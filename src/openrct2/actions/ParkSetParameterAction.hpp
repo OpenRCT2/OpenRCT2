@@ -11,6 +11,7 @@
 
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"
+#include "../util/Util.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -22,27 +23,25 @@ enum class ParkParameter : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActions::Result)
 {
 private:
-    uint8_t _parameter{ static_cast<uint8_t>(ParkParameter::Count) };
-    uint64_t _value;
+    ParkParameter _parameter{ ParkParameter::Count };
+    uint64_t _value{};
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
 
 public:
-    ParkSetParameterAction()
-    {
-    }
+    ParkSetParameterAction() = default;
     ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
-        : _parameter(static_cast<uint8_t>(parameter))
+        : _parameter(parameter)
         , _value(value)
     {
     }
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -51,21 +50,21 @@ public:
         stream << DS_TAG(_parameter) << DS_TAG(_value);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        if (_parameter >= static_cast<uint8_t>(ParkParameter::Count))
+        if (_parameter >= ParkParameter::Count)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[_parameter];
+        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        switch (static_cast<ParkParameter>(_parameter))
+        switch (_parameter)
         {
             case ParkParameter::Close:
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
@@ -86,12 +85,12 @@ public:
                 window_invalidate_by_class(WC_RIDE);
                 break;
             default:
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
                 break;
         }
 
         auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[_parameter];
+        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
         return res;
     }
 };

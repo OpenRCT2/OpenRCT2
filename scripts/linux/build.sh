@@ -44,7 +44,7 @@ pushd build
 		# CMAKE and MAKE opts from environment
 		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:mingw-arch bash -c "cmake ../ $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT2_MAKE_OPTS"
 	else
-		echo "Unkown target $TARGET"
+		echo "Unknown target $TARGET"
 		exit 1
 	fi
 popd

@@ -42,6 +42,7 @@ namespace ParkImporter
 
     bool ExtensionIsScenario(const std::string& extension)
     {
-        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sc6", true);
+        return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sc6", true)
+            || String::Equals(extension, ".sea", true);
     }
 } // namespace ParkImporter

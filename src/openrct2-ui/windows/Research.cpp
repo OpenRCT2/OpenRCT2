@@ -112,68 +112,24 @@ static void window_research_funding_invalidate(rct_window *w);
 static void window_research_funding_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events = {
-    nullptr,
-    window_research_development_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_development_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_development_invalidate,
-    window_research_development_paint,
-    nullptr
-};
+static rct_window_event_list window_research_development_events([](auto& events)
+{
+    events.mouse_up = &window_research_development_mouseup;
+    events.update = &window_research_development_update;
+    events.invalidate = &window_research_development_invalidate;
+    events.paint = &window_research_development_paint;
+});
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events = {
-    nullptr,
-    window_research_funding_mouseup,
-    nullptr,
-    window_research_funding_mousedown,
-    window_research_funding_dropdown,
-    nullptr,
-    window_research_funding_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_research_funding_invalidate,
-    window_research_funding_paint,
-    nullptr
-};
+static rct_window_event_list window_research_funding_events([](auto& events)
+{
+    events.mouse_up = &window_research_funding_mouseup;
+    events.mouse_down = &window_research_funding_mousedown;
+    events.dropdown = &window_research_funding_dropdown;
+    events.update = &window_research_funding_update;
+    events.invalidate = &window_research_funding_invalidate;
+    events.paint = &window_research_funding_paint;
+});
 
 static rct_window_event_list *window_research_page_events[] = {
     &window_research_development_events,
@@ -346,18 +302,25 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
 
     if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
     {
-        stringId = STR_RESEARCH_UNKNOWN;
-        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
-        screenCoords.y += 25;
-
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_UNKNOWN);
+            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
+            screenCoords.y += 25;
+        }
         // Progress
-        stringId = STR_RESEARCH_COMPLETED_AL;
-        gfx_draw_string_left_wrapped(dpi, &stringId, screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
-        screenCoords.y += 15;
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_COMPLETED_AL);
+            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 296, STR_RESEARCH_PROGRESS_LABEL, COLOUR_BLACK);
+            screenCoords.y += 15;
+        }
 
-        auto ft = Formatter::Common();
-        ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
+            gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+        }
     }
     else
     {
@@ -397,7 +360,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         screenCoords.y += 15;
 
         // Expected
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH && gResearchExpectedDay != 255)
         {
             // TODO: Should probably use game date format setting
@@ -409,7 +372,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, gCommonFormatArgs, COLOUR_BLACK, screenCoords);
+        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
     }
 
     // Last development
@@ -625,11 +588,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
-    if (w->viewport != nullptr)
-    {
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = window_research_page_enabled_widgets[page];
     w->hold_down_widgets = 0;

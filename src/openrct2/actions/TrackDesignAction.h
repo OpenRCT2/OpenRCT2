@@ -12,23 +12,23 @@
 #include "../ride/TrackDesign.h"
 #include "GameAction.h"
 
-class TrackDesignActionResult final : public GameActionResult
+class TrackDesignActionResult final : public GameActions::Result
 {
 public:
     TrackDesignActionResult()
-        : GameActionResult(GA_ERROR::OK, STR_NONE)
+        : GameActions::Result(GameActions::Status::Ok, STR_NONE)
     {
     }
-    TrackDesignActionResult(GA_ERROR error)
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
+    TrackDesignActionResult(GameActions::Status error)
+        : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
     {
     }
-    TrackDesignActionResult(GA_ERROR error, rct_string_id title, rct_string_id message)
-        : GameActionResult(error, title, message)
+    TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message)
+        : GameActions::Result(error, title, message)
     {
     }
-    TrackDesignActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
+    TrackDesignActionResult(GameActions::Status error, rct_string_id message)
+        : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
     {
     }
 
@@ -69,6 +69,6 @@ public:
         _td.Serialise(stream);
     }
 
-    GameActionResult::Ptr Query() const override;
-    GameActionResult::Ptr Execute() const override;
+    GameActions::Result::Ptr Query() const override;
+    GameActions::Result::Ptr Execute() const override;
 };

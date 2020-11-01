@@ -13,12 +13,12 @@
 #include "../ride/TrackData.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameActionResult)
+DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
-    uint16_t _mazeEntry{ 0 };
+    uint16_t _mazeEntry{};
 
 public:
     MazePlaceTrackAction() = default;
@@ -43,29 +43,29 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_rideIndex) << DS_TAG(_mazeEntry);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
 
         res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
         {
-            res->Error = GA_ERROR::NO_FREE_ELEMENTS;
+            res->Error = GameActions::Status::NoFreeElements;
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
         if ((_loc.z & 0xF) != 0)
         {
-            res->Error = GA_ERROR::UNKNOWN;
+            res->Error = GameActions::Status::Unknown;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
             return res;
         }
 
         if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
         {
-            res->Error = GA_ERROR::NOT_OWNED;
+            res->Error = GameActions::Status::NotOwned;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
@@ -73,7 +73,7 @@ public:
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            res->Error = GA_ERROR::UNKNOWN;
+            res->Error = GameActions::Status::Unknown;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
@@ -88,7 +88,7 @@ public:
 
             if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
             {
-                res->Error = GA_ERROR::TOO_HIGH;
+                res->Error = GameActions::Status::TooHigh;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
                 return res;
             }
@@ -100,19 +100,20 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags(), &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
         {
-            res->Error = GA_ERROR::NO_CLEARANCE;
+            res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return res;
         }
 
         if (gMapGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
-            res->Error = GA_ERROR::NO_CLEARANCE;
+            res->Error = GameActions::Status::NoClearance;
             res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
             return res;
         }
@@ -120,20 +121,20 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr || ride->type == RIDE_TYPE_NULL)
         {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
 
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
 
         res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
@@ -142,14 +143,14 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorMessage = STR_NONE;
             return res;
         }
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            res->Error = GA_ERROR::NO_FREE_ELEMENTS;
+            res->Error = GameActions::Status::NoFreeElements;
             res->ErrorMessage = STR_NONE;
             return res;
         }
@@ -169,10 +170,11 @@ public:
                 { _loc.ToTileStart(), baseHeight, clearanceHeight }, &map_place_non_scenery_clear_func, { 0b1111, 0 },
                 GetFlags() | GAME_COMMAND_FLAG_APPLY, &clearCost, CREATE_CROSSING_MODE_NONE))
         {
-            return MakeResult(GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
+            return MakeResult(
+                GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
         }
 
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = clearCost + price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();
@@ -183,7 +185,7 @@ public:
         tileElement->SetClearanceZ(clearanceHeight);
         tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-        tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+        tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
         tileElement->AsTrack()->SetRideIndex(_rideIndex);
         tileElement->AsTrack()->SetMazeEntry(_mazeEntry);
 

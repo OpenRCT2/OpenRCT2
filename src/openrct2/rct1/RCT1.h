@@ -125,22 +125,14 @@ struct rct1_ride
     uint8_t unk_CC[2];              // 0x0CC
     uint8_t num_sheltered_sections; // 0x0CE
     // see cur_test_track_location
-    uint8_t cur_test_track_z;                 // 0x0CF
-    int16_t unk_D0;                           // 0x0D0
-    int16_t unk_D2;                           // 0x0D2
-    int16_t customers_per_hour;               // 0x0D4
-    int16_t unk_D6;                           // 0x0D6
-    int16_t unk_D8;                           // 0x0D8
-    int16_t unk_DA;                           // 0x0DA
-    int16_t unk_DC;                           // 0x0DC
-    int16_t unk_DE;                           // 0x0DE
-    uint16_t age;                             // 0x0E0
-    int16_t running_cost;                     // 0x0E2
-    int16_t unk_E4;                           // 0x0E4
-    int16_t unk_E6;                           // 0x0E6
-    money16 price;                            // 0x0E8
-    RCT12xy8 chairlift_bullwheel_location[2]; // 0x0EA
-    uint8_t chairlift_bullwheel_z[2];         // 0x0EE
+    uint8_t cur_test_track_z; // 0x0CF
+    int16_t unk_D0;           // 0x0D0
+    int16_t unk_D2;           // 0x0D2
+    // Customer count in the last 10 * 960 game ticks (sliding window)
+    uint16_t num_customers[CUSTOMER_HISTORY_SIZE]; // 0xD4
+    money16 price;                                 // 0x0E8
+    RCT12xy8 chairlift_bullwheel_location[2];      // 0x0EA
+    uint8_t chairlift_bullwheel_z[2];              // 0x0EE
     union
     {
         RatingTuple ratings;
@@ -422,7 +414,7 @@ struct rct1_peep : RCT12SpriteBase
     uint32_t id;                                        // 0x9C
     money32 cash_in_pocket;                             // 0xA0
     money32 cash_spent;                                 // 0xA4
-    int32_t time_in_park;                               // 0xA8
+    int32_t park_entry_time;                            // 0xA8
     int8_t rejoin_queue_timeout;                        // 0xAC
     uint8_t previous_ride;                              // 0xAD
     uint16_t previous_ride_time_out;                    // 0xAE

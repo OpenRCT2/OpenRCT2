@@ -26,7 +26,6 @@ enum TILE_INSPECTOR_PAGE
     TILE_INSPECTOR_PAGE_CORRUPT
 };
 
-extern uint32_t windowTileInspectorTileX;
-extern uint32_t windowTileInspectorTileY;
+extern TileCoordsXY windowTileInspectorTile;
 extern int32_t windowTileInspectorElementCount;
 extern int32_t windowTileInspectorSelectedIndex;

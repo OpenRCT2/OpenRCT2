@@ -52,68 +52,17 @@ static void window_ride_refurbish_mouseup(rct_window *w, rct_widgetindex widgetI
 static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
-static rct_window_event_list window_ride_demolish_events = {
-    nullptr,
-    window_ride_demolish_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_demolish_paint,
-    nullptr,
-};
+static rct_window_event_list window_ride_demolish_events([](auto& events)
+{
+    events.mouse_up = &window_ride_demolish_mouseup;
+    events.paint = &window_ride_demolish_paint;
+});
 // clang-format on
 
-static rct_window_event_list window_ride_refurbish_events = {
-    nullptr,
-    window_ride_refurbish_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_ride_refurbish_paint,
-    nullptr,
-};
+static rct_window_event_list window_ride_refurbish_events([](auto& events) {
+    events.mouse_up = &window_ride_refurbish_mouseup;
+    events.paint = &window_ride_refurbish_paint;
+});
 
 /** Based off of rct2: 0x006B486A */
 rct_window* window_ride_demolish_prompt_open(Ride* ride)
@@ -216,12 +165,12 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ride->FormatNameTo(ft);
         ft.Add<money32>(_demolishRideCost);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, stringId, COLOUR_BLACK);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, WW - 4, stringId, COLOUR_BLACK);
     }
 }
 
@@ -233,11 +182,11 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride != nullptr)
     {
         auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ride->FormatNameTo(ft);
         ft.Add<money32>(_demolishRideCost / 2);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-        gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, stringCoords, WW - 4, stringId, COLOUR_BLACK);
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, WW - 4, stringId, COLOUR_BLACK);
     }
 }

@@ -79,36 +79,18 @@ static void window_track_place_unknown14(rct_window *w);
 static void window_track_place_invalidate(rct_window *w);
 static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_track_place_events = {
-    window_track_place_close,
-    window_track_place_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_update,
-    nullptr,
-    nullptr,
-    window_track_place_toolupdate,
-    window_track_place_tooldown,
-    nullptr,
-    nullptr,
-    window_track_place_toolabort,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_unknown14,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_track_place_invalidate,
-    window_track_place_paint,
-    nullptr
-};
+static rct_window_event_list window_track_place_events([](auto& events)
+{
+    events.close = &window_track_place_close;
+    events.mouse_up = &window_track_place_mouseup;
+    events.update = &window_track_place_update;
+    events.tool_update = &window_track_place_toolupdate;
+    events.tool_down = &window_track_place_tooldown;
+    events.tool_abort = &window_track_place_toolabort;
+    events.viewport_rotate = &window_track_place_unknown14;
+    events.invalidate = &window_track_place_invalidate;
+    events.paint = &window_track_place_paint;
+});
 // clang-format on
 
 static std::vector<uint8_t> _window_track_place_mini_preview;
@@ -242,9 +224,9 @@ static void window_track_place_update(rct_window* w)
             window_close(w);
 }
 
-static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
+static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t flags)
 {
-    GameActionResult::Ptr res;
+    GameActions::Result::Ptr res;
     for (int32_t i = 0; i < 7; i++, loc.z += 8)
     {
         auto tdAction = TrackDesignAction(CoordsXYZD{ loc.x, loc.y, loc.z, _currentTrackPieceDirection }, *_trackDesign);
@@ -253,7 +235,7 @@ static GameActionResult::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uin
 
         // If successful dont keep trying.
         // If failure due to no money then increasing height only makes problem worse
-        if (res->Error == GA_ERROR::OK || res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+        if (res->Error == GameActions::Status::Ok || res->Error == GameActions::Status::InsufficientFunds)
         {
             return res;
         }
@@ -300,13 +282,13 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
         window_track_place_clear_provisional();
         auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
-        if (res->Error == GA_ERROR::OK)
+        if (res->Error == GameActions::Status::Ok)
         {
             // Valid location found. Place the ghost at the location.
             auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
             tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     _window_track_place_ride_index = result->rideIndex;
                     _windowTrackPlaceLastValid = trackLoc;
@@ -314,7 +296,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
                 }
             });
             res = GameActions::Execute(&tdAction);
-            cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+            cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
         }
     }
 
@@ -349,17 +331,17 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     CoordsXYZ trackLoc = { mapCoords, mapZ };
 
     auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
-    if (res->Error == GA_ERROR::OK)
+    if (res->Error == GameActions::Status::Ok)
     {
         auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetCallback([trackLoc](const GameAction*, const TrackDesignActionResult* result) {
-            if (result->Error == GA_ERROR::OK)
+            if (result->Error == GameActions::Status::Ok)
             {
                 auto ride = get_ride(result->rideIndex);
                 if (ride != nullptr)
                 {
                     window_close_by_class(WC_ERROR);
-                    audio_play_sound_at_location(SoundId::PlaceItem, trackLoc);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackLoc);
 
                     _currentRideIndex = result->rideIndex;
                     if (track_design_are_entrance_and_exit_placed())
@@ -380,7 +362,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
             }
             else
             {
-                audio_play_sound_at_location(SoundId::Error, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, result->Position);
             }
         });
         GameActions::Execute(&tdAction);
@@ -388,7 +370,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     }
 
     // Unable to build track
-    audio_play_sound_at_location(SoundId::Error, trackLoc);
+    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, trackLoc);
 
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->ShowError(res->GetErrorTitle(), res->GetErrorMessage());
@@ -453,7 +435,7 @@ void TrackPlaceRestoreProvisional()
         auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
         tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         auto res = GameActions::Execute(&tdAction);
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
         {
             _window_track_place_last_was_valid = false;
         }
@@ -562,9 +544,9 @@ static void window_track_place_draw_mini_preview_track(
     for (const auto& trackElement : td6->track_elements)
     {
         int32_t trackType = trackElement.type;
-        if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP_ALIAS)
+        if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
         {
-            trackType = TRACK_ELEM_MULTIDIM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP;
+            trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
         }
 
         // Follow a single track piece shape

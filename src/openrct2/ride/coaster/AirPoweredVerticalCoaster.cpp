@@ -933,45 +933,45 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return air_powered_vertical_rc_track_flat;
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return air_powered_vertical_rc_track_station;
-        case TRACK_ELEM_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::LeftQuarterTurn5Tiles:
             return air_powered_vertical_rc_track_left_quarter_turn_5;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::RightQuarterTurn5Tiles:
             return air_powered_vertical_rc_track_right_quarter_turn_5;
-        case TRACK_ELEM_FLAT_TO_LEFT_BANK:
+        case TrackElemType::FlatToLeftBank:
             return air_powered_vertical_rc_track_flat_to_left_bank;
-        case TRACK_ELEM_FLAT_TO_RIGHT_BANK:
+        case TrackElemType::FlatToRightBank:
             return air_powered_vertical_rc_track_flat_to_right_bank;
-        case TRACK_ELEM_LEFT_BANK_TO_FLAT:
+        case TrackElemType::LeftBankToFlat:
             return air_powered_vertical_rc_track_left_bank_to_flat;
-        case TRACK_ELEM_RIGHT_BANK_TO_FLAT:
+        case TrackElemType::RightBankToFlat:
             return air_powered_vertical_rc_track_right_bank_to_flat;
-        case TRACK_ELEM_BANKED_LEFT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedLeftQuarterTurn5Tiles:
             return air_powered_vertical_rc_track_banked_left_quarter_turn_5;
-        case TRACK_ELEM_BANKED_RIGHT_QUARTER_TURN_5_TILES:
+        case TrackElemType::BankedRightQuarterTurn5Tiles:
             return air_powered_vertical_rc_track_banked_right_quarter_turn_5;
-        case TRACK_ELEM_LEFT_BANK:
+        case TrackElemType::LeftBank:
             return air_powered_vertical_rc_track_left_bank;
-        case TRACK_ELEM_RIGHT_BANK:
+        case TrackElemType::RightBank:
             return air_powered_vertical_rc_track_right_bank;
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             return air_powered_vertical_rc_track_brakes;
-        case TRACK_ELEM_REVERSE_FREEFALL_SLOPE:
+        case TrackElemType::ReverseFreefallSlope:
             return air_powered_vertical_rc_track_vertical_slope_up;
-        case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
+        case TrackElemType::ReverseFreefallVertical:
             return air_powered_vertical_rc_track_vertical_up;
-        case TRACK_ELEM_AIR_THRUST_TOP_CAP:
+        case TrackElemType::AirThrustTopCap:
             return air_powered_vertical_rc_track_vertical_top;
-        case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN:
+        case TrackElemType::AirThrustVerticalDown:
             return air_powered_vertical_rc_track_vertical_down;
-        case TRACK_ELEM_AIR_THRUST_VERTICAL_DOWN_TO_LEVEL:
+        case TrackElemType::AirThrustVerticalDownToLevel:
             return air_powered_vertical_rc_track_vertical_slope_down;
-        case TRACK_ELEM_BOOSTER:
+        case TrackElemType::Booster:
             return air_powered_vertical_rc_track_booster;
     }
     return nullptr;

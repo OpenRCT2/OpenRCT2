@@ -26,17 +26,15 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, GameActionResult)
+DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, GameActions::Result)
 {
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType;
+    uint8_t _selectionType{};
 
 public:
-    LandRaiseAction()
-    {
-    }
+    LandRaiseAction() = default;
     LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
         : _coords(coords)
         , _range(range)
@@ -56,18 +54,18 @@ public:
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
         size_t tableRow = _selectionType;
@@ -89,7 +87,8 @@ private:
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
+            OpenRCT2::Audio::Play3D(
+                OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
         }
 
         uint8_t minHeight = map_get_lowest_land_height(validRange);
@@ -130,7 +129,7 @@ private:
                 landSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                           : GameActions::QueryNested(&landSetHeightAction);
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     res->Cost += result->Cost;
                 }
@@ -144,8 +143,8 @@ private:
 
         if (!withinOwnership)
         {
-            GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(
-                GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+            GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
+                GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
             ownerShipResult->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
             return ownerShipResult;
         }

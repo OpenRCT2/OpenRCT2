@@ -532,9 +532,9 @@ bool track_type_is_station(track_type_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_END_STATION:
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
+        case TrackElemType::EndStation:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
             return true;
         default:
             return false;
@@ -854,5 +854,9 @@ void ride_ratings_calculate_lim_launched_roller_coaster([[maybe_unused]] Ride* r
 }
 
 void ride_ratings_calculate_drink_stall([[maybe_unused]] Ride* ride)
+{
+}
+
+void ride_ratings_calculate_hybrid_coaster([[maybe_unused]] Ride* ride)
 {
 }

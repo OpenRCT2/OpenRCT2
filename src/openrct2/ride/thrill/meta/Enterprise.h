@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
                      RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_ALLOW_MUSIC |
                      RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT | 
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_ROTATION)),
-    SET_FIELD(DefaultMode, RIDE_MODE_ROTATION),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::Rotation)),
+    SET_FIELD(DefaultMode, RideMode::Rotation),
     SET_FIELD(OperatingSettings, { 10, 20, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 16, 160, 3, 2, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_enterprise),
     SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

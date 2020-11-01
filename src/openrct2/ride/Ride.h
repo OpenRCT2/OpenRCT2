@@ -11,6 +11,7 @@
 #define _RIDE_H_
 
 #include "../common.h"
+#include "../localisation/Formatter.h"
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
@@ -189,6 +190,7 @@ enum class RideClassification
 };
 
 struct TrackDesign;
+enum class RideMode : uint8_t;
 
 /**
  * Ride structure.
@@ -203,7 +205,7 @@ struct Ride
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
     ObjectEntryIndex subtype;
-    uint8_t mode;
+    RideMode mode;
     uint8_t colour_scheme_type;
     VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
     // 0 = closed, 1 = open, 2 = test
@@ -405,7 +407,7 @@ public:
 
     void StopGuestsQueuing();
 
-    uint8_t GetDefaultMode() const;
+    RideMode GetDefaultMode() const;
 
     void SetColourPreset(uint8_t index);
 
@@ -432,6 +434,8 @@ public:
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
     TrackElement* GetOriginElement(StationIndex stationIndex) const;
+
+    std::pair<RideMeasurement*, OpenRCT2String> GetMeasurement();
 };
 
 #pragma pack(push, 1)
@@ -620,12 +624,12 @@ enum
     RIDE_TYPE_MINE_RIDE,
     RIDE_TYPE_59,
     RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90,
-
     RIDE_TYPE_HYPERCOASTER,
     RIDE_TYPE_HYPER_TWISTER,
     RIDE_TYPE_MONSTER_TRUCKS,
     RIDE_TYPE_SPINNING_WILD_MOUSE,
     RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
+    RIDE_TYPE_HYBRID_COASTER,
 
     RIDE_TYPE_COUNT
 };
@@ -639,49 +643,51 @@ enum
     RIDE_STATUS_COUNT,
 };
 
-enum : uint8_t
+enum class RideMode : uint8_t
 {
-    RIDE_MODE_NORMAL,
-    RIDE_MODE_CONTINUOUS_CIRCUIT,
-    RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE,
-    RIDE_MODE_POWERED_LAUNCH_PASSTROUGH, // RCT2 style, pass through station
-    RIDE_MODE_SHUTTLE,
-    RIDE_MODE_BOAT_HIRE,
-    RIDE_MODE_UPWARD_LAUNCH,
-    RIDE_MODE_ROTATING_LIFT,
-    RIDE_MODE_STATION_TO_STATION,
-    RIDE_MODE_SINGLE_RIDE_PER_ADMISSION,
-    RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION = 10,
-    RIDE_MODE_MAZE,
-    RIDE_MODE_RACE,
-    RIDE_MODE_DODGEMS,
-    RIDE_MODE_SWING,
-    RIDE_MODE_SHOP_STALL,
-    RIDE_MODE_ROTATION,
-    RIDE_MODE_FORWARD_ROTATION,
-    RIDE_MODE_BACKWARD_ROTATION,
-    RIDE_MODE_FILM_AVENGING_AVIATORS,
-    RIDE_MODE_3D_FILM_MOUSE_TAILS = 20,
-    RIDE_MODE_SPACE_RINGS,
-    RIDE_MODE_BEGINNERS,
-    RIDE_MODE_LIM_POWERED_LAUNCH,
-    RIDE_MODE_FILM_THRILL_RIDERS,
-    RIDE_MODE_3D_FILM_STORM_CHASERS,
-    RIDE_MODE_3D_FILM_SPACE_RAIDERS,
-    RIDE_MODE_INTENSE,
-    RIDE_MODE_BERSERK,
-    RIDE_MODE_HAUNTED_HOUSE,
-    RIDE_MODE_CIRCUS_SHOW = 30,
-    RIDE_MODE_DOWNWARD_LAUNCH,
-    RIDE_MODE_CROOKED_HOUSE,
-    RIDE_MODE_FREEFALL_DROP,
-    RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED,
-    RIDE_MODE_POWERED_LAUNCH, // RCT1 style, don't pass through station
-    RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED,
+    Normal,
+    ContinuousCircuit,
+    ReverseInclineLaunchedShuttle,
+    PoweredLaunchPasstrough, // RCT2 style, pass through station
+    Shuttle,
+    BoatHire,
+    UpwardLaunch,
+    RotatingLift,
+    StationToStation,
+    SingleRidePerAdmission,
+    UnlimitedRidesPerAdmission = 10,
+    Maze,
+    Race,
+    Dodgems,
+    Swing,
+    ShopStall,
+    Rotation,
+    ForwardRotation,
+    BackwardRotation,
+    FilmAvengingAviators,
+    MouseTails3DFilm = 20,
+    SpaceRings,
+    Beginners,
+    LimPoweredLaunch,
+    FilmThrillRiders,
+    StormChasers3DFilm,
+    SpaceRaiders3DFilm,
+    Intense,
+    Berserk,
+    HauntedHouse,
+    Circus = 30,
+    DownwardLaunch,
+    CrookedHouse,
+    FreefallDrop,
+    ContinuousCircuitBlockSectioned,
+    PoweredLaunch, // RCT1 style, don't pass through station
+    PoweredLaunchBlockSectioned,
 
-    RIDE_MODE_COUNT,
-    RIDE_MODE_NULL = 255,
+    Count,
+    NullMode = 255,
 };
+
+RideMode& operator++(RideMode& d, int);
 
 enum
 {
@@ -1055,7 +1061,7 @@ extern CoordsXYZ _currentTrackBegin;
 extern uint8_t _currentTrackPieceDirection;
 extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
-extern int8_t _rideConstructionArrowPulseTime;
+extern uint32_t _rideConstructionNextArrowPulse;
 extern uint8_t _currentTrackSlopeEnd;
 extern uint8_t _currentTrackBankEnd;
 extern uint8_t _currentTrackLiftHill;
@@ -1105,7 +1111,6 @@ vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 void ride_measurements_update();
-std::pair<RideMeasurement*, rct_string_id> ride_get_measurement(Ride* ride);
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying);
@@ -1198,7 +1203,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
 uint32_t ride_customers_per_hour(const Ride* ride);
 uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
-Vehicle* ride_get_broken_vehicle(Ride* ride);
+Vehicle* ride_get_broken_vehicle(const Ride* ride);
 
 void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();

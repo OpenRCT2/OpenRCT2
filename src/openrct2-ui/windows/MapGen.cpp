@@ -211,129 +211,48 @@ static void window_mapgen_heightmap_mousedown(rct_window *w, rct_widgetindex wid
 static void window_mapgen_heightmap_invalidate(rct_window *w);
 static void window_mapgen_heightmap_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list BaseEvents = {
-    window_mapgen_shared_close,
-    window_mapgen_base_mouseup,
-    nullptr,
-    window_mapgen_base_mousedown,
-    window_mapgen_base_dropdown,
-    nullptr,
-    window_mapgen_base_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_base_invalidate,
-    window_mapgen_base_paint,
-    nullptr
-};
+static rct_window_event_list BaseEvents([](auto& events)
+{
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_base_mouseup;
+    events.mouse_down = &window_mapgen_base_mousedown;
+    events.dropdown = &window_mapgen_base_dropdown;
+    events.update = &window_mapgen_base_update;
+    events.text_input = &window_mapgen_textinput;
+    events.invalidate = &window_mapgen_base_invalidate;
+    events.paint = &window_mapgen_base_paint;
+});
 
-static rct_window_event_list RandomEvents = {
-    window_mapgen_shared_close,
-    window_mapgen_random_mouseup,
-    nullptr,
-    window_mapgen_random_mousedown,
-    nullptr,
-    nullptr,
-    window_mapgen_random_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_random_invalidate,
-    window_mapgen_random_paint,
-    nullptr
-};
+static rct_window_event_list RandomEvents([](auto& events)
+{
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_random_mouseup;
+    events.mouse_down = &window_mapgen_random_mousedown;
+    events.update = &window_mapgen_random_update;
+    events.invalidate = &window_mapgen_random_invalidate;
+    events.paint = &window_mapgen_random_paint;
+});
 
-static rct_window_event_list SimplexEvents = {
-    window_mapgen_shared_close,
-    window_mapgen_simplex_mouseup,
-    nullptr,
-    window_mapgen_simplex_mousedown,
-    window_mapgen_simplex_dropdown,
-    nullptr,
-    window_mapgen_simplex_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_simplex_invalidate,
-    window_mapgen_simplex_paint,
-    nullptr
-};
+static rct_window_event_list SimplexEvents([](auto& events)
+{
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_simplex_mouseup;
+    events.mouse_down = &window_mapgen_simplex_mousedown;
+    events.dropdown = &window_mapgen_simplex_dropdown;
+    events.update = &window_mapgen_simplex_update;
+    events.text_input = &window_mapgen_textinput;
+    events.invalidate = &window_mapgen_simplex_invalidate;
+    events.paint = &window_mapgen_simplex_paint;
+});
 
-static rct_window_event_list HeightmapEvents = {
-    window_mapgen_shared_close,
-    window_mapgen_heightmap_mouseup,
-    nullptr,
-    window_mapgen_heightmap_mousedown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_mapgen_heightmap_invalidate,
-    window_mapgen_heightmap_paint,
-    nullptr
-};
+static rct_window_event_list HeightmapEvents([](auto& events)
+{
+    events.close = &window_mapgen_shared_close;
+    events.mouse_up = &window_mapgen_heightmap_mouseup;
+    events.mouse_down = &window_mapgen_heightmap_mousedown;
+    events.invalidate = &window_mapgen_heightmap_invalidate;
+    events.paint = &window_mapgen_heightmap_paint;
+});
 
 static rct_window_event_list *PageEvents[] = {
     &BaseEvents,
@@ -1343,11 +1262,7 @@ static void window_mapgen_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
-    if (w->viewport != nullptr)
-    {
-        w->viewport->width = 0;
-        w->viewport = nullptr;
-    }
+    w->RemoveViewport();
 
     w->enabled_widgets = PageEnabledWidgets[page];
     w->hold_down_widgets = HoldDownWidgets[page];

@@ -31,57 +31,57 @@
 
 using namespace OpenRCT2;
 
-GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
-{
-    Error = error;
-    ErrorMessage = message;
-}
-
-GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message)
-{
-    Error = error;
-    ErrorTitle = title;
-    ErrorMessage = message;
-}
-
-GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8_t* args)
-{
-    Error = error;
-    ErrorTitle = title;
-    ErrorMessage = message;
-    std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
-}
-
-std::string GameActionResult::GetErrorTitle() const
-{
-    std::string title;
-    if (auto error = ErrorTitle.AsString())
-    {
-        title = *error;
-    }
-    else
-    {
-        title = format_string(ErrorTitle.GetStringId(), ErrorMessageArgs.data());
-    }
-    return title;
-}
-
-std::string GameActionResult::GetErrorMessage() const
-{
-    std::string message;
-    if (auto error = ErrorMessage.AsString())
-    {
-        message = *error;
-    }
-    else
-    {
-        message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
-    }
-    return message;
-}
-
 namespace GameActions
 {
+    Result::Result(GameActions::Status error, rct_string_id message)
+    {
+        Error = error;
+        ErrorMessage = message;
+    }
+
+    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message)
+    {
+        Error = error;
+        ErrorTitle = title;
+        ErrorMessage = message;
+    }
+
+    Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args)
+    {
+        Error = error;
+        ErrorTitle = title;
+        ErrorMessage = message;
+        std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());
+    }
+
+    std::string GameActions::Result::GetErrorTitle() const
+    {
+        std::string title;
+        if (auto error = ErrorTitle.AsString())
+        {
+            title = *error;
+        }
+        else
+        {
+            title = format_string(ErrorTitle.GetStringId(), ErrorMessageArgs.data());
+        }
+        return title;
+    }
+
+    std::string GameActions::Result::GetErrorMessage() const
+    {
+        std::string message;
+        if (auto error = ErrorMessage.AsString())
+        {
+            message = *error;
+        }
+        else
+        {
+            message = format_string(ErrorMessage.GetStringId(), ErrorMessageArgs.data());
+        }
+        return message;
+    }
+
     struct QueuedGameAction
     {
         uint32_t tick;
@@ -207,8 +207,8 @@ namespace GameActions
 
             Guard::Assert(action != nullptr);
 
-            GameActionResult::Ptr result = Execute(action);
-            if (result->Error == GA_ERROR::OK && network_get_mode() == NETWORK_MODE_SERVER)
+            GameActions::Result::Ptr result = Execute(action);
+            if (result->Error == GameActions::Status::Ok && network_get_mode() == NETWORK_MODE_SERVER)
             {
                 // Relay this action to all other clients.
                 network_send_game_action(action);
@@ -278,21 +278,21 @@ namespace GameActions
             return true;
         if (gCheatsBuildInPauseMode)
             return true;
-        if (actionFlags & GA_FLAGS::ALLOW_WHILE_PAUSED)
+        if (actionFlags & GameActions::Flags::AllowWhilePaused)
             return true;
         return false;
     }
 
-    static GameActionResult::Ptr QueryInternal(const GameAction* action, bool topLevel)
+    static GameActions::Result::Ptr QueryInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
         uint16_t actionFlags = action->GetActionFlags();
         if (topLevel && !CheckActionInPausedMode(actionFlags))
         {
-            GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+            GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
 
-            result->Error = GA_ERROR::GAME_PAUSED;
+            result->Error = GameActions::Status::GamePaused;
             result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -301,11 +301,12 @@ namespace GameActions
 
         auto result = action->Query();
 
-        if (result->Error == GA_ERROR::OK)
+        if (result->Error == GameActions::Status::Ok)
         {
             if (!finance_check_affordability(result->Cost, action->GetFlags()))
             {
-                result->Error = GA_ERROR::INSUFFICIENT_FUNDS;
+                result->Error = GameActions::Status::InsufficientFunds;
+                result->ErrorTitle = STR_CANT_DO_THIS;
                 result->ErrorMessage = STR_NOT_ENOUGH_CASH_REQUIRES;
                 Formatter(result->ErrorMessageArgs.data()).Add<uint32_t>(result->Cost);
             }
@@ -313,12 +314,12 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult::Ptr Query(const GameAction* action)
+    GameActions::Result::Ptr Query(const GameAction* action)
     {
         return QueryInternal(action, true);
     }
 
-    GameActionResult::Ptr QueryNested(const GameAction* action)
+    GameActions::Result::Ptr QueryNested(const GameAction* action)
     {
         return QueryInternal(action, false);
     }
@@ -354,13 +355,13 @@ namespace GameActions
         action->Serialise(ds);
     }
 
-    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActionResult::Ptr& result)
+    static void LogActionFinish(ActionLogContext_t& ctx, const GameAction* action, const GameActions::Result::Ptr& result)
     {
         MemoryStream& output = ctx.output;
 
         char temp[128] = {};
 
-        if (result->Error != GA_ERROR::OK)
+        if (result->Error != GameActions::Status::Ok)
         {
             snprintf(temp, sizeof(temp), ") Failed, %u", static_cast<uint32_t>(result->Error));
         }
@@ -377,7 +378,7 @@ namespace GameActions
         network_append_server_log(text);
     }
 
-    static GameActionResult::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
+    static GameActions::Result::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
     {
         Guard::ArgumentNotNull(action);
 
@@ -391,9 +392,9 @@ namespace GameActions
             if ((flags & GAME_COMMAND_FLAG_REPLAY) == 0)
             {
                 // TODO: Introduce proper error.
-                GameActionResult::Ptr result = std::make_unique<GameActionResult>();
+                GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
 
-                result->Error = GA_ERROR::GAME_PAUSED;
+                result->Error = GameActions::Status::GamePaused;
                 result->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
                 result->ErrorMessage = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
 
@@ -401,9 +402,9 @@ namespace GameActions
             }
         }
 
-        GameActionResult::Ptr result = QueryInternal(action, topLevel);
+        GameActions::Result::Ptr result = QueryInternal(action, topLevel);
 #ifdef ENABLE_SCRIPTING
-        if (result->Error == GA_ERROR::OK
+        if (result->Error == GameActions::Status::Ok
             && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -411,7 +412,7 @@ namespace GameActions
             // Script hooks may now have changed the game action result...
         }
 #endif
-        if (result->Error == GA_ERROR::OK)
+        if (result->Error == GameActions::Status::Ok)
         {
             if (topLevel)
             {
@@ -419,7 +420,7 @@ namespace GameActions
                 if (network_get_mode() == NETWORK_MODE_CLIENT)
                 {
                     // As a client we have to wait or send it first.
-                    if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
                         network_send_game_action(action);
@@ -431,7 +432,7 @@ namespace GameActions
                 {
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
-                    if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
+                    if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         log_verbose("[%s] GameAction::Execute %s (Queue)", GetRealm(), action->GetName());
                         Enqueue(action, gCurrentTicks);
@@ -447,7 +448,7 @@ namespace GameActions
             // Execute the action, changing the game state
             result = action->Execute();
 #ifdef ENABLE_SCRIPTING
-            if (result->Error == GA_ERROR::OK)
+            if (result->Error == GameActions::Status::Ok)
             {
                 auto& scriptEngine = GetContext()->GetScriptEngine();
                 scriptEngine.RunGameActionHooks(*action, result, true);
@@ -462,13 +463,13 @@ namespace GameActions
                 return result;
 
             // Update money balance
-            if (result->Error == GA_ERROR::OK && finance_check_money_required(flags) && result->Cost != 0)
+            if (result->Error == GameActions::Status::Ok && finance_check_money_required(flags) && result->Cost != 0)
             {
                 finance_payment(result->Cost, result->Expenditure);
                 MoneyEffect::Create(result->Cost, result->Position);
             }
 
-            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && result->Error == GA_ERROR::OK)
+            if (!(actionFlags & GameActions::Flags::ClientOnly) && result->Error == GameActions::Status::Ok)
             {
                 if (network_get_mode() != NETWORK_MODE_NONE)
                 {
@@ -537,7 +538,7 @@ namespace GameActions
             }
         }
 
-        if (result->Error != GA_ERROR::OK && shouldShowError)
+        if (result->Error != GameActions::Status::Ok && shouldShowError)
         {
             auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
             windowManager->ShowError(result->GetErrorTitle(), result->GetErrorMessage());
@@ -546,12 +547,12 @@ namespace GameActions
         return result;
     }
 
-    GameActionResult::Ptr Execute(const GameAction* action)
+    GameActions::Result::Ptr Execute(const GameAction* action)
     {
         return ExecuteInternal(action, true);
     }
 
-    GameActionResult::Ptr ExecuteNested(const GameAction* action)
+    GameActions::Result::Ptr ExecuteNested(const GameAction* action)
     {
         return ExecuteInternal(action, false);
     }
@@ -576,7 +577,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         obj.Set("type", _type);
 
         auto flags = GetActionFlags();
-        obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
         obj.Set("result", true);
 
         // Call the subscriptions

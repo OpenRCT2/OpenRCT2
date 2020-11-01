@@ -83,7 +83,7 @@ public:
 
         td->cost = 0;
         td->flags = td6.flags;
-        td->ride_mode = td6.ride_mode;
+        td->ride_mode = static_cast<RideMode>(td6.ride_mode);
         td->track_flags = 0;
         td->colour_scheme = td6.version_and_colour_scheme & 0x3;
         for (auto i = 0; i < RCT2_MAX_CARS_PER_TRAIN; ++i)
@@ -217,16 +217,16 @@ public:
         if (RCT2RideTypeNeedsConversion(td->type))
         {
             std::scoped_lock<std::mutex> lock(_objectLookupMutex);
-            auto* rawObject = object_repository_load_object(&td->vehicle_object);
+            auto rawObject = object_repository_load_object(&td->vehicle_object);
             if (rawObject != nullptr)
             {
                 const auto* rideEntry = static_cast<const rct_ride_entry*>(
-                    static_cast<RideObject*>(rawObject)->GetLegacyData());
+                    static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                 if (rideEntry != nullptr)
                 {
                     td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
                 }
-                object_delete(rawObject);
+                rawObject->Unload();
             }
         }
     }

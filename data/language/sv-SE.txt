@@ -1967,7 +1967,6 @@ STR_2763    :???
 STR_2765    :Stort tåg
 STR_2766    :Vinn scenario
 STR_2767    :Frys väder
-STR_2768    :Avfrys väder
 STR_2769    :Öppna Park
 STR_2770    :Stäng Park
 STR_2773    :Fönster
@@ -2699,8 +2698,6 @@ STR_5365    :{BLACK}Personalhastighet:
 STR_5366    :Normal
 STR_5367    :Snabb
 STR_5368    :Återställ krasch
-STR_5369    :Parkinställningar …
-STR_5370    :{SMALLFONT}{BLACK}Klicka på denna knapp för att modifiera{NEWLINE}parkinställningar som begränsningar,{NEWLINE}besökargenerering och pengar.
 STR_5371    :Objektväljare
 STR_5372    :Invertera höger musdragning
 STR_5373    :Namn {STRINGID}
@@ -3138,7 +3135,6 @@ STR_5846    :{SMALLFONT}{BLACK}Välj hur ofta OpenRCT2 ska spara automatiskt
 STR_5847    :{SMALLFONT}{BLACK}Välj vilket parkintro spelet ska använda på huvudmenyn. Titelsekvenser från RCT1 och RCT2 kräver importerade filer för att fungera korrekt
 STR_5848    :{SMALLFONT}{BLACK}Skapa och hantera egna titelsekvenser
 STR_5849    :{SMALLFONT}{BLACK}Placera automatiskt ut ny personal när de anställs
-STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Sätter standarden på inspektionsmellanrummen{NEWLINE}på nybyggda attraktioner
 STR_5853    :{SMALLFONT}{BLACK}Slå av eller på ljudeffekter
 STR_5854    :{SMALLFONT}{BLACK}Slå av eller på åkturernas musik

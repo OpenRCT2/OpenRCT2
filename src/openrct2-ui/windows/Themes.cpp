@@ -49,36 +49,21 @@ static void window_themes_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_themes_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void window_themes_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
-static rct_window_event_list window_themes_events = {
-    nullptr,
-    window_themes_mouseup,
-    window_themes_resize,
-    window_themes_mousedown,
-    window_themes_dropdown,
-    nullptr,
-    window_themes_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_themes_scrollgetsize,
-    window_themes_scrollmousedown,
-    nullptr,
-    window_themes_scrollmouseover,
-    window_themes_textinput,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_themes_invalidate,
-    window_themes_paint,
-    window_themes_scrollpaint,
-};
+static rct_window_event_list window_themes_events([](auto& events)
+{
+    events.mouse_up = &window_themes_mouseup;
+    events.resize = &window_themes_resize;
+    events.mouse_down = &window_themes_mousedown;
+    events.dropdown = &window_themes_dropdown;
+    events.update = &window_themes_update;
+    events.get_scroll_size = &window_themes_scrollgetsize;
+    events.scroll_mousedown = &window_themes_scrollmousedown;
+    events.scroll_mouseover = &window_themes_scrollmouseover;
+    events.text_input = &window_themes_textinput;
+    events.invalidate = &window_themes_invalidate;
+    events.paint = &window_themes_paint;
+    events.scroll_paint = &window_themes_scrollpaint;
+});
 
 enum WINDOW_STAFF_LIST_WIDGET_IDX {
     WIDX_THEMES_BACKGROUND,
@@ -224,7 +209,7 @@ static rct_windowclass window_themes_tab_5_classes[] = {
     WC_EDITOR_OBJECT_SELECTION,
     WC_EDITOR_INVENTION_LIST,
     WC_EDITOR_SCENARIO_OPTIONS,
-    WC_EDTIOR_OBJECTIVE_OPTIONS,
+    WC_EDITOR_OBJECTIVE_OPTIONS,
     WC_MAPGEN,
     WC_MANAGE_TRACK_DESIGN,
     WC_INSTALL_TRACK
@@ -839,7 +824,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
         const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<const utf8*>(activeThemeName);
 
         auto screenPos = w->windowPos

@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../management/Finance.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "GameAction.h"
@@ -25,18 +26,18 @@ enum class BannerSetStyleType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActionResult)
+DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActions::Result)
 {
 private:
-    uint8_t _type = static_cast<uint8_t>(BannerSetStyleType::Count);
-    BannerIndex _bannerIndex = BANNER_INDEX_NULL;
-    uint8_t _parameter;
+    BannerSetStyleType _type{ BannerSetStyleType::Count };
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    uint8_t _parameter{};
 
 public:
     BannerSetStyleAction() = default;
 
     BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter)
-        : _type(static_cast<uint8_t>(type))
+        : _type(type)
         , _bannerIndex(bannerIndex)
         , _parameter(parameter)
     {
@@ -44,7 +45,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -54,13 +55,13 @@ public:
         stream << DS_TAG(_type) << DS_TAG(_bannerIndex) << DS_TAG(_parameter);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
 
         if (_bannerIndex >= MAX_BANNERS || _bannerIndex == BANNER_INDEX_NULL)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
         auto banner = GetBanner(_bannerIndex);
@@ -74,16 +75,16 @@ public:
         if (tileElement == nullptr)
         {
             log_error("Could not find banner index = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
-        switch (static_cast<BannerSetStyleType>(_type))
+        switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
                 if (_parameter > 31)
                 {
                     log_error("Invalid primary colour: colour = %u", _parameter);
-                    return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
+                    return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
                 }
                 break;
 
@@ -91,24 +92,24 @@ public:
                 if (_parameter > 13)
                 {
                     log_error("Invalid text colour: colour = %u", _parameter);
-                    return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
+                    return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
                 }
                 break;
             case BannerSetStyleType::NoEntry:
                 if (tileElement->AsBanner() == nullptr)
                 {
                     log_error("Tile element was not a banner.");
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                    return MakeResult(GameActions::Status::Unknown, STR_NONE);
                 }
                 break;
             default:
                 log_error("Invalid type: %u", _type);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
 
@@ -123,10 +124,10 @@ public:
         if (tileElement == nullptr)
         {
             log_error("Could not find banner index = %u", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
-        switch (static_cast<BannerSetStyleType>(_type))
+        switch (_type)
         {
             case BannerSetStyleType::PrimaryColour:
                 banner->colour = _parameter;
@@ -140,7 +141,7 @@ public:
                 if (bannerElement == nullptr)
                 {
                     log_error("Tile element was not a banner.");
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_NONE);
+                    return MakeResult(GameActions::Status::Unknown, STR_NONE);
                 }
 
                 banner->flags &= ~BANNER_FLAG_NO_ENTRY;
@@ -155,7 +156,7 @@ public:
             }
             default:
                 log_error("Invalid type: %u", _type);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto intent = Intent(INTENT_ACTION_UPDATE_BANNER);

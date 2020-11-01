@@ -94,6 +94,7 @@ static constexpr const char RideTypeViewOrder[] = {
     RIDE_TYPE_REVERSE_FREEFALL_COASTER,
     RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER,
     RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER,
+    RIDE_TYPE_HYBRID_COASTER,
 
     // Gentle rides
     RIDE_TYPE_MONORAIL_CYCLES,
@@ -219,36 +220,18 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, i
 static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen);
 
 // 0x0098E354
-static rct_window_event_list window_new_ride_events = {
-    nullptr,
-    window_new_ride_mouseup,
-    nullptr,
-    window_new_ride_mousedown,
-    nullptr,
-    nullptr,
-    window_new_ride_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_new_ride_scrollgetsize,
-    window_new_ride_scrollmousedown,
-    nullptr,
-    window_new_ride_scrollmouseover,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_new_ride_invalidate,
-    window_new_ride_paint,
-    window_new_ride_scrollpaint
-};
+static rct_window_event_list window_new_ride_events([](auto& events)
+{
+    events.mouse_up = &window_new_ride_mouseup;
+    events.mouse_down = &window_new_ride_mousedown;
+    events.update = &window_new_ride_update;
+    events.get_scroll_size = &window_new_ride_scrollgetsize;
+    events.scroll_mousedown = &window_new_ride_scrollmousedown;
+    events.scroll_mouseover = &window_new_ride_scrollmouseover;
+    events.invalidate = &window_new_ride_invalidate;
+    events.paint = &window_new_ride_paint;
+    events.scroll_paint = &window_new_ride_scrollpaint;
+});
 
 #pragma endregion
 
@@ -729,7 +712,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->new_ride.SelectedRide = item;
 
-    audio_play_sound(SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     w->new_ride.selected_ride_countdown = 8;
     w->Invalidate();
 }
@@ -914,10 +897,10 @@ static void window_new_ride_paint_ride_information(
 
     // Ride name and description
     rideNaming = get_ride_naming(item.Type, rideEntry);
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
     ft.Add<rct_string_id>(rideNaming.Name);
     ft.Add<rct_string_id>(rideNaming.Description);
-    gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
+    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
     window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
@@ -925,16 +908,18 @@ static void window_new_ride_paint_ride_information(
     if (availabilityString[0] != 0)
     {
         const char* drawString = availabilityString;
-        ft = Formatter::Common();
+        ft = Formatter();
         ft.Add<const char*>(drawString);
         DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
     }
 
+    ft = Formatter();
     if (item.Type != _lastTrackDesignCountRideType.Type || item.EntryIndex != _lastTrackDesignCountRideType.EntryIndex)
     {
         _lastTrackDesignCountRideType = item;
         _lastTrackDesignCount = get_num_track_designs(item);
     }
+    ft.Add<int32_t>(_lastTrackDesignCount);
 
     rct_string_id designCountStringId;
     switch (_lastTrackDesignCount)
@@ -950,7 +935,7 @@ static void window_new_ride_paint_ride_information(
             break;
     }
 
-    gfx_draw_string_left(dpi, designCountStringId, &_lastTrackDesignCount, COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 51 });
+    gfx_draw_string_left(dpi, designCountStringId, ft.Data(), COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 51 });
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

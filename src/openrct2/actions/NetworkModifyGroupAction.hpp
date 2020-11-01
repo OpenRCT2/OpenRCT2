@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../network/network.h"
+#include "../util/Util.h"
 #include "GameAction.h"
 
 enum class ModifyGroupType : uint8_t
@@ -30,14 +31,14 @@ enum class PermissionState : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(NetworkModifyGroupAction, GAME_COMMAND_MODIFY_GROUPS, GameActionResult)
+DEFINE_GAME_ACTION(NetworkModifyGroupAction, GAME_COMMAND_MODIFY_GROUPS, GameActions::Result)
 {
 private:
-    uint8_t _type{ static_cast<uint8_t>(ModifyGroupType::Count) };
+    ModifyGroupType _type{ ModifyGroupType::Count };
     uint8_t _groupId{ std::numeric_limits<uint8_t>::max() };
     std::string _name;
     uint32_t _permissionIndex{ std::numeric_limits<uint32_t>::max() };
-    uint8_t _permissionState{ static_cast<uint8_t>(PermissionState::Count) };
+    PermissionState _permissionState{ PermissionState::Count };
 
 public:
     NetworkModifyGroupAction() = default;
@@ -45,17 +46,17 @@ public:
     NetworkModifyGroupAction(
         ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
         uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count)
-        : _type(static_cast<uint8_t>(type))
+        : _type(type)
         , _groupId(groupId)
         , _name(name)
         , _permissionIndex(permissionIndex)
-        , _permissionState(static_cast<uint8_t>(permissionState))
+        , _permissionState(permissionState)
     {
     }
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -65,17 +66,13 @@ public:
         stream << DS_TAG(_type) << DS_TAG(_groupId) << DS_TAG(_name) << DS_TAG(_permissionIndex) << DS_TAG(_permissionState);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        return network_modify_groups(
-            GetPlayer(), static_cast<ModifyGroupType>(_type), _groupId, _name, _permissionIndex,
-            static_cast<PermissionState>(_permissionState), false);
+        return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        return network_modify_groups(
-            GetPlayer(), static_cast<ModifyGroupType>(_type), _groupId, _name, _permissionIndex,
-            static_cast<PermissionState>(_permissionState), true);
+        return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
     }
 };

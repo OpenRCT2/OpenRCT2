@@ -27,20 +27,18 @@
 #include "../world/Surface.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandSmoothAction, GAME_COMMAND_EDIT_LAND_SMOOTH, GameActionResult)
+DEFINE_GAME_ACTION(LandSmoothAction, GAME_COMMAND_EDIT_LAND_SMOOTH, GameActions::Result)
 {
 private:
     CoordsXY _coords;
     MapRange _range;
-    uint8_t _selectionType{ 0 };
-    bool _isLowering{ false };
+    uint8_t _selectionType{};
+    bool _isLowering{};
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
 
 public:
-    LandSmoothAction()
-    {
-    }
+    LandSmoothAction() = default;
     LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
         : _coords(coords)
         , _range(range)
@@ -61,18 +59,18 @@ public:
         stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType) << DS_TAG(_isLowering);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return SmoothLand(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return SmoothLand(true);
     }
 
 private:
-    GameActionResult::Ptr SmoothLandTile(
+    GameActions::Result::Ptr SmoothLandTile(
         int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const
     {
         int32_t targetBaseZ = surfaceElement->base_height;
@@ -240,7 +238,7 @@ private:
             landSetHeightAction.SetFlags(GetFlags());
             auto res = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                    : GameActions::QueryNested(&landSetHeightAction);
-            if (res->Error == GA_ERROR::OK)
+            if (res->Error == GameActions::Status::Ok)
             {
                 totalCost += res->Cost;
             }
@@ -328,7 +326,7 @@ private:
             expectedLandHeight += landChangePerTile;
             // change land of current tile
             auto result = SmoothLandTile(direction, isExecuting, nextLoc, surfaceElement);
-            if (result->Error == GA_ERROR::OK)
+            if (result->Error == GameActions::Status::Ok)
             {
                 totalCost += result->Cost;
             }
@@ -336,7 +334,7 @@ private:
         return totalCost;
     }
 
-    GameActionResult::Ptr SmoothLand(bool isExecuting) const
+    GameActions::Result::Ptr SmoothLand(bool isExecuting) const
     {
         const bool raiseLand = !_isLowering;
         const int32_t selectionType = _selectionType;
@@ -642,11 +640,11 @@ private:
             }
             default:
                 log_error("Invalid map selection %u", _selectionType);
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, res->ErrorTitle.GetStringId());
+                return MakeResult(GameActions::Status::InvalidParameters, res->ErrorTitle.GetStringId());
         } // switch selectionType
 
         // Raise / lower the land tool selection area
-        GameActionResult::Ptr result;
+        GameActions::Result::Ptr result;
         if (raiseLand)
         {
             auto raiseLandAction = LandRaiseAction({ _coords.x, _coords.y }, validRange, selectionType);
@@ -659,14 +657,14 @@ private:
             lowerLandAction.SetFlags(GetFlags());
             result = isExecuting ? GameActions::ExecuteNested(&lowerLandAction) : GameActions::QueryNested(&lowerLandAction);
         }
-        if (result->Error != GA_ERROR::OK)
+        if (result->Error != GameActions::Status::Ok)
         {
             return result;
         }
 
         if (isExecuting)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, centreZ });
         }
         res->Cost += result->Cost;
         return res;

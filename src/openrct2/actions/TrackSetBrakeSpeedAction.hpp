@@ -12,12 +12,12 @@
 #include "../management/Finance.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, GameActionResult)
+DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
-    track_type_t _trackType;
-    uint8_t _brakeSpeed;
+    track_type_t _trackType{};
+    uint8_t _brakeSpeed{};
 
 public:
     TrackSetBrakeSpeedAction() = default;
@@ -37,7 +37,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -46,18 +46,18 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
 
@@ -68,14 +68,14 @@ private:
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_NONE);
+            return MakeResult(GameActions::Status::NotOwned, STR_NONE);
         }
 
         TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (isExecuting)

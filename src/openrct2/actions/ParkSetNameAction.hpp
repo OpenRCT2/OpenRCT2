@@ -23,15 +23,13 @@
 #include "../world/Park.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetNameAction, GAME_COMMAND_SET_PARK_NAME, GameActionResult)
+DEFINE_GAME_ACTION(ParkSetNameAction, GAME_COMMAND_SET_PARK_NAME, GameActions::Result)
 {
 private:
     std::string _name;
 
 public:
-    ParkSetNameAction()
-    {
-    }
+    ParkSetNameAction() = default;
     ParkSetNameAction(const std::string& name)
         : _name(name)
     {
@@ -44,7 +42,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -53,16 +51,16 @@ public:
         stream << DS_TAG(_name);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_name.empty())
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         // Do a no-op if new name is the same as the current name is the same
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();

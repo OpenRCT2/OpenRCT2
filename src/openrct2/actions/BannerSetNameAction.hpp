@@ -20,16 +20,14 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerSetNameAction, GAME_COMMAND_SET_BANNER_NAME, GameActionResult)
+DEFINE_GAME_ACTION(BannerSetNameAction, GAME_COMMAND_SET_BANNER_NAME, GameActions::Result)
 {
 private:
-    BannerIndex _bannerIndex;
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     std::string _name;
 
 public:
-    BannerSetNameAction()
-    {
-    }
+    BannerSetNameAction() = default;
     BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
         : _bannerIndex(bannerIndex)
         , _name(name)
@@ -38,7 +36,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -47,17 +45,17 @@ public:
         stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_bannerIndex >= MAX_BANNERS)
         {
             log_warning("Invalid game command for setting banner name, banner id = %d", _bannerIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto banner = GetBanner(_bannerIndex);
         banner->text = _name;

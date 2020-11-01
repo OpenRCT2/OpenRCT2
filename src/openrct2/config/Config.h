@@ -19,6 +19,7 @@ enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
 enum class VirtualFloorStyles : int32_t;
+enum class DrawingEngine : int32_t;
 
 struct GeneralConfiguration
 {
@@ -34,13 +35,14 @@ struct GeneralConfiguration
     int32_t fullscreen_width;
     int32_t fullscreen_height;
     float window_scale;
-    int32_t drawing_engine;
+    DrawingEngine drawing_engine;
     ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
     bool multithreading;
     bool minimize_fullscreen_focus_loss;
+    bool disable_screensaver;
 
     // Map rendering
     bool landscape_smoothing;
@@ -62,7 +64,7 @@ struct GeneralConfiguration
     TemperatureUnit temperature_format;
     bool show_height_as_units;
     int32_t date_format;
-    int32_t currency_format;
+    CurrencyType currency_format;
     int32_t custom_currency_rate;
     CurrencyAffix custom_currency_affix;
     utf8* custom_currency_symbol;

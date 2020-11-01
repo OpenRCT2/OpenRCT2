@@ -35,6 +35,7 @@
 #include "coaster/meta/FlyingRollerCoaster.h"
 #include "coaster/meta/GigaCoaster.h"
 #include "coaster/meta/HeartlineTwisterCoaster.h"
+#include "coaster/meta/HybridCoaster.h"
 #include "coaster/meta/HyperTwister.h"
 #include "coaster/meta/Hypercoaster.h"
 #include "coaster/meta/InvertedHairpinCoaster.h"
@@ -149,7 +150,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .no_seating_rows = */ 0,
     /* .spinning_inertia = */ 0,
     /* .spinning_friction = */ 255,
-    /* .friction_sound_id = */ SoundId::LiftClassic,
+    /* .friction_sound_id = */ OpenRCT2::Audio::SoundId::LiftClassic,
     /* .log_flume_reverser_vehicle_type = */ 0,
     /* .sound_range = */ 0,
     /* .double_sound_frequency = */ 0,
@@ -307,6 +308,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MONSTER_TRUCKS,                    */ MonsterTrucksRTD,
     /* RIDE_TYPE_SPINNING_WILD_MOUSE,               */ SpinningWildMouseRTD,
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
+    /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const

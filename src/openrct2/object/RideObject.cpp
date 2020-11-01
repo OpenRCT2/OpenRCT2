@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
@@ -169,15 +170,15 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     // Validate properties
     if (_legacyType.excitement_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Excitement multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Excitement multiplier too high.");
     }
     if (_legacyType.intensity_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Intensity multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Intensity multiplier too high.");
     }
     if (_legacyType.nausea_multiplier > 75)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
+        context->LogError(ObjectError::InvalidProperty, "Nausea multiplier too high.");
     }
     RideObjectUpdateRideType(&_legacyType);
 }
@@ -438,7 +439,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->no_seating_rows = stream->ReadValue<uint8_t>();
     vehicle->spinning_inertia = stream->ReadValue<uint8_t>();
     vehicle->spinning_friction = stream->ReadValue<uint8_t>();
-    vehicle->friction_sound_id = stream->ReadValue<SoundId>();
+    vehicle->friction_sound_id = stream->ReadValue<OpenRCT2::Audio::SoundId>();
     vehicle->log_flume_reverser_vehicle_type = stream->ReadValue<uint8_t>();
     vehicle->sound_range = stream->ReadValue<uint8_t>();
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
@@ -544,7 +545,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
                 if (rideType == RIDE_TYPE_NULL)
                 {
-                    context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Unknown ride type");
+                    context->LogError(ObjectError::InvalidProperty, "Unknown ride type");
                 }
             }
 
@@ -573,7 +574,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             car.sprite_height_positive = 1;
             car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
             car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
-            car.friction_sound_id = SoundId::Null;
+            car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
             car.sound_range = 0xFF;
             car.draw_order = 6;
 
@@ -585,7 +586,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
                 if (shopItem == SHOP_ITEM_NONE)
                 {
-                    context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, "Unknown shop item");
+                    context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
                 }
 
                 _legacyType.shop_item[i] = shopItem;
@@ -732,7 +733,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     car.no_seating_rows = Json::GetNumber<uint8_t>(jCar["numSeatRows"]);
     car.spinning_inertia = Json::GetNumber<uint8_t>(jCar["spinningInertia"]);
     car.spinning_friction = Json::GetNumber<uint8_t>(jCar["spinningFriction"]);
-    car.friction_sound_id = Json::GetEnum<SoundId>(jCar["frictionSoundId"], SoundId::Null);
+    car.friction_sound_id = Json::GetEnum<OpenRCT2::Audio::SoundId>(jCar["frictionSoundId"], OpenRCT2::Audio::SoundId::Null);
     car.log_flume_reverser_vehicle_type = Json::GetNumber<uint8_t>(jCar["logFlumeReverserVehicleType"]);
     car.sound_range = Json::GetNumber<uint8_t>(jCar["soundRange"], 255);
     car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
@@ -1016,6 +1017,7 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride", RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+        { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);

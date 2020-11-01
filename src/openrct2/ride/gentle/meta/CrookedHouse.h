@@ -28,8 +28,8 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
                      RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
                      RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_ALLOW_MUSIC | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_SINGLE_SESSION | 
                      RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_CROOKED_HOUSE)),
-    SET_FIELD(DefaultMode, RIDE_MODE_CROOKED_HOUSE),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::CrookedHouse)),
+    SET_FIELD(DefaultMode, RideMode::CrookedHouse),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CROOKED_HOUSE, STR_RIDE_DESCRIPTION_CROOKED_HOUSE }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
@@ -37,7 +37,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 16, 96, 3, 2, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_crooked_house),
     SET_FIELD(RatingsMultipliers, { 15, 8, 0 }),
     SET_FIELD(UpkeepCosts, { 30, 1, 0, 0, 0, 0 }),

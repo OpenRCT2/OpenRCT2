@@ -29,21 +29,21 @@
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
-    PEEP_SPRITE_TYPE_HANDYMAN,
-    PEEP_SPRITE_TYPE_MECHANIC,
-    PEEP_SPRITE_TYPE_SECURITY,
-    PEEP_SPRITE_TYPE_ENTERTAINER_PANDA,
+    PeepSpriteType::Handyman,
+    PeepSpriteType::Mechanic,
+    PeepSpriteType::Security,
+    PeepSpriteType::EntertainerPanda,
 };
 
-class StaffHireNewActionResult final : public GameActionResult
+class StaffHireNewActionResult final : public GameActions::Result
 {
 public:
     StaffHireNewActionResult()
-        : GameActionResult(GA_ERROR::OK, STR_CANT_HIRE_NEW_STAFF)
+        : GameActions::Result(GameActions::Status::Ok, STR_CANT_HIRE_NEW_STAFF)
     {
     }
-    StaffHireNewActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, STR_CANT_HIRE_NEW_STAFF, message)
+    StaffHireNewActionResult(GameActions::Status error, rct_string_id message)
+        : GameActions::Result(error, STR_CANT_HIRE_NEW_STAFF, message)
     {
     }
 
@@ -53,10 +53,10 @@ public:
 DEFINE_GAME_ACTION(StaffHireNewAction, GAME_COMMAND_HIRE_NEW_STAFF_MEMBER, StaffHireNewActionResult)
 {
 private:
-    bool _autoPosition = false;
-    uint8_t _staffType = static_cast<uint8_t>(StaffType::Count);
-    EntertainerCostume _entertainerType = EntertainerCostume::Count;
-    uint32_t _staffOrders = 0;
+    bool _autoPosition{};
+    uint8_t _staffType{ EnumValue(StaffType::Count) };
+    EntertainerCostume _entertainerType{ EntertainerCostume::Count };
+    uint32_t _staffOrders{};
 
 public:
     StaffHireNewAction() = default;
@@ -70,7 +70,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -80,18 +80,18 @@ public:
         stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType) << DS_TAG(_staffOrders);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool execute) const
+    GameActions::Result::Ptr QueryExecute(bool execute) const
     {
         auto res = std::make_unique<StaffHireNewActionResult>();
 
@@ -102,12 +102,12 @@ private:
             // Invalid staff type.
             log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         if (GetEntityListCount(EntityListId::Free) < 400)
         {
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
@@ -117,7 +117,7 @@ private:
                 // Invalid entertainer costume
                 log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
             }
 
             uint32_t availableCostumes = staff_get_available_entertainer_costumes();
@@ -126,7 +126,7 @@ private:
                 // Entertainer costume unavailable
                 log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
             }
         }
 
@@ -141,14 +141,14 @@ private:
         if (staffIndex == STAFF_MAX_COUNT)
         {
             // Too many staff members exist already.
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_STAFF_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
         }
 
         Peep* newPeep = &(create_sprite(SPRITE_IDENTIFIER_PEEP)->peep);
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
-            return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_TOO_MANY_PEOPLE_IN_GAME);
+            return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
         }
 
         if (execute == false)
@@ -160,11 +160,11 @@ private:
         {
             newPeep->sprite_identifier = 1;
             newPeep->WindowInvalidateFlags = 0;
-            newPeep->Action = PEEP_ACTION_NONE_2;
+            newPeep->Action = PeepActionType::None2;
             newPeep->SpecialSprite = 0;
             newPeep->ActionSpriteImageOffset = 0;
             newPeep->WalkingFrameNum = 0;
-            newPeep->ActionSpriteType = PEEP_ACTION_SPRITE_TYPE_NONE;
+            newPeep->ActionSpriteType = PeepActionSpriteType::None;
             newPeep->PathCheckOptimisation = 0;
             newPeep->AssignedPeepType = PeepType::Staff;
             newPeep->OutsideOfPark = false;
@@ -209,7 +209,7 @@ private:
             newPeep->Name = nullptr;
             newPeep->SpriteType = spriteType;
 
-            const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[spriteType].sprite_bounds;
+            const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(spriteType);
             newPeep->sprite_width = spriteBounds->sprite_width;
             newPeep->sprite_height_negative = spriteBounds->sprite_height_negative;
             newPeep->sprite_height_positive = spriteBounds->sprite_height_positive;
@@ -221,13 +221,13 @@ private:
             else
             {
                 // NOTE: This state is required for the window to act.
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
 
                 newPeep->MoveTo({ newPeep->x, newPeep->y, newPeep->z });
             }
 
             // Staff uses this
-            newPeep->TimeInPark = gDateMonthsElapsed;
+            newPeep->AsStaff()->SetHireDate(gDateMonthsElapsed);
             newPeep->PathfindGoal.x = 0xFF;
             newPeep->PathfindGoal.y = 0xFF;
             newPeep->PathfindGoal.z = 0xFF;
@@ -260,7 +260,7 @@ private:
     void AutoPositionNewStaff(Peep * newPeep) const
     {
         // Find a location to place new staff member
-        newPeep->State = PEEP_STATE_FALLING;
+        newPeep->State = PeepState::Falling;
 
         uint32_t count = 0;
         PathElement* guest_tile = nullptr;
@@ -269,7 +269,7 @@ private:
         {
             for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                if (guest->State == PEEP_STATE_WALKING)
+                if (guest->State == PeepState::Walking)
                 {
                     // Check the walking guest's tile. Only count them if they're on a path tile.
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
@@ -288,7 +288,7 @@ private:
 
             for (auto guest : EntityList<Guest>(EntityListId::Peep))
             {
-                if (guest->State == PEEP_STATE_WALKING)
+                if (guest->State == PeepState::Walking)
                 {
                     guest_tile = map_get_path_element_at(TileCoordsXYZ{ guest->NextLoc });
                     if (guest_tile != nullptr)
@@ -312,7 +312,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
                 newLocation.x = newPeep->x;
                 newLocation.y = newPeep->y;
                 newLocation.z = newPeep->z;
@@ -334,7 +334,7 @@ private:
             else
             {
                 // User must pick a location
-                newPeep->State = PEEP_STATE_PICKED;
+                newPeep->State = PeepState::Picked;
                 newLocation.x = newPeep->x;
                 newLocation.y = newPeep->y;
                 newLocation.z = newPeep->z;

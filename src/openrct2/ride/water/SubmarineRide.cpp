@@ -216,22 +216,22 @@ TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
-        case TRACK_ELEM_END_STATION:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
+        case TrackElemType::EndStation:
             return submarine_ride_paint_track_station;
 
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return submarine_ride_paint_track_flat;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_3_TILES:
+        case TrackElemType::LeftQuarterTurn3Tiles:
             return submarine_ride_paint_track_left_quarter_turn_3_tiles;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_3_TILES:
+        case TrackElemType::RightQuarterTurn3Tiles:
             return submarine_ride_paint_track_right_quarter_turn_3_tiles;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+        case TrackElemType::LeftQuarterTurn1Tile:
             return submarine_ride_paint_track_left_quarter_turn_1_tile;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+        case TrackElemType::RightQuarterTurn1Tile:
             return submarine_ride_paint_track_right_quarter_turn_1_tile;
     }
 

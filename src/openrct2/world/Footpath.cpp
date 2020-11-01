@@ -153,8 +153,8 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
-    if (res->Error == GA_ERROR::OK)
+    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error == GameActions::Status::Ok)
     {
         gFootpathProvisionalType = type;
         gFootpathProvisionalPosition = footpathLoc;
@@ -176,7 +176,7 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
 
     if (!scenery_tool_is_active())
     {
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);
@@ -283,7 +283,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         }
     }
 
-    auto start_vp_pos = screen_coord_to_viewport_coord(viewport, screenCoords);
+    auto start_vp_pos = viewport->ScreenToViewportCoord(screenCoords);
 
     for (int32_t i = 0; i < 5; i++)
     {
@@ -417,11 +417,11 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     auto quad = EntityTileList<Peep>(footpathPos);
     for (auto peep : quad)
     {
-        if (peep->State == PEEP_STATE_SITTING || peep->State == PEEP_STATE_WATCHING)
+        if (peep->State == PeepState::Sitting || peep->State == PeepState::Watching)
         {
             if (peep->z == footpathPos.z)
             {
-                peep->SetState(PEEP_STATE_WALKING);
+                peep->SetState(PeepState::Walking);
                 peep->DestinationX = (peep->x & 0xFFE0) + 16;
                 peep->DestinationY = (peep->y & 0xFFE0) + 16;
                 peep->DestinationTolerance = 5;
@@ -2260,7 +2260,7 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    if (trackElement->GetTrackType() != TRACK_ELEM_FLAT)
+    if (trackElement->GetTrackType() != TrackElemType::Flat)
     {
         return false;
     }

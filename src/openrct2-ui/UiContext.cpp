@@ -231,12 +231,12 @@ public:
         return _keysPressed;
     }
 
-    CURSOR_ID GetCursor() override
+    CursorID GetCursor() override
     {
         return _cursorRepository.GetCurrentCursor();
     }
 
-    void SetCursor(CURSOR_ID cursor) override
+    void SetCursor(CursorID cursor) override
     {
         _cursorRepository.SetCurrentCursor(cursor);
     }
@@ -658,7 +658,7 @@ private:
 
         // Create window in window first rather than fullscreen so we have the display the window is on first
         uint32_t flags = SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI;
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_OPENGL)
+        if (gConfigGeneral.drawing_engine == DrawingEngine::OpenGL)
         {
             flags |= SDL_WINDOW_OPENGL;
         }
@@ -669,6 +669,8 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
+        ApplyScreenSaverLockSetting();
+
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
@@ -678,8 +680,13 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
+        // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
+#ifdef __MACOSX__
+        gConfigGeneral.fullscreen_mode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
+#else
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
+#endif
         TriggerResize();
     }
 

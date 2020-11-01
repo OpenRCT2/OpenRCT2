@@ -27,7 +27,7 @@ static int32_t place_virtual_track(
     return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
 }
 
-GameActionResult::Ptr TrackDesignAction::Query() const
+GameActions::Result::Ptr TrackDesignAction::Query() const
 {
     auto res = MakeResult();
     res->Position.x = _loc.x + 16;
@@ -38,7 +38,7 @@ GameActionResult::Ptr TrackDesignAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GA_ERROR::INVALID_PARAMETERS);
+        return MakeResult(GameActions::Status::InvalidParameters);
     }
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
@@ -61,16 +61,16 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
 
-    if (r->Error != GA_ERROR::OK)
+    if (r->Error != GameActions::Status::Ok)
     {
-        return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GA_ERROR::UNKNOWN);
+        return MakeResult(GameActions::Status::Unknown);
     }
 
     money32 cost = 0;
@@ -90,13 +90,13 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     GameActions::ExecuteNested(&gameAction);
     if (cost == MONEY32_UNDEFINED)
     {
-        return MakeResult(GA_ERROR::DISALLOWED, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
     res->Cost = cost;
     return res;
 }
 
-GameActionResult::Ptr TrackDesignAction::Execute() const
+GameActions::Result::Ptr TrackDesignAction::Execute() const
 {
     auto res = MakeResult();
     res->Position.x = _loc.x + 16;
@@ -124,16 +124,16 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
 
-    if (r->Error != GA_ERROR::OK)
+    if (r->Error != GameActions::Status::Ok)
     {
-        return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GA_ERROR::UNKNOWN);
+        return MakeResult(GameActions::Status::Unknown);
     }
 
     money32 cost = 0;
@@ -171,7 +171,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         gameAction.SetFlags(GetFlags());
 
         GameActions::ExecuteNested(&gameAction);
-        return MakeResult(GA_ERROR::DISALLOWED, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
 
     if (entryIndex != 0xFF)
@@ -181,7 +181,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         GameActions::ExecuteNested(&rideSetVehicleAction);
     }
 
-    set_operating_setting_nested(ride->id, RideSetSetting::Mode, _td.ride_mode, GAME_COMMAND_FLAG_APPLY);
+    set_operating_setting_nested(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(_td.ride_mode), GAME_COMMAND_FLAG_APPLY);
     auto rideSetVehicleAction2 = RideSetVehicleAction(ride->id, RideSetVehicleType::NumTrains, _td.number_of_trains);
     GameActions::ExecuteNested(&rideSetVehicleAction2);
 
@@ -221,9 +221,13 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
     }
 
-    auto gameAction = RideSetNameAction(ride->id, _td.name);
-    gameAction.SetFlags(GetFlags());
-    GameActions::ExecuteNested(&gameAction);
+    for (int32_t count = 1; count == 1 || r->Error != GameActions::Status::Ok; ++count)
+    {
+        auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
+        auto gameAction = RideSetNameAction(ride->id, name);
+        gameAction.SetFlags(GetFlags());
+        r = GameActions::ExecuteNested(&gameAction);
+    }
     res->Cost = cost;
     res->rideIndex = ride->id;
     return res;

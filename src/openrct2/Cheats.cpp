@@ -293,7 +293,7 @@ const char* CheatsGetName(CheatType cheatType)
         case CheatType::WinScenario:
             return language_get_string(STR_CHEAT_WIN_SCENARIO);
         case CheatType::ForceWeather:
-            return language_get_string(STR_FORCE_WEATHER);
+            return language_get_string(STR_CHANGE_WEATHER);
         case CheatType::FreezeWeather:
             return language_get_string(STR_CHEAT_FREEZE_WEATHER);
         case CheatType::NeverEndingMarketing:

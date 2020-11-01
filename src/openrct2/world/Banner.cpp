@@ -379,18 +379,18 @@ void BannerElement::SetPosition(uint8_t newPosition)
 
 uint8_t BannerElement::GetAllowedEdges() const
 {
-    return flags & 0b00001111;
+    return AllowedEdges & 0b00001111;
 }
 
 void BannerElement::SetAllowedEdges(uint8_t newEdges)
 {
-    flags &= ~0b00001111;
-    flags |= (newEdges & 0b00001111);
+    AllowedEdges &= ~0b00001111;
+    AllowedEdges |= (newEdges & 0b00001111);
 }
 
 void BannerElement::ResetAllowedEdges()
 {
-    flags |= 0b00001111;
+    AllowedEdges |= 0b00001111;
 }
 
 Banner* GetBanner(BannerIndex id)

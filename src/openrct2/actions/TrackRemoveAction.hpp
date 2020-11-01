@@ -18,19 +18,17 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
+#include "RideSetSetting.hpp"
 
-DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActionResult)
+DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActions::Result)
 {
 private:
-    int32_t _trackType{ 0 };
-    int32_t _sequence{ 0 };
+    int32_t _trackType{};
+    int32_t _sequence{};
     CoordsXYZD _origin;
 
 public:
-    TrackRemoveAction()
-    {
-    }
-
+    TrackRemoveAction() = default;
     TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
         : _trackType(trackType)
         , _sequence(sequence)
@@ -58,7 +56,7 @@ public:
         stream << DS_TAG(_trackType) << DS_TAG(_sequence) << DS_TAG(_origin);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->Position.x = _origin.x + 16;
@@ -70,9 +68,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -103,9 +101,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -121,13 +119,14 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
                 _origin.direction, _sequence);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         if (tileElement->AsTrack()->IsIndestructible())
         {
             return MakeResult(
-                GA_ERROR::DISALLOWED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
+                GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS,
+                STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
         }
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -137,7 +136,13 @@ public:
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+        }
+
+        if (ride->type >= RIDE_TYPE_COUNT)
+        {
+            log_warning("Ride type not found. ride type = %d.", ride->type);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
         trackBlock += tileElement->AsTrack()->GetSequenceIndex();
@@ -163,7 +168,8 @@ public:
 
             if (!LocationValid(mapLoc))
             {
-                return MakeResult(GA_ERROR::NOT_OWNED, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return MakeResult(
+                    GameActions::Status::NotOwned, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
             map_invalidate_tile_full(mapLoc);
 
@@ -201,7 +207,7 @@ public:
                 log_warning(
                     "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                     _origin.direction, trackBlock->index);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int32_t entranceDirections;
@@ -218,7 +224,8 @@ public:
             {
                 if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    return MakeResult(
+                        GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 
@@ -226,7 +233,7 @@ public:
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -258,7 +265,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Position.x = _origin.x + 16;
@@ -270,9 +277,9 @@ public:
         auto comparableTrackType = _trackType;
         switch (_trackType)
         {
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                comparableTrackType = TRACK_ELEM_END_STATION;
+            case TrackElemType::BeginStation:
+            case TrackElemType::MiddleStation:
+                comparableTrackType = TrackElemType::EndStation;
                 break;
         }
 
@@ -303,9 +310,9 @@ public:
             auto tileTrackType = tileElement->AsTrack()->GetTrackType();
             switch (tileTrackType)
             {
-                case TRACK_ELEM_BEGIN_STATION:
-                case TRACK_ELEM_MIDDLE_STATION:
-                    tileTrackType = TRACK_ELEM_END_STATION;
+                case TrackElemType::BeginStation:
+                case TrackElemType::MiddleStation:
+                    tileTrackType = TrackElemType::EndStation;
                     break;
             }
 
@@ -321,7 +328,7 @@ public:
             log_warning(
                 "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", _origin.x, _origin.y, _origin.z,
                 _origin.direction, _sequence);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
@@ -332,7 +339,7 @@ public:
         if (ride == nullptr)
         {
             log_warning("Ride not found. ride index = %d.", rideIndex);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
         }
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, trackType);
         trackBlock += tileElement->AsTrack()->GetSequenceIndex();
@@ -391,7 +398,7 @@ public:
                 log_warning(
                     "Track Element not found. x = %d, y = %d, z = %d, d = %d, seq = %d.", mapLoc.x, mapLoc.y, mapLoc.z,
                     _origin.direction, trackBlock->index);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int32_t entranceDirections;
@@ -408,7 +415,8 @@ public:
             {
                 if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    return MakeResult(
+                        GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 
@@ -416,7 +424,7 @@ public:
             if (surfaceElement == nullptr)
             {
                 log_warning("Surface Element not found. x = %d, y = %d", mapLoc.x, mapLoc.y);
-                return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
+                return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS);
             }
 
             int8_t _support_height = tileElement->base_height - surfaceElement->base_height;
@@ -427,11 +435,16 @@ public:
 
             cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
 
-            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
+            // If the removed tile is a station modify station properties.
+            // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
+            if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN
+                && !(ride->status == RIDE_STATUS_SIMULATING && tileElement->Flags & TILE_ELEMENT_FLAG_GHOST)
+                && (tileElement->AsTrack()->GetSequenceIndex() == 0))
             {
                 if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, GAME_COMMAND_FLAG_APPLY))
                 {
-                    return MakeResult(GA_ERROR::UNKNOWN, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
+                    return MakeResult(
+                        GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, gGameCommandErrorText);
                 }
             }
 
@@ -454,40 +467,48 @@ public:
             }
         }
 
-        switch (trackType)
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
-            case TRACK_ELEM_ON_RIDE_PHOTO:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
-                break;
-            case TRACK_ELEM_CABLE_LIFT_HILL:
-                ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
-                break;
-            case TRACK_ELEM_BLOCK_BRAKES:
-                ride->num_block_brakes--;
-                if (ride->num_block_brakes == 0)
-                {
-                    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
-                    ride->mode = RIDE_MODE_CONTINUOUS_CIRCUIT;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                    {
-                        ride->mode = RIDE_MODE_POWERED_LAUNCH;
-                    }
-                }
-                break;
-        }
-
-        switch (trackType)
-        {
-            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
-                if (!isLiftHill)
+            switch (trackType)
+            {
+                case TrackElemType::OnRidePhoto:
+                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_ON_RIDE_PHOTO;
                     break;
-                [[fallthrough]];
-            case TRACK_ELEM_CABLE_LIFT_HILL:
-                ride->num_block_brakes--;
-                break;
+                case TrackElemType::CableLiftHill:
+                    ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED;
+                    break;
+                case TrackElemType::BlockBrakes:
+                    ride->num_block_brakes--;
+                    if (ride->num_block_brakes == 0)
+                    {
+                        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
+                        RideMode newMode = RideMode::ContinuousCircuit;
+                        if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
+                        {
+                            newMode = RideMode::PoweredLaunch;
+                        }
+
+                        auto rideSetSetting = RideSetSettingAction(
+                            ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
+                        GameActions::ExecuteNested(&rideSetSetting);
+                    }
+
+                    break;
+            }
+
+            switch (trackType)
+            {
+                case TrackElemType::Up25ToFlat:
+                case TrackElemType::Up60ToFlat:
+                case TrackElemType::DiagUp25ToFlat:
+                case TrackElemType::DiagUp60ToFlat:
+                    if (!isLiftHill)
+                        break;
+                    [[fallthrough]];
+                case TrackElemType::CableLiftHill:
+                    ride->num_block_brakes--;
+                    break;
+            }
         }
 
         money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;

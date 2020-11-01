@@ -15,6 +15,7 @@
 #    include "../common.h"
 #    include "../peep/Peep.h"
 #    include "../peep/Staff.h"
+#    include "../util/Util.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScRide.hpp"
@@ -142,7 +143,7 @@ namespace OpenRCT2::Scripting
                         auto peep = static_cast<Peep*>(entity);
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
                         // vehicle car having an unsupported peep capacity.
-                        if (peep->State == PEEP_STATE_ON_RIDE || peep->State == PEEP_STATE_ENTERING_RIDE)
+                        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
                         {
                             duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
                         }
@@ -1024,7 +1025,7 @@ namespace OpenRCT2::Scripting
         uint8_t nauseaTolerance_get() const
         {
             auto peep = GetPeep();
-            return peep != nullptr ? peep->NauseaTolerance : 0;
+            return peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0;
         }
         void nauseaTolerance_set(uint8_t value)
         {
@@ -1032,7 +1033,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                peep->NauseaTolerance = std::min<uint8_t>(value, 3);
+                peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
             }
         }
 
@@ -1111,22 +1112,22 @@ namespace OpenRCT2::Scripting
                 if (value == "handyman" && peep->AssignedStaffType != StaffType::Handyman)
                 {
                     peep->AssignedStaffType = StaffType::Handyman;
-                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_HANDYMAN;
+                    peep->SpriteType = PeepSpriteType::Handyman;
                 }
                 else if (value == "mechanic" && peep->AssignedStaffType != StaffType::Mechanic)
                 {
                     peep->AssignedStaffType = StaffType::Mechanic;
-                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_MECHANIC;
+                    peep->SpriteType = PeepSpriteType::Mechanic;
                 }
                 else if (value == "security" && peep->AssignedStaffType != StaffType::Security)
                 {
                     peep->AssignedStaffType = StaffType::Security;
-                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_SECURITY;
+                    peep->SpriteType = PeepSpriteType::Security;
                 }
                 else if (value == "entertainer" && peep->AssignedStaffType != StaffType::Entertainer)
                 {
                     peep->AssignedStaffType = StaffType::Entertainer;
-                    peep->SpriteType = PeepSpriteType::PEEP_SPRITE_TYPE_ENTERTAINER_PANDA;
+                    peep->SpriteType = PeepSpriteType::EntertainerPanda;
                 }
             }
         }

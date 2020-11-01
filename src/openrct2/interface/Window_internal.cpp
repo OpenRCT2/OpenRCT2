@@ -42,3 +42,12 @@ void rct_window::Invalidate()
 {
     gfx_set_dirty_blocks({ windowPos, windowPos + ScreenCoordsXY{ width, height } });
 }
+
+void rct_window::RemoveViewport()
+{
+    if (viewport == nullptr)
+        return;
+
+    viewport->width = 0;
+    viewport = nullptr;
+}

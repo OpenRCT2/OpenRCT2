@@ -138,15 +138,15 @@ enum
     RESEARCH_STAGE_FINISHED_ALL
 };
 
-enum : uint8_t
+enum class ResearchCategory : uint8_t
 {
-    RESEARCH_CATEGORY_TRANSPORT,
-    RESEARCH_CATEGORY_GENTLE,
-    RESEARCH_CATEGORY_ROLLERCOASTER,
-    RESEARCH_CATEGORY_THRILL,
-    RESEARCH_CATEGORY_WATER,
-    RESEARCH_CATEGORY_SHOP,
-    RESEARCH_CATEGORY_SCENERY_GROUP
+    Transport,
+    Gentle,
+    Rollercoaster,
+    Thrill,
+    Water,
+    Shop,
+    SceneryGroup
 };
 
 extern uint8_t gResearchFundingLevel;

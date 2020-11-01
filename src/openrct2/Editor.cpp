@@ -77,7 +77,7 @@ namespace Editor
      */
     void Load()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         object_manager_unload_all_objects();
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
@@ -152,7 +152,7 @@ namespace Editor
      */
     void LoadTrackDesigner()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_DESIGNER;
         gScreenAge = 0;
 
@@ -173,7 +173,7 @@ namespace Editor
      */
     void LoadTrackManager()
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
         gScreenFlags = SCREEN_FLAGS_TRACK_MANAGER;
         gScreenAge = 0;
 
@@ -415,12 +415,12 @@ namespace Editor
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
             case EDITOR_STEP_OBJECTIVE_SELECTION:
-                if (window_find_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS))
+                if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
                 {
                     return;
                 }
 
-                context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+                context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
                 break;
         }
     }

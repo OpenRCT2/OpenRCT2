@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../core/Json.hpp"
+#include "../core/JsonFwd.hpp"
 #include "ImageTable.h"
 #include "StringTable.h"
 
@@ -59,16 +59,16 @@ enum OBJECT_SELECTION_FLAGS
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
 
-enum OBJECT_SOURCE_GAME
+enum class ObjectSourceGame : uint8_t
 {
-    OBJECT_SOURCE_CUSTOM,
-    OBJECT_SOURCE_WACKY_WORLDS,
-    OBJECT_SOURCE_TIME_TWISTER,
-    OBJECT_SOURCE_OPENRCT2_OFFICIAL,
-    OBJECT_SOURCE_RCT1,
-    OBJECT_SOURCE_ADDED_ATTRACTIONS,
-    OBJECT_SOURCE_LOOPY_LANDSCAPES,
-    OBJECT_SOURCE_RCT2 = 8
+    Custom,
+    WackyWorlds,
+    TimeTwister,
+    OpenRCT2Official,
+    RCT1,
+    AddedAttractions,
+    LoopyLandscapes,
+    RCT2 = 8
 };
 
 #pragma pack(push, 1)
@@ -106,6 +106,11 @@ struct rct_object_entry
     }
 
     std::optional<uint8_t> GetSceneryType() const;
+
+    ObjectSourceGame GetSourceGame() const
+    {
+        return static_cast<ObjectSourceGame>((flags & 0xF0) >> 4);
+    }
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -143,6 +148,17 @@ namespace OpenRCT2
 struct ObjectRepositoryItem;
 struct rct_drawpixelinfo;
 
+enum class ObjectError : uint32_t
+{
+    Ok,
+    Unknown,
+    BadEncoding,
+    InvalidProperty,
+    BadStringTable,
+    BadImageTable,
+    UnexpectedEOF,
+};
+
 struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
@@ -152,8 +168,8 @@ struct IReadObjectContext
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
 
-    virtual void LogWarning(uint32_t code, const utf8* text) abstract;
-    virtual void LogError(uint32_t code, const utf8* text) abstract;
+    virtual void LogWarning(ObjectError code, const utf8* text) abstract;
+    virtual void LogError(ObjectError code, const utf8* text) abstract;
 };
 
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
@@ -168,7 +184,7 @@ private:
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
-    std::vector<uint8_t> _sourceGames;
+    std::vector<ObjectSourceGame> _sourceGames;
     std::vector<std::string> _authors;
     bool _isJsonObject{};
 
@@ -258,8 +274,8 @@ public:
     virtual void SetRepositoryItem(ObjectRepositoryItem* /*item*/) const
     {
     }
-    std::vector<uint8_t> GetSourceGames();
-    void SetSourceGames(const std::vector<uint8_t>& sourceGames);
+    std::vector<ObjectSourceGame> GetSourceGames();
+    void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
     void SetAuthors(const std::vector<std::string>&& authors);
@@ -281,17 +297,6 @@ public:
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
 #    pragma GCC diagnostic pop
 #endif
-
-enum OBJECT_ERROR : uint32_t
-{
-    OBJECT_ERROR_OK,
-    OBJECT_ERROR_UNKNOWN,
-    OBJECT_ERROR_BAD_ENCODING,
-    OBJECT_ERROR_INVALID_PROPERTY,
-    OBJECT_ERROR_BAD_STRING_TABLE,
-    OBJECT_ERROR_BAD_IMAGE_TABLE,
-    OBJECT_ERROR_UNEXPECTED_EOF,
-};
 
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];

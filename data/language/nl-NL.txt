@@ -91,6 +91,7 @@ STR_0089    :Mini-achtbaan
 STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
+STR_0093    :Hybride achtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -170,6 +171,7 @@ STR_0598    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en ga
 STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkelende afdalingen.
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
+STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -1965,7 +1967,6 @@ STR_2763    :???
 STR_2765    :Grote groep
 STR_2766    :Win scenario
 STR_2767    :Weer vastzetten
-STR_2768    :Weer vrijgeven
 STR_2769    :Park openen
 STR_2770    :Park sluiten
 STR_2773    :Venster
@@ -2705,8 +2706,6 @@ STR_5365    :{BLACK}Snelh. werknemers:
 STR_5366    :Normaal
 STR_5367    :Snel
 STR_5368    :Crashstatus weg
-STR_5369    :Parkparameters…
-STR_5370    :{SMALLFONT}{BLACK}Klik op deze knop om park-{NEWLINE}parameters zoals verboden,{NEWLINE}bezoekersgenerering en geld{NEWLINE}aan te passen.
 STR_5371    :Objectselectie
 STR_5372    :Sleeprichting van rechtermuisknop omkeren
 STR_5373    :Naam {STRINGID}
@@ -3025,7 +3024,7 @@ STR_5721    :Bewolkt
 STR_5722    :Regen
 STR_5723    :Flinke regen
 STR_5724    :Onweer
-STR_5725    :{BLACK}Weer forceren:
+STR_5725    :{BLACK}Weer veranderen:
 STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
 STR_5727    :Opschaalkwaliteit:
 STR_5728    :Dit vereist ‘weergave door hardware’
@@ -3146,7 +3145,6 @@ STR_5846    :{SMALLFONT}{BLACK}Stelt in hoe vaak OpenRCT2 automatisch een back-u
 STR_5847    :{SMALLFONT}{BLACK}Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
 STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
 STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
-STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
 STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
@@ -3554,7 +3552,7 @@ STR_6270    :Oppervlakken terrein
 STR_6271    :Zijkanten terrein
 STR_6272    :Stations
 STR_6273    :Muziek
-STR_6274    :Kan kleurenschema niet instellen...
+STR_6274    :Kan kleurenschema niet instellen…
 STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
 STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
@@ -3606,7 +3604,7 @@ STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
 STR_6325    :{SMALLFONT}{BLACK}Testrit simuleren
-STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten...
+STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten…
 STR_6327    :Reuzenscreenshots hebben transparante achtergrond
 STR_6328    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
@@ -3667,6 +3665,17 @@ STR_6383    :Downloadpagina openen
 STR_6384    :Sneeuw
 STR_6385    :Zware sneeuw
 STR_6386    :Sneeuwstorm
+STR_6387    :Kan dit element niet verlagen…
+STR_6388    :Kan dit element niet verhogen…
+STR_6389    :Hoogte bovenkant is ongeldig
+STR_6390    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Selecteer de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden.
+STR_6391    :Selecteer je RCT2-map
+STR_6392    :Kon het bestand {STRING} niet vinden in dit pad.
+STR_6393    :Doelselectie
+STR_6394    :Doel
+STR_6395    :Onderhoud
+STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
+STR_6397    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 
 #############
 # Scenarios #
@@ -4416,14 +4425,6 @@ STR_DESC    :Een steiger waarvan bezoekers het water in kunnen om een stukje te 
 STR_CPTY    :1 bezoeker per ‘boot’
 # End of Boat Ride / Bootverhuur
 
-# Junior Roller Coaster / Juniorachtbaan
-#OCC
-[ZPANDA]
-STR_NAME    :Pandatreinen
-STR_DESC    :Achtbaantrein met kleine karretjes in de vorm van een panda.
-STR_CPTY    :1 passagier per karretje
-# End of Junior Roller Coaster / Juniorachtbaan
-
 # Space rings / Ruimteringen
 #CC
 [RIDE7MKY]
@@ -4474,33 +4475,9 @@ STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu's kunnen k
 
 # End of Information Kiosks
 
-#########
-# Water #
-#########
-
-#OCC
-[WTRPINK]
-STR_NAME    :Roze water
-
-#################################
-# Scenery groups / Decorgroepen #
-#################################
-
-#OCC
-[SCGPANDA]
-STR_NAME    :Pandathema
-
 #################
 # Small objects #
 #################
-
-## Start OCC
-[BIGPANDA]
-STR_NAME    :Reuzenpanda
-
-[PANDAGR]
-STR_NAME    :Bamboescheuten
-## End OCC
 
 ## Start CC
 # TT Glass Roofs
@@ -4512,22 +4489,6 @@ STR_NAME    :Glazen dak
 
 [TTRFGL03]
 STR_NAME    :Glazen dak
-
-# TT Red tile roofs with stucco
-[TTRFTL02]
-STR_NAME    :Dak
-
-[TTRFTL03]
-STR_NAME    :Dak
-
-[TTRFTL04]
-STR_NAME    :Dak
-
-[TTRFTL07]
-STR_NAME    :Dak
-
-[TTRFTL08]
-STR_NAME    :Dak
 
 ## TT Pirate roofs and eaves
 [TTPIRF02]
@@ -4582,10 +4543,6 @@ STR_NAME    :Dak
 [TTRFWD08]
 STR_NAME    :Dak
 
-# Brick base block
-[XXBBBR01]
-STR_NAME    :Basisblok
-
 [ACWW33]
 STR_NAME    :Muur van houten palen
 
@@ -4594,20 +4551,4 @@ STR_NAME    :Hek van houten palen
 
 ## End CC
 
-
-#########
-# Walls #
-#########
-
-#CC
-[MG-PRAR]
-STR_NAME    :Muur met doorgang
-
-##################
-# Path additions #
-##################
-
-#OCC
-[LITTERPA]
-STR_NAME    :Vuilnisbak in pandavorm
 

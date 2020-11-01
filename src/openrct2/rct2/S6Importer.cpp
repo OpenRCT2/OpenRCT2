@@ -272,7 +272,7 @@ public:
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
             gResearchLastItem = ResearchItem(
-                RCT12ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
+                RCT12ResearchItem{ _s6.last_researched_item_subject, EnumValue(ResearchCategory::Transport) });
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8
@@ -523,10 +523,16 @@ public:
                 rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
             }
         }
+
+        if (rideType >= RIDE_TYPE_COUNT)
+        {
+            log_error("Invalid ride type for a ride in this save.");
+            throw UnsupportedRideTypeException(rideType);
+        }
         dst->type = rideType;
         dst->subtype = subtype;
         // pad_002;
-        dst->mode = src->mode;
+        dst->mode = static_cast<RideMode>(src->mode);
         dst->colour_scheme_type = src->colour_scheme_type;
 
         for (uint8_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
@@ -1024,7 +1030,8 @@ public:
             if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
             {
                 if (sprite.peep.current_ride == rideIndex
-                    && (sprite.peep.state == PEEP_STATE_ON_RIDE || sprite.peep.state == PEEP_STATE_ENTERING_RIDE))
+                    && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
+                        || static_cast<PeepState>(sprite.peep.state) == PeepState::EnteringRide))
                 {
                     numRiders++;
                 }
@@ -1138,7 +1145,7 @@ public:
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                else if (trackType == TrackElemType::OnRidePhoto)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
@@ -1349,7 +1356,7 @@ public:
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
         dst->track_direction = src->track_direction;
-        if (src->boat_location.isNull() || ride.mode != RIDE_MODE_BOAT_HIRE
+        if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
             || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();
@@ -1393,9 +1400,9 @@ public:
         dst->crash_x = src->crash_x;
         dst->sound2_flags = src->sound2_flags;
         dst->spin_sprite = src->spin_sprite;
-        dst->sound1_id = static_cast<SoundId>(src->sound1_id);
+        dst->sound1_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound1_id);
         dst->sound1_volume = src->sound1_volume;
-        dst->sound2_id = static_cast<SoundId>(src->sound2_id);
+        dst->sound2_id = static_cast<OpenRCT2::Audio::SoundId>(src->sound2_id);
         dst->sound2_volume = src->sound2_volume;
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->time_waiting = src->time_waiting;
@@ -1405,7 +1412,7 @@ public:
         dst->animation_frame = src->animation_frame;
         dst->var_C8 = src->var_C8;
         dst->var_CA = src->var_CA;
-        dst->scream_sound_id = static_cast<SoundId>(src->scream_sound_id);
+        dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->var_CE = src->var_CE;
         dst->var_CF = src->var_CF;
@@ -1453,7 +1460,7 @@ public:
         dst->Mass = src->mass;
         dst->TimeToConsume = src->time_to_consume;
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = src->window_invalidate_flags;
         dst->PaidOnDrink = src->paid_on_drink;
         for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
@@ -1486,7 +1493,7 @@ public:
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
-        dst->TimeInPark = src->time_in_park;
+        dst->ParkEntryTime = src->park_entry_time;
         dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
         dst->PreviousRide = src->previous_ride;
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
@@ -1725,6 +1732,10 @@ void load_from_sv6(const char* path)
     {
         log_error("Error loading: %s", loadError.what());
         show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
+    }
+    catch (const UnsupportedRideTypeException&)
+    {
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES);
     }
     catch (const std::exception&)
     {

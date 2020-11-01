@@ -691,6 +691,10 @@ namespace OpenRCT2
             uint32_t actionType = 0;
             if (serialiser.IsSaving())
             {
+                if (!command.action)
+                {
+                    return false;
+                }
                 actionType = command.action->GetType();
             }
             serialiser << actionType;
@@ -847,8 +851,8 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActionResult::Ptr result = GameActions::Execute(action);
-                if (result->Error == GA_ERROR::OK)
+                GameActions::Result::Ptr result = GameActions::Execute(action);
+                if (result->Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;
                 }

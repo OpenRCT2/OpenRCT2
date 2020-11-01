@@ -47,7 +47,7 @@ class TitleSequencePlayer final : public ITitleSequencePlayer
 private:
     GameState& _gameState;
 
-    TitleSequence* _sequence = nullptr;
+    std::unique_ptr<TitleSequence> _sequence;
     int32_t _position = 0;
     int32_t _waitCounter = 0;
 
@@ -73,7 +73,6 @@ public:
 
     void Eject() override
     {
-        FreeTitleSequence(_sequence);
         _sequence = nullptr;
     }
 
@@ -93,7 +92,7 @@ public:
         }
 
         Eject();
-        _sequence = sequence;
+        _sequence = std::move(sequence);
 
         Reset();
         return true;
@@ -111,7 +110,7 @@ public:
         }
 
         // Check that position is valid
-        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
+        if (_position >= static_cast<int32_t>(_sequence->Commands.size()))
         {
             _position = 0;
             return false;
@@ -123,8 +122,8 @@ public:
             _waitCounter--;
             if (_waitCounter == 0)
             {
-                const TitleCommand* command = &_sequence->Commands[_position];
-                if (command->Type == TITLE_SCRIPT_WAIT)
+                const auto& command = _sequence->Commands[_position];
+                if (command.Type == TITLE_SCRIPT_WAIT)
                 {
                     IncrementPosition();
                 }
@@ -134,14 +133,14 @@ public:
         {
             while (true)
             {
-                const TitleCommand* command = &_sequence->Commands[_position];
+                const auto& command = _sequence->Commands[_position];
                 if (ExecuteCommand(command))
                 {
-                    if (command->Type == TITLE_SCRIPT_WAIT)
+                    if (command.Type == TITLE_SCRIPT_WAIT)
                     {
                         break;
                     }
-                    if (command->Type != TITLE_SCRIPT_RESTART)
+                    if (command.Type != TITLE_SCRIPT_RESTART)
                     {
                         IncrementPosition();
                     }
@@ -156,7 +155,7 @@ public:
                 {
                     if (!SkipToNextLoadCommand() || _position == entryPosition)
                     {
-                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name);
+                        Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name.c_str());
                         return false;
                     }
                 }
@@ -173,7 +172,7 @@ public:
 
     void Seek(int32_t targetPosition) override
     {
-        if (targetPosition < 0 || targetPosition >= static_cast<int32_t>(_sequence->NumCommands))
+        if (targetPosition < 0 || targetPosition >= static_cast<int32_t>(_sequence->Commands.size()))
         {
             throw std::runtime_error("Invalid position.");
         }
@@ -189,7 +188,7 @@ public:
         // Set position to the last LOAD command before target position
         for (int32_t i = targetPosition; i >= 0; i--)
         {
-            const TitleCommand* command = &_sequence->Commands[i];
+            const TitleCommand& command = _sequence->Commands[i];
             if ((_position == i && _position != targetPosition) || TitleSequenceIsLoadCommand(command))
             {
                 // Break if we have a new load command or if we're already in the range of the correct load command
@@ -222,7 +221,7 @@ private:
     void IncrementPosition()
     {
         _position++;
-        if (_position >= static_cast<int32_t>(_sequence->NumCommands))
+        if (_position >= static_cast<int32_t>(_sequence->Commands.size()))
         {
             _position = 0;
         }
@@ -236,13 +235,13 @@ private:
         {
             IncrementPosition();
             command = &_sequence->Commands[_position];
-        } while (!TitleSequenceIsLoadCommand(command) && _position != entryPosition);
+        } while (!TitleSequenceIsLoadCommand(*command) && _position != entryPosition);
         return _position != entryPosition;
     }
 
-    bool ExecuteCommand(const TitleCommand* command)
+    bool ExecuteCommand(const TitleCommand& command)
     {
-        switch (command->Type)
+        switch (command.Type)
         {
             case TITLE_SCRIPT_END:
                 _waitCounter = 1;
@@ -250,25 +249,25 @@ private:
             case TITLE_SCRIPT_WAIT:
                 // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
                 // 25 ms/tick
-                _waitCounter = std::max<int32_t>(1, command->Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
+                _waitCounter = std::max<int32_t>(1, command.Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
                 break;
             case TITLE_SCRIPT_LOCATION:
             {
-                auto loc = TileCoordsXY(command->X, command->Y).ToCoordsXY().ToTileCentre();
+                auto loc = TileCoordsXY(command.X, command.Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
             case TITLE_SCRIPT_ROTATE:
-                RotateView(command->Rotations);
+                RotateView(command.Rotations);
                 break;
             case TITLE_SCRIPT_ZOOM:
-                SetViewZoom(command->Zoom);
+                SetViewZoom(command.Zoom);
                 break;
             case TITLE_SCRIPT_SPEED:
-                gGameSpeed = std::clamp<uint8_t>(command->Speed, 1, 4);
+                gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
                 break;
             case TITLE_SCRIPT_FOLLOW:
-                FollowSprite(command->SpriteIndex);
+                FollowSprite(command.SpriteIndex);
                 break;
             case TITLE_SCRIPT_RESTART:
                 Reset();
@@ -276,19 +275,18 @@ private:
             case TITLE_SCRIPT_LOAD:
             {
                 bool loadSuccess = false;
-                uint8_t saveIndex = command->SaveIndex;
-                TitleSequenceParkHandle* parkHandle = TitleSequenceGetParkHandle(_sequence, saveIndex);
+                uint8_t saveIndex = command.SaveIndex;
+                auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
-                    loadSuccess = LoadParkFromStream(static_cast<OpenRCT2::IStream*>(parkHandle->Stream), parkHandle->HintPath);
-                    TitleSequenceCloseParkHandle(parkHandle);
+                    loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                 }
                 if (!loadSuccess)
                 {
-                    if (_sequence->NumSaves > saveIndex)
+                    if (_sequence->Saves.size() > saveIndex)
                     {
-                        const utf8* path = _sequence->Saves[saveIndex];
-                        Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path);
+                        const auto& path = _sequence->Saves[saveIndex];
+                        Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", path.c_str());
                     }
                     return false;
                 }
@@ -297,14 +295,14 @@ private:
             case TITLE_SCRIPT_LOADSC:
             {
                 bool loadSuccess = false;
-                auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
+                auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (scenario != nullptr)
                 {
                     loadSuccess = LoadParkFromFile(scenario->path);
                 }
                 if (!loadSuccess)
                 {
-                    Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command->Scenario);
+                    Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command.Scenario);
                     return false;
                 }
                 break;
@@ -431,7 +429,7 @@ private:
         window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
         window_close_by_class(WC_EDITOR_INVENTION_LIST);
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
-        window_close_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
+        window_close_by_class(WC_EDITOR_OBJECTIVE_OPTIONS);
         window_close_by_class(WC_EDITOR_SCENARIO_OPTIONS);
         window_close_by_class(WC_FINANCES);
         window_close_by_class(WC_FIRE_PROMPT);

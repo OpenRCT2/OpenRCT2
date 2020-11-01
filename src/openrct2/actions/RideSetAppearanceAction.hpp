@@ -35,21 +35,19 @@ enum class RideSetAppearanceType : uint8_t
     EntranceStyle
 };
 
-DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, GameActionResult)
+DEFINE_GAME_ACTION(RideSetAppearanceAction, GAME_COMMAND_SET_RIDE_APPEARANCE, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _type;
-    uint8_t _value;
-    uint32_t _index;
+    RideSetAppearanceType _type{};
+    uint8_t _value{};
+    uint32_t _index{};
 
 public:
-    RideSetAppearanceAction()
-    {
-    }
+    RideSetAppearanceAction() = default;
     RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
         : _rideIndex(rideIndex)
-        , _type(static_cast<uint8_t>(type))
+        , _type(type)
         , _value(value)
         , _index(index)
     {
@@ -65,7 +63,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -74,16 +72,16 @@ public:
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
-        switch (static_cast<RideSetAppearanceType>(_type))
+        switch (_type)
         {
             case RideSetAppearanceType::TrackColourMain:
             case RideSetAppearanceType::TrackColourAdditional:
@@ -91,7 +89,7 @@ public:
                 if (_index >= std::size(ride->track_colour))
                 {
                     log_warning("Invalid game command, index %d out of bounds", _index);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourBody:
@@ -100,7 +98,7 @@ public:
                 if (_index >= std::size(ride->vehicle_colours))
                 {
                     log_warning("Invalid game command, index %d out of bounds", _index);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
                 }
                 break;
             case RideSetAppearanceType::VehicleColourScheme:
@@ -108,22 +106,22 @@ public:
                 break;
             default:
                 log_warning("Invalid game command, type %d not recognised", _type);
-                return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
-        switch (static_cast<RideSetAppearanceType>(_type))
+        switch (_type)
         {
             case RideSetAppearanceType::TrackColourMain:
                 ride->track_colour[_index].main = _value;
@@ -166,7 +164,7 @@ public:
         }
         window_invalidate_by_number(WC_RIDE, _rideIndex);
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         if (!ride->overall_view.isNull())
         {
             auto location = ride->overall_view.ToTileCentre();

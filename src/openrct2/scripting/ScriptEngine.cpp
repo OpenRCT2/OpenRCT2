@@ -726,7 +726,7 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
     LoadPlugin(plugin);
 }
 
-std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
+std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameAction(
     const std::string_view& id, const std::string_view& args, bool isExecute)
 {
     std::string actionz = std::string(id);
@@ -741,8 +741,8 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
         {
-            auto action = std::make_unique<GameActionResult>();
-            action->Error = GA_ERROR::INVALID_PARAMETERS;
+            auto action = std::make_unique<GameActions::Result>();
+            action->Error = GameActions::Status::InvalidParameters;
             action->ErrorTitle = "Invalid JSON";
             return action;
         }
@@ -761,17 +761,17 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
     }
     else
     {
-        auto action = std::make_unique<GameActionResult>();
-        action->Error = GA_ERROR::UNKNOWN;
+        auto action = std::make_unique<GameActions::Result>();
+        action->Error = GameActions::Status::Unknown;
         action->ErrorTitle = "Unknown custom action";
         return action;
     }
 }
 
-std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukValue& d)
+std::unique_ptr<GameActions::Result> ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
-    auto result = std::make_unique<GameActionResult>();
-    result->Error = static_cast<GA_ERROR>(AsOrDefault<int32_t>(d["error"]));
+    auto result = std::make_unique<GameActions::Result>();
+    result->Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
     result->ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
     result->ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
     result->Cost = AsOrDefault<int32_t>(d["cost"]);
@@ -825,7 +825,7 @@ ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view& ex
     return ExpenditureType::Count;
 }
 
-DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result)
+DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActions::Result>& result)
 {
     DukStackFrame frame(_context);
     DukObject obj(_context);
@@ -1053,7 +1053,7 @@ static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::strin
     return nullptr;
 }
 
-void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
+void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute)
 {
     DukStackFrame frame(_context);
 
@@ -1097,7 +1097,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
         obj.Set("type", actionId);
 
         auto flags = action.GetActionFlags();
-        obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
 
         obj.Set("result", GameActionResultToDuk(action, result));
         auto dukEventArgs = obj.Take();
@@ -1112,7 +1112,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
                 auto error = AsOrDefault<int32_t>(dukResult["error"]);
                 if (error != 0)
                 {
-                    result->Error = static_cast<GA_ERROR>(error);
+                    result->Error = static_cast<GameActions::Status>(error);
                     result->ErrorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
                     result->ErrorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
                 }

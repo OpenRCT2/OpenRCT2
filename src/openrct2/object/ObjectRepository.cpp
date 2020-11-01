@@ -94,7 +94,7 @@ public:
 public:
     std::tuple<bool, ObjectRepositoryItem> Create([[maybe_unused]] int32_t language, const std::string& path) const override
     {
-        Object* object = nullptr;
+        std::unique_ptr<Object> object;
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
         {
@@ -117,7 +117,6 @@ public:
             item.Authors = object->GetAuthors();
             item.Sources = object->GetSourceGames();
             object->SetRepositoryItem(&item);
-            delete object;
             return std::make_tuple(true, item);
         }
         return std::make_tuple(false, ObjectRepositoryItem());
@@ -179,7 +178,7 @@ protected:
         for (size_t i = 0; i < sourceLength; i++)
         {
             auto value = stream->ReadValue<uint8_t>();
-            item.Sources.push_back(value);
+            item.Sources.push_back(static_cast<ObjectSourceGame>(value));
         }
 
         auto authorsLength = stream->ReadValue<uint8_t>();
@@ -290,7 +289,7 @@ public:
         return nullptr;
     }
 
-    Object* LoadObject(const ObjectRepositoryItem* ori) override
+    std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override
     {
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
@@ -332,7 +331,7 @@ public:
         object_entry_get_name_fixed(objectName, sizeof(objectName), objectEntry);
 
         // Check that the object is loadable before writing it
-        Object* object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
+        auto object = ObjectFactory::CreateObjectFromLegacyData(*this, objectEntry, data, dataSize);
         if (object == nullptr)
         {
             Console::Error::WriteLine("[%s] Unable to export object.", objectName);
@@ -672,10 +671,10 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     switch (object->GetFirstSourceGame())
     {
-        case OBJECT_SOURCE_RCT2:
-        case OBJECT_SOURCE_WACKY_WORLDS:
-        case OBJECT_SOURCE_TIME_TWISTER:
-        case OBJECT_SOURCE_OPENRCT2_OFFICIAL:
+        case ObjectSourceGame::RCT2:
+        case ObjectSourceGame::WackyWorlds:
+        case ObjectSourceGame::TimeTwister:
+        case ObjectSourceGame::OpenRCT2Official:
             return false;
         default:
             return true;
@@ -694,9 +693,9 @@ const rct_object_entry* object_list_find(rct_object_entry* entry)
     return result;
 }
 
-void* object_repository_load_object(const rct_object_entry* objectEntry)
+std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry)
 {
-    Object* object = nullptr;
+    std::unique_ptr<Object> object;
     auto& objRepository = GetContext()->GetObjectRepository();
     const ObjectRepositoryItem* ori = objRepository.FindObject(objectEntry);
     if (ori != nullptr)
@@ -707,7 +706,7 @@ void* object_repository_load_object(const rct_object_entry* objectEntry)
             object->Load();
         }
     }
-    return static_cast<void*>(object);
+    return object;
 }
 
 void scenario_translate(scenario_index_entry* scenarioEntry)
@@ -748,22 +747,6 @@ const ObjectRepositoryItem* object_repository_find_object_by_name(const char* na
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObject(name);
-}
-
-void object_delete(void* object)
-{
-    if (object != nullptr)
-    {
-        Object* baseObject = static_cast<Object*>(object);
-        baseObject->Unload();
-        delete baseObject;
-    }
-}
-
-void object_draw_preview(const void* object, rct_drawpixelinfo* dpi, int32_t width, int32_t height)
-{
-    const Object* baseObject = static_cast<const Object*>(object);
-    baseObject->DrawPreview(dpi, width, height);
 }
 
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)

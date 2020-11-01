@@ -19,6 +19,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectLimits.h>
+#include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -27,6 +28,7 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_FOOTPATHS;
 static constexpr const int32_t WH = 381;
 static constexpr const int32_t WW = 106;
+static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
 
 // clang-format off
 enum
@@ -112,40 +114,24 @@ static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, 
 static void window_footpath_invalidate(rct_window * w);
 static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events = {
-    window_footpath_close,
-    window_footpath_mouseup,
-    nullptr,
-    window_footpath_mousedown,
-    window_footpath_dropdown,
-    nullptr,
-    window_footpath_update,
-    nullptr,
-    nullptr,
-    window_footpath_toolupdate,
-    window_footpath_tooldown,
-    window_footpath_tooldrag,
-    window_footpath_toolup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_footpath_invalidate,
-    window_footpath_paint,
-    nullptr
-};
+static rct_window_event_list window_footpath_events([](auto& events)
+{
+    events.close = &window_footpath_close;
+    events.mouse_up = &window_footpath_mouseup;
+    events.mouse_down = &window_footpath_mousedown;
+    events.dropdown = &window_footpath_dropdown;
+    events.update = &window_footpath_update;
+    events.tool_update = &window_footpath_toolupdate;
+    events.tool_down = &window_footpath_tooldown;
+    events.tool_drag = &window_footpath_tooldrag;
+    events.tool_up = &window_footpath_toolup;
+    events.invalidate = &window_footpath_invalidate;
+    events.paint = &window_footpath_paint;
+});
 // clang-format on
 
 static money32 _window_footpath_cost;
-static int8_t _window_footpath_provisional_path_arrow_timer;
+static uint32_t _footpathConstructionNextArrowPulse = 0;
 static uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
 static bool _footpathErrorOccured;
 
@@ -489,10 +475,13 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
+    auto curTime = platform_get_ticks();
+
     // Update little directional arrow on provisional bridge mode path
-    if (--_window_footpath_provisional_path_arrow_timer < 0)
+    if (_footpathConstructionNextArrowPulse < curTime)
     {
-        _window_footpath_provisional_path_arrow_timer = 5;
+        _footpathConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+
         gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
@@ -880,13 +869,13 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
     auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, slope, selectedType);
-    footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error == GA_ERROR::OK)
+    footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error == GameActions::Status::Ok)
         {
             // Don't play sound if it is no cost to prevent multiple sounds. TODO: make this work in no money scenarios
             if (result->Cost != 0)
             {
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             }
         }
         else
@@ -948,7 +937,6 @@ static void window_footpath_start_bridge_at_point(const ScreenCoordsXY& screenCo
     gFootpathConstructFromPosition = { mapCoords, z };
     gFootpathConstructDirection = direction;
     gFootpathProvisionalFlags = 0;
-    _window_footpath_provisional_path_arrow_timer = 0;
     gFootpathConstructSlope = 0;
     gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
     gFootpathConstructValidDirections = INVALID_DIRECTION;
@@ -970,10 +958,10 @@ static void window_footpath_construct()
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, gFootpathConstructDirection);
-    footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error == GA_ERROR::OK)
+    footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error == GameActions::Status::Ok)
         {
-            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             if (gFootpathConstructSlope == 0)
             {

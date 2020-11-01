@@ -865,11 +865,11 @@ private:
         if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
         {
             // Launched rides never passed through the station in RCT1.
-            dst->mode = RIDE_MODE_POWERED_LAUNCH;
+            dst->mode = RideMode::PoweredLaunch;
         }
         else
         {
-            dst->mode = src->operating_mode;
+            dst->mode = static_cast<RideMode>(src->operating_mode);
         }
 
         SetRideColourScheme(dst, src);
@@ -950,6 +950,10 @@ private:
         dst->profit = src->profit;
         dst->total_profit = src->total_profit;
         dst->value = src->value;
+        for (size_t i = 0; i < std::size(src->num_customers); i++)
+        {
+            dst->num_customers[i] = src->num_customers[i];
+        }
 
         dst->satisfaction = src->satisfaction;
         dst->satisfaction_time_out = src->satisfaction_time_out;
@@ -1191,8 +1195,8 @@ private:
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->spin_speed = src->spin_speed;
         dst->sound2_flags = src->sound2_flags;
-        dst->sound1_id = SoundId::Null;
-        dst->sound2_id = SoundId::Null;
+        dst->sound1_id = OpenRCT2::Audio::SoundId::Null;
+        dst->sound2_id = OpenRCT2::Audio::SoundId::Null;
         dst->var_C0 = src->var_C0;
         dst->var_C4 = src->var_C4;
         dst->animation_frame = src->animation_frame;
@@ -1200,7 +1204,7 @@ private:
         dst->var_CA = src->var_CA;
         dst->var_CE = src->var_CE;
         dst->var_D3 = src->var_D3;
-        dst->scream_sound_id = SoundId::Null;
+        dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
 
@@ -1233,7 +1237,7 @@ private:
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->current_station = src->current_station;
-        if (src->boat_location.isNull() || ride->mode != RIDE_MODE_BOAT_HIRE || statusSrc != Vehicle::Status::TravellingBoat)
+        if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
             dst->track_type = src->track_type;
@@ -1405,10 +1409,10 @@ private:
         dst->ActionSpriteType = static_cast<PeepActionSpriteType>(src->action_sprite_type);
         dst->ActionFrame = src->action_frame;
 
-        const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[dst->SpriteType].sprite_bounds;
-        dst->sprite_width = spriteBounds[dst->ActionSpriteType].sprite_width;
-        dst->sprite_height_negative = spriteBounds[dst->ActionSpriteType].sprite_height_negative;
-        dst->sprite_height_positive = spriteBounds[dst->ActionSpriteType].sprite_height_positive;
+        const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(dst->SpriteType, dst->ActionSpriteType);
+        dst->sprite_width = spriteBounds->sprite_width;
+        dst->sprite_height_negative = spriteBounds->sprite_height_negative;
+        dst->sprite_height_positive = spriteBounds->sprite_height_positive;
 
         dst->MoveTo({ src->x, src->y, src->z });
         dst->Invalidate2();
@@ -1469,7 +1473,7 @@ private:
         dst->DisgustingCount = src->disgusting_count;
 
         dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = src->nausea_tolerance;
+        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = 0;
 
         dst->CurrentRide = src->current_ride;
@@ -1485,7 +1489,8 @@ private:
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
-        dst->TimeInPark = src->time_in_park;
+        // This doubles as staff hire date
+        dst->ParkEntryTime = src->park_entry_time;
 
         // This doubles as staff type
         dst->GuestNumRides = src->no_of_rides;
@@ -1561,7 +1566,7 @@ private:
 
         if (dst->AssignedPeepType == PeepType::Guest)
         {
-            if (dst->OutsideOfPark && dst->State != PEEP_STATE_LEAVING_PARK)
+            if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
             {
                 increment_guests_heading_for_park();
             }
@@ -1925,7 +1930,7 @@ private:
         for (const auto objectName : objectNames)
         {
             rct_object_entry entry{};
-            entry.flags = ((OBJECT_SOURCE_RCT2 << 4) & 0xF0) | (objectType & 0x0F);
+            entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (objectType & 0x0F);
             entry.SetName(objectName);
             entries.push_back(entry);
         }
@@ -1978,13 +1983,12 @@ private:
             }
             else
             {
-                Object* object = objectRepository.LoadObject(ori);
+                auto object = objectRepository.LoadObject(ori);
                 if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
                 {
                     missingObjects.push_back(entry);
                     Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
                 }
-                delete object;
             }
         }
     }
@@ -2141,7 +2145,7 @@ private:
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
                 }
-                else if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
+                else if (trackType == TrackElemType::OnRidePhoto)
                 {
                     dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
                 }
@@ -2403,25 +2407,25 @@ private:
         uint8_t activeResearchTypes = 0;
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Rollercoaster);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_THRILL);
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_WATER);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Thrill);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Water);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_GENTLE);
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_TRANSPORT);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Gentle);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Transport);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SHOPS)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SHOP);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::Shop);
         }
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
-            activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+            activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
         }
         gResearchPriorities = activeResearchTypes;
         gResearchFundingLevel = _s4.research_level;
@@ -2659,7 +2663,7 @@ private:
             {
                 dst->entryIndex = entryIndex;
                 dst->type = Research::EntryType::Scenery;
-                dst->category = RESEARCH_CATEGORY_SCENERY_GROUP;
+                dst->category = EnumValue(ResearchCategory::SceneryGroup);
                 dst->flags = 0;
             }
         }
@@ -3040,10 +3044,10 @@ private:
             // First, make the queuing peep exit
             for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
-                if (peep->State == PEEP_STATE_QUEUING_FRONT && peep->CurrentRide == 0)
+                if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
                 {
                     peep->RemoveFromQueue();
-                    peep->SetState(PEEP_STATE_FALLING);
+                    peep->SetState(PeepState::Falling);
                     break;
                 }
             }
@@ -3096,10 +3100,10 @@ private:
                         auto trackType = tileElement->AsTrack()->GetTrackType();
                         switch (trackType)
                         {
-                            case TRACK_ELEM_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_60_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_25_DEG_UP_TO_FLAT:
-                            case TRACK_ELEM_DIAG_60_DEG_UP_TO_FLAT:
+                            case TrackElemType::Up25ToFlat:
+                            case TrackElemType::Up60ToFlat:
+                            case TrackElemType::DiagUp25ToFlat:
+                            case TrackElemType::DiagUp60ToFlat:
                                 break;
                             default:
                                 continue;

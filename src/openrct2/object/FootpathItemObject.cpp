@@ -10,6 +10,7 @@
 #include "FootpathItemObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
@@ -24,7 +25,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.path_bit.flags = stream->ReadValue<uint16_t>();
     _legacyType.path_bit.draw_type = stream->ReadValue<uint8_t>();
-    _legacyType.path_bit.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.path_bit.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.path_bit.price = stream->ReadValue<int16_t>();
     _legacyType.path_bit.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     stream->Seek(2, OpenRCT2::STREAM_SEEK_CURRENT);
@@ -39,7 +40,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
 
     // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
@@ -51,8 +52,8 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
-            || sourceGame == OBJECT_SOURCE_CUSTOM)
+        if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
+            || sourceGame == ObjectSourceGame::Custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(&scgPathX);
@@ -106,7 +107,7 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
     if (properties.is_object())
     {
         _legacyType.path_bit.draw_type = ParseDrawType(Json::GetString(properties["renderAs"]));
-        _legacyType.path_bit.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_LAMPPOST_DOWN);
+        _legacyType.path_bit.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
         _legacyType.path_bit.price = Json::GetNumber<int16_t>(properties["price"]);
 
         SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));

@@ -349,7 +349,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
         json_t root;
         try
         {
-            if (response.status != Http::Status::OK)
+            if (response.status != Http::Status::Ok)
             {
                 throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
             }

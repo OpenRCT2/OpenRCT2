@@ -11,6 +11,7 @@
 #define _WINDOW_H_
 
 #include "../common.h"
+#include "../localisation/Formatter.h"
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
@@ -28,6 +29,9 @@ struct track_design_file_ref;
 struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
+
+enum class VisibilityCache : uint8_t;
+enum class CursorID : uint8_t;
 
 #define SCROLLABLE_ROW_HEIGHT 12
 #define LIST_ROW_HEIGHT 12
@@ -142,7 +146,23 @@ struct rct_viewport
     uint32_t flags;
     ZoomLevel zoom;
     uint8_t var_11;
-    uint8_t visibility; // VISIBILITY_CACHE
+    VisibilityCache visibility;
+
+    // Use this function on coordinates that are relative to the viewport zoom i.e. a peeps x, y position after transforming
+    // from its x, y, z
+    [[nodiscard]] constexpr bool Contains(const ScreenCoordsXY& vpos) const
+    {
+        return (
+            vpos.y >= viewPos.y && vpos.y < viewPos.y + view_height && vpos.x >= viewPos.x && vpos.x < viewPos.x + view_width);
+    }
+
+    // Use this function on coordinates that are relative to the screen that is been drawn i.e. the cursor position
+    [[nodiscard]] constexpr bool ContainsScreen(const ScreenCoordsXY& sPos) const
+    {
+        return (sPos.x >= pos.x && sPos.x < pos.x + width && sPos.y >= pos.y && sPos.y < pos.y + height);
+    }
+
+    [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
 };
 
 /**
@@ -235,12 +255,18 @@ struct rct_window_event_list
     void (*text_input)(struct rct_window*, rct_widgetindex, char*);
     void (*viewport_rotate)(struct rct_window*);
     void (*unknown_15)(struct rct_window*, int32_t, int32_t);
-    void (*tooltip)(struct rct_window*, rct_widgetindex, rct_string_id*);
-    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, int32_t*);
+    OpenRCT2String (*tooltip)(struct rct_window*, const rct_widgetindex, const rct_string_id);
+    void (*cursor)(struct rct_window*, rct_widgetindex, const ScreenCoordsXY&, CursorID*);
     void (*moved)(struct rct_window*, const ScreenCoordsXY&);
     void (*invalidate)(struct rct_window*);
     void (*paint)(struct rct_window*, rct_drawpixelinfo*);
     void (*scroll_paint)(struct rct_window*, rct_drawpixelinfo*, int32_t);
+
+    typedef void (*fnEventInitializer)(rct_window_event_list&);
+    rct_window_event_list(fnEventInitializer fn)
+    {
+        fn(*this);
+    }
 };
 
 struct campaign_variables
@@ -451,7 +477,7 @@ enum
     WC_EDITOR_INVENTION_LIST = 43,
     WC_EDITOR_INVENTION_LIST_DRAG = 44,
     WC_EDITOR_SCENARIO_OPTIONS = 45,
-    WC_EDTIOR_OBJECTIVE_OPTIONS = 46,
+    WC_EDITOR_OBJECTIVE_OPTIONS = 46,
     WC_MANAGE_TRACK_DESIGN = 47,
     WC_TRACK_DELETE_PROMPT = 48,
     WC_INSTALL_TRACK = 49,
@@ -589,12 +615,12 @@ enum
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE 27
 
-enum PROMPT_MODE
+enum class PromptMode : uint8_t
 {
-    PM_SAVE_BEFORE_LOAD = 0,
-    PM_SAVE_BEFORE_QUIT,
-    PM_SAVE_BEFORE_QUIT2,
-    PM_QUIT
+    SaveBeforeLoad = 0,
+    SaveBeforeQuit,
+    SaveBeforeQuit2,
+    Quit
 };
 
 enum BTM_TOOLBAR_DIRTY_FLAGS
@@ -626,11 +652,11 @@ enum
     MODAL_RESULT_OK
 };
 
-enum VISIBILITY_CACHE
+enum class VisibilityCache : uint8_t
 {
-    VC_UNKNOWN,
-    VC_VISIBLE,
-    VC_COVERED
+    Unknown,
+    Visible,
+    Covered
 };
 
 enum class GuestListFilterType : int32_t
@@ -788,8 +814,8 @@ void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, cons
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text);
 void window_event_viewport_rotate_call(rct_window* w);
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType);
-rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex);
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
+CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);

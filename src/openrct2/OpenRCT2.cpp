@@ -11,7 +11,6 @@
 
 StartupAction gOpenRCT2StartupAction = StartupAction::Title;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
-utf8 gExePath[MAX_PATH];
 utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
 utf8 gCustomOpenRCT2DataPath[MAX_PATH] = { 0 };
 utf8 gCustomRCT1DataPath[MAX_PATH] = { 0 };
@@ -28,4 +27,4 @@ bool gOpenRCT2SilentBreakpad;
 uint32_t gCurrentDrawCount = 0;
 uint8_t gScreenFlags;
 uint32_t gScreenAge;
-uint8_t gSavePromptMode;
+PromptMode gSavePromptMode;

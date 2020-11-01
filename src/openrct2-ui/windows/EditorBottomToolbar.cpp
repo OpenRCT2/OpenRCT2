@@ -58,36 +58,12 @@ static void window_editor_bottom_toolbar_jump_forward_to_options_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_objective_selection();
 static void window_editor_bottom_toolbar_jump_forward_to_save_scenario();
 
-static rct_window_event_list window_editor_bottom_toolbar_events = {
-    nullptr,
-    window_editor_bottom_toolbar_mouseup, // 0x0066f5ae,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_editor_bottom_toolbar_invalidate, // 0x0066f1c9,
-    window_editor_bottom_toolbar_paint, // 0x0066f25c,
-    nullptr
-};
+static rct_window_event_list window_editor_bottom_toolbar_events([](auto& events)
+{
+    events.mouse_up = &window_editor_bottom_toolbar_mouseup;
+    events.invalidate = &window_editor_bottom_toolbar_invalidate;
+    events.paint = &window_editor_bottom_toolbar_paint;
+});
 
 static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     nullptr,
@@ -276,7 +252,7 @@ void window_editor_bottom_toolbar_jump_forward_to_options_selection()
 void window_editor_bottom_toolbar_jump_forward_to_objective_selection()
 {
     window_close_all();
-    context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+    context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
     gfx_invalidate_screen();
 }

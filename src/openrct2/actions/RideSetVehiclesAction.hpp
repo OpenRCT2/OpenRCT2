@@ -22,6 +22,7 @@
 #include "../ride/RideData.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
+#include "../util/Util.h"
 #include "../world/Park.h"
 #include "GameAction.h"
 
@@ -29,29 +30,27 @@ enum class RideSetVehicleType : uint8_t
 {
     NumTrains,
     NumCarsPerTrain,
-    RideEntry
+    RideEntry,
+    Count,
 };
 
-DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameActionResult)
+DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _type;
-    uint8_t _value;
-    uint8_t _colour;
+    RideSetVehicleType _type{};
+    uint8_t _value{};
+    uint8_t _colour{};
 
     constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
                                                                   STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
                                                                   STR_RIDE_SET_VEHICLE_TYPE_FAIL };
 
 public:
-    RideSetVehicleAction()
-    {
-    }
-
+    RideSetVehicleAction() = default;
     RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0)
         : _rideIndex(rideIndex)
-        , _type(static_cast<uint8_t>(type))
+        , _type(type)
         , _value(value)
         , _colour(colour)
     {
@@ -67,7 +66,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -76,32 +75,33 @@ public:
         stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_colour);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        if (_type > sizeof(SetVehicleTypeErrorTitle))
+        if (_type >= RideSetVehicleType::Count)
         {
             log_warning("Invalid type. type = %d", _type);
         }
-        auto errTitle = SetVehicleTypeErrorTitle[_type];
+        auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
         }
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::BROKEN, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+            return std::make_unique<GameActions::Result>(
+                GameActions::Status::Broken, errTitle, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         }
 
         if (ride->status != RIDE_STATUS_CLOSED && ride->status != RIDE_STATUS_SIMULATING)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NOT_CLOSED, errTitle, STR_MUST_BE_CLOSED_FIRST);
+            return std::make_unique<GameActions::Result>(GameActions::Status::NotClosed, errTitle, STR_MUST_BE_CLOSED_FIRST);
         }
 
-        switch (static_cast<RideSetVehicleType>(_type))
+        switch (_type)
         {
             case RideSetVehicleType::NumTrains:
             case RideSetVehicleType::NumCarsPerTrain:
@@ -111,13 +111,13 @@ public:
                 if (!ride_is_vehicle_type_valid(ride))
                 {
                     log_error("Invalid vehicle type. type = %d", _value);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
                 }
                 auto rideEntry = get_ride_entry(_value);
                 if (rideEntry == nullptr)
                 {
                     log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
                 }
 
                 // Validate preset
@@ -125,30 +125,30 @@ public:
                 if (_colour >= presetList->count && _colour != 255 && _colour != 0)
                 {
                     log_error("Unknown vehicle colour preset. colour = %d", _colour);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
                 }
                 break;
             }
 
             default:
                 log_error("Unknown vehicle command. type = %d", _type);
-                return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        auto errTitle = SetVehicleTypeErrorTitle[_type];
+        auto errTitle = SetVehicleTypeErrorTitle[EnumValue(_type)];
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
         }
 
-        switch (static_cast<RideSetVehicleType>(_type))
+        switch (_type)
         {
             case RideSetVehicleType::NumTrains:
                 ride_clear_for_construction(ride);
@@ -168,7 +168,7 @@ public:
                 if (rideEntry == nullptr)
                 {
                     log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
                 }
                 auto clampValue = _value;
                 if (!gCheatsDisableTrainLengthLimit)
@@ -190,7 +190,7 @@ public:
                 if (rideEntry == nullptr)
                 {
                     log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
-                    return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
                 }
 
                 ride_set_vehicle_colours_to_random_preset(ride, _colour);
@@ -204,13 +204,13 @@ public:
 
             default:
                 log_error("Unknown vehicle command. type = %d", _type);
-                return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, errTitle);
+                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, errTitle);
         }
 
         ride->num_circuits = 1;
         ride->UpdateMaxVehicles();
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         if (!ride->overall_view.isNull())
         {
             auto location = ride->overall_view.ToTileCentre();

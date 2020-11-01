@@ -40,7 +40,7 @@ static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_
     {
         for (size_t j = 0; j < paint_struct_entries; j++)
         {
-            if (s[i].PaintStructs[j].basic.next_quadrant_ps == (paint_struct*)paint_struct_entries)
+            if (s[i].PaintStructs[j].basic.next_quadrant_ps == reinterpret_cast<paint_struct*>(paint_struct_entries))
             {
                 s[i].PaintStructs[j].basic.next_quadrant_ps = nullptr;
             }
@@ -52,13 +52,13 @@ static void fixup_pointers(paint_session* s, size_t paint_session_entries, size_
         }
         for (size_t j = 0; j < quadrant_entries; j++)
         {
-            if (s[i].Quadrants[j] == (paint_struct*)quadrant_entries)
+            if (s[i].Quadrants[j] == reinterpret_cast<paint_struct*>(quadrant_entries))
             {
                 s[i].Quadrants[j] = nullptr;
             }
             else
             {
-                s[i].Quadrants[j] = &s[i].PaintStructs[(size_t)s[i].Quadrants[j]].basic;
+                s[i].Quadrants[j] = &s[i].PaintStructs[reinterpret_cast<size_t>(s[i].Quadrants[j])].basic;
             }
         }
     }
@@ -147,7 +147,7 @@ static void BM_paint_session_arrange(benchmark::State& state, const std::vector<
         state.PauseTiming();
         std::copy_n(local_s, std::size(sessions), sessions.begin());
         state.ResumeTiming();
-        paint_session_arrange(&sessions[0]);
+        PaintSessionArrange(&sessions[0]);
         benchmark::DoNotOptimize(sessions);
     }
     state.SetItemsProcessed(state.iterations() * std::size(sessions));
@@ -161,11 +161,11 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         std::vector<paint_session> sessions(1);
         for (auto& ps : sessions[0].PaintStructs)
         {
-            ps.basic.next_quadrant_ps = (paint_struct*)(std::size(sessions[0].PaintStructs));
+            ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>((std::size(sessions[0].PaintStructs)));
         }
         for (auto& quad : sessions[0].Quadrants)
         {
-            quad = (paint_struct*)(std::size(sessions[0].Quadrants));
+            quad = reinterpret_cast<paint_struct*>((std::size(sessions[0].Quadrants)));
         }
         benchmark::RegisterBenchmark("baseline", BM_paint_session_arrange, sessions);
     }

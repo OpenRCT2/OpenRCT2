@@ -12,15 +12,13 @@
 #include "GameAction.h"
 #include "WaterSetHeightAction.hpp"
 
-DEFINE_GAME_ACTION(WaterLowerAction, GAME_COMMAND_LOWER_WATER, GameActionResult)
+DEFINE_GAME_ACTION(WaterLowerAction, GAME_COMMAND_LOWER_WATER, GameActions::Result)
 {
 private:
     MapRange _range;
 
 public:
-    WaterLowerAction()
-    {
-    }
+    WaterLowerAction() = default;
     WaterLowerAction(MapRange range)
         : _range(range)
     {
@@ -38,18 +36,18 @@ public:
         stream << DS_TAG(_range);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
 
@@ -107,7 +105,7 @@ private:
                 waterSetHeightAction.SetFlags(GetFlags());
                 auto result = isExecuting ? GameActions::ExecuteNested(&waterSetHeightAction)
                                           : GameActions::QueryNested(&waterSetHeightAction);
-                if (result->Error == GA_ERROR::OK)
+                if (result->Error == GameActions::Status::Ok)
                 {
                     res->Cost += result->Cost;
                     hasChanged = true;
@@ -122,15 +120,15 @@ private:
 
         if (!withinOwnership)
         {
-            GameActionResult::Ptr ownerShipResult = std::make_unique<GameActionResult>(
-                GA_ERROR::DISALLOWED, STR_LAND_NOT_OWNED_BY_PARK);
+            GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
+                GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
             ownerShipResult->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
             return ownerShipResult;
         }
 
         if (isExecuting && hasChanged)
         {
-            audio_play_sound_at_location(SoundId::LayingOutWater, res->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res->Position);
         }
         // Force ride construction to recheck area
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

@@ -39,15 +39,15 @@ void InGameConsole::WritePrompt()
     InteractiveConsole::WriteLine("> ");
 }
 
-void InGameConsole::Input(CONSOLE_INPUT input)
+void InGameConsole::Input(ConsoleInput input)
 {
     switch (input)
     {
-        case CONSOLE_INPUT_LINE_CLEAR:
+        case ConsoleInput::LineClear:
             ClearInput();
             RefreshCaret();
             break;
-        case CONSOLE_INPUT_LINE_EXECUTE:
+        case ConsoleInput::LineExecute:
             if (_consoleCurrentLine[0] != '\0')
             {
                 HistoryAdd(_consoleCurrentLine);
@@ -62,7 +62,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             }
             ScrollToEnd();
             break;
-        case CONSOLE_INPUT_HISTORY_PREVIOUS:
+        case ConsoleInput::HistoryPrevious:
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
@@ -72,7 +72,7 @@ void InGameConsole::Input(CONSOLE_INPUT input)
             _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
             break;
-        case CONSOLE_INPUT_HISTORY_NEXT:
+        case ConsoleInput::HistoryNext:
             if (_consoleHistoryIndex < _consoleHistoryCount - 1)
             {
                 _consoleHistoryIndex++;
@@ -87,13 +87,13 @@ void InGameConsole::Input(CONSOLE_INPUT input)
                 ClearInput();
             }
             break;
-        case CONSOLE_INPUT_SCROLL_PREVIOUS:
+        case ConsoleInput::ScrollPrevious:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(scrollAmt);
             break;
         }
-        case CONSOLE_INPUT_SCROLL_NEXT:
+        case ConsoleInput::ScrollNext:
         {
             int32_t scrollAmt = GetNumVisibleLines() - 1;
             Scroll(-scrollAmt);
@@ -134,9 +134,13 @@ void InGameConsole::ScrollToEnd()
         _consoleScrollPos = std::max<int32_t>(0, static_cast<int32_t>(_consoleLines.size()) - maxLines);
 }
 
-void InGameConsole::RefreshCaret()
+void InGameConsole::RefreshCaret(size_t position)
 {
     _consoleCaretTicks = 0;
+    _selectionStart = position;
+    char tempString[TEXT_INPUT_SIZE] = { 0 };
+    std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
+    _caretScreenPosX = gfx_get_string_width(tempString);
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -325,10 +329,9 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
     {
-        auto caret = screenCoords + ScreenCoordsXY{ gfx_get_string_width(_consoleCurrentLine), lineHeight };
-
+        auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 0 } }, caretColour);
+        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
     }
 
     // What about border colours?

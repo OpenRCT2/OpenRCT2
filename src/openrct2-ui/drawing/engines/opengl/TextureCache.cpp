@@ -156,9 +156,9 @@ void TextureCache::CreateTextures()
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         glGenTextures(1, &_paletteTexture);
-        glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
-        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glBindTexture(GL_TEXTURE_2D, _paletteTexture);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         GeneratePaletteTexture();
 
@@ -170,10 +170,13 @@ void TextureCache::CreateTextures()
 
 void TextureCache::GeneratePaletteTexture()
 {
-    rct_drawpixelinfo dpi = CreateDPI(256, PALETTE_TO_G1_OFFSET_COUNT + 5);
+    static_assert(PALETTE_TO_G1_OFFSET_COUNT + 5 < 256, "Height of palette too large!");
+    constexpr int32_t height = 256;
+    constexpr int32_t width = height;
+    rct_drawpixelinfo dpi = CreateDPI(width, height);
 
     // Init no-op palette
-    for (int i = 0; i < 256; ++i)
+    for (int i = 0; i < width; ++i)
     {
         dpi.bits[i] = i;
     }
@@ -190,9 +193,8 @@ void TextureCache::GeneratePaletteTexture()
         }
     }
 
-    glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
-    glTexImage2D(
-        GL_TEXTURE_RECTANGLE, 0, GL_R8UI, 256, PALETTE_TO_G1_OFFSET_COUNT + 5, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+    glBindTexture(GL_TEXTURE_2D, _paletteTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
     DeleteDPI(dpi);
 }
 

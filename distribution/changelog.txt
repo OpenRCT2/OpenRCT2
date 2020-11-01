@@ -1,3 +1,53 @@
+0.3.1+ (in development)
+------------------------------------------------------------------------
+- Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.
+- Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
+- Feature: [#13000] objective_options command for console.
+- Feature: [#13096] Add Esperanto translation.
+- Feature: [#13164] Add 'Objective options' to Cheats menu.
+- Change: [#9568] Change lift sounds of Reverser Roller Coaster and Compact Inverted Coaster to better fitting ones.
+- Change: [#13160] The lay-out of the Park Cheats tab has been improved.
+- Fix: [#1324] Last track piece map selection still visible when placing ride entrance or exit (original bug).
+- Fix: [#3200] Close Construction window upon selecting vehicle page.
+- Fix: [#4022] Fix Mac cursor offset on launch
+- Fix: [#4041] Garbled park option on scenario editor with custom theme.
+- Fix: [#4865] Offer an option to disable inhibiting the monitor power.
+- Fix: [#5178] Lighting effects cannot be disabled in software mode
+- Fix: [#5904] Empty errors on tile inspector base height change.
+- Fix: [#6086] Cannot install existing track design with another name.
+- Fix: [#6614, #8623] Colours are distorted when using OpenGL with Intel integrated graphics drivers.
+- Fix: [#7443] Construction arrows pulse at irregular intervals.
+- Fix: [#7518] Water isn't cut down by view clipping tool.
+- Fix: [#7748] Tooltips would not timeout for normal UI elements.
+- Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
+- Fix: [#8957] Error title missing when building with insufficient funds
+- Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
+- Fix: [#12368] Desync due to ghost station pieces affecting changing ride settings.
+- Fix: [#12940] Windows cause issues with snow drawing.
+- Fix: [#13019] Simulated trains sometimes open construction window when they crash.
+- Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
+- Fix: [#13024] Console cursor does not correctly render at current cursor position.
+- Fix: [#13029] Not all Junior Roller Coaster pieces are shown when "Show all track pieces" cheat is enabled.
+- Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
+- Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
+- Fix: [#13083] Dialog for renaming conflicting track design crops text out.
+- Fix: [#13097] Missing direction arrow for stations
+- Fix: [#13098] UI buttons for entrance and exit don't toggle according to them being built.
+- Fix: [#13098] Maze can still be constructed while placing entrance and exit (original bug).
+- Fix: [#13118] Closing construction window resets ride viewport.
+- Fix: [#13129] Missing error message when waiting for train to leave station on the ride measurements graph.
+- Fix: [#13138] Fix logical sorting of list windows.
+- Fix: [#13158] Cursors are drawn incorrectly in text input fields.
+- Fix: [#13222] Vehicle collision causes negative number of passengers (original bug).
+- Fix: [#13226, #7280] No error is shown when attempting to load a corrupted save.
+- Fix: [#13266] Plugin API: Deleting key of sharedStorage not working.
+- Fix: [#13278] Desync caused by ghost tiles changing the ride mode.
+- Fix: [#13289] Litter and vomit sometimes not loading with RCT1 saved game or scenario
+- Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal
+- Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
+- Improved: [#13098] Improvements to the maze construction window user interface
+- Improved: [#13125] Selecting the RCT2 files now uses localised dialogs.
+
 0.3.1 (2020-09-27)
 ------------------------------------------------------------------------
 - Feature: [#10807] Add 2x and 4x zoom levels (currently limited to OpenGL).

@@ -33,7 +33,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GA_ERROR::OK)
+    if (result->Error == GameActions::Status::Ok)
     {
         gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
@@ -64,7 +64,7 @@ void ride_construct_new(RideSelection listItem)
     auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
 
     gameAction.SetCallback([](const GameAction* ga, const RideCreateGameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+        if (result->Error != GameActions::Status::Ok)
             return;
 
         auto ride = get_ride(result->rideIndex);
@@ -131,7 +131,7 @@ money32 maze_set_track(
     auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
-    GameActionResult::Ptr res;
+    GameActions::Result::Ptr res;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         res = GameActions::Query(&gameAction);
@@ -149,7 +149,7 @@ money32 maze_set_track(
     else
         gGameCommandErrorText = STR_NONE;
 
-    if (res->Error != GA_ERROR::OK)
+    if (res->Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }

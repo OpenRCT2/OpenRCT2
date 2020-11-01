@@ -13,11 +13,12 @@
 
 struct rct_drawpixelinfo;
 struct GamePalette;
+enum class DrawingEngine : int32_t;
 
 extern rct_string_id DrawingEngineStringIds[3];
 
-int32_t drawing_engine_get_type();
-bool drawing_engine_requires_new_window(int32_t srcEngine, int32_t dstEngine);
+DrawingEngine drawing_engine_get_type();
+bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine);
 void drawing_engine_init();
 void drawing_engine_resize();
 void drawing_engine_set_palette(const GamePalette& colours);

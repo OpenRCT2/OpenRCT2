@@ -1075,7 +1075,7 @@ void map_invalidate_selection_rect()
  */
 void map_reorganise_elements()
 {
-    context_setcurrentcursor(CURSOR_ZZZ);
+    context_setcurrentcursor(CursorID::ZZZ);
 
     auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
     TileElement* newElementsPtr = newTileElements.get();
@@ -1222,7 +1222,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
  *
  *  rct2: 0x0068BB18
  */
-void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& res)
+void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res)
 {
     Ride* ride;
     rct_scenery_entry* sceneryEntry;
@@ -1297,19 +1297,19 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActionResult& 
  *  ebp = clearFunc
  *  bl = bl
  */
-std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
+std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode)
 {
     int32_t northZ, eastZ, baseHeight, southZ, westZ, water_height;
     northZ = eastZ = baseHeight = southZ = westZ = water_height = 0;
-    auto res = std::make_unique<ConstructClearResult>();
+    auto res = std::make_unique<GameActions::ConstructClearResult>();
     uint8_t slope = 0;
 
     res->GroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
     if (pos.x >= gMapSizeUnits || pos.y >= gMapSizeUnits || pos.x < 32 || pos.y < 32)
     {
-        res->Error = GA_ERROR::INVALID_PARAMETERS;
+        res->Error = GameActions::Status::InvalidParameters;
         res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
@@ -1322,7 +1322,7 @@ std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
     TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
     {
-        res->Error = GA_ERROR::UNKNOWN;
+        res->Error = GameActions::Status::Unknown;
         res->ErrorMessage = STR_NONE;
         return res;
     }
@@ -1356,7 +1356,7 @@ std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
 
             if (heightFromGround > (18 * COORDS_Z_STEP))
             {
-                res->Error = GA_ERROR::DISALLOWED;
+                res->Error = GameActions::Status::Disallowed;
                 res->ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                 return res;
             }
@@ -1439,7 +1439,7 @@ std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
                 // Crossing mode 2: building path over track
                 else if (
                     crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
-                    && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_FLAT)
+                    && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
                 {
                     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                     if (ride != nullptr && RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS))
@@ -1451,7 +1451,7 @@ std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
                 if (tileElement != nullptr)
                 {
                     map_obstruction_set_error_text(tileElement, *res);
-                    res->Error = GA_ERROR::NO_CLEARANCE;
+                    res->Error = GameActions::Status::NoClearance;
                 }
                 return res;
 
@@ -1465,7 +1465,7 @@ std::unique_ptr<ConstructClearResult> MapCanConstructWithClearAt(
                 }
                 if (tileElement != nullptr)
                 {
-                    res->Error = GA_ERROR::NO_CLEARANCE;
+                    res->Error = GameActions::Status::NoClearance;
                     res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                 }
                 return res;
@@ -1491,7 +1491,7 @@ bool map_can_construct_with_clear_at(
     }
 
     gMapGroundFlags = res->GroundFlags;
-    return res->Error == GA_ERROR::OK;
+    return res->Error == GameActions::Status::Ok;
 }
 
 /**
@@ -1503,7 +1503,7 @@ int32_t map_can_construct_at(const CoordsXYRangedZ& pos, QuarterTile bl)
     return map_can_construct_with_clear_at(pos, nullptr, bl, 0, nullptr, CREATE_CROSSING_MODE_NONE);
 }
 
-std::unique_ptr<ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+std::unique_ptr<GameActions::ConstructClearResult> MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
     return MapCanConstructWithClearAt(pos, nullptr, bl, 0, CREATE_CROSSING_MODE_NONE);
 }

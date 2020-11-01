@@ -47,18 +47,16 @@ static constexpr const uint8_t byte_993D0C[] = {
 };
 // clang-format on
 
-DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActionResult)
+DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
-    bool _initialPlacement;
-    NetworkRideId_t _rideIndex;
-    uint8_t _mode;
+    bool _initialPlacement{};
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    uint8_t _mode{};
 
 public:
-    MazeSetTrackAction()
-    {
-    }
+    MazeSetTrackAction() = default;
     MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
         : _loc(location)
         , _initialPlacement(initialPlacement)
@@ -81,29 +79,29 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_loc.direction) << DS_TAG(_initialPlacement) << DS_TAG(_rideIndex) << DS_TAG(_mode);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
 
         res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
         res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         if (!map_check_free_elements_and_reorganise(1))
         {
-            res->Error = GA_ERROR::NO_FREE_ELEMENTS;
+            res->Error = GameActions::Status::NoFreeElements;
             res->ErrorMessage = STR_TILE_ELEMENT_LIMIT_REACHED;
             return res;
         }
         if ((_loc.z & 0xF) != 0 && _mode == GC_SET_MAZE_TRACK_BUILD)
         {
-            res->Error = GA_ERROR::UNKNOWN;
+            res->Error = GameActions::Status::Unknown;
             res->ErrorMessage = STR_CONSTRUCTION_ERR_UNKNOWN;
             return res;
         }
 
         if (!LocationValid(_loc) || (!map_is_location_owned(_loc) && !gCheatsSandboxMode))
         {
-            res->Error = GA_ERROR::NOT_OWNED;
+            res->Error = GameActions::Status::NotOwned;
             res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
@@ -111,7 +109,7 @@ public:
         auto surfaceElement = map_get_surface_element_at(_loc);
         if (surfaceElement == nullptr)
         {
-            res->Error = GA_ERROR::UNKNOWN;
+            res->Error = GameActions::Status::Unknown;
             res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
             return res;
         }
@@ -126,39 +124,39 @@ public:
 
             if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
             {
-                res->Error = GA_ERROR::TOO_HIGH;
+                res->Error = GameActions::Status::TooHigh;
                 res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
                 return res;
             }
         }
 
-        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
+        TileElement* tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
         if (tileElement == nullptr)
         {
             if (_mode != GC_SET_MAZE_TRACK_BUILD)
             {
-                res->Error = GA_ERROR::UNKNOWN;
+                res->Error = GameActions::Status::Unknown;
                 res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
                 return res;
             }
             auto constructResult = MapCanConstructAt({ _loc.ToTileStart(), baseHeight, clearanceHeight }, { 0b1111, 0 });
-            if (constructResult->Error != GA_ERROR::OK)
+            if (constructResult->Error != GameActions::Status::Ok)
             {
                 return MakeResult(
-                    GA_ERROR::NO_CLEARANCE, res->ErrorTitle.GetStringId(), constructResult->ErrorMessage.GetStringId(),
-                    constructResult->ErrorMessageArgs.data());
+                    GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(),
+                    constructResult->ErrorMessage.GetStringId(), constructResult->ErrorMessageArgs.data());
             }
 
             if (constructResult->GroundFlags & ELEMENT_IS_UNDERWATER)
             {
-                res->Error = GA_ERROR::NO_CLEARANCE;
+                res->Error = GameActions::Status::NoClearance;
                 res->ErrorMessage = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
                 return res;
             }
 
             if (constructResult->GroundFlags & ELEMENT_IS_UNDERGROUND)
             {
-                res->Error = GA_ERROR::NO_CLEARANCE;
+                res->Error = GameActions::Status::NoClearance;
                 res->ErrorMessage = STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND;
                 return res;
             }
@@ -166,23 +164,24 @@ public:
             auto ride = get_ride(_rideIndex);
             if (ride == nullptr || ride->type == RIDE_CRASH_TYPE_NONE)
             {
-                res->Error = GA_ERROR::NO_CLEARANCE;
+                res->Error = GameActions::Status::NoClearance;
                 res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
                 return res;
             }
 
-            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = ((
+                (RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
             res->Cost = price / 2 * 10;
 
             return res;
         }
 
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
 
         res->Position = _loc + CoordsXYZ{ 8, 8, 0 };
         res->Expenditure = ExpenditureType::RideConstruction;
@@ -191,14 +190,14 @@ public:
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorMessage = STR_NONE;
             return res;
         }
 
         if (!map_check_free_elements_and_reorganise(1))
         {
-            res->Error = GA_ERROR::NO_FREE_ELEMENTS;
+            res->Error = GameActions::Status::NoFreeElements;
             res->ErrorMessage = STR_NONE;
             return res;
         }
@@ -210,10 +209,11 @@ public:
             wall_remove_at({ _loc.ToTileStart(), _loc.z, _loc.z + 32 });
         }
 
-        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TRACK_ELEM_MAZE, _rideIndex);
+        auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
         if (tileElement == nullptr)
         {
-            money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
+            money32 price = ((
+                (RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
             res->Cost = price / 2 * 10;
 
             auto startLoc = _loc.ToTileStart();
@@ -224,7 +224,7 @@ public:
             tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
             tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
-            tileElement->AsTrack()->SetTrackType(TRACK_ELEM_MAZE);
+            tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
             tileElement->AsTrack()->SetRideIndex(_rideIndex);
             tileElement->AsTrack()->SetMazeEntry(0xFFFF);
 
@@ -264,7 +264,7 @@ public:
                         auto previousElementLoc = CoordsXY{ _loc }.ToTileStart() - CoordsDirectionDelta[_loc.direction];
 
                         TileElement* previousTileElement = map_get_track_element_at_of_type_from_ride(
-                            { previousElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { previousElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                         if (previousTileElement != nullptr)
                         {
@@ -290,13 +290,13 @@ public:
                                                      _loc.y - CoordsDirectionDelta[_loc.direction].y / 2 };
 
                     tileElement = map_get_track_element_at_of_type_from_ride(
-                        { previousSegment, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                        { previousSegment, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                     map_invalidate_tile_full(previousSegment.ToTileStart());
                     if (tileElement == nullptr)
                     {
                         log_error("No surface found");
-                        res->Error = GA_ERROR::UNKNOWN;
+                        res->Error = GameActions::Status::Unknown;
                         res->ErrorMessage = STR_NONE;
                         return res;
                     }
@@ -318,7 +318,7 @@ public:
                         auto nextElementLoc = previousSegment.ToTileStart() + CoordsDirectionDelta[direction1];
 
                         TileElement* tmp_tileElement = map_get_track_element_at_of_type_from_ride(
-                            { nextElementLoc, _loc.z }, TRACK_ELEM_MAZE, _rideIndex);
+                            { nextElementLoc, _loc.z }, TrackElemType::Maze, _rideIndex);
 
                         if (tmp_tileElement != nullptr)
                         {

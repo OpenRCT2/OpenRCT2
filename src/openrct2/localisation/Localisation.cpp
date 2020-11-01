@@ -37,8 +37,6 @@
 #include <limits.h>
 
 thread_local char gCommonStringFormatBuffer[512];
-thread_local uint8_t gCommonFormatArgs[80];
-thread_local uint8_t gMapTooltipFormatArgs[40];
 
 #ifdef DEBUG
 // Set to true before a string format call to see details of the formatting.
@@ -94,7 +92,6 @@ const rct_string_id RideInspectionIntervalNames[] = {
     STR_EVERY_HOUR,
     STR_EVERY_2_HOURS,
     STR_NEVER,
-    RIDE_SETTING_INSPECTION_INTERVAL
 };
 
 const rct_string_id PeepThoughts[] = {
@@ -788,7 +785,7 @@ static void format_currency(char** dest, size_t* size, int64_t value)
     if ((*size) == 0)
         return;
 
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
 
     value *= currencyDesc->rate;
 
@@ -831,7 +828,7 @@ static void format_currency_2dp(char** dest, size_t* size, int64_t value)
     if ((*size) == 0)
         return;
 
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
 
     int32_t rate = currencyDesc->rate;
     value *= rate;
@@ -1441,7 +1438,7 @@ void format_readable_speed(char* buf, size_t bufSize, uint64_t sizeBytes)
 money32 string_to_money(const char* string_to_monetise)
 {
     const char* decimal_char = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
     char processedString[128] = {};
 
     Guard::Assert(strlen(string_to_monetise) < sizeof(processedString));
@@ -1546,7 +1543,7 @@ void money_to_string(money32 amount, char* buffer_to_put_value_to, size_t buffer
         return;
     }
 
-    const currency_descriptor* currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+    const currency_descriptor* currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
 
     int sign = amount >= 0 ? 1 : -1;
     int a = abs(amount) * currencyDesc->rate;

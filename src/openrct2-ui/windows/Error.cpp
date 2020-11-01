@@ -30,36 +30,11 @@ static rct_widget window_error_widgets[] = {
 static void window_error_unknown5(rct_window *w);
 static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events = {
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_error_unknown5,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_error_paint,
-    nullptr
-};
+static rct_window_event_list window_error_events([](auto& events)
+{
+    events.unknown_05 = &window_error_unknown5;
+    events.paint = &window_error_paint;
+});
 // clang-format on
 
 static std::string _window_error_text;
@@ -149,7 +124,7 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
-        audio_play_sound(SoundId::Error, 0, w->windowPos.x + (w->width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Error, 0, w->windowPos.x + (w->width / 2));
     }
 
     return w;

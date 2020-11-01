@@ -22,11 +22,11 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathSceneryPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_SCENERY, GameActionResult)
+DEFINE_GAME_ACTION(FootpathSceneryPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_SCENERY, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
-    ObjectEntryIndex _pathItemType;
+    ObjectEntryIndex _pathItemType{};
 
 public:
     FootpathSceneryPlaceAction() = default;
@@ -54,43 +54,44 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = _loc;
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
         }
 
         if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (_loc.z < FootpathMinHeight)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
         }
 
         if (_loc.z > FootpathMaxHeight)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
         }
 
         auto tileElement = map_get_footpath_element(_loc);
         if (tileElement == nullptr)
         {
             log_error("Could not find path element.");
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         auto pathElement = tileElement->AsPath();
         if (pathElement->IsLevelCrossing(_loc))
         {
             return MakeResult(
-                GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+                STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
         }
 
         // No change
@@ -105,32 +106,35 @@ public:
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
             if (sceneryEntry == nullptr)
             {
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
             }
             uint16_t sceneryFlags = sceneryEntry->path_bit.flags;
 
             if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
             {
                 return MakeResult(
-                    GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
+                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+                    STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
             }
 
             if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
             {
                 return MakeResult(
-                    GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
+                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+                    STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
             }
 
             if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
                 && (pathElement->GetEdges()) == 0x0F)
             {
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
             }
 
             if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
             {
                 return MakeResult(
-                    GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
+                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+                    STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
             }
 
             res->Cost = sceneryEntry->path_bit.price;
@@ -142,13 +146,13 @@ public:
             // Check if there is something on the path already
             if (pathElement->HasAddition())
             {
-                return MakeResult(GA_ERROR::ITEM_ALREADY_PLACED, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE);
             }
         }
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->Position = _loc;
@@ -160,7 +164,7 @@ public:
         if (pathElement == nullptr)
         {
             log_error("Could not find path element.");
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
         // No change
@@ -175,7 +179,7 @@ public:
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
             if (sceneryEntry == nullptr)
             {
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_POSITION_THIS_HERE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
             }
 
             res->Cost = sceneryEntry->path_bit.price;

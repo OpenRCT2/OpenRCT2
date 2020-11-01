@@ -131,27 +131,28 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
     WIDX_CREATE_DUCKS,
-    WIDX_PARK_PARAMETERS,
-    WIDX_REMOVE_DUCKS,
     WIDX_OWN_ALL_LAND,
+    WIDX_REMOVE_DUCKS,
+    WIDX_OBJECTIVE_GROUP,
+    WIDX_NEVERENDING_MARKETING,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
     WIDX_INCREASE_PARK_RATING,
     WIDX_DECREASE_PARK_RATING,
     WIDX_WIN_SCENARIO,
     WIDX_HAVE_FUN,
-    WIDX_NEVERENDING_MARKETING,
     WIDX_WEATHER_GROUP,
-    WIDX_FREEZE_WEATHER,
     WIDX_WEATHER,
     WIDX_WEATHER_DROPDOWN_BUTTON,
-    WIDX_STAFF_GROUP,
+    WIDX_FREEZE_WEATHER,
+    WIDX_MAINTENANCE_GROUP,
+    WIDX_REMOVE_LITTER,
+    WIDX_FIX_VANDALISM,
     WIDX_CLEAR_GRASS,
     WIDX_MOWED_GRASS,
     WIDX_WATER_PLANTS,
-    WIDX_FIX_VANDALISM,
-    WIDX_REMOVE_LITTER,
     WIDX_DISABLE_PLANT_AGING,
+    WIDX_STAFF_GROUP,
     WIDX_STAFF_SPEED,
     WIDX_STAFF_SPEED_DROPDOWN_BUTTON,
 
@@ -259,30 +260,35 @@ static rct_widget window_cheats_guests_widgets[] =
 static rct_widget window_cheats_misc_widgets[] =
 {
     MAIN_CHEATS_WIDGETS,
-    MakeWidget        ({  5,  48}, {238, 169},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
-    MakeWidget        ({ 11,  69}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
-    MakeWidget        ({ 11,  90}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
-    MakeWidget        ({127,  69}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_PARK_PARAMETERS,       STR_CHEAT_PARK_PARAMETERS_TIP      ), // Park parameters
-    MakeWidget        ({127,  90}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
-    MakeWidget        ({ 11, 111}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
-    MakeWidget        ({ 11, 153}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
-    MakeSpinnerWidgets({126, 155}, {111,  12},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
-    MakeWidget        ({ 11, 174}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
-    MakeWidget        ({127, 174}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
-    MakeWidget        ({ 11, 195}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
-    MakeWidget        ({  5, 221}, {238,  64},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
-    MakeWidget        ({ 11, 237}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
-    MakeWidget        ({126, 258}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                        STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
-    MakeWidget        ({225, 259}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_FORCE_WEATHER_TOOLTIP          ), // Force weather
-    MakeWidget        ({  5, 300}, {238, 132},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
-    MakeWidget        ({ 11, 321}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
-    MakeWidget        ({127, 321}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
-    MakeWidget        ({ 11, 342}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
-    MakeWidget        ({127, 342}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
-    MakeWidget        ({ 11, 363}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
-    MakeWidget        ({ 11, 384}, CHEAT_BUTTON, WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
-    MakeWidget        ({126, 405}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary                                                                      ), // Staff speed
-    MakeWidget        ({225, 406}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
+    MakeWidget        ({  5,  48}, {238,  60},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_GENERAL_GROUP                                             ), // General group
+    MakeWidget        ({ 11,  62}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OPEN_PARK,             STR_CHEAT_OPEN_PARK_TIP            ), // open / close park
+    MakeWidget        ({ 11,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CREATE_DUCKS,                STR_CREATE_DUCKS_TIP               ), // Create ducks
+    MakeWidget        ({127,  62}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_OWN_ALL_LAND,          STR_CHEAT_OWN_ALL_LAND_TIP         ), // Own all land
+    MakeWidget        ({127,  83}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_DUCKS,                STR_REMOVE_DUCKS_TIP               ), // Remove ducks
+
+    MakeWidget        ({  5, 112}, {238,  75},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_OBJECTIVE_GROUP                                           ), // Objective group
+    MakeWidget        ({ 11, 127}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_NEVERENDING_MARKETING, STR_CHEAT_NEVERENDING_MARKETING_TIP), // never ending marketing campaigns
+    MakeWidget        ({ 11, 144}, {281,  12},   WWT_CHECKBOX, WindowColour::Secondary, STR_FORCE_PARK_RATING                                               ), // Force park rating
+    MakeSpinnerWidgets({156, 142}, { 81,  14},   WWT_SPINNER,  WindowColour::Secondary                                                                      ), // park rating (3 widgets)
+    MakeWidget        ({ 11, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WIN_SCENARIO                                              ), // Win scenario
+    MakeWidget        ({127, 162}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_HAVE_FUN                                                  ), // Have fun!
+
+    MakeWidget        ({  5, 190}, {238,  50},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_WEATHER_GROUP                                             ), // Weather group
+    MakeWidget        ({126, 204}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                        STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({225, 205}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,              STR_CHANGE_WEATHER_TOOLTIP         ), // Force weather
+    MakeWidget        ({ 11, 222}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_FREEZE_WEATHER,        STR_CHEAT_FREEZE_WEATHER_TIP       ), // Freeze weather
+
+    MakeWidget        ({  5, 244}, {238,  99},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_MAINTENANCE_GROUP                                         ), // Maintenance group
+    MakeWidget        ({ 11, 259}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_REMOVE_LITTER                                             ), // Remove litter
+    MakeWidget        ({127, 259}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_FIX_VANDALISM                                             ), // Fix vandalism
+    MakeWidget        ({ 11, 280}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_CLEAR_GRASS                                               ), // Clear grass
+    MakeWidget        ({127, 280}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_MOWED_GRASS                                               ), // Mowed grass
+    MakeWidget        ({ 11, 301}, CHEAT_BUTTON, WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_WATER_PLANTS                                              ), // Water plants
+    MakeWidget        ({ 11, 322}, CHEAT_CHECK,  WWT_CHECKBOX, WindowColour::Secondary, STR_CHEAT_DISABLE_PLANT_AGING,   STR_CHEAT_DISABLE_PLANT_AGING_TIP  ), // Disable plant ageing
+
+    MakeWidget        ({  5, 347}, {238,  35},   WWT_GROUPBOX, WindowColour::Secondary, STR_CHEAT_STAFF_GROUP                                               ), // Staff group
+    MakeWidget        ({126, 361}, {111,  14},   WWT_DROPDOWN, WindowColour::Secondary                                                                      ), // Staff speed
+    MakeWidget        ({225, 362}, { 11,  12},   WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                  ), // Staff speed
     { WIDGETS_END },
 };
 static rct_widget window_cheats_rides_widgets[] =
@@ -327,139 +333,49 @@ static void window_cheats_misc_dropdown(rct_window *w, rct_widgetindex widgetInd
 static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static OpenRCT2String window_cheats_rides_tooltip(rct_window* const w, rct_widgetindex widgetIndex, rct_string_id fallback);
 static void window_cheats_update(rct_window *w);
 static void window_cheats_invalidate(rct_window *w);
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_cheats_set_page(rct_window *w, int32_t page);
 static void window_cheats_text_input(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_cheats_money_events =
+static rct_window_event_list window_cheats_money_events([](auto& events)
 {
-    nullptr,
-    window_cheats_money_mouseup,
-    nullptr,
-    window_cheats_money_mousedown,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_text_input,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_money_mouseup;
+    events.mouse_down = &window_cheats_money_mousedown;
+    events.update = &window_cheats_update;
+    events.text_input = &window_cheats_text_input;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_guests_events =
+static rct_window_event_list window_cheats_guests_events([](auto& events)
 {
-    nullptr,
-    window_cheats_guests_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_guests_mouseup;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_misc_events =
+static rct_window_event_list window_cheats_misc_events([](auto& events)
 {
-    nullptr,
-    window_cheats_misc_mouseup,
-    nullptr,
-    window_cheats_misc_mousedown,
-    window_cheats_misc_dropdown,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_misc_mouseup;
+    events.mouse_down = &window_cheats_misc_mousedown;
+    events.dropdown = &window_cheats_misc_dropdown;
+    events.update = &window_cheats_update;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
-static rct_window_event_list window_cheats_rides_events =
+static rct_window_event_list window_cheats_rides_events([](auto& events)
 {
-    nullptr,
-    window_cheats_rides_mouseup,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_cheats_invalidate,
-    window_cheats_paint,
-    nullptr
-};
+    events.mouse_up = &window_cheats_rides_mouseup;
+    events.update = &window_cheats_update;
+    events.tooltip = &window_cheats_rides_tooltip;
+    events.invalidate = &window_cheats_invalidate;
+    events.paint = &window_cheats_paint;
+});
 
 
 static rct_window_event_list *window_cheats_page_events[] =
@@ -492,7 +408,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_DAY_BOX) |
     (1ULL << WIDX_DAY_UP) |
     (1ULL << WIDX_DAY_DOWN) |
-    (1ULL << WIDX_MONTH_BOX) |
     (1ULL << WIDX_DATE_GROUP) |
     (1ULL << WIDX_DATE_RESET),
 
@@ -545,7 +460,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_NEVERENDING_MARKETING) |
     (1ULL << WIDX_STAFF_SPEED) |
     (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_PARK_PARAMETERS) |
     (1ULL << WIDX_FORCE_PARK_RATING) |
     (1ULL << WIDX_INCREASE_PARK_RATING) |
     (1ULL << WIDX_DECREASE_PARK_RATING),
@@ -850,10 +764,10 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA, 0);
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MAX:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_HIGH);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::High));
             break;
         case WIDX_GUEST_NAUSEA_TOLERANCE_MIN:
-            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, PEEP_NAUSEA_TOLERANCE_NONE);
+            CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_NAUSEA_TOLERANCE, EnumValue(PeepNauseaTolerance::None));
             break;
         case WIDX_GUEST_TOILET_MAX:
             CheatsSet(CheatType::SetGuestParameter, GUEST_PARAMETER_TOILET, PEEP_MAX_TOILET);
@@ -954,9 +868,6 @@ static void window_cheats_misc_mouseup(rct_window* w, rct_widgetindex widgetInde
             break;
         case WIDX_NEVERENDING_MARKETING:
             CheatsSet(CheatType::NeverEndingMarketing, !gCheatsNeverendingMarketing);
-            break;
-        case WIDX_PARK_PARAMETERS:
-            context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
             break;
         case WIDX_FORCE_PARK_RATING:
             if (get_forced_park_rating() >= 0)
@@ -1094,6 +1005,17 @@ static void window_cheats_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1 + w->page);
 }
 
+static OpenRCT2String window_cheats_rides_tooltip(rct_window* const w, rct_widgetindex widgetIndex, rct_string_id fallback)
+{
+    if (widgetIndex == WIDX_FAST_LIFT_HILL)
+    {
+        auto ft = Formatter{};
+        ft.Add<uint16_t>(255);
+        return { fallback, ft };
+    }
+    return { fallback, {} };
+}
+
 static void window_cheats_invalidate(rct_window* w)
 {
     int32_t i;
@@ -1116,8 +1038,6 @@ static void window_cheats_invalidate(rct_window* w)
     // Set title
     w->widgets[WIDX_TITLE].text = window_cheats_page_titles[w->page];
 
-    auto ft = Formatter::Common();
-
     switch (w->page)
     {
         case WINDOW_CHEATS_PAGE_MONEY:
@@ -1138,21 +1058,24 @@ static void window_cheats_invalidate(rct_window* w)
         }
         break;
         case WINDOW_CHEATS_PAGE_GUESTS:
+        {
+            auto ft = Formatter::Common();
             ft.Add<int32_t>(MONEY(1000, 00));
             widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
             widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
             widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
-            break;
+        }
+        break;
+
         case WINDOW_CHEATS_PAGE_MISC:
             w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                         : STR_CHEAT_OPEN_PARK;
             widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
-            w->widgets[WIDX_FREEZE_WEATHER].text = gCheatsFreezeWeather ? STR_CHEAT_UNFREEZE_WEATHER : STR_CHEAT_FREEZE_WEATHER;
+            widget_set_checkbox_value(w, WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
             widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
             widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
         case WINDOW_CHEATS_PAGE_RIDES:
-            ft.Add<uint16_t>(255);
             widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
             widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
             widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
@@ -1213,15 +1136,14 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->page == WINDOW_CHEATS_PAGE_MONEY)
     {
         uint8_t colour = w->colours[1];
-        auto ft = Formatter::Common();
+        auto ft = Formatter();
         ft.Add<money32>(_moneySpinnerValue);
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }
         int32_t actual_month = _monthSpinnerValue - 1;
-        gfx_draw_string_left(
-            dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
+        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, ft.Data(), colour, w->windowPos + ScreenCoordsXY{ X_LCOL, 93 });
         gfx_draw_string_left(dpi, STR_YEAR, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 198 });
         gfx_draw_string_left(dpi, STR_MONTH, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 219 });
         gfx_draw_string_left(dpi, STR_DAY, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 240 });
@@ -1240,12 +1162,26 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else if (w->page == WINDOW_CHEATS_PAGE_MISC)
     {
-        gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 408 });
-        gfx_draw_string_left(dpi, STR_FORCE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL, 261 });
-        auto ft = Formatter();
-        ft.Add<int32_t>(_parkRatingSpinnerValue);
-        DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ X_RCOL, 156 }, STR_FORMAT_INTEGER, ft, w->colours[1], TextAlignment::RIGHT);
+        {
+            auto& widget = w->widgets[WIDX_WEATHER];
+            gfx_draw_string_left(
+                dpi, STR_CHANGE_WEATHER, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL - 3, widget.top + 1 });
+        }
+
+        {
+            auto ft = Formatter();
+            ft.Add<int32_t>(_parkRatingSpinnerValue);
+
+            auto& widget = w->widgets[WIDX_PARK_RATING_SPINNER];
+            DrawTextBasic(
+                dpi, w->windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, w->colours[1]);
+        }
+
+        {
+            auto& widget = w->widgets[WIDX_STAFF_SPEED];
+            gfx_draw_string_left(
+                dpi, STR_CHEAT_STAFF_SPEED, nullptr, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ X_LCOL - 3, widget.top + 1 });
+        }
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS)
     {

@@ -18,6 +18,9 @@
 struct IObjectManager;
 struct IObjectRepository;
 struct IScenarioRepository;
+enum class DrawingEngine : int32_t;
+enum class CursorID : uint8_t;
+
 namespace OpenRCT2
 {
     struct IStream;
@@ -125,7 +128,7 @@ namespace OpenRCT2
         virtual IScenarioRepository* GetScenarioRepository() abstract;
         virtual IReplayManager* GetReplayManager() abstract;
         virtual IGameStateSnapshots* GetGameStateSnapshots() abstract;
-        virtual int32_t GetDrawingEngineType() abstract;
+        virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
 
@@ -229,7 +232,7 @@ enum
 };
 
 void context_init();
-void context_setcurrentcursor(int32_t cursor);
+void context_setcurrentcursor(CursorID cursor);
 void context_update_cursor_scale();
 void context_hide_cursor();
 void context_show_cursor();

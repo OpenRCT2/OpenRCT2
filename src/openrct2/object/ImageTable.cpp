@@ -15,6 +15,7 @@
 #include "../core/File.h"
 #include "../core/FileScanner.h"
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
@@ -141,7 +142,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         catch (const std::exception& e)
         {
             auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
-            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+            context->LogWarning(ObjectError::BadImageTable, msg.c_str());
             result.push_back(std::make_unique<RequiredImage>());
         }
     }
@@ -178,7 +179,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     catch (const std::exception& e)
     {
         auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
-        context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, msg.c_str());
+        context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         result.push_back(std::make_unique<RequiredImage>());
     }
     return result;
@@ -192,7 +193,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
     if (obj != nullptr)
     {
-        auto& imgTable = static_cast<const Object*>(obj)->GetImageTable();
+        auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
         auto numImages = static_cast<int32_t>(imgTable.GetCount());
         auto images = imgTable.GetImages();
         size_t placeHoldersAdded = 0;
@@ -209,19 +210,18 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
                 placeHoldersAdded++;
             }
         }
-        delete obj;
 
         // Log place holder information
         if (placeHoldersAdded > 0)
         {
             std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
-            context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
+            context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
         }
     }
     else
     {
         std::string msg = "Unable to open '" + objectPath + "'";
-        context->LogWarning(OBJECT_ERROR_INVALID_PROPERTY, msg.c_str());
+        context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
         for (size_t i = 0; i < range.size(); i++)
         {
             result.push_back(std::make_unique<RequiredImage>());
@@ -315,7 +315,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         uint64_t remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
         if (remainingBytes > imageDataSize)
         {
-            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size longer than expected.");
+            context->LogWarning(ObjectError::BadImageTable, "Image table size longer than expected.");
             imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
 
@@ -323,7 +323,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         auto data = std::make_unique<uint8_t[]>(dataSize);
         if (data == nullptr)
         {
-            context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
+            context->LogError(ObjectError::BadImageTable, "Image table too large.");
             throw std::runtime_error("Image table too large.");
         }
 
@@ -355,7 +355,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         if (unreadBytes > 0)
         {
             std::fill_n(data.get() + readBytes, unreadBytes, 0);
-            context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size shorter than expected.");
+            context->LogWarning(ObjectError::BadImageTable, "Image table size shorter than expected.");
         }
 
         _data = std::move(data);
@@ -363,7 +363,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
     }
     catch (const std::exception&)
     {
-        context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Bad image table.");
+        context->LogError(ObjectError::BadImageTable, "Bad image table.");
         throw;
     }
 }

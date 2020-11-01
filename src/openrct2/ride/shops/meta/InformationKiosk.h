@@ -26,8 +26,8 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
                      RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_IS_SHOP |
                      RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
-    SET_FIELD(RideModes, (1ULL << RIDE_MODE_SHOP_STALL)),
-    SET_FIELD(DefaultMode, RIDE_MODE_SHOP_STALL),
+    SET_FIELD(RideModes, EnumsToFlags(RideMode::ShopStall)),
+    SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INFORMATION_KIOSK, STR_RIDE_DESCRIPTION_INFORMATION_KIOSK }),
     SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
@@ -35,7 +35,7 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 48, 0, 0, }),
     SET_FIELD(MaxMass, 255),
-    SET_FIELD(LiftData, { SoundId::Null, 5, 5 }),
+    SET_FIELD(LiftData, { OpenRCT2::Audio::SoundId::Null, 5, 5 }),
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_information_kiosk),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),

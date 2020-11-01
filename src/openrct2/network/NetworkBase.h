@@ -1,7 +1,6 @@
 #pragma once
 
 #include "../actions/GameAction.h"
-#include "../core/Json.hpp"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -228,7 +227,7 @@ private: // Client Data
     int32_t status = NETWORK_STATUS_NONE;
     uint8_t player_id = 0;
     uint16_t _port = 0;
-    SOCKET_STATUS _lastConnectStatus = SOCKET_STATUS_CLOSED;
+    SocketStatus _lastConnectStatus = SocketStatus::Closed;
     bool _requireReconnect = false;
     bool _clientMapLoaded = false;
 };

@@ -1145,42 +1145,42 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType)
 {
     switch (trackType)
     {
-        case TRACK_ELEM_FLAT:
+        case TrackElemType::Flat:
             return paint_mini_golf_track_flat;
 
-        case TRACK_ELEM_BEGIN_STATION:
-        case TRACK_ELEM_MIDDLE_STATION:
-        case TRACK_ELEM_END_STATION:
+        case TrackElemType::BeginStation:
+        case TrackElemType::MiddleStation:
+        case TrackElemType::EndStation:
             return paint_mini_golf_station;
 
-        case TRACK_ELEM_25_DEG_UP:
+        case TrackElemType::Up25:
             return paint_mini_golf_track_25_deg_up;
-        case TRACK_ELEM_FLAT_TO_25_DEG_UP:
+        case TrackElemType::FlatToUp25:
             return paint_mini_golf_track_flat_to_25_deg_up;
-        case TRACK_ELEM_25_DEG_UP_TO_FLAT:
+        case TrackElemType::Up25ToFlat:
             return paint_mini_golf_track_25_deg_up_to_flat;
 
-        case TRACK_ELEM_25_DEG_DOWN:
+        case TrackElemType::Down25:
             return paint_mini_golf_track_25_deg_down;
-        case TRACK_ELEM_FLAT_TO_25_DEG_DOWN:
+        case TrackElemType::FlatToDown25:
             return paint_mini_golf_track_flat_to_25_deg_down;
-        case TRACK_ELEM_25_DEG_DOWN_TO_FLAT:
+        case TrackElemType::Down25ToFlat:
             return paint_mini_golf_track_25_deg_down_to_flat;
 
-        case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
+        case TrackElemType::LeftQuarterTurn1Tile:
             return paint_mini_golf_track_left_quarter_turn_1_tile;
-        case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
+        case TrackElemType::RightQuarterTurn1Tile:
             return paint_mini_golf_track_right_quarter_turn_1_tile;
 
-        case TRACK_ELEM_MINI_GOLF_HOLE_A:
+        case TrackElemType::MinigolfHoleA:
             return paint_mini_golf_hole_a;
-        case TRACK_ELEM_MINI_GOLF_HOLE_B:
+        case TrackElemType::MinigolfHoleB:
             return paint_mini_golf_hole_b;
-        case TRACK_ELEM_MINI_GOLF_HOLE_C:
+        case TrackElemType::MinigolfHoleC:
             return paint_mini_golf_hole_c;
-        case TRACK_ELEM_MINI_GOLF_HOLE_D:
+        case TrackElemType::MinigolfHoleD:
             return paint_mini_golf_hole_d;
-        case TRACK_ELEM_MINI_GOLF_HOLE_E:
+        case TrackElemType::MinigolfHoleE:
             return paint_mini_golf_hole_e;
     }
 

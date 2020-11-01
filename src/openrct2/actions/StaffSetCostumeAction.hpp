@@ -20,34 +20,32 @@
 
 /** rct2: 0x00982134 */
 constexpr const bool peep_slow_walking_types[] = {
-    false, // PEEP_SPRITE_TYPE_NORMAL
-    false, // PEEP_SPRITE_TYPE_HANDYMAN
-    false, // PEEP_SPRITE_TYPE_MECHANIC
-    false, // PEEP_SPRITE_TYPE_SECURITY
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_PANDA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_TIGER
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_BANDIT
-    false, // PEEP_SPRITE_TYPE_ENTERTAINER_SHERIFF
-    true,  // PEEP_SPRITE_TYPE_ENTERTAINER_PIRATE
-    true,  // PEEP_SPRITE_TYPE_BALLOON
+    false, // PeepSpriteType::Normal
+    false, // PeepSpriteType::Handyman
+    false, // PeepSpriteType::Mechanic
+    false, // PeepSpriteType::Security
+    false, // PeepSpriteType::EntertainerPanda
+    false, // PeepSpriteType::EntertainerTiger
+    false, // PeepSpriteType::EntertainerElephant
+    false, // PeepSpriteType::EntertainerRoman
+    false, // PeepSpriteType::EntertainerGorilla
+    false, // PeepSpriteType::EntertainerSnowman
+    false, // PeepSpriteType::EntertainerKnight
+    true,  // PeepSpriteType::EntertainerAstronaut
+    false, // PeepSpriteType::EntertainerBandit
+    false, // PeepSpriteType::EntertainerSheriff
+    true,  // PeepSpriteType::EntertainerPirate
+    true,  // PeepSpriteType::Balloon
 };
 
-DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActionResult)
+DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActions::Result)
 {
 private:
-    uint16_t _spriteIndex;
-    EntertainerCostume _costume;
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntertainerCostume _costume = EntertainerCostume::Count;
 
 public:
-    StaffSetCostumeAction()
-    {
-    }
+    StaffSetCostumeAction() = default;
     StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
         : _spriteIndex(spriteIndex)
         , _costume(costume)
@@ -56,7 +54,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -66,42 +64,42 @@ public:
         stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         if (_spriteIndex >= MAX_SPRITES)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto* staff = TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto spriteType = EntertainerCostumeToSprite(_costume);
-        if (spriteType > std::size(peep_slow_walking_types))
+        if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto* staff = TryGetEntity<Staff>(_spriteIndex);
         if (staff == nullptr)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         auto spriteType = EntertainerCostumeToSprite(_costume);
         staff->SpriteType = spriteType;
         staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-        if (peep_slow_walking_types[spriteType])
+        if (peep_slow_walking_types[EnumValue(spriteType)])
         {
             staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
         }
@@ -113,7 +111,7 @@ public:
         auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
         context_broadcast_intent(&intent);
 
-        auto res = std::make_unique<GameActionResult>();
+        auto res = std::make_unique<GameActions::Result>();
         res->Position.x = staff->x;
         res->Position.y = staff->y;
         res->Position.z = staff->z;

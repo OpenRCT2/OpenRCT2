@@ -57,7 +57,7 @@ public:
                 return window_editor_inventions_list_open();
             case WC_EDITOR_OBJECT_SELECTION:
                 return window_editor_object_selection_open();
-            case WC_EDTIOR_OBJECTIVE_OPTIONS:
+            case WC_EDITOR_OBJECTIVE_OPTIONS:
                 return window_editor_objective_options_open();
             case WC_EDITOR_SCENARIO_OPTIONS:
                 return window_editor_scenario_options_open();
@@ -472,6 +472,16 @@ public:
             case INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL:
                 TrackPlaceRestoreProvisional();
                 break;
+
+            case INTENT_ACTION_SET_MAP_TOOLTIP:
+            {
+                auto ft = static_cast<Formatter*>(intent.GetPointerExtra(INTENT_EXTRA_FORMATTER));
+                if (ft != nullptr)
+                {
+                    SetMapTooltip(*ft);
+                }
+                break;
+            }
         }
     }
 

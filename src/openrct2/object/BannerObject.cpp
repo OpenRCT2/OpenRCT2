@@ -10,6 +10,7 @@
 #include "BannerObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
@@ -35,7 +36,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
 
     // Add banners to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
@@ -47,8 +48,8 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();
-        if (sourceGame == OBJECT_SOURCE_WACKY_WORLDS || sourceGame == OBJECT_SOURCE_TIME_TWISTER
-            || sourceGame == OBJECT_SOURCE_CUSTOM)
+        if (sourceGame == ObjectSourceGame::WackyWorlds || sourceGame == ObjectSourceGame::TimeTwister
+            || sourceGame == ObjectSourceGame::Custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
             SetPrimarySceneryGroup(&scgPathX);

@@ -30,16 +30,14 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_SIMULATE,
 };
 
-DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActionResult)
+DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };
-    uint8_t _status = RIDE_STATUS_CLOSED;
+    uint8_t _status{ RIDE_STATUS_CLOSED };
 
 public:
-    RideSetStatusAction()
-    {
-    }
+    RideSetStatusAction() = default;
     RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
         : _rideIndex(rideIndex)
         , _status(status)
@@ -54,7 +52,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -64,15 +62,15 @@ public:
         stream << DS_TAG(_rideIndex) << DS_TAG(_status);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res->ErrorMessage = STR_NONE;
             return res;
@@ -81,7 +79,7 @@ public:
         if (_status >= RIDE_STATUS_COUNT)
         {
             log_warning("Invalid ride status %u for ride %u", uint32_t(_status), uint32_t(_rideIndex));
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res->ErrorMessage = STR_NONE;
             return res;
@@ -97,7 +95,7 @@ public:
             if (_status == RIDE_STATUS_SIMULATING && (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
             {
                 // Simulating will force clear the track, so make sure player can't cheat around a break down
-                res->Error = GA_ERROR::DISALLOWED;
+                res->Error = GameActions::Status::Disallowed;
                 res->ErrorMessage = STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING;
                 return res;
             }
@@ -105,7 +103,7 @@ public:
             {
                 if (!ride_is_valid_for_test(ride, _status, false))
                 {
-                    res->Error = GA_ERROR::UNKNOWN;
+                    res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
                 }
@@ -114,25 +112,25 @@ public:
             {
                 if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, false))
                 {
-                    res->Error = GA_ERROR::UNKNOWN;
+                    res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
                 }
             }
         }
-        return std::make_unique<GameActionResult>();
+        return std::make_unique<GameActions::Result>();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Expenditure = ExpenditureType::RideRunningCosts;
 
         auto ride = get_ride(_rideIndex);
         if (ride == nullptr)
         {
             log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->Error = GameActions::Status::InvalidParameters;
             res->ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
             res->ErrorMessage = STR_NONE;
             return res;
@@ -176,7 +174,7 @@ public:
 
                 if (!ride_is_valid_for_test(ride, _status, true))
                 {
-                    res->Error = GA_ERROR::UNKNOWN;
+                    res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
                 }
@@ -186,7 +184,7 @@ public:
                 ride->race_winner = SPRITE_INDEX_NULL;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;
@@ -217,14 +215,14 @@ public:
                 {
                     if (!ride_is_valid_for_test(ride, _status, true))
                     {
-                        res->Error = GA_ERROR::UNKNOWN;
+                        res->Error = GameActions::Status::Unknown;
                         res->ErrorMessage = gGameCommandErrorText;
                         return res;
                     }
                 }
                 else if (!ride_is_valid_for_open(ride, _status == RIDE_STATUS_OPEN, true))
                 {
-                    res->Error = GA_ERROR::UNKNOWN;
+                    res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
                 }
@@ -233,7 +231,7 @@ public:
                 ride->status = _status;
                 ride->current_issues = 0;
                 ride->last_issue_time = 0;
-                ride_get_measurement(ride);
+                ride->GetMeasurement();
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;

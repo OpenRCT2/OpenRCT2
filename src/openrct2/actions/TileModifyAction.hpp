@@ -42,23 +42,21 @@ enum class TileModifyType : uint8_t
     Count,
 };
 
-DEFINE_GAME_ACTION(TileModifyAction, GAME_COMMAND_MODIFY_TILE, GameActionResult)
+DEFINE_GAME_ACTION(TileModifyAction, GAME_COMMAND_MODIFY_TILE, GameActions::Result)
 {
 private:
     CoordsXY _loc;
-    uint8_t _setting{ 0 };
-    uint32_t _value1{ 0 };
-    uint32_t _value2{ 0 };
+    TileModifyType _setting{};
+    uint32_t _value1{};
+    uint32_t _value2{};
     TileElement _pasteElement{};
 
 public:
-    TileModifyAction()
-    {
-    }
+    TileModifyAction() = default;
     TileModifyAction(
         CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {})
         : _loc(loc)
-        , _setting(static_cast<uint8_t>(setting))
+        , _setting(setting)
         , _value1(value1)
         , _value2(value2)
         , _pasteElement(pasteElement)
@@ -67,7 +65,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -77,25 +75,25 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_setting) << DS_TAG(_value1) << DS_TAG(_value2) << DS_TAG(_pasteElement);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK);
         }
         auto res = MakeResult();
-        switch (static_cast<TileModifyType>(_setting))
+        switch (_setting)
         {
             case TileModifyType::AnyRemove:
             {
@@ -261,7 +259,7 @@ private:
             }
             default:
                 log_error("invalid instruction");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
                 break;
         }
 

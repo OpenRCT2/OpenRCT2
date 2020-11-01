@@ -42,6 +42,7 @@
 		2ADE2F3622441960002598AF /* RideTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F352244195F002598AF /* RideTypes.h */; };
 		2ADE2F382244198B002598AF /* SpriteBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F372244198A002598AF /* SpriteBase.h */; };
 		304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304FE94F23A2996600470197 /* SceneryScatter.cpp */; };
+		4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */; };
 		4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25594F244A328A00CE7E45 /* CustomMenu.cpp */; };
 		4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255954244A328A00CE7E45 /* UiExtensions.cpp */; };
 		4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255957244A328B00CE7E45 /* CustomWindow.cpp */; };
@@ -74,6 +75,8 @@
 		932A211E22D73CFA00C57EDB /* GameActionCompat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */; };
 		932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */; };
 		932A212022D73CFA00C57EDB /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 932A211C22D73CFA00C57EDB /* GameAction.cpp */; };
+		93378D01252B4F550077D2D8 /* JsonFwd.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93378D00252B4F550077D2D8 /* JsonFwd.hpp */; };
+		93378D03252B54140077D2D8 /* json_fwd.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 93378D02252B54140077D2D8 /* json_fwd.hpp */; };
 		933C55B524B858490057E64B /* SeaDecrypt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933C55B424B858490057E64B /* SeaDecrypt.cpp */; };
 		933CBDB520CB1ACD00134678 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB120CB1ACC00134678 /* Widget.cpp */; };
 		933CBDB620CB1ACD00134678 /* Theme.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 933CBDB220CB1ACD00134678 /* Theme.cpp */; };
@@ -106,6 +109,8 @@
 		939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359D20C12FDD00630B3F /* Paint.Surface.h */; };
 		939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A359E20C12FDE00630B3F /* Paint.TileElement.h */; };
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
+		93AE2389252F948A00CD03C3 /* Formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93AE2387252F948A00CD03C3 /* Formatter.h */; };
+		93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AE2388252F948A00CD03C3 /* Formatter.cpp */; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -679,6 +684,7 @@
 		2ADE2F372244198A002598AF /* SpriteBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBase.h; sourceTree = "<group>"; };
 		304FE94F23A2996600470197 /* SceneryScatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryScatter.cpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
+		4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HybridCoaster.cpp; sourceTree = "<group>"; };
 		4C25594E244A328A00CE7E45 /* CustomWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWindow.h; path = scripting/CustomWindow.h; sourceTree = "<group>"; };
 		4C25594F244A328A00CE7E45 /* CustomMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomMenu.cpp; path = scripting/CustomMenu.cpp; sourceTree = "<group>"; };
 		4C255950244A328A00CE7E45 /* ScUi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScUi.hpp; path = scripting/ScUi.hpp; sourceTree = "<group>"; };
@@ -1064,6 +1070,8 @@
 		932A211B22D73CFA00C57EDB /* TrackSetBrakeSpeedAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackSetBrakeSpeedAction.hpp; sourceTree = "<group>"; };
 		932A211C22D73CFA00C57EDB /* GameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameAction.cpp; sourceTree = "<group>"; };
 		932A211D22D73CFA00C57EDB /* LargeSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeSceneryRemoveAction.hpp; sourceTree = "<group>"; };
+		93378D00252B4F550077D2D8 /* JsonFwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JsonFwd.hpp; sourceTree = "<group>"; };
+		93378D02252B54140077D2D8 /* json_fwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = json_fwd.hpp; path = "build/json-3.9.1/include/nlohmann/json_fwd.hpp"; sourceTree = SOURCE_ROOT; };
 		933C55B424B858490057E64B /* SeaDecrypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeaDecrypt.cpp; sourceTree = "<group>"; };
 		933CBDB120CB1ACC00134678 /* Widget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Widget.cpp; sourceTree = "<group>"; };
 		933CBDB220CB1ACD00134678 /* Theme.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Theme.cpp; sourceTree = "<group>"; };
@@ -1318,6 +1326,8 @@
 		939A359D20C12FDD00630B3F /* Paint.Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.Surface.h; sourceTree = "<group>"; };
 		939A359E20C12FDE00630B3F /* Paint.TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.TileElement.h; sourceTree = "<group>"; };
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
+		93AE2387252F948A00CD03C3 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
+		93AE2388252F948A00CD03C3 /* Formatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatter.cpp; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -2263,6 +2273,7 @@
 			isa = PBXGroup;
 			children = (
 				93FB271E24ED32B7008241C9 /* json.hpp */,
+				93378D02252B54140077D2D8 /* json_fwd.hpp */,
 			);
 			name = nlohmann;
 			path = libxc/include/nlohmann;
@@ -2831,6 +2842,7 @@
 				2ADE2F25224418B2002598AF /* JobPool.hpp */,
 				F76C83881EC4E7CC00FA49E2 /* Json.cpp */,
 				F76C83891EC4E7CC00FA49E2 /* Json.hpp */,
+				93378D00252B4F550077D2D8 /* JsonFwd.hpp */,
 				F76C838B1EC4E7CC00FA49E2 /* Memory.hpp */,
 				F76C838C1EC4E7CC00FA49E2 /* MemoryStream.cpp */,
 				F76C838D1EC4E7CC00FA49E2 /* MemoryStream.h */,
@@ -2932,6 +2944,8 @@
 				4C7B53AE1FFF935B00A52E21 /* Date.h */,
 				4C7B53AF1FFF935B00A52E21 /* FormatCodes.cpp */,
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
+				93AE2388252F948A00CD03C3 /* Formatter.cpp */,
+				93AE2387252F948A00CD03C3 /* Formatter.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
@@ -3240,6 +3254,7 @@
 				4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */,
 				4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */,
 				4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */,
+				4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */,
 				4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */,
 				4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */,
 				4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */,
@@ -3670,6 +3685,7 @@
 				93DFD05524521C1A001FCBAF /* ScMap.hpp in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
 				C67B28152002D67A00109C93 /* Widget.h in Headers */,
+				93378D01252B4F550077D2D8 /* JsonFwd.hpp in Headers */,
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
 				93DFD05124521C1A001FCBAF /* ScContext.hpp in Headers */,
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
@@ -3686,6 +3702,7 @@
 				93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
+				93378D03252B54140077D2D8 /* json_fwd.hpp in Headers */,
 				93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */,
 				936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */,
 				93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */,
@@ -3700,6 +3717,7 @@
 				2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */,
 				2ADE2F3622441960002598AF /* RideTypes.h in Headers */,
 				93DFD05324521C1A001FCBAF /* ScRide.hpp in Headers */,
+				93AE2389252F948A00CD03C3 /* Formatter.h in Headers */,
 				93DFD05424521C1A001FCBAF /* ScDate.hpp in Headers */,
 				93FC08FF2418F3ED00CA3054 /* duktape.h in Headers */,
 				93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */,
@@ -3875,7 +3893,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.17\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
+			shellScript = "version=\"1.0.18\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3889,7 +3907,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"25\"\nzipname=\"openrct2-libs-v25-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
+			shellScript = "version=\"26\"\nzipname=\"openrct2-libs-v26-x64-macos-dylibs.zip\"\nliburl=\"https://github.com/OpenRCT2/Dependencies/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/libxc\" || ! -e \"${SRCROOT}/libversion\" || $(head -n 1 \"${SRCROOT}/libversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/libxc\" ]]; then rm -r \"${SRCROOT}/libxc\"; fi\nmkdir \"${SRCROOT}/libxc\"\n\ncurl -L -o \"${SRCROOT}/libxc/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/libxc\" \"${SRCROOT}/libxc/$zipname\"\nrm \"${SRCROOT}/libxc/$zipname\"\n\necho $version > \"${SRCROOT}/libversion\"\nfi\n";
 		};
 		D42C09D21C254F4E00309751 /* Build g2.dat */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4039,6 +4057,7 @@
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */,
 				4C81F7E124672C4D000E61BF /* CustomListView.cpp in Sources */,
+				4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */,
 				6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */,
 				C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
@@ -4174,6 +4193,7 @@
 				C688786820289A4A0084B384 /* Util.cpp in Sources */,
 				C688792720289B9B0084B384 /* TopSpin.cpp in Sources */,
 				C688787E20289ADE0084B384 /* Drawing.cpp in Sources */,
+				93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */,
 				C68878A120289B200084B384 /* Localisation.cpp in Sources */,
 				C68878ED20289B9B0084B384 /* BobsleighCoaster.cpp in Sources */,
 				C688785E20289A0A0084B384 /* Fountain.cpp in Sources */,

@@ -137,7 +137,7 @@ public:
         return {};
     }
 
-    void LogWarning(uint32_t code, const utf8* text) override
+    void LogWarning(ObjectError code, const utf8* text) override
     {
         _wasWarning = true;
 
@@ -147,7 +147,7 @@ public:
         }
     }
 
-    void LogError(uint32_t code, const utf8* text) override
+    void LogError(ObjectError code, const utf8* text) override
     {
         _wasError = true;
 
@@ -164,47 +164,47 @@ namespace ObjectFactory
      * @param jRoot Must be JSON node of type object
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
-    static Object* CreateObjectFromJson(
+    static std::unique_ptr<Object> CreateObjectFromJson(
         IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever);
 
-    static uint8_t ParseSourceGame(const std::string& s)
+    static ObjectSourceGame ParseSourceGame(const std::string& s)
     {
-        static const std::unordered_map<std::string, OBJECT_SOURCE_GAME> LookupTable{
-            { "rct1", OBJECT_SOURCE_RCT1 },
-            { "rct1aa", OBJECT_SOURCE_ADDED_ATTRACTIONS },
-            { "rct1ll", OBJECT_SOURCE_LOOPY_LANDSCAPES },
-            { "rct2", OBJECT_SOURCE_RCT2 },
-            { "rct2ww", OBJECT_SOURCE_WACKY_WORLDS },
-            { "rct2tt", OBJECT_SOURCE_TIME_TWISTER },
-            { "official", OBJECT_SOURCE_OPENRCT2_OFFICIAL },
-            { "custom", OBJECT_SOURCE_CUSTOM },
+        static const std::unordered_map<std::string, ObjectSourceGame> LookupTable{
+            { "rct1", ObjectSourceGame::RCT1 },
+            { "rct1aa", ObjectSourceGame::AddedAttractions },
+            { "rct1ll", ObjectSourceGame::LoopyLandscapes },
+            { "rct2", ObjectSourceGame::RCT2 },
+            { "rct2ww", ObjectSourceGame::WackyWorlds },
+            { "rct2tt", ObjectSourceGame::TimeTwister },
+            { "official", ObjectSourceGame::OpenRCT2Official },
+            { "custom", ObjectSourceGame::Custom },
         };
         auto result = LookupTable.find(s);
-        return (result != LookupTable.end()) ? result->second : OBJECT_SOURCE_CUSTOM;
+        return (result != LookupTable.end()) ? result->second : ObjectSourceGame::Custom;
     }
 
-    static void ReadObjectLegacy(Object* object, IReadObjectContext* context, OpenRCT2::IStream* stream)
+    static void ReadObjectLegacy(Object& object, IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
         try
         {
-            object->ReadLegacy(context, stream);
+            object.ReadLegacy(context, stream);
         }
         catch (const IOException&)
         {
             // TODO check that ex is really EOF and not some other error
-            context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
+            context->LogError(ObjectError::UnexpectedEOF, "Unexpectedly reached end of file.");
         }
         catch (const std::exception&)
         {
-            context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
+            context->LogError(ObjectError::Unknown, nullptr);
         }
     }
 
-    Object* CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path)
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path)
     {
         log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
-        Object* result = nullptr;
+        std::unique_ptr<Object> result;
         try
         {
             auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
@@ -225,30 +225,28 @@ namespace ObjectFactory
 
                 auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
                 auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
-                ReadObjectLegacy(result, &readContext, &chunkStream);
+                ReadObjectLegacy(*result, &readContext, &chunkStream);
                 if (readContext.WasError())
                 {
                     throw std::runtime_error("Object has errors");
                 }
-                result->SetSourceGames({ object_entry_get_source_game_legacy(&entry) });
+                result->SetSourceGames({ entry.GetSourceGame() });
             }
         }
         catch (const std::exception& e)
         {
             log_error("Error: %s when processing object %s", e.what(), path);
-            delete result;
-            result = nullptr;
         }
         return result;
     }
 
-    Object* CreateObjectFromLegacyData(
+    std::unique_ptr<Object> CreateObjectFromLegacyData(
         IObjectRepository& objectRepository, const rct_object_entry* entry, const void* data, size_t dataSize)
     {
         Guard::ArgumentNotNull(entry, GUARD_LINE);
         Guard::ArgumentNotNull(data, GUARD_LINE);
 
-        Object* result = CreateObject(*entry);
+        auto result = CreateObject(*entry);
         if (result != nullptr)
         {
             utf8 objectName[DAT_NAME_LENGTH + 1];
@@ -256,67 +254,65 @@ namespace ObjectFactory
 
             auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
             auto chunkStream = OpenRCT2::MemoryStream(data, dataSize);
-            ReadObjectLegacy(result, &readContext, &chunkStream);
+            ReadObjectLegacy(*result, &readContext, &chunkStream);
 
             if (readContext.WasError())
             {
-                delete result;
-                result = nullptr;
+                log_error("Error when processing object.");
             }
             else
             {
-                result->SetSourceGames({ object_entry_get_source_game_legacy(entry) });
+                result->SetSourceGames({ entry->GetSourceGame() });
             }
         }
         return result;
     }
 
-    Object* CreateObject(const rct_object_entry& entry)
+    std::unique_ptr<Object> CreateObject(const rct_object_entry& entry)
     {
-        Object* result;
+        std::unique_ptr<Object> result;
         switch (entry.GetType())
         {
             case OBJECT_TYPE_RIDE:
-                result = new RideObject(entry);
+                result = std::make_unique<RideObject>(entry);
                 break;
             case OBJECT_TYPE_SMALL_SCENERY:
-                result = new SmallSceneryObject(entry);
+                result = std::make_unique<SmallSceneryObject>(entry);
                 break;
             case OBJECT_TYPE_LARGE_SCENERY:
-                result = new LargeSceneryObject(entry);
+                result = std::make_unique<LargeSceneryObject>(entry);
                 break;
             case OBJECT_TYPE_WALLS:
-                result = new WallObject(entry);
+                result = std::make_unique<WallObject>(entry);
                 break;
             case OBJECT_TYPE_BANNERS:
-                result = new BannerObject(entry);
+                result = std::make_unique<BannerObject>(entry);
                 break;
             case OBJECT_TYPE_PATHS:
-                result = new FootpathObject(entry);
+                result = std::make_unique<FootpathObject>(entry);
                 break;
             case OBJECT_TYPE_PATH_BITS:
-                result = new FootpathItemObject(entry);
+                result = std::make_unique<FootpathItemObject>(entry);
                 break;
             case OBJECT_TYPE_SCENERY_GROUP:
-                result = new SceneryGroupObject(entry);
+                result = std::make_unique<SceneryGroupObject>(entry);
                 break;
             case OBJECT_TYPE_PARK_ENTRANCE:
-                result = new EntranceObject(entry);
+                result = std::make_unique<EntranceObject>(entry);
                 break;
             case OBJECT_TYPE_WATER:
-                result = new WaterObject(entry);
+                result = std::make_unique<WaterObject>(entry);
                 break;
             case OBJECT_TYPE_SCENARIO_TEXT:
-                result = nullptr;
                 break;
             case OBJECT_TYPE_TERRAIN_SURFACE:
-                result = new TerrainSurfaceObject(entry);
+                result = std::make_unique<TerrainSurfaceObject>(entry);
                 break;
             case OBJECT_TYPE_TERRAIN_EDGE:
-                result = new TerrainEdgeObject(entry);
+                result = std::make_unique<TerrainEdgeObject>(entry);
                 break;
             case OBJECT_TYPE_STATION:
-                result = new StationObject(entry);
+                result = std::make_unique<StationObject>(entry);
                 break;
             default:
                 throw std::runtime_error("Invalid object type");
@@ -355,9 +351,8 @@ namespace ObjectFactory
         return 0xFF;
     }
 
-    Object* CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
     {
-        Object* result = nullptr;
         try
         {
             auto archive = Zip::Open(path, ZIP_ACCESS::READ);
@@ -369,52 +364,77 @@ namespace ObjectFactory
 
             json_t jRoot = Json::FromVector(jsonBytes);
 
-            Object* obj = nullptr;
-
             if (jRoot.is_object())
             {
                 auto fileDataRetriever = ZipDataRetriever(*archive);
-                obj = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
             }
-
-            return obj;
         }
         catch (const std::exception& e)
         {
             Console::Error::WriteLine("Unable to open or read '%s': %s", path.data(), e.what());
-
-            delete result;
-            result = nullptr;
         }
-        return result;
+        return nullptr;
     }
 
-    Object* CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path)
+    std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
-        Object* result = nullptr;
         try
         {
             json_t jRoot = Json::ReadFromFile(path.c_str());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
-            result = CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
         }
         catch (const std::runtime_error& err)
         {
             Console::Error::WriteLine("Unable to open or read '%s': %s", path.c_str(), err.what());
         }
 
-        return result;
+        return nullptr;
     }
 
-    Object* CreateObjectFromJson(IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever)
+    static void ExtractSourceGames(const std::string& id, json_t& jRoot, Object& result)
+    {
+        auto sourceGames = jRoot["sourceGame"];
+        if (sourceGames.is_array() || sourceGames.is_string())
+        {
+            std::vector<ObjectSourceGame> sourceGameVector;
+            for (const auto& jSourceGame : sourceGames)
+            {
+                sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
+            }
+            if (!sourceGameVector.empty())
+            {
+                result.SetSourceGames(sourceGameVector);
+            }
+            else
+            {
+                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+                result.SetSourceGames({ ObjectSourceGame::Custom });
+            }
+        }
+        // >90% of objects are custom, so allow omitting the parameter without displaying an error.
+        else if (sourceGames.is_null())
+        {
+            result.SetSourceGames({ ObjectSourceGame::Custom });
+        }
+        else
+        {
+            log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
+            result.SetSourceGames({ ObjectSourceGame::Custom });
+        }
+    }
+
+    std::unique_ptr<Object> CreateObjectFromJson(
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever)
     {
         Guard::Assert(jRoot.is_object(), "ObjectFactory::CreateObjectFromJson expects parameter jRoot to be object");
 
         log_verbose("CreateObjectFromJson(...)");
 
-        Object* result = nullptr;
+        std::unique_ptr<Object> result;
 
         auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
         if (objectType != 0xFF)
@@ -454,21 +474,7 @@ namespace ObjectFactory
             }
             result->SetAuthors(std::move(authorVector));
 
-            auto sourceGames = jRoot["sourceGame"];
-            if (sourceGames.is_array() || sourceGames.is_string())
-            {
-                std::vector<uint8_t> sourceGameVector;
-                for (const auto& jSourceGame : sourceGames)
-                {
-                    sourceGameVector.push_back(ParseSourceGame(Json::GetString(jSourceGame)));
-                }
-                result->SetSourceGames(sourceGameVector);
-            }
-            else
-            {
-                log_error("Object %s has an incorrect sourceGame parameter.", id.c_str());
-                result->SetSourceGames({ OBJECT_SOURCE_CUSTOM });
-            }
+            ExtractSourceGames(id, jRoot, *result);
         }
         return result;
     }

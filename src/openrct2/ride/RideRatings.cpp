@@ -196,7 +196,7 @@ static void ride_ratings_update_state_2()
 {
     const ride_id_t rideIndex = gRideRatingsCalcData.CurrentRide;
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED)
+    if (ride == nullptr || ride->status == RIDE_STATUS_CLOSED || ride->type >= RIDE_TYPE_COUNT)
     {
         gRideRatingsCalcData.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
         return;
@@ -229,7 +229,7 @@ static void ride_ratings_update_state_2()
         if (trackType == 255
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
-            if (trackType == TRACK_ELEM_END_STATION)
+            if (trackType == TrackElemType::EndStation)
             {
                 int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 gRideRatingsCalcData.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
@@ -501,8 +501,8 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
                     if (zDiff >= 0 && zDiff <= 16)
                     {
                         proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                        if (tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_LEFT_VERTICAL_LOOP
-                            || tileElement->AsTrack()->GetTrackType() == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::LeftVerticalLoop
+                            || tileElement->AsTrack()->GetTrackType() == TrackElemType::RightVerticalLoop)
                         {
                             proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                         }
@@ -521,7 +521,7 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
 static void ride_ratings_score_close_proximity_loops(TileElement* inputTileElement)
 {
     int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
-    if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+    if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper({ gRideRatingsCalcData.Proximity, inputTileElement });
 
@@ -617,7 +617,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 int32_t trackType = tileElement->AsTrack()->GetTrackType();
-                if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
                 {
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
                     if (sequence == 3 || sequence == 6)
@@ -709,11 +709,11 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
 
     switch (gRideRatingsCalcData.ProximityTrackType)
     {
-        case TRACK_ELEM_BRAKES:
+        case TrackElemType::Brakes:
             gRideRatingsCalcData.AmountOfBrakes++;
             break;
-        case TRACK_ELEM_LEFT_REVERSER:
-        case TRACK_ELEM_RIGHT_REVERSER:
+        case TrackElemType::LeftReverser:
+        case TrackElemType::RightReverser:
             gRideRatingsCalcData.AmountOfReversers++;
             break;
     }
@@ -918,19 +918,19 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
     upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
 
-    if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
+    if (ride->mode == RideMode::ReverseInclineLaunchedShuttle)
     {
         upkeep += 30;
     }
-    else if (ride->mode == RIDE_MODE_POWERED_LAUNCH_PASSTROUGH)
+    else if (ride->mode == RideMode::PoweredLaunchPasstrough)
     {
         upkeep += 160;
     }
-    else if (ride->mode == RIDE_MODE_LIM_POWERED_LAUNCH)
+    else if (ride->mode == RideMode::LimPoweredLaunch)
     {
         upkeep += 320;
     }
-    else if (ride->mode == RIDE_MODE_POWERED_LAUNCH || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)
+    else if (ride->mode == RideMode::PoweredLaunch || ride->mode == RideMode::PoweredLaunchBlockSectioned)
     {
         upkeep += 220;
     }
@@ -2190,7 +2190,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 70), RIDE_RATING(3, 00), RIDE_RATING(3, 50));
 
-    if (ride->mode == RIDE_MODE_DOWNWARD_LAUNCH)
+    if (ride->mode == RideMode::DownwardLaunch)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45));
     }
@@ -2202,7 +2202,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride)
     ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
 #else
     // Only apply "launch speed" effects when the setting can be modified
-    if (ride->mode == RIDE_MODE_UPWARD_LAUNCH)
+    if (ride->mode == RideMode::UpwardLaunch)
     {
         ride_ratings_apply_operation_option(&ratings, ride, 0, 1355917, 451972);
     }
@@ -2547,7 +2547,7 @@ void ride_ratings_calculate_spiral_slide(Ride* ride)
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(1, 40), RIDE_RATING(0, 90));
 
     // Unlimited slides boost
-    if (ride->mode == RIDE_MODE_UNLIMITED_RIDES_PER_ADMISSION)
+    if (ride->mode == RideMode::UnlimitedRidesPerAdmission)
     {
         ride_ratings_add(&ratings, RIDE_RATING(0, 40), RIDE_RATING(0, 20), RIDE_RATING(0, 25));
     }
@@ -2577,7 +2577,7 @@ void ride_ratings_calculate_go_karts(Ride* ride)
     ride_ratings_set(&ratings, RIDE_RATING(1, 42), RIDE_RATING(1, 73), RIDE_RATING(0, 40));
     ride_ratings_apply_length(&ratings, ride, 700, 32768);
 
-    if (ride->mode == RIDE_MODE_RACE && ride->num_vehicles >= 4)
+    if (ride->mode == RideMode::Race && ride->num_vehicles >= 4)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
@@ -2839,7 +2839,7 @@ void ride_ratings_calculate_motion_simulator(Ride* ride)
 
     // Base ratings
     RatingTuple ratings;
-    if (ride->mode == RIDE_MODE_FILM_THRILL_RIDERS)
+    if (ride->mode == RideMode::FilmThrillRiders)
     {
         ratings.Excitement = RIDE_RATING(3, 25);
         ratings.Intensity = RIDE_RATING(4, 10);
@@ -2875,17 +2875,17 @@ void ride_ratings_calculate_3d_cinema(Ride* ride)
     switch (ride->mode)
     {
         default:
-        case RIDE_MODE_3D_FILM_MOUSE_TAILS:
+        case RideMode::MouseTails3DFilm:
             ratings.Excitement = RIDE_RATING(3, 50);
             ratings.Intensity = RIDE_RATING(2, 40);
             ratings.Nausea = RIDE_RATING(1, 40);
             break;
-        case RIDE_MODE_3D_FILM_STORM_CHASERS:
+        case RideMode::StormChasers3DFilm:
             ratings.Excitement = RIDE_RATING(4, 00);
             ratings.Intensity = RIDE_RATING(2, 65);
             ratings.Nausea = RIDE_RATING(1, 55);
             break;
-        case RIDE_MODE_3D_FILM_SPACE_RAIDERS:
+        case RideMode::SpaceRaiders3DFilm:
             ratings.Excitement = RIDE_RATING(4, 20);
             ratings.Intensity = RIDE_RATING(2, 60);
             ratings.Nausea = RIDE_RATING(1, 48);
@@ -2915,17 +2915,17 @@ void ride_ratings_calculate_top_spin(Ride* ride)
     switch (ride->mode)
     {
         default:
-        case RIDE_MODE_BEGINNERS:
+        case RideMode::Beginners:
             ratings.Excitement = RIDE_RATING(2, 00);
             ratings.Intensity = RIDE_RATING(4, 80);
             ratings.Nausea = RIDE_RATING(5, 74);
             break;
-        case RIDE_MODE_INTENSE:
+        case RideMode::Intense:
             ratings.Excitement = RIDE_RATING(3, 00);
             ratings.Intensity = RIDE_RATING(5, 75);
             ratings.Nausea = RIDE_RATING(6, 64);
             break;
-        case RIDE_MODE_BERSERK:
+        case RideMode::Berserk:
             ratings.Excitement = RIDE_RATING(3, 20);
             ratings.Intensity = RIDE_RATING(6, 80);
             ratings.Nausea = RIDE_RATING(7, 94);
@@ -3927,7 +3927,7 @@ void ride_ratings_calculate_compact_inverted_coaster(Ride* ride)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
-    ride->unreliability_factor = ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE ? 31 : 21;
+    ride->unreliability_factor = ride->mode == RideMode::ReverseInclineLaunchedShuttle ? 31 : 21;
     set_unreliability_factor(ride);
 
     RatingTuple ratings;
@@ -4342,6 +4342,51 @@ void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride)
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
+void ride_ratings_calculate_hybrid_coaster(Ride* ride)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 16;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(3, 80), RIDE_RATING(1, 00), RIDE_RATING(0, 45));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 400497);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 40960, 35746, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 34179, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 34952, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
+    ride_ratings_apply_proximity(&ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+    if (ride->inversions == 0)
+    {
+        ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2);
+    }
+
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);
+
+    if (ride->inversions == 0)
+    {
+        ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
+        ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);
+    }
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+    ride->ratings = ratings;
+    ride->upkeep_cost = ride_compute_upkeep(ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 

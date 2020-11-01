@@ -10,6 +10,7 @@
 #include "WallObject.h"
 
 #include "../core/IStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
@@ -19,7 +20,7 @@
 void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.wall.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.wall.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.wall.flags = stream->ReadValue<uint8_t>();
     _legacyType.wall.height = stream->ReadValue<uint8_t>();
     _legacyType.wall.flags2 = stream->ReadValue<uint8_t>();
@@ -38,7 +39,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     // Validate properties
     if (_legacyType.wall.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
 
     // Autofix this object (will be turned into an official object later).
@@ -101,7 +102,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (properties.is_object())
     {
-        _legacyType.wall.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_FENCE_DOWN);
+        _legacyType.wall.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::FenceDown);
         _legacyType.wall.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.wall.price = Json::GetNumber<int16_t>(properties["price"]);
 

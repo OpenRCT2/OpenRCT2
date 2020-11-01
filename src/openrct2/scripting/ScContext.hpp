@@ -199,9 +199,10 @@ namespace OpenRCT2::Scripting
                     auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
                     if (isExecute)
                     {
-                        action->SetCallback([this, plugin, callback](const GameAction*, const GameActionResult* res) -> void {
-                            HandleGameActionResult(plugin, *res, callback);
-                        });
+                        action->SetCallback(
+                            [this, plugin, callback](const GameAction*, const GameActions::Result* res) -> void {
+                                HandleGameActionResult(plugin, *res, callback);
+                            });
                         GameActions::Execute(action.get());
                     }
                     else
@@ -222,7 +223,7 @@ namespace OpenRCT2::Scripting
         }
 
         void HandleGameActionResult(
-            const std::shared_ptr<Plugin>& plugin, const GameActionResult& res, const DukValue& callback)
+            const std::shared_ptr<Plugin>& plugin, const GameActions::Result& res, const DukValue& callback)
         {
             // Construct result object
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -231,7 +232,7 @@ namespace OpenRCT2::Scripting
             duk_push_int(ctx, static_cast<duk_int_t>(res.Error));
             duk_put_prop_string(ctx, objIdx, "error");
 
-            if (res.Error != GA_ERROR::OK)
+            if (res.Error != GameActions::Status::Ok)
             {
                 auto title = res.GetErrorTitle();
                 duk_push_string(ctx, title.c_str());

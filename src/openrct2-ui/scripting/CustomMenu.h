@@ -19,6 +19,8 @@
 #    include <string>
 #    include <vector>
 
+enum class CursorID : uint8_t;
+
 namespace OpenRCT2::Scripting
 {
     class CustomToolbarMenuItem
@@ -46,7 +48,7 @@ namespace OpenRCT2::Scripting
     {
         std::shared_ptr<Plugin> Owner;
         std::string Id;
-        CURSOR_ID Cursor{};
+        CursorID Cursor = CursorID::Undefined;
         bool MouseDown{};
 
         // Event handlers
@@ -73,8 +75,8 @@ namespace OpenRCT2::Scripting
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
     void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);
 
-    template<> DukValue ToDuk(duk_context* ctx, const CURSOR_ID& value);
-    template<> CURSOR_ID FromDuk(const DukValue& s);
+    template<> DukValue ToDuk(duk_context* ctx, const CursorID& value);
+    template<> CursorID FromDuk(const DukValue& s);
 
 } // namespace OpenRCT2::Scripting
 

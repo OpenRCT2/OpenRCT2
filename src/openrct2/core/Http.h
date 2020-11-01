@@ -22,7 +22,7 @@ namespace Http
 {
     enum class Status
     {
-        OK = 200,
+        Ok = 200,
         NotFound = 404
     };
 

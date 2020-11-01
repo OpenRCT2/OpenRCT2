@@ -15,6 +15,10 @@
 #include <string>
 #include <string_view>
 
+#if NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 6)
+#    error "Unsupported version of nlohmann json library, must be >= 3.6"
+#endif // NLOHMANN_JSON_VERSION_MAJOR < 3 || (NLOHMANN_JSON_VERSION_MAJOR == 3 && NLOHMANN_JSON_VERSION_MINOR < 6)
+
 using json_t = nlohmann::json;
 
 namespace Json

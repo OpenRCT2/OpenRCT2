@@ -284,9 +284,9 @@ void Park::Initialise()
     gPeepSpawns.clear();
     reset_park_entrance();
 
-    gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
-        | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)
-        | (1 << RESEARCH_CATEGORY_SHOP) | (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+    gResearchPriorities = EnumsToFlags(
+        ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
+        ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gGuestInitialCash = MONEY(50, 00);
@@ -729,7 +729,7 @@ Peep* Park::GenerateGuest()
             peep->DestinationTolerance = 5;
             peep->PeepDirection = direction;
             peep->Var37 = 0;
-            peep->State = PEEP_STATE_ENTERING_PARK;
+            peep->State = PeepState::EnteringPark;
         }
     }
     return peep;

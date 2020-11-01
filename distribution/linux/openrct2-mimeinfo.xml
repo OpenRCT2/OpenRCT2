@@ -49,6 +49,7 @@
     <comment xml:lang="zh-TW">OpenRCT2 劇情檔案</comment>
     <glob weight="60" pattern="*.sc6"/>
     <glob weight="60" pattern="*.sc4"/>
+    <glob weight="60" pattern="*.sea"/>
   </mime-type>
 
 </mime-info>

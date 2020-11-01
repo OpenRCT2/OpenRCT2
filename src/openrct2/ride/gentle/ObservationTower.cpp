@@ -35,18 +35,23 @@ void vehicle_visual_observation_tower(
     int32_t baseImage_id = (vehicle->restraints_position / 64);
     if (vehicle->restraints_position >= 64)
     {
-        if ((imageDirection / 8) && (imageDirection / 8) != 3)
+        auto directionOffset = imageDirection / 8;
+        if ((directionOffset == 0) || (directionOffset == 3))
         {
-            baseImage_id *= 2;
-            baseImage_id += vehicleEntry->base_image_id + 28;
-            if ((imageDirection / 8) != 1)
-            {
-                baseImage_id -= 6;
-            }
+            baseImage_id = vehicleEntry->base_image_id + 8;
         }
         else
         {
-            baseImage_id = vehicleEntry->base_image_id + 8;
+            baseImage_id *= 2;
+            baseImage_id += vehicleEntry->base_image_id;
+            if (directionOffset == 1)
+            {
+                baseImage_id += 28;
+            }
+            else
+            {
+                baseImage_id += 22;
+            }
         }
     }
     else
@@ -187,10 +192,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_observation_tower(int32_t trackTyp
 {
     switch (trackType)
     {
-        case TRACK_ELEM_TOWER_BASE:
+        case TrackElemType::TowerBase:
             return paint_observation_tower_base;
 
-        case TRACK_ELEM_TOWER_SECTION:
+        case TrackElemType::TowerSection:
             return paint_observation_tower_section;
     }
 

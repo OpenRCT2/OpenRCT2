@@ -64,6 +64,7 @@ The following people are not part of the development team, but have been contrib
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
 * Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4 through 0.1.2, title sequences using milliseconds
 * Hugo Wallenburg (Goddesen) - Misc.
+* Edward Calver (X7123M3-256) - New Hybrid Coaster track, extended sprite toolchain, more vehicle cheats, misc.
 * Matte Andersson (Nubbie) - Misc, UX
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * (zaxcav) - Improvements to original pathfinding algorithm.
@@ -89,6 +90,7 @@ The following people are not part of the development team, but have been contrib
 * Hudson Oliveira (hdpoliveira) - Misc.
 * Jim Verheijde (Jimver) - Make handymen less likely to get stuck in queue lines, misc.
 * Helio Batimarqui (batimarqui) - Misc.
+* Keith Stellyes (keithstellyes) - Misc.
 
 ## Bug fixes
 * (halfbro)
@@ -158,6 +160,8 @@ The following people are not part of the development team, but have been contrib
 * Tom Parsons (tombomp)
 * Stephan Spengler (Sadret)
 * Roger Seekell (rpstester)
+* Ben Johnston (gsckoco)
+* (evilclownattack)
 
 ## Toolchain
 * (Balletie) - macOS

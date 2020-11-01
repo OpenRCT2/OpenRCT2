@@ -88,6 +88,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
+    WIDX_DISABLE_SCREENSAVER_LOCK,
 
     // Rendering
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
@@ -205,7 +206,7 @@ static constexpr const int32_t WH = 332;
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget        ({  5,  53}, {300, 155}, WWT_GROUPBOX, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+    MakeWidget        ({  5,  53}, {300, 170}, WWT_GROUPBOX, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
     MakeWidget        ({155,  68}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                                  ), // Fullscreen
     MakeWidget        ({288,  69}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
     MakeWidget        ({155,  83}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ), // Resolution
@@ -221,6 +222,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeWidget        ({155, 176}, {136,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
     MakeWidget        ({ 11, 176}, {143,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
     MakeWidget        ({ 11, 191}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({ 11, 206}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     { WIDGETS_END },
 };
 
@@ -423,50 +425,6 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
 static void window_options_show_dropdown(rct_window *w, rct_widget *widget, int32_t num_items);
 static void window_options_update_height_markers();
 
-#pragma region Events
-
-static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_options_update(rct_window *w);
-static void window_options_invalidate(rct_window *w);
-static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_options_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid);
-
-static rct_window_event_list window_options_events = {
-    nullptr,
-    window_options_mouseup,
-    nullptr,
-    window_options_mousedown,
-    window_options_dropdown,
-    nullptr,
-    window_options_update,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_options_scrollgetsize,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_options_tooltip,
-    nullptr,
-    nullptr,
-    window_options_invalidate,
-    window_options_paint,
-    nullptr
-};
-
-#pragma endregion
-
 #pragma region Enabled Widgets
 
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
@@ -493,6 +451,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
+    (1 << WIDX_DISABLE_SCREENSAVER_LOCK) |
     (1 << WIDX_SCALE) |
     (1 << WIDX_SCALE_UP) |
     (1 << WIDX_SCALE_DOWN) |
@@ -585,36 +544,9 @@ static uint64_t window_options_page_enabled_widgets[] = {
 };
 // clang-format on
 
-#pragma endregion
+#pragma region Common tab events
 
-/**
- *
- *  rct2: 0x006BAC5B
- */
-rct_window* window_options_open()
-{
-    rct_window* w;
-
-    // Check if window is already open
-    w = window_bring_to_front_by_class(WC_OPTIONS);
-    if (w != nullptr)
-        return w;
-
-    w = window_create_centred(WW, WH, &window_options_events, WC_OPTIONS, 0);
-    w->widgets = window_options_display_widgets;
-    w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
-    w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
-    w->frame_no = 0;
-    window_init_scroll_widgets(w);
-
-    return w;
-}
-
-/**
- *
- *  rct2: 0x006BAFCA
- */
-static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void window_options_common_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -631,966 +563,10 @@ static void window_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_options_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
     }
-
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_UNCAP_FPS_CHECKBOX:
-                    gConfigGeneral.uncap_fps ^= 1;
-                    drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_USE_VSYNC_CHECKBOX:
-                    gConfigGeneral.use_vsync ^= 1;
-                    drawing_engine_set_vsync(gConfigGeneral.use_vsync);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_SHOW_FPS_CHECKBOX:
-                    gConfigGeneral.show_fps ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_MULTITHREADING_CHECKBOX:
-                    gConfigGeneral.multithreading ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_MINIMIZE_FOCUS_LOSS:
-                    gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
-                    platform_refresh_video(false);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_STEAM_OVERLAY_PAUSE:
-                    gConfigGeneral.steam_overlay_pause ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_TILE_SMOOTHING_CHECKBOX:
-                    gConfigGeneral.landscape_smoothing ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_GRIDLINES_CHECKBOX:
-                    gConfigGeneral.always_show_gridlines ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    if ((w = window_get_main()) != nullptr)
-                    {
-                        if (gConfigGeneral.always_show_gridlines)
-                            w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
-                        else
-                            w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
-                    }
-                    break;
-                case WIDX_DAY_NIGHT_CHECKBOX:
-                    gConfigGeneral.day_night_cycle ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
-                    gConfigGeneral.enable_light_fx ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
-                    gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
-                    gConfigGeneral.upper_case_banners ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
-                    gConfigGeneral.disable_lightning_effect ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
-                    gConfigGeneral.render_weather_effects ^= 1;
-                    gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
-                    config_save_default();
-                    w->Invalidate();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
-                    gConfigGeneral.show_guest_purchases ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
-                    gConfigGeneral.transparent_screenshot ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_CHECKBOX:
-                    gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_MASTER_SOUND_CHECKBOX:
-                    gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
-                    if (!gConfigSound.master_sound_enabled)
-                        audio_pause_sounds();
-                    else
-                        audio_unpause_sounds();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_MUSIC_CHECKBOX:
-                    gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
-                    if (!gConfigSound.ride_music_enabled)
-                    {
-                        audio_stop_ride_music();
-                    }
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-
-                case WIDX_AUDIO_FOCUS_CHECKBOX:
-                    gConfigSound.audio_focus = !gConfigSound.audio_focus;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_HOTKEY_DROPDOWN:
-                    context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
-                    break;
-                case WIDX_SCREEN_EDGE_SCROLLING:
-                    gConfigGeneral.edge_scrolling ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TRAP_CURSOR:
-                    gConfigGeneral.trap_cursor ^= 1;
-                    config_save_default();
-                    context_set_cursor_trap(gConfigGeneral.trap_cursor);
-                    w->Invalidate();
-                    break;
-                case WIDX_ZOOM_TO_CURSOR:
-                    gConfigGeneral.zoom_to_cursor ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TOOLBAR_SHOW_FINANCES:
-                    gConfigInterface.toolbar_show_finances ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_RESEARCH:
-                    gConfigInterface.toolbar_show_research ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHEATS:
-                    gConfigInterface.toolbar_show_cheats ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_NEWS:
-                    gConfigInterface.toolbar_show_news ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_MUTE:
-                    gConfigInterface.toolbar_show_mute ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_TOOLBAR_SHOW_CHAT:
-                    gConfigInterface.toolbar_show_chat ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    window_invalidate_by_class(WC_TOP_TOOLBAR);
-                    break;
-                case WIDX_INVERT_DRAG:
-                    gConfigGeneral.invert_viewport_drag ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_THEMES_BUTTON:
-                    context_open_window(WC_THEMES);
-                    w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_REAL_NAME_CHECKBOX:
-                    gConfigGeneral.show_real_names_of_guests ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                    break;
-                case WIDX_AUTO_STAFF_PLACEMENT:
-                    gConfigGeneral.auto_staff_placement ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_TITLE_SEQUENCE_BUTTON:
-                    window_title_editor_open(0);
-                    break;
-                case WIDX_SCENARIO_UNLOCKING:
-                    gConfigGeneral.scenario_unlocking_enabled ^= 1;
-                    config_save_default();
-                    window_close_by_class(WC_SCENARIO_SELECT);
-                    break;
-                case WIDX_TITLE_SEQUENCE_RANDOM:
-                    gConfigInterface.random_title_sequence ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_AUTO_OPEN_SHOPS:
-                    gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ALLOW_EARLY_COMPLETION:
-                    gConfigGeneral.allow_early_completion ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
-            {
-                case WIDX_DEBUGGING_TOOLS:
-                    gConfigGeneral.debugging_tools ^= 1;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
-                    gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral
-                                                                                .allow_loading_with_incorrect_checksum;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
-                    gConfigGeneral.save_plugin_data ^= 1;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_STAY_CONNECTED_AFTER_DESYNC:
-                    gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_ALWAYS_NATIVE_LOADSAVE:
-                    gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
-                    config_save_default();
-                    w->Invalidate();
-                    break;
-                case WIDX_PATH_TO_RCT1_BUTTON:
-                {
-                    utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-                    if (rct1path)
-                    {
-                        // Check if this directory actually contains RCT1
-                        if (Csg1datPresentAtLocation(rct1path))
-                        {
-                            if (Csg1idatPresentAtLocation(rct1path))
-                            {
-                                if (CsgAtLocationIsUsable(rct1path))
-                                {
-                                    SafeFree(gConfigGeneral.rct1_path);
-                                    gConfigGeneral.rct1_path = rct1path;
-                                    gConfigInterface.scenarioselect_last_tab = 0;
-                                    config_save_default();
-                                    context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
-                                }
-                                else
-                                {
-                                    SafeFree(rct1path);
-                                    context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
-                                }
-                            }
-                            else
-                            {
-                                SafeFree(rct1path);
-                                context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
-                            }
-                        }
-                        else
-                        {
-                            SafeFree(rct1path);
-                            context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
-                        }
-                    }
-                    w->Invalidate();
-                    break;
-                }
-                case WIDX_PATH_TO_RCT1_CLEAR:
-                    if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
-                    {
-                        SafeFree(gConfigGeneral.rct1_path);
-                        config_save_default();
-                    }
-                    w->Invalidate();
-                    break;
-            }
-            break;
-    }
 }
 
-/**
- *
- *  rct2: 0x006BB01B
- */
-static void window_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_options_common_invalidate_before(rct_window* w)
 {
-    uint32_t num_items;
-
-    widget = &w->widgets[widgetIndex - 1];
-
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_RESOLUTION_DROPDOWN:
-                {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-                    int32_t selectedResolution = -1;
-                    for (size_t i = 0; i < resolutions.size(); i++)
-                    {
-                        const Resolution& resolution = resolutions[i];
-
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-
-                        uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
-                        args[0] = STR_RESOLUTION_X_BY_Y;
-                        args[1] = resolution.Width;
-                        args[2] = resolution.Height;
-
-                        if (resolution.Width == gConfigGeneral.fullscreen_width
-                            && resolution.Height == gConfigGeneral.fullscreen_height)
-                        {
-                            selectedResolution = static_cast<int32_t>(i);
-                        }
-                    }
-
-                    window_options_show_dropdown(w, widget, static_cast<int32_t>(resolutions.size()));
-
-                    if (selectedResolution != -1 && selectedResolution < 32)
-                    {
-                        dropdown_set_checked(selectedResolution, true);
-                    }
-                }
-
-                break;
-                case WIDX_FULLSCREEN_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
-                    gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
-                    gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
-                    break;
-                case WIDX_DRAWING_ENGINE_DROPDOWN:
-                {
-                    int32_t numItems = 3;
-#ifdef DISABLE_OPENGL
-                    numItems = 2;
-#endif
-
-                    for (int32_t i = 0; i < numItems; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
-                    }
-                    window_options_show_dropdown(w, widget, numItems);
-                    dropdown_set_checked(gConfigGeneral.drawing_engine, true);
-                    break;
-                }
-                case WIDX_SCALE_UP:
-                    gConfigGeneral.window_scale += 0.25f;
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    context_trigger_resize();
-                    context_update_cursor_scale();
-                    break;
-                case WIDX_SCALE_DOWN:
-                    gConfigGeneral.window_scale -= 0.25f;
-                    gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    context_trigger_resize();
-                    context_update_cursor_scale();
-                    break;
-                case WIDX_SCALE_QUALITY_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
-                    gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    // Note: offset by one to compensate for lack of NN option.
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-                    gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-                    gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
-                    gDropdownItemsArgs[1] = STR_REAL_VALUES;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
-                    break;
-                case WIDX_CURRENCY_DROPDOWN:
-                {
-                    num_items = CURRENCY_END + 1;                      // All the currencies plus the separator
-                    size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
-
-                    for (size_t i = 0; i < num_ordinary_currencies; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
-                    }
-
-                    gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
-
-                    gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
-
-                    window_options_show_dropdown(w, widget, num_items);
-
-                    if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
-                    {
-                        dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
-                    }
-                    else
-                    {
-                        dropdown_set_checked(gConfigGeneral.currency_format, true);
-                    }
-                    break;
-                }
-                case WIDX_DISTANCE_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_IMPERIAL;
-                    gDropdownItemsArgs[1] = STR_METRIC;
-                    gDropdownItemsArgs[2] = STR_SI;
-
-                    window_options_show_dropdown(w, widget, 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
-                    break;
-                case WIDX_TEMPERATURE_DROPDOWN:
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_CELSIUS;
-                    gDropdownItemsArgs[1] = STR_FAHRENHEIT;
-
-                    window_options_show_dropdown(w, widget, 2);
-
-                    dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
-                    break;
-                case WIDX_LANGUAGE_DROPDOWN:
-                    for (size_t i = 1; i < LANGUAGE_COUNT; i++)
-                    {
-                        gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
-                    }
-                    window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-                    dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
-                    break;
-                case WIDX_DATE_FORMAT_DROPDOWN:
-                    for (size_t i = 0; i < 4; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = DateFormatStringIds[i];
-                    }
-                    window_options_show_dropdown(w, widget, 4);
-                    dropdown_set_checked(gConfigGeneral.date_format, true);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_DROPDOWN:
-                    audio_populate_devices();
-
-                    // populate the list with the sound devices
-                    for (size_t i = 0; static_cast<int32_t>(i) < gAudioDeviceCount; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(gAudioDevices[i].name);
-                    }
-
-                    window_options_show_dropdown(w, widget, gAudioDeviceCount);
-
-                    dropdown_set_checked(gAudioCurrentDevice, true);
-                    break;
-                case WIDX_TITLE_MUSIC_DROPDOWN:
-                    num_items = 4;
-
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = window_options_title_music_names[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, num_items);
-
-                    dropdown_set_checked(gConfigSound.title_music, true);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_THEMES_DROPDOWN:
-                    num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
-
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
-                    }
-
-                    window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-
-                    dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
-                    widget_invalidate(w, WIDX_THEMES_DROPDOWN);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                    num_items = static_cast<int32_t>(title_sequence_manager_get_count());
-                    for (size_t i = 0; i < num_items; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
-                    }
-
-                    window_dropdown_show_text(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
-                        DROPDOWN_FLAG_STAY_OPEN, num_items);
-
-                    dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
-                    break;
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    num_items = 2;
-
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
-
-                    window_dropdown_show_text_custom_width(
-                        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-
-                    dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
-                    break;
-                case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    for (size_t i = 0; i < 7; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, 7);
-                    dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
-            {
-                case WIDX_AUTOSAVE_DROPDOWN:
-                    for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
-                    {
-                        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = window_options_autosave_names[i];
-                    }
-
-                    window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-                    dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
-                    break;
-                case WIDX_AUTOSAVE_AMOUNT_UP:
-                    gConfigGeneral.autosave_amount += 1;
-                    config_save_default();
-                    widget_invalidate(w, WIDX_AUTOSAVE);
-                    widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
-                    widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
-                    break;
-                case WIDX_AUTOSAVE_AMOUNT_DOWN:
-                    if (gConfigGeneral.autosave_amount > 1)
-                    {
-                        gConfigGeneral.autosave_amount -= 1;
-                        config_save_default();
-                        widget_invalidate(w, WIDX_AUTOSAVE);
-                        widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
-                        widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
-                    }
-            }
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006BB076
- */
-static void window_options_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
-{
-    if (dropdownIndex == -1)
-        return;
-
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-            switch (widgetIndex)
-            {
-                case WIDX_RESOLUTION_DROPDOWN:
-                {
-                    const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
-
-                    const Resolution& resolution = resolutions[dropdownIndex];
-                    if (resolution.Width != gConfigGeneral.fullscreen_width
-                        || resolution.Height != gConfigGeneral.fullscreen_height)
-                    {
-                        gConfigGeneral.fullscreen_width = resolution.Width;
-                        gConfigGeneral.fullscreen_height = resolution.Height;
-
-                        if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-                            context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
-
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                }
-                break;
-                case WIDX_FULLSCREEN_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.fullscreen_mode)
-                    {
-                        context_set_fullscreen_mode(dropdownIndex);
-
-                        gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-                case WIDX_DRAWING_ENGINE_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.drawing_engine)
-                    {
-                        int32_t srcEngine = drawing_engine_get_type();
-                        int32_t dstEngine = dropdownIndex;
-
-                        gConfigGeneral.drawing_engine = static_cast<uint8_t>(dstEngine);
-                        bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
-                        platform_refresh_video(recreate_window);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_SCALE_QUALITY_DROPDOWN:
-                    // Note: offset by one to compensate for lack of NN option.
-                    if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
-                    {
-                        gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                        context_trigger_resize();
-                    }
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-            switch (widgetIndex)
-            {
-                case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                    gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
-                    config_save_default();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            switch (widgetIndex)
-            {
-                case WIDX_HEIGHT_LABELS_DROPDOWN:
-                    // reset flag and set it to 1 if height as units is selected
-                    gConfigGeneral.show_height_as_units = 0;
-
-                    if (dropdownIndex == 0)
-                    {
-                        gConfigGeneral.show_height_as_units = 1;
-                    }
-                    config_save_default();
-                    window_options_update_height_markers();
-                    break;
-                case WIDX_CURRENCY_DROPDOWN:
-                    if (dropdownIndex == CURRENCY_CUSTOM + 1)
-                    { // Add 1 because the separator occupies a position
-                        gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
-                        context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
-                    }
-                    else
-                    {
-                        gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex);
-                    }
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    break;
-                case WIDX_DISTANCE_DROPDOWN:
-                    gConfigGeneral.measurement_format = static_cast<MeasurementFormat>(dropdownIndex);
-                    config_save_default();
-                    window_options_update_height_markers();
-                    break;
-                case WIDX_TEMPERATURE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
-                    {
-                        gConfigGeneral.temperature_format = static_cast<TemperatureUnit>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-                case WIDX_LANGUAGE_DROPDOWN:
-                {
-                    auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
-                    if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
-                    {
-                        if (!language_open(dropdownIndex + 1))
-                        {
-                            // Failed to open language file, try to recover by falling
-                            // back to previously used language
-                            if (language_open(fallbackLanguage))
-                            {
-                                // It worked, so we can say it with error message in-game
-                                context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
-                            }
-                            // report error to console regardless
-                            log_error("Failed to open language file.");
-                            dropdownIndex = fallbackLanguage - 1;
-                        }
-                        else
-                        {
-                            gConfigGeneral.language = dropdownIndex + 1;
-                            config_save_default();
-                            gfx_invalidate_screen();
-                        }
-                    }
-                }
-                break;
-                case WIDX_DATE_FORMAT_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.date_format)
-                    {
-                        gConfigGeneral.date_format = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        gfx_invalidate_screen();
-                    }
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-            switch (widgetIndex)
-            {
-                case WIDX_SOUND_DROPDOWN:
-                    audio_init_ride_sounds(dropdownIndex);
-                    if (dropdownIndex < gAudioDeviceCount)
-                    {
-                        if (dropdownIndex == 0)
-                        {
-                            Mixer_Init(nullptr);
-                            gConfigSound.device = nullptr;
-                        }
-                        else
-                        {
-                            char* devicename = gAudioDevices[dropdownIndex].name;
-                            Mixer_Init(devicename);
-                            SafeFree(gConfigSound.device);
-                            gConfigSound.device = strndup(devicename, AUDIO_DEVICE_NAME_SIZE);
-                        }
-                        config_save_default();
-                        audio_start_title_music();
-                    }
-                    w->Invalidate();
-                    break;
-                case WIDX_TITLE_MUSIC_DROPDOWN:
-                    if ((dropdownIndex == 1 || dropdownIndex == 3)
-                        && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
-                    {
-                        context_show_error(
-                            STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
-                    }
-                    else
-                    {
-                        gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-
-                    audio_stop_title_music();
-                    if (dropdownIndex != 0)
-                        audio_start_title_music();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-            switch (widgetIndex)
-            {
-                case WIDX_THEMES_DROPDOWN:
-                    if (dropdownIndex != -1)
-                    {
-                        theme_manager_set_active_available_theme(dropdownIndex);
-                    }
-                    config_save_default();
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-            switch (widgetIndex)
-            {
-                case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                    if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
-                    {
-                        title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.default_inspection_interval)
-                    {
-                        gConfigGeneral.default_inspection_interval = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-                case WIDX_SCENARIO_GROUPING_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.scenario_select_mode)
-                    {
-                        gConfigGeneral.scenario_select_mode = dropdownIndex;
-                        gConfigInterface.scenarioselect_last_tab = 0;
-                        config_save_default();
-                        w->Invalidate();
-                        window_close_by_class(WC_SCENARIO_SELECT);
-                    }
-                    break;
-            }
-            break;
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            switch (widgetIndex)
-            {
-                case WIDX_AUTOSAVE_DROPDOWN:
-                    if (dropdownIndex != gConfigGeneral.autosave_frequency)
-                    {
-                        gConfigGeneral.autosave_frequency = static_cast<uint8_t>(dropdownIndex);
-                        config_save_default();
-                        w->Invalidate();
-                    }
-                    break;
-            }
-            break;
-    }
-}
-
-static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
-{
-    rct_widget* widget = &window_options_audio_widgets[widget_index];
-    rct_scroll* scroll = &w->scrolls[scroll_id];
-
-    int widget_size = scroll->h_right - (widget->width() - 1);
-    scroll->h_left = ceil(volume / 100.0f * widget_size);
-
-    widget_scroll_update_thumbs(w, widget_index);
-}
-
-/**
- *
- *  rct2: 0x006BAD48
- */
-static void window_options_invalidate(rct_window* w)
-{
-    rct_widget* widget;
-
     if (window_options_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_options_page_widgets[w->page];
@@ -1599,315 +575,13 @@ static void window_options_invalidate(rct_window* w)
     window_options_set_pressed_tab(w);
 
     w->disabled_widgets = 0;
+}
 
-    switch (w->page)
-    {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-        {
-            // Resolution dropdown caption.
-            auto ft = Formatter::Common();
-            ft.Increment(16);
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
-            ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
-
-            // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-            {
-                w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
-                w->disabled_widgets |= (1 << WIDX_RESOLUTION);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
-                w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
-            }
-
-            // Disable Steam Overlay checkbox when using software rendering.
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
-            {
-                w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
-            }
-
-            // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
-            // In the latter case, nearest neighbour rendering will be used to scale.
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE
-                || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-            {
-                w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
-                w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
-                w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            }
-
-            // Disable changing VSync for Software engine, as we can't control its use of VSync
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
-            {
-                w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-            widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-            widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-            widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-            widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-            widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-
-            // Dropdown captions for straightforward strings.
-            window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral
-                                                                                                            .fullscreen_mode];
-            window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[gConfigGeneral.drawing_engine];
-            window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
-                [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
-
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_RENDERING:
-        {
-            widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-            widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-            widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-            widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-            widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-            widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
-
-            rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
-                                                         STR_VIRTUAL_FLOOR_STYLE_GLASSY };
-
-            window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
-                gConfigGeneral.virtual_floor_style)];
-
-            widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
-            if (gConfigGeneral.day_night_cycle
-                && gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY)
-            {
-                w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(
-                w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
-            if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY
-                && gConfigGeneral.enable_light_fx)
-            {
-                w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-            }
-            else
-            {
-                w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
-            }
-
-            widget_set_checkbox_value(
-                w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
-                gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-            widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
-            if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
-            {
-                widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-                w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-                w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
-            else
-            {
-                w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-                w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
-            }
-
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-        {
-            // Language
-            auto ft = Formatter::Common();
-            ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
-
-            // Currency: pounds, dollars, etc. (10 total)
-            window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
-
-            // Distance: metric / imperial / si
-            {
-                rct_string_id stringId = STR_NONE;
-                switch (gConfigGeneral.measurement_format)
-                {
-                    case MeasurementFormat::Imperial:
-                        stringId = STR_IMPERIAL;
-                        break;
-                    case MeasurementFormat::Metric:
-                        stringId = STR_METRIC;
-                        break;
-                    case MeasurementFormat::SI:
-                        stringId = STR_SI;
-                        break;
-                }
-                window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
-            }
-
-            // Date format
-            window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
-
-            // Temperature: celsius/fahrenheit
-            window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format
-                    == TemperatureUnit::Fahrenheit
-                ? STR_FAHRENHEIT
-                : STR_CELSIUS;
-
-            // Height: units/real values
-            window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
-                                                                                                          : STR_REAL_VALUES;
-
-            break;
-        }
-        case WINDOW_OPTIONS_PAGE_AUDIO:
-        {
-            // Sound device
-            rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-            const char* audioDeviceName = nullptr;
-            if (gAudioCurrentDevice == -1)
-            {
-                audioDeviceStringId = STR_SOUND_NONE;
-            }
-            else
-            {
-                audioDeviceStringId = STR_STRING;
-#ifndef __linux__
-                if (gAudioCurrentDevice == 0)
-                {
-                    audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
-                }
-#endif // __linux__
-                if (audioDeviceStringId == STR_STRING)
-                {
-                    audioDeviceName = gAudioDevices[gAudioCurrentDevice].name;
-                }
-            }
-
-            window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
-            auto ft = Formatter::Common();
-            ft.Add<char*>(audioDeviceName);
-
-            window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
-
-            widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-            widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-            widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
-            widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-            widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-            widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
-
-            // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
-            if (w->frame_no == 0)
-            {
-                initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
-                initialize_scroll_position(w, WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
-                initialize_scroll_position(w, WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
-            }
-
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-        {
-            widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-            widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
-            widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-            widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-            widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
-
-            size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-            const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(activeThemeName);
-
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-        {
-            const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(name);
-
-            // The real name setting of clients is fixed to that of the server
-            // and the server cannot change the setting during gameplay to prevent desyncs
-            if (network_get_mode() != NETWORK_MODE_NONE)
-            {
-                w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
-                window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
-            }
-
-            widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-            widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-            widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-            widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
-            widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
-
-            // Disable title sequence dropdown if set to random
-            if (gConfigInterface.random_title_sequence)
-            {
-                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-                w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
-            }
-            else
-            {
-                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
-                w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
-            }
-
-            if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
-                window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
-            else
-                window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
-
-            widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
-
-            if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
-            {
-                w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
-            }
-            else
-            {
-                w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
-            }
-
-            window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
-                [gConfigGeneral.default_inspection_interval];
-
-            break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-            widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-            widget_set_checkbox_value(
-                w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-            widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-            widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-            widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
-            break;
-    }
-
+static void window_options_common_invalidate_after(rct_window* w)
+{
     // Automatically adjust window height to fit widgets
     int32_t y = 0;
-    for (widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++)
+    for (auto widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++)
     {
         y = std::max<int32_t>(y, widget->bottom);
     }
@@ -1916,17 +590,889 @@ static void window_options_invalidate(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
 }
 
+static void window_options_common_update(rct_window* w)
+{
+    // Tab animation
+    w->frame_no++;
+    widget_invalidate(w, WIDX_TAB_1 + w->page);
+}
+
+#pragma region Display Tab
+
+static void window_options_display_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
+    {
+        case WIDX_UNCAP_FPS_CHECKBOX:
+            gConfigGeneral.uncap_fps ^= 1;
+            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_USE_VSYNC_CHECKBOX:
+            gConfigGeneral.use_vsync ^= 1;
+            drawing_engine_set_vsync(gConfigGeneral.use_vsync);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_SHOW_FPS_CHECKBOX:
+            gConfigGeneral.show_fps ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_MULTITHREADING_CHECKBOX:
+            gConfigGeneral.multithreading ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_MINIMIZE_FOCUS_LOSS:
+            gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
+            platform_refresh_video(false);
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_STEAM_OVERLAY_PAUSE:
+            gConfigGeneral.steam_overlay_pause ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_DISABLE_SCREENSAVER_LOCK:
+            gConfigGeneral.disable_screensaver ^= 1;
+            ApplyScreenSaverLockSetting();
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_RESOLUTION_DROPDOWN:
+        {
+            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+            int32_t selectedResolution = -1;
+            for (size_t i = 0; i < resolutions.size(); i++)
+            {
+                const Resolution& resolution = resolutions[i];
+
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+
+                uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                args[0] = STR_RESOLUTION_X_BY_Y;
+                args[1] = resolution.Width;
+                args[2] = resolution.Height;
+
+                if (resolution.Width == gConfigGeneral.fullscreen_width
+                    && resolution.Height == gConfigGeneral.fullscreen_height)
+                {
+                    selectedResolution = static_cast<int32_t>(i);
+                }
+            }
+
+            window_options_show_dropdown(w, widget, static_cast<int32_t>(resolutions.size()));
+
+            if (selectedResolution != -1 && selectedResolution < 32)
+            {
+                dropdown_set_checked(selectedResolution, true);
+            }
+        }
+
+        break;
+        case WIDX_FULLSCREEN_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
+            gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
+            gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
+            break;
+        case WIDX_DRAWING_ENGINE_DROPDOWN:
+        {
+            int32_t numItems = 3;
+#ifdef DISABLE_OPENGL
+            numItems = 2;
+#endif
+
+            for (int32_t i = 0; i < numItems; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+            }
+            window_options_show_dropdown(w, widget, numItems);
+            dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
+            break;
+        }
+        case WIDX_SCALE_UP:
+            gConfigGeneral.window_scale += 0.25f;
+            config_save_default();
+            gfx_invalidate_screen();
+            context_trigger_resize();
+            context_update_cursor_scale();
+            break;
+        case WIDX_SCALE_DOWN:
+            gConfigGeneral.window_scale -= 0.25f;
+            gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
+            config_save_default();
+            gfx_invalidate_screen();
+            context_trigger_resize();
+            context_update_cursor_scale();
+            break;
+        case WIDX_SCALE_QUALITY_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
+            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            // Note: offset by one to compensate for lack of NN option.
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
+            break;
+    }
+}
+
+static void window_options_display_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_RESOLUTION_DROPDOWN:
+        {
+            const auto& resolutions = OpenRCT2::GetContext()->GetUiContext()->GetFullscreenResolutions();
+
+            const Resolution& resolution = resolutions[dropdownIndex];
+            if (resolution.Width != gConfigGeneral.fullscreen_width || resolution.Height != gConfigGeneral.fullscreen_height)
+            {
+                gConfigGeneral.fullscreen_width = resolution.Width;
+                gConfigGeneral.fullscreen_height = resolution.Height;
+
+                if (gConfigGeneral.fullscreen_mode == static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+                    context_set_fullscreen_mode(static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN));
+
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+        }
+        break;
+        case WIDX_FULLSCREEN_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.fullscreen_mode)
+            {
+                context_set_fullscreen_mode(dropdownIndex);
+
+                gConfigGeneral.fullscreen_mode = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+        case WIDX_DRAWING_ENGINE_DROPDOWN:
+            if (dropdownIndex != EnumValue(gConfigGeneral.drawing_engine))
+            {
+                DrawingEngine srcEngine = drawing_engine_get_type();
+                DrawingEngine dstEngine = static_cast<DrawingEngine>(dropdownIndex);
+
+                gConfigGeneral.drawing_engine = dstEngine;
+                bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
+                platform_refresh_video(recreate_window);
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_SCALE_QUALITY_DROPDOWN:
+            // Note: offset by one to compensate for lack of NN option.
+            if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
+            {
+                gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
+                config_save_default();
+                gfx_invalidate_screen();
+                context_trigger_resize();
+            }
+            break;
+    }
+}
+
+static void window_options_display_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Resolution dropdown caption.
+    auto ft = Formatter::Common();
+    ft.Increment(16);
+    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_width));
+    ft.Add<uint16_t>(static_cast<uint16_t>(gConfigGeneral.fullscreen_height));
+
+    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    {
+        w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets |= (1 << WIDX_RESOLUTION);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
+        w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
+    }
+
+    // Disable Steam Overlay checkbox when using software rendering.
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+    {
+        w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+    }
+
+    // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
+    // In the latter case, nearest neighbour rendering will be used to scale.
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    {
+        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
+        w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
+        w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
+    }
+
+    // Disable changing VSync for Software engine, as we can't control its use of VSync
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
+    {
+        w->disabled_widgets |= (1 << WIDX_USE_VSYNC_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
+    }
+
+    widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+    widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+    widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+    widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+    widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+    widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+    widget_set_checkbox_value(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
+
+    // Dropdown captions for straightforward strings.
+    window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+    window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
+    window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+        [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_FULLSCREEN_MODE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 });
+
+    // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+    int32_t colour = w->colours[1];
+    if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+    gfx_draw_string_left(
+        dpi, STR_DISPLAY_RESOLUTION, w, colour,
+        w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 });
+
+    gfx_draw_string_left(
+        dpi, STR_UI_SCALING_DESC, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DRAWING_ENGINE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 });
+
+    int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
+    gfx_draw_string_left(
+        dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
+
+    colour = w->colours[1];
+    if (gConfigGeneral.drawing_engine == DrawingEngine::Software
+        || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+    {
+        colour |= COLOUR_FLAG_INSET;
+    }
+    gfx_draw_string_left(
+        dpi, STR_SCALING_QUALITY, w, colour,
+        w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
+}
+
+#pragma region Rendering Tab
+
+static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
+    {
+        case WIDX_TILE_SMOOTHING_CHECKBOX:
+            gConfigGeneral.landscape_smoothing ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_GRIDLINES_CHECKBOX:
+            gConfigGeneral.always_show_gridlines ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
+            if ((w = window_get_main()) != nullptr)
+            {
+                if (gConfigGeneral.always_show_gridlines)
+                    w->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
+                else
+                    w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
+            }
+            break;
+        case WIDX_DAY_NIGHT_CHECKBOX:
+            gConfigGeneral.day_night_cycle ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ENABLE_LIGHT_FX_CHECKBOX:
+            gConfigGeneral.enable_light_fx ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX:
+            gConfigGeneral.enable_light_fx_for_vehicles ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_UPPER_CASE_BANNERS_CHECKBOX:
+            gConfigGeneral.upper_case_banners ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
+            gConfigGeneral.disable_lightning_effect ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX:
+            gConfigGeneral.render_weather_effects ^= 1;
+            gConfigGeneral.render_weather_gloom = gConfigGeneral.render_weather_effects;
+            config_save_default();
+            w->Invalidate();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_SHOW_GUEST_PURCHASES_CHECKBOX:
+            gConfigGeneral.show_guest_purchases ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX:
+            gConfigGeneral.transparent_screenshot ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+            gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+            gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+
+            widget = &w->widgets[widgetIndex - 1];
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
+            break;
+    }
+}
+
+static void window_options_rendering_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_VIRTUAL_FLOOR_DROPDOWN:
+            gConfigGeneral.virtual_floor_style = static_cast<VirtualFloorStyles>(dropdownIndex);
+            config_save_default();
+            break;
+    }
+}
+
+static void window_options_rendering_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+    widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+    widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+    widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+    widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+    widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+
+    rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
+                                                 STR_VIRTUAL_FLOOR_STYLE_GLASSY };
+
+    window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+        gConfigGeneral.virtual_floor_style)];
+
+    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
+    {
+        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        gConfigGeneral.enable_light_fx = false;
+    }
+
+    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+    if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
+        && gConfigGeneral.enable_light_fx)
+    {
+        w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+    }
+    else
+    {
+        w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        gConfigGeneral.enable_light_fx_for_vehicles = false;
+    }
+
+    widget_set_checkbox_value(
+        w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
+    widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+    if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
+    {
+        widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+        w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+    }
+    else
+    {
+        w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+        w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
+    }
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+}
+
+#pragma region Culture Tab
+
+static void window_options_culture_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+}
+
+static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_HEIGHT_LABELS_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
+            gDropdownItemsArgs[1] = STR_REAL_VALUES;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
+            break;
+        case WIDX_CURRENCY_DROPDOWN:
+        {
+            uint32_t num_items = EnumValue(CurrencyType::Count) + 1;             // All the currencies plus the separator
+            size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
+
+            for (size_t i = 0; i < num_ordinary_currencies; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
+            }
+
+            gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
+
+            gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
+
+            window_options_show_dropdown(w, widget, num_items);
+
+            if (gConfigGeneral.currency_format == CurrencyType::Custom)
+            {
+                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format) + 1, true);
+            }
+            else
+            {
+                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format), true);
+            }
+            break;
+        }
+        case WIDX_DISTANCE_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_IMPERIAL;
+            gDropdownItemsArgs[1] = STR_METRIC;
+            gDropdownItemsArgs[2] = STR_SI;
+
+            window_options_show_dropdown(w, widget, 3);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
+            break;
+        case WIDX_TEMPERATURE_DROPDOWN:
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_CELSIUS;
+            gDropdownItemsArgs[1] = STR_FAHRENHEIT;
+
+            window_options_show_dropdown(w, widget, 2);
+
+            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
+            break;
+        case WIDX_LANGUAGE_DROPDOWN:
+            for (size_t i = 1; i < LANGUAGE_COUNT; i++)
+            {
+                gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+            }
+            window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
+            dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
+            break;
+        case WIDX_DATE_FORMAT_DROPDOWN:
+            for (size_t i = 0; i < 4; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = DateFormatStringIds[i];
+            }
+            window_options_show_dropdown(w, widget, 4);
+            dropdown_set_checked(gConfigGeneral.date_format, true);
+            break;
+    }
+}
+
+static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_HEIGHT_LABELS_DROPDOWN:
+            // reset flag and set it to 1 if height as units is selected
+            gConfigGeneral.show_height_as_units = 0;
+
+            if (dropdownIndex == 0)
+            {
+                gConfigGeneral.show_height_as_units = 1;
+            }
+            config_save_default();
+            window_options_update_height_markers();
+            break;
+        case WIDX_CURRENCY_DROPDOWN:
+            if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
+            { // Add 1 because the separator occupies a position
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex - 1);
+                context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
+            }
+            else
+            {
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex);
+            }
+            config_save_default();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_DISTANCE_DROPDOWN:
+            gConfigGeneral.measurement_format = static_cast<MeasurementFormat>(dropdownIndex);
+            config_save_default();
+            window_options_update_height_markers();
+            break;
+        case WIDX_TEMPERATURE_DROPDOWN:
+            if (dropdownIndex != static_cast<int32_t>(gConfigGeneral.temperature_format))
+            {
+                gConfigGeneral.temperature_format = static_cast<TemperatureUnit>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+        case WIDX_LANGUAGE_DROPDOWN:
+        {
+            auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
+            if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
+            {
+                if (!language_open(dropdownIndex + 1))
+                {
+                    // Failed to open language file, try to recover by falling
+                    // back to previously used language
+                    if (language_open(fallbackLanguage))
+                    {
+                        // It worked, so we can say it with error message in-game
+                        context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE, {});
+                    }
+                    // report error to console regardless
+                    log_error("Failed to open language file.");
+                    dropdownIndex = fallbackLanguage - 1;
+                }
+                else
+                {
+                    gConfigGeneral.language = dropdownIndex + 1;
+                    config_save_default();
+                    gfx_invalidate_screen();
+                }
+            }
+        }
+        break;
+        case WIDX_DATE_FORMAT_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.date_format)
+            {
+                gConfigGeneral.date_format = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                gfx_invalidate_screen();
+            }
+            break;
+    }
+}
+
+static void window_options_culture_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Language
+    auto ft = Formatter::Common();
+    ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
+
+    // Currency: pounds, dollars, etc. (10 total)
+    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
+                                                             .stringId;
+
+    // Distance: metric / imperial / si
+    {
+        rct_string_id stringId = STR_NONE;
+        switch (gConfigGeneral.measurement_format)
+        {
+            case MeasurementFormat::Imperial:
+                stringId = STR_IMPERIAL;
+                break;
+            case MeasurementFormat::Metric:
+                stringId = STR_METRIC;
+                break;
+            case MeasurementFormat::SI:
+                stringId = STR_SI;
+                break;
+        }
+        window_options_culture_widgets[WIDX_DISTANCE].text = stringId;
+    }
+
+    // Date format
+    window_options_culture_widgets[WIDX_DATE_FORMAT].text = DateFormatStringIds[gConfigGeneral.date_format];
+
+    // Temperature: celsius/fahrenheit
+    window_options_culture_widgets[WIDX_TEMPERATURE].text = gConfigGeneral.temperature_format == TemperatureUnit::Fahrenheit
+        ? STR_FAHRENHEIT
+        : STR_CELSIUS;
+
+    // Height: units/real values
+    window_options_culture_widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS
+                                                                                                  : STR_REAL_VALUES;
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_CURRENCY, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_TEMPERATURE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_HEIGHT_LABELS, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DATE_FORMAT, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
+}
+
+#pragma region Audio Tab
+
+static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
+    {
+        case WIDX_SOUND_CHECKBOX:
+            gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_MASTER_SOUND_CHECKBOX:
+            gConfigSound.master_sound_enabled = !gConfigSound.master_sound_enabled;
+            if (!gConfigSound.master_sound_enabled)
+                OpenRCT2::Audio::Pause();
+            else
+                OpenRCT2::Audio::Resume();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_MUSIC_CHECKBOX:
+            gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
+            if (!gConfigSound.ride_music_enabled)
+            {
+                OpenRCT2::Audio::StopRideMusic();
+            }
+            config_save_default();
+            w->Invalidate();
+            break;
+
+        case WIDX_AUDIO_FOCUS_CHECKBOX:
+            gConfigSound.audio_focus = !gConfigSound.audio_focus;
+            config_save_default();
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_SOUND_DROPDOWN:
+            OpenRCT2::Audio::PopulateDevices();
+
+            // populate the list with the sound devices
+            for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
+            }
+
+            window_options_show_dropdown(w, widget, OpenRCT2::Audio::GetDeviceCount());
+
+            dropdown_set_checked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
+            break;
+        case WIDX_TITLE_MUSIC_DROPDOWN:
+            uint32_t num_items = 4;
+
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = window_options_title_music_names[i];
+            }
+
+            window_options_show_dropdown(w, widget, num_items);
+
+            dropdown_set_checked(gConfigSound.title_music, true);
+            break;
+    }
+}
+
+static void window_options_audio_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_SOUND_DROPDOWN:
+            OpenRCT2::Audio::InitRideSounds(dropdownIndex);
+            if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
+            {
+                if (dropdownIndex == 0)
+                {
+                    Mixer_Init(nullptr);
+                    gConfigSound.device = nullptr;
+                }
+                else
+                {
+                    const char* devicename = OpenRCT2::Audio::GetDeviceName(dropdownIndex).c_str();
+                    Mixer_Init(devicename);
+                    SafeFree(gConfigSound.device);
+                    gConfigSound.device = strndup(devicename, OpenRCT2::Audio::MaxDeviceNameSize);
+                }
+                config_save_default();
+                OpenRCT2::Audio::PlayTitleMusic();
+            }
+            w->Invalidate();
+            break;
+        case WIDX_TITLE_MUSIC_DROPDOWN:
+            if ((dropdownIndex == 1 || dropdownIndex == 3) && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
+            {
+                context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
+            }
+            else
+            {
+                gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
+            }
+
+            OpenRCT2::Audio::StopTitleMusic();
+            if (dropdownIndex != 0)
+                OpenRCT2::Audio::PlayTitleMusic();
+            break;
+    }
+}
+
 static uint8_t get_scroll_percentage(rct_widget* widget, rct_scroll* scroll)
 {
     uint8_t width = widget->width() - 1;
     return static_cast<float>(scroll->h_left) / (scroll->h_right - width) * 100;
 }
 
-static void window_options_update(rct_window* w)
+static void window_options_audio_update(rct_window* w)
 {
-    // Tab animation
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_1 + w->page);
+    window_options_common_update(w);
 
     if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
     {
@@ -1961,185 +1507,752 @@ static void window_options_update(rct_window* w)
     }
 }
 
-/**
- *
- *  rct2: 0x006BAEB4
- */
-static void window_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void window_options_audio_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+{
+    *width = 500;
+}
+
+static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_index, int32_t scroll_id, uint8_t volume)
+{
+    rct_widget* widget = &window_options_audio_widgets[widget_index];
+    rct_scroll* scroll = &w->scrolls[scroll_id];
+
+    int widget_size = scroll->h_right - (widget->width() - 1);
+    scroll->h_left = ceil(volume / 100.0f * widget_size);
+
+    widget_scroll_update_thumbs(w, widget_index);
+}
+
+static void window_options_audio_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    // Sound device
+    rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+    const char* audioDeviceName = nullptr;
+    const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
+    if (currentDeviceIndex == -1)
+    {
+        audioDeviceStringId = STR_SOUND_NONE;
+    }
+    else
+    {
+        audioDeviceStringId = STR_STRING;
+#ifndef __linux__
+        if (currentDeviceIndex == 0)
+        {
+            audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
+        }
+#endif // __linux__
+        if (audioDeviceStringId == STR_STRING)
+        {
+            audioDeviceName = OpenRCT2::Audio::GetDeviceName(currentDeviceIndex).c_str();
+        }
+    }
+
+    window_options_audio_widgets[WIDX_SOUND].text = audioDeviceStringId;
+    auto ft = Formatter::Common();
+    ft.Add<char*>(audioDeviceName);
+
+    window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+
+    widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+    widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+    widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+    widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+
+    // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
+    if (w->frame_no == 0)
+    {
+        initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);
+        initialize_scroll_position(w, WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
+        initialize_scroll_position(w, WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
+    }
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+}
+
+#pragma region Controls and Interface Tab
+
+static void window_options_controls_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
+    {
+        case WIDX_HOTKEY_DROPDOWN:
+            context_open_window(WC_KEYBOARD_SHORTCUT_LIST);
+            break;
+        case WIDX_SCREEN_EDGE_SCROLLING:
+            gConfigGeneral.edge_scrolling ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TRAP_CURSOR:
+            gConfigGeneral.trap_cursor ^= 1;
+            config_save_default();
+            context_set_cursor_trap(gConfigGeneral.trap_cursor);
+            w->Invalidate();
+            break;
+        case WIDX_ZOOM_TO_CURSOR:
+            gConfigGeneral.zoom_to_cursor ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_TOOLBAR_SHOW_FINANCES:
+            gConfigInterface.toolbar_show_finances ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_RESEARCH:
+            gConfigInterface.toolbar_show_research ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_CHEATS:
+            gConfigInterface.toolbar_show_cheats ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_NEWS:
+            gConfigInterface.toolbar_show_news ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_MUTE:
+            gConfigInterface.toolbar_show_mute ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_TOOLBAR_SHOW_CHAT:
+            gConfigInterface.toolbar_show_chat ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
+        case WIDX_INVERT_DRAG:
+            gConfigGeneral.invert_viewport_drag ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_THEMES_BUTTON:
+            context_open_window(WC_THEMES);
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_controls_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_THEMES_DROPDOWN:
+            uint32_t num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
+
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
+            }
+
+            window_dropdown_show_text_custom_width(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+
+            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            widget_invalidate(w, WIDX_THEMES_DROPDOWN);
+            break;
+    }
+}
+
+static void window_options_controls_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_THEMES_DROPDOWN:
+            if (dropdownIndex != -1)
+            {
+                theme_manager_set_active_available_theme(dropdownIndex);
+            }
+            config_save_default();
+            break;
+    }
+}
+
+static void window_options_controls_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+    widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
+    widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+    widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+
+    size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
+    const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+    auto ft = Formatter::Common();
+    ft.Add<utf8*>(activeThemeName);
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_draw_widgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    switch (w->page)
+    gfx_draw_string_left(
+        dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
+        w->windowPos
+            + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
+    gfx_draw_string_left(
+        dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
+}
+
+#pragma region Miscellaneous Tab
+
+static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
     {
-        case WINDOW_OPTIONS_PAGE_DISPLAY:
-        {
-            gfx_draw_string_left(
-                dpi, STR_FULLSCREEN_MODE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 });
-
-            // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-            int32_t colour = w->colours[1];
-            if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
-            {
-                colour |= COLOUR_FLAG_INSET;
-            }
-            gfx_draw_string_left(
-                dpi, STR_DISPLAY_RESOLUTION, w, colour,
-                w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 });
-
-            gfx_draw_string_left(
-                dpi, STR_UI_SCALING_DESC, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DRAWING_ENGINE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 });
-
-            int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
-            gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
-
-            colour = w->colours[1];
-            if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE
-                || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-            {
-                colour |= COLOUR_FLAG_INSET;
-            }
-            gfx_draw_string_left(
-                dpi, STR_SCALING_QUALITY, w, colour,
-                w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
+        case WIDX_REAL_NAME_CHECKBOX:
+            gConfigGeneral.show_real_names_of_guests ^= 1;
+            config_save_default();
+            w->Invalidate();
+            peep_update_names(gConfigGeneral.show_real_names_of_guests);
             break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_CULTURE:
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_CURRENCY, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_TEMPERATURE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_HEIGHT_LABELS, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DATE_FORMAT, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
+        case WIDX_AUTO_STAFF_PLACEMENT:
+            gConfigGeneral.auto_staff_placement ^= 1;
+            config_save_default();
+            w->Invalidate();
             break;
-
-        case WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE:
-        {
-            gfx_draw_string_left(
-                dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
-            gfx_draw_string_left(
-                dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
+        case WIDX_TITLE_SEQUENCE_BUTTON:
+            window_title_editor_open(0);
             break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_MISC:
-        {
-            gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 });
-            gfx_draw_string_left(
-                dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
+        case WIDX_SCENARIO_UNLOCKING:
+            gConfigGeneral.scenario_unlocking_enabled ^= 1;
+            config_save_default();
+            window_close_by_class(WC_SCENARIO_SELECT);
             break;
-        }
-
-        case WINDOW_OPTIONS_PAGE_ADVANCED:
-        {
-            gfx_draw_string_left(
-                dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
-            gfx_draw_string_left(
-                dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                                      window_options_advanced_widgets[WIDX_AUTOSAVE].top });
-            gfx_draw_string_left(
-                dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
-            int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
-            gfx_draw_string_left(
-                dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
-                w->windowPos
-                    + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
-
-            auto ft = Formatter::Common();
-            ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
-
-            rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
-
-            // Apply vertical alignment if appropriate.
-            int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
-            int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
-            uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
-            ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1,
-                                            w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-            DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
+        case WIDX_TITLE_SEQUENCE_RANDOM:
+            gConfigInterface.random_title_sequence ^= 1;
+            config_save_default();
+            w->Invalidate();
             break;
-        }
+        case WIDX_AUTO_OPEN_SHOPS:
+            gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ALLOW_EARLY_COMPLETION:
+            gConfigGeneral.allow_early_completion ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
     }
 }
 
-// helper function, all dropdown boxes have similar properties
-static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
+static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    window_dropdown_show_text_custom_width(
-        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
-}
+    uint32_t num_items;
 
-static void window_options_update_height_markers()
-{
-    config_save_default();
-    gfx_invalidate_screen();
-}
+    widget = &w->widgets[widgetIndex - 1];
 
-static void window_options_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    if (w->page == WINDOW_OPTIONS_PAGE_AUDIO)
+    switch (widgetIndex)
     {
-        *width = 500;
+        case WIDX_TITLE_SEQUENCE_DROPDOWN:
+            num_items = static_cast<int32_t>(title_sequence_manager_get_count());
+            for (size_t i = 0; i < num_items; i++)
+            {
+                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+            }
+
+            window_dropdown_show_text(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
+                DROPDOWN_FLAG_STAY_OPEN, num_items);
+
+            dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            num_items = 2;
+
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
+
+            window_dropdown_show_text_custom_width(
+                { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+
+            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
+            break;
+        case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+            for (size_t i = 0; i < 7; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
+            }
+
+            window_options_show_dropdown(w, widget, 7);
+            dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+            break;
     }
 }
 
-static void window_options_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
+static void window_options_misc_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (w->page == WINDOW_OPTIONS_PAGE_ADVANCED && widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_TITLE_SEQUENCE_DROPDOWN:
+            if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
+            {
+                title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.default_inspection_interval)
+            {
+                gConfigGeneral.default_inspection_interval = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.scenario_select_mode)
+            {
+                gConfigGeneral.scenario_select_mode = dropdownIndex;
+                gConfigInterface.scenarioselect_last_tab = 0;
+                config_save_default();
+                w->Invalidate();
+                window_close_by_class(WC_SCENARIO_SELECT);
+            }
+            break;
+    }
+}
+
+static void window_options_misc_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
+    auto ft = Formatter::Common();
+    ft.Add<utf8*>(name);
+
+    // The real name setting of clients is fixed to that of the server
+    // and the server cannot change the setting during gameplay to prevent desyncs
+    if (network_get_mode() != NETWORK_MODE_NONE)
+    {
+        w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
+        window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+    }
+
+    widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+    widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+    widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+    widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
+    widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+
+    // Disable title sequence dropdown if set to random
+    if (gConfigInterface.random_title_sequence)
+    {
+        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets |= (1 << WIDX_TITLE_SEQUENCE);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE_DROPDOWN);
+        w->disabled_widgets &= ~(1 << WIDX_TITLE_SEQUENCE);
+    }
+
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
+        window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
+    else
+        window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
+
+    widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
+    {
+        w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
+    }
+    else
+    {
+        w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
+    }
+
+    window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames
+        [gConfigGeneral.default_inspection_interval];
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_TITLE_SEQUENCE, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 });
+    gfx_draw_string_left(
+        dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
+}
+
+#pragma region Advanced Tab
+
+static void window_options_advanced_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+{
+    if (widgetIndex < WIDX_PAGE_START)
+        return window_options_common_mouseup(w, widgetIndex);
+
+    switch (widgetIndex)
+    {
+        case WIDX_DEBUGGING_TOOLS:
+            gConfigGeneral.debugging_tools ^= 1;
+            config_save_default();
+            gfx_invalidate_screen();
+            break;
+        case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
+            gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
+            gConfigGeneral.save_plugin_data ^= 1;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_STAY_CONNECTED_AFTER_DESYNC:
+            gConfigNetwork.stay_connected = !gConfigNetwork.stay_connected;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_ALWAYS_NATIVE_LOADSAVE:
+            gConfigGeneral.use_native_browse_dialog = !gConfigGeneral.use_native_browse_dialog;
+            config_save_default();
+            w->Invalidate();
+            break;
+        case WIDX_PATH_TO_RCT1_BUTTON:
+        {
+            utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
+            if (rct1path)
+            {
+                // Check if this directory actually contains RCT1
+                if (Csg1datPresentAtLocation(rct1path))
+                {
+                    if (Csg1idatPresentAtLocation(rct1path))
+                    {
+                        if (CsgAtLocationIsUsable(rct1path))
+                        {
+                            SafeFree(gConfigGeneral.rct1_path);
+                            gConfigGeneral.rct1_path = rct1path;
+                            gConfigInterface.scenarioselect_last_tab = 0;
+                            config_save_default();
+                            context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
+                        }
+                        else
+                        {
+                            SafeFree(rct1path);
+                            context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
+                        }
+                    }
+                    else
+                    {
+                        SafeFree(rct1path);
+                        context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
+                    }
+                }
+                else
+                {
+                    SafeFree(rct1path);
+                    context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
+                }
+            }
+            w->Invalidate();
+            break;
+        }
+        case WIDX_PATH_TO_RCT1_CLEAR:
+            if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
+            {
+                SafeFree(gConfigGeneral.rct1_path);
+                config_save_default();
+            }
+            w->Invalidate();
+            break;
+    }
+}
+
+static void window_options_advanced_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    widget = &w->widgets[widgetIndex - 1];
+
+    switch (widgetIndex)
+    {
+        case WIDX_AUTOSAVE_DROPDOWN:
+            for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
+            {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = window_options_autosave_names[i];
+            }
+
+            window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
+            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
+            break;
+        case WIDX_AUTOSAVE_AMOUNT_UP:
+            gConfigGeneral.autosave_amount += 1;
+            config_save_default();
+            widget_invalidate(w, WIDX_AUTOSAVE);
+            widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+            widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+            break;
+        case WIDX_AUTOSAVE_AMOUNT_DOWN:
+            if (gConfigGeneral.autosave_amount > 1)
+            {
+                gConfigGeneral.autosave_amount -= 1;
+                config_save_default();
+                widget_invalidate(w, WIDX_AUTOSAVE);
+                widget_invalidate(w, WIDX_AUTOSAVE_DROPDOWN);
+                widget_invalidate(w, WIDX_AUTOSAVE_AMOUNT);
+            }
+    }
+}
+
+static void window_options_advanced_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+{
+    if (dropdownIndex == -1)
+        return;
+
+    switch (widgetIndex)
+    {
+        case WIDX_AUTOSAVE_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.autosave_frequency)
+            {
+                gConfigGeneral.autosave_frequency = static_cast<uint8_t>(dropdownIndex);
+                config_save_default();
+                w->Invalidate();
+            }
+            break;
+    }
+}
+
+static void window_options_advanced_invalidate(rct_window* w)
+{
+    window_options_common_invalidate_before(w);
+
+    widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+    widget_set_checkbox_value(
+        w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+    widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+    widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+    widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
+
+    window_options_common_invalidate_after(w);
+}
+
+static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    window_draw_widgets(w, dpi);
+    window_options_draw_tab_images(dpi, w);
+
+    gfx_draw_string_left(
+        dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
+    gfx_draw_string_left(
+        dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
+        w->windowPos
+            + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
+                              window_options_advanced_widgets[WIDX_AUTOSAVE].top });
+    gfx_draw_string_left(
+        dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+    int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
+    gfx_draw_string_left(
+        dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+
+    auto ft = Formatter();
+    ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
+
+    rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
+
+    // Apply vertical alignment if appropriate.
+    int32_t widgetHeight = pathWidget.bottom - pathWidget.top;
+    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+    ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1,
+                                    w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
+    DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
+}
+
+static OpenRCT2String window_options_advanced_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
+{
+    if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
     {
         if (str_is_null_or_empty(gConfigGeneral.rct1_path))
         {
             // No tooltip if the path is empty
-            *stringid = STR_NONE;
+            return { STR_NONE, {} };
         }
         else
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<utf8*>(gConfigGeneral.rct1_path);
+            return { fallback, ft };
         }
     }
+    return { fallback, {} };
 }
 
+#pragma region Event lists
+
+static rct_window_event_list window_options_events_display([](auto& events) {
+    events.mouse_up = &window_options_display_mouseup;
+    events.mouse_down = &window_options_display_mousedown;
+    events.dropdown = &window_options_display_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_display_invalidate;
+    events.paint = &window_options_display_paint;
+});
+
+static rct_window_event_list window_options_events_rendering([](auto& events) {
+    events.mouse_up = &window_options_rendering_mouseup;
+    events.mouse_down = &window_options_rendering_mousedown;
+    events.dropdown = &window_options_rendering_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_rendering_invalidate;
+    events.paint = &window_options_rendering_paint;
+});
+
+static rct_window_event_list window_options_events_culture([](auto& events) {
+    events.mouse_up = &window_options_culture_mouseup;
+    events.mouse_down = &window_options_culture_mousedown;
+    events.dropdown = &window_options_culture_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_culture_invalidate;
+    events.paint = &window_options_culture_paint;
+});
+
+static rct_window_event_list window_options_events_audio([](auto& events) {
+    events.mouse_up = &window_options_audio_mouseup;
+    events.mouse_down = &window_options_audio_mousedown;
+    events.dropdown = &window_options_audio_dropdown;
+    events.update = &window_options_audio_update;
+    events.get_scroll_size = &window_options_audio_scrollgetsize;
+    events.invalidate = &window_options_audio_invalidate;
+    events.paint = &window_options_audio_paint;
+});
+
+static rct_window_event_list window_options_events_controls([](auto& events) {
+    events.mouse_up = &window_options_controls_mouseup;
+    events.mouse_down = &window_options_controls_mousedown;
+    events.dropdown = &window_options_controls_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_controls_invalidate;
+    events.paint = &window_options_controls_paint;
+});
+
+static rct_window_event_list window_options_events_misc([](auto& events) {
+    events.mouse_up = &window_options_misc_mouseup;
+    events.mouse_down = &window_options_misc_mousedown;
+    events.dropdown = &window_options_misc_dropdown;
+    events.update = &window_options_common_update;
+    events.invalidate = &window_options_misc_invalidate;
+    events.paint = &window_options_misc_paint;
+});
+
+static rct_window_event_list window_options_events_advanced([](auto& events) {
+    events.mouse_up = &window_options_advanced_mouseup;
+    events.mouse_down = &window_options_advanced_mousedown;
+    events.dropdown = &window_options_advanced_dropdown;
+    events.update = &window_options_common_update;
+    events.tooltip = &window_options_advanced_tooltip;
+    events.invalidate = &window_options_advanced_invalidate;
+    events.paint = &window_options_advanced_paint;
+});
+
+// clang-format off
+static rct_window_event_list* window_options_event_lists[] = {
+    &window_options_events_display,
+    &window_options_events_rendering,
+    &window_options_events_culture,
+    &window_options_events_audio,
+    &window_options_events_controls,
+    &window_options_events_misc,
+    &window_options_events_advanced,
+};
+// clang-format on
+
 #pragma region Common
+
+/**
+ *
+ *  rct2: 0x006BAC5B
+ */
+rct_window* window_options_open()
+{
+    rct_window* w;
+
+    // Check if window is already open
+    w = window_bring_to_front_by_class(WC_OPTIONS);
+    if (w != nullptr)
+        return w;
+
+    w = window_create_centred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
+    w->widgets = window_options_display_widgets;
+    w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
+    w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
+    w->frame_no = 0;
+    window_init_scroll_widgets(w);
+
+    return w;
+}
 
 static void window_options_set_page(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
+    w->event_handlers = window_options_event_lists[page];
     w->enabled_widgets = window_options_page_enabled_widgets[page];
     w->pressed_widgets = 0;
     w->widgets = window_options_page_widgets[page];
@@ -2199,6 +2312,20 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_RIDE_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
+}
+
+// helper function, all dropdown boxes have similar properties
+static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
+{
+    window_dropdown_show_text_custom_width(
+        { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
+        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+}
+
+static void window_options_update_height_markers()
+{
+    config_save_default();
+    gfx_invalidate_screen();
 }
 
 #pragma endregion

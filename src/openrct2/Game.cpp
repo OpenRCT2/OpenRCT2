@@ -301,7 +301,7 @@ void pause_toggle()
     window_invalidate_by_class(WC_TOP_TOOLBAR);
     if (gGamePaused & GAME_PAUSED_NORMAL)
     {
-        audio_stop_all_music_and_sounds();
+        OpenRCT2::Audio::StopAll();
     }
 }
 
@@ -466,8 +466,6 @@ void game_fix_save_vars()
                 peep->CurrentRide = RIDE_ID_NULL;
                 continue;
             }
-            auto ft = Formatter::Common();
-            ft.Add<uint32_t>(peep->Id);
             auto curName = peep->GetName();
             log_warning(
                 "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(), srcStation,
@@ -552,7 +550,7 @@ void game_load_init()
     snapshots->Reset();
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
-    audio_stop_all_music_and_sounds();
+    OpenRCT2::Audio::StopAll();
     if (!gLoadKeepWindowsOpen)
     {
         viewport_init_all();
@@ -573,6 +571,7 @@ void game_load_init()
         GameActions::ClearQueue();
     }
     reset_sprite_spatial_index();
+    reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
@@ -589,7 +588,7 @@ void game_load_init()
         window_update_all();
     }
 
-    audio_stop_title_music();
+    OpenRCT2::Audio::StopTitleMusic();
     gGameSpeed = 1;
 }
 
@@ -688,19 +687,19 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     size_t autosavesCount = 0;
     size_t numAutosavesToDelete = 0;
 
-    utf8 filter[MAX_PATH];
+    auto environment = GetContext()->GetPlatformEnvironment();
+    auto folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
+    char const* fileFilter = "autosave_*.sv6";
     if (processLandscapeFolder)
     {
-        platform_get_user_directory(filter, "landscape", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
+        folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::LANDSCAPE);
+        fileFilter = "autosave_*.sc6";
     }
-    else
-    {
-        platform_get_user_directory(filter, "save", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
-    }
+
+    utf8 filter[MAX_PATH];
+    safe_strcpy(filter, folderDirectory.c_str(), sizeof(filter));
+    safe_strcat_path(filter, "autosave", sizeof(filter));
+    safe_strcat_path(filter, fileFilter, sizeof(filter));
 
     // At first, count how many autosaves there are
     {
@@ -725,14 +724,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
-                if (processLandscapeFolder)
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "landscape", sizeof(utf8) * MAX_PATH);
-                }
-                else
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "save", sizeof(utf8) * MAX_PATH);
-                }
+                safe_strcpy(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
@@ -748,7 +740,10 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        platform_file_delete(autosaveFiles[i].data());
+        if (!platform_file_delete(autosaveFiles[i].data()))
+        {
+            log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
+        }
     }
 }
 
@@ -815,7 +810,7 @@ void game_load_or_quit_no_save_prompt()
 {
     switch (gSavePromptMode)
     {
-        case PM_SAVE_BEFORE_LOAD:
+        case PromptMode::SaveBeforeLoad:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
@@ -833,7 +828,7 @@ void game_load_or_quit_no_save_prompt()
             }
             break;
         }
-        case PM_SAVE_BEFORE_QUIT:
+        case PromptMode::SaveBeforeQuit:
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);

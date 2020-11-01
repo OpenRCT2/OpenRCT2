@@ -20,17 +20,15 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, GameActionResult)
+DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, GameActions::Result)
 {
 private:
     MapRange _range;
-    ObjectEntryIndex _surfaceStyle;
-    ObjectEntryIndex _edgeStyle;
+    ObjectEntryIndex _surfaceStyle{};
+    ObjectEntryIndex _edgeStyle{};
 
 public:
-    SurfaceSetStyleAction()
-    {
-    }
+    SurfaceSetStyleAction() = default;
 
     SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
         : _range(range)
@@ -46,7 +44,7 @@ public:
         stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto res = MakeResult();
         res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
@@ -66,7 +64,7 @@ public:
             if (_surfaceStyle > 0x1F)
             {
                 log_error("Invalid surface style.");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_LAND_TYPE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
             }
 
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -75,7 +73,7 @@ public:
             if (surfaceObj == nullptr)
             {
                 log_error("Invalid surface style.");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_LAND_TYPE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
             }
         }
 
@@ -84,7 +82,7 @@ public:
             if (_edgeStyle > 0xF)
             {
                 log_error("Invalid edge style.");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_LAND_TYPE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
@@ -93,7 +91,7 @@ public:
             if (edgeObj == nullptr)
             {
                 log_error("Invalid edge style.");
-                return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_CHANGE_LAND_TYPE);
+                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE);
             }
         }
 
@@ -109,7 +107,7 @@ public:
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
             && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
         {
-            return MakeResult(GA_ERROR::DISALLOWED, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+            return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
         }
 
         money32 surfaceCost = 0;
@@ -165,7 +163,7 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         auto res = MakeResult();
         res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;

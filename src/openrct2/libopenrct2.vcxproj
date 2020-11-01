@@ -169,6 +169,7 @@
     <ClInclude Include="core\IStream.hpp" />
     <ClInclude Include="core\JobPool.hpp" />
     <ClInclude Include="core\Json.hpp" />
+    <ClInclude Include="core\JsonFwd.hpp" />
     <ClInclude Include="core\Memory.hpp" />
     <ClInclude Include="core\MemoryStream.h" />
     <ClInclude Include="core\Meta.hpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="localisation\Currency.h" />
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
+    <ClInclude Include="localisation\Formatter.h" />
     <ClInclude Include="localisation\Language.h" />
     <ClInclude Include="localisation\LanguagePack.h" />
     <ClInclude Include="localisation\Localisation.h" />
@@ -304,6 +306,7 @@
     <ClInclude Include="ride\coaster\meta\FlyingRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\GigaCoaster.h" />
     <ClInclude Include="ride\coaster\meta\HeartlineTwisterCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\HybridCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedHairpinCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedImpulseCoaster.h" />
     <ClInclude Include="ride\coaster\meta\InvertedRollerCoaster.h" />
@@ -545,6 +548,7 @@
     <ClCompile Include="localisation\Convert.cpp" />
     <ClCompile Include="localisation\Currency.cpp" />
     <ClCompile Include="localisation\FormatCodes.cpp" />
+    <ClCompile Include="localisation\Formatter.cpp" />
     <ClCompile Include="localisation\Language.cpp" />
     <ClCompile Include="localisation\LanguagePack.cpp" />
     <ClCompile Include="localisation\Localisation.cpp" />
@@ -652,6 +656,7 @@
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\GigaCoaster.cpp" />
     <ClCompile Include="ride\coaster\HeartlineTwisterCoaster.cpp" />
+    <ClCompile Include="ride\coaster\HybridCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedHairpinCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedImpulseCoaster.cpp" />
     <ClCompile Include="ride\coaster\InvertedRollerCoaster.cpp" />

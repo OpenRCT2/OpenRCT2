@@ -27,14 +27,14 @@
 #include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallScenerySetColourAction, GAME_COMMAND_SET_SCENERY_COLOUR, GameActionResult)
+DEFINE_GAME_ACTION(SmallScenerySetColourAction, GAME_COMMAND_SET_SCENERY_COLOUR, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
-    uint8_t _quadrant;
-    ObjectEntryIndex _sceneryType;
-    uint8_t _primaryColour;
-    uint8_t _secondaryColour;
+    uint8_t _quadrant{};
+    ObjectEntryIndex _sceneryType{};
+    uint8_t _primaryColour{};
+    uint8_t _secondaryColour{};
 
 public:
     SmallScenerySetColourAction() = default;
@@ -51,7 +51,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -62,18 +62,18 @@ public:
                << DS_TAG(_secondaryColour);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -84,14 +84,14 @@ private:
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
         {
             if (!map_is_location_owned(_loc))
             {
-                return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
@@ -100,7 +100,7 @@ private:
         if (sceneryElement == nullptr)
         {
             log_error("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
         }
 
         if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->IsGhost()))

@@ -155,7 +155,7 @@ void scenario_begin()
     duck_remove_all();
     park_calculate_size();
     map_count_remaining_land_rights();
-    staff_reset_stats();
+    Staff::ResetStats();
     gLastEntranceStyle = 0;
     gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
@@ -356,7 +356,7 @@ static void scenario_update_daynight_cycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
     {
-        float monthFraction = gDateMonthTicks / static_cast<float>(0x10000);
+        float monthFraction = gDateMonthTicks / static_cast<float>(TICKS_PER_MONTH);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;

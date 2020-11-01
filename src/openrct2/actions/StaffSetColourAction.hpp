@@ -20,16 +20,14 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetColourAction, GAME_COMMAND_SET_STAFF_COLOUR, GameActionResult)
+DEFINE_GAME_ACTION(StaffSetColourAction, GAME_COMMAND_SET_STAFF_COLOUR, GameActions::Result)
 {
 private:
-    uint8_t _staffType;
-    uint8_t _colour;
+    uint8_t _staffType{};
+    uint8_t _colour{};
 
 public:
-    StaffSetColourAction()
-    {
-    }
+    StaffSetColourAction() = default;
     StaffSetColourAction(StaffType staffType, uint8_t colour)
         : _staffType(static_cast<uint8_t>(staffType))
         , _colour(colour)
@@ -38,7 +36,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -47,22 +45,22 @@ public:
         stream << DS_TAG(_staffType) << DS_TAG(_colour);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         auto staffType = static_cast<StaffType>(_staffType);
         if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
         return MakeResult();
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         // Update global uniform colour property
         if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
         }
 
         // Update each staff member's uniform

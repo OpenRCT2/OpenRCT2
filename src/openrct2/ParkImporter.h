@@ -86,3 +86,14 @@ public:
     {
     }
 };
+
+class UnsupportedRideTypeException : public std::exception
+{
+public:
+    ObjectEntryIndex const Type;
+
+    explicit UnsupportedRideTypeException(ObjectEntryIndex type)
+        : Type(type)
+    {
+    }
+};

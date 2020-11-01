@@ -15,11 +15,11 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerSetColourAction, GAME_COMMAND_SET_BANNER_COLOUR, GameActionResult)
+DEFINE_GAME_ACTION(BannerSetColourAction, GAME_COMMAND_SET_BANNER_COLOUR, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
-    uint8_t _primaryColour;
+    uint8_t _primaryColour{};
 
 public:
     BannerSetColourAction() = default;
@@ -32,7 +32,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override
@@ -42,18 +42,18 @@ public:
         stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
         return QueryExecute(false);
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
         return QueryExecute(true);
     }
 
 private:
-    GameActionResult::Ptr QueryExecute(bool isExecuting) const
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
     {
         auto res = MakeResult();
         res->Expenditure = ExpenditureType::Landscaping;
@@ -65,18 +65,18 @@ private:
         if (!LocationValid(_loc))
         {
             log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
         }
 
         if (_primaryColour > 31)
         {
             log_error("Invalid primary colour: colour = %u", _primaryColour);
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REPAINT_THIS);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
         }
 
         if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
@@ -85,14 +85,14 @@ private:
         {
             log_error(
                 "Could not find banner at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-            return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
+            return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
         }
 
         auto index = bannerElement->GetIndex();
         if (index >= MAX_BANNERS || index == BANNER_INDEX_NULL)
         {
             log_error("Invalid banner index: index = %u", index);
-            return MakeResult(GA_ERROR::UNKNOWN, STR_CANT_REPAINT_THIS);
+            return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS);
         }
 
         if (isExecuting)

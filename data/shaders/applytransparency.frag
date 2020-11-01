@@ -4,7 +4,7 @@ uniform usampler2D      uOpaqueTex;
 uniform sampler2D       uOpaqueDepth;
 uniform usampler2D      uTransparentTex;
 uniform sampler2D       uTransparentDepth;
-uniform usampler2DRect  uPaletteTex;
+uniform usampler2D      uPaletteTex;
 
 in vec2 fTextureCoordinate;
 
@@ -22,5 +22,5 @@ void main()
         transparent = 0u;
     }
 
-    oColour = texture(uPaletteTex, vec2(opaque, transparent)).r;
+    oColour = texture(uPaletteTex, vec2(opaque, transparent) / 256.f).r;
 }

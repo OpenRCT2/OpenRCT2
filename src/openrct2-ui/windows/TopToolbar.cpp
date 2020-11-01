@@ -165,10 +165,11 @@ enum {
     DDIDX_OBJECT_SELECTION = 2,
     DDIDX_INVENTIONS_LIST = 3,
     DDIDX_SCENARIO_OPTIONS = 4,
-    // 5 is a separator
-    DDIDX_ENABLE_SANDBOX_MODE = 6,
-    DDIDX_DISABLE_CLEARANCE_CHECKS = 7,
-    DDIDX_DISABLE_SUPPORT_LIMITS = 8,
+    DDIDX_OBJECTIVE_OPTIONS = 5,
+    // 6 is a separator
+    DDIDX_ENABLE_SANDBOX_MODE = 7,
+    DDIDX_DISABLE_CLEARANCE_CHECKS = 8,
+    DDIDX_DISABLE_SUPPORT_LIMITS = 9,
 
     TOP_TOOLBAR_CHEATS_COUNT
 };
@@ -270,36 +271,19 @@ static void window_top_toolbar_tool_abort(rct_window *w, rct_widgetindex widgetI
 static void window_top_toolbar_invalidate(rct_window *w);
 static void window_top_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_top_toolbar_events = {
-    nullptr,
-    window_top_toolbar_mouseup,
-    nullptr,
-    window_top_toolbar_mousedown,
-    window_top_toolbar_dropdown,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,                                           // check if editor versions are significantly different...
-    window_top_toolbar_tool_update,                 // editor: 0x0066fB0E
-    window_top_toolbar_tool_down,                   // editor: 0x0066fB5C
-    window_top_toolbar_tool_drag,                   // editor: 0x0066fB37
-    window_top_toolbar_tool_up,                     // editor: 0x0066fC44 (Exactly the same)
-    window_top_toolbar_tool_abort,                  // editor: 0x0066fA74 (Exactly the same)
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    nullptr,
-    window_top_toolbar_invalidate,
-    window_top_toolbar_paint,
-    nullptr
-};
+static rct_window_event_list window_top_toolbar_events([](auto& events)
+{
+    events.mouse_up = &window_top_toolbar_mouseup;
+    events.mouse_down = &window_top_toolbar_mousedown;
+    events.dropdown = &window_top_toolbar_dropdown;
+    events.tool_update = &window_top_toolbar_tool_update;
+    events.tool_down = &window_top_toolbar_tool_down;
+    events.tool_drag = &window_top_toolbar_tool_drag;
+    events.tool_up = &window_top_toolbar_tool_up;
+    events.tool_abort = &window_top_toolbar_tool_abort;
+    events.invalidate = &window_top_toolbar_invalidate;
+    events.paint = &window_top_toolbar_paint;
+});
 // clang-format on
 
 static void top_toolbar_init_view_menu(rct_window* window, rct_widget* widget);
@@ -420,7 +404,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             context_open_window(WC_RECENT_NEWS);
             break;
         case WIDX_MUTE:
-            audio_toggle_all_sounds();
+            OpenRCT2::Audio::ToggleAllSounds();
             break;
         case WIDX_CHAT:
             if (chat_available())
@@ -604,7 +588,7 @@ static void window_top_toolbar_dropdown(rct_window* w, rct_widgetindex widgetInd
                 {
                     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
                     window_close_by_class(WC_TRACK_DELETE_PROMPT);
-                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PM_SAVE_BEFORE_QUIT);
+                    auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt, PromptMode::SaveBeforeQuit);
                     GameActions::Execute(&loadOrQuitAction);
                     break;
                 }
@@ -812,7 +796,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     else
         w->pressed_widgets &= ~(1 << WIDX_PAUSE);
 
-    if (!gGameSoundsOff)
+    if (!OpenRCT2::Audio::gGameSoundsOff)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_MUTE;
     else
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
@@ -1823,7 +1807,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                     zAttemptRange = 20;
                 }
 
-                auto success = GA_ERROR::UNKNOWN;
+                auto success = GameActions::Status::Unknown;
                 // Try find a valid z coordinate
                 for (; zAttemptRange != 0; zAttemptRange--)
                 {
@@ -1832,12 +1816,12 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                         primaryColour, secondaryColour);
                     auto res = GameActions::Query(&smallSceneryPlaceAction);
                     success = res->Error;
-                    if (res->Error == GA_ERROR::OK)
+                    if (res->Error == GameActions::Status::Ok)
                     {
                         break;
                     }
 
-                    if (res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+                    if (res->Error == GameActions::Status::InsufficientFunds)
                     {
                         break;
                     }
@@ -1848,25 +1832,25 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 }
 
                 // Actually place
-                if (success == GA_ERROR::OK || ((q + 1 == quantity) && forceError))
+                if (success == GameActions::Status::Ok || ((q + 1 == quantity) && forceError))
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
                         primaryColour, secondaryColour);
 
-                    smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-                        if (result->Error == GA_ERROR::OK)
+                    smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                        if (result->Error == GameActions::Status::Ok)
                         {
-                            audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                         }
                     });
                     auto res = GameActions::Execute(&smallSceneryPlaceAction);
-                    if (res->Error == GA_ERROR::OK)
+                    if (res->Error == GameActions::Status::Ok)
                     {
                         forceError = false;
                     }
 
-                    if (res->Error == GA_ERROR::INSUFFICIENT_FUNDS)
+                    if (res->Error == GameActions::Status::InsufficientFunds)
                     {
                         break;
                     }
@@ -1884,12 +1868,12 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridPos, z }, selectedScenery + 1);
 
-            footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error != GA_ERROR::OK)
+            footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
                 {
                     return;
                 }
-                audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
             break;
@@ -1914,7 +1898,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                     selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
                 auto res = GameActions::Query(&wallPlaceAction);
-                if (res->Error == GA_ERROR::OK)
+                if (res->Error == GameActions::Status::Ok)
                 {
                     break;
                 }
@@ -1936,10 +1920,10 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             auto wallPlaceAction = WallPlaceAction(
                 selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
 
-            wallPlaceAction.SetCallback([](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+            wallPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
             });
             auto res = GameActions::Execute(&wallPlaceAction);
@@ -1967,7 +1951,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, selectedScenery, primaryColour, secondaryColour);
 
                 auto res = GameActions::Query(&sceneryPlaceAction);
-                if (res->Error == GA_ERROR::OK)
+                if (res->Error == GameActions::Status::Ok)
                 {
                     break;
                 }
@@ -1989,14 +1973,14 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, selectedScenery, primaryColour, secondaryColour);
-            sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+            sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                 }
                 else
                 {
-                    audio_play_sound_at_location(SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Error, { loc.x, loc.y, gSceneryPlaceZ });
                 }
             });
             auto res = GameActions::Execute(&sceneryPlaceAction);
@@ -2019,10 +2003,10 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 break;
             }
             auto bannerPlaceAction = BannerPlaceAction(loc, selectedScenery, bannerIndex, primaryColour);
-            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error == GA_ERROR::OK)
+            bannerPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error == GameActions::Status::Ok)
                 {
-                    audio_play_sound_at_location(SoundId::PlaceItem, result->Position);
+                    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
                     context_open_detail_window(WD_BANNER, bannerIndex);
                 }
             });
@@ -2113,7 +2097,7 @@ static void top_toolbar_tool_update_scenery_clear(const ScreenCoordsXY& screenPo
 
     auto action = GetClearAction();
     auto result = GameActions::Query(&action);
-    auto cost = (result->Error == GA_ERROR::OK ? result->Cost : MONEY32_UNDEFINED);
+    auto cost = (result->Error == GameActions::Status::Ok ? result->Cost : MONEY32_UNDEFINED);
     if (gClearSceneryCost != cost)
     {
         gClearSceneryCost = cost;
@@ -2378,10 +2362,10 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
             { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
         auto res = GameActions::Query(&waterLowerAction);
-        money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        money32 lowerCost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
         res = GameActions::Query(&waterRaiseAction);
-        money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        money32 raiseCost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
         if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
         {
@@ -2469,10 +2453,10 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y });
 
     auto res = GameActions::Query(&waterLowerAction);
-    money32 lowerCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    money32 lowerCost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
     res = GameActions::Query(&waterRaiseAction);
-    money32 raiseCost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+    money32 raiseCost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
 
     if (gWaterToolRaiseCost != raiseCost || gWaterToolLowerCost != lowerCost)
     {
@@ -2512,7 +2496,7 @@ static money32 try_place_ghost_scenery(
             smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
             auto res = GameActions::Execute(&smallSceneryPlaceAction);
             auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-            if (sspar == nullptr || res->Error != GA_ERROR::OK)
+            if (sspar == nullptr || res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
 
             gSceneryPlaceRotation = static_cast<uint16_t>(parameter_3 & 0xFF);
@@ -2544,8 +2528,8 @@ static money32 try_place_ghost_scenery(
             int32_t z = (parameter_2 & 0xFF) * COORDS_Z_STEP;
             auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ map_tile.x, map_tile.y, z }, entryIndex + 1);
             footpathSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            footpathSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-                if (result->Error != GA_ERROR::OK)
+            footpathSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+                if (result->Error != GameActions::Status::Ok)
                 {
                     return;
                 }
@@ -2553,7 +2537,7 @@ static money32 try_place_ghost_scenery(
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
             auto res = GameActions::Execute(&footpathSceneryPlaceAction);
-            if (res->Error != GA_ERROR::OK)
+            if (res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
 
             cost = res->Cost;
@@ -2571,7 +2555,7 @@ static money32 try_place_ghost_scenery(
             wallPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
-                if (result->Error != GA_ERROR::OK)
+                if (result->Error != GameActions::Status::Ok)
                     return;
 
                 gSceneryGhostPosition = { map_tile, result->tileElement->GetBaseZ() };
@@ -2581,7 +2565,7 @@ static money32 try_place_ghost_scenery(
             });
 
             auto res = GameActions::Execute(&wallPlaceAction);
-            if (res->Error != GA_ERROR::OK)
+            if (res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
             cost = res->Cost;
             break;
@@ -2600,7 +2584,7 @@ static money32 try_place_ghost_scenery(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&sceneryPlaceAction);
             auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
-            if (lspar == nullptr || res->Error != GA_ERROR::OK)
+            if (lspar == nullptr || res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
 
             gSceneryPlaceRotation = loc.direction;
@@ -2641,7 +2625,7 @@ static money32 try_place_ghost_scenery(
             bannerPlaceAction.SetFlags(
                 GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
             auto res = GameActions::Execute(&bannerPlaceAction);
-            if (res->Error != GA_ERROR::OK)
+            if (res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
 
             gSceneryGhostPosition = loc;
@@ -3021,7 +3005,7 @@ static money32 selection_raise_land(uint8_t flags)
             false);
         auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
                                                      : GameActions::Query(&landSmoothAction);
-        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
@@ -3031,7 +3015,7 @@ static money32 selection_raise_land(uint8_t flags)
         auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landRaiseAction)
                                                      : GameActions::Query(&landRaiseAction);
 
-        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -3054,7 +3038,7 @@ static money32 selection_lower_land(uint8_t flags)
             true);
         auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landSmoothAction)
                                                      : GameActions::Query(&landSmoothAction);
-        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     }
     else
     {
@@ -3064,7 +3048,7 @@ static money32 selection_lower_land(uint8_t flags)
         auto res = (flags & GAME_COMMAND_FLAG_APPLY) ? GameActions::Execute(&landLowerAction)
                                                      : GameActions::Query(&landLowerAction);
 
-        return res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
+        return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     }
 }
 
@@ -3459,6 +3443,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
         ToggleOption(DDIDX_INVENTIONS_LIST, STR_DEBUG_DROPDOWN_INVENTIONS_LIST),
         ToggleOption(DDIDX_SCENARIO_OPTIONS, STR_DEBUG_DROPDOWN_SCENARIO_OPTIONS),
+        ToggleOption(DDIDX_OBJECTIVE_OPTIONS, STR_CHEATS_MENU_OBJECTIVE_OPTIONS),
         Separator(),
         ToggleOption(DDIDX_ENABLE_SANDBOX_MODE, STR_ENABLE_SANDBOX_MODE),
         ToggleOption(DDIDX_DISABLE_CLEARANCE_CHECKS, STR_DISABLE_CLEARANCE_CHECKS),
@@ -3484,6 +3469,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
         dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
         dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
+        dropdown_set_disabled(DDIDX_OBJECTIVE_OPTIONS, true);
         dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
 
@@ -3522,6 +3508,9 @@ static void top_toolbar_cheats_menu_dropdown(int16_t dropdownIndex)
             break;
         case DDIDX_SCENARIO_OPTIONS:
             context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
+            break;
+        case DDIDX_OBJECTIVE_OPTIONS:
+            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
             break;
         case DDIDX_ENABLE_SANDBOX_MODE:
             CheatsSet(CheatType::SandboxMode, !gCheatsSandboxMode);

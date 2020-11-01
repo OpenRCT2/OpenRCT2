@@ -22,7 +22,7 @@
 #include "BannerRemoveAction.hpp"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActionResult)
+DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
@@ -51,27 +51,27 @@ public:
         stream << DS_TAG(_loc);
     }
 
-    GameActionResult::Ptr Query() const override
+    GameActions::Result::Ptr Query() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
 
         if (!LocationValid(_loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
         {
-            return MakeResult(GA_ERROR::NOT_OWNED, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REMOVE_FOOTPATH_FROM_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         TileElement* footpathElement = GetFootpathElement();
         if (footpathElement == nullptr)
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
         }
 
         res->Cost = GetRefundPrice(footpathElement);
@@ -79,9 +79,9 @@ public:
         return res;
     }
 
-    GameActionResult::Ptr Execute() const override
+    GameActions::Result::Ptr Execute() const override
     {
-        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
         res->Cost = 0;
         res->Expenditure = ExpenditureType::Landscaping;
         res->Position = { _loc.x + 16, _loc.y + 16, _loc.z };
@@ -97,7 +97,7 @@ public:
         {
             footpath_queue_chain_reset();
             auto bannerRes = RemoveBannersAtElement(_loc, footpathElement);
-            if (bannerRes->Error == GA_ERROR::OK)
+            if (bannerRes->Error == GameActions::Status::Ok)
             {
                 res->Cost += bannerRes->Cost;
             }
@@ -119,7 +119,7 @@ public:
         }
         else
         {
-            return MakeResult(GA_ERROR::INVALID_PARAMETERS, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_FOOTPATH_FROM_HERE);
         }
 
         res->Cost += GetRefundPrice(footpathElement);
@@ -167,7 +167,7 @@ private:
      *
      *  rct2: 0x006BA23E
      */
-    GameActionResult::Ptr RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
+    GameActions::Result::Ptr RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const
     {
         auto result = MakeResult();
         while (!(tileElement++)->IsLastForTile())
@@ -184,7 +184,7 @@ private:
             bannerRemoveAction.SetFlags(bannerFlags);
             auto res = GameActions::ExecuteNested(&bannerRemoveAction);
             // Ghost removal is free
-            if (res->Error == GA_ERROR::OK && !isGhost)
+            if (res->Error == GameActions::Status::Ok && !isGhost)
             {
                 result->Cost += res->Cost;
             }
