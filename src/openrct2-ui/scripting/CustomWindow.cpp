@@ -202,6 +202,8 @@ namespace OpenRCT2::Ui::Windows
             if (dukImage.type() == DukValue::Type::NUMBER)
             {
                 result.imageFrameBase = ImageId::FromUInt32(static_cast<uint32_t>(dukImage.as_int()));
+                result.imageFrameCount = 0;
+                result.imageFrameDuration = 0;
             }
             else if (dukImage.type() == DukValue::Type::OBJECT)
             {
