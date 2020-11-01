@@ -153,6 +153,8 @@ struct rct_vehicle_info
     uint8_t bank_rotation;       // 0x08
 };
 
+struct SoundIdVolume;
+
 struct Vehicle : SpriteBase
 {
     enum class Type : uint8_t
@@ -396,6 +398,7 @@ private:
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
+    SoundIdVolume sub_6D7A97(Ride* curRide);
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();

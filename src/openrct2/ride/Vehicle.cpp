@@ -1945,6 +1945,22 @@ static SoundIdVolume sub_6D7AC0(
     return { currentSoundId, currentVolume };
 }
 
+SoundIdVolume Vehicle::sub_6D7A97(Ride* curRide)
+{
+    SoundIdVolume resultSounds{};
+    std::cout << " Call function";
+    scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    if (curRide->type < std::size(RideTypeDescriptors))
+    {
+        // Get lift hill sound
+        resultSounds.id = RideTypeDescriptors[curRide->type].LiftData.sound_id;
+        resultSounds.volume = 243;
+        if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
+            resultSounds.id = OpenRCT2::Audio::SoundId::Null;
+    }
+    return resultSounds;
+}
+
 /**
  *
  *  rct2: 0x006D77F2
@@ -5506,8 +5522,9 @@ void Vehicle::UpdateSound()
     uint8_t frictionVolume = 255;
     auto frictionId = OpenRCT2::Audio::SoundId::Null;
     // bh screamVolume should be set before hand
-    auto screamId = OpenRCT2::Audio::SoundId::Null;
-    uint8_t screamVolume = 255;
+    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    //auto screamId = OpenRCT2::Audio::SoundId::Null;
+    //uint8_t screamVolume = 255;
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -5527,58 +5544,73 @@ void Vehicle::UpdateSound()
         frictionVolume = std::min(208 + (ecx & 0xFF), 255);
     }
 
+    std::cout << "Begin sound switch: ";
     switch (vehicleEntry->sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            screamId = scream_sound_id;
+            std::cout << " whistle";
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    screamSound = sub_6D7A97(curRide); // goto loc_6D7A97;
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
-                    screamVolume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                screamId = OpenRCT2::Audio::SoundId::Null;
-            screamVolume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         case SOUND_RANGE_BELL:
-            screamId = scream_sound_id;
+            std::cout << " bell";
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    sub_6D7A97(curRide); // goto loc_6D7A97;
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
-                    screamVolume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                screamId = OpenRCT2::Audio::SoundId::Null;
-            screamVolume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         default:
+            std::cout << " default";
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
-                screamId = UpdateScreamSound();
-                if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                    screamId = OpenRCT2::Audio::SoundId::Null;
-                else if (screamId == OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                screamSound.id = UpdateScreamSound();
+                if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
+                else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
+                {
+                    sub_6D7A97(curRide);//goto loc_6D7A97;
+                    break;
+                }
                 break;
             }
 
+            /*
         loc_6D7A97:
+            std::cout << " went to loc";
             scream_sound_id = OpenRCT2::Audio::SoundId::Null;
             if (curRide->type < std::size(RideTypeDescriptors))
             {
@@ -5588,7 +5620,9 @@ void Vehicle::UpdateSound()
                 if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
                     screamId = OpenRCT2::Audio::SoundId::Null;
             }
+            */
     }
+    std::cout << " - end switch\n";
 
     // Friction sound
     auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionId, frictionVolume);
@@ -5596,7 +5630,7 @@ void Vehicle::UpdateSound()
     sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamId, screamVolume);
+    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
     sound2_id = soundIdVolume.id;
     sound2_volume = soundIdVolume.volume;
 
