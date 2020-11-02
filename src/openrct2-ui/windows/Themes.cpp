@@ -511,7 +511,7 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
@@ -656,7 +656,7 @@ void window_themes_scrollmousedown(rct_window* w, int32_t scrollIndex, const Scr
                         + 12;
 
                     uint8_t colour = theme_get_colour(wc, _colour_index_2);
-                    window_dropdown_show_colour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
+                    WindowDropdownShowColour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
                     widget_invalidate(w, WIDX_THEMES_LIST);
                 }
             }

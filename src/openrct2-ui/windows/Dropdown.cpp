@@ -108,7 +108,7 @@ static rct_window_event_list window_dropdown_events([](auto& events)
  * @param num_items (bx)
  * @param colour (al)
  */
-void window_dropdown_show_text(const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
+void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items)
 {
     int32_t string_width, max_string_width;
     char buffer[256];
@@ -123,7 +123,7 @@ void window_dropdown_show_text(const ScreenCoordsXY& screenPos, int32_t extray, 
         max_string_width = std::max(string_width, max_string_width);
     }
 
-    window_dropdown_show_text_custom_width(screenPos, extray, colour, 0, flags, num_items, max_string_width + 3);
+    WindowDropdownShowTextCustomWidth(screenPos, extray, colour, 0, flags, num_items, max_string_width + 3);
 }
 
 /**
@@ -138,7 +138,7 @@ void window_dropdown_show_text(const ScreenCoordsXY& screenPos, int32_t extray, 
  * @param colour (al)
  * @param custom_height (ah) requires flag set as well
  */
-void window_dropdown_show_text_custom_width(
+void WindowDropdownShowTextCustomWidth(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
     int32_t width)
 {
@@ -148,7 +148,7 @@ void window_dropdown_show_text_custom_width(
     if (flags & Dropdown::Flag::StayOpen)
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
-    window_dropdown_close();
+    WindowDropdownClose();
 
     // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
@@ -214,7 +214,7 @@ void window_dropdown_show_text_custom_width(
  * @param itemHeight (ah)
  * @param numColumns (bl)
  */
-void window_dropdown_show_image(
+void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns)
 {
@@ -226,7 +226,7 @@ void window_dropdown_show_image(
         input_set_flag(INPUT_FLAG_DROPDOWN_STAY_OPEN, true);
 
     // Close existing dropdown
-    window_dropdown_close();
+    WindowDropdownClose();
 
     // Set and calculate num items, rows and columns
     _dropdown_item_width = itemWidth;
@@ -280,7 +280,7 @@ void window_dropdown_show_image(
     input_set_state(InputState::DropdownActive);
 }
 
-void window_dropdown_close()
+void WindowDropdownClose()
 {
     window_close_by_class(WC_DROPDOWN);
 }
@@ -383,7 +383,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
  * New function based on 6e914e
  * returns -1 if index is invalid
  */
-int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w)
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 {
     int32_t top = loc.y - w->windowPos.y - 2;
     if (top < 0)
@@ -419,7 +419,7 @@ int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w)
 /**
  *  rct2: 0x006ED43D
  */
-void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
+void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour)
 {
     int32_t defaultIndex = -1;
     // Set items
@@ -433,7 +433,7 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
     }
 
     // Show dropdown
-    window_dropdown_show_image(
+    WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
         Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
@@ -442,7 +442,7 @@ void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t drop
     gDropdownDefaultIndex = defaultIndex;
 }
 
-uint32_t dropdown_get_appropriate_image_dropdown_items_per_row(uint32_t numItems)
+uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
     return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
 }

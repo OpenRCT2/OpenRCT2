@@ -361,7 +361,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                 gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
@@ -378,7 +378,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                     gDropdownItemsArgs[i] = SpeedNames[i];
                 }
 
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                     Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
@@ -393,7 +393,7 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
                     gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
                 }
 
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                     Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 

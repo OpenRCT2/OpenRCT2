@@ -592,7 +592,7 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
                 gDropdownItemsArgs[DDIX_FILTER_NONSELECTED] = STR_NON_SELECTED_ONLY;
             }
 
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
                 w->colours[widget->colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
 

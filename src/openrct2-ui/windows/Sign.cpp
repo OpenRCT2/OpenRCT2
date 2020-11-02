@@ -220,10 +220,10 @@ static void window_sign_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->list_information_type));
+            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->list_information_type));
             break;
         case WIDX_TEXT_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->var_492));
+            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), static_cast<uint8_t>(w->var_492));
             break;
     }
 }

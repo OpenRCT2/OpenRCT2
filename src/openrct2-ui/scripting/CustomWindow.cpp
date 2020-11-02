@@ -519,7 +519,7 @@ namespace OpenRCT2::Ui::Windows
                     auto sz = items[i].c_str();
                     std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
                 }
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
                     w->colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
             }

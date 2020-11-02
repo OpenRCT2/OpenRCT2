@@ -481,7 +481,7 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                     numItems += 2;
                 }
             }
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
                 Dropdown::Flag::StayOpen, numItems);
             break;
@@ -3300,7 +3300,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
     }
 #endif
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, i);
     gDropdownDefaultIndex = DDIDX_SHOW_MAP;
 }
@@ -3361,7 +3361,7 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[2] = STR_SPEED_FAST;
     gDropdownItemsArgs[3] = STR_SPEED_TURBO;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         num_items);
 
@@ -3409,7 +3409,7 @@ static void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
     gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, 2);
 
     gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
@@ -3453,7 +3453,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 
     SetItems(items);
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_CHEATS_COUNT);
 
@@ -3531,7 +3531,7 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
         Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
@@ -3544,7 +3544,7 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
     gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
@@ -3630,7 +3630,7 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 
     SetItems(items);
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 

@@ -1671,7 +1671,7 @@ static void window_options_controls_mousedown(rct_window* w, rct_widgetindex wid
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
@@ -1797,7 +1797,7 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
             }
 
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
                 Dropdown::Flag::StayOpen, num_items);
 
@@ -1811,7 +1811,7 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
@@ -2317,7 +2317,7 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
 // helper function, all dropdown boxes have similar properties
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
         Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 }

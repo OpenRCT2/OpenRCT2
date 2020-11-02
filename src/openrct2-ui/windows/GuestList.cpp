@@ -429,7 +429,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
         case WIDX_PAGE_DROPDOWN_BUTTON:
             widget = &w->widgets[widgetIndex - 1];
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, _window_guest_list_num_pages, widget->width() - 3);
 
@@ -451,7 +451,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
                 gDropdownItemsArgs[i] = viewNames[i];
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 

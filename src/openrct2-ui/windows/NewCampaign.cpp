@@ -227,7 +227,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                         numItems++;
                     }
 
-                    window_dropdown_show_text_custom_width(
+                    WindowDropdownShowTextCustomWidth(
                         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
                         dropdownWidget->height() + 1, w->colours[1], 0, Dropdown::Flag::StayOpen, numItems,
                         dropdownWidget->width() - 3);
@@ -257,7 +257,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                     }
                 }
 
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
                     dropdownWidget->height() + 1, w->colours[1], 0, Dropdown::Flag::StayOpen, numItems,
                     dropdownWidget->width() - 3);

@@ -40,20 +40,19 @@ extern int32_t gDropdownLastColourHover;
 extern int32_t gDropdownHighlightedIndex;
 extern int32_t gDropdownDefaultIndex;
 
-void window_dropdown_show_text(
-    const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items);
-void window_dropdown_show_text_custom_width(
+void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items);
+void WindowDropdownShowTextCustomWidth(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t custom_height, uint8_t flags, size_t num_items,
     int32_t width);
-void window_dropdown_show_image(
+void WindowDropdownShowImage(
     int32_t x, int32_t y, int32_t extray, uint8_t colour, uint8_t flags, int32_t numItems, int32_t itemWidth,
     int32_t itemHeight, int32_t numColumns);
-void window_dropdown_close();
-int32_t dropdown_index_from_point(const ScreenCoordsXY& loc, rct_window* w);
-void window_dropdown_show_colour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
-void window_dropdown_show_colour_available(
+void WindowDropdownClose();
+int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w);
+void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour);
+void WindowDropdownShowColourAvailable(
     rct_window* w, rct_widget* widget, uint8_t dropdownColour, uint8_t selectedColour, uint32_t availableColours);
-uint32_t dropdown_get_appropriate_image_dropdown_items_per_row(uint32_t numItems);
+uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 
 namespace Dropdown
 {

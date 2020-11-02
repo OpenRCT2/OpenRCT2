@@ -520,7 +520,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
 
     auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
     int32_t extray = widget->height() + 1;
-    window_dropdown_show_text(dropdownPos, extray, w->colours[1], 0, 2);
+    WindowDropdownShowText(dropdownPos, extray, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
 
     const auto peep = GetStaff(w);
@@ -1440,7 +1440,7 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
     int32_t extray = widget->height() + 1;
     int32_t width = widget->width() - 3;
-    window_dropdown_show_text_custom_width(dropdownPos, extray, w->colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, width);
+    WindowDropdownShowTextCustomWidth(dropdownPos, extray, w->colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, width);
 
     // See above note.
     if (checkedIndex != -1)

@@ -200,7 +200,7 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
+            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
             break;
         case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
@@ -213,7 +213,7 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             // Switch to the dropdown box widget.
             widget--;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { widget->left + w->windowPos.x, widget->top + w->windowPos.y }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, 13, widget->width() - 3);
 

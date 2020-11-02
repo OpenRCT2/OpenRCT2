@@ -3362,7 +3362,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
         }
     }
 
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 0,
         _numCurrentPossibleRideConfigurations, widget->width());
 

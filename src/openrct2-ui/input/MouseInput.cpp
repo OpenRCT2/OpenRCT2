@@ -1232,7 +1232,7 @@ void input_state_widget_pressed(
 
                     if (w->classification == WC_DROPDOWN)
                     {
-                        dropdown_index = dropdown_index_from_point(screenCoords, w);
+                        dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                         dropdownCleanup = dropdown_index == -1
                             || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
                             || gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString;
@@ -1348,7 +1348,7 @@ void input_state_widget_pressed(
 
     if (w->classification == WC_DROPDOWN)
     {
-        int32_t dropdown_index = dropdown_index_from_point(screenCoords, w);
+        int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
         if (dropdown_index == -1)
         {
             return;

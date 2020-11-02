@@ -177,7 +177,7 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
-        window_dropdown_show_text(
+        WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, TRANSLUCENT(w->colours[0]),
             Dropdown::Flag::StayOpen, 5);
     }

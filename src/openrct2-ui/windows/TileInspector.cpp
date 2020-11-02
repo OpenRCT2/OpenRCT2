@@ -1092,7 +1092,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_WALL_FLAT;
                     gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
                     gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
-                    window_dropdown_show_text_custom_width(
+                    WindowDropdownShowTextCustomWidth(
                         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                         Dropdown::Flag::StayOpen, 3, widget->width() - 3);
 

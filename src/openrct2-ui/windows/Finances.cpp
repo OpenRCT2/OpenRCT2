@@ -1200,7 +1200,7 @@ static void window_finances_research_mousedown(rct_window* w, rct_widgetindex wi
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
     }
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, Dropdown::Flag::StayOpen, 4, dropdownWidget->width() - 3);
 
