@@ -5015,10 +5015,11 @@ static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
 }
 
 /**
- *
+ * Opens the construction window prompting to construct a missing entrance or exit.
+ * This will also the screen to the first station missing the entrance or exit.
  *  rct2: 0x006B51C0
  */
-static void loc_6B51C0(const Ride* ride)
+void Ride::ConstructMissingEntranceOrExit() const
 {
     rct_window* w = window_get_main();
     if (w == nullptr)
@@ -5028,18 +5029,18 @@ static void loc_6B51C0(const Ride* ride)
     int32_t i;
     for (i = 0; i < MAX_STATIONS; i++)
     {
-        if (ride->stations[i].Start.isNull())
+        if (stations[i].Start.isNull())
             continue;
 
-        if (ride_get_entrance_location(ride, i).isNull())
+        if (ride_get_entrance_location(this, i).isNull())
         {
-            entranceOrExit = 0;
+            entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
             break;
         }
 
-        if (ride_get_exit_location(ride, i).isNull())
+        if (ride_get_exit_location(this, i).isNull())
         {
-            entranceOrExit = 1;
+            entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
             break;
         }
     }
@@ -5047,14 +5048,14 @@ static void loc_6B51C0(const Ride* ride)
     if (entranceOrExit == -1)
         return;
 
-    if (ride->type != RIDE_TYPE_MAZE)
+    if (type != RIDE_TYPE_MAZE)
     {
-        auto location = ride->stations[i].GetStart();
+        auto location = stations[i].GetStart();
         window_scroll_to_location(w, location);
 
         CoordsXYE trackElement;
-        ride_try_get_origin_element(ride, &trackElement);
-        ride_find_track_gap(ride, &trackElement, &trackElement);
+        ride_try_get_origin_element(this, &trackElement);
+        ride_find_track_gap(this, &trackElement, &trackElement);
         int32_t ok = ride_modify(&trackElement);
         if (ok == 0)
         {
@@ -5063,7 +5064,7 @@ static void loc_6B51C0(const Ride* ride)
 
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w != nullptr)
-            window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE + entranceOrExit);
+            window_event_mouse_up_call(w, entranceOrExit);
     }
 }
 
@@ -5140,7 +5141,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
 
     if (newStatus != RIDE_STATUS_SIMULATING && !ride_check_for_entrance_exit(id))
     {
-        loc_6B51C0(this);
+        ConstructMissingEntranceOrExit();
         return false;
     }
 
@@ -5273,7 +5274,7 @@ bool Ride::Open(int32_t goingToBeOpen, bool isApplying)
 
     if (!ride_check_for_entrance_exit(id))
     {
-        loc_6B51C0(this);
+        ConstructMissingEntranceOrExit();
         return false;
     }
 

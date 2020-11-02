@@ -377,6 +377,7 @@ private:
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
     money32 CalculateIncomePerHour() const;
+    void ConstructMissingEntranceOrExit() const;
 
 public:
     bool CanBreakDown() const;
