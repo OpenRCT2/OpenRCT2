@@ -776,7 +776,7 @@ static void window_map_invalidate(rct_window* w)
                 for (i = 0; i < 4; i++)
                     w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
 
-                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(_landRightsToolSize);
+                w->widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
             }
         }
         else

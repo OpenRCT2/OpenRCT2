@@ -204,7 +204,7 @@ static void window_scenery_scatter_invalidate(rct_window* w)
     }
 
     // Update the preview image (for tool sizes up to 7)
-    window_scenery_scatter_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gWindowSceneryScatterSize);
+    window_scenery_scatter_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
 }
 
 static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)

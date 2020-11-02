@@ -44,7 +44,7 @@ ObjectEntryIndex gLandToolTerrainEdge;
 money32 gWaterToolRaiseCost;
 money32 gWaterToolLowerCost;
 
-uint32_t land_tool_size_to_sprite_index(uint16_t size)
+uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 {
     if (size <= MAX_TOOL_SIZE_WITH_SPRITE)
     {
@@ -56,7 +56,7 @@ uint32_t land_tool_size_to_sprite_index(uint16_t size)
     }
 }
 
-void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType)
+void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 
@@ -89,7 +89,7 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
     gDropdownDefaultIndex = defaultIndex;
 }
 
-void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType)
+void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType)
 {
     auto& objManager = GetContext()->GetObjectManager();
 

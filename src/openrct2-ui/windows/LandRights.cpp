@@ -227,7 +227,7 @@ static void window_land_rights_invalidate(rct_window* w)
                                                                           : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
     // Update the preview image
-    window_land_rights_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_land_rights_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 
     // Disable ownership and/or construction buying functions if there are no tiles left for sale
     if (gLandRemainingOwnershipSales == 0)
