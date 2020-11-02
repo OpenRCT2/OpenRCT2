@@ -13,29 +13,32 @@
 #include <openrct2/common.h>
 #include <openrct2/localisation/StringIds.h>
 
-constexpr const rct_string_id DROPDOWN_SEPARATOR = 0;
-constexpr const rct_string_id DROPDOWN_FORMAT_COLOUR_PICKER = 0xFFFE;
-constexpr const rct_string_id DROPDOWN_FORMAT_LAND_PICKER = 0xFFFF;
-constexpr const int32_t DROPDOWN_ITEMS_MAX_SIZE = 512;
-
-enum
+namespace Dropdown
 {
-    DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
-    DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
-};
+    constexpr const rct_string_id SeparatorString = 0;
+    constexpr const rct_string_id FormatColourPicker = 0xFFFE;
+    constexpr const rct_string_id FormatLandPicker = 0xFFFF;
+    constexpr const int32_t ItemsMaxSize = 512;
+
+    enum Flag
+    {
+        CustomHeight = (1 << 6),
+        StayOpen = (1 << 7)
+    };
+
+    bool IsChecked(int32_t index);
+    bool IsDisabled(int32_t index);
+    void SetChecked(int32_t index, bool value);
+    void SetDisabled(int32_t index, bool value);
+} // namespace Dropdown
 
 extern int32_t gDropdownNumItems;
-extern rct_string_id gDropdownItemsFormat[DROPDOWN_ITEMS_MAX_SIZE];
-extern int64_t gDropdownItemsArgs[DROPDOWN_ITEMS_MAX_SIZE];
+extern rct_string_id gDropdownItemsFormat[Dropdown::ItemsMaxSize];
+extern int64_t gDropdownItemsArgs[Dropdown::ItemsMaxSize];
 extern bool gDropdownIsColour;
 extern int32_t gDropdownLastColourHover;
 extern int32_t gDropdownHighlightedIndex;
 extern int32_t gDropdownDefaultIndex;
-
-bool dropdown_is_checked(int32_t index);
-bool dropdown_is_disabled(int32_t index);
-void dropdown_set_checked(int32_t index, bool value);
-void dropdown_set_disabled(int32_t index, bool value);
 
 void window_dropdown_show_text(
     const ScreenCoordsXY& screenPos, int32_t extray, uint8_t colour, uint8_t flags, size_t num_items);
@@ -75,7 +78,7 @@ namespace Dropdown
 
     constexpr Item Separator()
     {
-        return Item(-1, DROPDOWN_SEPARATOR, STR_EMPTY);
+        return Item(-1, Dropdown::SeparatorString, STR_EMPTY);
     }
 
     template<int N> void SetItems(const Dropdown::Item (&items)[N])

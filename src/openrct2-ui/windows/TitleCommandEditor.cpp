@@ -363,9 +363,9 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
 
             window_dropdown_show_text_custom_width(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+                Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-            dropdown_set_checked(get_command_info_index(command.Type), true);
+            Dropdown::SetChecked(get_command_info_index(command.Type), true);
             break;
         }
         case WIDX_INPUT_DROPDOWN:
@@ -380,9 +380,9 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
 
                 window_dropdown_show_text_custom_width(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+                    Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                dropdown_set_checked(command.Speed - 1, true);
+                Dropdown::SetChecked(command.Speed - 1, true);
             }
             else if (command.Type == TITLE_SCRIPT_LOAD)
             {
@@ -395,9 +395,9 @@ static void window_title_command_editor_mousedown(rct_window* w, rct_widgetindex
 
                 window_dropdown_show_text_custom_width(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+                    Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
-                dropdown_set_checked(command.SaveIndex, true);
+                Dropdown::SetChecked(command.SaveIndex, true);
             }
             break;
     }

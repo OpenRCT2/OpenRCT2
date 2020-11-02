@@ -513,9 +513,9 @@ static void window_themes_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
 
             window_dropdown_show_text_custom_width(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
             break;
         case WIDX_THEMES_RCT1_RIDE_LIGHTS:
             if (theme_get_flags() & UITHEME_FLAG_PREDEFINED)

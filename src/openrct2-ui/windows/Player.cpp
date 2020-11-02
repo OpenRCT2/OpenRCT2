@@ -208,7 +208,7 @@ static void window_player_overview_show_group_dropdown(rct_window* w, rct_widget
         gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
 
-    dropdown_set_checked(network_get_group_index(network_get_player_group(player)), true);
+    Dropdown::SetChecked(network_get_group_index(network_get_player_group(player)), true);
 }
 
 void window_player_overview_close(rct_window* w)

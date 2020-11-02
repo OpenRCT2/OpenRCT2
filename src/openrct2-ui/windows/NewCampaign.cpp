@@ -217,7 +217,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                 if (window_new_campaign_shop_items[0] != 255)
                 {
                     int32_t numItems = 0;
-                    for (int32_t i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++)
+                    for (int32_t i = 0; i < Dropdown::ItemsMaxSize; i++)
                     {
                         if (window_new_campaign_shop_items[i] == 255)
                             break;
@@ -229,7 +229,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
 
                     window_dropdown_show_text_custom_width(
                         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                        dropdownWidget->height() + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                        dropdownWidget->height() + 1, w->colours[1], 0, Dropdown::Flag::StayOpen, numItems,
                         dropdownWidget->width() - 3);
                 }
             }
@@ -259,7 +259,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
 
                 window_dropdown_show_text_custom_width(
                     { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                    dropdownWidget->height() + 1, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems,
+                    dropdownWidget->height() + 1, w->colours[1], 0, Dropdown::Flag::StayOpen, numItems,
                     dropdownWidget->width() - 3);
             }
             break;
@@ -412,10 +412,10 @@ void WindowCampaignRefreshRides()
     }
 
     // Take top 128 most valuable rides
-    if (window_new_campaign_rides.size() > DROPDOWN_ITEMS_MAX_SIZE)
+    if (window_new_campaign_rides.size() > Dropdown::ItemsMaxSize)
     {
         qsort(window_new_campaign_rides.data(), window_new_campaign_rides.size(), sizeof(ride_id_t), ride_value_compare);
-        window_new_campaign_rides.resize(DROPDOWN_ITEMS_MAX_SIZE);
+        window_new_campaign_rides.resize(Dropdown::ItemsMaxSize);
     }
 
     // Sort rides by name

@@ -3370,7 +3370,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     {
         if (_currentDisabledSpecialTrackPieces & (1 << i))
         {
-            dropdown_set_disabled(i, true);
+            Dropdown::SetDisabled(i, true);
         }
     }
     gDropdownDefaultIndex = defaultIndex;

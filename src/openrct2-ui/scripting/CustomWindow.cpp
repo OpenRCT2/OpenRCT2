@@ -511,7 +511,7 @@ namespace OpenRCT2::Ui::Windows
                 widget--;
                 auto selectedIndex = widgetDesc->SelectedIndex;
                 const auto& items = widgetDesc->Items;
-                const auto numItems = std::min<size_t>(items.size(), DROPDOWN_ITEMS_MAX_SIZE);
+                const auto numItems = std::min<size_t>(items.size(), Dropdown::ItemsMaxSize);
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = selectedIndex == static_cast<int32_t>(i) ? STR_OPTIONS_DROPDOWN_ITEM_SELECTED
@@ -521,7 +521,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 window_dropdown_show_text_custom_width(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
-                    w->colours[widget->colour], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+                    w->colours[widget->colour], 0, Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
             }
             else if (widgetDesc->Type == "spinner")
             {

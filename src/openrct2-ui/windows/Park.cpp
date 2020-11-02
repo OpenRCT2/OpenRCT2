@@ -557,12 +557,12 @@ static void window_park_entrance_mousedown(rct_window* w, rct_widgetindex widget
         if (park_is_open())
         {
             gDropdownDefaultIndex = 0;
-            dropdown_set_checked(1, true);
+            Dropdown::SetChecked(1, true);
         }
         else
         {
             gDropdownDefaultIndex = 1;
-            dropdown_set_checked(0, true);
+            Dropdown::SetChecked(0, true);
         }
     }
 }

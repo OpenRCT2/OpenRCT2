@@ -532,7 +532,7 @@ void window_staff_overview_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     // Disable clear patrol area if no area is set.
     if (gStaffModes[peep->StaffId] != StaffMode::Patrol)
     {
-        dropdown_set_disabled(1, true);
+        Dropdown::SetDisabled(1, true);
     }
 }
 
@@ -1440,12 +1440,12 @@ void window_staff_options_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
     int32_t extray = widget->height() + 1;
     int32_t width = widget->width() - 3;
-    window_dropdown_show_text_custom_width(dropdownPos, extray, w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numCostumes, width);
+    window_dropdown_show_text_custom_width(dropdownPos, extray, w->colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, width);
 
     // See above note.
     if (checkedIndex != -1)
     {
-        dropdown_set_checked(checkedIndex, true);
+        Dropdown::SetChecked(checkedIndex, true);
     }
 }
 

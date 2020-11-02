@@ -485,8 +485,8 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
     }
     window_dropdown_show_text_custom_width(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
-    dropdown_set_checked(static_cast<uint8_t>(gClimate), true);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
+    Dropdown::SetChecked(static_cast<uint8_t>(gClimate), true);
 }
 
 /**
@@ -1176,14 +1176,14 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
 
             window_dropdown_show_text_custom_width(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->width() - 3);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
             if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                dropdown_set_checked(2, true);
+                Dropdown::SetChecked(2, true);
             else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                dropdown_set_checked(0, true);
+                Dropdown::SetChecked(0, true);
             else
-                dropdown_set_checked(1, true);
+                Dropdown::SetChecked(1, true);
 
             break;
         case WIDX_CLIMATE_DROPDOWN:

@@ -594,20 +594,20 @@ void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex wid
 
             window_dropdown_show_text(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
-                w->colours[widget->colour], DROPDOWN_FLAG_STAY_OPEN, _numSourceGameItems + numSelectionItems);
+                w->colours[widget->colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
 
             for (int32_t i = 0; i < _numSourceGameItems; i++)
             {
                 if (_filter_flags & (1 << i))
                 {
-                    dropdown_set_checked(i, true);
+                    Dropdown::SetChecked(i, true);
                 }
             }
 
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
             {
-                dropdown_set_checked(DDIX_FILTER_SELECTED, _FILTER_SELECTED != 0);
-                dropdown_set_checked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED != 0);
+                Dropdown::SetChecked(DDIX_FILTER_SELECTED, _FILTER_SELECTED != 0);
+                Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED != 0);
             }
             break;
     }

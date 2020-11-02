@@ -300,11 +300,11 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
-        dropdown_set_checked(network_get_group_index(network_get_default_group()), true);
+        Dropdown::SetChecked(network_get_group_index(network_get_default_group()), true);
     }
     else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
     {
-        dropdown_set_checked(network_get_group_index(_selectedGroup), true);
+        Dropdown::SetChecked(network_get_group_index(_selectedGroup), true);
     }
 }
 
