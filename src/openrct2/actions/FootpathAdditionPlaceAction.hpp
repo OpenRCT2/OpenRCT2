@@ -22,15 +22,15 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathSceneryPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathAdditionPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_ADDITION, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
     ObjectEntryIndex _pathItemType{};
 
 public:
-    FootpathSceneryPlaceAction() = default;
-    FootpathSceneryPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
+    FootpathAdditionPlaceAction() = default;
+    FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
         : _loc(loc)
         , _pathItemType(pathItemType)
     {

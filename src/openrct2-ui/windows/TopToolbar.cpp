@@ -29,7 +29,7 @@
 #include <openrct2/actions/BannerPlaceAction.hpp>
 #include <openrct2/actions/BannerSetColourAction.hpp>
 #include <openrct2/actions/ClearAction.hpp>
-#include <openrct2/actions/FootpathSceneryPlaceAction.hpp>
+#include <openrct2/actions/FootpathAdditionPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LandSmoothAction.hpp>
@@ -1866,16 +1866,16 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             if (gridPos.isNull())
                 return;
 
-            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ gridPos, z }, selectedScenery + 1);
+            auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ gridPos, z }, selectedScenery + 1);
 
-            footpathSceneryPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+            footpathAdditionPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     return;
                 }
                 OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
             });
-            auto res = GameActions::Execute(&footpathSceneryPlaceAction);
+            auto res = GameActions::Execute(&footpathAdditionPlaceAction);
             break;
         }
         case SCENERY_TYPE_WALL:
@@ -2526,9 +2526,9 @@ static money32 try_place_ghost_scenery(
             // Path Bits
             // 6e265b
             int32_t z = (parameter_2 & 0xFF) * COORDS_Z_STEP;
-            auto footpathSceneryPlaceAction = FootpathSceneryPlaceAction({ map_tile.x, map_tile.y, z }, entryIndex + 1);
-            footpathSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            footpathSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ map_tile.x, map_tile.y, z }, entryIndex + 1);
+            footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+            footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                 {
                     return;
@@ -2536,7 +2536,7 @@ static money32 try_place_ghost_scenery(
                 gSceneryGhostPosition = { map_tile, static_cast<int32_t>((parameter_2 & 0xFF) * COORDS_Z_STEP) };
                 gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
             });
-            auto res = GameActions::Execute(&footpathSceneryPlaceAction);
+            auto res = GameActions::Execute(&footpathAdditionPlaceAction);
             if (res->Error != GameActions::Status::Ok)
                 return MONEY32_UNDEFINED;
 

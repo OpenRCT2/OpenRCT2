@@ -16,11 +16,11 @@
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "CustomAction.hpp"
+#include "FootpathAdditionPlaceAction.hpp"
+#include "FootpathAdditionRemoveAction.hpp"
 #include "FootpathPlaceAction.hpp"
 #include "FootpathPlaceFromTrackAction.hpp"
 #include "FootpathRemoveAction.hpp"
-#include "FootpathSceneryPlaceAction.hpp"
-#include "FootpathSceneryRemoveAction.hpp"
 #include "GameAction.h"
 #include "GuestSetFlagsAction.hpp"
 #include "GuestSetNameAction.hpp"
@@ -103,8 +103,8 @@ namespace GameActions
         Register<FootpathPlaceAction>();
         Register<FootpathPlaceFromTrackAction>();
         Register<FootpathRemoveAction>();
-        Register<FootpathSceneryPlaceAction>();
-        Register<FootpathSceneryRemoveAction>();
+        Register<FootpathAdditionPlaceAction>();
+        Register<FootpathAdditionRemoveAction>();
         Register<GuestSetNameAction>();
         Register<MazePlaceTrackAction>();
         Register<MazeSetTrackAction>();

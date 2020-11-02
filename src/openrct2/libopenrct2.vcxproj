@@ -65,8 +65,8 @@
     <ClInclude Include="actions\FootpathPlaceAction.hpp" />
     <ClInclude Include="actions\FootpathPlaceFromTrackAction.hpp" />
     <ClInclude Include="actions\FootpathRemoveAction.hpp" />
-    <ClInclude Include="actions\FootpathSceneryPlaceAction.hpp" />
-    <ClInclude Include="actions\FootpathSceneryRemoveAction.hpp" />
+    <ClInclude Include="actions\FootpathAdditionPlaceAction.hpp" />
+    <ClInclude Include="actions\FootpathAdditionRemoveAction.hpp" />
     <ClInclude Include="actions\GameAction.h" />
     <ClInclude Include="actions\GuestSetFlagsAction.hpp" />
     <ClInclude Include="actions\GuestSetNameAction.hpp" />

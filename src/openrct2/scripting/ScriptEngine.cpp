@@ -43,7 +43,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 7;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 8;
 
 struct ExpressionStringifier final
 {
@@ -963,8 +963,8 @@ const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
     { "footpathplace", GAME_COMMAND_PLACE_PATH },
     { "footpathplacefromtrack", GAME_COMMAND_PLACE_PATH_FROM_TRACK },
     { "footpathremove", GAME_COMMAND_REMOVE_PATH },
-    { "footpathsceneryplace", GAME_COMMAND_PLACE_FOOTPATH_SCENERY },
-    { "footpathsceneryremove", GAME_COMMAND_REMOVE_FOOTPATH_SCENERY },
+    { "footpathadditionplace", GAME_COMMAND_PLACE_FOOTPATH_ADDITION },
+    { "footpathadditionremove", GAME_COMMAND_REMOVE_FOOTPATH_ADDITION },
     { "guestsetflags", GAME_COMMAND_GUEST_SET_FLAGS },
     { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
     { "landbuyrights", GAME_COMMAND_BUY_LAND_RIGHTS },

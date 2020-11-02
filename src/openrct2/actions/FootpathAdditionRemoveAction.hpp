@@ -21,15 +21,15 @@
 #include "../world/Wall.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathSceneryRemoveAction, GAME_COMMAND_REMOVE_FOOTPATH_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathAdditionRemoveAction, GAME_COMMAND_REMOVE_FOOTPATH_ADDITION, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;
 
 public:
-    FootpathSceneryRemoveAction() = default;
+    FootpathAdditionRemoveAction() = default;
 
-    FootpathSceneryRemoveAction(const CoordsXYZ& loc)
+    FootpathAdditionRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
     }

@@ -1,5 +1,6 @@
 0.3.2+ (in development)
 ------------------------------------------------------------------------
+- Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences
 - Fix: [#13334] Uninitialised variables in CustomTabDesc
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface
 

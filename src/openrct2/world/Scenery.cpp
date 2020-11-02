@@ -13,7 +13,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../actions/BannerRemoveAction.hpp"
-#include "../actions/FootpathSceneryRemoveAction.hpp"
+#include "../actions/FootpathAdditionRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.hpp"
 #include "../actions/WallRemoveAction.hpp"
@@ -190,9 +190,9 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)
                 continue;
 
-            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction(gSceneryGhostPosition);
-            footpathSceneryRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
-            GameActions::Execute(&footpathSceneryRemoveAction);
+            auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction(gSceneryGhostPosition);
+            footpathAdditionRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+            GameActions::Execute(&footpathAdditionRemoveAction);
             break;
         } while (!(tileElement++)->IsLastForTile());
     }
