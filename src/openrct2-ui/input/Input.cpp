@@ -105,7 +105,7 @@ static void GameHandleKeyScroll()
     {
         window_unfollow_sprite(mainWindow);
     }
-    input_scroll_viewport(scrollCoords);
+    InputScrollViewport(scrollCoords);
 }
 
 static int32_t InputScancodeToRCTKeycode(int32_t sdl_key)
@@ -138,7 +138,7 @@ void InputHandleKeyboard(bool isTitle)
             {
                 if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z)))
                 {
-                    game_handle_edge_scroll();
+                    GameHandleEdgeScroll();
                 }
             }
         }
@@ -180,7 +180,7 @@ void InputHandleKeyboard(bool isTitle)
 
     // Handle key input
     int32_t key;
-    while (!gOpenRCT2Headless && (key = get_next_key()) != 0)
+    while (!gOpenRCT2Headless && (key = GetNextKey()) != 0)
     {
         if (key == 255)
             continue;

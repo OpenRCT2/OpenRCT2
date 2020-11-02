@@ -93,21 +93,21 @@ extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 void title_handle_keyboard_input();
-void game_handle_input();
+void GameHandleInput();
 void game_handle_keyboard_input();
-void game_handle_edge_scroll();
-int32_t get_next_key();
+void GameHandleEdgeScroll();
+int32_t GetNextKey();
 
-void store_mouse_input(int32_t state, const ScreenCoordsXY& screenCoords);
+void StoreMouseInput(int32_t state, const ScreenCoordsXY& screenCoords);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
 void input_reset_flags();
 
-bool input_test_place_object_modifier(PLACE_OBJECT_MODIFIER modifier);
+bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier);
 
 void input_set_state(InputState state);
 InputState input_get_state();
@@ -116,6 +116,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
-void input_scroll_viewport(const ScreenCoordsXY& screenCoords);
+void InputScrollViewport(const ScreenCoordsXY& screenCoords);
 
 #endif

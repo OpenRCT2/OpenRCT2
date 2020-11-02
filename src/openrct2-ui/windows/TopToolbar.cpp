@@ -1216,7 +1216,7 @@ static void sub_6E1F34(
     {
         if (!gSceneryCtrlPressed)
         {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+            if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
             {
                 // CTRL pressed
                 auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_RIDE
@@ -1233,7 +1233,7 @@ static void sub_6E1F34(
         }
         else
         {
-            if (!(input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)))
+            if (!(InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z)))
             {
                 // CTRL not pressed
                 gSceneryCtrlPressed = false;
@@ -1242,7 +1242,7 @@ static void sub_6E1F34(
 
         if (!gSceneryShiftPressed)
         {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+            if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
             {
                 // SHIFT pressed
                 gSceneryShiftPressed = true;
@@ -1253,7 +1253,7 @@ static void sub_6E1F34(
         }
         else
         {
-            if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
+            if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_SHIFT_Z))
             {
                 // SHIFT pressed
                 gSceneryShiftPressZOffset = (gSceneryShiftPressY - screenPos.y + 4);
@@ -2111,7 +2111,7 @@ static void top_toolbar_tool_update_scenery_clear(const ScreenCoordsXY& screenPo
  */
 static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
 {
-    const bool mapCtrlPressed = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+    const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
     map_invalidate_selection_rect();
 
