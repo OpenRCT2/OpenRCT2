@@ -283,7 +283,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
 
     if (News::IsQueueEmpty())
     {
-        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
         {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
@@ -362,7 +362,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
         w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         gfx_filter_rect(
@@ -381,7 +381,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
     {
         window_game_bottom_toolbar_draw_news_item(dpi, w);
     }
-    else if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    else if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         window_game_bottom_toolbar_draw_middle_panel(dpi, w);
     }

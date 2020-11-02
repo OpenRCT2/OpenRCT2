@@ -1818,7 +1818,7 @@ static void window_ride_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 static void window_ride_main_resize(rct_window* w)
 {
     int32_t minHeight = 180;
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
     {
         minHeight += 20 + RCT1_LIGHT_OFFSET;
 
@@ -2426,7 +2426,7 @@ static void window_ride_main_invalidate(rct_window* w)
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
     {
         window_ride_main_widgets[WIDX_OPEN].type = WWT_EMPTY;
         window_ride_main_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;

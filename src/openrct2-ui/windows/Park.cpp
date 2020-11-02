@@ -662,7 +662,7 @@ static void window_park_entrance_invalidate(rct_window* w)
     window_park_entrance_widgets[WIDX_STATUS].top = w->height - 13;
     window_park_entrance_widgets[WIDX_STATUS].bottom = w->height - 3;
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_PARK)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
     {
         window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)

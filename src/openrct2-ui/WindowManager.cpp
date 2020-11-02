@@ -30,7 +30,7 @@ class WindowManager final : public IWindowManager
 public:
     void Init() override
     {
-        theme_manager_initialise();
+        ThemeManagerInitialise();
         window_guest_list_init_vars();
         window_new_ride_init_vars();
     }

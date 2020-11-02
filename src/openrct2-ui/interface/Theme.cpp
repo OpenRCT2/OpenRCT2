@@ -625,7 +625,7 @@ namespace ThemeManager
 
         if (!configValid)
         {
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
+            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
         }
     }
 
@@ -658,38 +658,38 @@ namespace ThemeManager
     }
 } // namespace ThemeManager
 
-void theme_manager_load_available_themes()
+void ThemeManagerLoadAvailableThemes()
 {
     ThemeManager::GetAvailableThemes(&ThemeManager::AvailableThemes);
 }
 
-size_t theme_manager_get_num_available_themes()
+size_t ThemeManagerGetNumAvailableThemes()
 {
     return ThemeManager::AvailableThemes.size();
 }
 
-const utf8* theme_manager_get_available_theme_path(size_t index)
+const utf8* ThemeManagerGetAvailableThemePath(size_t index)
 {
     return ThemeManager::AvailableThemes[index].Path.c_str();
 }
 
-const utf8* theme_manager_get_available_theme_config_name(size_t index)
+const utf8* ThemeManagerGetAvailableThemeConfigName(size_t index)
 {
     return ThemeManager::AvailableThemes[index].Name.c_str();
 }
-const utf8* theme_manager_get_available_theme_name(size_t index)
+const utf8* ThemeManagerGetAvailableThemeName(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
         return language_get_string(PredefinedThemes[index].Name);
     return ThemeManager::AvailableThemes[index].Name.c_str();
 }
 
-size_t theme_manager_get_active_available_theme_index()
+size_t ThemeManagerGetAvailableThemeIndex()
 {
     return ThemeManager::ActiveAvailableThemeIndex;
 }
 
-void theme_manager_set_active_available_theme(size_t index)
+void ThemeManagerSetActiveAvailableTheme(size_t index)
 {
     if (index < ThemeManager::NumPredefinedThemes)
     {
@@ -707,17 +707,17 @@ void theme_manager_set_active_available_theme(size_t index)
         }
     }
     ThemeManager::ActiveAvailableThemeIndex = index;
-    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(index));
+    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(index));
 
-    colour_scheme_update_all();
+    ColourSchemeUpdateAll();
 }
 
-size_t theme_get_index_for_name(const utf8* name)
+size_t ThemeGetIndexForName(const utf8* name)
 {
     size_t count = ThemeManager::AvailableThemes.size();
     for (size_t i = 0; i < count; i++)
     {
-        const utf8* tn = theme_manager_get_available_theme_name(i);
+        const utf8* tn = ThemeManagerGetAvailableThemeName(i);
         if (String::Equals(tn, name, true))
         {
             return i;
@@ -726,7 +726,7 @@ size_t theme_get_index_for_name(const utf8* name)
     return SIZE_MAX;
 }
 
-uint8_t theme_get_colour(rct_windowclass wc, uint8_t index)
+uint8_t ThemeGetColour(rct_windowclass wc, uint8_t index)
 {
     const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(wc);
     if (entry == nullptr)
@@ -744,7 +744,7 @@ uint8_t theme_get_colour(rct_windowclass wc, uint8_t index)
     }
 }
 
-void theme_set_colour(rct_windowclass wc, uint8_t index, colour_t colour)
+void ThemeSetColour(rct_windowclass wc, uint8_t index, colour_t colour)
 {
     UIThemeWindowEntry entry{};
     entry.WindowClass = wc;
@@ -767,27 +767,27 @@ void theme_set_colour(rct_windowclass wc, uint8_t index, colour_t colour)
     entry.Theme.Colours[index] = colour;
     ThemeManager::CurrentTheme->SetEntry(&entry);
 
-    theme_save();
+    ThemeSave();
 }
 
-uint8_t theme_get_flags()
+uint8_t ThemeGetFlags()
 {
     return ThemeManager::CurrentTheme->Flags;
 }
 
-void theme_set_flags(uint8_t flags)
+void ThemeSetFlags(uint8_t flags)
 {
     ThemeManager::CurrentTheme->Flags = flags;
-    theme_save();
+    ThemeSave();
 }
 
-void theme_save()
+void ThemeSave()
 {
     ThemeManager::EnsureThemeDirectoryExists();
     ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
 }
 
-void theme_rename(const utf8* name)
+void ThemeRename(const utf8* name)
 {
     const auto oldPath = ThemeManager::CurrentThemePath;
 
@@ -799,19 +799,19 @@ void theme_rename(const utf8* name)
     ThemeManager::CurrentTheme->Name = name;
     ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
 
-    theme_manager_load_available_themes();
+    ThemeManagerLoadAvailableThemes();
     for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
     {
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
+            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
             break;
         }
     }
 }
 
-void theme_duplicate(const utf8* name)
+void ThemeDuplicate(const utf8* name)
 {
     ThemeManager::EnsureThemeDirectoryExists();
     auto newPath = ThemeManager::GetThemeFileName(name);
@@ -825,32 +825,32 @@ void theme_duplicate(const utf8* name)
 
     ThemeManager::LoadTheme(newPath);
 
-    theme_manager_load_available_themes();
+    ThemeManagerLoadAvailableThemes();
     for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
     {
         if (Path::Equals(newPath, ThemeManager::AvailableThemes[i].Path))
         {
             ThemeManager::ActiveAvailableThemeIndex = i;
-            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(i));
+            String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(i));
             break;
         }
     }
 }
 
-void theme_delete()
+void ThemeDelete()
 {
     File::Delete(ThemeManager::CurrentThemePath);
     ThemeManager::LoadTheme(const_cast<UITheme*>(&PredefinedThemeRCT2));
     ThemeManager::ActiveAvailableThemeIndex = 1;
-    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
+    String::DiscardDuplicate(&gConfigInterface.current_theme_preset, ThemeManagerGetAvailableThemeConfigName(1));
 }
 
-void theme_manager_initialise()
+void ThemeManagerInitialise()
 {
     ThemeManager::Initialise();
 }
 
-uint8_t theme_desc_get_num_colours(rct_windowclass wc)
+uint8_t ThemeDescGetNumColours(rct_windowclass wc)
 {
     const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
     if (desc == nullptr)
@@ -860,7 +860,7 @@ uint8_t theme_desc_get_num_colours(rct_windowclass wc)
     return desc->NumColours;
 }
 
-rct_string_id theme_desc_get_name(rct_windowclass wc)
+rct_string_id ThemeDescGetName(rct_windowclass wc)
 {
     const WindowThemeDesc* desc = GetWindowThemeDescriptor(wc);
     if (desc == nullptr)
@@ -870,17 +870,17 @@ rct_string_id theme_desc_get_name(rct_windowclass wc)
     return desc->WindowName;
 }
 
-void colour_scheme_update_all()
+void ColourSchemeUpdateAll()
 {
-    window_visit_each([](rct_window* w) { colour_scheme_update(w); });
+    window_visit_each([](rct_window* w) { ColourSchemeUpdate(w); });
 }
 
-void colour_scheme_update(rct_window* window)
+void ColourSchemeUpdate(rct_window* window)
 {
-    colour_scheme_update_by_class(window, window->classification);
+    ColourSchemeUpdateByClass(window, window->classification);
 }
 
-void colour_scheme_update_by_class(rct_window* window, rct_windowclass classification)
+void ColourSchemeUpdateByClass(rct_window* window, rct_windowclass classification)
 {
     const WindowTheme* windowTheme;
     const UIThemeWindowEntry* entry = ThemeManager::CurrentTheme->GetEntry(classification);

@@ -424,8 +424,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     window_draw_widgets(w, dpi);
 
-    format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
-                                                                                     : STR_WINDOW_COLOUR_2_STRINGID;
+    format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
+                                                                                   : STR_WINDOW_COLOUR_2_STRINGID;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -543,10 +543,10 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
+    rct_string_id highlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
         ? STR_WHITE_STRING
         : STR_WINDOW_COLOUR_2_STRINGID;
-    rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
+    rct_string_id unhighlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
         ? STR_WHITE_STRING
         : STR_BLACK_STRING;
 

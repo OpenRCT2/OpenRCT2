@@ -315,7 +315,7 @@ static void hide_next_step_button()
  */
 void window_editor_bottom_toolbar_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(
+    ColourSchemeUpdateByClass(
         w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
     uint16_t screenWidth = context_get_width();
