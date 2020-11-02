@@ -505,18 +505,18 @@ public:
 
     void HandleInput() override
     {
-        game_handle_input();
+        GameHandleInput();
     }
 
     void HandleKeyboard(bool isTitle) override
     {
-        input_handle_keyboard(isTitle);
+        InputHandleKeyboard(isTitle);
     }
 
     std::string GetKeyboardShortcutString(int32_t shortcut) override
     {
         utf8 buffer[256];
-        keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
+        KeyboardShortcutsFormatString(buffer, sizeof(buffer), shortcut);
         return std::string(buffer);
     }
 

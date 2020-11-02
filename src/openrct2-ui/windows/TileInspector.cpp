@@ -1194,7 +1194,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     CoordsXY mapCoords;
     TileElement* clickedElement = nullptr;
     bool mouseOnViewport = false;
-    if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z))
+    if (InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z))
     {
         auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionFlags);
         clickedElement = info.Element;
@@ -1231,7 +1231,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
 
 static void window_tile_inspector_update_selected_tile(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    const bool ctrlIsHeldDown = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+    const bool ctrlIsHeldDown = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
     // Mouse hasn't moved
     if (screenCoords.x == windowTileInspectorToolMouseX && screenCoords.y == windowTileInspectorToolMouseY

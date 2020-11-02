@@ -80,7 +80,7 @@ void window_map_tooltip_update_visibility()
     std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
-        || input_test_place_object_modifier(
+        || InputTestPlaceObjectModifier(
             static_cast<PLACE_OBJECT_MODIFIER>(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
         || window_find_by_class(WC_ERROR) != nullptr)
     {
