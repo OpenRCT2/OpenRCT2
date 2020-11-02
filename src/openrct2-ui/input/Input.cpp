@@ -27,7 +27,7 @@
 
 using namespace OpenRCT2::Ui;
 
-static void input_handle_console(int32_t key)
+static void InputHandleConsole(int32_t key)
 {
     ConsoleInput input = ConsoleInput::None;
     switch (key)
@@ -59,7 +59,7 @@ static void input_handle_console(int32_t key)
     }
 }
 
-static void input_handle_chat(int32_t key)
+static void InputHandleChat(int32_t key)
 {
     ChatInput input = ChatInput::None;
     switch (key)
@@ -78,7 +78,7 @@ static void input_handle_chat(int32_t key)
     }
 }
 
-static void game_handle_key_scroll()
+static void GameHandleKeyScroll()
 {
     rct_window* mainWindow;
 
@@ -108,7 +108,7 @@ static void game_handle_key_scroll()
     input_scroll_viewport(scrollCoords);
 }
 
-static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
+static int32_t InputScancodeToRCTKeycode(int32_t sdl_key)
 {
     char keycode = static_cast<char>(SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(sdl_key)));
 
@@ -121,7 +121,7 @@ static int32_t input_scancode_to_rct_keycode(int32_t sdl_key)
     return keycode;
 }
 
-void input_handle_keyboard(bool isTitle)
+void InputHandleKeyboard(bool isTitle)
 {
     if (gOpenRCT2Headless)
     {
@@ -166,7 +166,7 @@ void input_handle_keyboard(bool isTitle)
 #endif
         if (!isTitle)
         {
-            game_handle_key_scroll();
+            GameHandleKeyScroll();
         }
     }
 
@@ -197,12 +197,12 @@ void input_handle_keyboard(bool isTitle)
         }
         else if (console.IsOpen())
         {
-            input_handle_console(key);
+            InputHandleConsole(key);
             continue;
         }
         else if (!isTitle && gChatOpen)
         {
-            input_handle_chat(key);
+            InputHandleChat(key);
             continue;
         }
 
@@ -211,7 +211,7 @@ void input_handle_keyboard(bool isTitle)
         rct_window* w = window_find_by_class(WC_TEXTINPUT);
         if (w != nullptr)
         {
-            char keychar = input_scancode_to_rct_keycode(key & 0xFF);
+            char keychar = InputScancodeToRCTKeycode(key & 0xFF);
             window_text_input_key(w, keychar);
         }
         else if (!gUsingWidgetTextBox)

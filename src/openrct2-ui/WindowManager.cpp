@@ -510,7 +510,7 @@ public:
 
     void HandleKeyboard(bool isTitle) override
     {
-        input_handle_keyboard(isTitle);
+        InputHandleKeyboard(isTitle);
     }
 
     std::string GetKeyboardShortcutString(int32_t shortcut) override
