@@ -3893,14 +3893,14 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
 }
 
 /**
- *
+ * Calls footpath_chain_ride_queue for all entrances of the ride
  *  rct2: 0x006B5952
  */
-static void sub_6B5952(Ride* ride)
+void Ride::ChainQueues() const
 {
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        auto location = ride_get_entrance_location(ride, i);
+        auto location = ride_get_entrance_location(this, i);
         if (location.isNull())
             continue;
 
@@ -3919,7 +3919,7 @@ static void sub_6B5952(Ride* ride)
                     continue;
 
                 int32_t direction = tileElement->GetDirection();
-                footpath_chain_ride_queue(ride->id, i, mapLocation, tileElement, direction_reverse(direction));
+                footpath_chain_ride_queue(id, i, mapLocation, tileElement, direction_reverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -5147,12 +5147,6 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
         return false;
     }
 
-    if (newStatus == RIDE_STATUS_OPEN && isApplying)
-    {
-        sub_6B5952(this);
-        lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
-    }
-
     // z = ride->stations[i].GetBaseZ();
     auto startLoc = stations[stationIndex].Start;
     trackElement.x = startLoc.x;
@@ -5282,7 +5276,7 @@ bool Ride::Open(int32_t goingToBeOpen, bool isApplying)
 
     if (goingToBeOpen && isApplying)
     {
-        sub_6B5952(this);
+        ChainQueues();
         lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;
     }
 
