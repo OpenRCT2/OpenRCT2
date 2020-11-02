@@ -231,8 +231,8 @@ static void window_shortcut_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(w);
             break;
         case WIDX_RESET:
-            keyboard_shortcuts_reset();
-            keyboard_shortcuts_save();
+            KeyboardShortcutsReset();
+            KeyboardShortcutsSave();
             w->Invalidate();
             break;
     }
@@ -357,7 +357,7 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
 
         char keybinding[128];
-        keyboard_shortcuts_format_string(keybinding, 128, static_cast<int32_t>(ShortcutList[i].ShortcutId));
+        KeyboardShortcutsFormatString(keybinding, 128, static_cast<int32_t>(ShortcutList[i].ShortcutId));
 
         if (strlen(keybinding) > 0)
         {

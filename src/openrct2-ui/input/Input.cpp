@@ -99,7 +99,7 @@ static void GameHandleKeyScroll()
         return;
 
     const uint8_t* keysState = context_get_keys_state();
-    auto scrollCoords = get_keyboard_map_scroll(keysState);
+    auto scrollCoords = GetKeyboardMapScroll(keysState);
 
     if (scrollCoords.x != 0 || scrollCoords.y != 0)
     {
@@ -219,13 +219,13 @@ void InputHandleKeyboard(bool isTitle)
             w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
             if (w != nullptr)
             {
-                keyboard_shortcuts_set(key);
+                KeyboardShortcutsSet(key);
                 window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
                 window_invalidate_by_class(WC_KEYBOARD_SHORTCUT_LIST);
             }
             else
             {
-                keyboard_shortcut_handle(key);
+                KeyboardShortcutHandle(key);
             }
         }
     }

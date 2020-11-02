@@ -264,38 +264,38 @@ ScreenCoordsXY KeyboardShortcuts::GetKeyboardMapScroll(const uint8_t* keysState)
     return screenCoords;
 }
 
-void keyboard_shortcuts_reset()
+void KeyboardShortcutsReset()
 {
     _instance->Reset();
 }
 
-bool keyboard_shortcuts_load()
+bool KeyboardShortcutsLoad()
 {
     return _instance->Load();
 }
 
-bool keyboard_shortcuts_save()
+bool KeyboardShortcutsSave()
 {
     return _instance->Save();
 }
 
-void keyboard_shortcuts_set(int32_t key)
+void KeyboardShortcutsSet(int32_t key)
 {
     return _instance->Set(key);
 }
 
-Shortcut keyboard_shortcuts_get_from_key(int32_t key)
+Shortcut KeyboardShortcutsGetFromKey(int32_t key)
 {
     return _instance->GetFromKey(key);
 }
 
-void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t shortcut)
+void KeyboardShortcutsFormatString(char* buffer, size_t bufferSize, int32_t shortcut)
 {
     auto str = _instance->GetShortcutString(shortcut);
     String::Set(buffer, bufferSize, str.c_str());
 }
 
-ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState)
+ScreenCoordsXY GetKeyboardMapScroll(const uint8_t* keysState)
 {
     return _instance->GetKeyboardMapScroll(keysState);
 }

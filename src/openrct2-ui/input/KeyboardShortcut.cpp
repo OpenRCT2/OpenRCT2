@@ -53,16 +53,16 @@ namespace
  *  rct2: 0x006E3E68
  */
 using namespace OpenRCT2;
-void keyboard_shortcut_handle(int32_t key)
+void KeyboardShortcutHandle(int32_t key)
 {
-    auto shortcut = keyboard_shortcuts_get_from_key(key);
+    auto shortcut = KeyboardShortcutsGetFromKey(key);
     if (shortcut != Input::Shortcut::Undefined)
     {
-        keyboard_shortcut_handle_command(shortcut);
+        KeyboardShortcutHandleCommand(shortcut);
     }
 }
 
-void keyboard_shortcut_handle_command(Input::Shortcut shortcut)
+void KeyboardShortcutHandleCommand(Input::Shortcut shortcut)
 {
     size_t shortcutIndex = static_cast<size_t>(shortcut);
     if (shortcutIndex < std::size(shortcut_table))
@@ -77,7 +77,7 @@ void keyboard_shortcut_handle_command(Input::Shortcut shortcut)
 
 #pragma region Shortcut Commands
 
-static void toggle_view_flag(int32_t viewportFlag)
+static void ToggleViewFlag(int32_t viewportFlag)
 {
     rct_window* window;
 
@@ -89,12 +89,12 @@ static void toggle_view_flag(int32_t viewportFlag)
     }
 }
 
-static void shortcut_close_top_most_window()
+static void ShortcutCloseTopMostWindow()
 {
     window_close_top();
 }
 
-static void shortcut_close_all_floating_windows()
+static void ShortcutCloseAllFloatingWindow()
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
         window_close_all();
@@ -102,7 +102,7 @@ static void shortcut_close_all_floating_windows()
         window_close_top();
 }
 
-static void shortcut_cancel_construction_mode()
+static void ShortcutCancelConstructionMode()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -114,7 +114,7 @@ static void shortcut_cancel_construction_mode()
         tool_cancel();
 }
 
-static void shortcut_pause_game()
+static void ShortcutPauseGame()
 {
     if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
     {
@@ -127,17 +127,17 @@ static void shortcut_pause_game()
     }
 }
 
-static void shortcut_zoom_view_out()
+static void ShortcutZoomViewOut()
 {
     main_window_zoom(false, false);
 }
 
-static void shortcut_zoom_view_in()
+static void ShortcutZoomViewIn()
 {
     main_window_zoom(true, false);
 }
 
-static void shortcut_rotate_view_clockwise()
+static void ShortcutRotateViewClockwise()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -146,7 +146,7 @@ static void shortcut_rotate_view_clockwise()
     window_rotate_camera(w, 1);
 }
 
-static void shortcut_rotate_view_anticlockwise()
+static void ShortcutRotateViewAnticlockwise()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -155,7 +155,7 @@ static void shortcut_rotate_view_anticlockwise()
     window_rotate_camera(w, -1);
 }
 
-static void shortcut_rotate_construction_object()
+static void ShortcutRotateConstructionObject()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -218,31 +218,31 @@ static void shortcut_rotate_construction_object()
     }
 }
 
-static void shortcut_underground_view_toggle()
+static void ShortcutUndergroundViewToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_UNDERGROUND_INSIDE);
+    ToggleViewFlag(VIEWPORT_FLAG_UNDERGROUND_INSIDE);
 }
 
-static void shortcut_remove_base_land_toggle()
+static void ShortcutRemoveBaseLandToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_HIDE_BASE);
+    ToggleViewFlag(VIEWPORT_FLAG_HIDE_BASE);
 }
 
-static void shortcut_remove_vertical_land_toggle()
+static void ShortcutRemoveVerticalLandToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_HIDE_VERTICAL);
+    ToggleViewFlag(VIEWPORT_FLAG_HIDE_VERTICAL);
 }
 
-static void shortcut_remove_top_bottom_toolbar_toggle()
+static void ShortcutRemoveTopBottomToolbarToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
@@ -284,79 +284,79 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
     gfx_invalidate_screen();
 }
 
-static void shortcut_see_through_rides_toggle()
+static void ShortcutSeeThroughRidesToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_RIDES);
+    ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_RIDES);
 }
 
-static void shortcut_see_through_scenery_toggle()
+static void ShortcutSeeThroughSceneryToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_SCENERY);
+    ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_SCENERY);
 }
 
-static void shortcut_see_through_paths_toggle()
+static void ShortcutSeeThroughPathsToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_SEETHROUGH_PATHS);
+    ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_PATHS);
 }
 
-static void shortcut_invisible_supports_toggle()
+static void ShortcutInvisibleSupportsToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+    ToggleViewFlag(VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
 }
 
-static void shortcut_invisible_people_toggle()
+static void ShortcutInvisiblePeopleToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_INVISIBLE_PEEPS);
+    ToggleViewFlag(VIEWPORT_FLAG_INVISIBLE_PEEPS);
 }
 
-static void shortcut_gridlines_toggle()
+static void ShortcutGridlinesToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_GRIDLINES);
+    ToggleViewFlag(VIEWPORT_FLAG_GRIDLINES);
 }
 
-static void shortcut_height_marks_on_land_toggle()
+static void ShortcutHeightMarksOnLandToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_LAND_HEIGHTS);
+    ToggleViewFlag(VIEWPORT_FLAG_LAND_HEIGHTS);
 }
 
-static void shortcut_height_marks_on_ride_tracks_toggle()
+static void ShortcutHeightMarksOnRideTracksToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_TRACK_HEIGHTS);
+    ToggleViewFlag(VIEWPORT_FLAG_TRACK_HEIGHTS);
 }
 
-static void shortcut_height_marks_on_paths_toggle()
+static void ShortcutHeightMarksOnPathsToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_PATH_HEIGHTS);
+    ToggleViewFlag(VIEWPORT_FLAG_PATH_HEIGHTS);
 }
 
-static void shortcut_adjust_land()
+static void ShortcutAdjustLand()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -375,7 +375,7 @@ static void shortcut_adjust_land()
     }
 }
 
-static void shortcut_adjust_water()
+static void ShortcutAdjustWater()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -394,7 +394,7 @@ static void shortcut_adjust_water()
     }
 }
 
-static void shortcut_build_scenery()
+static void ShortcutBuildScenery()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -413,7 +413,7 @@ static void shortcut_build_scenery()
     }
 }
 
-static void shortcut_build_paths()
+static void ShortcutBuildPaths()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -432,7 +432,7 @@ static void shortcut_build_paths()
     }
 }
 
-static void shortcut_build_new_ride()
+static void ShortcutBuildNewRide()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -446,7 +446,7 @@ static void shortcut_build_new_ride()
     }
 }
 
-static void shortcut_show_financial_information()
+static void ShortcutShowFinancialInformation()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -456,7 +456,7 @@ static void shortcut_show_financial_information()
             context_open_window(WC_FINANCES);
 }
 
-static void shortcut_show_research_information()
+static void ShortcutShowResearchInformation()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -467,7 +467,7 @@ static void shortcut_show_research_information()
     }
 }
 
-static void shortcut_show_rides_list()
+static void ShortcutShowRidesList()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -478,7 +478,7 @@ static void shortcut_show_rides_list()
     }
 }
 
-static void shortcut_show_park_information()
+static void ShortcutShowParkInformation()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -489,7 +489,7 @@ static void shortcut_show_park_information()
     }
 }
 
-static void shortcut_show_guest_list()
+static void ShortcutShowGuestList()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -500,7 +500,7 @@ static void shortcut_show_guest_list()
     }
 }
 
-static void shortcut_show_staff_list()
+static void ShortcutShowStaffList()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -511,7 +511,7 @@ static void shortcut_show_staff_list()
     }
 }
 
-static void shortcut_show_recent_messages()
+static void ShortcutShowRecentMessages()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -520,7 +520,7 @@ static void shortcut_show_recent_messages()
         context_open_window(WC_RECENT_NEWS);
 }
 
-static void shortcut_show_map()
+static void ShortcutShowMap()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -530,12 +530,12 @@ static void shortcut_show_map()
             context_open_window(WC_MAP);
 }
 
-static void shortcut_screenshot()
+static void ShortcutScreenshot()
 {
     gScreenshotCountdown = 2;
 }
 
-static void shortcut_reduce_game_speed()
+static void ShortcutReduceGameSpeed()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -544,7 +544,7 @@ static void shortcut_reduce_game_speed()
         game_reduce_game_speed();
 }
 
-static void shortcut_increase_game_speed()
+static void ShortcutIncreaseGameSpeed()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -553,7 +553,7 @@ static void shortcut_increase_game_speed()
         game_increase_game_speed();
 }
 
-static void shortcut_open_cheat_window()
+static void ShortcutOpenCheatWindow()
 {
     if (gScreenFlags != SCREEN_FLAGS_PLAYING)
         return;
@@ -568,7 +568,7 @@ static void shortcut_open_cheat_window()
     context_open_window(WC_CHEATS);
 }
 
-static void shortcut_clear_scenery()
+static void ShortcutClearScenery()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -587,7 +587,7 @@ static void shortcut_clear_scenery()
     }
 }
 
-static void shortcut_open_chat_window()
+static void ShortcutOpenChatWindow()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -595,7 +595,7 @@ static void shortcut_open_chat_window()
     chat_toggle();
 }
 
-static void shortcut_quick_save_game()
+static void ShortcutQuickSaveGame()
 {
     // Do a quick save in playing mode and a regular save in Scenario Editor mode. In other cases, don't do anything.
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
@@ -612,28 +612,28 @@ static void shortcut_quick_save_game()
     }
 }
 
-static void shortcut_show_options()
+static void ShortcutShowOptions()
 {
     context_open_window(WC_OPTIONS);
 }
 
-static void shortcut_mute_sound()
+static void ShortcutMuteSound()
 {
     OpenRCT2::Audio::ToggleAllSounds();
 }
 
-static void shortcut_windowed_mode_toggle()
+static void ShortcutWindowsModeToggle()
 {
     platform_toggle_windowed_mode();
 }
 
-static void shortcut_show_multiplayer()
+static void ShortcutShowMultiplayer()
 {
     if (network_get_mode() != NETWORK_MODE_NONE)
         context_open_window(WC_MULTIPLAYER);
 }
 
-static void shortcut_debug_paint_toggle()
+static void ShortcutDebugPaintToggle()
 {
     rct_window* window = window_find_by_class(WC_DEBUG_PAINT);
     if (window != nullptr)
@@ -646,7 +646,7 @@ static void shortcut_debug_paint_toggle()
     }
 }
 
-static void shortcut_ride_construction_turn_left()
+static void ShortcutRideConstructionTurnLeft()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -654,7 +654,7 @@ static void shortcut_ride_construction_turn_left()
     window_ride_construction_keyboard_shortcut_turn_left();
 }
 
-static void shortcut_ride_construction_turn_right()
+static void ShortcutRideConstructionTurnRight()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -662,7 +662,7 @@ static void shortcut_ride_construction_turn_right()
     window_ride_construction_keyboard_shortcut_turn_right();
 }
 
-static void shortcut_ride_construction_use_track_default()
+static void ShortcutRideConstructionUseTrackDefault()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -670,7 +670,7 @@ static void shortcut_ride_construction_use_track_default()
     window_ride_construction_keyboard_shortcut_use_track_default();
 }
 
-static void shortcut_ride_construction_slope_down()
+static void ShortcutRideConstructionSlopeDown()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -678,7 +678,7 @@ static void shortcut_ride_construction_slope_down()
     window_ride_construction_keyboard_shortcut_slope_down();
 }
 
-static void shortcut_ride_construction_slope_up()
+static void ShortcutRideConstructionSlopeUp()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -686,7 +686,7 @@ static void shortcut_ride_construction_slope_up()
     window_ride_construction_keyboard_shortcut_slope_up();
 }
 
-static void shortcut_ride_construction_chain_lift_toggle()
+static void ShortcutRideConstructionChainLiftToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -694,7 +694,7 @@ static void shortcut_ride_construction_chain_lift_toggle()
     window_ride_construction_keyboard_shortcut_chain_lift_toggle();
 }
 
-static void shortcut_ride_construction_bank_left()
+static void ShortcutRideConstructionBankLeft()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -702,7 +702,7 @@ static void shortcut_ride_construction_bank_left()
     window_ride_construction_keyboard_shortcut_bank_left();
 }
 
-static void shortcut_ride_construction_bank_right()
+static void ShortcutRideConstructionBankRight()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -710,7 +710,7 @@ static void shortcut_ride_construction_bank_right()
     window_ride_construction_keyboard_shortcut_bank_right();
 }
 
-static void shortcut_ride_construction_previous_track()
+static void ShortcutRideConstructionPreviousTrack()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -718,7 +718,7 @@ static void shortcut_ride_construction_previous_track()
     window_ride_construction_keyboard_shortcut_previous_track();
 }
 
-static void shortcut_ride_construction_next_track()
+static void ShortcutRideConstructionNextTrack()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -726,7 +726,7 @@ static void shortcut_ride_construction_next_track()
     window_ride_construction_keyboard_shortcut_next_track();
 }
 
-static void shortcut_ride_construction_build_current()
+static void ShortcutRideConstructionBuildCurrent()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -734,7 +734,7 @@ static void shortcut_ride_construction_build_current()
     window_ride_construction_keyboard_shortcut_build_current();
 }
 
-static void shortcut_ride_construction_demolish_current()
+static void ShortcutRideConstructionDemolishCurrent()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -742,7 +742,7 @@ static void shortcut_ride_construction_demolish_current()
     window_ride_construction_keyboard_shortcut_demolish_current();
 }
 
-static void shortcut_load_game()
+static void ShortcutLoadGame()
 {
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
@@ -751,7 +751,7 @@ static void shortcut_load_game()
     }
 }
 
-static void shortcut_view_clipping()
+static void ShortcutViewClipping()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
@@ -759,15 +759,15 @@ static void shortcut_view_clipping()
     context_open_window(WC_VIEW_CLIPPING);
 }
 
-static void shortcut_highlight_path_issues_toggle()
+static void ShortcutHighlightPathIssuesToggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    toggle_view_flag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    ToggleViewFlag(VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 }
 
-static void shortcut_open_tile_inspector()
+static void ShortcutOpenTileInspector()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO || !gConfigInterface.toolbar_show_cheats)
         return;
@@ -775,7 +775,7 @@ static void shortcut_open_tile_inspector()
     context_open_window(WC_TILE_INSPECTOR);
 }
 
-static void shortcut_advance_to_next_tick()
+static void ShortcutAdvanceToNextTick()
 {
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER))
         return;
@@ -783,7 +783,7 @@ static void shortcut_advance_to_next_tick()
     gDoSingleUpdate = true;
 }
 
-static void shortcut_open_scenery_picker()
+static void ShortcutOpenSceneryPicker()
 {
     if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
         || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR))
@@ -810,7 +810,7 @@ static void shortcut_open_scenery_picker()
     }
 }
 
-static void shortcut_scale_up()
+static void ShortcutScaleUp()
 {
     gConfigGeneral.window_scale += 0.25f;
     config_save_default();
@@ -819,7 +819,7 @@ static void shortcut_scale_up()
     context_update_cursor_scale();
 }
 
-static void shortcut_scale_down()
+static void ShortcutScaleDown()
 {
     gConfigGeneral.window_scale -= 0.25f;
     gConfigGeneral.window_scale = std::max(0.5f, gConfigGeneral.window_scale);
@@ -830,7 +830,7 @@ static void shortcut_scale_down()
 }
 
 // Tile inspector shortcuts
-static void shortcut_insert_corrupt_element()
+static void ShortcutInsertCorruptElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT)
@@ -841,7 +841,7 @@ static void shortcut_insert_corrupt_element()
     }
 }
 
-static void shortcut_copy_element()
+static void ShortcutCopyElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY)
@@ -852,7 +852,7 @@ static void shortcut_copy_element()
     }
 }
 
-static void shortcut_paste_element()
+static void ShortcutPasteElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE)
@@ -863,7 +863,7 @@ static void shortcut_paste_element()
     }
 }
 
-static void shortcut_remove_element()
+static void ShortcutRemoveElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE)
@@ -874,7 +874,7 @@ static void shortcut_remove_element()
     }
 }
 
-static void shortcut_move_element_up()
+static void ShortcutMoveElementUp()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP)
@@ -885,7 +885,7 @@ static void shortcut_move_element_up()
     }
 }
 
-static void shortcut_move_element_down()
+static void ShortcutMoveElementDown()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN)
@@ -896,7 +896,7 @@ static void shortcut_move_element_down()
     }
 }
 
-static void shortcut_increase_x_coord()
+static void ShortcutIncreaseXCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE)
@@ -907,7 +907,7 @@ static void shortcut_increase_x_coord()
     }
 }
 
-static void shortcut_decrease_x_coord()
+static void ShortcutDecreaseXCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE)
@@ -918,7 +918,7 @@ static void shortcut_decrease_x_coord()
     }
 }
 
-static void shortcut_increase_y_coord()
+static void ShortcutIncreaseYCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE)
@@ -929,7 +929,7 @@ static void shortcut_increase_y_coord()
     }
 }
 
-static void shortcut_decrease_y_coord()
+static void ShortcutDecreaseYCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE)
@@ -940,7 +940,7 @@ static void shortcut_decrease_y_coord()
     }
 }
 
-static void shortcut_increase_element_height()
+static void ShortcutIncreaseElementHeight()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr)
@@ -982,7 +982,7 @@ static void shortcut_increase_element_height()
     }
 }
 
-static void shortcut_decrease_element_height()
+static void ShortcutDecreaseElementHeight()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
     if (w != nullptr)
@@ -1024,7 +1024,7 @@ static void shortcut_decrease_element_height()
     }
 }
 
-static void shortcut_toggle_clearance_checks()
+static void ShortcutToggleClearanceChecks()
 {
     auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, gCheatsDisableClearanceChecks ? 0 : 1);
     GameActions::Execute(&setCheatAction);
@@ -1034,93 +1034,93 @@ namespace
 {
     using namespace OpenRCT2::Input;
     const shortcut_action shortcut_table[ShortcutsCount] = {
-        shortcut_close_top_most_window,
-        shortcut_close_all_floating_windows,
-        shortcut_cancel_construction_mode,
-        shortcut_pause_game,
-        shortcut_zoom_view_out,
-        shortcut_zoom_view_in,
-        shortcut_rotate_view_clockwise,
-        shortcut_rotate_view_anticlockwise,
-        shortcut_rotate_construction_object,
-        shortcut_underground_view_toggle,
-        shortcut_remove_base_land_toggle,
-        shortcut_remove_vertical_land_toggle,
-        shortcut_see_through_rides_toggle,
-        shortcut_see_through_scenery_toggle,
-        shortcut_invisible_supports_toggle,
-        shortcut_invisible_people_toggle,
-        shortcut_height_marks_on_land_toggle,
-        shortcut_height_marks_on_ride_tracks_toggle,
-        shortcut_height_marks_on_paths_toggle,
-        shortcut_adjust_land,
-        shortcut_adjust_water,
-        shortcut_build_scenery,
-        shortcut_build_paths,
-        shortcut_build_new_ride,
-        shortcut_show_financial_information,
-        shortcut_show_research_information,
-        shortcut_show_rides_list,
-        shortcut_show_park_information,
-        shortcut_show_guest_list,
-        shortcut_show_staff_list,
-        shortcut_show_recent_messages,
-        shortcut_show_map,
-        shortcut_screenshot,
+        ShortcutCloseTopMostWindow,
+        ShortcutCloseAllFloatingWindow,
+        ShortcutCancelConstructionMode,
+        ShortcutPauseGame,
+        ShortcutZoomViewOut,
+        ShortcutZoomViewIn,
+        ShortcutRotateViewClockwise,
+        ShortcutRotateViewAnticlockwise,
+        ShortcutRotateConstructionObject,
+        ShortcutUndergroundViewToggle,
+        ShortcutRemoveBaseLandToggle,
+        ShortcutRemoveVerticalLandToggle,
+        ShortcutSeeThroughRidesToggle,
+        ShortcutSeeThroughSceneryToggle,
+        ShortcutInvisibleSupportsToggle,
+        ShortcutInvisiblePeopleToggle,
+        ShortcutHeightMarksOnLandToggle,
+        ShortcutHeightMarksOnRideTracksToggle,
+        ShortcutHeightMarksOnPathsToggle,
+        ShortcutAdjustLand,
+        ShortcutAdjustWater,
+        ShortcutBuildScenery,
+        ShortcutBuildPaths,
+        ShortcutBuildNewRide,
+        ShortcutShowFinancialInformation,
+        ShortcutShowResearchInformation,
+        ShortcutShowRidesList,
+        ShortcutShowParkInformation,
+        ShortcutShowGuestList,
+        ShortcutShowStaffList,
+        ShortcutShowRecentMessages,
+        ShortcutShowMap,
+        ShortcutScreenshot,
 
         // new
-        shortcut_reduce_game_speed,
-        shortcut_increase_game_speed,
-        shortcut_open_cheat_window,
-        shortcut_remove_top_bottom_toolbar_toggle,
+        ShortcutReduceGameSpeed,
+        ShortcutIncreaseGameSpeed,
+        ShortcutOpenCheatWindow,
+        ShortcutRemoveTopBottomToolbarToggle,
         nullptr,
         nullptr,
         nullptr,
         nullptr,
-        shortcut_open_chat_window,
-        shortcut_quick_save_game,
-        shortcut_show_options,
-        shortcut_mute_sound,
-        shortcut_windowed_mode_toggle,
-        shortcut_show_multiplayer,
+        ShortcutOpenChatWindow,
+        ShortcutQuickSaveGame,
+        ShortcutShowOptions,
+        ShortcutMuteSound,
+        ShortcutWindowsModeToggle,
+        ShortcutShowMultiplayer,
         nullptr,
-        shortcut_debug_paint_toggle,
-        shortcut_see_through_paths_toggle,
-        shortcut_ride_construction_turn_left,
-        shortcut_ride_construction_turn_right,
-        shortcut_ride_construction_use_track_default,
-        shortcut_ride_construction_slope_down,
-        shortcut_ride_construction_slope_up,
-        shortcut_ride_construction_chain_lift_toggle,
-        shortcut_ride_construction_bank_left,
-        shortcut_ride_construction_bank_right,
-        shortcut_ride_construction_previous_track,
-        shortcut_ride_construction_next_track,
-        shortcut_ride_construction_build_current,
-        shortcut_ride_construction_demolish_current,
-        shortcut_load_game,
-        shortcut_clear_scenery,
-        shortcut_gridlines_toggle,
-        shortcut_view_clipping,
-        shortcut_highlight_path_issues_toggle,
-        shortcut_open_tile_inspector,
-        shortcut_advance_to_next_tick,
-        shortcut_open_scenery_picker,
-        shortcut_scale_up,
-        shortcut_scale_down,
-        shortcut_insert_corrupt_element,
-        shortcut_copy_element,
-        shortcut_paste_element,
-        shortcut_remove_element,
-        shortcut_move_element_up,
-        shortcut_move_element_down,
-        shortcut_increase_x_coord,
-        shortcut_decrease_x_coord,
-        shortcut_increase_y_coord,
-        shortcut_decrease_y_coord,
-        shortcut_increase_element_height,
-        shortcut_decrease_element_height,
-        shortcut_toggle_clearance_checks,
+        ShortcutDebugPaintToggle,
+        ShortcutSeeThroughPathsToggle,
+        ShortcutRideConstructionTurnLeft,
+        ShortcutRideConstructionTurnRight,
+        ShortcutRideConstructionUseTrackDefault,
+        ShortcutRideConstructionSlopeDown,
+        ShortcutRideConstructionSlopeUp,
+        ShortcutRideConstructionChainLiftToggle,
+        ShortcutRideConstructionBankLeft,
+        ShortcutRideConstructionBankRight,
+        ShortcutRideConstructionPreviousTrack,
+        ShortcutRideConstructionNextTrack,
+        ShortcutRideConstructionBuildCurrent,
+        ShortcutRideConstructionDemolishCurrent,
+        ShortcutLoadGame,
+        ShortcutClearScenery,
+        ShortcutGridlinesToggle,
+        ShortcutViewClipping,
+        ShortcutHighlightPathIssuesToggle,
+        ShortcutOpenTileInspector,
+        ShortcutAdvanceToNextTick,
+        ShortcutOpenSceneryPicker,
+        ShortcutScaleUp,
+        ShortcutScaleDown,
+        ShortcutInsertCorruptElement,
+        ShortcutCopyElement,
+        ShortcutPasteElement,
+        ShortcutRemoveElement,
+        ShortcutMoveElementUp,
+        ShortcutMoveElementDown,
+        ShortcutIncreaseXCoord,
+        ShortcutDecreaseXCoord,
+        ShortcutIncreaseYCoord,
+        ShortcutDecreaseYCoord,
+        ShortcutIncreaseElementHeight,
+        ShortcutDecreaseElementHeight,
+        ShortcutToggleClearanceChecks,
     };
 } // anonymous namespace
 
