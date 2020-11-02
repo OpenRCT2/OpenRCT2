@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#13334] Uninitialised variables in CustomTabDesc
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface
+- Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
@@ -49,7 +50,6 @@
 - Fix: [#13278] Desync caused by ghost tiles changing the ride mode.
 - Fix: [#13289] Litter and vomit sometimes not loading with RCT1 saved game or scenario
 - Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal
-- Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
 - Improved: [#13098] Improvements to the maze construction window user interface
 - Improved: [#13125] Selecting the RCT2 files now uses localised dialogs.
