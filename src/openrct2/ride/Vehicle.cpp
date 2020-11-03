@@ -3340,11 +3340,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
             }
         }
         else
@@ -3358,11 +3358,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
             }
         }
     }
@@ -7620,7 +7620,7 @@ void Vehicle::UpdateReverserCarBogies()
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_1))
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
         return false;
 
     auto vehicleEntry = Entry();
