@@ -6632,7 +6632,7 @@ void Vehicle::ApplyNonStopBlockBrake()
 void Vehicle::ApplyStopBlockBrake()
 {
     // Slow it down till completely stop the car
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
     acceleration = 0;
     // If the this is slow enough, stop it. If not, slow it down
     if (velocity <= 0x20000)
@@ -6686,7 +6686,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
             break;
         case TrackElemType::EndStation:
             if (trackElement->AsTrack()->BlockBrakeClosed())
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
         case TrackElemType::Up25ToFlat:
