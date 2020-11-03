@@ -4699,19 +4699,19 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
 }
 
 /**
- *
+ * Create and place the rides vehicles
  *  rct2: 0x006DD84C
  */
-static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t isApplying)
+bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 {
-    ride->UpdateMaxVehicles();
-    if (ride->subtype == RIDE_ENTRY_INDEX_NULL)
+    UpdateMaxVehicles();
+    if (subtype == RIDE_ENTRY_INDEX_NULL)
     {
         return true;
     }
 
     // Check if there are enough free sprite slots for all the vehicles
-    int32_t totalCars = ride->num_vehicles * ride->num_cars_per_train;
+    int32_t totalCars = num_vehicles * num_cars_per_train;
     if (totalCars > count_free_misc_sprite_slots())
     {
         gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
@@ -4728,7 +4728,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
     int32_t direction = trackElement->GetDirection();
 
     //
-    if (ride->mode == RideMode::StationToStation)
+    if (mode == RideMode::StationToStation)
     {
         vehiclePos -= CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
 
@@ -4738,31 +4738,31 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
         direction = trackElement->GetDirection();
     }
 
-    vehicle_create_trains(ride->id, vehiclePos, trackElement);
+    vehicle_create_trains(id, vehiclePos, trackElement);
     // return true;
 
     // Initialise station departs
     // 006DDDD0:
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
+    lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
     for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
-        ride->stations[i].Depart = (ride->stations[i].Depart & STATION_DEPART_FLAG) | 1;
+        stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
     }
 
     //
-    if (ride->type != RIDE_TYPE_SPACE_RINGS && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+    if (type != RIDE_TYPE_SPACE_RINGS && !ride_type_has_flag(type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
     {
-        if (ride->IsBlockSectioned())
+        if (IsBlockSectioned())
         {
             CoordsXYE firstBlock{};
-            ride_create_vehicles_find_first_block(ride, &firstBlock);
-            loc_6DDF9C(ride, firstBlock.element);
+            ride_create_vehicles_find_first_block(this, &firstBlock);
+            loc_6DDF9C(this, firstBlock.element);
         }
         else
         {
-            for (int32_t i = 0; i < ride->num_vehicles; i++)
+            for (int32_t i = 0; i < num_vehicles; i++)
             {
-                Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
+                Vehicle* vehicle = GetEntity<Vehicle>(vehicles[i]);
                 if (vehicle == nullptr)
                 {
                     continue;
@@ -4779,7 +4779,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
             }
         }
     }
-    ride_update_vehicle_colours(ride);
+    ride_update_vehicle_colours(this);
     return true;
 }
 
@@ -5222,7 +5222,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
 
     if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!ride_create_vehicles(this, trackElement, isApplying))
+        if (!CreateVehicles(trackElement, isApplying))
         {
             return false;
         }
@@ -5354,7 +5354,7 @@ bool Ride::Open(bool isApplying)
 
     if (!ride_type_has_flag(type, RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!ride_create_vehicles(this, trackElement, isApplying))
+        if (!CreateVehicles(trackElement, isApplying))
         {
             return false;
         }
