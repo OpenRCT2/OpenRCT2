@@ -13,7 +13,6 @@
 
 #include <algorithm>
 #include <iterator>
-#include <string>
 
 StringBuilder::StringBuilder(size_t capacity)
 {

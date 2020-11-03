@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <string>
+
 /**
  * Class for constructing strings efficiently. A buffer is automatically allocated and reallocated when characters or strings
  * are appended. Use GetString to copy the current state of the string builder to a new fire-and-forget string.
