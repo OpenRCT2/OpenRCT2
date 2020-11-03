@@ -40,19 +40,19 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
-static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords);
-static void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords);
-static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance);
+static void ViewportInteractionRemoveScenery(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemoveFootpathItem(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, const CoordsXY& mapCoords);
+static void ViewportInteractionRemoveParkEntrance(TileElement* tileElement, CoordsXY mapCoords);
+static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance);
 
 /**
  *
  *  rct2: 0x006ED9D0
  */
-InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords)
+InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords)
 {
     InteractionInfo info{};
     // No click input for scenario editor or track manager
@@ -133,7 +133,7 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
     // If nothing is under cursor, find a close by peep
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
     {
-        auto peep = viewport_interaction_get_closest_peep(screenCoords, 32);
+        auto peep = ViewportInteractionGetClosestPeep(screenCoords, 32);
         if (peep != nullptr)
         {
             info.Entity = peep;
@@ -147,9 +147,9 @@ InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenC
     return info;
 }
 
-bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords)
+bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords)
 {
-    auto info = viewport_interaction_get_item_left(screenCoords);
+    auto info = ViewportInteractionGetItemLeft(screenCoords);
 
     switch (info.SpriteType)
     {
@@ -162,9 +162,9 @@ bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords)
     }
 }
 
-bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
+bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
 {
-    auto info = viewport_interaction_get_item_left(screenCoords);
+    auto info = ViewportInteractionGetItemLeft(screenCoords);
 
     switch (info.SpriteType)
     {
@@ -232,7 +232,7 @@ bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006EDE88
  */
-InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords)
+InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
     rct_scenery_entry* sceneryEntry;
     Ride* ride;
@@ -496,9 +496,9 @@ InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screen
     return info;
 }
 
-bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords)
+bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords)
 {
-    auto info = viewport_interaction_get_item_right(screenCoords);
+    auto info = ViewportInteractionGetItemRight(screenCoords);
 
     return info.SpriteType != VIEWPORT_INTERACTION_ITEM_NONE;
 }
@@ -507,10 +507,10 @@ bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006E8A62
  */
-bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
+bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYE tileElement;
-    auto info = viewport_interaction_get_item_right(screenCoords);
+    auto info = ViewportInteractionGetItemRight(screenCoords);
 
     switch (info.SpriteType)
     {
@@ -543,22 +543,22 @@ bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
             ride_modify(&tileElement);
             break;
         case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            viewport_interaction_remove_scenery(info.Element, info.Loc);
+            ViewportInteractionRemoveScenery(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            viewport_interaction_remove_footpath(info.Element, info.Loc);
+            ViewportInteractionRemoveFootpath(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            viewport_interaction_remove_footpath_item(info.Element, info.Loc);
+            ViewportInteractionRemoveFootpathItem(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_PARK:
-            viewport_interaction_remove_park_entrance(info.Element, info.Loc);
+            ViewportInteractionRemoveParkEntrance(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_WALL:
-            viewport_interaction_remove_park_wall(info.Element, info.Loc);
+            ViewportInteractionRemoveParkWall(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            viewport_interaction_remove_large_scenery(info.Element, info.Loc);
+            ViewportInteractionRemoveLargeScenery(info.Element, info.Loc);
             break;
         case VIEWPORT_INTERACTION_ITEM_BANNER:
             context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex());
@@ -572,7 +572,7 @@ bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemoveScenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto removeSceneryAction = SmallSceneryRemoveAction(
         { mapCoords.x, mapCoords.y, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
@@ -585,7 +585,7 @@ static void viewport_interaction_remove_scenery(TileElement* tileElement, const 
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_window* w;
     TileElement* tileElement2;
@@ -613,7 +613,7 @@ static void viewport_interaction_remove_footpath(TileElement* tileElement, const
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemoveFootpathItem(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction({ mapCoords.x, mapCoords.y, tileElement->GetBaseZ() });
     GameActions::Execute(&footpathAdditionRemoveAction);
@@ -623,7 +623,7 @@ static void viewport_interaction_remove_footpath_item(TileElement* tileElement, 
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsXY mapCoords)
+void ViewportInteractionRemoveParkEntrance(TileElement* tileElement, CoordsXY mapCoords)
 {
     int32_t rotation = tileElement->GetDirectionWithOffset(1);
     switch (tileElement->AsEntrance()->GetSequenceIndex())
@@ -643,7 +643,7 @@ void viewport_interaction_remove_park_entrance(TileElement* tileElement, CoordsX
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsWall()->GetEntry();
     if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
@@ -662,7 +662,7 @@ static void viewport_interaction_remove_park_wall(TileElement* tileElement, cons
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(TileElement* tileElement, const CoordsXY& mapCoords)
+static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, const CoordsXY& mapCoords)
 {
     rct_scenery_entry* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
 
@@ -680,7 +680,7 @@ static void viewport_interaction_remove_large_scenery(TileElement* tileElement, 
     }
 }
 
-static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, int32_t maxDistance)
+static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
     rct_window* w;
     rct_viewport* viewport;
@@ -721,7 +721,7 @@ static Peep* viewport_interaction_get_closest_peep(ScreenCoordsXY screenCoords, 
  *
  *  rct2: 0x0068A15E
  */
-CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords)
+CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords)
 {
     rct_window* window = window_find_from_point(screenCoords);
     if (window == nullptr || window->viewport == nullptr)

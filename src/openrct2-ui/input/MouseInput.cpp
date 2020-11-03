@@ -346,7 +346,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
                 if (_ticksSinceDragStart < 500)
                 {
                     // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
-                    viewport_interaction_right_click(screenCoords);
+                    ViewportInteractionRightClick(screenCoords);
                 }
             }
             break;
@@ -399,7 +399,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
                         }
                         else if (!(_inputFlags & INPUT_FLAG_4))
                         {
-                            viewport_interaction_left_click(screenCoords);
+                            ViewportInteractionLeftClick(screenCoords);
                         }
                     }
                     break;
@@ -1087,7 +1087,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                 case WWT_VIEWPORT:
                     if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                     {
-                        if (viewport_interaction_left_over(screenCoords))
+                        if (ViewportInteractionLeftOver(screenCoords))
                         {
                             SetCursor(CursorID::HandPoint);
                             return;
@@ -1140,7 +1140,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
         }
     }
 
-    viewport_interaction_right_over(screenCoords);
+    ViewportInteractionRightOver(screenCoords);
     SetCursor(cursorId);
 }
 

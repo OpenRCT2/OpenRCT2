@@ -2151,7 +2151,7 @@ static std::optional<CoordsXY> ride_get_place_position_from_screen_position(Scre
 
     if (!_trackPlaceCtrlState)
     {
-        mapCoords = sub_68A15E(screenCoords);
+        mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
         if (mapCoords.isNull())
             return std::nullopt;
 

@@ -257,7 +257,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    CoordsXY mapCoords = sub_68A15E(screenCoords);
+    CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     if (mapCoords.isNull())
     {
         window_track_place_clear_provisional();
@@ -322,7 +322,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     if (mapCoords.isNull())
         return;
 

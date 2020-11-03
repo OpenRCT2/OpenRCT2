@@ -1172,7 +1172,7 @@ static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenC
 static CoordsXYZD place_park_entrance_get_map_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
-    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
     if (parkEntranceMapPosition.isNull())
         return parkEntranceMapPosition;
