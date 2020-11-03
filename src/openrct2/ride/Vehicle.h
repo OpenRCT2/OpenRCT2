@@ -331,6 +331,7 @@ struct Vehicle : SpriteBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    void EnableCollisionsForTrain();
 
     uint16_t GetTrackType() const
     {
@@ -513,7 +514,7 @@ enum
 enum : uint32_t
 {
     VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
-    VEHICLE_UPDATE_FLAG_1 = (1 << 1),
+    VEHICLE_UPDATE_FLAG_COLLISION_DISABLED = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
     VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE = (1 << 3), // Shuttle is in reverse
     VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
