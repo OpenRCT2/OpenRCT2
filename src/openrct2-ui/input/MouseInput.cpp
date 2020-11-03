@@ -259,10 +259,13 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
             _inputState = InputState::Reset;
             context_show_cursor();
             break;
-        default:
-        {
-            // Do nothing. Workaround for compilation errors.
-        }
+        case MouseState::LeftPress:
+        case MouseState::LeftRelease:
+        case MouseState::RightPress:
+            //Take no action
+            //In this switch only right button release is relevant
+            //Function handles only right button
+            break;
     }
 }
 
@@ -319,10 +322,11 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         }
                     }
                     break;
-                default:
-                {
-                    // Do nothing. Workaround for compilation errors.
-                }
+                case MouseState::LeftRelease:
+                case MouseState::RightRelease:
+                    //Take no action
+                    //In this switch only button presses are relevant
+                    break;
             }
             break;
         case InputState::WidgetPressed:
@@ -411,10 +415,12 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         }
                     }
                     break;
-                default:
-                {
-                    // Do nothing. Workaround for compilation errors.
-                }
+                case MouseState::LeftPress:
+                case MouseState::RightPress:
+                case MouseState::RightRelease:
+                    //Take no action
+                    //In this switch only left button release is relevant
+                    break;
             }
             break;
         case InputState::ScrollLeft:
@@ -426,10 +432,12 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 case MouseState::LeftRelease:
                     InputScrollEnd();
                     break;
-                default:
-                {
-                    // Do nothing. Workaround for compilation errors.
-                }
+                case MouseState::LeftPress:
+                case MouseState::RightPress:
+                case MouseState::RightRelease:
+                    //Take no action
+                    //In this switch only left button release is relevant
+                    break;
             }
             break;
         case InputState::Resizing:
