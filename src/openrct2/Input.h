@@ -37,13 +37,13 @@ enum INPUT_FLAGS
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum MOUSE_STATE
+enum class MouseState : uint32_t
 {
-    MOUSE_STATE_RELEASED,
-    MOUSE_STATE_LEFT_PRESS,
-    MOUSE_STATE_LEFT_RELEASE,
-    MOUSE_STATE_RIGHT_PRESS,
-    MOUSE_STATE_RIGHT_RELEASE
+    Released,
+    LeftPress,
+    LeftRelease,
+    RightPress,
+    RightRelease
 };
 
 enum class InputState
@@ -101,7 +101,7 @@ void game_handle_keyboard_input();
 void GameHandleEdgeScroll();
 int32_t GetNextKey();
 
-void StoreMouseInput(int32_t state, const ScreenCoordsXY& screenCoords);
+void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);

@@ -37,7 +37,7 @@ struct RCTMouseData
 {
     uint32_t x;
     uint32_t y;
-    uint32_t state;
+    MouseState state;
 };
 
 static RCTMouseData _mouseInputQueue[64];
@@ -61,7 +61,7 @@ ScreenCoordsXY gTooltipCursor;
 
 static int16_t _clickRepeatTicks;
 
-static int32_t GameGetNextInput(ScreenCoordsXY& screenCoords);
+static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
 static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 static void InputWidgetOverChangeCheck(rct_windowclass windowClass, rct_windownumber windowNumber, rct_widgetindex widgetIndex);
 static void InputWidgetOverFlatbuttonInvalidate();
@@ -70,10 +70,10 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords);
 void InvalidateScroll();
 static RCTMouseData* GetMouseInput();
 void TileElementRightClick(int32_t type, TileElement* tileElement, const ScreenCoordsXY& screenCoords);
-static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t state);
+static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState state);
 static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, rct_widgetindex widgetIndex);
 void InputStateWidgetPressed(
-    const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
+    const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);
 void SetCursor(CursorID cursor_id);
 static void InputWindowPositionContinue(
     rct_window* w, const ScreenCoordsXY& lastScreenCoords, const ScreenCoordsXY& newScreenCoords);
@@ -107,11 +107,11 @@ void GameHandleInput()
 
     invalidate_all_windows_after_input();
 
-    int32_t state;
+    MouseState state;
     ScreenCoordsXY screenCoords;
-    while ((state = GameGetNextInput(screenCoords)) != MOUSE_STATE_RELEASED)
+    while ((state = GameGetNextInput(screenCoords)) != MouseState::Released)
     {
-        GameHandleInputMouse(screenCoords, state & 0xFF);
+        GameHandleInputMouse(screenCoords, state);
     }
 
     if (_inputFlags & INPUT_FLAG_5)
@@ -137,14 +137,14 @@ void GameHandleInput()
  *
  *  rct2: 0x006E83C7
  */
-static int32_t GameGetNextInput(ScreenCoordsXY& screenCoords)
+static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords)
 {
     RCTMouseData* input = GetMouseInput();
     if (input == nullptr)
     {
         const CursorState* cursorState = context_get_cursor_state();
         screenCoords = cursorState->position;
-        return 0;
+        return MouseState::Released;
     }
     else
     {
@@ -235,7 +235,7 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
  *
  *  rct2: 0x006E8ACB
  */
-static void InputScrollRight(const ScreenCoordsXY& screenCoords, int32_t state)
+static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState state)
 {
     rct_window* w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
     if (w == nullptr)
@@ -247,7 +247,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, int32_t state)
 
     switch (state)
     {
-        case MOUSE_STATE_RELEASED:
+        case MouseState::Released:
             _ticksSinceDragStart += gCurrentDeltaTime;
             if (screenCoords.x != 0 || screenCoords.y != 0)
             {
@@ -255,10 +255,14 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, int32_t state)
                 InputScrollDragContinue(screenCoords, w);
             }
             break;
-        case MOUSE_STATE_RIGHT_RELEASE:
+        case MouseState::RightRelease:
             _inputState = InputState::Reset;
             context_show_cursor();
             break;
+        default:
+        {
+            // Do nothing. Workaround for compilation errors.
+        }
     }
 }
 
@@ -266,7 +270,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, int32_t state)
  *
  *  rct2: 0x006E8655
  */
-static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t state)
+static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState state)
 {
     rct_window* w;
     rct_widget* widget;
@@ -285,13 +289,13 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
         case InputState::Normal:
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     InputWidgetOver(screenCoords, w, widgetIndex);
                     break;
-                case MOUSE_STATE_LEFT_PRESS:
+                case MouseState::LeftPress:
                     InputWidgetLeft(screenCoords, w, widgetIndex);
                     break;
-                case MOUSE_STATE_RIGHT_PRESS:
+                case MouseState::RightPress:
                     window_close_by_class(WC_TOOLTIP);
 
                     if (w != nullptr)
@@ -315,6 +319,10 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
                         }
                     }
                     break;
+                default:
+                {
+                    // Do nothing. Workaround for compilation errors.
+                }
             }
             break;
         case InputState::WidgetPressed:
@@ -329,18 +337,18 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
             else
             {
                 InputWindowPositionContinue(w, gInputDragLast, screenCoords);
-                if (state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::LeftRelease)
                 {
                     InputWindowPositionEnd(w, screenCoords);
                 }
             }
             break;
         case InputState::ViewportRight:
-            if (state == MOUSE_STATE_RELEASED)
+            if (state == MouseState::Released)
             {
                 InputViewportDragContinue();
             }
-            else if (state == MOUSE_STATE_RIGHT_RELEASE)
+            else if (state == MouseState::RightRelease)
             {
                 InputViewportDragEnd();
                 if (_ticksSinceDragStart < 500)
@@ -363,7 +371,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
 
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     if (w->viewport == nullptr)
                     {
                         _inputState = InputState::Reset;
@@ -384,7 +392,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
 
                     window_event_tool_drag_call(w, gCurrentToolWidget.widget_index, screenCoords);
                     break;
-                case MOUSE_STATE_LEFT_RELEASE:
+                case MouseState::LeftRelease:
                     _inputState = InputState::Reset;
                     if (_dragWidget.window_number == w->number)
                     {
@@ -403,17 +411,25 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
                         }
                     }
                     break;
+                default:
+                {
+                    // Do nothing. Workaround for compilation errors.
+                }
             }
             break;
         case InputState::ScrollLeft:
             switch (state)
             {
-                case MOUSE_STATE_RELEASED:
+                case MouseState::Released:
                     InputScrollContinue(w, widgetIndex, screenCoords);
                     break;
-                case MOUSE_STATE_LEFT_RELEASE:
+                case MouseState::LeftRelease:
                     InputScrollEnd();
                     break;
+                default:
+                {
+                    // Do nothing. Workaround for compilation errors.
+                }
             }
             break;
         case InputState::Resizing:
@@ -424,11 +440,11 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, int32_t sta
             }
             else
             {
-                if (state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::LeftRelease)
                 {
                     InputWindowResizeEnd();
                 }
-                if (state == MOUSE_STATE_RELEASED || state == MOUSE_STATE_LEFT_RELEASE)
+                if (state == MouseState::Released || state == MouseState::LeftRelease)
                 {
                     InputWindowResizeContinue(w, screenCoords);
                 }
@@ -1166,7 +1182,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
  *  rct2: 0x006E8DA7
  */
 void InputStateWidgetPressed(
-    const ScreenCoordsXY& screenCoords, int32_t state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
+    const ScreenCoordsXY& screenCoords, MouseState state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget)
 {
     rct_windowclass cursor_w_class;
     rct_windownumber cursor_w_number;
@@ -1183,7 +1199,7 @@ void InputStateWidgetPressed(
 
     switch (state)
     {
-        case MOUSE_STATE_RELEASED:
+        case MouseState::Released:
             if (!w || cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
@@ -1217,8 +1233,8 @@ void InputStateWidgetPressed(
             _inputFlags |= INPUT_FLAG_WIDGET_PRESSED;
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
             return;
-        case MOUSE_STATE_LEFT_RELEASE:
-        case MOUSE_STATE_RIGHT_PRESS:
+        case MouseState::LeftRelease:
+        case MouseState::RightPress:
             if (_inputState == InputState::DropdownActive)
             {
                 if (w)
@@ -1293,7 +1309,7 @@ void InputStateWidgetPressed(
 
             _inputState = InputState::Normal;
 
-            if (state == MOUSE_STATE_RIGHT_PRESS)
+            if (state == MouseState::RightPress)
             {
                 return;
             }
@@ -1506,7 +1522,7 @@ void InvalidateScroll()
 /**
  * rct2: 0x00406C96
  */
-void StoreMouseInput(int32_t state, const ScreenCoordsXY& screenCoords)
+void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords)
 {
     uint32_t writeIndex = _mouseInputQueueWriteIndex;
     uint32_t nextWriteIndex = (writeIndex + 1) % std::size(_mouseInputQueue);
