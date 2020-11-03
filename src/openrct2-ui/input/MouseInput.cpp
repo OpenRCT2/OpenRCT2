@@ -222,7 +222,7 @@ static void InputScrollDragContinue(const ScreenCoordsXY& screenCoords, rct_wind
         scroll->v_top = std::min<uint16_t>(std::max(0, scroll->v_top + differentialCoords.y), size);
     }
 
-    widget_scroll_update_thumbs(w, widgetIndex);
+    WidgetScrollUpdateThumbs(w, widgetIndex);
     window_invalidate_by_number(w->classification, w->number);
 
     ScreenCoordsXY fixedCursorPosition = { static_cast<int32_t>(std::ceil(gInputDragLast.x * gConfigGeneral.window_scale)),
@@ -601,7 +601,7 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
     int32_t scroll_area, scroll_id;
     ScreenCoordsXY scrollCoords;
     scroll_id = 0; // safety
-    widget_scroll_get_part(w, widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
+    WidgetScrollGetPart(w, widget, screenCoords, scrollCoords, &scroll_area, &scroll_id);
 
     _currentScrollArea = scroll_area;
     _currentScrollIndex = scroll_id;
@@ -654,7 +654,7 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
         default:
             break;
     }
-    widget_scroll_update_thumbs(w, widgetIndex);
+    WidgetScrollUpdateThumbs(w, widgetIndex);
     window_invalidate_by_number(widgetIndex, w->classification);
 }
 
@@ -674,7 +674,7 @@ static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, cons
     }
 
     ScreenCoordsXY newScreenCoords;
-    widget_scroll_get_part(w, widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
+    WidgetScrollGetPart(w, widget, screenCoords, newScreenCoords, &scroll_part, &scroll_id);
 
     if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
     {
@@ -757,7 +757,7 @@ static void InputScrollPartUpdateHThumb(rct_window* w, rct_widgetindex widgetInd
         if (newLeft > x)
             newLeft = x;
         w->scrolls[scroll_id].h_left = newLeft;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -796,7 +796,7 @@ static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetInd
         if (newTop > y)
             newTop = y;
         w->scrolls[scroll_id].v_top = newTop;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -813,7 +813,7 @@ static void InputScrollPartUpdateHLeft(rct_window* w, rct_widgetindex widgetInde
         w->scrolls[scroll_id].flags |= HSCROLLBAR_LEFT_PRESSED;
         if (w->scrolls[scroll_id].h_left >= 3)
             w->scrolls[scroll_id].h_left -= 3;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -839,7 +839,7 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
             newLeft = 0;
         if (w->scrolls[scroll_id].h_left > newLeft)
             w->scrolls[scroll_id].h_left = newLeft;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -856,7 +856,7 @@ static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex
         w->scrolls[scroll_id].flags |= VSCROLLBAR_UP_PRESSED;
         if (w->scrolls[scroll_id].v_top >= 3)
             w->scrolls[scroll_id].v_top -= 3;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -882,7 +882,7 @@ static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIn
             newTop = 0;
         if (w->scrolls[scroll_id].v_top > newTop)
             w->scrolls[scroll_id].v_top = newTop;
-        widget_scroll_update_thumbs(w, widgetIndex);
+        WidgetScrollUpdateThumbs(w, widgetIndex);
         widget_invalidate_by_number(w->classification, w->number, widgetIndex);
     }
 }
@@ -914,7 +914,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
     {
         int32_t scroll_part, scrollId;
         ScreenCoordsXY newScreenCoords;
-        widget_scroll_get_part(w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
+        WidgetScrollGetPart(w, widget, screenCoords, newScreenCoords, &scroll_part, &scrollId);
 
         if (scroll_part != SCROLL_PART_VIEW)
             window_tooltip_close();
@@ -1042,7 +1042,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             InputScrollBegin(w, widgetIndex, screenCoords);
             break;
         default:
-            if (widget_is_enabled(w, widgetIndex) && !widget_is_disabled(w, widgetIndex))
+            if (WidgetIsEnabled(w, widgetIndex) && !WidgetIsDisabled(w, widgetIndex))
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget->midX());
 
@@ -1118,7 +1118,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                 {
                     int32_t output_scroll_area, scroll_id;
                     ScreenCoordsXY scrollCoords;
-                    widget_scroll_get_part(
+                    WidgetScrollGetPart(
                         window, &window->widgets[widgetId], screenCoords, scrollCoords, &output_scroll_area, &scroll_id);
                     if (output_scroll_area != SCROLL_PART_VIEW)
                     {

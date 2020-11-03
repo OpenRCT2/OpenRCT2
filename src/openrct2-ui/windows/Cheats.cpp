@@ -1042,7 +1042,7 @@ static void window_cheats_invalidate(rct_window* w)
     {
         case WINDOW_CHEATS_PAGE_MONEY:
         {
-            widget_set_checkbox_value(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY);
+            WidgetSetCheckboxValue(w, WIDX_NO_MONEY, gParkFlags & PARK_FLAGS_NO_MONEY);
 
             uint64_t money_widgets = (1 << WIDX_ADD_SET_MONEY_GROUP) | (1 << WIDX_MONEY_SPINNER)
                 | (1 << WIDX_MONEY_SPINNER_INCREMENT) | (1 << WIDX_MONEY_SPINNER_DECREMENT) | (1 << WIDX_ADD_MONEY)
@@ -1061,34 +1061,34 @@ static void window_cheats_invalidate(rct_window* w)
         {
             auto ft = Formatter::Common();
             ft.Add<int32_t>(MONEY(1000, 00));
-            widget_set_checkbox_value(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
-            widget_set_checkbox_value(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
-            widget_set_checkbox_value(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
+            WidgetSetCheckboxValue(w, WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
         }
         break;
 
         case WINDOW_CHEATS_PAGE_MISC:
             w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK
                                                                                         : STR_CHEAT_OPEN_PARK;
-            widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
-            widget_set_checkbox_value(w, WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
-            widget_set_checkbox_value(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
-            widget_set_checkbox_value(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
+            WidgetSetCheckboxValue(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
+            WidgetSetCheckboxValue(w, WIDX_FREEZE_WEATHER, gCheatsFreezeWeather);
+            WidgetSetCheckboxValue(w, WIDX_NEVERENDING_MARKETING, gCheatsNeverendingMarketing);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_PLANT_AGING, gCheatsDisablePlantAging);
             break;
         case WINDOW_CHEATS_PAGE_RIDES:
-            widget_set_checkbox_value(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
-            widget_set_checkbox_value(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
-            widget_set_checkbox_value(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
-            widget_set_checkbox_value(w, WIDX_BUILD_IN_PAUSE_MODE, gCheatsBuildInPauseMode);
-            widget_set_checkbox_value(w, WIDX_SHOW_ALL_OPERATING_MODES, gCheatsShowAllOperatingModes);
-            widget_set_checkbox_value(w, WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gCheatsShowVehiclesFromOtherTrackTypes);
-            widget_set_checkbox_value(w, WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gCheatsDisableTrainLengthLimit);
-            widget_set_checkbox_value(w, WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gCheatsEnableChainLiftOnAllTrack);
-            widget_set_checkbox_value(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
-            widget_set_checkbox_value(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
-            widget_set_checkbox_value(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
-            widget_set_checkbox_value(w, WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
-            widget_set_checkbox_value(w, WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
+            WidgetSetCheckboxValue(w, WIDX_FAST_LIFT_HILL, gCheatsFastLiftHill);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_BRAKES_FAILURE, gCheatsDisableBrakesFailure);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_ALL_BREAKDOWNS, gCheatsDisableAllBreakdowns);
+            WidgetSetCheckboxValue(w, WIDX_BUILD_IN_PAUSE_MODE, gCheatsBuildInPauseMode);
+            WidgetSetCheckboxValue(w, WIDX_SHOW_ALL_OPERATING_MODES, gCheatsShowAllOperatingModes);
+            WidgetSetCheckboxValue(w, WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES, gCheatsShowVehiclesFromOtherTrackTypes);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_TRAIN_LENGTH_LIMITS, gCheatsDisableTrainLengthLimit);
+            WidgetSetCheckboxValue(w, WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK, gCheatsEnableChainLiftOnAllTrack);
+            WidgetSetCheckboxValue(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
+            WidgetSetCheckboxValue(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
+            WidgetSetCheckboxValue(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
+            WidgetSetCheckboxValue(w, WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
+            WidgetSetCheckboxValue(w, WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
             break;
     }
 
@@ -1138,7 +1138,7 @@ static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t colour = w->colours[1];
         auto ft = Formatter();
         ft.Add<money32>(_moneySpinnerValue);
-        if (widget_is_disabled(w, WIDX_MONEY_SPINNER))
+        if (WidgetIsDisabled(w, WIDX_MONEY_SPINNER))
         {
             colour |= COLOUR_FLAG_INSET;
         }

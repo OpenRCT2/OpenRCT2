@@ -626,7 +626,7 @@ void window_scenery_update_scroll(rct_window* w)
     w->scrolls[0].v_top = window_scenery_rows_height(rowSelected);
     w->scrolls[0].v_top = std::min<int32_t>(maxTop, w->scrolls[0].v_top);
 
-    widget_scroll_update_thumbs(w, WIDX_SCENERY_LIST);
+    WidgetScrollUpdateThumbs(w, WIDX_SCENERY_LIST);
 }
 
 /**

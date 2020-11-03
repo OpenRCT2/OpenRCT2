@@ -449,7 +449,7 @@ static void window_network_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi,
 {
     rct_widgetindex widgetIndex = WIDX_TAB1 + page;
 
-    if (!widget_is_disabled(w, widgetIndex))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {

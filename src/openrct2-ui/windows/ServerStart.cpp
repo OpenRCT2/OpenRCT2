@@ -309,7 +309,7 @@ static void window_server_start_invalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, WC_SERVER_LIST);
 
-    widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+    WidgetSetCheckboxValue(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
     auto ft = Formatter::Common();
     ft.Increment(18);
     ft.Add<uint16_t>(gConfigNetwork.maxplayers);

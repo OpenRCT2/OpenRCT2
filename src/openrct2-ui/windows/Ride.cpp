@@ -2375,22 +2375,22 @@ static void window_ride_main_invalidate(rct_window* w)
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RIDE_STATUS_CLOSED) * 2
-        + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+        + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
     window_ride_main_widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0
-        + (ride->status == RIDE_STATUS_SIMULATING) * 2 + widget_is_pressed(w, WIDX_SIMULATE_LIGHT);
+        + (ride->status == RIDE_STATUS_SIMULATING) * 2 + WidgetIsPressed(w, WIDX_SIMULATE_LIGHT);
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RIDE_STATUS_TESTING) * 2
-        + widget_is_pressed(w, WIDX_TEST_LIGHT);
+        + WidgetIsPressed(w, WIDX_TEST_LIGHT);
 #else
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RIDE_STATUS_CLOSED) * 2
-        + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+        + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
 
     auto baseSprite = ride->status == RIDE_STATUS_SIMULATING ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = baseSprite
         + (ride->status == RIDE_STATUS_TESTING || ride->status == RIDE_STATUS_SIMULATING) * 2
-        + widget_is_pressed(w, WIDX_TEST_LIGHT);
+        + WidgetIsPressed(w, WIDX_TEST_LIGHT);
 #endif
     window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RIDE_STATUS_OPEN) * 2
-        + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+        + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
 
     window_ride_anchor_border_widgets(w);
 
@@ -5842,7 +5842,7 @@ static void window_ride_graphs_update(rct_window* w)
     }
 
     w->scrolls[0].h_left = std::clamp(x, 0, w->scrolls[0].h_right - (widget->width() - 2));
-    widget_scroll_update_thumbs(w, WIDX_GRAPH);
+    WidgetScrollUpdateThumbs(w, WIDX_GRAPH);
 }
 
 /**

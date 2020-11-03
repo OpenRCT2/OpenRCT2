@@ -438,7 +438,7 @@ static void window_object_load_error_update(rct_window* w)
     w->frame_no++;
 
     // Check if the mouse is hovering over the list
-    if (!widget_is_highlighted(w, WIDX_SCROLL))
+    if (!WidgetIsHighlighted(w, WIDX_SCROLL))
     {
         highlighted_index = -1;
         widget_invalidate(w, WIDX_SCROLL);

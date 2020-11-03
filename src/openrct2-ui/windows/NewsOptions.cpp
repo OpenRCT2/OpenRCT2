@@ -200,7 +200,7 @@ static void window_news_options_invalidate(rct_window* w)
         checkboxWidget->text = ndef->caption;
 
         const bool* configValue = get_notification_value_ptr(ndef);
-        widget_set_checkbox_value(w, checkboxWidgetIndex, *configValue);
+        WidgetSetCheckboxValue(w, checkboxWidgetIndex, *configValue);
 
         checkboxWidgetIndex++;
         checkboxWidget++;

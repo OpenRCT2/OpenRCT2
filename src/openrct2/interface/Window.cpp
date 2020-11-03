@@ -610,7 +610,7 @@ void window_update_scroll_widgets(rct_window* w)
 
         if (scrollPositionChanged)
         {
-            widget_scroll_update_thumbs(w, widgetIndex);
+            WidgetScrollUpdateThumbs(w, widgetIndex);
             w->Invalidate();
         }
         scrollIndex++;
@@ -2119,7 +2119,7 @@ rct_windowclass window_get_classification(rct_window* window)
  *
  *  rct2: 0x006EAF26
  */
-void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 {
     rct_widget* widget = &w->widgets[widget_index];
     rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];

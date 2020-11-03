@@ -860,13 +860,13 @@ static void window_options_display_invalidate(rct_window* w)
         w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
     }
 
-    widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-    widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-    widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-    widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-    widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-    widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-    widget_set_checkbox_value(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
+    WidgetSetCheckboxValue(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+    WidgetSetCheckboxValue(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+    WidgetSetCheckboxValue(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+    WidgetSetCheckboxValue(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+    WidgetSetCheckboxValue(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+    WidgetSetCheckboxValue(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+    WidgetSetCheckboxValue(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
     // Dropdown captions for straightforward strings.
     window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
@@ -1030,12 +1030,12 @@ static void window_options_rendering_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-    widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-    widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-    widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-    widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-    widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+    WidgetSetCheckboxValue(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+    WidgetSetCheckboxValue(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+    WidgetSetCheckboxValue(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+    WidgetSetCheckboxValue(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+    WidgetSetCheckboxValue(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+    WidgetSetCheckboxValue(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
     rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
                                                  STR_VIRTUAL_FLOOR_STYLE_GLASSY };
@@ -1043,7 +1043,7 @@ static void window_options_rendering_invalidate(rct_window* w)
     window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
         gConfigGeneral.virtual_floor_style)];
 
-    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
     {
         w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
@@ -1054,7 +1054,7 @@ static void window_options_rendering_invalidate(rct_window* w)
         gConfigGeneral.enable_light_fx = false;
     }
 
-    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
         && gConfigGeneral.enable_light_fx)
     {
@@ -1066,12 +1066,12 @@ static void window_options_rendering_invalidate(rct_window* w)
         gConfigGeneral.enable_light_fx_for_vehicles = false;
     }
 
-    widget_set_checkbox_value(
+    WidgetSetCheckboxValue(
         w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-    widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+    WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
     if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
     {
-        widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+        WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
         w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
     }
@@ -1520,7 +1520,7 @@ static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_ind
     int widget_size = scroll->h_right - (widget->width() - 1);
     scroll->h_left = ceil(volume / 100.0f * widget_size);
 
-    widget_scroll_update_thumbs(w, widget_index);
+    WidgetScrollUpdateThumbs(w, widget_index);
 }
 
 static void window_options_audio_invalidate(rct_window* w)
@@ -1556,12 +1556,12 @@ static void window_options_audio_invalidate(rct_window* w)
 
     window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
-    widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-    widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-    widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
-    widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-    widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-    widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+    WidgetSetCheckboxValue(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+    WidgetSetEnabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetEnabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
     // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
     if (w->frame_no == 0)
@@ -1702,16 +1702,16 @@ static void window_options_controls_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-    widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
-    widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-    widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+    WidgetSetCheckboxValue(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+    WidgetSetCheckboxValue(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
+    WidgetSetCheckboxValue(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+    WidgetSetCheckboxValue(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
 
     size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
     const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -1882,11 +1882,11 @@ static void window_options_misc_invalidate(rct_window* w)
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
     }
 
-    widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-    widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-    widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-    widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
-    widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+    WidgetSetCheckboxValue(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+    WidgetSetCheckboxValue(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+    WidgetSetCheckboxValue(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+    WidgetSetCheckboxValue(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
+    WidgetSetCheckboxValue(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
 
     // Disable title sequence dropdown if set to random
     if (gConfigInterface.random_title_sequence)
@@ -1905,7 +1905,7 @@ static void window_options_misc_invalidate(rct_window* w)
     else
         window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
-    widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+    WidgetSetCheckboxValue(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
     {
@@ -2079,12 +2079,11 @@ static void window_options_advanced_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-    widget_set_checkbox_value(
-        w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-    widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-    widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-    widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
+    WidgetSetCheckboxValue(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+    WidgetSetCheckboxValue(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+    WidgetSetCheckboxValue(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+    WidgetSetCheckboxValue(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+    WidgetSetCheckboxValue(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
 
     window_options_common_invalidate_after(w);
 }

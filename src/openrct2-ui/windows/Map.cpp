@@ -586,7 +586,7 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const
             gLandToolTerrainSurface, gLandToolTerrainEdge);
         GameActions::Execute(&surfaceSetStyleAction);
     }
-    else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
+    else if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
         // Set land rights
         int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -800,7 +800,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
     // Draw land tool size
-    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+    if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
         gfx_draw_string_centred(
             dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &_landRightsToolSize);
@@ -843,7 +843,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
     }
-    else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
+    else if (!WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
         gfx_draw_string_left(
             dpi, STR_MAP_SIZE, nullptr, w->colours[1],
@@ -940,7 +940,7 @@ static void window_map_centre_on_view_point()
 
     w_map->scrolls[0].h_left = cx;
     w_map->scrolls[0].v_top = dx;
-    widget_scroll_update_thumbs(w_map, WIDX_MAP);
+    WidgetScrollUpdateThumbs(w_map, WIDX_MAP);
 }
 
 /**

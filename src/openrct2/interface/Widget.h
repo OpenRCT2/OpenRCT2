@@ -132,19 +132,19 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_UP, tooltip);
 }
 
-void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index);
-void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
+void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
-bool widget_is_enabled(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_disabled(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_highlighted(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex);
-void widget_scroll_get_part(
+bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
+void WidgetScrollGetPart(
     rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
-void widget_set_enabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
-void widget_set_checkbox_value(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
+void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
 
 #endif

@@ -971,9 +971,9 @@ static void window_multiplayer_options_invalidate(rct_window* w)
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WWT_EMPTY;
     }
 
-    widget_set_checkbox_value(w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
-    widget_set_checkbox_value(w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
-    widget_set_checkbox_value(w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
+    WidgetSetCheckboxValue(w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
+    WidgetSetCheckboxValue(w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
+    WidgetSetCheckboxValue(w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
 }
 
 static void window_multiplayer_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -988,7 +988,7 @@ static void window_multiplayer_draw_tab_image(rct_window* w, rct_drawpixelinfo* 
 {
     rct_widgetindex widgetIndex = WIDX_TAB1 + page;
 
-    if (!widget_is_disabled(w, widgetIndex))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {

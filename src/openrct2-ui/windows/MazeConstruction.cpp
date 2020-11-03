@@ -301,14 +301,14 @@ static void window_maze_construction_update(rct_window* w)
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_PLACE:
-            if (!widget_is_active_tool(w, WIDX_MAZE_DIRECTION_GROUPBOX))
+            if (!WidgetIsActiveTool(w, WIDX_MAZE_DIRECTION_GROUPBOX))
             {
                 window_close(w);
                 return;
             }
             break;
         case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
-            if (!widget_is_active_tool(w, WIDX_MAZE_ENTRANCE) && !widget_is_active_tool(w, WIDX_MAZE_EXIT))
+            if (!WidgetIsActiveTool(w, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(w, WIDX_MAZE_EXIT))
             {
                 _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                 window_maze_construction_update_pressed_widgets();
