@@ -187,7 +187,7 @@ rct_window* window_ride_list_open()
     window = window_bring_to_front_by_class(WC_RIDE_LIST);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
             | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
@@ -196,7 +196,7 @@ rct_window* window_ride_list_open()
         {
             window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
         }
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->page = PAGE_RIDES;
         window->no_list_items = 0;
         window->selected_list_item = -1;
@@ -555,7 +555,7 @@ static void window_ride_list_invalidate(rct_window* w)
  */
 static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_list_draw_tab_images(dpi, w);
 
     // Draw number of attractions on bottom

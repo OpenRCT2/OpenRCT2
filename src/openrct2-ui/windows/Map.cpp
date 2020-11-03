@@ -217,7 +217,7 @@ rct_window* window_map_open()
         return nullptr;
     }
 
-    w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
+    w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PEOPLE_TAB) | (1 << WIDX_RIDES_TAB) | (1 << WIDX_MAP_SIZE_SPINNER)
         | (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL)
@@ -229,7 +229,7 @@ rct_window* window_map_open()
     w->hold_down_widgets = (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL_LARGER)
         | (1 << WIDX_LAND_TOOL_SMALLER);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->map.rotation = get_current_rotation();
 
@@ -793,7 +793,7 @@ static void window_map_invalidate(rct_window* w)
  */
 static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
     auto screenCoords = w->windowPos

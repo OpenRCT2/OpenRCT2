@@ -92,7 +92,7 @@ rct_window* window_server_start_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
+    window = WindowCreateCentred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
     window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
     window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
@@ -105,7 +105,7 @@ rct_window* window_server_start_open()
            | (1 << WIDX_GREETING_INPUT) | (1 << WIDX_PASSWORD_INPUT) | (1 << WIDX_MAXPLAYERS) | (1 << WIDX_MAXPLAYERS_INCREASE)
            | (1 << WIDX_MAXPLAYERS_DECREASE) | (1 << WIDX_ADVERTISE_CHECKBOX) | (1 << WIDX_START_SERVER)
            | (1 << WIDX_LOAD_SERVER));
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -317,7 +317,7 @@ static void window_server_start_invalidate(rct_window* w)
 
 static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     gfx_draw_string_left(
         dpi, STR_PORT, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top });

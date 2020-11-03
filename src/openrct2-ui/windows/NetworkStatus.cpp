@@ -63,11 +63,11 @@ rct_window* window_network_status_open(const char* text, close_callback onClose)
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+    window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
     window->widgets = window_network_status_widgets;
     window->enabled_widgets = 1 << WIDX_CLOSE;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -154,7 +154,7 @@ static void window_network_status_invalidate(rct_window* w)
 
 static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     char buffer[sizeof(window_network_status_text) + 10];
     char* lineCh = buffer;

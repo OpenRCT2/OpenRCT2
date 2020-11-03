@@ -116,12 +116,12 @@ rct_window* window_new_campaign_open(int16_t campaignType)
         window_close(w);
     }
 
-    w = window_create_auto_pos(WW, WH, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
+    w = WindowCreateAutoPos(WW, WH, &window_new_campaign_events, WC_NEW_CAMPAIGN, 0);
     w->widgets = window_new_campaign_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RIDE_DROPDOWN) | (1 << WIDX_RIDE_DROPDOWN_BUTTON)
         | (1 << WIDX_WEEKS_INCREASE_BUTTON) | (1 << WIDX_WEEKS_DECREASE_BUTTON) | (1 << WIDX_START_BUTTON);
     w->hold_down_widgets = (1 << WIDX_WEEKS_INCREASE_BUTTON) | (1 << WIDX_WEEKS_DECREASE_BUTTON);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     window_new_campaign_widgets[WIDX_TITLE].text = MarketingCampaignNames[campaignType][0];
 
@@ -367,7 +367,7 @@ static void window_new_campaign_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Number of weeks
     rct_widget* spinnerWidget = &window_new_campaign_widgets[WIDX_WEEKS_SPINNER];

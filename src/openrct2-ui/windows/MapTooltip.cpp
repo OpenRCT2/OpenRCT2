@@ -108,7 +108,7 @@ static void window_map_tooltip_open()
     w = window_find_by_class(WC_MAP_TOOLTIP);
     if (w == nullptr)
     {
-        w = window_create(
+        w = WindowCreate(
             pos, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;

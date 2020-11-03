@@ -261,7 +261,7 @@ rct_window* window_staff_open(Peep* peep)
     rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
+        w = WindowCreateAutoPos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
         w->number = peep->sprite_index;
         w->page = 0;
@@ -285,7 +285,7 @@ rct_window* window_staff_open(Peep* peep)
     w->event_handlers = window_staff_page_events[0];
     w->pressed_widgets = 0;
     window_staff_disable_widgets(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     window_staff_viewport_init(w);
 
     if (peep->State == PeepState::Picked)
@@ -379,7 +379,7 @@ void window_staff_set_page(rct_window* w, int32_t page)
     window_event_resize_call(w);
     window_event_invalidate_call(w);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     if (listen && w->viewport)
@@ -740,7 +740,7 @@ void window_staff_stats_invalidate(rct_window* w)
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_staff_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -779,7 +779,7 @@ void window_staff_options_invalidate(rct_window* w)
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_staff_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -861,7 +861,7 @@ void window_staff_overview_invalidate(rct_window* w)
     if (window_staff_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_staff_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -916,7 +916,7 @@ void window_staff_overview_invalidate(rct_window* w)
  */
 void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_staff_overview_tab_paint(w, dpi);
     window_staff_options_tab_paint(w, dpi);
     window_staff_stats_tab_paint(w, dpi);
@@ -1067,7 +1067,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_staff_overview_tab_paint(w, dpi);
     window_staff_options_tab_paint(w, dpi);
     window_staff_stats_tab_paint(w, dpi);
@@ -1079,7 +1079,7 @@ void window_staff_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_staff_overview_tab_paint(w, dpi);
     window_staff_options_tab_paint(w, dpi);
     window_staff_stats_tab_paint(w, dpi);

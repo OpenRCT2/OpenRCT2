@@ -1257,7 +1257,7 @@ static rct_window* window_ride_open(Ride* ride)
 {
     rct_window* w;
 
-    w = window_create_auto_pos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
+    w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
@@ -1356,7 +1356,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
     window_ride_disable_tabs(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     // View
     for (int32_t i = stationIndex; i >= 0; i--)
@@ -1488,7 +1488,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
     window_ride_disable_tabs(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->ride.view = view;
     window_ride_init_viewport(w);
@@ -1547,7 +1547,7 @@ static void window_ride_set_page(rct_window* w, int32_t page)
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     if (listen != 0 && w->viewport != nullptr)
@@ -2349,7 +2349,7 @@ static void window_ride_main_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -2626,7 +2626,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     // Viewport and ear icon
@@ -2850,7 +2850,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -2932,7 +2932,7 @@ static void window_ride_vehicle_invalidate(rct_window* w)
  */
 static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     auto ride = get_ride(w->number);
@@ -3417,7 +3417,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -3660,7 +3660,7 @@ static void window_ride_operating_invalidate(rct_window* w)
  */
 static void window_ride_operating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     auto ride = get_ride(w->number);
@@ -4013,7 +4013,7 @@ static void window_ride_maintenance_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -4057,7 +4057,7 @@ static void window_ride_maintenance_invalidate(rct_window* w)
  */
 static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     auto ride = get_ride(w->number);
@@ -4559,7 +4559,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -4795,7 +4795,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride == nullptr)
         return;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     // Track / shop item preview
@@ -5086,7 +5086,7 @@ static void window_ride_music_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -5126,7 +5126,7 @@ static void window_ride_music_invalidate(rct_window* w)
  */
 static void window_ride_music_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 }
 
@@ -5449,7 +5449,7 @@ static void window_ride_measurements_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -5502,7 +5502,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
     int16_t holes, maxSpeed, averageSpeed, drops, highestDropHeight, inversions, time;
     int32_t maxPositiveVerticalGs, maxNegativeVerticalGs, maxLateralGs, totalAirTime, length;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     if (window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type == WWT_BUTTON)
@@ -5921,7 +5921,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -5979,7 +5979,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
  */
 static void window_ride_graphs_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 }
 
@@ -6475,7 +6475,7 @@ static void window_ride_income_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -6586,7 +6586,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     money32 profit, costPerHour;
     int32_t primaryItem, secondaryItem;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     auto ride = get_ride(w->number);
@@ -6760,7 +6760,7 @@ static void window_ride_customer_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_ride_set_pressed_tab(w);
@@ -6799,7 +6799,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t customersPerHour;
     rct_string_id stringId;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
 
     auto ride = get_ride(w->number);

@@ -212,7 +212,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr)
         return;
 
-    rct_window* window = window_create_centred(
+    rct_window* window = WindowCreateCentred(
         WW, WH, &window_title_command_editor_events, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
     window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
@@ -221,7 +221,7 @@ void window_title_command_editor_open(TitleSequence* sequence, int32_t index, bo
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COMMAND) | (1 << WIDX_COMMAND_DROPDOWN) | (1 << WIDX_TEXTBOX_FULL)
         | (1 << WIDX_TEXTBOX_X) | (1 << WIDX_TEXTBOX_Y) | (1 << WIDX_INPUT) | (1 << WIDX_INPUT_DROPDOWN) | (1 << WIDX_GET)
         | (1 << WIDX_SELECT_SCENARIO) | (1 << WIDX_SELECT_SPRITE) | (1 << WIDX_OKAY) | (1 << WIDX_CANCEL);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
     viewport_create(
@@ -703,7 +703,7 @@ static void window_title_command_editor_invalidate(rct_window* w)
 
 static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     TITLE_COMMAND_ORDER command_info = get_command_info(command.Type);
 

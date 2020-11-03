@@ -106,13 +106,13 @@ rct_window* window_sign_open(rct_windownumber number)
     if (w != nullptr)
         return w;
 
-    w = window_create_auto_pos(WW, WH, &window_sign_events, WC_BANNER, WF_NO_SCROLLING);
+    w = WindowCreateAutoPos(WW, WH, &window_sign_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_sign_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
         | (1 << WIDX_TEXT_COLOUR);
 
     w->number = number;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     auto banner = GetBanner(w->number);
     if (banner == nullptr)
@@ -307,7 +307,7 @@ static void window_sign_invalidate(rct_window* w)
  */
 static void window_sign_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw viewport
     if (w->viewport != nullptr)
@@ -352,13 +352,13 @@ rct_window* window_sign_small_open(rct_windownumber number)
     if (w != nullptr)
         return w;
 
-    w = window_create_auto_pos(WW, WH, &window_sign_small_events, WC_BANNER, 0);
+    w = WindowCreateAutoPos(WW, WH, &window_sign_small_events, WC_BANNER, 0);
     w->widgets = window_sign_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SIGN_TEXT) | (1 << WIDX_SIGN_DEMOLISH) | (1 << WIDX_MAIN_COLOUR)
         | (1 << WIDX_TEXT_COLOUR);
 
     w->number = number;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->colours[0] = COLOUR_DARK_BROWN;
     w->colours[1] = COLOUR_DARK_BROWN;
     w->colours[2] = COLOUR_DARK_BROWN;

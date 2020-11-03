@@ -54,11 +54,11 @@ rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_
     gKeyboardShortcutChangeId = shortcut;
     CurrentShortcutKeyStringId = key_string_id;
 
-    rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+    rct_window* w = WindowCreateCentred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
 
     w->widgets = window_shortcut_change_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     return w;
 }
 
@@ -82,7 +82,7 @@ static void window_shortcut_change_mouseup(rct_window* w, rct_widgetindex widget
  */
 static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 

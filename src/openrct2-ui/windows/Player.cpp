@@ -151,7 +151,7 @@ rct_window* window_player_open(uint8_t id)
     window = window_bring_to_front_by_number(WC_PLAYER, id);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
+        window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
         window->viewport_focus_coordinates.y = 0;
@@ -178,7 +178,7 @@ rct_window* window_player_open(uint8_t id)
     window->event_handlers = window_player_page_events[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->pressed_widgets = 0;
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_player_set_page(window, WINDOW_PLAYER_PAGE_OVERVIEW);
 
     return window;
@@ -315,7 +315,7 @@ void window_player_overview_update(rct_window* w)
 
 void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
@@ -384,7 +384,7 @@ void window_player_overview_invalidate(rct_window* w)
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
@@ -477,7 +477,7 @@ void window_player_statistics_invalidate(rct_window* w)
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
@@ -499,7 +499,7 @@ void window_player_statistics_invalidate(rct_window* w)
 
 void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_player_draw_tab_images(dpi, w);
 
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
@@ -540,7 +540,7 @@ static void window_player_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     if (page == WINDOW_PLAYER_PAGE_OVERVIEW)

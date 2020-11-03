@@ -120,14 +120,14 @@ rct_window* window_track_list_open(RideSelection item)
         screenPos = { 0, TOP_TOOLBAR_HEIGHT + 2 };
     }
 
-    rct_window* w = window_create(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
+    rct_window* w = WindowCreate(screenPos, 600, 432, &window_track_list_events, WC_TRACK_DESIGN_LIST, 0);
 
     window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BACK) | (1ULL << WIDX_FILTER_STRING) | (1ULL << WIDX_FILTER_CLEAR)
         | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     w->track_list.reload_track_designs = false;
 
@@ -478,7 +478,7 @@ static void window_track_list_invalidate(rct_window* w)
  */
 static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     int32_t listItemIndex = w->selected_list_item;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)

@@ -72,11 +72,11 @@ rct_window* window_water_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
+    window = WindowCreate(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gLandToolSize = 1;
@@ -194,7 +194,7 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                         w->windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {

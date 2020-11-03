@@ -264,7 +264,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr)
     {
-        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
+        w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE)
             | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
@@ -308,7 +308,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
             openrct2_assert(true, "Unsupported load/save type: %d", type & 0x0F);
     }
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     window_loadsave_compute_max_date_width();
 
     return w;
@@ -438,7 +438,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_UP:
             safe_strcpy(path, _parentDirectory, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
 
@@ -462,7 +462,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 // If user cancels file dialog, refresh list
                 safe_strcpy(path, _directory, sizeof(path));
                 window_loadsave_populate_list(w, isSave, path, _extension);
-                window_init_scroll_widgets(w);
+                WindowInitScrollWidgets(w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
             break;
@@ -498,7 +498,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_DEFAULT:
             getInitialDirectoryByType(_type, path, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
     }
@@ -530,7 +530,7 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
         safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
 
         w->no_list_items = static_cast<uint16_t>(_listItems.size());
     }
@@ -588,7 +588,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             w->selected_list_item = -1;
 
             window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             w->Invalidate();
@@ -682,7 +682,7 @@ static void window_loadsave_invalidate(rct_window* w)
 
 static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     if (_shortenedDirectory[0] == '\0')
     {
@@ -1155,12 +1155,12 @@ static rct_window* window_overwrite_prompt_open(const char* name, const char* pa
 
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
-    w = window_create_centred(
+    w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
@@ -1195,7 +1195,7 @@ static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widge
 
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);

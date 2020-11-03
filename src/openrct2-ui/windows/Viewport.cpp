@@ -64,7 +64,7 @@ static int32_t _viewportNumber = 1;
  */
 rct_window* window_viewport_open()
 {
-    rct_window* w = window_create_auto_pos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
+    rct_window* w = WindowCreateAutoPos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
     w->number = _viewportNumber++;
@@ -193,7 +193,7 @@ static void window_viewport_invalidate(rct_window* w)
 
 static void window_viewport_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw viewport
     if (w->viewport != nullptr)

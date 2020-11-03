@@ -724,7 +724,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
 
 void CustomListView::RefreshScroll()
 {
-    window_init_scroll_widgets(ParentWindow);
+    WindowInitScrollWidgets(ParentWindow);
     Invalidate();
 }
 

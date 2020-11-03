@@ -105,7 +105,7 @@ static constexpr const rct_string_id EditorStepNames[] = {
  */
 rct_window* window_editor_bottom_toolbar_open()
 {
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &window_editor_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_editor_bottom_toolbar_widgets;
@@ -113,7 +113,7 @@ rct_window* window_editor_bottom_toolbar_open()
     window->enabled_widgets |= (1 << WIDX_PREVIOUS_STEP_BUTTON) | (1 << WIDX_NEXT_STEP_BUTTON) | (1 << WIDX_PREVIOUS_IMAGE)
         | (1 << WIDX_NEXT_IMAGE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     set_all_scenery_items_invented();
 
     return window;
@@ -405,7 +405,7 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
     }
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {

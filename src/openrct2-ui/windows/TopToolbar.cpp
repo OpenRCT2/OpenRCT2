@@ -325,12 +325,12 @@ static colour_t _tertiaryColour;
  */
 rct_window* window_top_toolbar_open()
 {
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, 0), context_get_width(), TOP_TOOLBAR_HEIGHT + 1, &window_top_toolbar_events, WC_TOP_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -838,7 +838,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t imgId;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     ScreenCoordsXY screenPos{};
     // Draw staff button image (setting masks to the staff colours)

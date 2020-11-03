@@ -71,7 +71,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
@@ -105,7 +105,7 @@ rct_window* window_title_menu_open()
     window->windowPos.x = (context_get_width() - window->width) / 2;
     window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -234,5 +234,5 @@ static void window_title_menu_invalidate(rct_window* w)
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_filter_rect(dpi, _filterRect, PALETTE_51);
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }

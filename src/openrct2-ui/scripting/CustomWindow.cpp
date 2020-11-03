@@ -381,12 +381,11 @@ namespace OpenRCT2::Ui::Windows
         rct_window* window{};
         if (desc.X && desc.Y)
         {
-            window = window_create(
-                { *desc.X, *desc.Y }, desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
+            window = WindowCreate({ *desc.X, *desc.Y }, desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
         else
         {
-            window = window_create_auto_pos(desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
+            window = WindowCreateAutoPos(desc.Width, desc.Height, &window_custom_events, WC_CUSTOM, windowFlags);
         }
 
         window->number = GetNewWindowNumber();
@@ -436,7 +435,7 @@ namespace OpenRCT2::Ui::Windows
         w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
         w->Invalidate();
 
         InvokeEventHandler(info.Owner, info.Desc.OnTabChange);
@@ -703,7 +702,7 @@ namespace OpenRCT2::Ui::Windows
 
     static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
-        window_draw_widgets(w, dpi);
+        WindowDrawWidgets(w, dpi);
         window_custom_draw_tab_images(w, dpi);
         if (w->viewport != nullptr)
         {
@@ -1029,7 +1028,7 @@ namespace OpenRCT2::Ui::Windows
         widgets.push_back({ WIDGETS_END });
         w->widgets = widgets.data();
 
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
         window_custom_update_viewport(w);
     }
 

@@ -69,13 +69,13 @@ rct_window* custom_currency_window_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
+    window = WindowCreateCentred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
     window->widgets = window_custom_currency_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RATE) | (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN)
         | (1 << WIDX_SYMBOL_TEXT) | (1 << WIDX_AFFIX_DROPDOWN) | (1 << WIDX_AFFIX_DROPDOWN_BUTTON);
 
     window->hold_down_widgets = (1 << WIDX_RATE_UP) | (1 << WIDX_RATE_DOWN);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BROWN;
     window->colours[1] = COLOUR_LIGHT_BROWN;
     window->colours[2] = COLOUR_LIGHT_BROWN;
@@ -214,7 +214,7 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter::Common();
     ft.Add<int32_t>(100);
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 10, 30 };
 

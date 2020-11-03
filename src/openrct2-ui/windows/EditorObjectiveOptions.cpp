@@ -222,12 +222,12 @@ rct_window* window_editor_objective_options_open()
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
+    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
     w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
     w->selected_list_item = -1;
@@ -303,7 +303,7 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
     window_editor_objective_options_update_disabled_widgets(w);
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -736,7 +736,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_objective_options_set_pressed_tab(w);
@@ -792,7 +792,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     rct_string_id stringId;
     uint32_t arg;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     // Objective label
@@ -1041,7 +1041,7 @@ static void window_editor_objective_options_rides_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_objective_options_set_pressed_tab(w);
@@ -1059,7 +1059,7 @@ static void window_editor_objective_options_rides_invalidate(rct_window* w)
  */
 static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_objective_options_draw_tab_images(w, dpi);
 
     gfx_draw_string_left(

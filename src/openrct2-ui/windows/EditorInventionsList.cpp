@@ -262,12 +262,12 @@ rct_window* window_editor_inventions_list_open()
 
     research_rides_setup();
 
-    w = window_create_centred(
+    w = WindowCreateCentred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESIZE) | (1 << WIDX_TAB_1) | (1 << WIDX_RANDOM_SHUFFLE)
         | (1 << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1 << WIDX_MOVE_ITEMS_TO_TOP);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;
     _editorInventionsListDraggedItem.SetNull();
@@ -314,12 +314,12 @@ static void window_editor_inventions_list_mouseup(rct_window* w, rct_widgetindex
             break;
         case WIDX_MOVE_ITEMS_TO_TOP:
             research_items_make_all_researched();
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->Invalidate();
             break;
         case WIDX_MOVE_ITEMS_TO_BOTTOM:
             research_items_make_all_unresearched();
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->Invalidate();
             break;
     }
@@ -508,7 +508,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     rct_string_id stringId;
     int32_t width;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Tab image
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top };
@@ -710,7 +710,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
     auto stringWidth = gfx_get_string_width(buffer);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
-    auto* w = window_create(
+    auto* w = WindowCreate(
         gTooltipCursor - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &window_editor_inventions_list_drag_events,
         WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;

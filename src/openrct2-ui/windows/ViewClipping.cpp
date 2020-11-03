@@ -130,14 +130,14 @@ rct_window* window_view_clipping_open()
     }
 
     // Window is not open - create it.
-    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
+    window = WindowCreate(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
         | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
         | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
     window->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Initialise the clip height slider from the current clip height value.
     window_view_clipping_set_clipheight(window, gClipHeight);
@@ -377,7 +377,7 @@ static void window_view_clipping_invalidate(rct_window* w)
 
 static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Clip height value
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };

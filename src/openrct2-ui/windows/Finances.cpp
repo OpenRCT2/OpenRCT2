@@ -383,7 +383,7 @@ rct_window* window_finances_open()
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(WW_OTHER_TABS, WH_SUMMARY, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
+        w = WindowCreateAutoPos(WW_OTHER_TABS, WH_SUMMARY, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
 
@@ -403,7 +403,7 @@ rct_window* window_finances_open()
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     // Scroll summary all the way to the right, initially.
     window_finances_summary_invertscroll(w);
@@ -505,7 +505,7 @@ static void window_finances_summary_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     // Keep up with new months being added in the first two years.
@@ -524,7 +524,7 @@ static void window_finances_summary_invalidate(rct_window* w)
  */
 static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 51 };
@@ -697,7 +697,7 @@ static void window_finances_financial_graph_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_finances_set_pressed_tab(w);
@@ -711,7 +711,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
 {
     int32_t i, x, y, graphLeft, graphTop, graphRight, graphBottom;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
@@ -807,7 +807,7 @@ static void window_finances_park_value_graph_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_VALUE_GRAPH];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_finances_set_pressed_tab(w);
@@ -821,7 +821,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
 {
     int32_t i, x, y, graphLeft, graphTop, graphRight, graphBottom;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
@@ -911,7 +911,7 @@ static void window_finances_profit_graph_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_PROFIT_GRAPH];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_finances_set_pressed_tab(w);
@@ -925,7 +925,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
 {
     int32_t i, graphLeft, graphTop, graphRight, graphBottom;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     rct_widget* pageWidget = &_windowFinancesCashWidgets[WIDX_PAGE_BACKGROUND];
@@ -1021,7 +1021,7 @@ static void window_finances_marketing_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_MARKETING];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_finances_set_pressed_tab(w);
@@ -1060,7 +1060,7 @@ static void window_finances_marketing_invalidate(rct_window* w)
  */
 static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 62 };
@@ -1242,7 +1242,7 @@ static void window_finances_research_invalidate(rct_window* w)
     if (w->widgets != _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH])
     {
         w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_RESEARCH];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_finances_set_pressed_tab(w);
@@ -1294,7 +1294,7 @@ static void window_finances_research_invalidate(rct_window* w)
  */
 static void window_finances_research_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);
 
     window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
@@ -1340,7 +1340,7 @@ static void window_finances_set_page(rct_window* w, int32_t page)
     window_event_resize_call(w);
     window_event_invalidate_call(w);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     // Scroll summary all the way to the right, initially.

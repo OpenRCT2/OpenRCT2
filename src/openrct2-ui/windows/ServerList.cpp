@@ -124,14 +124,14 @@ rct_window* window_server_list_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+    window = WindowCreateCentred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
     window->enabled_widgets
         = ((1 << WIDX_CLOSE) | (1 << WIDX_PLAYER_NAME_INPUT) | (1 << WIDX_FETCH_SERVERS) | (1 << WIDX_ADD_SERVER)
            | (1 << WIDX_START_SERVER));
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -398,7 +398,7 @@ static void window_server_list_invalidate(rct_window* w)
 
 static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     gfx_draw_string_left(
         dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE,

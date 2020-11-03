@@ -39,12 +39,12 @@ static rct_window_event_list window_title_options_events([](auto& events)
  */
 rct_window* window_title_options_open()
 {
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
     window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -64,5 +64,5 @@ static void window_title_options_mouseup(rct_window* w, rct_widgetindex widgetIn
 
 static void window_title_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }

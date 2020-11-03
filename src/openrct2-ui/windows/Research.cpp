@@ -193,7 +193,7 @@ rct_window* window_research_open()
     w = window_bring_to_front_by_class(WC_RESEARCH);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
+        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
         w->widgets = window_research_page_widgets[0];
         w->enabled_widgets = window_research_page_enabled_widgets[0];
         w->number = 0;
@@ -215,7 +215,7 @@ rct_window* window_research_open()
     w->event_handlers = window_research_page_events[0];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     return w;
 }
@@ -264,7 +264,7 @@ static void window_research_development_invalidate(rct_window* w)
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
     {
         w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_research_set_pressed_tab(w);
@@ -286,7 +286,7 @@ static void window_research_development_invalidate(rct_window* w)
  */
 static void window_research_development_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_research_draw_tab_images(dpi, w);
 
     window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
@@ -506,7 +506,7 @@ static void window_research_funding_invalidate(rct_window* w)
     if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING])
     {
         w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_research_set_pressed_tab(w);
@@ -559,7 +559,7 @@ static void window_research_funding_invalidate(rct_window* w)
  */
 static void window_research_funding_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_research_draw_tab_images(dpi, w);
 
     window_research_funding_page_paint(w, dpi, WIDX_RESEARCH_FUNDING);
@@ -611,7 +611,7 @@ static void window_research_set_page(rct_window* w, int32_t page)
     window_event_resize_call(w);
     window_event_invalidate_call(w);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 

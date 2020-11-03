@@ -66,14 +66,14 @@ rct_window* window_debug_paint_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
         &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
     window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
         | (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) | (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
@@ -159,5 +159,5 @@ static void window_debug_paint_invalidate(rct_window* w)
 
 static void window_debug_paint_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }

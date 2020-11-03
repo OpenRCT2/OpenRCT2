@@ -231,7 +231,7 @@ rct_window* window_multiplayer_open()
     rct_window* window = window_bring_to_front_by_class(WC_MULTIPLAYER);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
         window_multiplayer_set_page(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }
 
@@ -256,7 +256,7 @@ static void window_multiplayer_set_page(rct_window* w, int32_t page)
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -404,7 +404,7 @@ static void window_multiplayer_information_invalidate(rct_window* w)
 
 static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_drawpixelinfo clippedDPI;
@@ -554,7 +554,7 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
 {
     rct_string_id stringId;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 
     // Number of players
@@ -823,7 +823,7 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
 
 static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
@@ -978,7 +978,7 @@ static void window_multiplayer_options_invalidate(rct_window* w)
 
 static void window_multiplayer_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_multiplayer_draw_tab_images(w, dpi);
 }
 

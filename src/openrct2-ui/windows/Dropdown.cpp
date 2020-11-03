@@ -183,7 +183,7 @@ void WindowDropdownShowTextCustomWidth(
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
-    w = window_create(
+    w = WindowCreate(
         boundedScreenPos + ScreenCoordsXY{ 0, extray }, window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
@@ -263,7 +263,7 @@ void WindowDropdownShowImage(
     window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
-    w = window_create(
+    w = WindowCreate(
         ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
         window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
     w->widgets = window_dropdown_widgets;
@@ -289,7 +289,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t cell_x, cell_y, l, t, r, b, item, image, colour;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     int32_t highlightedIndex = gDropdownHighlightedIndex;
     for (int32_t i = 0; i < gDropdownNumItems; i++)

@@ -60,11 +60,11 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
         return w;
     }
 
-    w = window_create_centred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
+    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
     w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->number = peep->sprite_index;
 
@@ -97,7 +97,7 @@ static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     Peep* peep = GetEntity<Peep>(w->number);
     auto ft = Formatter();

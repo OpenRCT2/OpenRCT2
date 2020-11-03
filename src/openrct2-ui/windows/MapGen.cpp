@@ -447,7 +447,7 @@ rct_window* window_mapgen_open()
         return w;
     }
 
-    w = window_create_centred(WW, WH, PageEvents[WINDOW_MAPGEN_PAGE_BASE], WC_MAPGEN, WF_10);
+    w = WindowCreateCentred(WW, WH, PageEvents[WINDOW_MAPGEN_PAGE_BASE], WC_MAPGEN, WF_10);
     w->number = 0;
     w->frame_no = 0;
 
@@ -459,7 +459,7 @@ rct_window* window_mapgen_open()
     w->event_handlers = PageEvents[WINDOW_MAPGEN_PAGE_BASE];
     w->pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     _heightmapLoaded = false;
 
@@ -675,7 +675,7 @@ static void window_mapgen_base_invalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->widgets[WIDX_FLOOR_TEXTURE].image = surfaceImage;
@@ -688,7 +688,7 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     uint16_t arg;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 
     const uint8_t textColour = w->colours[1];
@@ -777,7 +777,7 @@ static void window_mapgen_random_invalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets = 0;
@@ -791,7 +791,7 @@ static void window_mapgen_random_invalidate(rct_window* w)
 
 static void window_mapgen_random_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 }
 
@@ -979,7 +979,7 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = surfaceImage;
@@ -1007,7 +1007,7 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     uint16_t arg;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 
     const uint8_t textColour = w->colours[1];
@@ -1194,7 +1194,7 @@ static void window_mapgen_heightmap_invalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
@@ -1206,7 +1206,7 @@ static void window_mapgen_heightmap_invalidate(rct_window* w)
 
 static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_mapgen_draw_tab_images(dpi, w);
 
     const uint8_t enabledColour = w->colours[1];
@@ -1291,7 +1291,7 @@ static void window_mapgen_set_page(rct_window* w, int32_t page)
         WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
     }
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 

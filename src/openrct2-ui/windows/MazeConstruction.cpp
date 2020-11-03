@@ -120,7 +120,7 @@ static void window_maze_construction_construct(int32_t direction);
  */
 rct_window* window_maze_construction_open()
 {
-    rct_window* w = window_create(
+    rct_window* w = WindowCreate(
         ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
     w->widgets = window_maze_construction_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
@@ -128,7 +128,7 @@ rct_window* window_maze_construction_open()
         | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)
         | (1ULL << WIDX_MAZE_EXIT);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->number = _currentRideIndex;
 
@@ -444,7 +444,7 @@ static void window_maze_construction_invalidate(rct_window* w)
  */
 static void window_maze_construction_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**

@@ -373,7 +373,7 @@ rct_window* window_editor_object_selection_open()
     sub_6AB211();
     reset_selected_object_count_and_size();
 
-    window = window_create_centred(
+    window = WindowCreateCentred(
         600, 400, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
     window->widgets = _window_editor_object_selection_widgets.data();
     window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
@@ -389,7 +389,7 @@ rct_window* window_editor_object_selection_open()
     {
         window->enabled_widgets |= (1LL << i);
     }
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     window->selected_tab = 0;
     window->selected_list_item = -1;
@@ -943,7 +943,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     int32_t width;
     rct_widget* widget;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw tabs
     for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
