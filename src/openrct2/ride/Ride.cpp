@@ -4271,10 +4271,10 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
 }
 
 /**
- * Sets a flag on all the track elements that can be the start of a circuit block. i.e. where a train can start.
+ * Opens all block brakes of a ride.
  *  rct2: 0x006B4E6B
  */
-static void ride_set_block_points(CoordsXYE* startElement)
+static void RideOpenBlockBrakes(CoordsXYE* startElement)
 {
     CoordsXYE currentElement = *startElement;
     do
@@ -4318,7 +4318,7 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
 
     if (ride->IsBlockSectioned() && !(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        ride_set_block_points(startElement);
+        RideOpenBlockBrakes(startElement);
     }
 }
 
