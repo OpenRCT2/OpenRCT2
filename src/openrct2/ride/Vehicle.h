@@ -331,6 +331,7 @@ struct Vehicle : SpriteBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    void EnableCollisionsForTrain();
 
     uint16_t GetTrackType() const
     {

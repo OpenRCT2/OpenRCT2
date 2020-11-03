@@ -9886,3 +9886,12 @@ bool Vehicle::IsGhost() const
     auto r = GetRide();
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
 }
+
+void Vehicle::EnableCollisionsForTrain()
+{
+    assert(this->IsHead());
+    for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    }
+}

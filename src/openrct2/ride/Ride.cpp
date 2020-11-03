@@ -4631,14 +4631,6 @@ static void vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
         lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
 }
 
-static void vehicle_unset_update_flag_b1(Vehicle* head)
-{
-    for (auto vehicle = head; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
-    {
-        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
-    }
-}
-
 /**
  *
  *  rct2: 0x006DDE9E
@@ -4783,7 +4775,7 @@ static bool ride_create_vehicles(Ride* ride, const CoordsXYE& element, int32_t i
                     vehicle->UpdateTrackMotion(nullptr);
                 }
 
-                vehicle_unset_update_flag_b1(vehicle);
+                vehicle->EnableCollisionsForTrain();
             }
         }
     }
@@ -4806,7 +4798,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
         if (i == 0)
         {
             train->UpdateTrackMotion(nullptr);
-            vehicle_unset_update_flag_b1(train);
+            train->EnableCollisionsForTrain();
             continue;
         }
 
