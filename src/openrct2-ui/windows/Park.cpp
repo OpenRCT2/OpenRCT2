@@ -926,7 +926,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Graph
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    graph_draw_uint8_t(dpi, gParkRatingHistory, 32, screenPos.x, screenPos.y);
+    Graph::Draw(dpi, gParkRatingHistory, 32, screenPos.x, screenPos.y);
 }
 
 #pragma endregion
@@ -1061,7 +1061,7 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Graph
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    graph_draw_uint8_t(dpi, gGuestsInParkHistory, 32, screenPos.x, screenPos.y);
+    Graph::Draw(dpi, gGuestsInParkHistory, 32, screenPos.x, screenPos.y);
 }
 
 #pragma endregion

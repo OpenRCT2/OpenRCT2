@@ -13,9 +13,12 @@
 #include <openrct2/common.h>
 #include <openrct2/drawing/Drawing.h>
 
-void graph_draw_uint8_t(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, int32_t baseX, int32_t baseY);
-void graph_draw_money32(
-    rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
-    const int32_t modifier, const int32_t offset);
+namespace Graph
+{
+    void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, int32_t baseX, int32_t baseY);
+    void Draw(
+        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+        const int32_t modifier, const int32_t offset);
+} // namespace Graph
 
 #endif
