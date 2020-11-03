@@ -4822,7 +4822,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
                 car->SwingSprite = 0;
                 car->remaining_distance += 13962;
             }
-        } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_10));
+        } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
         tileElement->AsTrack()->SetBlockBrakeClosed(true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
