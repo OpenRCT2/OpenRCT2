@@ -153,8 +153,8 @@ const std::array<NetworkAction, static_cast<size_t>(NetworkPermission::Count)> N
             GAME_COMMAND_PLACE_PATH,
             GAME_COMMAND_PLACE_PATH_FROM_TRACK,
             GAME_COMMAND_REMOVE_PATH,
-            GAME_COMMAND_PLACE_FOOTPATH_SCENERY,
-            GAME_COMMAND_REMOVE_FOOTPATH_SCENERY,
+            GAME_COMMAND_PLACE_FOOTPATH_ADDITION,
+            GAME_COMMAND_REMOVE_FOOTPATH_ADDITION,
         },
     },
     NetworkAction{

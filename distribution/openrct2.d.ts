@@ -324,9 +324,9 @@ declare global {
         "climateset" |
         "footpathplace" |
         "footpathplacefromtrack" |
-        "foothpathremove" |
-        "footpathsceneryplace" |
-        "footpathsceneryremove" |
+        "footpathremove" |
+        "footpathadditionplace" |
+        "footpathadditionremove" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
