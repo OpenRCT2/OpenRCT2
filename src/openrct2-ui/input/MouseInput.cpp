@@ -262,9 +262,7 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
         case MouseState::LeftPress:
         case MouseState::LeftRelease:
         case MouseState::RightPress:
-            //Take no action
-            //In this switch only right button release is relevant
-            //Function handles only right button
+            // Function only handles right button, so it's the only one relevant
             break;
     }
 }
@@ -324,8 +322,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     break;
                 case MouseState::LeftRelease:
                 case MouseState::RightRelease:
-                    //Take no action
-                    //In this switch only button presses are relevant
+                    // In this switch only button presses are relevant
                     break;
             }
             break;
@@ -418,8 +415,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 case MouseState::LeftPress:
                 case MouseState::RightPress:
                 case MouseState::RightRelease:
-                    //Take no action
-                    //In this switch only left button release is relevant
+                    // In this switch only left button release is relevant
                     break;
             }
             break;
@@ -435,8 +431,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 case MouseState::LeftPress:
                 case MouseState::RightPress:
                 case MouseState::RightRelease:
-                    //Take no action
-                    //In this switch only left button release is relevant
+                    // In this switch only left button release is relevant
                     break;
             }
             break;
