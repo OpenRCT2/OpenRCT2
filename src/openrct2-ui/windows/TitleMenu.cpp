@@ -87,7 +87,7 @@ rct_window* window_title_menu_open()
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
-        if (widget_is_enabled(window, i))
+        if (WidgetIsEnabled(window, i))
         {
             widget->left = x;
             widget->right = x + MenuButtonDims.width - 1;

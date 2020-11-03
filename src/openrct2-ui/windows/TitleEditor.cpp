@@ -561,7 +561,7 @@ static void window_title_editor_update(rct_window* w)
         w->frame_no = 0;
     }
 
-    if (!widget_is_highlighted(w, WIDX_TITLE_EDITOR_LIST))
+    if (!WidgetIsHighlighted(w, WIDX_TITLE_EDITOR_LIST))
     {
         _window_title_editor_highlighted_index = -1;
         widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);

@@ -357,12 +357,12 @@ static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, co
 
 static void window_view_clipping_invalidate(rct_window* w)
 {
-    widget_scroll_update_thumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
+    WidgetScrollUpdateThumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
     {
-        widget_set_checkbox_value(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+        WidgetSetCheckboxValue(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
     }
 
     if (window_view_clipping_tool_is_active())

@@ -471,7 +471,7 @@ namespace OpenRCT2::Ui::Windows
                         widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
                         bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
 
-                        widget_set_checkbox_value(w, widgetIndex, isChecked);
+                        WidgetSetCheckboxValue(w, widgetIndex, isChecked);
 
                         std::vector<DukValue> args;
                         auto ctx = widgetDesc->OnChange.context();
@@ -579,7 +579,7 @@ namespace OpenRCT2::Ui::Windows
         {
             if (widget->type == WWT_SCROLL)
             {
-                widget_scroll_update_thumbs(w, widgetIndex);
+                WidgetScrollUpdateThumbs(w, widgetIndex);
             }
             widgetIndex++;
         }
@@ -685,7 +685,7 @@ namespace OpenRCT2::Ui::Windows
         {
             auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
             auto widget = &w->widgets[widgetIndex];
-            if (widget_is_enabled(w, widgetIndex))
+            if (WidgetIsEnabled(w, widgetIndex))
             {
                 auto leftTop = w->windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                 auto image = tab.imageFrameBase;

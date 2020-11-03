@@ -847,7 +847,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top };
         imgId = SPR_TOOLBAR_STAFF;
-        if (widget_is_pressed(w, WIDX_STAFF))
+        if (WidgetIsPressed(w, WIDX_STAFF))
             imgId++;
         imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
         gfx_draw_sprite(dpi, imgId, screenPos, 0);
@@ -858,7 +858,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
-        if (widget_is_pressed(w, WIDX_FASTFORWARD))
+        if (WidgetIsPressed(w, WIDX_FASTFORWARD))
             screenPos.y++;
         imgId = SPR_G2_FASTFORWARD;
         gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 6, 3 }, 0);
@@ -879,7 +879,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
                               window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
-        if (widget_is_pressed(w, WIDX_CHEATS))
+        if (WidgetIsPressed(w, WIDX_CHEATS))
             screenPos.y++;
         imgId = SPR_G2_SANDBOX;
         gfx_draw_sprite(dpi, imgId, screenPos, 3);
@@ -898,7 +898,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
-        if (widget_is_pressed(w, WIDX_CHAT))
+        if (WidgetIsPressed(w, WIDX_CHAT))
             screenPos.y++;
         imgId = SPR_G2_CHAT;
         gfx_draw_sprite(dpi, imgId, screenPos, 3);
@@ -909,7 +909,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
-        if (widget_is_pressed(w, WIDX_DEBUG))
+        if (WidgetIsPressed(w, WIDX_DEBUG))
             screenPos.y++;
         imgId = SPR_TAB_GEARS_0;
         gfx_draw_sprite(dpi, imgId, screenPos, 3);
@@ -921,7 +921,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
                               window_top_toolbar_widgets[WIDX_RESEARCH].top };
-        if (widget_is_pressed(w, WIDX_RESEARCH))
+        if (WidgetIsPressed(w, WIDX_RESEARCH))
             screenPos.y++;
         imgId = SPR_TAB_FINANCES_RESEARCH_0;
         gfx_draw_sprite(dpi, imgId, screenPos, 0);
@@ -933,7 +933,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
                               window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
-        if (widget_is_pressed(w, WIDX_FINANCES))
+        if (WidgetIsPressed(w, WIDX_FINANCES))
             screenPos.y++;
         imgId = SPR_FINANCE;
         gfx_draw_sprite(dpi, imgId, screenPos, 0);
@@ -944,7 +944,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
-        if (widget_is_pressed(w, WIDX_NEWS))
+        if (WidgetIsPressed(w, WIDX_NEWS))
             screenPos.y++;
         imgId = SPR_G2_TAB_NEWS;
         gfx_draw_sprite(dpi, imgId, screenPos, 0);
@@ -956,7 +956,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
                               window_top_toolbar_widgets[WIDX_NETWORK].top + 0 };
-        if (widget_is_pressed(w, WIDX_NETWORK))
+        if (WidgetIsPressed(w, WIDX_NETWORK))
             screenPos.y++;
 
         // Draw (de)sync icon.

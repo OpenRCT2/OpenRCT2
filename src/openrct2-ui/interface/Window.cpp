@@ -350,7 +350,7 @@ static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_
         scroll->h_left = std::min(std::max(0, scroll->h_left + wheel), size);
     }
 
-    widget_scroll_update_thumbs(w, widgetIndex);
+    WidgetScrollUpdateThumbs(w, widgetIndex);
     widget_invalidate(w, widgetIndex);
 }
 
@@ -459,7 +459,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
             return false;
     }
 
-    if (widget_is_disabled(w, buttonWidgetIndex))
+    if (WidgetIsDisabled(w, buttonWidgetIndex))
     {
         return false;
     }
@@ -579,7 +579,7 @@ void window_init_scroll_widgets(rct_window* w)
         if (widget->content & SCROLL_VERTICAL)
             scroll->flags |= VSCROLLBAR_VISIBLE;
 
-        widget_scroll_update_thumbs(w, widget_index);
+        WidgetScrollUpdateThumbs(w, widget_index);
 
         widget_index++;
         scroll_index++;
@@ -606,7 +606,7 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
         // Check if widget is outside the draw region
         if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
             if (w->windowPos.y + widget->top < dpi->y + dpi->height && w->windowPos.y + widget->bottom >= dpi->y)
-                widget_draw(dpi, w, widgetIndex);
+                WidgetDraw(dpi, w, widgetIndex);
 
         widgetIndex++;
     }
@@ -636,7 +636,7 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
         if (widget->type != WWT_IMGBTN)
             continue;
 
-        if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             gfx_set_dirty_blocks({ w->windowPos, w->windowPos + ScreenCoordsXY{ w->width, w->height } });
     }
 }

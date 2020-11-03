@@ -407,7 +407,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window* w)
     int32_t listWidgetHeight = listWidget->bottom - listWidget->top - 1;
     scrollHeight = std::max(0, scrollHeight - listWidgetHeight);
     w->scrolls[0].v_top = std::min(row * 116, scrollHeight);
-    widget_scroll_update_thumbs(w, WIDX_RIDE_LIST);
+    WidgetScrollUpdateThumbs(w, WIDX_RIDE_LIST);
 }
 
 /**

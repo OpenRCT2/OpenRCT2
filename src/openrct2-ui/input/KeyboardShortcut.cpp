@@ -162,7 +162,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate scenery
     rct_window* w = window_find_by_class(WC_SCENERY);
-    if (w != nullptr && !widget_is_disabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
         && w->widgets[WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
@@ -171,7 +171,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate construction track piece
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != nullptr && !widget_is_disabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_RIDE_CONSTRUCTION__WIDX_ROTATE)
         && w->widgets[WC_RIDE_CONSTRUCTION__WIDX_ROTATE].type != WWT_EMPTY)
     {
         // Check if building a maze...
@@ -184,7 +184,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design preview
     w = window_find_by_class(WC_TRACK_DESIGN_LIST);
-    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_LIST__WIDX_ROTATE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_LIST__WIDX_ROTATE);
@@ -193,7 +193,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate track design placement
     w = window_find_by_class(WC_TRACK_DESIGN_PLACE);
-    if (w != nullptr && !widget_is_disabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE)
         && w->widgets[WC_TRACK_DESIGN_PLACE__WIDX_ROTATE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TRACK_DESIGN_PLACE__WIDX_ROTATE);
@@ -202,7 +202,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate park entrance
     w = window_find_by_class(WC_MAP);
-    if (w != nullptr && !widget_is_disabled(w, WC_MAP__WIDX_ROTATE_90) && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WWT_EMPTY)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_MAP__WIDX_ROTATE_90) && w->widgets[WC_MAP__WIDX_ROTATE_90].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_MAP__WIDX_ROTATE_90);
         return;
@@ -210,7 +210,7 @@ static void ShortcutRotateConstructionObject()
 
     // Rotate selected element in tile inspector
     w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE);
@@ -801,7 +801,7 @@ static void ShortcutOpenSceneryPicker()
     }
 
     window_scenery = window_find_by_class(WC_SCENERY);
-    if (window_scenery != nullptr && !widget_is_disabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
+    if (window_scenery != nullptr && !WidgetIsDisabled(window_scenery, WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON)
         && window_scenery->widgets[WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON].type != WWT_EMPTY
         && !gWindowSceneryEyedropperEnabled)
     {
@@ -833,7 +833,7 @@ static void ShortcutScaleDown()
 static void ShortcutInsertCorruptElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT);
@@ -844,7 +844,7 @@ static void ShortcutInsertCorruptElement()
 static void ShortcutCopyElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_COPY].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_COPY);
@@ -855,7 +855,7 @@ static void ShortcutCopyElement()
 static void ShortcutPasteElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE);
@@ -866,7 +866,7 @@ static void ShortcutPasteElement()
 static void ShortcutRemoveElement()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE);
@@ -877,7 +877,7 @@ static void ShortcutRemoveElement()
 static void ShortcutMoveElementUp()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_UP);
@@ -888,7 +888,7 @@ static void ShortcutMoveElementUp()
 static void ShortcutMoveElementDown()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN].type != WWT_EMPTY)
     {
         window_event_mouse_up_call(w, WC_TILE_INSPECTOR__WIDX_BUTTON_MOVE_DOWN);
@@ -899,7 +899,7 @@ static void ShortcutMoveElementDown()
 static void ShortcutIncreaseXCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE].type != WWT_EMPTY)
     {
         window_event_mouse_down_call(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_INCREASE);
@@ -910,7 +910,7 @@ static void ShortcutIncreaseXCoord()
 static void ShortcutDecreaseXCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE].type != WWT_EMPTY)
     {
         window_event_mouse_down_call(w, WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE);
@@ -921,7 +921,7 @@ static void ShortcutDecreaseXCoord()
 static void ShortcutIncreaseYCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE].type != WWT_EMPTY)
     {
         window_event_mouse_down_call(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE);
@@ -932,7 +932,7 @@ static void ShortcutIncreaseYCoord()
 static void ShortcutDecreaseYCoord()
 {
     rct_window* w = window_find_by_class(WC_TILE_INSPECTOR);
-    if (w != nullptr && !widget_is_disabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE)
+    if (w != nullptr && !WidgetIsDisabled(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE)
         && w->widgets[WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE].type != WWT_EMPTY)
     {
         window_event_mouse_down_call(w, WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE);
@@ -976,7 +976,7 @@ static void ShortcutIncreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE;
                 break;
         }
-        if (action != -1 && !widget_is_disabled(w, action) && w->widgets[action].type != WWT_EMPTY)
+        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WWT_EMPTY)
             window_event_mouse_down_call(w, action);
         return;
     }
@@ -1018,7 +1018,7 @@ static void ShortcutDecreaseElementHeight()
                 action = WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE;
                 break;
         }
-        if (action != -1 && !widget_is_disabled(w, action) && w->widgets[action].type != WWT_EMPTY)
+        if (action != -1 && !WidgetIsDisabled(w, action) && w->widgets[action].type != WWT_EMPTY)
             window_event_mouse_down_call(w, action);
         return;
     }

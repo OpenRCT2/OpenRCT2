@@ -284,7 +284,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return widget_is_disabled(w, _widgetIndex);
+                return WidgetIsDisabled(w, _widgetIndex);
             }
             return false;
         }
@@ -432,7 +432,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return widget_is_pressed(w, _widgetIndex);
+                return WidgetIsPressed(w, _widgetIndex);
             }
             return false;
         }
@@ -441,7 +441,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }
@@ -486,7 +486,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                return widget_is_pressed(w, _widgetIndex);
+                return WidgetIsPressed(w, _widgetIndex);
             }
             return false;
         }
@@ -495,7 +495,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                widget_set_checkbox_value(w, _widgetIndex, value ? 1 : 0);
+                WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
                 Invalidate();
             }
         }

@@ -481,7 +481,7 @@ static void window_finances_summary_invertscroll(rct_window* w)
 {
     rct_widget summary = w->widgets[WIDX_SUMMARY_SCROLL];
     w->scrolls[0].h_left = std::max(0, w->scrolls[0].h_right - (summary.width() - 2));
-    widget_scroll_update_thumbs(w, WIDX_SUMMARY_SCROLL);
+    WidgetScrollUpdateThumbs(w, WIDX_SUMMARY_SCROLL);
 }
 
 /**

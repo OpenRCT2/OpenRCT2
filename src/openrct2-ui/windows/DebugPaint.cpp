@@ -150,11 +150,11 @@ static void window_debug_paint_invalidate(rct_window* w)
         w->Invalidate();
     }
 
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
 }
 
 static void window_debug_paint_paint(rct_window* w, rct_drawpixelinfo* dpi)

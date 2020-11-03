@@ -533,9 +533,9 @@ static void window_ride_list_invalidate(rct_window* w)
         }
 
         w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
-            + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+            + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
         w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-            + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+            + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_LIGHT].bottom + 3;
     }
     else

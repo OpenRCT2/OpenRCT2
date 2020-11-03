@@ -985,19 +985,19 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
     w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = surfaceImage;
     w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = edgeImage;
 
-    widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
-    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
+    WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
+    WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain)
     {
-        widget_set_enabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, true);
-        widget_set_enabled(w, WIDX_SIMPLEX_WALL_TEXTURE, true);
+        WidgetSetEnabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, true);
+        WidgetSetEnabled(w, WIDX_SIMPLEX_WALL_TEXTURE, true);
     }
     else
     {
-        widget_set_enabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, false);
-        widget_set_enabled(w, WIDX_SIMPLEX_WALL_TEXTURE, false);
+        WidgetSetEnabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, false);
+        WidgetSetEnabled(w, WIDX_SIMPLEX_WALL_TEXTURE, false);
     }
 
     window_mapgen_set_pressed_tab(w);
@@ -1166,21 +1166,21 @@ static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widge
         }
         case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
             _heightmapSmoothMap = !_heightmapSmoothMap;
-            widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-            widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-            widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-            widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
+            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
+            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
+            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
             widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
             widget_invalidate(w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_NORMALIZE:
             _heightmapNormalize = !_heightmapNormalize;
-            widget_set_checkbox_value(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
             widget_invalidate(w, WIDX_HEIGHTMAP_NORMALIZE);
             break;
         case WIDX_HEIGHTMAP_SMOOTH_TILES:
             _heightmapSmoothTiles = !_heightmapSmoothTiles;
-            widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
             widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
             break;
     }
@@ -1197,9 +1197,9 @@ static void window_mapgen_heightmap_invalidate(rct_window* w)
         window_init_scroll_widgets(w);
     }
 
-    widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-    widget_set_checkbox_value(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
-    widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
+    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
 
     window_mapgen_set_pressed_tab(w);
 }
@@ -1274,21 +1274,21 @@ static void window_mapgen_set_page(rct_window* w, int32_t page)
     // Enable heightmap widgets if one is loaded
     if (page == WINDOW_MAPGEN_PAGE_HEIGHTMAP && _heightmapLoaded)
     {
-        widget_set_enabled(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_NORMALIZE, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_SMOOTH_TILES, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_HIGH, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_HIGH_UP, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_HIGH_DOWN, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_LOW, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_LOW_UP, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_LOW_DOWN, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_WATER_LEVEL, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_UP, true);
-        widget_set_enabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_NORMALIZE, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_SMOOTH_TILES, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH_UP, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH_DOWN, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW_UP, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW_DOWN, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_UP, true);
+        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
     }
 
     window_init_scroll_widgets(w);

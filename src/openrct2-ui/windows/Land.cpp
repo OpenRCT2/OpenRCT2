@@ -336,8 +336,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords = { w->windowPos.x + previewWidget->left, w->windowPos.y + previewWidget->top };
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
         gfx_draw_sprite(dpi, sprite, screenCoords, 0);
-        widget_draw(dpi, w, WIDX_DECREMENT);
-        widget_draw(dpi, w, WIDX_INCREMENT);
+        WidgetDraw(dpi, w, WIDX_DECREMENT);
+        WidgetDraw(dpi, w, WIDX_INCREMENT);
     }
 
     screenCoords = { w->windowPos.x + previewWidget->midX(), w->windowPos.y + previewWidget->bottom + 5 };

@@ -233,7 +233,7 @@ static ResearchItem* get_research_item_at(const ScreenCoordsXY& screenCoords, in
             gPressedWidget.widget_index = widgetIndex;
             int32_t outScrollArea;
             ScreenCoordsXY outScrollCoords;
-            widget_scroll_get_part(w, widget, screenCoords, outScrollCoords, &outScrollArea, outScrollId);
+            WidgetScrollGetPart(w, widget, screenCoords, outScrollCoords, &outScrollArea, outScrollId);
             if (outScrollArea == SCROLL_PART_VIEW)
             {
                 *outScrollId = *outScrollId == 0 ? 0 : 1;

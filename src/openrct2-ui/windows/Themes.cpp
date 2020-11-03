@@ -786,11 +786,11 @@ void window_themes_invalidate(rct_window* w)
         window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].type = WWT_EMPTY;
         window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_EMPTY;
 
-        widget_set_checkbox_value(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
-        widget_set_checkbox_value(w, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
-        widget_set_checkbox_value(
+        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_RIDE_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE);
+        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_PARK_LIGHTS, ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK);
+        WidgetSetCheckboxValue(
             w, WIDX_THEMES_RCT1_SCENARIO_FONT, ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
-        widget_set_checkbox_value(w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
+        WidgetSetCheckboxValue(w, WIDX_THEMES_RCT1_BOTTOM_TOOLBAR, ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
     }
     else
     {
