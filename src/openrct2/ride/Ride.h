@@ -377,6 +377,7 @@ private:
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
     bool CreateVehicles(const CoordsXYE& element, bool isApplying);
+    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money32 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;

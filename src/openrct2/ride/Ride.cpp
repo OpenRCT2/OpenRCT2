@@ -138,7 +138,6 @@ static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
 static void ride_music_update(Ride* ride);
 static void ride_shop_connected(Ride* ride);
-void loc_6DDF9C(Ride* ride, TileElement* tileElement);
 
 RideManager GetRideManager()
 {
@@ -4756,7 +4755,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         {
             CoordsXYE firstBlock{};
             ride_create_vehicles_find_first_block(this, &firstBlock);
-            loc_6DDF9C(this, firstBlock.element);
+            MoveTrainsToBlockBrakes(firstBlock.element->AsTrack());
         }
         else
         {
@@ -4784,29 +4783,30 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 }
 
 /**
- *
+ * Move all the trains so each one will be placed at the block brake of a different block.
+ * The first vehicle will placed into the first block and all other vehicles in the blocks
+ * preceding that block.
  *  rct2: 0x006DDF9C
  */
-void loc_6DDF9C(Ride* ride, TileElement* tileElement)
+void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
 {
-    for (int32_t i = 0; i < ride->num_vehicles; i++)
+    for (int32_t i = 0; i < num_vehicles; i++)
     {
-        auto train = GetEntity<Vehicle>(ride->vehicles[i]);
+        auto train = GetEntity<Vehicle>(vehicles[i]);
         if (train == nullptr)
             continue;
 
+        train->UpdateTrackMotion(nullptr);
+
         if (i == 0)
         {
-            train->UpdateTrackMotion(nullptr);
             train->EnableCollisionsForTrain();
             continue;
         }
 
-        train->UpdateTrackMotion(nullptr);
-
         do
         {
-            tileElement->AsTrack()->SetBlockBrakeClosed(true);
+            firstBlock->SetBlockBrakeClosed(true);
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
                 car->velocity = 0;
@@ -4816,7 +4816,7 @@ void loc_6DDF9C(Ride* ride, TileElement* tileElement)
             }
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
-        tileElement->AsTrack()->SetBlockBrakeClosed(true);
+        firstBlock->SetBlockBrakeClosed(true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
