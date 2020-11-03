@@ -1547,7 +1547,7 @@ static void sub_6E1F34(
             // If CTRL not pressed
             if (!gSceneryCtrlPressed)
             {
-                const CoordsXY mapCoords = sub_68A15E(screenPos);
+                const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
                 gridPos = mapCoords;
 
                 if (gridPos.isNull())

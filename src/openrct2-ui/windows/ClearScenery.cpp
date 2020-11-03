@@ -206,7 +206,7 @@ static void window_clear_scenery_invalidate(rct_window* w)
         | (gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1 << WIDX_FOOTPATH) : 0);
 
     // Update the preview image (for tool sizes up to 7)
-    window_clear_scenery_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**

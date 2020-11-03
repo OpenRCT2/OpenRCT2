@@ -151,14 +151,14 @@ InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords,
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
+InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
-CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
+CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);

@@ -580,7 +580,7 @@ static void window_title_command_editor_update(rct_window* w)
 static void window_title_command_editor_tool_down(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    auto info = viewport_interaction_get_item_left(screenCoords);
+    auto info = ViewportInteractionGetItemLeft(screenCoords);
 
     if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
@@ -641,7 +641,7 @@ static void window_title_command_editor_tool_down(
 
 static void window_title_command_editor_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, WC_TITLE_EDITOR);
+    ColourSchemeUpdateByClass(w, WC_TITLE_EDITOR);
 
     window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_EMPTY;

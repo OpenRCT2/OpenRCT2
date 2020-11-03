@@ -271,7 +271,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Set font
     gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     gCurrentFontFlags = 0;
-    uint8_t textColour = NOT_TRANSLUCENT(theme_get_colour(WC_CONSOLE, 1));
+    uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WC_CONSOLE, 1));
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     const int32_t maxLines = GetNumVisibleLines();
 
@@ -301,7 +301,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         dpi, { { _consoleLeft, _consoleBottom - lineHeight - 10 }, { _consoleRight, _consoleBottom - 1 } }, PALETTE_51);
 
     // Paint background colour.
-    uint8_t backgroundColour = theme_get_colour(WC_CONSOLE, 0);
+    uint8_t backgroundColour = ThemeGetColour(WC_CONSOLE, 0);
     gfx_fill_rect_inset(
         dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(

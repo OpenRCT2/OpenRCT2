@@ -1663,19 +1663,19 @@ static void window_options_controls_mousedown(rct_window* w, rct_widgetindex wid
     switch (widgetIndex)
     {
         case WIDX_THEMES_DROPDOWN:
-            uint32_t num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
+            uint32_t num_items = static_cast<uint32_t>(ThemeManagerGetNumAvailableThemes());
 
             for (size_t i = 0; i < num_items; i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
             }
 
             WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                 Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            Dropdown::SetChecked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
             widget_invalidate(w, WIDX_THEMES_DROPDOWN);
             break;
     }
@@ -1691,7 +1691,7 @@ static void window_options_controls_dropdown(rct_window* w, rct_widgetindex widg
         case WIDX_THEMES_DROPDOWN:
             if (dropdownIndex != -1)
             {
-                theme_manager_set_active_available_theme(dropdownIndex);
+                ThemeManagerSetActiveAvailableTheme(dropdownIndex);
             }
             config_save_default();
             break;
@@ -1713,8 +1713,8 @@ static void window_options_controls_invalidate(rct_window* w)
     widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
     widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
 
-    size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-    const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+    size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
+    const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
     auto ft = Formatter::Common();
     ft.Add<utf8*>(activeThemeName);
 

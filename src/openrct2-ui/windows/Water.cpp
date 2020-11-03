@@ -182,7 +182,7 @@ static void window_water_invalidate(rct_window* w)
     w->pressed_widgets |= (1 << WIDX_PREVIEW);
 
     // Update the preview image
-    window_water_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_water_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**

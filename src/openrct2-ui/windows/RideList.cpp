@@ -512,7 +512,7 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_QUICK_DEMOLISH].right = w->width - 2;
     w->widgets[WIDX_QUICK_DEMOLISH].left = w->width - 25;
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
     {
         w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
         w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;

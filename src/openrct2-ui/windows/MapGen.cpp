@@ -557,10 +557,10 @@ static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIn
             w->Invalidate();
             break;
         case WIDX_FLOOR_TEXTURE:
-            land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
+            LandTool::ShowSurfaceStyleDropdown(w, widget, _floorTexture);
             break;
         case WIDX_WALL_TEXTURE:
-            land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
+            LandTool::ShowEdgeStyleDropdown(w, widget, _wallTexture);
             break;
     }
 }
@@ -891,10 +891,10 @@ static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widge
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_FLOOR_TEXTURE:
-            land_tool_show_surface_style_dropdown(w, widget, _floorTexture);
+            LandTool::ShowSurfaceStyleDropdown(w, widget, _floorTexture);
             break;
         case WIDX_SIMPLEX_WALL_TEXTURE:
-            land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
+            LandTool::ShowEdgeStyleDropdown(w, widget, _wallTexture);
             break;
         case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
             _placeTrees ^= 1;

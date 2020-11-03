@@ -171,7 +171,7 @@ rct_window* window_create(
     w->var_4AE = 0;
     w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
 
-    colour_scheme_update(w);
+    ColourSchemeUpdate(w);
     w->Invalidate();
     return w;
 }

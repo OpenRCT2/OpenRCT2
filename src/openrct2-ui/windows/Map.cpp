@@ -776,7 +776,7 @@ static void window_map_invalidate(rct_window* w)
                 for (i = 0; i < 4; i++)
                     w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
 
-                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(_landRightsToolSize);
+                w->widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
             }
         }
         else
@@ -1172,7 +1172,7 @@ static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenC
 static CoordsXYZD place_park_entrance_get_map_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
-    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
     if (parkEntranceMapPosition.isNull())
         return parkEntranceMapPosition;

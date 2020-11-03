@@ -307,7 +307,7 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
 
 static void window_server_start_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, WC_SERVER_LIST);
+    ColourSchemeUpdateByClass(w, WC_SERVER_LIST);
 
     widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
     auto ft = Formatter::Common();

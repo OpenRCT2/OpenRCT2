@@ -160,10 +160,10 @@ static void window_land_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
     switch (widgetIndex)
     {
         case WIDX_FLOOR:
-            land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
+            LandTool::ShowSurfaceStyleDropdown(w, widget, _selectedFloorTexture);
             break;
         case WIDX_WALL:
-            land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
+            LandTool::ShowEdgeStyleDropdown(w, widget, _selectedWallTexture);
             break;
         case WIDX_PREVIEW:
             window_land_inputsize(w);
@@ -308,7 +308,7 @@ static void window_land_invalidate(rct_window* w)
     window_land_widgets[WIDX_FLOOR].image = surfaceImage;
     window_land_widgets[WIDX_WALL].image = edgeImage;
     // Update the preview image (for tool sizes up to 7)
-    window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_land_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**
