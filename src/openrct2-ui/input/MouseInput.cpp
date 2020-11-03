@@ -1230,10 +1230,10 @@ void InputStateWidgetPressed(
 
                     if (w->classification == WC_DROPDOWN)
                     {
-                        dropdown_index = dropdown_index_from_point(screenCoords, w);
+                        dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                         dropdownCleanup = dropdown_index == -1
-                            || (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
-                            || gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR;
+                            || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
+                            || gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString;
                         w = nullptr; // To be closed right next
                     }
                     else
@@ -1281,7 +1281,7 @@ void InputStateWidgetPressed(
 
                         if (dropdown_index == -1)
                         {
-                            if (!dropdown_is_disabled(gDropdownDefaultIndex))
+                            if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
                             {
                                 dropdown_index = gDropdownDefaultIndex;
                             }
@@ -1346,7 +1346,7 @@ void InputStateWidgetPressed(
 
     if (w->classification == WC_DROPDOWN)
     {
-        int32_t dropdown_index = dropdown_index_from_point(screenCoords, w);
+        int32_t dropdown_index = DropdownIndexFromPoint(screenCoords, w);
         if (dropdown_index == -1)
         {
             return;
@@ -1394,12 +1394,12 @@ void InputStateWidgetPressed(
             window_tooltip_show(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
-        if (dropdown_index < DROPDOWN_ITEMS_MAX_SIZE && dropdown_is_disabled(dropdown_index))
+        if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
         {
             return;
         }
 
-        if (gDropdownItemsFormat[dropdown_index] == DROPDOWN_SEPARATOR)
+        if (gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString)
         {
             return;
         }

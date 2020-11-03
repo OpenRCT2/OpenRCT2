@@ -67,7 +67,7 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, i));
         if (surfaceObj != nullptr)
         {
-            gDropdownItemsFormat[itemIndex] = DROPDOWN_FORMAT_LAND_PICKER;
+            gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
             gDropdownItemsArgs[itemIndex] = surfaceObj->IconImageId;
             if (surfaceObj->Colour != 255)
             {
@@ -82,9 +82,9 @@ void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, ui
     }
     uint32_t surfaceCount = itemIndex;
 
-    window_dropdown_show_image(
+    WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), w->colours[2], 0, surfaceCount, 47, 36,
-        dropdown_get_appropriate_image_dropdown_items_per_row(surfaceCount));
+        DropdownGetAppropriateImageDropdownItemsPerRow(surfaceCount));
 
     gDropdownDefaultIndex = defaultIndex;
 }
@@ -100,7 +100,7 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, i));
         if (edgeObj != nullptr && edgeObj->NumImagesLoaded > 1)
         {
-            gDropdownItemsFormat[itemIndex] = DROPDOWN_FORMAT_LAND_PICKER;
+            gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
             gDropdownItemsArgs[itemIndex] = edgeObj->IconImageId;
             if (i == currentEdgeType)
             {
@@ -110,9 +110,9 @@ void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8
         }
     }
     uint32_t edgeCount = itemIndex;
-    auto itemsPerRow = dropdown_get_appropriate_image_dropdown_items_per_row(edgeCount);
+    auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(edgeCount);
 
-    window_dropdown_show_image(
+    WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height(), w->colours[2], 0, edgeCount, 47, 36,
         itemsPerRow);
 

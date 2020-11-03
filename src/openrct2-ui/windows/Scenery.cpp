@@ -679,13 +679,13 @@ static void window_scenery_mousedown(rct_window* w, rct_widgetindex widgetIndex,
     switch (widgetIndex)
     {
         case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
-            window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
             break;
         case WIDX_SCENERY_SECONDARY_COLOUR_BUTTON:
-            window_dropdown_show_colour(w, widget, w->colours[1], gWindowScenerySecondaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], gWindowScenerySecondaryColour);
             break;
         case WIDX_SCENERY_TERTIARY_COLOUR_BUTTON:
-            window_dropdown_show_colour(w, widget, w->colours[1], gWindowSceneryTertiaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], gWindowSceneryTertiaryColour);
             break;
     }
 

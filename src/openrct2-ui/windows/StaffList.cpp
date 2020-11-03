@@ -288,7 +288,7 @@ static void window_staff_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             window_staff_list_cancel_tools(w);
             break;
         case WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER:
-            window_dropdown_show_colour(
+            WindowDropdownShowColour(
                 w, widget, w->colours[1], staff_get_colour(static_cast<StaffType>(_windowStaffListSelectedTab)));
             break;
     }

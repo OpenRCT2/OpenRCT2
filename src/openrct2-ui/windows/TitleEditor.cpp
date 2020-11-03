@@ -532,10 +532,10 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
                 }
 
                 widget--;
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
-                dropdown_set_checked(static_cast<int32_t>(_selectedTitleSequence), true);
+                    Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                Dropdown::SetChecked(static_cast<int32_t>(_selectedTitleSequence), true);
             }
             break;
     }

@@ -117,17 +117,17 @@ static void custom_currency_window_mousedown(rct_window* w, rct_widgetindex widg
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[1] = STR_SUFFIX;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 2, widget->width() - 3);
+                Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
             if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
             {
-                dropdown_set_checked(0, true);
+                Dropdown::SetChecked(0, true);
             }
             else
             {
-                dropdown_set_checked(1, true);
+                Dropdown::SetChecked(1, true);
             }
 
             break;

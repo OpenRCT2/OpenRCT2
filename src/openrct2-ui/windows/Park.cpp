@@ -551,18 +551,18 @@ static void window_park_entrance_mousedown(rct_window* w, rct_widgetindex widget
         gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[0] = STR_CLOSE_PARK;
         gDropdownItemsArgs[1] = STR_OPEN_PARK;
-        window_dropdown_show_text(
+        WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
 
         if (park_is_open())
         {
             gDropdownDefaultIndex = 0;
-            dropdown_set_checked(1, true);
+            Dropdown::SetChecked(1, true);
         }
         else
         {
             gDropdownDefaultIndex = 1;
-            dropdown_set_checked(0, true);
+            Dropdown::SetChecked(0, true);
         }
     }
 }

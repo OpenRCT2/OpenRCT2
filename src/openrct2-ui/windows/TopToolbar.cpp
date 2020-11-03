@@ -481,9 +481,9 @@ static void window_top_toolbar_mousedown(rct_window* w, rct_widgetindex widgetIn
                     numItems += 2;
                 }
             }
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
-                DROPDOWN_FLAG_STAY_OPEN, numItems);
+                Dropdown::Flag::StayOpen, numItems);
             break;
         case WIDX_CHEATS:
             top_toolbar_init_cheats_menu(w, widget);
@@ -3300,7 +3300,7 @@ static void top_toolbar_init_map_menu(rct_window* w, rct_widget* widget)
     }
 #endif
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, i);
     gDropdownDefaultIndex = DDIDX_SHOW_MAP;
 }
@@ -3361,18 +3361,18 @@ static void top_toolbar_init_fastforward_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[2] = STR_SPEED_FAST;
     gDropdownItemsArgs[3] = STR_SPEED_TURBO;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         num_items);
 
     // Set checkmarks
     if (gGameSpeed <= 4)
     {
-        dropdown_set_checked(gGameSpeed - 1, true);
+        Dropdown::SetChecked(gGameSpeed - 1, true);
     }
     if (gGameSpeed == 8)
     {
-        dropdown_set_checked(5, true);
+        Dropdown::SetChecked(5, true);
     }
 
     if (gConfigGeneral.debugging_tools)
@@ -3409,7 +3409,7 @@ static void top_toolbar_init_rotate_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
     gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, 2);
 
     gDropdownDefaultIndex = DDIDX_ROTATE_CLOCKWISE;
@@ -3453,37 +3453,37 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
 
     SetItems(items);
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
-        dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
-        dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
+        Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
+        Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
     }
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
-        dropdown_set_disabled(DDIDX_OBJECT_SELECTION, true);
-        dropdown_set_disabled(DDIDX_INVENTIONS_LIST, true);
-        dropdown_set_disabled(DDIDX_SCENARIO_OPTIONS, true);
-        dropdown_set_disabled(DDIDX_OBJECTIVE_OPTIONS, true);
-        dropdown_set_disabled(DDIDX_ENABLE_SANDBOX_MODE, true);
+        Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
+        Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
+        Dropdown::SetDisabled(DDIDX_SCENARIO_OPTIONS, true);
+        Dropdown::SetDisabled(DDIDX_OBJECTIVE_OPTIONS, true);
+        Dropdown::SetDisabled(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
 
     if (gCheatsSandboxMode)
     {
-        dropdown_set_checked(DDIDX_ENABLE_SANDBOX_MODE, true);
+        Dropdown::SetChecked(DDIDX_ENABLE_SANDBOX_MODE, true);
     }
     if (gCheatsDisableClearanceChecks)
     {
-        dropdown_set_checked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
+        Dropdown::SetChecked(DDIDX_DISABLE_CLEARANCE_CHECKS, true);
     }
     if (gCheatsDisableSupportLimits)
     {
-        dropdown_set_checked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
+        Dropdown::SetChecked(DDIDX_DISABLE_SUPPORT_LIMITS, true);
     }
 
     gDropdownDefaultIndex = DDIDX_CHEATS;
@@ -3531,11 +3531,11 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
     gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
-        DROPDOWN_FLAG_STAY_OPEN, TOP_TOOLBAR_DEBUG_COUNT);
+        Dropdown::Flag::StayOpen, TOP_TOOLBAR_DEBUG_COUNT);
 
-    dropdown_set_checked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
+    Dropdown::SetChecked(DDIDX_DEBUG_PAINT, window_find_by_class(WC_DEBUG_PAINT) != nullptr);
 }
 
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
@@ -3544,11 +3544,11 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
     gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
     gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
-    dropdown_set_disabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
+    Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3630,38 +3630,38 @@ static void top_toolbar_init_view_menu(rct_window* w, rct_widget* widget)
 
     SetItems(items);
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0,
         TOP_TOOLBAR_VIEW_MENU_COUNT);
 
     // Set checkmarks
     rct_viewport* mainViewport = window_get_main()->viewport;
     if (mainViewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        dropdown_set_checked(0, true);
+        Dropdown::SetChecked(0, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_BASE)
-        dropdown_set_checked(1, true);
+        Dropdown::SetChecked(1, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
-        dropdown_set_checked(2, true);
+        Dropdown::SetChecked(2, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-        dropdown_set_checked(4, true);
+        Dropdown::SetChecked(4, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-        dropdown_set_checked(5, true);
+        Dropdown::SetChecked(5, true);
     if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-        dropdown_set_checked(6, true);
+        Dropdown::SetChecked(6, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        dropdown_set_checked(7, true);
+        Dropdown::SetChecked(7, true);
     if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-        dropdown_set_checked(8, true);
+        Dropdown::SetChecked(8, true);
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
-        dropdown_set_checked(10, true);
+        Dropdown::SetChecked(10, true);
     if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
-        dropdown_set_checked(11, true);
+        Dropdown::SetChecked(11, true);
     if (mainViewport->flags & VIEWPORT_FLAG_PATH_HEIGHTS)
-        dropdown_set_checked(12, true);
+        Dropdown::SetChecked(12, true);
     if (mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW)
-        dropdown_set_checked(DDIDX_VIEW_CLIPPING, true);
+        Dropdown::SetChecked(DDIDX_VIEW_CLIPPING, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-        dropdown_set_checked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
+        Dropdown::SetChecked(DDIDX_HIGHLIGHT_PATH_ISSUES, true);
 
     gDropdownDefaultIndex = DDIDX_UNDERGROUND_INSIDE;
 }

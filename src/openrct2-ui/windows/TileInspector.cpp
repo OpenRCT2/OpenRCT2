@@ -1092,13 +1092,13 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_WALL_FLAT;
                     gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
                     gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
-                    window_dropdown_show_text_custom_width(
+                    WindowDropdownShowTextCustomWidth(
                         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                        DROPDOWN_FLAG_STAY_OPEN, 3, widget->width() - 3);
+                        Dropdown::Flag::StayOpen, 3, widget->width() - 3);
 
                     // Set current value as checked
                     TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
-                    dropdown_set_checked(tileElement->AsWall()->GetSlope(), true);
+                    Dropdown::SetChecked(tileElement->AsWall()->GetSlope(), true);
                     break;
                 }
                 case WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE:

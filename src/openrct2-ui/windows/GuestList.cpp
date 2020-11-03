@@ -429,9 +429,9 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
         case WIDX_PAGE_DROPDOWN_BUTTON:
             widget = &w->widgets[widgetIndex - 1];
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, _window_guest_list_num_pages, widget->width() - 3);
+                Dropdown::Flag::StayOpen, _window_guest_list_num_pages, widget->width() - 3);
 
             for (i = 0; i < _window_guest_list_num_pages; i++)
             {
@@ -440,7 +440,7 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
                 args[0] = STR_PAGE_X;
                 args[1] = i + 1;
             }
-            dropdown_set_checked(_window_guest_list_selected_page, true);
+            Dropdown::SetChecked(_window_guest_list_selected_page, true);
             break;
         case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
             widget = &w->widgets[widgetIndex - 1];
@@ -451,11 +451,11 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
                 gDropdownItemsArgs[i] = viewNames[i];
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 2, widget->width() - 3);
+                Dropdown::Flag::StayOpen, 2, widget->width() - 3);
 
-            dropdown_set_checked(_window_guest_list_selected_view, true);
+            Dropdown::SetChecked(_window_guest_list_selected_view, true);
             break;
     }
 }

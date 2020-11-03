@@ -1865,7 +1865,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
         numItems += ride->num_vehicles;
     }
 
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
@@ -1898,13 +1898,13 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
         for (int32_t i = 0; i < ride->num_vehicles; i++)
         {
             // The +1 is to skip 'Overall view'
-            dropdown_set_disabled(i + 1, true);
+            Dropdown::SetDisabled(i + 1, true);
             ;
         }
     }
 
     // Set checked item
-    dropdown_set_checked(w->ride.view, true);
+    Dropdown::SetChecked(w->ride.view, true);
 }
 
 static uint8_t window_ride_get_next_default_status(const Ride* ride)
@@ -1980,9 +1980,9 @@ static void window_ride_show_open_dropdown(rct_window* w, rct_widget* widget)
 #endif
     window_ride_set_dropdown(info, RIDE_STATUS_TESTING, STR_TEST_RIDE);
     window_ride_set_dropdown(info, RIDE_STATUS_OPEN, STR_OPEN_RIDE);
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, info.NumItems);
-    dropdown_set_checked(info.CheckedIndex, true);
+    Dropdown::SetChecked(info.CheckedIndex, true);
     gDropdownDefaultIndex = info.DefaultIndex;
 }
 
@@ -2050,9 +2050,9 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
     }
 
     rct_widget* dropdownWidget = widget - 1;
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], DROPDOWN_FLAG_STAY_OPEN, RIDE_TYPE_COUNT);
+        w->colours[1], Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
 
     // Find the current ride type in the ordered list.
     uint8_t pos = 0;
@@ -2067,7 +2067,7 @@ static void window_ride_show_ride_type_dropdown(rct_window* w, rct_widget* widge
 
     gDropdownHighlightedIndex = pos;
     gDropdownDefaultIndex = pos;
-    dropdown_set_checked(pos, true);
+    Dropdown::SetChecked(pos, true);
 }
 
 static void populate_vehicle_type_dropdown(Ride* ride)
@@ -2140,7 +2140,7 @@ static void window_ride_show_vehicle_type_dropdown(rct_window* w, rct_widget* wi
 
     populate_vehicle_type_dropdown(ride);
 
-    size_t numItems = std::min<size_t>(VehicleDropdownData.size(), DROPDOWN_ITEMS_MAX_SIZE);
+    size_t numItems = std::min<size_t>(VehicleDropdownData.size(), Dropdown::ItemsMaxSize);
 
     for (size_t i = 0; i < numItems; i++)
     {
@@ -2149,9 +2149,9 @@ static void window_ride_show_vehicle_type_dropdown(rct_window* w, rct_widget* wi
     }
 
     rct_widget* dropdownWidget = widget - 1;
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
 
     // Find the current vehicle type in the ordered list.
     uint8_t pos = 0;
@@ -2166,7 +2166,7 @@ static void window_ride_show_vehicle_type_dropdown(rct_window* w, rct_widget* wi
 
     gDropdownHighlightedIndex = pos;
     gDropdownDefaultIndex = pos;
-    dropdown_set_checked(pos, true);
+    Dropdown::SetChecked(pos, true);
 }
 
 /**
@@ -3170,13 +3170,13 @@ static void window_ride_mode_dropdown(rct_window* w, rct_widget* widget)
         }
     }
 
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numAvailableModes, widget->right - dropdownWidget->left);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, numAvailableModes, widget->right - dropdownWidget->left);
 
     if (checkedIndex != -1)
     {
-        dropdown_set_checked(checkedIndex, true);
+        Dropdown::SetChecked(checkedIndex, true);
     }
 }
 
@@ -3196,11 +3196,11 @@ static void window_ride_load_dropdown(rct_window* w, rct_widget* widget)
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = VehicleLoadNames[i];
     }
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, widget->right - dropdownWidget->left);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, 5, widget->right - dropdownWidget->left);
 
-    dropdown_set_checked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
+    Dropdown::SetChecked(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK, true);
 }
 
 /**
@@ -3805,11 +3805,11 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
             }
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 7, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 7, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(ride->inspection_interval, true);
+            Dropdown::SetChecked(ride->inspection_interval, true);
             break;
 
         case WIDX_FORCE_BREAKDOWN:
@@ -3842,9 +3842,9 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             }
             else
             {
-                window_dropdown_show_text(
+                WindowDropdownShowText(
                     { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top },
-                    dropdownWidget->height() + 1, w->colours[1], DROPDOWN_FLAG_STAY_OPEN, num_items);
+                    dropdownWidget->height() + 1, w->colours[1], Dropdown::Flag::StayOpen, num_items);
 
                 num_items = 1;
                 int32_t breakdownReason = ride->breakdown_reason_pending;
@@ -3861,7 +3861,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                             }
                             if (i == breakdownReason)
                             {
-                                dropdown_set_checked(num_items, true);
+                                Dropdown::SetChecked(num_items, true);
                                 break;
                             }
                             gDropdownItemsFormat[num_items] = STR_DROPDOWN_MENU_LABEL;
@@ -3873,7 +3873,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
 
                 if ((ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING) == 0)
                 {
-                    dropdown_set_disabled(0, true);
+                    Dropdown::SetDisabled(0, true);
                 }
             }
             break;
@@ -4310,20 +4310,20 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsArgs[i] = ColourSchemeNames[i];
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 4, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(colourSchemeIndex, true);
+            Dropdown::SetChecked(colourSchemeIndex, true);
             break;
         case WIDX_TRACK_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].main);
+            WindowDropdownShowColour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].main);
             break;
         case WIDX_TRACK_ADDITIONAL_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].additional);
+            WindowDropdownShowColour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].additional);
             break;
         case WIDX_TRACK_SUPPORT_COLOUR:
-            window_dropdown_show_colour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].supports);
+            WindowDropdownShowColour(w, widget, w->colours[1], ride->track_colour[colourSchemeIndex].supports);
             break;
         case WIDX_MAZE_STYLE_DROPDOWN:
             for (i = 0; i < 4; i++)
@@ -4332,11 +4332,11 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                 gDropdownItemsArgs[i] = MazeOptions[i].text;
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 4, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 4, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(ride->track_colour[colourSchemeIndex].supports, true);
+            Dropdown::SetChecked(ride->track_colour[colourSchemeIndex].supports, true);
             break;
         case WIDX_ENTRANCE_STYLE_DROPDOWN:
         {
@@ -4357,9 +4357,9 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                 }
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, ddIndex, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, ddIndex, widget->right - dropdownWidget->left);
             break;
         }
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
@@ -4371,12 +4371,12 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                     | VehicleColourSchemeNames[i];
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, rideEntry->max_cars_in_train > 1 ? 3 : 2,
+                w->colours[1], 0, Dropdown::Flag::StayOpen, rideEntry->max_cars_in_train > 1 ? 3 : 2,
                 widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(ride->colour_scheme_type & 3, true);
+            Dropdown::SetChecked(ride->colour_scheme_type & 3, true);
             break;
         case WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN:
             numItems = ride->num_vehicles;
@@ -4385,7 +4385,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
 
             stringId = (ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_TRAIN ? STR_RIDE_COLOUR_TRAIN_OPTION
                                                                                          : STR_RIDE_COLOUR_VEHICLE_OPTION;
-            for (i = 0; i < std::min(numItems, DROPDOWN_ITEMS_MAX_SIZE); i++)
+            for (i = 0; i < std::min(numItems, Dropdown::ItemsMaxSize); i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = (static_cast<int64_t>(i + 1) << 32)
@@ -4393,23 +4393,23 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
                     | stringId;
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
 
-            dropdown_set_checked(w->vehicleIndex, true);
+            Dropdown::SetChecked(w->vehicleIndex, true);
             break;
         case WIDX_VEHICLE_MAIN_COLOUR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.main);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.main);
             break;
         case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_1);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.additional_1);
             break;
         case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            window_dropdown_show_colour(w, widget, w->colours[1], vehicleColour.additional_2);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.additional_2);
             break;
     }
 }
@@ -5037,15 +5037,15 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsArgs[i] = MusicStyleNames[window_ride_current_music_style_order[i]];
     }
 
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, widget->right - dropdownWidget->left);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
 
     for (auto i = 0; i < numItems; i++)
     {
         if (window_ride_current_music_style_order[i] == ride->music)
         {
-            dropdown_set_checked(i, true);
+            Dropdown::SetChecked(i, true);
         }
     }
 }
@@ -5337,18 +5337,18 @@ static void window_ride_measurements_mousedown(rct_window* w, rct_widgetindex wi
     gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
     gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
-    window_dropdown_show_text(
+    WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
-        DROPDOWN_FLAG_STAY_OPEN, 2);
+        Dropdown::Flag::StayOpen, 2);
     gDropdownDefaultIndex = 0;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
-        dropdown_set_disabled(1, true);
+        Dropdown::SetDisabled(1, true);
     }
     else if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
     {
         // Disable saving without scenery if we're a flat ride
-        dropdown_set_disabled(0, true);
+        Dropdown::SetDisabled(0, true);
         gDropdownDefaultIndex = 1;
     }
 }

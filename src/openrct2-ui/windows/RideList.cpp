@@ -305,7 +305,7 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
     {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
-        window_dropdown_show_text(
+        WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0, 2);
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
@@ -340,12 +340,12 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
             numItems++;
         }
 
-        window_dropdown_show_text_custom_width(
+        WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0,
-            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+            Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
         if (selectedIndex != -1)
         {
-            dropdown_set_checked(selectedIndex, true);
+            Dropdown::SetChecked(selectedIndex, true);
         }
     }
 }

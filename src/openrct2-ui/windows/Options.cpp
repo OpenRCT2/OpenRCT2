@@ -681,7 +681,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
 
             if (selectedResolution != -1 && selectedResolution < 32)
             {
-                dropdown_set_checked(selectedResolution, true);
+                Dropdown::SetChecked(selectedResolution, true);
             }
         }
 
@@ -696,7 +696,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
+            Dropdown::SetChecked(gConfigGeneral.fullscreen_mode, true);
             break;
         case WIDX_DRAWING_ENGINE_DROPDOWN:
         {
@@ -711,7 +711,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
             }
             window_options_show_dropdown(w, widget, numItems);
-            dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
+            Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
             break;
         }
         case WIDX_SCALE_UP:
@@ -738,7 +738,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
             window_options_show_dropdown(w, widget, 2);
 
             // Note: offset by one to compensate for lack of NN option.
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
             break;
     }
 }
@@ -1007,7 +1007,7 @@ static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex wi
             widget = &w->widgets[widgetIndex - 1];
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
             break;
     }
 }
@@ -1112,7 +1112,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
+            Dropdown::SetChecked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
             break;
         case WIDX_CURRENCY_DROPDOWN:
         {
@@ -1125,7 +1125,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
             }
 
-            gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
+            gDropdownItemsFormat[num_ordinary_currencies] = Dropdown::SeparatorString;
 
             gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
@@ -1134,11 +1134,11 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             if (gConfigGeneral.currency_format == CurrencyType::Custom)
             {
-                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format) + 1, true);
+                Dropdown::SetChecked(EnumValue(gConfigGeneral.currency_format) + 1, true);
             }
             else
             {
-                dropdown_set_checked(EnumValue(gConfigGeneral.currency_format), true);
+                Dropdown::SetChecked(EnumValue(gConfigGeneral.currency_format), true);
             }
             break;
         }
@@ -1152,7 +1152,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
             break;
         case WIDX_TEMPERATURE_DROPDOWN:
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1162,7 +1162,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
             break;
         case WIDX_LANGUAGE_DROPDOWN:
             for (size_t i = 1; i < LANGUAGE_COUNT; i++)
@@ -1171,7 +1171,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
             }
             window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-            dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
+            Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
             break;
         case WIDX_DATE_FORMAT_DROPDOWN:
             for (size_t i = 0; i < 4; i++)
@@ -1180,7 +1180,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = DateFormatStringIds[i];
             }
             window_options_show_dropdown(w, widget, 4);
-            dropdown_set_checked(gConfigGeneral.date_format, true);
+            Dropdown::SetChecked(gConfigGeneral.date_format, true);
             break;
     }
 }
@@ -1399,7 +1399,7 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
 
             window_options_show_dropdown(w, widget, OpenRCT2::Audio::GetDeviceCount());
 
-            dropdown_set_checked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
+            Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
             uint32_t num_items = 4;
@@ -1412,7 +1412,7 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
 
             window_options_show_dropdown(w, widget, num_items);
 
-            dropdown_set_checked(gConfigSound.title_music, true);
+            Dropdown::SetChecked(gConfigSound.title_music, true);
             break;
     }
 }
@@ -1671,11 +1671,11 @@ static void window_options_controls_mousedown(rct_window* w, rct_widgetindex wid
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
             widget_invalidate(w, WIDX_THEMES_DROPDOWN);
             break;
     }
@@ -1797,11 +1797,11 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
             }
 
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
-                DROPDOWN_FLAG_STAY_OPEN, num_items);
+                Dropdown::Flag::StayOpen, num_items);
 
-            dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(title_get_current_sequence()), true);
             break;
         case WIDX_SCENARIO_GROUPING_DROPDOWN:
             num_items = 2;
@@ -1811,11 +1811,11 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
+            Dropdown::SetChecked(gConfigGeneral.scenario_select_mode, true);
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             for (size_t i = 0; i < 7; i++)
@@ -1825,7 +1825,7 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
             }
 
             window_options_show_dropdown(w, widget, 7);
-            dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+            Dropdown::SetChecked(gConfigGeneral.default_inspection_interval, true);
             break;
     }
 }
@@ -2036,7 +2036,7 @@ static void window_options_advanced_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
+            Dropdown::SetChecked(gConfigGeneral.autosave_frequency, true);
             break;
         case WIDX_AUTOSAVE_AMOUNT_UP:
             gConfigGeneral.autosave_amount += 1;
@@ -2317,9 +2317,9 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
 // helper function, all dropdown boxes have similar properties
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+        Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 }
 
 static void window_options_update_height_markers()

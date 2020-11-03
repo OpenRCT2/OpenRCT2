@@ -418,16 +418,16 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
         }
     }
 
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, numItems, dropdownWidget->width() - 3);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, dropdownWidget->width() - 3);
 
     objectiveType = gScenarioObjective.Type;
     for (int32_t j = 0; j < numItems; j++)
     {
         if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
         {
-            dropdown_set_checked(j, true);
+            Dropdown::SetChecked(j, true);
             break;
         }
     }
@@ -445,10 +445,10 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
     }
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 5, dropdownWidget->width() - 3);
-    dropdown_set_checked(gS6Info.category, true);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, 5, dropdownWidget->width() - 3);
+    Dropdown::SetChecked(gS6Info.category, true);
 }
 
 static void window_editor_objective_options_arg_1_increase(rct_window* w)
