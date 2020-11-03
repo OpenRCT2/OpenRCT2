@@ -233,6 +233,11 @@ public:
     {
     }
 
+    void AcceptFlags(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("flags", _flags);
+    }
+
     NetworkPlayerId_t GetPlayer() const
     {
         return _playerId;
