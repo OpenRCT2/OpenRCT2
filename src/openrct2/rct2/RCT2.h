@@ -318,6 +318,11 @@ struct rct2_ride
     uint16_t cable_lift;                                       // 0x1FE
     uint16_t queue_length[RCT12_MAX_STATIONS_PER_RIDE];        // 0x200
     uint8_t pad_208[0x58];                                     // 0x208
+
+    uint8_t GetMinCarsPerTrain() const;
+    uint8_t GetMaxCarsPerTrain() const;
+    void SetMinCarsPerTrain(uint8_t newValue);
+    void SetMaxCarsPerTrain(uint8_t newValue);
 };
 assert_struct_size(rct2_ride, 0x260);
 

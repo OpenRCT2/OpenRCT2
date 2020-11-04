@@ -6658,7 +6658,8 @@ void Ride::UpdateMaxVehicles()
     {
         int32_t trainLength;
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);
-        min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
+        SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
 
         // Calculate maximum train length based on smallest station length
         auto stationNumTiles = ride_get_smallest_station_length(this);
@@ -6691,7 +6692,8 @@ void Ride::UpdateMaxVehicles()
         {
             newCarsPerTrain = std::min(maxCarsPerTrain, newCarsPerTrain);
         }
-        min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
+        SetMaxCarsPerTrain(maxCarsPerTrain);
+        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
 
         switch (mode)
         {
@@ -6769,7 +6771,8 @@ void Ride::UpdateMaxVehicles()
     else
     {
         max_trains = rideEntry->cars_per_flat_ride;
-        min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
+        SetMinCarsPerTrain(rideEntry->min_cars_in_train);
+        SetMaxCarsPerTrain(rideEntry->max_cars_in_train);
         numCarsPerTrain = rideEntry->max_cars_in_train;
         maxNumTrains = rideEntry->cars_per_flat_ride;
     }
@@ -7618,4 +7621,26 @@ uint64_t Ride::GetAvailableModes() const
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
     return RideTypeDescriptors[type];
+}
+
+uint8_t Ride::GetMinCarsPerTrain() const
+{
+    return min_max_cars_per_train >> 4;
+}
+
+uint8_t Ride::GetMaxCarsPerTrain() const
+{
+    return min_max_cars_per_train & 0xF;
+}
+
+void Ride::SetMinCarsPerTrain(uint8_t newValue)
+{
+    min_max_cars_per_train &= ~0xF0;
+    min_max_cars_per_train |= (newValue << 4);
+}
+
+void Ride::SetMaxCarsPerTrain(uint8_t newValue)
+{
+    min_max_cars_per_train &= ~0x0F;
+    min_max_cars_per_train |= newValue & 0x0F;
 }
