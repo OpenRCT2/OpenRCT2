@@ -5241,7 +5241,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
  *
  *  rct2: 0x006B4EEA
  */
-bool Ride::Open(int32_t goingToBeOpen, bool isApplying)
+bool Ride::Open(bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
@@ -5266,7 +5266,7 @@ bool Ride::Open(int32_t goingToBeOpen, bool isApplying)
         return false;
     }
 
-    if (goingToBeOpen && isApplying)
+    if (isApplying)
     {
         ChainQueues();
         lifecycle_flags |= RIDE_LIFECYCLE_EVER_BEEN_OPENED;

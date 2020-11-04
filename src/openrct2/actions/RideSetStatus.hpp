@@ -110,7 +110,7 @@ public:
             }
             else if (_status == RIDE_STATUS_OPEN)
             {
-                if (!ride->Open(_status == RIDE_STATUS_OPEN, false))
+                if (!ride->Open(false))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
@@ -220,7 +220,7 @@ public:
                         return res;
                     }
                 }
-                else if (!ride->Open(_status == RIDE_STATUS_OPEN, true))
+                else if (!ride->Open(true))
                 {
                     res->Error = GameActions::Status::Unknown;
                     res->ErrorMessage = gGameCommandErrorText;
