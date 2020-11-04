@@ -50,8 +50,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
                     return;
             }
 
-            lightfx_add_3d_light(
-                peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LightType::Spot1);
+            LightfxAdd3DLight(*peep, 0, { peep_x, peep_y, peep_z }, LightType::Spot1);
         }
     }
 #endif
