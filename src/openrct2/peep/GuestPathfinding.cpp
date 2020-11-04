@@ -137,7 +137,31 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     peep->DestinationTolerance = 2;
     if (peep->State != PeepState::Queuing)
     {
-        peep->DestinationTolerance = (scenario_rand() & 7) + 2;
+        // When peeps are walking along a path, we would like them to be spread out across the width of the path,
+        // instead of all walking along the exact center line of the path.
+        //
+        // Setting a random DestinationTolerance does not work very well for this. It means that peeps will make
+        // their new pathfinding decision at a random time, and so will distribute a bit when they are turning
+        // corners (which is good); but, as they walk along a straight path, they will - eventually - have had a
+        // low tolerance value which forced them back to the center of the path, where they stay until they turn
+        // a corner.
+        //
+        // What we want instead is to apply that randomness in the direction they are walking ONLY, and keep their
+        // other coordinate constant.
+
+        int8_t offset = (scenario_rand() & 7) - 3;
+        if (direction == 0 || direction == 2)
+        {
+            // Peep is moving along X, so apply the offset to the X position of the destination and keep their current Y
+            peep->DestinationX += offset;
+            peep->DestinationY = peep->y;
+        }
+        else
+        {
+            // Peep is moving along Y, so apply the offset to the Y position of the destination and keep their current X
+            peep->DestinationX = peep->x;
+            peep->DestinationY += offset;
+        }
     }
     return 0;
 }
