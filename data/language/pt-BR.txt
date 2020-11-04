@@ -3651,6 +3651,7 @@ STR_6394    :Objetivo
 STR_6395    :Manutenção
 STR_6396    :Desabilitar proteção de tela e economia de energia do monitor
 STR_6397    :{SMALLFONT}{BLACK}Se selecionada, a proteção de tela e outras configurações de economia de energia do monitor serão inibidas durante a execução do OpenRCT2.
+STR_6398    :Esse arquivo contém atrações não suportadas. Por favor atualize para uma versão mais nova do OpenRCT2.
 
 #############
 # Scenarios #

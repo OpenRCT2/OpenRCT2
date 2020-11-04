@@ -3673,6 +3673,7 @@ STR_6394    :Objetivo
 STR_6395    :Mantenimiento
 STR_6396    :Deshabilitar protector y ahorro de energía del monitor.
 STR_6397    :{SMALLFONT}{BLACK}Si está activado, el salvapantallas y otras funciones de ahorro de energía estarán inhabilitadas mientras OpenRCT2 esté abierto.
+STR_6398    :El archivo contiene atracciones incompatibles. Por favor actualiza a una versión mas nueva de OpenRCT2.
 
 ##############
 # Escenarios #
