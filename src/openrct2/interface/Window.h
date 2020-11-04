@@ -707,12 +707,12 @@ void window_update_all();
 
 void window_set_window_limit(int32_t value);
 
-rct_window* window_create(
+rct_window* WindowCreate(
     const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
     rct_windowclass cls, uint16_t flags);
-rct_window* window_create_auto_pos(
+rct_window* WindowCreateAutoPos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
-rct_window* window_create_centred(
+rct_window* WindowCreateCentred(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
@@ -731,7 +731,7 @@ void window_invalidate_all();
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
-void window_init_scroll_widgets(rct_window* w);
+void WindowInitScrollWidgets(rct_window* w);
 void window_update_scroll_widgets(rct_window* w);
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index);
 
@@ -760,7 +760,7 @@ void window_show_textinput(rct_window* w, rct_widgetindex widgetIndex, uint16_t 
 
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom);
 void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi);
+void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
 
 void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords);
@@ -821,7 +821,7 @@ void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-void invalidate_all_windows_after_input();
+void InvalidateAllWindowsAfterInput();
 void textinput_cancel();
 
 void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);

@@ -103,13 +103,13 @@ rct_window* window_banner_open(rct_windownumber number)
     if (w != nullptr)
         return w;
 
-    w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
+    w = WindowCreateAutoPos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_banner_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BANNER_TEXT) | (1 << WIDX_BANNER_NO_ENTRY) | (1 << WIDX_BANNER_DEMOLISH)
         | (1 << WIDX_MAIN_COLOUR) | (1 << WIDX_TEXT_COLOUR_DROPDOWN) | (1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 
     w->number = number;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     auto banner = GetBanner(w->number);
     auto bannerViewPos = banner->position.ToCoordsXY().ToTileCentre();
@@ -300,7 +300,7 @@ static void window_banner_invalidate(rct_window* w)
 /* rct2: 0x006BA4C5 */
 static void window_banner_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw viewport
     if (w->viewport != nullptr)

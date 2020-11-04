@@ -146,12 +146,11 @@ rct_window* window_save_prompt_open()
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window = window_create_centred(
-        width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
     window->enabled_widgets = enabled_widgets;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Pause the game if not network play.
     if (network_get_mode() == NETWORK_MODE_NONE)
@@ -246,7 +245,7 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
 
 static void window_save_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 static void window_save_prompt_callback(int32_t result, const utf8* path)

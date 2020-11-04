@@ -118,7 +118,7 @@ void window_text_input_raw_open(
     int32_t height = no_lines * 10 + WH;
 
     // Window will be in the centre of the screen
-    rct_window* w = window_create_centred(WW, height, &window_text_input_events, WC_TEXTINPUT, WF_STICK_TO_FRONT);
+    rct_window* w = WindowCreateCentred(WW, height, &window_text_input_events, WC_TEXTINPUT, WF_STICK_TO_FRONT);
 
     w->widgets = window_text_input_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
@@ -141,7 +141,7 @@ void window_text_input_raw_open(
 
     gTextInput = context_start_text_input(text_input, maxLength);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     if (call_w == nullptr)
     {
@@ -228,7 +228,7 @@ static void window_text_input_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     ScreenCoordsXY screenCoords;
     screenCoords.y = w->windowPos.y + 25;

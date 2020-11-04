@@ -70,10 +70,10 @@ rct_window* window_news_open()
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
+        window = WindowCreateAutoPos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
         window->widgets = window_news_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->news.var_480 = -1;
     }
 
@@ -209,7 +209,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
  */
 static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**

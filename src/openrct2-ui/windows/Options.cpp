@@ -570,7 +570,7 @@ static void window_options_common_invalidate_before(rct_window* w)
     if (window_options_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_options_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
     window_options_set_pressed_tab(w);
 
@@ -879,7 +879,7 @@ static void window_options_display_invalidate(rct_window* w)
 
 static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -1086,7 +1086,7 @@ static void window_options_rendering_invalidate(rct_window* w)
 
 static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 }
 
@@ -1314,7 +1314,7 @@ static void window_options_culture_invalidate(rct_window* w)
 
 static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -1576,7 +1576,7 @@ static void window_options_audio_invalidate(rct_window* w)
 
 static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 }
 
@@ -1723,7 +1723,7 @@ static void window_options_controls_invalidate(rct_window* w)
 
 static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -1924,7 +1924,7 @@ static void window_options_misc_invalidate(rct_window* w)
 
 static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -2090,7 +2090,7 @@ static void window_options_advanced_invalidate(rct_window* w)
 
 static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -2237,12 +2237,12 @@ rct_window* window_options_open()
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
+    w = WindowCreateCentred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
     w->widgets = window_options_display_widgets;
     w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
     w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
     w->frame_no = 0;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     return w;
 }
@@ -2259,7 +2259,7 @@ static void window_options_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 

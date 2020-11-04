@@ -407,13 +407,13 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     rct_window* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
     if (window == nullptr)
     {
-        window = window_create_centred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
+        window = WindowCreateCentred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
 
         window->widgets = window_object_load_error_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL)
             | (1 << WIDX_DOWNLOAD_ALL);
 
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_LIGHT_BLUE;
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -534,7 +534,7 @@ static void window_object_load_error_scrollgetsize(rct_window* w, int32_t scroll
 
 static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw explanatory message
     auto ft = Formatter();

@@ -386,7 +386,7 @@ rct_window* window_guest_open(Peep* peep)
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = window_create_auto_pos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
+        window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
@@ -417,7 +417,7 @@ rct_window* window_guest_open(Peep* peep)
     window->pressed_widgets = 0;
 
     window_guest_disable_widgets(window);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_guest_viewport_init(window);
 
     return window;
@@ -449,7 +449,7 @@ static void window_guest_common_invalidate(rct_window* w)
     if (window_guest_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -653,7 +653,7 @@ void window_guest_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     if (listen && w->viewport)
@@ -944,7 +944,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1295,7 +1295,7 @@ static int32_t NormalizeGuestStatValue(int32_t value, int32_t currMax, int32_t n
  */
 void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1550,7 +1550,7 @@ void window_guest_rides_invalidate(rct_window* w)
  */
 void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1635,7 +1635,7 @@ void window_guest_finance_update(rct_window* w)
  */
 void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1773,7 +1773,7 @@ void window_guest_thoughts_update(rct_window* w)
  */
 void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1954,7 +1954,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
  */
 void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -2012,7 +2012,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     char buffer[512]{};
     char buffer2[512]{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);

@@ -426,13 +426,13 @@ rct_window* window_new_ride_open()
     window_close_by_class(WC_TRACK_DESIGN_LIST);
     window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
-    w = window_create_auto_pos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
+    w = WindowCreateAutoPos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_TAB_3) | (1 << WIDX_TAB_4)
         | (1 << WIDX_TAB_5) | (1 << WIDX_TAB_6) | (1 << WIDX_TAB_7) | (1 << WIDX_LAST_DEVELOPMENT_BUTTON)
         | (1 << WIDX_RESEARCH_FUNDING_BUTTON);
     window_new_ride_populate_list();
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->frame_no = 0;
     w->new_ride.SelectedRide = { RIDE_TYPE_NULL, RIDE_ENTRY_INDEX_NULL };
@@ -586,7 +586,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
         w->Invalidate();
     }
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 }
 
 static void window_new_ride_set_pressed_tab(rct_window* w)
@@ -770,7 +770,7 @@ static void window_new_ride_invalidate(rct_window* w)
  */
 static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_new_ride_draw_tab_images(dpi, w);
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)

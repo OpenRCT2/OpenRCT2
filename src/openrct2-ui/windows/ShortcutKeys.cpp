@@ -203,11 +203,11 @@ rct_window* window_shortcut_keys_open()
     rct_window* w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)
     {
-        w = window_create_auto_pos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
+        w = WindowCreateAutoPos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
 
         w->widgets = window_shortcut_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
 
         w->no_list_items = static_cast<uint16_t>(std::size(ShortcutList));
         w->selected_list_item = -1;
@@ -262,7 +262,7 @@ static void window_shortcut_invalidate(rct_window* w)
  */
 static void window_shortcut_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**

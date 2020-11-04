@@ -43,12 +43,12 @@ rct_window* window_title_exit_open()
 {
     rct_window* window;
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_exit_widgets;
     window->enabled_widgets |= (1ULL << WIDX_EXIT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -77,5 +77,5 @@ static void window_title_exit_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_title_exit_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }

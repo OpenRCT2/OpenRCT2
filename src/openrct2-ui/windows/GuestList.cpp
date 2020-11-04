@@ -189,13 +189,13 @@ rct_window* window_guest_list_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_auto_pos(350, 330, &window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(350, 330, &window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
     window->widgets = window_guest_list_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PAGE_DROPDOWN) | (1 << WIDX_PAGE_DROPDOWN_BUTTON)
         | (1 << WIDX_INFO_TYPE_DROPDOWN) | (1 << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1 << WIDX_MAP) | (1 << WIDX_TRACKING)
         | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2) | (1 << WIDX_FILTER_BY_NAME);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     _window_guest_list_highlighted_index = 0xFFFF;
     window->list_information_type = 0;
     _window_guest_list_selected_tab = PAGE_INDIVIDUAL;
@@ -667,7 +667,7 @@ static void window_guest_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_string_id format;
 
     // Widgets
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     // Tab 1 image
     i = (_window_guest_list_selected_tab == 0 ? w->list_information_type & 0x0FFFFFFFC : 0);
     i += GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;

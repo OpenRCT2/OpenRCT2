@@ -331,12 +331,12 @@ rct_window* window_editor_scenario_options_open()
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(
+    w = WindowCreateCentred(
         280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
     w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->page = 0;
 
     return w;
@@ -411,7 +411,7 @@ static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -631,7 +631,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -679,7 +679,7 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
 {
     ScreenCoordsXY screenCoords{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
     if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY)
@@ -911,7 +911,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -956,7 +956,7 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     int32_t arg;
     ScreenCoordsXY screenCoords{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
     if (w->widgets[WIDX_CASH_PER_GUEST].type != WWT_EMPTY)
@@ -1245,7 +1245,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -1317,7 +1317,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
     ScreenCoordsXY screenCoords{};
     rct_string_id stringId;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
     if (w->widgets[WIDX_LAND_COST].type != WWT_EMPTY)

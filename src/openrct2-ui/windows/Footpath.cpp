@@ -205,14 +205,14 @@ rct_window* window_footpath_open()
         return window;
     }
 
-    window = window_create(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
+    window = WindowCreate(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)
         | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE)
         | (1 << WIDX_SLOPEDOWN) | (1 << WIDX_LEVEL) | (1 << WIDX_SLOPEUP) | (1 << WIDX_CONSTRUCT) | (1 << WIDX_REMOVE)
         | (1 << WIDX_CONSTRUCT_ON_LAND) | (1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_right(window);
     show_gridlines();
 
@@ -587,7 +587,7 @@ static void window_footpath_invalidate(rct_window* w)
 static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords;
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))
     {

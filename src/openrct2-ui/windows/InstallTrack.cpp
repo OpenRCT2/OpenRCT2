@@ -111,11 +111,11 @@ rct_window* window_install_track_open(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = window_create(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
+    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_INSTALL)
         | (1 << WIDX_CANCEL);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
 
@@ -193,7 +193,7 @@ static void window_install_track_invalidate(rct_window* w)
  */
 static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Track preview
     rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];

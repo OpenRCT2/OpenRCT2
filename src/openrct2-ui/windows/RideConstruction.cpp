@@ -520,7 +520,7 @@ rct_window* window_ride_construction_open()
         return context_open_window_view(WV_MAZE_CONSTRUCTION);
     }
 
-    auto w = window_create(
+    auto w = WindowCreate(
         ScreenCoordsXY(0, 29), 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
     w->widgets = window_ride_construction_widgets;
@@ -534,7 +534,7 @@ rct_window* window_ride_construction_open()
         | (1ULL << WIDX_RIGHT_CURVE_LARGE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_U_TRACK) | (1ULL << WIDX_O_TRACK)
         | (1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP) | (1ULL << WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->colours[0] = COLOUR_DARK_BROWN;
     w->colours[1] = COLOUR_DARK_BROWN;
@@ -2302,7 +2302,7 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     rct_widget* widget;
     int32_t width, height;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     widget = &window_ride_construction_widgets[WIDX_CONSTRUCT];
     if (widget->type == WWT_EMPTY)

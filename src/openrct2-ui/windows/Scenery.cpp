@@ -436,7 +436,7 @@ rct_window* window_scenery_open()
 
     window_scenery_init();
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
         &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
     window->widgets = window_scenery_widgets;
@@ -451,7 +451,7 @@ rct_window* window_scenery_open()
         | (1 << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) | (1 << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
         | (1 << WIDX_SCENERY_EYEDROPPER_BUTTON) | (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_scenery_update_scroll(window);
     show_gridlines();
     gWindowSceneryRotation = 3;
@@ -1108,7 +1108,7 @@ void window_scenery_invalidate(rct_window* w)
  */
 void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     uint16_t tabIndex = gWindowSceneryActiveTabIndex;
     uint16_t selectedWidgetId = tabIndex + 4;

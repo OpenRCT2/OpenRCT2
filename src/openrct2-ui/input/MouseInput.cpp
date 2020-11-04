@@ -105,7 +105,7 @@ void GameHandleInput()
 {
     window_visit_each([](rct_window* w) { window_event_periodic_update_call(w); });
 
-    invalidate_all_windows_after_input();
+    InvalidateAllWindowsAfterInput();
 
     MouseState state;
     ScreenCoordsXY screenCoords;

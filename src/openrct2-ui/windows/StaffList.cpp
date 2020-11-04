@@ -145,14 +145,14 @@ rct_window* window_staff_list_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_auto_pos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(WW, WH, &window_staff_list_events, WC_STAFF_LIST, WF_10 | WF_RESIZABLE);
     window->widgets = window_staff_list_widgets;
     window->enabled_widgets = (1 << WIDX_STAFF_LIST_CLOSE) | (1 << WIDX_STAFF_LIST_HANDYMEN_TAB)
         | (1 << WIDX_STAFF_LIST_MECHANICS_TAB) | (1 << WIDX_STAFF_LIST_SECURITY_TAB) | (1 << WIDX_STAFF_LIST_ENTERTAINERS_TAB)
         | (1 << WIDX_STAFF_LIST_HIRE_BUTTON) | (1 << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER)
         | (1 << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON) | (1 << WIDX_STAFF_LIST_MAP) | (1 << WIDX_STAFF_LIST_QUICK_FIRE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     _windowStaffListHighlightedIndex = -1;
     window->list_information_type = 0;
 
@@ -557,7 +557,7 @@ void window_staff_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint8_t selectedTab;
 
     // Widgets
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     selectedTab = _windowStaffListSelectedTab;
 

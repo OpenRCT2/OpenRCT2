@@ -319,7 +319,7 @@ rct_window* window_themes_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_auto_pos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
     window->widgets = window_themes_widgets;
     window->enabled_widgets = (1 << WIDX_THEMES_CLOSE) | (1 << WIDX_THEMES_SETTINGS_TAB) | (1 << WIDX_THEMES_MAIN_UI_TAB)
         | (1 << WIDX_THEMES_PARK_TAB) | (1 << WIDX_THEMES_TOOLS_TAB) | (1 << WIDX_THEMES_RIDE_PEEPS_TAB)
@@ -331,7 +331,7 @@ rct_window* window_themes_open()
 
     window_themes_init_vars();
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->list_information_type = 0;
     _colour_index_1 = -1;
     _colour_index_2 = -1;
@@ -813,7 +813,7 @@ void window_themes_invalidate(rct_window* w)
 void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_themes_draw_tab_images(dpi, w);
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)

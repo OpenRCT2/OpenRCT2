@@ -123,12 +123,12 @@ rct_window* window_changelog_open(int personality)
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
 
-    window = window_create_centred(
+    window = WindowCreateCentred(
         screenWidth * 4 / 5, screenHeight * 4 / 5, &window_changelog_events, WC_CHANGELOG, WF_RESIZABLE);
     window->widgets = window_changelog_widgets;
     window->enabled_widgets = enabled_widgets;
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->min_width = MIN_WW;
     window->min_height = MIN_WH;
     window->max_width = MIN_WW;
@@ -208,7 +208,7 @@ static void window_changelog_invalidate(rct_window* w)
 
 static void window_changelog_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t scrollIndex)

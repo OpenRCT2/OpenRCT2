@@ -506,7 +506,7 @@ rct_window* window_tile_inspector_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WC_TILE_INSPECTOR, WF_RESIZABLE);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &TileInspectorWindowEvents, WC_TILE_INSPECTOR, WF_RESIZABLE);
 
     window_tile_inspector_set_page(window, TILE_INSPECTOR_PAGE_DEFAULT);
     window->min_width = MIN_WW;
@@ -514,7 +514,7 @@ rct_window* window_tile_inspector_open()
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
     windowTileInspectorSelectedIndex = -1;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     windowTileInspectorTileSelected = false;
 
@@ -1699,7 +1699,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
 
 static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Set medium font size
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;

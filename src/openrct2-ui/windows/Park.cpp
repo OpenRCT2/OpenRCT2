@@ -410,7 +410,7 @@ static rct_window* window_park_open()
 {
     rct_window* w;
 
-    w = window_create_auto_pos(230, 174 + 9, &window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
+    w = WindowCreateAutoPos(230, 174 + 9, &window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
     w->widgets = window_park_entrance_widgets;
     w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     w->number = 0;
@@ -469,7 +469,7 @@ rct_window* window_park_entrance_open()
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     window->event_handlers = &window_park_entrance_events;
     window->pressed_widgets = 0;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_park_init_viewport(window);
 
     return window;
@@ -621,7 +621,7 @@ static void window_park_entrance_invalidate(rct_window* w)
     int32_t i, height;
 
     w->widgets = window_park_page_widgets[w->page];
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     window_park_set_pressed_tab(w);
 
@@ -711,7 +711,7 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* labelWidget;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     // Draw viewport
@@ -827,7 +827,7 @@ rct_window* window_park_rating_open()
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
     window->event_handlers = &window_park_rating_events;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -875,7 +875,7 @@ static void window_park_rating_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_park_set_pressed_tab(w);
@@ -891,7 +891,7 @@ static void window_park_rating_invalidate(rct_window* w)
  */
 static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     auto screenPos = w->windowPos;
@@ -961,7 +961,7 @@ rct_window* window_park_guests_open()
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->event_handlers = &window_park_guests_events;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -1010,7 +1010,7 @@ static void window_park_guests_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_park_set_pressed_tab(w);
@@ -1026,7 +1026,7 @@ static void window_park_guests_invalidate(rct_window* w)
  */
 static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     auto screenPos = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y };
@@ -1135,7 +1135,7 @@ static void window_park_price_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_park_set_pressed_tab(w);
@@ -1175,7 +1175,7 @@ static void window_park_price_invalidate(rct_window* w)
  */
 static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     auto screenCoords = w->windowPos
@@ -1253,7 +1253,7 @@ static void window_park_stats_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_park_set_pressed_tab(w);
@@ -1271,7 +1271,7 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t parkSize, stringIndex;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     auto screenCoords = w->windowPos
@@ -1351,7 +1351,7 @@ rct_window* window_park_objective_open()
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->event_handlers = &window_park_objective_events;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->windowPos.x = context_get_width() / 2 - 115;
     window->windowPos.y = context_get_height() / 2 - 87;
     window->Invalidate();
@@ -1452,7 +1452,7 @@ static void window_park_objective_invalidate(rct_window* w)
  */
 static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     // Scenario description
@@ -1542,7 +1542,7 @@ rct_window* window_park_awards_open()
     window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->event_handlers = &window_park_awards_events;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -1590,7 +1590,7 @@ static void window_park_awards_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_park_set_pressed_tab(w);
@@ -1606,7 +1606,7 @@ static void window_park_awards_invalidate(rct_window* w)
  */
 static void window_park_awards_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_park_draw_tab_images(dpi, w);
 
     auto screenCoords = w->windowPos

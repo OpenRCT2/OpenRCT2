@@ -523,11 +523,11 @@ rct_window* window_cheats_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
+    window = WindowCreate(ScreenCoordsXY(32, 32), WW, WH, &window_cheats_money_events, WC_CHEATS, 0);
     window->widgets = window_cheats_money_widgets;
     window->enabled_widgets = window_cheats_page_enabled_widgets[0];
     window->hold_down_widgets = window_cheats_page_hold_down_widgets[0];
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_cheats_set_page(window, WINDOW_CHEATS_PAGE_MONEY);
     _parkRatingSpinnerValue = get_forced_park_rating() >= 0 ? get_forced_park_rating() : 999;
 
@@ -1024,7 +1024,7 @@ static void window_cheats_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets = 0;
@@ -1127,7 +1127,7 @@ static void window_cheats_update_tab_positions(rct_window* w)
 static void window_cheats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_cheats_update_tab_positions(w);
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_cheats_draw_tab_images(dpi, w);
 
     static constexpr int16_t X_LCOL = 14;

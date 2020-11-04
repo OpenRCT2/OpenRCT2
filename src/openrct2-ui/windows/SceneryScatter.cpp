@@ -80,13 +80,13 @@ rct_window* window_scenery_scatter_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_auto_pos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
+    window = WindowCreateAutoPos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
 
     window->widgets = window_scenery_scatter_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_DENSITY_LOW) | (1 << WIDX_DENSITY_MEDIUM) | (1 << WIDX_DENSITY_HIGH);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gWindowSceneryScatterEnabled = true;
@@ -209,7 +209,7 @@ static void window_scenery_scatter_invalidate(rct_window* w)
 
 static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw area as a number for tool sizes bigger than 7
     if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)

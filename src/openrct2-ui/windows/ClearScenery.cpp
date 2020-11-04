@@ -78,13 +78,13 @@ rct_window* window_clear_scenery_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gLandToolSize = 2;
@@ -215,7 +215,7 @@ static void window_clear_scenery_invalidate(rct_window* w)
  */
 static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
     ScreenCoordsXY screenCoords = { w->windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),

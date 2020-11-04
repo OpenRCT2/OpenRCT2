@@ -165,7 +165,7 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
     else
         windowWidth = 733;
 
-    window = window_create_centred(
+    window = WindowCreateCentred(
         windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
@@ -175,7 +175,7 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
     window_scenarioselect_init_tabs(window);
     initialise_list_items(window);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
 
@@ -266,7 +266,7 @@ static void window_scenarioselect_mousedown(rct_window* w, rct_widgetindex widge
         w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
         w->Invalidate();
     }
 }
@@ -422,7 +422,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t format;
     const scenario_index_entry* scenario;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
                                                                                    : STR_WINDOW_COLOUR_2_STRINGID;

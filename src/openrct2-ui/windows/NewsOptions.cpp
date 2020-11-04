@@ -109,10 +109,10 @@ rct_window* window_news_options_open()
     window = window_bring_to_front_by_class(WC_NOTIFICATION_OPTIONS);
     if (window == nullptr)
     {
-        window = window_create_centred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
+        window = WindowCreateCentred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
         window->widgets = window_news_options_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_PARK) | (1 << WIDX_TAB_RIDE) | (1 << WIDX_TAB_GUEST);
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -232,7 +232,7 @@ static void window_news_options_invalidate(rct_window* w)
 
 static void window_news_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_news_options_draw_tab_images(w, dpi);
 }
 

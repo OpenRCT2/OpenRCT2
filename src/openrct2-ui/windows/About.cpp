@@ -123,11 +123,11 @@ rct_window* window_about_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
+    window = WindowCreateCentred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
     window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_GREY;
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -162,7 +162,7 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
 
 static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     const auto& aboutOpenRCT2 = w->widgets[WIDX_TAB_ABOUT_OPENRCT2];
     const auto& aboutRCT2 = w->widgets[WIDX_TAB_ABOUT_RCT2];
@@ -315,6 +315,6 @@ static void window_about_set_page(rct_window* w, int32_t page)
 
     w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }

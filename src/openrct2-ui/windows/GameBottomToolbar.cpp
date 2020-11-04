@@ -112,7 +112,7 @@ rct_window* window_game_bottom_toolbar_open()
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
@@ -121,7 +121,7 @@ rct_window* window_game_bottom_toolbar_open()
         | (1 << WIDX_RIGHT_OUTSET) | (1 << WIDX_DATE);
 
     window->frame_no = 0;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Reset the middle widget to not show by default.
     // If it is required to be shown news_update will reshow it.
@@ -372,7 +372,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
             w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
     }
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     window_game_bottom_toolbar_draw_left_panel(dpi, w);
     window_game_bottom_toolbar_draw_right_panel(dpi, w);

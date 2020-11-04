@@ -209,7 +209,7 @@ void window_title_editor_open(int32_t tab)
     if (_selectedTitleSequence == SIZE_MAX)
         _selectedTitleSequence = title_get_config_sequence();
 
-    window = window_create_auto_pos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
     window->enabled_widgets = (1 << WIDX_TITLE_EDITOR_CLOSE) | (1 << WIDX_TITLE_EDITOR_PRESETS_TAB)
         | (1 << WIDX_TITLE_EDITOR_SAVES_TAB) | (1 << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
@@ -228,7 +228,7 @@ void window_title_editor_open(int32_t tab)
         (1 << WIDX_TITLE_EDITOR_PLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_REPLAY)
         | (1 << WIDX_TITLE_EDITOR_SKIP);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->list_information_type = 0;
 
     window->selected_tab = tab;
@@ -796,7 +796,7 @@ static void window_title_editor_invalidate(rct_window* w)
 static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_title_editor_draw_tab_images(dpi, w);
 
     // Draw strings
