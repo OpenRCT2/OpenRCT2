@@ -409,7 +409,7 @@ public:
 
     void StopGuestsQueuing();
 
-    bool Open(int32_t goingToBeOpen, bool isApplying);
+    bool Open(bool isApplying);
     bool Test(int32_t newStatus, bool isApplying);
 
     RideMode GetDefaultMode() const;
