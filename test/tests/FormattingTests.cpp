@@ -108,7 +108,7 @@ TEST_F(FormattingTests, comma_0)
 
 TEST_F(FormattingTests, currency)
 {
-    gConfigGeneral.currency_format = CURRENCY_POUNDS;
+    gConfigGeneral.currency_format = CurrencyType::Pounds;
     ASSERT_EQ(u8"-£251", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 4));
     ASSERT_EQ(u8"£1", FormatString("{CURRENCY}", 5));
@@ -119,7 +119,7 @@ TEST_F(FormattingTests, currency)
 
 TEST_F(FormattingTests, currency2dp)
 {
-    gConfigGeneral.currency_format = CURRENCY_POUNDS;
+    gConfigGeneral.currency_format = CurrencyType::Pounds;
     ASSERT_EQ(u8"-£251.00", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"£0.40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"£0.50", FormatString("{CURRENCY2DP}", 5));
@@ -130,7 +130,7 @@ TEST_F(FormattingTests, currency2dp)
 
 TEST_F(FormattingTests, currency_yen)
 {
-    gConfigGeneral.currency_format = CURRENCY_YEN;
+    gConfigGeneral.currency_format = CurrencyType::Yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -141,7 +141,7 @@ TEST_F(FormattingTests, currency_yen)
 
 TEST_F(FormattingTests, currency2dp_yen)
 {
-    gConfigGeneral.currency_format = CURRENCY_YEN;
+    gConfigGeneral.currency_format = CurrencyType::Yen;
     ASSERT_EQ(u8"-¥25,100", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ(u8"¥40", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ(u8"¥50", FormatString("{CURRENCY2DP}", 5));
@@ -152,14 +152,14 @@ TEST_F(FormattingTests, currency2dp_yen)
 
 TEST_F(FormattingTests, currency_pts)
 {
-    gConfigGeneral.currency_format = CURRENCY_PESETA;
+    gConfigGeneral.currency_format = CurrencyType::Peseta;
     ASSERT_EQ("-251Pts", FormatString("{CURRENCY}", -2510));
     ASSERT_EQ("112Pts", FormatString("{CURRENCY}", 1111));
 }
 
 TEST_F(FormattingTests, currency2dp_pts)
 {
-    gConfigGeneral.currency_format = CURRENCY_PESETA;
+    gConfigGeneral.currency_format = CurrencyType::Peseta;
     ASSERT_EQ("-251.00Pts", FormatString("{CURRENCY2DP}", -2510));
     ASSERT_EQ("0.40Pts", FormatString("{CURRENCY2DP}", 4));
     ASSERT_EQ("111.10Pts", FormatString("{CURRENCY2DP}", 1111));

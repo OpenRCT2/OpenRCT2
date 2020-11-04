@@ -238,13 +238,13 @@ namespace OpenRCT2
         return result;
     }
 
-    static std::string_view GetDigitSeperator()
+    static std::string_view GetDigitSeparator()
     {
         auto sz = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
         return sz != nullptr ? sz : std::string_view();
     }
 
-    static std::string_view GetDecimalSeperator()
+    static std::string_view GetDecimalSeparator()
     {
         auto sz = language_get_string(STR_LOCALE_DECIMAL_POINT);
         return sz != nullptr ? sz : std::string_view();
@@ -262,7 +262,7 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TSize, typename TIndex> static void AppendSeperator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
+    template<size_t TSize, typename TIndex> static void AppendSeparator(char (&buffer)[TSize], TIndex& i, std::string_view sep)
     {
         if (i < TSize)
         {
@@ -299,12 +299,12 @@ namespace OpenRCT2
                 num /= 10;
             }
 
-            auto decSep = GetDecimalSeperator();
-            AppendSeperator(buffer, i, decSep);
+            auto decSep = GetDecimalSeparator();
+            AppendSeparator(buffer, i, decSep);
         }
 
         // Whole digits
-        [[maybe_unused]] auto digitSep = GetDigitSeperator();
+        [[maybe_unused]] auto digitSep = GetDigitSeparator();
         size_t groupLen = 0;
         do
         {
@@ -313,7 +313,7 @@ namespace OpenRCT2
                 if (groupLen >= 3)
                 {
                     groupLen = 0;
-                    AppendSeperator(buffer, i, digitSep);
+                    AppendSeparator(buffer, i, digitSep);
                 }
             }
             buffer[i++] = static_cast<char>('0' + (num % 10));
@@ -333,7 +333,7 @@ namespace OpenRCT2
 
     template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(std::stringstream& ss, T rawValue)
     {
-        auto currencyDesc = &CurrencyDescriptors[gConfigGeneral.currency_format];
+        auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
 
         // Negative sign
