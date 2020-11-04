@@ -11,8 +11,6 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
-#include "FormatCodes.h"
-#include "Language.h"
 #include "Localisation.h"
 #include "StringIds.h"
 
