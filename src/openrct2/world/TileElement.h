@@ -105,42 +105,77 @@ struct TileElement : public TileElementBase
     uint8_t pad_04[4];
     uint8_t pad_08[8];
 
-    template<typename TType, TileElementType TClass> TType* as() const
+    template<typename TType, TileElementType TClass> const TType* as() const
     {
-        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(const_cast<TileElement*>(this))
-                                                                 : nullptr;
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+    }
+    template<typename TType, TileElementType TClass> TType* as()
+    {
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
 public:
-    SurfaceElement* AsSurface() const
+    const SurfaceElement* AsSurface() const
     {
         return as<SurfaceElement, TileElementType::Surface>();
     }
-    PathElement* AsPath() const
+    SurfaceElement* AsSurface()
+    {
+        return as<SurfaceElement, TileElementType::Surface>();
+    }
+    const PathElement* AsPath() const
     {
         return as<PathElement, TileElementType::Path>();
     }
-    TrackElement* AsTrack() const
+    PathElement* AsPath()
+    {
+        return as<PathElement, TileElementType::Path>();
+    }
+    const TrackElement* AsTrack() const
     {
         return as<TrackElement, TileElementType::Track>();
     }
-    SmallSceneryElement* AsSmallScenery() const
+    TrackElement* AsTrack()
+    {
+        return as<TrackElement, TileElementType::Track>();
+    }
+    const SmallSceneryElement* AsSmallScenery() const
     {
         return as<SmallSceneryElement, TileElementType::SmallScenery>();
     }
-    LargeSceneryElement* AsLargeScenery() const
+    SmallSceneryElement* AsSmallScenery()
+    {
+        return as<SmallSceneryElement, TileElementType::SmallScenery>();
+    }
+    const LargeSceneryElement* AsLargeScenery() const
     {
         return as<LargeSceneryElement, TileElementType::LargeScenery>();
     }
-    WallElement* AsWall() const
+    LargeSceneryElement* AsLargeScenery()
+    {
+        return as<LargeSceneryElement, TileElementType::LargeScenery>();
+    }
+    const WallElement* AsWall() const
     {
         return as<WallElement, TileElementType::Wall>();
     }
-    EntranceElement* AsEntrance() const
+    WallElement* AsWall()
+    {
+        return as<WallElement, TileElementType::Wall>();
+    }
+    const EntranceElement* AsEntrance() const
     {
         return as<EntranceElement, TileElementType::Entrance>();
     }
-    BannerElement* AsBanner() const
+    EntranceElement* AsEntrance()
+    {
+        return as<EntranceElement, TileElementType::Entrance>();
+    }
+    const BannerElement* AsBanner() const
+    {
+        return as<BannerElement, TileElementType::Banner>();
+    }
+    BannerElement* AsBanner()
     {
         return as<BannerElement, TileElementType::Banner>();
     }
@@ -274,7 +309,7 @@ public:
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
 
-    bool ShouldDrawPathOverSupports();
+    bool ShouldDrawPathOverSupports() const;
     void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;

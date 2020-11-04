@@ -1616,7 +1616,7 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
     type |= (direction << 6);
 }
 
-bool PathElement::ShouldDrawPathOverSupports()
+bool PathElement::ShouldDrawPathOverSupports() const
 {
     return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }

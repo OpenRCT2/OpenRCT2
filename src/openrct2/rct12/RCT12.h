@@ -301,42 +301,76 @@ struct RCT12TileElementBase
 struct RCT12TileElement : public RCT12TileElementBase
 {
     uint8_t pad_04[4];
-    template<typename TType, RCT12TileElementType TClass> TType* as() const
+    template<typename TType, RCT12TileElementType TClass> const TType* as() const
     {
-        return static_cast<RCT12TileElementType>(GetType()) == TClass
-            ? reinterpret_cast<TType*>(const_cast<RCT12TileElement*>(this))
-            : nullptr;
+        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+    }
+    template<typename TType, RCT12TileElementType TClass> TType* as()
+    {
+        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-    RCT12SurfaceElement* AsSurface() const
+    const RCT12SurfaceElement* AsSurface() const
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
     }
-    RCT12PathElement* AsPath() const
+    RCT12SurfaceElement* AsSurface()
+    {
+        return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
+    }
+    const RCT12PathElement* AsPath() const
     {
         return as<RCT12PathElement, RCT12TileElementType::Path>();
     }
-    RCT12TrackElement* AsTrack() const
+    RCT12PathElement* AsPath()
+    {
+        return as<RCT12PathElement, RCT12TileElementType::Path>();
+    }
+    const RCT12TrackElement* AsTrack() const
     {
         return as<RCT12TrackElement, RCT12TileElementType::Track>();
     }
-    RCT12SmallSceneryElement* AsSmallScenery() const
+    RCT12TrackElement* AsTrack()
+    {
+        return as<RCT12TrackElement, RCT12TileElementType::Track>();
+    }
+    const RCT12SmallSceneryElement* AsSmallScenery() const
     {
         return as<RCT12SmallSceneryElement, RCT12TileElementType::SmallScenery>();
     }
-    RCT12LargeSceneryElement* AsLargeScenery() const
+    RCT12SmallSceneryElement* AsSmallScenery()
+    {
+        return as<RCT12SmallSceneryElement, RCT12TileElementType::SmallScenery>();
+    }
+    const RCT12LargeSceneryElement* AsLargeScenery() const
     {
         return as<RCT12LargeSceneryElement, RCT12TileElementType::LargeScenery>();
     }
-    RCT12WallElement* AsWall() const
+    RCT12LargeSceneryElement* AsLargeScenery()
+    {
+        return as<RCT12LargeSceneryElement, RCT12TileElementType::LargeScenery>();
+    }
+    const RCT12WallElement* AsWall() const
     {
         return as<RCT12WallElement, RCT12TileElementType::Wall>();
     }
-    RCT12EntranceElement* AsEntrance() const
+    RCT12WallElement* AsWall()
+    {
+        return as<RCT12WallElement, RCT12TileElementType::Wall>();
+    }
+    const RCT12EntranceElement* AsEntrance() const
     {
         return as<RCT12EntranceElement, RCT12TileElementType::Entrance>();
     }
-    RCT12BannerElement* AsBanner() const
+    RCT12EntranceElement* AsEntrance()
+    {
+        return as<RCT12EntranceElement, RCT12TileElementType::Entrance>();
+    }
+    const RCT12BannerElement* AsBanner() const
+    {
+        return as<RCT12BannerElement, RCT12TileElementType::Banner>();
+    }
+    RCT12BannerElement* AsBanner()
     {
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }
