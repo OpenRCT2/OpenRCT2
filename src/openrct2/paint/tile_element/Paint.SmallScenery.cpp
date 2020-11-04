@@ -36,7 +36,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         return;
     }
-    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+    const SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;

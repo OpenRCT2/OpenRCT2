@@ -991,7 +991,7 @@ void path_paint_box_support(
     paint_session* session, const TileElement* tileElement, int32_t height, PathSurfaceEntry* footpathEntry,
     PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
-    PathElement* pathElement = tileElement->AsPath();
+    const PathElement* pathElement = tileElement->AsPath();
 
     // Rol edges around rotation
     uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
@@ -1141,7 +1141,7 @@ void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, PathSurfaceEntry* footpathEntry,
     PathRailingsEntry* railingEntry, bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
-    PathElement* pathElement = tileElement->AsPath();
+    const PathElement* pathElement = tileElement->AsPath();
 
     // Rol edges around rotation
     uint8_t edges = ((tileElement->AsPath()->GetEdges() << session->CurrentRotation) & 0xF)
