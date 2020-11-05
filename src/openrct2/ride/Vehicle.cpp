@@ -1945,7 +1945,7 @@ static SoundIdVolume sub_6D7AC0(
     return { currentSoundId, currentVolume };
 }
 
-SoundIdVolume Vehicle::sub_6D7A97(Ride* curRide)
+SoundIdVolume Vehicle::GetLiftHillSound(Ride* curRide)
 {
     SoundIdVolume resultSounds{};
     std::cout << " Call function";
@@ -5554,7 +5554,7 @@ void Vehicle::UpdateSound()
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    screamSound = sub_6D7A97(curRide);
+                    screamSound = GetLiftHillSound(curRide);
                     break;
                 }
 
@@ -5577,7 +5577,7 @@ void Vehicle::UpdateSound()
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    screamSound = sub_6D7A97(curRide);
+                    screamSound = GetLiftHillSound(curRide);
                     break;
                 }
 
@@ -5602,14 +5602,14 @@ void Vehicle::UpdateSound()
                     screamSound.id = OpenRCT2::Audio::SoundId::Null;
                 else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
                 {
-                    screamSound = sub_6D7A97(curRide);
+                    screamSound = GetLiftHillSound(curRide);
                     break;
                 }
                 break;
             }
 
             // loc_6D7A97:
-            screamSound = sub_6D7A97(curRide);
+            screamSound = GetLiftHillSound(curRide);
             /*
             std::cout << " went to loc";
             scream_sound_id = OpenRCT2::Audio::SoundId::Null;
