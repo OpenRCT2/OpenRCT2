@@ -233,52 +233,52 @@ public:
         // loaded RCT1 and RCT2 save files.
 
         // Surfaces
-        LoadObjectLegacy("#RCT2SGR");
-        LoadObjectLegacy("#RCT2SSY");
-        LoadObjectLegacy("#RCT2SDI");
-        LoadObjectLegacy("#RCT2SRO");
-        LoadObjectLegacy("#RCT2SMA");
-        LoadObjectLegacy("#RCT2SCH");
-        LoadObjectLegacy("#RCT2SGC");
-        LoadObjectLegacy("#RCT2SIC");
-        LoadObjectLegacy("#RCT2SIR");
-        LoadObjectLegacy("#RCT2SIY");
-        LoadObjectLegacy("#RCT2SIP");
-        LoadObjectLegacy("#RCT2SIG");
-        LoadObjectLegacy("#RCT2SSR");
-        LoadObjectLegacy("#RCT2SSA");
+        LoadObject("rct2.surface.grass");
+        LoadObject("rct2.surface.sand");
+        LoadObject("rct2.surface.dirt");
+        LoadObject("rct2.surface.rock");
+        LoadObject("rct2.surface.martian");
+        LoadObject("rct2.surface.chequerboard");
+        LoadObject("rct2.surface.grassclumps");
+        LoadObject("rct2.surface.ice");
+        LoadObject("rct2.surface.gridred");
+        LoadObject("rct2.surface.gridyellow");
+        LoadObject("rct2.surface.gridpurple");
+        LoadObject("rct2.surface.gridgreen");
+        LoadObject("rct2.surface.sandred");
+        LoadObject("rct2.surface.sandbrown");
 
         // Edges
-        LoadObjectLegacy("#RCT2ERO");
-        LoadObjectLegacy("#RCT2EWR");
-        LoadObjectLegacy("#RCT2EWB");
-        LoadObjectLegacy("#RCT2EIC");
-        LoadObjectLegacy("#RCT1EBR");
-        LoadObjectLegacy("#RCT1EIR");
-        LoadObjectLegacy("#RCT1EGY");
-        LoadObjectLegacy("#RCT1EYE");
-        LoadObjectLegacy("#RCT1ERE");
-        LoadObjectLegacy("#RCT1EPU");
-        LoadObjectLegacy("#RCT1EGR");
-        LoadObjectLegacy("#RCT1ESN");
-        LoadObjectLegacy("#RCT1ESG");
-        LoadObjectLegacy("#RCT1ESA");
-        LoadObjectLegacy("#RCT1ESB");
+        LoadObject("rct2.edge.rock");
+        LoadObject("rct2.edge.woodred");
+        LoadObject("rct2.edge.woodblack");
+        LoadObject("rct2.edge.ice");
+        LoadObject("rct1.edge.brick");
+        LoadObject("rct1.edge.iron");
+        LoadObject("rct1.aa.edge.grey");
+        LoadObject("rct1.aa.edge.yellow");
+        LoadObject("rct1.aa.edge.red");
+        LoadObject("rct1.ll.edge.purple");
+        LoadObject("rct1.ll.edge.green");
+        LoadObject("rct1.ll.edge.stonebrown");
+        LoadObject("rct1.ll.edge.stonegrey");
+        LoadObject("rct1.ll.edge.skyscrapera");
+        LoadObject("rct1.ll.edge.skyscraperb");
 
         // Stations
-        LoadObjectLegacy("#RCT2STN");
-        LoadObjectLegacy("#RCT2STW");
-        LoadObjectLegacy("#RCT2STV");
-        LoadObjectLegacy("#RCT2ST3");
-        LoadObjectLegacy("#RCT2ST4");
-        LoadObjectLegacy("#RCT2STJ");
-        LoadObjectLegacy("#RCT2STL");
-        LoadObjectLegacy("#RCT2STC");
-        LoadObjectLegacy("#RCT2STA");
-        LoadObjectLegacy("#RCT2STS");
-        LoadObjectLegacy("#RCT2STP");
-        LoadObjectLegacy("#RCT2STE");
-        LoadObjectLegacy("#ORCT2SN");
+        LoadObject("rct2.station.plain");
+        LoadObject("rct2.station.wooden");
+        LoadObject("rct2.station.canvastent");
+        LoadObject("rct2.station.castlegrey");
+        LoadObject("rct2.station.castlebrown");
+        LoadObject("rct2.station.jungle");
+        LoadObject("rct2.station.log");
+        LoadObject("rct2.station.classical");
+        LoadObject("rct2.station.abstract");
+        LoadObject("rct2.station.snow");
+        LoadObject("rct2.station.pagoda");
+        LoadObject("rct2.station.space");
+        LoadObject("openrct2.station.noentrance");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
@@ -315,13 +315,6 @@ public:
     }
 
 private:
-    Object* LoadObjectLegacy(const std::string& name)
-    {
-        rct_object_entry entry{};
-        std::copy_n(name.c_str(), 8, entry.name);
-        return LoadObject(&entry);
-    }
-
     int32_t FindSpareSlot(uint8_t objectType)
     {
         size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
