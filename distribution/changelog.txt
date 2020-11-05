@@ -1,9 +1,10 @@
 0.3.2+ (in development)
 ------------------------------------------------------------------------
 - Feature: [#13057] Make GameAction flags accessible by plugins.
-- Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences
-- Fix: [#13334] Uninitialised variables in CustomTabDesc
-- Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface
+- Feature: [#13376] Open custom window at specified tab.
+- Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences.
+- Fix: [#13334] Uninitialised variables in CustomTabDesc.
+- Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 
 0.3.2 (2020-11-01)

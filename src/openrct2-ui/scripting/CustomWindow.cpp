@@ -244,6 +244,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<CustomWidgetDesc> Widgets;
         std::vector<colour_t> Colours;
         std::vector<CustomTabDesc> Tabs;
+        std::optional<int32_t> TabIndex;
 
         // Event handlers
         DukValue OnClose;
@@ -271,6 +272,7 @@ namespace OpenRCT2::Ui::Windows
             result.MaxHeight = GetOptionalInt(desc["maxHeight"]);
             result.Title = language_convert_string(desc["title"].as_string());
             result.Id = GetOptionalInt(desc["id"]);
+            result.TabIndex = GetOptionalInt(desc["tabIndex"]);
 
             if (desc["widgets"].is_array())
             {
@@ -391,6 +393,9 @@ namespace OpenRCT2::Ui::Windows
         window->number = GetNewWindowNumber();
         window->custom_info = new CustomWindowInfo(owner, desc);
         window->enabled_widgets = (1 << WIDX_CLOSE);
+
+        // Set window tab
+        window->page = desc.TabIndex.value_or(0);
 
         // Set window colours
         window->colours[0] = COLOUR_GREY;
