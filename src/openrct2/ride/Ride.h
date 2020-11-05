@@ -221,7 +221,11 @@ struct Ride
     uint8_t proposed_num_vehicles;
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
+
+private:
     uint8_t min_max_cars_per_train;
+
+public:
     uint8_t min_waiting_time;
     uint8_t max_waiting_time;
     union
@@ -443,6 +447,11 @@ public:
     TrackElement* GetOriginElement(StationIndex stationIndex) const;
 
     std::pair<RideMeasurement*, OpenRCT2String> GetMeasurement();
+
+    uint8_t GetMinCarsPerTrain() const;
+    uint8_t GetMaxCarsPerTrain() const;
+    void SetMinCarsPerTrain(uint8_t newValue);
+    void SetMaxCarsPerTrain(uint8_t newValue);
 };
 
 #pragma pack(push, 1)
