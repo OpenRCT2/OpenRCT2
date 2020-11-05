@@ -8322,10 +8322,10 @@ loc_6DB967:
     }
     auto head = otherVeh->TrainHead();
 
-    regs.eax = abs(velocity - head->velocity);
+    auto velocityDelta = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
-        if (regs.eax > 0xE0000)
+        if (velocityDelta > 0xE0000)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
