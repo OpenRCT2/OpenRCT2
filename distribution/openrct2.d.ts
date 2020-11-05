@@ -1866,6 +1866,7 @@ declare global {
         widgets?: Widget[];
         colours?: number[];
         tabs?: WindowTabDesc[];
+        tabIndex: number;
 
         onClose?: () => void;
         onUpdate?: () => void;
