@@ -5553,7 +5553,10 @@ void Vehicle::UpdateSound()
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    screamSound = sub_6D7A97(curRide);
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
@@ -5573,7 +5576,10 @@ void Vehicle::UpdateSound()
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    screamSound = sub_6D7A97(curRide);
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
@@ -5595,11 +5601,14 @@ void Vehicle::UpdateSound()
                 if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
                     screamSound.id = OpenRCT2::Audio::SoundId::Null;
                 else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    screamSound = sub_6D7A97(curRide);
+                    break;
+                }
                 break;
             }
 
-        loc_6D7A97:
+            // loc_6D7A97:
             screamSound = sub_6D7A97(curRide);
             /*
             std::cout << " went to loc";
