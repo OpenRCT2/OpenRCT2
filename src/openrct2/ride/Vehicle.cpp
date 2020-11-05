@@ -5522,8 +5522,6 @@ void Vehicle::UpdateSound()
     auto frictionId = OpenRCT2::Audio::SoundId::Null;
     // bh screamVolume should be set before hand
     SoundIdVolume currentSound = { OpenRCT2::Audio::SoundId::Null, 255 };
-    // auto screamId = OpenRCT2::Audio::SoundId::Null;
-    // uint8_t screamVolume = 255;
 
     auto curRide = GetRide();
     if (curRide == nullptr)
