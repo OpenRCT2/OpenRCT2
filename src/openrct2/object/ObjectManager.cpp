@@ -101,10 +101,9 @@ public:
         return result;
     }
 
-    Object* LoadObject(const rct_object_entry* entry) override
+    Object* RepositoryItemToObject(const ObjectRepositoryItem* ori)
     {
         Object* loadedObject = nullptr;
-        const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
         if (ori != nullptr)
         {
             loadedObject = ori->LoadedObject;
@@ -130,6 +129,18 @@ public:
             }
         }
         return loadedObject;
+    }
+
+    Object* LoadObject(const std::string_view& identifier) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
+        return RepositoryItemToObject(ori);
+    }
+
+    Object* LoadObject(const rct_object_entry* entry) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
+        return RepositoryItemToObject(ori);
     }
 
     void LoadObjects(const rct_object_entry* entries, size_t count) override
@@ -222,52 +233,52 @@ public:
         // loaded RCT1 and RCT2 save files.
 
         // Surfaces
-        LoadObject("#RCT2SGR");
-        LoadObject("#RCT2SSY");
-        LoadObject("#RCT2SDI");
-        LoadObject("#RCT2SRO");
-        LoadObject("#RCT2SMA");
-        LoadObject("#RCT2SCH");
-        LoadObject("#RCT2SGC");
-        LoadObject("#RCT2SIC");
-        LoadObject("#RCT2SIR");
-        LoadObject("#RCT2SIY");
-        LoadObject("#RCT2SIP");
-        LoadObject("#RCT2SIG");
-        LoadObject("#RCT2SSR");
-        LoadObject("#RCT2SSA");
+        LoadObjectLegacy("#RCT2SGR");
+        LoadObjectLegacy("#RCT2SSY");
+        LoadObjectLegacy("#RCT2SDI");
+        LoadObjectLegacy("#RCT2SRO");
+        LoadObjectLegacy("#RCT2SMA");
+        LoadObjectLegacy("#RCT2SCH");
+        LoadObjectLegacy("#RCT2SGC");
+        LoadObjectLegacy("#RCT2SIC");
+        LoadObjectLegacy("#RCT2SIR");
+        LoadObjectLegacy("#RCT2SIY");
+        LoadObjectLegacy("#RCT2SIP");
+        LoadObjectLegacy("#RCT2SIG");
+        LoadObjectLegacy("#RCT2SSR");
+        LoadObjectLegacy("#RCT2SSA");
 
         // Edges
-        LoadObject("#RCT2ERO");
-        LoadObject("#RCT2EWR");
-        LoadObject("#RCT2EWB");
-        LoadObject("#RCT2EIC");
-        LoadObject("#RCT1EBR");
-        LoadObject("#RCT1EIR");
-        LoadObject("#RCT1EGY");
-        LoadObject("#RCT1EYE");
-        LoadObject("#RCT1ERE");
-        LoadObject("#RCT1EPU");
-        LoadObject("#RCT1EGR");
-        LoadObject("#RCT1ESN");
-        LoadObject("#RCT1ESG");
-        LoadObject("#RCT1ESA");
-        LoadObject("#RCT1ESB");
+        LoadObjectLegacy("#RCT2ERO");
+        LoadObjectLegacy("#RCT2EWR");
+        LoadObjectLegacy("#RCT2EWB");
+        LoadObjectLegacy("#RCT2EIC");
+        LoadObjectLegacy("#RCT1EBR");
+        LoadObjectLegacy("#RCT1EIR");
+        LoadObjectLegacy("#RCT1EGY");
+        LoadObjectLegacy("#RCT1EYE");
+        LoadObjectLegacy("#RCT1ERE");
+        LoadObjectLegacy("#RCT1EPU");
+        LoadObjectLegacy("#RCT1EGR");
+        LoadObjectLegacy("#RCT1ESN");
+        LoadObjectLegacy("#RCT1ESG");
+        LoadObjectLegacy("#RCT1ESA");
+        LoadObjectLegacy("#RCT1ESB");
 
         // Stations
-        LoadObject("#RCT2STN");
-        LoadObject("#RCT2STW");
-        LoadObject("#RCT2STV");
-        LoadObject("#RCT2ST3");
-        LoadObject("#RCT2ST4");
-        LoadObject("#RCT2STJ");
-        LoadObject("#RCT2STL");
-        LoadObject("#RCT2STC");
-        LoadObject("#RCT2STA");
-        LoadObject("#RCT2STS");
-        LoadObject("#RCT2STP");
-        LoadObject("#RCT2STE");
-        LoadObject("#ORCT2SN");
+        LoadObjectLegacy("#RCT2STN");
+        LoadObjectLegacy("#RCT2STW");
+        LoadObjectLegacy("#RCT2STV");
+        LoadObjectLegacy("#RCT2ST3");
+        LoadObjectLegacy("#RCT2ST4");
+        LoadObjectLegacy("#RCT2STJ");
+        LoadObjectLegacy("#RCT2STL");
+        LoadObjectLegacy("#RCT2STC");
+        LoadObjectLegacy("#RCT2STA");
+        LoadObjectLegacy("#RCT2STS");
+        LoadObjectLegacy("#RCT2STP");
+        LoadObjectLegacy("#RCT2STE");
+        LoadObjectLegacy("#ORCT2SN");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
@@ -304,7 +315,7 @@ public:
     }
 
 private:
-    Object* LoadObject(const std::string& name)
+    Object* LoadObjectLegacy(const std::string& name)
     {
         rct_object_entry entry{};
         std::copy_n(name.c_str(), 8, entry.name);
