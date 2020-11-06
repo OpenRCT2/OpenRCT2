@@ -16,8 +16,9 @@
 
 enum EDITOR_INPUT_FLAGS
 {
+    INPUT_FLAG_EDITOR_OBJECT_SELECT = (1 << 0), // Set when you want to select an object, not set when you want to deselect it.
     INPUT_FLAG_EDITOR_OBJECT_1 = (1 << 1),
-    INPUT_FLAG_EDITOR_OBJECT_2 = (1 << 2),
+    INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP = (1 << 2),
     INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED = (1 << 3)
 };
 
@@ -31,7 +32,9 @@ void unload_unselected_objects();
 void sub_6AB211();
 void reset_selected_object_count_and_size();
 void finish_object_selection();
-int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry);
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier);
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry);
 
 /**
  * Removes all unused objects from the object selection.

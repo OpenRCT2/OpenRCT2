@@ -11,4 +11,4 @@
 
 #include "Object.h"
 
-extern const rct_object_entry DefaultSelectedObjects[33];
+extern const std::string_view DefaultSelectedObjects[33];

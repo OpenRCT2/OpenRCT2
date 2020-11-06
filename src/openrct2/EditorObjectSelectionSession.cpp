@@ -342,9 +342,13 @@ static void window_editor_object_selection_select_default_objects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
-        for (const auto& defaultSelectedObject : DefaultSelectedObjects)
+        for (auto defaultSelectedObject : DefaultSelectedObjects)
         {
-            window_editor_object_selection_select_object(0, 7, &defaultSelectedObject);
+            window_editor_object_selection_select_object(
+                0,
+                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
+                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                defaultSelectedObject);
         }
     }
 }
@@ -408,16 +412,15 @@ static void set_object_selection_error(uint8_t is_master_object, rct_string_id e
  *
  *  rct2: 0x006AB54F
  */
-int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, const rct_object_entry* entry)
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
     if (item == nullptr)
     {
-        set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
-        return 0;
+        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
+        return false;
     }
 
+    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     // Get repository item index
     int32_t index = -1;
     const ObjectRepositoryItem* items = object_repository_get_items();
@@ -430,39 +433,39 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
     }
 
     uint8_t* selectionFlags = &_objectSelectionFlags[index];
-    if (!(flags & 1))
+    if (!(flags & INPUT_FLAG_EDITOR_OBJECT_SELECT))
     {
         if (!(*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED))
         {
-            return 1;
+            return true;
         }
         else if (*selectionFlags & OBJECT_SELECTION_FLAG_IN_USE)
         {
-            set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
-            return 0;
+            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
+            return false;
         }
         else if (*selectionFlags & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED)
         {
-            set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
-            return 0;
+            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
+            return false;
         }
 
         uint8_t objectType = item->ObjectEntry.GetType();
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2))
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
-                window_editor_object_selection_select_object(++bh, flags, &sgEntry);
+                window_editor_object_selection_select_object(++isMasterObject, flags, &sgEntry);
             }
         }
 
         _numSelectedObjectsForType[objectType]--;
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
-        return 1;
+        return true;
     }
     else
     {
-        if (bh == 0)
+        if (isMasterObject == 0)
         {
             if (flags & INPUT_FLAG_EDITOR_OBJECT_ALWAYS_REQUIRED)
             {
@@ -471,7 +474,7 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
         }
         if (*selectionFlags & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            return 1;
+            return true;
         }
 
         uint8_t objectType = item->ObjectEntry.GetType();
@@ -483,42 +486,55 @@ int32_t window_editor_object_selection_select_object(uint8_t bh, int32_t flags, 
 
         if (maxObjects <= _numSelectedObjectsForType[objectType])
         {
-            set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-            return 0;
+            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+            return false;
         }
 
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_2))
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
-                if (!window_editor_object_selection_select_object(++bh, flags, &sgEntry))
+                if (!window_editor_object_selection_select_object(++isMasterObject, flags, &sgEntry))
                 {
                     _maxObjectsWasHit = true;
                 }
             }
         }
 
-        if (bh != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
+        if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))
         {
             char objectName[64];
             object_create_identifier_name(objectName, 64, &item->ObjectEntry);
             auto ft = Formatter::Common();
             ft.Add<const char*>(objectName);
-            set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
-            return 0;
+            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
+            return false;
         }
 
         if (maxObjects <= _numSelectedObjectsForType[objectType])
         {
-            set_object_selection_error(bh, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-            return 0;
+            set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+            return false;
         }
 
         _numSelectedObjectsForType[objectType]++;
 
         *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
-        return 1;
+        return true;
     }
+}
+
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier)
+{
+    auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    const auto* item = objectRepository.FindObject(identifier);
+    return window_editor_object_selection_select_object(isMasterObject, flags, item);
+}
+
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry)
+{
+    const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
+    return window_editor_object_selection_select_object(isMasterObject, flags, item);
 }
 
 bool editor_check_object_group_at_least_one_selected(int32_t checkObjectType)
