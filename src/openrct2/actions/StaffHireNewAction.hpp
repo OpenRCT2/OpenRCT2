@@ -144,7 +144,7 @@ private:
             return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
         }
 
-        Peep* newPeep = &(create_sprite(SPRITE_IDENTIFIER_PEEP)->peep);
+        Peep* newPeep = &(create_sprite(SpriteIdentifier::Peep)->peep);
         if (newPeep == nullptr)
         {
             // Too many peeps exist already.
@@ -158,7 +158,7 @@ private:
         }
         else
         {
-            newPeep->sprite_identifier = 1;
+            newPeep->sprite_identifier = SpriteIdentifier::Peep;
             newPeep->WindowInvalidateFlags = 0;
             newPeep->Action = PeepActionType::None2;
             newPeep->SpecialSprite = 0;

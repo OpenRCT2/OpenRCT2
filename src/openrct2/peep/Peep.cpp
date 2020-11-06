@@ -318,7 +318,7 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+    return sprite_identifier == SpriteIdentifier::Peep;
 }
 
 Guest* Peep::AsGuest()
@@ -398,7 +398,7 @@ void peep_update_all()
         else
         {
             peep_128_tick_update(peep, i);
-            if (peep->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (peep->sprite_identifier == SpriteIdentifier::Peep)
             {
                 peep->Update();
             }
@@ -806,7 +806,7 @@ void peep_sprite_remove(Peep* peep)
 
     window_close_by_number(WC_PEEP, peep->sprite_index);
 
-    window_close_by_number(WC_FIRE_PROMPT, peep->sprite_identifier);
+    window_close_by_number(WC_FIRE_PROMPT, EnumValue(peep->sprite_identifier));
 
     // Needed for invalidations after sprite removal
     bool wasGuest = peep->AssignedPeepType == PeepType::Guest;
@@ -1580,8 +1580,8 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     if (GetEntityListCount(EntityListId::Free) < 400)
         return nullptr;
 
-    Peep* peep = &create_sprite(SPRITE_IDENTIFIER_PEEP)->peep;
-    peep->sprite_identifier = SPRITE_IDENTIFIER_PEEP;
+    Peep* peep = &create_sprite(SpriteIdentifier::Peep)->peep;
+    peep->sprite_identifier = SpriteIdentifier::Peep;
     peep->SpriteType = PeepSpriteType::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;

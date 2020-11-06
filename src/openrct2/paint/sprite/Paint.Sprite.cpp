@@ -55,7 +55,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                     continue;
                 }
             }
-            else if (spr->sprite_identifier != SPRITE_IDENTIFIER_LITTER)
+            else if (spr->sprite_identifier != SpriteIdentifier::Litter)
             {
                 continue;
             }
@@ -101,7 +101,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
 
         switch (spr->sprite_identifier)
         {
-            case SPRITE_IDENTIFIER_VEHICLE:
+            case SpriteIdentifier::Vehicle:
                 vehicle_paint(session, spr->As<Vehicle>(), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
@@ -110,14 +110,14 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 }
 #endif
                 break;
-            case SPRITE_IDENTIFIER_PEEP:
+            case SpriteIdentifier::Peep:
                 peep_paint(session, spr->As<Peep>(), image_direction);
                 break;
-            case SPRITE_IDENTIFIER_MISC:
+            case SpriteIdentifier::Misc:
                 // TODO: Update misc_paint to take a specific sprite type
                 misc_paint(session, spr, image_direction);
                 break;
-            case SPRITE_IDENTIFIER_LITTER:
+            case SpriteIdentifier::Litter:
                 litter_paint(session, spr->As<Litter>(), image_direction);
                 break;
             default:

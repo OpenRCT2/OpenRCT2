@@ -39,7 +39,7 @@ struct GameStateSpriteChange_t
     };
 
     uint8_t changeType;
-    uint8_t spriteIdentifier;
+    SpriteIdentifier spriteIdentifier;
     uint8_t miscIdentifier;
     uint32_t spriteIndex;
 

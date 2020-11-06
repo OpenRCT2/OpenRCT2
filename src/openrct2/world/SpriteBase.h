@@ -4,10 +4,11 @@
 
 struct CoordsXYZ;
 enum class EntityListId : uint8_t;
+enum class SpriteIdentifier : uint8_t;
 
 struct SpriteBase
 {
-    uint8_t sprite_identifier;
+    SpriteIdentifier sprite_identifier;
     uint8_t type;
     uint16_t next_in_quadrant;
     uint16_t next;

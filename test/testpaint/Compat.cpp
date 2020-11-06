@@ -153,7 +153,7 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+    return sprite_identifier == SpriteIdentifier::Peep;
 }
 
 template<> bool SpriteBase::Is<Guest>() const
@@ -164,7 +164,7 @@ template<> bool SpriteBase::Is<Guest>() const
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+    return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
 SpriteBase* get_sprite(size_t sprite_idx)
