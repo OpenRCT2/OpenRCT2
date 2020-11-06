@@ -43,7 +43,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 10;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 11;
 
 struct ExpressionStringifier final
 {
@@ -1130,7 +1130,10 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
         DukValue argsCopy = args;
         DukToGameActionParameterVisitor visitor(std::move(argsCopy));
         action->AcceptParameters(visitor);
-        action->AcceptFlags(visitor);
+        if (args["flags"].type() == DukValue::Type::NUMBER)
+        {
+            action->AcceptFlags(visitor);
+        }
         return action;
     }
     else
