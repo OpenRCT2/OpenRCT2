@@ -30,6 +30,7 @@ struct IObjectManager
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) abstract;
     virtual std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) abstract;
 
+    virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
     virtual void LoadObjects(const rct_object_entry* entries, size_t count) abstract;
     virtual void LoadDefaultObjects() abstract;

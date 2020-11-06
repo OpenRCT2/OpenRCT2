@@ -2340,7 +2340,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         uint32_t flags = 0;
         packet >> checksum >> flags;
 
-        const auto* object = repo.FindObject(objectName);
+        const auto* object = repo.FindObjectLegacy(objectName);
         // This could potentially request the object if checksums don't match, but since client
         // won't replace its version with server-provided one, we don't do that.
         if (object == nullptr)
@@ -2482,7 +2482,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         // This is required, as packet does not have null terminator
         std::string s(name, name + 8);
         log_verbose("Client requested object %s", s.c_str());
-        const ObjectRepositoryItem* item = repo.FindObject(s.c_str());
+        const ObjectRepositoryItem* item = repo.FindObjectLegacy(s.c_str());
         if (item == nullptr)
         {
             log_warning("Client tried getting non-existent object %s from us.", s.c_str());

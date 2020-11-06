@@ -68,13 +68,14 @@ struct ObjectEntryEqual
     }
 };
 
+using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 21;
+    static constexpr uint16_t VERSION = 22;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -111,6 +112,7 @@ public:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
+            item.Identifier = object->GetIdentifier();
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
@@ -125,6 +127,7 @@ public:
 protected:
     void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
     {
+        stream->WriteValue(item.Identifier);
         stream->WriteValue(item.ObjectEntry);
         stream->WriteString(item.Path);
         stream->WriteString(item.Name);
@@ -170,6 +173,7 @@ protected:
     {
         ObjectRepositoryItem item;
 
+        item.Identifier = stream->ReadStdString();
         item.ObjectEntry = stream->ReadValue<rct_object_entry>();
         item.Path = stream->ReadStdString();
         item.Name = stream->ReadStdString();
@@ -227,6 +231,7 @@ class ObjectRepository final : public IObjectRepository
     std::shared_ptr<IPlatformEnvironment> const _env;
     ObjectFileIndex const _fileIndex;
     std::vector<ObjectRepositoryItem> _items;
+    ObjectIdentifierMap _newItemMap;
     ObjectEntryMap _itemMap;
 
 public:
@@ -266,13 +271,23 @@ public:
         return _items.data();
     }
 
-    const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const override
+    const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const override
     {
         rct_object_entry entry = {};
         entry.SetName(legacyIdentifier);
 
         auto kvp = _itemMap.find(entry);
         if (kvp != _itemMap.end())
+        {
+            return &_items[kvp->second];
+        }
+        return nullptr;
+    }
+
+    const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
+    {
+        auto kvp = _newItemMap.find(std::string(identifier));
+        if (kvp != _newItemMap.end())
         {
             return &_items[kvp->second];
         }
@@ -408,6 +423,7 @@ private:
     void ClearItems()
     {
         _items.clear();
+        _newItemMap.clear();
         _itemMap.clear();
     }
 
@@ -425,10 +441,15 @@ private:
 
         // Rebuild item map
         _itemMap.clear();
+        _newItemMap.clear();
         for (size_t i = 0; i < _items.size(); i++)
         {
             rct_object_entry entry = _items[i].ObjectEntry;
             _itemMap[entry] = i;
+            if (!_items[i].Identifier.empty())
+            {
+                _newItemMap[_items[i].Identifier] = i;
+            }
         }
     }
 
@@ -457,6 +478,10 @@ private:
             auto copy = item;
             copy.Id = index;
             _items.push_back(copy);
+            if (!item.Identifier.empty())
+            {
+                _newItemMap[item.Identifier] = index;
+            }
             _itemMap[item.ObjectEntry] = index;
             return true;
         }
@@ -746,7 +771,7 @@ const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_obj
 const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
-    return objectRepository.FindObject(name);
+    return objectRepository.FindObjectLegacy(name);
 }
 
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)

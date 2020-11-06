@@ -48,7 +48,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     auto identifier = GetLegacyIdentifier();
 
     auto& objectRepository = context->GetObjectRepository();
-    auto item = objectRepository.FindObject(identifier);
+    auto item = objectRepository.FindObjectLegacy(identifier);
     if (item != nullptr)
     {
         auto sourceGame = item->GetFirstSourceGame();

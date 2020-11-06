@@ -526,7 +526,7 @@ private:
             for (const char* objectName : objects)
             {
                 auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                auto foundObject = objectRepository.FindObject(objectName);
+                auto foundObject = objectRepository.FindObjectLegacy(objectName);
                 if (foundObject != nullptr)
                 {
                     uint8_t objectType = foundObject->ObjectEntry.GetType();
