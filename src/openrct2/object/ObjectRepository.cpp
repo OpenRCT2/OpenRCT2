@@ -47,27 +47,6 @@
 
 using namespace OpenRCT2;
 
-struct ObjectIdentifierHash
-{
-    size_t operator()(std::string_view identifier) const
-    {
-        uint32_t hash = 5381;
-        for (auto i : identifier)
-        {
-            hash = ((hash << 5) + hash) + i;
-        }
-        return hash;
-    }
-};
-
-struct ObjectIdentifierEqual
-{
-    bool operator()(std::string_view lhs, std::string_view rhs) const
-    {
-        return lhs == rhs;
-    }
-};
-
 struct ObjectEntryHash
 {
     size_t operator()(const rct_object_entry& entry) const
@@ -89,7 +68,7 @@ struct ObjectEntryEqual
     }
 };
 
-using ObjectIdentifierMap = std::unordered_map<std::string, size_t, ObjectIdentifierHash, ObjectIdentifierEqual>;
+using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
@@ -467,7 +446,7 @@ private:
         {
             rct_object_entry entry = _items[i].ObjectEntry;
             _itemMap[entry] = i;
-            if (_items[i].Identifier != "")
+            if (!_items[i].Identifier.empty())
             {
                 _newItemMap[_items[i].Identifier] = i;
             }
@@ -499,7 +478,7 @@ private:
             auto copy = item;
             copy.Id = index;
             _items.push_back(copy);
-            if (item.Identifier != "")
+            if (!item.Identifier.empty())
             {
                 _newItemMap[item.Identifier] = index;
             }
