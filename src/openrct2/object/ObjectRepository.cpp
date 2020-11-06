@@ -49,11 +49,10 @@ using namespace OpenRCT2;
 
 struct ObjectIdentifierHash
 {
-    size_t operator()(const std::string_view& identifier) const
+    size_t operator()(std::string_view identifier) const
     {
-        std::string copy = identifier.data();
         uint32_t hash = 5381;
-        for (auto i : copy)
+        for (auto i : identifier)
         {
             hash = ((hash << 5) + hash) + i;
         }
@@ -63,7 +62,7 @@ struct ObjectIdentifierHash
 
 struct ObjectIdentifierEqual
 {
-    bool operator()(const std::string_view& lhs, const std::string_view& rhs) const
+    bool operator()(std::string_view lhs, std::string_view rhs) const
     {
         return lhs == rhs;
     }
@@ -306,9 +305,9 @@ public:
         return nullptr;
     }
 
-    const ObjectRepositoryItem* FindObject(const std::string_view& identifier) const override final
+    const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
     {
-        auto kvp = _newItemMap.find(identifier.data());
+        auto kvp = _newItemMap.find(std::string(identifier));
         if (kvp != _newItemMap.end())
         {
             return &_items[kvp->second];

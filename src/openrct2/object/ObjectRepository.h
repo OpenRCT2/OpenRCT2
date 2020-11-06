@@ -73,7 +73,7 @@ struct IObjectRepository
     virtual size_t GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem* GetObjects() const abstract;
     virtual const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const std::string_view& identifier) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
 
     virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;

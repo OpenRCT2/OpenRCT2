@@ -131,7 +131,7 @@ public:
         return loadedObject;
     }
 
-    Object* LoadObject(const std::string_view& identifier) override
+    Object* LoadObject(std::string_view identifier) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
         return RepositoryItemToObject(ori);
