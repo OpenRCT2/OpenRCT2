@@ -683,7 +683,7 @@ static void window_editor_object_selection_scroll_mousedown(
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (!window_editor_object_selection_select_object(0, 1, listItem->entry))
+        if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->entry))
             return;
 
         // Close any other open windows such as options/colour schemes to prevent a crash.
@@ -695,15 +695,16 @@ static void window_editor_object_selection_scroll_mousedown(
         return;
     }
 
-    int32_t ebx = 6;
+    int32_t flags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
     // If already selected
     if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
-        ebx = 7;
+        flags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
     _maxObjectsWasHit = false;
-    if (!window_editor_object_selection_select_object(0, ebx, listItem->entry))
+    if (!window_editor_object_selection_select_object(0, flags, listItem->entry))
     {
-        rct_string_id error_title = (ebx & 1) ? STR_UNABLE_TO_SELECT_THIS_OBJECT : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+        rct_string_id error_title = (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                              : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
         context_show_error(error_title, gGameCommandErrorText, {});
         return;

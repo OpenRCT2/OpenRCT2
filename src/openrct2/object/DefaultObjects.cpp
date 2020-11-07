@@ -11,41 +11,41 @@
 
 #include "Object.h"
 
-const rct_object_entry DefaultSelectedObjects[] = {
+const std::string_view DefaultSelectedObjects[] = {
     // An initial default selection
-    { 0x00000087, { "SCGTREES" } }, // Scenery: Trees
-    { 0x00000087, { "SCGSHRUB" } }, // Scenery: Shrubs and Ornaments
-    { 0x00000087, { "SCGGARDN" } }, // Scenery: Gardens
-    { 0x00000087, { "SCGFENCE" } }, // Scenery: Fences and Walls
-    { 0x00000087, { "SCGWALLS" } }, // Scenery: Walls and Roofs
-    { 0x00000087, { "SCGPATHX" } }, // Scenery: Signs and Items for Footpaths
-    { 0x00000085, { "TARMAC  " } }, // Footpath: Tarmac
-    { 0x00000080, { "TWIST1  " } }, // Ride: Twist
-    { 0x00000080, { "PTCT1   " } }, // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
-    { 0x00000080, { "ZLDB    " } }, // Ride: Junior Roller Coaster (Ladybird Trains)
-    { 0x00000080, { "LFB1    " } }, // Ride: Log Flume
-    { 0x00000080, { "VCR     " } }, // Ride: Vintage Cars
-    { 0x00000080, { "MGR1    " } }, // Ride: Merry-Go-Round
-    { 0x00000080, { "TLT1    " } }, // Ride: Restroom
-    { 0x00000080, { "ATM1    " } }, // Ride: Cash Machine
-    { 0x00000080, { "FAID1   " } }, // Ride: First Aid Room
-    { 0x00000080, { "INFOK   " } }, // Ride: Information Kiosk
-    { 0x00000080, { "DRNKS   " } }, // Ride: Drinks Stall
-    { 0x00000080, { "CNDYF   " } }, // Ride: Candyfloss Stall
-    { 0x00000080, { "BURGB   " } }, // Ride: Burger Bar
-    { 0x00000080, { "BALLN   " } }, // Ride: Balloon Stall
-    { 0x00000080, { "ARRT1   " } }, // Ride: Corkscrew Roller Coaster
-    { 0x00000080, { "RBOAT   " } }, // Ride: Rowing Boats
-    { 0x00000088, { "PKENT1  " } }, // Park Entrance: Traditional Park Entrance
-    { 0x00000089, { "WTRCYAN " } }, // Water: Natural Water
-    { 0x00000085, { "TARMACB " } }, // Footpath: Brown Tarmac Footpath
-    { 0x00000085, { "PATHSPCE" } }, // Footpath: Space Style Footpath
-    { 0x00000085, { "PATHDIRT" } }, // Footpath: Dirt Footpath
-    { 0x00000085, { "PATHCRZY" } }, // Footpath: Crazy Paving Footpath
-    { 0x00000085, { "PATHASH " } }, // Footpath: Ash Footpath
+    "rct2.scgtrees", // Scenery: Trees
+    "rct2.scgshrub", // Scenery: Shrubs and Ornaments
+    "rct2.scggardn", // Scenery: Gardens
+    "rct2.scgfence", // Scenery: Fences and Walls
+    "rct2.scgwalls", // Scenery: Walls and Roofs
+    "rct2.scgpathx", // Scenery: Signs and Items for Footpaths
+    "rct2.tarmac",   // Footpath: Tarmac
+    "rct2.twist1",   // Ride: Twist
+    "rct2.ptct1",    // Ride: Wooden Roller Coaster (Wooden Roller Coaster Trains)
+    "rct2.zldb",     // Ride: Junior Roller Coaster (Ladybird Trains)
+    "rct2.lfb1",     // Ride: Log Flume
+    "rct2.vcr",      // Ride: Vintage Cars
+    "rct2.mgr1",     // Ride: Merry-Go-Round
+    "rct2.tlt1",     // Ride: Restroom
+    "rct2.atm1",     // Ride: Cash Machine
+    "rct2.faid1",    // Ride: First Aid Room
+    "rct2.infok",    // Ride: Information Kiosk
+    "rct2.drnks",    // Ride: Drinks Stall
+    "rct2.cndyf",    // Ride: Candyfloss Stall
+    "rct2.burgb",    // Ride: Burger Bar
+    "rct2.balln",    // Ride: Balloon Stall
+    "rct2.arrt1",    // Ride: Corkscrew Roller Coaster
+    "rct2.rboat",    // Ride: Rowing Boats
+    "rct2.pkent1",   // Park Entrance: Traditional Park Entrance
+    "rct2.wtrcyan",  // Water: Natural Water
+    "rct2.tarmacb",  // Footpath: Brown Tarmac Footpath
+    "rct2.pathspce", // Footpath: Space Style Footpath
+    "rct2.pathdirt", // Footpath: Dirt Footpath
+    "rct2.pathcrzy", // Footpath: Crazy Paving Footpath
+    "rct2.pathash",  // Footpath: Ash Footpath
 
     // The following are for all random map generation features to work out the box
-    { 0x00000087, { "SCGJUNGL" } }, // Jungle Theming
-    { 0x00000087, { "SCGSNOW " } }, // Snow and Ice Theming
-    { 0x00000087, { "SCGWATER" } }  // Water Feature Theming
+    "rct2.scgjungl", // Jungle Theming
+    "rct2.scgsnow",  // Snow and Ice Theming
+    "rct2.scgwater", // Water Feature Theming
 };
