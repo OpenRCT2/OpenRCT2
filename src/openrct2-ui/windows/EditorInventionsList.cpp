@@ -113,15 +113,6 @@ static rct_window_event_list window_editor_inventions_list_drag_events([](auto& 
 
 static ResearchItem _editorInventionsListDraggedItem;
 
-static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
-    STR_RESEARCH_NEW_TRANSPORT_RIDES,
-    STR_RESEARCH_NEW_GENTLE_RIDES,
-    STR_RESEARCH_NEW_ROLLER_COASTERS,
-    STR_RESEARCH_NEW_THRILL_RIDES,
-    STR_RESEARCH_NEW_WATER_RIDES,
-    STR_RESEARCH_NEW_SHOPS_AND_STALLS,
-    STR_RESEARCH_NEW_SCENERY_AND_THEMING,
-};
 // clang-format on
 
 static void window_editor_inventions_list_drag_open(ResearchItem* researchItem);
@@ -576,7 +567,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
-    stringId = EditorInventionsResearchCategories[researchItem->category];
+    stringId = researchItem->GetCategoryInventionString();
     gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos);
 }
 
