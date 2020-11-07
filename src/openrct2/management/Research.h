@@ -36,13 +36,13 @@ enum
 
 enum class ResearchCategory : uint8_t
 {
-    Transport,
-    Gentle,
-    Rollercoaster,
-    Thrill,
-    Water,
-    Shop,
-    SceneryGroup
+    Transport = 0,
+    Gentle = 1,
+    Rollercoaster = 2,
+    Thrill = 3,
+    Water = 4,
+    Shop = 5,
+    SceneryGroup = 6,
 };
 
 struct ResearchItem

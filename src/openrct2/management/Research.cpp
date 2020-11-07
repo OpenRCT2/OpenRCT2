@@ -890,50 +890,42 @@ bool ResearchItem::Exists() const
     return false;
 }
 
+// clang-format off
+static constexpr const rct_string_id _editorInventionsResearchCategories[] = {
+    STR_RESEARCH_NEW_TRANSPORT_RIDES,
+    STR_RESEARCH_NEW_GENTLE_RIDES,
+    STR_RESEARCH_NEW_ROLLER_COASTERS,
+    STR_RESEARCH_NEW_THRILL_RIDES,
+    STR_RESEARCH_NEW_WATER_RIDES,
+    STR_RESEARCH_NEW_SHOPS_AND_STALLS,
+    STR_RESEARCH_NEW_SCENERY_AND_THEMING,
+};
+// clang-format on
+
 rct_string_id ResearchItem::GetCategoryInventionString() const
 {
-    switch (category)
-    {
-        case ResearchCategory::Transport:
-            return STR_RESEARCH_NEW_TRANSPORT_RIDES;
-        case ResearchCategory::Gentle:
-            return STR_RESEARCH_NEW_GENTLE_RIDES;
-        case ResearchCategory::Rollercoaster:
-            return STR_RESEARCH_NEW_ROLLER_COASTERS;
-        case ResearchCategory::Thrill:
-            return STR_RESEARCH_NEW_THRILL_RIDES;
-        case ResearchCategory::Water:
-            return STR_RESEARCH_NEW_WATER_RIDES;
-        case ResearchCategory::Shop:
-            return STR_RESEARCH_NEW_SHOPS_AND_STALLS;
-        case ResearchCategory::SceneryGroup:
-            return STR_RESEARCH_NEW_SCENERY_AND_THEMING;
-    }
-    log_error("Unsupported category invention string");
-    return STR_NONE;
+    const auto categoryValue = EnumValue(category);
+    Guard::Assert(categoryValue <= 6, "Unsupported category invention string");
+    return _editorInventionsResearchCategories[categoryValue];
 }
+
+// clang-format off
+static constexpr const rct_string_id _researchCategoryNames[] = {
+    STR_RESEARCH_CATEGORY_TRANSPORT,
+    STR_RESEARCH_CATEGORY_GENTLE,
+    STR_RESEARCH_CATEGORY_ROLLERCOASTER,
+    STR_RESEARCH_CATEGORY_THRILL,
+    STR_RESEARCH_CATEGORY_WATER,
+    STR_RESEARCH_CATEGORY_SHOP,
+    STR_RESEARCH_CATEGORY_SCENERY_GROUP,
+};
+// clang-format on
 
 rct_string_id ResearchItem::GetCategoryName() const
 {
-    switch (category)
-    {
-        case ResearchCategory::Transport:
-            return STR_RESEARCH_CATEGORY_TRANSPORT;
-        case ResearchCategory::Gentle:
-            return STR_RESEARCH_CATEGORY_GENTLE;
-        case ResearchCategory::Rollercoaster:
-            return STR_RESEARCH_CATEGORY_ROLLERCOASTER;
-        case ResearchCategory::Thrill:
-            return STR_RESEARCH_CATEGORY_THRILL;
-        case ResearchCategory::Water:
-            return STR_RESEARCH_CATEGORY_WATER;
-        case ResearchCategory::Shop:
-            return STR_RESEARCH_CATEGORY_SHOP;
-        case ResearchCategory::SceneryGroup:
-            return STR_RESEARCH_CATEGORY_SCENERY_GROUP;
-    }
-    log_error("Unsupported category name");
-    return STR_NONE;
+    const auto categoryValue = EnumValue(category);
+    Guard::Assert(categoryValue <= 6, "Unsupported category name");
+    return _researchCategoryNames[categoryValue];
 }
 
 static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
