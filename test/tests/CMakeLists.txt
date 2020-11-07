@@ -120,8 +120,12 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 set(LANGUAGEPACK_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/LanguagePackTest.cpp"
         "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
+        "${ROOT_DIR}/src/openrct2/core/FileStream.cpp"
+        "${ROOT_DIR}/src/openrct2/core/Path.cpp"
         "${ROOT_DIR}/src/openrct2/core/RTL.FriBidi.cpp"
         "${ROOT_DIR}/src/openrct2/core/RTL.ICU.cpp"
+        "${ROOT_DIR}/src/openrct2/core/StringBuilder.cpp"
+        "${ROOT_DIR}/src/openrct2/core/StringReader.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -140,6 +144,8 @@ set(INI_TEST_SOURCES
         "${ROOT_DIR}/src/openrct2/config/IniWriter.cpp"
         "${ROOT_DIR}/src/openrct2/core/IStream.cpp"
         "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
+        "${ROOT_DIR}/src/openrct2/core/StringBuilder.cpp"
+        "${ROOT_DIR}/src/openrct2/core/StringReader.cpp"
         )
 add_executable(test_ini ${INI_TEST_SOURCES})
 SET_CHECK_CXX_FLAGS(test_ini)

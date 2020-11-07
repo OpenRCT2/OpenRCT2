@@ -66,6 +66,7 @@ file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES
     "${OPENRCT2_SRCPATH}/core/Guard.cpp"
     "${OPENRCT2_SRCPATH}/core/String.cpp"
     "${OPENRCT2_SRCPATH}/Diagnostic.cpp"
+    "${OPENRCT2_SRCPATH}/interface/ZoomLevel.cpp"
     "${OPENRCT2_SRCPATH}/localisation/ConversionTables.cpp"
     "${OPENRCT2_SRCPATH}/localisation/Convert.cpp"
     "${OPENRCT2_SRCPATH}/localisation/FormatCodes.cpp"
