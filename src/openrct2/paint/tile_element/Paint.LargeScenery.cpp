@@ -276,7 +276,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     boxlength.x = s98E3C4[esi].length.x;
     boxlength.y = s98E3C4[esi].length.y;
     boxlength.z = ah;
-    sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
+    PaintAddImageAsParent(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
     if (entry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -444,7 +444,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
 
         uint16_t stringWidth = gfx_get_string_width(signString);
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-        sub_98199C(
+        PaintAddImageAsChild(
             session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
             height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
     }

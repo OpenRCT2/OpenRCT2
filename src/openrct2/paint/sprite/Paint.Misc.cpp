@@ -41,7 +41,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (particle == nullptr)
                 return;
             uint32_t imageId = 22637 + (particle->frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
@@ -73,7 +73,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             uint32_t imageId = vehicle_particle_base_sprites[particle->crashed_sprite_base] + particle->frame / 256;
             imageId = imageId | (particle->colour[0] << 19) | (particle->colour[1] << 24) | IMAGE_TYPE_REMAP
                 | IMAGE_TYPE_REMAP_2_PLUS;
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
@@ -83,7 +83,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (particle == nullptr)
                 return;
             uint32_t imageId = 22878 + (particle->frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, particle->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, particle->z);
             break;
         }
 
@@ -93,7 +93,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (crashSplash == nullptr)
                 return;
             uint32_t imageId = 22927 + (crashSplash->frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, crashSplash->z);
             break;
         }
 
@@ -104,7 +104,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             if (flare == nullptr)
                 return;
             uint32_t imageId = 22896 + (flare->frame / 256);
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, flare->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, flare->z);
             break;
         }
 
@@ -142,7 +142,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
 
             auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 
-            sub_98197C_rotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
+            PaintAddImageAsParentRotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
             break;
         }
 
@@ -158,7 +158,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             }
 
             imageId = imageId | (balloon->colour << 19) | IMAGE_TYPE_REMAP;
-            sub_98196C(session, imageId, 0, 0, 1, 1, 0, balloon->z);
+            PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, balloon->z);
             break;
         }
 
@@ -171,7 +171,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 uint32_t imageId = duck->GetFrameImage(imageDirection);
                 if (imageId != 0)
                 {
-                    sub_98196C(session, imageId, 0, 0, 1, 1, 0, duck->z);
+                    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, duck->z);
                 }
             }
             break;

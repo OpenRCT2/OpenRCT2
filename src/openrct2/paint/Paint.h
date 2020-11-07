@@ -147,7 +147,7 @@ struct paint_session
     paint_entry* EndOfPaintStructArray;
     paint_entry* NextFreePaintStruct;
     CoordsXY SpritePosition;
-    paint_struct* LastRootPS;
+    paint_struct* LastPS;
     attached_paint_struct* LastAttachedPS;
     ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
@@ -169,6 +169,43 @@ struct paint_session
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
+
+    constexpr bool NoPaintStructsAvailable() noexcept
+    {
+        return NextFreePaintStruct >= EndOfPaintStructArray;
+    }
+
+    constexpr paint_struct* AllocateNormalPaintEntry(paint_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->basic = entry;
+        LastPS = &NextFreePaintStruct->basic;
+        NextFreePaintStruct++;
+        return LastPS;
+    }
+
+    constexpr attached_paint_struct* AllocateAttachedPaintEntry(attached_paint_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->attached = entry;
+        LastAttachedPS = &NextFreePaintStruct->attached;
+        NextFreePaintStruct++;
+        return LastAttachedPS;
+    }
+
+    constexpr paint_string_struct* AllocateStringPaintEntry(paint_string_struct&& entry) noexcept
+    {
+        NextFreePaintStruct->string = entry;
+        if (LastPSString == nullptr)
+        {
+            PSStringHead = &NextFreePaintStruct->string;
+        }
+        else
+        {
+            LastPSString->next = &NextFreePaintStruct->string;
+        }
+        LastPSString = &NextFreePaintStruct->string;
+        NextFreePaintStruct++;
+        return LastPSString;
+    }
 };
 
 extern paint_session gPaintSession;
@@ -185,33 +222,35 @@ extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
-paint_struct* sub_98196C(
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
-paint_struct* sub_98197C(
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98198C(
+[[nodiscard]] paint_struct* PaintAddImageAsOrphan(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 
-paint_struct* sub_98196C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
-paint_struct* sub_98197C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C_rotated(
+paint_struct* PaintAddImageAsChildRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);

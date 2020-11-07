@@ -176,7 +176,7 @@ static void wild_mouse_track_flat(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -199,18 +199,18 @@ static void wild_mouse_track_station(
     };
 
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
-    sub_98197C_rotated(
+    PaintAddImageAsParentRotated(
         session, direction, baseImageIds[direction] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
         height);
     if (trackType == TrackElemType::EndStation)
     {
-        sub_98199C_rotated(
+        PaintAddImageAsChildRotated(
             session, direction, _wild_mouse_block_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK], 0, 0, 32,
             20, 2, height, 0, 0, height);
     }
     else
     {
-        sub_98199C_rotated(
+        PaintAddImageAsChildRotated(
             session, direction, _wild_mouse_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2,
             height, 0, 0, height);
     }
@@ -235,7 +235,7 @@ static void wild_mouse_track_25_deg_up(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -9, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -269,11 +269,11 @@ static void wild_mouse_track_60_deg_up(
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 98, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -313,7 +313,7 @@ static void wild_mouse_track_flat_to_25_deg_up(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -4, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -354,12 +354,12 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
-        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -401,12 +401,12 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
-        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+        PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 1, 66, height, 0, 27, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -439,7 +439,7 @@ static void wild_mouse_track_25_deg_up_to_flat(
 
     uint8_t isChained = tileElement->AsTrack()->HasChain() ? 1 : 0;
     uint32_t imageId = imageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -7, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -589,7 +589,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(
     {
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
-        sub_98196C(
+        PaintAddImageAsParent(
             session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
             static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
             height + static_cast<int8_t>(sbb->offset.z));
@@ -658,7 +658,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(
     {
         int32_t part = trackSequence == 0 ? 0 : 1;
         const sprite_bb* sbb = &imageIds[direction][part];
-        sub_98196C(
+        PaintAddImageAsParent(
             session, sbb->sprite_id | session->TrackColours[SCHEME_TRACK], static_cast<int8_t>(sbb->offset.x),
             static_cast<int8_t>(sbb->offset.y), sbb->bb_size.x, sbb->bb_size.y, static_cast<int8_t>(sbb->bb_size.z),
             height + static_cast<int8_t>(sbb->offset.z));
@@ -733,16 +733,16 @@ static void wild_mouse_track_left_quarter_turn_1(
     switch (direction)
     {
         case 0:
-            sub_98197C(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height);
             break;
         case 1:
-            sub_98196C(session, imageId, 0, 0, 26, 26, 2, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 26, 26, 2, height);
             break;
         case 2:
-            sub_98197C(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height);
             break;
         case 3:
-            sub_98197C(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height);
             break;
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -783,12 +783,12 @@ static void wild_mouse_track_flat_to_60_deg_up(
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
-        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
+        PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -830,12 +830,12 @@ static void wild_mouse_track_60_deg_up_to_flat(
     uint32_t frontImageId = frontImageIds[direction][isChained] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3)
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
     }
     else
     {
-        sub_98197C_rotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
-        sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
+        PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 1, 24, 43, height, 29, 4, height + 2);
+        PaintAddImageAsParentRotated(session, direction, frontImageId, 0, 0, 32, 2, 43, height, 0, 4, height);
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
@@ -883,7 +883,7 @@ static void wild_mouse_track_brakes(
     const TileElement* tileElement)
 {
     uint32_t imageId = _wild_mouse_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -907,7 +907,7 @@ static void wild_mouse_track_rotation_control_toggle(
     };
 
     uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
@@ -924,7 +924,7 @@ static void wild_mouse_track_block_brakes(
     const TileElement* tileElement)
 {
     uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);

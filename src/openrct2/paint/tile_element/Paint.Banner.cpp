@@ -79,12 +79,12 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         image_id |= (banner->colour << 19) | IMAGE_TYPE_REMAP;
     }
 
-    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+    PaintAddImageAsParent(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     boundBoxOffset.x = BannerBoundBoxes[direction][1].x;
     boundBoxOffset.y = BannerBoundBoxes[direction][1].y;
 
     image_id++;
-    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+    PaintAddImageAsParent(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 
     // Opposite direction
     direction = direction_reverse(direction);
@@ -118,5 +118,6 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
     uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
     auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
-    sub_98199C(session, scrollIndex, 0, 0, 1, 1, 0x15, height + 22, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+    PaintAddImageAsChild(
+        session, scrollIndex, 0, 0, 1, 1, 0x15, height + 22, boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
 }

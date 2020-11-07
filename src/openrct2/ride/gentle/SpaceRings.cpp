@@ -65,7 +65,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         }
 
         uint32_t imageId = (baseImageId + frameNum) | imageColourFlags;
-        sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
 
         if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
@@ -74,7 +74,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
             {
                 imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
                 imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-                sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+                PaintAddImageAsChild(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
             }
         }
     }
@@ -109,12 +109,12 @@ static void paint_space_rings(
             if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
-                sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
+                PaintAddImageAsParent(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2);
             }
             if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
-                sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
+                PaintAddImageAsParent(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2);
             }
             break;
         default:

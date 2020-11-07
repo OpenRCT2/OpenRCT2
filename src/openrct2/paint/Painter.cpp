@@ -163,7 +163,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->DPI = *dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
-    session->LastRootPS = nullptr;
+    session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
     session->ViewFlags = viewFlags;
     for (auto& quadrant : session->Quadrants)
