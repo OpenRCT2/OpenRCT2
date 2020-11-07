@@ -1477,7 +1477,7 @@ private:
         dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = 0;
 
-        dst->CurrentRide = src->current_ride;
+        dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->CurrentCar = src->current_car;
@@ -1485,7 +1485,7 @@ private:
         dst->GuestTimeOnRide = src->time_on_ride;
         dst->DaysInQueue = src->days_in_queue;
 
-        dst->InteractionRideIndex = src->interaction_ride_index;
+        dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->interaction_ride_index);
 
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
@@ -1506,7 +1506,7 @@ private:
         dst->PaidOnFood = src->paid_on_food;
         dst->PaidOnSouvenirs = src->paid_on_souvenirs;
 
-        dst->VoucherRideId = src->voucher_arguments;
+        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
         dst->VoucherType = src->voucher_type;
 
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
@@ -1522,7 +1522,7 @@ private:
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
 
-        dst->Photo1RideRef = src->photo1_ride_ref;
+        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
 
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
@@ -1534,11 +1534,11 @@ private:
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
 
-        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
 
         dst->PathCheckOptimisation = 0;
-        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
+        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
         // Doubles as staff orders
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
         // The ID is fixed later
@@ -1554,7 +1554,7 @@ private:
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
         {
-            dst->FavouriteRide = src->favourite_ride;
+            dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
             dst->FavouriteRideRating = src->favourite_ride_rating;
         }
         else
