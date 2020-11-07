@@ -186,12 +186,12 @@ void setup_in_use_selection_flags()
         }
     } while (tile_element_iterator_next(&iter));
 
-    for (uint8_t ride_index = 0; ride_index < 0xFF; ride_index++)
+    for (ride_id_t ride_index = 0; ride_index < MAX_RIDES; ride_index++)
     {
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            uint8_t type = ride->subtype;
+            ObjectEntryIndex type = ride->subtype;
             Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }

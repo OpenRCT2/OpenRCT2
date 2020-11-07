@@ -141,16 +141,16 @@ void tile_element_remove_banner_entry(TileElement* tileElement)
     }
 }
 
-uint8_t tile_element_get_ride_index(const TileElement* tileElement)
+ride_id_t TileElement::GetRideIndex() const
 {
-    switch (tileElement->GetType())
+    switch (GetType())
     {
         case TILE_ELEMENT_TYPE_TRACK:
-            return tileElement->AsTrack()->GetRideIndex();
+            return AsTrack()->GetRideIndex();
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            return tileElement->AsEntrance()->GetRideIndex();
+            return AsEntrance()->GetRideIndex();
         case TILE_ELEMENT_TYPE_PATH:
-            return tileElement->AsPath()->GetRideIndex();
+            return AsPath()->GetRideIndex();
         default:
             return RIDE_ID_NULL;
     }

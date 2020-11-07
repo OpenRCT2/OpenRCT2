@@ -2316,7 +2316,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
     {
         // Default guest/staff behaviour attempting to enter a
         // ride exit is to turn around.
-        peep->InteractionRideIndex = 0xFF;
+        peep->InteractionRideIndex = RIDE_ID_NULL;
         peep_return_to_centre_of_tile(peep);
         return;
     }
@@ -2333,7 +2333,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         {
             // Default staff behaviour attempting to enter a
             // ride entrance is to turn around.
-            peep->InteractionRideIndex = 0xFF;
+            peep->InteractionRideIndex = RIDE_ID_NULL;
             peep_return_to_centre_of_tile(peep);
             return;
         }
@@ -2774,7 +2774,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
             else
             {
                 // Queue got disconnected from the original ride.
-                peep->InteractionRideIndex = 0xFF;
+                peep->InteractionRideIndex = RIDE_ID_NULL;
                 guest->RemoveFromQueue();
                 peep->SetState(PeepState::One);
                 peep_footpath_move_forward(peep, { coords, tile_element }, vandalism_present);
@@ -2845,7 +2845,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
     }
     else
     {
-        peep->InteractionRideIndex = 0xFF;
+        peep->InteractionRideIndex = RIDE_ID_NULL;
         if (peep->State == PeepState::Queuing)
         {
             peep->RemoveFromQueue();
@@ -3059,7 +3059,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         int16_t height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (AssignedPeepType == PeepType::Staff && height <= 32))
         {
-            InteractionRideIndex = 0xFF;
+            InteractionRideIndex = RIDE_ID_NULL;
             if (State == PeepState::Queuing)
             {
                 RemoveFromQueue();

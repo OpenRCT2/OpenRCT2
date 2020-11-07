@@ -699,7 +699,7 @@ struct Peep : SpriteBase
         uint8_t MazeLastEdge;
         Direction PeepDirection; // Direction ?
     };
-    uint8_t InteractionRideIndex;
+    ride_id_t InteractionRideIndex;
     uint16_t TimeInQueue;
     uint8_t RidesBeenOn[32];
     // 255 bit bitmap of every ride the peep has been on see
@@ -713,7 +713,7 @@ struct Peep : SpriteBase
         int32_t HireDate;
     };
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    uint8_t PreviousRide;
+    ride_id_t PreviousRide;
     uint16_t PreviousRideTimeOut;
     rct_peep_thought Thoughts[PEEP_MAX_THOUGHTS];
     uint8_t PathCheckOptimisation; // see peep.checkForPath

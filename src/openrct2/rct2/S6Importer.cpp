@@ -1469,10 +1469,10 @@ public:
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
         dst->ItemExtraFlags = src->item_extra_flags;
-        dst->Photo2RideRef = src->photo2_ride_ref;
-        dst->Photo3RideRef = src->photo3_ride_ref;
-        dst->Photo4RideRef = src->photo4_ride_ref;
-        dst->CurrentRide = src->current_ride;
+        dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
+        dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
+        dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
+        dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->TimeToSitdown = src->time_to_sitdown;
@@ -1485,7 +1485,7 @@ public:
         dst->StepProgress = src->step_progress;
         dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
-        dst->InteractionRideIndex = src->interaction_ride_index;
+        dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->interaction_ride_index);
         dst->TimeInQueue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)
         {
@@ -1496,7 +1496,7 @@ public:
         dst->CashSpent = src->cash_spent;
         dst->ParkEntryTime = src->park_entry_time;
         dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
-        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
@@ -1508,9 +1508,9 @@ public:
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
         dst->PathCheckOptimisation = src->path_check_optimisation;
-        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
+        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->Photo1RideRef = src->photo1_ride_ref;
+        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
         dst->PeepFlags = src->peep_flags;
         dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
@@ -1530,7 +1530,7 @@ public:
         dst->AmountOfSouvenirs = src->no_of_souvenirs;
         dst->VandalismSeen = src->vandalism_seen;
         dst->VoucherType = src->voucher_type;
-        dst->VoucherRideId = src->voucher_arguments;
+        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
@@ -1538,7 +1538,7 @@ public:
         dst->BalloonColour = src->balloon_colour;
         dst->UmbrellaColour = src->umbrella_colour;
         dst->HatColour = src->hat_colour;
-        dst->FavouriteRide = src->favourite_ride;
+        dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
         dst->FavouriteRideRating = src->favourite_ride_rating;
         dst->ItemStandardFlags = src->item_standard_flags;
     }

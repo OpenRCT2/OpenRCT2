@@ -273,7 +273,7 @@ rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t
     {
         case GuestListFilterType::GuestsOnRide:
         {
-            auto ride = get_ride(index & 0xFF);
+            auto ride = get_ride(index);
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
@@ -288,7 +288,7 @@ rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t
         }
         case GuestListFilterType::GuestsInQueue:
         {
-            auto ride = get_ride(index & 0xFF);
+            auto ride = get_ride(index);
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_QUEUING_FOR);
@@ -303,7 +303,7 @@ rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t
         }
         case GuestListFilterType::GuestsThinkingAboutRide:
         {
-            auto ride = get_ride(index & 0xFF);
+            auto ride = get_ride(index);
             if (ride != nullptr)
             {
                 ft.Add<rct_string_id>(STR_NONE);

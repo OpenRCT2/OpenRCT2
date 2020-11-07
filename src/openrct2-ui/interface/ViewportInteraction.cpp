@@ -296,7 +296,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 return info;
             }
 
-            ride = get_ride(tile_element_get_ride_index(tileElement));
+            ride = get_ride(tileElement->GetRideIndex());
             if (ride == nullptr)
             {
                 info.SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;

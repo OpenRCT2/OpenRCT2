@@ -1024,3 +1024,19 @@ RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex i
 
     return index;
 }
+
+ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
+{
+    if (rideId == RCT12_RIDE_ID_NULL)
+        return RIDE_ID_NULL;
+
+    return rideId;
+}
+
+RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
+{
+    if (rideId == RIDE_ID_NULL)
+        return RCT12_RIDE_ID_NULL;
+
+    return rideId;
+}

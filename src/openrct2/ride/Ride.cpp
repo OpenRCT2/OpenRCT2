@@ -1821,7 +1821,7 @@ bool ride_modify(CoordsXYE* input)
     if (tileElement.element == nullptr)
         return false;
 
-    auto rideIndex = tile_element_get_ride_index(tileElement.element);
+    auto rideIndex = tileElement.element->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {

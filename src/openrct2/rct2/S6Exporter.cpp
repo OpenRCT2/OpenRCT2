@@ -1174,10 +1174,10 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];
     }
     dst->item_extra_flags = src->ItemExtraFlags;
-    dst->photo2_ride_ref = src->Photo2RideRef;
-    dst->photo3_ride_ref = src->Photo3RideRef;
-    dst->photo4_ride_ref = src->Photo4RideRef;
-    dst->current_ride = src->CurrentRide;
+    dst->photo2_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo2RideRef);
+    dst->photo3_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo3RideRef);
+    dst->photo4_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo4RideRef);
+    dst->current_ride = OpenRCT2RideIdToRCT12RideId(src->CurrentRide);
     dst->current_ride_station = src->CurrentRideStation;
     dst->current_train = src->CurrentTrain;
     dst->time_to_sitdown = src->TimeToSitdown;
@@ -1190,7 +1190,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->step_progress = src->StepProgress;
     dst->next_in_queue = src->GuestNextInQueue;
     dst->direction = src->PeepDirection;
-    dst->interaction_ride_index = src->InteractionRideIndex;
+    dst->interaction_ride_index = OpenRCT2RideIdToRCT12RideId(src->InteractionRideIndex);
     dst->time_in_queue = src->TimeInQueue;
     for (size_t i = 0; i < std::size(src->RidesBeenOn); i++)
     {
@@ -1201,7 +1201,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->cash_spent = src->CashSpent;
     dst->park_entry_time = src->ParkEntryTime;
     dst->rejoin_queue_timeout = src->RejoinQueueTimeout;
-    dst->previous_ride = src->PreviousRide;
+    dst->previous_ride = OpenRCT2RideIdToRCT12RideId(src->PreviousRide);
     dst->previous_ride_time_out = src->PreviousRideTimeOut;
     for (size_t i = 0; i < std::size(src->Thoughts); i++)
     {
@@ -1213,9 +1213,9 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
         dstThought->fresh_timeout = srcThought->fresh_timeout;
     }
     dst->path_check_optimisation = src->PathCheckOptimisation;
-    dst->guest_heading_to_ride_id = src->GuestHeadingToRideId;
+    dst->guest_heading_to_ride_id = OpenRCT2RideIdToRCT12RideId(src->GuestHeadingToRideId);
     dst->peep_is_lost_countdown = src->GuestIsLostCountdown;
-    dst->photo1_ride_ref = src->Photo1RideRef;
+    dst->photo1_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo1RideRef);
     dst->peep_flags = src->PeepFlags;
     dst->pathfind_goal = src->PathfindGoal;
     for (size_t i = 0; i < std::size(src->PathfindHistory); i++)
@@ -1235,7 +1235,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->no_of_souvenirs = src->AmountOfSouvenirs;
     dst->vandalism_seen = src->VandalismSeen;
     dst->voucher_type = src->VoucherType;
-    dst->voucher_arguments = src->VoucherRideId;
+    dst->voucher_arguments = OpenRCT2RideIdToRCT12RideId(src->VoucherRideId);
     dst->surroundings_thought_timeout = src->SurroundingsThoughtTimeout;
     dst->angriness = src->Angriness;
     dst->time_lost = src->TimeLost;
@@ -1243,7 +1243,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->balloon_colour = src->BalloonColour;
     dst->umbrella_colour = src->UmbrellaColour;
     dst->hat_colour = src->HatColour;
-    dst->favourite_ride = src->FavouriteRide;
+    dst->favourite_ride = OpenRCT2RideIdToRCT12RideId(src->FavouriteRide);
     dst->favourite_ride_rating = src->FavouriteRideRating;
     dst->item_standard_flags = src->ItemStandardFlags;
 }

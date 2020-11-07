@@ -181,6 +181,8 @@ public:
     }
 
     void ClearAs(uint8_t newType);
+
+    ride_id_t GetRideIndex() const;
 };
 assert_struct_size(TileElement, 16);
 
@@ -683,5 +685,3 @@ bool tile_element_is_underground(TileElement* tileElement);
 // ~Oli414: The banner functions should probably be part of banner.
 void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex);
 void tile_element_remove_banner_entry(TileElement* tileElement);
-
-uint8_t tile_element_get_ride_index(const TileElement* tileElement);

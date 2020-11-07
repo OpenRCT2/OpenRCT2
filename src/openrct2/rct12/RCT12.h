@@ -13,6 +13,7 @@
 
 #include "../common.h"
 #include "../object/Object.h"
+#include "../ride/RideTypes.h"
 
 #include <string>
 #include <string_view>
@@ -41,7 +42,8 @@ constexpr const uint8_t RCT12_USER_STRING_MAX_LENGTH = 32;
 
 constexpr const uint8_t RCT12_PEEP_MAX_THOUGHTS = 5;
 
-constexpr const uint8_t RCT12_RIDE_ID_NULL = 255;
+using RCT12RideId = uint8_t;
+constexpr const RCT12RideId RCT12_RIDE_ID_NULL = 255;
 constexpr const uint16_t RCT12_RIDE_MEASUREMENT_MAX_ITEMS = 4800;
 
 constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
@@ -858,3 +860,5 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
 RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
+ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
+RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);

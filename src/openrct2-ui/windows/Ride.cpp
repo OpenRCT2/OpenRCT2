@@ -1133,7 +1133,7 @@ static void window_ride_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 static void window_ride_disable_tabs(rct_window* w)
 {
     uint32_t disabled_tabs = 0;
-    auto ride = get_ride(w->number & 0xFF);
+    auto ride = get_ride(w->number);
     if (ride == nullptr)
         return;
 
@@ -1376,7 +1376,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
 rct_window* window_ride_open_track(TileElement* tileElement)
 {
     assert(tileElement != nullptr);
-    auto rideIndex = tile_element_get_ride_index(tileElement);
+    auto rideIndex = tileElement->GetRideIndex();
     if (rideIndex != RIDE_ID_NULL)
     {
         auto ride = get_ride(rideIndex);
@@ -3816,7 +3816,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             num_items = 1;
             for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
             {
-                if (rideEntry->ride_type[j] != 0xFF)
+                if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                     break;
             }
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -5175,7 +5175,7 @@ static void setup_scenery_selection(rct_window* w)
     while (tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR))
         ;
 
-    gTrackDesignSaveRideIndex = static_cast<uint8_t>(w->number);
+    gTrackDesignSaveRideIndex = w->number;
 
     track_design_save_init();
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;

@@ -88,7 +88,7 @@ public:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tile_element_get_ride_index(tileElement) != _rideIndex)
+            if (tileElement->GetRideIndex() != _rideIndex)
                 continue;
 
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
@@ -148,7 +148,7 @@ public:
             if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (tile_element_get_ride_index(tileElement) != _rideIndex)
+            if (tileElement->GetRideIndex() != _rideIndex)
                 continue;
 
             if (tileElement->AsEntrance()->GetStationIndex() != _stationNum)
