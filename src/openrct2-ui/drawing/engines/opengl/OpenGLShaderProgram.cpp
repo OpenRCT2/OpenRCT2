@@ -14,7 +14,7 @@
 #    include <openrct2/Context.h>
 #    include <openrct2/PlatformEnvironment.h>
 #    include <openrct2/core/Console.hpp>
-#    include <openrct2/core/FileStream.hpp>
+#    include <openrct2/core/FileStream.h>
 #    include <openrct2/core/Path.hpp>
 #    include <openrct2/core/String.hpp>
 

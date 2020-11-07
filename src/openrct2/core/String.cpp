@@ -34,7 +34,7 @@
 #include "../util/Util.h"
 #include "Memory.hpp"
 #include "String.hpp"
-#include "StringBuilder.hpp"
+#include "StringBuilder.h"
 
 namespace String
 {

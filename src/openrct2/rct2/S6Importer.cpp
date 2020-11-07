@@ -15,7 +15,7 @@
 #include "../ParkImporter.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/IStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"

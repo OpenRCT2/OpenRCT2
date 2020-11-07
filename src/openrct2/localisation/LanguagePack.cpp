@@ -10,12 +10,12 @@
 #include "LanguagePack.h"
 
 #include "../common.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
-#include "../core/StringReader.hpp"
+#include "../core/StringBuilder.h"
+#include "../core/StringReader.h"
 #include "Language.h"
 #include "Localisation.h"
 

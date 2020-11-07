@@ -13,8 +13,8 @@
 #include "Console.hpp"
 #include "File.h"
 #include "FileScanner.h"
-#include "FileStream.hpp"
-#include "JobPool.hpp"
+#include "FileStream.h"
+#include "JobPool.h"
 #include "Path.hpp"
 
 #include <chrono>

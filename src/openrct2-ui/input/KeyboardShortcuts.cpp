@@ -16,7 +16,7 @@
 #include <openrct2/common.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/core/File.h>
-#include <openrct2/core/FileStream.hpp>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>

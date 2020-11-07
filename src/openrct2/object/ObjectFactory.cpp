@@ -12,7 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"

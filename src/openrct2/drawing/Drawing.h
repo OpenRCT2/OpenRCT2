@@ -12,7 +12,7 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
-#include "../interface/ZoomLevel.hpp"
+#include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
 #include "Text.h"
 
