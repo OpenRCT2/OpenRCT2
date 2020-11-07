@@ -2579,15 +2579,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 {
     if (!firstRun)
     {
-        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
-
         if (State == PeepState::Inspecting)
         {
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
@@ -2610,7 +2608,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     }
 
     ride_fix_breakdown(ride, steps);
-
+    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
 
