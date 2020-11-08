@@ -2510,8 +2510,8 @@ STR_5147    :Trapaças
 STR_5148    :{SMALLFONT}{BLACK}Mudar velocidade do jogo
 STR_5149    :{SMALLFONT}{BLACK}Exibir opções de trapaça
 STR_5150    :Habilitar ferramentas de depuração
-STR_5151    :,
-STR_5152    :.
+STR_5151    :.
+STR_5152    :,
 STR_5153    :Editar Temas…
 STR_5154    :Exibição por Hardware
 STR_5155    :Permitir o teste de atrações incompletas
