@@ -575,6 +575,13 @@ static void window_options_common_invalidate_before(rct_window* w)
     window_options_set_pressed_tab(w);
 
     w->disabled_widgets = 0;
+    auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+    if (!hasFilePicker)
+    {
+        w->enabled_widgets &= ~WIDX_ALWAYS_NATIVE_LOADSAVE;
+        w->disabled_widgets |= WIDX_ALWAYS_NATIVE_LOADSAVE;
+        w->widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WWT_EMPTY;
+    }
 }
 
 static void window_options_common_invalidate_after(rct_window* w)

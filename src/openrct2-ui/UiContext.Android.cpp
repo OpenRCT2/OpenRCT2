@@ -70,6 +70,11 @@ namespace OpenRCT2::Ui
         {
             STUB();
         }
+
+        bool HasFilePicker() const override
+        {
+            return false;
+        }
     };
 
     IPlatformUiContext* CreatePlatformUiContext()

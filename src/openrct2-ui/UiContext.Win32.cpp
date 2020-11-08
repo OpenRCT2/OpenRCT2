@@ -197,6 +197,11 @@ namespace OpenRCT2::Ui
             return result;
         }
 
+        bool HasFilePicker() const override
+        {
+            return true;
+        }
+
     private:
         HWND GetHWND(SDL_Window* window)
         {

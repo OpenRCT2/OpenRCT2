@@ -30,6 +30,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/title/TitleScreen.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -252,7 +253,8 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
         return nullptr;
 
     // Bypass the lot?
-    if (gConfigGeneral.use_native_browse_dialog)
+    auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+    if (gConfigGeneral.use_native_browse_dialog && hasFilePicker)
     {
         if (browse(isSave, path, sizeof(path)))
         {
@@ -273,6 +275,13 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
         w->min_height = WH / 2;
         w->max_width = WW * 2;
         w->max_height = WH * 2;
+
+        if (!hasFilePicker)
+        {
+            w->enabled_widgets &= ~(1 << WIDX_BROWSE);
+            w->disabled_widgets |= (1 << WIDX_BROWSE);
+            window_loadsave_widgets[WIDX_BROWSE].type = WWT_EMPTY;
+        }
     }
 
     const char* pattern = getFilterPatternByType(type, isSave);
