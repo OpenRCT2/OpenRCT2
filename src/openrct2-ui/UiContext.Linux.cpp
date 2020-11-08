@@ -250,6 +250,12 @@ namespace OpenRCT2::Ui
             return result;
         }
 
+        bool HasFilePicker() const override
+        {
+            std::string dummy;
+            return GetDialogApp(&dummy) != DIALOG_TYPE::NONE;
+        }
+
     private:
         static DIALOG_TYPE GetDialogApp(std::string* executablePath)
         {

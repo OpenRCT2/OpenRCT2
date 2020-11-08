@@ -198,6 +198,11 @@ namespace OpenRCT2::Ui
         {
             delete _windowManager;
         }
+
+        bool HasFilePicker() const override
+        {
+            return false;
+        }
     };
 
     std::shared_ptr<IUiContext> CreateDummyUiContext()

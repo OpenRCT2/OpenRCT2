@@ -794,12 +794,18 @@ bool config_find_or_browse_install_directory()
             return false;
         }
 
+        auto uiContext = GetContext()->GetUiContext();
+        if (!uiContext->HasFilePicker())
+        {
+            uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            return false;
+        }
+
         try
         {
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
 
                 std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));

@@ -117,6 +117,7 @@ namespace OpenRCT2
             virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
+            virtual bool HasFilePicker() const abstract;
 
             // Input
             virtual const CursorState* GetCursorState() abstract;

@@ -624,6 +624,11 @@ public:
         return _platformUiContext->ShowDirectoryDialog(_window, title);
     }
 
+    bool HasFilePicker() const override
+    {
+        return _platformUiContext->HasFilePicker();
+    }
+
     IWindowManager* GetWindowManager() override
     {
         return _windowManager;
