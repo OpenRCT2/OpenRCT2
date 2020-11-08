@@ -3652,7 +3652,7 @@ STR_6395    :Maintenance
 STR_6396    :Disable screensaver and monitor power saving
 STR_6397    :{SMALLFONT}{BLACK}If checked, screensaver and other monitor power saving features will be inhibited while OpenRCT2 is running.
 STR_6398    :File contains unsupported ride types. Please update to a newer version of OpenRCT2.
-STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the "game_path" variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
+STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
 
 #############
 # Scenarios #
