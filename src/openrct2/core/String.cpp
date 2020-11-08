@@ -745,6 +745,50 @@ namespace String
 #endif
     }
 
+    std::string ToLower(const std::string_view& src)
+    {
+#ifdef _WIN32
+#    if _WIN32_WINNT >= 0x0600
+        auto srcW = ToWideChar(src);
+
+        // Measure how long the destination needs to be
+        auto requiredSize = LCMapStringEx(
+            LOCALE_NAME_USER_DEFAULT, LCMAP_LOWERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), static_cast<int>(srcW.length()),
+            nullptr, 0, nullptr, nullptr, 0);
+
+        auto dstW = std::wstring();
+        dstW.resize(requiredSize);
+
+        // Transform the string
+        auto result = LCMapStringEx(
+            LOCALE_NAME_USER_DEFAULT, LCMAP_LOWERCASE | LCMAP_LINGUISTIC_CASING, srcW.c_str(), static_cast<int>(srcW.length()),
+            dstW.data(), static_cast<int>(dstW.length()), nullptr, nullptr, 0);
+        if (result == 0)
+        {
+            // Check the error
+            auto error = GetLastError();
+            log_warning("LCMapStringEx failed with %d", error);
+            return std::string(src);
+        }
+        else
+        {
+            return String::ToUtf8(dstW);
+        }
+#    else
+        log_warning("String::ToLower not supported");
+        return std::string(src);
+#    endif
+#else
+        icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
+        str.toLower();
+
+        std::string res;
+        str.toUTF8String(res);
+
+        return res;
+#endif
+    }
+
     bool ContainsColourCode(const std::string& string)
     {
         for (unsigned char c : string)

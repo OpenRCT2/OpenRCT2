@@ -20,6 +20,7 @@
 #include "../core/String.hpp"
 #include "../core/Zip.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "../util/Util.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
@@ -230,6 +231,9 @@ namespace ObjectFactory
                 {
                     throw std::runtime_error("Object has errors");
                 }
+
+                std::string identifier = "legacy." + String::ToLower(objectName);
+                result->SetIdentifier(identifier);
                 result->SetSourceGames({ entry.GetSourceGame() });
             }
         }
