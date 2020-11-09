@@ -64,7 +64,7 @@ enum
 static constexpr uint8_t _numSourceGameItems = 8;
 
 static uint32_t _filter_flags;
-static uint16_t _filter_object_counts[ObjectType::Count];
+static uint16_t _filter_object_counts[EnumValue(ObjectType::Count)];
 
 static char _filter_string[MAX_PATH];
 
@@ -222,7 +222,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item);
 static void filter_update_counts();
 
 static std::string object_get_description(const Object* object);
-static int32_t get_selected_object_type(rct_window* w);
+static ObjectType get_selected_object_type(rct_window* w);
 
 enum
 {
@@ -1224,7 +1224,7 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
     w->scrolls[0].v_top = 0;
     w->frame_no = 0;
 
-    if (page == ObjectType::Ride)
+    if (page == EnumValue(ObjectType::Ride))
     {
         _listSortType = RIDE_SORT_TYPE;
         _listSortDescending = false;
@@ -1314,7 +1314,7 @@ static void editor_load_selected_objects()
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
                     // Defaults selected items to researched (if in-game)
-                    uint8_t objectType = entry->GetType();
+                    ObjectType objectType = entry->GetType();
                     auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {
@@ -1474,7 +1474,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
     switch (item->ObjectEntry.GetType())
     {
         case ObjectType::Ride:
-
+        {
             uint8_t rideType = 0;
             for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
             {
@@ -1485,6 +1485,25 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                 }
             }
             return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
+        }
+        case ObjectType::SmallScenery:
+        case ObjectType::LargeScenery:
+        case ObjectType::Walls:
+        case ObjectType::Banners:
+        case ObjectType::Paths:
+        case ObjectType::PathBits:
+        case ObjectType::SceneryGroup:
+        case ObjectType::ParkEntrance:
+        case ObjectType::Water:
+        case ObjectType::ScenarioText:
+        case ObjectType::TerrainSurface:
+        case ObjectType::TerrainEdge:
+        case ObjectType::Station:
+        case ObjectType::Music:
+        case ObjectType::Count:
+        case ObjectType::None:
+            //This function works only with ObjectType::Ride.
+            break;
     }
     return true;
 }
@@ -1539,11 +1558,11 @@ static std::string object_get_description(const Object* object)
     }
 }
 
-static int32_t get_selected_object_type(rct_window* w)
+static ObjectType get_selected_object_type(rct_window* w)
 {
     auto tab = w->selected_tab;
-    if (tab >= ObjectType::ScenarioText)
-        return tab + 1;
+    if (tab >= EnumValue(ObjectType::ScenarioText))
+        return static_cast<ObjectType>(tab + 1);
     else
-        return tab;
+        return static_cast<ObjectType>(tab);
 }

@@ -12,6 +12,8 @@
 
 #include "common.h"
 
+#include <src/openrct2/object/Object.h>
+
 namespace Editor
 {
     void Load();
@@ -21,13 +23,13 @@ namespace Editor
     bool LoadLandscape(const utf8* path);
 
     bool CheckPark();
-    int32_t CheckObjectSelection();
+    ObjectType CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();
 
     uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index);
-    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags);
-    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags);
+    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
+    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 } // namespace Editor
 
 enum RCT2_EDITOR_STEP

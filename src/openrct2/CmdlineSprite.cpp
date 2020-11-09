@@ -468,7 +468,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
         auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
-        uint8_t objectType = entry->GetType();
+        ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();
         auto metaObject = objManager.GetLoadedObject(objectType, entryIndex);

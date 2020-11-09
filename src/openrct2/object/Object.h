@@ -23,7 +23,7 @@ using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of rct_object_entry->flags
-enum ObjectType : uint8_t
+enum class ObjectType : uint8_t
 {
     Ride,
     SmallScenery,
@@ -41,7 +41,8 @@ enum ObjectType : uint8_t
     Station,
     Music,
 
-    Count
+    Count,
+    None=255
 };
 
 enum OBJECT_SELECTION_FLAGS
@@ -100,9 +101,9 @@ struct rct_object_entry
 
     void SetName(const std::string_view& value);
 
-    uint8_t GetType() const
+    ObjectType GetType() const
     {
-        return flags & 0x0F;
+        return static_cast<ObjectType>(flags & 0x0F);
     }
 
     std::optional<uint8_t> GetSceneryType() const;
@@ -264,7 +265,7 @@ public:
     {
     }
 
-    virtual uint8_t GetObjectType() const final
+    virtual ObjectType GetObjectType() const final
     {
         return _objectEntry.GetType();
     }
@@ -304,12 +305,12 @@ extern int32_t object_entry_group_encoding[];
 bool object_entry_is_empty(const rct_object_entry* entry);
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex);
+bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
-void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index);
-const rct_object_entry* object_entry_get_entry(int32_t objectType, ObjectEntryIndex index);
+void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
+const rct_object_entry* object_entry_get_entry(ObjectType objectType, ObjectEntryIndex index);

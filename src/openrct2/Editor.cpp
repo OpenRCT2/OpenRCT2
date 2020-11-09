@@ -445,7 +445,7 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    int32_t CheckObjectSelection()
+    ObjectType CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
@@ -479,7 +479,7 @@ namespace Editor
             }
         }
 
-        return -1;
+        return ObjectType::None;
     }
 
     /**
@@ -541,7 +541,7 @@ namespace Editor
         return result;
     }
 
-    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags)
+    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
         auto& list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)
@@ -551,7 +551,7 @@ namespace Editor
         list[index] &= ~flags;
     }
 
-    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags)
+    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
         auto& list = _editorSelectedObjectFlags[objectType];
         if (list.size() <= index)

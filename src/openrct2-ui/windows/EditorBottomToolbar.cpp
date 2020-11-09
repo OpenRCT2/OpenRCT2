@@ -176,8 +176,8 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window* w;
 
-    int32_t missingObjectType = Editor::CheckObjectSelection();
-    if (missingObjectType < 0)
+    ObjectType missingObjectType = Editor::CheckObjectSelection();
+    if (missingObjectType == ObjectType::None)
     {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;

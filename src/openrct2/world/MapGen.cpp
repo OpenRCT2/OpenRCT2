@@ -260,7 +260,7 @@ static void mapgen_place_trees()
     std::vector<int32_t> desertTreeIds(std::size(DesertTrees), 0);
     std::vector<int32_t> snowTreeIds(std::size(SnowTrees), 0);
 
-    for (int32_t i = 0; i < object_entry_group_counts[ObjectType::SmallScenery]; i++)
+    for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
         auto sceneryEntry = get_small_scenery_entry(i);
         auto entry = object_entry_get_entry(ObjectType::SmallScenery, i);

@@ -529,7 +529,7 @@ private:
                 auto foundObject = objectRepository.FindObjectLegacy(objectName);
                 if (foundObject != nullptr)
                 {
-                    uint8_t objectType = foundObject->ObjectEntry.GetType();
+                    ObjectType objectType = foundObject->ObjectEntry.GetType();
                     switch (objectType)
                     {
                         case ObjectType::SmallScenery:
@@ -537,6 +537,7 @@ private:
                         case ObjectType::Walls:
                         case ObjectType::Paths:
                         case ObjectType::PathBits:
+                        {
                             EntryList* entries = GetEntryList(objectType);
 
                             // Check if there are spare entries available
@@ -545,6 +546,21 @@ private:
                             {
                                 entries->GetOrAddEntry(objectName);
                             }
+                            break;
+                        }
+                        case ObjectType::Ride:
+                        case ObjectType::Banners:
+                        case ObjectType::SceneryGroup:
+                        case ObjectType::ParkEntrance:
+                        case ObjectType::Water:
+                        case ObjectType::ScenarioText:
+                        case ObjectType::TerrainSurface:
+                        case ObjectType::TerrainEdge:
+                        case ObjectType::Station:
+                        case ObjectType::Music:
+                        case ObjectType::Count:
+                        case ObjectType::None:
+                            //This switch processes only ObjectTypes valid for scenery
                             break;
                     }
                 }
@@ -1892,12 +1908,12 @@ private:
         LoadObjects(ObjectType::Water, _waterEntry);
     }
 
-    void LoadObjects(uint8_t objectType, const EntryList& entries)
+    void LoadObjects(ObjectType objectType, const EntryList& entries)
     {
         LoadObjects(objectType, entries.GetEntries());
     }
 
-    void LoadObjects(uint8_t objectType, const std::vector<const char*>& entries)
+    void LoadObjects(ObjectType objectType, const std::vector<const char*>& entries)
     {
         auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -1920,13 +1936,13 @@ private:
         }
     }
 
-    void AppendRequiredObjects(std::vector<rct_object_entry>& entries, uint8_t objectType, const EntryList& entryList)
+    void AppendRequiredObjects(std::vector<rct_object_entry>& entries, ObjectType objectType, const EntryList& entryList)
     {
         AppendRequiredObjects(entries, objectType, entryList.GetEntries());
     }
 
     void AppendRequiredObjects(
-        std::vector<rct_object_entry>& entries, uint8_t objectType, const std::vector<const char*>& objectNames)
+        std::vector<rct_object_entry>& entries, ObjectType objectType, const std::vector<const char*>& objectNames)
     {
         for (const auto objectName : objectNames)
         {
@@ -1966,7 +1982,7 @@ private:
     }
 
     void GetInvalidObjects(
-        uint8_t objectType, const std::vector<const char*>& entries, std::vector<rct_object_entry>& missingObjects)
+        ObjectType objectType, const std::vector<const char*>& entries, std::vector<rct_object_entry>& missingObjects)
     {
         auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
         for (const char* objectName : entries)
@@ -2954,7 +2970,7 @@ private:
         }
     }
 
-    EntryList* GetEntryList(uint8_t objectType)
+    EntryList* GetEntryList(ObjectType objectType)
     {
         switch (objectType)
         {
@@ -2974,6 +2990,17 @@ private:
                 return &_sceneryGroupEntries;
             case ObjectType::Water:
                 return &_waterEntry;
+            case ObjectType::Banners:
+            case ObjectType::ParkEntrance:
+            case ObjectType::ScenarioText:
+            case ObjectType::TerrainSurface:
+            case ObjectType::TerrainEdge:
+            case ObjectType::Station:
+            case ObjectType::Music:
+            case ObjectType::Count:
+            case ObjectType::None:
+                //This switch processes only ObjectType for for Entries
+                break;
         }
         return nullptr;
     }

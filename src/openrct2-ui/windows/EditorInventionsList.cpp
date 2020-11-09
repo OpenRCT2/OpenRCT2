@@ -126,12 +126,12 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex);
 static void research_rides_setup()
 {
     // Reset all objects to not required
-    for (uint8_t objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+    for (uint8_t objectType = EnumValue(ObjectType::Ride); objectType < EnumValue(ObjectType::Count); objectType++)
     {
         auto maxObjects = object_entry_group_counts[objectType];
         for (int32_t i = 0; i < maxObjects; i++)
         {
-            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
+            Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_ALL);
         }
     }
 
@@ -531,7 +531,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
         return;
 
     // Preview image
-    int32_t objectEntryType = ObjectType::SceneryGroup;
+    ObjectType objectEntryType = ObjectType::SceneryGroup;
     if (researchItem->type == Research::EntryType::Ride)
         objectEntryType = ObjectType::Ride;
 

@@ -667,7 +667,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
 {
     for (auto& scenery : td6->scenery_elements)
     {
-        uint8_t entry_type{ 0 };
+        ObjectType entry_type{ 0 };
         ObjectEntryIndex entryIndex{ 0 };
         if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
         {
@@ -728,6 +728,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             case ObjectType::SmallScenery:
+            {
                 scenery.y = -scenery.y;
 
                 if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_DIAGONAL))
@@ -746,16 +747,18 @@ static void track_design_mirror_scenery(TrackDesign* td6)
 
                 scenery.flags ^= (1 << 2);
                 break;
-
+            }
             case ObjectType::Walls:
+            {
                 scenery.y = -scenery.y;
                 if (scenery.flags & (1 << 0))
                 {
                     scenery.flags ^= (1 << 1);
                 }
                 break;
-
+            }
             case ObjectType::Paths:
+            {
                 scenery.y = -scenery.y;
 
                 if (scenery.flags & (1 << 5))
@@ -767,6 +770,23 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 flags = ((flags & (1 << 3)) >> 2) | ((flags & (1 << 1)) << 2);
                 scenery.flags &= 0xF5;
                 scenery.flags |= flags;
+                break;
+            }
+            case ObjectType::Ride:
+            case ObjectType::Banners:
+            case ObjectType::PathBits:
+            case ObjectType::SceneryGroup:
+            case ObjectType::ParkEntrance:
+            case ObjectType::Water:
+            case ObjectType::ScenarioText:
+            case ObjectType::TerrainSurface:
+            case ObjectType::TerrainEdge:
+            case ObjectType::Station:
+            case ObjectType::Music:
+            case ObjectType::Count:
+            case ObjectType::None:
+                //This switch processes only ObjectType for Scenery items.
+                break;
         }
     }
 }
@@ -862,7 +882,7 @@ static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
 }
 
 static bool TrackDesignPlaceSceneryElementGetEntry(
-    uint8_t& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
+    ObjectType& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
 {
     if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
     {
@@ -893,7 +913,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
             }
         }
 
-        if (entry_index == object_entry_group_counts[ObjectType::Paths])
+        if (entry_index == object_entry_group_counts[EnumValue(ObjectType::Paths)])
         {
             _trackDesignPlaceStateSceneryUnavailable = true;
             return true;
@@ -905,7 +925,7 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
-    uint8_t entry_type;
+    ObjectType entry_type;
     ObjectEntryIndex entry_index;
     if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
     {
@@ -997,7 +1017,7 @@ static bool TrackDesignPlaceSceneryElement(
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_GHOST
         || _trackDesignPlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
     {
-        uint8_t entry_type;
+        ObjectType entry_type;
         ObjectEntryIndex entry_index;
         if (TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery))
         {

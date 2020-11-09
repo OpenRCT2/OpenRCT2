@@ -320,7 +320,7 @@ namespace ObjectFactory
         return result;
     }
 
-    static uint8_t ParseObjectType(const std::string& s)
+    static ObjectType ParseObjectType(const std::string& s)
     {
         if (s == "ride")
             return ObjectType::Ride;
@@ -348,7 +348,7 @@ namespace ObjectFactory
             return ObjectType::TerrainEdge;
         if (s == "station")
             return ObjectType::Station;
-        return 0xFF;
+        return ObjectType::None;
     }
 
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)

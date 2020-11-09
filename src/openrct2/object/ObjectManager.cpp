@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -65,7 +66,7 @@ public:
         return _loadedObjects[index].get();
     }
 
-    Object* GetLoadedObject(int32_t objectType, size_t index) override
+    Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
         if (index >= static_cast<size_t>(object_entry_group_counts[objectType]))
         {
@@ -684,7 +685,7 @@ private:
         }
 
         // Build object lists
-        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[ObjectType::Ride]);
+        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
         for (size_t i = 0; i < maxRideObjects; i++)
         {
             auto rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));

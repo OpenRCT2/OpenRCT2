@@ -85,16 +85,16 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        static DukValue CreateScObject(duk_context* ctx, uint8_t type, int32_t index)
+        static DukValue CreateScObject(duk_context* ctx, ObjectType type, int32_t index)
         {
             switch (type)
             {
                 case ObjectType::Ride:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(EnumValue(type), index));
                 case ObjectType::SmallScenery:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(EnumValue(type), index));
                 default:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(EnumValue(type), index));
             }
         }
 

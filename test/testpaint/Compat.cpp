@@ -127,7 +127,7 @@ Ride* get_ride(ride_id_t index)
 
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[ObjectType::OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[ObjectType::Ride])
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;

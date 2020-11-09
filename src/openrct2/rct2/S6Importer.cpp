@@ -1679,7 +1679,7 @@ public:
         std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
 
         int objectIt = 0;
-        for (int16_t objectType = ObjectType::Ride; objectType <= ObjectType::Water; objectType++)
+        for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
