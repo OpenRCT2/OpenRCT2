@@ -23,25 +23,25 @@ using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of rct_object_entry->flags
-enum OBJECT_TYPE
+enum ObjectType : uint8_t
 {
-    OBJECT_TYPE_RIDE,
-    OBJECT_TYPE_SMALL_SCENERY,
-    OBJECT_TYPE_LARGE_SCENERY,
-    OBJECT_TYPE_WALLS,
-    OBJECT_TYPE_BANNERS,
-    OBJECT_TYPE_PATHS,
-    OBJECT_TYPE_PATH_BITS,
-    OBJECT_TYPE_SCENERY_GROUP,
-    OBJECT_TYPE_PARK_ENTRANCE,
-    OBJECT_TYPE_WATER,
-    OBJECT_TYPE_SCENARIO_TEXT,
-    OBJECT_TYPE_TERRAIN_SURFACE,
-    OBJECT_TYPE_TERRAIN_EDGE,
-    OBJECT_TYPE_STATION,
-    OBJECT_TYPE_MUSIC,
+    Ride,
+    SmallScenery,
+    LargeScenery,
+    Walls,
+    Banners,
+    Paths,
+    PathBits,
+    SceneryGroup,
+    ParkEntrance,
+    Water,
+    ScenarioText,
+    TerrainSurface,
+    TerrainEdge,
+    Station,
+    Music,
 
-    OBJECT_TYPE_COUNT
+    Count
 };
 
 enum OBJECT_SELECTION_FLAGS

@@ -47,7 +47,7 @@ namespace OpenRCT2::Scripting
 
         static std::optional<uint8_t> StringToObjectType(const std::string_view& type)
         {
-            for (uint8_t i = 0; i < OBJECT_TYPE_COUNT; i++)
+            for (uint8_t i = 0; i < ObjectType::Count; i++)
             {
                 auto s = ObjectTypeToString(i);
                 if (s == type)
@@ -120,12 +120,12 @@ namespace OpenRCT2::Scripting
     class ScRideObjectVehicle
     {
     private:
-        OBJECT_TYPE _objectType{};
+        ObjectType _objectType{};
         ObjectEntryIndex _objectIndex{};
         size_t _vehicleIndex{};
 
     public:
-        ScRideObjectVehicle(OBJECT_TYPE objectType, ObjectEntryIndex objectIndex, size_t vehicleIndex)
+        ScRideObjectVehicle(ObjectType objectType, ObjectEntryIndex objectIndex, size_t vehicleIndex)
             : _objectType(objectType)
             , _objectIndex(objectIndex)
             , _vehicleIndex(vehicleIndex)
@@ -836,7 +836,7 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(entry->vehicles); i++)
                 {
-                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<OBJECT_TYPE>(_type), _index, i));
+                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<ObjectType>(_type), _index, i));
                 }
             }
             return result;

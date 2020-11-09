@@ -1074,7 +1074,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
         uint8_t objectType = entry->GetType();
-        if (objectType == OBJECT_TYPE_RIDE)
+        if (objectType == ObjectType::Ride)
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
@@ -1096,7 +1096,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
+        else if (objectType == ObjectType::SceneryGroup)
         {
             research_insert_scenery_group_entry(groupIndex, true);
 

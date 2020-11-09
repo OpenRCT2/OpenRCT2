@@ -279,7 +279,7 @@ static void window_land_invalidate(rct_window* w)
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _selectedFloorTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
     if (surfaceObj != nullptr)
     {
         surfaceImage = surfaceObj->IconImageId;
@@ -289,7 +289,7 @@ static void window_land_invalidate(rct_window* w)
         }
     }
     const auto edgeObj = static_cast<TerrainEdgeObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _selectedWallTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
     if (edgeObj != nullptr)
     {
         edgeImage = edgeObj->IconImageId;
@@ -361,7 +361,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
             if (surfaceObj != nullptr)
             {
                 price += numTiles * surfaceObj->Price;

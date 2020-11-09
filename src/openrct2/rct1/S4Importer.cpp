@@ -532,11 +532,11 @@ private:
                     uint8_t objectType = foundObject->ObjectEntry.GetType();
                     switch (objectType)
                     {
-                        case OBJECT_TYPE_SMALL_SCENERY:
-                        case OBJECT_TYPE_LARGE_SCENERY:
-                        case OBJECT_TYPE_WALLS:
-                        case OBJECT_TYPE_PATHS:
-                        case OBJECT_TYPE_PATH_BITS:
+                        case ObjectType::SmallScenery:
+                        case ObjectType::LargeScenery:
+                        case ObjectType::Walls:
+                        case ObjectType::Paths:
+                        case ObjectType::PathBits:
                             EntryList* entries = GetEntryList(objectType);
 
                             // Check if there are spare entries available
@@ -1868,15 +1868,15 @@ private:
         auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
         objectManager.LoadDefaultObjects();
 
-        LoadObjects(OBJECT_TYPE_RIDE, _rideEntries);
-        LoadObjects(OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
-        LoadObjects(OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);
-        LoadObjects(OBJECT_TYPE_WALLS, _wallEntries);
-        LoadObjects(OBJECT_TYPE_PATHS, _pathEntries);
-        LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
-        LoadObjects(OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
+        LoadObjects(ObjectType::Ride, _rideEntries);
+        LoadObjects(ObjectType::SmallScenery, _smallSceneryEntries);
+        LoadObjects(ObjectType::LargeScenery, _largeSceneryEntries);
+        LoadObjects(ObjectType::Walls, _wallEntries);
+        LoadObjects(ObjectType::Paths, _pathEntries);
+        LoadObjects(ObjectType::PathBits, _pathAdditionEntries);
+        LoadObjects(ObjectType::SceneryGroup, _sceneryGroupEntries);
         LoadObjects(
-            OBJECT_TYPE_BANNERS,
+            ObjectType::Banners,
             std::vector<const char*>({
                 "BN1     ",
                 "BN2     ",
@@ -1888,8 +1888,8 @@ private:
                 "BN8     ",
                 "BN9     ",
             }));
-        LoadObjects(OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        LoadObjects(OBJECT_TYPE_WATER, _waterEntry);
+        LoadObjects(ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
+        LoadObjects(ObjectType::Water, _waterEntry);
     }
 
     void LoadObjects(uint8_t objectType, const EntryList& entries)
@@ -1910,7 +1910,7 @@ private:
             entry.checksum = 0;
 
             Object* object = objectManager.LoadObject(&entry);
-            if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
+            if (object == nullptr && objectType != ObjectType::SceneryGroup)
             {
                 log_error("Failed to load %s.", objectName);
                 throw std::runtime_error("Failed to load object.");
@@ -1940,15 +1940,15 @@ private:
     std::vector<rct_object_entry> GetRequiredObjects()
     {
         std::vector<rct_object_entry> result;
-        AppendRequiredObjects(result, OBJECT_TYPE_RIDE, _rideEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_SMALL_SCENERY, _smallSceneryEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_LARGE_SCENERY, _largeSceneryEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_WALLS, _wallEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_PATHS, _pathEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
-        AppendRequiredObjects(result, OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
+        AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
+        AppendRequiredObjects(result, ObjectType::SmallScenery, _smallSceneryEntries);
+        AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
+        AppendRequiredObjects(result, ObjectType::Walls, _wallEntries);
+        AppendRequiredObjects(result, ObjectType::Paths, _pathEntries);
+        AppendRequiredObjects(result, ObjectType::PathBits, _pathAdditionEntries);
+        AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
         AppendRequiredObjects(
-            result, OBJECT_TYPE_BANNERS,
+            result, ObjectType::Banners,
             std::vector<const char*>({
                 "BN1     ",
                 "BN2     ",
@@ -1960,8 +1960,8 @@ private:
                 "BN8     ",
                 "BN9     ",
             }));
-        AppendRequiredObjects(result, OBJECT_TYPE_PARK_ENTRANCE, std::vector<const char*>({ "PKENT1  " }));
-        AppendRequiredObjects(result, OBJECT_TYPE_WATER, _waterEntry);
+        AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
+        AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
         return result;
     }
 
@@ -1985,7 +1985,7 @@ private:
             else
             {
                 auto object = objectRepository.LoadObject(ori);
-                if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
+                if (object == nullptr && objectType != ObjectType::SceneryGroup)
                 {
                     missingObjects.push_back(entry);
                     Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
@@ -2958,21 +2958,21 @@ private:
     {
         switch (objectType)
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
                 return &_rideEntries;
-            case OBJECT_TYPE_SMALL_SCENERY:
+            case ObjectType::SmallScenery:
                 return &_smallSceneryEntries;
-            case OBJECT_TYPE_LARGE_SCENERY:
+            case ObjectType::LargeScenery:
                 return &_largeSceneryEntries;
-            case OBJECT_TYPE_WALLS:
+            case ObjectType::Walls:
                 return &_wallEntries;
-            case OBJECT_TYPE_PATHS:
+            case ObjectType::Paths:
                 return &_pathEntries;
-            case OBJECT_TYPE_PATH_BITS:
+            case ObjectType::PathBits:
                 return &_pathAdditionEntries;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
                 return &_sceneryGroupEntries;
-            case OBJECT_TYPE_WATER:
+            case ObjectType::Water:
                 return &_waterEntry;
         }
         return nullptr;

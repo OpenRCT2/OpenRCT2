@@ -64,7 +64,7 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, uint8
     auto itemIndex = 0;
     for (size_t i = 0; i < MAX_TERRAIN_SURFACE_OBJECTS; i++)
     {
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, i));
+        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, i));
         if (surfaceObj != nullptr)
         {
             gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
@@ -97,7 +97,7 @@ void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, uint8_t 
     auto itemIndex = 0;
     for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
     {
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, i));
+        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, i));
         if (edgeObj != nullptr && edgeObj->NumImagesLoaded > 1)
         {
             gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;

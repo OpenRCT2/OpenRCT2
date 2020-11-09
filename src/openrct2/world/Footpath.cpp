@@ -2177,7 +2177,7 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     // TODO: Change when moving to the new save format.
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex % MAX_PATH_OBJECTS);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
     if (obj != nullptr)
     {
         if (entryIndex < MAX_PATH_OBJECTS)
@@ -2192,7 +2192,7 @@ PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
 {
     PathRailingsEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
     if (obj != nullptr)
     {
         result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();

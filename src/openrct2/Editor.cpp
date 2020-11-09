@@ -47,7 +47,7 @@ using namespace OpenRCT2;
 
 namespace Editor
 {
-    static std::array<std::vector<uint8_t>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, ObjectType::Count> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
@@ -451,31 +451,31 @@ namespace Editor
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::Paths))
             {
                 gGameCommandErrorText = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
-                return OBJECT_TYPE_PATHS;
+                return ObjectType::Paths;
             }
         }
 
-        if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE))
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::Ride))
         {
             gGameCommandErrorText = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
-            return OBJECT_TYPE_RIDE;
+            return ObjectType::Ride;
         }
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::ParkEntrance))
             {
                 gGameCommandErrorText = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
-                return OBJECT_TYPE_PARK_ENTRANCE;
+                return ObjectType::ParkEntrance;
             }
 
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::Water))
             {
                 gGameCommandErrorText = STR_WATER_TYPE_MUST_BE_SELECTED;
-                return OBJECT_TYPE_WATER;
+                return ObjectType::Water;
             }
         }
 

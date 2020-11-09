@@ -233,7 +233,7 @@ rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -245,7 +245,7 @@ rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -257,7 +257,7 @@ rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -269,7 +269,7 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::SceneryGroup, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_group_entry*>(obj->GetLegacyData());

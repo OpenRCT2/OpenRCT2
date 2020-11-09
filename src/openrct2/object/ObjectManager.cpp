@@ -426,27 +426,27 @@ private:
                 rct_scenery_entry* sceneryEntry;
                 switch (loadedObject->GetObjectType())
                 {
-                    case OBJECT_TYPE_SMALL_SCENERY:
+                    case ObjectType::SmallScenery:
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_LARGE_SCENERY:
+                    case ObjectType::LargeScenery:
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_WALLS:
+                    case ObjectType::Walls:
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_BANNERS:
+                    case ObjectType::Banners:
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_PATH_BITS:
+                    case ObjectType::PathBits:
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_SCENERY_GROUP:
+                    case ObjectType::SceneryGroup:
                         auto sgObject = dynamic_cast<SceneryGroupObject*>(loadedObject.get());
                         sgObject->UpdateEntryIndexes();
                         break;
@@ -499,7 +499,7 @@ private:
             ori = _objectRepository.FindObject(&entry);
             if (ori == nullptr)
             {
-                if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (entry.GetType() != ObjectType::ScenarioText)
                 {
                     invalidEntries.push_back(entry);
                     ReportMissingObject(&entry);
@@ -539,7 +539,7 @@ private:
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry->GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (ori == nullptr && entry->GetType() != ObjectType::ScenarioText)
                 {
                     missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
@@ -684,10 +684,10 @@ private:
         }
 
         // Build object lists
-        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[OBJECT_TYPE_RIDE]);
+        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[ObjectType::Ride]);
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto rideObject = static_cast<RideObject*>(GetLoadedObject(OBJECT_TYPE_RIDE, i));
+            auto rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
             if (rideObject != nullptr)
             {
                 const auto entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());

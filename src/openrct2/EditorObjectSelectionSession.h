@@ -24,7 +24,7 @@ enum EDITOR_INPUT_FLAGS
 
 extern bool _maxObjectsWasHit;
 extern std::vector<uint8_t> _objectSelectionFlags;
-extern int32_t _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
+extern int32_t _numSelectedObjectsForType[ObjectType::Count];
 
 bool editor_check_object_group_at_least_one_selected(int32_t objectType);
 void editor_object_flags_free();

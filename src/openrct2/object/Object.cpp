@@ -145,15 +145,15 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
 {
     switch (GetType())
     {
-        case OBJECT_TYPE_SMALL_SCENERY:
+        case ObjectType::SmallScenery:
             return SCENERY_TYPE_SMALL;
-        case OBJECT_TYPE_LARGE_SCENERY:
+        case ObjectType::LargeScenery:
             return SCENERY_TYPE_LARGE;
-        case OBJECT_TYPE_WALLS:
+        case ObjectType::Walls:
             return SCENERY_TYPE_WALL;
-        case OBJECT_TYPE_BANNERS:
+        case ObjectType::Banners:
             return SCENERY_TYPE_BANNER;
-        case OBJECT_TYPE_PATH_BITS:
+        case ObjectType::PathBits:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;

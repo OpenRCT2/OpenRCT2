@@ -1218,7 +1218,7 @@ static bool footpath_select_default()
 {
     // Select first available footpath
     int32_t footpathId = -1;
-    for (int32_t i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++)
+    for (int32_t i = 0; i < object_entry_group_counts[ObjectType::Paths]; i++)
     {
         PathSurfaceEntry* pathEntry = get_path_surface_entry(i);
         if (pathEntry != nullptr)

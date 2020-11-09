@@ -772,7 +772,7 @@ public:
         // This stall was not colourable in RCT2.
         if (dst->type == RIDE_TYPE_FOOD_STALL)
         {
-            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            auto entry = object_entry_get_entry(ObjectType::Ride, dst->subtype);
             if (entry != nullptr)
             {
                 char name[DAT_NAME_LENGTH + 1];
@@ -1679,7 +1679,7 @@ public:
         std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
 
         int objectIt = 0;
-        for (int16_t objectType = OBJECT_TYPE_RIDE; objectType <= OBJECT_TYPE_WATER; objectType++)
+        for (int16_t objectType = ObjectType::Ride; objectType <= ObjectType::Water; objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {

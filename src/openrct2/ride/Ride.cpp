@@ -216,7 +216,7 @@ rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
     rct_ride_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_RIDE, index);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Ride, index);
     if (obj != nullptr)
     {
         result = static_cast<rct_ride_entry*>(obj->GetLegacyData());
@@ -227,13 +227,13 @@ rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 
 std::string_view get_ride_entry_name(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[ObjectType::Ride])
     {
         log_error("invalid index %d for ride type", index);
         return {};
     }
 
-    auto objectEntry = object_entry_get_entry(OBJECT_TYPE_RIDE, index);
+    auto objectEntry = object_entry_get_entry(ObjectType::Ride, index);
     if (objectEntry != nullptr)
     {
         return objectEntry->GetName();
@@ -7410,7 +7410,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
 StationObject* ride_get_station_object(const Ride* ride)
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, ride->entrance_style));
+    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, ride->entrance_style));
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

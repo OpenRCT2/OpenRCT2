@@ -177,7 +177,7 @@ rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());

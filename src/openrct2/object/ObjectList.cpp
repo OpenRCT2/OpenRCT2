@@ -87,7 +87,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
 bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex)
 {
     int32_t objectType = entry->GetType();
-    if (objectType >= OBJECT_TYPE_COUNT)
+    if (objectType >= ObjectType::Count)
     {
         return false;
     }
@@ -113,7 +113,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
 
 void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
-    uint8_t objectType = OBJECT_TYPE_RIDE;
+    uint8_t objectType = ObjectType::Ride;
     for (size_t groupCount : object_entry_group_counts)
     {
         if (index >= groupCount)
