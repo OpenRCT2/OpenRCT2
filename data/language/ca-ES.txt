@@ -2258,8 +2258,6 @@ STR_3141    :No es pot establir un multicircuit si l'atracció té cable d'eleva
 STR_3142    :{WINDOW_COLOUR_2}Capacitat: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Mostra gent al mapa
 STR_3144    :{SMALLFONT}{BLACK}Mostra les atraccions i estands al mapa
-STR_3158    :gràfic
-STR_3159    :llista
 STR_3160    :{SMALLFONT}{BLACK}Seleccioneu el nombre de circuits per viatge.
 STR_3162    :No es pot assignar suficient memòria.
 STR_3163    :S'estan instal·lant dades noves:
@@ -2812,7 +2810,6 @@ STR_5484    :{BLACK}(queden {COMMA16} setmanes)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Mostra els missatges recents.
-STR_5488    :Sense entrada (només disponible a l'OpenRCT2)
 STR_5489    :{SMALLFONT}{BLACK}Mostra només els visitants amb seguiment.
 STR_5490    :Desactiva sons i música si es perd el focus
 STR_5491    :Llistat de recerques
@@ -2921,7 +2918,6 @@ STR_5595    :Atracció sinistrada
 STR_5596    :Avisos d'atraccions
 STR_5597    :Recerques d'atraccions i altres
 STR_5598    :Avisos sobre els visitants
-STR_5599    :El visitant s'ha perdut
 STR_5600    :El visitant ha abandonat el parc
 STR_5601    :El visitant està fent cua
 STR_5602    :El visitant ha pujat a una atracció
@@ -3017,8 +3013,6 @@ STR_5724    :Tempesta
 STR_5725    :{BLACK}Força l'estat meteorològic:
 STR_5726    :{SMALLFONT}{BLACK}Escolliu el temps que farà al parc.
 STR_5727    :Qualitat d'escalat:
-STR_5728    :Requereix l'opció de renderitzat amb maquinari
-STR_5729    :{SMALLFONT}{BLACK}Requereix que s'activi l'opció per realitzar el renderitzat via maquinari gràfic.
 STR_5731    :Lineal
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderitzat
@@ -3388,21 +3382,13 @@ STR_6100    :Us heu desconnectat del servidor.
 STR_6101    :Les atraccions no perden valor
 STR_6102    :{SMALLFONT}{BLACK}El valor de les atraccions no disminuirà amb el pas del temps, de manera que els visitants no pensaran de cop que l'atracció és massa cara.
 STR_6103    :{SMALLFONT}{BLACK}Aquesta opció està desactivada si es juga en xarxa.
-STR_6104    :Muntanya russa amb tirabuixons
 STR_6105    :Hipermuntanya russa
-STR_6106    :Atracció de cotxes
 STR_6107    :Monster Trucks
-STR_6108    :Tornado d'acer
 STR_6109    :Hiper-Twister
-STR_6110    :Muntanya russa infantil
 STR_6111    :Minimuntanya russa clàssica
-STR_6112    :Muntanya russa compacta amb vies d'acer per la qual els vagons passen per tirabuixons i inversions.
 STR_6113    :Una muntanya russa alta sense inversions, amb llargues caigudes, alta velocitat, vagons còmodes i amb només unes barres de subjecció.
-STR_6114    :Els passatgers viatgen poc a poc en vehicles autopropulsats sobre la ruta que segueix la via.
 STR_6115    :Camions 4x4 gegants i autopropulsats que poden pujar per pendents empinades.
 STR_6116    :Muntanya russa amb vagons amples que llisca per una via d'acer llisa, passant per una bona varietat d'inversions.
-STR_6117    :Els passatgers drets amb unes subjeccions simples dintre els vagons travessen i gaudeixen de caigudes i girs enrevessats, així com d'una part «a l'aire lliure» damunt dels turons.
-STR_6118    :Muntanya russa suau per gent que encara no s'atreveix amb muntanyes russes grans.
 STR_6119    :Una muntanya russa barata i fàcil de construir, però amb una alçada limitada.
 STR_6120    :{BABYBLUE}Nou vehicle disponible per {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Amplia els drets de construcció del parc fins a les vores del mapa.

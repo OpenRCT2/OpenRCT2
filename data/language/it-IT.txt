@@ -2260,8 +2260,6 @@ STR_3141    :Con la salita per il traino non è possibile usare la modalità mul
 STR_3142    :{WINDOW_COLOUR_2}Capienza: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Mostra le persone sulla mappa
 STR_3144    :{SMALLFONT}{BLACK}Mostra le attrazioni e i negozi sulla mappa
-STR_3158    :grafico
-STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Seleziona il numero di circuiti per corsa
 STR_3162    :Impossibile assegnare abbastanza memoria
 STR_3163    :Installazione dei nuovi dati: 
@@ -2816,7 +2814,6 @@ STR_5484    :{BLACK}({COMMA16} settimana rimasta)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Mostra i messaggi recenti
-STR_5488    :Nessuna entrata (solo OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Mostra solo i visitatori seguiti
 STR_5490    :Disabilità audio quando si perde il focus
 STR_5491    :Lista Invenzioni
@@ -2925,7 +2922,6 @@ STR_5595    :L'attrazione ha avuto un incidente
 STR_5596    :Avvisi attrazione
 STR_5597    :Ricerca completata per attrazione/scenario
 STR_5598    :Avvisi visitatori
-STR_5599    :Il visitatore si è perso
 STR_5600    :Il visitatore ha lasciato il parco
 STR_5601    :Il visitatore è in fila per l'attrazione
 STR_5602    :Il visitatore è sull'attrazione
@@ -3021,8 +3017,6 @@ STR_5724    :Temporale
 STR_5725    :{BLACK}Cambia il meteo a:
 STR_5726    :{SMALLFONT}{BLACK}Imposta il meteo attuale nel parco
 STR_5727    :Qualità scala:
-STR_5728    :Richiede il rendering hardware
-STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
 STR_5731    :Lineare
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
@@ -3393,21 +3387,13 @@ STR_6100    :Disconnesso dal server.
 STR_6101    :Le attrazioni non perdono valore con il tempo
 STR_6102    :{SMALLFONT}{BLACK}Il valore delle attrazioni non calerà con il tempo, in modo che i visitatori non pensino improvvisamente che il costo dell'attrazione sia troppo alto.
 STR_6103    :{SMALLFONT}{BLACK}Questa opzione è disabilitata durante il gioco online.
-STR_6104    :Ottovolante ad avvitamento
 STR_6105    :Hypercoaster
-STR_6106    :Corsa in auto
 STR_6107    :Monster truck
-STR_6108    :Ottovolante ad avvitamento in acciaio
 STR_6109    :Ottovolante grande ad avvitamento
-STR_6110    :Ottovolante per giovanissimi
 STR_6111    :Mini-ottovolante classico
-STR_6112    :Un ottovolante di acciaio compatto, nel quale i treni viaggiano attraverso avvitamenti e inversioni
 STR_6113    :Un ottovolante molto alto ma privo di inversioni, con grandi cadute, un'alta velocità e comodi treni dotati di una barra di protezione sul bacino
-STR_6114    :I passeggeri viaggiano con tranquillità su un percorso a bordo di veicoli motorizzati
 STR_6115    :Enormi camion 4x4 motorizzati, in grado di scalare ripide salite
 STR_6116    :Un ottovolante molto largo che scorre lungo un percorso di acciaio, passando attraverso numerosi tipi di inversioni
-STR_6117    :I passeggeri, seduti su confortevoli treni e protetti soltanto da barre di protezione sul bacino, viaggiano lungo discese e avvitamenti, provando la sensazione di sollevarsi dal sedile
-STR_6118    :Un ottovolante tranquillo per i visitatori che non hanno ancora il coraggio di provare le attrazioni più estreme
 STR_6119    :Un piccolo ed economico ottovolante, la cui altezza è limitata
 STR_6120    :{BABYBLUE}È disponibile un nuovo veicolo per {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Estende i terreni di proprietà del parco fino ai bordi della mappa

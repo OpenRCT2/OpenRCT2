@@ -2209,18 +2209,6 @@ STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You hav
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}LAKKAUTUSTIEDOTE: Puistosi on suljettu !
-STR_3078    :Tavallinen sisäänkäynti
-STR_3079    :Puinen sisäänkäynti
-STR_3080    :Kangastelttasisäänkäynti
-STR_3081    :Linnan sisäänkäynti (harmaa)
-STR_3082    :Linnan sisäänkäynti (ruskea)
-STR_3083    :Viidakkosisäänkäynti
-STR_3084    :Hirsimökkisisäänkäynti
-STR_3085    :Klassinen/Roomalainen sisäänkäynti
-STR_3086    :Abstrktisisäänkäynti
-STR_3087    :Lumi-/Jääsisäänkäynti
-STR_3088    :Pagodisisäänkäynti
-STR_3089    :Avaruussisäänkäynti
 STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
 STR_3091    :Ei ole sallittua poistaa tätä aluetta!
 STR_3092    :You are not allowed to move or modify the station for this ride!
@@ -2275,8 +2263,6 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Kapasiteetti: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Näytä ihmiset kartalla
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3158    :graph
-STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
@@ -2496,11 +2482,6 @@ STR_3390    :Liian monta esinettä valittuna
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Tyhjennä maisema
-STR_3440    :Sivu 1
-STR_3441    :Sivu 2
-STR_3442    :Sivu 3
-STR_3443    :Sivu 4
-STR_3444    :Sivu 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -2833,7 +2814,6 @@ STR_5484    :{BLACK}({COMMA16} viikko jäljellä)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Näytä viimeiset viestit
-STR_5488    :Ei sisäänkäyntiä
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Keksinnötlista

@@ -2202,18 +2202,6 @@ STR_3074    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{N
 STR_3075    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog maar 2 weken om de waardering te verhogen, anders wordt je park gesloten
 STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog maar 7 dagen om die te verhogen, anders wordt je park gesloten
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
-STR_3078    :Standaardingang
-STR_3079    :Houten ingang
-STR_3080    :Canvastentingang
-STR_3081    :Kasteelingang (grijs)
-STR_3082    :Kasteelingang (bruin)
-STR_3083    :Jungle-ingang
-STR_3084    :Blokhutingang
-STR_3085    :Klassieke/Romeinse ingang
-STR_3086    :Abstracte ingang
-STR_3087    :Sneeuw/ijs-ingang
-STR_3088    :Pagode-ingang
-STR_3089    :Ruimte-ingang
 STR_3090    :{SMALLFONT}{BLACK}Selecteer de stijl van de ingang, uitgang, en het station
 STR_3091    :Je mag dit gedeelte niet verwijderen!
 STR_3092    :Je mag het station van deze attractie niet verplaatsen of veranderen!
@@ -2268,8 +2256,6 @@ STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Laat bezoekers zien op kaart
 STR_3144    :{SMALLFONT}{BLACK}Laat attracties en kraampjes zien op kaart
-STR_3158    :grafiek
-STR_3159    :lijst
 STR_3160    :{SMALLFONT}{BLACK}Selecteer het aantal rondes dat de trein per rit zal afleggen
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
@@ -2822,7 +2808,6 @@ STR_5484    :{BLACK}({COMMA16} week resterend)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Recente berichten tonen
-STR_5488    :Geen ingang (alleen in OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Enkel bezoekers die gevolgd worden weergeven
 STR_5490    :Geluid dempen bij focusverlies
 STR_5491    :Uitvindingenlijst
@@ -2931,7 +2916,6 @@ STR_5595    :Als een attractie is neergestort
 STR_5596    :Waarschuwingen over attracties
 STR_5597    :Als een nieuw type attractie of thema beschikbaar is
 STR_5598    :Waarschuwingen over bezoekers
-STR_5599    :Als een gevolgde bezoeker verdwaald is
 STR_5600    :Als een gevolgde bezoeker het park verlaten heeft
 STR_5601    :Als een gevolgde bezoeker in de rij staat voor een attractie
 STR_5602    :Als een gevolgde bezoeker een attractie is ingegaan
@@ -3027,8 +3011,6 @@ STR_5724    :Onweer
 STR_5725    :{BLACK}Weer veranderen:
 STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
 STR_5727    :Opschaalkwaliteit:
-STR_5728    :Dit vereist ‘weergave door hardware’
-STR_5729    :{SMALLFONT}{BLACK}Dit vereist ‘weergave door hardware’
 STR_5731    :Lineair
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
@@ -3396,21 +3378,13 @@ STR_6100    :Je verbrak de verbinding met de server.
 STR_6101    :Attracties verliezen geen waarde
 STR_6102    :{SMALLFONT}{BLACK}Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen.
 STR_6103    :{SMALLFONT}{BLACK}Deze optie is niet aan te passen tijdens multiplayer.
-STR_6104    :Stalen schroefachtbaan
 STR_6105    :Hypercoaster
-STR_6106    :Autorondrit
 STR_6107    :Monstertrucks
-STR_6108    :Stalen twisterachtbaan
 STR_6109    :Hyper-twister
-STR_6110    :Juniorachtbaan
 STR_6111    :Klassieke mini-achtbaan
-STR_6112    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_6113    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
-STR_6114    :Bezoekers rijden langzaam over een baan in aangedreven karretjes.
 STR_6115    :Gigantische elektrische 4x4-trucks die steile hellingen kunnen nemen.
 STR_6116    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
-STR_6117    :Bezoekers zitten in comfortabele treinen met enkel een schootbeugel en gaan soepel door grote afdalingen en kronkelende stukken baan, met veel ‘airtime’ in de heuvels.
-STR_6118    :Een rustige achtbaan voor bezoekers die nog niet in engere attracties durven.
 STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd worden.
 STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Neem al het land op de kaart in bezit
@@ -3676,6 +3650,7 @@ STR_6394    :Doel
 STR_6395    :Onderhoud
 STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
 STR_6397    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
+STR_6398    :Bestand bevat niet-ondersteunde attractietypes. Update naar een nieuwere versie van OpenRCT2 om dit bestand te openen.
 
 #############
 # Scenarios #

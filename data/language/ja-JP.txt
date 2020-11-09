@@ -178,7 +178,6 @@ STR_0768    :清掃員{INT32}
 STR_0769    :整備士{INT32}
 STR_0770    :警備員{INT32}
 STR_0771    :エンターテイナー{INT32}
-STR_0772    :名称未設定の遊園地{POP16}{POP16}
 STR_0778    :バナー
 STR_0779    :1日
 STR_0780    :2日
@@ -2052,8 +2051,6 @@ STR_2852    :コースデザインはすでにインストールされていま�
 STR_2853    :地方自治体により禁止されています!
 STR_2854    :{RED}{STRINGID}の入口に来園客が行けません!{NEWLINE}入口まで歩道を敷設してください
 STR_2855    :{RED}{STRINGID}の出口からの歩道がありません!{NEWLINE}乗物の出口から歩道を敷設してください
-STR_2856    :{WINDOW_COLOUR_2}チュートリアル
-STR_2857    :{WINDOW_COLOUR_2}(操作するにはキーまたはマウスボタンを押してください)
 STR_2858    :キャンペーンを始めることができません…
 STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :Music acknowledgements…
@@ -2916,7 +2913,6 @@ STR_5595    :ライドがクラッシュする
 STR_5596    :ライドが警告
 STR_5597    :ライドや景色物の研究
 STR_5598    :ゲストの警告
-STR_5599    :ゲストが迷い込む
 STR_5600    :ゲストがパークを立ち去る
 STR_5601    :ゲストがライドの行列に入る
 STR_5602    :ゲストがライドを乗る
@@ -3381,21 +3377,13 @@ STR_6100    :You disconnected from the server.
 STR_6101    :Rides don't decrease in value over time
 STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
 STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
-STR_6104    :コークスクリュー・ジェットコースター
 STR_6105    :ハイパーコースター
-STR_6106    :カーライド
 STR_6107    :モンスタートラック
-STR_6108    :スチール・ツイスター
 STR_6109    :ハイパー・ツイスター
-STR_6110    :子供用ローラーコースター
 STR_6111    :クラシック・ミニ・ジェットコースター
-STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6114    :Riders travel slowly in powered vehicles along a track-based route
 STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
 STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
-STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}{STRINGID}に新しい車両:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map

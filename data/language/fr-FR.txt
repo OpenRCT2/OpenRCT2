@@ -2262,8 +2262,6 @@ STR_3141    :La remontée à chaîne n'est pas compatible avec une attraction mu
 STR_3142    :{WINDOW_COLOUR_2}Capacité : {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Voir les personnes sur la carte
 STR_3144    :{SMALLFONT}{BLACK}Voir les attractions et boutiques sur la carte
-STR_3158    :graphique
-STR_3159    :liste
 STR_3160    :{SMALLFONT}{BLACK}Sélectionne le nombre de tours de circuit à effectuer
 STR_3162    :Impossible d'allouer assez de mémoire
 STR_3163    :Installation des nouvelles données : 
@@ -2816,7 +2814,6 @@ STR_5484    :{BLACK}({COMMA16} semaine restante)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Afficher les messages récents
-STR_5488    :Pas d'entrée
 STR_5489    :{SMALLFONT}{BLACK}Afficher seulement les visiteurs surveillés
 STR_5490    :Couper le son lorsque la fenêtre est minimisée
 STR_5491    :Liste d'inventions
@@ -2925,7 +2922,6 @@ STR_5595    :Accidents des attractions
 STR_5596    :Avertissements des attractions
 STR_5597    :Nouvelles recherches
 STR_5598    :Avertissements des visiteurs
-STR_5599    :Visiteurs perdus
 STR_5600    :Départs des visiteurs
 STR_5601    :Visiteurs font la queue
 STR_5602    :Visiteurs sur une attraction
@@ -3021,8 +3017,6 @@ STR_5724    :Orage
 STR_5725    :{BLACK}Change la météo pour :
 STR_5726    :{SMALLFONT}{BLACK}Définit la météo actuelle dans le parc
 STR_5727    :Qual. de mise à l'échelle :
-STR_5728    :Requiert l'option d'affichage matériel
-STR_5729    :{SMALLFONT}{BLACK}Requiert l'option d'affichage matériel
 STR_5731    :Linéaire
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendu
@@ -3392,21 +3386,13 @@ STR_6100    :Vous êtes déconnecté(e) du serveur.
 STR_6101    :Les attractions ne perdent pas de valeur{NEWLINE}au fil du temps.
 STR_6102    :{SMALLFONT}{BLACK}La valeur d'une attraction ne se dégradera pas au fil du temps, les visiteurs ne penseront plus que l'attraction est trop chère.
 STR_6103    :{SMALLFONT}{BLACK}Cette option est désactivée dans les parties multijoueurs.
-STR_6104    :Montagnes russes tire-bouchon
 STR_6105    :Hyper montagnes russes
-STR_6106    :Balade en voitures
 STR_6107    :Camions monstrueux
-STR_6108    :Tornades métalliques
 STR_6109    :Hyper-tornades
-STR_6110    :Montagnes russes junior
 STR_6111    :Mini-montagnes russes classiques
-STR_6112    :Un montagne russe compacte en métal où le train parcourt une série de tire-bouchons et de boucles
 STR_6113    :Une grande montagne russe sans inversions avec de grandes descentes, une forte vitesse, et des trains confortables avec une simple ceinture
-STR_6114    :Les visisteurs parcourent lentement des véhicules propulsés qui suivent un parcours spécifique
 STR_6115    :Des camions 4 x 4 géants qui peuvent grimper de pentes fortes
 STR_6116    :Des trains de montagnes russes larges glissent le long d'un parcours fluide en métal, et parcourent une variété d'inversions
-STR_6117    :Les visiteurs sont assis dans des trains confortables avec des ceintures simples en profitant de descentes douces, d'un tracé sinueux et également plein “de temps en l'air” au-dessus des collines
-STR_6118    :Des montagnes russes calmes pour les gens qui n'ont pas le courage de parcourir les plus imposants
 STR_6119    :Des montagnes russes peu chères et faciles à construire, mais avec une hauteur limitée
 STR_6120    :{BABYBLUE}Nouveau véhicule disponible pour {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Etend les droits de propriété du parc jusqu'aux bords de la carte

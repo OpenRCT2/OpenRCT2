@@ -236,8 +236,6 @@ STR_6053    :The heightmap cannot be normalized
 STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
 STR_6159    :Smooth Nearest Neighbor
 STR_6166    :{SMALLFONT}{BLACK}Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
-STR_6206    :Gray stucco
-STR_6212    :Gray sandstone
 STR_6274    :Can't set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}
 STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black color.

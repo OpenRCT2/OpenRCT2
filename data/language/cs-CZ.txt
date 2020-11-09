@@ -2206,18 +2206,6 @@ STR_3074    :{RED}POZOR: Hodnocení parku je stále nižší, než 700!{NEWLINE}
 STR_3075    :{RED}POZOR: Hodnocení parku je stále nižší, než 700!{NEWLINE}Máte už jen 2 týdny na zvýšení hodnocení parku, nebo bude park uzavřen
 STR_3076    :{RED}POSLEDNÍ VAROVÁNÍ: Hodnocení parku je stále nižší, než 700!{NEWLINE}Za pouhých 7 dní dojde k uzavření parku, pokud do té doby nezvýšíte hodnocení
 STR_3077    :{RED}OZNÁMENÍ O UZAVŘENÍ: Zábavní park byl uzavřen!
-STR_3078    :Obyčejný
-STR_3079    :Dřevěný
-STR_3080    :Plátěný stan
-STR_3081    :Hradní věž (šedá)
-STR_3082    :Hradní věž (hnědá)
-STR_3083    :Jungle
-STR_3084    :Dřevěná chata
-STR_3085    :Klasika/Římský styl
-STR_3086    :Abstraktní
-STR_3087    :Sníh/led
-STR_3088    :Pagoda
-STR_3089    :Vesmír
 STR_3090    :{SMALLFONT}{BLACK}Vyberte styl vchodu, východu a stanice
 STR_3091    :Není dovoleno odebrat tuto stanici
 STR_3092    :Není dovoleno přesouvat nebo modifikovat tuto stanici
@@ -2272,8 +2260,6 @@ STR_3141    :Více kol za jízdu není přípustné současně s řetězovým v�
 STR_3142    :{WINDOW_COLOUR_2}Kapacita: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Zobrazit návštěvníky na mapě
 STR_3144    :{SMALLFONT}{BLACK}Zobrazit atrakce a stánky na mapě
-STR_3158    :graph
-STR_3159    :list
 STR_3160    :Vyberte počet kol za jednu jízdu
 STR_3162    :Nepodařilo se alokovat dostatek paměti
 STR_3163    :Instaluji nová data: 
@@ -2824,7 +2810,6 @@ STR_5484    :{BLACK}(zbývá {COMMA16} týden)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Zobrazit poslední zprávy
-STR_5488    :Bez vstupu (pouze pro OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Zobrazit pouze sledované návštěvníky
 STR_5490    :Vypnout zvuk při přepnutí ze hry
 STR_5491    :Seznam vynálezů
@@ -2933,7 +2918,6 @@ STR_5595    :Atrakce havarovala
 STR_5596    :Varování atrakcí
 STR_5597    :Vyzkoumané atrakce / kulisy
 STR_5598    :Varování návštěvníků
-STR_5599    :Návštěvník se ztratil
 STR_5600    :Návštěvník opustil zábavní park
 STR_5601    :Návštěvník čeká ve frontě na atrakci
 STR_5602    :Návštěvník je na atrakci
@@ -3029,8 +3013,6 @@ STR_5724    :Bouřka
 STR_5725    :{BLACK}Vynutit počasí:
 STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
 STR_5727    :Metoda škálování:
-STR_5728    :Vyžaduje hardwarové zobrazování
-STR_5729    :{SMALLFONT}{BLACK}Vyžaduje hardwarové zobrazování
 STR_5731    :Lineární
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 STR_5735    :Stav připojení
@@ -3398,21 +3380,13 @@ STR_6100    :Odpojili jste se od serveru.
 STR_6101    :Hodnota atrakcí časem nedegraduje
 STR_6102    :{SMALLFONT}{BLACK}Hodnota atrakce nebude s postupem času klesat, takže návštěvníci nebudou najednou mít pocit, že je vstupné moc drahé.
 STR_6103    :{SMALLFONT}{BLACK}Tato volba není ve hře více hráčů dostupná.
-STR_6104    :Vývrtková horská dráha
 STR_6105    :Hyper horská dráha
-STR_6106    :Autodráha
 STR_6107    :Monster Trucks
-STR_6108    :Ocelová horská
 STR_6109    :Hyper-Twister
-STR_6110    :Dorostenecká horská dráha
 STR_6111    :Klasická malá horská dráha
-STR_6112    :Malá ocelová horská dráha, na které vlak projíždí smyčky a vývrtky
 STR_6113    :Vysoká horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně
-STR_6114    :Návštěvníci jedou pomalu ve vozidlech po postavené dráze.
 STR_6115    :Obří auta s pohonem 4x4, které jsou schopna vyjíždět velmi strmé svahy
 STR_6116    :Široká ocelová horská dráha, na které vozy jedou po hladkých kolejnicích skrze propletenou dráhu
-STR_6117    :Horská dráha s dlouhými pády, velkou rychlostí a pohodlnými vlaky, kde se jezdí s opěrkou v klíně, která přelétává vrcholky kopců
-STR_6118    :Pozvolná horská dráha pro ty kdo se zatím neodvažují na větší dráhy
 STR_6119    :Levná horská dráha, kterou lze snadno postavit - má však omezenou maximální výšku
 STR_6120    :{BABYBLUE}Nové vozy dostupné pro {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Zajistí práva pro všechny pozemky na mapě
@@ -3923,7 +3897,7 @@ STR_SCNR    :Mythological - Animatronic Film Set
 STR_PARK    :Animatronic Antics
 STR_DTLS    :Byl vám zadán úkol správy a vylepšování stávajícího zábavního parku, který byl postaven na starém filmařském místě. Vybudujte odkaz průkopníkům-animátorům, kteří poprvé přinesli mýtické postavy k životu na stříbrném plátně.
 
-<Mythological - Cradle of Civilization>
+<Mythological - Cradle of Civilisation>
 STR_SCNR    :Mythological - Cradle of Civilisation
 STR_PARK    :Mythological Madness
 STR_DTLS    :Vlastníte ostrov velké archeologické hodnoty. Rozhodli jste se podpořit jeho zachování vybudováním zábavního parku založeném na mytologii tohoto místa.

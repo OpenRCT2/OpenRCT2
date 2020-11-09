@@ -2464,11 +2464,6 @@ STR_3390    :Túl sok elem van kiválasztva
 STR_3437    :{SMALLFONT}{BLACK}Nagy földterületek megtisztítása a díszletektől
 STR_3438    :Nem távolítható el az összes díszlet innen…
 STR_3439    :Díszlet törlése
-STR_3440    :1. oldal
-STR_3441    :2. oldal
-STR_3442    :3. oldal
-STR_3443    :4. oldal
-STR_3444    :5. oldal
 STR_3445    :Járőrözési terület kijelölése
 STR_3446    :Járőrözési terület törlése
 
@@ -2796,7 +2791,6 @@ STR_5484    :{BLACK}({COMMA16} hét van vissza)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}A legutóbbi üzenetek megjelenítése
-STR_5488    :Nincs bejárat (Csak az OpenRCT2-ben!)
 STR_5489    :{SMALLFONT}{BLACK}Csak a követett vendégek megjelenítése
 STR_5490    :Hang kikapcsolása fókuszvesztés esetén
 STR_5491    :Találmányok listája
@@ -2904,7 +2898,6 @@ STR_5595    :A játék ütközött
 STR_5596    :Játék figyelmeztetések
 STR_5597    :Játék / díszlet felfedezése
 STR_5598    :Vendég figyelmeztetések
-STR_5599    :A vendég eltévedt
 STR_5600    :A vendég elhagyta a parkot
 STR_5601    :A vendég sorban áll egy játék előtt
 STR_5602    :A vendég egy játékon van
@@ -3353,15 +3346,10 @@ STR_6100    :Bontottad a kapcsolatot a szerverrel.
 STR_6101    :Nem csökken a játékok értéke
 STR_6102    :{SMALLFONT}{BLACK}A játékok értéke nem csökken az idő múlásával, így a vendégek nem fogják hirtelen azt gondolni, hogy túl drágák
 STR_6103    :{SMALLFONT}{BLACK}Ez a beállítás le van tiltva hálózati játék alatt.
-STR_6104    :Dugóhúzó hullámvasút
 STR_6105    :Hiperhullámvasút
-STR_6106    :Autós utazás
 STR_6107    :Monster Truck-ok
-STR_6108    :Acél csavaró
 STR_6109    :Hiper-csavaró
-STR_6110    :Kezdő hullámvasút
 STR_6111    :Klasszikus mini hullámvasút
-STR_6118    :Egy szelíd hullámvasút azok számára, akikben még nincs meg a bátorság, ahhoz, hogy szembenézzenek a nagyobbakkal
 STR_6119    :Ez a hullámvasút olcsó és könnyen építhető, de csak korlátozott magasságig
 STR_6120    :{BABYBLUE}Új jármű érhető el {STRINGID} számára:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Kiterjeszti a park által birtokolt területet egészen a térkép széléig

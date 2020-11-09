@@ -2258,8 +2258,6 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3158    :graph
-STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data:
@@ -2481,11 +2479,6 @@ STR_3390    :Too many items selected
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Clear Scenery
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -2817,7 +2810,6 @@ STR_5484    :{BLACK}({COMMA16} أسبوع باقً)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}أظهر الرسائل الحالية
-STR_5488    :لا مدخل (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :قائمة الإختراعات
@@ -2926,7 +2918,6 @@ STR_5595    :الرحلة قد تحطمت
 STR_5596    :تحذيرات الرحلة
 STR_5597    :Ride / scenery researched
 STR_5598    :تحذيرات الزائر
-STR_5599    :الزائر تائة
 STR_5600    :الزائر قد غادر الحديقة
 STR_5601    :الزائر يقف في طابور إنتظار الرحلة
 STR_5602    :الزائر في الرحلة
@@ -3022,8 +3013,6 @@ STR_5724    :عاصفة برقية
 STR_5725    :{BLACK}طبق الجو الأتي بالقوة:
 STR_5726    :{SMALLFONT}{BLACK}يُحدد الجو الحالي في الحديقة
 STR_5727    :جودة التكبير:
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
 STR_5731    :حدي
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
@@ -3393,21 +3382,13 @@ STR_6100    :.أنت إنفصلت عن السرفر
 STR_6101    :Rides don't decrease in value over time
 STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
 STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
-STR_6104    :Corkscrew Roller Coaster
 STR_6105    :Hypercoaster
-STR_6106    :رحلة سيارة
 STR_6107    :شاحنات الوحش
-STR_6108    :Steel Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Junior Roller Coaster
 STR_6111    :Classic Mini Roller Coaster
-STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6114    :Riders travel slowly in powered vehicles along a track-based route
 STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
 STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
-STR_6117    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
-STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK} توسيع حدود الحديقة إلي اليسار بالكامل حتي حدود الخريطة

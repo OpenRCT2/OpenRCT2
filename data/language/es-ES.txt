@@ -2258,8 +2258,6 @@ STR_3141    :Multi-circuito por attracc. no es posible con un cable de elevació
 STR_3142    :{WINDOW_COLOUR_2}Capacidad: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Mostrar visitantes en el mapa
 STR_3144    :{SMALLFONT}{BLACK}Mostrar atracciones y puestos en el mapa
-STR_3158    :gráfica
-STR_3159    :lista
 STR_3160    :{SMALLFONT}{BLACK}Selecciona el número de circuitos por paseo.
 STR_3162    :No se puede asignar memoria suficiente
 STR_3163    :Instalar nuevo dato: 
@@ -2481,11 +2479,6 @@ STR_3390    :Demasiados elementos seleccionados
 STR_3437    :{SMALLFONT}{BLACK}Demoler grandes áreas de decorado
 STR_3438    :No se puede quitar este decorado…
 STR_3439    :Quitar decorado
-STR_3440    :Página 1
-STR_3441    :Página 2
-STR_3442    :Página 3
-STR_3443    :Página 4
-STR_3444    :Página 5
 STR_3445    :Establecer Área de Patrullaje
 STR_3446    :Cancelar Área de Patrullaje
 
@@ -2817,7 +2810,6 @@ STR_5484    :{BLACK}({COMMA16} semana restante)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Mensajes recientes
-STR_5488    :Entrada invisible (¡sólo OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Mostrar sólo los visitantes con seguimiento activado
 STR_5490    :Silenciar al perder el foco
 STR_5491    :Lista de inventos
@@ -2926,7 +2918,6 @@ STR_5595    :Atracción se ha destruido
 STR_5596    :Advertencias sobre las atracciones
 STR_5597    :Atracción y decorado desarrollado
 STR_5598    :Advertencias sobre los visitantes
-STR_5599    :Visitante se ha perdido
 STR_5600    :Visitante ha abandonado el parque
 STR_5601    :Visitante se ha puesto en la cola de una atracción
 STR_5602    :Visitante se ha subido a una atracción
@@ -3024,8 +3015,6 @@ STR_5724    :Tormenta
 STR_5725    :{BLACK}Cambiar clima a:
 STR_5726    :{SMALLFONT}{BLACK}Establecer el clima actual en el parque
 STR_5727    :Calidad de escalado:
-STR_5728    :Requiere Renderizado por Hardware
-STR_5729    :{SMALLFONT}{BLACK}Requiere Renderizado por Hardware
 STR_5731    :Lineal
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderizado
@@ -3395,21 +3384,13 @@ STR_6100    :Te has desconectado del servidor.
 STR_6101    :Atracciones no disminuyen su valor.
 STR_6102    :{SMALLFONT}{BLACK}El valor de una atracción no disminuye con el tiempo, así los visitantes no pensarán que una atracción es demasiado caro.
 STR_6103    :{SMALLFONT}{BLACK}Esta opción está des-habilitada durante una partida multijugador.
-STR_6104    :Montaña Rusa Sacacorchos
 STR_6105    :Hipermontaña Rusa
-STR_6106    :Atracción de Coches
 STR_6107    :Camiones Monstruo
-STR_6108    :Twister de Acero
 STR_6109    :Hiper-Twister
-STR_6110    :Montaña Rusa Infantil
 STR_6111    :Mini Montaña Rusa Clásica
-STR_6112    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos
 STR_6113    :Una montaña rusa alta y que no se invierte con grandes caídas, alta velocidad y vagones confortables con sólo unas barras para sujetarse
-STR_6114    :Los viajeros viajan lentamente en vehículos motorizados que siguen la ruta de las vías.
 STR_6115    :Camiones gigantes autopropulsados 4x4 que pueden subir cuestas impresionantes
 STR_6116    :Montaña rusa amplia sobre vías de acero que efectúa varias inversiones
-STR_6117    :Sentados en cómodos vagones con sujeciones simples, los viajeros disfrutan de grandes y suaves caídas así como de giros y gran cantidad de momentos de caída libre en los puntos superiores.
-STR_6118    :Una montaña rusa suave para las personas que todavía no tienen el coraje de enfrentar atracciones más grandes.
 STR_6119    :Una montaña rusa barata y fácil de construir, pero con una altura limitada.
 STR_6120    :{BABYBLUE}Nuevo vehículo disponible ahora para {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Extiende los derechos de construcción del parque hasta los bordes del mapa.

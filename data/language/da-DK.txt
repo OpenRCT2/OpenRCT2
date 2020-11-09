@@ -2207,18 +2207,6 @@ STR_3074    :{RED}ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Du
 STR_3075    :{RED}ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Du har kun to uger til at forbedre vurderingen, elles bliver din park lukket
 STR_3076    :{RED}SIDSTE ADVARSEL: Din parks vurdering er stadig under 700 !{NEWLINE}Om kun 7 dage lukker parken, hvis du ikke forbedrer park vurderingen
 STR_3077    :{RED}LUKNINGS BESKED: Din park er blevet lukket !
-STR_3078    :Almindelig indgang
-STR_3079    :Træ indgang
-STR_3080    :Telt indgang
-STR_3081    :Ridderborg indgang (grå)
-STR_3082    :Ridderborg indgang (brun)
-STR_3083    :Jungle indgang
-STR_3084    :Bjælkehytte indgang
-STR_3085    :Klassisk/Romer indgang
-STR_3086    :Abstrakt indgang
-STR_3087    :Sne/is indgang
-STR_3088    :Pagode indgang
-STR_3089    :Rumfarts indgang
 STR_3090    :{SMALLFONT}{BLACK}Vælg stilen af indgang, udgang, og station
 STR_3091    :Du har ikke lov til at fjerne denne sektion!
 STR_3092    :Du har ikke lov til at flytte eller ændre stationen for denne forlystelse!
@@ -2273,8 +2261,6 @@ STR_3141    :Multi-kredsløb per tur ikke muligt med kædeløft bakke
 STR_3142    :{WINDOW_COLOUR_2}Kapacitet: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Vis folk på kortet
 STR_3144    :{SMALLFONT}{BLACK}Vis forlystelser og boder på kortet
-STR_3158    :graf
-STR_3159    :liste
 STR_3160    :{SMALLFONT}{BLACK}Vælg antal omgange per tur
 STR_3162    :Kan ikke allokere nok hukommelse
 STR_3163    :Installerer ny data: 
@@ -2494,11 +2480,6 @@ STR_3390    :For mange enheder valgt
 STR_3437    :{SMALLFONT}{BLACK}Ryd et stort område for sceneri
 STR_3438    :Kan ikke fjerne al sceneri herfra…
 STR_3439    :Ryd sceneri
-STR_3440    :Side 1
-STR_3441    :Side 2
-STR_3442    :Side 3
-STR_3443    :Side 4
-STR_3444    :Side 5
 STR_3445    :Sæt patruljeområde
 STR_3446    :Annuller patruljeområde
 
@@ -2830,7 +2811,6 @@ STR_5484    :{BLACK}({COMMA16} uge tilbage)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Vis foregående meddelelse
-STR_5488    :Ingen indgang (kun OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Vis kun overvågede gæster
 STR_5490    :Sluk lyd ved tabt fokus
 STR_5491    :Opfindelsesliste
@@ -2939,7 +2919,6 @@ STR_5595    :Forlystelse er forulykket
 STR_5596    :Forlystelses advarsler
 STR_5597    :Forlystelses / sceneri udforsket
 STR_5598    :Gæst advarsler
-STR_5599    :Gæst er faret vild
 STR_5600    :Gæst har forladt parken
 STR_5601    :Gæst sår i kø ved forlystelse
 STR_5602    :Gæst er i forlystelse
@@ -3035,8 +3014,6 @@ STR_5724    :Skybrud
 STR_5725    :{BLACK}Tving vejr:
 STR_5726    :{SMALLFONT}{BLACK}Indstiller det nuværende vejr i parken
 STR_5727    :Skalerings kvalitet:
-STR_5728    :Kræver hardware Skærmindstillinger
-STR_5729    :{SMALLFONT}{BLACK}Kræver hardware skærmindstillinger
 STR_5731    :Lineær
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Gengivelse
@@ -3406,21 +3383,13 @@ STR_6100    :Du afbrød forbindelsen til serveren.
 STR_6101    :Forlystelser falder ikke i værdi, over tid
 STR_6102    :{SMALLFONT}{BLACK}Værdien af forlystelser vil ikke falde over tid over tid, Så gæsterne ikke vil vurdere forlystelsen, som spild af penge.
 STR_6103    :{SMALLFONT}{BLACK}Denne funktion er deaktiveret ved netværksspil.
-STR_6104    :Proptrækker rutschebane
 STR_6105    :Hypercoaster
-STR_6106    :Car Ride
 STR_6107    :Monster Trucks
-STR_6108    :Stål Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Junior rutchebane
 STR_6111    :Klassisk mini rutchebane
-STR_6112    :En kompakt stålsporet rutschebane, hvor toget kører gennem snoninger og loops
 STR_6113    :En høj ikke-inverterende rutschebane med store fald, høj hastighed og komfortable vogne med simpel fastspænding
-STR_6114    :Passagerer kører langsomt i el-drevne køretøjer langs en sporbaseret rute
 STR_6115    :Kæmpe Eldrevne firhjulstrækkere , der kan klatre op ad stejle skråninger
 STR_6116    :Brede rutschebane vogne kører langs en glat stålspor, igennem en række forskellige inversioner
-STR_6117    :Siddende i komfortable vogne med forholdsvis simpel fastspænding, kan gæsterne nyde gigantiske fald og snoede spor samt masser af 'luft tid' over bakkerne
-STR_6118    :En rolig rutschebane for folk der endnu ikke har modet til at prøve de større rutschebaner
 STR_6119    :En billig og let at bygge rutchebane, men med begrænset højde
 STR_6120    :{BABYBLUE}Nyt køretøj er klar til {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Udvider parkens jordrettigheder hele vejen ud til kanten af kortet

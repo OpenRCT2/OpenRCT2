@@ -2201,18 +2201,6 @@ STR_3074    :{RED}UYARI: Park değerlendirmesi halen 700'ün altında !{NEWLINE}
 STR_3075    :{RED}UYARI: Park değerlendirmesi halen 700'ün altında !{NEWLINE}2 hafta içinde park değerlendirmesini yükseltmeyi başaramazsanız parkınız kapatılacakdır
 STR_3076    :{RED}SON UYARI: Park değerlendirmesi halen 700'ün altında !{NEWLINE}Parkın kapanmasına sadece 7 gün süreniz kaldı
 STR_3077    :{RED}KAPANMA BILGISI: Parkınız kapatıldı !
-STR_3078    :Normal giriş kulübesi
-STR_3079    :Ahşap giriş kulübesi
-STR_3080    :Çadırlı giriş
-STR_3081    :Kale tarzı giriş (gri)
-STR_3082    :Kale tarzı giriş (brown)
-STR_3083    :Cengel tarzı giriş
-STR_3084    :Loca tarzı giriş
-STR_3085    :Klassik/Romalı tarzı giriş
-STR_3086    :Soyut tarzı giriş
-STR_3087    :Kar/Buz tarzı giriş
-STR_3088    :Pagoda tarzı giriş
-STR_3089    :Uzaylı tarzı giriş
 STR_3090    :{SMALLFONT}{BLACK}Giriş kulübesinin hangi tarzda olacağını seçiniz
 STR_3091    :Bu bölümü değiştirmeye izin verilmiyor!
 STR_3092    :Bu aletin istasyonunu değiştiremezsiniz!
@@ -2486,11 +2474,6 @@ STR_3390    :Çok fazla cisim seçildi
 STR_3437    :{SMALLFONT}{BLACK}Büyük ölçüde tema veya cisim siliniz
 STR_3438    :Tüm tema/cisim buradan kaldırılamıyor…
 STR_3439    :Tema/Cisim kaldır
-STR_3440    :Sayfa 1
-STR_3441    :Sayfa 2
-STR_3442    :Sayfa 3
-STR_3443    :Sayfa 4
-STR_3444    :Sayfa 5
 STR_3445    :Bölge seçiniz
 STR_3446    :Tüm bölgeyi sıfırlayınız
 
@@ -2822,7 +2805,6 @@ STR_5484    :{BLACK}({COMMA16} hafta kaldı)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Son bildirimleri göster
-STR_5488    :Giriş kulübesi yok (OpenRCT2'ye özel!)
 STR_5489    :{SMALLFONT}{BLACK}Takip ettiğiniz müşteriler
 STR_5490    :Oyun ön planda değilse sesi kıs
 STR_5491    :Araştırma listesi
@@ -2931,7 +2913,6 @@ STR_5595    :Alet kaza yaptı
 STR_5596    :Alet uyarıları
 STR_5597    :Alet/dekorasyon araştırması
 STR_5598    :Müşteri uyarıları
-STR_5599    :Müşteri kayboldu
 STR_5600    :Müşteri parkı terk etti
 STR_5601    :Müşteri bir alet için sırada
 STR_5602    :Müşteri bir aletde
@@ -3395,21 +3376,13 @@ STR_6100    :Server'den çıktınız.
 STR_6101    :Aletler zamanla değer kayıp etmesin
 STR_6102    :{SMALLFONT}{BLACK}Aletlerin değeri düşmediği sürece müşterilerin gözünde giriş ücreti her zaman ucuz kalacakdır
 STR_6103    :{SMALLFONT}{BLACK}Bu ayar Multiplayer'de sıra dışı bırkalıdı.
-STR_6104    :Tirbuşon Treni
 STR_6105    :Hyper Tren
-STR_6106    :Araba Turu
 STR_6107    :Monster Trucks
-STR_6108    :Çelik Twister
 STR_6109    :Hyper Twister
-STR_6110    :Ölçülü Tren
 STR_6111    :Klassik Mini Tren
-STR_6112    :Tirbuşona benzeyen raylardan ve döngülerden süren çelik yapılı bir hız treni 
 STR_6113    :Yüksek düşüşler ve hızlara ulaşan bir tren. Vagonları çok komforlu ve heyecanı artdırmak için güvenlik askısı kalça kısmındadır
-STR_6114    :Müşteriler belirli bir yolda farklı araçlarda yavaşça seyahat eder
 STR_6115    :Müşteriler belirli bir yolda Monster Truck ile yavaşça seyahat eder
 STR_6116    :Bu çelik yapılı hız treni farklı kıvrılmalara, yuvarlamalara ve döngülere sahiptir
-STR_6117    :Bu çelik yapılı hız treni keskin virajlara ve sarmallara sahiptir. Heyecanı artdırmak için güvenlik askısı kalça kısmındadır
-STR_6118    :Henüz daha büyük ve hızlı trenlere cesaret edemeyen kişiler için en iyi seçenekdir
 STR_6119    :Fazla yüksekliğe ulaşmayan ölçülü bir tren
 STR_6120    :{BABYBLUE}{STRINGID} aleti için yeni vagon/araç araştırıldı:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Parkın etrafında bulunan tüm boş araziyi bu hile ile parkınızın sınırlarına katınız
@@ -4267,7 +4240,7 @@ STR_SCNR    :Europe - Renovation
 STR_PARK    :From The Ashes
 STR_DTLS    :Eski bir lunapark harabeye dönüşdü. Avrupa Birliği size bu parkı eski ihtişamına getirmek dileği ile verdi. Parkı yenilemeniz ve krediyi geri ödemeniz gerekiyor.
 
-<N America - Extreme Hawaiian Island>
+<N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
 STR_DTLS    :Hawaii'de yaşıyan insanlar bütün gün sörf yapmakdan sıkılmış ve daha heyecanlı birşey yapmak istiyorlar. Sizden turistlerin ziyaret edeceği ve yerel halkı memnun edecek bir park inşa etmeniz bekleniyor

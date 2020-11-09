@@ -3655,6 +3655,7 @@ STR_6395    :유지보수
 STR_6396    :화면 보호기 및 모니터 꺼짐 비활성화
 STR_6397    :{SMALLFONT}{BLACK}이 설정을 켜면, OpenRCT2를 실행시키는 중에는 화면 보호기와 모니터 전원 절약 기능이 작동하지 않습니다.
 STR_6398    :파일에 지원하지 않는 놀이기구 종류가 있습니다. OpenRCT2를 새 버전으로 업데이트하십시오.
+STR_6399    :OpenRCT2를 실행하려면 오리지널 RollerCoaster Tycoon 2의 파일이 필요합니다. RollerCoaster Tycoon 2를 설치한 폴더에 있는 config.ini 파일 안의 “game_path” 변수 값을 설정한 뒤에, OpenRCT2를 다시 실행해주세요.
 
 #############
 # Scenarios #

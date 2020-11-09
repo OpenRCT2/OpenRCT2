@@ -2258,8 +2258,6 @@ STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Show people on map
 STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3158    :graph
-STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
@@ -2481,11 +2479,6 @@ STR_3390    :Too many items selected
 STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Clear Scenery
-STR_3440    :Page 1
-STR_3441    :Page 2
-STR_3442    :Page 3
-STR_3443    :Page 4
-STR_3444    :Page 5
 STR_3445    :Set Patrol Area
 STR_3446    :Cancel Patrol Area
 
@@ -2817,7 +2810,6 @@ STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
@@ -2926,7 +2918,6 @@ STR_5595    :Ride has crashed
 STR_5596    :Ride warnings
 STR_5597    :Ride / scenery researched
 STR_5598    :Guest warnings
-STR_5599    :Guest is lost
 STR_5600    :Guest has left the park
 STR_5601    :Guest is queuing for ride
 STR_5602    :Guest is on ride
@@ -3022,8 +3013,6 @@ STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
 STR_5727    :Skaleringskvalitet:
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
 STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
@@ -3395,21 +3384,13 @@ STR_6100    :Du koblet fra serveren.
 STR_6101    :Attraksjoners verdi synker ikke over tid
 STR_6102    :{SMALLFONT}{BLACK}Verdien til attraksjoner synker ikke over tid, slik at gjester ikke bestemmer seg for at en attraksjon har for høy inngangspris.
 STR_6103    :{SMALLFONT}{BLACK}Denne innstillingen er skrudd av for nettverksspill.
-STR_6104    :Korkskru berg-og-dal-bane
 STR_6105    :Hyper berg-og-dal-bane
-STR_6106    :Kjøretur
 STR_6107    :Monster Trucker
-STR_6108    :Stål Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Junior berg-og-dal-bane
 STR_6111    :Klassisk Mini-berg-og-dal-bane
-STR_6112    :En kompakt berg-og-dal-bane i stål, hvor toget går gjennom korkskruer og looper
 STR_6113    :En høy berg-og-dal-bane som ikke går opp-ned, med høye fall, høy fart og komfortable tog som kun har sikringer over fanget
-STR_6114    :Passasjerer kjører sakte i selvdrevne kjøretøy langs et spor
 STR_6115    :Selvdrevne gigantiske firehjulstrucker som kan kjøre opp bratte bakker
 STR_6116    :Vide berg-og-dal-bane-tog glir langs jevne stålspor, mens de går gjennom et stort utvalg opp-ned-seksjoner
-STR_6117    :Passasjerer opplever gigantiske jevne fall og vridde spor, samt mye vektløshet over toppene – i komfortable seter med minimalt inntrengende sikringer
-STR_6118    :En rolig berg-og-dal-bane for dem som ikke enda tør prøve de større attraksjonene
 STR_6119    :En billig og lettbygd berg-og-dal-bane, men med knapp høydebegrensning
 STR_6120    :{BABYBLUE}Ny vogn nå tilgjengelig for {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Utvider parkens landrettigheter til kartets kanter

@@ -2478,11 +2478,6 @@ STR_3390    :För många saker markerade
 STR_3437    :{SMALLFONT}{BLACK}Rensa stora områden av dekorationer från terrängen
 STR_3438    :Kan inte ta bort alla dekorationer härifrån …
 STR_3439    :Rensa land
-STR_3440    :Sida 1
-STR_3441    :Sida 2
-STR_3442    :Sida 3
-STR_3443    :Sida 4
-STR_3444    :Sida 5
 STR_3445    :Sätt satrullområde
 STR_3446    :Avbryt patrullområde
 
@@ -2922,7 +2917,6 @@ STR_5595    :Åktur har kraschat
 STR_5596    :Åktursvarningar
 STR_5597    :Åktur eller dekoration utvecklad
 STR_5598    :Besökarvarningar
-STR_5599    :Besökare är vilse
 STR_5600    :Besökare har lämnat parken
 STR_5601    :Besökare köar för åktur
 STR_5602    :Besökare är på åktur
@@ -3386,21 +3380,13 @@ STR_6100    :Du lämnade servern.
 STR_6101    :Åkturer minskar aldrig i värde 
 STR_6102    :{SMALLFONT}{BLACK}Värdet på åkturer minskar inte vid längre perioder, så besökare kommer inte tycka den helt plötsligt är för dyr.
 STR_6103    :{SMALLFONT}{BLACK}Denna inställning är avaktiverad i multiplayer.
-STR_6104    :Korkskruvsberg- och dalbana
 STR_6105    :Hyperberg- och dalbana
-STR_6106    :Biltur
 STR_6107    :Monstertruckar
-STR_6108    :Snurrberg- och dalbana
 STR_6109    :Hyperberg- och dalbana
-STR_6110    :Juniorberg- och dalbana
 STR_6111    :Klassisk miniberg- och dalbana
-STR_6112    :En kompakt stålberg- och dalbana där tågen åker längs korkskruvar och loopar
 STR_6113    :En hög berg- och dalbana som inte vänder på sig med stora dropp, höga hastigheter, och bekväma tåg med endast säkerhetsbygel runt midjan
-STR_6114    :Passagerare åker sakta i motorfordon på en spårlagd väg
 STR_6115    :Motordrivna gigantiska fyrhjulsdrivna bilar som kan klättra över stora stockar
 STR_6116    :Bred berg- och dalbana tåg som glider efter ett mjukt stålspår, rusande genom en variation av inversioner
-STR_6117    :Sittandes i bekväma vagnar med endast säkerhetsbygel runt midjan njuter passagerare av enorma nedförsbackar och spännande svängar, samt mycket tid flygandes över topparna
-STR_6118    :En snäll berg- och dalbana för de som inte har mod nog att utmana större åkturer
 STR_6119    :En simpel och billig berg- och dalbana, men med en begränsad höjd
 STR_6120    :{BABYBLUE}Nya fordon är nu tillgängliga för {STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Utökar marken i parken hela vägen till kanterna av kartan

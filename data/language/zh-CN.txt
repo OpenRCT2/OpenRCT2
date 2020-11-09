@@ -2264,8 +2264,6 @@ STR_3141    :缆道坡道并不适合於单次多圈数的游乐设施
 STR_3142    :{WINDOW_COLOUR_2}载客量: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}在地图上显示所有人物
 STR_3144    :{SMALLFONT}{BLACK}在地图上显示所有游乐设施及店铺
-STR_3158    :graph
-STR_3159    :list
 STR_3160    :{SMALLFONT}{BLACK}选择每次乘坐循环的次数
 STR_3162    :无法分配足够的内存
 STR_3163    :安装新数据档中: 
@@ -2487,11 +2485,6 @@ STR_3390    :选取了太多对象
 STR_3437    :{SMALLFONT}{BLACK}在地形中清理大范围内的景物
 STR_3438    :无法移除这里的所有景物…
 STR_3439    :移除景物
-STR_3440    :第1页
-STR_3441    :第2页
-STR_3442    :第3页
-STR_3443    :第4页
-STR_3444    :第5页
 STR_3445    :设置巡逻范围
 STR_3446    :取消巡逻范围
 
@@ -2823,7 +2816,6 @@ STR_5484    :{BLACK}(还剩{COMMA16}周结束)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}显示最近消息
-STR_5488    :隐藏入口(只适用于OpenRCT2！)
 STR_5489    :{SMALLFONT}{BLACK}只显示追踪中的游客
 STR_5490    :游戏失去焦点时静音
 STR_5491    :研发列表
@@ -2932,7 +2924,6 @@ STR_5595    :游乐设施毁坏了
 STR_5596    :有关游乐设施的警告
 STR_5597    :研发好的游乐设施，商店或景物
 STR_5598    :有关游客的警告
-STR_5599    :游客迷路了
 STR_5600    :游客已离开乐园
 STR_5601    :游客正在排队游玩某个游乐设施
 STR_5602    :游客已乘上游乐设施
@@ -3029,8 +3020,6 @@ STR_5724    :大雷雨
 STR_5725    :{BLACK}强制设定天气为:
 STR_5726    :{SMALLFONT}{BLACK}设定游乐园当前的天气
 STR_5727    :缩放质量
-STR_5728    :需要开启硬件渲染
-STR_5729    :{SMALLFONT}{BLACK}需要开启硬件渲染选项
 STR_5731    :线性
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}渲染
@@ -3399,22 +3388,13 @@ STR_6100    :你已从服务器断开.
 STR_6101    :游乐设施不会随时间流逝而贬值
 STR_6102    :{SMALLFONT}{BLACK}游乐设施的价值不会随时间流逝而贬值, 因此游客不会产生玩此游乐设施太贵的想法.
 STR_6103    :{SMALLFONT}{BLACK}此选项在联网模式下被禁用.
-STR_6104    :螺旋过山车
 STR_6105    :超级过山车
-STR_6106    :轨道小车
 STR_6107    :怪兽卡车
-STR_6108    :钢架旋转式
 STR_6109    :超旋转式
-STR_6110    :儿童过山车
 STR_6111    :经典迷你过山车
-STR_6112    :一种紧凑的钢制轨道过山车, 其车厢穿越螺旋轨道和回旋轨道
 STR_6113    :一种高大的非翻转的过山车, 拥有巨大降落, 高速和只有围栏限制的舒适的车厢
-#TODO 6114
-STR_6114    :乘客沿轨道缓慢行驶
 STR_6115    :动力十足的4x4四驱卡车, 可以攀爬陡峭的斜坡
 STR_6116    :宽阔的过山车车厢沿着光滑的钢轨滑行，穿过各种倒置轨道
-STR_6117    :坐在舒适的只有简单的围栏护手的车厢中，即可享受巨大落差和旋转轨道，就像在山丘上的大量'空中时光'
-STR_6118    :对于还没有勇气面对更大游乐设施的人们而言，这是一种温和的过山车
 STR_6119    :一种廉价且方便建造的过山车, 但是有高度限制
 STR_6120    :{BABYBLUE}新车辆可用于{STRINGID}:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}将游乐园土地所有权扩展至地图边缘
@@ -4282,7 +4262,7 @@ STR_SCNR    :Mythological - Animatronic Film Set
 STR_PARK    :Animatronic Antics
 STR_DTLS    :你已经被赋予了运行和改进现有的主题公园的任务，它是建立在一个旧的电影集上的。建立一个向创业的定格动画人第一次带来了神秘的生物生活在银幕上。
 
-<Mythological - Cradle of Civilization>
+<Mythological - Cradle of Civilisation>
 STR_SCNR    :Mythological - Cradle of Civilisation
 STR_PARK    :Mythological Madness
 STR_DTLS    :你拥有一个特定的考古价值的岛屿。你已经决定采用基于地区丰富的神话遗产建设主题公园的保护基金。

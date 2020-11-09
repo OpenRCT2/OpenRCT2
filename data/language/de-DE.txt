@@ -2259,8 +2259,6 @@ STR_3141    :Mehrere Runden bei Kabellifthügel nicht möglich
 STR_3142    :{WINDOW_COLOUR_2}Fassungsvermögen: {BLACK}{STRINGID}
 STR_3143    :{SMALLFONT}{BLACK}Personen auf Karte anzeigen
 STR_3144    :{SMALLFONT}{BLACK}Bahnen und Stände auf Karte anzeigen
-STR_3158    :Diagramm
-STR_3159    :Liste
 STR_3160    :{SMALLFONT}{BLACK}Rundenanzahl der Strecke pro Fahrt
 STR_3162    :Es kann nicht genügend Geld bereitgestellt werden
 STR_3163    :Neue Daten werden installiert:
@@ -2810,7 +2808,6 @@ STR_5484    :{BLACK}({COMMA16} Woche verbleibend)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}Aktuelle Nachrichten anzeigen
-STR_5488    :Kein Eingang (nur OpenRCT2!)
 STR_5489    :{SMALLFONT}{BLACK}Nur überwachte Besucher anzeigen
 STR_5490    :Audio deaktivieren, wenn Spiel nicht im Vordergrund
 STR_5491    :Erfindungsliste
@@ -2919,7 +2916,6 @@ STR_5595    :Attraktion ist verunglückt
 STR_5596    :Attraktionswarnungen
 STR_5597    :Attraktion / Szenerie erforscht
 STR_5598    :Besucherwarnungen
-STR_5599    :Besucher hat sich verirrt
 STR_5600    :Besucher hat den Park verlassen
 STR_5601    :Besucher steht für eine Attraktion Schlange
 STR_5602    :Besucher ist auf einer Attraktion
@@ -3014,8 +3010,6 @@ STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter setzen:
 STR_5726    :{SMALLFONT}{BLACK}Stellt das aktuelle Wetter im Park ein
 STR_5727    :Skalierungsqualität:
-STR_5728    :Setzt Anzeige durch Hardware voraus
-STR_5729    :{SMALLFONT}{BLACK}Setzt Anzeige durch Hardware voraus
 STR_5731    :Linear
 STR_5734    :{SMALLFONT}{BLACK}Darstellung
 STR_5735    :Netzwerkstatus
@@ -3382,21 +3376,13 @@ STR_6100    :Sie haben die Verbindung mit dem Server getrennt.
 STR_6101    :Attrakt. verlieren keinen Wert über Zeit
 STR_6102    :{SMALLFONT}{BLACK}Der Wert einer Attraktion wird mit der Zeit nicht sinken, sodass Besucher eine Attraktion nicht mehr plötzlich als{NEWLINE}zu teuer empfinden
 STR_6103    :{SMALLFONT}{BLACK}Diese Option ist im Mehrspielermodus deaktiviert
-STR_6104    :Korkenzieher-Achterbahn
 STR_6105    :Hyper-Achterbahn
-STR_6106    :Wagenbahn
 STR_6107    :Monster-Trucks
-STR_6108    :Stahl-Twister
 STR_6109    :Hyper-Twister
-STR_6110    :Kinder-Achterbahn
 STR_6111    :Klassische Miniachterbahn
-STR_6112    :Eine kompakte Stahlachterbahn, bei der der Zug durch Schrauben und Schleifen fährt
 STR_6113    :Eine große, nicht umgekehrte Achterbahn mit großen Gefällen, hoher Geschwindigkeit und komfortablen Zügen, die lediglich Beckenhalterungen aufweisen
-STR_6114    :Die Passagiere sitzen in langsam angetriebenen Wagen auf einer Schienenstrecke
 STR_6115    :Angetriebene, gigantische Trucks mit Allradantrieb, die steile Hänge bezwingen können
 STR_6116    :Breite Achterbahnzüge gleiten auf glatten Stahlschienen mit verdrehter Streckenführung
-STR_6117    :Die Fahrgäste sitzen in komfortablen Wagen mit einfachen Beckenhalterungen, in denen sie gigantische, gemäßigte Gefälle erleben, aber auch viel Zeit oben „in der Luft“ verbringen
-STR_6118    :Eine gemäßigte Achterbahn für Leute, die noch nicht den Mut für längere Bahnen haben
 STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begrenzter Höhe
 STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
