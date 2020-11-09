@@ -47,7 +47,7 @@ using namespace OpenRCT2;
 
 namespace Editor
 {
-    static std::array<std::vector<uint8_t>, ObjectType::Count> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
@@ -530,10 +530,10 @@ namespace Editor
         return true;
     }
 
-    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index)
+    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)
     {
         uint8_t result = 0;
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() > index)
         {
             result = list[index];
@@ -543,7 +543,7 @@ namespace Editor
 
     void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
             list.resize(index + 1);
@@ -553,7 +553,7 @@ namespace Editor
 
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
             list.resize(index + 1);

@@ -1129,7 +1129,7 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         int32_t entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
+            if (object_entry_get_chunk(static_cast<ObjectType>(i), entryGroupIndex) == nullptr)
             {
                 break;
             }

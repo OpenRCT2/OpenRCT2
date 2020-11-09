@@ -240,7 +240,7 @@ void sub_6AB211()
     for (int32_t i = 0; i < numObjects; i++)
     {
         ObjectType objectType = items[i].ObjectEntry.GetType();
-        _numAvailableObjectsForType[objectType]++;
+        _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -368,10 +368,10 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = items[i].ObjectEntry.GetType();
+        ObjectType objectType = items[i].ObjectEntry.GetType();
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            _numSelectedObjectsForType[objectType]++;
+            _numSelectedObjectsForType[EnumValue(objectType)]++;
         }
     }
 }
@@ -484,7 +484,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             maxObjects = 4;
         }
 
-        if (maxObjects <= _numSelectedObjectsForType[objectType])
+        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
             return false;
@@ -511,7 +511,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return false;
         }
 
-        if (maxObjects <= _numSelectedObjectsForType[objectType])
+        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
             return false;
@@ -577,7 +577,7 @@ int32_t editor_remove_unused_objects()
                     continue;
                 }
 
-                _numSelectedObjectsForType[objectType]--;
+                _numSelectedObjectsForType[EnumValue(objectType)]--;
                 _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
                 numUnselectedObjects++;
             }

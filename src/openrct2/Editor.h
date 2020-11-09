@@ -27,7 +27,7 @@ namespace Editor
 
     void OpenWindowsForCurrentStep();
 
-    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index);
+    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index);
     void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags);
 } // namespace Editor

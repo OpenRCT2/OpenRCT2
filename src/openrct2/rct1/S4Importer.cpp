@@ -541,7 +541,7 @@ private:
                             EntryList* entries = GetEntryList(objectType);
 
                             // Check if there are spare entries available
-                            size_t maxEntries = static_cast<size_t>(object_entry_group_counts[objectType]);
+                            size_t maxEntries = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);
                             if (entries != nullptr && entries->GetCount() < maxEntries)
                             {
                                 entries->GetOrAddEntry(objectName);
@@ -1921,7 +1921,7 @@ private:
         for (const char* objectName : entries)
         {
             rct_object_entry entry;
-            entry.flags = 0x00008000 + objectType;
+            entry.flags = 0x00008000 + EnumValue(objectType);
             std::copy_n(objectName, 8, entry.name);
             entry.checksum = 0;
 
@@ -1947,7 +1947,7 @@ private:
         for (const auto objectName : objectNames)
         {
             rct_object_entry entry{};
-            entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (objectType & 0x0F);
+            entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (EnumValue(objectType) & 0x0F);
             entry.SetName(objectName);
             entries.push_back(entry);
         }
@@ -1988,7 +1988,7 @@ private:
         for (const char* objectName : entries)
         {
             rct_object_entry entry;
-            entry.flags = 0x00008000 + objectType;
+            entry.flags = 0x00008000 + EnumValue(objectType);
             std::copy_n(objectName, DAT_NAME_LENGTH, entry.name);
             entry.checksum = 0;
 

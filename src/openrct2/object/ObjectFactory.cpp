@@ -437,7 +437,7 @@ namespace ObjectFactory
         std::unique_ptr<Object> result;
 
         auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != 0xFF)
+        if (objectType != ObjectType::None)
         {
             auto id = Json::GetString(jRoot["id"]);
 
