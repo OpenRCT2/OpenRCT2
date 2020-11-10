@@ -154,7 +154,7 @@ namespace String
         }
     }
 
-    bool Equals(const std::string_view& a, const std::string_view& b, bool ignoreCase)
+    bool Equals(const std::string_view a, const std::string_view b, bool ignoreCase)
     {
         if (ignoreCase)
         {

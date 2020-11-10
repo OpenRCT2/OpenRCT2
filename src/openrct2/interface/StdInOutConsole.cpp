@@ -111,19 +111,16 @@ void StdInOutConsole::Close()
 void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
 {
     std::string formatBegin;
-    if (colourFormat != FormatToken::ColourWindow2)
+    switch (colourFormat)
     {
-        switch (colourFormat)
-        {
-            case FormatToken::ColourRed:
-                formatBegin = "\033[31m";
-                break;
-            case FormatToken::ColourYellow:
-                formatBegin = "\033[33m";
-                break;
-            default:
-                break;
-        }
+        case FormatToken::ColourRed:
+            formatBegin = "\033[31m";
+            break;
+        case FormatToken::ColourYellow:
+            formatBegin = "\033[33m";
+            break;
+        default:
+            break;
     }
 
     if (formatBegin.empty() || !Platform::IsColourTerminalSupported())
