@@ -11,8 +11,7 @@
 #define _EDITOR_H_
 
 #include "common.h"
-
-#include <src/openrct2/object/Object.h>
+#include "object/Object.h"
 
 namespace Editor
 {

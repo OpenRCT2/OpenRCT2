@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
                 auto rideObject = GetContext()->GetObjectManager().GetLoadedObject(ObjectType::Ride, ride->subtype);
                 if (rideObject != nullptr)
                 {
-                    return std::make_shared<ScRideObject>(EnumValue(ObjectType::Ride), ride->subtype);
+                    return std::make_shared<ScRideObject>(ObjectType::Ride, ride->subtype);
                 }
             }
             return nullptr;

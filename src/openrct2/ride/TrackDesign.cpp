@@ -785,7 +785,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             case ObjectType::Music:
             case ObjectType::Count:
             case ObjectType::None:
-                //This switch processes only ObjectType for Scenery items.
+                // This switch processes only ObjectType for Scenery items.
                 break;
         }
     }
@@ -900,7 +900,8 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
         }
 
         entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0); entry_index < object_entry_group_counts[ObjectType::Paths];
+        for (PathSurfaceEntry* path = get_path_surface_entry(0);
+             entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
              path = get_path_surface_entry(entry_index), entry_index++)
         {
             if (path == nullptr)
@@ -987,7 +988,7 @@ static bool TrackDesignPlaceSceneryElementGetPlaceZ(const TrackDesignSceneryElem
         _trackDesignPlaceSceneryZ = z;
     }
 
-    uint8_t entry_type;
+    ObjectType entry_type;
     ObjectEntryIndex entry_index;
     TrackDesignPlaceSceneryElementGetEntry(entry_type, entry_index, scenery);
 
@@ -1904,7 +1905,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    uint8_t entry_type;
+    ObjectType entry_type;
     ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
     {

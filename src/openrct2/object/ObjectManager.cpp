@@ -474,7 +474,7 @@ private:
                     case ObjectType::Music:
                     case ObjectType::Count:
                     case ObjectType::None:
-                        //This switch handles only ObjectType for sceneries.
+                        // This switch handles only ObjectType for sceneries.
                         break;
                 }
             }

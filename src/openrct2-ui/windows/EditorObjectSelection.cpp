@@ -212,7 +212,7 @@ static constexpr const int32_t window_editor_object_selection_animation_divisor[
 
 static void window_editor_object_set_page(rct_window* w, int32_t page);
 static void window_editor_object_selection_set_pressed_tab(rct_window* w);
-static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y);
+static int32_t get_object_from_object_selection(ObjectType object_type, int32_t y);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
 static bool filter_selected(uint8_t objectFlags);
@@ -295,7 +295,7 @@ static void visible_list_refresh(rct_window* w)
     {
         uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->ObjectEntry.GetType();
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
@@ -999,8 +999,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         auto screenPos = w->windowPos + ScreenCoordsXY{ 3, w->height - 13 };
 
-        int32_t numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
-        int32_t totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
+        int32_t numSelected = _numSelectedObjectsForType[EnumValue(get_selected_object_type(w))];
+        int32_t totalSelectable = object_entry_group_counts[EnumValue(get_selected_object_type(w))];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
@@ -1256,7 +1256,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window* w)
  *
  *  rct2: 0x006AA703
  */
-static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y)
+static int32_t get_object_from_object_selection(ObjectType object_type, int32_t y)
 {
     int32_t listItemIndex = y / SCROLLABLE_ROW_HEIGHT;
     if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
@@ -1502,7 +1502,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
         case ObjectType::Music:
         case ObjectType::Count:
         case ObjectType::None:
-            //This function works only with ObjectType::Ride.
+            // This function works only with ObjectType::Ride.
             break;
     }
     return true;
@@ -1522,8 +1522,8 @@ static void filter_update_counts()
             const ObjectRepositoryItem* item = &items[i];
             if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
-                uint8_t objectType = item->ObjectEntry.GetType();
-                _filter_object_counts[objectType]++;
+                ObjectType objectType = item->ObjectEntry.GetType();
+                _filter_object_counts[EnumValue(objectType)]++;
             }
         }
     }

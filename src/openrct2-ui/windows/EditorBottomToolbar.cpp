@@ -188,7 +188,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
     if (w != nullptr)
     {
         // Click tab with missing object
-        window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + missingObjectType);
+        window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
     }
     return false;
 }

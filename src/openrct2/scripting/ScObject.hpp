@@ -26,11 +26,11 @@ namespace OpenRCT2::Scripting
     class ScObject
     {
     protected:
-        uint8_t _type{};
+        ObjectType _type{};
         int32_t _index{};
 
     public:
-        ScObject(uint8_t type, int32_t index)
+        ScObject(ObjectType type, int32_t index)
             : _type(type)
             , _index(index)
         {
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
     private:
         std::string type_get() const
         {
-            return std::string(ObjectTypeToString(_type));
+            return std::string(ObjectTypeToString(EnumValue(_type)));
         }
 
         int32_t index_get() const
@@ -641,7 +641,7 @@ namespace OpenRCT2::Scripting
     class ScRideObject : public ScObject
     {
     public:
-        ScRideObject(uint8_t type, int32_t index)
+        ScRideObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }
@@ -922,7 +922,7 @@ namespace OpenRCT2::Scripting
     class ScSmallSceneryObject : public ScObject
     {
     public:
-        ScSmallSceneryObject(uint8_t type, int32_t index)
+        ScSmallSceneryObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }

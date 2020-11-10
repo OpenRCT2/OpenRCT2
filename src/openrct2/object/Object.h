@@ -42,7 +42,7 @@ enum class ObjectType : uint8_t
     Music,
 
     Count,
-    None=255
+    None = 255
 };
 
 enum OBJECT_SELECTION_FLAGS

@@ -560,7 +560,7 @@ private:
                         case ObjectType::Music:
                         case ObjectType::Count:
                         case ObjectType::None:
-                            //This switch processes only ObjectTypes valid for scenery
+                            // This switch processes only ObjectTypes valid for scenery
                             break;
                     }
                 }
@@ -2999,7 +2999,7 @@ private:
             case ObjectType::Music:
             case ObjectType::Count:
             case ObjectType::None:
-                //This switch processes only ObjectType for for Entries
+                // This switch processes only ObjectType for for Entries
                 break;
         }
         return nullptr;

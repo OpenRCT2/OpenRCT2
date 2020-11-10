@@ -181,7 +181,7 @@ protected:
             case ObjectType::Music:
             case ObjectType::Count:
             case ObjectType::None:
-                //Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }
     }
@@ -247,7 +247,7 @@ protected:
             case ObjectType::Music:
             case ObjectType::Count:
             case ObjectType::None:
-                //Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }
         return item;

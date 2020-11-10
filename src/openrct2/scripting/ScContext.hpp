@@ -90,11 +90,11 @@ namespace OpenRCT2::Scripting
             switch (type)
             {
                 case ObjectType::Ride:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(EnumValue(type), index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScRideObject>(type, index));
                 case ObjectType::SmallScenery:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(EnumValue(type), index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScSmallSceneryObject>(type, index));
                 default:
-                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(EnumValue(type), index));
+                    return GetObjectAsDukValue(ctx, std::make_shared<ScObject>(type, index));
             }
         }
 
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
             auto type = ScObject::StringToObjectType(typez);
             if (type)
             {
-                auto count = object_entry_group_counts[*type];
+                auto count = object_entry_group_counts[EnumValue(*type)];
                 for (int32_t i = 0; i < count; i++)
                 {
                     auto obj = objManager.GetLoadedObject(*type, i);
