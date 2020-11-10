@@ -3652,6 +3652,7 @@ STR_6395    :Manutenção
 STR_6396    :Desabilitar proteção de tela e economia de energia do monitor
 STR_6397    :{SMALLFONT}{BLACK}Se selecionada, a proteção de tela e outras configurações de economia de energia do monitor serão inibidas durante a execução do OpenRCT2.
 STR_6398    :Esse arquivo contém atrações não suportadas. Por favor atualize para uma versão mais nova do OpenRCT2.
+STR_6399    :OpenRCT2 precisa de arquivos do RollerCoaster Tycoon 2 original para funcionar. Por favor configure a variável “game_path” no arquivo config.ini para o diretório onde instalou o RollerCoaster Tycoon 2 e reinicie o OpenRCT2.
 
 #############
 # Scenarios #
