@@ -731,8 +731,9 @@ namespace String
             return String::ToUtf8(dstW);
         }
 #    else
-        log_warning("String::ToUpper not supported");
-        return std::string(src);
+        std::string dst = std::string(src);
+        std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::toupper(c); });
+        return dst;
 #    endif
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -775,8 +776,9 @@ namespace String
             return String::ToUtf8(dstW);
         }
 #    else
-        log_warning("String::ToLower not supported");
-        return std::string(src);
+        std::string dst = std::string(src);
+        std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::tolower(c); });
+        return dst;
 #    endif
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
