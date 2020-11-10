@@ -531,7 +531,7 @@ const rct_track_coordinates TrackCoordinates[TrackElemType::Count] = {
 };
 
 /** rct2: 0x0099BA64 */
-const uint8_t TrackSequenceProperties[][16] = {
+const uint8_t TrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 },
     /* TrackElemType::EndStation */    { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* TrackElemType::BeginStation */  { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN | TRACK_SEQUENCE_FLAG_DISALLOW_DOORS, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -791,7 +791,7 @@ const uint8_t TrackSequenceProperties[][16] = {
 };
 
 /** rct2: 0x0099CA64 */
-const uint8_t FlatRideTrackSequenceProperties[][16] = {
+const uint8_t FlatRideTrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 },
     /* 1 */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
     /* 2 */ { TRACK_SEQUENCE_FLAG_DIRECTION_1 | TRACK_SEQUENCE_FLAG_DIRECTION_3 | TRACK_SEQUENCE_FLAG_ORIGIN, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
@@ -6035,7 +6035,7 @@ const uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
 };
 
 /** rct2: 0x00999A94 */
-const uint8_t TrackSequenceElementAllowedWallEdges[][16] = {
+const uint8_t TrackSequenceElementAllowedWallEdges[][MaxSequencesPerPiece] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::Flat
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::EndStation
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 }, // TrackElemType::BeginStation
@@ -6295,7 +6295,7 @@ const uint8_t TrackSequenceElementAllowedWallEdges[][16] = {
 };
 
 /** rct2: 0x0099AA94 */
-const uint8_t FlatRideTrackSequenceElementAllowedWallEdges[][16] = {
+const uint8_t FlatRideTrackSequenceElementAllowedWallEdges[][MaxSequencesPerPiece] = {
     { 0b1010,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
     {      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0,      0 },
