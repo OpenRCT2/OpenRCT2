@@ -1945,19 +1945,17 @@ static SoundIdVolume sub_6D7AC0(
     return { currentSoundId, currentVolume };
 }
 
-SoundIdVolume Vehicle::GetLiftHillSound(Ride* curRide)
+void Vehicle::GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound)
 {
-    SoundIdVolume resultSounds{};
     scream_sound_id = OpenRCT2::Audio::SoundId::Null;
     if (curRide->type < std::size(RideTypeDescriptors))
     {
         // Get lift hill sound
-        resultSounds.id = RideTypeDescriptors[curRide->type].LiftData.sound_id;
-        resultSounds.volume = 243;
+        curSound.id = RideTypeDescriptors[curRide->type].LiftData.sound_id;
+        curSound.volume = 243;
         if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-            resultSounds.id = OpenRCT2::Audio::SoundId::Null;
+            curSound.id = OpenRCT2::Audio::SoundId::Null;
     }
-    return resultSounds;
 }
 
 /**
@@ -5549,7 +5547,7 @@ void Vehicle::UpdateSound()
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    currentSound = GetLiftHillSound(curRide);
+                    GetLiftHillSound(curRide, currentSound);
                     break;
                 }
 
@@ -5571,7 +5569,7 @@ void Vehicle::UpdateSound()
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    currentSound = GetLiftHillSound(curRide);
+                    GetLiftHillSound(curRide, currentSound);
                     break;
                 }
 
@@ -5595,13 +5593,13 @@ void Vehicle::UpdateSound()
                     currentSound.id = OpenRCT2::Audio::SoundId::Null;
                 else if (currentSound.id == OpenRCT2::Audio::SoundId::Null)
                 {
-                    currentSound = GetLiftHillSound(curRide);
+                    GetLiftHillSound(curRide, currentSound);
                     break;
                 }
                 break;
             }
 
-            currentSound = GetLiftHillSound(curRide);
+            GetLiftHillSound(curRide, currentSound);
     }
 
     // Friction sound
