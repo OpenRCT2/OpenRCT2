@@ -398,7 +398,7 @@ private:
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
-    void GetLiftHillSound(Ride* curRide, SoundIdVolume &curSound);
+    void GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound);
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
