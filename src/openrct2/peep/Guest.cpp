@@ -448,10 +448,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->ItemStandardFlags & SHOP_ITEM_PIZZA))
+    if ((passingPeep->ItemStandardFlags & (1 << SHOP_ITEM_PIZZA)))
         return;
 
-    passingPeep->ItemStandardFlags |= SHOP_ITEM_PIZZA;
+    passingPeep->ItemStandardFlags |= (1 << SHOP_ITEM_PIZZA);
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -487,10 +487,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->ItemStandardFlags & SHOP_ITEM_ICE_CREAM)
+    if (passingPeep->ItemStandardFlags & (1 << SHOP_ITEM_ICE_CREAM))
         return;
 
-    passingPeep->ItemStandardFlags |= SHOP_ITEM_ICE_CREAM;
+    passingPeep->ItemStandardFlags |= (1 << SHOP_ITEM_ICE_CREAM);
     passingPeep->UpdateSpriteType();
 }
 
@@ -1002,7 +1002,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & SHOP_ITEM_MAP) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & (1 << SHOP_ITEM_MAP)) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1341,29 +1341,33 @@ bool Guest::HasItem(int32_t peepItem) const
 int32_t Guest::HasFoodStandardFlag() const
 {
     return ItemStandardFlags
-        & (SHOP_ITEM_DRINK | SHOP_ITEM_BURGER | SHOP_ITEM_CHIPS | SHOP_ITEM_ICE_CREAM | SHOP_ITEM_CANDYFLOSS | SHOP_ITEM_PIZZA
-           | SHOP_ITEM_POPCORN | SHOP_ITEM_HOT_DOG | SHOP_ITEM_TENTACLE | SHOP_ITEM_TOFFEE_APPLE | SHOP_ITEM_DOUGHNUT
-           | SHOP_ITEM_COFFEE | SHOP_ITEM_CHICKEN | SHOP_ITEM_LEMONADE);
+        & ((1 << SHOP_ITEM_DRINK) | (1 << SHOP_ITEM_BURGER) | (1 << SHOP_ITEM_CHIPS) | (1 << SHOP_ITEM_ICE_CREAM)
+           | (1 << SHOP_ITEM_CANDYFLOSS) | (1 << SHOP_ITEM_PIZZA) | (1 << SHOP_ITEM_POPCORN) | (1 << SHOP_ITEM_HOT_DOG)
+           | (1 << SHOP_ITEM_TENTACLE) | (1 << SHOP_ITEM_TOFFEE_APPLE) | (1 << SHOP_ITEM_DOUGHNUT) | (1 << SHOP_ITEM_COFFEE)
+           | (1 << SHOP_ITEM_CHICKEN) | (1 << SHOP_ITEM_LEMONADE));
 }
 
 int32_t Guest::HasFoodExtraFlag() const
 {
     return ItemExtraFlags
-        & (SHOP_ITEM_PRETZEL | SHOP_ITEM_CHOCOLATE | SHOP_ITEM_ICED_TEA | SHOP_ITEM_FUNNEL_CAKE | SHOP_ITEM_BEEF_NOODLES
-           | SHOP_ITEM_FRIED_RICE_NOODLES | SHOP_ITEM_WONTON_SOUP | SHOP_ITEM_MEATBALL_SOUP | SHOP_ITEM_FRUIT_JUICE
-           | SHOP_ITEM_SOYBEAN_MILK | SHOP_ITEM_SUJEONGGWA | SHOP_ITEM_SUB_SANDWICH | SHOP_ITEM_COOKIE
-           | SHOP_ITEM_ROAST_SAUSAGE);
+        & ((1 << (SHOP_ITEM_PRETZEL - 32)) | (1 << (SHOP_ITEM_CHOCOLATE - 32)) | (1 << (SHOP_ITEM_ICED_TEA - 32))
+           | (1 << (SHOP_ITEM_FUNNEL_CAKE - 32)) | (1 << (SHOP_ITEM_BEEF_NOODLES - 32))
+           | (1 << (SHOP_ITEM_FRIED_RICE_NOODLES - 32)) | (1 << (SHOP_ITEM_WONTON_SOUP - 32))
+           | (1 << (SHOP_ITEM_MEATBALL_SOUP - 32)) | (1 << (SHOP_ITEM_FRUIT_JUICE - 32)) | (1 << (SHOP_ITEM_SOYBEAN_MILK - 32))
+           | (1 << (SHOP_ITEM_SUJEONGGWA - 32)) | (1 << (SHOP_ITEM_SUB_SANDWICH - 32)) | (1 << (SHOP_ITEM_COOKIE - 32))
+           | (1 << (SHOP_ITEM_ROAST_SAUSAGE - 32)));
 }
 
 bool Guest::HasDrinkStandardFlag() const
 {
-    return ItemStandardFlags & (SHOP_ITEM_DRINK | SHOP_ITEM_COFFEE | SHOP_ITEM_LEMONADE);
+    return ItemStandardFlags & ((1 << SHOP_ITEM_DRINK) | (1 << SHOP_ITEM_COFFEE) | (1 << SHOP_ITEM_LEMONADE));
 }
 
 bool Guest::HasDrinkExtraFlag() const
 {
     return ItemExtraFlags
-        & (SHOP_ITEM_CHOCOLATE | SHOP_ITEM_ICED_TEA | SHOP_ITEM_FRUIT_JUICE | SHOP_ITEM_SOYBEAN_MILK | SHOP_ITEM_SUJEONGGWA);
+        & ((1 << (SHOP_ITEM_CHOCOLATE - 32)) | (1 << (SHOP_ITEM_ICED_TEA - 32)) | (1 << (SHOP_ITEM_FRUIT_JUICE - 32))
+           | (1 << (SHOP_ITEM_SOYBEAN_MILK - 32)) | (1 << (SHOP_ITEM_SUJEONGGWA - 32)));
 }
 
 /**
@@ -1378,14 +1382,15 @@ bool Guest::HasDrink() const
 int32_t Guest::HasEmptyContainerStandardFlag() const
 {
     return ItemStandardFlags
-        & (SHOP_ITEM_EMPTY_CAN | SHOP_ITEM_EMPTY_BURGER_BOX | SHOP_ITEM_EMPTY_CUP | SHOP_ITEM_RUBBISH | SHOP_ITEM_EMPTY_BOX
-           | SHOP_ITEM_EMPTY_BOTTLE);
+        & ((1 << SHOP_ITEM_EMPTY_CAN) | (1 << SHOP_ITEM_EMPTY_BURGER_BOX) | (1 << SHOP_ITEM_EMPTY_CUP)
+           | (1 << SHOP_ITEM_RUBBISH) | (1 << SHOP_ITEM_EMPTY_BOX) | (1 << SHOP_ITEM_EMPTY_BOTTLE));
 }
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
     return ItemExtraFlags
-        & (SHOP_ITEM_EMPTY_BOWL_RED | SHOP_ITEM_EMPTY_DRINK_CARTON | SHOP_ITEM_EMPTY_JUICE_CUP | SHOP_ITEM_EMPTY_BOWL_BLUE);
+        & ((1 << (SHOP_ITEM_EMPTY_BOWL_RED - 32)) | (1 << (SHOP_ITEM_EMPTY_DRINK_CARTON - 32))
+           | (1 << (SHOP_ITEM_EMPTY_JUICE_CUP - 32)) | (1 << (SHOP_ITEM_EMPTY_BOWL_BLUE - 32)));
 }
 
 bool Guest::HasEmptyContainer() const
@@ -1495,6 +1500,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
     if ((ItemStandardFlags & SHOP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1727,7 +1733,7 @@ loc_69B119:
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        ItemStandardFlags &= ~SHOP_ITEM_VOUCHER;
+        ItemStandardFlags &= ~(1 << SHOP_ITEM_VOUCHER);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1872,7 +1878,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (ItemStandardFlags & SHOP_ITEM_MAP)
+        if (ItemStandardFlags & (1 << SHOP_ITEM_MAP))
         {
             ReadMap();
         }
@@ -1910,7 +1916,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (ItemStandardFlags & SHOP_ITEM_MAP)
+    if (ItemStandardFlags & (1 << SHOP_ITEM_MAP))
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2427,7 +2433,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & SHOP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    return peep->ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == ride->id;
 }
 
@@ -2649,7 +2655,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & SHOP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
@@ -3172,7 +3178,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & SHOP_ITEM_MAP))
+    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & (1 << SHOP_ITEM_MAP)))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3867,10 +3873,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & SHOP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
+        if ((ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
             && (VoucherRideId == CurrentRide))
         {
-            ItemStandardFlags &= ~SHOP_ITEM_VOUCHER;
+            ItemStandardFlags &= ~(1 << SHOP_ITEM_VOUCHER);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -6806,37 +6812,37 @@ struct item_pref_t
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, SHOP_ITEM_ICE_CREAM, PeepSpriteType::IceCream },
-        { 0, SHOP_ITEM_CHIPS, PeepSpriteType::Chips },
-        { 0, SHOP_ITEM_PIZZA, PeepSpriteType::Pizza },
-        { 0, SHOP_ITEM_BURGER, PeepSpriteType::Burger },
-        { 0, SHOP_ITEM_DRINK, PeepSpriteType::Drink },
-        { 0, SHOP_ITEM_COFFEE, PeepSpriteType::Coffee },
-        { 0, SHOP_ITEM_CHICKEN, PeepSpriteType::Chicken },
-        { 0, SHOP_ITEM_LEMONADE, PeepSpriteType::Lemonade },
-        { 0, SHOP_ITEM_CANDYFLOSS, PeepSpriteType::Candyfloss },
-        { 0, SHOP_ITEM_POPCORN, PeepSpriteType::Popcorn },
-        { 0, SHOP_ITEM_HOT_DOG, PeepSpriteType::HotDog  },
-        { 0, SHOP_ITEM_TENTACLE, PeepSpriteType::Tentacle },
-        { 0, SHOP_ITEM_TOFFEE_APPLE, PeepSpriteType::ToffeeApple },
-        { 0, SHOP_ITEM_DOUGHNUT, PeepSpriteType::Doughnut },
-        { 1, SHOP_ITEM_PRETZEL, PeepSpriteType::Pretzel },
-        { 1, SHOP_ITEM_COOKIE, PeepSpriteType::Pretzel },
-        { 1, SHOP_ITEM_CHOCOLATE, PeepSpriteType::Coffee },
-        { 1, SHOP_ITEM_ICED_TEA, PeepSpriteType::Coffee },
-        { 1, SHOP_ITEM_FUNNEL_CAKE, PeepSpriteType::FunnelCake },
-        { 1, SHOP_ITEM_BEEF_NOODLES, PeepSpriteType::Noodles },
-        { 1, SHOP_ITEM_FRIED_RICE_NOODLES, PeepSpriteType::Noodles },
-        { 1, SHOP_ITEM_WONTON_SOUP, PeepSpriteType::Soup },
-        { 1, SHOP_ITEM_MEATBALL_SOUP, PeepSpriteType::Soup },
-        { 1, SHOP_ITEM_FRUIT_JUICE, PeepSpriteType::Juice },
-        { 1, SHOP_ITEM_SOYBEAN_MILK, PeepSpriteType::SuJongkwa },
-        { 1, SHOP_ITEM_SUJEONGGWA, PeepSpriteType::SuJongkwa },
-        { 1, SHOP_ITEM_SUB_SANDWICH, PeepSpriteType::Sandwich },
-        { 1, SHOP_ITEM_ROAST_SAUSAGE, PeepSpriteType::Sausage },
-        { 0, SHOP_ITEM_BALLOON, PeepSpriteType::Balloon },
-        { 0, SHOP_ITEM_HAT, PeepSpriteType::Hat },
-        { 1, SHOP_ITEM_SUNGLASSES, PeepSpriteType::Sunglasses },
+        { 0, (1 << SHOP_ITEM_ICE_CREAM), PeepSpriteType::IceCream },
+        { 0, (1 << SHOP_ITEM_CHIPS), PeepSpriteType::Chips },
+        { 0, (1 << SHOP_ITEM_PIZZA), PeepSpriteType::Pizza },
+        { 0, (1 << SHOP_ITEM_BURGER), PeepSpriteType::Burger },
+        { 0, (1 << SHOP_ITEM_DRINK), PeepSpriteType::Drink },
+        { 0, (1 << SHOP_ITEM_COFFEE), PeepSpriteType::Coffee },
+        { 0, (1 << SHOP_ITEM_CHICKEN), PeepSpriteType::Chicken },
+        { 0, (1 << SHOP_ITEM_LEMONADE), PeepSpriteType::Lemonade },
+        { 0, (1 << SHOP_ITEM_CANDYFLOSS), PeepSpriteType::Candyfloss },
+        { 0, (1 << SHOP_ITEM_POPCORN), PeepSpriteType::Popcorn },
+        { 0, (1 << SHOP_ITEM_HOT_DOG), PeepSpriteType::HotDog  },
+        { 0, (1 << SHOP_ITEM_TENTACLE), PeepSpriteType::Tentacle },
+        { 0, (1 << SHOP_ITEM_TOFFEE_APPLE), PeepSpriteType::ToffeeApple },
+        { 0, (1 << SHOP_ITEM_DOUGHNUT), PeepSpriteType::Doughnut },
+        { 1, (1 << (SHOP_ITEM_PRETZEL-32)), PeepSpriteType::Pretzel },
+        { 1, (1 << (SHOP_ITEM_COOKIE-32)), PeepSpriteType::Pretzel },
+        { 1, (1 << (SHOP_ITEM_CHOCOLATE-32)), PeepSpriteType::Coffee },
+        { 1, (1 << (SHOP_ITEM_ICED_TEA-32)), PeepSpriteType::Coffee },
+        { 1, (1 << (SHOP_ITEM_FUNNEL_CAKE-32)), PeepSpriteType::FunnelCake },
+        { 1, (1 << (SHOP_ITEM_BEEF_NOODLES-32)), PeepSpriteType::Noodles },
+        { 1, (1 << (SHOP_ITEM_FRIED_RICE_NOODLES-32)), PeepSpriteType::Noodles },
+        { 1, (1 << (SHOP_ITEM_WONTON_SOUP-32)), PeepSpriteType::Soup },
+        { 1, (1 << (SHOP_ITEM_MEATBALL_SOUP-32)), PeepSpriteType::Soup },
+        { 1, (1 << (SHOP_ITEM_FRUIT_JUICE-32)), PeepSpriteType::Juice },
+        { 1, (1 << (SHOP_ITEM_SOYBEAN_MILK-32)), PeepSpriteType::SuJongkwa },
+        { 1, (1 << (SHOP_ITEM_SUJEONGGWA-32)), PeepSpriteType::SuJongkwa },
+        { 1, (1 << (SHOP_ITEM_SUB_SANDWICH-32)), PeepSpriteType::Sandwich },
+        { 1, (1 << (SHOP_ITEM_ROAST_SAUSAGE-32)), PeepSpriteType::Sausage },
+        { 0, (1 << SHOP_ITEM_BALLOON), PeepSpriteType::Balloon },
+        { 0, (1 << SHOP_ITEM_HAT), PeepSpriteType::Hat },
+        { 1, (1 << (SHOP_ITEM_SUNGLASSES-32)), PeepSpriteType::Sunglasses },
         { 0xFF, 0xFFFFFFFF, PeepSpriteType::Invalid }
 };
 // clang-format on
@@ -6859,11 +6865,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        ItemStandardFlags &= ~SHOP_ITEM_BALLOON;
+        ItemStandardFlags &= ~(1 << SHOP_ITEM_BALLOON);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (ItemStandardFlags & SHOP_ITEM_UMBRELLA) && x != LOCATION_NULL)
+    if (climate_is_raining() && (ItemStandardFlags & (1 << SHOP_ITEM_UMBRELLA)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))

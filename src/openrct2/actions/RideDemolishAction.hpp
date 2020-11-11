@@ -174,41 +174,41 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->ItemStandardFlags & SHOP_ITEM_VOUCHER)
+            if (peep->ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~(SHOP_ITEM_VOUCHER);
+                    peep->ItemStandardFlags &= ~(1 << SHOP_ITEM_VOUCHER);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->ItemStandardFlags & SHOP_ITEM_PHOTO)
+            if (peep->ItemStandardFlags & (1 << SHOP_ITEM_PHOTO))
             {
                 if (peep->Photo1RideRef == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~SHOP_ITEM_PHOTO;
+                    peep->ItemStandardFlags &= ~(1 << SHOP_ITEM_PHOTO);
                 }
             }
-            if (peep->ItemExtraFlags & SHOP_ITEM_PHOTO2)
+            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO2 - 32)))
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~SHOP_ITEM_PHOTO2;
+                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO2 - 32));
                 }
             }
-            if (peep->ItemExtraFlags & SHOP_ITEM_PHOTO3)
+            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO3 - 32)))
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~SHOP_ITEM_PHOTO3;
+                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO3 - 32));
                 }
             }
-            if (peep->ItemExtraFlags & SHOP_ITEM_PHOTO4)
+            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO4 - 32)))
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~SHOP_ITEM_PHOTO4;
+                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO4 - 32));
                 }
             }
 

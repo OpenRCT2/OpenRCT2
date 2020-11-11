@@ -17,57 +17,57 @@ struct Ride;
 
 enum ShopItem
 {
-    SHOP_ITEM_BALLOON,
-    SHOP_ITEM_TOY,
-    SHOP_ITEM_MAP,
-    SHOP_ITEM_PHOTO,
-    SHOP_ITEM_UMBRELLA,
-    SHOP_ITEM_DRINK,
-    SHOP_ITEM_BURGER,
-    SHOP_ITEM_CHIPS,
-    SHOP_ITEM_ICE_CREAM,
-    SHOP_ITEM_CANDYFLOSS,
-    SHOP_ITEM_EMPTY_CAN,
-    SHOP_ITEM_RUBBISH,
-    SHOP_ITEM_EMPTY_BURGER_BOX,
-    SHOP_ITEM_PIZZA,
-    SHOP_ITEM_VOUCHER,
-    SHOP_ITEM_POPCORN,
-    SHOP_ITEM_HOT_DOG,
-    SHOP_ITEM_TENTACLE,
-    SHOP_ITEM_HAT,
-    SHOP_ITEM_TOFFEE_APPLE,
-    SHOP_ITEM_TSHIRT,
-    SHOP_ITEM_DOUGHNUT,
-    SHOP_ITEM_COFFEE,
-    SHOP_ITEM_EMPTY_CUP,
-    SHOP_ITEM_CHICKEN,
-    SHOP_ITEM_LEMONADE,
-    SHOP_ITEM_EMPTY_BOX,
-    SHOP_ITEM_EMPTY_BOTTLE = 27,
+    SHOP_ITEM_BALLOON,           // for PEEP_ITEM was (1<<0)
+    SHOP_ITEM_TOY,               // for PEEP_ITEM was (1<<1)
+    SHOP_ITEM_MAP,               // for PEEP_ITEM was (1<<2)
+    SHOP_ITEM_PHOTO,             // for PEEP_ITEM was (1<<3)
+    SHOP_ITEM_UMBRELLA,          // for PEEP_ITEM was (1<<4)
+    SHOP_ITEM_DRINK,             // for PEEP_ITEM was (1<<5)
+    SHOP_ITEM_BURGER,            // for PEEP_ITEM was (1<<6)
+    SHOP_ITEM_CHIPS,             // for PEEP_ITEM was (1<<7)
+    SHOP_ITEM_ICE_CREAM,         // for PEEP_ITEM was (1<<8)
+    SHOP_ITEM_CANDYFLOSS,        // for PEEP_ITEM was (1<<9)
+    SHOP_ITEM_EMPTY_CAN,         // for PEEP_ITEM was (1<<10)
+    SHOP_ITEM_RUBBISH,           // for PEEP_ITEM was (1<<11)
+    SHOP_ITEM_EMPTY_BURGER_BOX,  // for PEEP_ITEM was (1<<12)
+    SHOP_ITEM_PIZZA,             // for PEEP_ITEM was (1<<13)
+    SHOP_ITEM_VOUCHER,           // for PEEP_ITEM was (1<<14)
+    SHOP_ITEM_POPCORN,           // for PEEP_ITEM was (1<<15)
+    SHOP_ITEM_HOT_DOG,           // for PEEP_ITEM was (1<<16)
+    SHOP_ITEM_TENTACLE,          // for PEEP_ITEM was (1<<17)
+    SHOP_ITEM_HAT,               // for PEEP_ITEM was (1<<18)
+    SHOP_ITEM_TOFFEE_APPLE,      // for PEEP_ITEM was (1<<19)
+    SHOP_ITEM_TSHIRT,            // for PEEP_ITEM was (1<<20)
+    SHOP_ITEM_DOUGHNUT,          // for PEEP_ITEM was (1<<21)
+    SHOP_ITEM_COFFEE,            // for PEEP_ITEM was (1<<22)
+    SHOP_ITEM_EMPTY_CUP,         // for PEEP_ITEM was (1<<23)
+    SHOP_ITEM_CHICKEN,           // for PEEP_ITEM was (1<<24)
+    SHOP_ITEM_LEMONADE,          // for PEEP_ITEM was (1<<25)
+    SHOP_ITEM_EMPTY_BOX,         // for PEEP_ITEM was (1<<26)
+    SHOP_ITEM_EMPTY_BOTTLE = 27, // for PEEP_ITEM was (1<<27)
     SHOP_ITEM_ADMISSION = 31,
-    SHOP_ITEM_PHOTO2 = 32,
-    SHOP_ITEM_PHOTO3,
-    SHOP_ITEM_PHOTO4,
-    SHOP_ITEM_PRETZEL,
-    SHOP_ITEM_CHOCOLATE,
-    SHOP_ITEM_ICED_TEA,
-    SHOP_ITEM_FUNNEL_CAKE,
-    SHOP_ITEM_SUNGLASSES,
-    SHOP_ITEM_BEEF_NOODLES,
-    SHOP_ITEM_FRIED_RICE_NOODLES,
-    SHOP_ITEM_WONTON_SOUP,
-    SHOP_ITEM_MEATBALL_SOUP,
-    SHOP_ITEM_FRUIT_JUICE,
-    SHOP_ITEM_SOYBEAN_MILK,
-    SHOP_ITEM_SUJEONGGWA,
-    SHOP_ITEM_SUB_SANDWICH,
-    SHOP_ITEM_COOKIE,
-    SHOP_ITEM_EMPTY_BOWL_RED,
-    SHOP_ITEM_EMPTY_DRINK_CARTON,
-    SHOP_ITEM_EMPTY_JUICE_CUP,
-    SHOP_ITEM_ROAST_SAUSAGE,
-    SHOP_ITEM_EMPTY_BOWL_BLUE,
+    SHOP_ITEM_PHOTO2 = 32,        // for PEEP_ITEM was (1<<0)
+    SHOP_ITEM_PHOTO3,             // for PEEP_ITEM was (1<<1)
+    SHOP_ITEM_PHOTO4,             // for PEEP_ITEM was (1<<2)
+    SHOP_ITEM_PRETZEL,            // for PEEP_ITEM was (1<<3)
+    SHOP_ITEM_CHOCOLATE,          // for PEEP_ITEM was (1<<4)
+    SHOP_ITEM_ICED_TEA,           // for PEEP_ITEM was (1<<5)
+    SHOP_ITEM_FUNNEL_CAKE,        // for PEEP_ITEM was (1<<6)
+    SHOP_ITEM_SUNGLASSES,         // for PEEP_ITEM was (1<<7)
+    SHOP_ITEM_BEEF_NOODLES,       // for PEEP_ITEM was (1<<8)
+    SHOP_ITEM_FRIED_RICE_NOODLES, // for PEEP_ITEM was (1<<9)
+    SHOP_ITEM_WONTON_SOUP,        // for PEEP_ITEM was (1<<10)
+    SHOP_ITEM_MEATBALL_SOUP,      // for PEEP_ITEM was (1<<11)
+    SHOP_ITEM_FRUIT_JUICE,        // for PEEP_ITEM was (1<<12)
+    SHOP_ITEM_SOYBEAN_MILK,       // for PEEP_ITEM was (1<<13)
+    SHOP_ITEM_SUJEONGGWA,         // for PEEP_ITEM was (1<<14)
+    SHOP_ITEM_SUB_SANDWICH,       // for PEEP_ITEM was (1<<15)
+    SHOP_ITEM_COOKIE,             // for PEEP_ITEM was (1<<16)
+    SHOP_ITEM_EMPTY_BOWL_RED,     // for PEEP_ITEM was (1<<17)
+    SHOP_ITEM_EMPTY_DRINK_CARTON, // for PEEP_ITEM was (1<<18)
+    SHOP_ITEM_EMPTY_JUICE_CUP,    // for PEEP_ITEM was (1<<19)
+    SHOP_ITEM_ROAST_SAUSAGE,      // for PEEP_ITEM was (1<<20)
+    SHOP_ITEM_EMPTY_BOWL_BLUE,    // for PEEP_ITEM was (1<<21)
     SHOP_ITEM_COUNT = 56,
     SHOP_ITEM_NONE = 255
 };
