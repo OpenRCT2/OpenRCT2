@@ -15,7 +15,7 @@ using ShopItemIndex = uint8_t;
 
 struct Ride;
 
-enum
+enum ShopItem
 {
     SHOP_ITEM_BALLOON,
     SHOP_ITEM_TOY,

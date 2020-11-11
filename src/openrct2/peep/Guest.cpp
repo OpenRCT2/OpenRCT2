@@ -156,60 +156,60 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
 
 /** rct2: 0x0097EFCC */
 static constexpr const uint8_t item_standard_litter[32] = {
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BALLOON
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOY
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_MAP
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PHOTO
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_UMBRELLA
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DRINK
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BURGER
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CHIPS
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_ICE_CREAM
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CANDYFLOSS
-    LITTER_TYPE_EMPTY_CAN,        // PEEP_ITEM_EMPTY_CAN
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_RUBBISH
-    LITTER_TYPE_EMPTY_BURGER_BOX, // PEEP_ITEM_EMPTY_BURGER_BOX
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PIZZA
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_VOUCHER
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_POPCORN
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HOT_DOG
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TENTACLE
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HAT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOFFEE_APPLE
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TSHIRT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DOUGHNUT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_COFFEE
-    LITTER_TYPE_EMPTY_CUP,        // PEEP_ITEM_EMPTY_CUP
-    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_CHICKEN
-    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_LEMONADE
-    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_EMPTY_BOX
-    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_EMPTY_BOTTLE
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_BALLOON
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_TOY
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_MAP
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_PHOTO
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_UMBRELLA
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_DRINK
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_BURGER
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_CHIPS
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_ICE_CREAM
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_CANDYFLOSS
+    LITTER_TYPE_EMPTY_CAN,        // SHOP_ITEM_EMPTY_CAN
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_RUBBISH
+    LITTER_TYPE_EMPTY_BURGER_BOX, // SHOP_ITEM_EMPTY_BURGER_BOX
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_PIZZA
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_VOUCHER
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_POPCORN
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_HOT_DOG
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_TENTACLE
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_HAT
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_TOFFEE_APPLE
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_TSHIRT
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_DOUGHNUT
+    LITTER_TYPE_RUBBISH,          // SHOP_ITEM_COFFEE
+    LITTER_TYPE_EMPTY_CUP,        // SHOP_ITEM_EMPTY_CUP
+    LITTER_TYPE_EMPTY_BOX,        // SHOP_ITEM_CHICKEN
+    LITTER_TYPE_EMPTY_BOTTLE,     // SHOP_ITEM_LEMONADE
+    LITTER_TYPE_EMPTY_BOX,        // SHOP_ITEM_EMPTY_BOX
+    LITTER_TYPE_EMPTY_BOTTLE,     // SHOP_ITEM_EMPTY_BOTTLE
 };
 
 /** rct2: 0x0097EFE8 */
 static constexpr const uint8_t item_extra_litter[32] = {
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO2
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO3
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO4
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PRETZEL
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_CHOCOLATE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ICED_TEA
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FUNNEL_CAKE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUNGLASSES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_BEEF_NOODLES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRIED_RICE_NOODLES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_WONTON_SOUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_MEATBALL_SOUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRUIT_JUICE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SOYBEAN_MILK
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SU_JONGKWA
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUB_SANDWICH
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_COOKIE
-    LITTER_TYPE_EMPTY_BOWL_RED,     // PEEP_ITEM_EMPTY_BOWL_RED
-    LITTER_TYPE_EMPTY_DRINK_CARTON, // PEEP_ITEM_EMPTY_DRINK_CARTON
-    LITTER_TYPE_EMPTY_JUICE_CUP,    // PEEP_ITEM_EMPTY_JUICE_CUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ROAST_SAUSAGE
-    LITTER_TYPE_EMPTY_BOWL_BLUE,    // PEEP_ITEM_EMPTY_BOWL_BLUE
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_PHOTO2
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_PHOTO3
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_PHOTO4
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_PRETZEL
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_CHOCOLATE
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_ICED_TEA
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_FUNNEL_CAKE
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_SUNGLASSES
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_BEEF_NOODLES
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_FRIED_RICE_NOODLES
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_WONTON_SOUP
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_MEATBALL_SOUP
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_FRUIT_JUICE
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_SOYBEAN_MILK
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_SUJEONGGWA
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_SUB_SANDWICH
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_COOKIE
+    LITTER_TYPE_EMPTY_BOWL_RED,     // SHOP_ITEM_EMPTY_BOWL_RED
+    LITTER_TYPE_EMPTY_DRINK_CARTON, // SHOP_ITEM_EMPTY_DRINK_CARTON
+    LITTER_TYPE_EMPTY_JUICE_CUP,    // SHOP_ITEM_EMPTY_JUICE_CUP
+    LITTER_TYPE_RUBBISH,            // SHOP_ITEM_ROAST_SAUSAGE
+    LITTER_TYPE_EMPTY_BOWL_BLUE,    // SHOP_ITEM_EMPTY_BOWL_BLUE
 };
 
 /** rct2: 0x009822F4, 0x00982310 */
@@ -292,60 +292,60 @@ static constexpr const PeepThoughtType crowded_thoughts[] = {
 
 /** rct2: 0x00982326 */
 static constexpr const uint8_t peep_item_containers[] = {
-    0xFF,                           // PEEP_ITEM_BALLOON
-    0xFF,                           // PEEP_ITEM_TOY
-    0xFF,                           // PEEP_ITEM_MAP
-    0xFF,                           // PEEP_ITEM_PHOTO
-    0xFF,                           // PEEP_ITEM_UMBRELLA
-    SHOP_ITEM_EMPTY_CAN,            // PEEP_ITEM_DRINK
-    SHOP_ITEM_EMPTY_BURGER_BOX,     // PEEP_ITEM_BURGER
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_CHIPS
-    0xFF,                           // PEEP_ITEM_ICE_CREAM
-    0xFF,                           // PEEP_ITEM_CANDYFLOSS
-    0xFF,                           // PEEP_ITEM_EMPTY_CAN
-    0xFF,                           // PEEP_ITEM_RUBBISH
-    0xFF,                           // PEEP_ITEM_EMPTY_BURGER_BOX
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_PIZZA
-    0xFF,                           // PEEP_ITEM_VOUCHER
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_POPCORN
-    0xFF,                           // PEEP_ITEM_HOT_DOG
-    0xFF,                           // PEEP_ITEM_TENTACLE
-    0xFF,                           // PEEP_ITEM_HAT
-    0xFF,                           // PEEP_ITEM_TOFFEE_APPLE
-    0xFF,                           // PEEP_ITEM_TSHIRT
-    0xFF,                           // PEEP_ITEM_DOUGHNUT
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_COFFEE
-    0xFF,                           // PEEP_ITEM_EMPTY_CUP
-    SHOP_ITEM_EMPTY_BOX,            // PEEP_ITEM_CHICKEN
-    SHOP_ITEM_EMPTY_BOTTLE,         // PEEP_ITEM_LEMONADE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOX
-    0xFF,                           // PEEP_ITEM_EMPTY_BOTTLE
+    0xFF,                           // SHOP_ITEM_BALLOON
+    0xFF,                           // SHOP_ITEM_TOY
+    0xFF,                           // SHOP_ITEM_MAP
+    0xFF,                           // SHOP_ITEM_PHOTO
+    0xFF,                           // SHOP_ITEM_UMBRELLA
+    SHOP_ITEM_EMPTY_CAN,            // SHOP_ITEM_DRINK
+    SHOP_ITEM_EMPTY_BURGER_BOX,     // SHOP_ITEM_BURGER
+    SHOP_ITEM_RUBBISH,              // SHOP_ITEM_CHIPS
+    0xFF,                           // SHOP_ITEM_ICE_CREAM
+    0xFF,                           // SHOP_ITEM_CANDYFLOSS
+    0xFF,                           // SHOP_ITEM_EMPTY_CAN
+    0xFF,                           // SHOP_ITEM_RUBBISH
+    0xFF,                           // SHOP_ITEM_EMPTY_BURGER_BOX
+    SHOP_ITEM_RUBBISH,              // SHOP_ITEM_PIZZA
+    0xFF,                           // SHOP_ITEM_VOUCHER
+    SHOP_ITEM_RUBBISH,              // SHOP_ITEM_POPCORN
+    0xFF,                           // SHOP_ITEM_HOT_DOG
+    0xFF,                           // SHOP_ITEM_TENTACLE
+    0xFF,                           // SHOP_ITEM_HAT
+    0xFF,                           // SHOP_ITEM_TOFFEE_APPLE
+    0xFF,                           // SHOP_ITEM_TSHIRT
+    0xFF,                           // SHOP_ITEM_DOUGHNUT
+    SHOP_ITEM_EMPTY_CUP,            // SHOP_ITEM_COFFEE
+    0xFF,                           // SHOP_ITEM_EMPTY_CUP
+    SHOP_ITEM_EMPTY_BOX,            // SHOP_ITEM_CHICKEN
+    SHOP_ITEM_EMPTY_BOTTLE,         // SHOP_ITEM_LEMONADE
+    0xFF,                           // SHOP_ITEM_EMPTY_BOX
+    0xFF,                           // SHOP_ITEM_EMPTY_BOTTLE
 };
 
 /** rct2: 0x00982342 */
 static constexpr const uint8_t peep_extra_item_containers[] = {
-    0xFF,                           // PEEP_ITEM_PHOTO2
-    0xFF,                           // PEEP_ITEM_PHOTO3
-    0xFF,                           // PEEP_ITEM_PHOTO4
-    0xFF,                           // PEEP_ITEM_PRETZEL
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_CHOCOLATE
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_ICED_TEA
-    0xFF,                           // PEEP_ITEM_FUNNEL_CAKE
-    0xFF,                           // PEEP_ITEM_SUNGLASSES
-    SHOP_ITEM_EMPTY_BOWL_BLUE,      // PEEP_ITEM_BEEF_NOODLES
-    SHOP_ITEM_EMPTY_BOWL_BLUE,      // PEEP_ITEM_FRIED_RICE_NOODLES
-    SHOP_ITEM_EMPTY_BOWL_RED,       // PEEP_ITEM_WONTON_SOUP
-    SHOP_ITEM_EMPTY_BOWL_RED,       // PEEP_ITEM_MEATBALL_SOUP
-    SHOP_ITEM_EMPTY_JUICE_CUP,      // PEEP_ITEM_FRUIT_JUICE
-    SHOP_ITEM_EMPTY_DRINK_CARTON,   // PEEP_ITEM_SOYBEAN_MILK
-    SHOP_ITEM_EMPTY_DRINK_CARTON,   // PEEP_ITEM_SU_JONGKWA
-    0xFF,                           // PEEP_ITEM_SUB_SANDWICH
-    0xFF,                           // PEEP_ITEM_COOKIE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOWL_RED
-    0xFF,                           // PEEP_ITEM_EMPTY_DRINK_CARTON
-    0xFF,                           // PEEP_ITEM_EMPTY_JUICE_CUP
-    0xFF,                           // PEEP_ITEM_ROAST_SAUSAGE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOWL_BLUE
+    0xFF,                           // SHOP_ITEM_PHOTO2
+    0xFF,                           // SHOP_ITEM_PHOTO3
+    0xFF,                           // SHOP_ITEM_PHOTO4
+    0xFF,                           // SHOP_ITEM_PRETZEL
+    SHOP_ITEM_EMPTY_CUP,            // SHOP_ITEM_CHOCOLATE
+    SHOP_ITEM_EMPTY_CUP,            // SHOP_ITEM_ICED_TEA
+    0xFF,                           // SHOP_ITEM_FUNNEL_CAKE
+    0xFF,                           // SHOP_ITEM_SUNGLASSES
+    SHOP_ITEM_EMPTY_BOWL_BLUE,      // SHOP_ITEM_BEEF_NOODLES
+    SHOP_ITEM_EMPTY_BOWL_BLUE,      // SHOP_ITEM_FRIED_RICE_NOODLES
+    SHOP_ITEM_EMPTY_BOWL_RED,       // SHOP_ITEM_WONTON_SOUP
+    SHOP_ITEM_EMPTY_BOWL_RED,       // SHOP_ITEM_MEATBALL_SOUP
+    SHOP_ITEM_EMPTY_JUICE_CUP,      // SHOP_ITEM_FRUIT_JUICE
+    SHOP_ITEM_EMPTY_DRINK_CARTON,   // SHOP_ITEM_SOYBEAN_MILK
+    SHOP_ITEM_EMPTY_DRINK_CARTON,   // SHOP_ITEM_SUJEONGGWA
+    0xFF,                           // SHOP_ITEM_SUB_SANDWICH
+    0xFF,                           // SHOP_ITEM_COOKIE
+    0xFF,                           // SHOP_ITEM_EMPTY_BOWL_RED
+    0xFF,                           // SHOP_ITEM_EMPTY_DRINK_CARTON
+    0xFF,                           // SHOP_ITEM_EMPTY_JUICE_CUP
+    0xFF,                           // SHOP_ITEM_ROAST_SAUSAGE
+    0xFF,                           // SHOP_ITEM_EMPTY_BOWL_BLUE
 };
 
 static constexpr const char *gPeepEasterEggNames[] = {
@@ -448,10 +448,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->ItemStandardFlags & PEEP_ITEM_PIZZA))
+    if ((passingPeep->ItemStandardFlags & SHOP_ITEM_PIZZA))
         return;
 
-    passingPeep->ItemStandardFlags |= PEEP_ITEM_PIZZA;
+    passingPeep->ItemStandardFlags |= SHOP_ITEM_PIZZA;
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -487,10 +487,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->ItemStandardFlags & PEEP_ITEM_ICE_CREAM)
+    if (passingPeep->ItemStandardFlags & SHOP_ITEM_ICE_CREAM)
         return;
 
-    passingPeep->ItemStandardFlags |= PEEP_ITEM_ICE_CREAM;
+    passingPeep->ItemStandardFlags |= SHOP_ITEM_ICE_CREAM;
     passingPeep->UpdateSpriteType();
 }
 
@@ -1002,7 +1002,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & PEEP_ITEM_MAP) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & SHOP_ITEM_MAP) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1341,29 +1341,29 @@ bool Guest::HasItem(int32_t peepItem) const
 int32_t Guest::HasFoodStandardFlag() const
 {
     return ItemStandardFlags
-        & (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS | PEEP_ITEM_PIZZA
-           | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE | PEEP_ITEM_DOUGHNUT
-           | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
+        & (SHOP_ITEM_DRINK | SHOP_ITEM_BURGER | SHOP_ITEM_CHIPS | SHOP_ITEM_ICE_CREAM | SHOP_ITEM_CANDYFLOSS | SHOP_ITEM_PIZZA
+           | SHOP_ITEM_POPCORN | SHOP_ITEM_HOT_DOG | SHOP_ITEM_TENTACLE | SHOP_ITEM_TOFFEE_APPLE | SHOP_ITEM_DOUGHNUT
+           | SHOP_ITEM_COFFEE | SHOP_ITEM_CHICKEN | SHOP_ITEM_LEMONADE);
 }
 
 int32_t Guest::HasFoodExtraFlag() const
 {
     return ItemExtraFlags
-        & (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES
-           | PEEP_ITEM_FRIED_RICE_NOODLES | PEEP_ITEM_WONTON_SOUP | PEEP_ITEM_MEATBALL_SOUP | PEEP_ITEM_FRUIT_JUICE
-           | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA | PEEP_ITEM_SUB_SANDWICH | PEEP_ITEM_COOKIE
-           | PEEP_ITEM_ROAST_SAUSAGE);
+        & (SHOP_ITEM_PRETZEL | SHOP_ITEM_CHOCOLATE | SHOP_ITEM_ICED_TEA | SHOP_ITEM_FUNNEL_CAKE | SHOP_ITEM_BEEF_NOODLES
+           | SHOP_ITEM_FRIED_RICE_NOODLES | SHOP_ITEM_WONTON_SOUP | SHOP_ITEM_MEATBALL_SOUP | SHOP_ITEM_FRUIT_JUICE
+           | SHOP_ITEM_SOYBEAN_MILK | SHOP_ITEM_SUJEONGGWA | SHOP_ITEM_SUB_SANDWICH | SHOP_ITEM_COOKIE
+           | SHOP_ITEM_ROAST_SAUSAGE);
 }
 
 bool Guest::HasDrinkStandardFlag() const
 {
-    return ItemStandardFlags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
+    return ItemStandardFlags & (SHOP_ITEM_DRINK | SHOP_ITEM_COFFEE | SHOP_ITEM_LEMONADE);
 }
 
 bool Guest::HasDrinkExtraFlag() const
 {
     return ItemExtraFlags
-        & (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
+        & (SHOP_ITEM_CHOCOLATE | SHOP_ITEM_ICED_TEA | SHOP_ITEM_FRUIT_JUICE | SHOP_ITEM_SOYBEAN_MILK | SHOP_ITEM_SUJEONGGWA);
 }
 
 /**
@@ -1378,14 +1378,14 @@ bool Guest::HasDrink() const
 int32_t Guest::HasEmptyContainerStandardFlag() const
 {
     return ItemStandardFlags
-        & (PEEP_ITEM_EMPTY_CAN | PEEP_ITEM_EMPTY_BURGER_BOX | PEEP_ITEM_EMPTY_CUP | PEEP_ITEM_RUBBISH | PEEP_ITEM_EMPTY_BOX
-           | PEEP_ITEM_EMPTY_BOTTLE);
+        & (SHOP_ITEM_EMPTY_CAN | SHOP_ITEM_EMPTY_BURGER_BOX | SHOP_ITEM_EMPTY_CUP | SHOP_ITEM_RUBBISH | SHOP_ITEM_EMPTY_BOX
+           | SHOP_ITEM_EMPTY_BOTTLE);
 }
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
     return ItemExtraFlags
-        & (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
+        & (SHOP_ITEM_EMPTY_BOWL_RED | SHOP_ITEM_EMPTY_DRINK_CARTON | SHOP_ITEM_EMPTY_JUICE_CUP | SHOP_ITEM_EMPTY_BOWL_BLUE);
 }
 
 bool Guest::HasEmptyContainer() const
@@ -1494,6 +1494,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     bool isRainingAndUmbrella = shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining();
 
     if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((ItemStandardFlags & SHOP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1552,6 +1553,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
+loc_69B119:
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1620,6 +1622,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
             Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
+    }
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
@@ -1724,7 +1727,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+        ItemStandardFlags &= ~SHOP_ITEM_VOUCHER;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1869,7 +1872,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (ItemStandardFlags & PEEP_ITEM_MAP)
+        if (ItemStandardFlags & SHOP_ITEM_MAP)
         {
             ReadMap();
         }
@@ -1907,7 +1910,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (ItemStandardFlags & PEEP_ITEM_MAP)
+    if (ItemStandardFlags & SHOP_ITEM_MAP)
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2424,7 +2427,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    return peep->ItemStandardFlags & SHOP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == ride->id;
 }
 
@@ -2646,7 +2649,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->ItemStandardFlags & SHOP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
@@ -3169,7 +3172,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & PEEP_ITEM_MAP))
+    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & SHOP_ITEM_MAP))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3864,10 +3867,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
+        if ((ItemStandardFlags & SHOP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
             && (VoucherRideId == CurrentRide))
         {
-            ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+            ItemStandardFlags &= ~SHOP_ITEM_VOUCHER;
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -6803,37 +6806,37 @@ struct item_pref_t
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, PEEP_ITEM_ICE_CREAM, PeepSpriteType::IceCream },
-        { 0, PEEP_ITEM_CHIPS, PeepSpriteType::Chips },
-        { 0, PEEP_ITEM_PIZZA, PeepSpriteType::Pizza },
-        { 0, PEEP_ITEM_BURGER, PeepSpriteType::Burger },
-        { 0, PEEP_ITEM_DRINK, PeepSpriteType::Drink },
-        { 0, PEEP_ITEM_COFFEE, PeepSpriteType::Coffee },
-        { 0, PEEP_ITEM_CHICKEN, PeepSpriteType::Chicken },
-        { 0, PEEP_ITEM_LEMONADE, PeepSpriteType::Lemonade },
-        { 0, PEEP_ITEM_CANDYFLOSS, PeepSpriteType::Candyfloss },
-        { 0, PEEP_ITEM_POPCORN, PeepSpriteType::Popcorn },
-        { 0, PEEP_ITEM_HOT_DOG, PeepSpriteType::HotDog  },
-        { 0, PEEP_ITEM_TENTACLE, PeepSpriteType::Tentacle },
-        { 0, PEEP_ITEM_TOFFEE_APPLE, PeepSpriteType::ToffeeApple },
-        { 0, PEEP_ITEM_DOUGHNUT, PeepSpriteType::Doughnut },
-        { 1, PEEP_ITEM_PRETZEL, PeepSpriteType::Pretzel },
-        { 1, PEEP_ITEM_COOKIE, PeepSpriteType::Pretzel },
-        { 1, PEEP_ITEM_CHOCOLATE, PeepSpriteType::Coffee },
-        { 1, PEEP_ITEM_ICED_TEA, PeepSpriteType::Coffee },
-        { 1, PEEP_ITEM_FUNNEL_CAKE, PeepSpriteType::FunnelCake },
-        { 1, PEEP_ITEM_BEEF_NOODLES, PeepSpriteType::Noodles },
-        { 1, PEEP_ITEM_FRIED_RICE_NOODLES, PeepSpriteType::Noodles },
-        { 1, PEEP_ITEM_WONTON_SOUP, PeepSpriteType::Soup },
-        { 1, PEEP_ITEM_MEATBALL_SOUP, PeepSpriteType::Soup },
-        { 1, PEEP_ITEM_FRUIT_JUICE, PeepSpriteType::Juice },
-        { 1, PEEP_ITEM_SOYBEAN_MILK, PeepSpriteType::SuJongkwa },
-        { 1, PEEP_ITEM_SU_JONGKWA, PeepSpriteType::SuJongkwa },
-        { 1, PEEP_ITEM_SUB_SANDWICH, PeepSpriteType::Sandwich },
-        { 1, PEEP_ITEM_ROAST_SAUSAGE, PeepSpriteType::Sausage },
-        { 0, PEEP_ITEM_BALLOON, PeepSpriteType::Balloon },
-        { 0, PEEP_ITEM_HAT, PeepSpriteType::Hat },
-        { 1, PEEP_ITEM_SUNGLASSES, PeepSpriteType::Sunglasses },
+        { 0, SHOP_ITEM_ICE_CREAM, PeepSpriteType::IceCream },
+        { 0, SHOP_ITEM_CHIPS, PeepSpriteType::Chips },
+        { 0, SHOP_ITEM_PIZZA, PeepSpriteType::Pizza },
+        { 0, SHOP_ITEM_BURGER, PeepSpriteType::Burger },
+        { 0, SHOP_ITEM_DRINK, PeepSpriteType::Drink },
+        { 0, SHOP_ITEM_COFFEE, PeepSpriteType::Coffee },
+        { 0, SHOP_ITEM_CHICKEN, PeepSpriteType::Chicken },
+        { 0, SHOP_ITEM_LEMONADE, PeepSpriteType::Lemonade },
+        { 0, SHOP_ITEM_CANDYFLOSS, PeepSpriteType::Candyfloss },
+        { 0, SHOP_ITEM_POPCORN, PeepSpriteType::Popcorn },
+        { 0, SHOP_ITEM_HOT_DOG, PeepSpriteType::HotDog  },
+        { 0, SHOP_ITEM_TENTACLE, PeepSpriteType::Tentacle },
+        { 0, SHOP_ITEM_TOFFEE_APPLE, PeepSpriteType::ToffeeApple },
+        { 0, SHOP_ITEM_DOUGHNUT, PeepSpriteType::Doughnut },
+        { 1, SHOP_ITEM_PRETZEL, PeepSpriteType::Pretzel },
+        { 1, SHOP_ITEM_COOKIE, PeepSpriteType::Pretzel },
+        { 1, SHOP_ITEM_CHOCOLATE, PeepSpriteType::Coffee },
+        { 1, SHOP_ITEM_ICED_TEA, PeepSpriteType::Coffee },
+        { 1, SHOP_ITEM_FUNNEL_CAKE, PeepSpriteType::FunnelCake },
+        { 1, SHOP_ITEM_BEEF_NOODLES, PeepSpriteType::Noodles },
+        { 1, SHOP_ITEM_FRIED_RICE_NOODLES, PeepSpriteType::Noodles },
+        { 1, SHOP_ITEM_WONTON_SOUP, PeepSpriteType::Soup },
+        { 1, SHOP_ITEM_MEATBALL_SOUP, PeepSpriteType::Soup },
+        { 1, SHOP_ITEM_FRUIT_JUICE, PeepSpriteType::Juice },
+        { 1, SHOP_ITEM_SOYBEAN_MILK, PeepSpriteType::SuJongkwa },
+        { 1, SHOP_ITEM_SUJEONGGWA, PeepSpriteType::SuJongkwa },
+        { 1, SHOP_ITEM_SUB_SANDWICH, PeepSpriteType::Sandwich },
+        { 1, SHOP_ITEM_ROAST_SAUSAGE, PeepSpriteType::Sausage },
+        { 0, SHOP_ITEM_BALLOON, PeepSpriteType::Balloon },
+        { 0, SHOP_ITEM_HAT, PeepSpriteType::Hat },
+        { 1, SHOP_ITEM_SUNGLASSES, PeepSpriteType::Sunglasses },
         { 0xFF, 0xFFFFFFFF, PeepSpriteType::Invalid }
 };
 // clang-format on
@@ -6856,11 +6859,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
+        ItemStandardFlags &= ~SHOP_ITEM_BALLOON;
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (ItemStandardFlags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
+    if (climate_is_raining() && (ItemStandardFlags & SHOP_ITEM_UMBRELLA) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
