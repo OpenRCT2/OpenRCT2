@@ -45,6 +45,8 @@ enum class ObjectType : uint8_t
     None = 255
 };
 
+ObjectType& operator++(ObjectType& d, int);
+
 enum OBJECT_SELECTION_FLAGS
 {
     OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),

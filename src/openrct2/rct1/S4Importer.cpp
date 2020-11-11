@@ -548,18 +548,7 @@ private:
                             }
                             break;
                         }
-                        case ObjectType::Ride:
-                        case ObjectType::Banners:
-                        case ObjectType::SceneryGroup:
-                        case ObjectType::ParkEntrance:
-                        case ObjectType::Water:
-                        case ObjectType::ScenarioText:
-                        case ObjectType::TerrainSurface:
-                        case ObjectType::TerrainEdge:
-                        case ObjectType::Station:
-                        case ObjectType::Music:
-                        case ObjectType::Count:
-                        case ObjectType::None:
+                        default:
                             // This switch processes only ObjectTypes valid for scenery
                             break;
                     }
@@ -2990,15 +2979,7 @@ private:
                 return &_sceneryGroupEntries;
             case ObjectType::Water:
                 return &_waterEntry;
-            case ObjectType::Banners:
-            case ObjectType::ParkEntrance:
-            case ObjectType::ScenarioText:
-            case ObjectType::TerrainSurface:
-            case ObjectType::TerrainEdge:
-            case ObjectType::Station:
-            case ObjectType::Music:
-            case ObjectType::Count:
-            case ObjectType::None:
+            default:
                 // This switch processes only ObjectType for for Entries
                 break;
         }

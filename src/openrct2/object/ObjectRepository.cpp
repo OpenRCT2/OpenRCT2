@@ -166,21 +166,7 @@ protected:
                     stream->WriteValue<rct_object_entry>(entry);
                 }
                 break;
-            case ObjectType::SmallScenery:
-            case ObjectType::LargeScenery:
-            case ObjectType::Walls:
-            case ObjectType::Banners:
-            case ObjectType::Paths:
-            case ObjectType::PathBits:
-            case ObjectType::ParkEntrance:
-            case ObjectType::Water:
-            case ObjectType::ScenarioText:
-            case ObjectType::TerrainSurface:
-            case ObjectType::TerrainEdge:
-            case ObjectType::Station:
-            case ObjectType::Music:
-            case ObjectType::Count:
-            case ObjectType::None:
+            default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }
@@ -232,21 +218,7 @@ protected:
                 }
                 break;
             }
-            case ObjectType::SmallScenery:
-            case ObjectType::LargeScenery:
-            case ObjectType::Walls:
-            case ObjectType::Banners:
-            case ObjectType::Paths:
-            case ObjectType::PathBits:
-            case ObjectType::ParkEntrance:
-            case ObjectType::Water:
-            case ObjectType::ScenarioText:
-            case ObjectType::TerrainSurface:
-            case ObjectType::TerrainEdge:
-            case ObjectType::Station:
-            case ObjectType::Music:
-            case ObjectType::Count:
-            case ObjectType::None:
+            default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }

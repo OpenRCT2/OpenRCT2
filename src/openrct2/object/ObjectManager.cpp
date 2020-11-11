@@ -463,18 +463,8 @@ private:
                         sgObject->UpdateEntryIndexes();
                         break;
                     }
-                    case ObjectType::Ride:
-                    case ObjectType::Paths:
-                    case ObjectType::ParkEntrance:
-                    case ObjectType::Water:
-                    case ObjectType::ScenarioText:
-                    case ObjectType::TerrainSurface:
-                    case ObjectType::TerrainEdge:
-                    case ObjectType::Station:
-                    case ObjectType::Music:
-                    case ObjectType::Count:
-                    case ObjectType::None:
-                        // This switch handles only ObjectType for sceneries.
+                    default:
+                        // This switch only handles scenery ObjectTypes.
                         break;
                 }
             }

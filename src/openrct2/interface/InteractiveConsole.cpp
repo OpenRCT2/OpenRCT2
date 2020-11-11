@@ -1124,17 +1124,18 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
     };
 
-    for (int32_t i = 0; i < 10; i++)
+    for (ObjectType i = ObjectType::Ride; i < ObjectType::ScenarioText; i++)
     {
         int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++)
+        for (; entryGroupIndex < object_entry_group_counts[EnumValue(i)]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(static_cast<ObjectType>(i), entryGroupIndex) == nullptr)
+            if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
-        console.WriteFormatLine("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
+        console.WriteFormatLine(
+            "%s: %d/%d", object_type_names[EnumValue(i)], entryGroupIndex, object_entry_group_counts[EnumValue(i)]);
     }
 
     return 0;

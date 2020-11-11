@@ -1471,39 +1471,18 @@ static bool filter_source(const ObjectRepositoryItem* item)
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
 {
-    switch (item->ObjectEntry.GetType())
+    if (item->ObjectEntry.GetType() == ObjectType::Ride)
     {
-        case ObjectType::Ride:
+        uint8_t rideType = 0;
+        for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            uint8_t rideType = 0;
-            for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
             {
-                if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
-                {
-                    rideType = item->RideInfo.RideType[i];
-                    break;
-                }
+                rideType = item->RideInfo.RideType[i];
+                break;
             }
-            return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
         }
-        case ObjectType::SmallScenery:
-        case ObjectType::LargeScenery:
-        case ObjectType::Walls:
-        case ObjectType::Banners:
-        case ObjectType::Paths:
-        case ObjectType::PathBits:
-        case ObjectType::SceneryGroup:
-        case ObjectType::ParkEntrance:
-        case ObjectType::Water:
-        case ObjectType::ScenarioText:
-        case ObjectType::TerrainSurface:
-        case ObjectType::TerrainEdge:
-        case ObjectType::Station:
-        case ObjectType::Music:
-        case ObjectType::Count:
-        case ObjectType::None:
-            // This function works only with ObjectType::Ride.
-            break;
+        return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
     }
     return true;
 }

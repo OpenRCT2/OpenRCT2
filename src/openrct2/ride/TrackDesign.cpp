@@ -772,19 +772,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 scenery.flags |= flags;
                 break;
             }
-            case ObjectType::Ride:
-            case ObjectType::Banners:
-            case ObjectType::PathBits:
-            case ObjectType::SceneryGroup:
-            case ObjectType::ParkEntrance:
-            case ObjectType::Water:
-            case ObjectType::ScenarioText:
-            case ObjectType::TerrainSurface:
-            case ObjectType::TerrainEdge:
-            case ObjectType::Station:
-            case ObjectType::Music:
-            case ObjectType::Count:
-            case ObjectType::None:
+            default:
                 // This switch processes only ObjectType for Scenery items.
                 break;
         }

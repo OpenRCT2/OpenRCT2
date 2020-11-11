@@ -126,12 +126,12 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex);
 static void research_rides_setup()
 {
     // Reset all objects to not required
-    for (uint8_t objectType = EnumValue(ObjectType::Ride); objectType < EnumValue(ObjectType::Count); objectType++)
+    for (ObjectType objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
     {
-        auto maxObjects = object_entry_group_counts[objectType];
+        auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
         for (int32_t i = 0; i < maxObjects; i++)
         {
-            Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_ALL);
+            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
         }
     }
 
