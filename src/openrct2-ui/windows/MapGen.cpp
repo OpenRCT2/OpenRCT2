@@ -657,7 +657,7 @@ static void window_mapgen_base_invalidate(rct_window* w)
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _floorTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
     if (surfaceObj != nullptr)
     {
         surfaceImage = surfaceObj->IconImageId;
@@ -666,7 +666,7 @@ static void window_mapgen_base_invalidate(rct_window* w)
             surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
         }
     }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _wallTexture));
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
     if (edgeObj != nullptr)
     {
         edgeImage = edgeObj->IconImageId;
@@ -961,7 +961,7 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _floorTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
     if (surfaceObj != nullptr)
     {
         surfaceImage = surfaceObj->IconImageId;
@@ -970,7 +970,7 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
             surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
         }
     }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _wallTexture));
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
     if (edgeObj != nullptr)
     {
         edgeImage = edgeObj->IconImageId;

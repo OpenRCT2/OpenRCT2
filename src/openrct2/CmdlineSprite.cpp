@@ -468,7 +468,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
         auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
-        uint8_t objectType = entry->GetType();
+        ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();
         auto metaObject = objManager.GetLoadedObject(objectType, entryIndex);
@@ -487,17 +487,17 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         int32_t imagesOffset = 0;
         switch (objectType)
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
             {
                 auto rideEntry = get_ride_entry(entryIndex);
                 imagesOffset = rideEntry->images_offset;
                 break;
             }
-            case OBJECT_TYPE_SMALL_SCENERY:
-            case OBJECT_TYPE_LARGE_SCENERY:
-            case OBJECT_TYPE_WALLS:
-            case OBJECT_TYPE_BANNERS:
-            case OBJECT_TYPE_PATH_BITS:
+            case ObjectType::SmallScenery:
+            case ObjectType::LargeScenery:
+            case ObjectType::Walls:
+            case ObjectType::Banners:
+            case ObjectType::PathBits:
             {
                 auto obj = objManager.GetLoadedObject(objectType, entryIndex);
                 if (obj != nullptr)
@@ -507,19 +507,19 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 }
                 break;
             }
-            case OBJECT_TYPE_PATHS:
+            case ObjectType::Paths:
             {
                 auto pathEntry = get_path_surface_entry(entryIndex);
                 imagesOffset = pathEntry->image;
                 break;
             }
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
             {
                 auto sceneryGroupEntry = get_scenery_group_entry(entryIndex);
                 imagesOffset = sceneryGroupEntry->image;
                 break;
             }
-            case OBJECT_TYPE_PARK_ENTRANCE:
+            case ObjectType::ParkEntrance:
             {
                 auto obj = objManager.GetLoadedObject(objectType, entryIndex);
                 if (obj != nullptr)

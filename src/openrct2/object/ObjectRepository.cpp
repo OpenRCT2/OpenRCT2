@@ -148,7 +148,7 @@ protected:
 
         switch (item.ObjectEntry.GetType())
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
                 stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
                 for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
                 {
@@ -159,12 +159,15 @@ protected:
                     stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
                 }
                 break;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
                 stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
                 for (const auto& entry : item.SceneryGroupInfo.Entries)
                 {
                     stream->WriteValue<rct_object_entry>(entry);
                 }
+                break;
+            default:
+                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }
     }
@@ -194,7 +197,7 @@ protected:
 
         switch (item.ObjectEntry.GetType())
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
                 item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
                 for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
                 {
@@ -205,7 +208,7 @@ protected:
                     item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
                 }
                 break;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
             {
                 auto numEntries = stream->ReadValue<uint16_t>();
                 item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
@@ -215,6 +218,9 @@ protected:
                 }
                 break;
             }
+            default:
+                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                break;
         }
         return item;
     }
@@ -557,9 +563,9 @@ private:
         }
 
         // Encode data
-        uint8_t objectType = entry->GetType();
+        ObjectType objectType = entry->GetType();
         sawyercoding_chunk_header chunkHeader;
-        chunkHeader.encoding = object_entry_group_encoding[objectType];
+        chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
         size_t encodedDataSize = sawyercoding_write_chunk_buffer(
@@ -689,7 +695,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
     auto type = object->ObjectEntry.GetType();
-    if (type > OBJECT_TYPE_SCENARIO_TEXT)
+    if (type > ObjectType::ScenarioText)
     {
         return false;
     }

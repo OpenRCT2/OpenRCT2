@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -65,9 +66,9 @@ public:
         return _loadedObjects[index].get();
     }
 
-    Object* GetLoadedObject(int32_t objectType, size_t index) override
+    Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
-        if (index >= static_cast<size_t>(object_entry_group_counts[objectType]))
+        if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
             log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
@@ -109,7 +110,7 @@ public:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                uint8_t objectType = ori->ObjectEntry.GetType();
+                ObjectType objectType = ori->ObjectEntry.GetType();
                 int32_t slot = FindSpareSlot(objectType);
                 if (slot != -1)
                 {
@@ -315,10 +316,10 @@ public:
     }
 
 private:
-    int32_t FindSpareSlot(uint8_t objectType)
+    int32_t FindSpareSlot(ObjectType objectType)
     {
         size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
-        size_t endIndex = firstIndex + object_entry_group_counts[objectType];
+        size_t endIndex = firstIndex + object_entry_group_counts[EnumValue(objectType)];
         for (size_t i = firstIndex; i < endIndex; i++)
         {
             if (_loadedObjects.size() <= i)
@@ -426,29 +427,44 @@ private:
                 rct_scenery_entry* sceneryEntry;
                 switch (loadedObject->GetObjectType())
                 {
-                    case OBJECT_TYPE_SMALL_SCENERY:
+                    case ObjectType::SmallScenery:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_LARGE_SCENERY:
+                    }
+                    case ObjectType::LargeScenery:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_WALLS:
+                    }
+                    case ObjectType::Walls:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_BANNERS:
+                    }
+                    case ObjectType::Banners:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_PATH_BITS:
+                    }
+                    case ObjectType::PathBits:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_SCENERY_GROUP:
+                    }
+                    case ObjectType::SceneryGroup:
+                    {
                         auto sgObject = dynamic_cast<SceneryGroupObject*>(loadedObject.get());
                         sgObject->UpdateEntryIndexes();
+                        break;
+                    }
+                    default:
+                        // This switch only handles scenery ObjectTypes.
                         break;
                 }
             }
@@ -499,7 +515,7 @@ private:
             ori = _objectRepository.FindObject(&entry);
             if (ori == nullptr)
             {
-                if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (entry.GetType() != ObjectType::ScenarioText)
                 {
                     invalidEntries.push_back(entry);
                     ReportMissingObject(&entry);
@@ -539,7 +555,7 @@ private:
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry->GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (ori == nullptr && entry->GetType() != ObjectType::ScenarioText)
                 {
                     missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
@@ -684,10 +700,10 @@ private:
         }
 
         // Build object lists
-        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[OBJECT_TYPE_RIDE]);
+        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto rideObject = static_cast<RideObject*>(GetLoadedObject(OBJECT_TYPE_RIDE, i));
+            auto rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
             if (rideObject != nullptr)
             {
                 const auto entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
@@ -720,10 +736,10 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static int32_t GetIndexFromTypeEntry(int32_t objectType, size_t entryIndex)
+    static int32_t GetIndexFromTypeEntry(ObjectType objectType, size_t entryIndex)
     {
         int32_t result = 0;
-        for (int32_t i = 0; i < objectType; i++)
+        for (int32_t i = 0; i < EnumValue(objectType); i++)
         {
             result += object_entry_group_counts[i];
         }

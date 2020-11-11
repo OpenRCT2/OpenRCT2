@@ -64,7 +64,7 @@ enum
 static constexpr uint8_t _numSourceGameItems = 8;
 
 static uint32_t _filter_flags;
-static uint16_t _filter_object_counts[OBJECT_TYPE_COUNT];
+static uint16_t _filter_object_counts[EnumValue(ObjectType::Count)];
 
 static char _filter_string[MAX_PATH];
 
@@ -212,7 +212,7 @@ static constexpr const int32_t window_editor_object_selection_animation_divisor[
 
 static void window_editor_object_set_page(rct_window* w, int32_t page);
 static void window_editor_object_selection_set_pressed_tab(rct_window* w);
-static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y);
+static int32_t get_object_from_object_selection(ObjectType object_type, int32_t y);
 static void window_editor_object_selection_manage_tracks();
 static void editor_load_selected_objects();
 static bool filter_selected(uint8_t objectFlags);
@@ -222,7 +222,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item);
 static void filter_update_counts();
 
 static std::string object_get_description(const Object* object);
-static int32_t get_selected_object_type(rct_window* w);
+static ObjectType get_selected_object_type(rct_window* w);
 
 enum
 {
@@ -295,7 +295,7 @@ static void visible_list_refresh(rct_window* w)
     {
         uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->ObjectEntry.GetType();
         if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
@@ -871,7 +871,7 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
     w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = w->widgets[WIDX_LIST].right;
 
-    bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
+    bool ridePage = (get_selected_object_type(w) == ObjectType::Ride);
     w->widgets[WIDX_LIST].top = (ridePage ? 118 : 60);
     w->widgets[WIDX_FILTER_TEXT_BOX].right = w->widgets[WIDX_LIST].right - 77;
     w->widgets[WIDX_FILTER_TEXT_BOX].top = (ridePage ? 79 : 45);
@@ -965,7 +965,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     const int32_t ThrillRidesTabAnimationSequence[] = { 5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0 };
 
     // Draw ride tabs
-    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
+    if (get_selected_object_type(w) == ObjectType::Ride)
     {
         for (int32_t i = 0; i < 7; i++)
         {
@@ -999,8 +999,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     {
         auto screenPos = w->windowPos + ScreenCoordsXY{ 3, w->height - 13 };
 
-        int32_t numSelected = _numSelectedObjectsForType[get_selected_object_type(w)];
-        int32_t totalSelectable = object_entry_group_counts[get_selected_object_type(w)];
+        int32_t numSelected = _numSelectedObjectsForType[EnumValue(get_selected_object_type(w))];
+        int32_t totalSelectable = object_entry_group_counts[EnumValue(get_selected_object_type(w))];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             totalSelectable = 4;
 
@@ -1078,7 +1078,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
 
     // Draw ride type.
-    if (get_selected_object_type(w) == OBJECT_TYPE_RIDE)
+    if (get_selected_object_type(w) == ObjectType::Ride)
     {
         auto stringId = get_ride_type_string_id(listItem->repositoryItem);
         DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
@@ -1131,7 +1131,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
     int32_t colour, colour2;
     ScreenCoordsXY screenCoords;
 
-    bool ridePage = (get_selected_object_type(w) == OBJECT_TYPE_RIDE);
+    bool ridePage = (get_selected_object_type(w) == ObjectType::Ride);
 
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
@@ -1224,7 +1224,7 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
     w->scrolls[0].v_top = 0;
     w->frame_no = 0;
 
-    if (page == OBJECT_TYPE_RIDE)
+    if (page == EnumValue(ObjectType::Ride))
     {
         _listSortType = RIDE_SORT_TYPE;
         _listSortDescending = false;
@@ -1256,7 +1256,7 @@ static void window_editor_object_selection_set_pressed_tab(rct_window* w)
  *
  *  rct2: 0x006AA703
  */
-static int32_t get_object_from_object_selection(uint8_t object_type, int32_t y)
+static int32_t get_object_from_object_selection(ObjectType object_type, int32_t y)
 {
     int32_t listItemIndex = y / SCROLLABLE_ROW_HEIGHT;
     if (listItemIndex < 0 || static_cast<size_t>(listItemIndex) >= _listItems.size())
@@ -1277,7 +1277,7 @@ static void window_editor_object_selection_manage_tracks()
     gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
     int32_t entry_index = 0;
-    for (; object_entry_get_chunk(OBJECT_TYPE_RIDE, entry_index) == nullptr; entry_index++)
+    for (; object_entry_get_chunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
         ;
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
@@ -1314,16 +1314,16 @@ static void editor_load_selected_objects()
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
                     // Defaults selected items to researched (if in-game)
-                    uint8_t objectType = entry->GetType();
+                    ObjectType objectType = entry->GetType();
                     auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
-                    if (objectType == OBJECT_TYPE_RIDE)
+                    if (objectType == ObjectType::Ride)
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
                         uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
-                    else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
+                    else if (objectType == ObjectType::SceneryGroup)
                     {
                         research_insert_scenery_group_entry(entryIndex, true);
                     }
@@ -1428,7 +1428,7 @@ static bool filter_string(const ObjectRepositoryItem* item)
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = strstr(name_lower, filter_lower) != nullptr;
-    bool inRideType = (item->ObjectEntry.GetType() == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr;
+    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && strstr(type_lower, filter_lower) != nullptr;
     bool inPath = strstr(object_path, filter_lower) != nullptr;
 
     return inName || inRideType || inPath;
@@ -1471,20 +1471,18 @@ static bool filter_source(const ObjectRepositoryItem* item)
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
 {
-    switch (item->ObjectEntry.GetType())
+    if (item->ObjectEntry.GetType() == ObjectType::Ride)
     {
-        case OBJECT_TYPE_RIDE:
-
-            uint8_t rideType = 0;
-            for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        uint8_t rideType = 0;
+        for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        {
+            if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
             {
-                if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
-                {
-                    rideType = item->RideInfo.RideType[i];
-                    break;
-                }
+                rideType = item->RideInfo.RideType[i];
+                break;
             }
-            return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
+        }
+        return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
     }
     return true;
 }
@@ -1503,8 +1501,8 @@ static void filter_update_counts()
             const ObjectRepositoryItem* item = &items[i];
             if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
-                uint8_t objectType = item->ObjectEntry.GetType();
-                _filter_object_counts[objectType]++;
+                ObjectType objectType = item->ObjectEntry.GetType();
+                _filter_object_counts[EnumValue(objectType)]++;
             }
         }
     }
@@ -1529,7 +1527,7 @@ static std::string object_get_description(const Object* object)
 {
     switch (object->GetObjectType())
     {
-        case OBJECT_TYPE_RIDE:
+        case ObjectType::Ride:
         {
             const RideObject* rideObject = static_cast<const RideObject*>(object);
             return rideObject->GetDescription();
@@ -1539,11 +1537,11 @@ static std::string object_get_description(const Object* object)
     }
 }
 
-static int32_t get_selected_object_type(rct_window* w)
+static ObjectType get_selected_object_type(rct_window* w)
 {
     auto tab = w->selected_tab;
-    if (tab >= OBJECT_TYPE_SCENARIO_TEXT)
-        return tab + 1;
+    if (tab >= EnumValue(ObjectType::ScenarioText))
+        return static_cast<ObjectType>(tab + 1);
     else
-        return tab;
+        return static_cast<ObjectType>(tab);
 }

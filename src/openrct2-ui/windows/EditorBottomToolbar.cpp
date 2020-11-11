@@ -176,8 +176,8 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window* w;
 
-    int32_t missingObjectType = Editor::CheckObjectSelection();
-    if (missingObjectType < 0)
+    ObjectType missingObjectType = Editor::CheckObjectSelection();
+    if (missingObjectType == ObjectType::None)
     {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;
@@ -188,7 +188,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
     if (w != nullptr)
     {
         // Click tab with missing object
-        window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + missingObjectType);
+        window_event_mouse_up_call(w, WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 + EnumValue(missingObjectType));
     }
     return false;
 }

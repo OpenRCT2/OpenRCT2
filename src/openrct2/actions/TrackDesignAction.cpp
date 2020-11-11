@@ -43,7 +43,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {
@@ -106,7 +106,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {

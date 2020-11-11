@@ -126,9 +126,9 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex);
 static void research_rides_setup()
 {
     // Reset all objects to not required
-    for (uint8_t objectType = OBJECT_TYPE_RIDE; objectType < OBJECT_TYPE_COUNT; objectType++)
+    for (ObjectType objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
     {
-        auto maxObjects = object_entry_group_counts[objectType];
+        auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
         for (int32_t i = 0; i < maxObjects; i++)
         {
             Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
@@ -138,7 +138,7 @@ static void research_rides_setup()
     // Set research required for rides in use
     for (const auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(OBJECT_TYPE_RIDE, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
     }
 }
 
@@ -531,9 +531,9 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
         return;
 
     // Preview image
-    int32_t objectEntryType = OBJECT_TYPE_SCENERY_GROUP;
+    ObjectType objectEntryType = ObjectType::SceneryGroup;
     if (researchItem->type == Research::EntryType::Ride)
-        objectEntryType = OBJECT_TYPE_RIDE;
+        objectEntryType = ObjectType::Ride;
 
     auto chunk = object_entry_get_chunk(objectEntryType, researchItem->entryIndex);
     if (chunk == nullptr)

@@ -4344,7 +4344,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             auto& objManager = GetContext()->GetObjectManager();
             for (i = 0; i < MAX_STATION_OBJECTS; i++)
             {
-                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, i));
+                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
                 if (stationObj != nullptr)
                 {
                     gDropdownItemsFormat[ddIndex] = STR_DROPDOWN_MENU_LABEL;
@@ -4463,7 +4463,7 @@ static void window_ride_colour_dropdown(rct_window* w, rct_widgetindex widgetInd
             auto& objManager = GetContext()->GetObjectManager();
             for (auto i = 0; i < MAX_STATION_OBJECTS; i++)
             {
-                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(OBJECT_TYPE_STATION, i));
+                auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
                 if (stationObj != nullptr)
                 {
                     if (ddIndex == dropdownIndex)

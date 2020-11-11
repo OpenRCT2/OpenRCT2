@@ -68,7 +68,7 @@ public:
             }
 
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _surfaceStyle));
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
 
             if (surfaceObj == nullptr)
             {
@@ -86,7 +86,7 @@ public:
             }
 
             const auto edgeObj = static_cast<TerrainEdgeObject*>(
-                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _edgeStyle));
+                objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
 
             if (edgeObj == nullptr)
             {
@@ -139,7 +139,7 @@ public:
                     if (_surfaceStyle != curSurfaceStyle)
                     {
                         const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                            objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _surfaceStyle));
+                            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
                         if (surfaceObject != nullptr)
                         {
                             surfaceCost += surfaceObject->Price;
@@ -215,7 +215,7 @@ public:
                     {
                         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
                         const auto surfaceObject = static_cast<TerrainSurfaceObject*>(
-                            objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _surfaceStyle));
+                            objManager.GetLoadedObject(ObjectType::TerrainSurface, _surfaceStyle));
                         if (surfaceObject != nullptr)
                         {
                             surfaceCost += surfaceObject->Price;

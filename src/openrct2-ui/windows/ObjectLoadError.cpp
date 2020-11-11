@@ -327,34 +327,34 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
     rct_string_id result;
     switch (entry->GetType())
     {
-        case OBJECT_TYPE_RIDE:
+        case ObjectType::Ride:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
             break;
-        case OBJECT_TYPE_SMALL_SCENERY:
+        case ObjectType::SmallScenery:
             result = STR_OBJECT_SELECTION_SMALL_SCENERY;
             break;
-        case OBJECT_TYPE_LARGE_SCENERY:
+        case ObjectType::LargeScenery:
             result = STR_OBJECT_SELECTION_LARGE_SCENERY;
             break;
-        case OBJECT_TYPE_WALLS:
+        case ObjectType::Walls:
             result = STR_OBJECT_SELECTION_WALLS_FENCES;
             break;
-        case OBJECT_TYPE_BANNERS:
+        case ObjectType::Banners:
             result = STR_OBJECT_SELECTION_PATH_SIGNS;
             break;
-        case OBJECT_TYPE_PATHS:
+        case ObjectType::Paths:
             result = STR_OBJECT_SELECTION_FOOTPATHS;
             break;
-        case OBJECT_TYPE_PATH_BITS:
+        case ObjectType::PathBits:
             result = STR_OBJECT_SELECTION_PATH_EXTRAS;
             break;
-        case OBJECT_TYPE_SCENERY_GROUP:
+        case ObjectType::SceneryGroup:
             result = STR_OBJECT_SELECTION_SCENERY_GROUPS;
             break;
-        case OBJECT_TYPE_PARK_ENTRANCE:
+        case ObjectType::ParkEntrance:
             result = STR_OBJECT_SELECTION_PARK_ENTRANCE;
             break;
-        case OBJECT_TYPE_WATER:
+        case ObjectType::Water:
             result = STR_OBJECT_SELECTION_WATER;
             break;
         default:

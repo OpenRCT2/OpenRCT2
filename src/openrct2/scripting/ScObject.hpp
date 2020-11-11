@@ -26,11 +26,11 @@ namespace OpenRCT2::Scripting
     class ScObject
     {
     protected:
-        uint8_t _type{};
+        ObjectType _type{};
         int32_t _index{};
 
     public:
-        ScObject(uint8_t type, int32_t index)
+        ScObject(ObjectType type, int32_t index)
             : _type(type)
             , _index(index)
         {
@@ -45,17 +45,17 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
         }
 
-        static std::optional<uint8_t> StringToObjectType(const std::string_view& type)
+        static std::optional<ObjectType> StringToObjectType(const std::string_view& type)
         {
-            for (uint8_t i = 0; i < OBJECT_TYPE_COUNT; i++)
+            for (uint8_t i = 0; i < EnumValue(ObjectType::Count); i++)
             {
                 auto s = ObjectTypeToString(i);
                 if (s == type)
                 {
-                    return i;
+                    return static_cast<ObjectType>(i);
                 }
             }
-            return std::nullopt;
+            return ObjectType::None;
         }
 
         static std::string_view ObjectTypeToString(uint8_t type)
@@ -71,7 +71,7 @@ namespace OpenRCT2::Scripting
     private:
         std::string type_get() const
         {
-            return std::string(ObjectTypeToString(_type));
+            return std::string(ObjectTypeToString(EnumValue(_type)));
         }
 
         int32_t index_get() const
@@ -120,12 +120,12 @@ namespace OpenRCT2::Scripting
     class ScRideObjectVehicle
     {
     private:
-        OBJECT_TYPE _objectType{};
+        ObjectType _objectType{};
         ObjectEntryIndex _objectIndex{};
         size_t _vehicleIndex{};
 
     public:
-        ScRideObjectVehicle(OBJECT_TYPE objectType, ObjectEntryIndex objectIndex, size_t vehicleIndex)
+        ScRideObjectVehicle(ObjectType objectType, ObjectEntryIndex objectIndex, size_t vehicleIndex)
             : _objectType(objectType)
             , _objectIndex(objectIndex)
             , _vehicleIndex(vehicleIndex)
@@ -641,7 +641,7 @@ namespace OpenRCT2::Scripting
     class ScRideObject : public ScObject
     {
     public:
-        ScRideObject(uint8_t type, int32_t index)
+        ScRideObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }
@@ -836,7 +836,7 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(entry->vehicles); i++)
                 {
-                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<OBJECT_TYPE>(_type), _index, i));
+                    result.push_back(std::make_shared<ScRideObjectVehicle>(static_cast<ObjectType>(_type), _index, i));
                 }
             }
             return result;
@@ -922,7 +922,7 @@ namespace OpenRCT2::Scripting
     class ScSmallSceneryObject : public ScObject
     {
     public:
-        ScSmallSceneryObject(uint8_t type, int32_t index)
+        ScSmallSceneryObject(ObjectType type, int32_t index)
             : ScObject(type, index)
         {
         }

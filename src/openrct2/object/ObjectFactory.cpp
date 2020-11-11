@@ -212,7 +212,7 @@ namespace ObjectFactory
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
 
-            if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+            if (entry.GetType() != ObjectType::ScenarioText)
             {
                 result = CreateObject(entry);
 
@@ -273,45 +273,45 @@ namespace ObjectFactory
         std::unique_ptr<Object> result;
         switch (entry.GetType())
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
                 result = std::make_unique<RideObject>(entry);
                 break;
-            case OBJECT_TYPE_SMALL_SCENERY:
+            case ObjectType::SmallScenery:
                 result = std::make_unique<SmallSceneryObject>(entry);
                 break;
-            case OBJECT_TYPE_LARGE_SCENERY:
+            case ObjectType::LargeScenery:
                 result = std::make_unique<LargeSceneryObject>(entry);
                 break;
-            case OBJECT_TYPE_WALLS:
+            case ObjectType::Walls:
                 result = std::make_unique<WallObject>(entry);
                 break;
-            case OBJECT_TYPE_BANNERS:
+            case ObjectType::Banners:
                 result = std::make_unique<BannerObject>(entry);
                 break;
-            case OBJECT_TYPE_PATHS:
+            case ObjectType::Paths:
                 result = std::make_unique<FootpathObject>(entry);
                 break;
-            case OBJECT_TYPE_PATH_BITS:
+            case ObjectType::PathBits:
                 result = std::make_unique<FootpathItemObject>(entry);
                 break;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
                 result = std::make_unique<SceneryGroupObject>(entry);
                 break;
-            case OBJECT_TYPE_PARK_ENTRANCE:
+            case ObjectType::ParkEntrance:
                 result = std::make_unique<EntranceObject>(entry);
                 break;
-            case OBJECT_TYPE_WATER:
+            case ObjectType::Water:
                 result = std::make_unique<WaterObject>(entry);
                 break;
-            case OBJECT_TYPE_SCENARIO_TEXT:
+            case ObjectType::ScenarioText:
                 break;
-            case OBJECT_TYPE_TERRAIN_SURFACE:
+            case ObjectType::TerrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>(entry);
                 break;
-            case OBJECT_TYPE_TERRAIN_EDGE:
+            case ObjectType::TerrainEdge:
                 result = std::make_unique<TerrainEdgeObject>(entry);
                 break;
-            case OBJECT_TYPE_STATION:
+            case ObjectType::Station:
                 result = std::make_unique<StationObject>(entry);
                 break;
             default:
@@ -320,35 +320,35 @@ namespace ObjectFactory
         return result;
     }
 
-    static uint8_t ParseObjectType(const std::string& s)
+    static ObjectType ParseObjectType(const std::string& s)
     {
         if (s == "ride")
-            return OBJECT_TYPE_RIDE;
+            return ObjectType::Ride;
         if (s == "footpath")
-            return OBJECT_TYPE_PATHS;
+            return ObjectType::Paths;
         if (s == "footpath_banner")
-            return OBJECT_TYPE_BANNERS;
+            return ObjectType::Banners;
         if (s == "footpath_item")
-            return OBJECT_TYPE_PATH_BITS;
+            return ObjectType::PathBits;
         if (s == "scenery_small")
-            return OBJECT_TYPE_SMALL_SCENERY;
+            return ObjectType::SmallScenery;
         if (s == "scenery_large")
-            return OBJECT_TYPE_LARGE_SCENERY;
+            return ObjectType::LargeScenery;
         if (s == "scenery_wall")
-            return OBJECT_TYPE_WALLS;
+            return ObjectType::Walls;
         if (s == "scenery_group")
-            return OBJECT_TYPE_SCENERY_GROUP;
+            return ObjectType::SceneryGroup;
         if (s == "park_entrance")
-            return OBJECT_TYPE_PARK_ENTRANCE;
+            return ObjectType::ParkEntrance;
         if (s == "water")
-            return OBJECT_TYPE_WATER;
+            return ObjectType::Water;
         if (s == "terrain_surface")
-            return OBJECT_TYPE_TERRAIN_SURFACE;
+            return ObjectType::TerrainSurface;
         if (s == "terrain_edge")
-            return OBJECT_TYPE_TERRAIN_EDGE;
+            return ObjectType::TerrainEdge;
         if (s == "station")
-            return OBJECT_TYPE_STATION;
-        return 0xFF;
+            return ObjectType::Station;
+        return ObjectType::None;
     }
 
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
@@ -437,7 +437,7 @@ namespace ObjectFactory
         std::unique_ptr<Object> result;
 
         auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != 0xFF)
+        if (objectType != ObjectType::None)
         {
             auto id = Json::GetString(jRoot["id"]);
 

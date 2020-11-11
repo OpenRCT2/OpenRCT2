@@ -30,8 +30,8 @@
 
 bool _maxObjectsWasHit;
 std::vector<uint8_t> _objectSelectionFlags;
-int32_t _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
-static int32_t _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
+int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
+static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
 
 static void setup_in_use_selection_flags();
 static void setup_track_designer_objects();
@@ -50,8 +50,8 @@ static void setup_track_manager_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t object_type = item->ObjectEntry.GetType();
-        if (object_type == OBJECT_TYPE_RIDE)
+        ObjectType object_type = item->ObjectEntry.GetType();
+        if (object_type == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -79,8 +79,8 @@ static void setup_track_designer_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        uint8_t objectType = item->ObjectEntry.GetType();
-        if (objectType == OBJECT_TYPE_RIDE)
+        ObjectType objectType = item->ObjectEntry.GetType();
+        if (objectType == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -107,16 +107,16 @@ void setup_in_use_selection_flags()
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
+    for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::Count); objectType++)
     {
         for (int32_t i = 0; i < object_entry_group_counts[objectType]; i++)
         {
-            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
+            Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_ALL);
 
-            auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
+            auto loadedObj = objectMgr.GetLoadedObject(static_cast<ObjectType>(objectType), i);
             if (loadedObj != nullptr)
             {
-                Editor::SetSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_2);
+                Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_2);
             }
         }
     }
@@ -135,19 +135,19 @@ void setup_in_use_selection_flags()
                 break;
             case TILE_ELEMENT_TYPE_PATH:
                 type = iter.element->AsPath()->GetSurfaceEntryIndex();
-                assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
+                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
 
                 if (iter.element->AsPath()->HasAddition())
                 {
                     uint8_t path_additions = iter.element->AsPath()->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(OBJECT_TYPE_PATH_BITS, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::PathBits, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
-                Editor::SetSelectedObject(OBJECT_TYPE_SMALL_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
+                assert(type < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]);
+                Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (iter.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -156,21 +156,21 @@ void setup_in_use_selection_flags()
                 if (iter.element->AsEntrance()->GetSequenceIndex() != 0)
                     break;
 
-                Editor::SetSelectedObject(OBJECT_TYPE_PARK_ENTRANCE, 0, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
                 type = iter.element->AsEntrance()->GetPathType();
-                assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_PATHS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
+                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
                 type = iter.element->AsWall()->GetEntryIndex();
-                assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
-                Editor::SetSelectedObject(OBJECT_TYPE_WALLS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                assert(type < object_entry_group_counts[EnumValue(ObjectType::Walls)]);
+                Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
-                Editor::SetSelectedObject(OBJECT_TYPE_LARGE_SCENERY, type, OBJECT_SELECTION_FLAG_SELECTED);
+                assert(type < object_entry_group_counts[EnumValue(ObjectType::LargeScenery)]);
+                Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
             {
@@ -178,8 +178,8 @@ void setup_in_use_selection_flags()
                 if (banner != nullptr)
                 {
                     type = banner->type;
-                    assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-                    Editor::SetSelectedObject(OBJECT_TYPE_BANNERS, type, OBJECT_SELECTION_FLAG_SELECTED);
+                    assert(type < object_entry_group_counts[EnumValue(ObjectType::Banners)]);
+                    Editor::SetSelectedObject(ObjectType::Banners, type, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;
             }
@@ -192,7 +192,7 @@ void setup_in_use_selection_flags()
         if (ride != nullptr)
         {
             ObjectEntryIndex type = ride->subtype;
-            Editor::SetSelectedObject(OBJECT_TYPE_RIDE, type, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }
 
@@ -204,7 +204,7 @@ void setup_in_use_selection_flags()
         const ObjectRepositoryItem* item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        uint8_t entryType;
+        ObjectType entryType;
         ObjectEntryIndex entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex))
         {
@@ -230,7 +230,7 @@ void sub_6AB211()
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     _objectSelectionFlags = std::vector<uint8_t>(numObjects);
 
-    for (uint8_t objectType = 0; objectType < OBJECT_TYPE_COUNT; objectType++)
+    for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::Count); objectType++)
     {
         _numSelectedObjectsForType[objectType] = 0;
         _numAvailableObjectsForType[objectType] = 0;
@@ -239,8 +239,8 @@ void sub_6AB211()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = items[i].ObjectEntry.GetType();
-        _numAvailableObjectsForType[objectType]++;
+        ObjectType objectType = items[i].ObjectEntry.GetType();
+        _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -284,12 +284,12 @@ void editor_object_flags_free()
  */
 static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
 {
-    uint8_t entry_type;
+    ObjectType entry_type;
     ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
         return;
 
-    if (entry_type == OBJECT_TYPE_RIDE)
+    if (entry_type == ObjectType::Ride)
     {
         auto rideEntry = get_ride_entry(entry_index);
 
@@ -302,7 +302,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
             research_remove(&tmp);
         }
     }
-    else if (entry_type == OBJECT_TYPE_SCENERY_GROUP)
+    else if (entry_type == ObjectType::SceneryGroup)
     {
         ResearchItem tmp = {};
         tmp.type = Research::EntryType::Scenery;
@@ -368,10 +368,10 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = items[i].ObjectEntry.GetType();
+        ObjectType objectType = items[i].ObjectEntry.GetType();
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            _numSelectedObjectsForType[objectType]++;
+            _numSelectedObjectsForType[EnumValue(objectType)]++;
         }
     }
 }
@@ -450,8 +450,8 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return false;
         }
 
-        uint8_t objectType = item->ObjectEntry.GetType();
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+        ObjectType objectType = item->ObjectEntry.GetType();
+        if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -459,7 +459,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             }
         }
 
-        _numSelectedObjectsForType[objectType]--;
+        _numSelectedObjectsForType[EnumValue(objectType)]--;
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_SELECTED;
         return true;
     }
@@ -477,20 +477,20 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return true;
         }
 
-        uint8_t objectType = item->ObjectEntry.GetType();
-        uint16_t maxObjects = object_entry_group_counts[objectType];
+        ObjectType objectType = item->ObjectEntry.GetType();
+        uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
         {
             maxObjects = 4;
         }
 
-        if (maxObjects <= _numSelectedObjectsForType[objectType])
+        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
             return false;
         }
 
-        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
+        if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
@@ -511,13 +511,13 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return false;
         }
 
-        if (maxObjects <= _numSelectedObjectsForType[objectType])
+        if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
             return false;
         }
 
-        _numSelectedObjectsForType[objectType]++;
+        _numSelectedObjectsForType[EnumValue(objectType)]++;
 
         *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
         return true;
@@ -537,14 +537,14 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     return window_editor_object_selection_select_object(isMasterObject, flags, item);
 }
 
-bool editor_check_object_group_at_least_one_selected(int32_t checkObjectType)
+bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
 
     for (int32_t i = 0; i < numObjects; i++)
     {
-        uint8_t objectType = items[i].ObjectEntry.GetType();
+        ObjectType objectType = items[i].ObjectEntry.GetType();
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
             return true;
@@ -570,14 +570,14 @@ int32_t editor_remove_unused_objects()
                 && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
                 const ObjectRepositoryItem* item = &items[i];
-                uint8_t objectType = item->ObjectEntry.GetType();
+                ObjectType objectType = item->ObjectEntry.GetType();
 
-                if (objectType >= OBJECT_TYPE_SCENERY_GROUP)
+                if (objectType >= ObjectType::SceneryGroup)
                 {
                     continue;
                 }
 
-                _numSelectedObjectsForType[objectType]--;
+                _numSelectedObjectsForType[EnumValue(objectType)]--;
                 _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
                 numUnselectedObjects++;
             }
