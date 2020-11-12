@@ -161,22 +161,11 @@ void SmallSceneryObject::PerformFixes()
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
     if (identifier == "XXBBCL01" ||
         identifier == "XXBBMD01" ||
-        identifier == "XXBBBR01" ||
         identifier == "ARBASE2 ")
     {
         SetPrimarySceneryGroup(&scgWalls);
 
         _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
-    }
-
-    // ToonTowner's regular roofs. Put them in the Walls and Roofs group.
-    if (identifier == "TTRFTL02" ||
-        identifier == "TTRFTL03" ||
-        identifier == "TTRFTL04" ||
-        identifier == "TTRFTL07" ||
-        identifier == "TTRFTL08")
-    {
-        SetPrimarySceneryGroup(&scgWalls);
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
