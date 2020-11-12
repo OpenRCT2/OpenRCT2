@@ -1601,13 +1601,6 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
         }
         else
         {
-            // reset itemValue for satisfaction calculation
-            if (gClimateCurrent.Temperature >= 21)
-                itemValue = ShopItems[shopItem].HotValue;
-            else if (gClimateCurrent.Temperature <= 11)
-                itemValue = ShopItems[shopItem].ColdValue;
-            else
-                itemValue = ShopItems[shopItem].BaseValue;
             itemValue -= price;
             itemValue = std::max(8, itemValue);
 
@@ -1628,6 +1621,13 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
 
+        // reset itemValue for satisfaction calculation
+        if (gClimateCurrent.Temperature >= 21)
+            itemValue = ShopItems[shopItem].HotValue;
+        else if (gClimateCurrent.Temperature <= 11)
+            itemValue = ShopItems[shopItem].ColdValue;
+        else
+            itemValue = ShopItems[shopItem].BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
