@@ -781,7 +781,7 @@ struct Guest : Peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    bool HasItem(int32_t peepItem) const;
+    bool HasItem(ShopItem peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
@@ -816,7 +816,7 @@ public:
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
+    bool DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;

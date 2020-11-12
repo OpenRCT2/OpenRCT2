@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor SideFrictionRollerCoasterRTD =
     SET_FIELD(BuildCosts, { 55, 6, 37, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO3),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO3),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_DARK_BROWN, COLOUR_WHITE },

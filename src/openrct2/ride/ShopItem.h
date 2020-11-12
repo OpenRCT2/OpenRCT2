@@ -10,12 +10,11 @@
 #pragma once
 
 #include "../common.h"
-
-using ShopItemIndex = uint8_t;
+#include "../util/Util.h"
 
 struct Ride;
 
-enum ShopItem
+enum class ShopItem : uint8_t
 {
     SHOP_ITEM_BALLOON,           // for PEEP_ITEM was (1<<0)
     SHOP_ITEM_TOY,               // for PEEP_ITEM was (1<<1)
@@ -72,6 +71,14 @@ enum ShopItem
     SHOP_ITEM_NONE = 255
 };
 
+ShopItem& operator++(ShopItem& d, int);
+
+ShopItem operator+(const ShopItem& lhs, const ShopItem& rhs);
+
+ShopItem operator-(const ShopItem& lhs, const ShopItem& rhs);
+
+using ShopItemIndex = ShopItem;
+
 struct ShopItemStrings
 {
     rct_string_id PriceLabel; // Balloon price:
@@ -108,8 +115,8 @@ enum
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
 };
 
-extern const ShopItemDescriptor ShopItems[SHOP_ITEM_COUNT];
+extern const ShopItemDescriptor ShopItems[EnumValue(ShopItem::SHOP_ITEM_COUNT)];
 extern uint64_t gSamePriceThroughoutPark;
 
-money32 shop_item_get_common_price(Ride* forRide, const int32_t shopItem);
-bool shop_item_has_common_price(const int32_t shopItem);
+money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem);
+bool shop_item_has_common_price(const ShopItem shopItem);

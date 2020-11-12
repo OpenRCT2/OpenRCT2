@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor SteeplechaseRTD =
     SET_FIELD(BuildCosts, { 57, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 60),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_BLACK },

@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(BuildCosts, { 50, 7, 20, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 23),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_SATURATED_GREEN, COLOUR_DARK_BROWN, COLOUR_BLACK },

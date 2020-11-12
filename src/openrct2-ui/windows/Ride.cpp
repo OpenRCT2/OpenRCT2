@@ -4812,7 +4812,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     //
     auto rideEntry = ride->GetRideEntry();
-    if (rideEntry == nullptr || rideEntry->shop_item[0] == SHOP_ITEM_NONE)
+    if (rideEntry == nullptr || rideEntry->shop_item[0] == ShopItem::SHOP_ITEM_NONE)
     {
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
@@ -4846,8 +4846,9 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto screenCoords = w->windowPos
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
-        uint8_t shopItem = rideEntry->shop_item[1] == SHOP_ITEM_NONE ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        int32_t spriteIndex = ShopItems[shopItem].Image;
+        ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::SHOP_ITEM_NONE ? rideEntry->shop_item[0]
+                                                                                : rideEntry->shop_item[1];
+        int32_t spriteIndex = ShopItems[EnumValue(shopItem)].Image;
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
@@ -6155,22 +6156,22 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
 static utf8 _moneyInputText[MONEY_STRING_MAXLENGTH];
 
-static void update_same_price_throughout_flags(uint32_t shop_item)
+static void update_same_price_throughout_flags(ShopItem shop_item)
 {
     uint64_t newFlags;
 
-    if (ShopItems[shop_item].IsPhoto())
+    if (ShopItems[EnumValue(shop_item)].IsPhoto())
     {
         newFlags = gSamePriceThroughoutPark;
-        newFlags ^= (1ULL << SHOP_ITEM_PHOTO) | (1ULL << SHOP_ITEM_PHOTO2) | (1ULL << SHOP_ITEM_PHOTO3)
-            | (1ULL << SHOP_ITEM_PHOTO4);
+        newFlags ^= EnumsToFlags(
+            ShopItem::SHOP_ITEM_PHOTO, ShopItem::SHOP_ITEM_PHOTO2, ShopItem::SHOP_ITEM_PHOTO3, ShopItem::SHOP_ITEM_PHOTO4);
         auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
     }
     else
     {
         newFlags = gSamePriceThroughoutPark;
-        newFlags ^= (1ULL << shop_item);
+        newFlags ^= EnumToFlag(shop_item);
         auto parkSetParameter = ParkSetParameterAction(ParkParameter::SamePriceInPark, newFlags);
         GameActions::Execute(&parkSetParameter);
     }
@@ -6186,10 +6187,10 @@ static void window_ride_income_toggle_primary_price(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint32_t shop_item;
+    ShopItem shop_item;
     if (ride->type == RIDE_TYPE_TOILETS)
     {
-        shop_item = SHOP_ITEM_ADMISSION;
+        shop_item = ShopItem::SHOP_ITEM_ADMISSION;
     }
     else
     {
@@ -6197,7 +6198,7 @@ static void window_ride_income_toggle_primary_price(rct_window* w)
         if (rideEntry != nullptr)
         {
             shop_item = rideEntry->shop_item[0];
-            if (shop_item == 0xFFFF)
+            if (shop_item == ShopItem::SHOP_ITEM_NONE)
                 return;
         }
         else
@@ -6227,7 +6228,7 @@ static void window_ride_income_toggle_secondary_price(rct_window* w)
         return;
 
     auto shop_item = rideEntry->shop_item[1];
-    if (shop_item == SHOP_ITEM_NONE)
+    if (shop_item == ShopItem::SHOP_ITEM_NONE)
         shop_item = RideTypeDescriptors[ride->type].PhotoItem;
 
     update_same_price_throughout_flags(shop_item);
@@ -6306,7 +6307,7 @@ static bool window_ride_income_can_modify_primary_price(rct_window* w)
 
     auto rideEntry = ride->GetRideEntry();
     return park_ride_prices_unlocked() || ride->type == RIDE_TYPE_TOILETS
-        || (rideEntry != nullptr && rideEntry->shop_item[0] != SHOP_ITEM_NONE);
+        || (rideEntry != nullptr && rideEntry->shop_item[0] != ShopItem::SHOP_ITEM_NONE);
 }
 
 /**
@@ -6503,7 +6504,7 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
 
     // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
-    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
+    if (!park_ride_prices_unlocked() && rideEntry->shop_item[0] == ShopItem::SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
     {
         w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;
@@ -6522,28 +6523,28 @@ static void window_ride_income_invalidate(rct_window* w)
     if (ridePrimaryPrice == 0)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
-    uint8_t primaryItem = SHOP_ITEM_ADMISSION;
-    if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = rideEntry->shop_item[0]) != SHOP_ITEM_NONE))
+    ShopItem primaryItem = ShopItem::SHOP_ITEM_ADMISSION;
+    if (ride->type == RIDE_TYPE_TOILETS || ((primaryItem = rideEntry->shop_item[0]) != ShopItem::SHOP_ITEM_NONE))
     {
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Checkbox;
 
         if (shop_item_has_common_price(primaryItem))
             w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItems[primaryItem].Naming.PriceLabel;
+        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItems[EnumValue(primaryItem)].Naming.PriceLabel;
     }
 
     // Get secondary item
     auto secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
     {
-        if ((secondaryItem = rideEntry->shop_item[1]) != SHOP_ITEM_NONE)
+        if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::SHOP_ITEM_NONE)
         {
-            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItems[secondaryItem].Naming.PriceLabel;
+            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItems[EnumValue(secondaryItem)].Naming.PriceLabel;
         }
     }
 
-    if (secondaryItem == SHOP_ITEM_NONE)
+    if (secondaryItem == ShopItem::SHOP_ITEM_NONE)
     {
         // Hide secondary item widgets
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WindowWidgetType::Empty;
@@ -6585,7 +6586,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
     money32 profit, costPerHour;
-    int32_t primaryItem, secondaryItem;
+    ShopItem primaryItem, secondaryItem;
 
     WindowDrawWidgets(w, dpi);
     window_ride_draw_tab_images(dpi, w);
@@ -6604,12 +6605,12 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Primary item profit / loss per item sold
     primaryItem = rideEntry->shop_item[0];
-    if (primaryItem != SHOP_ITEM_NONE)
+    if (primaryItem != ShopItem::SHOP_ITEM_NONE)
     {
         profit = ride->price[0];
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= ShopItems[primaryItem].Cost;
+        profit -= ShopItems[EnumValue(primaryItem)].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6625,12 +6626,12 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
         secondaryItem = rideEntry->shop_item[1];
 
-    if (secondaryItem != SHOP_ITEM_NONE)
+    if (secondaryItem != ShopItem::SHOP_ITEM_NONE)
     {
         profit = ride->price[1];
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= ShopItems[secondaryItem].Cost;
+        profit -= ShopItems[EnumValue(secondaryItem)].Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6795,7 +6796,7 @@ static void window_ride_customer_invalidate(rct_window* w)
  */
 static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    uint8_t shopItem;
+    ShopItem shopItem;
     int16_t popularity, satisfaction, queueTime;
     int32_t customersPerHour;
     rct_string_id stringId;
@@ -6863,10 +6864,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Primary shop items sold
     shopItem = ride->GetRideEntry()->shop_item[0];
-    if (shopItem != SHOP_ITEM_NONE)
+    if (shopItem != ShopItem::SHOP_ITEM_NONE)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
+        ft.Add<rct_string_id>(ShopItems[EnumValue(shopItem)].Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -6875,10 +6876,10 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Secondary shop items sold / on-ride photos sold
     shopItem = (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[ride->type].PhotoItem
                                                                       : ride->GetRideEntry()->shop_item[1];
-    if (shopItem != SHOP_ITEM_NONE)
+    if (shopItem != ShopItem::SHOP_ITEM_NONE)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Plural);
+        ft.Add<rct_string_id>(ShopItems[EnumValue(shopItem)].Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;

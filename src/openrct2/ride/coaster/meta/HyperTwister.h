@@ -47,7 +47,7 @@ constexpr const RideTypeDescriptor HyperTwisterRTD =
     SET_FIELD(BuildCosts, { 120, 5, 55, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 120),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_YELLOW, COLOUR_YELLOW, COLOUR_BORDEAUX_RED },

@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(BuildCosts, { 212, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_YELLOW, COLOUR_BLACK },

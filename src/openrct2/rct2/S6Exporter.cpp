@@ -936,7 +936,7 @@ void S6Exporter::ExportMarketingCampaigns()
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            _s6.campaign_ride_index[campaign.Type] = campaign.ShopItemType;
+            _s6.campaign_ride_index[campaign.Type] = EnumValue(campaign.ShopItemType);
         }
     }
 }

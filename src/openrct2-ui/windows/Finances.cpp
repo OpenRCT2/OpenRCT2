@@ -1092,7 +1092,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
                 break;
             }
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                ft.Add<rct_string_id>(ShopItems[campaign->ShopItemType].Naming.Plural);
+                ft.Add<rct_string_id>(ShopItems[EnumValue(campaign->ShopItemType)].Naming.Plural);
                 break;
             default:
             {

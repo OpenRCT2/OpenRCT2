@@ -174,41 +174,41 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER))
+            if (peep->ItemStandardFlags & EnumToFlag(ShopItem::SHOP_ITEM_VOUCHER))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~(1 << SHOP_ITEM_VOUCHER);
+                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::SHOP_ITEM_VOUCHER);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->ItemStandardFlags & (1 << SHOP_ITEM_PHOTO))
+            if (peep->ItemStandardFlags & EnumToFlag(ShopItem::SHOP_ITEM_PHOTO))
             {
                 if (peep->Photo1RideRef == _rideIndex)
                 {
-                    peep->ItemStandardFlags &= ~(1 << SHOP_ITEM_PHOTO);
+                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::SHOP_ITEM_PHOTO);
                 }
             }
-            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO2 - 32)))
+            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::SHOP_ITEM_PHOTO2 - ShopItem::SHOP_ITEM_PHOTO2)))
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO2 - 32));
+                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::SHOP_ITEM_PHOTO2 - ShopItem::SHOP_ITEM_PHOTO2));
                 }
             }
-            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO3 - 32)))
+            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::SHOP_ITEM_PHOTO3 - ShopItem::SHOP_ITEM_PHOTO2)))
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO3 - 32));
+                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::SHOP_ITEM_PHOTO3 - ShopItem::SHOP_ITEM_PHOTO2));
                 }
             }
-            if (peep->ItemExtraFlags & (1 << (SHOP_ITEM_PHOTO4 - 32)))
+            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::SHOP_ITEM_PHOTO4 - ShopItem::SHOP_ITEM_PHOTO2)))
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~(1 << (SHOP_ITEM_PHOTO4 - 32));
+                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::SHOP_ITEM_PHOTO4 - ShopItem::SHOP_ITEM_PHOTO2));
                 }
             }
 

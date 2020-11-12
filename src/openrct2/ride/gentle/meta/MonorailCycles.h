@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(BuildCosts, { 20, 5, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },

@@ -46,7 +46,7 @@ constexpr const RideTypeDescriptor RiverRaftsRTD =
     SET_FIELD(BuildCosts, { 40, 5, 30, }),
     SET_FIELD(DefaultPrices, { 10, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO4),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO4),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_SATURATED_BROWN },

@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(BuildCosts, { 55, 2, 8, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
     SET_FIELD(BonusValue, 40),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },

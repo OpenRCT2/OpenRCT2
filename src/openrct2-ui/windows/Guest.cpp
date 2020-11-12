@@ -1839,15 +1839,15 @@ void window_guest_inventory_update(rct_window* w)
     }
 }
 
-static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, int32_t item)
+static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, ShopItem item)
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto parkName = park.Name.c_str();
 
     // Default arguments
     auto ft = Formatter();
-    ft.Add<uint32_t>(ShopItems[item].Image);
-    ft.Add<rct_string_id>(ShopItems[item].Naming.Display);
+    ft.Add<uint32_t>(ShopItems[EnumValue(item)].Image);
+    ft.Add<rct_string_id>(ShopItems[EnumValue(item)].Naming.Display);
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(parkName);
 
@@ -1855,11 +1855,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     Ride* ride{};
     switch (item)
     {
-        case SHOP_ITEM_BALLOON:
+        case ShopItem::SHOP_ITEM_BALLOON:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case SHOP_ITEM_PHOTO:
+        case ShopItem::SHOP_ITEM_PHOTO:
             ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
             {
@@ -1869,11 +1869,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
 
             break;
-        case SHOP_ITEM_UMBRELLA:
+        case ShopItem::SHOP_ITEM_UMBRELLA:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case SHOP_ITEM_VOUCHER:
+        case ShopItem::SHOP_ITEM_VOUCHER:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
@@ -1904,19 +1904,19 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(ShopItems[peep->VoucherShopItem].Naming.Singular);
+                    ft.Add<rct_string_id>(ShopItems[EnumValue(peep->VoucherShopItem)].Naming.Singular);
                     break;
             }
             break;
-        case SHOP_ITEM_HAT:
+        case ShopItem::SHOP_ITEM_HAT:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case SHOP_ITEM_TSHIRT:
+        case ShopItem::SHOP_ITEM_TSHIRT:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case SHOP_ITEM_PHOTO2:
+        case ShopItem::SHOP_ITEM_PHOTO2:
             ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
             {
@@ -1925,7 +1925,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case SHOP_ITEM_PHOTO3:
+        case ShopItem::SHOP_ITEM_PHOTO3:
             ride = get_ride(peep->Photo3RideRef);
             if (ride != nullptr)
             {
@@ -1934,7 +1934,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case SHOP_ITEM_PHOTO4:
+        case ShopItem::SHOP_ITEM_PHOTO4:
             ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
             {
@@ -1942,6 +1942,9 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ft.Increment(6);
                 ride->FormatNameTo(ft);
             }
+            break;
+        default:
+            // This switch handles only items visible in peep window
             break;
     }
 
@@ -1979,7 +1982,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, screenCoords);
     screenCoords.y += 10;
 
-    for (int32_t item = 0; item < SHOP_ITEM_COUNT; item++)
+    for (ShopItem item = ShopItem::SHOP_ITEM_BALLOON; item < ShopItem::SHOP_ITEM_COUNT; item++)
     {
         if (screenCoords.y >= maxY)
             break;

@@ -620,15 +620,15 @@ private:
                     peep->CashInPocket = MONEY(1000, 00);
                     break;
                 case OBJECT_PARK_MAP:
-                    peep->ItemStandardFlags |= (1 << SHOP_ITEM_MAP);
+                    peep->ItemStandardFlags |= EnumToFlag(ShopItem::SHOP_ITEM_MAP);
                     break;
                 case OBJECT_BALLOON:
-                    peep->ItemStandardFlags |= (1 << SHOP_ITEM_BALLOON);
+                    peep->ItemStandardFlags |= EnumToFlag(ShopItem::SHOP_ITEM_BALLOON);
                     peep->BalloonColour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
                 case OBJECT_UMBRELLA:
-                    peep->ItemStandardFlags |= (1 << SHOP_ITEM_UMBRELLA);
+                    peep->ItemStandardFlags |= EnumToFlag(ShopItem::SHOP_ITEM_UMBRELLA);
                     peep->UmbrellaColour = scenario_rand_max(COLOUR_COUNT - 1);
                     peep->UpdateSpriteType();
                     break;
