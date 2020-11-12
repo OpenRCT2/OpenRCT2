@@ -1498,8 +1498,6 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
 
     bool isRainingAndUmbrella = shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining();
 
-    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-    if ((ItemStandardFlags & SHOP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
     if ((ItemStandardFlags & (1 << SHOP_ITEM_VOUCHER)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
@@ -1559,7 +1557,6 @@ bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
             return false;
     }
 
-loc_69B119:
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1628,7 +1625,6 @@ loc_69B119:
             HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
             Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
-    }
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
