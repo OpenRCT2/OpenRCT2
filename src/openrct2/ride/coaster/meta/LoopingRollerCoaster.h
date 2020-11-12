@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor LoopingRollerCoasterRTD =
     SET_FIELD(BuildCosts, { 90, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 95),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BROWN, COLOUR_LIGHT_BROWN, COLOUR_BLACK },

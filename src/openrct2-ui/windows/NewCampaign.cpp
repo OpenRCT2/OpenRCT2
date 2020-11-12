@@ -152,7 +152,7 @@ static void window_new_campaign_get_shop_items()
         {
             for (const auto itemType : rideEntry->shop_item)
             {
-                if (itemType != ShopItem::SHOP_ITEM_NONE && ShopItems[EnumValue(itemType)].IsFoodOrDrink())
+                if (itemType != ShopItem::None && ShopItems[EnumValue(itemType)].IsFoodOrDrink())
                 {
                     items |= EnumToFlag(itemType);
                 }

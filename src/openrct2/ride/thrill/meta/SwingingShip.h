@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
     SET_FIELD(BuildCosts, { 155, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_PIRATES),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },

@@ -107,11 +107,11 @@ public:
         ShopItem shopItem;
         if (_primaryPrice)
         {
-            shopItem = ShopItem::SHOP_ITEM_ADMISSION;
+            shopItem = ShopItem::Admission;
             if (ride->type != RIDE_TYPE_TOILETS)
             {
                 shopItem = rideEntry->shop_item[0];
-                if (shopItem == ShopItem::SHOP_ITEM_NONE)
+                if (shopItem == ShopItem::None)
                 {
                     ride->price[0] = _price;
                     window_invalidate_by_class(WC_RIDE);
@@ -129,7 +129,7 @@ public:
         else
         {
             shopItem = rideEntry->shop_item[1];
-            if (shopItem == ShopItem::SHOP_ITEM_NONE)
+            if (shopItem == ShopItem::None)
             {
                 shopItem = RideTypeDescriptors[ride->type].PhotoItem;
                 if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
@@ -161,7 +161,7 @@ private:
         {
             auto invalidate = false;
             auto rideEntry = get_ride_entry(ride.subtype);
-            if (ride.type == RIDE_TYPE_TOILETS && shopItem == ShopItem::SHOP_ITEM_ADMISSION)
+            if (ride.type == RIDE_TYPE_TOILETS && shopItem == ShopItem::Admission)
             {
                 if (ride.price[0] != _price)
                 {
@@ -181,7 +181,7 @@ private:
             {
                 // If the shop item is the same or an on-ride photo
                 if (rideEntry->shop_item[1] == shopItem
-                    || (rideEntry->shop_item[1] == ShopItem::SHOP_ITEM_NONE && ShopItems[EnumValue(shopItem)].IsPhoto()))
+                    || (rideEntry->shop_item[1] == ShopItem::None && ShopItems[EnumValue(shopItem)].IsPhoto()))
                 {
                     if (ride.price[1] != _price)
                     {

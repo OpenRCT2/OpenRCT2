@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor MerryGoRoundRTD =
     SET_FIELD(BuildCosts, { 115, 2, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_FAIRGROUND_ORGAN),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),

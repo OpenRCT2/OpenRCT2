@@ -213,7 +213,7 @@ public:
                 ride->price[i] = RideTypeDescriptors[ride->type].DefaultPrices[i];
             }
 
-            if (rideEntry->shop_item[0] == ShopItem::SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[0] == ShopItem::None)
             {
                 if (!park_ride_prices_unlocked())
                 {
@@ -224,7 +224,7 @@ public:
             {
                 ride->price[0] = ShopItems[EnumValue(rideEntry->shop_item[0])].DefaultPrice;
             }
-            if (rideEntry->shop_item[1] != ShopItem::SHOP_ITEM_NONE)
+            if (rideEntry->shop_item[1] != ShopItem::None)
             {
                 ride->price[1] = ShopItems[EnumValue(rideEntry->shop_item[1])].DefaultPrice;
             }
@@ -236,7 +236,7 @@ public:
 
             if (ride->type == RIDE_TYPE_TOILETS)
             {
-                if (shop_item_has_common_price(ShopItem::SHOP_ITEM_ADMISSION))
+                if (shop_item_has_common_price(ShopItem::Admission))
                 {
                     money32 price = ride_get_common_price(ride);
                     if (price != MONEY32_UNDEFINED)
@@ -248,7 +248,7 @@ public:
 
             for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
             {
-                if (rideEntry->shop_item[i] != ShopItem::SHOP_ITEM_NONE)
+                if (rideEntry->shop_item[i] != ShopItem::None)
                 {
                     if (shop_item_has_common_price(rideEntry->shop_item[i]))
                     {
@@ -262,10 +262,9 @@ public:
             }
 
             // Set the on-ride photo price, whether the ride has one or not (except shops).
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)
-                && shop_item_has_common_price(ShopItem::SHOP_ITEM_PHOTO))
+            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
             {
-                money32 price = shop_item_get_common_price(ride, ShopItem::SHOP_ITEM_PHOTO);
+                money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
                 if (price != MONEY32_UNDEFINED)
                 {
                     ride->price[1] = static_cast<money16>(price);

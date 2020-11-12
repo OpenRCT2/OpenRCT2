@@ -557,7 +557,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         // This needs to be set for both shops/facilities _and_ regular rides.
         for (auto& item : _legacyType.shop_item)
         {
-            item = ShopItem::SHOP_ITEM_NONE;
+            item = ShopItem::None;
         }
 
         auto carColours = Json::AsArray(properties["carColours"]);
@@ -584,7 +584,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
-                if (shopItem == ShopItem::SHOP_ITEM_NONE)
+                if (shopItem == ShopItem::None)
                 {
                     context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
                 }
@@ -1040,44 +1040,44 @@ uint8_t RideObject::ParseRideCategory(const std::string& s)
 ShopItem RideObject::ParseShopItem(const std::string& s)
 {
     static const std::unordered_map<std::string, ShopItem> LookupTable{
-        { "burger", ShopItem::SHOP_ITEM_BURGER },
-        { "chips", ShopItem::SHOP_ITEM_CHIPS },
-        { "ice_cream", ShopItem::SHOP_ITEM_ICE_CREAM },
-        { "candyfloss", ShopItem::SHOP_ITEM_CANDYFLOSS },
-        { "pizza", ShopItem::SHOP_ITEM_PIZZA },
-        { "popcorn", ShopItem::SHOP_ITEM_POPCORN },
-        { "hot_dog", ShopItem::SHOP_ITEM_HOT_DOG },
-        { "tentacle", ShopItem::SHOP_ITEM_TENTACLE },
-        { "toffee_apple", ShopItem::SHOP_ITEM_TOFFEE_APPLE },
-        { "doughnut", ShopItem::SHOP_ITEM_DOUGHNUT },
-        { "chicken", ShopItem::SHOP_ITEM_CHICKEN },
-        { "pretzel", ShopItem::SHOP_ITEM_PRETZEL },
-        { "funnel_cake", ShopItem::SHOP_ITEM_FUNNEL_CAKE },
-        { "beef_noodles", ShopItem::SHOP_ITEM_BEEF_NOODLES },
-        { "fried_rice_noodles", ShopItem::SHOP_ITEM_FRIED_RICE_NOODLES },
-        { "wonton_soup", ShopItem::SHOP_ITEM_WONTON_SOUP },
-        { "meatball_soup", ShopItem::SHOP_ITEM_MEATBALL_SOUP },
-        { "sub_sandwich", ShopItem::SHOP_ITEM_SUB_SANDWICH },
-        { "cookie", ShopItem::SHOP_ITEM_COOKIE },
-        { "roast_sausage", ShopItem::SHOP_ITEM_ROAST_SAUSAGE },
-        { "drink", ShopItem::SHOP_ITEM_DRINK },
-        { "coffee", ShopItem::SHOP_ITEM_COFFEE },
-        { "lemonade", ShopItem::SHOP_ITEM_LEMONADE },
-        { "chocolate", ShopItem::SHOP_ITEM_CHOCOLATE },
-        { "iced_tea", ShopItem::SHOP_ITEM_ICED_TEA },
-        { "fruit_juice", ShopItem::SHOP_ITEM_FRUIT_JUICE },
-        { "soybean_milk", ShopItem::SHOP_ITEM_SOYBEAN_MILK },
-        { "sujeonggwa", ShopItem::SHOP_ITEM_SUJEONGGWA },
-        { "balloon", ShopItem::SHOP_ITEM_BALLOON },
-        { "toy", ShopItem::SHOP_ITEM_TOY },
-        { "map", ShopItem::SHOP_ITEM_MAP },
-        { "photo", ShopItem::SHOP_ITEM_PHOTO },
-        { "umbrella", ShopItem::SHOP_ITEM_UMBRELLA },
-        { "voucher", ShopItem::SHOP_ITEM_VOUCHER },
-        { "hat", ShopItem::SHOP_ITEM_HAT },
-        { "tshirt", ShopItem::SHOP_ITEM_TSHIRT },
-        { "sunglasses", ShopItem::SHOP_ITEM_SUNGLASSES },
+        { "burger", ShopItem::Burger },
+        { "chips", ShopItem::Chips },
+        { "ice_cream", ShopItem::IceCream },
+        { "candyfloss", ShopItem::Candyfloss },
+        { "pizza", ShopItem::Pizza },
+        { "popcorn", ShopItem::Popcorn },
+        { "hot_dog", ShopItem::HotDog },
+        { "tentacle", ShopItem::Tentacle },
+        { "toffee_apple", ShopItem::ToffeeApple },
+        { "doughnut", ShopItem::Doughnut },
+        { "chicken", ShopItem::Chicken },
+        { "pretzel", ShopItem::Pretzel },
+        { "funnel_cake", ShopItem::FunnelCake },
+        { "beef_noodles", ShopItem::BeefNoodles },
+        { "fried_rice_noodles", ShopItem::FriedRiceNoodles },
+        { "wonton_soup", ShopItem::WontonSoup },
+        { "meatball_soup", ShopItem::MeatballSoup },
+        { "sub_sandwich", ShopItem::SubSandwich },
+        { "cookie", ShopItem::Cookie },
+        { "roast_sausage", ShopItem::RoastSausage },
+        { "drink", ShopItem::Drink },
+        { "coffee", ShopItem::Coffee },
+        { "lemonade", ShopItem::Lemonade },
+        { "chocolate", ShopItem::Chocolate },
+        { "iced_tea", ShopItem::IcedTea },
+        { "fruit_juice", ShopItem::FruitJuice },
+        { "soybean_milk", ShopItem::SoybeanMilk },
+        { "sujeonggwa", ShopItem::SuJeongGwa },
+        { "balloon", ShopItem::Balloon },
+        { "toy", ShopItem::Toy },
+        { "map", ShopItem::Map },
+        { "photo", ShopItem::Photo },
+        { "umbrella", ShopItem::Umbrella },
+        { "voucher", ShopItem::Voucher },
+        { "hat", ShopItem::Hat },
+        { "tshirt", ShopItem::TShirt },
+        { "sunglasses", ShopItem::Sunglasses },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : ShopItem::SHOP_ITEM_NONE;
+    return (result != LookupTable.end()) ? result->second : ShopItem::None;
 }

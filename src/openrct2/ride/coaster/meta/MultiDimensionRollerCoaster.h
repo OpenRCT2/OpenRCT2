@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(BuildCosts, { 180, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_3),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO2),
+    SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },
@@ -82,7 +82,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(BuildCosts, { 180, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_3),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO2),
+    SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_PINK, COLOUR_YELLOW, COLOUR_YELLOW },

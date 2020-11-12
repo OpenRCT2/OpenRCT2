@@ -2546,18 +2546,18 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         money16 entranceFee = park_get_entrance_fee();
         if (entranceFee != 0)
         {
-            if (peep->ItemStandardFlags & EnumToFlag(ShopItem::SHOP_ITEM_VOUCHER))
+            if (peep->ItemStandardFlags & EnumToFlag(ShopItem::Voucher))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::SHOP_ITEM_VOUCHER);
+                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::Voucher);
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::SHOP_ITEM_VOUCHER);
+                    peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::Voucher);
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
@@ -3264,9 +3264,9 @@ void decrement_guests_heading_for_park()
 
 static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->ItemStandardFlags & EnumToFlag(ShopItem::SHOP_ITEM_BALLOON))
+    if (peep->ItemStandardFlags & EnumToFlag(ShopItem::Balloon))
     {
-        peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::SHOP_ITEM_BALLOON);
+        peep->ItemStandardFlags &= ~EnumToFlag(ShopItem::Balloon);
 
         if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != LOCATION_NULL)
         {

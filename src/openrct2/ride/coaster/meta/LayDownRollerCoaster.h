@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterRTD =
     SET_FIELD(BuildCosts, { 107, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO2),
+    SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },
@@ -81,7 +81,7 @@ constexpr const RideTypeDescriptor LayDownRollerCoasterAltRTD =
     SET_FIELD(BuildCosts, { 107, 5, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, ShopItem::SHOP_ITEM_PHOTO2),
+    SET_FIELD(PhotoItem, ShopItem::Photo2),
     SET_FIELD(BonusValue, 100),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_YELLOW },

@@ -273,7 +273,7 @@ size_t Ride::GetNumPrices() const
             {
                 result++;
             }
-            else if (rideEntry->shop_item[1] != ShopItem::SHOP_ITEM_NONE)
+            else if (rideEntry->shop_item[1] != ShopItem::None)
             {
                 result++;
             }
@@ -390,7 +390,7 @@ money32 Ride::CalculateIncomePerHour() const
     money32 priceMinusCost = ride_get_price(this);
 
     ShopItem currentShopItem = entry->shop_item[0];
-    if (currentShopItem != ShopItem::SHOP_ITEM_NONE)
+    if (currentShopItem != ShopItem::None)
     {
         priceMinusCost -= ShopItems[EnumValue(currentShopItem)].Cost;
     }
@@ -398,7 +398,7 @@ money32 Ride::CalculateIncomePerHour() const
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[type].PhotoItem
                                                                        : entry->shop_item[1];
 
-    if (currentShopItem != ShopItem::SHOP_ITEM_NONE)
+    if (currentShopItem != ShopItem::None)
     {
         const money16 shopItemProfit = price[1] - ShopItems[EnumValue(currentShopItem)].Cost;
 
@@ -419,7 +419,7 @@ money32 Ride::CalculateIncomePerHour() const
             priceMinusCost += shopItemProfit;
         }
 
-        if (entry->shop_item[0] != ShopItem::SHOP_ITEM_NONE)
+        if (entry->shop_item[0] != ShopItem::None)
             priceMinusCost /= 2;
     }
 

@@ -1855,11 +1855,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     Ride* ride{};
     switch (item)
     {
-        case ShopItem::SHOP_ITEM_BALLOON:
+        case ShopItem::Balloon:
             ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case ShopItem::SHOP_ITEM_PHOTO:
+        case ShopItem::Photo:
             ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
             {
@@ -1869,11 +1869,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
 
             break;
-        case ShopItem::SHOP_ITEM_UMBRELLA:
+        case ShopItem::Umbrella:
             ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case ShopItem::SHOP_ITEM_VOUCHER:
+        case ShopItem::Voucher:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
@@ -1908,15 +1908,15 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     break;
             }
             break;
-        case ShopItem::SHOP_ITEM_HAT:
+        case ShopItem::Hat:
             ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case ShopItem::SHOP_ITEM_TSHIRT:
+        case ShopItem::TShirt:
             ft.Rewind();
             ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | ShopItems[EnumValue(item)].Image);
             break;
-        case ShopItem::SHOP_ITEM_PHOTO2:
+        case ShopItem::Photo2:
             ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
             {
@@ -1925,7 +1925,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case ShopItem::SHOP_ITEM_PHOTO3:
+        case ShopItem::Photo3:
             ride = get_ride(peep->Photo3RideRef);
             if (ride != nullptr)
             {
@@ -1934,7 +1934,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case ShopItem::SHOP_ITEM_PHOTO4:
+        case ShopItem::Photo4:
             ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
             {
@@ -1982,7 +1982,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, screenCoords);
     screenCoords.y += 10;
 
-    for (ShopItem item = ShopItem::SHOP_ITEM_BALLOON; item < ShopItem::SHOP_ITEM_COUNT; item++)
+    for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
     {
         if (screenCoords.y >= maxY)
             break;
