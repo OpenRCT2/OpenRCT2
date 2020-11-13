@@ -3,7 +3,7 @@
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13376] Open custom window at specified tab.
 - Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences.
-- Fix: [#12895] Mechanics no longer are called to repair rides that were just re-opened
+- Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
