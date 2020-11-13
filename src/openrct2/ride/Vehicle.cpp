@@ -5516,10 +5516,9 @@ void Vehicle::UpdateCrash()
 void Vehicle::UpdateSound()
 {
     // frictionVolume (bl) should be set before hand
-    uint8_t frictionVolume = 255;
-    auto frictionId = OpenRCT2::Audio::SoundId::Null;
+    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::Null, 255 };
     // bh screamVolume should be set before hand
-    SoundIdVolume currentSound = { OpenRCT2::Audio::SoundId::Null, 255 };
+    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -5534,81 +5533,81 @@ void Vehicle::UpdateSound()
     int32_t ecx = abs(velocity) - 0x10000;
     if (ecx >= 0)
     {
-        frictionId = vehicleEntry->friction_sound_id;
+        frictionSound.id = vehicleEntry->friction_sound_id;
         ecx >>= 15;
-        frictionVolume = std::min(208 + (ecx & 0xFF), 255);
+        frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
     switch (vehicleEntry->sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            currentSound.id = scream_sound_id;
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    GetLiftHillSound(curRide, currentSound);
+                    GetLiftHillSound(curRide, screamSound);
                     break;
                 }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
-                    currentSound.volume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (currentSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                currentSound.id = OpenRCT2::Audio::SoundId::Null;
-            currentSound.volume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         case SOUND_RANGE_BELL:
-            currentSound.id = scream_sound_id;
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
                 {
-                    GetLiftHillSound(curRide, currentSound);
+                    GetLiftHillSound(curRide, screamSound);
                     break;
                 }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
-                    currentSound.volume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (currentSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                currentSound.id = OpenRCT2::Audio::SoundId::Null;
-            currentSound.volume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         default:
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
-                currentSound.id = UpdateScreamSound();
-                if (currentSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                    currentSound.id = OpenRCT2::Audio::SoundId::Null;
-                else if (currentSound.id == OpenRCT2::Audio::SoundId::Null)
+                screamSound.id = UpdateScreamSound();
+                if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
+                else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
                 {
-                    GetLiftHillSound(curRide, currentSound);
+                    GetLiftHillSound(curRide, screamSound);
                     break;
                 }
                 break;
             }
 
-            GetLiftHillSound(curRide, currentSound);
+            GetLiftHillSound(curRide, screamSound);
     }
 
     // Friction sound
-    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionId, frictionVolume);
+    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
     sound1_id = soundIdVolume.id;
     sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, currentSound.id, currentSound.volume);
+    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
     sound2_id = soundIdVolume.id;
     sound2_volume = soundIdVolume.volume;
 
