@@ -5589,15 +5589,15 @@ void Vehicle::UpdateSound()
             {
                 screamSound.id = UpdateScreamSound();
                 if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
-                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
-                else if (screamSound.id == OpenRCT2::Audio::SoundId::Null)
                 {
-                    GetLiftHillSound(curRide, screamSound);
+                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
                     break;
                 }
-                break;
+                if (screamSound.id != OpenRCT2::Audio::SoundId::Null)
+                {
+                    break;
+                }
             }
-
             GetLiftHillSound(curRide, screamSound);
     }
 
