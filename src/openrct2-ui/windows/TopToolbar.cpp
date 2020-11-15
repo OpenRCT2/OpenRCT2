@@ -1148,66 +1148,9 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
     }
 }
 
-/**
- *
- *  rct2: 0x006E1F34
- * Outputs
- * eax : gridX
- * ebx : parameter_1
- * ecx : gridY
- * edx : parameter_2
- * edi : parameter_3
- */
-static void sub_6E1F34(
-    const ScreenCoordsXY& sourceScreenPos, ScenerySelection selection, CoordsXY& gridPos, uint32_t* parameter_1,
-    uint32_t* parameter_2, uint32_t* parameter_3)
+static void sub_6E1F34_update_screen_coords_and_buttons_pressed(bool canRaiseItem, ScreenCoordsXY& screenPos)
 {
-    rct_window* w = window_find_by_class(WC_SCENERY);
-
-    if (w == nullptr)
-    {
-        gridPos.setNull();
-        return;
-    }
-
-    auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
-    bool can_raise_item = false;
-
-    if (selection.SceneryType == SCENERY_TYPE_SMALL)
-    {
-        rct_scenery_entry* scenery_entry = get_small_scenery_entry(selection.EntryIndex);
-        maxPossibleHeight -= scenery_entry->small_scenery.height;
-        if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_STACKABLE))
-        {
-            can_raise_item = true;
-        }
-    }
-    else if (selection.SceneryType == SCENERY_TYPE_WALL)
-    {
-        rct_scenery_entry* scenery_entry = get_wall_entry(selection.EntryIndex);
-        if (scenery_entry)
-        {
-            maxPossibleHeight -= scenery_entry->wall.height;
-        }
-        can_raise_item = true;
-    }
-    else if (selection.SceneryType == SCENERY_TYPE_LARGE)
-    {
-        rct_scenery_entry* scenery_entry = get_large_scenery_entry(selection.EntryIndex);
-        if (scenery_entry)
-        {
-            int16_t maxClearZ = 0;
-            for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
-            {
-                maxClearZ = std::max<int16_t>(maxClearZ, scenery_entry->large_scenery.tiles[i].z_clearance);
-            }
-            maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
-        }
-        can_raise_item = true;
-    }
-
-    if (!can_raise_item && !gCheatsDisableSupportLimits)
+    if (!canRaiseItem && !gCheatsDisableSupportLimits)
     {
         gSceneryCtrlPressed = false;
         gSceneryShiftPressed = false;
@@ -1275,378 +1218,471 @@ static void sub_6E1F34(
             }
         }
     }
+}
 
-    switch (selection.SceneryType)
+static void sub_6E1F34_small_scenery(
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
+    colour_t* outPrimaryColour, colour_t* outSecondaryColour, Direction* outRotation)
+{
+    rct_window* w = window_find_by_class(WC_SCENERY);
+
+    if (w == nullptr)
     {
-        case SCENERY_TYPE_SMALL:
+        gridPos.setNull();
+        return;
+    }
+
+    auto screenPos = sourceScreenPos;
+    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    bool can_raise_item = false;
+
+    rct_scenery_entry* scenery = get_small_scenery_entry(sceneryIndex);
+    maxPossibleHeight -= scenery->small_scenery.height;
+    if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_STACKABLE))
+    {
+        can_raise_item = true;
+    }
+
+    sub_6E1F34_update_screen_coords_and_buttons_pressed(can_raise_item, screenPos);
+
+    // Small scenery
+    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+    {
+        uint8_t quadrant = 0;
+
+        // If CTRL not pressed
+        if (!gSceneryCtrlPressed)
         {
-            // Small scenery
-            rct_scenery_entry* scenery = get_small_scenery_entry(selection.EntryIndex);
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+            auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
+            if (!gridCoords)
             {
-                uint8_t quadrant = 0;
-
-                // If CTRL not pressed
-                if (!gSceneryCtrlPressed)
-                {
-                    auto gridCoords = screen_get_map_xy_quadrant(screenPos, &quadrant);
-                    if (!gridCoords)
-                    {
-                        gridPos.setNull();
-                        return;
-                    }
-                    gridPos = *gridCoords;
-
-                    gSceneryPlaceZ = 0;
-
-                    // If SHIFT pressed
-                    if (gSceneryShiftPressed)
-                    {
-                        auto* surfaceElement = map_get_surface_element_at(gridPos);
-
-                        if (surfaceElement == nullptr)
-                        {
-                            gridPos.setNull();
-                            return;
-                        }
-
-                        int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
-                        z += gSceneryShiftPressZOffset;
-
-                        z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                        gSceneryPlaceZ = z;
-                    }
-                }
-                else
-                {
-                    int16_t z = gSceneryCtrlPressZ;
-
-                    auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
-                    if (!mapCoords)
-                    {
-                        gridPos.setNull();
-                        return;
-                    }
-                    gridPos = *mapCoords;
-
-                    // If SHIFT pressed
-                    if (gSceneryShiftPressed)
-                    {
-                        z += gSceneryShiftPressZOffset;
-                    }
-
-                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                    gSceneryPlaceZ = z;
-                }
-
-                if (gridPos.isNull())
-                    return;
-
-                uint8_t rotation = gWindowSceneryRotation;
-
-                if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
-                {
-                    rotation = util_rand() & 0xFF;
-                }
-
-                rotation -= get_current_rotation();
-                rotation &= 0x3;
-
-                // Also places it in lower but think thats for clobbering
-                *parameter_1 = selection.EntryIndex << 8;
-                *parameter_2 = (quadrant ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
-                *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
-
-                if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
-                {
-                    virtual_floor_set_height(gSceneryPlaceZ);
-                }
-
+                gridPos.setNull();
                 return;
             }
+            gridPos = *gridCoords;
 
-            // If CTRL not pressed
-            if (!gSceneryCtrlPressed)
+            gSceneryPlaceZ = 0;
+
+            // If SHIFT pressed
+            if (gSceneryShiftPressed)
             {
-                auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER;
+                auto* surfaceElement = map_get_surface_element_at(gridPos);
 
-                auto info = get_map_coordinates_from_pos(screenPos, flags);
-                gridPos = info.Loc;
-
-                if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+                if (surfaceElement == nullptr)
                 {
                     gridPos.setNull();
                     return;
                 }
 
-                // If CTRL and SHIFT not pressed
-                gSceneryPlaceZ = 0;
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    auto surfaceElement = map_get_surface_element_at(gridPos);
-
-                    if (surfaceElement == nullptr)
-                    {
-                        gridPos.setNull();
-                        return;
-                    }
-
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
-                    z += gSceneryShiftPressZOffset;
-
-                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                    gSceneryPlaceZ = z;
-                }
-            }
-            else
-            {
-                int16_t z = gSceneryCtrlPressZ;
-                auto coords = screen_get_map_xy_with_z(screenPos, z);
-                if (coords)
-                {
-                    gridPos = *coords;
-                }
-                else
-                {
-                    gridPos.setNull();
-                }
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    z += gSceneryShiftPressZOffset;
-                }
+                int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+                z += gSceneryShiftPressZOffset;
 
                 z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
                 gSceneryPlaceZ = z;
             }
+        }
+        else
+        {
+            int16_t z = gSceneryCtrlPressZ;
 
-            if (gridPos.isNull())
-                return;
-
-            gridPos = gridPos.ToTileStart();
-            uint8_t rotation = gWindowSceneryRotation;
-
-            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+            auto mapCoords = screen_get_map_xy_quadrant_with_z(screenPos, z, &quadrant);
+            if (!mapCoords)
             {
-                rotation = util_rand() & 0xFF;
+                gridPos.setNull();
+                return;
+            }
+            gridPos = *mapCoords;
+
+            // If SHIFT pressed
+            if (gSceneryShiftPressed)
+            {
+                z += gSceneryShiftPressZOffset;
             }
 
-            rotation -= get_current_rotation();
-            rotation &= 0x3;
+            z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
-            // Also places it in lower but think thats for clobbering
-            *parameter_1 = selection.EntryIndex << 8;
-            *parameter_2 = 0 | (gWindowSceneryPrimaryColour << 8);
-            *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
-            break;
+            gSceneryPlaceZ = z;
         }
-        case SCENERY_TYPE_PATH_ITEM:
+
+        if (gridPos.isNull())
+            return;
+
+        uint8_t rotation = gWindowSceneryRotation;
+
+        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
         {
-            // Path bits
-            auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
+            rotation = util_rand() & 0xFF;
+        }
 
-            auto info = get_map_coordinates_from_pos(screenPos, flags);
-            gridPos = info.Loc;
+        rotation -= get_current_rotation();
+        rotation &= 0x3;
 
-            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+        {
+            virtual_floor_set_height(gSceneryPlaceZ);
+        }
+
+        *outQuadrant = quadrant ^ 2;
+        *outPrimaryColour = gWindowSceneryPrimaryColour;
+        *outSecondaryColour = gWindowScenerySecondaryColour;
+        *outRotation = rotation;
+
+        return;
+    }
+
+    // If CTRL not pressed
+    if (!gSceneryCtrlPressed)
+    {
+        auto flags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER;
+
+        auto info = get_map_coordinates_from_pos(screenPos, flags);
+        gridPos = info.Loc;
+
+        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        {
+            gridPos.setNull();
+            return;
+        }
+
+        // If CTRL and SHIFT not pressed
+        gSceneryPlaceZ = 0;
+
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
+        {
+            auto surfaceElement = map_get_surface_element_at(gridPos);
+
+            if (surfaceElement == nullptr)
             {
                 gridPos.setNull();
                 return;
             }
 
-            *parameter_1 = info.Element->AsPath()->GetSlopeDirection() << 8;
-            if (info.Element->AsPath()->IsSloped())
-                *parameter_1 |= FOOTPATH_PROPERTIES_FLAG_IS_SLOPED << 8;
-            *parameter_2 = info.Element->base_height;
-            *parameter_2 |= (info.Element->AsPath()->GetSurfaceEntryIndex() << 8);
-            if (info.Element->AsPath()->IsQueue())
-            {
-                *parameter_2 |= LOCATION_NULL;
-            }
-            *parameter_3 = selection.EntryIndex + 1;
-            break;
+            int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+            z += gSceneryShiftPressZOffset;
+
+            z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
+
+            gSceneryPlaceZ = z;
         }
-        case SCENERY_TYPE_WALL:
+    }
+    else
+    {
+        int16_t z = gSceneryCtrlPressZ;
+        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        if (coords)
         {
-            // Walls
-            uint8_t cl;
-            // If CTRL not pressed
-            if (!gSceneryCtrlPressed)
-            {
-                auto gridCoords = screen_get_map_xy_side(screenPos, &cl);
-                if (!gridCoords)
-                {
-                    gridPos.setNull();
-                    return;
-                }
-                gridPos = *gridCoords;
-
-                gSceneryPlaceZ = 0;
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    auto* surfaceElement = map_get_surface_element_at(gridPos);
-
-                    if (surfaceElement == nullptr)
-                    {
-                        gridPos.setNull();
-                        return;
-                    }
-
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
-                    z += gSceneryShiftPressZOffset;
-
-                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                    gSceneryPlaceZ = z;
-                }
-            }
-            else
-            {
-                int16_t z = gSceneryCtrlPressZ;
-                auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &cl);
-                if (!mapCoords)
-                {
-                    gridPos.setNull();
-                    return;
-                }
-                gridPos = *mapCoords;
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    z += gSceneryShiftPressZOffset;
-                }
-
-                z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                gSceneryPlaceZ = z;
-            }
-
-            if (gridPos.isNull())
-                return;
-
-            _secondaryColour = gWindowScenerySecondaryColour;
-            _tertiaryColour = gWindowSceneryTertiaryColour;
-            // Also places it in lower but think thats for clobbering
-            *parameter_1 = selection.EntryIndex << 8;
-            *parameter_2 = cl | (gWindowSceneryPrimaryColour << 8);
-            *parameter_3 = 0;
-            break;
+            gridPos = *coords;
         }
-        case SCENERY_TYPE_LARGE:
+        else
         {
-            // Large scenery
-            // If CTRL not pressed
-            if (!gSceneryCtrlPressed)
-            {
-                const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
-                gridPos = mapCoords;
-
-                if (gridPos.isNull())
-                    return;
-
-                gSceneryPlaceZ = 0;
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    auto* surfaceElement = map_get_surface_element_at(gridPos);
-
-                    if (surfaceElement == nullptr)
-                    {
-                        gridPos.setNull();
-                        return;
-                    }
-
-                    int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
-                    z += gSceneryShiftPressZOffset;
-
-                    z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                    gSceneryPlaceZ = z;
-                }
-            }
-            else
-            {
-                int16_t z = gSceneryCtrlPressZ;
-                auto coords = screen_get_map_xy_with_z(screenPos, z);
-                if (coords)
-                {
-                    gridPos = *coords;
-                }
-                else
-                {
-                    gridPos.setNull();
-                }
-
-                // If SHIFT pressed
-                if (gSceneryShiftPressed)
-                {
-                    z += gSceneryShiftPressZOffset;
-                }
-
-                z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
-
-                gSceneryPlaceZ = z;
-            }
-
-            if (gridPos.isNull())
-                return;
-
-            gridPos = gridPos.ToTileStart();
-
-            uint8_t rotation = gWindowSceneryRotation;
-            rotation -= get_current_rotation();
-            rotation &= 0x3;
-
-            *parameter_1 = (rotation << 8);
-            *parameter_2 = gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8);
-            *parameter_3 = selection.EntryIndex;
-            break;
+            gridPos.setNull();
         }
-        case SCENERY_TYPE_BANNER:
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
         {
-            // Banner
-            auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
+            z += gSceneryShiftPressZOffset;
+        }
 
-            auto info = get_map_coordinates_from_pos(screenPos, flags);
-            gridPos = info.Loc;
+        z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
-            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        gSceneryPlaceZ = z;
+    }
+
+    if (gridPos.isNull())
+        return;
+
+    gridPos = gridPos.ToTileStart();
+    uint8_t rotation = gWindowSceneryRotation;
+
+    if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+    {
+        rotation = util_rand() & 0xFF;
+    }
+
+    rotation -= get_current_rotation();
+    rotation &= 0x3;
+
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    {
+        virtual_floor_set_height(gSceneryPlaceZ);
+    }
+
+    *outQuadrant = 0;
+    *outPrimaryColour = gWindowSceneryPrimaryColour;
+    *outSecondaryColour = gWindowScenerySecondaryColour;
+    *outRotation = rotation;
+}
+
+static void sub_6E1F34_path_item(
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
+{
+    rct_window* w = window_find_by_class(WC_SCENERY);
+
+    if (w == nullptr)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    auto screenPos = sourceScreenPos;
+    sub_6E1F34_update_screen_coords_and_buttons_pressed(false, screenPos);
+
+    // Path bits
+    auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
+
+    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    gridPos = info.Loc;
+
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    {
+        virtual_floor_set_height(gSceneryPlaceZ);
+    }
+
+    *outZ = info.Element->GetBaseZ();
+}
+
+static void sub_6E1F34_wall(
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour,
+    uint8_t* outEdges)
+{
+    rct_window* w = window_find_by_class(WC_SCENERY);
+
+    if (w == nullptr)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    auto screenPos = sourceScreenPos;
+    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+
+    rct_scenery_entry* scenery_entry = get_wall_entry(sceneryIndex);
+    if (scenery_entry)
+    {
+        maxPossibleHeight -= scenery_entry->wall.height;
+    }
+
+    sub_6E1F34_update_screen_coords_and_buttons_pressed(true, screenPos);
+
+    // Walls
+    uint8_t edge;
+    // If CTRL not pressed
+    if (!gSceneryCtrlPressed)
+    {
+        auto gridCoords = screen_get_map_xy_side(screenPos, &edge);
+        if (!gridCoords)
+        {
+            gridPos.setNull();
+            return;
+        }
+        gridPos = *gridCoords;
+
+        gSceneryPlaceZ = 0;
+
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
+        {
+            auto* surfaceElement = map_get_surface_element_at(gridPos);
+
+            if (surfaceElement == nullptr)
             {
                 gridPos.setNull();
                 return;
             }
 
-            uint8_t rotation = gWindowSceneryRotation;
-            rotation -= get_current_rotation();
-            rotation &= 0x3;
+            int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+            z += gSceneryShiftPressZOffset;
 
-            int16_t z = info.Element->base_height;
+            z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
 
-            if (info.Element->AsPath()->IsSloped())
+            gSceneryPlaceZ = z;
+        }
+    }
+    else
+    {
+        int16_t z = gSceneryCtrlPressZ;
+        auto mapCoords = screen_get_map_xy_side_with_z(screenPos, z, &edge);
+        if (!mapCoords)
+        {
+            gridPos.setNull();
+            return;
+        }
+        gridPos = *mapCoords;
+
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
+        {
+            z += gSceneryShiftPressZOffset;
+        }
+
+        z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
+
+        gSceneryPlaceZ = z;
+    }
+
+    if (gridPos.isNull())
+        return;
+
+    _secondaryColour = gWindowScenerySecondaryColour;
+    _tertiaryColour = gWindowSceneryTertiaryColour;
+
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    {
+        virtual_floor_set_height(gSceneryPlaceZ);
+    }
+
+    *outPrimaryColour = gWindowSceneryPrimaryColour;
+    *outEdges = edge;
+}
+
+static void sub_6E1F34_large_scenery(
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour,
+    colour_t* outSecondaryColour, Direction* outDirection)
+{
+    rct_window* w = window_find_by_class(WC_SCENERY);
+
+    if (w == nullptr)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    auto screenPos = sourceScreenPos;
+    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+
+    rct_scenery_entry* scenery_entry = get_large_scenery_entry(sceneryIndex);
+    if (scenery_entry)
+    {
+        int16_t maxClearZ = 0;
+        for (int32_t i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; ++i)
+        {
+            maxClearZ = std::max<int16_t>(maxClearZ, scenery_entry->large_scenery.tiles[i].z_clearance);
+        }
+        maxPossibleHeight = std::max(0, maxPossibleHeight - maxClearZ);
+    }
+
+    sub_6E1F34_update_screen_coords_and_buttons_pressed(true, screenPos);
+
+    // Large scenery
+    // If CTRL not pressed
+    if (!gSceneryCtrlPressed)
+    {
+        const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenPos);
+        gridPos = mapCoords;
+
+        if (gridPos.isNull())
+            return;
+
+        gSceneryPlaceZ = 0;
+
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
+        {
+            auto* surfaceElement = map_get_surface_element_at(gridPos);
+
+            if (surfaceElement == nullptr)
             {
-                if (rotation != direction_reverse(info.Element->AsPath()->GetSlopeDirection()))
-                {
-                    z += 2;
-                }
+                gridPos.setNull();
+                return;
             }
 
-            z /= 2;
+            int16_t z = (surfaceElement->GetBaseZ()) & 0xFFF0;
+            z += gSceneryShiftPressZOffset;
 
-            // Also places it in lower but think thats for clobbering
-            *parameter_1 = selection.EntryIndex << 8;
-            *parameter_2 = z | (rotation << 8);
-            *parameter_3 = gWindowSceneryPrimaryColour;
-            break;
+            z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
+
+            gSceneryPlaceZ = z;
+        }
+    }
+    else
+    {
+        int16_t z = gSceneryCtrlPressZ;
+        auto coords = screen_get_map_xy_with_z(screenPos, z);
+        if (coords)
+        {
+            gridPos = *coords;
+        }
+        else
+        {
+            gridPos.setNull();
+        }
+
+        // If SHIFT pressed
+        if (gSceneryShiftPressed)
+        {
+            z += gSceneryShiftPressZOffset;
+        }
+
+        z = std::clamp<int16_t>(z, 16, maxPossibleHeight);
+
+        gSceneryPlaceZ = z;
+    }
+
+    if (gridPos.isNull())
+        return;
+
+    gridPos = gridPos.ToTileStart();
+
+    Direction rotation = gWindowSceneryRotation;
+    rotation -= get_current_rotation();
+    rotation &= 0x3;
+
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    {
+        virtual_floor_set_height(gSceneryPlaceZ);
+    }
+
+    *outPrimaryColour = gWindowSceneryPrimaryColour;
+    *outSecondaryColour = gWindowScenerySecondaryColour;
+    *outDirection = rotation;
+}
+
+static void sub_6E1F34_banner(
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, int32_t* outZ,
+    Direction* outDirection)
+{
+    rct_window* w = window_find_by_class(WC_SCENERY);
+
+    if (w == nullptr)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    auto screenPos = sourceScreenPos;
+    sub_6E1F34_update_screen_coords_and_buttons_pressed(false, screenPos);
+
+    // Banner
+    auto flags = VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
+
+    auto info = get_map_coordinates_from_pos(screenPos, flags);
+    gridPos = info.Loc;
+
+    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
+        gridPos.setNull();
+        return;
+    }
+
+    uint8_t rotation = gWindowSceneryRotation;
+    rotation -= get_current_rotation();
+    rotation &= 0x3;
+
+    auto z = info.Element->GetBaseZ();
+
+    if (info.Element->AsPath()->IsSloped())
+    {
+        if (rotation != direction_reverse(info.Element->AsPath()->GetSlopeDirection()))
+        {
+            z += (2 * COORDS_Z_STEP);
         }
     }
 
@@ -1654,59 +1690,9 @@ static void sub_6E1F34(
     {
         virtual_floor_set_height(gSceneryPlaceZ);
     }
-}
 
-static void sub_6E1F34_small_scenery(
-    const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
-    colour_t* outPrimaryColour, colour_t* outSecondaryColour, Direction* outRotation)
-{
-    uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords, { SCENERY_TYPE_SMALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
-
-    *outQuadrant = parameter2 & 0xFF;
-    *outPrimaryColour = (parameter2 >> 8) & 0xFF;
-    *outSecondaryColour = (parameter3 >> 16) & 0xFF;
-    *outRotation = parameter3 & 0xFF;
-}
-
-static void sub_6E1F34_path_item(const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
-{
-    uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords, { SCENERY_TYPE_PATH_ITEM, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
-
-    *outZ = (parameter2 & 0xFF) * COORDS_Z_STEP;
-}
-
-static void sub_6E1F34_wall(
-    const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour, uint8_t* outEdges)
-{
-    uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords, { SCENERY_TYPE_WALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
-
-    *outPrimaryColour = (parameter2 >> 8) & 0xFF;
-    *outEdges = parameter2 & 0xFF;
-}
-
-static void sub_6E1F34_large_scenery(
-    const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour,
-    colour_t* outSecondaryColour, Direction* outDirection)
-{
-    uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords, { SCENERY_TYPE_LARGE, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
-
-    *outPrimaryColour = parameter2 & 0xFF;
-    *outSecondaryColour = (parameter2 >> 8) & 0xFF;
-    *outDirection = (parameter1 & 0xFF00) >> 8;
-}
-
-static void sub_6E1F34_banner(
-    const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, int32_t* outZ, Direction* outDirection)
-{
-    uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
-    sub_6E1F34(screenCoords, { SCENERY_TYPE_BANNER, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
-
-    *outDirection = (parameter2 >> 8) & 0xFF;
-    *outZ = (parameter2 & 0xFF) * COORDS_Z_PER_TINY_Z;
+    *outDirection = rotation;
+    *outZ = z;
 }
 
 /**
