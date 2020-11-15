@@ -164,9 +164,6 @@ public:
             case CheatType::RemoveAllGuests:
                 RemoveAllGuests();
                 break;
-            case CheatType::ExplodeGuests:
-                ExplodeGuests();
-                break;
             case CheatType::GiveAllGuests:
                 GiveObjectToGuests(_param1);
                 break;
@@ -684,17 +681,6 @@ private:
 
         window_invalidate_by_class(WC_RIDE);
         gfx_invalidate_screen();
-    }
-
-    void ExplodeGuests() const
-    {
-        for (auto peep : EntityList<Guest>(EntityListId::Peep))
-        {
-            if (scenario_rand_max(6) == 0)
-            {
-                peep->PeepFlags |= PEEP_FLAGS_EXPLODE;
-            }
-        }
     }
 
     void SetStaffSpeed(uint8_t value) const

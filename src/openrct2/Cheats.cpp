@@ -264,8 +264,6 @@ const char* CheatsGetName(CheatType cheatType)
             return language_get_string(STR_CHEAT_LARGE_TRAM_GUESTS);
         case CheatType::RemoveAllGuests:
             return language_get_string(STR_CHEAT_REMOVE_ALL_GUESTS);
-        case CheatType::ExplodeGuests:
-            return language_get_string(STR_CHEAT_EXPLODE);
         case CheatType::GiveAllGuests:
             return language_get_string(STR_CHEAT_GIVE_ALL_GUESTS);
         case CheatType::SetGrassLength:
