@@ -775,7 +775,7 @@ namespace OpenRCT2
                     for (uint16_t i = 0; i < MAX_SPRITES; i++)
                     {
                         auto entity = get_sprite(i);
-                        if (entity->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+                        if (entity->sprite_identifier != SpriteIdentifier::Null)
                         {
                             entityIndices.push_back(i);
                         }
@@ -794,17 +794,19 @@ namespace OpenRCT2
             ReadWriteEntityCommon(cs, entity);
             switch (entity.sprite_identifier)
             {
-                case SPRITE_IDENTIFIER_VEHICLE:
+                case SpriteIdentifier::Vehicle:
                     ReadWriteEntityVehicle(cs, *entity.As<Vehicle>());
                     break;
-                case SPRITE_IDENTIFIER_PEEP:
+                case SpriteIdentifier::Peep:
                     ReadWriteEntityPeep(cs, *entity.As<Peep>());
                     break;
-                case SPRITE_IDENTIFIER_MISC:
+                case SpriteIdentifier::Misc:
                     ReadWriteEntityMisc(cs, entity);
                     break;
-                case SPRITE_IDENTIFIER_LITTER:
+                case SpriteIdentifier::Litter:
                     ReadWriteEntityLitter(cs, *entity.As<Litter>());
+                    break;
+                case SpriteIdentifier::Null:
                     break;
             }
         }

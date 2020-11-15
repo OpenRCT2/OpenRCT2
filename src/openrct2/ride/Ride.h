@@ -223,7 +223,7 @@ struct Ride
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
 
-private:
+public: //private:
     uint8_t min_max_cars_per_train;
 
 public:
