@@ -1658,7 +1658,7 @@ static void sub_6E1F34(
 
 static void sub_6E1F34_small_scenery(
     const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
-    colour_t* outPrimaryColour, colour_t* outSecondaryColour)
+    colour_t* outPrimaryColour, colour_t* outSecondaryColour, Direction* outRotation)
 {
     uint32_t parameter1 = 0, parameter2 = 0, parameter3 = 0;
     sub_6E1F34(screenCoords, { SCENERY_TYPE_SMALL, sceneryIndex }, gridPos, &parameter1, &parameter2, &parameter3);
@@ -1666,6 +1666,7 @@ static void sub_6E1F34_small_scenery(
     *outQuadrant = parameter2 & 0xFF;
     *outPrimaryColour = (parameter2 >> 8) & 0xFF;
     *outSecondaryColour = (parameter3 >> 16) & 0xFF;
+    *outRotation = parameter3 & 0xFF;
 }
 
 static void sub_6E1F34_path_item(const ScreenCoordsXY& screenCoords, uint16_t sceneryIndex, CoordsXY& gridPos, int32_t* outZ)
@@ -1742,7 +1743,9 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             uint8_t quadrant;
             colour_t primaryColour;
             colour_t secondaryColour;
-            sub_6E1F34_small_scenery(windowPos, selectedScenery, gridPos, &quadrant, &primaryColour, &secondaryColour);
+            Direction rotation;
+            sub_6E1F34_small_scenery(
+                windowPos, selectedScenery, gridPos, &quadrant, &primaryColour, &secondaryColour, &rotation);
             if (gridPos.isNull())
                 return;
 
@@ -2472,172 +2475,143 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
-static money32 try_place_ghost_scenery(
-    CoordsXY map_tile, uint32_t parameter_1, uint32_t parameter_2, uint32_t parameter_3, uint8_t scenery_type,
-    ObjectEntryIndex entryIndex)
+static money32 try_place_ghost_small_scenery(
+    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
-    money32 cost = 0;
-    TileElement* tileElement;
+    // 6e252b
+    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
+    smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+    auto res = GameActions::Execute(&smallSceneryPlaceAction);
+    auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
+    if (sspar == nullptr || res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
 
-    switch (scenery_type)
+    gSceneryPlaceRotation = loc.direction;
+    gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
+    gSceneryPlaceObject.EntryIndex = entryIndex;
+
+    TileElement* tileElement = sspar->tileElement;
+    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
+    gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
+    if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
     {
-        case SCENERY_TYPE_SMALL:
-        {
-            // Small Scenery
-            // 6e252b
-            uint8_t quadrant = parameter_2 & 0xFF;
-            uint8_t primaryColour = (parameter_2 >> 8) & 0xFF;
-            uint8_t secondaryColour = (parameter_3 >> 16) & 0xFF;
-            uint8_t rotation = parameter_3 & 0xFF;
-            auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-                { map_tile.x, map_tile.y, gSceneryPlaceZ, rotation }, quadrant, entryIndex, primaryColour, secondaryColour);
-            smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            auto res = GameActions::Execute(&smallSceneryPlaceAction);
-            auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
-            if (sspar == nullptr || res->Error != GameActions::Status::Ok)
-                return MONEY32_UNDEFINED;
-
-            gSceneryPlaceRotation = static_cast<uint16_t>(parameter_3 & 0xFF);
-            gSceneryPlaceObject.SceneryType = SCENERY_TYPE_SMALL;
-            gSceneryPlaceObject.EntryIndex = entryIndex;
-
-            tileElement = sspar->tileElement;
-            gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
-            gSceneryQuadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-            if (sspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
-            {
-                // Set underground on
-                viewport_set_visibility(4);
-            }
-            else
-            {
-                // Set underground off
-                viewport_set_visibility(5);
-            }
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
-            cost = res->Cost;
-            break;
-        }
-        case SCENERY_TYPE_PATH_ITEM:
-        {
-            // Path Bits
-            // 6e265b
-            int32_t z = (parameter_2 & 0xFF) * COORDS_Z_STEP;
-            auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction({ map_tile.x, map_tile.y, z }, entryIndex + 1);
-            footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-                if (result->Error != GameActions::Status::Ok)
-                {
-                    return;
-                }
-                gSceneryGhostPosition = { map_tile, static_cast<int32_t>((parameter_2 & 0xFF) * COORDS_Z_STEP) };
-                gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
-            });
-            auto res = GameActions::Execute(&footpathAdditionPlaceAction);
-            if (res->Error != GameActions::Status::Ok)
-                return MONEY32_UNDEFINED;
-
-            cost = res->Cost;
-            break;
-        }
-        case SCENERY_TYPE_WALL:
-        {
-            // Walls
-            // 6e26b0
-            auto primaryColour = (parameter_2 >> 8) & 0xFF;
-            auto edges = parameter_2 & 0xFF;
-            auto wallPlaceAction = WallPlaceAction(
-                entryIndex, { map_tile.x, map_tile.y, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour,
-                _tertiaryColour);
-            wallPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
-                if (result->Error != GameActions::Status::Ok)
-                    return;
-
-                gSceneryGhostPosition = { map_tile, result->tileElement->GetBaseZ() };
-                gSceneryGhostWallRotation = edges;
-
-                gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
-            });
-
-            auto res = GameActions::Execute(&wallPlaceAction);
-            if (res->Error != GameActions::Status::Ok)
-                return MONEY32_UNDEFINED;
-            cost = res->Cost;
-            break;
-        }
-        case SCENERY_TYPE_LARGE:
-        {
-            // Large Scenery
-            // 6e25a7
-            auto primaryColour = parameter_2 & 0xFF;
-            auto secondaryColour = (parameter_2 >> 8) & 0xFF;
-            uint8_t direction = (parameter_1 & 0xFF00) >> 8;
-            CoordsXYZD loc = { map_tile.x, map_tile.y, gSceneryPlaceZ, direction };
-
-            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
-            sceneryPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            auto res = GameActions::Execute(&sceneryPlaceAction);
-            auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
-            if (lspar == nullptr || res->Error != GameActions::Status::Ok)
-                return MONEY32_UNDEFINED;
-
-            gSceneryPlaceRotation = loc.direction;
-
-            tileElement = lspar->tileElement;
-            gSceneryGhostPosition = { map_tile, tileElement->GetBaseZ() };
-
-            if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
-            {
-                // Set underground on
-                viewport_set_visibility(4);
-            }
-            else
-            {
-                // Set underground off
-                viewport_set_visibility(5);
-            }
-
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
-            cost = res->Cost;
-            break;
-        }
-        case SCENERY_TYPE_BANNER:
-        {
-            // Banners
-            // 6e2612
-            uint8_t direction = (parameter_2 >> 8) & 0xFF;
-            int32_t z = (parameter_2 & 0xFF) * COORDS_Z_PER_TINY_Z;
-            CoordsXYZD loc{ map_tile.x, map_tile.y, z, direction };
-            auto primaryColour = gWindowSceneryPrimaryColour;
-            auto bannerIndex = create_new_banner(0);
-            if (bannerIndex == BANNER_INDEX_NULL)
-            {
-                // Silently fail as this is just for the ghost
-                break;
-            }
-            auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, bannerIndex, primaryColour);
-            bannerPlaceAction.SetFlags(
-                GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
-            auto res = GameActions::Execute(&bannerPlaceAction);
-            if (res->Error != GameActions::Status::Ok)
-                return MONEY32_UNDEFINED;
-
-            gSceneryGhostPosition = loc;
-            gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
-            gSceneryPlaceRotation = direction;
-            gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
-            cost = res->Cost;
-            break;
-        }
+        // Set underground on
+        viewport_set_visibility(4);
+    }
+    else
+    {
+        // Set underground off
+        viewport_set_visibility(5);
     }
 
-    return cost;
+    gSceneryGhostType |= SCENERY_GHOST_FLAG_0;
+    return res->Cost;
+}
+
+static money32 try_place_ghost_path_addition(CoordsXYZ loc, ObjectEntryIndex entryIndex)
+{
+    scenery_remove_ghost_tool_placement();
+
+    // 6e265b
+    auto footpathAdditionPlaceAction = FootpathAdditionPlaceAction(loc, entryIndex + 1);
+    footpathAdditionPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+    footpathAdditionPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
+        {
+            return;
+        }
+        gSceneryGhostPosition = loc;
+        gSceneryGhostType |= SCENERY_GHOST_FLAG_1;
+    });
+    auto res = GameActions::Execute(&footpathAdditionPlaceAction);
+    if (res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
+
+    return res->Cost;
+}
+
+static money32 try_place_ghost_wall(CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour)
+{
+    scenery_remove_ghost_tool_placement();
+
+    // 6e26b0
+    auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, _secondaryColour, _tertiaryColour);
+    wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+    wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
+        if (result->Error != GameActions::Status::Ok)
+            return;
+
+        gSceneryGhostPosition = { loc, result->tileElement->GetBaseZ() };
+        gSceneryGhostWallRotation = edge;
+
+        gSceneryGhostType |= SCENERY_GHOST_FLAG_2;
+    });
+
+    auto res = GameActions::Execute(&wallPlaceAction);
+    if (res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
+
+    return res->Cost;
+}
+
+static money32 try_place_ghost_large_scenery(
+    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
+{
+    scenery_remove_ghost_tool_placement();
+
+    // 6e25a7
+    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
+    sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+    auto res = GameActions::Execute(&sceneryPlaceAction);
+    auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
+    if (lspar == nullptr || res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
+
+    gSceneryPlaceRotation = loc.direction;
+
+    TileElement* tileElement = lspar->tileElement;
+    gSceneryGhostPosition = { loc, tileElement->GetBaseZ() };
+
+    if (lspar->GroundFlags & ELEMENT_IS_UNDERGROUND)
+    {
+        // Set underground on
+        viewport_set_visibility(4);
+    }
+    else
+    {
+        // Set underground off
+        viewport_set_visibility(5);
+    }
+
+    gSceneryGhostType |= SCENERY_GHOST_FLAG_3;
+    return res->Cost;
+}
+
+static money32 try_place_ghost_banner(CoordsXYZD loc, ObjectEntryIndex entryIndex)
+{
+    scenery_remove_ghost_tool_placement();
+
+    // 6e2612
+    auto primaryColour = gWindowSceneryPrimaryColour;
+    auto bannerIndex = create_new_banner(0);
+    if (bannerIndex == BANNER_INDEX_NULL)
+    {
+        // Silently fail as this is just for the ghost
+        return 0;
+    }
+    auto bannerPlaceAction = BannerPlaceAction(loc, entryIndex, bannerIndex, primaryColour);
+    bannerPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+    auto res = GameActions::Execute(&bannerPlaceAction);
+    if (res->Error != GameActions::Status::Ok)
+        return MONEY32_UNDEFINED;
+
+    gSceneryGhostPosition = loc;
+    gSceneryGhostPosition.z += PATH_HEIGHT_STEP;
+    gSceneryPlaceRotation = loc.direction;
+    gSceneryGhostType |= SCENERY_GHOST_FLAG_4;
+    return res->Cost;
 }
 
 /**
@@ -2670,26 +2644,26 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
         return;
     }
 
-    uint8_t sceneryType = selection.SceneryType;
-    uint16_t selectedScenery = selection.EntryIndex;
-    CoordsXY mapTile = {};
-    uint32_t parameter1, parameter2, parameter3;
-
-    sub_6E1F34(screenPos, selection, mapTile, &parameter1, &parameter2, &parameter3);
-
-    if (mapTile.isNull())
-    {
-        scenery_remove_ghost_tool_placement();
-        return;
-    }
-
-    rct_scenery_entry* scenery;
-    uint8_t bl;
     money32 cost = 0;
 
-    switch (sceneryType)
+    switch (selection.SceneryType)
     {
         case SCENERY_TYPE_SMALL:
+        {
+            CoordsXY mapTile = {};
+            uint8_t quadrant;
+            colour_t primaryColour, secondaryColour;
+            Direction rotation;
+
+            sub_6E1F34_small_scenery(
+                screenPos, selection.EntryIndex, mapTile, &quadrant, &primaryColour, &secondaryColour, &rotation);
+
+            if (mapTile.isNull())
+            {
+                scenery_remove_ghost_tool_placement();
+                return;
+            }
+
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             if (gWindowSceneryScatterEnabled)
             {
@@ -2712,38 +2686,39 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
                 gMapSelectPositionB.y = mapTile.y;
             }
 
-            scenery = get_small_scenery_entry(selectedScenery);
+            rct_scenery_entry* scenery = get_small_scenery_entry(selection.EntryIndex);
 
             gMapSelectType = MAP_SELECT_TYPE_FULL;
             if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryScatterEnabled)
             {
-                gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + ((parameter2 & 0xFF) ^ 2);
+                gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + (quadrant ^ 2);
             }
 
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition
-                && (parameter2 & 0xFF) == _unkF64F0E && gSceneryPlaceZ == _unkF64F0A
-                && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_SMALL && gSceneryPlaceObject.EntryIndex == selectedScenery)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) && mapTile == gSceneryGhostPosition && quadrant == _unkF64F0E
+                && gSceneryPlaceZ == _unkF64F0A && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_SMALL
+                && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
             {
                 return;
             }
 
             scenery_remove_ghost_tool_placement();
 
-            _unkF64F0E = (parameter2 & 0xFF);
+            _unkF64F0E = quadrant;
             _unkF64F0A = gSceneryPlaceZ;
 
-            bl = 1;
+            uint8_t attemptsLeft = 1;
             if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
             {
-                bl = 20;
+                attemptsLeft = 20;
             }
 
-            for (; bl != 0; bl--)
+            for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, sceneryType, selectedScenery);
+                cost = try_place_ghost_small_scenery(
+                    { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, primaryColour, secondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2752,7 +2727,20 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             gSceneryPlaceCost = cost;
             break;
+        }
         case SCENERY_TYPE_PATH_ITEM:
+        {
+            CoordsXY mapTile = {};
+            int32_t z;
+
+            sub_6E1F34_path_item(screenPos, selection.EntryIndex, mapTile, &z);
+
+            if (mapTile.isNull())
+            {
+                scenery_remove_ghost_tool_placement();
+                return;
+            }
+
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectPositionA.x = mapTile.x;
             gMapSelectPositionA.y = mapTile.y;
@@ -2763,50 +2751,63 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition
-                && static_cast<int16_t>(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z)
             {
                 return;
             }
 
             scenery_remove_ghost_tool_placement();
 
-            cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, sceneryType, selectedScenery);
+            cost = try_place_ghost_path_addition({ mapTile, z }, selection.EntryIndex);
 
             gSceneryPlaceCost = cost;
             break;
+        }
         case SCENERY_TYPE_WALL:
+        {
+            CoordsXY mapTile = {};
+            colour_t primaryColour;
+            uint8_t edge;
+
+            sub_6E1F34_wall(screenPos, selection.EntryIndex, mapTile, &primaryColour, &edge);
+
+            if (mapTile.isNull())
+            {
+                scenery_remove_ghost_tool_placement();
+                return;
+            }
+
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectPositionA.x = mapTile.x;
             gMapSelectPositionA.y = mapTile.y;
             gMapSelectPositionB.x = mapTile.x;
             gMapSelectPositionB.y = mapTile.y;
-            gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (parameter2 & 0xFF);
+            gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + edge;
 
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) && mapTile == gSceneryGhostPosition
-                && (parameter2 & 0xFF) == gSceneryGhostWallRotation && gSceneryPlaceZ == _unkF64F0A)
+                && edge == gSceneryGhostWallRotation && gSceneryPlaceZ == _unkF64F0A)
             {
                 return;
             }
 
             scenery_remove_ghost_tool_placement();
 
-            gSceneryGhostWallRotation = (parameter2 & 0xFF);
+            gSceneryGhostWallRotation = edge;
             _unkF64F0A = gSceneryPlaceZ;
 
-            bl = 1;
+            uint8_t attemptsLeft = 1;
             if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
             {
-                bl = 20;
+                attemptsLeft = 20;
             }
 
             cost = 0;
-            for (; bl != 0; bl--)
+            for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, sceneryType, selectedScenery);
+                cost = try_place_ghost_wall({ mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, primaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2815,16 +2816,29 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             gSceneryPlaceCost = cost;
             break;
+        }
         case SCENERY_TYPE_LARGE:
         {
-            scenery = get_large_scenery_entry(selectedScenery);
+            CoordsXY mapTile = {};
+            colour_t primaryColour, secondaryColour;
+            Direction direction;
+
+            sub_6E1F34_large_scenery(screenPos, selection.EntryIndex, mapTile, &primaryColour, &secondaryColour, &direction);
+
+            if (mapTile.isNull())
+            {
+                scenery_remove_ghost_tool_placement();
+                return;
+            }
+
+            rct_scenery_entry* scenery = get_large_scenery_entry(selection.EntryIndex);
             gMapSelectionTiles.clear();
 
             for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles;
                  tile->x_offset != static_cast<int16_t>(static_cast<uint16_t>(0xFFFF)); tile++)
             {
                 CoordsXY tileLocation = { tile->x_offset, tile->y_offset };
-                auto rotatedTileCoords = tileLocation.Rotate((parameter1 >> 8) & 0xFF);
+                auto rotatedTileCoords = tileLocation.Rotate(direction);
 
                 rotatedTileCoords.x += mapTile.x;
                 rotatedTileCoords.y += mapTile.y;
@@ -2837,7 +2851,8 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             // If no change in ghost placement
             if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) && mapTile == gSceneryGhostPosition && gSceneryPlaceZ == _unkF64F0A
-                && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_LARGE && gSceneryPlaceObject.EntryIndex == selectedScenery)
+                && gSceneryPlaceObject.SceneryType == SCENERY_TYPE_LARGE
+                && gSceneryPlaceObject.EntryIndex == selection.EntryIndex)
             {
                 return;
             }
@@ -2845,29 +2860,43 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             scenery_remove_ghost_tool_placement();
 
             gSceneryPlaceObject.SceneryType = SCENERY_TYPE_LARGE;
-            gSceneryPlaceObject.EntryIndex = selectedScenery;
+            gSceneryPlaceObject.EntryIndex = selection.EntryIndex;
             _unkF64F0A = gSceneryPlaceZ;
 
-            bl = 1;
+            uint8_t attemptsLeft = 1;
             if (gSceneryPlaceZ != 0 && gSceneryShiftPressed)
             {
-                bl = 20;
+                attemptsLeft = 20;
             }
 
             cost = 0;
-            for (; bl != 0; bl--)
+            for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, sceneryType, selectedScenery);
+                cost = try_place_ghost_large_scenery(
+                    { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, primaryColour, secondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
-                gSceneryPlaceZ += 8;
+                gSceneryPlaceZ += COORDS_Z_STEP;
             }
 
             gSceneryPlaceCost = cost;
             break;
         }
         case SCENERY_TYPE_BANNER:
+        {
+            CoordsXY mapTile = {};
+            Direction direction;
+            int32_t z;
+
+            sub_6E1F34_banner(screenPos, selection.EntryIndex, mapTile, &z, &direction);
+
+            if (mapTile.isNull())
+            {
+                scenery_remove_ghost_tool_placement();
+                return;
+            }
+
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             gMapSelectPositionA.x = mapTile.x;
             gMapSelectPositionA.y = mapTile.y;
@@ -2878,19 +2907,19 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             map_invalidate_selection_rect();
 
             // If no change in ghost placement
-            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition
-                && static_cast<int16_t>(parameter2 & 0xFF) * COORDS_Z_STEP == gSceneryGhostPosition.z
-                && ((parameter2 >> 8) & 0xFF) == gSceneryPlaceRotation)
+            if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) && mapTile == gSceneryGhostPosition && z == gSceneryGhostPosition.z
+                && direction == gSceneryPlaceRotation)
             {
                 return;
             }
 
             scenery_remove_ghost_tool_placement();
 
-            cost = try_place_ghost_scenery(mapTile, parameter1, parameter2, parameter3, sceneryType, selectedScenery);
+            cost = try_place_ghost_banner({ mapTile, z, direction }, selection.EntryIndex);
 
             gSceneryPlaceCost = cost;
             break;
+        }
     }
 }
 
