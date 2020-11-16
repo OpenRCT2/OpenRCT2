@@ -782,12 +782,12 @@ void Guest::loc_68FA89()
                 chosen_food = bitscanforward(HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
-                    ItemExtraFlags &= ~(1 << chosen_food);
+                    setItemExtraFlags(getItemExtraFlags() & ~(1 << chosen_food));
                     uint8_t discard_container = peep_extra_item_containers[chosen_food];
                     if (discard_container != 0xFF)
                     {
                         if (discard_container >= 32)
-                            ItemExtraFlags |= (1 << (discard_container - 32));
+                            setItemExtraFlags(getItemExtraFlags() | (1 << (discard_container - 32)));
                         else
                             setItemStandardFlags(getItemStandardFlags() | (1 << discard_container));
                     }
@@ -1334,7 +1334,7 @@ bool Guest::HasItem(ShopItem peepItem) const
     }
     else
     {
-        return ItemExtraFlags & EnumToFlag(peepItem - ShopItem::Photo2);
+        return getItemExtraFlags() & EnumToFlag(peepItem - ShopItem::Photo2);
     }
 }
 
@@ -1349,7 +1349,7 @@ int32_t Guest::HasFoodStandardFlag() const
 
 int32_t Guest::HasFoodExtraFlag() const
 {
-    return ItemExtraFlags
+    return getItemExtraFlags()
         & EnumsToFlags(
                ShopItem::Pretzel - ShopItem::Photo2, ShopItem::Chocolate - ShopItem::Photo2,
                ShopItem::IcedTea - ShopItem::Photo2, ShopItem::FunnelCake - ShopItem::Photo2,
@@ -1367,7 +1367,7 @@ bool Guest::HasDrinkStandardFlag() const
 
 bool Guest::HasDrinkExtraFlag() const
 {
-    return ItemExtraFlags
+    return getItemExtraFlags()
         & EnumsToFlags(
                ShopItem::Chocolate - ShopItem::Photo2, ShopItem::IcedTea - ShopItem::Photo2,
                ShopItem::FruitJuice - ShopItem::Photo2, ShopItem::SoybeanMilk - ShopItem::Photo2,
@@ -1393,7 +1393,7 @@ int32_t Guest::HasEmptyContainerStandardFlag() const
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
-    return ItemExtraFlags
+    return getItemExtraFlags()
         & EnumsToFlags(
                ShopItem::EmptyBowlRed - ShopItem::Photo2, ShopItem::EmptyDrinkCarton - ShopItem::Photo2,
                ShopItem::EmptyJuiceCup - ShopItem::Photo2, ShopItem::EmptyBowlBlue - ShopItem::Photo2);
@@ -1659,7 +1659,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
     if (shopItem >= ShopItem::Photo2)
-        ItemExtraFlags |= EnumToFlag(shopItem - ShopItem::Photo2);
+        setItemExtraFlags(getItemExtraFlags() | EnumToFlag(shopItem - ShopItem::Photo2));
     else
         setItemStandardFlags(getItemStandardFlags() | EnumToFlag(shopItem));
 
@@ -5379,7 +5379,7 @@ void Guest::UpdateWalking()
                 for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
                     if (container & (1u << pos_extr))
                         break;
-                ItemExtraFlags &= ~(1u << pos_extr);
+                setItemExtraFlags(getItemExtraFlags() & ~(1u << pos_extr));
                 litterType = item_extra_litter[pos_extr];
             }
 
@@ -5943,7 +5943,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    setItemExtraFlags(getItemStandardFlags() & ~(1 << cur_container));
+                    setItemStandardFlags(getItemStandardFlags() & ~(1 << cur_container));
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
@@ -5976,7 +5976,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    ItemExtraFlags &= ~(1 << cur_container);
+                    setItemExtraFlags(getItemExtraFlags() & ~(1 << cur_container));
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                     UpdateSpriteType();
@@ -5988,7 +5988,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                ItemExtraFlags &= ~(1 << cur_container);
+                setItemExtraFlags(getItemExtraFlags() & ~(1 << cur_container));
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -6908,7 +6908,7 @@ void Guest::UpdateSpriteType()
         }
         else
         {
-            if (ItemExtraFlags & item_pref->item)
+            if (getItemExtraFlags() & item_pref->item)
             {
                 SetSpriteType(item_pref->sprite_type);
                 return;

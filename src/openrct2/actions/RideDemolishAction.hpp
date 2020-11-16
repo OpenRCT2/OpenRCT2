@@ -190,25 +190,25 @@ private:
                     peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Photo));
                 }
             }
-            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)))
+            if (peep->getItemExtraFlags() & EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)))
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2));
+                    peep->setItemExtraFlags(peep->getItemExtraFlags() & ~EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)));
                 }
             }
-            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2)))
+            if (peep->getItemExtraFlags() & EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2)))
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2));
+                    peep->setItemExtraFlags(peep->getItemExtraFlags() & ~EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2)));
                 }
             }
-            if (peep->ItemExtraFlags & EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2)))
+            if (peep->getItemExtraFlags() & EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2)))
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->ItemExtraFlags &= ~EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2));
+                    peep->setItemExtraFlags(peep->getItemExtraFlags() & ~EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2)));
                 }
             }
 

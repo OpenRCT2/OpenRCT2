@@ -765,6 +765,7 @@ public: // Peep
     void setItemStandardFlags(uint32_t ItemFlag);
     void setItemExtraFlags(uint32_t ItemFlag);
     void ResetItemStandardFlags();
+    void ResetItemExtraFlags();
 
     // TODO: Make these private again when done refactoring
 public: // Peep

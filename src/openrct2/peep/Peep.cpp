@@ -1713,7 +1713,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->ParkEntryTime = -1;
     peep->ResetPathfindGoal();
     peep->ResetItemStandardFlags();
-    peep->ItemExtraFlags = 0;
+    peep->ResetItemExtraFlags();
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;
@@ -3353,4 +3353,9 @@ void Peep::setItemExtraFlags(uint32_t ItemFlag)
 void Peep::ResetItemStandardFlags()
 {
     ItemStandardFlags = 0;
+}
+
+void Peep::ResetItemExtraFlags()
+{
+    ItemExtraFlags = 0;
 }
