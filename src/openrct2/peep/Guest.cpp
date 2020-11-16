@@ -448,10 +448,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->ItemStandardFlags & EnumToFlag(ShopItem::Pizza)))
+    if ((passingPeep->getItemStandardFlags() & EnumToFlag(ShopItem::Pizza)))
         return;
 
-    passingPeep->ItemStandardFlags |= EnumToFlag(ShopItem::Pizza);
+    passingPeep->setItemStandardFlags(passingPeep->getItemStandardFlags() | EnumToFlag(ShopItem::Pizza));
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -487,10 +487,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->ItemStandardFlags & EnumToFlag(ShopItem::IceCream))
+    if (passingPeep->getItemStandardFlags() & EnumToFlag(ShopItem::IceCream))
         return;
 
-    passingPeep->ItemStandardFlags |= EnumToFlag(ShopItem::IceCream);
+    passingPeep->setItemStandardFlags(passingPeep->getItemStandardFlags() | EnumToFlag(ShopItem::IceCream));
     passingPeep->UpdateSpriteType();
 }
 
@@ -766,12 +766,12 @@ void Guest::loc_68FA89()
             int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
             if (chosen_food != -1)
             {
-                ItemStandardFlags &= ~(1 << chosen_food);
+                setItemStandardFlags(getItemStandardFlags() & ~(1 << chosen_food));
 
                 uint8_t discard_container = peep_item_containers[chosen_food];
                 if (discard_container != 0xFF)
                 {
-                    ItemStandardFlags |= (1 << discard_container);
+                    setItemStandardFlags(getItemStandardFlags() | (1 << discard_container));
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -789,7 +789,7 @@ void Guest::loc_68FA89()
                         if (discard_container >= 32)
                             ItemExtraFlags |= (1 << (discard_container - 32));
                         else
-                            ItemStandardFlags |= (1 << discard_container);
+                            setItemStandardFlags(getItemStandardFlags() | (1 << discard_container));
                     }
 
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1002,7 +1002,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & EnumToFlag(ShopItem::Map)) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((getItemStandardFlags() & EnumToFlag(ShopItem::Map)) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1330,7 +1330,7 @@ bool Guest::HasItem(ShopItem peepItem) const
 {
     if (peepItem < ShopItem::Photo2)
     {
-        return ItemStandardFlags & EnumToFlag(peepItem);
+        return getItemStandardFlags() & EnumToFlag(peepItem);
     }
     else
     {
@@ -1340,7 +1340,7 @@ bool Guest::HasItem(ShopItem peepItem) const
 
 int32_t Guest::HasFoodStandardFlag() const
 {
-    return ItemStandardFlags
+    return getItemStandardFlags()
         & EnumsToFlags(
                ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
                ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
@@ -1362,7 +1362,7 @@ int32_t Guest::HasFoodExtraFlag() const
 
 bool Guest::HasDrinkStandardFlag() const
 {
-    return ItemStandardFlags & EnumsToFlags(ShopItem::Drink, ShopItem::Coffee, ShopItem::Lemonade);
+    return getItemStandardFlags() & EnumsToFlags(ShopItem::Drink, ShopItem::Coffee, ShopItem::Lemonade);
 }
 
 bool Guest::HasDrinkExtraFlag() const
@@ -1385,7 +1385,7 @@ bool Guest::HasDrink() const
 
 int32_t Guest::HasEmptyContainerStandardFlag() const
 {
-    return ItemStandardFlags
+    return getItemStandardFlags()
         & EnumsToFlags(
                ShopItem::EmptyCan, ShopItem::EmptyBurgerBox, ShopItem::EmptyCup, ShopItem::Rubbish, ShopItem::EmptyBox,
                ShopItem::EmptyBottle);
@@ -1504,7 +1504,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && climate_is_raining();
 
-    if ((ItemStandardFlags & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
+    if ((getItemStandardFlags() & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
         && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
@@ -1661,7 +1661,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     if (shopItem >= ShopItem::Photo2)
         ItemExtraFlags |= EnumToFlag(shopItem - ShopItem::Photo2);
     else
-        ItemStandardFlags |= EnumToFlag(shopItem);
+        setItemStandardFlags(getItemStandardFlags() | EnumToFlag(shopItem));
 
     if (shopItem == ShopItem::TShirt)
         TshirtColour = ride->track_colour[0].main;
@@ -1737,7 +1737,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        ItemStandardFlags &= ~EnumToFlag(ShopItem::Voucher);
+        setItemStandardFlags(getItemStandardFlags() & ~EnumToFlag(ShopItem::Voucher));
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -1882,7 +1882,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (ItemStandardFlags & EnumToFlag(ShopItem::Map))
+        if (getItemStandardFlags() & EnumToFlag(ShopItem::Map))
         {
             ReadMap();
         }
@@ -1920,7 +1920,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (ItemStandardFlags & EnumToFlag(ShopItem::Map))
+    if (getItemStandardFlags() & EnumToFlag(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2437,7 +2437,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & EnumToFlag(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    return peep->getItemStandardFlags() & EnumToFlag(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == ride->id;
 }
 
@@ -2659,7 +2659,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & EnumToFlag(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->getItemStandardFlags() & EnumToFlag(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
@@ -3182,7 +3182,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & EnumToFlag(ShopItem::Map)))
+    if (!considerOnlyCloseRides && (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Map)))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3877,10 +3877,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
+        if ((getItemStandardFlags() & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
             && (VoucherRideId == CurrentRide))
         {
-            ItemStandardFlags &= ~EnumToFlag(ShopItem::Voucher);
+            setItemStandardFlags(getItemStandardFlags() & ~EnumToFlag(ShopItem::Voucher));
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -5370,7 +5370,7 @@ void Guest::UpdateWalking()
 
             if (pos_stnd != 32)
             {
-                ItemStandardFlags &= ~(1u << pos_stnd);
+                setItemStandardFlags(getItemStandardFlags() & ~(1u << pos_stnd));
                 litterType = item_standard_litter[pos_stnd];
             }
             else
@@ -5943,7 +5943,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    ItemStandardFlags &= ~(1 << cur_container);
+                    setItemExtraFlags(getItemStandardFlags() & ~(1 << cur_container));
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
@@ -5954,7 +5954,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                ItemStandardFlags &= ~(1 << cur_container);
+                setItemStandardFlags(getItemStandardFlags() & ~(1 << cur_container));
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -6869,11 +6869,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        ItemStandardFlags &= ~EnumToFlag(ShopItem::Balloon);
+        setItemStandardFlags(getItemStandardFlags() & ~EnumToFlag(ShopItem::Balloon));
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (ItemStandardFlags & EnumToFlag(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    if (climate_is_raining() && (getItemStandardFlags() & EnumToFlag(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
@@ -6900,7 +6900,7 @@ void Guest::UpdateSpriteType()
     {
         if (item_pref->type == 0)
         {
-            if (ItemStandardFlags & item_pref->item)
+            if (getItemStandardFlags() & item_pref->item)
             {
                 SetSpriteType(item_pref->sprite_type);
                 return;

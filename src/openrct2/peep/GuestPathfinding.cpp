@@ -501,7 +501,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
     }
 
-    if (peep->ItemStandardFlags & EnumToFlag(ShopItem::Map))
+    if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Map))
         return 7;
 
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -2120,7 +2120,7 @@ int32_t guest_path_finding(Guest* peep)
     /* If there are still multiple directions to choose from,
      * peeps with maps will randomly read the map: probability of doing so
      * is much higher when heading for a ride or the park exit. */
-    if (peep->ItemStandardFlags & EnumToFlag(ShopItem::Map))
+    if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Map))
     {
         // If at least 2 directions consult map
         if (bitcount(edges) >= 2)

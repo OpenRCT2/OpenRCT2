@@ -1245,7 +1245,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->hat_colour = src->HatColour;
     dst->favourite_ride = OpenRCT2RideIdToRCT12RideId(src->FavouriteRide);
     dst->favourite_ride_rating = src->FavouriteRideRating;
-    dst->item_standard_flags = src->ItemStandardFlags;
+    dst->item_standard_flags = src->getItemStandardFlags();
 }
 
 void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)

@@ -760,11 +760,11 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint32_t getItemStandardFlags();
-    uint32_t getItemExtraFlags();
+    uint32_t getItemStandardFlags() const;
+    uint32_t getItemExtraFlags() const;
     void setItemStandardFlags(uint32_t ItemFlag);
     void setItemExtraFlags(uint32_t ItemFlag);
-
+    void ResetItemStandardFlags();
 
     // TODO: Make these private again when done refactoring
 public: // Peep
