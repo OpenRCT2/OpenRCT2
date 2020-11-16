@@ -126,7 +126,6 @@ enum WINDOW_CHEATS_WIDGET_IDX
     WIDX_GIVE_GUESTS_UMBRELLAS,
     WIDX_TRAM_GUESTS,
     WIDX_REMOVE_ALL_GUESTS,
-    WIDX_EXPLODE_GUESTS,
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
@@ -252,7 +251,6 @@ static rct_widget window_cheats_guests_widgets[] =
     MakeWidget({127, 384}, CHEAT_BUTTON,  WWT_BUTTON,   WindowColour::Secondary, STR_SHOP_ITEM_PLURAL_UMBRELLA                                   ), // give guests umbrellas
     MakeWidget({ 11, 426}, CHEAT_BUTTON,  WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_LARGE_TRAM_GUESTS,     STR_CHEAT_LARGE_TRAM_GUESTS_TIP), // large tram
     MakeWidget({127, 426}, CHEAT_BUTTON,  WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_REMOVE_ALL_GUESTS,     STR_CHEAT_REMOVE_ALL_GUESTS_TIP), // remove all guests
-    MakeWidget({ 11, 447}, CHEAT_BUTTON,  WWT_BUTTON,   WindowColour::Secondary, STR_CHEAT_EXPLODE,               STR_CHEAT_EXPLODE_TIP          ), // explode guests
     { WIDGETS_END },
 };
 
@@ -437,7 +435,6 @@ static uint64_t window_cheats_page_enabled_widgets[] = {
     (1ULL << WIDX_GIVE_GUESTS_UMBRELLAS) |
     (1ULL << WIDX_TRAM_GUESTS) |
     (1ULL << WIDX_REMOVE_ALL_GUESTS) |
-    (1ULL << WIDX_EXPLODE_GUESTS) |
     (1ULL << WIDX_DISABLE_VANDALISM) |
     (1ULL << WIDX_DISABLE_LITTERING),
 
@@ -786,9 +783,6 @@ static void window_cheats_guests_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_REMOVE_ALL_GUESTS:
             CheatsSet(CheatType::RemoveAllGuests);
-            break;
-        case WIDX_EXPLODE_GUESTS:
-            CheatsSet(CheatType::ExplodeGuests);
             break;
         case WIDX_GIVE_GUESTS_MONEY:
             CheatsSet(CheatType::GiveAllGuests, OBJECT_MONEY);
