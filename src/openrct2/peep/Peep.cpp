@@ -3329,3 +3329,20 @@ void Peep::RemoveFromRide()
     }
     StateReset();
 }
+
+uint32_t Peep::getItemStandardFlags()
+{
+    return ItemStandardFlags;
+}
+uint32_t Peep::getItemExtraFlags()
+{
+    return ItemExtraFlags;
+}
+void Peep::setItemStandardFlags(uint32_t ItemFlag)
+{
+    ItemStandardFlags=ItemFlag;
+}
+void Peep::setItemExtraFlags(uint32_t ItemFlag)
+{
+    ItemExtraFlags=ItemFlag;
+}
