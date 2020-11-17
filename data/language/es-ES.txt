@@ -3655,7 +3655,7 @@ STR_6395    :Mantenimiento
 STR_6396    :Deshabilitar protector y ahorro de energía del monitor.
 STR_6397    :{SMALLFONT}{BLACK}Si está activado, el salvapantallas y otras funciones de ahorro de energía estarán inhabilitadas mientras OpenRCT2 esté abierto.
 STR_6398    :El archivo contiene atracciones incompatibles. Por favor actualiza a una versión mas nueva de OpenRCT2.
-
+STR_6399    :OpenRCT2 necesita archivos del juego original RollerCoaster Tycoon 2 para funcionar. Por favor establece la variable "game_path" en config.ini apuntando al directorio donde instalaste RollerCoaster Tycoon 2, y reinicia OpenRCT2.
 ##############
 # Escenarios #
 ##############
