@@ -135,22 +135,22 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            peep->SetItemFlags(peep->getItemFlags(0) | EnumToFlag(ShopItem::Voucher), 0);
+            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            peep->SetItemFlags(peep->getItemFlags(0) | EnumToFlag(ShopItem::Voucher), 0);
+            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
             peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
             peep->VoucherRideId = campaign->RideId;
             peep->GuestHeadingToRideId = campaign->RideId;
             peep->GuestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            peep->SetItemFlags(peep->getItemFlags(0) | EnumToFlag(ShopItem::Voucher), 0);
+            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            peep->SetItemFlags(peep->getItemFlags(0) | EnumToFlag(ShopItem::Voucher), 0);
+            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
             peep->VoucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
             peep->VoucherShopItem = campaign->ShopItemType;
             break;

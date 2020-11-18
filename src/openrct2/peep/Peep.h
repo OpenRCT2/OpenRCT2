@@ -726,6 +726,7 @@ struct Peep : SpriteBase
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
     //    uint32_t ItemStandardFlags;
+    uint64_t ItemFlags;
 
 public: // Peep
     Guest* AsGuest();
@@ -760,10 +761,8 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint32_t getItemFlags(bool ExtraItem = false) const;
-    uint32_t getItemExtraFlags() const;
+    uint32_t GetItemFlags(bool ExtraItem = false) const;
     void SetItemFlags(uint32_t ItemFlag, bool ExtraItem = false);
-    void setItemExtraFlags(uint32_t ItemFlag);
     void ResetItemFlags();
 
     // TODO: Make these private again when done refactoring
@@ -774,7 +773,6 @@ public: // Peep
     int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
     PeepActionSpriteType GetActionSpriteType();
-    uint64_t ItemFlags;
 
 private:
     void UpdateFalling();

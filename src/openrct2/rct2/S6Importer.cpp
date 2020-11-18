@@ -1468,7 +1468,7 @@ public:
         {
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
-        dst->setItemExtraFlags(src->item_extra_flags);
+        dst->SetItemFlags(src->item_extra_flags, 1);
         dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
         dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
         dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
