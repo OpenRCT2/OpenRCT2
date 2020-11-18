@@ -775,6 +775,7 @@ public: // Peep
     int32_t GetZOnSlope(int32_t tile_x, int32_t tile_y);
     void SwitchNextActionSpriteType();
     PeepActionSpriteType GetActionSpriteType();
+    uint64_t ItemFlags;
 
 private:
     void UpdateFalling();

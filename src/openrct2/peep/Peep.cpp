@@ -3342,7 +3342,10 @@ uint32_t Peep::getItemExtraFlags() const
 
 void Peep::setItemStandardFlags(uint32_t ItemFlag)
 {
+    //    if(ItemFlag<32)
     ItemStandardFlags = ItemFlag;
+    //    if(ItemFlag>=32)
+    //        setItemExtraFlags(ItemFlag);
 }
 
 void Peep::setItemExtraFlags(uint32_t ItemFlag)

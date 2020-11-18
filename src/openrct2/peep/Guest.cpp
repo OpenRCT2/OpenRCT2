@@ -786,8 +786,8 @@ void Guest::loc_68FA89()
                     uint8_t discard_container = peep_extra_item_containers[chosen_food];
                     if (discard_container != 0xFF)
                     {
-                        if (discard_container >= 32)
-                            setItemExtraFlags(getItemExtraFlags() | (1 << (discard_container - 32)));
+                        if (discard_container >= EnumValue(ShopItem::Photo2))
+                            setItemExtraFlags(getItemExtraFlags() | (1 << (discard_container - EnumValue(ShopItem::Photo2))));
                         else
                             setItemStandardFlags(getItemStandardFlags() | (1 << discard_container));
                     }
