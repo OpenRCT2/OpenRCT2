@@ -14,6 +14,7 @@
 #    include "../Context.h"
 #    include "../common.h"
 #    include "../ride/Ride.h"
+#    include "../ride/RideData.h"
 #    include "Duktape.hpp"
 #    include "ScObject.hpp"
 #    include "ScriptEngine.h"
@@ -224,6 +225,35 @@ namespace OpenRCT2::Scripting
                         return "stall";
                     case RideClassification::KioskOrFacility:
                         return "facility";
+                }
+            }
+            return "";
+        }
+
+        std::string category_get() const
+        {
+            auto ride = GetRide();
+            if (ride != nullptr)
+            {
+                for (auto rideType : ride->GetRideEntry()->ride_type)
+                {
+                    switch (RideTypeDescriptors[rideType].Category)
+                    {
+                        case RIDE_CATEGORY_TRANSPORT:
+                            return "transport";
+                        case RIDE_CATEGORY_GENTLE:
+                            return "gentle";
+                        case RIDE_CATEGORY_ROLLERCOASTER:
+                            return "rollercoaster";
+                        case RIDE_CATEGORY_THRILL:
+                            return "thrill";
+                        case RIDE_CATEGORY_WATER:
+                            return "water";
+                        case RIDE_CATEGORY_SHOP:
+                            return "shop";
+                        case RIDE_CATEGORY_NONE:
+                            return "";
+                    }
                 }
             }
             return "";
@@ -652,6 +682,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRide::object_get, nullptr, "object");
             dukglue_register_property(ctx, &ScRide::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScRide::classification_get, nullptr, "classification");
+            dukglue_register_property(ctx, &ScRide::category_get, nullptr, "category");
             dukglue_register_property(ctx, &ScRide::name_get, &ScRide::name_set, "name");
             dukglue_register_property(ctx, &ScRide::status_get, nullptr, "status");
             dukglue_register_property(ctx, &ScRide::lifecycleFlags_get, &ScRide::lifecycleFlags_set, "lifecycleFlags");

@@ -775,6 +775,12 @@ declare global {
         type: number;
 
         /**
+         * The category of a ride. Same as the tab from ride building window.
+         * (e.g. Transport, Gentle, Coaster, Thrill, Water, Shop)
+         */
+        readonly category: RideCategory;
+
+        /**
          * Whether the ride is a ride, shop or facility.
          */
         readonly classification: RideClassification;
@@ -905,6 +911,8 @@ declare global {
          */
         value: number;
     }
+
+    type RideCategory = "transport" | "gentle" | "rollercoaster" | "thrill" | "water" | "shop" | "";
 
     type RideClassification = "ride" | "stall" | "facility";
 
