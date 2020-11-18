@@ -174,20 +174,20 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Voucher))
+            if (peep->getItemFlags(0) & EnumToFlag(ShopItem::Voucher))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
                 {
-                    peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Voucher));
+                    peep->SetItemFlags(peep->getItemFlags(0) & ~EnumToFlag(ShopItem::Voucher), 0);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Photo))
+            if (peep->getItemFlags(0) & EnumToFlag(ShopItem::Photo))
             {
                 if (peep->Photo1RideRef == _rideIndex)
                 {
-                    peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Photo));
+                    peep->SetItemFlags(peep->getItemFlags(0) & ~EnumToFlag(ShopItem::Photo), 0);
                 }
             }
             if (peep->getItemExtraFlags() & EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)))

@@ -1540,7 +1540,7 @@ public:
         dst->HatColour = src->hat_colour;
         dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
         dst->FavouriteRideRating = src->favourite_ride_rating;
-        dst->setItemStandardFlags(src->item_standard_flags);
+        dst->SetItemFlags(src->item_standard_flags, 0);
     }
 
     void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)

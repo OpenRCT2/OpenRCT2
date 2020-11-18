@@ -1712,8 +1712,7 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->CashSpent = 0;
     peep->ParkEntryTime = -1;
     peep->ResetPathfindGoal();
-    peep->ResetItemStandardFlags();
-    peep->ResetItemExtraFlags();
+    peep->ResetItemFlags();
     peep->GuestHeadingToRideId = RIDE_ID_NULL;
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;
@@ -2546,18 +2545,18 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         money16 entranceFee = park_get_entrance_fee();
         if (entranceFee != 0)
         {
-            if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Voucher))
+            if (peep->getItemFlags(0) & EnumToFlag(ShopItem::Voucher))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE)
                 {
                     entranceFee /= 2;
-                    peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Voucher));
+                    peep->SetItemFlags(peep->getItemFlags(0) & ~EnumToFlag(ShopItem::Voucher), 0);
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
                 else if (peep->VoucherType == VOUCHER_TYPE_PARK_ENTRY_FREE)
                 {
                     entranceFee = 0;
-                    peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Voucher));
+                    peep->SetItemFlags(peep->getItemFlags(0) & ~EnumToFlag(ShopItem::Voucher), 0);
                     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 }
             }
@@ -3264,9 +3263,9 @@ void decrement_guests_heading_for_park()
 
 static void peep_release_balloon(Guest* peep, int16_t spawn_height)
 {
-    if (peep->getItemStandardFlags() & EnumToFlag(ShopItem::Balloon))
+    if (peep->getItemFlags(0) & EnumToFlag(ShopItem::Balloon))
     {
-        peep->setItemStandardFlags(peep->getItemStandardFlags() & ~EnumToFlag(ShopItem::Balloon));
+        peep->SetItemFlags(peep->getItemFlags(0) & ~EnumToFlag(ShopItem::Balloon), 0);
 
         if (peep->SpriteType == PeepSpriteType::Balloon && peep->x != LOCATION_NULL)
         {
@@ -3330,35 +3329,36 @@ void Peep::RemoveFromRide()
     StateReset();
 }
 
-uint32_t Peep::getItemStandardFlags() const
+uint32_t Peep::getItemFlags(bool ExtraItem) const
 {
-    return ItemStandardFlags;
+    if (ExtraItem)
+        return ItemFlags & 0xFFFFFFFF00000000;
+    return ItemFlags & 0x00000000FFFFFFFF;
 }
 
 uint32_t Peep::getItemExtraFlags() const
 {
-    return ItemExtraFlags;
+    return ItemFlags & 0xFFFFFFFF00000000;
 }
 
-void Peep::setItemStandardFlags(uint32_t ItemFlag)
+void Peep::SetItemFlags(uint32_t ItemFlag, bool ExtraItem)
 {
-    //    if(ItemFlag<32)
-    ItemStandardFlags = ItemFlag;
-    //    if(ItemFlag>=32)
-    //        setItemExtraFlags(ItemFlag);
+    if (ExtraItem)
+    {
+        uint64_t mask = ItemFlag;
+        ItemFlags = mask << 32;
+        return;
+    }
+    ItemFlags = ItemFlag;
 }
 
 void Peep::setItemExtraFlags(uint32_t ItemFlag)
 {
-    ItemExtraFlags = ItemFlag;
+    uint64_t mask = ItemFlag;
+    ItemFlags = mask << 32;
 }
 
-void Peep::ResetItemStandardFlags()
+void Peep::ResetItemFlags()
 {
-    ItemStandardFlags = 0;
-}
-
-void Peep::ResetItemExtraFlags()
-{
-    ItemExtraFlags = 0;
+    ItemFlags = 0;
 }

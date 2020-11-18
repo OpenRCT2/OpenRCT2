@@ -597,7 +597,7 @@ struct Peep : SpriteBase
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
-    uint32_t ItemExtraFlags;
+    //    uint32_t ItemExtraFlags;
     ride_id_t Photo2RideRef;
     ride_id_t Photo3RideRef;
     ride_id_t Photo4RideRef;
@@ -725,7 +725,7 @@ struct Peep : SpriteBase
     uint8_t HatColour;
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
-    uint32_t ItemStandardFlags;
+    //    uint32_t ItemStandardFlags;
 
 public: // Peep
     Guest* AsGuest();
@@ -760,12 +760,11 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint32_t getItemStandardFlags() const;
+    uint32_t getItemFlags(bool ExtraItem = false) const;
     uint32_t getItemExtraFlags() const;
-    void setItemStandardFlags(uint32_t ItemFlag);
+    void SetItemFlags(uint32_t ItemFlag, bool ExtraItem = false);
     void setItemExtraFlags(uint32_t ItemFlag);
-    void ResetItemStandardFlags();
-    void ResetItemExtraFlags();
+    void ResetItemFlags();
 
     // TODO: Make these private again when done refactoring
 public: // Peep
