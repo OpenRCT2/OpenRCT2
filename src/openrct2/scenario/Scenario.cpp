@@ -294,7 +294,7 @@ static void scenario_day_update()
         case OBJECTIVE_GUESTS_AND_RATING:
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             scenario_objective_check();
             break;
         default:
@@ -981,7 +981,7 @@ ObjectiveStatus Objective::Check() const
             return Check10RollerCoastersLength();
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             return CheckFinish5RollerCoasters();
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             return CheckRepayLoanAndParkValue();
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             return CheckMonthlyFoodIncome();
@@ -996,7 +996,7 @@ bool ObjectiveNeedsMoney(const uint8_t objective)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             return true;
     }

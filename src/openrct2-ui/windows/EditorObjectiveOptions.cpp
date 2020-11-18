@@ -344,7 +344,7 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
             break;
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             gScenarioObjective.Currency = MONEY(50000, 00);
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
@@ -457,7 +457,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -521,7 +521,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             if (gScenarioObjective.Currency <= MONEY(1000, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
@@ -756,7 +756,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
             window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_BUTTON;
@@ -815,7 +815,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 stringId = STR_WINDOW_OBJECTIVE_GUEST_COUNT;
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
-            case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+            case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 stringId = STR_WINDOW_OBJECTIVE_PARK_VALUE;
                 break;
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
@@ -844,7 +844,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 arg = gScenarioObjective.NumGuests;
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
-            case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+            case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
