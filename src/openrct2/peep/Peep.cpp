@@ -3332,22 +3332,22 @@ void Peep::RemoveFromRide()
 uint32_t Peep::GetItemFlags(bool ExtraItem) const
 {
     if (ExtraItem)
-        return ItemFlags & 0xFFFFFFFF00000000;
-    return ItemFlags & 0x00000000FFFFFFFF;
+        return ItemExtraFlags;
+    return ItemStandardFlags;
 }
 
 void Peep::SetItemFlags(uint32_t ItemFlag, bool ExtraItem)
 {
     if (ExtraItem)
     {
-        uint64_t mask = ItemFlag;
-        ItemFlags = mask << 32;
+        ItemExtraFlags = ItemFlag;
         return;
     }
-    ItemFlags = ItemFlag;
+    ItemStandardFlags = ItemFlag;
 }
 
 void Peep::ResetItemFlags()
 {
-    ItemFlags = 0;
+    ItemStandardFlags = 0;
+    ItemExtraFlags = 0;
 }

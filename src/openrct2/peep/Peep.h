@@ -597,7 +597,7 @@ struct Peep : SpriteBase
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
-    //    uint32_t ItemExtraFlags;
+    uint32_t ItemExtraFlags;
     ride_id_t Photo2RideRef;
     ride_id_t Photo3RideRef;
     ride_id_t Photo4RideRef;
@@ -725,7 +725,7 @@ struct Peep : SpriteBase
     uint8_t HatColour;
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
-    //    uint32_t ItemStandardFlags;
+    uint32_t ItemStandardFlags;
     uint64_t ItemFlags;
 
 public: // Peep
