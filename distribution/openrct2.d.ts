@@ -1485,7 +1485,7 @@ declare global {
         "monthlyRideIncome" |
         "10RollercoastersLength" |
         "finish5Rollercoasters" |
-        "replayLoanAndParkValue" |
+        "repayLoanAndParkValue" |
         "monthlyFoodIncome";
 
     interface ScenarioObjective {

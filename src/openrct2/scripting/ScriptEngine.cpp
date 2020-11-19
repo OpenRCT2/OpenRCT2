@@ -43,7 +43,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 11;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 12;
 
 struct ExpressionStringifier final
 {
