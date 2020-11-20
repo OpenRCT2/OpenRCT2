@@ -48,7 +48,8 @@ void X8WeatherDrawer::SetDPI(rct_drawpixelinfo* dpi)
 }
 
 void X8WeatherDrawer::Draw(
-    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart, const WeatherDropletSize* weatherpattern)
+    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
+    const WeatherDropletSize* weatherpattern)
 {
     const WeatherDropletSize* pattern = weatherpattern;
     auto patternXSpace = EnumValue(*pattern++);

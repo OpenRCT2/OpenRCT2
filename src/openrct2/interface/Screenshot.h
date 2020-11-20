@@ -11,8 +11,8 @@
 
 #include "../common.h"
 #include "../core/FileSystem.hpp"
-#include "../world/Location.hpp"
 #include "../world/Climate.h"
+#include "../world/Location.hpp"
 #include "ZoomLevel.h"
 
 #include <optional>

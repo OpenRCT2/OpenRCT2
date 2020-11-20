@@ -73,7 +73,7 @@ int32_t DISABLE_OPT RCT2_CALLPROC_X(
         : "eax","ecx","edx","esi","edi","memory");
     // clang-format on
 #    endif // _MSC_VER
-#endif     // PLATFORM_X86
+#endif // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest
     return result & 0xFF00;

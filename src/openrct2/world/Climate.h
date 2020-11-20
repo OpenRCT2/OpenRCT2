@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../util/Util.h"
 #include "../drawing/Drawing.h"
+#include "../util/Util.h"
 
 enum class ClimateType : uint8_t
 {

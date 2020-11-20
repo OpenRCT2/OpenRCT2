@@ -206,7 +206,7 @@ using rct_string_id = uint16_t;
 #            define FASTCALL
 #        endif
 #    endif // FASTCALL
-#else      // PLATFORM_X86
+#else // PLATFORM_X86
 #    define FASTCALL
 #endif // PLATFORM_X86
 

@@ -18,7 +18,8 @@ namespace OpenRCT2::Drawing
     struct IWeatherDrawer;
 }
 
-enum class WeatherDropletSize : uint8_t {
+enum class WeatherDropletSize : uint8_t
+{
     NONE = 0,
     TINY1 = 12,
     TINY2 = 14,
@@ -26,7 +27,6 @@ enum class WeatherDropletSize : uint8_t {
     MEDIUM = 32,
     FULL = 255
 };
-
 
 constexpr auto N = WeatherDropletSize::NONE;
 constexpr auto T1 = WeatherDropletSize::TINY1;
