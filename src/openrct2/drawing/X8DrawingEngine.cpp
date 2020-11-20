@@ -17,6 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../ui/UiContext.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
@@ -26,7 +27,6 @@
 
 #include <algorithm>
 #include <cstring>
-#include <src/openrct2/util/Util.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

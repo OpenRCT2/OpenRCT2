@@ -35,8 +35,8 @@
 #    include <openrct2/drawing/Weather.h>
 #    include <openrct2/interface/Screenshot.h>
 #    include <openrct2/ui/UiContext.h>
+#    include <openrct2/util/Util.h>
 #    include <openrct2/world/Climate.h>
-#    include <src/openrct2/util/Util.h>
 #    include <unordered_map>
 
 using namespace OpenRCT2;
