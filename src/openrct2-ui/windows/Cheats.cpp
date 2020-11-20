@@ -637,7 +637,7 @@ static void window_cheats_misc_mousedown(rct_window* w, rct_widgetindex widgetIn
                 w->colours[1], 0, Dropdown::Flag::StayOpen, std::size(WeatherTypes), dropdownWidget->width() - 3);
 
             auto currentWeather = gClimateCurrent.Weather;
-            Dropdown::SetChecked(currentWeather, true);
+            Dropdown::SetChecked(EnumValue(currentWeather), true);
         }
         break;
         case WIDX_STAFF_SPEED_DROPDOWN_BUTTON:
@@ -1087,7 +1087,7 @@ static void window_cheats_invalidate(rct_window* w)
     }
 
     // Current weather
-    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
+    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[EnumValue(gClimateCurrent.Weather)];
     // Staff speed
     window_cheats_misc_widgets[WIDX_STAFF_SPEED].text = _staffSpeedNames[_selectedStaffSpeed];
 

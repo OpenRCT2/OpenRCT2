@@ -57,7 +57,7 @@ namespace OpenRCT2
             void SetDPI(rct_drawpixelinfo* dpi);
             void Draw(
                 int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
-                const uint8_t* weatherpattern) override;
+                const WeatherDropletSize* weatherpattern) override;
             void Restore();
         };
 

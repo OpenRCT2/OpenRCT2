@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../util/Util.h"
 #include "../drawing/Drawing.h"
 
 enum class ClimateType : uint8_t
@@ -21,18 +22,23 @@ enum class ClimateType : uint8_t
     Count
 };
 
-enum WEATHER
+enum class WeatherType : uint8_t
 {
-    WEATHER_SUNNY,
-    WEATHER_PARTIALLY_CLOUDY,
-    WEATHER_CLOUDY,
-    WEATHER_RAIN,
-    WEATHER_HEAVY_RAIN,
-    WEATHER_THUNDER,
-    WEATHER_SNOW,
-    WEATHER_HEAVY_SNOW,
-    WEATHER_BLIZZARD,
-    WEATHER_COUNT,
+    Sunny,
+    PartiallyCloudy,
+    Cloudy,
+    Rain,
+    HeavyRain,
+    Thunder,
+    Snow,
+    HeavySnow,
+    Blizzard,
+    Count
+};
+
+constexpr std::array<WeatherType, EnumValue(WeatherType::Count)> weatherTypes = {
+    { WeatherType::Sunny, WeatherType::PartiallyCloudy, WeatherType::Cloudy, WeatherType::Rain, WeatherType::HeavyRain,
+      WeatherType::Thunder, WeatherType::Snow, WeatherType::HeavySnow, WeatherType::Blizzard }
 };
 
 enum class WeatherEffectType : uint8_t
@@ -62,7 +68,7 @@ struct WeatherState
 
 struct ClimateState
 {
-    uint8_t Weather;
+    WeatherType Weather;
     int8_t Temperature;
     WeatherEffectType WeatherEffect;
     uint8_t WeatherGloom;
@@ -79,9 +85,10 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius);
 void climate_reset(ClimateType climate);
 void climate_update();
 void climate_update_sound();
-void climate_force_weather(uint8_t weather);
+void climate_force_weather(WeatherType weather);
 
 bool climate_is_raining();
 bool climate_is_snowing();
+bool climate_is_dry();
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state);
 uint32_t climate_get_weather_sprite_id(const ClimateState& state);

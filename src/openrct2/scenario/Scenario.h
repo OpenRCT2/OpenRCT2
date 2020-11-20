@@ -24,6 +24,8 @@
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
+#include <src/openrct2/world/Climate.h>
+
 using random_engine_t = Random::Rct2::Engine;
 
 struct ParkLoadResult;
@@ -278,8 +280,8 @@ struct rct_s6_data
     uint8_t climate;
     uint8_t pad_013CA747;
     uint16_t climate_update_timer;
-    uint8_t current_weather;
-    uint8_t next_weather;
+    WeatherType current_weather;
+    WeatherType next_weather;
     uint8_t temperature;
     uint8_t next_temperature;
     uint8_t current_weather_effect;
