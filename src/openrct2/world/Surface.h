@@ -103,7 +103,7 @@ enum
 };
 
 // Surface
-#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10 // in TileElement.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG 0x10       // in TileElement.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in TileElement.properties.surface.slope
 #define TILE_ELEMENT_SURFACE_SLOPE_MASK                                                                                        \
     (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in TileElement.properties.surface.slope

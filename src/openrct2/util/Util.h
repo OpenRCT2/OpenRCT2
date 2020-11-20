@@ -70,13 +70,13 @@ uint8_t soft_light(uint8_t a, uint8_t b);
 
 size_t strcatftime(char* buffer, size_t bufferSize, const char* format, const struct tm* tp);
 
-template<typename T> [[nodiscard]] constexpr uint64_t EnumToFlag(T v)
+template<typename T>[[nodiscard]] constexpr uint64_t EnumToFlag(T v)
 {
     static_assert(std::is_enum_v<T>);
     return 1ULL << static_cast<std::underlying_type_t<T>>(v);
 }
 
-template<typename... T> [[nodiscard]] constexpr uint64_t EnumsToFlags(T... types)
+template<typename... T>[[nodiscard]] constexpr uint64_t EnumsToFlags(T... types)
 {
     return (EnumToFlag(types) | ...);
 }
