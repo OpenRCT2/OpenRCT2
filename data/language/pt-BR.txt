@@ -2629,8 +2629,6 @@ STR_5281    :{SMALLFONT}{BLACK}Características
 STR_5282    :Luzes de Abrir/Fechar Atração do RCT1
 STR_5283    :Luzes de Abrir/Fechar Parque do RCT1
 STR_5284    :Fonte de Seleção de Cenário do RCT1
-STR_5285    :EXPLODIR!!
-STR_5286    :{SMALLFONT}{BLACK}Exploda alguns visitantes
 STR_5287    :Atração já está quebrada
 STR_5288    :Atração está fechada
 STR_5289    :Quebras indisponíveis para essa atração

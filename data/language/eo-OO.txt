@@ -2629,8 +2629,6 @@ STR_5281    :{SMALLFONT}{BLACK}Funkcioj
 STR_5282    :Uzi RCT1 lumojn por ŝalti/malŝalti atrakciojn
 STR_5283    :Uzi RCT1 lumojn por ŝalti/malŝalti parkon
 STR_5284    :Uzi RCT1 tiparo dum elekti scenaron
-STR_5285    :EKSPLODIGI!!!
-STR_5286    :{SMALLFONT}{BLACK}Eksplodigi kelkajn gastojn
 STR_5287    :Atrakcio jam estas paneigita
 STR_5288    :Atrakcio estas fermita
 STR_5289    :Neniuj paneoj disponeblaj por ĉi tiu atrakcio

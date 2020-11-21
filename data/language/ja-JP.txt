@@ -2627,8 +2627,6 @@ STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1のライド「稼動／閉鎖」信号機
 STR_5283    :RCT1のパーク「稼動／閉鎖」信号機
 STR_5284    :RCT1ののシナリオ選定フォント
-STR_5285    :爆発する！
-STR_5286    :{SMALLFONT}{BLACK}全てのゲストを爆発するのボタンです。
 STR_5287    :Ride is already broken down
 STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride

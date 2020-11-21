@@ -2632,8 +2632,6 @@ STR_5281    :{SMALLFONT}{BLACK}Característiques
 STR_5282    :Llums d'atracció d'obert/tancat del RCT1
 STR_5283    :Llums del parc d'obert/tancat del RCT1
 STR_5284    :Selecció de fonts d'escenari del RCT1
-STR_5285    :Exploteu!
-STR_5286    :{SMALLFONT}{BLACK}Fa que alguns visitants explotin.
 STR_5287    :L'atracció ja està avariada.
 STR_5288    :L'atracció està tancada.
 STR_5289    :No es disposa d'avaries per aquest tipus d'atracció.

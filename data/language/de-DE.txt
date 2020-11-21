@@ -2630,8 +2630,6 @@ STR_5281    :{SMALLFONT}{BLACK}Features
 STR_5282    :RCT1-Ampel Bahn öffnen/schließen
 STR_5283    :RCT1-Ampel Park öffnen/schließen
 STR_5284    :RCT1-Schriftart Szenarioauswahl
-STR_5285    :SPRENGEN!!!
-STR_5286    :{SMALLFONT}{BLACK}Lässt einige Besucher explodieren
 STR_5287    :Bahn ist schon defekt
 STR_5288    :Bahn ist geschlossen
 STR_5289    :Für diese Bahn sind keine Defekte verfügbar

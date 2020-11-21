@@ -2636,8 +2636,6 @@ STR_5281    :{SMALLFONT}{BLACK}Ominaisuuksia
 STR_5282    :RCT1 Ajelu auki/suljettu -valot
 STR_5283    :RCT1 Puisto auki/kiinni -valot
 STR_5284    :RCT1 Scenario Selection Font
-STR_5285    :RÄJÄHTÄÄ!!!
-STR_5286    :{SMALLFONT}{BLACK}Saa jotkut vieraat räjähtämään
 STR_5287    :Ajelu on jo hajonnut
 STR_5288    :Ajelu on suljettu
 STR_5289    :No breakdowns available for this ride

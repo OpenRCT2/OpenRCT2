@@ -2633,8 +2633,6 @@ STR_5281    :{SMALLFONT}{BLACK}Funktioner
 STR_5282    :RCT1 forlystelse åben/lukket lys
 STR_5283    :RCT1 Park åben/lukket lys
 STR_5284    :RCT1 Scenarie udvælgelse skrifttype
-STR_5285    :EKSPLODER!!!
-STR_5286    :{SMALLFONT}{BLACK}Får nogle gæster til at eksplodere
 STR_5287    :Forlystelse er allerede brudt sammen
 STR_5288    :Forlystelse er lukket
 STR_5289    :Ingen nedbrud tilgængelig for denne forlystelse

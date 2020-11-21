@@ -2627,8 +2627,6 @@ STR_5281    :{SMALLFONT}{BLACK}Özellikler
 STR_5282    :RCT1 alet açma/kapatma ışıkları
 STR_5283    :RCT1 park açma/kapatma ışıkları
 STR_5284    :RCT1 tarzı senaryo listesi
-STR_5285    :PATLAT!!!
-STR_5286    :{SMALLFONT}{BLACK}Bazı müşteriler patlamaya başlıyor
 STR_5287    :Alet zaten arızalı
 STR_5288    :Alet kapalı
 STR_5289    :Bu alet için arıza yok

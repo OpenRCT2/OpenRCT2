@@ -2615,8 +2615,6 @@ STR_5281    :{SMALLFONT}{BLACK}Jellemzők
 STR_5282    :RCT1 játék nyitva/zárva lámpák
 STR_5283    :RCT1 park nyitva/zárva lámpák
 STR_5284    :RCT1 pályaválasztó betűtípus
-STR_5285    :ROBBANJANAK!!!
-STR_5286    :{SMALLFONT}{BLACK}Néhány vendéget felrobbant
 STR_5287    :A játék már meghibásodott
 STR_5288    :A játék zárva
 STR_5289    :A játék nem szokott meghibásodni

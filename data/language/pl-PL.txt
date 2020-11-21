@@ -2629,8 +2629,6 @@ STR_5281    :{SMALLFONT}{BLACK}Funkcje
 STR_5282    :RCT1 Włącz/Wyłącz światła atrakcji
 STR_5283    :RCT1 Włącz/Wyłącz światła parku
 STR_5284    :RCT1 Wybór czcionki scenariusza
-STR_5285    :WYBUCH!!!
-STR_5286    :{SMALLFONT}{BLACK}Niektórzy goście eksplodują
 STR_5287    :Atrakcja jest zepsuta
 STR_5288    :Atrakcja jest zamknięta
 STR_5289    :Brak uszkodzeń dla tej atrakcji

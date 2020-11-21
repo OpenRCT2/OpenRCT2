@@ -2636,8 +2636,6 @@ STR_5281    :{SMALLFONT}{BLACK}Feature
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Selezione Font Scenario
-STR_5285    :ESPLODI!!!
-STR_5286    :{SMALLFONT}{BLACK}Fa esplodere alcuni visitatori
 STR_5287    :L'attrazione è già partita
 STR_5288    :Corsa chiusa
 STR_5289    :Nessun guasto per questa attrazione

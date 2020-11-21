@@ -2636,8 +2636,6 @@ STR_5281    :{SMALLFONT}{BLACK}Fonctionnalités
 STR_5282    :Ouverture/fermeture attraction comme RCT1
 STR_5283    :Ouverture/fermeture parc comme RCT1
 STR_5284    :Police de sélection de scénario comme RCT1
-STR_5285    :EXPLOSION!!!
-STR_5286    :{SMALLFONT}{BLACK}Fait exploser quelques visiteurs
 STR_5287    :L'attraction est déjà en panne
 STR_5288    :L'attraction est fermée
 STR_5289    :Pas de pannes disponibles pour cette attraction

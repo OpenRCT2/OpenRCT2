@@ -2631,8 +2631,6 @@ STR_5281    :{SMALLFONT}{BLACK}Tillägg
 STR_5282    :RCT1 Öppen/Stängd Åktursljus
 STR_5283    :RCT1 Öppen/Stängd Parkljus
 STR_5284    :RCT1 Scenarioväljartypsnitt
-STR_5285    :EXPLODERA!!!
-STR_5286    :{SMALLFONT}{BLACK}Får besökare att explodera
 STR_5287    :Åkturen är redan trasig
 STR_5288    :Åkturen är stängd
 STR_5289    :Inga haverier tillgängliga för denna åktur

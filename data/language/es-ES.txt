@@ -2632,8 +2632,6 @@ STR_5281    :{SMALLFONT}{BLACK}Características
 STR_5282    :Luces abrir/cerrar de Atracc. iguales a RCT1
 STR_5283    :Luces abrir/cerrar de Parque iguales a RCT1
 STR_5284    :Selección de Fuente Escenario igual a RCT1
-STR_5285    :¡¡EXPLOTAN!!!
-STR_5286    :{SMALLFONT}{BLACK}Algunos visitantes explotan
 STR_5287    :La atracción ya está averiada
 STR_5288    :La atracción está cerrada
 STR_5289    :No hay averías disponibles para esta atracción
