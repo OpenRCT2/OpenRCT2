@@ -245,13 +245,6 @@ bool climate_is_dry()
 {
     return gClimateCurrent.Weather == WeatherType::Sunny || gClimateCurrent.Weather == WeatherType::PartiallyCloudy
         || gClimateCurrent.Weather == WeatherType::Cloudy;
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
