@@ -17,6 +17,7 @@ enum class FormatToken
 {
     Unknown,
     Literal,
+    Escaped,
 
     Newline,
     NewlineSmall,

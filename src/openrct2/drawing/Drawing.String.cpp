@@ -824,6 +824,13 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string
 #endif // NO_TTF
 }
 
+static void ttf_process_string_codepoint(rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
+{
+    char buffer[8]{};
+    utf8_write_codepoint(buffer, codepoint);
+    ttf_process_string_literal(dpi, buffer, info);
+}
+
 static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     FmtString fmt(text);
@@ -832,6 +839,11 @@ static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, te
         if (token.IsLiteral())
         {
             ttf_process_string_literal(dpi, token.text, info);
+        }
+        else if (token.IsCodepoint())
+        {
+            auto codepoint = token.GetCodepoint();
+            ttf_process_string_codepoint(dpi, codepoint, info);
         }
         else
         {

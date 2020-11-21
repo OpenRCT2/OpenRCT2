@@ -41,6 +41,8 @@ namespace OpenRCT2
             token() = default;
             token(FormatToken k, std::string_view s, uint32_t p = 0);
             bool IsLiteral() const;
+            bool IsCodepoint() const;
+            codepoint_t GetCodepoint() const;
         };
 
         struct iterator

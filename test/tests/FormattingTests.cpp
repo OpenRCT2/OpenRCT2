@@ -39,7 +39,20 @@ TEST_F(FmtStringTests, iteration)
         actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[28:{BLACK}][1:Guests: ][7:{INT32}]", actual);
+    ASSERT_EQ("[29:{BLACK}][1:Guests: ][8:{INT32}]", actual);
+}
+
+TEST_F(FmtStringTests, iteration_escaped)
+{
+    std::string actual;
+
+    auto fmt = FmtString("This is an {{ESCAPED}} string.");
+    for (const auto& t : fmt)
+    {
+        actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
+    }
+
+    ASSERT_EQ("[1:This is an ][2:{{][1:ESCAPED][2:}}][1: string.]", actual);
 }
 
 TEST_F(FmtStringTests, without_format_tokens)
@@ -60,6 +73,8 @@ protected:
         gOpenRCT2NoGraphics = true;
         _context = CreateContext();
         ASSERT_TRUE(_context->Initialise());
+
+        language_open(LANGUAGE_ENGLISH_UK);
     }
 
     static void TearDownTestCase()

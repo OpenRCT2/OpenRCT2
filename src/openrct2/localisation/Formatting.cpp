@@ -62,6 +62,21 @@ namespace OpenRCT2
         return kind == FormatToken::Literal;
     }
 
+    bool FmtString::token::IsCodepoint() const
+    {
+        return kind == FormatToken::Escaped;
+    }
+
+    codepoint_t FmtString::token::GetCodepoint() const
+    {
+        if (kind == FormatToken::Escaped)
+        {
+            // Assume text is only "{{" or "}}" for now
+            return text[0];
+        }
+        return 0;
+    }
+
     FmtString::iterator::iterator(std::string_view s, size_t i)
         : str(s)
         , index(i)
@@ -81,6 +96,14 @@ namespace OpenRCT2
         if (str[i] == '\n' || str[i] == '\r')
         {
             i++;
+        }
+        else if (str[i] == '{' && i + 1 < str.size() && str[i + 1] == '{')
+        {
+            i += 2;
+        }
+        else if (str[i] == '}' && i + 1 < str.size() && str[i + 1] == '}')
+        {
+            i += 2;
         }
         else if (str[i] == '{' && i + 1 < str.size() && str[i + 1] != '{')
         {
@@ -130,7 +153,7 @@ namespace OpenRCT2
             do
             {
                 i++;
-            } while (i < str.size() && str[i] != '{' && str[i] != '\n' && str[i] != '\r');
+            } while (i < str.size() && str[i] != '{' && str[i] != '}' && str[i] != '\n' && str[i] != '\r');
         }
         current = CreateToken(i - index);
     }
@@ -148,7 +171,12 @@ namespace OpenRCT2
     FmtString::token FmtString::iterator::CreateToken(size_t len)
     {
         std::string_view sztoken = str.substr(index, len);
-        if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
+
+        if (sztoken.size() >= 2 && ((sztoken[0] == '{' && sztoken[1] == '{') || (sztoken[0] == '}' && sztoken[1] == '}')))
+        {
+            return token(FormatToken::Escaped, sztoken);
+        }
+        else if (sztoken.size() >= 2 && sztoken[0] == '{' && sztoken[1] != '{')
         {
             auto kind = FormatTokenFromString(sztoken.substr(1, len - 2));
             return token(kind, sztoken);
