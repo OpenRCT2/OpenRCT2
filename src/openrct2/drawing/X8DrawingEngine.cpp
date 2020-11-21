@@ -48,12 +48,11 @@ void X8WeatherDrawer::SetDPI(rct_drawpixelinfo* dpi)
 }
 
 void X8WeatherDrawer::Draw(
-    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
-    const WeatherDropletSize* weatherpattern)
+    int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart, const uint8_t* weatherpattern)
 {
-    const WeatherDropletSize* pattern = weatherpattern;
-    auto patternXSpace = EnumValue(*pattern++);
-    auto patternYSpace = EnumValue(*pattern++);
+    const uint8_t* pattern = weatherpattern;
+    auto patternXSpace = *pattern++;
+    auto patternYSpace = *pattern++;
 
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
@@ -67,7 +66,7 @@ void X8WeatherDrawer::Draw(
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
     for (; height != 0; height--)
     {
-        auto patternX = EnumValue(pattern[patternYPos * 2]);
+        auto patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
             if (_weatherPixelsCount < (_weatherPixelsCapacity - static_cast<uint32_t>(width)))
@@ -77,7 +76,7 @@ void X8WeatherDrawer::Draw(
                 uint32_t xPixelOffset = pixelOffset;
                 xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
-                auto patternPixel = EnumValue(pattern[patternYPos * 2 + 1]);
+                auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
                     uint8_t current_pixel = screenBits[xPixelOffset];

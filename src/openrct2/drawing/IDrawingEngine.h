@@ -91,6 +91,6 @@ namespace OpenRCT2::Drawing
         }
         virtual void Draw(
             int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart,
-            const WeatherDropletSize* weatherpattern) abstract;
+            const uint8_t* weatherpattern) abstract;
     };
 } // namespace OpenRCT2::Drawing
