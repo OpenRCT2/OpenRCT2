@@ -243,8 +243,8 @@ bool climate_is_snowing()
 
 bool climate_is_dry()
 {
-    if (gClimateCurrent.Weather == WeatherType::Sunny || gClimateCurrent.Weather == WeatherType::PartiallyCloudy
-        || gClimateCurrent.Weather == WeatherType::Cloudy)
+    return gClimateCurrent.Weather == WeatherType::Sunny || gClimateCurrent.Weather == WeatherType::PartiallyCloudy
+        || gClimateCurrent.Weather == WeatherType::Cloudy;
     {
         return true;
     }
