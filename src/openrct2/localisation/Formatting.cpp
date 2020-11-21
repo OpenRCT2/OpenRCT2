@@ -276,12 +276,27 @@ namespace OpenRCT2
         char buffer[32];
         size_t i = 0;
 
-        size_t num;
-        if (value < 0)
+        uint64_t num;
+        if constexpr (std::is_signed<T>::value)
         {
-            // TODO handle edge case: std::numeric_limits<int64_t>::min();
-            num = -value;
-            ss << '-';
+            if (value < 0)
+            {
+                ss << '-';
+                if (value == std::numeric_limits<int64_t>::min())
+                {
+                    // Edge case: int64_t can not store this number so manually assign num to (int64_t::max + 1)
+                    num = static_cast<uint64_t>(std::numeric_limits<int64_t>::max()) + 1;
+                }
+                else
+                {
+                    // Cast negative number to int64_t and then reverse sign
+                    num = -static_cast<int64_t>(value);
+                }
+            }
+            else
+            {
+                num = value;
+            }
         }
         else
         {
@@ -571,6 +586,8 @@ namespace OpenRCT2
     template void FormatArgument(std::stringstream&, FormatToken, uint16_t);
     template void FormatArgument(std::stringstream&, FormatToken, int16_t);
     template void FormatArgument(std::stringstream&, FormatToken, int32_t);
+    template void FormatArgument(std::stringstream&, FormatToken, int64_t);
+    template void FormatArgument(std::stringstream&, FormatToken, uint64_t);
     template void FormatArgument(std::stringstream&, FormatToken, const char*);
 
     bool IsRealNameStringId(rct_string_id id)

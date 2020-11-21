@@ -106,6 +106,18 @@ TEST_F(FormattingTests, comma_0)
     ASSERT_EQ("Guests: 0", actual);
 }
 
+TEST_F(FormattingTests, comma_large_negative)
+{
+    auto actual = FormatString("{COMMA16}", std::numeric_limits<int64_t>::min());
+    ASSERT_EQ("-9,223,372,036,854,775,808", actual);
+}
+
+TEST_F(FormattingTests, comma_large)
+{
+    auto actual = FormatString("{COMMA16}", std::numeric_limits<uint64_t>::max());
+    ASSERT_EQ("18,446,744,073,709,551,615", actual);
+}
+
 TEST_F(FormattingTests, currency)
 {
     gConfigGeneral.currency_format = CurrencyType::Pounds;
