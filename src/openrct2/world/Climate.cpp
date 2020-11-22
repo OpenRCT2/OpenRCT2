@@ -39,11 +39,11 @@ struct WeatherTransition
 {
     int8_t BaseTemperature;
     int8_t DistributionSize;
-    int8_t Distribution[24];
+    WeatherType Distribution[24];
 };
 
 extern const WeatherTransition* ClimateTransitions[4];
-extern const WeatherState ClimateWeatherData[WEATHER_COUNT];
+extern const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)];
 extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
 
 // Climate data
@@ -81,10 +81,10 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius)
  */
 void climate_reset(ClimateType climate)
 {
-    uint8_t weather = WEATHER_PARTIALLY_CLOUDY;
+    auto weather = WeatherType::PartiallyCloudy;
     int32_t month = date_get_month(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
-    const WeatherState* weatherState = &ClimateWeatherData[weather];
+    const WeatherState* weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gClimate = climate;
     gClimateCurrent.Weather = weather;
@@ -184,11 +184,11 @@ void climate_update()
     }
 }
 
-void climate_force_weather(uint8_t weather)
+void climate_force_weather(WeatherType weather)
 {
     int32_t month = date_get_month(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
-    const auto weatherState = &ClimateWeatherData[weather];
+    const auto weatherState = &ClimateWeatherData[EnumValue(weather)];
 
     gClimateCurrent.Weather = weather;
     gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
@@ -217,8 +217,8 @@ void climate_update_sound()
 
 bool climate_is_raining()
 {
-    if (gClimateCurrent.Weather == WEATHER_RAIN || gClimateCurrent.Weather == WEATHER_HEAVY_RAIN
-        || gClimateCurrent.Weather == WEATHER_THUNDER)
+    if (gClimateCurrent.Weather == WeatherType::Rain || gClimateCurrent.Weather == WeatherType::HeavyRain
+        || gClimateCurrent.Weather == WeatherType::Thunder)
     {
         return true;
     }
@@ -230,8 +230,8 @@ bool climate_is_raining()
 
 bool climate_is_snowing()
 {
-    if (gClimateCurrent.Weather == WEATHER_SNOW || gClimateCurrent.Weather == WEATHER_HEAVY_SNOW
-        || gClimateCurrent.Weather == WEATHER_BLIZZARD)
+    if (gClimateCurrent.Weather == WeatherType::Snow || gClimateCurrent.Weather == WeatherType::HeavySnow
+        || gClimateCurrent.Weather == WeatherType::Blizzard)
     {
         return true;
     }
@@ -239,6 +239,12 @@ bool climate_is_snowing()
     {
         return false;
     }
+}
+
+bool WeatherIsDry(WeatherType weatherType)
+{
+    return weatherType == WeatherType::Sunny || weatherType == WeatherType::PartiallyCloudy
+        || weatherType == WeatherType::Cloudy;
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
@@ -255,9 +261,9 @@ FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state
 uint32_t climate_get_weather_sprite_id(const ClimateState& state)
 {
     uint32_t spriteId = SPR_WEATHER_SUN;
-    if (state.Weather < std::size(ClimateWeatherData))
+    if (EnumValue(state.Weather) < std::size(ClimateWeatherData))
     {
-        spriteId = ClimateWeatherData[state.Weather].SpriteId;
+        spriteId = ClimateWeatherData[EnumValue(state.Weather)].SpriteId;
     }
     return spriteId;
 }
@@ -287,10 +293,10 @@ static void climate_determine_future_weather(int32_t randomDistribution)
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table
     // accordingly
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(gClimate)][month];
-    int8_t nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
+    WeatherType nextWeather = (transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8]);
     gClimateNext.Weather = nextWeather;
 
-    const auto nextWeatherState = &ClimateWeatherData[nextWeather];
+    const auto nextWeatherState = &ClimateWeatherData[EnumValue(nextWeather)];
     gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
     gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
     gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
@@ -438,7 +444,7 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
-const WeatherState ClimateWeatherData[WEATHER_COUNT] = {
+const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)] = {
     { 10, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN },         // Sunny
     { 5, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_SUN_CLOUD },    // Partially Cloudy
     { 0, WeatherEffectType::None, 0, WeatherLevel::None, SPR_WEATHER_CLOUD },        // Cloudy
@@ -450,45 +456,52 @@ const WeatherState ClimateWeatherData[WEATHER_COUNT] = {
     { -20, WeatherEffectType::Blizzard, 2, WeatherLevel::Heavy, SPR_WEATHER_SNOW },  // Blizzard
 };
 
+constexpr auto S = WeatherType::Sunny;
+constexpr auto P = WeatherType::PartiallyCloudy;
+constexpr auto C = WeatherType::Cloudy;
+constexpr auto R = WeatherType::Rain;
+constexpr auto H = WeatherType::HeavyRain;
+constexpr auto T = WeatherType::Thunder;
+
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] = {
-    { 8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
-    { 10, 21, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
-    { 14, 17, { 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 0, 0, 0, 0, 0, 0 } },
-    { 17, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
-    { 19, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
-    { 20, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 4, 4, 5 } },
-    { 16, 19, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
-    { 13, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 8, 18, { S, P, P, P, P, P, C, C, C, C, C, C, C, R, R, R, H, H, S, S, S, S, S } },
+    { 10, 21, { P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, R, R, H, H, H, T, S, S } },
+    { 14, 17, { S, S, S, P, P, P, P, P, P, C, C, C, C, R, R, R, H, S, S, S, S, S, S } },
+    { 17, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, R, S, S, S, S, S, S } },
+    { 19, 23, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, R, H } },
+    { 20, 23, { S, S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, R, H, H, H, T } },
+    { 16, 19, { S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, R, H, H, T, S, S, S, S } },
+    { 13, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
 static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
-    { 12, 21, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0 } },
-    { 13, 22, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 0 } },
-    { 16, 17, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
-    { 19, 18, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0 } },
-    { 21, 22, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 0 } },
-    { 22, 17, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 5, 0, 0, 0, 0, 0, 0 } },
-    { 19, 17, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
-    { 16, 17, { 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0, 0, 0, 0, 0 } },
+    { 12, 21, { S, S, S, S, S, P, P, P, P, P, P, P, P, C, C, C, C, C, C, C, H, S, S } },
+    { 13, 22, { S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, T, S } },
+    { 16, 17, { S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S, S } },
+    { 19, 18, { S, S, S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, S, S, S, S, S } },
+    { 21, 22, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, P, P, P, C, C, C, S } },
+    { 22, 17, { S, S, S, S, S, S, S, S, S, P, P, P, P, P, C, C, T, S, S, S, S, S, S } },
+    { 19, 17, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, S, S, S, S, S, S } },
+    { 16, 17, { S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, H, S, S, S, S, S, S } },
 };
 static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
-    { 12, 15, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 14, 12, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 16, 11, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 19, 9, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 21, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 22, 11, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 21, 12, { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
-    { 16, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
+    { 12, 15, { S, S, S, S, P, P, P, P, P, P, P, P, C, C, R, S, S, S, S, S, S, S, S } },
+    { 14, 12, { S, S, S, S, S, P, P, P, P, P, C, C, S, S, S, S, S, S, S, S, S, S, S } },
+    { 16, 11, { S, S, S, S, S, S, P, P, P, P, C, S, S, S, S, S, S, S, S, S, S, S, S } },
+    { 19, 9, { S, S, S, S, S, S, P, P, P, S, S, S, S, S, S, S, S, S, S, S, S, S, S } },
+    { 21, 13, { S, S, S, S, S, S, S, S, S, S, P, P, P, S, S, S, S, S, S, S, S, S, S } },
+    { 22, 11, { S, S, S, S, S, S, S, S, S, P, P, S, S, S, S, S, S, S, S, S, S, S, S } },
+    { 21, 12, { S, S, S, S, S, S, S, P, P, P, C, T, S, S, S, S, S, S, S, S, S, S, S } },
+    { 16, 13, { S, S, S, S, S, S, S, S, P, P, P, C, R, S, S, S, S, S, S, S, S, S, S } },
 };
 static constexpr const WeatherTransition ClimateTransitionsCold[] = {
-    { 4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
-    { 5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
-    { 7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },
-    { 9, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 0, 0, 0, 0, 0, 0 } },
-    { 10, 23, { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 4 } },
-    { 11, 23, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 5 } },
-    { 9, 19, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0, 0, 0 } },
-    { 6, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
+    { 4, 18, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, R, H, S, S, S, S, S } },
+    { 5, 21, { S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, C, C, C, R, H, T, S, S } },
+    { 7, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, H, S, S, S, S, S, S } },
+    { 9, 17, { S, S, S, S, P, P, P, P, P, P, P, C, C, C, C, R, R, S, S, S, S, S, S } },
+    { 10, 23, { S, S, S, S, S, S, S, S, S, S, P, P, P, P, P, P, C, C, C, C, C, R, H } },
+    { 11, 23, { S, S, S, S, S, S, P, P, P, P, P, P, P, P, P, P, C, C, C, C, R, H, T } },
+    { 9, 19, { S, S, S, S, S, P, P, P, P, P, C, C, C, C, C, C, R, H, T, S, S, S, S } },
+    { 6, 16, { S, S, P, P, P, P, C, C, C, C, C, C, R, R, H, T, S, S, S, S, S, S, S } },
 };
 
 const WeatherTransition* ClimateTransitions[] = {

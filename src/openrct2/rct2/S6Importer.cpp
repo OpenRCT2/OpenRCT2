@@ -415,8 +415,8 @@ public:
         // byte_13CA742
         // pad_013CA747
         gClimateUpdateTimer = _s6.climate_update_timer;
-        gClimateCurrent.Weather = _s6.current_weather;
-        gClimateNext.Weather = _s6.next_weather;
+        gClimateCurrent.Weather = WeatherType{ _s6.current_weather };
+        gClimateNext.Weather = WeatherType{ _s6.next_weather };
         gClimateCurrent.Temperature = _s6.temperature;
         gClimateNext.Temperature = _s6.next_temperature;
         gClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.current_weather_effect };

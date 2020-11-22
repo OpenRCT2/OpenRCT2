@@ -204,7 +204,8 @@ public:
                 scenario_success();
                 break;
             case CheatType::ForceWeather:
-                climate_force_weather(_param1);
+                // Todo - make sure this is safe
+                climate_force_weather(WeatherType{ static_cast<uint8_t>(_param1) });
                 break;
             case CheatType::FreezeWeather:
                 gCheatsFreezeWeather = _param1 != 0;
@@ -356,7 +357,7 @@ private:
             case CheatType::SetStaffSpeed:
                 return { { 0, 255 }, { 0, 0 } };
             case CheatType::ForceWeather:
-                return { { 0, WEATHER_COUNT - 1 }, { 0, 0 } };
+                return { { 0, EnumValue(WeatherType::Count) - 1 }, { 0, 0 } };
             case CheatType::SetForcedParkRating:
                 return { { 0, 999 }, { 0, 0 } };
             case CheatType::CreateDucks:

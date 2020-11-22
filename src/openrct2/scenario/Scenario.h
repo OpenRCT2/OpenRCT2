@@ -20,6 +20,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"

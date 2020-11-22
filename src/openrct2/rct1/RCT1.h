@@ -16,6 +16,7 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 

@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/FileSystem.hpp"
+#include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "ZoomLevel.h"
 
@@ -23,7 +24,7 @@ extern uint8_t gScreenshotCountdown;
 
 struct ScreenshotOptions
 {
-    int32_t weather = 0;
+    WeatherType weather = WeatherType::Sunny;
     bool hide_guests = false;
     bool hide_sprites = false;
     bool clear_grass = false;
