@@ -733,6 +733,8 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
 
 // string
 void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
+void gfx_draw_string_no_formatting(
+    rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
 
 /** @deprecated */
 void gfx_draw_string_left(
@@ -759,10 +761,12 @@ void gfx_draw_string_with_y_offsets(
 int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
 int32_t gfx_get_string_width(std::string_view text);
 int32_t gfx_get_string_width_new_lined(std::string_view text);
+int32_t gfx_get_string_width_no_formatting(std::string_view text);
 int32_t string_get_height_raw(char* buffer);
 int32_t gfx_clip_string(char* buffer, int32_t width);
 void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth);
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords);
+void ttf_draw_string(
+    rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();

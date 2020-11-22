@@ -266,7 +266,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int32_t line = 0; line <= no_lines; line++)
     {
         screenCoords.x = w->windowPos.x + 12;
-        gfx_draw_string(dpi, wrap_pointer, w->colours[1], screenCoords);
+        gfx_draw_string_no_formatting(dpi, wrap_pointer, w->colours[1], screenCoords);
 
         size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -275,7 +275,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
             // Make a copy of the string for measuring the width.
             char temp_string[TEXT_INPUT_SIZE] = { 0 };
             std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-            cursorX = w->windowPos.x + 13 + gfx_get_string_width(temp_string);
+            cursorX = w->windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string);
             cursorY = screenCoords.y;
 
             int32_t width = 6;
@@ -286,7 +286,7 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
                 uint32_t codepoint = utf8_get_next(text_input + gTextInput->SelectionStart, nullptr);
                 utf8_write_codepoint(tmp, codepoint);
-                width = std::max(gfx_get_string_width(tmp) - 2, 4);
+                width = std::max(gfx_get_string_width_no_formatting(tmp) - 2, 4);
             }
 
             if (w->frame_no > 15)

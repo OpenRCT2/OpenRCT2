@@ -30,12 +30,13 @@ enum : uint32_t
     TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
     TEXT_DRAW_FLAG_DARK = 1 << 2,
     TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
+    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
     TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
     TEXT_DRAW_FLAG_TTF = 1 << 30,
     TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
-static int32_t ttf_get_string_width(std::string_view text);
+static int32_t ttf_get_string_width(std::string_view text, bool noFormatting);
 
 /**
  *
@@ -79,7 +80,12 @@ int32_t gfx_get_string_width_new_lined(std::string_view text)
  */
 int32_t gfx_get_string_width(std::string_view text)
 {
-    return ttf_get_string_width(text);
+    return ttf_get_string_width(text, false);
+}
+
+int32_t gfx_get_string_width_no_formatting(std::string_view text)
+{
+    return ttf_get_string_width(text, true);
 }
 
 /**
@@ -833,24 +839,33 @@ static void ttf_process_string_codepoint(rct_drawpixelinfo* dpi, codepoint_t cod
 
 static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
-    FmtString fmt(text);
-    for (const auto& token : fmt)
+    if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
     {
-        if (token.IsLiteral())
-        {
-            ttf_process_string_literal(dpi, token.text, info);
-        }
-        else if (token.IsCodepoint())
-        {
-            auto codepoint = token.GetCodepoint();
-            ttf_process_string_codepoint(dpi, codepoint, info);
-        }
-        else
-        {
-            ttf_process_format_code(dpi, token, info);
-        }
+        ttf_process_string_literal(dpi, text, info);
         info->maxX = std::max(info->maxX, info->x);
         info->maxY = std::max(info->maxY, info->y);
+    }
+    else
+    {
+        FmtString fmt(text);
+        for (const auto& token : fmt)
+        {
+            if (token.IsLiteral())
+            {
+                ttf_process_string_literal(dpi, token.text, info);
+            }
+            else if (token.IsCodepoint())
+            {
+                auto codepoint = token.GetCodepoint();
+                ttf_process_string_codepoint(dpi, codepoint, info);
+            }
+            else
+            {
+                ttf_process_format_code(dpi, token, info);
+            }
+            info->maxX = std::max(info->maxX, info->x);
+            info->maxY = std::max(info->maxY, info->y);
+        }
     }
 }
 
@@ -919,7 +934,8 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords)
+void ttf_draw_string(
+    rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting)
 {
     if (text == nullptr)
         return;
@@ -937,6 +953,11 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
+    if (noFormatting)
+    {
+        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+    }
+
     std::memcpy(info.palette, text_palette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
@@ -949,7 +970,7 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
     gLastDrawStringY = info.y;
 }
 
-static int32_t ttf_get_string_width(std::string_view text)
+static int32_t ttf_get_string_width(std::string_view text, bool noFormatting)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
@@ -965,6 +986,11 @@ static int32_t ttf_get_string_width(std::string_view text)
     if (LocalisationService_UseTrueTypeFont())
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
+    }
+
+    if (noFormatting)
+    {
+        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
     ttf_process_string(nullptr, text, &info);

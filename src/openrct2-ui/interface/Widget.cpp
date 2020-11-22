@@ -1055,7 +1055,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
             gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines, &font_height);
-            gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+            gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
         }
         return;
     }
@@ -1066,14 +1066,14 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines, &font_height);
 
-    gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+    gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width(temp_string) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1082,7 +1082,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width(temp_string) - 2, 4);
+        width = std::max(gfx_get_string_width_no_formatting(temp_string) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)
