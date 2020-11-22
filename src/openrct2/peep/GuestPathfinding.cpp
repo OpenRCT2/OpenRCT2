@@ -148,18 +148,27 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
         //
         // What we want instead is to apply that randomness in the direction they are walking ONLY, and keep their
         // other coordinate constant.
+        //
+        // However, we have also seen some situations where guests end up too far from the center of paths. We've
+        // not identified exactly what causes this yet, but to limit the impact of it, we don't just keep the other
+        // coordinate constant, but instead clamp it to an acceptable range. This brings in 'outlier' guests from
+        // the edges of the path, while allowing guests who are already in an acceptable position to stay there.
 
         int8_t offset = (scenario_rand() & 7) - 3;
         if (direction == 0 || direction == 2)
         {
-            // Peep is moving along X, so apply the offset to the X position of the destination and keep their current Y
+            // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
             peep->DestinationX += offset;
-            peep->DestinationY = peep->y;
+            const uint16_t centerLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
+            peep->DestinationY = std::clamp(
+                peep->y, static_cast<int16_t>(centerLine - 3), static_cast<int16_t>(centerLine + 3));
         }
         else
         {
-            // Peep is moving along Y, so apply the offset to the Y position of the destination and keep their current X
-            peep->DestinationX = peep->x;
+            // Peep is moving along Y, so apply the offset to the Y position of the destination and clamp their current X
+            const uint16_t centerLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
+            peep->DestinationX = std::clamp(
+                peep->x, static_cast<int16_t>(centerLine - 3), static_cast<int16_t>(centerLine + 3));
             peep->DestinationY += offset;
         }
     }

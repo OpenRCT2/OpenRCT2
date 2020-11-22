@@ -6,6 +6,7 @@
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
+- Fix: [#13409] Clamp peep distances from path centers.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 
