@@ -1146,20 +1146,18 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 gfx_fill_rect_inset(dpi, 2, screenCoords.y, 11, screenCoords.y + 10, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
-            colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
-            if (listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6))
+            auto highlighted = listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
+            if (highlighted)
             {
                 auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
                 gfx_filter_rect(dpi, 0, screenCoords.y, w->width, bottom, PALETTE_DARKEN_1);
-                colour = COLOUR_BRIGHT_GREEN;
             }
 
             // Draw checkmark
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
             {
                 screenCoords.x = 2;
-                gCurrentFontSpriteBase = colour == COLOUR_BRIGHT_GREEN ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK
-                                                                       : FONT_SPRITE_BASE_MEDIUM_DARK;
+                gCurrentFontSpriteBase = highlighted ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
                 colour2 = NOT_TRANSLUCENT(w->colours[1]);
                 if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
@@ -1169,8 +1167,9 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
 
             screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-            char* bufferWithColour = gCommonStringFormatBuffer;
-            char* buffer = utf8_write_codepoint(bufferWithColour, colour);
+            auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
+            auto buffer = strchr(bufferWithColour, '\0');
+
             if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
             {
                 colour = w->colours[1] & 0x7F;

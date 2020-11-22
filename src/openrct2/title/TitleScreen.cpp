@@ -443,7 +443,8 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
-    buffer.assign(OPENRCT2_PLATFORM);
+    buffer.assign("{MEDIUMFONT}{OUTLINE}{WHITE}");
+    buffer.append(OPENRCT2_PLATFORM);
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
