@@ -49,7 +49,7 @@
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.0.18/objects.zip</ObjectsUrl>
     <ObjectsSha1>4a3c32a0251c3babe014844f2c683fc32138b3f2</ObjectsSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.22/replays.zip</ReplaysUrl>
-    <ReplaysSha1>7591DB0A3842A7AC44FCBFF9A573C9CB3DDC56</ReplaysSha1>
+    <ReplaysSha1>7591db0a3842a7ac44fcbfbff9a573c9cb3ddc56</ReplaysSha1>
   </PropertyGroup>
 
   <ItemGroup>
