@@ -279,8 +279,8 @@ struct rct_s6_data
     uint8_t climate;
     uint8_t pad_013CA747;
     uint16_t climate_update_timer;
-    WeatherType current_weather;
-    WeatherType next_weather;
+    uint8_t current_weather;
+    uint8_t next_weather;
     uint8_t temperature;
     uint8_t next_temperature;
     uint8_t current_weather_effect;

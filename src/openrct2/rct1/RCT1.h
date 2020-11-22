@@ -686,8 +686,8 @@ struct rct1_s4
     uint8_t climate;
     uint8_t unk_1F432B;
     uint16_t climate_timer;
-    WeatherType weather;
-    WeatherType target_weather;
+    uint8_t weather;
+    uint8_t target_weather;
     uint8_t temperature;
     uint8_t target_temperature;
     uint8_t thunder_frequency;

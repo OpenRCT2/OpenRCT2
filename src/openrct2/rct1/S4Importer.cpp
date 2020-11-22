@@ -2680,12 +2680,12 @@ private:
         gClimate = ClimateType{ _s4.climate };
         gClimateUpdateTimer = _s4.climate_timer;
         gClimateCurrent.Temperature = _s4.temperature;
-        gClimateCurrent.Weather = _s4.weather;
+        gClimateCurrent.Weather = WeatherType{ _s4.weather };
         gClimateCurrent.WeatherEffect = WeatherEffectType::None;
         gClimateCurrent.WeatherGloom = _s4.weather_gloom;
         gClimateCurrent.Level = static_cast<WeatherLevel>(_s4.rain);
         gClimateNext.Temperature = _s4.target_temperature;
-        gClimateNext.Weather = _s4.target_weather;
+        gClimateNext.Weather = WeatherType{ _s4.target_weather };
         gClimateNext.WeatherEffect = WeatherEffectType::None;
         gClimateNext.WeatherGloom = _s4.target_weather_gloom;
         gClimateNext.Level = static_cast<WeatherLevel>(_s4.target_rain);

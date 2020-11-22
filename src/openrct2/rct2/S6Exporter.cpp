@@ -389,8 +389,8 @@ void S6Exporter::Export()
     // byte_13CA742
     // pad_013CA747
     _s6.climate_update_timer = gClimateUpdateTimer;
-    _s6.current_weather = gClimateCurrent.Weather;
-    _s6.next_weather = gClimateNext.Weather;
+    _s6.current_weather = EnumValue(gClimateCurrent.Weather);
+    _s6.next_weather = EnumValue(gClimateNext.Weather);
     _s6.temperature = gClimateCurrent.Temperature;
     _s6.next_temperature = gClimateNext.Temperature;
     _s6.current_weather_effect = static_cast<uint8_t>(gClimateCurrent.WeatherEffect);
