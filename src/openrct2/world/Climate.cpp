@@ -241,10 +241,10 @@ bool climate_is_snowing()
     }
 }
 
-bool climate_is_dry()
+bool weatherIsDry(WeatherType weatherType)
 {
-    return gClimateCurrent.Weather == WeatherType::Sunny || gClimateCurrent.Weather == WeatherType::PartiallyCloudy
-        || gClimateCurrent.Weather == WeatherType::Cloudy;
+    return weatherType == WeatherType::Sunny || weatherType == WeatherType::PartiallyCloudy
+        || weatherType == WeatherType::Cloudy;
 }
 
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
