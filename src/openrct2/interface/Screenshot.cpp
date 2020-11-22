@@ -552,7 +552,7 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
 {
     if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
     {
-        climate_force_weather(weatherTypes[EnumValue(options->weather) - 1]);
+        climate_force_weather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }
 
     if (options->hide_guests)

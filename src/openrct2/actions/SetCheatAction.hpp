@@ -205,7 +205,7 @@ public:
                 break;
             case CheatType::ForceWeather:
                 // Todo - make sure this is safe
-                climate_force_weather(weatherTypes[_param1]);
+                climate_force_weather(WeatherType{ static_cast<uint8_t>(_param1) });
                 break;
             case CheatType::FreezeWeather:
                 gCheatsFreezeWeather = _param1 != 0;

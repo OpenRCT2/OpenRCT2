@@ -36,12 +36,6 @@ enum class WeatherType : uint8_t
     Count
 };
 
-constexpr WeatherType weatherTypes[EnumValue(WeatherType::Count)] = { WeatherType::Sunny,     WeatherType::PartiallyCloudy,
-                                                                      WeatherType::Cloudy,    WeatherType::Rain,
-                                                                      WeatherType::HeavyRain, WeatherType::Thunder,
-                                                                      WeatherType::Snow,      WeatherType::HeavySnow,
-                                                                      WeatherType::Blizzard };
-
 enum class WeatherEffectType : uint8_t
 {
     None,
