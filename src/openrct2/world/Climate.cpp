@@ -241,7 +241,7 @@ bool climate_is_snowing()
     }
 }
 
-bool weatherIsDry(WeatherType weatherType)
+bool WeatherIsDry(WeatherType weatherType)
 {
     return weatherType == WeatherType::Sunny || weatherType == WeatherType::PartiallyCloudy
         || weatherType == WeatherType::Cloudy;

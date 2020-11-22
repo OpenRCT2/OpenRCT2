@@ -84,6 +84,6 @@ void climate_force_weather(WeatherType weather);
 
 bool climate_is_raining();
 bool climate_is_snowing();
-bool weatherIsDry(WeatherType);
+bool WeatherIsDry(WeatherType);
 FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state);
 uint32_t climate_get_weather_sprite_id(const ClimateState& state);
