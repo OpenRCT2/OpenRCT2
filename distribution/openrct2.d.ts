@@ -184,6 +184,13 @@ declare global {
         getRandom(min: number, max: number): number;
 
         /**
+         * Formats a new string using the given format string and the arguments.
+         * @param fmt The format string, e.g. "Guests: {COMMA16}"
+         * @param args The arguments to insert into the string.
+         */
+        formatString(fmt: string, ...args: any[]): string;
+
+        /**
          * Registers a new game action that allows clients to interact with the game.
          * @param action The unique name of the action.
          * @param query Logic for validating and returning a price for an action.

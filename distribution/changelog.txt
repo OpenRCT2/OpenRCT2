@@ -5,6 +5,7 @@
 - Feature: [#13376] Open custom window at specified tab.
 - Feature: [#13398] Add pause button to the Track Designer.
 - Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
+- Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
 - Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
