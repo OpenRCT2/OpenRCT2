@@ -189,7 +189,7 @@ enum
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7),    // 0x80
 };
 
-enum class FilterPaletteID : int
+enum class FilterPaletteID : int32_t
 {
     PaletteNull = 0,
 

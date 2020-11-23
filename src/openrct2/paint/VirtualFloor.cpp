@@ -405,7 +405,7 @@ void virtual_floor_paint(paint_session* session)
     if (!weAreOccupied && !weAreLit && weAreAboveGround && weAreOwned)
     {
         int32_t imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-            | static_cast<int>(FilterPaletteID::PaletteWater) << 19;
+            | EnumValue(FilterPaletteID::PaletteWater) << 19;
         PaintAddImageAsParent(session, imageColourFlats, 0, 0, 30, 30, 0, _virtualFloorHeight, 2, 2, _virtualFloorHeight - 3);
     }
 }

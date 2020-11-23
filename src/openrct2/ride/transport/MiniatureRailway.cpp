@@ -630,7 +630,7 @@ static void paint_miniature_railway_track_flat(
             PaintAddImageAsChildRotated(
                 session, direction,
                 (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-                    | (static_cast<int>(FilterPaletteID::PaletteDarken2) << 19),
+                    | (EnumValue(FilterPaletteID::PaletteDarken2) << 19),
                 0, 6, 32, 20, 2, height, 0, 6, height + 2);
         }
     }
@@ -655,7 +655,7 @@ static void paint_miniature_railway_track_flat(
             PaintAddImageAsParentRotated(
                 session, direction,
                 (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-                    | (static_cast<int>(FilterPaletteID::PaletteDarken2) << 19),
+                    | (EnumValue(FilterPaletteID::PaletteDarken2) << 19),
                 0, 6, 32, 20, 2, height, 0, 6, height + 2);
         }
     }

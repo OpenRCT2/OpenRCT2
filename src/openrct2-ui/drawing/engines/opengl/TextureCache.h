@@ -25,7 +25,7 @@
 
 struct rct_drawpixelinfo;
 struct PaletteMap;
-enum class FilterPaletteID : int;
+enum class FilterPaletteID : int32_t;
 
 struct GlyphId
 {

@@ -33,8 +33,7 @@ static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t o
     uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 2, height);
 
-    image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (static_cast<int>(FilterPaletteID::PaletteDarken3) << 19)
-        | IMAGE_TYPE_TRANSPARENT;
+    image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (EnumValue(FilterPaletteID::PaletteDarken3) << 19) | IMAGE_TYPE_TRANSPARENT;
     PaintAttachToPreviousPS(session, image_id, 0, 0);
 }
 

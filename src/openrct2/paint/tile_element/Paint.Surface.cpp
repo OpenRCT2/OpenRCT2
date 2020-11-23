@@ -1312,7 +1312,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
 
         const int32_t image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
-            | static_cast<int>(FilterPaletteID::PaletteWater) << 19;
+            | EnumValue(FilterPaletteID::PaletteWater) << 19;
         PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, -1, waterHeight);
 
         PaintAttachToPreviousPS(session, SPR_WATER_OVERLAY + image_offset, 0, 0);

@@ -194,7 +194,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
     {
         if (!track_design_save_contains_tile_element(tile_element))
         {
-            dword_141F710 = SPRITE_ID_PALETTE_COLOUR_1(static_cast<int>(FilterPaletteID::Palette46));
+            dword_141F710 = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
 

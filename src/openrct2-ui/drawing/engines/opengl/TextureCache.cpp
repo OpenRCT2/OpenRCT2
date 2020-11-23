@@ -13,6 +13,7 @@
 
 #    include <algorithm>
 #    include <openrct2/drawing/Drawing.h>
+#    include <openrct2/util/Util.h>
 #    include <openrct2/world/Location.hpp>
 #    include <stdexcept>
 #    include <vector>
@@ -371,7 +372,7 @@ GLuint TextureCache::GetPaletteTexture()
 
 GLint TextureCache::PaletteToY(FilterPaletteID palette)
 {
-    return palette > FilterPaletteID::PaletteWater ? static_cast<int>(palette) + 5 : static_cast<int>(palette) + 1;
+    return palette > FilterPaletteID::PaletteWater ? EnumValue(palette) + 5 : EnumValue(palette) + 1;
 }
 
 #endif /* DISABLE_OPENGL */
