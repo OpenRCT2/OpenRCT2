@@ -1290,7 +1290,7 @@ public:
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
-                    campaign.ShopItemType = static_cast<ShopItem>(_s6.campaign_ride_index[i]);
+                    campaign.ShopItemType = ShopItem(_s6.campaign_ride_index[i]);
                 }
                 gMarketingCampaigns.push_back(campaign);
             }

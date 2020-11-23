@@ -726,7 +726,6 @@ struct Peep : SpriteBase
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
     uint32_t ItemStandardFlags;
-    uint64_t ItemFlags;
 
 public: // Peep
     Guest* AsGuest();
@@ -761,9 +760,12 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint32_t GetItemFlags(bool ExtraItem = false) const;
+    uint64_t GetItemFlags(bool bit32Flag = false, bool ExtraItem = false) const;
     void SetItemFlags(uint32_t ItemFlag, bool ExtraItem = false);
-    void ResetItemFlags();
+    void RemoveAllItems();
+    void RemoveItem(ShopItem item);
+    void GiveItem(ShopItem item);
+    bool HasItem(ShopItem peepItem) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -785,7 +787,6 @@ struct Guest : Peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    bool HasItem(ShopItem peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
@@ -813,8 +814,6 @@ public:
     int32_t GetParkEntryTime() const;
     int32_t HasFoodStandardFlag() const;
     int32_t HasFoodExtraFlag() const;
-    bool HasDrinkStandardFlag() const;
-    bool HasDrinkExtraFlag() const;
     int32_t HasEmptyContainerStandardFlag() const;
     int32_t HasEmptyContainerExtraFlag() const;
     void CheckIfLost();

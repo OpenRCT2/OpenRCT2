@@ -181,7 +181,7 @@ private:
             {
                 // If the shop item is the same or an on-ride photo
                 if (rideEntry->shop_item[1] == shopItem
-                    || (rideEntry->shop_item[1] == ShopItem::None && ShopItems[EnumValue(shopItem)].IsPhoto()))
+                    || (rideEntry->shop_item[1] == ShopItem::None && GetShopItemDescriptor(shopItem).IsPhoto()))
                 {
                     if (ride.price[1] != _price)
                     {

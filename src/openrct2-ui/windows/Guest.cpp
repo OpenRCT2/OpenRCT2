@@ -1846,8 +1846,8 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
 
     // Default arguments
     auto ft = Formatter();
-    ft.Add<uint32_t>(ShopItems[EnumValue(item)].Image);
-    ft.Add<rct_string_id>(ShopItems[EnumValue(item)].Naming.Display);
+    ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
+    ft.Add<rct_string_id>(GetShopItemDescriptor(item).Naming.Display);
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(parkName);
 
@@ -1857,7 +1857,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     {
         case ShopItem::Balloon:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[EnumValue(item)].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo:
             ride = get_ride(peep->Photo1RideRef);
@@ -1871,7 +1871,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             break;
         case ShopItem::Umbrella:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[EnumValue(item)].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Voucher:
             switch (peep->VoucherType)
@@ -1904,17 +1904,17 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(ShopItems[EnumValue(peep->VoucherShopItem)].Naming.Singular);
+                    ft.Add<rct_string_id>(GetShopItemDescriptor(peep->VoucherShopItem).Naming.Singular);
                     break;
             }
             break;
         case ShopItem::Hat:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[EnumValue(item)].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::TShirt:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | ShopItems[EnumValue(item)].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo2:
             ride = get_ride(peep->Photo2RideRef);

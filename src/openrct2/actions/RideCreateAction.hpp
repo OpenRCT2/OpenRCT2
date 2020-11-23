@@ -222,11 +222,11 @@ public:
             }
             else
             {
-                ride->price[0] = ShopItems[EnumValue(rideEntry->shop_item[0])].DefaultPrice;
+                ride->price[0] = GetShopItemDescriptor(rideEntry->shop_item[0]).DefaultPrice;
             }
             if (rideEntry->shop_item[1] != ShopItem::None)
             {
-                ride->price[1] = ShopItems[EnumValue(rideEntry->shop_item[1])].DefaultPrice;
+                ride->price[1] = GetShopItemDescriptor(rideEntry->shop_item[1]).DefaultPrice;
             }
 
             if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)

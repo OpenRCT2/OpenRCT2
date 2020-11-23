@@ -174,41 +174,41 @@ private:
             }
 
             // remove any free voucher for this ride from peep
-            if (peep->GetItemFlags() & EnumToFlag(ShopItem::Voucher))
+            if (peep->HasItem(ShopItem::Voucher))
             {
                 if (peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == _rideIndex)
                 {
-                    peep->SetItemFlags(peep->GetItemFlags() & ~EnumToFlag(ShopItem::Voucher), 0);
+                    peep->RemoveItem(ShopItem::Voucher);
                 }
             }
 
             // remove any photos of this ride from peep
-            if (peep->GetItemFlags() & EnumToFlag(ShopItem::Photo))
+            if (peep->HasItem(ShopItem::Photo))
             {
                 if (peep->Photo1RideRef == _rideIndex)
                 {
-                    peep->SetItemFlags(peep->GetItemFlags() & ~EnumToFlag(ShopItem::Photo), 0);
+                    peep->RemoveItem(ShopItem::Photo);
                 }
             }
-            if (peep->GetItemFlags(true) & EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)))
+            if (peep->HasItem(ShopItem::Photo2))
             {
                 if (peep->Photo2RideRef == _rideIndex)
                 {
-                    peep->SetItemFlags(peep->GetItemFlags(true) & ~EnumToFlag((ShopItem::Photo2 - ShopItem::Photo2)), 1);
+                    peep->RemoveItem(ShopItem::Photo2);
                 }
             }
-            if (peep->GetItemFlags(true) & EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2)))
+            if (peep->HasItem(ShopItem::Photo3))
             {
                 if (peep->Photo3RideRef == _rideIndex)
                 {
-                    peep->SetItemFlags(peep->GetItemFlags(true) & ~EnumToFlag((ShopItem::Photo3 - ShopItem::Photo2)), 1);
+                    peep->RemoveItem(ShopItem::Photo3);
                 }
             }
-            if (peep->GetItemFlags(true) & EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2)))
+            if (peep->HasItem(ShopItem::Photo4))
             {
                 if (peep->Photo4RideRef == _rideIndex)
                 {
-                    peep->SetItemFlags(peep->GetItemFlags(true) & ~EnumToFlag((ShopItem::Photo4 - ShopItem::Photo2)), 1);
+                    peep->RemoveItem(ShopItem::Photo4);
                 }
             }
 

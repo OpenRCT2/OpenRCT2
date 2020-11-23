@@ -15,17 +15,17 @@
 
 ShopItem& operator++(ShopItem& d, int)
 {
-    return d = (d == ShopItem::Count) ? ShopItem::Balloon : static_cast<ShopItem>(static_cast<uint8_t>(d) + 1);
+    return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(static_cast<uint8_t>(d) + 1);
 }
 
 ShopItem operator+(const ShopItem& lhs, const ShopItem& rhs)
 {
-    return static_cast<ShopItem>(EnumValue(lhs) + EnumValue(rhs));
+    return ShopItem(EnumValue(lhs) + EnumValue(rhs));
 }
 
 ShopItem operator-(const ShopItem& lhs, const ShopItem& rhs)
 {
-    return static_cast<ShopItem>(EnumValue(lhs) - EnumValue(rhs));
+    return ShopItem(EnumValue(lhs) - EnumValue(rhs));
 }
 
 uint64_t gSamePriceThroughoutPark;
@@ -110,7 +110,7 @@ money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem)
             {
                 return ride.price[1];
             }
-            if (ShopItems[EnumValue(shopItem)].IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
+            if (GetShopItemDescriptor(shopItem).IsPhoto() && (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO))
             {
                 return ride.price[1];
             }
@@ -153,4 +153,9 @@ bool ShopItemDescriptor::IsSouvenir() const
 bool ShopItemDescriptor::IsPhoto() const
 {
     return HasFlag(SHOP_ITEM_FLAG_IS_PHOTO);
+}
+
+ShopItemDescriptor GetShopItemDescriptor(ShopItem item)
+{
+    return ShopItems[EnumValue(item)];
 }

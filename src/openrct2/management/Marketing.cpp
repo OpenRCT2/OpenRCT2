@@ -14,6 +14,7 @@
 #include "../config/Config.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../peep/Peep.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -82,7 +83,7 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            ft.Add<rct_string_id>(ShopItems[EnumValue(campaign.ShopItemType)].Naming.Plural);
+            ft.Add<rct_string_id>(GetShopItemDescriptor(campaign.ShopItemType).Naming.Plural);
         }
 
         News::AddItemToQueue(News::ItemType::Money, MarketingCampaignNames[campaign.Type][2], 0, ft);
@@ -135,22 +136,22 @@ void marketing_set_guest_campaign(Peep* peep, int32_t campaignType)
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
+            peep->GiveItem(ShopItem::Voucher);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_FREE;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
-            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
+            peep->GiveItem(ShopItem::Voucher);
             peep->VoucherType = VOUCHER_TYPE_RIDE_FREE;
             peep->VoucherRideId = campaign->RideId;
             peep->GuestHeadingToRideId = campaign->RideId;
             peep->GuestIsLostCountdown = 240;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
+            peep->GiveItem(ShopItem::Voucher);
             peep->VoucherType = VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE;
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            peep->SetItemFlags(peep->GetItemFlags() | EnumToFlag(ShopItem::Voucher), 0);
+            peep->GiveItem(ShopItem::Voucher);
             peep->VoucherType = VOUCHER_TYPE_FOOD_OR_DRINK_FREE;
             peep->VoucherShopItem = campaign->ShopItemType;
             break;
@@ -198,7 +199,7 @@ bool marketing_is_campaign_type_applicable(int32_t campaignType)
                 {
                     for (auto& item : rideEntry->shop_item)
                     {
-                        if (ShopItems[EnumValue(item)].IsFoodOrDrink())
+                        if (GetShopItemDescriptor(item).IsFoodOrDrink())
                         {
                             return true;
                         }

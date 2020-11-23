@@ -4847,7 +4847,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        int32_t spriteIndex = ShopItems[EnumValue(shopItem)].Image;
+        int32_t spriteIndex = GetShopItemDescriptor(shopItem).Image;
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
 
         gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
@@ -6159,7 +6159,7 @@ static void update_same_price_throughout_flags(ShopItem shop_item)
 {
     uint64_t newFlags;
 
-    if (ShopItems[EnumValue(shop_item)].IsPhoto())
+    if (GetShopItemDescriptor(shop_item).IsPhoto())
     {
         newFlags = gSamePriceThroughoutPark;
         newFlags ^= EnumsToFlags(ShopItem::Photo, ShopItem::Photo2, ShopItem::Photo3, ShopItem::Photo4);
@@ -6529,7 +6529,7 @@ static void window_ride_income_invalidate(rct_window* w)
         if (shop_item_has_common_price(primaryItem))
             w->pressed_widgets |= (1 << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK);
 
-        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = ShopItems[EnumValue(primaryItem)].Naming.PriceLabel;
+        window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].text = GetShopItemDescriptor(primaryItem).Naming.PriceLabel;
     }
 
     // Get secondary item
@@ -6538,7 +6538,8 @@ static void window_ride_income_invalidate(rct_window* w)
     {
         if ((secondaryItem = rideEntry->shop_item[1]) != ShopItem::None)
         {
-            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = ShopItems[EnumValue(secondaryItem)].Naming.PriceLabel;
+            window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = GetShopItemDescriptor(secondaryItem)
+                                                                              .Naming.PriceLabel;
         }
     }
 
@@ -6608,7 +6609,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price[0];
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= ShopItems[EnumValue(primaryItem)].Cost;
+        profit -= GetShopItemDescriptor(primaryItem).Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6629,7 +6630,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
         profit = ride->price[1];
 
         stringId = STR_PROFIT_PER_ITEM_SOLD;
-        profit -= ShopItems[EnumValue(secondaryItem)].Cost;
+        profit -= GetShopItemDescriptor(secondaryItem).Cost;
         if (profit < 0)
         {
             profit *= -1;
@@ -6865,7 +6866,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (shopItem != ShopItem::None)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(ShopItems[EnumValue(shopItem)].Naming.Plural);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -6877,7 +6878,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (shopItem != ShopItem::None)
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(ShopItems[EnumValue(shopItem)].Naming.Plural);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Plural);
         ft.Add<uint32_t>(ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;

@@ -448,10 +448,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->GetItemFlags() & EnumToFlag(ShopItem::Pizza)))
+    if (passingPeep->HasItem(ShopItem::Pizza))
         return;
 
-    passingPeep->SetItemFlags(passingPeep->GetItemFlags() | EnumToFlag(ShopItem::Pizza), 0);
+    passingPeep->GiveItem(ShopItem::Pizza);
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -487,10 +487,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->GetItemFlags() & EnumToFlag(ShopItem::IceCream))
+    if (passingPeep->HasItem(ShopItem::IceCream))
         return;
 
-    passingPeep->SetItemFlags(passingPeep->GetItemFlags() | EnumToFlag(ShopItem::IceCream), 0);
+    passingPeep->GiveItem(ShopItem::IceCream);
     passingPeep->UpdateSpriteType();
 }
 
@@ -766,12 +766,12 @@ void Guest::loc_68FA89()
             int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
             if (chosen_food != -1)
             {
-                SetItemFlags(GetItemFlags() & ~(1 << chosen_food), 0);
+                RemoveItem(static_cast<ShopItem>(chosen_food));
 
                 uint8_t discard_container = peep_item_containers[chosen_food];
                 if (discard_container != 0xFF)
                 {
-                    SetItemFlags(GetItemFlags() | (1 << discard_container), 0);
+                    GiveItem(static_cast<ShopItem>(discard_container));
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -782,14 +782,11 @@ void Guest::loc_68FA89()
                 chosen_food = bitscanforward(HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
-                    SetItemFlags(GetItemFlags(true) & ~(1 << chosen_food), 1);
+                    RemoveItem(static_cast<ShopItem>(chosen_food));
                     uint8_t discard_container = peep_extra_item_containers[chosen_food];
                     if (discard_container != 0xFF)
                     {
-                        if (discard_container >= EnumValue(ShopItem::Photo2))
-                            SetItemFlags(GetItemFlags(true) | (1 << (discard_container - EnumValue(ShopItem::Photo2))), 1);
-                        else
-                            SetItemFlags(GetItemFlags() | (1 << discard_container), 0);
+                        GiveItem(static_cast<ShopItem>(discard_container));
                     }
 
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1002,7 +999,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((GetItemFlags() & EnumToFlag(ShopItem::Map)) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1326,18 +1323,6 @@ void Guest::UpdateSitting()
     }
 }
 
-bool Guest::HasItem(ShopItem peepItem) const
-{
-    if (peepItem < ShopItem::Photo2)
-    {
-        return GetItemFlags() & EnumToFlag(peepItem);
-    }
-    else
-    {
-        return GetItemFlags(true) & EnumToFlag(peepItem - ShopItem::Photo2);
-    }
-}
-
 int32_t Guest::HasFoodStandardFlag() const
 {
     return GetItemFlags()
@@ -1349,29 +1334,11 @@ int32_t Guest::HasFoodStandardFlag() const
 
 int32_t Guest::HasFoodExtraFlag() const
 {
-    return GetItemFlags(true)
+    return GetItemFlags()
         & EnumsToFlags(
-               ShopItem::Pretzel - ShopItem::Photo2, ShopItem::Chocolate - ShopItem::Photo2,
-               ShopItem::IcedTea - ShopItem::Photo2, ShopItem::FunnelCake - ShopItem::Photo2,
-               ShopItem::BeefNoodles - ShopItem::Photo2, ShopItem::FriedRiceNoodles - ShopItem::Photo2,
-               ShopItem::WontonSoup - ShopItem::Photo2, ShopItem::MeatballSoup - ShopItem::Photo2,
-               ShopItem::FruitJuice - ShopItem::Photo2, ShopItem::SoybeanMilk - ShopItem::Photo2,
-               ShopItem::SuJeongGwa - ShopItem::Photo2, ShopItem::SubSandwich - ShopItem::Photo2,
-               ShopItem::Cookie - ShopItem::Photo2, ShopItem::RoastSausage - ShopItem::Photo2);
-}
-
-bool Guest::HasDrinkStandardFlag() const
-{
-    return GetItemFlags() & EnumsToFlags(ShopItem::Drink, ShopItem::Coffee, ShopItem::Lemonade);
-}
-
-bool Guest::HasDrinkExtraFlag() const
-{
-    return GetItemFlags(true)
-        & EnumsToFlags(
-               ShopItem::Chocolate - ShopItem::Photo2, ShopItem::IcedTea - ShopItem::Photo2,
-               ShopItem::FruitJuice - ShopItem::Photo2, ShopItem::SoybeanMilk - ShopItem::Photo2,
-               ShopItem::SuJeongGwa - ShopItem::Photo2);
+               ShopItem::Pretzel, ShopItem::Chocolate, ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles,
+               ShopItem::FriedRiceNoodles, ShopItem::WontonSoup, ShopItem::MeatballSoup, ShopItem::FruitJuice,
+               ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich, ShopItem::Cookie, ShopItem::RoastSausage);
 }
 
 /**
@@ -1380,7 +1347,10 @@ bool Guest::HasDrinkExtraFlag() const
  */
 bool Guest::HasDrink() const
 {
-    return HasDrinkStandardFlag() || HasDrinkExtraFlag();
+    return GetItemFlags()
+        & EnumsToFlags(
+               ShopItem::Drink, ShopItem::Coffee, ShopItem::Lemonade, ShopItem::Chocolate, ShopItem::IcedTea,
+               ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa);
 }
 
 int32_t Guest::HasEmptyContainerStandardFlag() const
@@ -1393,10 +1363,8 @@ int32_t Guest::HasEmptyContainerStandardFlag() const
 
 int32_t Guest::HasEmptyContainerExtraFlag() const
 {
-    return GetItemFlags(true)
-        & EnumsToFlags(
-               ShopItem::EmptyBowlRed - ShopItem::Photo2, ShopItem::EmptyDrinkCarton - ShopItem::Photo2,
-               ShopItem::EmptyJuiceCup - ShopItem::Photo2, ShopItem::EmptyBowlBlue - ShopItem::Photo2);
+    return GetItemFlags()
+        & EnumsToFlags(ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup, ShopItem::EmptyBowlBlue);
 }
 
 bool Guest::HasEmptyContainer() const
@@ -1504,8 +1472,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && climate_is_raining();
 
-    if ((GetItemFlags() & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-        && (VoucherShopItem == shopItem))
+    if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
     }
@@ -1516,7 +1483,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         return false;
     }
 
-    if (ShopItems[EnumValue(shopItem)].IsFoodOrDrink())
+    if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
         int32_t food = -1;
         if ((food = HasFoodStandardFlag()) != 0)
@@ -1545,19 +1512,19 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         return false;
     }
 
-    if (ShopItems[EnumValue(shopItem)].IsFood() && (Hunger > 75))
+    if (GetShopItemDescriptor(shopItem).IsFood() && (Hunger > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (ShopItems[EnumValue(shopItem)].IsDrink() && (Thirst > 75))
+    if (GetShopItemDescriptor(shopItem).IsDrink() && (Thirst > 75))
     {
         InsertNewThought(PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && ShopItems[EnumValue(shopItem)].IsSouvenir() && !hasVoucher)
+    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
     {
         if (((scenario_rand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
@@ -1580,11 +1547,11 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[EnumValue(shopItem)].HotValue;
+            itemValue = GetShopItemDescriptor(shopItem).HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[EnumValue(shopItem)].ColdValue;
+            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
         else
-            itemValue = ShopItems[EnumValue(shopItem)].BaseValue;
+            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
 
         if (itemValue < price)
         {
@@ -1602,10 +1569,9 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                        (shopItem >= ShopItem::Photo2
-                             ? (static_cast<ShopItem>(PEEP_THOUGHT_TYPE_PHOTO2_MUCH) + (shopItem - ShopItem::Photo2))
-                             : (static_cast<ShopItem>(PEEP_THOUGHT_TYPE_BALLOON_MUCH) + shopItem)));
+                    PeepThoughtType thought_type = static_cast<PeepThoughtType>((
+                        shopItem >= ShopItem::Photo2 ? (ShopItem(PEEP_THOUGHT_TYPE_PHOTO2_MUCH) + (shopItem - ShopItem::Photo2))
+                                                     : (ShopItem(PEEP_THOUGHT_TYPE_BALLOON_MUCH) + shopItem)));
                     InsertNewThought(thought_type, ride->id);
                     return false;
                 }
@@ -1622,9 +1588,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 {
                     // "This x is a really good value"
                     PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        (shopItem >= ShopItem::Photo2
-                             ? (static_cast<ShopItem>(PEEP_THOUGHT_TYPE_PHOTO2) + (shopItem - ShopItem::Photo2))
-                             : (static_cast<ShopItem>(PEEP_THOUGHT_TYPE_BALLOON) + shopItem)));
+                        (shopItem >= ShopItem::Photo2 ? (ShopItem(PEEP_THOUGHT_TYPE_PHOTO2) + (shopItem - ShopItem::Photo2))
+                                                      : (ShopItem(PEEP_THOUGHT_TYPE_BALLOON) + shopItem)));
                     InsertNewThought(thought_item, ride->id);
                 }
             }
@@ -1636,11 +1601,11 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
         // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[EnumValue(shopItem)].HotValue;
+            itemValue = GetShopItemDescriptor(shopItem).HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[EnumValue(shopItem)].ColdValue;
+            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
         else
-            itemValue = ShopItems[EnumValue(shopItem)].BaseValue;
+            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
@@ -1658,10 +1623,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
-    if (shopItem >= ShopItem::Photo2)
-        SetItemFlags(GetItemFlags(true) | EnumToFlag(shopItem - ShopItem::Photo2), 1);
-    else
-        SetItemFlags(GetItemFlags() | EnumToFlag(shopItem), 0);
+    GiveItem(shopItem);
 
     if (shopItem == ShopItem::TShirt)
         TshirtColour = ride->track_colour[0].main;
@@ -1699,52 +1661,52 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<rct_string_id>(ShopItems[EnumValue(shopItem)].Naming.Indefinite);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
     }
 
-    if (ShopItems[EnumValue(shopItem)].IsFood())
+    if (GetShopItemDescriptor(shopItem).IsFood())
         AmountOfFood++;
 
-    if (ShopItems[EnumValue(shopItem)].IsDrink())
+    if (GetShopItemDescriptor(shopItem).IsDrink())
         AmountOfDrinks++;
 
-    if (ShopItems[EnumValue(shopItem)].IsSouvenir())
+    if (GetShopItemDescriptor(shopItem).IsSouvenir())
         AmountOfSouvenirs++;
 
     money16* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (ShopItems[EnumValue(shopItem)].IsFood())
+    if (GetShopItemDescriptor(shopItem).IsFood())
     {
         expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (ShopItems[EnumValue(shopItem)].IsDrink())
+    if (GetShopItemDescriptor(shopItem).IsDrink())
     {
         expend_type = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(ShopItems[EnumValue(shopItem)].Cost, expenditure);
+        finance_payment(GetShopItemDescriptor(shopItem).Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        SetItemFlags(GetItemFlags() & ~EnumToFlag(ShopItem::Voucher), 0);
+        RemoveItem(ShopItem::Voucher);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride->total_profit += (price - ShopItems[EnumValue(shopItem)].Cost);
+    ride->total_profit += (price - GetShopItemDescriptor(shopItem).Cost);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride->cur_num_customers++;
     ride->total_customers++;
@@ -1882,7 +1844,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (GetItemFlags() & EnumToFlag(ShopItem::Map))
+        if (HasItem(ShopItem::Map))
         {
             ReadMap();
         }
@@ -1920,7 +1882,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (GetItemFlags() & EnumToFlag(ShopItem::Map))
+    if (HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2437,8 +2399,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->GetItemFlags() & EnumToFlag(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
-        && peep->VoucherRideId == ride->id;
+    return peep->HasItem(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == ride->id;
 }
 
 /**
@@ -2659,7 +2620,7 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->GetItemFlags() & EnumToFlag(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->HasItem(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
@@ -3182,7 +3143,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->GetItemFlags() & EnumToFlag(ShopItem::Map)))
+    if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3877,10 +3838,9 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((GetItemFlags() & EnumToFlag(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
-            && (VoucherRideId == CurrentRide))
+        if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
         {
-            SetItemFlags(GetItemFlags() & ~EnumToFlag(ShopItem::Voucher), 0);
+            RemoveItem(ShopItem::Voucher);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -5370,7 +5330,7 @@ void Guest::UpdateWalking()
 
             if (pos_stnd != 32)
             {
-                SetItemFlags(GetItemFlags() & ~(1u << pos_stnd), 0);
+                RemoveItem(static_cast<ShopItem>(pos_stnd));
                 litterType = item_standard_litter[pos_stnd];
             }
             else
@@ -5379,7 +5339,7 @@ void Guest::UpdateWalking()
                 for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
                     if (container & (1u << pos_extr))
                         break;
-                SetItemFlags(GetItemFlags(true) & ~(1u << pos_extr), 1);
+                RemoveItem(static_cast<ShopItem>(pos_extr));
                 litterType = item_extra_litter[pos_extr];
             }
 
@@ -5943,7 +5903,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    SetItemFlags(GetItemFlags() & ~(1 << cur_container), 0);
+                    RemoveItem(static_cast<ShopItem>(cur_container));
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
@@ -5954,7 +5914,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                SetItemFlags(GetItemFlags() & ~(1 << cur_container), 0);
+                RemoveItem(static_cast<ShopItem>(cur_container));
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -5976,7 +5936,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    SetItemFlags(GetItemFlags(true) & ~(1 << cur_container), 1);
+                    RemoveItem(static_cast<ShopItem>(cur_container));
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                     UpdateSpriteType();
@@ -5988,7 +5948,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                SetItemFlags(GetItemFlags(true) & ~(1 << cur_container), 1);
+                RemoveItem(static_cast<ShopItem>(cur_container));
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -6810,7 +6770,7 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 struct item_pref_t
 {
     uint8_t type;  // 0 for standard, 1 for extra
-    uint32_t item; // And this with the relevant flags
+    uint64_t item; // And this with the relevant flags
     PeepSpriteType sprite_type;
 };
 
@@ -6830,24 +6790,24 @@ static item_pref_t item_order_preference[] = {
         { 0, EnumToFlag(ShopItem::Tentacle), PeepSpriteType::Tentacle },
         { 0, EnumToFlag(ShopItem::ToffeeApple), PeepSpriteType::ToffeeApple },
         { 0, EnumToFlag(ShopItem::Doughnut), PeepSpriteType::Doughnut },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::Pretzel-ShopItem::Photo2)), PeepSpriteType::Pretzel },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::Cookie-ShopItem::Photo2)), PeepSpriteType::Pretzel },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::Chocolate-ShopItem::Photo2)), PeepSpriteType::Coffee },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::IcedTea-ShopItem::Photo2)), PeepSpriteType::Coffee },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::FunnelCake-ShopItem::Photo2)), PeepSpriteType::FunnelCake },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::BeefNoodles-ShopItem::Photo2)), PeepSpriteType::Noodles },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::FriedRiceNoodles-ShopItem::Photo2)), PeepSpriteType::Noodles },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::WontonSoup-ShopItem::Photo2)), PeepSpriteType::Soup },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::MeatballSoup-ShopItem::Photo2)), PeepSpriteType::Soup },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::FruitJuice-ShopItem::Photo2)), PeepSpriteType::Juice },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::SoybeanMilk-ShopItem::Photo2)), PeepSpriteType::SuJongkwa },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::SuJeongGwa-ShopItem::Photo2)), PeepSpriteType::SuJongkwa },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::SubSandwich-ShopItem::Photo2)), PeepSpriteType::Sandwich },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::RoastSausage-ShopItem::Photo2)), PeepSpriteType::Sausage },
+        { 1, EnumToFlag(ShopItem::Pretzel), PeepSpriteType::Pretzel },
+        { 1, EnumToFlag(ShopItem::Cookie), PeepSpriteType::Pretzel },
+        { 1, EnumToFlag(ShopItem::Chocolate), PeepSpriteType::Coffee },
+        { 1, EnumToFlag(ShopItem::IcedTea), PeepSpriteType::Coffee },
+        { 1, EnumToFlag(ShopItem::FunnelCake), PeepSpriteType::FunnelCake },
+        { 1, EnumToFlag(ShopItem::BeefNoodles), PeepSpriteType::Noodles },
+        { 1, EnumToFlag(ShopItem::FriedRiceNoodles), PeepSpriteType::Noodles },
+        { 1, EnumToFlag(ShopItem::WontonSoup), PeepSpriteType::Soup },
+        { 1, EnumToFlag(ShopItem::MeatballSoup), PeepSpriteType::Soup },
+        { 1, EnumToFlag(ShopItem::FruitJuice), PeepSpriteType::Juice },
+        { 1, EnumToFlag(ShopItem::SoybeanMilk), PeepSpriteType::SuJongkwa },
+        { 1, EnumToFlag(ShopItem::SuJeongGwa), PeepSpriteType::SuJongkwa },
+        { 1, EnumToFlag(ShopItem::SubSandwich), PeepSpriteType::Sandwich },
+        { 1, EnumToFlag(ShopItem::RoastSausage), PeepSpriteType::Sausage },
         { 0, EnumToFlag(ShopItem::Balloon), PeepSpriteType::Balloon },
         { 0, EnumToFlag(ShopItem::Hat), PeepSpriteType::Hat },
-        { 1, static_cast<uint32_t>(EnumToFlag(ShopItem::Sunglasses-ShopItem::Photo2)), PeepSpriteType::Sunglasses },
-        { 0xFF, 0xFFFFFFFF, PeepSpriteType::Invalid }
+        { 1, EnumToFlag(ShopItem::Sunglasses), PeepSpriteType::Sunglasses },
+        { 0xFF, 0xFFFFFFFFFFFFFFFF, PeepSpriteType::Invalid }
 };
 // clang-format on
 
@@ -6869,11 +6829,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        SetItemFlags(GetItemFlags() & ~EnumToFlag(ShopItem::Balloon), 0);
+        RemoveItem(ShopItem::Balloon);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (GetItemFlags() & EnumToFlag(ShopItem::Umbrella)) && x != LOCATION_NULL)
+    if (climate_is_raining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
@@ -6901,14 +6861,6 @@ void Guest::UpdateSpriteType()
         if (item_pref->type == 0)
         {
             if (GetItemFlags() & item_pref->item)
-            {
-                SetSpriteType(item_pref->sprite_type);
-                return;
-            }
-        }
-        else
-        {
-            if (GetItemFlags(true) & item_pref->item)
             {
                 SetSpriteType(item_pref->sprite_type);
                 return;

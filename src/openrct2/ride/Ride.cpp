@@ -392,7 +392,7 @@ money32 Ride::CalculateIncomePerHour() const
     ShopItem currentShopItem = entry->shop_item[0];
     if (currentShopItem != ShopItem::None)
     {
-        priceMinusCost -= ShopItems[EnumValue(currentShopItem)].Cost;
+        priceMinusCost -= GetShopItemDescriptor(currentShopItem).Cost;
     }
 
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[type].PhotoItem
@@ -400,9 +400,9 @@ money32 Ride::CalculateIncomePerHour() const
 
     if (currentShopItem != ShopItem::None)
     {
-        const money16 shopItemProfit = price[1] - ShopItems[EnumValue(currentShopItem)].Cost;
+        const money16 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
 
-        if (ShopItems[EnumValue(currentShopItem)].IsPhoto())
+        if (GetShopItemDescriptor(currentShopItem).IsPhoto())
         {
             const int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
 
