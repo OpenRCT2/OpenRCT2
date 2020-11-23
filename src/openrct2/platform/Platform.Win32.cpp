@@ -535,6 +535,24 @@ namespace Platform
         log_warning("Execute() not implemented for Windows!");
         return -1;
     }
+
+    uint64_t GetLastModified(const std::string& path)
+    {
+        uint64_t lastModified = 0;
+        auto pathW = String::ToWideChar(path);
+        auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+        if (hFile != INVALID_HANDLE_VALUE)
+        {
+            FILETIME ftCreate, ftAccess, ftWrite;
+            if (GetFileTime(hFile, &ftCreate, &ftAccess, &ftWrite))
+            {
+                lastModified = (static_cast<uint64_t>(ftWrite.dwHighDateTime) << 32ULL)
+                    | static_cast<uint64_t>(ftWrite.dwLowDateTime);
+            }
+            CloseHandle(hFile);
+        }
+        return lastModified;
+    }
 } // namespace Platform
 
 #endif

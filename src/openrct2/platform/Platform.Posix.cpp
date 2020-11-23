@@ -18,6 +18,7 @@
 #    include <cstring>
 #    include <ctime>
 #    include <pwd.h>
+#    include <sys/stat.h>
 
 namespace Platform
 {
@@ -158,6 +159,19 @@ namespace Platform
         log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
         return -1;
 #    endif // __EMSCRIPTEN__
+    }
+
+    uint64_t GetLastModified(const std::string& path)
+    {
+        uint64_t lastModified = 0;
+        struct stat statInfo
+        {
+        };
+        if (stat(path.c_str(), &statInfo) == 0)
+        {
+            lastModified = statInfo.st_mtime;
+        }
+        return lastModified;
     }
 } // namespace Platform
 
