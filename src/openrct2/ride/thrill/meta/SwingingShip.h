@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
     SET_FIELD(DefaultMode, RideMode::Swing),
     SET_FIELD(OperatingSettings, { 7, 25, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SWINGING_SHIP, STR_RIDE_DESCRIPTION_SWINGING_SHIP }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_SHIP, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Ship, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SWINGING_SHIP)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 12, 112, 7, 11, }),

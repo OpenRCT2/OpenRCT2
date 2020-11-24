@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor EnterpriseRTD =
     SET_FIELD(DefaultMode, RideMode::Rotation),
     SET_FIELD(OperatingSettings, { 10, 20, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_ENTERPRISE, STR_RIDE_DESCRIPTION_ENTERPRISE }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_WHEEL, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Wheel, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_ENTERPRISE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 16, 160, 3, 2, }),
