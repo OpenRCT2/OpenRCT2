@@ -3045,8 +3045,8 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     else
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[type].NameConvention.vehicle].singular);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[type].NameConvention.station].singular);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[type].NameConvention.vehicle)].singular);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[type].NameConvention.station)].singular);
         return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
     }
 }
@@ -3356,7 +3356,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
         ride->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].capitalised);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.station)].capitalised);
         ft.Add<uint16_t>(stationIndex + 1);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);

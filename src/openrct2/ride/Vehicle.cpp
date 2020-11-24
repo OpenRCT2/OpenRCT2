@@ -3504,7 +3504,7 @@ void Vehicle::CheckIfMissing()
     if (gConfigNotifications.ride_stalled_vehicles)
     {
         Formatter ft;
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[curRide->type].NameConvention.vehicle)].number);
 
         uint8_t vehicleIndex = 0;
         for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
@@ -3514,7 +3514,7 @@ void Vehicle::CheckIfMissing()
         vehicleIndex++;
         ft.Add<uint16_t>(vehicleIndex);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[curRide->type].NameConvention.station)].singular);
 
         News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride, ft);
     }
@@ -6246,7 +6246,7 @@ void Vehicle::SetMapToolbar() const
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].capitalised);
+        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[curRide->type].NameConvention.vehicle)].capitalised);
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
