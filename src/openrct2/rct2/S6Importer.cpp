@@ -33,6 +33,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Staff.h"
+#include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
 #include "../rct2/RCT2.h"
@@ -187,18 +188,6 @@ public:
         return false;
     }
 
-    static bool IsLikelyUtf8(const std::string_view s)
-    {
-        for (auto c : s)
-        {
-            if (static_cast<uint8_t>(c) >= 128)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-
     void Import() override
     {
         Initialise();
@@ -207,7 +196,7 @@ public:
         gS6Info = _s6.info;
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
-        if (!IsLikelyUtf8(_s6.info.name) && !IsLikelyUtf8(_s6.info.details))
+        if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
         {
             auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
             safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));

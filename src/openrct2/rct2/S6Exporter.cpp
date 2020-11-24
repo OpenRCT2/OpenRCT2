@@ -1370,9 +1370,8 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
         auto bannerText = src.text;
         if (!(src.flags & BANNER_FLAG_IS_WALL) && !(src.flags & BANNER_FLAG_IS_LARGE_SCENERY))
         {
-            char codeBuffer[32]{};
-            utf8_write_codepoint(codeBuffer, 142 + src.text_colour);
-            bannerText = codeBuffer + bannerText;
+            auto formatCode = static_cast<char>(RCT2_STRING_FORMAT_COLOUR_START + src.text_colour);
+            bannerText.insert(bannerText.begin(), formatCode);
         }
 
         auto stringId = AllocateUserString(bannerText);

@@ -1040,3 +1040,23 @@ RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
 
     return rideId;
 }
+
+bool IsLikelyUTF8(std::string_view s)
+{
+    // RCT2 uses CP-1252 so some characters may be >= 128. However we don't expect any
+    // characters that are reserved for formatting strings, so if those are found, assume
+    // that the string is UTF-8.
+    for (auto c : s)
+    {
+        auto chr = static_cast<uint8_t>(c);
+        if (chr >= RCT2_STRING_FORMAT_ARG_START && chr <= RCT2_STRING_FORMAT_ARG_END)
+        {
+            return true;
+        }
+        if (chr >= RCT2_STRING_FORMAT_COLOUR_START && chr <= RCT2_STRING_FORMAT_COLOUR_END)
+        {
+            return true;
+        }
+    }
+    return false;
+}
