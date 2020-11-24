@@ -3649,6 +3649,8 @@ STR_6394    :Celo
 STR_6395    :Prizorgado
 STR_6396    :Malŝalti ekrankurtenon kaj energiŝparan de ekrano
 STR_6397    :{SMALLFONT}{BLACK}Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
+STR_6398    :Dosiero enhavas nesubtenatajn atrakciotipojn. Bonvolu ĝisdatigi al pli nova versio de OpenRCT2.
+STR_6399    :OpenRCT2 bezonas dosierojn de la origina RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en "config.ini" al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, poste rekomencu OpenRCT2.
 
 #############
 # Scenarios #
