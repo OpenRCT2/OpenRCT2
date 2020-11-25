@@ -103,6 +103,8 @@ namespace OpenRCT2::Scripting
                         return "checkbox";
                     case WWT_TEXT_BOX:
                         return "textbox";
+                    default:
+                        break;
                 }
             }
             return "unknown";

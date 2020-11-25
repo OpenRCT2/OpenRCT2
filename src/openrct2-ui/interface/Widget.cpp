@@ -50,6 +50,7 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetInd
     switch (w->widgets[widgetIndex].type)
     {
         case WWT_EMPTY:
+        case WWT_LAST:
             break;
         case WWT_FRAME:
             WidgetFrameDraw(dpi, w, widgetIndex);

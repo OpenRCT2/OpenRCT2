@@ -13,33 +13,6 @@
 #include "../localisation/StringIds.h"
 #include "Window.h"
 
-enum WINDOW_WIDGET_TYPES
-{
-    WWT_EMPTY = 0,
-    WWT_FRAME = 1,
-    WWT_RESIZE = 2,
-    WWT_IMGBTN = 3,
-    WWT_COLOURBTN = 6,
-    WWT_TRNBTN = 7,
-    WWT_TAB = 8,
-    WWT_FLATBTN = 9,
-    WWT_BUTTON = 10,
-    WWT_LABEL_CENTRED = 12, // Centred text
-    WWT_TABLE_HEADER = 13,  // Left-aligned textual button
-    WWT_LABEL = 14,         // Left-aligned text
-    WWT_SPINNER = 15,
-    WWT_DROPDOWN = 16,
-    WWT_VIEWPORT = 17,
-    WWT_GROUPBOX = 19,
-    WWT_CAPTION = 20,
-    WWT_CLOSEBOX = 21,
-    WWT_SCROLL = 22,
-    WWT_CHECKBOX = 23,
-    WWT_PLACEHOLDER = 25,
-    WWT_TEXT_BOX = 27,
-    WWT_LAST = 26,
-};
-
 #define WIDGETS_END WWT_LAST, 0, 0, 0, 0, 0, 0, 0
 #define BAR_BLINK (1u << 31)
 
@@ -72,8 +45,8 @@ constexpr uint8_t SCROLLBAR_WIDTH = 10;
 constexpr const ScreenSize TAB_SIZE = { 31, 27 };
 
 constexpr rct_widget MakeWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, WindowColour colour, uint32_t content = 0xFFFFFFFF,
-    rct_string_id tooltip = STR_NONE)
+    const ScreenCoordsXY& origin, const ScreenSize& size, WINDOW_WIDGET_TYPES type, WindowColour colour,
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     rct_widget out = {};
     out.left = origin.x;
@@ -89,8 +62,8 @@ constexpr rct_widget MakeWidget(
 }
 
 constexpr rct_widget MakeRemapWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, WindowColour colour, uint32_t content = 0xFFFFFFFF,
-    rct_string_id tooltip = STR_NONE)
+    const ScreenCoordsXY& origin, const ScreenSize& size, WINDOW_WIDGET_TYPES type, WindowColour colour,
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
 }
@@ -98,7 +71,7 @@ constexpr rct_widget MakeRemapWidget(
 constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip = STR_NONE)
 {
     const ScreenSize size = TAB_SIZE;
-    const uint8_t type = WWT_TAB;
+    const WINDOW_WIDGET_TYPES type = WWT_TAB;
     const WindowColour colour = WindowColour::Secondary;
     const uint32_t content = 0xFFFFFFFF;
 

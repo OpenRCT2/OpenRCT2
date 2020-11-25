@@ -317,6 +317,8 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                             case WWT_SCROLL:
                                 InputScrollDragBegin(screenCoords, w, widgetIndex);
                                 break;
+                            default:
+                                break;
                         }
                     }
                     break;

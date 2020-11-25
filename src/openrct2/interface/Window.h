@@ -78,13 +78,40 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
 } // namespace WIDGET_FLAGS
 
+enum WINDOW_WIDGET_TYPES
+{
+    WWT_EMPTY = 0,
+    WWT_FRAME = 1,
+    WWT_RESIZE = 2,
+    WWT_IMGBTN = 3,
+    WWT_COLOURBTN = 6,
+    WWT_TRNBTN = 7,
+    WWT_TAB = 8,
+    WWT_FLATBTN = 9,
+    WWT_BUTTON = 10,
+    WWT_LABEL_CENTRED = 12, // Centred text
+    WWT_TABLE_HEADER = 13,  // Left-aligned textual button
+    WWT_LABEL = 14,         // Left-aligned text
+    WWT_SPINNER = 15,
+    WWT_DROPDOWN = 16,
+    WWT_VIEWPORT = 17,
+    WWT_GROUPBOX = 19,
+    WWT_CAPTION = 20,
+    WWT_CLOSEBOX = 21,
+    WWT_SCROLL = 22,
+    WWT_CHECKBOX = 23,
+    WWT_PLACEHOLDER = 25,
+    WWT_TEXT_BOX = 27,
+    WWT_LAST = 26,
+};
+
 /**
  * Widget structure
  * size: 0x10
  */
 struct rct_widget
 {
-    uint8_t type;   // 0x00
+    WINDOW_WIDGET_TYPES type; // 0x00
     uint8_t colour; // 0x01
     int16_t left;   // 0x02
     int16_t right;  // 0x04
