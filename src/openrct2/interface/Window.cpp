@@ -1945,7 +1945,7 @@ void window_cancel_textbox()
         context_stop_text_input();
         gUsingWidgetTextBox = false;
         widget_invalidate(w, gCurrentTextBox.widget_index);
-        gCurrentTextBox.widget_index = WindowWidgetType::Last;
+        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
 }
 

@@ -439,7 +439,7 @@ static bool WindowOtherWheelInput(rct_window* w, rct_widgetindex widgetIndex, in
     }
 
     rct_widgetindex buttonWidgetIndex;
-    uint16_t expectedType;
+    WindowWidgetType expectedType;
     uint32_t expectedContent[2];
     switch (widgetType)
     {

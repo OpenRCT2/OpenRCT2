@@ -82,7 +82,7 @@ constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, WindowColour colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 26;
@@ -94,7 +94,7 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
 }
 
 constexpr rct_widget MakeSpinnerIncreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, WindowColour colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 13;
