@@ -78,31 +78,31 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
 } // namespace WIDGET_FLAGS
 
-enum WINDOW_WIDGET_TYPES
+enum WindowWidgetType
 {
-    WWT_EMPTY = 0,
-    WWT_FRAME = 1,
-    WWT_RESIZE = 2,
-    WWT_IMGBTN = 3,
-    WWT_COLOURBTN = 6,
-    WWT_TRNBTN = 7,
-    WWT_TAB = 8,
-    WWT_FLATBTN = 9,
-    WWT_BUTTON = 10,
-    WWT_LABEL_CENTRED = 12, // Centred text
-    WWT_TABLE_HEADER = 13,  // Left-aligned textual button
-    WWT_LABEL = 14,         // Left-aligned text
-    WWT_SPINNER = 15,
-    WWT_DROPDOWN = 16,
-    WWT_VIEWPORT = 17,
-    WWT_GROUPBOX = 19,
-    WWT_CAPTION = 20,
-    WWT_CLOSEBOX = 21,
-    WWT_SCROLL = 22,
-    WWT_CHECKBOX = 23,
-    WWT_PLACEHOLDER = 25,
-    WWT_TEXT_BOX = 27,
-    WWT_LAST = 26,
+    Empty = 0,
+    Frame = 1,
+    Resize = 2,
+    ImgBtn = 3,
+    ColourBtn = 6,
+    TrnBtn = 7,
+    Tab = 8,
+    FlatBtn = 9,
+    Button = 10,
+    LabelCentred = 12, // Centred text
+    TableHeader = 13, // Left-aligned textual button
+    Label = 14,        // Left-aligned text
+    Spinner = 15,
+    DropdownMenu = 16,
+    Viewport = 17,
+    Groupbox = 19,
+    Caption = 20,
+    CloseBox = 21,
+    Scroll = 22,
+    Checkbox = 23,
+    Placeholder = 25,
+    TextBox = 27,
+    Last = 26,
 };
 
 /**
@@ -111,7 +111,7 @@ enum WINDOW_WIDGET_TYPES
  */
 struct rct_widget
 {
-    WINDOW_WIDGET_TYPES type; // 0x00
+    WindowWidgetType type; // 0x00
     uint8_t colour; // 0x01
     int16_t left;   // 0x02
     int16_t right;  // 0x04

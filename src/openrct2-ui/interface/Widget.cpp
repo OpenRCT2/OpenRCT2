@@ -49,59 +49,59 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetInd
 {
     switch (w->widgets[widgetIndex].type)
     {
-        case WWT_EMPTY:
-        case WWT_LAST:
+        case WindowWidgetType::Empty:
+        case WindowWidgetType::Last:
             break;
-        case WWT_FRAME:
+        case WindowWidgetType::Frame:
             WidgetFrameDraw(dpi, w, widgetIndex);
             break;
-        case WWT_RESIZE:
+        case WindowWidgetType::Resize:
             WidgetResizeDraw(dpi, w, widgetIndex);
             break;
-        case WWT_IMGBTN:
+        case WindowWidgetType::ImgBtn:
             WidgetButtonDraw(dpi, w, widgetIndex);
             break;
-        case WWT_COLOURBTN:
-        case WWT_TRNBTN:
-        case WWT_TAB:
+        case WindowWidgetType::ColourBtn:
+        case WindowWidgetType::TrnBtn:
+        case WindowWidgetType::Tab:
             WidgetTabDraw(dpi, w, widgetIndex);
             break;
-        case WWT_FLATBTN:
+        case WindowWidgetType::FlatBtn:
             WidgetFlatButtonDraw(dpi, w, widgetIndex);
             break;
-        case WWT_BUTTON:
-        case WWT_TABLE_HEADER:
+        case WindowWidgetType::Button:
+        case WindowWidgetType::TableHeader:
             WidgetTextButton(dpi, w, widgetIndex);
             break;
-        case WWT_LABEL_CENTRED:
+        case WindowWidgetType::LabelCentred:
             WidgetTextCentred(dpi, w, widgetIndex);
             break;
-        case WWT_LABEL:
+        case WindowWidgetType::Label:
             WidgetText(dpi, w, widgetIndex);
             break;
-        case WWT_SPINNER:
-        case WWT_DROPDOWN:
-        case WWT_VIEWPORT:
+        case WindowWidgetType::Spinner:
+        case WindowWidgetType::DropdownMenu:
+        case WindowWidgetType::Viewport:
             WidgetTextInset(dpi, w, widgetIndex);
             break;
-        case WWT_GROUPBOX:
+        case WindowWidgetType::Groupbox:
             WidgetGroupboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CAPTION:
+        case WindowWidgetType::Caption:
             WidgetCaptionDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CLOSEBOX:
+        case WindowWidgetType::CloseBox:
             WidgetCloseboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_SCROLL:
+        case WindowWidgetType::Scroll:
             WidgetScrollDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CHECKBOX:
+        case WindowWidgetType::Checkbox:
             WidgetCheckboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_PLACEHOLDER:
+        case WindowWidgetType::Placeholder:
             break;
-        case WWT_TEXT_BOX:
+        case WindowWidgetType::TextBox:
             WidgetTextBoxDraw(dpi, w, widgetIndex);
             break;
     }
@@ -213,10 +213,10 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if (widget->type != WWT_TAB && static_cast<int32_t>(widget->image) == -1)
+    if (widget->type != WindowWidgetType::Tab && static_cast<int32_t>(widget->image) == -1)
         return;
 
-    if (widget->type == WWT_TAB)
+    if (widget->type == WindowWidgetType::Tab)
     {
         if (WidgetIsDisabled(w, widgetIndex))
             return;
@@ -235,7 +235,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
         return;
     }
 
-    if (widget->type != WWT_TRNBTN)
+    if (widget->type != WindowWidgetType::TrnBtn)
     {
         WidgetDrawImage(dpi, w, widgetIndex);
         return;
@@ -313,7 +313,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
     gfx_fill_rect_inset(dpi, rect, colour, press);
 
     // Button caption
-    if (widget->type != WWT_TABLE_HEADER)
+    if (widget->type != WindowWidgetType::TableHeader)
     {
         WidgetTextCentred(dpi, w, widgetIndex);
     }
@@ -345,7 +345,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     auto topLeft = w->windowPos + ScreenCoordsXY{ widget->left, 0 };
     int32_t r = w->windowPos.x + widget->right;
 
-    if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
+    if (widget->type == WindowWidgetType::Button || widget->type == WindowWidgetType::TableHeader)
         topLeft.y += widget->textTop();
     else
         topLeft.y += widget->top;
@@ -383,8 +383,8 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex wi
     int32_t r = w->windowPos.x + widget->right;
     int32_t t;
 
-    if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
-        || widget->type == WWT_TABLE_HEADER)
+    if (widget->type == WindowWidgetType::Button || widget->type == WindowWidgetType::DropdownMenu
+        || widget->type == WindowWidgetType::Spinner || widget->type == WindowWidgetType::TableHeader)
     {
         t = w->windowPos.y + widget->textTop();
     }
@@ -540,10 +540,10 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
 
     topLeft = w->windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
     int32_t width = widget->width() - 4;
-    if ((widget + 1)->type == WWT_CLOSEBOX)
+    if ((widget + 1)->type == WindowWidgetType::CloseBox)
     {
         width -= 10;
-        if ((widget + 2)->type == WWT_CLOSEBOX)
+        if ((widget + 2)->type == WindowWidgetType::CloseBox)
             width -= 10;
     }
     topLeft.x += width / 2;
@@ -793,7 +793,8 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     // Get the colour
     uint8_t colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
-    if (widget->type == WWT_COLOURBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
+    if (widget->type == WindowWidgetType::ColourBtn || widget->type == WindowWidgetType::TrnBtn
+        || widget->type == WindowWidgetType::Tab)
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             image++;
 
@@ -898,7 +899,7 @@ void WidgetScrollGetPart(
     *scroll_id = 0;
     for (rct_widget* iterator = w->widgets; iterator != widget; iterator++)
     {
-        if (iterator->type == WWT_SCROLL)
+        if (iterator->type == WindowWidgetType::Scroll)
         {
             *scroll_id += 1;
         }

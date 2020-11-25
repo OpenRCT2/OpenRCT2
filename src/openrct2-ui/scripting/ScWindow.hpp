@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 rct_widgetindex widgetIndex = 0;
-                for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
+                for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
                 {
                     result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
                     widgetIndex++;

@@ -81,23 +81,23 @@ validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 static rct_widget window_map_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({  0,  43}, {245, 215}, WWT_RESIZE,    WindowColour::Secondary                                                                                  ),
-    MakeRemapWidget   ({  3,  17}, { 31,  27}, WWT_COLOURBTN, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
-    MakeRemapWidget   ({ 34,  17}, { 31,  27}, WWT_COLOURBTN, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
-    MakeWidget        ({  3,  46}, {239, 180}, WWT_SCROLL,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
-    MakeSpinnerWidgets({104, 229}, { 95,  12}, WWT_SPINNER,   WindowColour::Secondary, STR_MAP_SIZE_VALUE                                                              ), // NB: 3 widgets
-    MakeWidget        ({  4,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
-    MakeWidget        ({  4,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_PARK_ENTRANCE,               STR_BUILD_PARK_ENTRANCE_TIP                    ),
-    MakeWidget        ({ 28,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
-    MakeWidget        ({  4,  17}, { 44,  32}, WWT_IMGBTN,    WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                                            ),
-    MakeRemapWidget   ({  5,  18}, { 16,  16}, WWT_TRNBTN,    WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_TIP                    ),
-    MakeRemapWidget   ({ 31,  32}, { 16,  16}, WWT_TRNBTN,    WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_TIP                     ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-    MakeWidget        ({ 58, 197}, {174,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-    MakeWidget        ({218,  45}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_ROTATE_ARROW,                STR_ROTATE_OBJECTS_90                          ),
-    MakeWidget        ({110, 189}, {131,  14}, WWT_BUTTON,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
+    MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
+    MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
+    MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
+    MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
+    MakeSpinnerWidgets({104, 229}, { 95,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_MAP_SIZE_VALUE                                                              ), // NB: 3 widgets
+    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
+    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PARK_ENTRANCE,               STR_BUILD_PARK_ENTRANCE_TIP                    ),
+    MakeWidget        ({ 28,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
+    MakeWidget        ({  4,  17}, { 44,  32}, WindowWidgetType::ImgBtn,    WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                                            ),
+    MakeRemapWidget   ({  5,  18}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_TIP                    ),
+    MakeRemapWidget   ({ 31,  32}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_TIP                     ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
+    MakeWidget        ({ 58, 197}, {174,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
+    MakeWidget        ({218,  45}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,                STR_ROTATE_OBJECTS_90                          ),
+    MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
     { WIDGETS_END },
 };
 
@@ -744,7 +744,7 @@ static void window_map_invalidate(rct_window* w)
     // Disable all scenario editor related widgets
     for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_MAP_GENERATOR; i++)
     {
-        w->widgets[i].type = WWT_EMPTY;
+        w->widgets[i].type = WindowWidgetType::Empty;
     }
 
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
@@ -753,11 +753,11 @@ static void window_map_invalidate(rct_window* w)
         if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP
             && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
         {
-            w->widgets[WIDX_ROTATE_90].type = WWT_FLATBTN;
+            w->widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
         }
 
         // Always show set land rights button
-        w->widgets[WIDX_SET_LAND_RIGHTS].type = WWT_FLATBTN;
+        w->widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
         // If any tool is active
         if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP)
@@ -769,12 +769,12 @@ static void window_map_invalidate(rct_window* w)
             }
             else
             { // if in set land rights mode: show land tool buttons + modes
-                w->widgets[WIDX_LAND_TOOL].type = WWT_IMGBTN;
-                w->widgets[WIDX_LAND_TOOL_SMALLER].type = WWT_TRNBTN;
-                w->widgets[WIDX_LAND_TOOL_LARGER].type = WWT_TRNBTN;
+                w->widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
+                w->widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
+                w->widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
                 for (i = 0; i < 4; i++)
-                    w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
+                    w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WindowWidgetType::Checkbox;
 
                 w->widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
             }
@@ -808,7 +808,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
     // People starting position (scenario editor only)
-    if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
+    if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
@@ -949,15 +949,15 @@ static void window_map_centre_on_view_point()
  */
 static void window_map_show_default_scenario_editor_buttons(rct_window* w)
 {
-    w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
-    w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
-    w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_BUTTON;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_BUTTON;
+    w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
+    w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
+    w->widgets[WIDX_MAP_SIZE_SPINNER].type = WindowWidgetType::Spinner;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WindowWidgetType::Button;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WindowWidgetType::Button;
 
     // Only show this in the scenario editor, even when in sandbox mode.
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        w->widgets[WIDX_MAP_GENERATOR].type = WWT_BUTTON;
+        w->widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
     auto ft = Formatter::Common();
     ft.Increment(2);

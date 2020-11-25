@@ -308,13 +308,13 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     {
                         switch (widget->type)
                         {
-                            case WWT_VIEWPORT:
+                            case WindowWidgetType::Viewport:
                                 if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
                                 {
                                     InputViewportDragBegin(w);
                                 }
                                 break;
-                            case WWT_SCROLL:
+                            case WindowWidgetType::Scroll:
                                 InputScrollDragBegin(screenCoords, w, widgetIndex);
                                 break;
                             default:
@@ -931,7 +931,7 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
 
     InputWidgetOverChangeCheck(windowClass, windowNumber, widgetIndex);
 
-    if (w != nullptr && widgetIndex != -1 && widget->type == WWT_SCROLL)
+    if (w != nullptr && widgetIndex != -1 && widget->type == WindowWidgetType::Scroll)
     {
         int32_t scroll_part, scrollId;
         ScreenCoordsXY newScreenCoords;
@@ -989,7 +989,7 @@ static void InputWidgetOverFlatbuttonInvalidate()
     if (w != nullptr)
     {
         window_event_invalidate_call(w);
-        if (w->widgets[gHoverWidget.widget_index].type == WWT_FLATBTN)
+        if (w->widgets[gHoverWidget.widget_index].type == WindowWidgetType::FlatBtn)
         {
             widget_invalidate_by_number(
                 gHoverWidget.window_classification, gHoverWidget.window_number, gHoverWidget.widget_index);
@@ -1035,13 +1035,13 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
 
     switch (widget->type)
     {
-        case WWT_FRAME:
-        case WWT_RESIZE:
+        case WindowWidgetType::Frame:
+        case WindowWidgetType::Resize:
             if (window_can_resize(w)
                 && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                 InputWindowResizeBegin(w, widgetIndex, screenCoords);
             break;
-        case WWT_VIEWPORT:
+        case WindowWidgetType::Viewport:
             _inputState = InputState::ViewportLeft;
             gInputDragLast = screenCoords;
             _dragWidget.window_classification = windowClass;
@@ -1056,10 +1056,10 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
                 }
             }
             break;
-        case WWT_CAPTION:
+        case WindowWidgetType::Caption:
             InputWindowPositionBegin(w, widgetIndex, screenCoords);
             break;
-        case WWT_SCROLL:
+        case WindowWidgetType::Scroll:
             InputScrollBegin(w, widgetIndex, screenCoords);
             break;
         default:
@@ -1105,7 +1105,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
         {
             switch (window->widgets[widgetId].type)
             {
-                case WWT_VIEWPORT:
+                case WindowWidgetType::Viewport:
                     if (!(_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                     {
                         if (ViewportInteractionLeftOver(screenCoords))
@@ -1118,8 +1118,8 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                     cursorId = static_cast<CursorID>(gCurrentToolId);
                     break;
 
-                case WWT_FRAME:
-                case WWT_RESIZE:
+                case WindowWidgetType::Frame:
+                case WindowWidgetType::Resize:
                     if (!(window->flags & WF_RESIZABLE))
                         break;
 
@@ -1135,7 +1135,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
                     cursorId = CursorID::DiagonalArrows;
                     break;
 
-                case WWT_SCROLL:
+                case WindowWidgetType::Scroll:
                 {
                     int32_t output_scroll_area, scroll_id;
                     ScreenCoordsXY scrollCoords;

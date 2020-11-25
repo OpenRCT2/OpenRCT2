@@ -142,15 +142,15 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {600, 357}, WWT_RESIZE,       WindowColour::Secondary                                                                  ),
-    MakeWidget({470, 22}, {122,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
-    MakeWidget({  4, 60}, {288, 327}, WWT_SCROLL,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
-    MakeWidget({391, 45}, {114, 115}, WWT_FLATBTN,      WindowColour::Secondary                                                                  ),
-    MakeWidget({470, 22}, {122,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
-    MakeWidget({350, 22}, {114,  14}, WWT_BUTTON,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
-    MakeWidget({  4, 45}, {211,  14}, WWT_TEXT_BOX,     WindowColour::Secondary                                                                  ),
-    MakeWidget({218, 45}, { 70,  14}, WWT_BUTTON,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
-    MakeWidget({  3, 73}, {285,   4}, WWT_IMGBTN,       WindowColour::Secondary                                                                  ),
+    MakeWidget({  0, 43}, {600, 357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
+    MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
+    MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
+    MakeWidget({391, 45}, {114, 115}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
+    MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
+    MakeWidget({350, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
+    MakeWidget({  4, 45}, {211,  14}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                                  ),
+    MakeWidget({218, 45}, { 70,  14}, WindowWidgetType::Button,       WindowColour::Secondary, STR_OBJECT_SEARCH_CLEAR                                         ),
+    MakeWidget({  3, 73}, {285,   4}, WindowWidgetType::ImgBtn,       WindowColour::Secondary                                                                  ),
     MakeTab   ({  3, 47},                                                                                       STR_OBJECT_FILTER_ALL_RIDES_TIP  ),
     MakeTab   ({ 34, 47},                                                                                       STR_TRANSPORT_RIDES_TIP          ),
     MakeTab   ({ 65, 47},                                                                                       STR_GENTLE_RIDES_TIP             ),
@@ -158,8 +158,8 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     MakeTab   ({127, 47},                                                                                       STR_THRILL_RIDES_TIP             ),
     MakeTab   ({158, 47},                                                                                       STR_WATER_RIDES_TIP              ),
     MakeTab   ({189, 47},                                                                                       STR_SHOPS_STALLS_TIP             ),
-    MakeWidget({  4, 80}, {145,  14}, WWT_TABLE_HEADER, WindowColour::Secondary                                                                  ),
-    MakeWidget({149, 80}, {143,  14}, WWT_TABLE_HEADER, WindowColour::Secondary                                                                  ),
+    MakeWidget({  4, 80}, {145,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
+    MakeWidget({149, 80}, {143,  14}, WindowWidgetType::TableHeader, WindowColour::Secondary                                                                  ),
 
     MakeTab   ({  3, 17},                                                                                       STR_STRING_DEFINED_TOOLTIP       ),
     // Copied object type times...
@@ -818,17 +818,17 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
-        w->widgets[WIDX_INSTALL_TRACK].type = WWT_BUTTON;
+        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Button;
     }
     else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
     {
         w->widgets[WIDX_TITLE].text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
-        w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
+        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Empty;
     }
     else
     {
         w->widgets[WIDX_TITLE].text = STR_OBJECT_SELECTION;
-        w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
+        w->widgets[WIDX_INSTALL_TRACK].type = WindowWidgetType::Empty;
     }
 
     // Align tabs, hide advanced ones
@@ -839,11 +839,11 @@ static void window_editor_object_selection_invalidate(rct_window* w)
         auto widget = &w->widgets[WIDX_TAB_1 + i];
         if (!advancedMode && ObjectSelectionPages[i].IsAdvanced)
         {
-            widget->type = WWT_EMPTY;
+            widget->type = WindowWidgetType::Empty;
         }
         else
         {
-            widget->type = WWT_TAB;
+            widget->type = WindowWidgetType::Tab;
             widget->left = x;
             widget->right = x + 30;
             x += 31;
@@ -852,20 +852,20 @@ static void window_editor_object_selection_invalidate(rct_window* w)
 
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TRACK_DESIGNER))
     {
-        w->widgets[WIDX_ADVANCED].type = WWT_EMPTY;
+        w->widgets[WIDX_ADVANCED].type = WindowWidgetType::Empty;
         for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
         {
-            w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
+            w->widgets[WIDX_TAB_1 + i].type = WindowWidgetType::Empty;
         }
         x = 150;
     }
     else
     {
-        w->widgets[WIDX_ADVANCED].type = WWT_BUTTON;
+        w->widgets[WIDX_ADVANCED].type = WindowWidgetType::Button;
         x = 300;
     }
 
-    w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_BUTTON;
+    w->widgets[WIDX_FILTER_DROPDOWN].type = WindowWidgetType::Button;
     w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
     w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
     w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
@@ -901,19 +901,19 @@ static void window_editor_object_selection_invalidate(rct_window* w)
             }
         }
 
-        w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WWT_IMGBTN;
+        w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].type = WindowWidgetType::ImgBtn;
         for (int32_t i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
-            w->widgets[i].type = WWT_TAB;
+            w->widgets[i].type = WindowWidgetType::Tab;
 
         int32_t width_limit = (w->widgets[WIDX_LIST].width() - 15) / 2;
 
-        w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
+        w->widgets[WIDX_LIST_SORT_TYPE].type = WindowWidgetType::TableHeader;
         w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_TEXT_BOX].bottom + 3;
         w->widgets[WIDX_LIST_SORT_TYPE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].top + 13;
         w->widgets[WIDX_LIST_SORT_TYPE].left = 4;
         w->widgets[WIDX_LIST_SORT_TYPE].right = w->widgets[WIDX_LIST_SORT_TYPE].left + width_limit;
 
-        w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_TABLE_HEADER;
+        w->widgets[WIDX_LIST_SORT_RIDE].type = WindowWidgetType::TableHeader;
         w->widgets[WIDX_LIST_SORT_RIDE].top = w->widgets[WIDX_LIST_SORT_TYPE].top;
         w->widgets[WIDX_LIST_SORT_RIDE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].bottom;
         w->widgets[WIDX_LIST_SORT_RIDE].left = w->widgets[WIDX_LIST_SORT_TYPE].right + 1;
@@ -928,10 +928,10 @@ static void window_editor_object_selection_invalidate(rct_window* w)
             | (1 << WIDX_FILTER_RIDE_TAB_COASTER) | (1 << WIDX_FILTER_RIDE_TAB_THRILL) | (1 << WIDX_FILTER_RIDE_TAB_WATER)
             | (1 << WIDX_FILTER_RIDE_TAB_STALL));
         for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
-            w->widgets[i].type = WWT_EMPTY;
+            w->widgets[i].type = WindowWidgetType::Empty;
 
-        w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_EMPTY;
-        w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_EMPTY;
+        w->widgets[WIDX_LIST_SORT_TYPE].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_LIST_SORT_RIDE].type = WindowWidgetType::Empty;
     }
 }
 
@@ -950,7 +950,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         widget = &w->widgets[WIDX_TAB_1 + i];
-        if (widget->type != WWT_EMPTY)
+        if (widget->type != WindowWidgetType::Empty)
         {
             auto image = ObjectSelectionPages[i].Image;
             auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
@@ -970,7 +970,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         for (int32_t i = 0; i < 7; i++)
         {
             widget = &w->widgets[WIDX_FILTER_RIDE_TAB_ALL + i];
-            if (widget->type == WWT_EMPTY)
+            if (widget->type == WindowWidgetType::Empty)
                 continue;
 
             int32_t spriteIndex = ride_tabs[i];
@@ -1012,7 +1012,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
     // Draw sort button text
     widget = &w->widgets[WIDX_LIST_SORT_TYPE];
-    if (widget->type != WWT_EMPTY)
+    if (widget->type != WindowWidgetType::Empty)
     {
         auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
@@ -1022,7 +1022,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, ft, w->colours[1]);
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
-    if (widget->type != WWT_EMPTY)
+    if (widget->type != WindowWidgetType::Empty)
     {
         auto ft = Formatter();
         auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)

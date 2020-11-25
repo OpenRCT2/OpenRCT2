@@ -44,11 +44,11 @@ enum WINDOW_SIGN_WIDGET_IDX {
 // 0x9AEE00
 static rct_widget window_sign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
-    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
-    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
-    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
-    MakeWidget({     17, WH - 16}, {12, 12}, WWT_COLOURBTN, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
+    MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
+    MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_MAIN_SIGN_COLOUR_TIP), // Main colour
+    MakeWidget({     17, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,   STR_SELECT_TEXT_COLOUR_TIP     ), // Text colour
     { WIDGETS_END },
 };
 
@@ -285,16 +285,16 @@ static void window_sign_invalidate(rct_window* w)
 
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(w->SceneryEntry);
 
-    main_colour_btn->type = WWT_EMPTY;
-    text_colour_btn->type = WWT_EMPTY;
+    main_colour_btn->type = WindowWidgetType::Empty;
+    text_colour_btn->type = WindowWidgetType::Empty;
 
     if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
     {
-        main_colour_btn->type = WWT_COLOURBTN;
+        main_colour_btn->type = WindowWidgetType::ColourBtn;
     }
     if (scenery_entry->large_scenery.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
     {
-        text_colour_btn->type = WWT_COLOURBTN;
+        text_colour_btn->type = WindowWidgetType::ColourBtn;
     }
 
     main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
@@ -490,16 +490,16 @@ static void window_sign_small_invalidate(rct_window* w)
 
     rct_scenery_entry* scenery_entry = get_wall_entry(w->SceneryEntry);
 
-    main_colour_btn->type = WWT_EMPTY;
-    text_colour_btn->type = WWT_EMPTY;
+    main_colour_btn->type = WindowWidgetType::Empty;
+    text_colour_btn->type = WindowWidgetType::Empty;
 
     if (scenery_entry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
     {
-        main_colour_btn->type = WWT_COLOURBTN;
+        main_colour_btn->type = WindowWidgetType::ColourBtn;
     }
     if (scenery_entry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        text_colour_btn->type = WWT_COLOURBTN;
+        text_colour_btn->type = WindowWidgetType::ColourBtn;
     }
 
     main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(w->list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;

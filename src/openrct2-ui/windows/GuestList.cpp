@@ -69,17 +69,17 @@ static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
 
 static rct_widget window_guest_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {350, 287}, WWT_RESIZE,   WindowColour::Secondary                                                   ), // tab content panel
-    MakeWidget({  5, 59}, { 80,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
-    MakeWidget({ 73, 60}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
-    MakeWidget({120, 59}, {142,  12}, WWT_DROPDOWN, WindowColour::Secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
-    MakeWidget({250, 60}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
-    MakeWidget({273, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
-    MakeWidget({297, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
-    MakeWidget({321, 46}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
+    MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
+    MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
+    MakeWidget({ 73, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
+    MakeWidget({120, 59}, {142,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, 0xFFFFFFFF,         STR_INFORMATION_TYPE_TIP     ), // information type dropdown
+    MakeWidget({250, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_INFORMATION_TYPE_TIP     ), // information type dropdown button
+    MakeWidget({273, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_MAP,            STR_SHOW_GUESTS_ON_MAP_TIP   ), // map
+    MakeWidget({297, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SEARCH,      STR_GUESTS_FILTER_BY_NAME_TIP), // filter by name
+    MakeWidget({321, 46}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TRACK_PEEP,     STR_TRACKED_GUESTS_ONLY_TIP  ), // tracking
     MakeTab   ({  3, 17},                                                                        STR_INDIVIDUAL_GUESTS_TIP    ), // tab 1
     MakeTab   ({ 34, 17},                                                                        STR_SUMMARISED_GUESTS_TIP    ), // tab 2
-    MakeWidget({  3, 72}, {344, 255}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
+    MakeWidget({  3, 72}, {344, 255}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_BOTH                                      ), // guest list
     { WIDGETS_END },
 };
 
@@ -204,10 +204,10 @@ rct_window* window_guest_list_open()
     _window_guest_list_num_pages = 1;
     _window_guest_list_tracking_only = false;
     _window_guest_list_filter_name[0] = '\0';
-    window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
-    window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WWT_FLATBTN;
-    window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
-    window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
+    window_guest_list_widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
+    window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
+    window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
+    window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
     window->min_width = 350;
     window->min_height = 330;
     window->max_width = 500;
@@ -411,15 +411,15 @@ static void window_guest_list_mousedown(rct_window* w, rct_widgetindex widgetInd
             _window_guest_list_selected_tab = widgetIndex - WIDX_TAB_1;
             _window_guest_list_selected_page = 0;
             _window_guest_list_num_pages = 1;
-            window_guest_list_widgets[WIDX_TRACKING].type = WWT_EMPTY;
-            window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WWT_EMPTY;
+            window_guest_list_widgets[WIDX_TRACKING].type = WindowWidgetType::Empty;
+            window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::Empty;
             if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL)
             {
-                window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
-                window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WWT_FLATBTN;
+                window_guest_list_widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
+                window_guest_list_widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
             }
-            window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
-            window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
+            window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
+            window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
             w->list_information_type = 0;
             _window_guest_list_selected_filter = -1;
             w->Invalidate();
@@ -584,7 +584,7 @@ static void window_guest_list_scrollmousedown(rct_window* w, int32_t scrollIndex
                 _window_guest_list_filter_arguments = _window_guest_list_groups_arguments[i];
                 _window_guest_list_selected_filter = _window_guest_list_selected_view;
                 _window_guest_list_selected_tab = PAGE_INDIVIDUAL;
-                window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
+                window_guest_list_widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
                 w->Invalidate();
                 w->scrolls[0].v_top = 0;
                 window_guest_list_refresh_list();
@@ -622,9 +622,9 @@ static void window_guest_list_invalidate(rct_window* w)
     w->pressed_widgets |= (1LL << (_window_guest_list_selected_tab + WIDX_TAB_1));
 
     window_guest_list_widgets[WIDX_INFO_TYPE_DROPDOWN].text = viewNames[_window_guest_list_selected_view];
-    window_guest_list_widgets[WIDX_MAP].type = WWT_EMPTY;
+    window_guest_list_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
     if (_window_guest_list_selected_tab == PAGE_INDIVIDUAL && _window_guest_list_selected_filter != -1)
-        window_guest_list_widgets[WIDX_MAP].type = WWT_FLATBTN;
+        window_guest_list_widgets[WIDX_MAP].type = WindowWidgetType::FlatBtn;
 
     window_guest_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_guest_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -644,16 +644,16 @@ static void window_guest_list_invalidate(rct_window* w)
 
     if (_window_guest_list_num_pages > 1)
     {
-        window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
-        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_BUTTON;
+        window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
+        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
         auto ft = Formatter::Common();
         ft.Increment(4);
         ft.Add<uint16_t>(_window_guest_list_selected_page + 1);
     }
     else
     {
-        window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
-        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
+        window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WindowWidgetType::Empty;
+        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
     }
 }
 

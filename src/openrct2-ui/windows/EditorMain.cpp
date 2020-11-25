@@ -24,7 +24,7 @@ static rct_window_event_list window_editor_main_events([](auto& events) {
 // clang-format on
 
 static rct_widget window_editor_main_widgets[] = {
-    MakeWidget({ 0, 0 }, { 0, 0 }, WWT_VIEWPORT, WindowColour::Primary, STR_VIEWPORT),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     { WIDGETS_END },
 };
 

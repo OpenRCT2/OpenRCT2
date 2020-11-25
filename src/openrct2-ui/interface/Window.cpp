@@ -284,7 +284,7 @@ rct_window* WindowCreateCentred(
 static int32_t WindowGetWidgetIndex(rct_window* w, rct_widget* widget)
 {
     int32_t i = 0;
-    for (rct_widget* widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+    for (rct_widget* widget2 = w->widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
         if (widget == widget2)
             return i;
     return -1;
@@ -292,16 +292,16 @@ static int32_t WindowGetWidgetIndex(rct_window* w, rct_widget* widget)
 
 static int32_t WindowGetScrollIndex(rct_window* w, int32_t targetWidgetIndex)
 {
-    if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
+    if (w->widgets[targetWidgetIndex].type != WindowWidgetType::Scroll)
         return -1;
 
     int32_t scrollIndex = 0;
     rct_widgetindex widgetIndex = 0;
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
         if (widgetIndex == targetWidgetIndex)
             break;
-        if (widget->type == WWT_SCROLL)
+        if (widget->type == WindowWidgetType::Scroll)
             scrollIndex++;
     }
 
@@ -310,9 +310,9 @@ static int32_t WindowGetScrollIndex(rct_window* w, int32_t targetWidgetIndex)
 
 static rct_widget* WindowGetScrollWidget(rct_window* w, int32_t scrollIndex)
 {
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         if (scrollIndex == 0)
@@ -361,9 +361,9 @@ static void WindowScrollWheelInput(rct_window* w, int32_t scrollIndex, int32_t w
 static int32_t WindowWheelInput(rct_window* w, int32_t wheel)
 {
     int32_t i = 0;
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         // Originally always checked first scroll view, bug maybe?
@@ -404,12 +404,12 @@ static bool WindowOtherWheelInput(rct_window* w, rct_widgetindex widgetIndex, in
 
     // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
     int32_t attempts = 0;
-    while (widgetType != WWT_IMGBTN && widgetType != WWT_SPINNER && widgetIndex > 0)
+    while (widgetType != WindowWidgetType::ImgBtn && widgetType != WindowWidgetType::Spinner && widgetIndex > 0)
     {
         switch (widgetType)
         {
-            case WWT_TRNBTN: // + and - for preview widget
-            case WWT_BUTTON: // + and - for spinner widget
+            case WindowWidgetType::TrnBtn: // + and - for preview widget
+            case WindowWidgetType::Button: // + and - for spinner widget
             {
                 if (attempts > 0)
                 {
@@ -443,15 +443,15 @@ static bool WindowOtherWheelInput(rct_window* w, rct_widgetindex widgetIndex, in
     uint32_t expectedContent[2];
     switch (widgetType)
     {
-        case WWT_IMGBTN:
+        case WindowWidgetType::ImgBtn:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
-            expectedType = WWT_TRNBTN;
+            expectedType = WindowWidgetType::TrnBtn;
             expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
             expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
             break;
-        case WWT_SPINNER:
+        case WindowWidgetType::Spinner:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
-            expectedType = WWT_BUTTON;
+            expectedType = WindowWidgetType::Button;
             expectedContent[0] = STR_NUMERIC_UP;
             expectedContent[1] = STR_NUMERIC_DOWN;
             break;
@@ -512,7 +512,7 @@ void WindowAllWheelInput()
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];
-                if (widget->type == WWT_SCROLL)
+                if (widget->type == WindowWidgetType::Scroll)
                 {
                     int32_t scrollIndex = WindowGetScrollIndex(w, widgetIndex);
                     rct_scroll* scroll = &w->scrolls[scrollIndex];
@@ -556,9 +556,9 @@ void WindowInitScrollWidgets(rct_window* w)
 
     widget_index = 0;
     scroll_index = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
         {
             widget_index++;
             continue;
@@ -601,7 +601,7 @@ void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi)
     // todo: some code missing here? Between 006EB18C and 006EB260
 
     widgetIndex = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         // Check if widget is outside the draw region
         if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
@@ -631,9 +631,9 @@ static void WindowInvalidatePressedImageButton(rct_window* w)
     rct_widget* widget;
 
     widgetIndex = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
-        if (widget->type != WWT_IMGBTN)
+        if (widget->type != WindowWidgetType::ImgBtn)
             continue;
 
         if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))

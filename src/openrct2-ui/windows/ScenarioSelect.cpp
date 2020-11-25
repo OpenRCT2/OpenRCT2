@@ -74,16 +74,16 @@ enum {
 
 static rct_widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 50}, {734, 284}, WWT_IMGBTN, WindowColour::Secondary),                  // tab content panel
-    MakeRemapWidget({  3, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
-    MakeRemapWidget({ 94, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
-    MakeRemapWidget({185, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 3
-    MakeRemapWidget({276, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 4
-    MakeRemapWidget({367, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 5
-    MakeRemapWidget({458, 17}, {136,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 6
-    MakeRemapWidget({594, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
-    MakeRemapWidget({685, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
-    MakeWidget     ({  3, 54}, {553, 276}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL), // level list
+    MakeWidget     ({  0, 50}, {734, 284}, WindowWidgetType::ImgBtn, WindowColour::Secondary),                  // tab content panel
+    MakeRemapWidget({  3, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
+    MakeRemapWidget({ 94, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
+    MakeRemapWidget({185, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 3
+    MakeRemapWidget({276, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 4
+    MakeRemapWidget({367, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 5
+    MakeRemapWidget({458, 17}, {136,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 6
+    MakeRemapWidget({594, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
+    MakeRemapWidget({685, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
+    MakeWidget     ({  3, 54}, {553, 276}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     { WIDGETS_END },
 };
 
@@ -229,11 +229,11 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         rct_widget* widget = &w->widgets[i + WIDX_TAB1];
         if (!(showPages & (1 << i)))
         {
-            widget->type = WWT_EMPTY;
+            widget->type = WindowWidgetType::Empty;
             continue;
         }
 
-        widget->type = WWT_TAB;
+        widget->type = WindowWidgetType::Tab;
         widget->left = x;
         widget->right = x + 90;
         x += 91;
@@ -431,7 +431,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
         rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
-        if (widget->type == WWT_EMPTY)
+        if (widget->type == WindowWidgetType::Empty)
             continue;
 
         auto ft = Formatter();

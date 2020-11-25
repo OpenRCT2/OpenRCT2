@@ -230,33 +230,33 @@ static constexpr const int32_t right_aligned_widgets_order[] = {
 #pragma endregion
 
 static rct_widget window_top_toolbar_widgets[] = {
-    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
-    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
-    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
-    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
-    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
-    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
-    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
-    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
-    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
-    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
-    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
-    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
-    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
-    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
-    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
-    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
-    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
-    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WWT_TRNBTN, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
-    MakeWidget     ({  0, 0}, {10,                      1}, WWT_EMPTY,  WindowColour::Primary                                                                   ), // Artificial widget separator
+    MakeRemapWidget({  0, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_PAUSE,          STR_PAUSE_GAME_TIP                ), // Pause
+    MakeRemapWidget({ 60, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TOOLBAR_FILE,           STR_DISC_AND_GAME_OPTIONS_TIP     ), // File menu
+    MakeRemapWidget({250, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MUTE,        STR_TOOLBAR_MUTE_TIP              ), // Mute
+    MakeRemapWidget({100, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_OUT,       STR_ZOOM_OUT_TIP                  ), // Zoom out
+    MakeRemapWidget({130, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ZOOM_IN,        STR_ZOOM_IN_TIP                   ), // Zoom in
+    MakeRemapWidget({160, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_ROTATE,         STR_ROTATE_TIP                    ), // Rotate camera
+    MakeRemapWidget({190, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_VIEW,           STR_VIEW_OPTIONS_TIP              ), // Transparency menu
+    MakeRemapWidget({220, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Secondary , SPR_TOOLBAR_MAP,            STR_SHOW_MAP_TIP                  ), // Map
+    MakeRemapWidget({267, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_LAND,           STR_ADJUST_LAND_TIP               ), // Land
+    MakeRemapWidget({297, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_WATER,          STR_ADJUST_WATER_TIP              ), // Water
+    MakeRemapWidget({327, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_SCENERY,        STR_PLACE_SCENERY_TIP             ), // Scenery
+    MakeRemapWidget({357, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_FOOTPATH,       STR_BUILD_FOOTPATH_TIP            ), // Path
+    MakeRemapWidget({387, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CONSTRUCT_RIDE, STR_BUILD_RIDE_TIP                ), // Construct ride
+    MakeRemapWidget({490, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_RIDES,          STR_RIDES_IN_PARK_TIP             ), // Rides
+    MakeRemapWidget({520, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_PARK,           STR_PARK_INFORMATION_TIP          ), // Park
+    MakeRemapWidget({550, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_STAFF_TIP                     ), // Staff
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TOOLBAR_GUESTS,         STR_GUESTS_TIP                    ), // Guests
+    MakeRemapWidget({560, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Tertiary  , SPR_TOOLBAR_CLEAR_SCENERY,  STR_CLEAR_SCENERY_TIP             ), // Clear scenery
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_GAME_SPEED_TIP                ), // Fast forward
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_CHEATS_TIP                    ), // Cheats
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_DEBUG_TIP                     ), // Debug
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SCENARIO_OPTIONS_FINANCIAL_TIP), // Finances
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_FINANCES_RESEARCH_TIP         ), // Research
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Quaternary, SPR_TAB_TOOLBAR,            STR_SHOW_RECENT_MESSAGES_TIP      ), // News
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_G2_TOOLBAR_MULTIPLAYER, STR_SHOW_MULTIPLAYER_STATUS_TIP   ), // Network
+    MakeRemapWidget({ 30, 0}, {30, TOP_TOOLBAR_HEIGHT + 1}, WindowWidgetType::TrnBtn, WindowColour::Primary   , SPR_TAB_TOOLBAR,            STR_TOOLBAR_CHAT_TIP              ), // Chat
+    MakeWidget     ({  0, 0}, {10,                      1}, WindowWidgetType::Empty,  WindowColour::Primary                                                                   ), // Artificial widget separator
     { WIDGETS_END },
 };
 
@@ -634,111 +634,112 @@ static void window_top_toolbar_invalidate(rct_window* w)
     rct_widget* widget;
 
     // Enable / disable buttons
-    window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_FILE_MENU].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_MAP].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_MUTE].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_CHAT].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_LAND].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_WATER].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_PATH].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_RIDES].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_PARK].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_STAFF].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WWT_TRNBTN : WWT_EMPTY;
-    window_top_toolbar_widgets[WIDX_NEWS].type = WWT_TRNBTN;
-    window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_TRNBTN;
+    window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_FILE_MENU].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_ROTATE].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_MUTE].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_LAND].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_WATER].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_GUESTS].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_DEBUG].type = gConfigGeneral.debugging_tools ? WindowWidgetType::TrnBtn
+                                                                                 : WindowWidgetType::Empty;
+    window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::TrnBtn;
+    window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::TrnBtn;
 
     if (!gConfigInterface.toolbar_show_mute)
     {
-        window_top_toolbar_widgets[WIDX_MUTE].type = WWT_EMPTY;
+        window_top_toolbar_widgets[WIDX_MUTE].type = WindowWidgetType::Empty;
     }
 
     if (!gConfigInterface.toolbar_show_chat)
     {
-        window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
+        window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
     }
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
-        window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_RIDES].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_PARK].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_STAFF].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_GUESTS].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
-        window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
+        window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
+        window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
 
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
         {
-            window_top_toolbar_widgets[WIDX_MAP].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_LAND].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_WATER].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_SCENERY].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_PATH].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_LAND].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_WATER].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
         }
 
         if (gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
-            window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
         }
 
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
-            window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_ROTATE].type = WWT_EMPTY;
-            window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_VIEW_MENU].type = WindowWidgetType::Empty;
         }
     }
     else
     {
         if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !gConfigInterface.toolbar_show_finances)
-            window_top_toolbar_widgets[WIDX_FINANCES].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_FINANCES].type = WindowWidgetType::Empty;
 
         if (!gConfigInterface.toolbar_show_research)
-            window_top_toolbar_widgets[WIDX_RESEARCH].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_RESEARCH].type = WindowWidgetType::Empty;
 
         if (!gConfigInterface.toolbar_show_cheats)
-            window_top_toolbar_widgets[WIDX_CHEATS].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_CHEATS].type = WindowWidgetType::Empty;
 
         if (!gConfigInterface.toolbar_show_news)
-            window_top_toolbar_widgets[WIDX_NEWS].type = WWT_EMPTY;
+            window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
         switch (network_get_mode())
         {
             case NETWORK_MODE_NONE:
-                window_top_toolbar_widgets[WIDX_NETWORK].type = WWT_EMPTY;
-                window_top_toolbar_widgets[WIDX_CHAT].type = WWT_EMPTY;
+                window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
+                window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
                 break;
             case NETWORK_MODE_CLIENT:
-                window_top_toolbar_widgets[WIDX_PAUSE].type = WWT_EMPTY;
+                window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
                 [[fallthrough]];
             case NETWORK_MODE_SERVER:
-                window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WWT_EMPTY;
+                window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
                 break;
         }
     }
 
     enabledWidgets = 0;
     for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
-        if (window_top_toolbar_widgets[i].type != WWT_EMPTY)
+        if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
             enabledWidgets |= (1 << i);
     w->enabled_widgets = enabledWidgets;
 
@@ -749,7 +750,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     {
         widgetIndex = left_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
-        if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
+        if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
             continue;
 
         if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
@@ -771,7 +772,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
     {
         widgetIndex = right_aligned_widgets_order[i];
         widget = &window_top_toolbar_widgets[widgetIndex];
-        if (widget->type == WWT_EMPTY && widgetIndex != WIDX_SEPARATOR)
+        if (widget->type == WindowWidgetType::Empty && widgetIndex != WIDX_SEPARATOR)
             continue;
 
         if (firstAlignment && widgetIndex == WIDX_SEPARATOR)
@@ -802,7 +803,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
     // Set map button to the right image.
-    if (window_top_toolbar_widgets[WIDX_MAP].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_MAP].type != WindowWidgetType::Empty)
     {
         static constexpr uint32_t imageIdByRotation[] = {
             SPR_G2_MAP_NORTH,
@@ -842,7 +843,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     ScreenCoordsXY screenPos{};
     // Draw staff button image (setting masks to the staff colours)
-    if (window_top_toolbar_widgets[WIDX_STAFF].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_STAFF].type != WindowWidgetType::Empty)
     {
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_STAFF].left,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_STAFF].top };
@@ -854,7 +855,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw fast forward button
-    if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_FASTFORWARD].type != WindowWidgetType::Empty)
     {
         screenPos = { w->windowPos.x + window_top_toolbar_widgets[WIDX_FASTFORWARD].left + 0,
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
@@ -874,7 +875,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw cheats button
-    if (window_top_toolbar_widgets[WIDX_CHEATS].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_CHEATS].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHEATS].left - 1,
@@ -894,7 +895,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw chat button
-    if (window_top_toolbar_widgets[WIDX_CHAT].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_CHAT].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
@@ -905,7 +906,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw debug button
-    if (window_top_toolbar_widgets[WIDX_DEBUG].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_DEBUG].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
@@ -916,7 +917,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw research button
-    if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_RESEARCH].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_RESEARCH].left - 1,
@@ -928,7 +929,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw finances button
-    if (window_top_toolbar_widgets[WIDX_FINANCES].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_FINANCES].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_FINANCES].left + 3,
@@ -940,7 +941,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw news button
-    if (window_top_toolbar_widgets[WIDX_NEWS].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_NEWS].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
@@ -951,7 +952,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Draw network button
-    if (window_top_toolbar_widgets[WIDX_NETWORK].type != WWT_EMPTY)
+    if (window_top_toolbar_widgets[WIDX_NETWORK].type != WindowWidgetType::Empty)
     {
         screenPos = w->windowPos
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NETWORK].left + 3,
@@ -3080,7 +3081,7 @@ static void window_top_toolbar_land_tool_drag(const ScreenCoordsXY& screenPos)
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
-    if (widget->type != WWT_VIEWPORT)
+    if (widget->type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
     if (!viewport)
@@ -3123,7 +3124,7 @@ static void window_top_toolbar_water_tool_drag(const ScreenCoordsXY& screenPos)
     if (widget_index == -1)
         return;
     rct_widget* widget = &window->widgets[widget_index];
-    if (widget->type != WWT_VIEWPORT)
+    if (widget->type != WindowWidgetType::Viewport)
         return;
     rct_viewport* viewport = window->viewport;
     if (!viewport)

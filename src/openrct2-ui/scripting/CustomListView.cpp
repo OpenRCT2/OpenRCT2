@@ -731,9 +731,9 @@ void CustomListView::RefreshScroll()
 rct_widget* CustomListView::GetWidget() const
 {
     size_t scrollIndex = 0;
-    for (auto widget = ParentWindow->widgets; widget->type != WWT_LAST; widget++)
+    for (auto widget = ParentWindow->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type == WWT_SCROLL)
+        if (widget->type == WindowWidgetType::Scroll)
         {
             if (scrollIndex == ScrollIndex)
             {

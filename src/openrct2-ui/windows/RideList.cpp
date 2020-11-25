@@ -57,18 +57,18 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 
 static rct_widget window_ride_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   WindowColour::Secondary                                                                ), // tab page background
-    MakeWidget({315, 60}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-    MakeWidget({150, 46}, {124,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                ), // current information type
-    MakeWidget({262, 47}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-    MakeWidget({280, 46}, { 54,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
+    MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
+    MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
+    MakeWidget({150, 46}, {124,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                ), // current information type
+    MakeWidget({262, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
+    MakeWidget({280, 46}, { 54,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
     MakeTab   ({  3, 17},                                                                                STR_LIST_RIDES_TIP                ), // tab 1
     MakeTab   ({ 34, 17},                                                                                STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
     MakeTab   ({ 65, 17},                                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
-    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
-    MakeWidget({320, 62}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
-    MakeWidget({320, 76}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
-    MakeWidget({315, 90}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
+    MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
+    MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
+    MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
+    MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
     { WIDGETS_END },
 };
 
@@ -514,9 +514,9 @@ static void window_ride_list_invalidate(rct_window* w)
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
     {
-        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
-        w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
-        w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
+        w->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
         const auto& rideManager = GetRideManager();
         auto allClosed = true;
@@ -540,13 +540,14 @@ static void window_ride_list_invalidate(rct_window* w)
     }
     else
     {
-        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_FLATBTN;
-        w->widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
-        w->widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::FlatBtn;
+        w->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
     }
     w->widgets[WIDX_QUICK_DEMOLISH].bottom = w->widgets[WIDX_QUICK_DEMOLISH].top + 23;
-    w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WWT_FLATBTN : WWT_EMPTY;
+    w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
+                                                                                     : WindowWidgetType::Empty;
 }
 
 /**

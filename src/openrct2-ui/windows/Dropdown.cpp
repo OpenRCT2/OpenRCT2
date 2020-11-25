@@ -32,7 +32,7 @@ enum
 };
 
 static rct_widget window_dropdown_widgets[] = {
-    MakeWidget({ 0, 0 }, { 1, 1 }, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END },
 };
 

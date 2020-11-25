@@ -21,7 +21,7 @@ enum {
 };
 
 static rct_widget window_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 32}, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END },
 };
 
