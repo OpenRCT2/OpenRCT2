@@ -13,6 +13,7 @@
 
 #    include "../Diagnostic.h"
 #    include "../OpenRCT2.h"
+#    include "../core/File.h"
 #    include "Duktape.hpp"
 
 #    include <algorithm>
@@ -101,16 +102,7 @@ void Plugin::Stop()
 
 void Plugin::LoadCodeFromFile()
 {
-    std::string code;
-    std::ifstream fs(_path);
-    if (fs.is_open())
-    {
-        fs.seekg(0, std::ios::end);
-        code.reserve(fs.tellg());
-        fs.seekg(0, std::ios::beg);
-        code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
-    }
-    _code = std::move(code);
+    _code = File::ReadAllText(_path);
 }
 
 static std::string TryGetString(const DukValue& value, const std::string& message)
