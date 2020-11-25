@@ -23,6 +23,11 @@ public:
     {
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("id", _spriteIndex);
+    }
+
     uint16_t GetActionFlags() const override
     {
         return GameAction::GetActionFlags();
