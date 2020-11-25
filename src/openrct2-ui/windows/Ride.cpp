@@ -4366,7 +4366,8 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             for (i = 0; i < 3; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].singular
+                gDropdownItemsArgs[i] = (RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)]
+                                             .singular
                                          << 16)
                     | VehicleColourSchemeNames[i];
             }
@@ -4389,7 +4390,8 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = (static_cast<int64_t>(i + 1) << 32)
-                    | ((RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].capitalised) << 16)
+                    | ((RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].capitalised)
+                       << 16)
                     | stringId;
             }
 
@@ -4743,7 +4745,8 @@ static void window_ride_colour_invalidate(rct_window* w)
         ft.Increment(6);
         ft.Add<rct_string_id>(VehicleColourSchemeNames[vehicleColourSchemeType]);
         ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].singular);
-        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].capitalised);
+        ft.Add<rct_string_id>(
+            RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].capitalised);
         ft.Add<uint16_t>(w->vehicleIndex + 1);
 
         // Vehicle index
@@ -5894,7 +5897,8 @@ static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widget
             {
                 auto ft = Formatter();
                 ft.Increment(2);
-                ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].number);
+                ft.Add<rct_string_id>(
+                    RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.vehicle)].number);
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
                 return { fallback, ft };
             }

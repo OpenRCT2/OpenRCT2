@@ -3356,7 +3356,8 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
         ride->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.station)].capitalised);
+        ft.Add<rct_string_id>(
+            RideComponentNames[EnumValue(RideTypeDescriptors[ride->type].NameConvention.station)].capitalised);
         ft.Add<uint16_t>(stationIndex + 1);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
