@@ -15,6 +15,7 @@
 #    include "../actions/CustomAction.hpp"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
+#    include "../actions/StaffHireNewAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
@@ -855,6 +856,14 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         if (rideCreateResult.rideIndex != RIDE_ID_NULL)
         {
             obj.Set("ride", rideCreateResult.rideIndex);
+        }
+    }
+    else if (action.GetType() == GAME_COMMAND_HIRE_NEW_STAFF_MEMBER)
+    {
+        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
+        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        {
+            obj.Set("staff", staffHireResult.peepSriteIndex);
         }
     }
 
