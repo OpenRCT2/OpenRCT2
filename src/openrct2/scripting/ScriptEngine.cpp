@@ -863,7 +863,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
         if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
         {
-            obj.Set("staff", staffHireResult.peepSriteIndex);
+            obj.Set("peep", staffHireResult.peepSriteIndex);
         }
     }
 
