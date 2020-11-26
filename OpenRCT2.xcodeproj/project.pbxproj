@@ -70,6 +70,7 @@
 		4CB991CD25CEE54500C692B4 /* ShortcutInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB991C925CEE54500C692B4 /* ShortcutInput.cpp */; };
 		4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
+		631D7A3625F590A100EA2B45 /* openrct2.icns in Resources */ = {isa = PBXBuildFile; fileRef = 631D7A3525F590A100EA2B45 /* openrct2.icns */; };
 		6341F4E12400AA0F0052902B /* Drawing.Sprite.RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */; };
 		6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */; };
 		662578A625803AA90002C77E /* discord_rpc.h in Headers */ = {isa = PBXBuildFile; fileRef = 662578A525803AA90002C77E /* discord_rpc.h */; };
@@ -618,7 +619,6 @@
 		C9C630B62235A22D009AD16E /* GameStateSnapshots.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
 		D41B741D1C210A7A0080A7B9 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
-		D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D41B74721C2125E50080A7B9 /* Assets.xcassets */; };
 		D43407E21D0E14CE00C2B3D4 /* shaders in Resources */ = {isa = PBXBuildFile; fileRef = D43407E11D0E14CE00C2B3D4 /* shaders */; };
 		D45A38BC1CF3006400659A24 /* libcrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B31CF3006400659A24 /* libcrypto.dylib */; };
 		D45A38C11CF3006400659A24 /* libSDL2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B81CF3006400659A24 /* libSDL2.dylib */; };
@@ -1169,6 +1169,7 @@
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		51160A24250C7A15002029F6 /* GuestPathfinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestPathfinding.h; sourceTree = "<group>"; };
+		631D7A3525F590A100EA2B45 /* openrct2.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = openrct2.icns; path = resources/mac/openrct2.icns; sourceTree = SOURCE_ROOT; };
 		6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.RLE.cpp; sourceTree = "<group>"; };
 		6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.BMP.cpp; sourceTree = "<group>"; };
 		662578A325803A6C0002C77E /* libdiscord-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libdiscord-rpc.a"; path = "discord-rpc/build/src/libdiscord-rpc.a"; sourceTree = "<group>"; };
@@ -1756,7 +1757,6 @@
 		C9C630B52235A22C009AD16E /* GameStateSnapshots.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameStateSnapshots.cpp; sourceTree = "<group>"; };
 		D41B73EE1C2101890080A7B9 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		D43407E11D0E14CE00C2B3D4 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shaders; path = data/shaders; sourceTree = SOURCE_ROOT; };
 		D43BAB921F8C2B2B00A9E362 /* OpenGLAPIProc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLAPIProc.h; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
@@ -2969,8 +2969,8 @@
 		D497D07A1C20FD52002BF46A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				631D7A3525F590A100EA2B45 /* openrct2.icns */,
 				F79F428E1F3260F1009E42F8 /* changelog.txt */,
-				D41B74721C2125E50080A7B9 /* Assets.xcassets */,
 				D4895D321C23EFDD000CD788 /* Info.plist */,
 				D4C1EDD01C266A0B00F71B63 /* data */,
 			);
@@ -4184,7 +4184,6 @@
 			buildPhases = (
 				4CF67195206B7BEF0034ADDD /* Download JSON objects */,
 				D4E09E831E049C0600F53CE3 /* Download Title Sequences */,
-				D4EC012A1C25532B00DAFE69 /* Setup AppIcon */,
 				D4CA88671D4E962100060C11 /* Get Git Variables */,
 				D497D0741C20FD52002BF46A /* Sources */,
 				D497D0751C20FD52002BF46A /* Frameworks */,
@@ -4302,12 +4301,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				4CF67197206B7E720034ADDD /* object in Resources */,
-				D41B74731C2125E50080A7B9 /* Assets.xcassets in Resources */,
 				D4EC48E61C2637710024B507 /* g2.dat in Resources */,
 				D4EC48E71C2637710024B507 /* language in Resources */,
 				F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */,
 				D43407E21D0E14CE00C2B3D4 /* shaders in Resources */,
 				D4EC48E81C2637710024B507 /* sequence in Resources */,
+				631D7A3625F590A100EA2B45 /* openrct2.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4413,37 +4412,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi\n";
-		};
-		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/resources/logo/icon_x16.png",
-				"$(SRCROOT)/resources/logo/icon_x32.png",
-				"$(SRCROOT)/resources/logo/icon_x64.png",
-				"$(SRCROOT)/resources/logo/icon_x128.png",
-				"$(SRCROOT)/resources/logo/icon_x256.png",
-				"$(SRCROOT)/resources/logo/icon_x512.png",
-				"$(SRCROOT)/resources/logo/icon_x1024.png",
-			);
-			name = "Setup AppIcon";
-			outputPaths = (
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png",
-				"$(SRCROOT)/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x16.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_16x16@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x32.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x64.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_32x32@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x128.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x256.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_256x256@2x.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x512.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512.png\"; fi\nif [[ ! -e \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\" ]]; then ln \"${SRCROOT}/resources/logo/icon_x1024.png\" \"${SRCROOT}/distribution/macos/Assets.xcassets/AppIcon.appiconset/icon_512x512@2x.png\"; fi";
 		};
 		F76C809F1EC4DB0300FA49E2 /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -5205,7 +5173,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
@@ -5247,7 +5214,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_OBJC_WEAK = YES;
