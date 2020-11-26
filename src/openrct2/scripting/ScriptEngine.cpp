@@ -15,6 +15,7 @@
 #    include "../actions/CustomAction.hpp"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
+#    include "../actions/StaffHireNewAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
@@ -43,7 +44,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 13;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 14;
 
 struct ExpressionStringifier final
 {
@@ -855,6 +856,14 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         if (rideCreateResult.rideIndex != RIDE_ID_NULL)
         {
             obj.Set("ride", rideCreateResult.rideIndex);
+        }
+    }
+    else if (action.GetType() == GAME_COMMAND_HIRE_NEW_STAFF_MEMBER)
+    {
+        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
+        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        {
+            obj.Set("peep", staffHireResult.peepSriteIndex);
         }
     }
 
