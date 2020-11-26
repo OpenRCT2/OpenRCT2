@@ -68,7 +68,7 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
         }
     }
 
-    #ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_MARKETING_GEN_PROBABILITY_CALCULATE))
     {
@@ -79,7 +79,6 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
         auto obj = DukObject(ctx);
         obj.Set("campaignType", campaign->Type);
         obj.Set("probability", originalProbability);
-        
 
         // Call the subscriptions
         auto e = obj.Take();
@@ -89,7 +88,7 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
 
         probability = scriptProbability;
     }
-    #endif
+#endif
 
     return probability;
 }

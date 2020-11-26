@@ -598,7 +598,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
     suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
 
-    #ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_MAX_SUGGESTED_CALCULATE))
     {
@@ -617,7 +617,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
 
         suggestedMaxGuests = scriptSuggestedMaxGuests;
     }
-    #endif
+#endif
 
     return suggestedMaxGuests;
 }
@@ -675,7 +675,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
         }
     }
 
-    #ifdef ENABLE_SCRIPTING
+#ifdef ENABLE_SCRIPTING
     auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_GEN_PROBABILITY_CALCULATE))
     {
@@ -695,7 +695,7 @@ uint32_t Park::CalculateGuestGenerationProbability() const
 
         probability = scriptProbability;
     }
-    #endif
+#endif
 
     return probability;
 }
