@@ -33,6 +33,8 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "Entrance.h"
@@ -44,6 +46,7 @@
 #include <limits>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 uint32_t gParkFlags;
 uint16_t gParkRating;
@@ -594,6 +597,28 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
     }
 
     suggestedMaxGuests = std::min<uint32_t>(suggestedMaxGuests, 65535);
+
+    #ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_MAX_SUGGESTED_CALCULATE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto originalSuggestedMaxGuests = suggestedMaxGuests;
+
+        // Create event args object
+        auto obj = DukObject(ctx);
+        obj.Set("suggestedMaxGuests", originalSuggestedMaxGuests);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::GUEST_MAX_SUGGESTED_CALCULATE, e, true);
+
+        auto scriptSuggestedMaxGuests = AsOrDefault(e["suggestedMaxGuests"], static_cast<int32_t>(originalSuggestedMaxGuests));
+
+        suggestedMaxGuests = scriptSuggestedMaxGuests;
+    }
+    #endif
+
     return suggestedMaxGuests;
 }
 
@@ -649,6 +674,28 @@ uint32_t Park::CalculateGuestGenerationProbability() const
             }
         }
     }
+
+    #ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_GEN_PROBABILITY_CALCULATE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto originalProbability = probability;
+
+        // Create event args object
+        auto obj = DukObject(ctx);
+        obj.Set("numGuests", numGuests);
+        obj.Set("probability", originalProbability);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::GUEST_GEN_PROBABILITY_CALCULATE, e, true);
+
+        auto scriptProbability = AsOrDefault(e["probability"], static_cast<int32_t>(originalProbability));
+
+        probability = scriptProbability;
+    }
+    #endif
 
     return probability;
 }

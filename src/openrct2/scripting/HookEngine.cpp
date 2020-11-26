@@ -29,6 +29,9 @@ HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
           { "network.join", HOOK_TYPE::NETWORK_JOIN },
           { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
           { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
+          { "guest.generation.suggested", HOOK_TYPE::GUEST_MAX_SUGGESTED_CALCULATE },
+          { "guest.generation.probability", HOOK_TYPE::GUEST_GEN_PROBABILITY_CALCULATE },
+          { "guest.generation.marketingProbability", HOOK_TYPE::GUEST_MARKETING_GEN_PROBABILITY_CALCULATE },
           { "action.location", HOOK_TYPE::ACTION_LOCATION } });
     auto result = LookupTable.find(name);
     return (result != LookupTable.end()) ? result->second : HOOK_TYPE::UNDEFINED;

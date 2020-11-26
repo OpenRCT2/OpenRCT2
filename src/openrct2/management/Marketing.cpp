@@ -10,6 +10,7 @@
 #include "Marketing.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../Game.h"
 #include "../config/Config.h"
 #include "../interface/Window.h"
@@ -17,9 +18,13 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
+#include "../scripting/ScriptEngine.h"
 #include "../world/Park.h"
 #include "Finance.h"
 #include "NewsItem.h"
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Scripting;
 
 const money16 AdvertisingCampaignPricePerWeek[] = {
     MONEY(50, 00),  // PARK_ENTRY_FREE
@@ -62,6 +67,27 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
             break;
         }
     }
+
+    #ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::GUEST_MARKETING_GEN_PROBABILITY_CALCULATE))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto originalProbability = probability;
+
+        // Create event args object
+        auto obj = DukObject(ctx);
+        obj.Set("probability", originalProbability);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::GUEST_MARKETING_GEN_PROBABILITY_CALCULATE, e, true);
+
+        auto scriptProbability = AsOrDefault(e["probability"], static_cast<int32_t>(originalProbability));
+
+        probability = scriptProbability;
+    }
+    #endif
 
     return probability;
 }
