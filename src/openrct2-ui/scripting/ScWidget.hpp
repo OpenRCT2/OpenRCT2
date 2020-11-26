@@ -103,8 +103,12 @@ namespace OpenRCT2::Scripting
                         return "checkbox";
                     case WindowWidgetType::TextBox:
                         return "textbox";
-                    default:
-                        break;
+                    case WindowWidgetType::Empty:
+                        return "empty";
+                    case WindowWidgetType::Placeholder:
+                        return "placeholder";
+                    case WindowWidgetType::Last:
+                        return "last";
                 }
             }
             return "unknown";

@@ -78,32 +78,7 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
 } // namespace WIDGET_FLAGS
 
-enum class WindowWidgetType : uint8_t
-{
-    Empty,
-    Frame,
-    Resize,
-    ImgBtn,
-    ColourBtn,
-    TrnBtn,
-    Tab,
-    FlatBtn,
-    Button,
-    LabelCentred, // Centred text
-    TableHeader,  // Left-aligned textual button
-    Label,        // Left-aligned text
-    Spinner,
-    DropdownMenu,
-    Viewport,
-    Groupbox,
-    Caption,
-    CloseBox,
-    Scroll,
-    Checkbox,
-    Placeholder,
-    TextBox,
-    Last,
-};
+enum class WindowWidgetType : uint8_t;
 
 /**
  * Widget structure
