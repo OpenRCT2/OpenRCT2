@@ -1875,7 +1875,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     int32_t currentItem = 1;
 
     // Vehicles
-    int32_t name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number;
+    int32_t name = GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).number;
     for (int32_t i = 1; i <= ride->num_vehicles; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -1884,7 +1884,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     // Stations
-    name = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number;
+    name = GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station).number;
     for (int32_t i = 1; i <= ride->num_stations; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -2540,7 +2540,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
     ft.Add<rct_string_id>(stringId);
     uint16_t speedInMph = (abs(vehicle->velocity) * 9) >> 18;
     ft.Add<uint16_t>(speedInMph);
-    const RideComponentName stationName = RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station];
+    const RideComponentName stationName = GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station);
     ft.Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
     ft.Add<uint16_t>(vehicle->current_station + 1);
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
@@ -2647,12 +2647,12 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         if (w->ride.view > ride->num_vehicles)
         {
-            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.station].number);
+            ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station).number);
             ft.Add<uint16_t>(w->ride.view - ride->num_vehicles);
         }
         else
         {
-            ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
+            ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).number);
             ft.Add<uint16_t>(w->ride.view);
         }
     }
@@ -2801,11 +2801,11 @@ static OpenRCT2String window_ride_vehicle_tooltip(
             auto ft = Formatter();
             ft.Increment(12);
 
-            RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
-            rct_string_id stringId = RideComponentNames[vehicleType].count;
+            RideComponentType vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
+            rct_string_id stringId = GetRideComponentName(vehicleType).count;
             if (ride->max_trains > 1)
             {
-                stringId = RideComponentNames[vehicleType].count_plural;
+                stringId = GetRideComponentName(vehicleType).count_plural;
             }
             ft.Add<rct_string_id>(stringId);
             ft.Add<uint16_t>(ride->max_trains);
@@ -2823,10 +2823,10 @@ static OpenRCT2String window_ride_vehicle_tooltip(
             ft.Increment(16);
             ft.Add<uint16_t>(std::max(uint8_t(1), ride->GetMaxCarsPerTrain()) - rideEntry->zero_cars);
 
-            rct_string_id stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].singular;
+            rct_string_id stringId = GetRideComponentName(RideComponentType::Car).singular;
             if (ride->GetMaxCarsPerTrain() - rideEntry->zero_cars > 1)
             {
-                stringId = RideComponentNames[RIDE_COMPONENT_TYPE_CAR].plural;
+                stringId = GetRideComponentName(RideComponentType::Car).plural;
             }
             ft.Add<rct_string_id>(stringId);
             return { fallback, ft };
@@ -2900,11 +2900,11 @@ static void window_ride_vehicle_invalidate(rct_window* w)
     auto ft = Formatter::Common();
     ft.Increment(6);
     ft.Add<uint16_t>(carsPerTrain);
-    RIDE_COMPONENT_TYPE vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
-    stringId = RideComponentNames[vehicleType].count;
+    RideComponentType vehicleType = RideTypeDescriptors[ride->type].NameConvention.vehicle;
+    stringId = GetRideComponentName(vehicleType).count;
     if (ride->num_vehicles > 1)
     {
-        stringId = RideComponentNames[vehicleType].count_plural;
+        stringId = GetRideComponentName(vehicleType).count_plural;
     }
     ft.Add<rct_string_id>(stringId);
     ft.Add<uint16_t>(ride->num_vehicles);
@@ -3485,7 +3485,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             = STR_LEAVE_IF_ANOTHER_VEHICLE_ARRIVES_TIP;
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].text = RideTypeDescriptors[ride->type]
                                                                                            .NameConvention.vehicle
-                == RIDE_COMPONENT_TYPE_BOAT
+                == RideComponentType::Boat
             ? STR_LEAVE_IF_ANOTHER_BOAT_ARRIVES
             : STR_LEAVE_IF_ANOTHER_TRAIN_ARRIVES;
     }
@@ -4366,7 +4366,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             for (i = 0; i < 3; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular
+                gDropdownItemsArgs[i] = (GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).singular
                                          << 16)
                     | VehicleColourSchemeNames[i];
             }
@@ -4389,7 +4389,7 @@ static void window_ride_colour_mousedown(rct_window* w, rct_widgetindex widgetIn
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = (static_cast<int64_t>(i + 1) << 32)
-                    | ((RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised) << 16)
+                    | ((GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).capitalised) << 16)
                     | stringId;
             }
 
@@ -4742,8 +4742,8 @@ static void window_ride_colour_invalidate(rct_window* w)
         ft.Rewind();
         ft.Increment(6);
         ft.Add<rct_string_id>(VehicleColourSchemeNames[vehicleColourSchemeType]);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].singular);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].capitalised);
+        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).singular);
+        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).capitalised);
         ft.Add<uint16_t>(w->vehicleIndex + 1);
 
         // Vehicle index
@@ -5894,7 +5894,7 @@ static OpenRCT2String window_ride_graphs_tooltip(rct_window* w, const rct_widget
             {
                 auto ft = Formatter();
                 ft.Increment(2);
-                ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[ride->type].NameConvention.vehicle].number);
+                ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).number);
                 ft.Add<uint16_t>(measurement->vehicle_index + 1);
                 return { fallback, ft };
             }

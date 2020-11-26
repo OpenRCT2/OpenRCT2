@@ -30,7 +30,7 @@ constexpr const RideTypeDescriptor ShopRTD =
     SET_FIELD(DefaultMode, RideMode::ShopStall),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_SHOP, STR_RIDE_DESCRIPTION_SHOP }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SHOP)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 64, 0, 0, }),

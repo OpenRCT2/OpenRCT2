@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_PLAYER, RIDE_COMPONENT_TYPE_COURSE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MINI_GOLF)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 7, 32, 2, 2, }),

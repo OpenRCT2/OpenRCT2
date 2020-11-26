@@ -30,7 +30,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(DefaultMode, RideMode::Maze),
     SET_FIELD(OperatingSettings, { 1, 64, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MAZE)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 6, 24, 0, 1, }),

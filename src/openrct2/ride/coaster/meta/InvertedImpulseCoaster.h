@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(DefaultMode, RideMode::PoweredLaunchPasstrough),
     SET_FIELD(OperatingSettings, { 10, 33, 30, 25, 25, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_INVERTED_IMPULSE_COASTER, STR_RIDE_DESCRIPTION_INVERTED_IMPULSE_COASTER }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_INVERTED_IMPULSE_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 45, 40, 29, 8, }),
