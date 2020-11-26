@@ -77,7 +77,9 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
 
         // Create event args object
         auto obj = DukObject(ctx);
+        obj.Set("campaignType", campaign->Type);
         obj.Set("probability", originalProbability);
+        
 
         // Call the subscriptions
         auto e = obj.Take();
