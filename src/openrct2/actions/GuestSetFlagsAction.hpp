@@ -33,6 +33,12 @@ public:
         return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    {
+        visitor.Visit("peep", _peepId);
+        visitor.Visit("flags", _newFlags);
+    }
+
     void Serialise(DataSerialiser & stream) override
     {
         GameAction::Serialise(stream);
