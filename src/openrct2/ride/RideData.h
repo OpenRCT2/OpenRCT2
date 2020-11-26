@@ -293,7 +293,10 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
-extern constexpr const RideComponentName& GetRideComponentName(const RideComponentType type);
+constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
+{
+    return RideComponentNames[EnumValue(type)];
+}
 
 constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,

@@ -312,11 +312,6 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
 };
 
-constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
-{
-    return RideComponentNames[EnumValue(type)];
-}
-
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 {
     return Flags & flag;
