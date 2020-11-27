@@ -62,7 +62,7 @@ STR_0057    :Multaj-Dimensiaj Onda Fervojo
 STR_0058    :Nekonata Atrakcio (38)
 STR_0059    :Fluganta Onda Fervojo
 STR_0060    :Nekonata Atrakcio (3A)
-STR_0061    :Virginia Bobeno
+STR_0061    :Virginia Reel
 STR_0062    :Plaŭdoboatoj
 STR_0063    :Miniaturaj Helikopteroj
 STR_0064    :Kuŝanta Onda Fervojo
