@@ -240,10 +240,7 @@ void font_sprite_initialise_characters()
             int32_t width = 0;
             if (g1 != nullptr)
             {
-                if (glyphIndex < 91 || glyphIndex >= 109)
-                {
-                    width = (g1->width + 2 * g1->x_offset) - 1;
-                }
+                width = g1->width + (2 * g1->x_offset) - 1;
             }
 
             _spriteFontCharacterWidths[fontSize][glyphIndex] = static_cast<uint8_t>(width);
