@@ -431,11 +431,11 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     for (int32_t i = 0;; i++)
     {
         rct_widget* widget = &w->widgets[i];
-        if (widget->type == WWT_LAST)
+        if (widget->type == WindowWidgetType::Last)
         {
             break;
         }
-        else if (widget->type != WWT_EMPTY)
+        else if (widget->type != WindowWidgetType::Empty)
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
@@ -447,7 +447,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
     // Return next widget if a dropdown
     if (widget_index != -1)
-        if (w->widgets[widget_index].type == WWT_DROPDOWN)
+        if (w->widgets[widget_index].type == WindowWidgetType::DropdownMenu)
             widget_index++;
 
     // Return the widget index
@@ -510,7 +510,7 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
     {
-        assert(w->widgets[i].type != WWT_LAST);
+        assert(w->widgets[i].type != WindowWidgetType::Last);
     }
 #endif
 
@@ -575,9 +575,9 @@ void window_update_scroll_widgets(rct_window* w)
     widgetIndex = 0;
     scrollIndex = 0;
     assert(w != nullptr);
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         scroll = &w->scrolls[scrollIndex];
@@ -625,7 +625,7 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
     assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        if (w->widgets[i].type == WWT_SCROLL)
+        if (w->widgets[i].type == WindowWidgetType::Scroll)
             result++;
     }
     return result;
@@ -1664,7 +1664,7 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         viewport->height = height;
         viewport->view_width = width * viewport->zoom;
         viewport->view_height = height * viewport->zoom;
-        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT)
+        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
             mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
@@ -1945,7 +1945,7 @@ void window_cancel_textbox()
         context_stop_text_input();
         gUsingWidgetTextBox = false;
         widget_invalidate(w, gCurrentTextBox.widget_index);
-        gCurrentTextBox.widget_index = WWT_LAST;
+        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
 }
 

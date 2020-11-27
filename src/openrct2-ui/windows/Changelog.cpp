@@ -43,9 +43,9 @@ constexpr int32_t MIN_WH = 250;
 
 static rct_widget window_changelog_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({0,  14}, {500, 382}, WWT_RESIZE,      WindowColour::Secondary                               ), // content panel
-    MakeWidget({3,  16}, {495, 366}, WWT_SCROLL,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
-    MakeWidget({3, 473}, {300,  14}, WWT_PLACEHOLDER, WindowColour::Secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
+    MakeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::Secondary                               ), // content panel
+    MakeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
+    MakeWidget({3, 473}, {300,  14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
     { WIDGETS_END },
 };
 
@@ -90,7 +90,7 @@ rct_window* window_changelog_open(int personality)
 
     uint64_t enabled_widgets{};
 
-    window_changelog_widgets[WIDX_OPEN_URL].type = WWT_PLACEHOLDER;
+    window_changelog_widgets[WIDX_OPEN_URL].type = WindowWidgetType::Placeholder;
     switch (personality)
     {
         case WV_NEW_VERSION_INFO:
@@ -102,7 +102,7 @@ rct_window* window_changelog_open(int personality)
             _persnality = WV_NEW_VERSION_INFO;
             window_new_version_process_info();
             enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_URL);
-            window_changelog_widgets[WIDX_OPEN_URL].type = WWT_BUTTON;
+            window_changelog_widgets[WIDX_OPEN_URL].type = WindowWidgetType::Button;
             break;
 
         case WV_CHANGELOG:

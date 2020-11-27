@@ -188,7 +188,7 @@ enum {
 
 static rct_widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0,  43}, {601, 339}, WWT_RESIZE,   WindowColour::Secondary                                                                ),
+    MakeWidget({  0,  43}, {601, 339}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                  STR_TRANSPORT_RIDES_TIP         ),
     MakeTab   ({ 34,  17},                                                                                  STR_GENTLE_RIDES_TIP            ),
     MakeTab   ({ 65,  17},                                                                                  STR_ROLLER_COASTERS_TIP         ),
@@ -196,11 +196,11 @@ static rct_widget window_new_ride_widgets[] = {
     MakeTab   ({127,  17},                                                                                  STR_WATER_RIDES_TIP             ),
     MakeTab   ({158,  17},                                                                                  STR_SHOPS_STALLS_TIP            ),
     MakeTab   ({189,  17},                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
-    MakeWidget({  3,  46}, {595, 272}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
-    MakeWidget({  3,  47}, {290,  70}, WWT_GROUPBOX, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget({  3, 124}, {290,  65}, WWT_GROUPBOX, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
-    MakeWidget({265, 161}, { 24,  24}, WWT_FLATBTN,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
-    MakeWidget({265,  68}, { 24,  24}, WWT_FLATBTN,  WindowColour::Tertiary , SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
+    MakeWidget({  3,  46}, {595, 272}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ),
+    MakeWidget({  3,  47}, {290,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+    MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
+    MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
+    MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , SPR_FINANCE,                  STR_FINANCES_RESEARCH_TIP       ),
     { WIDGETS_END },
 };
 
@@ -545,23 +545,23 @@ static void window_new_ride_refresh_widget_sizing(rct_window* w)
     // Show or hide unrelated widgets
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        window_new_ride_widgets[WIDX_RIDE_LIST].type = WWT_SCROLL;
-        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WWT_EMPTY;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WWT_EMPTY;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-        window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WWT_EMPTY;
+        window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
+        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
+        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
+        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+        window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
         width = 601;
         height = WH;
     }
     else
     {
-        window_new_ride_widgets[WIDX_RIDE_LIST].type = WWT_EMPTY;
-        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WWT_GROUPBOX;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WWT_GROUPBOX;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
+        window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Empty;
+        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
+        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
+        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WWT_FLATBTN;
+            window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
         width = 300;
         height = 196;
@@ -604,7 +604,7 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (w->widgets[widgetIndex].type != WWT_EMPTY && !(w->disabled_widgets & (1LL << widgetIndex)))
+    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !(w->disabled_widgets & (1LL << widgetIndex)))
     {
         int32_t frame = 0;
         if (_windowNewRideCurrentTab == page)
@@ -747,17 +747,17 @@ static void window_new_ride_invalidate(rct_window* w)
     window_new_ride_set_pressed_tab(w);
 
     window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_windowNewRideCurrentTab];
-    window_new_ride_widgets[WIDX_TAB_7].type = WWT_TAB;
+    window_new_ride_widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        window_new_ride_widgets[WIDX_TAB_7].type = WWT_EMPTY;
+        window_new_ride_widgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
 
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
+        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
         if (gResearchLastItem.has_value())
         {
             auto type = gResearchLastItem->type;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
                                                                                                               : SPR_NEW_SCENERY;
         }

@@ -42,12 +42,12 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 
 static rct_widget window_new_campaign_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({ 14, 24}, {126, 12}, WWT_LABEL,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
-    MakeWidget        ({100, 24}, {242, 12}, WWT_DROPDOWN, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
-    MakeWidget        ({330, 25}, { 11, 10}, WWT_BUTTON,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
-    MakeWidget        ({ 14, 41}, {126, 14}, WWT_LABEL,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
-    MakeSpinnerWidgets({120, 41}, {100, 14}, WWT_SPINNER,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
-    MakeWidget        ({ 14, 89}, {322, 14}, WWT_BUTTON,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
+    MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
+    MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
+    MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
+    MakeWidget        ({ 14, 41}, {126, 14}, WindowWidgetType::Label,    WindowColour::Primary, STR_LENGTH_OF_TIME                         ), // weeks label
+    MakeSpinnerWidgets({120, 41}, {100, 14}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_EMPTY                                  ), // weeks (3 widgets)
+    MakeWidget        ({ 14, 89}, {322, 14}, WindowWidgetType::Button,   WindowColour::Primary, STR_MARKETING_START_THIS_MARKETING_CAMPAIGN), // start button
     { WIDGETS_END }
 };
 
@@ -314,17 +314,17 @@ static void window_new_campaign_dropdown(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_new_campaign_invalidate(rct_window* w)
 {
-    window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_EMPTY;
-    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_EMPTY;
-    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_EMPTY;
+    window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Empty;
+    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::Empty;
+    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
     window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
     switch (w->campaign.campaign_type)
     {
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         case ADVERTISING_CAMPAIGN_RIDE:
-            window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_LABEL;
-            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
-            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_BUTTON;
+            window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
+            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
+            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
             if (w->campaign.RideId != SELECTED_RIDE_UNDEFINED)
             {
@@ -339,9 +339,9 @@ static void window_new_campaign_invalidate(rct_window* w)
             }
             break;
         case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-            window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WWT_LABEL;
-            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WWT_DROPDOWN;
-            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_BUTTON;
+            window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
+            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
+            window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
             if (w->campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
             {
@@ -355,7 +355,8 @@ static void window_new_campaign_invalidate(rct_window* w)
 
     // Enable / disable start button based on ride dropdown
     w->disabled_widgets &= ~(1 << WIDX_START_BUTTON);
-    if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WWT_DROPDOWN && w->campaign.RideId == SELECTED_RIDE_UNDEFINED)
+    if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu
+        && w->campaign.RideId == SELECTED_RIDE_UNDEFINED)
         w->disabled_widgets |= 1 << WIDX_START_BUTTON;
 }
 

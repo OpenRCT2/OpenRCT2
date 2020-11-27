@@ -67,19 +67,19 @@ enum WINDOW_NEWS_WIDGET_IDX {
 
 static rct_widget window_news_options_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 0, 43}, {400, 257}, WWT_RESIZE,   WindowColour::Secondary), // tab content panel
+    MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // tab content panel
     MakeTab   ({ 3, 17}                                                   ), // tab 1
     MakeTab   ({34, 17}                                                   ), // tab 2
     MakeTab   ({65, 17}                                                   ), // tab 2
-    MakeWidget({ 7, 49}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
+    MakeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     { WIDGETS_END },
 };
 
@@ -192,7 +192,7 @@ static void window_news_options_invalidate(rct_window* w)
 
         w->enabled_widgets |= (1ULL << checkboxWidgetIndex);
 
-        checkboxWidget->type = WWT_CHECKBOX;
+        checkboxWidget->type = WindowWidgetType::Checkbox;
         checkboxWidget->left = baseCheckBox->left;
         checkboxWidget->right = baseCheckBox->right;
         checkboxWidget->top = y;
@@ -208,11 +208,11 @@ static void window_news_options_invalidate(rct_window* w)
     }
 
     // Remove unused checkboxes
-    while (checkboxWidget->type != WWT_LAST)
+    while (checkboxWidget->type != WindowWidgetType::Last)
     {
         w->enabled_widgets &= ~(1ULL << checkboxWidgetIndex);
 
-        checkboxWidget->type = WWT_EMPTY;
+        checkboxWidget->type = WindowWidgetType::Empty;
         checkboxWidgetIndex++;
         checkboxWidget++;
     }

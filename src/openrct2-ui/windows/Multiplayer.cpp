@@ -58,10 +58,10 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-    MakeWidget({  0,  0}, {340, 240}, WWT_FRAME,    WindowColour::Primary                                        ), /* panel / background */ \
-    MakeWidget({  1,  1}, {338,  14}, WWT_CAPTION,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
-    MakeWidget({327,  2}, { 11,  12}, WWT_CLOSEBOX, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
-    MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   WindowColour::Secondary                                      ), /* content panel */ \
+    MakeWidget({  0,  0}, {340, 240}, WindowWidgetType::Frame,    WindowColour::Primary                                        ), /* panel / background */ \
+    MakeWidget({  1,  1}, {338,  14}, WindowWidgetType::Caption,  WindowColour::Primary,  STR_NONE,    STR_WINDOW_TITLE_TIP    ), /* title bar */ \
+    MakeWidget({327,  2}, { 11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary,  STR_CLOSE_X, STR_CLOSE_WINDOW_TIP    ), /* close x button */ \
+    MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                      ), /* content panel */ \
     MakeTab   ({  3, 17},                                                                STR_SHOW_SERVER_INFO_TIP), /* tab */ \
     MakeTab   ({ 34, 17},                                                                STR_PLAYERS_TIP         ), /* tab */ \
     MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
@@ -74,32 +74,32 @@ static rct_widget window_multiplayer_information_widgets[] = {
 
 static rct_widget window_multiplayer_players_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({  3, 46}, {173,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_PLAYER     ), // Player name
-    MakeWidget({176, 46}, { 83,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_GROUP      ), // Player name
-    MakeWidget({259, 46}, {100,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_LAST_ACTION), // Player name
-    MakeWidget({359, 46}, { 42,  15}, WWT_TABLE_HEADER, WindowColour::Primary  , STR_PING       ), // Player name
-    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,       WindowColour::Secondary, SCROLL_VERTICAL), // list
+    MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
+    MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
+    MakeWidget({259, 46}, {100,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_LAST_ACTION), // Player name
+    MakeWidget({359, 46}, { 42,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PING       ), // Player name
+    MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL), // list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({141, 46}, {175,  12}, WWT_DROPDOWN, WindowColour::Secondary                    ), // default group
-    MakeWidget({305, 47}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-    MakeWidget({ 11, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
-    MakeWidget({113, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
-    MakeWidget({215, 65}, { 92,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
-    MakeWidget({ 72, 80}, {175,  12}, WWT_DROPDOWN, WindowColour::Secondary                    ), // selected group
-    MakeWidget({236, 81}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
-    MakeWidget({  3, 94}, {314, 207}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
+    MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
+    MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+    MakeWidget({ 11, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_ADD_GROUP     ), // add group button
+    MakeWidget({113, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_REMOVE_GROUP  ), // remove group button
+    MakeWidget({215, 65}, { 92,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RENAME_GROUP  ), // rename group button
+    MakeWidget({ 72, 80}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // selected group
+    MakeWidget({236, 81}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
+    MakeWidget({  3, 94}, {314, 207}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL   ), // permissions list
     { WIDGETS_END }
 };
 
 static rct_widget window_multiplayer_options_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    MakeWidget({3, 50}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
-    MakeWidget({3, 64}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
-    MakeWidget({3, 78}, {295, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
+    MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
+    MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
+    MakeWidget({3, 78}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALLOW_KNOWN_KEYS_ONLY, STR_ALLOW_KNOWN_KEYS_ONLY_TIP),
     { WIDGETS_END }
 };
 
@@ -968,7 +968,7 @@ static void window_multiplayer_options_invalidate(rct_window* w)
 
     if (network_get_mode() == NETWORK_MODE_CLIENT)
     {
-        w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WWT_EMPTY;
+        w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }
 
     WidgetSetCheckboxValue(w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);

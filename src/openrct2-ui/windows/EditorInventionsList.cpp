@@ -47,19 +47,19 @@ enum {
 
 static rct_widget window_editor_inventions_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0,  43}, {600, 357}, WWT_RESIZE,  WindowColour::Secondary                                             ),
+    MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
-    MakeWidget({  4,  56}, {368, 161}, WWT_SCROLL,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-    MakeWidget({  4, 231}, {368, 157}, WWT_SCROLL,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-    MakeWidget({431, 106}, {114, 114}, WWT_FLATBTN, WindowColour::Secondary                                             ),
-    MakeWidget({375, 343}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
-    MakeWidget({375, 358}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
-    MakeWidget({375, 373}, {220,  14}, WWT_BUTTON,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
+    MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+    MakeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+    MakeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
+    MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
+    MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
+    MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_inventions_list_drag_widgets[] = {
-    MakeWidget({0, 0}, {150, 14}, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -450,7 +450,8 @@ static void window_editor_inventions_list_invalidate(rct_window* w)
     w->pressed_widgets |= 1 << WIDX_PREVIEW;
     w->pressed_widgets |= 1 << WIDX_TAB_1;
 
-    w->widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WWT_EMPTY : WWT_CLOSEBOX;
+    w->widgets[WIDX_CLOSE].type = gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR ? WindowWidgetType::Empty
+                                                                              : WindowWidgetType::CloseBox;
 
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;

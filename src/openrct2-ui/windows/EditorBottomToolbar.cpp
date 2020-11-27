@@ -36,10 +36,10 @@ enum {
 };
 
 static rct_widget window_editor_bottom_toolbar_widgets[] = {
-    MakeWidget({  0, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
-    MakeWidget({  2, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
-    MakeWidget({440, 0}, {200, 34}, WWT_IMGBTN,  WindowColour::Primary),
-    MakeWidget({442, 2}, {196, 30}, WWT_FLATBTN, WindowColour::Primary),
+    MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
+    MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
+    MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
+    MakeWidget({442, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -299,14 +299,14 @@ static void window_editor_bottom_toolbar_mouseup([[maybe_unused]] rct_window* w,
 
 static void hide_previous_step_button()
 {
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WWT_EMPTY;
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WWT_EMPTY;
+    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
+    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
 }
 
 static void hide_next_step_button()
 {
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WWT_EMPTY;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WWT_EMPTY;
+    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
+    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
 }
 
 /**
@@ -324,10 +324,10 @@ void window_editor_bottom_toolbar_invalidate(rct_window* w)
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
     window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
 
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WWT_FLATBTN;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WWT_FLATBTN;
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WWT_IMGBTN;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WWT_IMGBTN;
+    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
+    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {

@@ -80,7 +80,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 #define MAIN_PARK_WIDGETS(WW) \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 131}, WWT_RESIZE, WindowColour::Secondary), /* tab content panel */ \
+    MakeWidget({  0, 43}, {WW, 131}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
     MakeTab   ({  3, 17}, STR_PARK_ENTRANCE_TAB_TIP                     ), /* tab 1 */ \
     MakeTab   ({ 34, 17}, STR_PARK_RATING_TAB_TIP                       ), /* tab 2 */ \
     MakeTab   ({ 65, 17}, STR_PARK_GUESTS_TAB_TIP                       ), /* tab 3 */ \
@@ -91,14 +91,14 @@ enum WINDOW_PARK_WIDGET_IDX {
 
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({  3,  46}, {202, 115}, WWT_VIEWPORT,      WindowColour::Secondary                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                                                      ), // status
-    MakeWidget({205,  49}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
-    MakeWidget({205,  73}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
-    MakeWidget({205,  97}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
-    MakeWidget({205, 121}, { 24,  24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
-    MakeWidget({210,  51}, { 14,  15}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
-    MakeWidget({210,  66}, { 14,  14}, WWT_IMGBTN,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
+    MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
+    MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                                      ), // status
+    MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
+    MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
+    MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
+    MakeWidget({205, 121}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,                 STR_NAME_PARK_TIP                       ), // rename
+    MakeWidget({210,  51}, { 14,  15}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0, STR_CLOSE_PARK_TIP                      ),
+    MakeWidget({210,  66}, { 14,  14}, WindowWidgetType::ImgBtn,        WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0,  STR_OPEN_PARK_TIP                       ),
     { WIDGETS_END },
 };
 
@@ -114,8 +114,8 @@ static rct_widget window_park_guests_widgets[] = {
 
 static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget        ({ 21, 50}, {126, 14}, WWT_LABEL,   WindowColour::Secondary, STR_ADMISSION_PRICE),
-    MakeSpinnerWidgets({147, 50}, { 76, 14}, WWT_SPINNER, WindowColour::Secondary                     ), // Price (3 widgets)
+    MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
+    MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
     { WIDGETS_END },
 };
 
@@ -126,7 +126,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WWT_BUTTON, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+    MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
     { WIDGETS_END },
 };
 
@@ -648,9 +648,9 @@ static void window_park_entrance_invalidate(rct_window* w)
 
     // Only allow purchase of land when there is money
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
+        window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
     else
-        window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
+        window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
@@ -664,24 +664,24 @@ static void window_park_entrance_invalidate(rct_window* w)
 
     if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
     {
-        window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_EMPTY;
+        window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         {
-            window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_FLATBTN;
-            window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_FLATBTN;
+            window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
+            window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
         }
         else
         {
-            window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
-            window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+            window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
+            window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
         }
         height = window_park_entrance_widgets[WIDX_OPEN_LIGHT].bottom + 5;
     }
     else
     {
-        window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WWT_FLATBTN;
-        window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
-        window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+        window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
+        window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
+        window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
         height = 49;
     }
 
@@ -692,7 +692,7 @@ static void window_park_entrance_invalidate(rct_window* w)
     }
     for (i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++)
     {
-        if (window_park_entrance_widgets[i].type == WWT_EMPTY)
+        if (window_park_entrance_widgets[i].type == WindowWidgetType::Empty)
             continue;
 
         window_park_entrance_widgets[i].left = w->width - 25;
@@ -1154,15 +1154,15 @@ static void window_park_price_invalidate(rct_window* w)
     // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
     {
-        window_park_price_widgets[WIDX_PRICE].type = WWT_LABEL_CENTRED;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
+        window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
+        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
+        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Empty;
     }
     else
     {
-        window_park_price_widgets[WIDX_PRICE].type = WWT_SPINNER;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_BUTTON;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
+        window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::Spinner;
+        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Button;
+        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
     }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
@@ -1435,12 +1435,12 @@ static void window_park_objective_invalidate(rct_window* w)
     // Show name input button on scenario completion.
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
     {
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
+        window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
         window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
         window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
     }
     else
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
+        window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);

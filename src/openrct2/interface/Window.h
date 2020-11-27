@@ -78,18 +78,20 @@ namespace WIDGET_FLAGS
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
 } // namespace WIDGET_FLAGS
 
+enum class WindowWidgetType : uint8_t;
+
 /**
  * Widget structure
  * size: 0x10
  */
 struct rct_widget
 {
-    uint8_t type;   // 0x00
-    uint8_t colour; // 0x01
-    int16_t left;   // 0x02
-    int16_t right;  // 0x04
-    int16_t top;    // 0x06
-    int16_t bottom; // 0x08
+    WindowWidgetType type; // 0x00
+    uint8_t colour;        // 0x01
+    int16_t left;          // 0x02
+    int16_t right;         // 0x04
+    int16_t top;           // 0x06
+    int16_t bottom;        // 0x08
     union
     { // 0x0A
         uint32_t image;

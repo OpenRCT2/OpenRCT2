@@ -99,17 +99,17 @@ constexpr int32_t MAX_WH = 450;
 
 static rct_widget window_staff_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {    WW, WH - 43}, WWT_RESIZE,    WindowColour::Secondary                                                 ), // tab content panel
+    MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
     MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
     MakeTab   ({ 34, 17},                                                                             STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
     MakeTab   ({ 65, 17},                                                                             STR_STAFF_SECURITY_TAB_TIP    ), // security guards tab
     MakeTab   ({ 96, 17},                                                                             STR_STAFF_ENTERTAINERS_TAB_TIP), // entertainers tab
-    MakeWidget({  3, 72}, {WW - 6,     195}, WWT_SCROLL,    WindowColour::Secondary, SCROLL_VERTICAL                                ), // staff list
-    MakeWidget({130, 58}, {    12,      12}, WWT_COLOURBTN, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
-    MakeWidget({165, 17}, {   145,      13}, WWT_BUTTON,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
-    MakeWidget({243, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
-    MakeWidget({267, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
-    MakeWidget({291, 46}, {    24,      24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
+    MakeWidget({  3, 72}, {WW - 6,     195}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                ), // staff list
+    MakeWidget({130, 58}, {    12,      12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, STR_NONE,        STR_UNIFORM_COLOUR_TIP        ), // uniform colour picker
+    MakeWidget({165, 17}, {   145,      13}, WindowWidgetType::Button,    WindowColour::Primary  , STR_NONE,        STR_HIRE_STAFF_TIP            ), // hire button
+    MakeWidget({243, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH,    STR_QUICK_FIRE_STAFF          ), // quick fire staff
+    MakeWidget({267, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PATROL_BTN,  STR_SHOW_PATROL_AREA_TIP      ), // show staff patrol area tool
+    MakeWidget({291, 46}, {    24,      24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_MAP,         STR_SHOW_STAFF_ON_MAP_TIP     ), // show staff on map button
     { WIDGETS_END },
 };
 
@@ -156,7 +156,7 @@ rct_window* window_staff_list_open()
     _windowStaffListHighlightedIndex = -1;
     window->list_information_type = 0;
 
-    window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_EMPTY;
+    window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
     window->min_width = WW;
     window->min_height = WH;
     window->max_width = MAX_WW;
@@ -513,11 +513,11 @@ void window_staff_list_invalidate(rct_window* w)
 
     w->pressed_widgets = pressed_widgets | (1ULL << widgetIndex);
     window_staff_list_widgets[WIDX_STAFF_LIST_HIRE_BUTTON].text = StaffNamingConvention[tabIndex].action_hire;
-    window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_EMPTY;
+    window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
 
     if (tabIndex < 3)
     {
-        window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WWT_COLOURBTN;
+        window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::ColourBtn;
         auto spriteIdPalette = SPRITE_ID_PALETTE_COLOUR_1(
             static_cast<uint32_t>(staff_get_colour(static_cast<StaffType>(tabIndex))));
         window_staff_list_widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].image = spriteIdPalette | IMAGE_TYPE_TRANSPARENT

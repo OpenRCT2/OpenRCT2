@@ -36,11 +36,11 @@ static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
 static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
-    MakeWidget({0,                       0}, UpdateButtonDims, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 
@@ -96,7 +96,7 @@ rct_window* window_title_menu_open()
         }
         else
         {
-            widget->type = WWT_EMPTY;
+            widget->type = WindowWidgetType::Empty;
         }
         i++;
     }
@@ -226,7 +226,7 @@ static void window_title_menu_invalidate(rct_window* w)
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
-        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         _filterRect.Point1.y = w->windowPos.y;
     }
 }
