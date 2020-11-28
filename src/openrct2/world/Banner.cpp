@@ -238,7 +238,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
+ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
     static constexpr const std::array<CoordsXY, 9> NeighbourCheckOrder = { CoordsXY{ COORDS_XY_STEP, 0 },
                                                                            CoordsXY{ -COORDS_XY_STEP, 0 },

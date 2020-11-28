@@ -59,7 +59,7 @@ void banner_init();
 BannerIndex create_new_banner(uint8_t flags);
 TileElement* banner_get_tile_element(BannerIndex bannerIndex);
 WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex);
-uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos);
+ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos);
 void banner_reset_broken_index();
 void fix_duplicated_banners();
 Banner* GetBanner(BannerIndex id);

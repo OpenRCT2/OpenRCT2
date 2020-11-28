@@ -17,7 +17,7 @@
 using ride_id_t = uint16_t;
 struct Ride;
 
-constexpr const ride_id_t RIDE_ID_NULL = 0xFF; // std::numeric_limits<ride_id_t>::max();
+constexpr const ride_id_t RIDE_ID_NULL = 0xFFFF; // std::numeric_limits<ride_id_t>::max();
 constexpr const ride_id_t RideIdNewNull = std::numeric_limits<ride_id_t>::max();
 
 /**
