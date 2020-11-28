@@ -3006,7 +3006,8 @@ private:
         const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
         std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
         auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
-        return asUtf8.data();
+        auto justText = RCT12RemoveFormattingUTF8(asUtf8);
+        return justText.data();
     }
 
     void FixLandOwnership()

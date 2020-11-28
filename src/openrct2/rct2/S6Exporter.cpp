@@ -1367,12 +1367,13 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
 
         dst.string_idx = STR_DEFAULT_SIGN;
 
-        auto bannerText = src.text;
+        std::string bannerText;
         if (!(src.flags & BANNER_FLAG_IS_WALL) && !(src.flags & BANNER_FLAG_IS_LARGE_SCENERY))
         {
-            auto formatCode = static_cast<char>(RCT2_STRING_FORMAT_COLOUR_START + src.text_colour);
-            bannerText.insert(bannerText.begin(), formatCode);
+            auto formatCode = static_cast<codepoint_t>(RCT2_STRING_FORMAT_COLOUR_START + src.text_colour);
+            String::AppendCodepoint(bannerText, formatCode);
         }
+        bannerText.append(src.text);
 
         auto stringId = AllocateUserString(bannerText);
         if (stringId != std::nullopt)

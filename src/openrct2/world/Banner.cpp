@@ -46,8 +46,15 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
     {
         auto formatToken = FormatTokenFromTextColour(text_colour);
         auto tokenText = FormatTokenToString(formatToken);
+
+        thread_local std::string tokenTextColourBuffer;
+        tokenTextColourBuffer.clear();
+        tokenTextColourBuffer.push_back('{');
+        tokenTextColourBuffer.append(tokenText);
+        tokenTextColourBuffer.push_back('}');
+
         ft.Add<rct_string_id>(STR_STRING_STRINGID);
-        ft.Add<const char*>(tokenText.data());
+        ft.Add<const char*>(tokenTextColourBuffer.c_str());
     }
 
     FormatTextTo(ft);

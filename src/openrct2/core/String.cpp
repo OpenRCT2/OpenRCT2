@@ -509,6 +509,13 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
+    void AppendCodepoint(std::string& str, codepoint_t codepoint)
+    {
+        char buffer[8]{};
+        utf8_write_codepoint(buffer, codepoint);
+        str.append(buffer);
+    }
+
     bool IsWhiteSpace(codepoint_t codepoint)
     {
         // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
