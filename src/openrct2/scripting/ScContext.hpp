@@ -156,21 +156,24 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine.GetContext();
+
             auto hookType = GetHookType(hook);
             if (hookType == HOOK_TYPE::UNDEFINED)
             {
-                throw DukException() << "Unknown hook type: " << hook;
+                duk_error(ctx, DUK_ERR_ERROR, "Unknown hook type");
             }
 
             if (!callback.is_function())
             {
-                throw DukException() << "Expected function for callback";
+                duk_error(ctx, DUK_ERR_ERROR, "Expected function for callback");
             }
 
             auto owner = _execInfo.GetCurrentPlugin();
             if (owner == nullptr)
             {
-                throw DukException() << "Not in a plugin context";
+                duk_error(ctx, DUK_ERR_ERROR, "Not in a plugin context");
             }
 
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);

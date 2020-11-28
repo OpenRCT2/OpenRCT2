@@ -9,6 +9,7 @@
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
 - Fix: [#13427] Newly created Go-Karts show "Race won by <blank>".
 - Fix: [#13454] Plug-ins do not load on Windows if the user directory contains non-ASCII characters.
+- Fix: [#13469] Exception thrown from plugin in context.subscribe.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 
