@@ -305,6 +305,12 @@ namespace UnicodeChar
     constexpr char32_t narrow_non_breaking_space = 0x202F;
     constexpr char32_t quote_open = 0x201C;
     constexpr char32_t quote_close = 0x201D;
+    constexpr char32_t left_curly_bracket = 0x007B;
+    constexpr char32_t right_curly_bracket = 0x007D;
+    constexpr char32_t vertical_bar = 0x007C;
+    constexpr char32_t tilde = 0x007E;
+    constexpr char32_t quotation_mark = 0x0022;
+    constexpr char32_t apostrophe = 0x0027;
 
     // Currency
     constexpr char32_t guilder = 0x192;
@@ -322,6 +328,8 @@ namespace UnicodeChar
     constexpr char32_t tick = 0x2713;
     constexpr char32_t plus = 0x2795;
     constexpr char32_t minus = 0x2796;
+    constexpr char32_t white_square = 0x25A1;
+    constexpr char32_t replacement_character = 0xFFFD;
 
     // Emoji
     constexpr char32_t cross = 0x274C;
