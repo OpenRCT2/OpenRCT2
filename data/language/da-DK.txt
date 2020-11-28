@@ -240,7 +240,6 @@ STR_0833    :{SMALLFONT}{BLACK}Sæt spillet på pause
 STR_0834    :{SMALLFONT}{BLACK}Disk og spil indstillinger
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Om 'OpenRCT2'
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, alle rettigheder forbeholdt
 STR_0851    :{WINDOW_COLOUR_2}Designet og programmeret af Chris Sawyer
@@ -952,7 +951,6 @@ STR_1565    :{SMALLFONT}“Jeg vil ikke betale så meget for pizza fra {STRINGID
 STR_1566    :
 STR_1567    :{SMALLFONT}“Jeg vil ikke betale så meget for popcorn fra {STRINGID}”
 STR_1568    :{SMALLFONT}“Jeg vil ikke betale så meget for en hot dog fra {STRINGID}”
-
 STR_1569    :{SMALLFONT}“Jeg vil ikke betale så meget for en tentakel fra {STRINGID}”
 STR_1570    :{SMALLFONT}“Jeg vil ikke betale så meget for en hat fra {STRINGID}”
 STR_1571    :{SMALLFONT}“Jeg vil ikke betale så meget for et kandiseret æble fra {STRINGID}”
@@ -1266,8 +1264,6 @@ STR_1888    :{WINDOW_COLOUR_2}Tid siden sidste inspektion: {BLACK}mere end 4 tim
 STR_1889    :{WINDOW_COLOUR_2}Nede-tid: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :{SMALLFONT}{BLACK}Vælg hvor ofte en mekaniker skal efterse denne forlystelse
 STR_1891    :Ingen {STRINGID} i parken endnu!
-# The following two strings were used to display an error when the disc was missing.
-# This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} solgt: {BLACK}{COMMA32}
 STR_1895    :{SMALLFONT}{BLACK}Byg en ny forlystelse
 STR_1896    :{WINDOW_COLOUR_2}Udgifter/indtægter
@@ -3649,6 +3645,12 @@ STR_6390    :OpenRCT2 skal bruge filerne, fra den originale RollerCoaster Tycoon
 STR_6391    :Vælg venligst din RCT2 mappe
 STR_6392    :Kunne ikke finde {STRING} i denne mappe.
 STR_6393    :Objekt udvælgelse
+STR_6394    :Objektiv
+STR_6395    :Vedligeholdelses
+STR_6396    :Slå screensaver og skærm-strømstyring fra
+STR_6397    :{SMALLFONT}{BLACK}Hvis markeret, bliver screensaver og andre skærm strøm styringsfunktioner slået fra. indstillingen forbliver aktiv så længe OpenRCT2 kører.
+STR_6398    :Filen indeholder ikke understøttet forlystelsestyper. Opdater venligst til en nyere version af OpenRCT2.
+STR_6399    :OpenRCT2 skal bruge filer fra den originale RollerCoaster Tycoon 2 for at kunne fungere. Tilret venligst “game_path” variablen i config.ini filen, til den mappe hvor du har installeret RollerCoaster Tycoon 2, og genstart derefter OpenRCT2.
 
 #############
 # Scenarios #
@@ -3916,6 +3918,7 @@ STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
 STR_DTLS    :En stor have park skal forvandles til en blomstrende forlystelsespark
 
+
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
@@ -4096,23 +4099,6 @@ STR_DTLS    :
 ###########
 
 ## Start OpenRCT2 Official
-[XXBBBR01]
-STR_NAME    :Basis blok
-
-[TTRFTL02]
-STR_NAME    :Tag
-
-[TTRFTL03]
-STR_NAME    :Tag
-
-[TTRFTL04]
-STR_NAME    :Tag
-
-[TTRFTL07]
-STR_NAME    :Tag
-
-[TTRFTL08]
-STR_NAME    :Tag
 
 [TTPIRF02]
 STR_NAME    :Tag
@@ -4131,9 +4117,6 @@ STR_NAME    :Tag
 
 [TTPIRF08]
 STR_NAME    :Tag
-
-[MG-PRAR]
-STR_NAME    :Væg med døråbning
 
 [TTRFWD01]
 STR_NAME    :Tag
@@ -4469,3 +4452,11 @@ STR_DTLS    :A large annual music festival takes place on your land. Build a hip
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Rock 'n' Roll Revival
 STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Tilføj flere forlystelser, og tiltræk flere besøgende til denne panda-tema park
