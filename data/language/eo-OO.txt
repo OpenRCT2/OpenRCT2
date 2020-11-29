@@ -45,7 +45,7 @@ STR_0040    :Moviĝadosimulilo
 STR_0041    :Tri-Dimensia Kinejo
 STR_0042    :Supera Turno
 STR_0043    :Eksterteraj Ringoj
-STR_0044    :Onda Fervojo kun Renversita Libera Falo
+STR_0044    :Onda Fervojo kun Dorsantaŭa Libera Falo
 STR_0045    :Lifto
 STR_0046    :Onda Fervojo kun Vertikalaj Malleviĝoj
 STR_0047    :Bankaŭtomato
@@ -68,7 +68,7 @@ STR_0063    :Miniaturaj Helikopteroj
 STR_0064    :Kuŝanta Onda Fervojo
 STR_0065    :Pendita Monorelo
 STR_0066    :Nekonata Atrakcio (40)
-STR_0067    :Renversiĝanta Onda Fervojo
+STR_0067    :Posteniĝanta Onda Fervojo
 STR_0068    :Ĉe-Kore Ruliĝanta Onda Fervojo
 STR_0069    :Miniatura Golfo
 STR_0070    :Altega Onda Fervojo
@@ -147,22 +147,22 @@ STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinosekur
 STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, kaj brua, kaj ankaŭ donas 'nedirektebla' sencon, kun sufiĉe da 'en-aeraj periodoj'
 STR_0565    :Simpla ligna onda fervojo, kiu povas enhavi nur mildajn deklivojn kaj kurbiĝojn. Nur la radoj ambaŭflanke, kiu donas froton, kaj la gravito, fiksas la ĉarojn sur la trakon
 STR_0566    :Unuopaj ondaj fervojaj ĉaroj rapidas sur kompakta zigzaga trakdesegnaĵo, kiu enhavas subitajn angulojn kaj mallongajn subitajn malleviĝojn
-STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigantoj
+STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigoj
 STR_0569    :Rajdantoj, kiuj rajdas en specialaj jungaĵoj sub la trako, flugas tra la aero por sperti la sencon de flugado
 STR_0571    :Rondaj ĉaroj turniĝas veturante laŭ la zigzaga ligna trako
 STR_0572    :Grandaj boatoj veturas laŭ larĝa akvokanalo, supreniras deklivojn per transportbendo, kaj plirapidiĝas malsuprenirante krutajn deklivojn, por trempi la rajdantojn per giganta plaŭdo
 STR_0573    :Rajdantoj, per pedalado, stiras helikopteroformajn veturilojn, kiuj estas gviditaj per ŝtala trako
-STR_0574    :Rajdantoj, kiuj estas en kuŝa pozicio, kaj kiuj estas tenitaj per specialaj jungaĵoj, veturas tra kurboplena trako kaj inversigantoj, aŭ fronte al la ĉielo, aŭ fronte al la tero
+STR_0574    :Rajdantoj, kiuj estas en kuŝa pozicio, kaj kiuj estas tenitaj per specialaj jungaĵoj, veturas tra kurboplena trako kaj inversigoj, aŭ fronte al la ĉielo, aŭ fronte al la tero
 STR_0575    :Ŝaltitaj trajnoj penditaj de unuopa relo transportas homojn ĉirkaŭ la parko
-STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj renversiĝas sur specialaj renversigantaj trakpartoj
+STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj ŝanĝas direkton ĉe specialaj trakpartoj
 STR_0578    :Ĉaroj veturas laŭ trako ĉirkaŭfermita per cirklaj ringetoj, kaj trapasas krutajn malleviĝojn kaj ĉe-korajn turnadojn
 STR_0579    :Milda ludo de miniatura golfo
 STR_0580    :Giganta ŝtala onda fervojo, kiu ebligas glatajn malleviĝojn kaj montetojn pli alta ol 300 futoj
 STR_0581    :Ringo da seĝoj, milde turniĝante, estas tirata al la supro de alta turo. Tiam, la ringo falas libere, kaj haltas milde al la malsupro per magnetaj bremsoj
-STR_0582    :Gastoj rajdas en aeroglitaj boatoj, kiujn ili stiras libere
+STR_0582    :Gastoj rajdas en kusenveturiloj, kiujn ili stiras libere
 STR_0583    :Konstruaĵo, kiu enhavas ĉambrojn torditajn kaj koridorojn angulajn por malorienti homojn tie
 STR_0584    :Specialaj bicikloj, kiujn la rajdantoj stiras per pedalado, veturas sur ŝtala monorelotrako
-STR_0585    :Rajdantoj, kiuj sidas en duopoj da seĝoj penditaj sub la trako, lopas kaj tordiĝas tra malgrandspacaj inversigantoj
+STR_0585    :Rajdantoj, kiuj sidas en duopoj da seĝoj penditaj sub la trako, lopas kaj tordiĝas tra malgrandspacaj inversigoj
 STR_0586    :Boatoformaj ĉaroj rapidas sur onda fervoja trako por ebligi kurboplenajn kurbiĝojn kaj krutajn malleviĝojn, foje plaŭdas en akvo dum mildaj riveropartoj
 STR_0587    :Post vigliga lanĉo povigita de aero, la trajno rapide supreniras vertikalan trakon, iras super la supro, kaj malsupreniras vertikale sur la alia flanko por reveni al la stacio
 STR_0588    :Unuopaj ĉaroj rapidas sub zigzaga trako kun harpingloformaj kurbiĝoj kaj subitaj malleviĝoj
@@ -173,8 +173,8 @@ STR_0593    :Turniĝanta radego kun penditaj pasaĝerujoj, kiu unue komencas tur
 STR_0598    :Inversigitaj trajnoj de la onda fervojo plirapidiĝas el la stacio por supreniri vertikalan pintaĵon, kaj tiam retroiras tra la stacio por supreniri alian vertikalan pintaĵon
 STR_0599    :Kompakta onda fervojo kun unuopaj ĉaroj kaj glataj kurboplenaj malleviĝoj
 STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
-STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigantojn
-STR_0603    :Ligna onda fervojo kun stala trako, kiu permesas krutajn malleviĝojn kaj inversigantojn.
+STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigojn
+STR_0603    :Ligna onda fervojo kun stala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -445,7 +445,7 @@ STR_1059    :Ne eblas renomi atrakcion…
 STR_1060    :Nevalida nomo de atrakcio
 STR_1061    :Norma reĝimo 
 STR_1062    :Fermita-sistemo-reĝimo
-STR_1063    :Renversita-deklivo-lanĉo-reĝimo
+STR_1063    :Dorsantaŭa-deklivo-lanĉo-reĝimo
 STR_1064    :Forta lanĉo (trapasas stacion)
 STR_1065    :Naveta reĝimo
 STR_1066    :Boatluo-reĝimo
@@ -761,8 +761,8 @@ STR_1375    :Supra Transportilo
 STR_1376    :Malsupra Transportilo
 STR_1377    :Ĉe-Kora Ruliĝo (maldekstre)
 STR_1378    :Ĉe-Kora Ruliĝo (dekstre)
-STR_1379    :Renversilo (maldekstre)
-STR_1380    :Renversilo (dekstre)
+STR_1379    :Postenigilo (maldekstre)
+STR_1380    :Postenigilo (dekstre)
 STR_1381    :Kurba Liftparto (maldekstre)
 STR_1382    :Kurba Liftparto (dekstre)
 STR_1383    :Kvarona Lopo
@@ -1143,7 +1143,7 @@ STR_1762    :Akvofaloj
 STR_1763    :Rapidfluo
 STR_1764    :Ŝtipoĝiboj
 STR_1765    :Sur-atrakcia fotoparto
-STR_1766    :Renversilo
+STR_1766    :Postenigilo
 STR_1767    :Turniĝanta tunelo
 STR_1768    :Ne eblas ŝanĝi nombron de svingoj…
 STR_1769    :{WINDOW_COLOUR_2}Nombro de svingoj:
@@ -2421,7 +2421,7 @@ STR_3328    :Ne eblas iri al sekva etapo de redaktilo…
 STR_3329    :Parkenirejo ankoraŭ ne estas konstruita
 STR_3330    :Parko devas posedi iom da bieno
 STR_3331    :Vojo de parkenirejo ĝis mapbordo estas aŭ nekompleta aŭ tro komplika. Vojo devas havi larĝon de nur 1 bloko, kaj kiel eble plej malmulte da anguloj kaj kunigaĵoj
-STR_3332    :Parkenirejo estas renversita, aŭ ne havas vojon al la mapbordo
+STR_3332    :Parkenirejo estas dorsantaŭa, aŭ ne havas vojon al la mapbordo
 STR_3333    :Eksporti proprajn objektojn kun konservitaj ludoj
 STR_3334    :{SMALLFONT}{BLACK}Elekti ĉu programo konservas datumojn de aldonaj bezonataj propraj objektoj (aldonaj datumoj, kiuj ne estas provizitaj per la ĉefa produktaĵo) en dosierojn de konservitaj ludoj aŭ scenaroj. Se jes, iu, kiu ne havas la aldonajn objektodatumojn, povas ŝargi ludon
 STR_3335    :Trakdesegnilo - Elekti Tipojn de Atrakcioj k Veturiloj
