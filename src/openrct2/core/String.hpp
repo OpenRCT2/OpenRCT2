@@ -39,6 +39,12 @@ namespace String
     std::string ToUtf8(const std::wstring_view& src);
     std::wstring ToWideChar(const std::string_view& src);
 
+    /**
+     * Creates a string_view from a char pointer with a length up to either the
+     * first null terminator or a given maximum length, whatever is smallest.
+     */
+    std::string_view ToStringView(const char* ch, size_t maxLen);
+
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);

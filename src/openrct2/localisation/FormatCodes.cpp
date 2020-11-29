@@ -9,7 +9,10 @@
 
 #include "FormatCodes.h"
 
+#include <mutex>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 // clang-format off
 static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = {
@@ -62,22 +65,48 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
 };
 // clang-format on
 
+static std::string_view GetFormatTokenStringWithBraces(FormatToken token)
+{
+    // Ensure cache is thread safe
+    static std::mutex mutex;
+    std::lock_guard<std::mutex> guard(mutex);
+
+    static std::vector<std::string> cache;
+    auto index = static_cast<size_t>(token);
+    if (cache.size() <= index)
+    {
+        cache.resize(index + 1);
+    }
+    if (cache[index].empty())
+    {
+        cache[index] = "{" + std::string(FormatTokenToString(token)) + "}";
+    }
+    return cache[index];
+}
+
 FormatToken FormatTokenFromString(std::string_view token)
 {
     auto result = FormatTokenMap.find(token);
     return result != std::end(FormatTokenMap) ? result->second : FormatToken::Unknown;
 }
 
-std::string_view FormatTokenToString(FormatToken token)
+std::string_view FormatTokenToString(FormatToken token, bool withBraces)
 {
-    for (const auto& t : FormatTokenMap)
+    if (withBraces)
     {
-        if (t.second == token)
-        {
-            return t.first;
-        }
+        return GetFormatTokenStringWithBraces(token);
     }
-    return {};
+    else
+    {
+        for (const auto& t : FormatTokenMap)
+        {
+            if (t.second == token)
+            {
+                return t.first;
+            }
+        }
+        return {};
+    }
 }
 
 bool FormatTokenTakesArgument(FormatToken token)

@@ -77,7 +77,7 @@ enum class FormatToken
 };
 
 FormatToken FormatTokenFromString(std::string_view token);
-std::string_view FormatTokenToString(FormatToken token);
+std::string_view FormatTokenToString(FormatToken token, bool withBraces = false);
 bool FormatTokenTakesArgument(FormatToken token);
 bool FormatTokenIsColour(FormatToken token);
 size_t FormatTokenGetTextColourIndex(FormatToken token);

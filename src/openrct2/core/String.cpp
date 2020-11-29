@@ -126,6 +126,23 @@ namespace String
 #endif
     }
 
+    std::string_view ToStringView(const char* ch, size_t maxLen)
+    {
+        size_t len{};
+        for (size_t i = 0; i < maxLen; i++)
+        {
+            if (ch[i] == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return std::string_view(ch, len);
+    }
+
     bool IsNullOrEmpty(const utf8* str)
     {
         return str == nullptr || str[0] == '\0';
