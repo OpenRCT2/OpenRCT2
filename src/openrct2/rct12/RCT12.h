@@ -609,7 +609,7 @@ private:
     uint8_t entranceType; // 4
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
-    ride_id_t rideIndex;    // 7
+    ride_id_t rideIndex;  // 7
 public:
     uint8_t GetEntranceType() const;
     uint8_t GetRideIndex() const;
