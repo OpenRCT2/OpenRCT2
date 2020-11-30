@@ -672,9 +672,13 @@ static void window_top_toolbar_invalidate(rct_window* w)
         window_top_toolbar_widgets[WIDX_CHAT].type = WindowWidgetType::Empty;
     }
 
-    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR || gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
         window_top_toolbar_widgets[WIDX_PAUSE].type = WindowWidgetType::Empty;
+    }
+
+    if (gScreenFlags & SCREEN_FLAGS_EDITOR)
+    {
         window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
