@@ -83,8 +83,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.max_height = stream->ReadValue<uint8_t>();
     // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.shop_item[0] = stream->ReadValue<ShopItem>();
-    _legacyType.shop_item[1] = stream->ReadValue<ShopItem>();
+    _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
+    _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
     GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
