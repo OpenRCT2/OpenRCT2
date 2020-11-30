@@ -106,7 +106,7 @@ void Banner::FormatTextTo(Formatter& ft) const
  *
  *  rct2: 0x006B7EAB
  */
-static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
+static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
     TileElement* tileElement = map_get_first_element_at(bannerCoords);
     ride_id_t resultRideIndex = RIDE_ID_NULL;

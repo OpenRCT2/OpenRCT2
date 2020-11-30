@@ -182,7 +182,7 @@ static void CallOriginal(
     uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
     uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[rideType][trackType];
-    const uint8_t rideIndex = 0;
+    const ride_id_t rideIndex = 0;
 
     // Have to call from this point as it pushes esi and expects callee to pop it
     RCT2_CALLPROC_X(

@@ -566,7 +566,7 @@ struct rct_neighbour
 {
     uint8_t order;
     uint8_t direction;
-    uint8_t ride_index;
+    ride_id_t ride_index;
     uint8_t entrance_index;
 };
 

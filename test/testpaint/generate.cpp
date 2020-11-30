@@ -126,7 +126,7 @@ private:
                 WriteLine(
                     0,
                     "static void " + _rideName
-                        + "_track_station(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, "
+                        + "_track_station(ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, "
                           "TileElement * tileElement)");
                 WriteLine(0, "{");
                 WriteLine(0, "}");
@@ -141,7 +141,7 @@ private:
         WriteLine(
             0,
             "static void " + GetTrackFunctionName(trackType)
-                + "(uint8_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, TileElement * tileElement)");
+                + "(ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int height, TileElement * tileElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {

@@ -2887,7 +2887,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
-                        uint8_t rideId = RIDE_ID_NULL;
+                        ride_id_t rideId = RIDE_ID_NULL;
                         for (; sv < _lastSynchronisedVehicle; sv++)
                         {
                             if (rideId == RIDE_ID_NULL)

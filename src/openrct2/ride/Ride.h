@@ -170,7 +170,7 @@ struct RideMeasurement
 {
     static constexpr size_t MAX_ITEMS = 4800;
 
-    uint8_t flags{};
+    ride_id_t flags{};
     uint32_t last_use_tick{};
     uint16_t num_items{};
     uint16_t current_item{};

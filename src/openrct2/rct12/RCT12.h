@@ -418,7 +418,7 @@ private:
     union
     {
         uint8_t additionStatus; // 7
-        uint8_t rideIndex;
+        ride_id_t rideIndex;
     };
 
 public:
@@ -485,7 +485,7 @@ private:
         };
         uint16_t mazeEntry; // 5
     };
-    uint8_t rideIndex; // 7
+    ride_id_t rideIndex; // 7
 public:
     uint8_t GetTrackType() const;
     uint8_t GetSequenceIndex() const;
@@ -609,7 +609,7 @@ private:
     uint8_t entranceType; // 4
     uint8_t index;        // 5. 0bUSSS????, S = station index.
     uint8_t pathType;     // 6
-    uint8_t rideIndex;    // 7
+    ride_id_t rideIndex;    // 7
 public:
     uint8_t GetEntranceType() const;
     uint8_t GetRideIndex() const;
@@ -795,7 +795,7 @@ assert_struct_size(RCT12PeepThought, 4);
 
 struct RCT12RideMeasurement
 {
-    uint8_t ride_index;                                 // 0x0000
+    ride_id_t ride_index;                               // 0x0000
     uint8_t flags;                                      // 0x0001
     uint32_t last_use_tick;                             // 0x0002
     uint16_t num_items;                                 // 0x0006

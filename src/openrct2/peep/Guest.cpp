@@ -399,7 +399,7 @@ static void peep_decide_whether_to_leave_park(Peep* peep);
 static void peep_leave_park(Peep* peep);
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
-bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool SpriteBase::Is<Guest>() const
 {
@@ -5266,7 +5266,7 @@ void Guest::UpdateRide()
 }
 
 static void peep_update_walking_break_scenery(Peep* peep);
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView);
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView);
 
 /**
  *
@@ -6355,7 +6355,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
     return true;
 }
 
-bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
+bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
@@ -6402,7 +6402,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
  * @param[out] rideSeatToView (ch)
  * @return !CF
  */
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToView, uint8_t* rideSeatToView)
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView)
 {
     TileElement* tileElement;
 
