@@ -3559,7 +3559,7 @@ STR_6304    :Open scenery picker
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
 STR_6307    :Colour scheme: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconnect
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Next: {BLACK}{INT32} {INT32} {INT32}
