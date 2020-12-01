@@ -186,6 +186,12 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::narrow_non_breaking_space, ' ' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::quote_open, CSChar::quote_open - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::quote_close, CSChar::quote_close - CS_SPRITE_FONT_OFFSET },
+    { UnicodeChar::left_curly_bracket, '{' - CS_SPRITE_FONT_OFFSET},
+    { UnicodeChar::right_curly_bracket, '}' - CS_SPRITE_FONT_OFFSET},
+    { UnicodeChar::vertical_bar, '|' - CS_SPRITE_FONT_OFFSET},
+    { UnicodeChar::tilde, '~' - CS_SPRITE_FONT_OFFSET},
+    { UnicodeChar::tilde, '~' - CS_SPRITE_FONT_OFFSET},
+    { UnicodeChar::quotation_mark, '"' - CS_SPRITE_FONT_OFFSET},
 
     // Currency
     { UnicodeChar::guilder, SPR_G2_GUILDER_SIGN - SPR_CHAR_START },
