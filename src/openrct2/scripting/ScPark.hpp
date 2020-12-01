@@ -366,6 +366,61 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint32_t totalAdmissions_get() const
+        {
+            return gTotalAdmissions;
+        }
+        void totalAdmissions_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gTotalAdmissions != value)
+            {
+                gTotalAdmissions = value;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+        }
+
+        money32 totalIncomeFromAdmissions_get() const
+        {
+            return gTotalIncomeFromAdmissions;
+        }
+        void totalIncomeFromAdmissions_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gTotalIncomeFromAdmissions != value)
+            {
+                gTotalIncomeFromAdmissions = value;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+        }
+
+        money32 landPrice_get() const
+        {
+            return gLandPrice;
+        }
+        void landPrice_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gLandPrice = value;
+        }
+
+        money32 constructionRightsPrice_get() const
+        {
+            return gConstructionRightsPrice;
+        }
+        void constructionRightsPrice_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gConstructionRightsPrice = value;
+        }
+
+        uint16_t parkSize_get() const
+        {
+            return gParkSize;
+        }
+
         std::string name_get() const
         {
             return GetContext()->GetGameState()->GetPark().Name;
@@ -495,6 +550,14 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
             dukglue_register_property(ctx, &ScPark::value_get, &ScPark::value_set, "value");
             dukglue_register_property(ctx, &ScPark::companyValue_get, &ScPark::companyValue_set, "companyValue");
+            dukglue_register_property(ctx, &ScPark::totalAdmissions_get, &ScPark::totalAdmissions_set, "totalAdmissions");
+            dukglue_register_property(
+                ctx, &ScPark::totalIncomeFromAdmissions_get, &ScPark::totalIncomeFromAdmissions_set,
+                "totalIncomeFromAdmissions");
+            dukglue_register_property(ctx, &ScPark::landPrice_get, &ScPark::landPrice_set, "landPrice");
+            dukglue_register_property(
+                ctx, &ScPark::constructionRightsPrice_get, &ScPark::constructionRightsPrice_set, "constructionRightsPrice");
+            dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");

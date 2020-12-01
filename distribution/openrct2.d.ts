@@ -1471,6 +1471,32 @@ declare global {
          */
         companyValue: number;
 
+        /**
+         * The total number of guests that have entered the park.
+         */
+        totalAdmissions: number;
+
+        /**
+         * The total amount of income gained from admissions into the park.
+         */
+        totalIncomeFromAdmissions: number;
+
+        /**
+         * The purchase price of one tile for park ownership.
+         */
+        landPrice: number;
+
+        /**
+         * The purchase price of one tile for construction rights.
+         */
+        constructionRightsPrice: number;
+
+        /**
+         * The number of tiles on the map with park ownership or construction rights.
+         * Updated every 4096 ticks.
+         */
+        readonly parkSize: number;
+
         name: string;
         messages: ParkMessage[];
 
