@@ -145,6 +145,7 @@ void WidgetScrollGetPart(
     int32_t* output_scroll_area, int32_t* scroll_id);
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
+void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
 
 #endif

@@ -299,11 +299,21 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                auto mask = 1ULL << _widgetIndex;
-                if (value)
-                    w->disabled_widgets |= mask;
-                else
-                    w->disabled_widgets &= ~mask;
+                WidgetSetDisabled(w, _widgetIndex, value);
+
+                auto widget = GetWidget();
+                if (widget != nullptr)
+                {
+                    if (widget->type == WindowWidgetType::DropdownMenu)
+                    {
+                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                    }
+                    else if (widget->type == WindowWidgetType::Spinner)
+                    {
+                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(w, _widgetIndex + 2, value);
+                    }
+                }
             }
         }
 

@@ -871,6 +871,8 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_DROPDOWN_GLYPH;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            if (desc.IsDisabled)
+                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "groupbox")
@@ -917,6 +919,8 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_NUMERIC_DOWN;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            if (desc.IsDisabled)
+                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             widgetList.push_back(widget);
 
             // Add the increment button

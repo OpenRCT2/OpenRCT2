@@ -1014,6 +1014,18 @@ void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
     }
 }
 
+void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->disabled_widgets |= (1ULL << widgetIndex);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
 void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
 {
     if (value)
