@@ -1454,6 +1454,23 @@ declare global {
          */
         entranceFee: number;
 
+        /**
+         * The number of guests within the park, not including any outside the park but still
+         * on the map.
+         */
+        readonly guests: number;
+
+        /**
+         * The park value, will be updated every 512 ticks.
+         */
+        value: number;
+
+        /**
+         * The company value, will be updated every 512 ticks.
+         * Calculation is: `park.value + park.cash - park.bankLoan`
+         */
+        companyValue: number;
+
         name: string;
         messages: ParkMessage[];
 
