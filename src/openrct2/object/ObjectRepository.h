@@ -52,7 +52,7 @@ struct ObjectRepositoryItem
     } RideInfo;
     struct
     {
-        std::vector<rct_object_entry> Entries;
+        std::vector<ObjectEntryDescriptor> Entries;
     } SceneryGroupInfo;
 
     ObjectSourceGame GetFirstSourceGame() const
@@ -75,6 +75,7 @@ struct IObjectRepository
     virtual const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
     virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;

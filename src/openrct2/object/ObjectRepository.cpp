@@ -75,7 +75,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 23;
+    static constexpr uint16_t VERSION = 24;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -163,7 +163,7 @@ protected:
                 stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
                 for (const auto& entry : item.SceneryGroupInfo.Entries)
                 {
-                    stream->WriteValue<rct_object_entry>(entry);
+                    stream->WriteObjectEntryDescriptor(entry);
                 }
                 break;
             default:
@@ -211,10 +211,10 @@ protected:
             case ObjectType::SceneryGroup:
             {
                 auto numEntries = stream->ReadValue<uint16_t>();
-                item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
+                item.SceneryGroupInfo.Entries = std::vector<ObjectEntryDescriptor>(numEntries);
                 for (size_t i = 0; i < numEntries; i++)
                 {
-                    item.SceneryGroupInfo.Entries[i] = stream->ReadValue<rct_object_entry>();
+                    item.SceneryGroupInfo.Entries[i] = stream->ReadObjectEntryDescriptor();
                 }
                 break;
             }
@@ -308,6 +308,14 @@ public:
             return &_items[kvp->second];
         }
         return nullptr;
+    }
+
+    const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& entry) const override final
+    {
+        if (entry.Generation == ObjectGeneration::DAT)
+            return FindObject(&entry.Entry);
+
+        return FindObject(entry.Identifier);
     }
 
     std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override

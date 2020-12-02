@@ -22,7 +22,7 @@ class SceneryGroupObject final : public Object
 {
 private:
     rct_scenery_group_entry _legacyType = {};
-    std::vector<rct_object_entry> _items;
+    std::vector<ObjectEntryDescriptor> _items;
 
 public:
     explicit SceneryGroupObject(const rct_object_entry& entry)
@@ -46,8 +46,8 @@ public:
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
 private:
-    static std::vector<rct_object_entry> ReadItems(OpenRCT2::IStream* stream);
+    static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
     static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
     static EntertainerCostume ParseEntertainerCostume(const std::string& s);
-    static std::vector<rct_object_entry> ReadJsonEntries(json_t& jEntries);
+    static std::vector<ObjectEntryDescriptor> ReadJsonEntries(json_t& jEntries);
 };

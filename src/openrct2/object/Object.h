@@ -11,10 +11,12 @@
 
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
+#include "../util/Util.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 
 #include <algorithm>
+#include <cstring>
 #include <optional>
 #include <string_view>
 #include <vector>
@@ -125,6 +127,46 @@ struct rct_object_entry_group
 #ifdef PLATFORM_32BIT
 assert_struct_size(rct_object_entry_group, 8);
 #endif
+
+enum class ObjectGeneration : uint8_t
+{
+    DAT,
+    JSON,
+};
+
+struct ObjectEntryDescriptor
+{
+    ObjectGeneration Generation;
+    union
+    {
+        rct_object_entry Entry; // For DAT objects
+        char Identifier[64];    // For JSON objects
+    };
+
+    ObjectEntryDescriptor() = default;
+    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry)
+    {
+        Generation = ObjectGeneration::DAT;
+        Entry = newEntry;
+    }
+
+    explicit ObjectEntryDescriptor(std::string_view newIdentifier)
+    {
+        Generation = ObjectGeneration::JSON;
+        safe_strcpy(const_cast<char*>(Identifier), std::string(newIdentifier).c_str(), 64);
+    }
+
+    ObjectEntryDescriptor& operator=(const ObjectEntryDescriptor& newEntry)
+    {
+        Generation = newEntry.Generation;
+        if (newEntry.Generation == ObjectGeneration::DAT)
+            Entry = newEntry.Entry;
+        else
+            safe_strcpy(const_cast<char*>(Identifier), std::string(newEntry.Identifier).c_str(), 64);
+
+        return *this;
+    }
+};
 
 struct rct_ride_filters
 {
