@@ -1784,7 +1784,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
+        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -1813,6 +1813,11 @@ declare global {
         text: string;
         isChecked: boolean;
         onChange: (isChecked: boolean) => void;
+    }
+
+    interface ColourPickerWidget extends Widget {
+        colour: number;
+        onChange: (colour: number) => void;
     }
 
     interface DropdownWidget extends Widget {

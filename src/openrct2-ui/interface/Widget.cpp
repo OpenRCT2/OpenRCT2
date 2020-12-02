@@ -1105,3 +1105,8 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
 }
+
+uint32_t GetColourButtonImage(colour_t colour)
+{
+    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+}
