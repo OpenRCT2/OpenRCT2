@@ -1569,9 +1569,10 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    PeepThoughtType thought_type = shopItem >= ShopItem::Photo2
-                        ? PEEP_THOUGHT_TYPE_PHOTO2_MUCH + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
-                        : PEEP_THOUGHT_TYPE_BALLOON_MUCH + static_cast<uint8_t>(shopItem);
+                    PeepThoughtType thought_type = static_cast<PeepThoughtType>(
+                        shopItem >= ShopItem::Photo2
+                            ? PEEP_THOUGHT_TYPE_PHOTO2_MUCH + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
+                            : PEEP_THOUGHT_TYPE_BALLOON_MUCH + static_cast<uint8_t>(shopItem));
                     InsertNewThought(thought_type, ride->id);
                     return false;
                 }
@@ -1587,9 +1588,10 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
-                    PeepThoughtType thought_item = shopItem >= ShopItem::Photo2
-                        ? PEEP_THOUGHT_TYPE_PHOTO2 + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
-                        : PEEP_THOUGHT_TYPE_BALLOON + static_cast<uint8_t>(shopItem);
+                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
+                        shopItem >= ShopItem::Photo2
+                            ? PEEP_THOUGHT_TYPE_PHOTO2 + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
+                            : PEEP_THOUGHT_TYPE_BALLOON + static_cast<uint8_t>(shopItem));
                     InsertNewThought(thought_item, ride->id);
                 }
             }
