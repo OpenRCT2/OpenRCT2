@@ -782,7 +782,7 @@ void Guest::loc_68FA89()
                 chosen_food = bitscanforward(HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
-                    RemoveItem(static_cast<ShopItem>(chosen_food));
+                    RemoveItem(static_cast<ShopItem>(chosen_food + 32));
                     uint8_t discard_container = peep_extra_item_containers[chosen_food];
                     if (discard_container != 0xFF)
                     {
@@ -1569,9 +1569,9 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    PeepThoughtType thought_type = static_cast<PeepThoughtType>((
-                        shopItem >= ShopItem::Photo2 ? (ShopItem(PEEP_THOUGHT_TYPE_PHOTO2_MUCH) + (shopItem - ShopItem::Photo2))
-                                                     : (ShopItem(PEEP_THOUGHT_TYPE_BALLOON_MUCH) + shopItem)));
+                    PeepThoughtType thought_type = shopItem >= ShopItem::Photo2
+                        ? PEEP_THOUGHT_TYPE_PHOTO2_MUCH + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
+                        : PEEP_THOUGHT_TYPE_BALLOON_MUCH + static_cast<uint8_t>(shopItem);
                     InsertNewThought(thought_type, ride->id);
                     return false;
                 }
@@ -1587,9 +1587,9 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
-                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        (shopItem >= ShopItem::Photo2 ? (ShopItem(PEEP_THOUGHT_TYPE_PHOTO2) + (shopItem - ShopItem::Photo2))
-                                                      : (ShopItem(PEEP_THOUGHT_TYPE_BALLOON) + shopItem)));
+                    PeepThoughtType thought_item = shopItem >= ShopItem::Photo2
+                        ? PEEP_THOUGHT_TYPE_PHOTO2 + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
+                        : PEEP_THOUGHT_TYPE_BALLOON + static_cast<uint8_t>(shopItem);
                     InsertNewThought(thought_item, ride->id);
                 }
             }
@@ -5339,7 +5339,7 @@ void Guest::UpdateWalking()
                 for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
                     if (container & (1u << pos_extr))
                         break;
-                RemoveItem(static_cast<ShopItem>(pos_extr));
+                RemoveItem(static_cast<ShopItem>(pos_extr + 32) + ShopItem::Photo2);
                 litterType = item_extra_litter[pos_extr];
             }
 
@@ -5936,7 +5936,7 @@ void Guest::UpdateUsingBin()
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
                         space_left_in_bin--;
-                    RemoveItem(static_cast<ShopItem>(cur_container));
+                    RemoveItem(static_cast<ShopItem>(cur_container) + ShopItem::Photo2);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                     UpdateSpriteType();
@@ -5948,7 +5948,7 @@ void Guest::UpdateUsingBin()
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                RemoveItem(static_cast<ShopItem>(cur_container));
+                RemoveItem(static_cast<ShopItem>(cur_container) + ShopItem::Photo2);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
