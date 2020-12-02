@@ -2444,13 +2444,13 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
-static money32 try_place_ghost_small_scenery(CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex)
+static money32 try_place_ghost_small_scenery(
+    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e252b
-    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
-        loc, quadrant, entryIndex, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
     auto sspar = dynamic_cast<SmallSceneryPlaceActionResult*>(res.get());
@@ -2501,13 +2501,14 @@ static money32 try_place_ghost_path_addition(CoordsXYZ loc, ObjectEntryIndex ent
     return res->Cost;
 }
 
-static money32 try_place_ghost_wall(CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex)
+static money32 try_place_ghost_wall(
+    CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
+    colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e26b0
-    auto wallPlaceAction = WallPlaceAction(
-        entryIndex, loc, edge, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
+    auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
         if (result->Error != GameActions::Status::Ok)
@@ -2526,13 +2527,13 @@ static money32 try_place_ghost_wall(CoordsXYZ loc, uint8_t edge, ObjectEntryInde
     return res->Cost;
 }
 
-static money32 try_place_ghost_large_scenery(CoordsXYZD loc, ObjectEntryIndex entryIndex)
+static money32 try_place_ghost_large_scenery(
+    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e25a7
-    auto sceneryPlaceAction = LargeSceneryPlaceAction(
-        loc, entryIndex, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
     sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&sceneryPlaceAction);
     auto lspar = dynamic_cast<LargeSceneryPlaceActionResult*>(res.get());
@@ -2685,7 +2686,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
 
             for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_small_scenery({ mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex);
+                cost = try_place_ghost_small_scenery(
+                    { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2773,7 +2776,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             cost = 0;
             for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_wall({ mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex);
+                cost = try_place_ghost_wall(
+                    { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2837,7 +2842,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             cost = 0;
             for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_large_scenery({ mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex);
+                cost = try_place_ghost_large_scenery(
+                    { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
