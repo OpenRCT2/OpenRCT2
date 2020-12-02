@@ -455,7 +455,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
-                window_editor_object_selection_select_object(++isMasterObject, flags, &sgEntry);
+                window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry);
             }
         }
 
@@ -494,7 +494,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
             {
-                if (!window_editor_object_selection_select_object(++isMasterObject, flags, &sgEntry))
+                if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
                 {
                     _maxObjectsWasHit = true;
                 }
@@ -535,6 +535,14 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 {
     const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
     return window_editor_object_selection_select_object(isMasterObject, flags, item);
+}
+
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry)
+{
+    if (entry.Generation == ObjectGeneration::DAT)
+        return window_editor_object_selection_select_object(isMasterObject, flags, &entry.Entry);
+
+    return window_editor_object_selection_select_object(isMasterObject, flags, entry.Identifier);
 }
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)

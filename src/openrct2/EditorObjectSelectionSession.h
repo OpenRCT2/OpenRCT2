@@ -36,6 +36,7 @@ void finish_object_selection();
 bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item);
 bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier);
 bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry);
+bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry);
 
 /**
  * Removes all unused objects from the object selection.
