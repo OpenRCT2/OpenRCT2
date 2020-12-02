@@ -522,8 +522,8 @@ STR_1138    :{SMALLFONT}{BLACK}Выберите доп. цвет 2
 STR_1139    :{SMALLFONT}{BLACK}Выберите цвет подд. конструкции
 STR_1140    :{SMALLFONT}{BLACK}Выберите опцию цветовой схемы машины
 STR_1141    :{SMALLFONT}{BLACK}Выберите поезд/машину для изменения
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Невозможно построить вход для этого аттракциона…
 STR_1145    :Невозможно построить выход для этого аттракциона…
 STR_1146    :Вход ещё не построен
@@ -536,8 +536,8 @@ STR_1152    :Любая загрузка
 STR_1153    :Отметки высоты на рельсах
 STR_1154    :Отметки высоты на земле
 STR_1155    :Отметки высоты на путях
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Невозможно удалить…
 STR_1159    :{SMALLFONT}{BLACK}Разместить декорации, сады, фонтаны
 STR_1160    :{SMALLFONT}{BLACK}Вода

@@ -3521,7 +3521,7 @@ STR_6304    :Díszletválasztó megnyitása
 STR_6305    :Többszálúság
 STR_6306    :{SMALLFONT}{BLACK}Kísérleti beállítás, mellyel bekapcsolható a több szálon történő megjelenítés, instabilitást okozhat.
 STR_6307    :Színséma: {BLACK}{STRINGID}
-STR_6308    :„{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}„{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Újracsatlakozás
 STR_6310    :{WINDOW_COLOUR_2}Pozíció: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Következő: {BLACK}{INT32} {INT32} {INT32}

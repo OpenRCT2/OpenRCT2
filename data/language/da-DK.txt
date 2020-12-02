@@ -3559,7 +3559,7 @@ STR_6304    :Åben scenarie vælger
 STR_6305    :Multi-tråde
 STR_6306    :{SMALLFONT}{BLACK}Eksperimentel indstilling, brug flere processor kerner til at gengive spillet, kan påvirke stabiliteten.
 STR_6307    :Farve tema: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Forbind igen
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Næste: {BLACK}{INT32} {INT32} {INT32}

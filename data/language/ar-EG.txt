@@ -523,8 +523,8 @@ STR_1138    :{SMALLFONT}{BLACK}حدد اللون الأضافي 2
 STR_1139    :{SMALLFONT}{BLACK}Select support structure colour
 STR_1140    :{SMALLFONT}{BLACK}Select vehicle colour scheme option
 STR_1141    :{SMALLFONT}{BLACK}Select which vehicle/train to modify
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Can't build/move entrance for this ride/attraction…
 STR_1145    :Can't build/move exit for this ride/attraction…
 STR_1146    :المدخل لم يُبني بعد
@@ -537,8 +537,8 @@ STR_1152    :أي حمل
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :…لا يمكن مسح هذا
 STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
@@ -1974,8 +1974,8 @@ STR_2773    :وضع النافذة
 STR_2774    :وضع الشاشة الكاملة
 STR_2775    :Fullscreen (borderless window)
 STR_2776    :اللغة:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Viewport #{COMMA16}
 STR_2780    :Extra viewport
 # End of new strings

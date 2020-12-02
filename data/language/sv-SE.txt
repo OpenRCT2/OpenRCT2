@@ -523,8 +523,8 @@ STR_1138    :{SMALLFONT}{BLACK}Välj tredje färg
 STR_1139    :{SMALLFONT}{BLACK}Välj färg för stödpelare
 STR_1140    :{SMALLFONT}{BLACK}Välj färgpalett för fordon
 STR_1141    :{SMALLFONT}{BLACK}Välj vilket fordon eller tåg som ska modifieras
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Kan inte bygga eller flytta ingången för den här åkturen eller attraktionen …
 STR_1145    :Kan inte bygga eller flytta utgången för den här åkturen eller attraktionen …
 STR_1146    :Ingången är inte byggd
@@ -537,8 +537,8 @@ STR_1152    :Minst en person
 STR_1153    :Höjdmarkeringar på åkturer
 STR_1154    :Höjdmarkeringar på land
 STR_1155    :Höjdmarkeringar på gångvägar
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kan inte ta bort detta …
 STR_1159    :{SMALLFONT}{BLACK}Placera dekorationer, planteringar och andra tillbehör
 STR_1160    :{SMALLFONT}{BLACK}Skapa eller justera sjöar och vatten
@@ -3560,7 +3560,7 @@ STR_6304    :Öppen dekorationsväljare
 STR_6305    :Flertrådsprocess
 STR_6306    :{SMALLFONT}{BLACK}Experiment att använda flera processortrådar för rendering, kan orsaka instabilitet.
 STR_6307    :Färgschema: {BLACK}{STRINGID}
-STR_6308    :”{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}”{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Återanslut
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Nästa: {BLACK}{INT32} {INT32} {INT32}

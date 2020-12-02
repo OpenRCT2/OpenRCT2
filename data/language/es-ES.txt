@@ -525,8 +525,8 @@ STR_1138    :{SMALLFONT}{BLACK}Seleccionar color adicional 2
 STR_1139    :{SMALLFONT}{BLACK}Seleccionar color de los soportes
 STR_1140    :{SMALLFONT}{BLACK}Selecciona el esquema de color de los vagones
 STR_1141    :{SMALLFONT}{BLACK}Selecciona que vehículo/tren modificar
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :No se puede construir/mover la entrada de esta atracción…
 STR_1145    :No se puede construir/mover la salida de esta atracción…
 STR_1146    :Aún no se ha construido una entrada
@@ -539,8 +539,8 @@ STR_1152    :Cualquier carga
 STR_1153    :Marcas de altura en atracciones
 STR_1154    :Marcas de altura en el suelo
 STR_1155    :Marcas de altura en senderos
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :No se puede quitar esto…
 STR_1159    :{SMALLFONT}{BLACK}Crear decorado, jardines y otros accesorios
 STR_1160    :{SMALLFONT}{BLACK}Crear lagos y ajustar agua
@@ -1974,8 +1974,8 @@ STR_2773    :Ventana
 STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (Sin bordes)
 STR_2776    :Idioma:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 # End of new strings
 STR_2779    :Cámara #{COMMA16}
 STR_2780    :Añadir 'cámara de vigilancia'
@@ -3564,7 +3564,7 @@ STR_6304    :Abrir selector de escenografía
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Opción experimental para usar múltiples núcleos en el renderizado, puede ser inestable.
 STR_6307    :Esquema de color: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconectar
 STR_6310    :{WINDOW_COLOUR_2}Posición: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Siguiente: {BLACK}{INT32} {INT32} {INT32}

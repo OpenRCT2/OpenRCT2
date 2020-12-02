@@ -65,7 +65,7 @@ STR_0060    :Nekonata Atrakcio (3A)
 STR_0061    :Virginia Reel
 STR_0062    :Plaŭdoboatoj
 STR_0063    :Miniaturaj Helikopteroj
-STR_0064    :Kuŝanta Onda Fervojo
+STR_0064    :Kuŝiĝanta Onda Fervojo
 STR_0065    :Pendita Monorelo
 STR_0066    :Nekonata Atrakcio (40)
 STR_0067    :Posteniĝanta Onda Fervojo
@@ -152,7 +152,7 @@ STR_0569    :Rajdantoj, kiuj rajdas en specialaj jungaĵoj sub la trako, flugas 
 STR_0571    :Rondaj ĉaroj turniĝas veturante laŭ la zigzaga ligna trako
 STR_0572    :Grandaj boatoj veturas laŭ larĝa akvokanalo, supreniras deklivojn per transportbendo, kaj plirapidiĝas malsuprenirante krutajn deklivojn, por trempi la rajdantojn per giganta plaŭdo
 STR_0573    :Rajdantoj, per pedalado, stiras helikopteroformajn veturilojn, kiuj estas gviditaj per ŝtala trako
-STR_0574    :Rajdantoj, kiuj estas en kuŝa pozicio, kaj kiuj estas tenitaj per specialaj jungaĵoj, veturas tra kurboplena trako kaj inversigoj, aŭ fronte al la ĉielo, aŭ fronte al la tero
+STR_0574    :Rajdantoj, kiuj estas en kuŝiĝanta pozicio, kaj kiuj estas tenitaj per specialaj jungaĵoj, veturas tra kurboplena trako kaj inversigoj, aŭ fronte al la ĉielo, aŭ fronte al la tero
 STR_0575    :Ŝaltitaj trajnoj penditaj de unuopa relo transportas homojn ĉirkaŭ la parko
 STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj ŝanĝas direkton ĉe specialaj trakpartoj
 STR_0578    :Ĉaroj veturas laŭ trako ĉirkaŭfermita per cirklaj ringetoj, kaj trapasas krutajn malleviĝojn kaj ĉe-korajn turnadojn
@@ -3559,7 +3559,7 @@ STR_6304    :Malfermi elektilon de pejzaĝo
 STR_6305    :Disfadenigo
 STR_6306    :{SMALLFONT}{BLACK}Opcio eksperimenta por uzi multoblajn fadenojn por bildiĝi. Povas kaŭzi nestabilecon.
 STR_6307    :Kolorskemo: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Rekonektiĝi
 STR_6310    :{WINDOW_COLOUR_2}Pozicio: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Sekva: {BLACK}{INT32} {INT32} {INT32}

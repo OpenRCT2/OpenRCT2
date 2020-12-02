@@ -522,8 +522,8 @@ STR_1138    :{SMALLFONT}{BLACK}Ikinci ek rengi seçiniz
 STR_1139    :{SMALLFONT}{BLACK}Desteklerin rengini seçiniz
 STR_1140    :{SMALLFONT}{BLACK}Bu araç için renk seçiniz
 STR_1141    :{SMALLFONT}{BLACK}Modife etmek istediğiniz vagonu seçiniz
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Bu aletin girşi değiştirilemiyor veya inşa edilemiyor…
 STR_1145    :Bu aletin çıkışı değiştirilemiyor veya inşa edilemiyor…
 STR_1146    :Giriş inşa edilmeli
@@ -536,8 +536,8 @@ STR_1152    :Herhangi dolulukda başlat
 STR_1153    :Alet yüksekliğini görüntüle
 STR_1154    :Arazı yüksekliğini görüntüle
 STR_1155    :Yol yüksekliğini görüntüle
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Silinemedi…
 STR_1159    :{SMALLFONT}{BLACK}Dekorasyonlar, çiçekler veya diğer cisimler
 STR_1160    :{SMALLFONT}{BLACK}Su ayarları 

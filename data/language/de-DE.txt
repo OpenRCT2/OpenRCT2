@@ -524,8 +524,8 @@ STR_1138    :{SMALLFONT}{BLACK}Zusatzfarbe 2 auswählen
 STR_1139    :{SMALLFONT}{BLACK}Farbe der Trägerstruktur auswählen
 STR_1140    :{SMALLFONT}{BLACK}Schemaoption für Fahrzeugfarbe auswählen
 STR_1141    :{SMALLFONT}{BLACK}Zu modifizierendes Fahrzeug auswählen
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Eingang für diese Attraktion kann nicht gebaut/verschoben werden…
 STR_1145    :Ausgang für diese Attraktion kann nicht gebaut/verschoben werden…
 STR_1146    :Eingang noch nicht gebaut
@@ -538,8 +538,8 @@ STR_1152    :Beliebig
 STR_1153    :Höhenmarkierungen an Fahrstrecken
 STR_1154    :Höhenmarkierungen auf dem Gelände
 STR_1155    :Höhenmarkierungen an Fußwegen
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kann nicht entfernt werden…
 STR_1159    :{SMALLFONT}{BLACK}Platzieren Sie Szenerien, Beete{NEWLINE}und andere Objekte
 STR_1160    :{SMALLFONT}{BLACK}Seen & Wasseranlagen erstellen/anpassen
@@ -1975,8 +1975,8 @@ STR_2773    :Fenstermodus
 STR_2774    :Vollbild
 STR_2775    :Vollbild (Randlos)
 STR_2776    :Sprache:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Ansichtsfenster {COMMA16}
 STR_2780    :Zusatz-Ansichtsfenster
 # End of new strings
@@ -3555,7 +3555,7 @@ STR_6304    :Szeneriewähler öffnen
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimentelle Option, um mehrere Threads für das Rendern zu verwenden, kann Instabilität verursachen
 STR_6307    :Farbschema: {BLACK}{STRINGID}
-STR_6308    :„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}„{STRINGID}{OUTLINE}{TOPAZ}“{NEWLINE}{STRINGID}
 STR_6309    :Neu verbinden
 STR_6310    :{WINDOW_COLOUR_2}Position: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Nächste: {BLACK}{INT32} {INT32} {INT32}

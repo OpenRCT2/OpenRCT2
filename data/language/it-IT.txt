@@ -526,8 +526,8 @@ STR_1138    :{SMALLFONT}{BLACK}Scegli il colore secondario 2
 STR_1139    :{SMALLFONT}{BLACK}Scegli il colore della struttura di supporto
 STR_1140    :{SMALLFONT}{BLACK}Scegli il modello decorativo del veicolo
 STR_1141    :{SMALLFONT}{BLACK}Scegli quale veicolo/treno modificare
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Impossibile costruire/spostare l'entrata di quest'attrazione…
 STR_1145    :Impossibile costruire/spostare l'uscita di quest'attrazione…
 STR_1146    :Entrata non ancora costruita
@@ -540,8 +540,8 @@ STR_1152    :Qualsiasi carico
 STR_1153    :Altezza indicata sul tracciato
 STR_1154    :Altezza indicata sul terreno
 STR_1155    :Altezza indicata sui sentieri
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Impossibile cancellarlo…
 STR_1159    :{SMALLFONT}{BLACK}Colloca lo scenario, i giardini e gli altri accessori
 STR_1160    :{SMALLFONT}{BLACK}Crea/regola i laghi e gli specchi d'acqua
@@ -1977,8 +1977,8 @@ STR_2773    :In finestra
 STR_2774    :A schermo intero
 STR_2775    :A schermo intero (desktop)
 STR_2776    :Lingua:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Finestra #{COMMA16}
 STR_2780    :Finestra extra
 STR_2781    :{STRINGID}:
@@ -3567,7 +3567,7 @@ STR_6304    :Apri selezione scenario
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Opzione sperimentale per utilizzare più thread per il rendering, potrebbe causare instabilità.
 STR_6307    :Schema colore: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Riconnessione
 STR_6310    :{WINDOW_COLOUR_2}Posizione: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Successivo: {BLACK}{INT32} {INT32} {INT32}

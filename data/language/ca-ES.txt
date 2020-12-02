@@ -1974,8 +1974,8 @@ STR_2773    :Finestra
 STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (sense vores)
 STR_2776    :Idioma:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Vista #{COMMA16}
 STR_2780    :Vista extra
 # End of new strings
@@ -3562,7 +3562,7 @@ STR_6304    :Obre el seleccionador de decoracions
 STR_6305    :Multifil
 STR_6306    :{SMALLFONT}{BLACK}Opció experimental per usar diferents fils per renderitzar. Pot causar problemes durant les partides.
 STR_6307    :Colors: {BLACK}{STRINGID}
-STR_6308    :«{STRINGID}{OUTLINE}{TOPAZ}»{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}«{STRINGID}{OUTLINE}{TOPAZ}»{NEWLINE}{STRINGID}
 STR_6309    :Reconnecta
 STR_6310    :{WINDOW_COLOUR_2}Posició: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Propera: {BLACK}{INT32} {INT32} {INT32}

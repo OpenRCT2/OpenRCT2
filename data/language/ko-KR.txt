@@ -525,8 +525,8 @@ STR_1138    :{SMALLFONT}{BLACK}2번 추가 색상을 선택하세요
 STR_1139    :{SMALLFONT}{BLACK}트랙 지지대 색상을 선택하세요
 STR_1140    :{SMALLFONT}{BLACK}차량 색상을 선택하세요
 STR_1141    :{SMALLFONT}{BLACK}어떤 차량/열차를 수정할지 선택하세요
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :이 놀이기구/시설의 입구를 건설/파괴할 수 없습니다…
 STR_1145    :이 놀이기구/시설의 출구를 건설/파괴할 수 없습니다…
 STR_1146    :입구가 아직 설치되지 않았습니다
@@ -539,8 +539,8 @@ STR_1152    :한 사람이라도 태우면
 STR_1153    :놀이기구 트랙 높이 표시
 STR_1154    :지표면 높이 표시
 STR_1155    :보도 높이 표시
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :제거할 수 없습니다…
 STR_1159    :{SMALLFONT}{BLACK}풍경, 정원, 기타 시설을 설치합니다
 STR_1160    :{SMALLFONT}{BLACK}호수나 물을 만듭니다
@@ -1977,8 +1977,8 @@ STR_2773    :창 모드
 STR_2774    :전체 화면
 STR_2775    :전체 화면 (창 모드)
 STR_2776    :언어:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
@@ -3562,7 +3562,7 @@ STR_6304    :오브젝트 스포이드
 STR_6305    :멀티스레딩
 STR_6306    :{SMALLFONT}{BLACK}렌더링을 하기 위해 여러 개의 스레드를 사용합니다. 실험적인 기능이므로 불안정할 수 있습니다.
 STR_6307    :색상 조합: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :재접속
 STR_6310    :{WINDOW_COLOUR_2}현재 위치: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}다음 위치: {BLACK}{INT32} {INT32} {INT32}

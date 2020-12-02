@@ -525,8 +525,8 @@ STR_1138    :{SMALLFONT}{BLACK}Valitse lisäväri 2
 STR_1139    :{SMALLFONT}{BLACK}Valitse tukirakenteiden väri
 STR_1140    :{SMALLFONT}{BLACK}Valitse ajoneuvon väriteema
 STR_1141    :{SMALLFONT}{BLACK}Valitse mitä ajoneuvoa/junaa muutetaan
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen sisäänkäyntiä…
 STR_1145    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen uloskäyntiä…
 STR_1146    :Sisäänkäyntiä ei ole vielä rakennettu
@@ -539,8 +539,8 @@ STR_1152    :Mikä tahansa kuorma
 STR_1153    :Korkeusmerkinnät laitteiden radoissa
 STR_1154    :Korkeusmerkinnät maanpinnassa
 STR_1155    :Korkeusmerkinnät poluissa
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Tämän poistaminen ei onnistu…
 STR_1159    :{SMALLFONT}{BLACK}Luo maisemaa, kasvillisuutta ja kaikenlaisia tilpehöörejä.
 STR_1160    :{SMALLFONT}{BLACK}Luo/säädä järviä ja vettä
@@ -1979,8 +1979,8 @@ STR_2773    :Ikkunoitu
 STR_2774    :Koko näyttö
 STR_2775    :Koko näyttö (työpöytä)
 STR_2776    :Kieli:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Ikkuna #{COMMA16}
 STR_2780    :Ylimääräinen ikkuna
 # End of new strings

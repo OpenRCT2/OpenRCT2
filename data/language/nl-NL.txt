@@ -522,8 +522,8 @@ STR_1138    :{SMALLFONT}{BLACK}Selecteer extra kleur 2
 STR_1139    :{SMALLFONT}{BLACK}Selecteer kleur ondersteuningen
 STR_1140    :{SMALLFONT}{BLACK}Selecteer kleurenschemaoptie voor voertuigen
 STR_1141    :{SMALLFONT}{BLACK}Selecteer welk voertuig je wilt aanpassen
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Kan de ingang van deze attractie niet bouwen of verplaatsen…
 STR_1145    :Kan de uitgang van deze attractie niet bouwen of verplaatsen…
 STR_1146    :Ingang nog niet gebouwd
@@ -536,8 +536,8 @@ STR_1152    :Aantal maakt niet uit
 STR_1153    :Hoogtemarkering op attracties
 STR_1154    :Hoogtemarkering op land
 STR_1155    :Hoogtemarkering op paden
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kan dit niet verwijderen…
 STR_1159    :{SMALLFONT}{BLACK}Decor, tuinen en andere accessoires neerzetten
 STR_1160    :{SMALLFONT}{BLACK}Waterniveaus bewerken
@@ -1973,8 +1973,8 @@ STR_2773    :Venster
 STR_2774    :Volledig scherm
 STR_2775    :Voll. sch. (randl. venster)
 STR_2776    :Taal:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Kijkvenster {COMMA16}
 STR_2780    :Extra kijkvenster
 STR_2781    :{STRINGID}:
@@ -3558,7 +3558,7 @@ STR_6304    :Decorselector openen
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
 STR_6307    :Kleurenschema: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Opnieuw verbinden
 STR_6310    :{WINDOW_COLOUR_2}Positie: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Volgende: {BLACK}{INT32} {INT32} {INT32}

@@ -522,8 +522,8 @@ STR_1138    :{SMALLFONT}{BLACK}追加の色2を選択
 STR_1139    :{SMALLFONT}{BLACK}支柱の色を選択
 STR_1140    :{SMALLFONT}{BLACK}車両の配色オプションを選択
 STR_1141    :{SMALLFONT}{BLACK}変更を加える車両/列車を選択
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :この乗物/施設の入口を設置/移動することはできません…
 STR_1145    :この乗物/施設の出口を設置/移動することはできません…
 STR_1146    :入口はまだ建てせんでした。
@@ -536,8 +536,8 @@ STR_1152    :指定なし
 STR_1153    :ライドの高さ表示の切り替え
 STR_1154    :地形の高さ表示の切り替え
 STR_1155    :歩道の高さ表示の切り替え
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :これを削除できません…
 STR_1159    :{SMALLFONT}{BLACK}景観、花壇、その他の備品を設置
 STR_1160    :{SMALLFONT}{BLACK}湖と水域を作成/調整
@@ -1971,8 +1971,8 @@ STR_2773    :ウィンドウ付き
 STR_2774    :フルスクリーン
 STR_2775    :フルスクリーン(デスクトップ)
 STR_2776    :言語:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :ビューポート {COMMA16}号
 STR_2780    :ビューポートを開く
 # End of new strings
@@ -3557,7 +3557,7 @@ STR_6304    :Open scenery picker
 STR_6305    :マルチスレッド
 STR_6306    :{SMALLFONT}{BLACK}Experimental option to use multiple threads to render, may cause instability.
 STR_6307    :配色: {BLACK}{STRINGID}
-STR_6308    :「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}「{STRINGID}{OUTLINE}{TOPAZ}」{NEWLINE}{STRINGID}
 STR_6309    :再接続
 STR_6310    :{WINDOW_COLOUR_2}拠点: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}次: {BLACK}{INT32} {INT32} {INT32}

@@ -526,8 +526,8 @@ STR_1138    :{SMALLFONT}{BLACK}Sélectionnez la couleur supplémentaire 2
 STR_1139    :{SMALLFONT}{BLACK}Sélectionnez la couleur de la structure
 STR_1140    :{SMALLFONT}{BLACK}Sélectionnez la palette de couleur du véhicule
 STR_1141    :{SMALLFONT}{BLACK}Sélectionnez le véhicule/train à modifier
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Impossible de construire/déplacer l'entrée de cette attraction…
 STR_1145    :Impossible de construire/déplacer la sortie de cette attraction…
 STR_1146    :Entrée pas encore construite
@@ -540,8 +540,8 @@ STR_1152    :N'importe quelle charge
 STR_1153    :Repères de hauteur sur les voies
 STR_1154    :Repères de hauteur sur le terrain
 STR_1155    :Repères de hauteur sur les chemins
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Impossible de supprimer ceci…
 STR_1159    :{SMALLFONT}{BLACK}Placer le décor, les jardins, et autres accessoires
 STR_1160    :{SMALLFONT}{BLACK}Créer/ajuster les étendues d'eau
@@ -1978,8 +1978,8 @@ STR_2773    :Fenêtré
 STR_2774    :Plein écran
 STR_2775    :Plein écran (ss. bordure)
 STR_2776    :Langue :
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 # End of new strings
 STR_2779    :Vue #{COMMA16}
 STR_2780    :Vue supplémentaire
@@ -3566,7 +3566,7 @@ STR_6304    :Ouvrir le sélecteur de décor
 STR_6305    :Multithreading
 STR_6306    :{SMALLFONT}{BLACK}Option expérimentale pour utiliser plusieurs fils d'exécution pour le rendu, peut causer des problèmes d'instabilité.
 STR_6307    :Palette de couleurs : {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconnecter
 STR_6310    :{WINDOW_COLOUR_2}Position : {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Suivant : {BLACK}{INT32} {INT32} {INT32}

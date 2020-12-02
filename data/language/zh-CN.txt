@@ -528,8 +528,8 @@ STR_1138    :{SMALLFONT}{BLACK}选择额外配色 2
 STR_1139    :{SMALLFONT}{BLACK}选择支撑框架配色
 STR_1140    :{SMALLFONT}{BLACK}选择车辆配色主题
 STR_1141    :{SMALLFONT}{BLACK}选择需要魔改的车辆/列车
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :不能建造/移动这个游乐设施的入口…
 STR_1145    :不能建造/移动这个游乐设施的出口…
 STR_1146    :尚未建造入口
@@ -542,8 +542,8 @@ STR_1152    :随意载客
 STR_1153    :设施轨道高度标记
 STR_1154    :土地高度标记
 STR_1155    :道路高度标记
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :不能移除此物…
 STR_1159    :{SMALLFONT}{BLACK}放置景观，花园和其他美化物
 STR_1160    :{SMALLFONT}{BLACK}创建/调整湖泊和水塘
@@ -1980,8 +1980,8 @@ STR_2773    :窗口
 STR_2774    :全屏幕
 STR_2775    :全屏幕 (无边框窗口)
 STR_2776    :语言:
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :查看窗口 #{COMMA16}
 STR_2780    :额外的查看窗口
 # End of new strings

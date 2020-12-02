@@ -524,8 +524,8 @@ STR_1138    :{SMALLFONT}{BLACK}Selecione a cor adicional 2
 STR_1139    :{SMALLFONT}{BLACK}Selecione a cor do suporte das estruturas
 STR_1140    :{SMALLFONT}{BLACK}Selecione a opção do esquema de cor do veículo
 STR_1141    :{SMALLFONT}{BLACK}Selecione o veículo/trem para modificar
-STR_1142    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1143    :»{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1142    :{MOVE_X}{10}{STRINGID}
+STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Impossível construir/mover a entrada dessa atração…
 STR_1145    :Impossível construir/mover a saída dessa atração…
 STR_1146    :Entrada ainda não construída
@@ -538,8 +538,8 @@ STR_1152    :Qualquer carga
 STR_1153    :Marcas de altura nas Pistas dos Brinquedos
 STR_1154    :Marcas de altura no Terreno
 STR_1155    :Marcas de altura nos Caminhos
-STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1157    :✓{MOVE_X}{SMALLFONT}{STRINGID}
+STR_1156    :{MOVE_X}{10}{STRINGID}
+STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Impossível remover isto…
 STR_1159    :{SMALLFONT}{BLACK}Coloque cenários, jardins, e outros acessórios
 STR_1160    :{SMALLFONT}{BLACK}Criar/ajustar lagos e água
@@ -1973,8 +1973,8 @@ STR_2773    :Janela
 STR_2774    :Tela Cheia
 STR_2775    :Tela Cheia Sem Borda
 STR_2776    :Idioma
-STR_2777    :{MOVE_X}{SMALLFONT}{STRING}
-STR_2778    :»{MOVE_X}{SMALLFONT}{STRING}
+STR_2777    :{MOVE_X}{10}{STRING}
+STR_2778    :»{MOVE_X}{10}{STRING}
 STR_2779    :Janela de Exibição #{COMMA16}
 STR_2780    :Janela de Exibição Grande
 # End of new strings
@@ -3559,7 +3559,7 @@ STR_6304    :Abrir seletor de cenário
 STR_6305    :Múltiplas threads
 STR_6306    :{SMALLFONT}{BLACK}Opção experimental que usa múltiplas threads para desenhar, pode causar instabilidade.
 STR_6307    :Esquema de cores: {BLACK}{STRINGID}
-STR_6308    :“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
+STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Reconectar
 STR_6310    :{WINDOW_COLOUR_2}Posição: {BLACK}{INT32} {INT32} {INT32}
 STR_6311    :{WINDOW_COLOUR_2}Próxima: {BLACK}{INT32} {INT32} {INT32}
