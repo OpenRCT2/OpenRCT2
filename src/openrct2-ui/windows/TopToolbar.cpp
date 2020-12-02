@@ -314,10 +314,6 @@ static ClearAction GetClearAction();
 static bool _landToolBlocked;
 static uint8_t _unkF64F0E;
 static int16_t _unkF64F0A;
-// rct2: 0x00F64F15
-static colour_t _secondaryColour;
-// rct2: 0x00F64F16
-static colour_t _tertiaryColour;
 
 /**
  * Creates the main game top toolbar window.
@@ -1227,7 +1223,7 @@ static void sub_6E1F34_update_screen_coords_and_buttons_pressed(bool canRaiseIte
 
 static void sub_6E1F34_small_scenery(
     const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outQuadrant,
-    colour_t* outPrimaryColour, colour_t* outSecondaryColour, Direction* outRotation)
+    Direction* outRotation)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1329,8 +1325,6 @@ static void sub_6E1F34_small_scenery(
         }
 
         *outQuadrant = quadrant ^ 2;
-        *outPrimaryColour = gWindowSceneryPrimaryColour;
-        *outSecondaryColour = gWindowScenerySecondaryColour;
         *outRotation = rotation;
 
         return;
@@ -1415,8 +1409,6 @@ static void sub_6E1F34_small_scenery(
     }
 
     *outQuadrant = 0;
-    *outPrimaryColour = gWindowSceneryPrimaryColour;
-    *outSecondaryColour = gWindowScenerySecondaryColour;
     *outRotation = rotation;
 }
 
@@ -1455,8 +1447,7 @@ static void sub_6E1F34_path_item(
 }
 
 static void sub_6E1F34_wall(
-    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour,
-    uint8_t* outEdges)
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, uint8_t* outEdges)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1536,21 +1527,16 @@ static void sub_6E1F34_wall(
     if (gridPos.isNull())
         return;
 
-    _secondaryColour = gWindowScenerySecondaryColour;
-    _tertiaryColour = gWindowSceneryTertiaryColour;
-
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         virtual_floor_set_height(gSceneryPlaceZ);
     }
 
-    *outPrimaryColour = gWindowSceneryPrimaryColour;
     *outEdges = edge;
 }
 
 static void sub_6E1F34_large_scenery(
-    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, colour_t* outPrimaryColour,
-    colour_t* outSecondaryColour, Direction* outDirection)
+    const ScreenCoordsXY& sourceScreenPos, ObjectEntryIndex sceneryIndex, CoordsXY& gridPos, Direction* outDirection)
 {
     rct_window* w = window_find_by_class(WC_SCENERY);
 
@@ -1645,8 +1631,6 @@ static void sub_6E1F34_large_scenery(
         virtual_floor_set_height(gSceneryPlaceZ);
     }
 
-    *outPrimaryColour = gWindowSceneryPrimaryColour;
-    *outSecondaryColour = gWindowScenerySecondaryColour;
     *outDirection = rotation;
 }
 
@@ -1732,11 +1716,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         case SCENERY_TYPE_SMALL:
         {
             uint8_t quadrant;
-            colour_t primaryColour;
-            colour_t secondaryColour;
             Direction rotation;
-            sub_6E1F34_small_scenery(
-                windowPos, selectedScenery, gridPos, &quadrant, &primaryColour, &secondaryColour, &rotation);
+            sub_6E1F34_small_scenery(windowPos, selectedScenery, gridPos, &quadrant, &rotation);
             if (gridPos.isNull())
                 return;
 
@@ -1807,7 +1788,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        primaryColour, secondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
                     auto res = GameActions::Query(&smallSceneryPlaceAction);
                     success = res->Error;
                     if (res->Error == GameActions::Status::Ok)
@@ -1830,7 +1811,7 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        primaryColour, secondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -1874,9 +1855,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         }
         case SCENERY_TYPE_WALL:
         {
-            colour_t primaryColour;
             uint8_t edges;
-            sub_6E1F34_wall(windowPos, selectedScenery, gridPos, &primaryColour, &edges);
+            sub_6E1F34_wall(windowPos, selectedScenery, gridPos, &edges);
             if (gridPos.isNull())
                 return;
 
@@ -1889,7 +1869,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             for (; zAttemptRange != 0; zAttemptRange--)
             {
                 auto wallPlaceAction = WallPlaceAction(
-                    selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                    selectedScenery, { gridPos, gSceneryPlaceZ }, edges, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 auto res = GameActions::Query(&wallPlaceAction);
                 if (res->Error == GameActions::Status::Ok)
@@ -1912,7 +1893,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             }
 
             auto wallPlaceAction = WallPlaceAction(
-                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, primaryColour, _secondaryColour, _tertiaryColour);
+                selectedScenery, { gridPos, gSceneryPlaceZ }, edges, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
+                gWindowSceneryTertiaryColour);
 
             wallPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
@@ -1925,10 +1907,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         }
         case SCENERY_TYPE_LARGE:
         {
-            colour_t primaryColour;
-            colour_t secondaryColour;
             Direction direction;
-            sub_6E1F34_large_scenery(windowPos, selectedScenery, gridPos, &primaryColour, &secondaryColour, &direction);
+            sub_6E1F34_large_scenery(windowPos, selectedScenery, gridPos, &direction);
             if (gridPos.isNull())
                 return;
 
@@ -1942,7 +1922,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
             {
                 CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
-                auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, selectedScenery, primaryColour, secondaryColour);
+                auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                    loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
 
                 auto res = GameActions::Query(&sceneryPlaceAction);
                 if (res->Error == GameActions::Status::Ok)
@@ -1966,7 +1947,8 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
-            auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, selectedScenery, primaryColour, secondaryColour);
+            auto sceneryPlaceAction = LargeSceneryPlaceAction(
+                loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -2523,12 +2505,14 @@ static money32 try_place_ghost_path_addition(CoordsXYZ loc, ObjectEntryIndex ent
     return res->Cost;
 }
 
-static money32 try_place_ghost_wall(CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour)
+static money32 try_place_ghost_wall(
+    CoordsXYZ loc, uint8_t edge, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
+    colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e26b0
-    auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, _secondaryColour, _tertiaryColour);
+    auto wallPlaceAction = WallPlaceAction(entryIndex, loc, edge, primaryColour, secondaryColour, tertiaryColour);
     wallPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     wallPlaceAction.SetCallback([=](const GameAction* ga, const WallPlaceActionResult* result) {
         if (result->Error != GameActions::Status::Ok)
@@ -2643,11 +2627,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
         {
             CoordsXY mapTile = {};
             uint8_t quadrant;
-            colour_t primaryColour, secondaryColour;
             Direction rotation;
 
-            sub_6E1F34_small_scenery(
-                screenPos, selection.EntryIndex, mapTile, &quadrant, &primaryColour, &secondaryColour, &rotation);
+            sub_6E1F34_small_scenery(screenPos, selection.EntryIndex, mapTile, &quadrant, &rotation);
 
             if (mapTile.isNull())
             {
@@ -2709,7 +2691,8 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             for (; attemptsLeft != 0; attemptsLeft--)
             {
                 cost = try_place_ghost_small_scenery(
-                    { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, primaryColour, secondaryColour);
+                    { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2757,10 +2740,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
         case SCENERY_TYPE_WALL:
         {
             CoordsXY mapTile = {};
-            colour_t primaryColour;
             uint8_t edge;
 
-            sub_6E1F34_wall(screenPos, selection.EntryIndex, mapTile, &primaryColour, &edge);
+            sub_6E1F34_wall(screenPos, selection.EntryIndex, mapTile, &edge);
 
             if (mapTile.isNull())
             {
@@ -2798,7 +2780,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             cost = 0;
             for (; attemptsLeft != 0; attemptsLeft--)
             {
-                cost = try_place_ghost_wall({ mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, primaryColour);
+                cost = try_place_ghost_wall(
+                    { mapTile, gSceneryPlaceZ }, edge, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
@@ -2811,10 +2795,9 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
         case SCENERY_TYPE_LARGE:
         {
             CoordsXY mapTile = {};
-            colour_t primaryColour, secondaryColour;
             Direction direction;
 
-            sub_6E1F34_large_scenery(screenPos, selection.EntryIndex, mapTile, &primaryColour, &secondaryColour, &direction);
+            sub_6E1F34_large_scenery(screenPos, selection.EntryIndex, mapTile, &direction);
 
             if (mapTile.isNull())
             {
@@ -2864,7 +2847,8 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
             for (; attemptsLeft != 0; attemptsLeft--)
             {
                 cost = try_place_ghost_large_scenery(
-                    { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, primaryColour, secondaryColour);
+                    { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
+                    gWindowScenerySecondaryColour);
 
                 if (cost != MONEY32_UNDEFINED)
                     break;
