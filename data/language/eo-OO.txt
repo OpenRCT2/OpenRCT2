@@ -25,7 +25,7 @@ STR_0020    :Seĝlifto
 STR_0021    :Korktirila Onda Fervojo
 STR_0022    :Labirinto
 STR_0023    :Spirala Tobagano
-STR_0024    :Vetkurantaj Aŭtetoj
+STR_0024    :Gokartoj
 STR_0025    :Ŝtiprajdo
 STR_0026    :Rapidfluorajdo
 STR_0027    :Albatiĝantaj Aŭtetoj
@@ -117,7 +117,7 @@ STR_0530    :Ĉaroj pendas de ŝtala kablo, kiu etendiĝas de unu flanko de la a
 STR_0531    :Onda fervojo kompakta kun ŝtala trako, sur kie la trajno veturas tra korktiriloj kaj lopoj
 STR_0532    :Labirinto konstruita de 6-futaj altaj heĝoj aŭ muroj. La gastoj vagas en tiu labirinto, kaj eliras nur kiam ili trovas la elirejon
 STR_0533    :Ligna konstruaĵo kun interna ŝtuparo kaj ekstera spirala tobogano, kiun oni uzas kun toboganomatoj
-STR_0534    :Gastoj vetkuras unu la alian en vetkurantaj aŭtetoj sur asfalta trako
+STR_0534    :Gastoj vetkuras unu la alian en gokartoj sur asfalta trako
 STR_0535    :Boatoj veturas laŭ akvokanalo, kaj plaŭde malsupreniras krutajn deklivojn por trempi la rajdantojn
 STR_0536    :Rondaj boatoj vagas laŭ larĝa akvokanalo, plaŭdas tra akvofaloj, kaj ekscitas rajdantojn per ŝaŭmantaj rapidfluoj
 STR_0537    :Gastoj albatiĝas al unu la alian per elektraj albatiĝantaj aŭtetoj, kiujn ili stiras
@@ -138,7 +138,7 @@ STR_0554    :Linearaj induktaj motoroj plirapidigas la ĉaron el la stacio laŭ 
 STR_0555    :Gastoj rajdas en lifto supren aŭ malsupren, por iri de unu nivelo al alia
 STR_0556    :Pliaj larĝaj veturiloj malsupreniras ekzaktajn vertikalajn trakojn por la pleja sperto de libera-fala onda fervojo
 STR_0557    :Monaŭtomato por gastoj, kiuj ne havas sufiĉe da mono
-STR_0558    :Rajdantoj rajdas en duopaj da seĝoj, kiuj turniĝas ĉirkaŭ la finoj de tri longaj turniĝantaj brakoj
+STR_0558    :Rajdantoj rajdas en paroj da seĝoj, kiuj turniĝas ĉirkaŭ la finoj de tri longaj turniĝantaj brakoj
 STR_0559    :Granda konstruaĵo, kiu enhavas timigajn koridorojn kaj timigajn ĉambrojn
 STR_0560    :Ejo por malsanaj gastoj, por ke ili bonsanas pli rapide
 STR_0561    :Cirkospektaklo de bestoj en granda cirkotendo
@@ -162,7 +162,7 @@ STR_0581    :Ringo da seĝoj, milde turniĝante, estas tirata al la supro de alt
 STR_0582    :Gastoj rajdas en kusenveturiloj, kiujn ili stiras libere
 STR_0583    :Konstruaĵo, kiu enhavas ĉambrojn torditajn kaj koridorojn angulajn por malorienti homojn tie
 STR_0584    :Specialaj bicikloj, kiujn la rajdantoj stiras per pedalado, veturas sur ŝtala monorelotrako
-STR_0585    :Rajdantoj, kiuj sidas en duopoj da seĝoj penditaj sub la trako, lopas kaj tordiĝas tra malgrandspacaj inversigoj
+STR_0585    :Rajdantoj, kiuj sidas en paroj da seĝoj penditaj sub la trako, lopas kaj tordiĝas tra krutaj inversigoj
 STR_0586    :Boatoformaj ĉaroj rapidas sur onda fervoja trako por ebligi kurboplenajn kurbiĝojn kaj krutajn malleviĝojn, foje plaŭdas en akvo dum mildaj riveropartoj
 STR_0587    :Post vigliga lanĉo povigita de aero, la trajno rapide supreniras vertikalan trakon, iras super la supro, kaj malsupreniras vertikale sur la alia flanko por reveni al la stacio
 STR_0588    :Unuopaj ĉaroj rapidas sub zigzaga trako kun harpingloformaj kurbiĝoj kaj subitaj malleviĝoj
@@ -3715,7 +3715,7 @@ STR_DTLS    :Konvertu grandan forlasitan minon, de vidindaĵo al amuzparko
 <Karts & Coasters>
 STR_SCNR    :Aŭtetoj k Ondaj Fervojoj
 STR_PARK    :Aŭtetoj k Ondaj Fervojoj
-STR_DTLS    :Granda parko kaŝita en la arbaro, kiu enhavas nur trakojn de vetkurantaj aŭtetoj kaj lignajn ondajn fervojojn
+STR_DTLS    :Granda parko kaŝita en la arbaro, kiu enhavas nur trakojn de gokartoj kaj lignajn ondajn fervojojn
 
 <Mel's World>
 STR_SCNR    :Melmondo
@@ -3781,7 +3781,7 @@ STR_DTLS    :La ĉefa atrakcio de ĉi tiu granda disvolvanta parko estas giganta
 <Canary Mines>
 STR_SCNR    :Kanario-Minoj
 STR_PARK    :Kanario-Minoj
-STR_DTLS    :Ĉi tiu forlasita mino jam havas la potencialon de vidindaĵo, kun sia miniatura fervojo kaj duopo de ondaj fervojoj kun vertikalaj malleviĝoj
+STR_DTLS    :Ĉi tiu forlasita mino jam havas la potencialon de vidindaĵo, kun sia miniatura fervojo kaj paro da ondaj fervojoj kun vertikalaj malleviĝoj
 
 <Barony Bridge>
 STR_SCNR    :Baronlando-Ponto
@@ -3866,7 +3866,7 @@ STR_DTLS    :Disvolvu ĉi tiu parkon kun romana temo, per aldoni atrakciojn kaj 
 <Swamp Cove>
 STR_SCNR    :Marĉejo-Golfeto
 STR_PARK    :Marĉejo-Golfeto
-STR_DTLS    :Konstruita parte sur serio de malgrandaj insuloj, ĉi tiu parko jam havas duopon de grandaj ondaj fervojoj por siaj ĉefaj atrakcioj
+STR_DTLS    :Konstruita parte sur serio de malgrandaj insuloj, ĉi tiu parko jam havas paron da grandaj ondaj fervojoj por siaj ĉefaj atrakcioj
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenalino-Altaĵoj
@@ -3963,7 +3963,7 @@ STR_DTLS    :Apudmara golfeto estas la okazejo por ĉi tiu defio de la konstruad
 <Good Knight Park>
 STR_SCNR    :Bona-Kavaliro-Parko
 STR_PARK    :Bona-Kavaliro-Parko
-STR_DTLS    :Vi devas disvolvi kastelon, kun duopo de ondaj fervojoj, al pli granda amuzparko
+STR_DTLS    :Vi devas disvolvi kastelon, kun paro da ondaj fervojoj, al pli granda amuzparko
 
 <Wacky Warren>
 STR_SCNR    :Komika Kuniklejo
