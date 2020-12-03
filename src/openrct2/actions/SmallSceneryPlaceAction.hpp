@@ -26,6 +26,7 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "GameAction.h"
+#include "SmallSceneryRemoveAction.hpp"
 
 class SmallSceneryPlaceActionResult final : public GameActions::Result
 {
@@ -98,6 +99,11 @@ public:
 
         stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour)
                << DS_TAG(_secondaryColour);
+    }
+
+    GameAction::Ptr Get_Undo(GameActions::Result & result) const override
+    {
+        return std::make_unique<SmallSceneryRemoveAction>(result.Position, _quadrant, _sceneryType);
     }
 
     GameActions::Result::Ptr Query() const override
