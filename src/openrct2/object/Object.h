@@ -144,6 +144,12 @@ struct ObjectEntryDescriptor
     };
 
     ObjectEntryDescriptor() = default;
+
+    ObjectEntryDescriptor(const ObjectEntryDescriptor& entry)
+    {
+        *this = entry;
+    }
+
     explicit ObjectEntryDescriptor(const rct_object_entry& newEntry)
     {
         Generation = ObjectGeneration::DAT;
