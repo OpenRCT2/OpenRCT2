@@ -25,6 +25,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/Platform2.h"
+#include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "Scenario.h"
 #include "ScenarioSources.h"
@@ -261,7 +262,7 @@ private:
                     rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
                     // If the name or the details contain a colour code, they might be in UTF-8 already.
                     // This is caused by a bug that was in OpenRCT2 for 3 years.
-                    if (!String::ContainsColourCode(info.name) && !String::ContainsColourCode(info.details))
+                    if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
                     {
                         rct2_to_utf8_self(info.name, sizeof(info.name));
                         rct2_to_utf8_self(info.details, sizeof(info.details));

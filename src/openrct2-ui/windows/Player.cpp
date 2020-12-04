@@ -329,13 +329,12 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (groupindex != -1)
     {
         rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
-        char buffer[300];
-        char* lineCh;
-        lineCh = buffer;
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_WINDOW_COLOUR_2);
-        safe_strcpy(lineCh, network_get_group_name(groupindex), sizeof(buffer) - (lineCh - buffer));
+
+        thread_local std::string buffer;
+        buffer.assign("{WINDOW_COLOUR_2}");
+        buffer += network_get_group_name(groupindex);
         auto ft = Formatter();
-        ft.Add<const char*>(buffer);
+        ft.Add<const char*>(buffer.c_str());
 
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,

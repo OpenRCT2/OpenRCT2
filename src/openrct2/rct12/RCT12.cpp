@@ -9,6 +9,7 @@
 
 #include "RCT12.h"
 
+#include "../core/String.hpp"
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
@@ -1039,4 +1040,55 @@ RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
         return RCT12_RIDE_ID_NULL;
 
     return rideId;
+}
+
+static bool RCT12IsFormatChar(codepoint_t c)
+{
+    if (c >= RCT2_STRING_FORMAT_ARG_START && c <= RCT2_STRING_FORMAT_ARG_END)
+    {
+        return true;
+    }
+    if (c >= RCT2_STRING_FORMAT_COLOUR_START && c <= RCT2_STRING_FORMAT_COLOUR_END)
+    {
+        return true;
+    }
+    return false;
+}
+
+static bool RCT12IsFormatChar(char c)
+{
+    return RCT12IsFormatChar(static_cast<codepoint_t>(c));
+}
+
+bool IsLikelyUTF8(std::string_view s)
+{
+    // RCT2 uses CP-1252 so some characters may be >= 128. However we don't expect any
+    // characters that are reserved for formatting strings, so if those are found, assume
+    // that the string is UTF-8.
+    for (auto c : s)
+    {
+        if (RCT12IsFormatChar(c))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string RCT12RemoveFormattingUTF8(std::string_view s)
+{
+    std::string result;
+    result.reserve(s.size() * 2);
+
+    CodepointView codepoints(s);
+    for (auto codepoint : codepoints)
+    {
+        if (!RCT12IsFormatChar(codepoint))
+        {
+            String::AppendCodepoint(result, codepoint);
+        }
+    }
+
+    result.shrink_to_fit();
+    return result;
 }

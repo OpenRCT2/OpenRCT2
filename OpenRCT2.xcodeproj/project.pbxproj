@@ -115,6 +115,8 @@
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
 		93AE2389252F948A00CD03C3 /* Formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93AE2387252F948A00CD03C3 /* Formatter.h */; };
 		93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AE2388252F948A00CD03C3 /* Formatter.cpp */; };
+		93B4DC1525487CDF008D63FF /* Formatting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B4DC1325487CDE008D63FF /* Formatting.cpp */; };
+		93B4DC1625487CDF008D63FF /* Formatting.h in Headers */ = {isa = PBXBuildFile; fileRef = 93B4DC1425487CDE008D63FF /* Formatting.h */; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -1341,6 +1343,8 @@
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
 		93AE2387252F948A00CD03C3 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
 		93AE2388252F948A00CD03C3 /* Formatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatter.cpp; sourceTree = "<group>"; };
+		93B4DC1325487CDE008D63FF /* Formatting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatting.cpp; sourceTree = "<group>"; };
+		93B4DC1425487CDE008D63FF /* Formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatting.h; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -2962,6 +2966,8 @@
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
 				93AE2388252F948A00CD03C3 /* Formatter.cpp */,
 				93AE2387252F948A00CD03C3 /* Formatter.h */,
+				93B4DC1325487CDE008D63FF /* Formatting.cpp */,
+				93B4DC1425487CDE008D63FF /* Formatting.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
@@ -3707,6 +3713,7 @@
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
 				C67B28192002D7F200109C93 /* Window_internal.h in Headers */,
 				93DFD05024521C1A001FCBAF /* ScPark.hpp in Headers */,
+				93B4DC1625487CDF008D63FF /* Formatting.h in Headers */,
 				93FB271F24ED32B7008241C9 /* json.hpp in Headers */,
 				93DFD02E24521BA0001FCBAF /* FileWatcher.h in Headers */,
 				2ADE2F28224418B2002598AF /* DataSerialiserTag.h in Headers */,
@@ -4292,6 +4299,7 @@
 				F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */,
 				C68878DE20289B9B0084B384 /* Supports.cpp in Sources */,
 				C688791720289B9B0084B384 /* MiniHelicopters.cpp in Sources */,
+				93B4DC1525487CDF008D63FF /* Formatting.cpp in Sources */,
 				C688784F202899D00084B384 /* CmdlineSprite.cpp in Sources */,
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				C688793220289B9B0084B384 /* SplashBoats.cpp in Sources */,

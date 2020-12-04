@@ -220,6 +220,7 @@
     <ClInclude Include="localisation\Date.h" />
     <ClInclude Include="localisation\FormatCodes.h" />
     <ClInclude Include="localisation\Formatter.h" />
+    <ClInclude Include="localisation\Formatting.h" />
     <ClInclude Include="localisation\Language.h" />
     <ClInclude Include="localisation\LanguagePack.h" />
     <ClInclude Include="localisation\Localisation.h" />
@@ -554,6 +555,7 @@
     <ClCompile Include="localisation\Currency.cpp" />
     <ClCompile Include="localisation\FormatCodes.cpp" />
     <ClCompile Include="localisation\Formatter.cpp" />
+    <ClCompile Include="localisation\Formatting.cpp" />
     <ClCompile Include="localisation\Language.cpp" />
     <ClCompile Include="localisation\LanguagePack.cpp" />
     <ClCompile Include="localisation\Localisation.cpp" />

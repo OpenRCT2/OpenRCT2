@@ -12,7 +12,9 @@
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
 
-static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text);
+static void DrawText(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text,
+    bool noFormatting = false);
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, rct_string_id format, const void* args);
 
@@ -74,9 +76,10 @@ int32_t StaticLayout::GetLineCount()
     return LineCount;
 }
 
-static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text)
+static void DrawText(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
-    int32_t width = gfx_get_string_width(text);
+    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text) : gfx_get_string_width(text);
 
     auto alignedCoords = coords;
     switch (paint.Alignment)
@@ -91,7 +94,7 @@ static void DrawText(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting);
 
     if (paint.UnderlineText)
     {
@@ -149,6 +152,13 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t co
 {
     TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
     DrawText(dpi, coords, textPaint, buffer);
+}
+
+void gfx_draw_string_no_formatting(
+    rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+{
+    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
+    DrawText(dpi, coords, textPaint, buffer, true);
 }
 
 // Basic

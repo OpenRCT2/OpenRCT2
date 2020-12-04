@@ -126,6 +126,23 @@ namespace String
 #endif
     }
 
+    std::string_view ToStringView(const char* ch, size_t maxLen)
+    {
+        size_t len{};
+        for (size_t i = 0; i < maxLen; i++)
+        {
+            if (ch[i] == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return std::string_view(ch, len);
+    }
+
     bool IsNullOrEmpty(const utf8* str)
     {
         return str == nullptr || str[0] == '\0';
@@ -151,6 +168,32 @@ namespace String
         else
         {
             return strcmp(a, b);
+        }
+    }
+
+    bool Equals(const std::string_view a, const std::string_view b, bool ignoreCase)
+    {
+        if (ignoreCase)
+        {
+            if (a.size() == b.size())
+            {
+                for (size_t i = 0; i < a.size(); i++)
+                {
+                    if (tolower(a[i]) != tolower(b[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return a == b;
         }
     }
 
@@ -483,6 +526,13 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
+    void AppendCodepoint(std::string& str, codepoint_t codepoint)
+    {
+        char buffer[8]{};
+        utf8_write_codepoint(buffer, codepoint);
+        str.append(buffer);
+    }
+
     bool IsWhiteSpace(codepoint_t codepoint)
     {
         // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
@@ -745,16 +795,9 @@ namespace String
         return res;
 #endif
     }
-
-    bool ContainsColourCode(const std::string& string)
-    {
-        for (unsigned char c : string)
-        {
-            if (c >= FORMAT_COLOUR_CODE_START && c <= FORMAT_COLOUR_CODE_END)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 } // namespace String
+
+char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
+{
+    return utf8_get_next(ch, next);
+}

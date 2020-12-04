@@ -1931,17 +1931,17 @@ void InteractiveConsole::Execute(const std::string& s)
 
 void InteractiveConsole::WriteLine(const std::string& s)
 {
-    WriteLine(s, FORMAT_WINDOW_COLOUR_2);
+    WriteLine(s, FormatToken::ColourWindow2);
 }
 
 void InteractiveConsole::WriteLineError(const std::string& s)
 {
-    WriteLine(s, FORMAT_RED);
+    WriteLine(s, FormatToken::ColourRed);
 }
 
 void InteractiveConsole::WriteLineWarning(const std::string& s)
 {
-    WriteLine(s, FORMAT_YELLOW);
+    WriteLine(s, FormatToken::ColourYellow);
 }
 
 void InteractiveConsole::WriteFormatLine(const char* format, ...)

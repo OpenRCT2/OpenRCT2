@@ -140,7 +140,7 @@ void InGameConsole::RefreshCaret(size_t position)
     _selectionStart = position;
     char tempString[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
-    _caretScreenPosX = gfx_get_string_width(tempString);
+    _caretScreenPosX = gfx_get_string_width_no_formatting(tempString);
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -199,13 +199,13 @@ void InGameConsole::Toggle()
     }
 }
 
-void InGameConsole::WriteLine(const std::string& input, uint32_t colourFormat)
+void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat)
 {
     // Include text colour format only for special cases
     // The draw function handles the default text colour differently
-    utf8 colourCodepoint[4]{};
-    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
-        utf8_write_codepoint(colourCodepoint, colourFormat);
+    auto colourCodepoint = "";
+    if (colourFormat != FormatToken::ColourWindow2)
+        colourCodepoint = "{WINDOW_COLOUR_2}";
 
     std::string line;
     std::size_t splitPos = 0;
@@ -254,9 +254,6 @@ void InGameConsole::Update()
                 }
             }
         }
-
-        // Remove unwanted characters in console input
-        utf8_remove_format_codes(_consoleCurrentLine, false);
     }
 
     // Flash the caret
@@ -277,12 +274,11 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
-    std::string colourFormatStr;
+    thread_local std::string colourFormatStr;
+    colourFormatStr.clear();
     if (textColour == COLOUR_BLACK)
     {
-        utf8 extraTextFormatCode[4]{};
-        utf8_write_codepoint(extraTextFormatCode, FORMAT_BLACK);
-        colourFormatStr = extraTextFormatCode;
+        colourFormatStr = "{BLACK}";
     }
 
     // TTF looks far better without the outlines
@@ -316,7 +312,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     {
         const size_t index = i + _consoleScrollPos;
         lineBuffer = colourFormatStr + _consoleLines[index];
-        gfx_draw_string(dpi, lineBuffer.c_str(), textColour, screenCoords);
+        gfx_draw_string_no_formatting(dpi, lineBuffer.c_str(), textColour, screenCoords);
         screenCoords.y += lineHeight;
     }
 
@@ -324,7 +320,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Draw current line
     lineBuffer = colourFormatStr + _consoleCurrentLine;
-    gfx_draw_string(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, screenCoords);
+    gfx_draw_string_no_formatting(dpi, lineBuffer.c_str(), TEXT_COLOUR_255, screenCoords);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

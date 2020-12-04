@@ -61,22 +61,13 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
 
     window_close_by_class(WC_ERROR);
     auto& buffer = _window_error_text;
-    buffer.clear();
-
-    // Format the title
-    {
-        char temp[8]{};
-        utf8_write_codepoint(temp, FORMAT_BLACK);
-        buffer.append(temp);
-    }
+    buffer.assign("{BLACK}");
     buffer.append(title);
 
     // Format the message
     if (!message.empty())
     {
-        char temp[8]{};
-        utf8_write_codepoint(temp, FORMAT_NEWLINE);
-        buffer.append(temp);
+        buffer.push_back('\n');
         buffer.append(message);
     }
 

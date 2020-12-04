@@ -63,7 +63,7 @@ namespace OpenRCT2::Scripting
         result.MonthYear = value["month"].as_int();
         result.Day = value["day"].as_int();
 
-        auto text = language_convert_string(value["text"].as_string());
+        auto text = value["text"].as_string();
         String::Set(result.Text, sizeof(result.Text), text.c_str());
         return result;
     }
@@ -207,7 +207,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                return language_convert_string_to_tokens(msg->Text);
+                return msg->Text;
             }
             return 0;
         }
@@ -218,8 +218,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                auto text = language_convert_string(value);
-                String::Set(msg->Text, sizeof(msg->Text), text.c_str());
+                String::Set(msg->Text, sizeof(msg->Text), value.c_str());
             }
         }
 
@@ -395,12 +394,12 @@ namespace OpenRCT2::Scripting
                 std::string text;
                 if (message.type() == DukValue::Type::STRING)
                 {
-                    text = language_convert_string(message.as_string());
+                    text = message.as_string();
                 }
                 else
                 {
                     type = GetParkMessageType(message["type"].as_string());
-                    text = language_convert_string(message["text"].as_string());
+                    text = message["text"].as_string();
                     if (type == News::ItemType::Blank)
                     {
                         assoc = static_cast<uint32_t>(((COORDS_NULL & 0xFFFF) << 16) | (COORDS_NULL & 0xFFFF));

@@ -243,7 +243,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
             {
-                return language_convert_string_to_tokens(GetWindowTitle(w));
+                return GetWindowTitle(w);
             }
             return {};
         }
@@ -252,7 +252,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
             {
-                UpdateWindowTitle(w, language_convert_string(value));
+                UpdateWindowTitle(w, value);
             }
         }
 

@@ -698,17 +698,14 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8);
     }
 
-    utf8 buffer[256];
-
     // Format text
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_BLACK);
-    safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
+    thread_local std::string buffer;
+    buffer.assign("{MEDIUMFONT}{BLACK}");
+    buffer += _shortenedDirectory;
 
     // Draw path text
     auto ft = Formatter();
-    ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
+    ft.Add<const char*>(Platform::StrDecompToPrecomp(buffer.data()));
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
 
     // Name button text

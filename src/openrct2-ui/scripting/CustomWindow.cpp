@@ -270,7 +270,7 @@ namespace OpenRCT2::Ui::Windows
             result.MaxWidth = GetOptionalInt(desc["maxWidth"]);
             result.MinHeight = GetOptionalInt(desc["minHeight"]);
             result.MaxHeight = GetOptionalInt(desc["maxHeight"]);
-            result.Title = language_convert_string(desc["title"].as_string());
+            result.Title = desc["title"].as_string();
             result.Id = GetOptionalInt(desc["id"]);
             result.TabIndex = GetOptionalInt(desc["tabIndex"]);
 
@@ -1077,7 +1077,7 @@ namespace OpenRCT2::Ui::Windows
             auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
             if (customWidgetInfo != nullptr)
             {
-                customWidgetInfo->Text = language_convert_string(value);
+                customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
                 widget_invalidate(w, widgetIndex);
             }

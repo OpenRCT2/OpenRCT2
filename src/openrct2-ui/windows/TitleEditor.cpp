@@ -19,6 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/Scenario.h>
@@ -31,6 +32,8 @@
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum WINDOW_TITLE_EDITOR_TAB {
@@ -871,21 +874,19 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
-        char buffer[256];
+        auto saveName = _editingTitleSequence->Saves[i].c_str();
         auto ft = Formatter();
-        ft.Add<const char*>(_editingTitleSequence->Saves[i].c_str());
         if (selected || hover)
         {
-            format_string(buffer, 256, STR_STRING, ft.Data());
+            ft.Add<rct_string_id>(STR_STRING);
         }
         else
         {
-            format_string(buffer + 1, 255, STR_STRING, ft.Data());
-            buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
+            ft.Add<rct_string_id>(STR_BLACK_STRING);
+            ft.Add<rct_string_id>(STR_STRING);
         }
-        ft = Formatter();
-        ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        ft.Add<const char*>(saveName);
+        gfx_draw_string_left(dpi, STR_STRINGID, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 
@@ -924,63 +925,102 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
+        if (command.Type == TITLE_SCRIPT_LOAD && command.SaveIndex == SAVE_INDEX_INVALID)
+            error = true;
+
         auto ft = Formatter();
-        rct_string_id commandName = STR_NONE;
+        if (error)
+        {
+            ft.Add<rct_string_id>(selected || hover ? STR_LIGHTPINK_STRINGID : STR_RED_STRINGID);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(selected || hover ? STR_STRINGID : STR_BLACK_STRING);
+        }
+
         switch (command.Type)
         {
             case TITLE_SCRIPT_LOAD:
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 if (command.SaveIndex == SAVE_INDEX_INVALID)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
-                    error = true;
+                    ft.Add<rct_string_id>(commandName);
                 }
                 else
                 {
+                    ft.Add<rct_string_id>(commandName);
                     ft.Add<const char*>(_editingTitleSequence->Saves[command.SaveIndex].c_str());
                 }
                 break;
+            }
             case TITLE_SCRIPT_LOCATION:
-                commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.X);
                 ft.Add<uint16_t>(command.Y);
                 break;
+            }
             case TITLE_SCRIPT_ROTATE:
-                commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Rotations);
                 break;
+            }
             case TITLE_SCRIPT_ZOOM:
-                commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Zoom);
                 break;
+            }
             case TITLE_SCRIPT_SPEED:
-                commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<rct_string_id>(SpeedNames[command.Speed - 1]);
                 break;
+            }
             case TITLE_SCRIPT_FOLLOW:
-                commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
                 if (command.SpriteIndex == SPRITE_INDEX_NULL)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
+                    ft.Add<rct_string_id>(commandName);
                 }
                 else
                 {
+                    ft.Add<rct_string_id>(commandName);
                     ft.Add<utf8*>(command.SpriteName);
                 }
                 break;
+            }
             case TITLE_SCRIPT_WAIT:
-                commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Milliseconds);
                 break;
+            }
             case TITLE_SCRIPT_RESTART:
-                commandName = STR_TITLE_EDITOR_RESTART;
+            {
+                auto commandName = STR_TITLE_EDITOR_RESTART;
+                ft.Add<rct_string_id>(commandName);
                 break;
+            }
             case TITLE_SCRIPT_END:
-                commandName = STR_TITLE_EDITOR_END;
+            {
+                auto commandName = STR_TITLE_EDITOR_END;
+                ft.Add<rct_string_id>(commandName);
                 break;
+            }
             case TITLE_SCRIPT_LOADSC:
             {
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";
                 auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (command.Scenario[0] == '\0')
@@ -995,26 +1035,17 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_MISSING_SCENARIO;
                 }
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<const char*>(name);
                 break;
             }
             default:
+            {
+                ft.Add<rct_string_id>(STR_NONE);
                 log_warning("Unknown command %d", command.Type);
+            }
         }
-
-        char buffer[256];
-        if ((selected || hover) && !error)
-        {
-            format_string(buffer, 256, commandName, ft.Data());
-        }
-        else
-        {
-            format_string(buffer + 1, 255, commandName, ft.Data());
-            buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
-        }
-        ft = Formatter();
-        ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        gfx_draw_string_left(dpi, STR_STRINGID, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
     }
 }
 

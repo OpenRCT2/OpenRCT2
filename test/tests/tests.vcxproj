@@ -59,6 +59,7 @@
     <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="CryptTests.cpp" />
     <ClCompile Include="Endianness.cpp" />
+    <ClCompile Include="FormattingTests.cpp" />
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="ImageImporterTests.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />

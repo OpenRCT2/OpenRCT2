@@ -18,6 +18,11 @@
 #include <string>
 #include <string_view>
 
+constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
+constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
+constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
+constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
+
 constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
 constexpr const uint8_t RCT12_MAX_AWARDS = 4;
 constexpr const uint8_t RCT12_MAX_NEWS_ITEMS = 61;
@@ -862,3 +867,5 @@ ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex i
 RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
 ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
+bool IsLikelyUTF8(std::string_view s);
+std::string RCT12RemoveFormattingUTF8(std::string_view s);

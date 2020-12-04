@@ -170,6 +170,14 @@ target_link_libraries(test_string ${GTEST_LIBRARIES} test-common ${LDL} z)
 target_link_platform_libraries(test_string)
 add_test(NAME string COMMAND test_string)
 
+# Formatting tests
+set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/FormattingTests.cpp")
+add_executable(test_formatting ${STRING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_formatting)
+target_link_libraries(test_formatting ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_formatting)
+add_test(NAME formatting COMMAND test_formatting)
+
 # Localisation test
 set(STRING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/Localisation.cpp")
 add_executable(test_localisation ${STRING_TEST_SOURCES})
