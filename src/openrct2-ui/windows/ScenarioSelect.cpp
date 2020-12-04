@@ -585,7 +585,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
-                    gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, PALETTE_DARKEN_1);
                 }
 
                 bool isCompleted = scenario->highscore != nullptr;

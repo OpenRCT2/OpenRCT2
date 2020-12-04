@@ -191,7 +191,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     {
         COMPARE_FIELD(RideTypesBeenOn[i]);
     }
-    COMPARE_FIELD(ItemExtraFlags);
+    COMPARE_FIELD(ItemFlags);
     COMPARE_FIELD(Photo2RideRef);
     COMPARE_FIELD(Photo3RideRef);
     COMPARE_FIELD(Photo4RideRef);
@@ -267,7 +267,6 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(HatColour);
     COMPARE_FIELD(FavouriteRide);
     COMPARE_FIELD(FavouriteRideRating);
-    COMPARE_FIELD(ItemStandardFlags);
 }
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)

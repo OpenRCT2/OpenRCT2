@@ -3329,58 +3329,29 @@ void Peep::RemoveFromRide()
     StateReset();
 }
 
-uint64_t Peep::GetItemFlags(bool bit32Flag, bool ExtraItem) const
+uint64_t Peep::GetItemFlags() const
 {
-    if (bit32Flag)
-    {
-        if (ExtraItem)
-            return ItemExtraFlags;
-        return ItemStandardFlags;
-    }
-    uint64_t ItemFlag = ItemExtraFlags;
-    return ItemStandardFlags | (ItemFlag << 32);
+    return ItemFlags;
 }
 
-void Peep::SetItemFlags(uint32_t ItemFlag, bool ExtraItem)
+void Peep::SetItemFlags(uint64_t itemFlags)
 {
-    if (ExtraItem)
-    {
-        ItemExtraFlags = ItemFlag;
-        return;
-    }
-    ItemStandardFlags = ItemFlag;
+    ItemFlags = itemFlags;
 }
 
 void Peep::RemoveAllItems()
 {
-    ItemStandardFlags = 0;
-    ItemExtraFlags = 0;
+    ItemFlags = 0;
 }
 
 void Peep::RemoveItem(ShopItem item)
 {
-    // TODO: Join up standard and extra flags into a `uint64_t` to remove this if for the extra flags
-    if (EnumValue(item) > EnumValue(ShopItem::Admission))
-    {
-        ItemExtraFlags &= ~(1 << (EnumValue(item) - EnumValue(ShopItem::Photo2)));
-    }
-    else
-    {
-        ItemStandardFlags &= ~EnumToFlag(item);
-    }
+    ItemFlags &= ~EnumToFlag(item);
 }
 
 void Peep::GiveItem(ShopItem item)
 {
-    // TODO: Join up standard and extra flags into a `uint64_t` to remove this if for the extra flags
-    if (EnumValue(item) > EnumValue(ShopItem::Admission))
-    {
-        ItemExtraFlags |= (1 << (EnumValue(item) - EnumValue(ShopItem::Photo2)));
-    }
-    else
-    {
-        ItemStandardFlags |= EnumToFlag(item);
-    }
+    ItemFlags |= EnumToFlag(item);
 }
 
 bool Peep::HasItem(ShopItem peepItem) const
