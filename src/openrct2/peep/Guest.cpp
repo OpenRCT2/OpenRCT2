@@ -154,64 +154,6 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
     300, 600, 800, 1000
 };
 
-/** rct2: 0x0097EFCC */
-static constexpr const uint8_t item_standard_litter[32] = {
-    LITTER_TYPE_RUBBISH,          // ShopItem::Balloon
-    LITTER_TYPE_RUBBISH,          // ShopItem::Toy
-    LITTER_TYPE_RUBBISH,          // ShopItem::Map
-    LITTER_TYPE_RUBBISH,          // ShopItem::Photo
-    LITTER_TYPE_RUBBISH,          // ShopItem::Umbrella
-    LITTER_TYPE_RUBBISH,          // ShopItem::Drink
-    LITTER_TYPE_RUBBISH,          // ShopItem::Burger
-    LITTER_TYPE_RUBBISH,          // ShopItem::Chips
-    LITTER_TYPE_RUBBISH,          // ShopItem::IceCream
-    LITTER_TYPE_RUBBISH,          // ShopItem::Candyfloss
-    LITTER_TYPE_EMPTY_CAN,        // ShopItem::EmptyCan
-    LITTER_TYPE_RUBBISH,          // ShopItem::Rubbish
-    LITTER_TYPE_EMPTY_BURGER_BOX, // ShopItem::EmptyBurgerBox
-    LITTER_TYPE_RUBBISH,          // ShopItem::Pizza
-    LITTER_TYPE_RUBBISH,          // ShopItem::Voucher
-    LITTER_TYPE_RUBBISH,          // ShopItem::Popcorn
-    LITTER_TYPE_RUBBISH,          // ShopItem::HotDog
-    LITTER_TYPE_RUBBISH,          // ShopItem::Tentacle
-    LITTER_TYPE_RUBBISH,          // ShopItem::Hat
-    LITTER_TYPE_RUBBISH,          // ShopItem::ToffeeApple
-    LITTER_TYPE_RUBBISH,          // ShopItem::TShirt
-    LITTER_TYPE_RUBBISH,          // ShopItem::Doughnut
-    LITTER_TYPE_RUBBISH,          // ShopItem::Coffee
-    LITTER_TYPE_EMPTY_CUP,        // ShopItem::EmptyCup
-    LITTER_TYPE_EMPTY_BOX,        // ShopItem::Chicken
-    LITTER_TYPE_EMPTY_BOTTLE,     // ShopItem::Lemonade
-    LITTER_TYPE_EMPTY_BOX,        // ShopItem::EmptyBox
-    LITTER_TYPE_EMPTY_BOTTLE,     // ShopItem::EmptyBottle
-};
-
-/** rct2: 0x0097EFE8 */
-static constexpr const uint8_t item_extra_litter[32] = {
-    LITTER_TYPE_RUBBISH,            // ShopItem::Photo2
-    LITTER_TYPE_RUBBISH,            // ShopItem::Photo3
-    LITTER_TYPE_RUBBISH,            // ShopItem::Photo4
-    LITTER_TYPE_RUBBISH,            // ShopItem::Pretzel
-    LITTER_TYPE_RUBBISH,            // ShopItem::Chocolate
-    LITTER_TYPE_RUBBISH,            // ShopItem::IcedTea
-    LITTER_TYPE_RUBBISH,            // ShopItem::FunnelCake
-    LITTER_TYPE_RUBBISH,            // ShopItem::Sunglasses
-    LITTER_TYPE_RUBBISH,            // ShopItem::BeefNoodles
-    LITTER_TYPE_RUBBISH,            // ShopItem::FriedRiceNoodles
-    LITTER_TYPE_RUBBISH,            // ShopItem::WontonSoup
-    LITTER_TYPE_RUBBISH,            // ShopItem::MeatballSoup
-    LITTER_TYPE_RUBBISH,            // ShopItem::FruitJuice
-    LITTER_TYPE_RUBBISH,            // ShopItem::SoybeanMilk
-    LITTER_TYPE_RUBBISH,            // ShopItem::SuJeongGwa
-    LITTER_TYPE_RUBBISH,            // ShopItem::SubSandwich
-    LITTER_TYPE_RUBBISH,            // ShopItem::Cookie
-    LITTER_TYPE_EMPTY_BOWL_RED,     // ShopItem::EmptyBowlRed
-    LITTER_TYPE_EMPTY_DRINK_CARTON, // ShopItem::EmptyDrinkCarton
-    LITTER_TYPE_EMPTY_JUICE_CUP,    // ShopItem::EmptyJuiceCup
-    LITTER_TYPE_RUBBISH,            // ShopItem::RoastSausage
-    LITTER_TYPE_EMPTY_BOWL_BLUE,    // ShopItem::EmptyBowlBlue
-};
-
 /** rct2: 0x009822F4, 0x00982310 */
 static constexpr const uint8_t item_consumption_time[] = {
     0,      // ShopItem::Balloon
@@ -5333,7 +5275,7 @@ void Guest::UpdateWalking()
             if (pos_stnd != 32)
             {
                 RemoveItem(static_cast<ShopItem>(pos_stnd));
-                litterType = item_standard_litter[pos_stnd];
+                litterType = GetShopItemDescriptor(static_cast<ShopItem>(pos_stnd)).LitterType;
             }
             else
             {
@@ -5341,8 +5283,8 @@ void Guest::UpdateWalking()
                 for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
                     if (container & (1u << pos_extr))
                         break;
-                RemoveItem(static_cast<ShopItem>(pos_extr + 32) + ShopItem::Photo2);
-                litterType = item_extra_litter[pos_extr];
+                RemoveItem(static_cast<ShopItem>(pos_extr + 32));
+                litterType = GetShopItemDescriptor(static_cast<ShopItem>(pos_stnd + 32)).LitterType;
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5910,7 +5852,7 @@ void Guest::UpdateUsingBin()
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t litterType = item_standard_litter[cur_container];
+                uint8_t litterType = GetShopItemDescriptor(static_cast<ShopItem>(cur_container)).LitterType;
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
@@ -5944,7 +5886,7 @@ void Guest::UpdateUsingBin()
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t litterType = item_extra_litter[cur_container];
+                uint8_t litterType = GetShopItemDescriptor(static_cast<ShopItem>(cur_container)).LitterType;
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
