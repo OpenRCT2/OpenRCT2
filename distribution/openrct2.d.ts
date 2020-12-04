@@ -1853,7 +1853,12 @@ declare global {
         maxWidth?: number;
     }
 
-    type ListViewItem = string[];
+    interface ListViewItemSeperator {
+        type: 'seperator';
+        text?: string;
+    }
+
+    type ListViewItem = ListViewItemSeperator | string[];
 
     interface RowColumn {
         row: number;

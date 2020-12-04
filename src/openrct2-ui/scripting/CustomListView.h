@@ -52,6 +52,7 @@ namespace OpenRCT2::Ui::Windows
 
     struct ListViewItem
     {
+        bool IsSeparator{};
         std::vector<std::string> Cells;
 
         ListViewItem() = default;
@@ -141,6 +142,7 @@ namespace OpenRCT2::Ui::Windows
         void PaintHeading(
             rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const std::string& text,
             ColumnSortOrder sortOrder, bool isPressed) const;
+        void PaintSeperator(rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const;
         void PaintCell(
             rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text,
             bool isHighlighted) const;
