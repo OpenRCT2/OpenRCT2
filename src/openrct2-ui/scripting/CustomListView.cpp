@@ -226,7 +226,8 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             else
                 widget->content = 0;
         }
-        RefreshScroll();
+        WindowInitScrollWidgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -243,7 +244,8 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        RefreshScroll();
+        window_update_scroll_widgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -270,7 +272,8 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        RefreshScroll();
+        window_update_scroll_widgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -724,12 +727,6 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         }
     }
     return result;
-}
-
-void CustomListView::RefreshScroll()
-{
-    WindowInitScrollWidgets(ParentWindow);
-    Invalidate();
 }
 
 rct_widget* CustomListView::GetWidget() const

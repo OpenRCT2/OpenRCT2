@@ -17,6 +17,7 @@
 - Fix: [#13469] Exception thrown from plugin in context.subscribe.
 - Fix: [#13477] Plug-in widget tooltips do not work.
 - Fix: [#13489] Mechanics continue heading to inspect broken down rides.
+- Fix: [#13510] [Plugin] list view scroll resets when items is set.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 
