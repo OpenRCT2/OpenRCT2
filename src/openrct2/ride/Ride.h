@@ -17,6 +17,7 @@
 #include "../world/Map.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "ShopItem.h"
 #include "Vehicle.h"
 
 #include <limits>
@@ -125,7 +126,7 @@ struct rct_ride_entry
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    uint8_t shop_item[NUM_SHOP_ITEMS_PER_RIDE];
+    ShopItem shop_item[NUM_SHOP_ITEMS_PER_RIDE];
     rct_string_id capacity;
     void* obj;
 

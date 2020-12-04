@@ -293,7 +293,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 
     uint32_t shops = 0;
     uint32_t uniqueShops = 0;
-    uint32_t shopTypes = 0;
+    uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)
@@ -305,9 +305,9 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
         auto rideEntry = get_ride_entry(ride.subtype);
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
+            if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item[0]);
+                shopTypes |= EnumToFlag(rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }
@@ -337,7 +337,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 
     uint32_t shops = 0;
     uint32_t uniqueShops = 0;
-    uint32_t shopTypes = 0;
+    uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)
@@ -349,9 +349,9 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
         auto rideEntry = ride.GetRideEntry();
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
+            if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item[0]);
+                shopTypes |= EnumToFlag(rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }

@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(BuildCosts, { 55, 5, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 40),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_WHITE },

@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     SET_FIELD(BuildCosts, { 200, 0, 45, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_2),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 70),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_BRIGHT_RED, COLOUR_DARK_BROWN },

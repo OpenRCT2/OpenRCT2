@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     SET_FIELD(BuildCosts, { 65, 2, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 22),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BLACK, COLOUR_GREY },

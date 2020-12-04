@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(BuildCosts, { 50, 6, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WILD_WEST),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO3),
+    SET_FIELD(PhotoItem, ShopItem::Photo3),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },

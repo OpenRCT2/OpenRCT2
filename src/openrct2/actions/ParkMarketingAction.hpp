@@ -77,7 +77,7 @@ public:
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            campaign.ShopItemType = _item;
+            campaign.ShopItemType = ShopItem(_item);
         }
         marketing_new_campaign(campaign);
 

@@ -273,7 +273,7 @@ size_t Ride::GetNumPrices() const
             {
                 result++;
             }
-            else if (rideEntry->shop_item[1] != SHOP_ITEM_NONE)
+            else if (rideEntry->shop_item[1] != ShopItem::None)
             {
                 result++;
             }
@@ -389,20 +389,20 @@ money32 Ride::CalculateIncomePerHour() const
     money32 customersPerHour = ride_customers_per_hour(this);
     money32 priceMinusCost = ride_get_price(this);
 
-    int32_t currentShopItem = entry->shop_item[0];
-    if (currentShopItem != SHOP_ITEM_NONE)
+    ShopItem currentShopItem = entry->shop_item[0];
+    if (currentShopItem != ShopItem::None)
     {
-        priceMinusCost -= ShopItems[currentShopItem].Cost;
+        priceMinusCost -= GetShopItemDescriptor(currentShopItem).Cost;
     }
 
     currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? RideTypeDescriptors[type].PhotoItem
                                                                        : entry->shop_item[1];
 
-    if (currentShopItem != SHOP_ITEM_NONE)
+    if (currentShopItem != ShopItem::None)
     {
-        const money16 shopItemProfit = price[1] - ShopItems[currentShopItem].Cost;
+        const money16 shopItemProfit = price[1] - GetShopItemDescriptor(currentShopItem).Cost;
 
-        if (ShopItems[currentShopItem].IsPhoto())
+        if (GetShopItemDescriptor(currentShopItem).IsPhoto())
         {
             const int32_t rideTicketsSold = total_customers - no_secondary_items_sold;
 
@@ -419,7 +419,7 @@ money32 Ride::CalculateIncomePerHour() const
             priceMinusCost += shopItemProfit;
         }
 
-        if (entry->shop_item[0] != SHOP_ITEM_NONE)
+        if (entry->shop_item[0] != ShopItem::None)
             priceMinusCost /= 2;
     }
 

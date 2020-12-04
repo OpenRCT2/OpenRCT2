@@ -1568,7 +1568,7 @@ private:
             dst->FavouriteRideRating = 0;
         }
 
-        dst->ItemStandardFlags = src->item_standard_flags;
+        dst->SetItemFlags(src->item_standard_flags, 0);
 
         if (dst->AssignedPeepType == PeepType::Guest)
         {
@@ -1861,7 +1861,7 @@ private:
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
-                    campaign.ShopItemType = _s4.marketing_assoc[i];
+                    campaign.ShopItemType = ShopItem(_s4.marketing_assoc[i]);
                 }
                 gMarketingCampaigns.push_back(campaign);
             }

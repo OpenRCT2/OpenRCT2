@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
     SET_FIELD(BuildCosts, { 110, 7, 55}),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_2),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 120),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_ORANGE, COLOUR_LIGHT_ORANGE, COLOUR_DARK_BROWN},

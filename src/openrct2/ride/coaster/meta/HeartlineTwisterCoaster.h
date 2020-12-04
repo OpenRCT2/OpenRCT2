@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(BuildCosts, { 135, 7, 30, }),
     SET_FIELD(DefaultPrices, { 15, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_WHITE, COLOUR_LIGHT_BLUE, COLOUR_WHITE },

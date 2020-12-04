@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor MineTrainCoasterRTD =
     SET_FIELD(BuildCosts, { 82, 6, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WILD_WEST),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 85),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },

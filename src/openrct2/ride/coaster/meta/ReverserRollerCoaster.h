@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(BuildCosts, { 55, 6, 37, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_TECHNO),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO3),
+    SET_FIELD(PhotoItem, ShopItem::Photo3),
     SET_FIELD(BonusValue, 65),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_LIGHT_BROWN, COLOUR_DARK_BROWN },

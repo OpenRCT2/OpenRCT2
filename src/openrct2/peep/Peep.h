@@ -418,63 +418,6 @@ enum class PeepNauseaTolerance : uint8_t
     High
 };
 
-enum PeepItem
-{
-    // ItemStandardFlags
-    PEEP_ITEM_BALLOON = (1 << 0),
-    PEEP_ITEM_TOY = (1 << 1),
-    PEEP_ITEM_MAP = (1 << 2),
-    PEEP_ITEM_PHOTO = (1 << 3),
-    PEEP_ITEM_UMBRELLA = (1 << 4),
-    PEEP_ITEM_DRINK = (1 << 5),
-    PEEP_ITEM_BURGER = (1 << 6),
-    PEEP_ITEM_CHIPS = (1 << 7),
-    PEEP_ITEM_ICE_CREAM = (1 << 8),
-    PEEP_ITEM_CANDYFLOSS = (1 << 9),
-    PEEP_ITEM_EMPTY_CAN = (1 << 10),
-    PEEP_ITEM_RUBBISH = (1 << 11),
-    PEEP_ITEM_EMPTY_BURGER_BOX = (1 << 12),
-    PEEP_ITEM_PIZZA = (1 << 13),
-    PEEP_ITEM_VOUCHER = (1 << 14),
-    PEEP_ITEM_POPCORN = (1 << 15),
-    PEEP_ITEM_HOT_DOG = (1 << 16),
-    PEEP_ITEM_TENTACLE = (1 << 17),
-    PEEP_ITEM_HAT = (1 << 18),
-    PEEP_ITEM_TOFFEE_APPLE = (1 << 19),
-    PEEP_ITEM_TSHIRT = (1 << 20),
-    PEEP_ITEM_DOUGHNUT = (1 << 21),
-    PEEP_ITEM_COFFEE = (1 << 22),
-    PEEP_ITEM_EMPTY_CUP = (1 << 23),
-    PEEP_ITEM_CHICKEN = (1 << 24),
-    PEEP_ITEM_LEMONADE = (1 << 25),
-    PEEP_ITEM_EMPTY_BOX = (1 << 26),
-    PEEP_ITEM_EMPTY_BOTTLE = (1 << 27),
-
-    // ItemExtraFlags
-    PEEP_ITEM_PHOTO2 = (1 << 0),
-    PEEP_ITEM_PHOTO3 = (1 << 1),
-    PEEP_ITEM_PHOTO4 = (1 << 2),
-    PEEP_ITEM_PRETZEL = (1 << 3),
-    PEEP_ITEM_CHOCOLATE = (1 << 4),
-    PEEP_ITEM_ICED_TEA = (1 << 5),
-    PEEP_ITEM_FUNNEL_CAKE = (1 << 6),
-    PEEP_ITEM_SUNGLASSES = (1 << 7),
-    PEEP_ITEM_BEEF_NOODLES = (1 << 8),
-    PEEP_ITEM_FRIED_RICE_NOODLES = (1 << 9),
-    PEEP_ITEM_WONTON_SOUP = (1 << 10),
-    PEEP_ITEM_MEATBALL_SOUP = (1 << 11),
-    PEEP_ITEM_FRUIT_JUICE = (1 << 12),
-    PEEP_ITEM_SOYBEAN_MILK = (1 << 13),
-    PEEP_ITEM_SU_JONGKWA = (1 << 14),
-    PEEP_ITEM_SUB_SANDWICH = (1 << 15),
-    PEEP_ITEM_COOKIE = (1 << 16),
-    PEEP_ITEM_EMPTY_BOWL_RED = (1 << 17),
-    PEEP_ITEM_EMPTY_DRINK_CARTON = (1 << 18),
-    PEEP_ITEM_EMPTY_JUICE_CUP = (1 << 19),
-    PEEP_ITEM_ROAST_SAUSAGE = (1 << 20),
-    PEEP_ITEM_EMPTY_BOWL_BLUE = (1 << 21),
-};
-
 enum class PeepSpriteType : uint8_t
 {
     Normal = 0,
@@ -817,6 +760,12 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
+    uint64_t GetItemFlags(bool bit32Flag = false, bool ExtraItem = false) const;
+    void SetItemFlags(uint32_t ItemFlag, bool ExtraItem = false);
+    void RemoveAllItems();
+    void RemoveItem(ShopItem item);
+    void GiveItem(ShopItem item);
+    bool HasItem(ShopItem peepItem) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep
@@ -838,7 +787,6 @@ struct Guest : Peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    bool HasItem(int32_t peepItem) const;
     bool HasFood() const;
     bool HasDrink() const;
     bool HasEmptyContainer() const;
@@ -866,14 +814,12 @@ public:
     int32_t GetParkEntryTime() const;
     int32_t HasFoodStandardFlag() const;
     int32_t HasFoodExtraFlag() const;
-    bool HasDrinkStandardFlag() const;
-    bool HasDrinkExtraFlag() const;
     int32_t HasEmptyContainerStandardFlag() const;
     int32_t HasEmptyContainerExtraFlag() const;
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
-    bool DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price);
+    bool DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price);
     void SetSpriteType(PeepSpriteType new_sprite_type);
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
