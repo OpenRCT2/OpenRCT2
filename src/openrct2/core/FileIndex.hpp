@@ -276,7 +276,7 @@ private:
                     for (uint32_t i = 0; i < header.NumItems; i++)
                     {
                         auto item = Deserialise(&fs);
-                        items.push_back(item);
+                        items.emplace_back(std::move(item));
                     }
                     loadedItems = true;
                 }
@@ -291,7 +291,7 @@ private:
                 Console::Error::WriteLine("%s", e.what());
             }
         }
-        return std::make_tuple(loadedItems, items);
+        return std::make_tuple(loadedItems, std::move(items));
     }
 
     void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const

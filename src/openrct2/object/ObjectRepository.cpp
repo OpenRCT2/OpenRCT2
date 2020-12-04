@@ -14,6 +14,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"
 #include "../core/FileStream.h"
 #include "../core/Guard.hpp"
@@ -75,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 24;
+    static constexpr uint16_t VERSION = 25;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -160,12 +161,15 @@ protected:
                 }
                 break;
             case ObjectType::SceneryGroup:
+            {
                 stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
+                DataSerialiser serialiser(true, *stream);
                 for (const auto& entry : item.SceneryGroupInfo.Entries)
                 {
-                    stream->WriteObjectEntryDescriptor(entry);
+                    serialiser << entry;
                 }
                 break;
+            }
             default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
@@ -212,9 +216,10 @@ protected:
             {
                 auto numEntries = stream->ReadValue<uint16_t>();
                 item.SceneryGroupInfo.Entries = std::vector<ObjectEntryDescriptor>(numEntries);
+                DataSerialiser serialiser(false, *stream);
                 for (size_t i = 0; i < numEntries; i++)
                 {
-                    item.SceneryGroupInfo.Entries[i] = stream->ReadObjectEntryDescriptor();
+                    serialiser << item.SceneryGroupInfo.Entries[i];
                 }
                 break;
             }
