@@ -223,7 +223,7 @@ static void window_new_campaign_mousedown(rct_window* w, rct_widgetindex widgetI
                             break;
 
                         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                        gDropdownItemsArgs[i] = ShopItems[window_new_campaign_shop_items[i]].Naming.Plural;
+                        gDropdownItemsArgs[i] = GetShopItemDescriptor(ShopItem(window_new_campaign_shop_items[i])).Naming.Plural;
                         numItems++;
                     }
 
@@ -345,7 +345,7 @@ static void window_new_campaign_invalidate(rct_window* w)
             window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
             if (w->campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
             {
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ShopItems[w->campaign.ShopItemId].Naming.Plural;
+                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(w->campaign.ShopItemId)).Naming.Plural;
             }
             break;
     }

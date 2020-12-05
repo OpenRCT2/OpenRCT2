@@ -115,10 +115,9 @@ enum
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
 };
 
-extern const ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)];
 extern uint64_t gSamePriceThroughoutPark;
 
 money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem);
 bool shop_item_has_common_price(const ShopItem shopItem);
 
-ShopItemDescriptor GetShopItemDescriptor(ShopItem item);
+const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

@@ -2013,11 +2013,11 @@ void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_SINGULAR)
     {
-        ft.Add<rct_string_id>(ShopItems[thought->item].Naming.Singular);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Singular);
     }
     else if (flags & PEEP_THOUGHT_ACTION_FLAG_SHOP_ITEM_INDEFINITE)
     {
-        ft.Add<rct_string_id>(ShopItems[thought->item].Naming.Indefinite);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Indefinite);
     }
 }
 

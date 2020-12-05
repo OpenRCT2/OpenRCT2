@@ -18,7 +18,7 @@ uint64_t gSamePriceThroughoutPark;
 // clang-format off
 // TODO: Guest::HasDrink, Guest::GetFoodOrDrinkFlags, Guest::GetEmptyContainerFlags duplicates the shop item flags
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
-const ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
+constexpr ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     // Item,                            Cost, Base value, Hot value, Cold value, Default price, Image,                               Price label,                                      Singular,                                   Plural,                                     Indefinite,                                     Display (in guest inventory),                Shop Item Flag,                                       Litter type,                    Consumption time, Discard Container,          Peep thought price too much,            Peep thought price good value,
     /* ShopItem::Balloon */          {  3,    14,         14,        14,         MONEY(0, 90),  SPR_SHOP_ITEM_BALLOON,             { STR_SHOP_ITEM_PRICE_LABEL_BALLOON,                STR_SHOP_ITEM_SINGULAR_BALLOON,             STR_SHOP_ITEM_PLURAL_BALLOON,               STR_SHOP_ITEM_INDEFINITE_BALLOON,               STR_SHOP_ITEM_DISPLAY_BALLOON             }, SHOP_ITEM_FLAG_IS_SOUVENIR,                           LITTER_TYPE_RUBBISH,            0,                ShopItem::None,             PeepThoughtType::BalloonMuch,           PeepThoughtType::Balloon            },
     /* ShopItem::Toy */              {  15,   30,         30,        30,         MONEY(2, 50),  SPR_SHOP_ITEM_TOY,                 { STR_SHOP_ITEM_PRICE_LABEL_CUDDLY_TOY,             STR_SHOP_ITEM_SINGULAR_CUDDLY_TOY,          STR_SHOP_ITEM_PLURAL_CUDDLY_TOY,            STR_SHOP_ITEM_INDEFINITE_CUDDLY_TOY,            STR_SHOP_ITEM_DISPLAY_CUDDLY_TOY          }, SHOP_ITEM_FLAG_IS_SOUVENIR,                           LITTER_TYPE_RUBBISH,            0,                ShopItem::None,             PeepThoughtType::ToyMuch,               PeepThoughtType::Toy                },
@@ -141,7 +141,7 @@ bool ShopItemDescriptor::IsPhoto() const
     return HasFlag(SHOP_ITEM_FLAG_IS_PHOTO);
 }
 
-ShopItemDescriptor GetShopItemDescriptor(ShopItem item)
+const ShopItemDescriptor& GetShopItemDescriptor(const ShopItem item)
 {
     return ShopItems[EnumValue(item)];
 }
