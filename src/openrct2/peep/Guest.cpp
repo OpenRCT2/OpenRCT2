@@ -1347,11 +1347,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
                 {
                     // "I'm not paying that much for x"
-                    PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                        shopItem >= ShopItem::Photo2
-                            ? EnumValue(PeepThoughtType::Photo2Much) + static_cast<uint8_t>(shopItem) - 32
-                            : EnumValue(PeepThoughtType::BalloonMuch) + static_cast<uint8_t>(shopItem));
-                    InsertNewThought(thought_type, ride->id);
+                    InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride->id);
                     return false;
                 }
             }
@@ -1366,10 +1362,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
-                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        shopItem >= ShopItem::Photo2 ? EnumValue(PeepThoughtType::Photo2) + static_cast<uint8_t>(shopItem) - 32
-                                                     : EnumValue(PeepThoughtType::Balloon) + static_cast<uint8_t>(shopItem));
-                    InsertNewThought(thought_item, ride->id);
+                    InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride->id);
                 }
             }
 

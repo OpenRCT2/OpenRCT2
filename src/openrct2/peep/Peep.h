@@ -157,7 +157,7 @@ enum class PeepThoughtType : uint8_t
     PizzaMuch = 85,
 
     PopcornMuch = 87,
-    Hot_dogMuch = 88,
+    HotDogMuch = 88,
     TentacleMuch = 89,
     HatMuch = 90,
     ToffeeAppleMuch = 91,

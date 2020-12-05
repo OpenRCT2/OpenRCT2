@@ -13,6 +13,7 @@
 #include "../util/Util.h"
 
 struct Ride;
+enum PeepThoughtType : uint8_t;
 
 enum class ShopItem : uint8_t
 {
@@ -95,6 +96,8 @@ struct ShopItemDescriptor
     uint8_t LitterType;
     uint8_t ConsumptionTime;
     ShopItem DiscardContianer;
+    PeepThoughtType TooMuchThought;
+    PeepThoughtType GoodValueThought;
 
     bool HasFlag(const uint16_t flag) const;
     bool IsFood() const;
