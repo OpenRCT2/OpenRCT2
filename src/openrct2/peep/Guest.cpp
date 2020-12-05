@@ -567,7 +567,7 @@ void Guest::loc_68F9F3()
 void Guest::loc_68FA89()
 {
     // 68FA89
-    if (TimeToConsume == 0 && GetFoodFlags())
+    if (TimeToConsume == 0 && HasFoodOrDrink())
     {
         TimeToConsume += 3;
     }
@@ -589,7 +589,7 @@ void Guest::loc_68FA89()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = bitscanforward(GetFoodFlags());
+            int32_t chosen_food = bitscanforward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -839,12 +839,12 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
                     }
 
-                    if (Hunger <= 10 && !GetFoodFlags())
+                    if (Hunger <= 10 && !HasFoodOrDrink())
                     {
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
                     }
 
-                    if (Thirst <= 25 && !GetFoodFlags())
+                    if (Thirst <= 25 && !HasFoodOrDrink())
                     {
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
                     }
@@ -1013,7 +1013,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 void Guest::TryGetUpFromSitting()
 {
     // Eats all food first
-    if (GetFoodFlags())
+    if (HasFoodOrDrink())
         return;
 
     TimeToSitdown--;
@@ -1091,7 +1091,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (GetFoodFlags())
+        if (HasFoodOrDrink())
         {
             if ((scenario_rand() & 0xFFFF) > 1310)
             {
@@ -1135,6 +1135,36 @@ void Guest::UpdateSitting()
 }
 
 /**
+ * To simplify check of 0x36BA3E0 and 0x11FF78
+ * returns false on no food.
+ */
+int64_t Guest::GetFoodOrDrinkFlags() const
+{
+    return GetItemFlags()
+        & EnumsToFlags(
+               ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
+               ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
+               ShopItem::Coffee, ShopItem::Chicken, ShopItem::Lemonade, ShopItem::Pretzel, ShopItem::Chocolate,
+               ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles, ShopItem::FriedRiceNoodles, ShopItem::WontonSoup,
+               ShopItem::MeatballSoup, ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich,
+               ShopItem::Cookie, ShopItem::RoastSausage);
+}
+
+int64_t Guest::GetEmptyContainerFlags() const
+{
+    return GetItemFlags()
+        & EnumsToFlags(
+               ShopItem::EmptyCan, ShopItem::EmptyBurgerBox, ShopItem::EmptyCup, ShopItem::Rubbish, ShopItem::EmptyBox,
+               ShopItem::EmptyBottle, ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup,
+               ShopItem::EmptyBowlBlue);
+}
+
+bool Guest::HasFoodOrDrink() const
+{
+    return GetFoodOrDrinkFlags() != 0;
+}
+
+/**
  * To simplify check of NOT(0x12BA3C0 and 0x118F48)
  * returns 0 on no food.
  */
@@ -1146,13 +1176,9 @@ bool Guest::HasDrink() const
                ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa);
 }
 
-int64_t Guest::GetEmptyContainerFlags() const
+bool Guest::HasEmptyContainer() const
 {
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::EmptyCan, ShopItem::EmptyBurgerBox, ShopItem::EmptyCup, ShopItem::Rubbish, ShopItem::EmptyBox,
-               ShopItem::EmptyBottle, ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup,
-               ShopItem::EmptyBowlBlue);
+    return GetEmptyContainerFlags() != 0;
 }
 
 /**
@@ -1268,7 +1294,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
-        int32_t food = bitscanforward(GetFoodFlags());
+        int32_t food = bitscanforward(GetFoodOrDrinkFlags());
         if (food != -1)
         {
             InsertNewThought(PeepThoughtType::HaventFinished, food);
@@ -1581,22 +1607,6 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 }
 
 /**
- * To simplify check of 0x36BA3E0 and 0x11FF78
- * returns false on no food.
- */
-int64_t Guest::GetFoodFlags() const
-{
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
-               ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
-               ShopItem::Coffee, ShopItem::Chicken, ShopItem::Lemonade, ShopItem::Pretzel, ShopItem::Chocolate,
-               ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles, ShopItem::FriedRiceNoodles, ShopItem::WontonSoup,
-               ShopItem::MeatballSoup, ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich,
-               ShopItem::Cookie, ShopItem::RoastSausage);
-}
-
-/**
  *
  *  rct2: 0x00695DD2
  */
@@ -1608,7 +1618,7 @@ void Guest::PickRideToGoOn()
         return;
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (GetFoodFlags())
+    if (HasFoodOrDrink())
         return;
     if (x == LOCATION_NULL)
         return;
@@ -3020,7 +3030,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
 
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
-    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->GetFoodFlags())
+    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
     {
         return;
     }
@@ -5095,7 +5105,7 @@ void Guest::UpdateWalking()
             }
         }
     }
-    else if (GetEmptyContainerFlags())
+    else if (HasEmptyContainer())
     {
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & scenario_rand()) <= 4096))
@@ -5181,7 +5191,7 @@ void Guest::UpdateWalking()
     if (Toilet > 140)
         return;
 
-    uint16_t chance = GetFoodFlags() ? 13107 : 2849;
+    uint16_t chance = HasFoodOrDrink() ? 13107 : 2849;
 
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
@@ -5519,7 +5529,7 @@ void Guest::UpdateWatching()
         }
         else
         {
-            if (GetFoodFlags())
+            if (HasFoodOrDrink())
             {
                 if ((scenario_rand() & 0xFFFF) <= 1310)
                 {
@@ -5713,7 +5723,7 @@ bool Guest::ShouldFindBench()
         return false;
     }
 
-    if (GetFoodFlags())
+    if (HasFoodOrDrink())
     {
         if (Hunger < 128 || Happiness < 128)
         {
@@ -5827,7 +5837,7 @@ bool Guest::UpdateWalkingFindBench()
 bool Guest::UpdateWalkingFindBin()
 {
     auto peep = this;
-    if (!peep->GetEmptyContainerFlags())
+    if (!peep->HasEmptyContainer())
         return false;
 
     if (peep->GetNextIsSurface())

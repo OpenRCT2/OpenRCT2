@@ -2093,7 +2093,7 @@ int32_t guest_path_finding(Guest* peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep->GetFoodFlags() && (scenario_rand() & 0xFFFF) >= 2184)
+    if (!peep->HasFoodOrDrink() && (scenario_rand() & 0xFFFF) >= 2184)
     {
         uint8_t adjustedEdges = edges;
         for (Direction chosenDirection : ALL_DIRECTIONS)

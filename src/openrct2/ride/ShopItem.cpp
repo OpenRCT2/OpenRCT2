@@ -16,7 +16,7 @@
 uint64_t gSamePriceThroughoutPark;
 
 // clang-format off
-// TODO: Guest::HasDrink, Guest::GetFoodFlags, Guest::GetEmptyContainerFlags duplicates the shop item flags
+// TODO: Guest::HasDrink, Guest::GetFoodOrDrinkFlags, Guest::GetEmptyContainerFlags duplicates the shop item flags
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
 const ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     // Item,                            Cost, Base value, Hot value, Cold value, Default price, Image,                               Price label,                                      Singular,                                   Plural,                                     Indefinite,                                     Display (in guest inventory),                Shop Item Flag,                                       Litter type,                    Consumption time, Discard Container,          Peep thought price too much,            Peep thought price good value,
