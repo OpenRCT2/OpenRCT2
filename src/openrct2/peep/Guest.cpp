@@ -567,7 +567,7 @@ void Guest::loc_68F9F3()
 void Guest::loc_68FA89()
 {
     // 68FA89
-    if (TimeToConsume == 0 && HasFood())
+    if (TimeToConsume == 0 && GetFoodFlags())
     {
         TimeToConsume += 3;
     }
@@ -589,7 +589,7 @@ void Guest::loc_68FA89()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
+            int32_t chosen_food = bitscanforward(GetFoodFlags());
             if (chosen_food != -1)
             {
                 ShopItem food = ShopItem(chosen_food);
@@ -603,23 +603,6 @@ void Guest::loc_68FA89()
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 UpdateSpriteType();
-            }
-            else
-            {
-                chosen_food = bitscanforward(HasFoodExtraFlag());
-                if (chosen_food != -1)
-                {
-                    ShopItem food = ShopItem(chosen_food + 32);
-                    RemoveItem(food);
-                    auto discardContainer = GetShopItemDescriptor(food).DiscardContianer;
-                    if (discardContainer != ShopItem::None)
-                    {
-                        GiveItem(discardContainer);
-                    }
-
-                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateSpriteType();
-                }
             }
         }
     }
@@ -856,12 +839,12 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
                     }
 
-                    if (Hunger <= 10 && !HasFood())
+                    if (Hunger <= 10 && !GetFoodFlags())
                     {
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
                     }
 
-                    if (Thirst <= 25 && !HasFood())
+                    if (Thirst <= 25 && !GetFoodFlags())
                     {
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
                     }
@@ -1030,7 +1013,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 void Guest::TryGetUpFromSitting()
 {
     // Eats all food first
-    if (HasFood())
+    if (GetFoodFlags())
         return;
 
     TimeToSitdown--;
@@ -1108,7 +1091,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (HasFood())
+        if (GetFoodFlags())
         {
             if ((scenario_rand() & 0xFFFF) > 1310)
             {
@@ -1151,24 +1134,6 @@ void Guest::UpdateSitting()
     }
 }
 
-int32_t Guest::HasFoodStandardFlag() const
-{
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
-               ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
-               ShopItem::Coffee, ShopItem::Chicken, ShopItem::Lemonade);
-}
-
-int32_t Guest::HasFoodExtraFlag() const
-{
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::Pretzel, ShopItem::Chocolate, ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles,
-               ShopItem::FriedRiceNoodles, ShopItem::WontonSoup, ShopItem::MeatballSoup, ShopItem::FruitJuice,
-               ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich, ShopItem::Cookie, ShopItem::RoastSausage);
-}
-
 /**
  * To simplify check of NOT(0x12BA3C0 and 0x118F48)
  * returns 0 on no food.
@@ -1181,23 +1146,13 @@ bool Guest::HasDrink() const
                ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa);
 }
 
-int32_t Guest::HasEmptyContainerStandardFlag() const
+int64_t Guest::GetEmptyContainerFlags() const
 {
     return GetItemFlags()
         & EnumsToFlags(
                ShopItem::EmptyCan, ShopItem::EmptyBurgerBox, ShopItem::EmptyCup, ShopItem::Rubbish, ShopItem::EmptyBox,
-               ShopItem::EmptyBottle);
-}
-
-int32_t Guest::HasEmptyContainerExtraFlag() const
-{
-    return GetItemFlags()
-        & EnumsToFlags(ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup, ShopItem::EmptyBowlBlue);
-}
-
-bool Guest::HasEmptyContainer() const
-{
-    return HasEmptyContainerStandardFlag() || HasEmptyContainerExtraFlag();
+               ShopItem::EmptyBottle, ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup,
+               ShopItem::EmptyBowlBlue);
 }
 
 /**
@@ -1313,15 +1268,10 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 
     if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
-        int32_t food = -1;
-        if ((food = HasFoodStandardFlag()) != 0)
+        int32_t food = bitscanforward(GetFoodFlags());
+        if (food != -1)
         {
-            InsertNewThought(PeepThoughtType::HaventFinished, bitscanforward(food));
-            return false;
-        }
-        else if ((food = HasFoodExtraFlag()) != 0)
-        {
-            InsertNewThought(PeepThoughtType::HaventFinished, bitscanforward(food) + 32);
+            InsertNewThought(PeepThoughtType::HaventFinished, food);
             return false;
         }
         else if (Nausea >= 145)
@@ -1642,9 +1592,16 @@ void Guest::OnExitRide(ride_id_t rideIndex)
  * To simplify check of 0x36BA3E0 and 0x11FF78
  * returns false on no food.
  */
-bool Guest::HasFood() const
+int64_t Guest::GetFoodFlags() const
 {
-    return HasFoodStandardFlag() || HasFoodExtraFlag();
+    return GetItemFlags()
+        & EnumsToFlags(
+               ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
+               ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
+               ShopItem::Coffee, ShopItem::Chicken, ShopItem::Lemonade, ShopItem::Pretzel, ShopItem::Chocolate,
+               ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles, ShopItem::FriedRiceNoodles, ShopItem::WontonSoup,
+               ShopItem::MeatballSoup, ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich,
+               ShopItem::Cookie, ShopItem::RoastSausage);
 }
 
 /**
@@ -1659,7 +1616,7 @@ void Guest::PickRideToGoOn()
         return;
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (HasFood())
+    if (GetFoodFlags())
         return;
     if (x == LOCATION_NULL)
         return;
@@ -3071,7 +3028,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
 
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
-    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFood())
+    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->GetFoodFlags())
     {
         return;
     }
@@ -5146,31 +5103,19 @@ void Guest::UpdateWalking()
             }
         }
     }
-    else if (HasEmptyContainer())
+    else if (GetEmptyContainerFlags())
     {
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
-            uint8_t pos_stnd = 0;
-            for (int32_t container = HasEmptyContainerStandardFlag(); pos_stnd < 32; pos_stnd++)
-                if (container & (1u << pos_stnd))
-                    break;
-
+            int32_t container = bitscanforward(GetEmptyContainerFlags());
             int32_t litterType = 0;
 
-            if (pos_stnd != 32)
+            if (container != -1)
             {
-                RemoveItem(static_cast<ShopItem>(pos_stnd));
-                litterType = GetShopItemDescriptor(static_cast<ShopItem>(pos_stnd)).LitterType;
-            }
-            else
-            {
-                uint8_t pos_extr = 0;
-                for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
-                    if (container & (1u << pos_extr))
-                        break;
-                RemoveItem(static_cast<ShopItem>(pos_extr + 32));
-                litterType = GetShopItemDescriptor(static_cast<ShopItem>(pos_stnd + 32)).LitterType;
+                auto item = static_cast<ShopItem>(container);
+                RemoveItem(item);
+                litterType = GetShopItemDescriptor(item).LitterType;
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5244,7 +5189,7 @@ void Guest::UpdateWalking()
     if (Toilet > 140)
         return;
 
-    uint16_t chance = HasFood() ? 13107 : 2849;
+    uint16_t chance = GetFoodFlags() ? 13107 : 2849;
 
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
@@ -5582,7 +5527,7 @@ void Guest::UpdateWatching()
         }
         else
         {
-            if (HasFood())
+            if (GetFoodFlags())
             {
                 if ((scenario_rand() & 0xFFFF) <= 1310)
                 {
@@ -5715,70 +5660,37 @@ void Guest::UpdateUsingBin()
             }
 
             // Bin selection is one of 4 corners
-            uint8_t selected_bin = Var37 * 2;
+            uint8_t selectedBin = Var37 * 2;
 
             // This counts down 2 = No rubbish, 0 = full
-            uint8_t space_left_in_bin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selected_bin);
-            uint32_t empty_containers = HasEmptyContainerStandardFlag();
+            uint8_t spaceLeftInBin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selectedBin);
+            uint64_t emptyContainers = GetEmptyContainerFlags();
 
-            for (uint8_t cur_container = 0; cur_container < 32; cur_container++)
+            for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
             {
-                if (!(empty_containers & (1u << cur_container)))
+                if (!(emptyContainers & (1ULL << curContainer)))
                     continue;
 
-                if (space_left_in_bin != 0)
+                auto item = ShopItem(curContainer);
+                if (spaceLeftInBin != 0)
                 {
                     // OpenRCT2 modification: This previously used
                     // the tick count as a simple random function
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
-                        space_left_in_bin--;
-                    RemoveItem(static_cast<ShopItem>(cur_container));
+                        spaceLeftInBin--;
+                    RemoveItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t litterType = GetShopItemDescriptor(static_cast<ShopItem>(cur_container)).LitterType;
+                uint8_t litterType = GetShopItemDescriptor(item).LitterType;
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                RemoveItem(static_cast<ShopItem>(cur_container));
-                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-
-                UpdateSpriteType();
-            }
-
-            // Original bug: This would clear any rubbish placed by the previous function
-            // space_left_in_bin = 0x3 & (tile_element->properties.path.addition_status >> selected_bin);
-            empty_containers = HasEmptyContainerExtraFlag();
-
-            for (uint8_t cur_container = 0; cur_container < 32; cur_container++)
-            {
-                if (!(empty_containers & (1u << cur_container)))
-                    continue;
-
-                if (space_left_in_bin != 0)
-                {
-                    // OpenRCT2 modification: This previously used
-                    // the tick count as a simple random function
-                    // switched to scenario_rand as it is more reliable
-                    if ((scenario_rand() & 7) == 0)
-                        space_left_in_bin--;
-                    RemoveItem(static_cast<ShopItem>(cur_container) + ShopItem::Photo2);
-                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-
-                    UpdateSpriteType();
-                    continue;
-                }
-                uint8_t litterType = GetShopItemDescriptor(static_cast<ShopItem>(cur_container)).LitterType;
-
-                int32_t litterX = x + (scenario_rand() & 7) - 3;
-                int32_t litterY = y + (scenario_rand() & 7) - 3;
-
-                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                RemoveItem(static_cast<ShopItem>(cur_container) + ShopItem::Photo2);
+                RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -5786,9 +5698,9 @@ void Guest::UpdateUsingBin()
 
             uint8_t additionStatus = tileElement->AsPath()->GetAdditionStatus();
             // Place new amount in bin by first clearing the value
-            additionStatus &= ~(3 << selected_bin);
+            additionStatus &= ~(3 << selectedBin);
             // Then placing the new value.
-            additionStatus |= space_left_in_bin << selected_bin;
+            additionStatus |= spaceLeftInBin << selectedBin;
             tileElement->AsPath()->SetAdditionStatus(additionStatus);
 
             map_invalidate_tile_zoom0({ NextLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
@@ -5809,7 +5721,7 @@ bool Guest::ShouldFindBench()
         return false;
     }
 
-    if (HasFood())
+    if (GetFoodFlags())
     {
         if (Hunger < 128 || Happiness < 128)
         {
@@ -5923,7 +5835,7 @@ bool Guest::UpdateWalkingFindBench()
 bool Guest::UpdateWalkingFindBin()
 {
     auto peep = this;
-    if (!peep->HasEmptyContainer())
+    if (!peep->GetEmptyContainerFlags())
         return false;
 
     if (peep->GetNextIsSurface())

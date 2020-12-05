@@ -787,9 +787,9 @@ struct Guest : Peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    bool HasFood() const;
+    int64_t GetFoodFlags() const;
     bool HasDrink() const;
-    bool HasEmptyContainer() const;
+    int64_t GetEmptyContainerFlags() const;
     void OnEnterRide(ride_id_t rideIndex);
     void OnExitRide(ride_id_t rideIndex);
     void UpdateSpriteType();
@@ -812,10 +812,6 @@ public:
     bool HasRiddenRideType(int32_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
-    int32_t HasFoodStandardFlag() const;
-    int32_t HasFoodExtraFlag() const;
-    int32_t HasEmptyContainerStandardFlag() const;
-    int32_t HasEmptyContainerExtraFlag() const;
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
