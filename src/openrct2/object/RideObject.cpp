@@ -1067,7 +1067,7 @@ ShopItem RideObject::ParseShopItem(const std::string& s)
         { "iced_tea", ShopItem::IcedTea },
         { "fruit_juice", ShopItem::FruitJuice },
         { "soybean_milk", ShopItem::SoybeanMilk },
-        { "sujeonggwa", ShopItem::SuJeongGwa },
+        { "sujeonggwa", ShopItem::Sujeonggwa },
         { "balloon", ShopItem::Balloon },
         { "toy", ShopItem::Toy },
         { "map", ShopItem::Map },

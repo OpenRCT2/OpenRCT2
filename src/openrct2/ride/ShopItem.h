@@ -60,7 +60,7 @@ enum class ShopItem : uint8_t
     MeatballSoup,
     FruitJuice,
     SoybeanMilk,
-    SuJeongGwa,
+    Sujeonggwa,
     SubSandwich,
     Cookie,
     EmptyBowlRed,
@@ -95,7 +95,7 @@ struct ShopItemDescriptor
     uint16_t Flags;
     uint8_t LitterType;
     uint8_t ConsumptionTime;
-    ShopItem DiscardContianer;
+    ShopItem DiscardContainer;
     PeepThoughtType TooMuchThought;
     PeepThoughtType GoodValueThought;
 

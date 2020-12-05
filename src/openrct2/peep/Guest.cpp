@@ -595,7 +595,7 @@ void Guest::loc_68FA89()
                 ShopItem food = ShopItem(chosen_food);
                 RemoveItem(food);
 
-                auto discardContainer = GetShopItemDescriptor(food).DiscardContianer;
+                auto discardContainer = GetShopItemDescriptor(food).DiscardContainer;
                 if (discardContainer != ShopItem::None)
                 {
                     GiveItem(discardContainer);
@@ -6530,7 +6530,7 @@ static item_pref_t item_order_preference[] = {
     { ShopItem::MeatballSoup,     PeepSpriteType::Soup        },
     { ShopItem::FruitJuice,       PeepSpriteType::Juice       },
     { ShopItem::SoybeanMilk,      PeepSpriteType::SuJongkwa   },
-    { ShopItem::SuJeongGwa,       PeepSpriteType::SuJongkwa   },
+    { ShopItem::Sujeonggwa,       PeepSpriteType::SuJongkwa   },
     { ShopItem::SubSandwich,      PeepSpriteType::Sandwich    },
     { ShopItem::RoastSausage,     PeepSpriteType::Sausage     },
     { ShopItem::Balloon,          PeepSpriteType::Balloon     },
