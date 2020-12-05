@@ -162,6 +162,7 @@ The following people are not part of the development team, but have been contrib
 * Roger Seekell (rpstester)
 * Ben Johnston (gsckoco)
 * (evilclownattack)
+* Adam Bloom (adam-bloom)
 
 ## Toolchain
 * (Balletie) - macOS

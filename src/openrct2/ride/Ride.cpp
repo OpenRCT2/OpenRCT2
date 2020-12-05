@@ -2627,6 +2627,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
         case RIDE_MECHANIC_STATUS_HEADING:
         {
             auto mechanic = ride_get_mechanic(ride);
+            bool rideNeedsRepair = (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN));
             if (mechanic == nullptr
                 || (mechanic->State != PeepState::HeadingToInspection && mechanic->State != PeepState::Answering)
                 || mechanic->CurrentRide != ride->id)
@@ -2634,6 +2635,13 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
                 ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
                 ride_mechanic_status_update(ride, RIDE_MECHANIC_STATUS_CALLING);
+            }
+            // if the ride is broken down, but a mechanic was heading for an inspection, update orders to fix
+            else if (rideNeedsRepair && mechanic->State == PeepState::HeadingToInspection)
+            {
+                // updates orders for mechanic already heading to inspect ride
+                // forInspection == false means start repair (goes to PeepState::Answering)
+                ride_call_mechanic(ride, mechanic, false);
             }
             break;
         }
