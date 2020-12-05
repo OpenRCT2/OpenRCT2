@@ -154,64 +154,6 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
     300, 600, 800, 1000
 };
 
-/** rct2: 0x009822F4, 0x00982310 */
-static constexpr const uint8_t item_consumption_time[] = {
-    0,      // ShopItem::Balloon
-    0,      // ShopItem::Toy
-    0,      // ShopItem::Map
-    0,      // ShopItem::Photo
-    0,      // ShopItem::Umbrella
-    100,    // ShopItem::Drink
-    150,    // ShopItem::Burger
-    120,    // ShopItem::Chips
-    60,     // ShopItem::IceCream
-    50,     // ShopItem::Candyfloss
-    0,      // ShopItem::EmptyCan
-    0,      // ShopItem::Rubbish
-    0,      // ShopItem::EmptyBurgerBox
-    150,    // ShopItem::Pizza
-    0,      // ShopItem::Voucher
-    75,     // ShopItem::Popcorn
-    133,    // ShopItem::HotDog
-    110,    // ShopItem::Tentacle
-    0,      // ShopItem::Hat
-    50,     // ShopItem::ToffeeApple
-    0,      // ShopItem::TShirt
-    80,     // ShopItem::Doughnut
-    90,     // ShopItem::Coffee
-    0,      // ShopItem::EmptyCup
-    170,    // ShopItem::Chicken
-    115,    // ShopItem::Lemonade
-    0,      // ShopItem::EmptyBox
-    0,      // ShopItem::EmptyBottle
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0,      // ShopItem::Photo2
-    0,      // ShopItem::Photo3
-    0,      // ShopItem::Photo4
-    70,     // ShopItem::Pretzel
-    85,     // ShopItem::Chocolate
-    95,     // ShopItem::IcedTea
-    90,     // ShopItem::FunnelCake
-    0,      // ShopItem::Sunglasses
-    130,    // ShopItem::BeefNoodles
-    120,    // ShopItem::FriedRiceNoodles
-    100,    // ShopItem::WontonSoup
-    110,    // ShopItem::MeatballSoup
-    110,    // ShopItem::FruitJuice
-    90,     // ShopItem::SoybeanMilk
-    100,    // ShopItem::SHOP_ITEM_SU_JONGKWA
-    130,    // ShopItem::SubSandwich
-    75,     // ShopItem::Cookie
-    0,      // ShopItem::EmptyBowlRed
-    0,      // ShopItem::EmptyDrinkCarton
-    0,      // ShopItem::EmptyJuiceCup
-    115,    // ShopItem::RoastSausage
-    0       // ShopItem::EmptyBowlBlue
-};
-
 /** rct2: 009823AC */
 static constexpr const PeepThoughtType crowded_thoughts[] = {
     PeepThoughtType::Lost,
@@ -1584,7 +1526,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = item_consumption_time[EnumValue(shopItem)];
+    uint16_t consumptionTime = GetShopItemDescriptor(shopItem).ConsumptionTime;
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
     if (shopItem == ShopItem::Photo)
