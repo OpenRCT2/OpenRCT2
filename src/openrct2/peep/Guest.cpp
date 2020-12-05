@@ -6599,45 +6599,43 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
 struct item_pref_t
 {
-    uint8_t type;  // 0 for standard, 1 for extra
-    uint64_t item; // And this with the relevant flags
+    ShopItem item;
     PeepSpriteType sprite_type;
 };
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, EnumToFlag(ShopItem::IceCream), PeepSpriteType::IceCream },
-        { 0, EnumToFlag(ShopItem::Chips), PeepSpriteType::Chips },
-        { 0, EnumToFlag(ShopItem::Pizza), PeepSpriteType::Pizza },
-        { 0, EnumToFlag(ShopItem::Burger), PeepSpriteType::Burger },
-        { 0, EnumToFlag(ShopItem::Drink), PeepSpriteType::Drink },
-        { 0, EnumToFlag(ShopItem::Coffee), PeepSpriteType::Coffee },
-        { 0, EnumToFlag(ShopItem::Chicken), PeepSpriteType::Chicken },
-        { 0, EnumToFlag(ShopItem::Lemonade), PeepSpriteType::Lemonade },
-        { 0, EnumToFlag(ShopItem::Candyfloss), PeepSpriteType::Candyfloss },
-        { 0, EnumToFlag(ShopItem::Popcorn), PeepSpriteType::Popcorn },
-        { 0, EnumToFlag(ShopItem::HotDog), PeepSpriteType::HotDog  },
-        { 0, EnumToFlag(ShopItem::Tentacle), PeepSpriteType::Tentacle },
-        { 0, EnumToFlag(ShopItem::ToffeeApple), PeepSpriteType::ToffeeApple },
-        { 0, EnumToFlag(ShopItem::Doughnut), PeepSpriteType::Doughnut },
-        { 1, EnumToFlag(ShopItem::Pretzel), PeepSpriteType::Pretzel },
-        { 1, EnumToFlag(ShopItem::Cookie), PeepSpriteType::Pretzel },
-        { 1, EnumToFlag(ShopItem::Chocolate), PeepSpriteType::Coffee },
-        { 1, EnumToFlag(ShopItem::IcedTea), PeepSpriteType::Coffee },
-        { 1, EnumToFlag(ShopItem::FunnelCake), PeepSpriteType::FunnelCake },
-        { 1, EnumToFlag(ShopItem::BeefNoodles), PeepSpriteType::Noodles },
-        { 1, EnumToFlag(ShopItem::FriedRiceNoodles), PeepSpriteType::Noodles },
-        { 1, EnumToFlag(ShopItem::WontonSoup), PeepSpriteType::Soup },
-        { 1, EnumToFlag(ShopItem::MeatballSoup), PeepSpriteType::Soup },
-        { 1, EnumToFlag(ShopItem::FruitJuice), PeepSpriteType::Juice },
-        { 1, EnumToFlag(ShopItem::SoybeanMilk), PeepSpriteType::SuJongkwa },
-        { 1, EnumToFlag(ShopItem::SuJeongGwa), PeepSpriteType::SuJongkwa },
-        { 1, EnumToFlag(ShopItem::SubSandwich), PeepSpriteType::Sandwich },
-        { 1, EnumToFlag(ShopItem::RoastSausage), PeepSpriteType::Sausage },
-        { 0, EnumToFlag(ShopItem::Balloon), PeepSpriteType::Balloon },
-        { 0, EnumToFlag(ShopItem::Hat), PeepSpriteType::Hat },
-        { 1, EnumToFlag(ShopItem::Sunglasses), PeepSpriteType::Sunglasses },
-        { 0xFF, 0xFFFFFFFFFFFFFFFF, PeepSpriteType::Invalid }
+    { ShopItem::IceCream,         PeepSpriteType::IceCream    },
+    { ShopItem::Chips,            PeepSpriteType::Chips       },
+    { ShopItem::Pizza,            PeepSpriteType::Pizza       },
+    { ShopItem::Burger,           PeepSpriteType::Burger      },
+    { ShopItem::Drink,            PeepSpriteType::Drink       },
+    { ShopItem::Coffee,           PeepSpriteType::Coffee      },
+    { ShopItem::Chicken,          PeepSpriteType::Chicken     },
+    { ShopItem::Lemonade,         PeepSpriteType::Lemonade    },
+    { ShopItem::Candyfloss,       PeepSpriteType::Candyfloss  },
+    { ShopItem::Popcorn,          PeepSpriteType::Popcorn     },
+    { ShopItem::HotDog,           PeepSpriteType::HotDog      },
+    { ShopItem::Tentacle,         PeepSpriteType::Tentacle    },
+    { ShopItem::ToffeeApple,      PeepSpriteType::ToffeeApple },
+    { ShopItem::Doughnut,         PeepSpriteType::Doughnut    },
+    { ShopItem::Pretzel,          PeepSpriteType::Pretzel     },
+    { ShopItem::Cookie,           PeepSpriteType::Pretzel     },
+    { ShopItem::Chocolate,        PeepSpriteType::Coffee      },
+    { ShopItem::IcedTea,          PeepSpriteType::Coffee      },
+    { ShopItem::FunnelCake,       PeepSpriteType::FunnelCake  },
+    { ShopItem::BeefNoodles,      PeepSpriteType::Noodles     },
+    { ShopItem::FriedRiceNoodles, PeepSpriteType::Noodles     },
+    { ShopItem::WontonSoup,       PeepSpriteType::Soup        },
+    { ShopItem::MeatballSoup,     PeepSpriteType::Soup        },
+    { ShopItem::FruitJuice,       PeepSpriteType::Juice       },
+    { ShopItem::SoybeanMilk,      PeepSpriteType::SuJongkwa   },
+    { ShopItem::SuJeongGwa,       PeepSpriteType::SuJongkwa   },
+    { ShopItem::SubSandwich,      PeepSpriteType::Sandwich    },
+    { ShopItem::RoastSausage,     PeepSpriteType::Sausage     },
+    { ShopItem::Balloon,          PeepSpriteType::Balloon     },
+    { ShopItem::Hat,              PeepSpriteType::Hat         },
+    { ShopItem::Sunglasses,       PeepSpriteType::Sunglasses  },
 };
 // clang-format on
 
@@ -6686,15 +6684,12 @@ void Guest::UpdateSpriteType()
         }
     }
 
-    for (item_pref_t* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++)
+    for (auto& itemPref : item_order_preference)
     {
-        if (item_pref->type == 0)
+        if (HasItem(itemPref.item))
         {
-            if (GetItemFlags() & item_pref->item)
-            {
-                SetSpriteType(item_pref->sprite_type);
-                return;
-            }
+            SetSpriteType(itemPref.sprite_type);
+            return;
         }
     }
 
