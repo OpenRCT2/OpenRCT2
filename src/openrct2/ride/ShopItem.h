@@ -100,6 +100,7 @@ struct ShopItemDescriptor
     uint16_t Flags;
     uint8_t LitterType;
     uint8_t ConsumptionTime;
+    ShopItem DiscardContianer;
 
     bool HasFlag(const uint16_t flag) const;
     bool IsFood() const;

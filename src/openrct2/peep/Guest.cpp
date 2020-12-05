@@ -174,64 +174,6 @@ static constexpr const PeepThoughtType crowded_thoughts[] = {
     PeepThoughtType::None,
 };
 
-/** rct2: 0x00982326 */
-static constexpr const uint8_t peep_item_containers[] = {
-    0xFF,                           // ShopItem::Balloon
-    0xFF,                           // ShopItem::Toy
-    0xFF,                           // ShopItem::Map
-    0xFF,                           // ShopItem::Photo
-    0xFF,                           // ShopItem::Umbrella
-    EnumValue(ShopItem::EmptyCan),            // ShopItem::Drink
-    EnumValue(ShopItem::EmptyBurgerBox),     // ShopItem::Burger
-    EnumValue(ShopItem::Rubbish),              // ShopItem::Chips
-    0xFF,                           // ShopItem::IceCream
-    0xFF,                           // ShopItem::Candyfloss
-    0xFF,                           // ShopItem::EmptyCan
-    0xFF,                           // ShopItem::Rubbish
-    0xFF,                           // ShopItem::EmptyBurgerBox
-    EnumValue(ShopItem::Rubbish),              // ShopItem::Pizza
-    0xFF,                           // ShopItem::Voucher
-    EnumValue(ShopItem::Rubbish),              // ShopItem::Popcorn
-    0xFF,                           // ShopItem::HotDog
-    0xFF,                           // ShopItem::Tentacle
-    0xFF,                           // ShopItem::Hat
-    0xFF,                           // ShopItem::ToffeeApple
-    0xFF,                           // ShopItem::TShirt
-    0xFF,                           // ShopItem::Doughnut
-    EnumValue(ShopItem::EmptyCup),            // ShopItem::Coffee
-    0xFF,                           // ShopItem::EmptyCup
-    EnumValue(ShopItem::EmptyBox),            // ShopItem::Chicken
-    EnumValue(ShopItem::EmptyBottle),         // ShopItem::Lemonade
-    0xFF,                           // ShopItem::EmptyBox
-    0xFF,                           // ShopItem::EmptyBottle
-};
-
-/** rct2: 0x00982342 */
-static constexpr const uint8_t peep_extra_item_containers[] = {
-    0xFF,                           // ShopItem::Photo2
-    0xFF,                           // ShopItem::Photo3
-    0xFF,                           // ShopItem::Photo4
-    0xFF,                           // ShopItem::Pretzel
-    EnumValue(ShopItem::EmptyCup),            // ShopItem::Chocolate
-    EnumValue(ShopItem::EmptyCup),            // ShopItem::IcedTea
-    0xFF,                           // ShopItem::FunnelCake
-    0xFF,                           // ShopItem::Sunglasses
-    EnumValue(ShopItem::EmptyBowlBlue),      // ShopItem::BeefNoodles
-    EnumValue(ShopItem::EmptyBowlBlue),      // ShopItem::FriedRiceNoodles
-    EnumValue(ShopItem::EmptyBowlRed),       // ShopItem::WontonSoup
-    EnumValue(ShopItem::EmptyBowlRed),       // ShopItem::MeatballSoup
-    EnumValue(ShopItem::EmptyJuiceCup),      // ShopItem::FruitJuice
-    EnumValue(ShopItem::EmptyDrinkCarton),   // ShopItem::SoybeanMilk
-    EnumValue(ShopItem::EmptyDrinkCarton),   // ShopItem::SuJeongGwa
-    0xFF,                           // ShopItem::SubSandwich
-    0xFF,                           // ShopItem::Cookie
-    0xFF,                           // ShopItem::EmptyBowlRed
-    0xFF,                           // ShopItem::EmptyDrinkCarton
-    0xFF,                           // ShopItem::EmptyJuiceCup
-    0xFF,                           // ShopItem::RoastSausage
-    0xFF,                           // EmptyBowlBlue
-};
-
 static constexpr const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",
     "JACQUES VILLENEUVE",
@@ -650,12 +592,13 @@ void Guest::loc_68FA89()
             int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
             if (chosen_food != -1)
             {
-                RemoveItem(static_cast<ShopItem>(chosen_food));
+                ShopItem food = ShopItem(chosen_food);
+                RemoveItem(food);
 
-                uint8_t discard_container = peep_item_containers[chosen_food];
-                if (discard_container != 0xFF)
+                auto discardContainer = GetShopItemDescriptor(food).DiscardContianer;
+                if (discardContainer != ShopItem::None)
                 {
-                    GiveItem(static_cast<ShopItem>(discard_container));
+                    GiveItem(discardContainer);
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -666,11 +609,12 @@ void Guest::loc_68FA89()
                 chosen_food = bitscanforward(HasFoodExtraFlag());
                 if (chosen_food != -1)
                 {
-                    RemoveItem(static_cast<ShopItem>(chosen_food + 32));
-                    uint8_t discard_container = peep_extra_item_containers[chosen_food];
-                    if (discard_container != 0xFF)
+                    ShopItem food = ShopItem(chosen_food + 32);
+                    RemoveItem(food);
+                    auto discardContainer = GetShopItemDescriptor(food).DiscardContianer;
+                    if (discardContainer != ShopItem::None)
                     {
-                        GiveItem(static_cast<ShopItem>(discard_container));
+                        GiveItem(discardContainer);
                     }
 
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
