@@ -588,7 +588,7 @@ private:
     {
         std::vector<function_call> commonCalls = TrimCommonCallsEnd(calls);
 
-        int totalCalls = 0;
+        size_t totalCalls = 0;
         for (int direction = 0; direction < 4; direction++)
         {
             totalCalls += calls[direction].size();
@@ -1080,11 +1080,7 @@ private:
         TestPaint::ResetEnvironment();
         TestPaint::ResetSupportHeights();
 
-        uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[_rideType][trackType];
-        // Have to call from this point as it pushes esi and expects callee to pop it
-        RCT2_CALLPROC_X(
-            0x006C4934, _rideType, (int)trackDirectionList, direction, height, (int)tileElement, 0 * sizeof(Ride),
-            trackSequence);
+        return;
     }
 
     void GenerateMainFunction()
