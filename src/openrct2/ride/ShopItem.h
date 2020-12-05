@@ -71,12 +71,6 @@ enum class ShopItem : uint8_t
     None = 255
 };
 
-ShopItem& operator++(ShopItem& d, int);
-
-ShopItem operator+(const ShopItem& lhs, const ShopItem& rhs);
-
-ShopItem operator-(const ShopItem& lhs, const ShopItem& rhs);
-
 using ShopItemIndex = ShopItem;
 
 struct ShopItemStrings

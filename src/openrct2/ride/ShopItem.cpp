@@ -13,24 +13,10 @@
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 
-ShopItem& operator++(ShopItem& d, int)
-{
-    return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(static_cast<uint8_t>(d) + 1);
-}
-
-ShopItem operator+(const ShopItem& lhs, const ShopItem& rhs)
-{
-    return ShopItem(EnumValue(lhs) + EnumValue(rhs));
-}
-
-ShopItem operator-(const ShopItem& lhs, const ShopItem& rhs)
-{
-    return ShopItem(EnumValue(lhs) - EnumValue(rhs));
-}
-
 uint64_t gSamePriceThroughoutPark;
 
 // clang-format off
+// TODO: Guest::HasDrink, Guest::GetFoodFlags, Guest::GetEmptyContainerFlags duplicates the shop item flags
 /** rct2: 0x00982164 (cost, base value, hot and cold value); 0x00982358 (default price) */
 const ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)] = {
     // Item,                            Cost, Base value, Hot value, Cold value, Default price, Image,                               Price label,                                      Singular,                                   Plural,                                     Indefinite,                                     Display (in guest inventory),                Shop Item Flag,                                       Litter type,                    Consumption time, Discard Container

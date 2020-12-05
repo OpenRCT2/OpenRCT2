@@ -1349,8 +1349,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                     // "I'm not paying that much for x"
                     PeepThoughtType thought_type = static_cast<PeepThoughtType>(
                         shopItem >= ShopItem::Photo2
-                            ? EnumValue(PeepThoughtType::Photo2Much) + EnumValue(shopItem - ShopItem::Photo2)
-                            : EnumValue(PeepThoughtType::BalloonMuch) + EnumValue(shopItem));
+                            ? EnumValue(PeepThoughtType::Photo2Much) + static_cast<uint8_t>(shopItem) - 32
+                            : EnumValue(PeepThoughtType::BalloonMuch) + static_cast<uint8_t>(shopItem));
                     InsertNewThought(thought_type, ride->id);
                     return false;
                 }
@@ -1367,9 +1367,8 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                 {
                     // "This x is a really good value"
                     PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        shopItem >= ShopItem::Photo2
-                            ? static_cast<uint8_t>(PeepThoughtType::Photo2) + static_cast<uint8_t>(shopItem - ShopItem::Photo2)
-                            : static_cast<uint8_t>(PeepThoughtType::Balloon) + static_cast<uint8_t>(shopItem));
+                        shopItem >= ShopItem::Photo2 ? EnumValue(PeepThoughtType::Photo2) + static_cast<uint8_t>(shopItem) - 32
+                                                     : EnumValue(PeepThoughtType::Balloon) + static_cast<uint8_t>(shopItem));
                     InsertNewThought(thought_item, ride->id);
                 }
             }
