@@ -3385,6 +3385,7 @@ STR_6119    :Eine günstige und einfach zu bauende Achterbahn, jedoch mit begren
 STR_6120    :{BABYBLUE}Neues Fahrzeug für {STRINGID} ist jetzt verfügbar:{NEWLINE}{STRINGID}
 STR_6121    :{SMALLFONT}{BLACK}Erweitert die Landrechte des Parks{NEWLINE}bis zum Rand der Karte
 STR_6122    :Dieses Szenario enthält zu wenige Achterbahnen!
+STR_6123    :Fehler beim Laden der Objekte für den Park
 STR_6124    :Objektname
 STR_6125    :Objekttyp
 STR_6126    :Unbekannter Typ
@@ -3645,6 +3646,8 @@ STR_6394    :Ziel
 STR_6395    :Pflege
 STR_6396    :Bildschirmschoner und -stromsparen deaktivieren
 STR_6397    :{SMALLFONT}{BLACK}Falls ausgewählt, werden der Bildschirmschoner und andere Bildschirmstromsparfunktionen blockiert, solange OpenRCT2 läuft.
+STR_6398    :Datei enthält nicht unterstützte Fahrgeschäfttypen. Bitte aktualisieren Sie zu einer neueren Version von OpenRCT2.
+STR_6399    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2, um zu funktionieren. Bitte setzen Sie die „game_path“-Variable in config.ini auf das Verzeichnis, in das Sie RollerCoaster Tycoon 2 installiert haben, dann starten Sie OpenRCT2 neu.
 
 #############
 # Scenarios #
