@@ -81,7 +81,7 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     uint32_t transparant_image_id = 0, image_id = 0;
     if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
     {
-        colour_1 = GlassPaletteIds[ride->track_colour[0].main];
+        colour_1 = EnumValue(GlassPaletteIds[ride->track_colour[0].main]);
         transparant_image_id = (colour_1 << 19) | IMAGE_TYPE_TRANSPARENT;
     }
 

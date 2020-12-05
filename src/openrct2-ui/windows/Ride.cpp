@@ -4870,7 +4870,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 int32_t terniaryColour = 0;
                 if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
                 {
-                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (GlassPaletteIds[trackColour.main] << 19);
+                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (EnumValue(GlassPaletteIds[trackColour.main]) << 19);
                 }
 
                 int32_t spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);

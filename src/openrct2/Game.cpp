@@ -203,10 +203,10 @@ void update_palette_effects()
         if (gConfigGeneral.render_weather_gloom)
         {
             auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
-            if (paletteId != PALETTE_NULL)
+            if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
-                if (paletteId != PALETTE_DARKEN_1)
+                if (paletteId != FilterPaletteID::PaletteDarken1)
                 {
                     shade = 2;
                 }

@@ -50,14 +50,14 @@ void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t h
 
     auto colour0 = COLOUR_LIGHT_BLUE;
     auto colour1 = COLOUR_BORDEAUX_RED;
-    auto tcolour0 = GlassPaletteIds[colour0];
+    auto tcolour0 = EnumValue(GlassPaletteIds[colour0]);
 
     uint32_t imageId = BaseImageId;
     uint32_t tImageId = BaseImageId + 16;
     if (Flags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
     {
         imageId |= (colour0 << 19) | IMAGE_TYPE_REMAP;
-        tImageId |= (GlassPaletteIds[tcolour0] << 19) | IMAGE_TYPE_TRANSPARENT;
+        tImageId |= (EnumValue(GlassPaletteIds[tcolour0]) << 19) | IMAGE_TYPE_TRANSPARENT;
     }
     if (Flags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
     {

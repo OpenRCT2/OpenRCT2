@@ -1268,7 +1268,8 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                     }
                     gfx_draw_sprite(&clipdpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
 
-                    imageId = (sceneryEntry->image + 0x40000006) | (GlassPaletteIds[gWindowSceneryPrimaryColour] << 19);
+                    imageId = (sceneryEntry->image + 0x40000006)
+                        | (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
                     gfx_draw_sprite(&clipdpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
                 }
                 else
@@ -1328,7 +1329,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
                 if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS))
                 {
                     imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004)
-                        + (GlassPaletteIds[gWindowSceneryPrimaryColour] << 19);
+                        + (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
 
                     gfx_draw_sprite(&clipdpi, imageId, { 0x20, spriteTop }, w->colours[1]);
                 }

@@ -189,121 +189,122 @@ enum
     INSET_RECT_FLAG_FILL_MID_LIGHT = (1 << 7),    // 0x80
 };
 
-enum FILTER_PALETTE_ID
+enum class FilterPaletteID : int32_t
 {
-    PALETTE_NULL = 0,
+    PaletteNull = 0,
 
-    PALETTE_WATER = 32,
+    PaletteWater = 32,
 
-    PALETTE_34 = 34,
+    Palette34 = 34,
 
-    PALETTE_45 = 45, // Decolourise + lighten
-    PALETTE_46 = 46,
+    Palette45 = 45, // Decolourise + lighten
+    Palette46 = 46,
 
-    PALETTE_DARKEN_3 = 47,
+    PaletteDarken3 = 47,
 
-    PALETTE_DARKEN_1 = 49,
-    PALETTE_DARKEN_2 = 50,
-    PALETTE_51 = 51, // Decolourise + darken
-    PALETTE_TRANSLUCENT_GREY = 52,
-    PALETTE_TRANSLUCENT_GREY_HIGHLIGHT = 53,
-    PALETTE_TRANSLUCENT_GREY_SHADOW = 54,
-    PALETTE_TRANSLUCENT_LIGHT_BLUE = 55,
-    PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT = 56,
-    PALETTE_TRANSLUCENT_LIGHT_BLUE_SHADOW = 57,
-    PALETTE_TRANSLUCENT_BORDEAUX_RED = 58,
-    PALETTE_TRANSLUCENT_BORDEAUX_RED_HIGHLIGHT = 59,
-    PALETTE_TRANSLUCENT_BORDEAUX_RED_SHADOW = 60,
-    PALETTE_TRANSLUCENT_DARK_GREEN = 61,
-    PALETTE_TRANSLUCENT_DARK_GREEN_HIGHLIGHT = 62,
-    PALETTE_TRANSLUCENT_DARK_GREEN_SHADOW = 63,
-    PALETTE_TRANSLUCENT_LIGHT_PURPLE = 64,
-    PALETTE_TRANSLUCENT_LIGHT_PURPLE_HIGHLIGHT = 65,
-    PALETTE_TRANSLUCENT_LIGHT_PURPLE_SHADOW = 66,
-    PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN = 67,
-    PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN_HIGHLIGHT = 68,
-    PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN_SHADOW = 69,
-    PALETTE_TRANSLUCENT_LIGHT_BROWN = 70,
-    PALETTE_TRANSLUCENT_LIGHT_BROWN_HIGHLIGHT = 71,
-    PALETTE_TRANSLUCENT_LIGHT_BROWN_SHADOW = 72,
-    PALETTE_TRANSLUCENT_YELLOW = 73,
-    PALETTE_TRANSLUCENT_YELLOW_HIGHLIGHT = 74,
-    PALETTE_TRANSLUCENT_YELLOW_SHADOW = 75,
-    PALETTE_TRANSLUCENT_MOSS_GREEN = 76,
-    PALETTE_TRANSLUCENT_MOSS_GREEN_HIGHLIGHT = 77,
-    PALETTE_TRANSLUCENT_MOSS_GREEN_SHADOW = 78,
-    PALETTE_TRANSLUCENT_OLIVE_GREEN = 79,
-    PALETTE_TRANSLUCENT_OLIVE_GREEN_HIGHLIGHT = 80,
-    PALETTE_TRANSLUCENT_OLIVE_GREEN_SHADOW = 81,
-    PALETTE_TRANSLUCENT_BRIGHT_GREEN = 82,
-    PALETTE_TRANSLUCENT_BRIGHT_GREEN_HIGHLIGHT = 83,
-    PALETTE_TRANSLUCENT_BRIGHT_GREEN_SHADOW = 84,
-    PALETTE_TRANSLUCENT_SALMON_PINK = 85,
-    PALETTE_TRANSLUCENT_SALMON_PINK_HIGHLIGHT = 86,
-    PALETTE_TRANSLUCENT_SALMON_PINK_SHADOW = 87,
-    PALETTE_TRANSLUCENT_BRIGHT_PURPLE = 88,
-    PALETTE_TRANSLUCENT_BRIGHT_PURPLE_HIGHLIGHT = 89,
-    PALETTE_TRANSLUCENT_BRIGHT_PURPLE_SHADOW = 90,
-    PALETTE_TRANSLUCENT_BRIGHT_RED = 91,
-    PALETTE_TRANSLUCENT_BRIGHT_RED_HIGHLIGHT = 92,
-    PALETTE_TRANSLUCENT_BRIGHT_RED_SHADOW = 93,
-    PALETTE_TRANSLUCENT_LIGHT_ORANGE = 94,
-    PALETTE_TRANSLUCENT_LIGHT_ORANGE_HIGHLIGHT = 95,
-    PALETTE_TRANSLUCENT_LIGHT_ORANGE_SHADOW = 96,
-    PALETTE_TRANSLUCENT_TEAL = 97,
-    PALETTE_TRANSLUCENT_TEAL_HIGHLIGHT = 98,
-    PALETTE_TRANSLUCENT_TEAL_SHADOW = 99,
-    PALETTE_TRANSLUCENT_BRIGHT_PINK = 100,
-    PALETTE_TRANSLUCENT_BRIGHT_PINK_HIGHLIGHT = 101,
-    PALETTE_TRANSLUCENT_BRIGHT_PINK_SHADOW = 102,
-    PALETTE_TRANSLUCENT_DARK_BROWN = 103,
-    PALETTE_TRANSLUCENT_DARK_BROWN_HIGHLIGHT = 104,
-    PALETTE_TRANSLUCENT_DARK_BROWN_SHADOW = 105,
-    PALETTE_TRANSLUCENT_LIGHT_PINK = 106,
-    PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT = 107,
-    PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW = 108,
-    PALETTE_TRANSLUCENT_WHITE = 109,
-    PALETTE_TRANSLUCENT_WHITE_HIGHLIGHT = 110,
-    PALETTE_TRANSLUCENT_WHITE_SHADOW = 111,
-    PALETTE_GLASS_BLACK = 112 + COLOUR_BLACK,
-    PALETTE_GLASS_GREY = 112 + COLOUR_GREY,
-    PALETTE_GLASS_WHITE = 112 + COLOUR_WHITE,
-    PALETTE_GLASS_DARK_PURPLE = 112 + COLOUR_DARK_PURPLE,
-    PALETTE_GLASS_LIGHT_PURPLE = 112 + COLOUR_LIGHT_PURPLE,
-    PALETTE_GLASS_BRIGHT_PURPLE = 112 + COLOUR_BRIGHT_PURPLE,
-    PALETTE_GLASS_DARK_BLUE = 112 + COLOUR_DARK_BLUE,
-    PALETTE_GLASS_LIGHT_BLUE = 112 + COLOUR_LIGHT_BLUE,
-    PALETTE_GLASS_ICY_BLUE = 112 + COLOUR_ICY_BLUE,
-    PALETTE_GLASS_TEAL = 112 + COLOUR_TEAL,
-    PALETTE_GLASS_AQUAMARINE = 112 + COLOUR_AQUAMARINE,
-    PALETTE_GLASS_SATURATED_GREEN = 112 + COLOUR_SATURATED_GREEN,
-    PALETTE_GLASS_DARK_GREEN = 112 + COLOUR_DARK_GREEN,
-    PALETTE_GLASS_MOSS_GREEN = 112 + COLOUR_MOSS_GREEN,
-    PALETTE_GLASS_BRIGHT_GREEN = 112 + COLOUR_BRIGHT_GREEN,
-    PALETTE_GLASS_OLIVE_GREEN = 112 + COLOUR_OLIVE_GREEN,
-    PALETTE_GLASS_DARK_OLIVE_GREEN = 112 + COLOUR_DARK_OLIVE_GREEN,
-    PALETTE_GLASS_BRIGHT_YELLOW = 112 + COLOUR_BRIGHT_YELLOW,
-    PALETTE_GLASS_YELLOW = 112 + COLOUR_YELLOW,
-    PALETTE_GLASS_DARK_YELLOW = 112 + COLOUR_DARK_YELLOW,
-    PALETTE_GLASS_LIGHT_ORANGE = 112 + COLOUR_LIGHT_ORANGE,
-    PALETTE_GLASS_DARK_ORANGE = 112 + COLOUR_DARK_ORANGE,
-    PALETTE_GLASS_LIGHT_BROWN = 112 + COLOUR_LIGHT_BROWN,
-    PALETTE_GLASS_SATURATED_BROWN = 112 + COLOUR_SATURATED_BROWN,
-    PALETTE_GLASS_DARK_BROWN = 112 + COLOUR_DARK_BROWN,
-    PALETTE_GLASS_SALMON_PINK = 112 + COLOUR_SALMON_PINK,
-    PALETTE_GLASS_BORDEAUX_RED = 112 + COLOUR_BORDEAUX_RED,
-    PALETTE_GLASS_SATURATED_RED = 112 + COLOUR_SATURATED_RED,
-    PALETTE_GLASS_BRIGHT_RED = 112 + COLOUR_BRIGHT_RED,
-    PALETTE_GLASS_DARK_PINK = 112 + COLOUR_DARK_PINK,
-    PALETTE_GLASS_BRIGHT_PINK = 112 + COLOUR_BRIGHT_PINK,
-    PALETTE_GLASS_LIGHT_PINK = 112 + COLOUR_LIGHT_PINK,
+    PaletteDarken1 = 49,
+    PaletteDarken2 = 50,
+    Palette51 = 51, // Decolourise + darken
+    PaletteTranslucentGrey = 52,
+    PaletteTranslucentGreyHighlight = 53,
+    PaletteTranslucentGreyShadow = 54,
+    PaletteTranslucentLightBlue = 55,
+    PaletteTranslucentLightBlueHighlight = 56,
+    PaletteTranslucentLightBlueShadow = 57,
+    PaletteTranslucentBordeauxRed = 58,
+    PaletteTranslucentBordeauxRedHighlight = 59,
+    PaletteTranslucentBordeauxRedShadow = 60,
+    PaletteTranslucentDarkGreen = 61,
+    PaletteTranslucentDarkGreenHighlight = 62,
+    PaletteTranslucentDarkGreenShadow = 63,
+    PaletteTranslucentLightPurple = 64,
+    PaletteTranslucentLightPurpleHighlight = 65,
+    PaletteTranslucentLightPurpleShadow = 66,
+    PaletteTranslucentDarkOliveGreen = 67,
+    PaletteTranslucentDarkOliveGreenHighlight = 68,
+    PaletteTranslucentDarkOliveGreenShadow = 69,
+    PaletteTranslucentLightBrown = 70,
+    PaletteTranslucentLightBrownHighlight = 71,
+    PaletteTranslucentLightBrownShadow = 72,
+    PaletteTranslucentYellow = 73,
+    PaletteTranslucentYellowHighlight = 74,
+    PaletteTranslucentYellowShadow = 75,
+    PaletteTranslucentMossGreen = 76,
+    PaletteTranslucentMossGreenHighlight = 77,
+    PaletteTranslucentMossGreenShadow = 78,
+    PaletteTranslucentOliveGreen = 79,
+    PaletteTranslucentOliveGreenHighlight = 80,
+    PaletteTranslucentOliveGreenShadow = 81,
+    PaletteTranslucentBrightGreen = 82,
+    PaletteTranslucentBrightGreenHighlight = 83,
+    PaletteTranslucentBrightGreenShadow = 84,
+    PaletteTranslucentSalmonPink = 85,
+    PaletteTranslucentSalmonPinkHighlight = 86,
+    PaletteTranslucentSalmonPinkShadow = 87,
+    PaletteTranslucentBrightPurple = 88,
+    PaletteTranslucentBrightPurpleHighlight = 89,
+    PaletteTranslucentBrightPurpleShadow = 90,
+    PaletteTranslucentBrightRed = 91,
+    PaletteTranslucentBrightRedHighlight = 92,
+    PaletteTranslucentBrightRedShadow = 93,
+    PaletteTranslucentLightOrange = 94,
+    PaletteTranslucentLightOrangeHighlight = 95,
+    PaletteTranslucentLightOrangeShadow = 96,
+    PaletteTranslucentTeal = 97,
+    PaletteTranslucentTealHighlight = 98,
+    PaletteTranslucentTealShadow = 99,
+    PaletteTranslucentBrightPink = 100,
+    PaletteTranslucentBrightPinkHighlight = 101,
+    PaletteTranslucentBrightPinkShadow = 102,
+    PaletteTranslucentDarkBrown = 103,
+    PaletteTranslucentDarkBrownHighlight = 104,
+    PaletteTranslucentDarkBrownShadow = 105,
+    PaletteTranslucentLightPink = 106,
+    PaletteTranslucentLightPinkHighlight = 107,
+    PaletteTranslucentLightPinkShadow = 108,
+    PaletteTranslucentWhite = 109,
+    PaletteTranslucentWhiteHighlight = 110,
+    PaletteTranslucentWhiteShadow = 111,
+    PaletteGlass = 112,
+    PaletteGlassBlack = PaletteGlass + COLOUR_BLACK,
+    PaletteGlassGrey = PaletteGlass + COLOUR_GREY,
+    PaletteGlassWhite = PaletteGlass + COLOUR_WHITE,
+    PaletteGlassDarkPurple = PaletteGlass + COLOUR_DARK_PURPLE,
+    PaletteGlassLightPurple = PaletteGlass + COLOUR_LIGHT_PURPLE,
+    PaletteGlassBrightPurple = PaletteGlass + COLOUR_BRIGHT_PURPLE,
+    PaletteGlassDarkBlue = PaletteGlass + COLOUR_DARK_BLUE,
+    PaletteGlassLightBlue = PaletteGlass + COLOUR_LIGHT_BLUE,
+    PaletteGlassIcyBlue = PaletteGlass + COLOUR_ICY_BLUE,
+    PaletteGlassTeal = PaletteGlass + COLOUR_TEAL,
+    PaletteGlassAquamarine = PaletteGlass + COLOUR_AQUAMARINE,
+    PaletteGlassSaturatedGreen = PaletteGlass + COLOUR_SATURATED_GREEN,
+    PaletteGlassDarkGreen = PaletteGlass + COLOUR_DARK_GREEN,
+    PaletteGlassMossGreen = PaletteGlass + COLOUR_MOSS_GREEN,
+    PaletteGlassBrightGreen = PaletteGlass + COLOUR_BRIGHT_GREEN,
+    PaletteGlassOliveGreen = PaletteGlass + COLOUR_OLIVE_GREEN,
+    PaletteGlassDarkOliveGreen = PaletteGlass + COLOUR_DARK_OLIVE_GREEN,
+    PaletteGlassBrightYellow = PaletteGlass + COLOUR_BRIGHT_YELLOW,
+    PaletteGlassYellow = PaletteGlass + COLOUR_YELLOW,
+    PaletteGlassDarkYellow = PaletteGlass + COLOUR_DARK_YELLOW,
+    PaletteGlassLightOrange = PaletteGlass + COLOUR_LIGHT_ORANGE,
+    PaletteGlassDarkOrange = PaletteGlass + COLOUR_DARK_ORANGE,
+    PaletteGlassLightBrown = PaletteGlass + COLOUR_LIGHT_BROWN,
+    PaletteGlassSaturatedBrown = PaletteGlass + COLOUR_SATURATED_BROWN,
+    PaletteGlassDarkBrown = PaletteGlass + COLOUR_DARK_BROWN,
+    PaletteGlassSalmonPink = PaletteGlass + COLOUR_SALMON_PINK,
+    PaletteGlassBordeauxRed = PaletteGlass + COLOUR_BORDEAUX_RED,
+    PaletteGlassSaturatedRed = PaletteGlass + COLOUR_SATURATED_RED,
+    PaletteGlassBrightRed = PaletteGlass + COLOUR_BRIGHT_RED,
+    PaletteGlassDarkPink = PaletteGlass + COLOUR_DARK_PINK,
+    PaletteGlassBrightPink = PaletteGlass + COLOUR_BRIGHT_PINK,
+    PaletteGlassLightPink = PaletteGlass + COLOUR_LIGHT_PINK,
 };
 
 struct translucent_window_palette
 {
-    FILTER_PALETTE_ID base;
-    FILTER_PALETTE_ID highlight;
-    FILTER_PALETTE_ID shadow;
+    FilterPaletteID base;
+    FilterPaletteID highlight;
+    FilterPaletteID shadow;
 };
 
 struct rct_size16
@@ -649,7 +650,7 @@ extern thread_local uint16_t gCurrentFontFlags;
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
-extern const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT];
+extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
 extern uint8_t gPeepPalette[256];
 extern uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
@@ -680,7 +681,7 @@ void load_palette();
 // other
 void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex);
 void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour);
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FILTER_PALETTE_ID palette);
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void gfx_invalidate_pickedup_peep();
 void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
 
@@ -695,9 +696,8 @@ void gfx_fill_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colou
 void gfx_fill_rect_inset(
     rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags);
 void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t colour, uint8_t flags);
-void gfx_filter_rect(
-    rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FILTER_PALETTE_ID palette);
-void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FILTER_PALETTE_ID palette);
+void gfx_filter_rect(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom, FilterPaletteID palette);
+void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);

@@ -44,7 +44,7 @@ struct WeatherTransition
 
 extern const WeatherTransition* ClimateTransitions[4];
 extern const WeatherState ClimateWeatherData[EnumValue(WeatherType::Count)];
-extern const FILTER_PALETTE_ID ClimateWeatherGloomColours[4];
+extern const FilterPaletteID ClimateWeatherGloomColours[4];
 
 // Climate data
 ClimateType gClimate;
@@ -247,9 +247,9 @@ bool WeatherIsDry(WeatherType weatherType)
         || weatherType == WeatherType::Cloudy;
 }
 
-FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState& state)
+FilterPaletteID climate_get_weather_gloom_palette_id(const ClimateState& state)
 {
-    auto paletteId = PALETTE_NULL;
+    auto paletteId = FilterPaletteID::PaletteNull;
     auto gloom = state.WeatherGloom;
     if (gloom < std::size(ClimateWeatherGloomColours))
     {
@@ -436,11 +436,11 @@ static void climate_play_thunder(int32_t instanceIndex, OpenRCT2::Audio::SoundId
 
 #pragma region Climate / Weather data tables
 
-const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] = {
-    PALETTE_NULL,
-    PALETTE_DARKEN_1,
-    PALETTE_DARKEN_2,
-    PALETTE_DARKEN_3,
+const FilterPaletteID ClimateWeatherGloomColours[4] = {
+    FilterPaletteID::PaletteNull,
+    FilterPaletteID::PaletteDarken1,
+    FilterPaletteID::PaletteDarken2,
+    FilterPaletteID::PaletteDarken3,
 };
 
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented

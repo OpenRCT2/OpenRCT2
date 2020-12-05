@@ -584,7 +584,8 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             int32_t colour = COLOUR_BLACK;
             if (i == w->selected_list_item)
             {
-                gfx_filter_rect(dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+                gfx_filter_rect(
+                    dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
                 buffer += network_get_player_name(i);
                 colour = w->colours[2];
             }
@@ -884,7 +885,8 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
     {
         if (i == w->selected_list_item)
         {
-            gfx_filter_rect(dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+            gfx_filter_rect(
+                dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
         }
         if (screenCoords.y > dpi->y + dpi->height)
         {

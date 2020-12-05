@@ -759,7 +759,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     format = STR_BLACK_STRING;
                     if (i == _window_guest_list_highlighted_index)
                     {
-                        gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+                        gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 
@@ -832,7 +832,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                     format = STR_BLACK_STRING;
                     if (i == _window_guest_list_highlighted_index)
                     {
-                        gfx_filter_rect(dpi, 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT, PALETTE_DARKEN_1);
+                        gfx_filter_rect(dpi, 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
                         format = STR_WINDOW_COLOUR_2_STRINGID;
                     }
 

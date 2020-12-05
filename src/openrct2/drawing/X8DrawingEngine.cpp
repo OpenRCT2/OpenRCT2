@@ -654,7 +654,7 @@ void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int3
     }
 }
 
-void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     rct_drawpixelinfo* dpi = _dpi;
 
@@ -706,7 +706,7 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
                        (startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
 
     // Find colour in colour table?
-    auto paletteMap = GetPaletteMapForColour(palette);
+    auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
     if (paletteMap)
     {
         const int32_t scaled_width = width / dpi->zoom_level;
