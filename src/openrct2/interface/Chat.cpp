@@ -13,6 +13,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../drawing/Drawing.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
@@ -20,6 +21,8 @@
 #include "../world/Location.hpp"
 
 #include <algorithm>
+
+using namespace OpenRCT2;
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -38,6 +41,8 @@ static TextInputSession* _chatTextInputSession;
 static const char* chat_history_get(uint32_t index);
 static uint32_t chat_history_get_time(uint32_t index);
 static void chat_clear_input();
+static int32_t chat_history_draw_string(
+    rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width);
 
 bool chat_available()
 {
@@ -165,7 +170,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         lineBuffer.assign(chat_history_get(i));
         auto lineCh = lineBuffer.c_str();
-        stringHeight = chat_history_draw_string(dpi, static_cast<void*>(&lineCh), screenCoords, _chatWidth - 10) + 5;
+        stringHeight = chat_history_draw_string(dpi, lineCh, screenCoords, _chatWidth - 10) + 5;
         gfx_set_dirty_blocks(
             { { screenCoords - ScreenCoordsXY{ 0, stringHeight } }, { screenCoords + ScreenCoordsXY{ _chatWidth, 20 } } });
 
@@ -263,19 +268,16 @@ static void chat_clear_input()
 
 // This method is the same as gfx_draw_string_left_wrapped.
 // But this adjusts the initial Y coordinate depending of the number of lines.
-int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& screenCoords, int32_t width)
+static int32_t chat_history_draw_string(
+    rct_drawpixelinfo* dpi, const char* text, const ScreenCoordsXY& screenCoords, int32_t width)
 {
-    int32_t fontSpriteBase, lineHeight, lineY, numLines;
+    auto buffer = gCommonStringFormatBuffer;
+    FormatStringToBuffer(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), "{OUTLINE}{WHITE}{STRING}", text);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    gfx_draw_string(dpi, "", TEXT_COLOUR_255, { dpi->x, dpi->y });
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, STR_STRING, args);
-
+    int32_t fontSpriteBase, numLines;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    auto lineHeight = font_get_line_height(fontSpriteBase);
 
     gCurrentFontFlags = 0;
 
@@ -285,7 +287,7 @@ int32_t chat_history_draw_string(rct_drawpixelinfo* dpi, void* args, const Scree
         return (numLines * lineHeight); // Skip drawing, return total height.
     }
 
-    lineY = screenCoords.y;
+    auto lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
         gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, { screenCoords.x, lineY - (numLines * lineHeight) });
