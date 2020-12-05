@@ -99,7 +99,10 @@ struct ShopItemDescriptor
     PeepThoughtType TooMuchThought;
     PeepThoughtType GoodValueThought;
 
-    bool HasFlag(const uint16_t flag) const;
+    constexpr bool HasFlag(const uint16_t flag) const
+    {
+        return (Flags & flag) != 0;
+    }
     bool IsFood() const;
     bool IsDrink() const;
     bool IsFoodOrDrink() const;
@@ -107,12 +110,17 @@ struct ShopItemDescriptor
     bool IsPhoto() const;
 };
 
+uint64_t ShopItemsGetAllFoods();
+uint64_t ShopItemsGetAllDrinks();
+uint64_t ShopItemsGetAllContainers();
+
 enum
 {
     SHOP_ITEM_FLAG_IS_FOOD = (1 << 0),
     SHOP_ITEM_FLAG_IS_DRINK = (1 << 1),
     SHOP_ITEM_FLAG_IS_SOUVENIR = (1 << 2),
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
+    SHOP_ITEM_FLAG_IS_CONTAINER = (1 << 4),
 };
 
 extern uint64_t gSamePriceThroughoutPark;

@@ -1140,23 +1140,12 @@ void Guest::UpdateSitting()
  */
 int64_t Guest::GetFoodOrDrinkFlags() const
 {
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::Drink, ShopItem::Burger, ShopItem::Chips, ShopItem::IceCream, ShopItem::Candyfloss, ShopItem::Pizza,
-               ShopItem::Popcorn, ShopItem::HotDog, ShopItem::Tentacle, ShopItem::ToffeeApple, ShopItem::Doughnut,
-               ShopItem::Coffee, ShopItem::Chicken, ShopItem::Lemonade, ShopItem::Pretzel, ShopItem::Chocolate,
-               ShopItem::IcedTea, ShopItem::FunnelCake, ShopItem::BeefNoodles, ShopItem::FriedRiceNoodles, ShopItem::WontonSoup,
-               ShopItem::MeatballSoup, ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa, ShopItem::SubSandwich,
-               ShopItem::Cookie, ShopItem::RoastSausage);
+    return GetItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
 }
 
 int64_t Guest::GetEmptyContainerFlags() const
 {
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::EmptyCan, ShopItem::EmptyBurgerBox, ShopItem::EmptyCup, ShopItem::Rubbish, ShopItem::EmptyBox,
-               ShopItem::EmptyBottle, ShopItem::EmptyBowlRed, ShopItem::EmptyDrinkCarton, ShopItem::EmptyJuiceCup,
-               ShopItem::EmptyBowlBlue);
+    return GetItemFlags() & ShopItemsGetAllContainers();
 }
 
 bool Guest::HasFoodOrDrink() const
@@ -1170,10 +1159,7 @@ bool Guest::HasFoodOrDrink() const
  */
 bool Guest::HasDrink() const
 {
-    return GetItemFlags()
-        & EnumsToFlags(
-               ShopItem::Drink, ShopItem::Coffee, ShopItem::Lemonade, ShopItem::Chocolate, ShopItem::IcedTea,
-               ShopItem::FruitJuice, ShopItem::SoybeanMilk, ShopItem::SuJeongGwa);
+    return GetItemFlags() & ShopItemsGetAllDrinks();
 }
 
 bool Guest::HasEmptyContainer() const
