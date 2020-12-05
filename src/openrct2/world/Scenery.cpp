@@ -15,7 +15,7 @@
 #include "../actions/BannerRemoveAction.hpp"
 #include "../actions/FootpathAdditionRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
-#include "../actions/SmallSceneryRemoveAction.hpp"
+#include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.hpp"
 #include "../common.h"
 #include "../localisation/Localisation.h"

@@ -22,7 +22,7 @@
 #include "../actions/LandSetRightsAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/ParkEntranceRemoveAction.hpp"
-#include "../actions/SmallSceneryRemoveAction.hpp"
+#include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.hpp"
 #include "../actions/WaterSetHeightAction.hpp"
 #include "../audio/audio.h"
