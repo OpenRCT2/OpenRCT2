@@ -14,6 +14,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
+#include "../object/Object.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Location.hpp"
@@ -727,6 +728,49 @@ template<> struct DataSerializerTraits_t<rct_vehicle_colour>
     {
         char msg[128] = {};
         snprintf(msg, sizeof(msg), "rct_vehicle_colour(body_colour = %d, trim_colour = %d)", val.body_colour, val.trim_colour);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits_t<ObjectEntryDescriptor>
+{
+    static void encode(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    {
+        stream->Write(&val.Generation);
+        if (val.Generation == ObjectGeneration::DAT)
+        {
+            DataSerializerTraits<rct_object_entry> s;
+            s.encode(stream, val.Entry);
+        }
+        else
+        {
+            DataSerializerTraits<std::string> s;
+            s.encode(stream, val.Identifier);
+        }
+    }
+    static void decode(OpenRCT2::IStream* stream, ObjectEntryDescriptor& val)
+    {
+        ObjectGeneration generation;
+        stream->Read(&generation);
+        if (generation == ObjectGeneration::DAT)
+        {
+            rct_object_entry obj;
+            DataSerializerTraits<rct_object_entry> s;
+            s.decode(stream, obj);
+            val = ObjectEntryDescriptor(obj);
+        }
+        else
+        {
+            std::string id;
+            DataSerializerTraits<std::string> s;
+            s.decode(stream, id);
+            val = ObjectEntryDescriptor(id);
+        }
+    }
+    static void log(OpenRCT2::IStream* stream, const ObjectEntryDescriptor& val)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "ObjectEntryDescriptor (Generation = %d)", static_cast<int32_t>(val.Generation));
         stream->Write(msg, strlen(msg));
     }
 };

@@ -61,23 +61,4 @@ namespace OpenRCT2
     {
         WriteString(str.c_str());
     }
-
-    ObjectEntryDescriptor IStream::ReadObjectEntryDescriptor()
-    {
-        auto generation = ReadValue<ObjectGeneration>();
-        if (generation == ObjectGeneration::DAT)
-            return ObjectEntryDescriptor(ReadValue<rct_object_entry>());
-
-        return ObjectEntryDescriptor(ReadStdString());
-    }
-
-    void IStream::WriteObjectEntryDescriptor(const ObjectEntryDescriptor& oed)
-    {
-        WriteValue<ObjectGeneration>(oed.Generation);
-        if (oed.Generation == ObjectGeneration::DAT)
-            WriteValue<rct_object_entry>(oed.Entry);
-        else
-            WriteString(oed.Identifier);
-    }
-
 } // namespace OpenRCT2

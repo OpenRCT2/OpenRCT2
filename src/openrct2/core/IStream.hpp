@@ -207,8 +207,6 @@ namespace OpenRCT2
         std::string ReadStdString();
         void WriteString(const utf8* str);
         void WriteString(const std::string& string);
-        ObjectEntryDescriptor ReadObjectEntryDescriptor();
-        void WriteObjectEntryDescriptor(const ObjectEntryDescriptor& oed);
     };
 
 } // namespace OpenRCT2
