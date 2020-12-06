@@ -599,6 +599,10 @@ namespace OpenRCT2
                 {
                     ss << arg.c_str();
                 }
+                else if constexpr (std::is_same<T, std::string>())
+                {
+                    ss << arg.c_str();
+                }
                 break;
             case FormatToken::Sprite:
                 if constexpr (std::is_integral<T>())
@@ -667,6 +671,10 @@ namespace OpenRCT2
         else if (std::holds_alternative<const char*>(value))
         {
             FormatArgument(ss, token, std::get<const char*>(value));
+        }
+        else if (std::holds_alternative<std::string>(value))
+        {
+            FormatArgument(ss, token, std::get<std::string>(value));
         }
         else
         {

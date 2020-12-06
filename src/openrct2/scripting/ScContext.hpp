@@ -13,6 +13,7 @@
 
 #    include "../actions/GameAction.h"
 #    include "../interface/Screenshot.h"
+#    include "../localisation/Formatting.h"
 #    include "../object/ObjectManager.h"
 #    include "../scenario/Scenario.h"
 #    include "Duktape.hpp"
@@ -154,6 +155,49 @@ namespace OpenRCT2::Scripting
             return min + scenario_rand_max(range);
         }
 
+        duk_ret_t formatString(duk_context* ctx)
+        {
+            auto nargs = duk_get_top(ctx);
+            if (nargs >= 1)
+            {
+                auto dukFmt = DukValue::copy_from_stack(ctx, 0);
+                if (dukFmt.type() == DukValue::Type::STRING)
+                {
+                    FmtString fmt(dukFmt.as_string());
+
+                    std::vector<FormatArg_t> args;
+                    for (duk_idx_t i = 1; i < nargs; i++)
+                    {
+                        auto dukArg = DukValue::copy_from_stack(ctx, i);
+                        switch (dukArg.type())
+                        {
+                            case DukValue::Type::NUMBER:
+                                args.push_back(dukArg.as_int());
+                                break;
+                            case DukValue::Type::STRING:
+                                args.push_back(dukArg.as_string());
+                                break;
+                            default:
+                                duk_error(ctx, DUK_ERR_ERROR, "Invalid format argument.");
+                                break;
+                        }
+                    }
+
+                    auto result = FormatStringAny(fmt, args);
+                    duk_push_lstring(ctx, result.c_str(), result.size());
+                }
+                else
+                {
+                    duk_error(ctx, DUK_ERR_ERROR, "Invalid format string.");
+                }
+            }
+            else
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Invalid format string.");
+            }
+            return 1;
+        }
+
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -289,6 +333,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
+            dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
             dukglue_register_method(ctx, &ScContext::queryAction, "queryAction");
             dukglue_register_method(ctx, &ScContext::executeAction, "executeAction");

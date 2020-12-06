@@ -114,6 +114,16 @@ namespace OpenRCT2::Scripting
             }
             result = ListViewItem(std::move(cells));
         }
+        else if (d.type() == DukValue::Type::OBJECT)
+        {
+            auto type = ProcessString(d["type"]);
+            if (type == "seperator")
+            {
+                auto text = ProcessString(d["text"]);
+                result = ListViewItem(text);
+                result.IsSeparator = true;
+            }
+        }
         return result;
     }
 
@@ -226,7 +236,8 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             else
                 widget->content = 0;
         }
-        RefreshScroll();
+        WindowInitScrollWidgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -243,7 +254,8 @@ void CustomListView::SetColumns(const std::vector<ListViewColumn>& columns, bool
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        RefreshScroll();
+        window_update_scroll_widgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -270,7 +282,8 @@ void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialisi
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {
-        RefreshScroll();
+        window_update_scroll_widgets(ParentWindow);
+        Invalidate();
     }
 }
 
@@ -550,55 +563,64 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
             const auto& itemIndex = static_cast<int32_t>(SortedItems[i]);
             const auto& item = Items[itemIndex];
 
-            // Background colour
-            auto isStriped = IsStriped && (i & 1);
-            auto isHighlighted = (HighlightedCell && itemIndex == HighlightedCell->Row);
-            auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
-            if (isSelected)
-            {
-                gfx_filter_rect(
-                    dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
-                    FilterPaletteID::PaletteDarken2);
-            }
-            else if (isHighlighted)
-            {
-                gfx_filter_rect(
-                    dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
-                    FilterPaletteID::PaletteDarken1);
-            }
-            else if (isStriped)
-            {
-                gfx_fill_rect(
-                    dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
-                    ColourMapA[w->colours[1]].lighter | 0x1000000);
-            }
-
-            // Columns
-            if (Columns.size() == 0)
+            if (item.IsSeparator)
             {
                 const auto& text = item.Cells[0];
-                if (!text.empty())
-                {
-                    ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
-                    PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
-                }
+                ScreenSize cellSize = { LastKnownSize.width, LIST_ROW_HEIGHT };
+                PaintSeperator(dpi, { 0, y }, cellSize, text.c_str());
             }
             else
             {
-                int32_t x = 0;
-                for (size_t j = 0; j < Columns.size(); j++)
+                // Background colour
+                auto isStriped = IsStriped && (i & 1);
+                auto isHighlighted = (HighlightedCell && itemIndex == HighlightedCell->Row);
+                auto isSelected = (SelectedCell && itemIndex == SelectedCell->Row);
+                if (isSelected)
                 {
-                    const auto& column = Columns[j];
-                    if (item.Cells.size() > j)
+                    gfx_filter_rect(
+                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        FilterPaletteID::PaletteDarken2);
+                }
+                else if (isHighlighted)
+                {
+                    gfx_filter_rect(
+                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        FilterPaletteID::PaletteDarken2);
+                }
+                else if (isStriped)
+                {
+                    gfx_fill_rect(
+                        dpi, { { dpi->x, y }, { dpi->x + dpi->width, y + (LIST_ROW_HEIGHT - 1) } },
+                        ColourMapA[w->colours[1]].lighter | 0x1000000);
+                }
+
+                // Columns
+                if (Columns.size() == 0)
+                {
+                    const auto& text = item.Cells[0];
+                    if (!text.empty())
                     {
-                        const auto& text = item.Cells[j];
-                        if (!text.empty())
-                        {
-                            ScreenSize cellSize = { column.Width, LIST_ROW_HEIGHT };
-                            PaintCell(dpi, { x, y }, cellSize, text.c_str(), isHighlighted);
-                        }
+                        ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
+                        PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
                     }
-                    x += column.Width;
+                }
+                else
+                {
+                    int32_t x = 0;
+                    for (size_t j = 0; j < Columns.size(); j++)
+                    {
+                        const auto& column = Columns[j];
+                        if (item.Cells.size() > j)
+                        {
+                            const auto& text = item.Cells[j];
+                            if (!text.empty())
+                            {
+                                ScreenSize cellSize = { column.Width, LIST_ROW_HEIGHT };
+                                PaintCell(dpi, { x, y }, cellSize, text.c_str(), isHighlighted);
+                            }
+                        }
+                        x += column.Width;
+                    }
                 }
             }
         }
@@ -663,6 +685,65 @@ void CustomListView::PaintHeading(
     }
 }
 
+void CustomListView::PaintSeperator(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text) const
+{
+    auto hasText = text != nullptr && text[0] != '\0';
+    auto left = pos.x + 4;
+    auto right = pos.x + size.width - 4;
+    auto centreX = size.width / 2;
+    auto lineY0 = pos.y + 5;
+    auto lineY1 = lineY0 + 1;
+
+    auto baseColour = ParentWindow->colours[1];
+    auto lightColour = ColourMapA[baseColour].lighter;
+    auto darkColour = ColourMapA[baseColour].mid_dark;
+
+    if (hasText)
+    {
+        // Draw string
+        Formatter ft;
+        ft.Add<const char*>(text);
+        gfx_draw_string_centred(dpi, STR_STRING, { centreX, pos.y }, baseColour, ft.Data());
+
+        // Get string dimensions
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
+        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer) / 2) + 4;
+        int32_t strLeft = centreX - categoryStringHalfWidth;
+        int32_t strRight = centreX + categoryStringHalfWidth;
+
+        // Draw light horizontal rule
+        auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
+        auto lightLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY0 };
+        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+
+        auto lightLineLeftTop2 = ScreenCoordsXY{ strRight, lineY0 };
+        auto lightLineRightBottom2 = ScreenCoordsXY{ right, lineY0 };
+        gfx_draw_line(dpi, { lightLineLeftTop2, lightLineRightBottom2 }, lightColour);
+
+        // Draw dark horizontal rule
+        auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
+        auto darkLineRightBottom1 = ScreenCoordsXY{ strLeft, lineY1 };
+        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+
+        auto darkLineLeftTop2 = ScreenCoordsXY{ strRight, lineY1 };
+        auto darkLineRightBottom2 = ScreenCoordsXY{ right, lineY1 };
+        gfx_draw_line(dpi, { darkLineLeftTop2, darkLineRightBottom2 }, darkColour);
+    }
+    else
+    {
+        // Draw light horizontal rule
+        auto lightLineLeftTop1 = ScreenCoordsXY{ left, lineY0 };
+        auto lightLineRightBottom1 = ScreenCoordsXY{ right, lineY0 };
+        gfx_draw_line(dpi, { lightLineLeftTop1, lightLineRightBottom1 }, lightColour);
+
+        // Draw dark horizontal rule
+        auto darkLineLeftTop1 = ScreenCoordsXY{ left, lineY1 };
+        auto darkLineRightBottom1 = ScreenCoordsXY{ right, lineY1 };
+        gfx_draw_line(dpi, { darkLineLeftTop1, darkLineRightBottom1 }, darkColour);
+    }
+}
+
 void CustomListView::PaintCell(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& pos, const ScreenSize& size, const char* text, bool isHighlighted) const
 {
@@ -724,12 +805,6 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         }
     }
     return result;
-}
-
-void CustomListView::RefreshScroll()
-{
-    WindowInitScrollWidgets(ParentWindow);
-    Invalidate();
 }
 
 rct_widget* CustomListView::GetWidget() const

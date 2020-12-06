@@ -74,12 +74,13 @@ namespace OpenRCT2::Scripting
                     case WindowWidgetType::Resize:
                         return "resize";
                     case WindowWidgetType::ImgBtn:
-                    case WindowWidgetType::ColourBtn:
                     case WindowWidgetType::TrnBtn:
                     case WindowWidgetType::FlatBtn:
                     case WindowWidgetType::Button:
                     case WindowWidgetType::CloseBox:
                         return "button";
+                    case WindowWidgetType::ColourBtn:
+                        return "colourpicker";
                     case WindowWidgetType::Tab:
                         return "tab";
                     case WindowWidgetType::LabelCentred:
@@ -299,11 +300,21 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                auto mask = 1ULL << _widgetIndex;
-                if (value)
-                    w->disabled_widgets |= mask;
-                else
-                    w->disabled_widgets &= ~mask;
+                WidgetSetDisabled(w, _widgetIndex, value);
+
+                auto widget = GetWidget();
+                if (widget != nullptr)
+                {
+                    if (widget->type == WindowWidgetType::DropdownMenu)
+                    {
+                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                    }
+                    else if (widget->type == WindowWidgetType::Spinner)
+                    {
+                        WidgetSetDisabled(w, _widgetIndex + 1, value);
+                        WidgetSetDisabled(w, _widgetIndex + 2, value);
+                    }
+                }
             }
         }
 
@@ -502,6 +513,41 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 WidgetSetCheckboxValue(w, _widgetIndex, value ? 1 : 0);
+                Invalidate();
+            }
+        }
+    };
+
+    class ScColourPickerWidget : public ScWidget
+    {
+    public:
+        ScColourPickerWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScColourPickerWidget>(ctx);
+            dukglue_register_property(ctx, &ScColourPickerWidget::colour_get, &ScColourPickerWidget::colour_set, "colour");
+        }
+
+    private:
+        colour_t colour_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return GetWidgetColour(w, _widgetIndex);
+            }
+            return COLOUR_BLACK;
+        }
+        void colour_set(colour_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                UpdateWidgetColour(w, _widgetIndex, value);
                 Invalidate();
             }
         }
@@ -766,6 +812,8 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(ctx, std::make_shared<ScButtonWidget>(c, n, widgetIndex));
             case WindowWidgetType::Checkbox:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScCheckBoxWidget>(c, n, widgetIndex));
+            case WindowWidgetType::ColourBtn:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
             case WindowWidgetType::DropdownMenu:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
             case WindowWidgetType::Scroll:

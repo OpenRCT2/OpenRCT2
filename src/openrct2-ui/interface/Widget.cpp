@@ -1014,6 +1014,18 @@ void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
     }
 }
 
+void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->disabled_widgets |= (1ULL << widgetIndex);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
 void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
 {
     if (value)
@@ -1092,4 +1104,9 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         auto y = topLeft.y + (widget->height() - 1);
         gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
+}
+
+uint32_t GetColourButtonImage(colour_t colour)
+{
+    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 }

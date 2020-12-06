@@ -23,7 +23,7 @@
 
 namespace OpenRCT2
 {
-    using FormatArg_t = std::variant<uint16_t, int32_t, const char*>;
+    using FormatArg_t = std::variant<uint16_t, int32_t, const char*, std::string>;
 
     class FmtString
     {

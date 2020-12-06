@@ -91,6 +91,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Name;
         ImageId Image;
         std::string Text;
+        colour_t Colour;
         std::string Tooltip;
         std::vector<std::string> Items;
         std::vector<ListViewItem> ListViewItems;
@@ -145,6 +146,15 @@ namespace OpenRCT2::Ui::Windows
             {
                 result.Text = ProcessString(desc["text"]);
                 result.IsChecked = AsOrDefault(desc["isChecked"], false);
+                result.OnChange = desc["onChange"];
+            }
+            else if (result.Type == "colourpicker")
+            {
+                auto colour = AsOrDefault(desc["colour"], 0);
+                if (colour < COLOUR_COUNT)
+                {
+                    result.Colour = colour;
+                }
                 result.OnChange = desc["onChange"];
             }
             else if (result.Type == "dropdown")
@@ -510,7 +520,11 @@ namespace OpenRCT2::Ui::Windows
         const auto widgetDesc = info.GetCustomWidgetDesc(w, widgetIndex);
         if (widgetDesc != nullptr)
         {
-            if (widgetDesc->Type == "dropdown")
+            if (widgetDesc->Type == "colourpicker")
+            {
+                WindowDropdownShowColour(w, widget, w->colours[widget->colour], widgetDesc->Colour);
+            }
+            else if (widgetDesc->Type == "dropdown")
             {
                 widget--;
                 auto selectedIndex = widgetDesc->SelectedIndex;
@@ -550,7 +564,11 @@ namespace OpenRCT2::Ui::Windows
         auto widgetDesc = info.GetCustomWidgetDesc(w, widgetIndex);
         if (widgetDesc != nullptr)
         {
-            if (widgetDesc->Type == "dropdown")
+            if (widgetDesc->Type == "colourpicker")
+            {
+                UpdateWidgetColour(w, widgetIndex, dropdownIndex);
+            }
+            else if (widgetDesc->Type == "dropdown")
             {
                 UpdateWidgetSelectedIndex(w, widgetIndex - 1, dropdownIndex);
             }
@@ -846,6 +864,12 @@ namespace OpenRCT2::Ui::Windows
             }
             widgetList.push_back(widget);
         }
+        else if (desc.Type == "colourpicker")
+        {
+            widget.type = WindowWidgetType::ColourBtn;
+            widget.image = GetColourButtonImage(desc.Colour);
+            widgetList.push_back(widget);
+        }
         else if (desc.Type == "dropdown")
         {
             widget.type = WindowWidgetType::DropdownMenu;
@@ -871,6 +895,8 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_DROPDOWN_GLYPH;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            if (desc.IsDisabled)
+                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "groupbox")
@@ -917,6 +943,8 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_NUMERIC_DOWN;
             widget.tooltip = STR_NONE;
             widget.flags |= WIDGET_FLAGS::IS_ENABLED;
+            if (desc.IsDisabled)
+                widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             widgetList.push_back(widget);
 
             // Add the increment button
@@ -1098,6 +1126,33 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
+    void UpdateWidgetColour(rct_window* w, rct_widgetindex widgetIndex, colour_t colour)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                auto& widget = w->widgets[widgetIndex];
+
+                auto lastColour = customWidgetInfo->Colour;
+                if (lastColour != colour && colour < COLOUR_COUNT)
+                {
+                    customWidgetInfo->Colour = colour;
+                    widget.image = GetColourButtonImage(colour);
+                    widget_invalidate(w, widgetIndex);
+
+                    std::vector<DukValue> args;
+                    auto ctx = customWidgetInfo->OnChange.context();
+                    duk_push_int(ctx, colour);
+                    args.push_back(DukValue::take_from_stack(ctx));
+                    InvokeEventHandler(customInfo.Owner, customWidgetInfo->OnChange, args);
+                }
+            }
+        }
+    }
+
     void UpdateWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex, int32_t selectedIndex)
     {
         if (w->custom_info != nullptr)
@@ -1157,6 +1212,20 @@ namespace OpenRCT2::Ui::Windows
             }
         }
         return {};
+    }
+
+    colour_t GetWidgetColour(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->Colour;
+            }
+        }
+        return COLOUR_BLACK;
     }
 
     int32_t GetWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex)
