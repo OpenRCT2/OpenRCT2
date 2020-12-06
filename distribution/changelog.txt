@@ -6,6 +6,7 @@
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13078] [Plugin] Add colour picker widget.
 - Feature: [#13376] Open custom window at specified tab.
+- Feature: [#13384] [Plugin] Expose all TileElement data.
 - Feature: [#13398] Add pause button to the Track Designer.
 - Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
 - Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
