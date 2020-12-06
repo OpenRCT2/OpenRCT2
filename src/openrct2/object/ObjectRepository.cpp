@@ -76,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 25;
+    static constexpr uint16_t VERSION = 26;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -126,65 +126,32 @@ public:
     }
 
 protected:
-    void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
     {
-        DataSerialiser serialiser(true, *stream);
-        serialiser << item.Identifier;
-        serialiser << item.ObjectEntry;
-        serialiser << item.Path;
-        serialiser << item.Name;
+        ds << item.Identifier;
+        ds << item.ObjectEntry;
+        ds << item.Path;
+        ds << item.Name;
 
-        serialiser << item.Sources;
-        serialiser << item.Authors;
+        ds << item.Sources;
+        ds << item.Authors;
 
         switch (item.ObjectEntry.GetType())
         {
             case ObjectType::Ride:
-                serialiser << item.RideInfo.RideFlags;
-                serialiser << item.RideInfo.RideCategory;
-                serialiser << item.RideInfo.RideType;
+                ds << item.RideInfo.RideFlags;
+                ds << item.RideInfo.RideCategory;
+                ds << item.RideInfo.RideType;
                 break;
             case ObjectType::SceneryGroup:
             {
-                serialiser << item.SceneryGroupInfo.Entries;
+                ds << item.SceneryGroupInfo.Entries;
                 break;
             }
             default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;
         }
-    }
-
-    ObjectRepositoryItem Deserialise(IStream* stream) const override
-    {
-        ObjectRepositoryItem item;
-        DataSerialiser serialiser(false, *stream);
-
-        serialiser << item.Identifier;
-        serialiser << item.ObjectEntry;
-        serialiser << item.Path;
-        serialiser << item.Name;
-
-        serialiser << item.Sources;
-        serialiser << item.Authors;
-
-        switch (item.ObjectEntry.GetType())
-        {
-            case ObjectType::Ride:
-                serialiser << item.RideInfo.RideFlags;
-                serialiser << item.RideInfo.RideCategory;
-                serialiser << item.RideInfo.RideType;
-                break;
-            case ObjectType::SceneryGroup:
-            {
-                serialiser << item.SceneryGroupInfo.Entries;
-                break;
-            }
-            default:
-                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
-                break;
-        }
-        return item;
     }
 
 private:

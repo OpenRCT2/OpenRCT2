@@ -110,6 +110,10 @@ template<> struct DataSerializerTraits_t<int8_t> : public DataSerializerTraitsIn
 {
 };
 
+template<> struct DataSerializerTraits_t<utf8> : public DataSerializerTraitsIntegral<utf8>
+{
+};
+
 template<> struct DataSerializerTraits_t<uint16_t> : public DataSerializerTraitsIntegral<uint16_t>
 {
 };
@@ -141,6 +145,10 @@ template<> struct DataSerializerTraits_t<std::string>
         uint16_t len = static_cast<uint16_t>(str.size());
         uint16_t swapped = ByteSwapBE(len);
         stream->Write(&swapped);
+        if (len == 0)
+        {
+            return;
+        }
         stream->WriteArray(str.c_str(), len);
     }
     static void decode(OpenRCT2::IStream* stream, std::string& res)
@@ -148,7 +156,11 @@ template<> struct DataSerializerTraits_t<std::string>
         uint16_t len;
         stream->Read(&len);
         len = ByteSwapBE(len);
-
+        if (len == 0)
+        {
+            res = "";
+            return;
+        }
         const char* str = stream->ReadArray<char>(len);
         res.assign(str, len);
 
@@ -157,7 +169,10 @@ template<> struct DataSerializerTraits_t<std::string>
     static void log(OpenRCT2::IStream* stream, const std::string& str)
     {
         stream->Write("\"", 1);
-        stream->Write(str.data(), str.size());
+        if (str.size() != 0)
+        {
+            stream->Write(str.data(), str.size());
+        }
         stream->Write("\"", 1);
     }
 };
@@ -324,6 +339,10 @@ template<typename _Ty, size_t _Size> struct DataSerializerTraitsPODArray
 };
 
 template<size_t _Size> struct DataSerializerTraits_t<uint8_t[_Size]> : public DataSerializerTraitsPODArray<uint8_t, _Size>
+{
+};
+
+template<size_t _Size> struct DataSerializerTraits_t<utf8[_Size]> : public DataSerializerTraitsPODArray<utf8, _Size>
 {
 };
 

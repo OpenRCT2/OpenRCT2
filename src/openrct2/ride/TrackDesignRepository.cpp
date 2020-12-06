@@ -57,7 +57,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16_t VERSION = 3;
+    static constexpr uint16_t VERSION = 4;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
@@ -97,24 +97,13 @@ public:
     }
 
 protected:
-    void Serialise(IStream* stream, const TrackRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, TrackRepositoryItem& item) const override
     {
-        stream->WriteString(item.Name);
-        stream->WriteString(item.Path);
-        stream->WriteValue(item.RideType);
-        stream->WriteString(item.ObjectEntry);
-        stream->WriteValue(item.Flags);
-    }
-
-    TrackRepositoryItem Deserialise(IStream* stream) const override
-    {
-        TrackRepositoryItem item;
-        item.Name = stream->ReadStdString();
-        item.Path = stream->ReadStdString();
-        item.RideType = stream->ReadValue<uint8_t>();
-        item.ObjectEntry = stream->ReadStdString();
-        item.Flags = stream->ReadValue<uint32_t>();
-        return item;
+        ds << item.Name;
+        ds << item.Path;
+        ds << item.RideType;
+        ds << item.ObjectEntry;
+        ds << item.Flags;
     }
 
 private:

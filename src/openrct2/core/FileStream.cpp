@@ -168,6 +168,10 @@ namespace OpenRCT2
 
     void FileStream::Write(const void* buffer, uint64_t length)
     {
+        if (length == 0)
+        {
+            return;
+        }
         if (fwrite(buffer, static_cast<size_t>(length), 1, _file) != 1)
         {
             throw IOException("Unable to write to file.");
