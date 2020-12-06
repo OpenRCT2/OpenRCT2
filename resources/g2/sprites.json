@@ -1040,6 +1040,51 @@
         "forceBmp": true
     },
     {
+        "path": "font/left-curly-bracket-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-curly-bracket-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-curly-bracket-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/quotation-mark-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/apostrophe-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/white-square-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/replacement-character-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1601,6 +1646,51 @@
     {
         "path": "font/latin/u-breve-bold.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-curly-bracket-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-curly-bracket-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-curly-bracket-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/quotation-mark-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/apostrophe-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/white-square-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/replacement-character-bold.png",
         "palette": "keep",
         "forceBmp": true
     },
@@ -2173,6 +2263,51 @@
     {
         "path": "font/latin/u-breve-tiny.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-curly-bracket-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-curly-bracket-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-curly-bracket-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/quotation-mark-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/apostrophe-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/white-square-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/replacement-character-tiny.png",
         "palette": "keep",
         "forceBmp": true
     },
