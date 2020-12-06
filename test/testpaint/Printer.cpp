@@ -27,6 +27,7 @@ namespace Printer
         "wooden_a_supports_paint_setup",
         "wooden_b_supports_paint_setup",
         "paint_util_set_segment_support_height",
+        "PAINT_98198C_COORDS",
     };
 
     static std::string GetImageIdString(uint32_t imageId);

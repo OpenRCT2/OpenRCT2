@@ -124,9 +124,14 @@ Ride* get_ride(ride_id_t index)
 
 static rct_ride_entry* gRideEntries[1];
 
+void set_ride_entry(rct_ride_entry* entry)
+{
+    gRideEntries[0] = entry;
+}
+
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[static_cast<int>(ObjectType::Ride)])
+    if (index >= 1)
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;

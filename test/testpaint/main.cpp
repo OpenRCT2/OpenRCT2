@@ -20,7 +20,7 @@
 #endif // defined(__unix__)
 
 #ifdef __WINDOWS__
-#include <Windows.h>
+#    include <Windows.h>
 #endif
 
 #include "Data.h"
@@ -327,7 +327,7 @@ int main(int argc, char* argv[])
 
     Write(CLIColour::GREEN, "[----------] ");
     Write("Global test environment set-up.\n");
-    //PaintIntercept::InitHooks();
+    // PaintIntercept::InitHooks();
 
     int successCount = 0;
     std::vector<utf8string> failures;

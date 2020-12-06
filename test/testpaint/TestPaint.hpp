@@ -49,6 +49,8 @@ enum Verbosity
     NORMAL,
 };
 
+struct rct_ride_entry;
 extern Ride gRideList[RCT12_MAX_RIDES_IN_PARK];
+void set_ride_entry(rct_ride_entry* entry);
 
 int generatePaintCode(uint8_t rideType);
