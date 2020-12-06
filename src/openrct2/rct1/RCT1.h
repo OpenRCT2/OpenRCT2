@@ -363,11 +363,7 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t window_invalidate_flags; // 0x45
     money16 paid_on_drink;           // 0x46
     uint8_t ride_types_been_on[16];  // 0x48
-    uint32_t item_extra_flags;       // 0x58
-    uint8_t photo2_ride_ref;         // 0x5C
-    uint8_t photo3_ride_ref;         // 0x5D
-    uint8_t photo4_ride_ref;         // 0x5E
-    uint8_t pad_5F[0x09];            // 0x5F
+    uint8_t pad_5F[0x10];            // 0x58
     RCT12RideId current_ride;        // 0x68
     uint8_t current_ride_station;    // 0x69
     uint8_t current_train;           // 0x6A
