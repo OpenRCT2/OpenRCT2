@@ -19,6 +19,8 @@
 
 namespace OpenRCT2
 {
+    static void FormatMonthYear(std::stringstream& ss, int32_t month, int32_t year);
+
     static std::optional<int32_t> ParseNumericToken(std::string_view s)
     {
         if (s.size() >= 3 && s.size() <= 5 && s[0] == '{' && s[s.size() - 1] == '}')
@@ -572,7 +574,7 @@ namespace OpenRCT2
                 {
                     auto month = date_get_month(arg);
                     auto year = date_get_year(arg) + 1;
-                    FormatStringId(ss, STR_DATE_FORMAT_MY, month, year);
+                    FormatMonthYear(ss, month, year);
                 }
                 break;
             case FormatToken::Month:
@@ -795,6 +797,22 @@ namespace OpenRCT2
         BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
         return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
     }
+
+    static void FormatMonthYear(std::stringstream& ss, int32_t month, int32_t year)
+    {
+        thread_local std::vector<FormatArg_t> tempArgs;
+        tempArgs.clear();
+
+        auto fmt = GetFmtStringById(STR_DATE_FORMAT_MY);
+        Formatter ft;
+        ft.Add<uint16_t>(month);
+        ft.Add<uint16_t>(year);
+        const void* legacyArgs = ft.Data();
+        BuildAnyArgListFromLegacyArgBuffer(fmt, tempArgs, legacyArgs);
+        size_t argIndex = 0;
+        FormatStringAny(ss, fmt, tempArgs, argIndex);
+    }
+
 } // namespace OpenRCT2
 
 void format_string(utf8* dest, size_t size, rct_string_id format, const void* args)
