@@ -128,46 +128,25 @@ public:
 protected:
     void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
     {
-        stream->WriteString(item.Identifier);
-        stream->WriteValue(item.ObjectEntry);
-        stream->WriteString(item.Path);
-        stream->WriteString(item.Name);
+        DataSerialiser serialiser(true, *stream);
+        serialiser << item.Identifier;
+        serialiser << item.ObjectEntry;
+        serialiser << item.Path;
+        serialiser << item.Name;
 
-        uint8_t sourceLength = static_cast<uint8_t>(item.Sources.size());
-        stream->WriteValue(sourceLength);
-        for (auto source : item.Sources)
-        {
-            stream->WriteValue(source);
-        }
-
-        uint8_t authorsLength = static_cast<uint8_t>(item.Authors.size());
-        stream->WriteValue(authorsLength);
-        for (const auto& author : item.Authors)
-        {
-            stream->WriteString(author);
-        }
+        serialiser << item.Sources;
+        serialiser << item.Authors;
 
         switch (item.ObjectEntry.GetType())
         {
             case ObjectType::Ride:
-                stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
-                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-                {
-                    stream->WriteValue<uint8_t>(item.RideInfo.RideCategory[i]);
-                }
-                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-                {
-                    stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
-                }
+                serialiser << item.RideInfo.RideFlags;
+                serialiser << item.RideInfo.RideCategory;
+                serialiser << item.RideInfo.RideType;
                 break;
             case ObjectType::SceneryGroup:
             {
-                stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
-                DataSerialiser serialiser(true, *stream);
-                for (const auto& entry : item.SceneryGroupInfo.Entries)
-                {
-                    serialiser << entry;
-                }
+                serialiser << item.SceneryGroupInfo.Entries;
                 break;
             }
             default:
@@ -179,48 +158,26 @@ protected:
     ObjectRepositoryItem Deserialise(IStream* stream) const override
     {
         ObjectRepositoryItem item;
+        DataSerialiser serialiser(false, *stream);
 
-        item.Identifier = stream->ReadStdString();
-        item.ObjectEntry = stream->ReadValue<rct_object_entry>();
-        item.Path = stream->ReadStdString();
-        item.Name = stream->ReadStdString();
+        serialiser << item.Identifier;
+        serialiser << item.ObjectEntry;
+        serialiser << item.Path;
+        serialiser << item.Name;
 
-        auto sourceLength = stream->ReadValue<uint8_t>();
-        for (size_t i = 0; i < sourceLength; i++)
-        {
-            auto value = stream->ReadValue<uint8_t>();
-            item.Sources.push_back(static_cast<ObjectSourceGame>(value));
-        }
-
-        auto authorsLength = stream->ReadValue<uint8_t>();
-        for (size_t i = 0; i < authorsLength; i++)
-        {
-            auto author = stream->ReadStdString();
-            item.Authors.emplace_back(author);
-        }
+        serialiser << item.Sources;
+        serialiser << item.Authors;
 
         switch (item.ObjectEntry.GetType())
         {
             case ObjectType::Ride:
-                item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
-                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-                {
-                    item.RideInfo.RideCategory[i] = stream->ReadValue<uint8_t>();
-                }
-                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-                {
-                    item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
-                }
+                serialiser << item.RideInfo.RideFlags;
+                serialiser << item.RideInfo.RideCategory;
+                serialiser << item.RideInfo.RideType;
                 break;
             case ObjectType::SceneryGroup:
             {
-                auto numEntries = stream->ReadValue<uint16_t>();
-                item.SceneryGroupInfo.Entries = std::vector<ObjectEntryDescriptor>(numEntries);
-                DataSerialiser serialiser(false, *stream);
-                for (size_t i = 0; i < numEntries; i++)
-                {
-                    serialiser << item.SceneryGroupInfo.Entries[i];
-                }
+                serialiser << item.SceneryGroupInfo.Entries;
                 break;
             }
             default:
