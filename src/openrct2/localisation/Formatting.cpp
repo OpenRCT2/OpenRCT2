@@ -588,7 +588,10 @@ namespace OpenRCT2
             case FormatToken::String:
                 if constexpr (std::is_same<T, const char*>())
                 {
-                    ss << arg;
+                    if (arg != nullptr)
+                    {
+                        ss << arg;
+                    }
                 }
                 else if constexpr (std::is_same<T, const std::string&>())
                 {
