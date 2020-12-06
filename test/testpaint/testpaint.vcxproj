@@ -37,10 +37,10 @@
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__WINDOWS__;DISABLE_HTTP;NO_VEHICLES;__TESTPAINT__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>libopenrct2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
     <PostBuildEvent>
@@ -48,17 +48,105 @@
   </ItemDefinitionGroup>
   <!-- Files -->
   <ItemGroup>
+    <ClCompile Include="..\..\src\openrct2\core\Console.cpp" />
+    <ClCompile Include="..\..\src\openrct2\core\Guard.cpp" />
+    <ClCompile Include="..\..\src\openrct2\core\String.cpp" />
+    <ClCompile Include="..\..\src\openrct2\Diagnostic.cpp" />
+    <ClCompile Include="..\..\src\openrct2\interface\ZoomLevel.cpp" />
+    <ClCompile Include="..\..\src\openrct2\localisation\ConversionTables.cpp" />
+    <ClCompile Include="..\..\src\openrct2\localisation\Convert.cpp" />
+    <ClCompile Include="..\..\src\openrct2\localisation\FormatCodes.cpp" />
+    <ClCompile Include="..\..\src\openrct2\localisation\UTF8.cpp" />
+    <ClCompile Include="..\..\src\openrct2\paint\PaintHelpers.cpp" />
+    <ClCompile Include="..\..\src\openrct2\paint\tile_element\Paint.TileElement.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\AirPoweredVerticalCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\BobsleighCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\BolligerMabillardTrack.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\CompactInvertedCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\CorkscrewRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\FlyingRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\GigaCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\HeartlineTwisterCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\HybridCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\InvertedHairpinCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\InvertedImpulseCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\InvertedRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\JuniorRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\LayDownRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\LimLaunchedRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\LoopingRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\MineRide.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\MineTrainCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\MiniRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\MiniSuspendedCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\MultiDimensionRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\ReverseFreefallCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\ReverserRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\SideFrictionRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\StandUpRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\Steeplechase.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\SuspendedSwingingCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\TwisterRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\VerticalDropRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\VirginiaReel.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\WildMouse.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\WoodenRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\WoodenWildMouse.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\CarRide.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\Circus.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\CrookedHouse.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\Dodgems.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\FerrisWheel.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\FlyingSaucers.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\GhostTrain.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\HauntedHouse.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\Maze.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\MerryGoRound.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\MiniGolf.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\MiniHelicopters.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\MonorailCycles.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\ObservationTower.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\SpaceRings.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\gentle\SpiralSlide.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\RideData.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\shops\Facility.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\shops\Shop.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\3dCinema.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\Enterprise.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\GoKarts.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\LaunchedFreefall.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\MagicCarpet.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\MotionSimulator.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\RotoDrop.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\SwingingInverterShip.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\SwingingShip.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\TopSpin.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\thrill\Twist.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\TrackData.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\TrackPaint.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\transport\Chairlift.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\transport\Lift.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\transport\MiniatureRailway.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\transport\Monorail.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\transport\SuspendedMonorail.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\BoatHire.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\DingySlide.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\LogFlume.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\RiverRapids.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\SplashBoats.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\SubmarineRide.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\water\WaterCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\util\Util.cpp" />
+    <ClCompile Include="..\..\src\openrct2\Version.cpp" />
     <ClCompile Include="Compat.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="FunctionCall.cpp" />
     <ClCompile Include="GeneralSupportHeightCall.cpp" />
-    <ClCompile Include="generate.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PaintIntercept.cpp" />
     <ClCompile Include="Printer.cpp" />
     <ClCompile Include="SegmentSupportHeightCall.cpp" />
     <ClCompile Include="SideTunnelCall.cpp" />
-    <ClCompile Include="String.cpp" />
     <ClCompile Include="TestPaint.cpp" />
     <ClCompile Include="TestTrack.cpp" />
     <ClCompile Include="TrackDataOld.cpp" />
@@ -66,6 +154,47 @@
     <ClCompile Include="VerticalTunnelCall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\src\openrct2\interface\ZoomLevel.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\BolligerMabillardTrack.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\JuniorRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\AirPoweredVerticalCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\BobsleighCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\ClassicMiniRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\CompactInvertedCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\CorkscrewRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\FlyingRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\GigaCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\HeartlineTwisterCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\HybridCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\Hypercoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\HyperTwister.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\InvertedHairpinCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\InvertedImpulseCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\InvertedRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\JuniorRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\LayDownRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\LIMLaunchedRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\LoopingRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\MineRide.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\MineTrainCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\MiniRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\MiniSuspendedCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\MultiDimensionRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\ReverseFreefallCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\ReverserRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\SideFrictionRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\SpinningWildMouse.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\SpiralRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\StandUpRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\SteelWildMouse.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\Steeplechase.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\SuspendedSwingingCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\TwisterRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\VerticalDropCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\VirginiaReel.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\WaterCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\WoodenRollerCoaster.h" />
+    <ClInclude Include="..\..\src\openrct2\ride\coaster\meta\WoodenWildMouse.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="FunctionCall.hpp" />
     <ClInclude Include="GeneralSupportHeightCall.hpp" />
@@ -73,7 +202,6 @@
     <ClInclude Include="Printer.hpp" />
     <ClInclude Include="SegmentSupportHeightCall.hpp" />
     <ClInclude Include="SideTunnelCall.hpp" />
-    <ClInclude Include="String.hpp" />
     <ClInclude Include="TestPaint.hpp" />
     <ClInclude Include="TestTrack.hpp" />
     <ClInclude Include="Utils.hpp" />

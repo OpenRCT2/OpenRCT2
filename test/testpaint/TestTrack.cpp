@@ -17,11 +17,11 @@
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
 #include "SideTunnelCall.hpp"
-#include "String.hpp"
 #include "TestPaint.hpp"
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
+#include <openrct2/core/String.hpp>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/Ride.h>
@@ -177,18 +177,6 @@ public:
         RCT2_Rides[0].entrance_style = variant;
     }
 };
-
-static void CallOriginal(
-    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
-{
-    uint32_t* trackDirectionList = (uint32_t*)RideTypeTrackPaintFunctionsOld[rideType][trackType];
-    const uint8_t rideIndex = 0;
-
-    // Have to call from this point as it pushes esi and expects callee to pop it
-    RCT2_CALLPROC_X(
-        0x006C4934, rideType, (int)trackDirectionList, direction, height, (int)tileElement, rideIndex * sizeof(Ride),
-        trackSequence);
-}
 
 static void CallNew(
     uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
@@ -365,7 +353,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
                 TestPaint::ResetSupportHeights();
                 gWoodenSupportsPrependTo = nullptr;
 
-                CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
+                // CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
                 callCount = PaintIntercept::GetCalls(callBuffer);
                 std::vector<function_call> oldCalls;
@@ -455,7 +443,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
     {
         TestPaint::ResetSupportHeights();
 
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
+        // CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
         tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
     }
@@ -541,7 +529,7 @@ static uint8_t TestTrackElementGeneralSupportHeight(
     {
         TestPaint::ResetSupportHeights();
 
-        CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
+        // CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
         tileGeneralSupportCalls[direction].height = -1;
         tileGeneralSupportCalls[direction].slope = -1;
@@ -641,7 +629,7 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
 
         for (int8_t offset = -8; offset <= 8; offset += 8)
         {
-            CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &tileElement);
+            // CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &tileElement);
         }
 
         uint8_t rightIndex = (direction + 1) % 4;
@@ -768,7 +756,7 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
         for (uint8_t i = 0; i < 3; i++)
         {
             gVerticalTunnelHeight = 0;
-            CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &tileElement);
+            // CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &tileElement);
             tunnelHeights[i] = gVerticalTunnelHeight;
         }
 

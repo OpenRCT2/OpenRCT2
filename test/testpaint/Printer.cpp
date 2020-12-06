@@ -10,9 +10,9 @@
 #include "Printer.hpp"
 
 #include "FunctionCall.hpp"
-#include "String.hpp"
 
 #include <iterator>
+#include <openrct2/core/String.hpp>
 #include <openrct2/sprites.h>
 
 namespace Printer

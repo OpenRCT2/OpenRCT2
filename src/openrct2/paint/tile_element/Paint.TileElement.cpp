@@ -159,8 +159,8 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         return;
     uint8_t rotation = session->CurrentRotation;
 
-    bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
+    bool partOfVirtualFloor = false;
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = virtual_floor_tile_is_floor(session->MapPosition);
