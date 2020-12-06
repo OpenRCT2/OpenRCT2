@@ -174,7 +174,7 @@ public:
         rct_ride_entry* rideEntry) override
     {
         ride->entrance_style = variant;
-        RCT2_Rides[0].entrance_style = variant;
+        //RCT2_Rides[0].entrance_style = variant;
     }
 };
 
@@ -253,13 +253,13 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
     tileElement.SetLastForTile(true);
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
-    g_currently_drawn_item = &tileElement;
+    //g_currently_drawn_item = &tileElement;
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
     surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
-    gSurfaceElement = &surfaceElement;
-    gDidPassSurface = true;
+    //gSurfaceElement = &surfaceElement;
+    //gDidPassSurface = true;
 
     gPaintSession.CurrentlyDrawnItem = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
@@ -332,18 +332,18 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
             baseCaseName += " ";
 
             activeFilters[filterIndex]->ApplyTo(
-                rideType, trackType, variant, &tileElement, &surfaceElement, &(gRideList[0]), gRideEntries[0]);
+                rideType, trackType, variant, &tileElement, &surfaceElement, &(gRideList[0]), nullptr/*gRideEntries[0]*/);
         }
 
         for (int currentRotation = 0; currentRotation < 4; currentRotation++)
         {
             gCurrentRotation = currentRotation;
-            RCT2_CurrentRotation = currentRotation;
+            //RCT2_CurrentRotation = currentRotation;
             gPaintSession.CurrentRotation = currentRotation;
             for (int direction = 0; direction < 4; direction++)
             {
-                RCT2_GLOBAL(0x009DE56A, int16_t) = 64; // x
-                RCT2_GLOBAL(0x009DE56E, int16_t) = 64; // y
+                //RCT2_GLOBAL(0x009DE56A, int16_t) = 64; // x
+                //RCT2_GLOBAL(0x009DE56E, int16_t) = 64; // y
 
                 std::string caseName = String::Format(
                     "%srotation:%d direction:%d trackSequence:%d]", baseCaseName.c_str(), currentRotation, direction,
@@ -351,7 +351,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
 
                 PaintIntercept::ClearCalls();
                 TestPaint::ResetSupportHeights();
-                gWoodenSupportsPrependTo = nullptr;
+                //gWoodenSupportsPrependTo = nullptr;
 
                 // CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
@@ -416,13 +416,13 @@ static uint8_t TestTrackElementSegmentSupportHeight(
     tileElement.SetLastForTile(true);
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
-    g_currently_drawn_item = &tileElement;
+    //g_currently_drawn_item = &tileElement;
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
     surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
-    gSurfaceElement = &surfaceElement;
-    gDidPassSurface = true;
+    //gSurfaceElement = &surfaceElement;
+    //gDidPassSurface = true;
 
     gPaintSession.CurrentlyDrawnItem = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
@@ -445,7 +445,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
 
         // CallOriginal(rideType, trackType, direction, trackSequence, height, &tileElement);
 
-        tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
+        //tileSegmentSupportCalls[direction] = SegmentSupportHeightCall::getSegmentCalls(gSupportSegments, direction);
     }
 
     std::vector<SegmentSupportCall> referenceCalls = tileSegmentSupportCalls[0];
@@ -503,13 +503,13 @@ static uint8_t TestTrackElementGeneralSupportHeight(
     tileElement.SetLastForTile(true);
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
-    g_currently_drawn_item = &tileElement;
+    //g_currently_drawn_item = &tileElement;
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
     surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
-    gSurfaceElement = &surfaceElement;
-    gDidPassSurface = true;
+    //gSurfaceElement = &surfaceElement;
+    //gDidPassSurface = true;
 
     gPaintSession.CurrentlyDrawnItem = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
@@ -533,14 +533,14 @@ static uint8_t TestTrackElementGeneralSupportHeight(
 
         tileGeneralSupportCalls[direction].height = -1;
         tileGeneralSupportCalls[direction].slope = -1;
-        if (gSupport.height != 0)
-        {
-            tileGeneralSupportCalls[direction].height = gSupport.height;
-        }
-        if (gSupport.slope != 0xFF)
-        {
-            tileGeneralSupportCalls[direction].slope = gSupport.slope;
-        }
+        //if (gSupport.height != 0)
+        //{
+        //    tileGeneralSupportCalls[direction].height = gSupport.height;
+        //}
+        //if (gSupport.slope != 0xFF)
+        //{
+        //    tileGeneralSupportCalls[direction].slope = gSupport.slope;
+        //}
     }
 
     SupportCall referenceCall = tileGeneralSupportCalls[0];
@@ -604,13 +604,13 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
     tileElement.SetLastForTile(true);
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
-    g_currently_drawn_item = &tileElement;
+    //g_currently_drawn_item = &tileElement;
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
     surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
-    gSurfaceElement = &surfaceElement;
-    gDidPassSurface = true;
+    //gSurfaceElement = &surfaceElement;
+    //gDidPassSurface = true;
 
     gPaintSession.CurrentlyDrawnItem = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
@@ -632,8 +632,8 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
             // CallOriginal(rideType, trackType, direction, trackSequence, height + offset, &tileElement);
         }
 
-        uint8_t rightIndex = (direction + 1) % 4;
-        uint8_t leftIndex = direction;
+        //uint8_t rightIndex = (direction + 1) % 4;
+        //uint8_t leftIndex = direction;
 
         for (int i = 0; i < 4; ++i)
         {
@@ -641,11 +641,11 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
         }
 
         bool err = false;
-        tileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(
-            gRightTunnels, gRightTunnelCount, height, &err);
+        //tileTunnelCalls[direction][rightIndex] = SideTunnelCall::ExtractTunnelCalls(
+        //    gRightTunnels, gRightTunnelCount, height, &err);
 
-        tileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(
-            gLeftTunnels, gLeftTunnelCount, height, &err);
+        //tileTunnelCalls[direction][leftIndex] = SideTunnelCall::ExtractTunnelCalls(
+        //    gLeftTunnels, gLeftTunnelCount, height, &err);
 
         if (err)
         {
@@ -732,13 +732,13 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
     tileElement.SetLastForTile(true);
     tileElement.AsTrack()->SetTrackType(trackType);
     tileElement.base_height = height / 16;
-    g_currently_drawn_item = &tileElement;
+    //g_currently_drawn_item = &tileElement;
 
     TileElement surfaceElement = {};
     surfaceElement.SetType(TILE_ELEMENT_TYPE_SURFACE);
     surfaceElement.base_height = MINIMUM_LAND_HEIGHT;
-    gSurfaceElement = &surfaceElement;
-    gDidPassSurface = true;
+    //gSurfaceElement = &surfaceElement;
+    //gDidPassSurface = true;
 
     gPaintSession.CurrentlyDrawnItem = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
@@ -755,9 +755,9 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
 
         for (uint8_t i = 0; i < 3; i++)
         {
-            gVerticalTunnelHeight = 0;
+            //gVerticalTunnelHeight = 0;
             // CallOriginal(rideType, trackType, direction, trackSequence, height - 8 + i * 8, &tileElement);
-            tunnelHeights[i] = gVerticalTunnelHeight;
+            //tunnelHeights[i] = gVerticalTunnelHeight;
         }
 
         verticalTunnelHeights[direction] = VerticalTunnelCall::GetTunnelHeight(height, tunnelHeights);

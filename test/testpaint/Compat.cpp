@@ -122,6 +122,8 @@ Ride* get_ride(ride_id_t index)
     return &gRideList[index];
 }
 
+static rct_ride_entry* gRideEntries[1];
+
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
     if (index >= object_entry_group_counts[static_cast<int>(ObjectType::Ride)])
@@ -164,10 +166,12 @@ template<> bool SpriteBase::Is<Vehicle>() const
     return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
+static rct_sprite _spriteList[MAX_ENTITIES];
+
 SpriteBase* get_sprite(size_t sprite_idx)
 {
     assert(sprite_idx < MAX_ENTITIES);
-    return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
+    return reinterpret_cast<SpriteBase*>(&_spriteList[sprite_idx]);
 }
 
 bool TileElementBase::IsLastForTile() const
@@ -197,6 +201,8 @@ bool TrackElement::BlockBrakeClosed() const
 {
     return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
 }
+
+TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 
 TileElement* map_get_first_element_at(const CoordsXY& elementPos)
 {

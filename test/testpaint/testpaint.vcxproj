@@ -211,7 +211,6 @@
     <Text Include="CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Compat.cpp~" />
     <None Include="PaintIntercept.cpp~" />
     <None Include="testpaint.vcxproj~" />
   </ItemGroup>
