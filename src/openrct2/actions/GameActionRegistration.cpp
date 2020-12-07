@@ -44,7 +44,7 @@
 #include "ParkSetNameAction.h"
 #include "ParkSetParameterAction.h"
 #include "ParkSetResearchFundingAction.h"
-#include "PauseToggleAction.hpp"
+#include "PauseToggleAction.h"
 #include "PeepPickupAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"

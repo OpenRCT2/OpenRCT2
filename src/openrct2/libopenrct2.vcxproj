@@ -89,7 +89,7 @@
     <ClInclude Include="actions\ParkSetNameAction.h" />
     <ClInclude Include="actions\ParkSetParameterAction.h" />
     <ClInclude Include="actions\ParkSetResearchFundingAction.h" />
-    <ClInclude Include="actions\PauseToggleAction.hpp" />
+    <ClInclude Include="actions\PauseToggleAction.h" />
     <ClInclude Include="actions\PeepPickupAction.hpp" />
     <ClInclude Include="actions\PlaceParkEntranceAction.hpp" />
     <ClInclude Include="actions\PlacePeepSpawnAction.hpp" />
