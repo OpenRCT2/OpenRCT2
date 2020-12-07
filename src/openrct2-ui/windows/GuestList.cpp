@@ -793,7 +793,7 @@ static void window_guest_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi,
                             for (uint32_t j = 0; j < PEEP_MAX_THOUGHTS; j++)
                             {
                                 thought = &peep->Thoughts[j];
-                                if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+                                if (thought->type == PeepThoughtType::None)
                                     break;
                                 if (thought->freshness == 0)
                                     continue;
@@ -912,7 +912,7 @@ static FilterArguments get_arguments_from_peep(const Peep* peep)
         case VIEW_THOUGHTS:
         {
             auto thought = &peep->Thoughts[0];
-            if (thought->freshness <= 5 && thought->type != PEEP_THOUGHT_TYPE_NONE)
+            if (thought->freshness <= 5 && thought->type != PeepThoughtType::None)
             {
                 peep_thought_set_format_args(thought, ft);
             }

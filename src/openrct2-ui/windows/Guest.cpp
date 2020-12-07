@@ -996,7 +996,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t i = 0;
     for (; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PeepThoughtType::None)
         {
             w->list_information_type = 0;
             return;
@@ -1102,7 +1102,7 @@ void window_guest_overview_update(rct_window* w)
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)
                 {
-                    peep->InsertNewThought(PEEP_THOUGHT_TYPE_WATCHED, PEEP_THOUGHT_ITEM_NONE);
+                    peep->InsertNewThought(PeepThoughtType::Watched, PEEP_THOUGHT_ITEM_NONE);
                 }
             }
         }
@@ -1798,7 +1798,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 10;
     for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
     {
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+        if (thought->type == PeepThoughtType::None)
             return;
         if (thought->freshness == 0)
             continue;
