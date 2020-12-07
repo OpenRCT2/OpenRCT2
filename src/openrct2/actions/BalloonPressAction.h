@@ -9,26 +9,19 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
+#include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActions::Result)
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
 
 public:
-    SmallSceneryRemoveAction() = default;
-
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
-        : _loc(location)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
+    BalloonPressAction() = default;
+    BalloonPressAction(uint16_t spriteIndex)
+        : _spriteIndex(spriteIndex)
     {
     }
-
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
     uint16_t GetActionFlags() const override
@@ -41,7 +34,4 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
-
-private:
-    TileElement* FindSceneryElement() const;
 };

@@ -12,7 +12,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
-#include "../actions/BannerRemoveAction.hpp"
+#include "../actions/BannerRemoveAction.h"
 #include "../actions/FootpathAdditionRemoveAction.hpp"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.h"

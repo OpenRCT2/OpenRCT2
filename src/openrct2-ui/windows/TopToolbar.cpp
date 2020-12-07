@@ -26,8 +26,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/actions/BannerPlaceAction.hpp>
-#include <openrct2/actions/BannerSetColourAction.hpp>
+#include <openrct2/actions/BannerPlaceAction.h>
+#include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.hpp>
 #include <openrct2/actions/FootpathAdditionPlaceAction.hpp>
 #include <openrct2/actions/LandLowerAction.hpp>

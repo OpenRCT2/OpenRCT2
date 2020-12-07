@@ -7,12 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "BalloonPressAction.hpp"
-#include "BannerPlaceAction.hpp"
-#include "BannerRemoveAction.hpp"
-#include "BannerSetColourAction.hpp"
-#include "BannerSetNameAction.hpp"
-#include "BannerSetStyleAction.hpp"
+#include "BalloonPressAction.h"
+#include "BannerPlaceAction.h"
+#include "BannerRemoveAction.h"
+#include "BannerSetColourAction.h"
+#include "BannerSetNameAction.h"
+#include "BannerSetStyleAction.h"
 #include "ClearAction.hpp"
 #include "ClimateSetAction.hpp"
 #include "CustomAction.hpp"

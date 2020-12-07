@@ -71,8 +71,6 @@ public:
 
     void Serialise(DataSerialiser & stream) override;
 
-    GameAction::Ptr Get_Undo(GameActions::Result & result) const override;
-
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;

@@ -19,7 +19,7 @@
 #include "../world/Location.hpp"
 #include "../world/Park.h"
 #include "../world/Wall.h"
-#include "BannerRemoveAction.hpp"
+#include "BannerRemoveAction.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActions::Result)

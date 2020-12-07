@@ -9,23 +9,32 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
+// There is also the BannerSetColourAction that sets primary colour but this action takes banner index rather than x, y, z,
+// direction
+enum class BannerSetStyleType : uint8_t
+{
+    PrimaryColour,
+    TextColour,
+    NoEntry,
+    Count
+};
+
+DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActions::Result)
 {
 private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    BannerSetStyleType _type{ BannerSetStyleType::Count };
+    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    uint8_t _parameter{};
 
 public:
-    SmallSceneryRemoveAction() = default;
+    BannerSetStyleAction() = default;
 
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
-        : _loc(location)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
+    BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter)
+        : _type(type)
+        , _bannerIndex(bannerIndex)
+        , _parameter(parameter)
     {
     }
 
@@ -33,7 +42,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags();
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override;
@@ -41,7 +50,4 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
-
-private:
-    TileElement* FindSceneryElement() const;
 };

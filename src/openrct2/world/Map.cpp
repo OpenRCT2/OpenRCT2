@@ -14,7 +14,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
-#include "../actions/BannerRemoveAction.hpp"
+#include "../actions/BannerRemoveAction.h"
 #include "../actions/FootpathRemoveAction.hpp"
 #include "../actions/LandLowerAction.hpp"
 #include "../actions/LandRaiseAction.hpp"

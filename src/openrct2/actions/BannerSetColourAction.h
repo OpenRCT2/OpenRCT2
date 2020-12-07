@@ -9,23 +9,22 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(BannerSetColourAction, GAME_COMMAND_SET_BANNER_COLOUR, GameActions::Result)
 {
 private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    CoordsXYZD _loc;
+    uint8_t _primaryColour{};
+
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
 
 public:
-    SmallSceneryRemoveAction() = default;
+    BannerSetColourAction() = default;
 
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
-        : _loc(location)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
+    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
+        : _loc(loc)
+        , _primaryColour(primaryColour)
     {
     }
 
@@ -33,7 +32,7 @@ public:
 
     uint16_t GetActionFlags() const override
     {
-        return GameAction::GetActionFlags();
+        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
     }
 
     void Serialise(DataSerialiser & stream) override;
@@ -41,7 +40,4 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
-
-private:
-    TileElement* FindSceneryElement() const;
 };

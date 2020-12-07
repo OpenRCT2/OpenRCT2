@@ -9,23 +9,18 @@
 
 #pragma once
 
-#include "../world/TileElement.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallSceneryRemoveAction, GAME_COMMAND_REMOVE_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(BannerRemoveAction, GAME_COMMAND_REMOVE_BANNER, GameActions::Result)
 {
 private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
+    CoordsXYZD _loc;
+    BannerElement* GetBannerElementAt() const;
 
 public:
-    SmallSceneryRemoveAction() = default;
-
-    SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
-        : _loc(location)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
+    BannerRemoveAction() = default;
+    BannerRemoveAction(const CoordsXYZD& loc)
+        : _loc(loc)
     {
     }
 
@@ -41,7 +36,4 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
-
-private:
-    TileElement* FindSceneryElement() const;
 };

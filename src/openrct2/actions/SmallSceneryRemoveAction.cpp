@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
-
 #include "SmallSceneryRemoveAction.h"
 
 #include "../Cheats.h"
@@ -38,23 +36,6 @@ void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
-}
-
-GameAction::Ptr SmallSceneryRemoveAction::Get_Undo(GameActions::Result& result) const
-{
-    TileElement* tileElement = FindSceneryElement();
-    if (tileElement == nullptr)
-    {
-        return nullptr;
-    }
-    auto* smallScenery = tileElement->AsSmallScenery();
-    if (smallScenery == nullptr)
-    {
-        return nullptr;
-    }
-    CoordsXYZD loc = { result.Position, smallScenery->GetDirection() };
-    return std::make_unique<SmallSceneryPlaceAction>(
-        loc, _quadrant, _sceneryType, smallScenery->GetPrimaryColour(), smallScenery->GetSecondaryColour());
 }
 
 GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const

@@ -18,7 +18,7 @@
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/BalloonPressAction.hpp>
+#include <openrct2/actions/BalloonPressAction.h>
 #include <openrct2/actions/FootpathAdditionRemoveAction.hpp>
 #include <openrct2/actions/LargeSceneryRemoveAction.hpp>
 #include <openrct2/actions/ParkEntranceRemoveAction.hpp>
