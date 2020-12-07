@@ -17,7 +17,7 @@ STR_0012    :Stipoĉejso
 STR_0013    :Aŭtrajdo
 STR_0014    :Lanĉita Libera Falo
 STR_0015    :Bobsleda Onda Fervojo
-STR_0016    :Turo por Observado
+STR_0016    :Turo por Observadi
 STR_0017    :Lopanta Onda Fervojo
 STR_0018    :Boatet-Tobagano
 STR_0019    :Mintrajna Onda Fervojo
@@ -28,7 +28,7 @@ STR_0023    :Spirala Tobagano
 STR_0024    :Gokartoj
 STR_0025    :Ŝtiprajdo
 STR_0026    :Rapidfluorajdo
-STR_0027    :Albatiĝantaj Aŭtetoj
+STR_0027    :Albatiĝantaj Ĉaroj
 STR_0028    :Svingiĝanta Ŝipo
 STR_0029    :Svingiĝanta Inversigiĝanta Ŝipo
 STR_0030    :Manĝaĵbudo
@@ -120,7 +120,7 @@ STR_0533    :Ligna konstruaĵo kun interna ŝtuparo kaj ekstera spirala tobogano
 STR_0534    :Gastoj vetkuras unu la alian en gokartoj sur asfalta trako
 STR_0535    :Boatoj veturas laŭ akvokanalo, kaj plaŭde malsupreniras krutajn deklivojn por trempi la rajdantojn
 STR_0536    :Rondaj boatoj vagas laŭ larĝa akvokanalo, plaŭdas tra akvofaloj, kaj ekscitas rajdantojn per ŝaŭmantaj rapidfluoj
-STR_0537    :Gastoj albatiĝas al unu la alian per elektraj albatiĝantaj aŭtetoj, kiujn ili stiras
+STR_0537    :Gastoj albatiĝas al unu la alian per elektraj albatiĝantaj ĉaroj, kiujn ili stiras
 STR_0538    :Granda svingiĝanta piratŝipo
 STR_0539    :La ŝipo estas fiksita al brako, kiu havas kontraŭpezon al la kontraŭa flanko, kaj svingiĝas tra plenaj 360 gradoj
 STR_0540    :Budo, kie gastoj povas aĉeti manĝaĵojn
@@ -456,7 +456,7 @@ STR_1070    :Po unu fojo por bileto
 STR_1071    :Po senlimaj fojoj por bileto
 STR_1072    :Labirinta reĝimo
 STR_1073    :Vetkura reĝimo
-STR_1074    :Albatiĝantaj-aŭtetoj-reĝimo
+STR_1074    :Albatiĝantaj-ĉaroj-reĝimo
 STR_1075    :Svingiĝanta reĝimo
 STR_1076    :Vendejbudo-reĝimo
 STR_1077    :Turnada reĝimo
@@ -2141,7 +2141,7 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Ne eblas ŝargi dosieron…
 STR_3011    :Doserio enhavas nevalidajn datumojn
-STR_3012    :Albatiĝantaj-aŭtetoj-taktaj-stilo
+STR_3012    :Albatiĝantaj-ĉaroj-taktaj-stilo
 STR_3013    :Foirejo-orgena stilo
 STR_3014    :Roma-fanfara stilo
 STR_3015    :Orienta stilo
