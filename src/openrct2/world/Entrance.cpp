@@ -12,7 +12,7 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkEntranceRemoveAction.hpp"
+#include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideEntranceExitRemoveAction.hpp"
 #include "../localisation/StringIds.h"

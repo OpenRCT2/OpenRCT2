@@ -33,8 +33,8 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
-#include "ParkSetLoanAction.hpp"
-#include "ParkSetParameterAction.hpp"
+#include "ParkSetLoanAction.h"
+#include "ParkSetParameterAction.h"
 
 DEFINE_GAME_ACTION(SetCheatAction, GAME_COMMAND_CHEAT, GameActions::Result)
 {

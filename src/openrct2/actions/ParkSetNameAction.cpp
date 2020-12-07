@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "ParkSetNameAction.h"
 
 #include "../Context.h"
 #include "../GameState.h"
@@ -21,55 +21,36 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetNameAction, GAME_COMMAND_SET_PARK_NAME, GameActions::Result)
+void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-private:
-    std::string _name;
+    visitor.Visit("name", _name);
+}
 
-public:
-    ParkSetNameAction() = default;
-    ParkSetNameAction(const std::string& name)
-        : _name(name)
-    {
-    }
+void ParkSetNameAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_name);
+}
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
+GameActions::Result::Ptr ParkSetNameAction::Query() const
+{
+    if (_name.empty())
     {
-        visitor.Visit("name", _name);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
+    return MakeResult();
+}
 
-    uint16_t GetActionFlags() const override
+GameActions::Result::Ptr ParkSetNameAction::Execute() const
+{
+    // Do a no-op if new name is the same as the current name is the same
+    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
+    if (_name != park.Name)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        park.Name = _name;
+        scrolling_text_invalidate();
+        gfx_invalidate_screen();
     }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_name);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_name.empty())
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
-        }
-        return MakeResult();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        // Do a no-op if new name is the same as the current name is the same
-        auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-        if (_name != park.Name)
-        {
-            park.Name = _name;
-            scrolling_text_invalidate();
-            gfx_invalidate_screen();
-        }
-        return MakeResult();
-    }
-};
+    return MakeResult();
+}

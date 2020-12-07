@@ -23,7 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
-#include <openrct2/actions/ParkSetParameterAction.hpp>
+#include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetAppearanceAction.hpp>
 #include <openrct2/actions/RideSetColourScheme.hpp>
 #include <openrct2/actions/RideSetPriceAction.hpp>

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "ParkMarketingAction.h"
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
@@ -18,88 +18,64 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "GameAction.h"
 
 #include <iterator>
 
-DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActions::Result)
+void ParkMarketingAction::Serialise(DataSerialiser& stream)
 {
-private:
-    int32_t _type{};
-    int32_t _item{};
-    int32_t _numWeeks{};
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
+}
 
-public:
-    ParkMarketingAction() = default;
-    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
-        : _type(type)
-        , _item(item)
-        , _numWeeks(numWeeks)
+GameActions::Result::Ptr ParkMarketingAction::Query() const
+{
+    if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
     {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN);
+    }
+    if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
+    {
+        return MakeResult(
+            GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
+            STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
     }
 
-    uint16_t GetActionFlags() const override
+    return CreateResult();
+}
+
+GameActions::Result::Ptr ParkMarketingAction::Execute() const
+{
+    MarketingCampaign campaign{};
+    campaign.Type = _type;
+    campaign.WeeksLeft = _numWeeks;
+    campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
+    if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        campaign.RideId = _item;
     }
-
-    void Serialise(DataSerialiser & stream) override
+    else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
     {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_type) << DS_TAG(_item) << DS_TAG(_numWeeks);
+        campaign.ShopItemType = ShopItem(_item);
     }
+    marketing_new_campaign(campaign);
 
-    GameActions::Result::Ptr Query() const override
-    {
-        if (static_cast<size_t>(_type) >= std::size(AdvertisingCampaignPricePerWeek) || _numWeeks >= 256)
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_START_MARKETING_CAMPAIGN);
-        }
-        if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
-        {
-            return MakeResult(
-                GameActions::Status::Disallowed, STR_CANT_START_MARKETING_CAMPAIGN,
-                STR_MARKETING_CAMPAIGNS_FORBIDDEN_BY_LOCAL_AUTHORITY);
-        }
+    // We are only interested in invalidating the finances (marketing) window
+    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
 
-        return CreateResult();
-    }
+    return CreateResult();
+}
 
-    GameActions::Result::Ptr Execute() const override
-    {
-        MarketingCampaign campaign{};
-        campaign.Type = _type;
-        campaign.WeeksLeft = _numWeeks;
-        campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
-        if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
-        {
-            campaign.RideId = _item;
-        }
-        else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
-        {
-            campaign.ShopItemType = ShopItem(_item);
-        }
-        marketing_new_campaign(campaign);
+GameActions::Result::Ptr ParkMarketingAction::CreateResult() const
+{
+    auto result = MakeResult();
+    result->ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
+    result->Expenditure = ExpenditureType::Marketing;
+    result->Cost = CalculatePrice();
+    return result;
+}
 
-        // We are only interested in invalidating the finances (marketing) window
-        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
-
-        return CreateResult();
-    }
-
-private:
-    GameActions::Result::Ptr CreateResult() const
-    {
-        auto result = MakeResult();
-        result->ErrorTitle = STR_CANT_START_MARKETING_CAMPAIGN;
-        result->Expenditure = ExpenditureType::Marketing;
-        result->Cost = CalculatePrice();
-        return result;
-    }
-
-    money32 CalculatePrice() const
-    {
-        return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
-    }
-};
+money32 ParkMarketingAction::CalculatePrice() const
+{
+    return _numWeeks * AdvertisingCampaignPricePerWeek[_type];
+}

@@ -7,90 +7,59 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "ParkSetParameterAction.h"
 
 #include "../interface/Window.h"
 #include "../ride/ShopItem.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
-#include "GameAction.h"
 
-enum class ParkParameter : uint8_t
+void ParkSetParameterAction::Serialise(DataSerialiser& stream)
 {
-    Close,
-    Open,
-    SamePriceInPark,
-    Count
-};
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_parameter) << DS_TAG(_value);
+}
 
-DEFINE_GAME_ACTION(ParkSetParameterAction, GAME_COMMAND_SET_PARK_OPEN, GameActions::Result)
+GameActions::Result::Ptr ParkSetParameterAction::Query() const
 {
-private:
-    ParkParameter _parameter{ ParkParameter::Count };
-    uint64_t _value{};
-
-    constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_CLOSE_PARK, STR_CANT_OPEN_PARK, STR_NONE, STR_NONE };
-
-public:
-    ParkSetParameterAction() = default;
-    ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
-        : _parameter(parameter)
-        , _value(value)
+    if (_parameter >= ParkParameter::Count)
     {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    auto res = MakeResult();
+    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    return res;
+}
 
-    void Serialise(DataSerialiser & stream) override
+GameActions::Result::Ptr ParkSetParameterAction::Execute() const
+{
+    switch (_parameter)
     {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_parameter) << DS_TAG(_value);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_parameter >= ParkParameter::Count)
-        {
+        case ParkParameter::Close:
+            if (gParkFlags & PARK_FLAGS_PARK_OPEN)
+            {
+                gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case ParkParameter::Open:
+            if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
+            {
+                gParkFlags |= PARK_FLAGS_PARK_OPEN;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+            break;
+        case ParkParameter::SamePriceInPark:
+            gSamePriceThroughoutPark = _value;
+            window_invalidate_by_class(WC_RIDE);
+            break;
+        default:
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
-        return res;
+            break;
     }
 
-    GameActions::Result::Ptr Execute() const override
-    {
-        switch (_parameter)
-        {
-            case ParkParameter::Close:
-                if (gParkFlags & PARK_FLAGS_PARK_OPEN)
-                {
-                    gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-                    window_invalidate_by_class(WC_PARK_INFORMATION);
-                }
-                break;
-            case ParkParameter::Open:
-                if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
-                {
-                    gParkFlags |= PARK_FLAGS_PARK_OPEN;
-                    window_invalidate_by_class(WC_PARK_INFORMATION);
-                }
-                break;
-            case ParkParameter::SamePriceInPark:
-                gSamePriceThroughoutPark = _value;
-                window_invalidate_by_class(WC_RIDE);
-                break;
-            default:
-                return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-                break;
-        }
-
-        auto res = MakeResult();
-        res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
-        return res;
-    }
-};
+    auto res = MakeResult();
+    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    return res;
+}

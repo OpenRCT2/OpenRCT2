@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "ParkSetLoanAction.h"
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
@@ -16,61 +16,41 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActions::Result)
+void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 {
-private:
-    money32 _value{ MONEY32_UNDEFINED };
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_value);
+}
 
-public:
-    ParkSetLoanAction() = default;
-    ParkSetLoanAction(money32 value)
-        : _value(value)
+GameActions::Result::Ptr ParkSetLoanAction::Query() const
+{
+    auto currentLoan = gBankLoan;
+    auto loanDifference = currentLoan - _value;
+    if (_value > currentLoan)
     {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_value);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        auto currentLoan = gBankLoan;
-        auto loanDifference = currentLoan - _value;
-        if (_value > currentLoan)
+        if (_value > gMaxBankLoan)
         {
-            if (_value > gMaxBankLoan)
-            {
-                return MakeResult(
-                    GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
-            }
+            return MakeResult(
+                GameActions::Status::Disallowed, STR_CANT_BORROW_ANY_MORE_MONEY, STR_BANK_REFUSES_TO_INCREASE_LOAN);
         }
-        else
-        {
-            if (loanDifference > gCash)
-            {
-                return MakeResult(
-                    GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
-            }
-        }
-        return MakeResult();
     }
-
-    GameActions::Result::Ptr Execute() const override
+    else
     {
-        gCash -= (gBankLoan - _value);
-        gBankLoan = _value;
-
-        auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
-        return MakeResult();
+        if (loanDifference > gCash)
+        {
+            return MakeResult(GameActions::Status::InsufficientFunds, STR_CANT_PAY_BACK_LOAN, STR_NOT_ENOUGH_CASH_AVAILABLE);
+        }
     }
-};
+    return MakeResult();
+}
+
+GameActions::Result::Ptr ParkSetLoanAction::Execute() const
+{
+    gCash -= (gBankLoan - _value);
+    gBankLoan = _value;
+
+    auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_CASH));
+    return MakeResult();
+}

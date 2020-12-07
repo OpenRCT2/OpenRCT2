@@ -21,7 +21,7 @@
 #include "../actions/LandSetHeightAction.h"
 #include "../actions/LandSetRightsAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/ParkEntranceRemoveAction.hpp"
+#include "../actions/ParkEntranceRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.hpp"
 #include "../actions/WaterSetHeightAction.hpp"

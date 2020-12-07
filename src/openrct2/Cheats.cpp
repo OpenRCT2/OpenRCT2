@@ -10,7 +10,7 @@
 #include "Cheats.h"
 
 #include "GameState.h"
-#include "actions/ParkSetLoanAction.hpp"
+#include "actions/ParkSetLoanAction.h"
 #include "actions/SetCheatAction.hpp"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
