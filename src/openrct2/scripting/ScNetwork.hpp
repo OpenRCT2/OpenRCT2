@@ -13,8 +13,8 @@
 
 #    include "../Context.h"
 #    include "../actions/NetworkModifyGroupAction.h"
-#    include "../actions/PlayerKickAction.hpp"
-#    include "../actions/PlayerSetGroupAction.hpp"
+#    include "../actions/PlayerKickAction.h"
+#    include "../actions/PlayerSetGroupAction.h"
 #    include "../network/NetworkAction.h"
 #    include "../network/network.h"
 #    include "Duktape.hpp"

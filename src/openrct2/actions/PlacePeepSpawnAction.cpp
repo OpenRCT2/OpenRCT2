@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "PlacePeepSpawnAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -17,131 +17,112 @@
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 #include "../world/Surface.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlacePeepSpawnAction, GAME_COMMAND_PLACE_PEEP_SPAWN, GameActions::Result)
+void PlacePeepSpawnAction::Serialise(DataSerialiser& stream)
 {
-private:
-    CoordsXYZD _location;
+    GameAction::Serialise(stream);
 
-public:
-    PlacePeepSpawnAction() = default;
-    PlacePeepSpawnAction(const CoordsXYZD& location)
-        : _location(location)
+    stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
+}
+
+GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
+{
+    if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    auto res = std::make_unique<GameActions::Result>();
+    res->Expenditure = ExpenditureType::LandPurchase;
+    res->Position = _location;
+
+    if (!map_check_free_elements_and_reorganise(3))
     {
-        return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::NoFreeElements, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
+        || _location.y >= (gMapSizeUnits - 16))
     {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    GameActions::Result::Ptr Query() const override
+    // Verify footpath exists at location, and retrieve coordinates
+    auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
+    if (pathElement == nullptr)
     {
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
-        }
-
-        auto res = std::make_unique<GameActions::Result>();
-        res->Expenditure = ExpenditureType::LandPurchase;
-        res->Position = _location;
-
-        if (!map_check_free_elements_and_reorganise(3))
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::NoFreeElements, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
-        }
-
-        if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (gMapSizeUnits - 16)
-            || _location.y >= (gMapSizeUnits - 16))
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
-        }
-
-        // Verify footpath exists at location, and retrieve coordinates
-        auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
-        if (pathElement == nullptr)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
-        }
-
-        // Verify location is unowned
-        auto surfaceMapElement = map_get_surface_element_at(_location);
-        if (surfaceMapElement == nullptr)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
-        }
-        if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE,
-                STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
-        }
-
-        return res;
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
     }
 
-    GameActions::Result::Ptr Execute() const override
+    // Verify location is unowned
+    auto surfaceMapElement = map_get_surface_element_at(_location);
+    if (surfaceMapElement == nullptr)
     {
-        auto res = std::make_unique<GameActions::Result>();
-        res->Expenditure = ExpenditureType::LandPurchase;
-        res->Position = _location;
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+    }
+    if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
+    {
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE,
+            STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
+    }
 
-        // Shift the spawn point to the edge of the tile
-        auto spawnPos = CoordsXY{ _location.ToTileCentre() }
-            + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
+    return res;
+}
 
-        PeepSpawn spawn;
-        spawn.x = spawnPos.x;
-        spawn.y = spawnPos.y;
-        spawn.z = _location.z;
-        spawn.direction = _location.direction;
+GameActions::Result::Ptr PlacePeepSpawnAction::Execute() const
+{
+    auto res = std::make_unique<GameActions::Result>();
+    res->Expenditure = ExpenditureType::LandPurchase;
+    res->Position = _location;
 
-        // When attempting to place a peep spawn on a tile that already contains it,
-        // remove that peep spawn instead.
-        if (!gPeepSpawns.empty())
-        {
-            // When searching for existing spawns, ignore the direction.
-            auto foundSpawn = std::find_if(gPeepSpawns.begin(), gPeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
-                {
-                    return existingSpawn.ToTileStart() == spawn.ToTileStart();
-                }
-            });
+    // Shift the spawn point to the edge of the tile
+    auto spawnPos = CoordsXY{ _location.ToTileCentre() }
+        + CoordsXY{ DirectionOffsets[_location.direction].x * 15, DirectionOffsets[_location.direction].y * 15 };
 
-            if (foundSpawn != std::end(gPeepSpawns))
+    PeepSpawn spawn;
+    spawn.x = spawnPos.x;
+    spawn.y = spawnPos.y;
+    spawn.z = _location.z;
+    spawn.direction = _location.direction;
+
+    // When attempting to place a peep spawn on a tile that already contains it,
+    // remove that peep spawn instead.
+    if (!gPeepSpawns.empty())
+    {
+        // When searching for existing spawns, ignore the direction.
+        auto foundSpawn = std::find_if(gPeepSpawns.begin(), gPeepSpawns.end(), [spawn](const CoordsXYZ& existingSpawn) {
             {
-                gPeepSpawns.erase(foundSpawn);
-                map_invalidate_tile_full(spawn);
-                return res;
+                return existingSpawn.ToTileStart() == spawn.ToTileStart();
             }
-        }
+        });
 
-        // If we have reached our max peep spawns, remove the oldest spawns
-        while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+        if (foundSpawn != std::end(gPeepSpawns))
         {
-            PeepSpawn oldestSpawn = *gPeepSpawns.begin();
-            gPeepSpawns.erase(gPeepSpawns.begin());
-            map_invalidate_tile_full(oldestSpawn);
+            gPeepSpawns.erase(foundSpawn);
+            map_invalidate_tile_full(spawn);
+            return res;
         }
-
-        // Set peep spawn
-        gPeepSpawns.push_back(spawn);
-
-        // Invalidate tile
-        map_invalidate_tile_full(_location);
-
-        return res;
     }
-};
+
+    // If we have reached our max peep spawns, remove the oldest spawns
+    while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+    {
+        PeepSpawn oldestSpawn = *gPeepSpawns.begin();
+        gPeepSpawns.erase(gPeepSpawns.begin());
+        map_invalidate_tile_full(oldestSpawn);
+    }
+
+    // Set peep spawn
+    gPeepSpawns.push_back(spawn);
+
+    // Invalidate tile
+    map_invalidate_tile_full(_location);
+
+    return res;
+}

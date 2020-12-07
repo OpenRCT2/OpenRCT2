@@ -7,42 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "PlayerKickAction.h"
 
 #include "../network/network.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(PlayerKickAction, GAME_COMMAND_KICK_PLAYER, GameActions::Result)
+void PlayerKickAction::Serialise(DataSerialiser& stream)
 {
-private:
-    NetworkPlayerId_t _playerId{ -1 };
+    GameAction::Serialise(stream);
 
-public:
-    PlayerKickAction() = default;
+    stream << DS_TAG(_playerId);
+}
+GameActions::Result::Ptr PlayerKickAction::Query() const
+{
+    return network_kick_player(_playerId, false);
+}
 
-    PlayerKickAction(NetworkPlayerId_t playerId)
-        : _playerId(playerId)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_playerId);
-    }
-    GameActions::Result::Ptr Query() const override
-    {
-        return network_kick_player(_playerId, false);
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        return network_kick_player(_playerId, true);
-    }
-};
+GameActions::Result::Ptr PlayerKickAction::Execute() const
+{
+    return network_kick_player(_playerId, true);
+}

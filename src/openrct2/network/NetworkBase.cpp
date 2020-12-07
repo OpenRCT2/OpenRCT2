@@ -16,7 +16,7 @@
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
-#include "../actions/PeepPickupAction.hpp"
+#include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../platform/Platform2.h"

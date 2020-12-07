@@ -90,11 +90,11 @@
     <ClInclude Include="actions\ParkSetParameterAction.h" />
     <ClInclude Include="actions\ParkSetResearchFundingAction.h" />
     <ClInclude Include="actions\PauseToggleAction.h" />
-    <ClInclude Include="actions\PeepPickupAction.hpp" />
-    <ClInclude Include="actions\PlaceParkEntranceAction.hpp" />
-    <ClInclude Include="actions\PlacePeepSpawnAction.hpp" />
-    <ClInclude Include="actions\PlayerKickAction.hpp" />
-    <ClInclude Include="actions\PlayerSetGroupAction.hpp" />
+    <ClInclude Include="actions\PeepPickupAction.h" />
+    <ClInclude Include="actions\PlaceParkEntranceAction.h" />
+    <ClInclude Include="actions\PlacePeepSpawnAction.h" />
+    <ClInclude Include="actions\PlayerKickAction.h" />
+    <ClInclude Include="actions\PlayerSetGroupAction.h" />
     <ClInclude Include="actions\RideCreateAction.hpp" />
     <ClInclude Include="actions\RideDemolishAction.hpp" />
     <ClInclude Include="actions\RideEntranceExitPlaceAction.hpp" />

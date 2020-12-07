@@ -19,8 +19,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/LandSetRightsAction.h>
-#include <openrct2/actions/PlaceParkEntranceAction.hpp>
-#include <openrct2/actions/PlacePeepSpawnAction.hpp>
+#include <openrct2/actions/PlaceParkEntranceAction.h>
+#include <openrct2/actions/PlacePeepSpawnAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
