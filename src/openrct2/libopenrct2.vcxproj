@@ -67,8 +67,8 @@
     <ClInclude Include="actions\FootpathAdditionPlaceAction.h" />
     <ClInclude Include="actions\FootpathAdditionRemoveAction.h" />
     <ClInclude Include="actions\GameAction.h" />
-    <ClInclude Include="actions\GuestSetFlagsAction.hpp" />
-    <ClInclude Include="actions\GuestSetNameAction.hpp" />
+    <ClInclude Include="actions\GuestSetFlagsAction.h" />
+    <ClInclude Include="actions\GuestSetNameAction.h" />
     <ClInclude Include="actions\LandBuyRightsAction.hpp" />
     <ClInclude Include="actions\LandLowerAction.hpp" />
     <ClInclude Include="actions\LandRaiseAction.hpp" />

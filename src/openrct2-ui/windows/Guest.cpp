@@ -14,7 +14,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/GuestSetFlagsAction.hpp>
+#include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/PeepPickupAction.hpp>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>

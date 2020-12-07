@@ -7,67 +7,45 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "GuestSetFlagsAction.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(GuestSetFlagsAction, GAME_COMMAND_GUEST_SET_FLAGS, GameActions::Result)
+void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-private:
-    uint16_t _peepId{ SPRITE_INDEX_NULL };
-    uint32_t _newFlags{};
+    visitor.Visit("peep", _peepId);
+    visitor.Visit("flags", _newFlags);
+}
 
-public:
-    GuestSetFlagsAction() = default;
-    GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
-        : _peepId(peepId)
-        , _newFlags(flags)
+void GuestSetFlagsAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
+}
+
+GameActions::Result::Ptr GuestSetFlagsAction::Query() const
+{
+    Peep* peep = TryGetEntity<Peep>(_peepId);
+    if (peep == nullptr)
     {
+        log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
+    }
+    return std::make_unique<GameActions::Result>();
+}
+
+GameActions::Result::Ptr GuestSetFlagsAction::Execute() const
+{
+    Peep* peep = TryGetEntity<Peep>(_peepId);
+    if (peep == nullptr)
+    {
+        log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
     }
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    peep->PeepFlags = _newFlags;
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
-    {
-        visitor.Visit("peep", _peepId);
-        visitor.Visit("flags", _newFlags);
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        Peep* peep = TryGetEntity<Peep>(_peepId);
-        if (peep == nullptr)
-        {
-            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
-        }
-        return std::make_unique<GameActions::Result>();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        Peep* peep = TryGetEntity<Peep>(_peepId);
-        if (peep == nullptr)
-        {
-            log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS);
-        }
-
-        peep->PeepFlags = _newFlags;
-
-        return std::make_unique<GameActions::Result>();
-    }
-};
+    return std::make_unique<GameActions::Result>();
+}

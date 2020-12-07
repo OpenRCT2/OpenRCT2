@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "GameAction.h"
-#include "GuestSetNameAction.hpp"
+#include "GuestSetNameAction.h"
 #include "MazeSetTrackAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
