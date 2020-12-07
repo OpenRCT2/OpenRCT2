@@ -18,8 +18,6 @@ private:
     MapRange _range;
     uint8_t _selectionType{};
 
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
-
 public:
     LandLowerAction() = default;
     LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
@@ -39,4 +37,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
 };

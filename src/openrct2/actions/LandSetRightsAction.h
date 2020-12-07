@@ -28,9 +28,6 @@ private:
     LandSetRightSetting _setting{ LandSetRightSetting::Count };
     uint8_t _ownership{};
 
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
-    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const;
-
 public:
     LandSetRightsAction() = default;
 
@@ -58,4 +55,8 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
+    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const;
 };

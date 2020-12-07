@@ -17,8 +17,6 @@ private:
     CoordsXYZD _loc;
     uint16_t _tileIndex{};
 
-    TileElement* FindLargeSceneryElement() const;
-
 public:
     LargeSceneryRemoveAction() = default;
 
@@ -40,4 +38,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    TileElement* FindLargeSceneryElement() const;
 };

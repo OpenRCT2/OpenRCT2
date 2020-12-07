@@ -21,16 +21,6 @@ private:
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_LOWER_LAND_HERE, STR_CANT_RAISE_LAND_HERE };
 
-    GameActions::Result::Ptr SmoothLandTile(
-        int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
-    money32 SmoothLandRowByEdge(
-        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
-        int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const;
-    money32 SmoothLandRowByCorner(
-        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
-        int32_t checkDirection) const;
-    GameActions::Result::Ptr SmoothLand(bool isExecuting) const;
-
 public:
     LandSmoothAction() = default;
     LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
@@ -51,4 +41,15 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr SmoothLandTile(
+        int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
+    money32 SmoothLandRowByEdge(
+        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
+        int32_t stepY, int32_t direction1, int32_t direction2, int32_t checkDirection1, int32_t checkDirection2) const;
+    money32 SmoothLandRowByCorner(
+        bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
+        int32_t checkDirection) const;
+    GameActions::Result::Ptr SmoothLand(bool isExecuting) const;
 };

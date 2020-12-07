@@ -26,9 +26,6 @@ private:
 
     constexpr static rct_string_id _ErrorTitles[] = { STR_CANT_BUY_LAND, STR_CANT_BUY_CONSTRUCTION_RIGHTS_HERE };
 
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
-    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const;
-
 public:
     LandBuyRightsAction() = default;
 
@@ -54,4 +51,8 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
+    GameActions::Result::Ptr map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const;
 };

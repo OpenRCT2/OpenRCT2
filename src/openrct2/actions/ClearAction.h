@@ -29,12 +29,6 @@ private:
     MapRange _range;
     ClearableItems _itemsToClear{};
 
-    GameActions::Result::Ptr CreateResult() const;
-    GameActions::Result::Ptr QueryExecute(bool executing) const;
-    money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
-    static void ResetClearLargeSceneryFlag();
-    static bool MapCanClearAt(const CoordsXY& location);
-
 public:
     ClearAction() = default;
     ClearAction(MapRange range, ClearableItems itemsToClear)
@@ -46,4 +40,11 @@ public:
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr CreateResult() const;
+    GameActions::Result::Ptr QueryExecute(bool executing) const;
+    money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
+    static void ResetClearLargeSceneryFlag();
+    static bool MapCanClearAt(const CoordsXY& location);
 };

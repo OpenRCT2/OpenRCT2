@@ -46,10 +46,6 @@ private:
     uint8_t _secondaryColour{};
     BannerIndex _bannerId{ BANNER_INDEX_NULL };
 
-    int16_t GetTotalNumTiles(rct_large_scenery_tile * tiles) const;
-    int16_t GetMaxSurfaceHeight(rct_large_scenery_tile * tiles) const;
-    void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum) const;
-
 public:
     LargeSceneryPlaceAction() = default;
 
@@ -81,4 +77,9 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    int16_t GetTotalNumTiles(rct_large_scenery_tile * tiles) const;
+    int16_t GetMaxSurfaceHeight(rct_large_scenery_tile * tiles) const;
+    void SetNewLargeSceneryElement(LargeSceneryElement & sceneryElement, uint8_t tileNum) const;
 };

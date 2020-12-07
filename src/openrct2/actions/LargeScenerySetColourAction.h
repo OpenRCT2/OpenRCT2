@@ -19,8 +19,6 @@ private:
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
 
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
-
 public:
     LargeScenerySetColourAction() = default;
 
@@ -42,4 +40,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
 };

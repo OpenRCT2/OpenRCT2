@@ -19,9 +19,6 @@ private:
     ObjectEntryIndex _type{};
     uint8_t _edges{};
 
-    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
-    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
-
 public:
     FootpathPlaceFromTrackAction() = default;
     FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges)
@@ -42,4 +39,8 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
+    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
 };

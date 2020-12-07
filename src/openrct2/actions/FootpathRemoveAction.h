@@ -17,10 +17,6 @@ DEFINE_GAME_ACTION(FootpathRemoveAction, GAME_COMMAND_REMOVE_PATH, GameActions::
 private:
     CoordsXYZ _loc;
 
-    TileElement* GetFootpathElement() const;
-    money32 GetRefundPrice(TileElement * footpathElement) const;
-    GameActions::Result::Ptr RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
-
 public:
     FootpathRemoveAction() = default;
     FootpathRemoveAction(const CoordsXYZ& location)
@@ -40,4 +36,9 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    TileElement* GetFootpathElement() const;
+    money32 GetRefundPrice(TileElement * footpathElement) const;
+    GameActions::Result::Ptr RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
 };

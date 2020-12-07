@@ -16,8 +16,6 @@ DEFINE_GAME_ACTION(ParkEntranceRemoveAction, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 
 private:
     CoordsXYZ _loc;
 
-    void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const;
-
 public:
     ParkEntranceRemoveAction() = default;
 
@@ -36,4 +34,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    void ParkEntranceRemoveSegment(const CoordsXYZ& loc) const;
 };

@@ -18,6 +18,27 @@ private:
     uint8_t _height{};
     uint8_t _style{};
 
+public:
+    LandSetHeightAction() = default;
+    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
+        : _coords(coords)
+        , _height(height)
+        , _style(style)
+    {
+    }
+
+    uint16_t GetActionFlags() const override
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+    }
+
+    void Serialise(DataSerialiser & stream) override;
+
+    GameActions::Result::Ptr Query() const override;
+
+    GameActions::Result::Ptr Execute() const override;
+
+private:
     rct_string_id CheckParameters() const;
     TileElement* CheckTreeObstructions() const;
     money32 GetSmallSceneryRemovalCost() const;
@@ -44,24 +65,4 @@ private:
 
         return 1;
     }
-
-public:
-    LandSetHeightAction() = default;
-    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
-        : _coords(coords)
-        , _height(height)
-        , _style(style)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
-    }
-
-    void Serialise(DataSerialiser & stream) override;
-
-    GameActions::Result::Ptr Query() const override;
-
-    GameActions::Result::Ptr Execute() const override;
 };

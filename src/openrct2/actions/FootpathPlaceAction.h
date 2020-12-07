@@ -20,14 +20,6 @@ private:
     ObjectEntryIndex _type{};
     Direction _direction{ INVALID_DIRECTION };
 
-    GameActions::Result::Ptr ElementUpdateQuery(PathElement * pathElement, GameActions::Result::Ptr res) const;
-    GameActions::Result::Ptr ElementUpdateExecute(PathElement * pathElement, GameActions::Result::Ptr res) const;
-    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
-    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
-    void AutomaticallySetPeepSpawn() const;
-    void RemoveIntersectingWalls(PathElement * pathElement) const;
-    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
-
 public:
     FootpathPlaceAction() = default;
     FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION)
@@ -50,4 +42,13 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr ElementUpdateQuery(PathElement * pathElement, GameActions::Result::Ptr res) const;
+    GameActions::Result::Ptr ElementUpdateExecute(PathElement * pathElement, GameActions::Result::Ptr res) const;
+    GameActions::Result::Ptr ElementInsertQuery(GameActions::Result::Ptr res) const;
+    GameActions::Result::Ptr ElementInsertExecute(GameActions::Result::Ptr res) const;
+    void AutomaticallySetPeepSpawn() const;
+    void RemoveIntersectingWalls(PathElement * pathElement) const;
+    PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
 };

@@ -45,8 +45,6 @@ private:
     NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     uint8_t _mode{};
 
-    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const;
-
 public:
     MazeSetTrackAction() = default;
     MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
@@ -64,4 +62,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const;
 };

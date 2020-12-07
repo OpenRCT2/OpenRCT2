@@ -18,9 +18,6 @@ private:
     int32_t _item{};
     int32_t _numWeeks{};
 
-    GameActions::Result::Ptr CreateResult() const;
-    money32 CalculatePrice() const;
-
 public:
     ParkMarketingAction() = default;
     ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
@@ -40,4 +37,8 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr CreateResult() const;
+    money32 CalculatePrice() const;
 };

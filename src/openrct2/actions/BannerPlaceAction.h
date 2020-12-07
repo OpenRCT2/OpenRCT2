@@ -19,8 +19,6 @@ private:
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
     uint8_t _primaryColour{};
 
-    PathElement* GetValidPathElement() const;
-
 public:
     BannerPlaceAction() = default;
     BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
@@ -43,4 +41,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    PathElement* GetValidPathElement() const;
 };

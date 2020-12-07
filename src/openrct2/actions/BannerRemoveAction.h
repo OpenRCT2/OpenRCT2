@@ -15,7 +15,6 @@ DEFINE_GAME_ACTION(BannerRemoveAction, GAME_COMMAND_REMOVE_BANNER, GameActions::
 {
 private:
     CoordsXYZD _loc;
-    BannerElement* GetBannerElementAt() const;
 
 public:
     BannerRemoveAction() = default;
@@ -36,4 +35,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    BannerElement* GetBannerElementAt() const;
 };

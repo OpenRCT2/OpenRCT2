@@ -17,8 +17,6 @@ private:
     CoordsXYZD _loc;
     uint8_t _primaryColour{};
 
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
-
 public:
     BannerSetColourAction() = default;
 
@@ -40,4 +38,7 @@ public:
     GameActions::Result::Ptr Query() const override;
 
     GameActions::Result::Ptr Execute() const override;
+
+private:
+    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
 };
