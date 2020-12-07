@@ -13,6 +13,11 @@
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 
+ShopItem& operator++(ShopItem& d, int)
+{
+    return d = (d == ShopItem::Count) ? ShopItem::Balloon : ShopItem(EnumValue(d) + 1);
+}
+
 uint64_t gSamePriceThroughoutPark;
 
 // clang-format off

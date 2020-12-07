@@ -1982,7 +1982,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, screenCoords);
     screenCoords.y += 10;
 
-    for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item = ShopItem(EnumValue(item) + 1))
+    for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
     {
         if (screenCoords.y >= maxY)
             break;

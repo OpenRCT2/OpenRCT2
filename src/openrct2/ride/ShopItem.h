@@ -13,7 +13,7 @@
 #include "../util/Util.h"
 
 struct Ride;
-enum PeepThoughtType : uint8_t;
+enum class PeepThoughtType : uint8_t;
 
 enum class ShopItem : uint8_t
 {
@@ -71,6 +71,8 @@ enum class ShopItem : uint8_t
     Count = 56,
     None = 255
 };
+
+ShopItem& operator++(ShopItem& d, int);
 
 using ShopItemIndex = ShopItem;
 
