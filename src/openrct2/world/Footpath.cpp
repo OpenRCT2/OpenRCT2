@@ -13,7 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.h"
 #include "../actions/FootpathRemoveAction.h"
-#include "../actions/LandSetRightsAction.hpp"
+#include "../actions/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"

@@ -1,0 +1,67 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#pragma once
+
+#include "GameAction.h"
+
+DEFINE_GAME_ACTION(LandSetHeightAction, GAME_COMMAND_SET_LAND_HEIGHT, GameActions::Result)
+{
+private:
+    CoordsXY _coords;
+    uint8_t _height{};
+    uint8_t _style{};
+
+    rct_string_id CheckParameters() const;
+    TileElement* CheckTreeObstructions() const;
+    money32 GetSmallSceneryRemovalCost() const;
+    void SmallSceneryRemoval() const;
+    rct_string_id CheckRideSupports() const;
+    TileElement* CheckFloatingStructures(TileElement * surfaceElement, uint8_t zCorner) const;
+    TileElement* CheckUnremovableObstructions(TileElement * surfaceElement, uint8_t zCorner) const;
+    money32 GetSurfaceHeightChangeCost(SurfaceElement * surfaceElement) const;
+    void SetSurfaceHeight(TileElement * surfaceElement) const;
+
+    /**
+     *
+     *  rct2: 0x00663CB9
+     */
+    static int32_t map_set_land_height_clear_func(
+        TileElement * *tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+        [[maybe_unused]] money32* price)
+    {
+        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+            return 0;
+
+        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            return 0;
+
+        return 1;
+    }
+
+public:
+    LandSetHeightAction() = default;
+    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
+        : _coords(coords)
+        , _height(height)
+        , _style(style)
+    {
+    }
+
+    uint16_t GetActionFlags() const override
+    {
+        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+    }
+
+    void Serialise(DataSerialiser & stream) override;
+
+    GameActions::Result::Ptr Query() const override;
+
+    GameActions::Result::Ptr Execute() const override;
+};

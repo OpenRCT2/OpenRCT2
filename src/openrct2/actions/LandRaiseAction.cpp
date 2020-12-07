@@ -8,11 +8,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "LandRaiseAction.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
-#include "../actions/LandSetHeightAction.hpp"
+#include "../actions/LandSetHeightAction.h"
 #include "../audio/audio.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -24,134 +24,109 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandRaiseAction, GAME_COMMAND_RAISE_LAND, GameActions::Result)
+void LandRaiseAction::Serialise(DataSerialiser& stream)
 {
-private:
-    CoordsXY _coords;
-    MapRange _range;
-    uint8_t _selectionType{};
+    GameAction::Serialise(stream);
 
-public:
-    LandRaiseAction() = default;
-    LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
-        : _coords(coords)
-        , _range(range)
-        , _selectionType(selectionType)
+    stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
+}
+
+GameActions::Result::Ptr LandRaiseAction::Query() const
+{
+    return QueryExecute(false);
+}
+
+GameActions::Result::Ptr LandRaiseAction::Execute() const
+{
+    return QueryExecute(true);
+}
+
+GameActions::Result::Ptr LandRaiseAction::QueryExecute(bool isExecuting) const
+{
+    auto res = MakeResult();
+    size_t tableRow = _selectionType;
+
+    // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
+    if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
+        tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
+
+    // Keep big coordinates within map boundaries
+    auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
+    auto bX = std::min<decltype(_range.GetRight())>(gMapSizeMaxXY, _range.GetRight());
+    auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
+    auto bY = std::min<decltype(_range.GetBottom())>(gMapSizeMaxXY, _range.GetBottom());
+
+    MapRange validRange = MapRange{ aX, aY, bX, bY };
+
+    res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+    res->Expenditure = ExpenditureType::Landscaping;
+
+    if (isExecuting)
     {
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
     }
 
-    uint16_t GetActionFlags() const override
+    uint8_t minHeight = map_get_lowest_land_height(validRange);
+    bool withinOwnership = false;
+
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
     {
-        return GameAction::GetActionFlags();
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        return QueryExecute(false);
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        return QueryExecute(true);
-    }
-
-private:
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
-    {
-        auto res = MakeResult();
-        size_t tableRow = _selectionType;
-
-        // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
-        if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
-            tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
-
-        // Keep big coordinates within map boundaries
-        auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-        auto bX = std::min<decltype(_range.GetRight())>(gMapSizeMaxXY, _range.GetRight());
-        auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-        auto bY = std::min<decltype(_range.GetBottom())>(gMapSizeMaxXY, _range.GetBottom());
-
-        MapRange validRange = MapRange{ aX, aY, bX, bY };
-
-        res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
-        res->Expenditure = ExpenditureType::Landscaping;
-
-        if (isExecuting)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
-            OpenRCT2::Audio::Play3D(
-                OpenRCT2::Audio::SoundId::PlaceItem, { _coords.x, _coords.y, tile_element_height(_coords) });
-        }
+            if (!LocationValid({ x, y }))
+                continue;
+            auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
+            if (surfaceElement == nullptr)
+                continue;
 
-        uint8_t minHeight = map_get_lowest_land_height(validRange);
-        bool withinOwnership = false;
-
-        for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
-        {
-            for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+            if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             {
-                if (!LocationValid({ x, y }))
-                    continue;
-                auto* surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
-                if (surfaceElement == nullptr)
-                    continue;
-
-                if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+                if (!map_is_location_in_park(CoordsXY{ x, y }))
                 {
-                    if (!map_is_location_in_park(CoordsXY{ x, y }))
-                    {
-                        continue;
-                    }
-                }
-                withinOwnership = true;
-
-                uint8_t height = surfaceElement->base_height;
-
-                if (height > minHeight)
                     continue;
-
-                uint8_t currentSlope = surfaceElement->GetSlope();
-                uint8_t newSlope = tile_element_raise_styles[tableRow][currentSlope];
-                if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
-                    height += 2;
-
-                newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
-
-                auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
-                landSetHeightAction.SetFlags(GetFlags());
-                auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
-                                          : GameActions::QueryNested(&landSetHeightAction);
-                if (result->Error == GameActions::Status::Ok)
-                {
-                    res->Cost += result->Cost;
-                }
-                else
-                {
-                    result->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
-                    return result;
                 }
             }
+            withinOwnership = true;
+
+            uint8_t height = surfaceElement->base_height;
+
+            if (height > minHeight)
+                continue;
+
+            uint8_t currentSlope = surfaceElement->GetSlope();
+            uint8_t newSlope = tile_element_raise_styles[tableRow][currentSlope];
+            if (newSlope & SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT)
+                height += 2;
+
+            newSlope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
+
+            auto landSetHeightAction = LandSetHeightAction({ x, y }, height, newSlope);
+            landSetHeightAction.SetFlags(GetFlags());
+            auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
+                                      : GameActions::QueryNested(&landSetHeightAction);
+            if (result->Error == GameActions::Status::Ok)
+            {
+                res->Cost += result->Cost;
+            }
+            else
+            {
+                result->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
+                return result;
+            }
         }
-
-        if (!withinOwnership)
-        {
-            GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
-                GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
-            ownerShipResult->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
-            return ownerShipResult;
-        }
-
-        // Force ride construction to recheck area
-        _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
-
-        return res;
     }
-};
+
+    if (!withinOwnership)
+    {
+        GameActions::Result::Ptr ownerShipResult = std::make_unique<GameActions::Result>(
+            GameActions::Status::Disallowed, STR_LAND_NOT_OWNED_BY_PARK);
+        ownerShipResult->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
+        return ownerShipResult;
+    }
+
+    // Force ride construction to recheck area
+    _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
+
+    return res;
+}

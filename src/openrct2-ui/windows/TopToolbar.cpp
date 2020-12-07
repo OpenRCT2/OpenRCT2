@@ -30,9 +30,9 @@
 #include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/ClearAction.h>
 #include <openrct2/actions/FootpathAdditionPlaceAction.h>
-#include <openrct2/actions/LandLowerAction.hpp>
-#include <openrct2/actions/LandRaiseAction.hpp>
-#include <openrct2/actions/LandSmoothAction.hpp>
+#include <openrct2/actions/LandLowerAction.h>
+#include <openrct2/actions/LandRaiseAction.h>
+#include <openrct2/actions/LandSmoothAction.h>
 #include <openrct2/actions/LargeSceneryPlaceAction.hpp>
 #include <openrct2/actions/LargeScenerySetColourAction.hpp>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
