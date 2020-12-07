@@ -35,7 +35,7 @@
 #include <openrct2/actions/LandSmoothAction.h>
 #include <openrct2/actions/LargeSceneryPlaceAction.h>
 #include <openrct2/actions/LargeScenerySetColourAction.h>
-#include <openrct2/actions/LoadOrQuitAction.hpp>
+#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>
 #include <openrct2/actions/SmallSceneryPlaceAction.h>

@@ -12,7 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../Context.h"
-#    include "../actions/NetworkModifyGroupAction.hpp"
+#    include "../actions/NetworkModifyGroupAction.h"
 #    include "../actions/PlayerKickAction.hpp"
 #    include "../actions/PlayerSetGroupAction.hpp"
 #    include "../network/NetworkAction.h"

@@ -24,7 +24,7 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "GameAction.h"
-#include "MazeSetTrackAction.hpp"
+#include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.hpp"
 
 using namespace OpenRCT2;

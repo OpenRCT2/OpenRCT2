@@ -17,7 +17,7 @@
 #include "../actions/FootpathRemoveAction.h"
 #include "../actions/LargeSceneryPlaceAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
-#include "../actions/MazePlaceTrackAction.hpp"
+#include "../actions/MazePlaceTrackAction.h"
 #include "../actions/RideCreateAction.hpp"
 #include "../actions/RideEntranceExitPlaceAction.hpp"
 #include "../actions/RideSetName.hpp"

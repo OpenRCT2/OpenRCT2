@@ -19,7 +19,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
-#include "actions/LoadOrQuitAction.hpp"
+#include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"

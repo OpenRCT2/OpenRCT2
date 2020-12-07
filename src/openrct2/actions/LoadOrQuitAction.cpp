@@ -7,65 +7,38 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "LoadOrQuitAction.h"
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
-#include "GameAction.h"
 
-enum class LoadOrQuitModes : uint8_t
+void LoadOrQuitAction::Serialise(DataSerialiser& stream)
 {
-    OpenSavePrompt,
-    CloseSavePrompt
-};
+    GameAction::Serialise(stream);
 
-DEFINE_GAME_ACTION(LoadOrQuitAction, GAME_COMMAND_LOAD_OR_QUIT, GameActions::Result)
+    stream << DS_TAG(_mode) << DS_TAG(_savePromptMode);
+}
+
+GameActions::Result::Ptr LoadOrQuitAction::Query() const
 {
-private:
-    LoadOrQuitModes _mode{};
-    PromptMode _savePromptMode{ PromptMode::SaveBeforeLoad };
+    return std::make_unique<GameActions::Result>();
+}
 
-public:
-    LoadOrQuitAction() = default;
-    LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode = PromptMode::SaveBeforeLoad)
-        : _mode(mode)
-        , _savePromptMode(savePromptMode)
+GameActions::Result::Ptr LoadOrQuitAction::Execute() const
+{
+    auto mode = static_cast<LoadOrQuitModes>(_mode);
+    switch (mode)
     {
+        case LoadOrQuitModes::OpenSavePrompt:
+            gSavePromptMode = _savePromptMode;
+            context_open_window(WC_SAVE_PROMPT);
+            break;
+        case LoadOrQuitModes::CloseSavePrompt:
+            window_close_by_class(WC_SAVE_PROMPT);
+            break;
+        default:
+            game_load_or_quit_no_save_prompt();
+            break;
     }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::ClientOnly | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_mode) << DS_TAG(_savePromptMode);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        return std::make_unique<GameActions::Result>();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto mode = static_cast<LoadOrQuitModes>(_mode);
-        switch (mode)
-        {
-            case LoadOrQuitModes::OpenSavePrompt:
-                gSavePromptMode = _savePromptMode;
-                context_open_window(WC_SAVE_PROMPT);
-                break;
-            case LoadOrQuitModes::CloseSavePrompt:
-                window_close_by_class(WC_SAVE_PROMPT);
-                break;
-            default:
-                game_load_or_quit_no_save_prompt();
-                break;
-        }
-        return std::make_unique<GameActions::Result>();
-    }
-};
+    return std::make_unique<GameActions::Result>();
+}

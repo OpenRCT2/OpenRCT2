@@ -9,7 +9,7 @@
 
 #include "GameAction.h"
 #include "GuestSetNameAction.h"
-#include "MazeSetTrackAction.hpp"
+#include "MazeSetTrackAction.h"
 #include "PlaceParkEntranceAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "RideCreateAction.hpp"

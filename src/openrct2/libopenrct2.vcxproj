@@ -78,10 +78,10 @@
     <ClInclude Include="actions\LargeSceneryPlaceAction.h" />
     <ClInclude Include="actions\LargeSceneryRemoveAction.h" />
     <ClInclude Include="actions\LargeScenerySetColourAction.h" />
-    <ClInclude Include="actions\LoadOrQuitAction.hpp" />
-    <ClInclude Include="actions\MazePlaceTrackAction.hpp" />
-    <ClInclude Include="actions\MazeSetTrackAction.hpp" />
-    <ClInclude Include="actions\NetworkModifyGroupAction.hpp" />
+    <ClInclude Include="actions\LoadOrQuitAction.h" />
+    <ClInclude Include="actions\MazePlaceTrackAction.h" />
+    <ClInclude Include="actions\MazeSetTrackAction.h" />
+    <ClInclude Include="actions\NetworkModifyGroupAction.h" />
     <ClInclude Include="actions\ParkEntranceRemoveAction.hpp" />
     <ClInclude Include="actions\ParkMarketingAction.hpp" />
     <ClInclude Include="actions\ParkSetDateAction.hpp" />
