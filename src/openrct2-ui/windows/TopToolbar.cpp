@@ -33,8 +33,8 @@
 #include <openrct2/actions/LandLowerAction.h>
 #include <openrct2/actions/LandRaiseAction.h>
 #include <openrct2/actions/LandSmoothAction.h>
-#include <openrct2/actions/LargeSceneryPlaceAction.hpp>
-#include <openrct2/actions/LargeScenerySetColourAction.hpp>
+#include <openrct2/actions/LargeSceneryPlaceAction.h>
+#include <openrct2/actions/LargeScenerySetColourAction.h>
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>

@@ -20,7 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/BalloonPressAction.h>
 #include <openrct2/actions/FootpathAdditionRemoveAction.h>
-#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
+#include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/ParkEntranceRemoveAction.hpp>
 #include <openrct2/actions/SmallSceneryRemoveAction.h>
 #include <openrct2/actions/WallRemoveAction.hpp>

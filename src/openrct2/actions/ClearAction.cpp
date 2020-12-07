@@ -18,7 +18,7 @@
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "FootpathRemoveAction.h"
-#include "LargeSceneryRemoveAction.hpp"
+#include "LargeSceneryRemoveAction.h"
 #include "SmallSceneryRemoveAction.h"
 #include "WallRemoveAction.hpp"
 

@@ -75,9 +75,9 @@
     <ClInclude Include="actions\LandSetHeightAction.h" />
     <ClInclude Include="actions\LandSetRightsAction.h" />
     <ClInclude Include="actions\LandSmoothAction.h" />
-    <ClInclude Include="actions\LargeSceneryPlaceAction.hpp" />
-    <ClInclude Include="actions\LargeSceneryRemoveAction.hpp" />
-    <ClInclude Include="actions\LargeScenerySetColourAction.hpp" />
+    <ClInclude Include="actions\LargeSceneryPlaceAction.h" />
+    <ClInclude Include="actions\LargeSceneryRemoveAction.h" />
+    <ClInclude Include="actions\LargeScenerySetColourAction.h" />
     <ClInclude Include="actions\LoadOrQuitAction.hpp" />
     <ClInclude Include="actions\MazePlaceTrackAction.hpp" />
     <ClInclude Include="actions\MazeSetTrackAction.hpp" />
