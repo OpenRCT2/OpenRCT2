@@ -15,7 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/BannerRemoveAction.h"
-#include "../actions/FootpathRemoveAction.hpp"
+#include "../actions/FootpathRemoveAction.h"
 #include "../actions/LandLowerAction.hpp"
 #include "../actions/LandRaiseAction.hpp"
 #include "../actions/LandSetHeightAction.hpp"

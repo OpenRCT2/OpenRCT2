@@ -16,7 +16,7 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
-#include "../actions/ClimateSetAction.hpp"
+#include "../actions/ClimateSetAction.h"
 #include "../actions/RideSetPriceAction.hpp"
 #include "../actions/RideSetSetting.hpp"
 #include "../actions/SetCheatAction.hpp"

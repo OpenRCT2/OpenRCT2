@@ -13,7 +13,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../actions/BannerRemoveAction.h"
-#include "../actions/FootpathAdditionRemoveAction.hpp"
+#include "../actions/FootpathAdditionRemoveAction.h"
 #include "../actions/LargeSceneryRemoveAction.hpp"
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.hpp"

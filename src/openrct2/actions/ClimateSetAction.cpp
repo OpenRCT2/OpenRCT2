@@ -7,57 +7,35 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "ClimateSetAction.h"
 
-#include "../world/Climate.h"
-#include "GameAction.h"
-
-DEFINE_GAME_ACTION(ClimateSetAction, GAME_COMMAND_SET_CLIMATE, GameActions::Result)
+void ClimateSetAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-private:
-    ClimateType _climate{};
+    visitor.Visit("climate", _climate);
+}
 
-public:
-    ClimateSetAction() = default;
-    ClimateSetAction(ClimateType climate)
-        : _climate(climate)
+void ClimateSetAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_climate);
+}
+
+GameActions::Result::Ptr ClimateSetAction::Query() const
+{
+    if (_climate >= ClimateType::Count)
     {
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
     }
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
-    {
-        visitor.Visit("climate", _climate);
-    }
+    return std::make_unique<GameActions::Result>();
+}
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+GameActions::Result::Ptr ClimateSetAction::Execute() const
+{
+    gClimate = ClimateType{ _climate };
 
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
+    gfx_invalidate_screen();
 
-        stream << DS_TAG(_climate);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_climate >= ClimateType::Count)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
-        }
-
-        return std::make_unique<GameActions::Result>();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        gClimate = ClimateType{ _climate };
-
-        gfx_invalidate_screen();
-
-        return std::make_unique<GameActions::Result>();
-    }
-};
+    return std::make_unique<GameActions::Result>();
+}

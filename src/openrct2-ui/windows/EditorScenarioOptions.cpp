@@ -17,7 +17,7 @@
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/ClimateSetAction.hpp>
+#include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>

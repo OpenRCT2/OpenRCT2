@@ -28,8 +28,8 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/BannerPlaceAction.h>
 #include <openrct2/actions/BannerSetColourAction.h>
-#include <openrct2/actions/ClearAction.hpp>
-#include <openrct2/actions/FootpathAdditionPlaceAction.hpp>
+#include <openrct2/actions/ClearAction.h>
+#include <openrct2/actions/FootpathAdditionPlaceAction.h>
 #include <openrct2/actions/LandLowerAction.hpp>
 #include <openrct2/actions/LandRaiseAction.hpp>
 #include <openrct2/actions/LandSmoothAction.hpp>

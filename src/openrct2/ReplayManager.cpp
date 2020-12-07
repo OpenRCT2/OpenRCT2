@@ -15,7 +15,7 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
-#include "actions/FootpathPlaceAction.hpp"
+#include "actions/FootpathPlaceAction.h"
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.hpp"
 #include "actions/RideSetSetting.hpp"

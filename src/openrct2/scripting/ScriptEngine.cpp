@@ -12,7 +12,7 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
-#    include "../actions/CustomAction.hpp"
+#    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.hpp"
 #    include "../actions/StaffHireNewAction.hpp"

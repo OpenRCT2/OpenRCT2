@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "FootpathAdditionPlaceAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -20,197 +20,172 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Wall.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathAdditionPlaceAction, GAME_COMMAND_PLACE_FOOTPATH_ADDITION, GameActions::Result)
+void FootpathAdditionPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-private:
-    CoordsXYZ _loc;
-    ObjectEntryIndex _pathItemType{};
+    visitor.Visit(_loc);
+    visitor.Visit("object", _pathItemType);
+}
 
-public:
-    FootpathAdditionPlaceAction() = default;
-    FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
-        : _loc(loc)
-        , _pathItemType(pathItemType)
+void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
+}
+
+GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
+{
+    auto res = MakeResult();
+    res->Expenditure = ExpenditureType::Landscaping;
+    res->Position = _loc;
+    if (!LocationValid(_loc))
     {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
     {
-        visitor.Visit(_loc);
-        visitor.Visit("object", _pathItemType);
+        return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    uint16_t GetActionFlags() const override
+    if (_loc.z < FootpathMinHeight)
     {
-        return GameAction::GetActionFlags();
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    if (_loc.z > FootpathMaxHeight)
     {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
     }
 
-    GameActions::Result::Ptr Query() const override
+    auto tileElement = map_get_footpath_element(_loc);
+    if (tileElement == nullptr)
     {
-        auto res = MakeResult();
-        res->Expenditure = ExpenditureType::Landscaping;
-        res->Position = _loc;
-        if (!LocationValid(_loc))
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
-        }
+        log_error("Could not find path element.");
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+    }
 
-        if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
-        {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
-        }
+    auto pathElement = tileElement->AsPath();
+    if (pathElement->IsLevelCrossing(_loc))
+    {
+        return MakeResult(
+            GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
+            STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
+    }
 
-        if (_loc.z < FootpathMinHeight)
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
-        }
+    // No change
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken()))
+    {
+        return res;
+    }
 
-        if (_loc.z > FootpathMaxHeight)
+    if (_pathItemType != 0)
+    {
+        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
+        if (sceneryEntry == nullptr)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
-        }
-
-        auto tileElement = map_get_footpath_element(_loc);
-        if (tileElement == nullptr)
-        {
-            log_error("Could not find path element.");
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
+        uint16_t sceneryFlags = sceneryEntry->path_bit.flags;
 
-        auto pathElement = tileElement->AsPath();
-        if (pathElement->IsLevelCrossing(_loc))
+        if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
         {
             return MakeResult(
-                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
-                STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
         }
 
-        // No change
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType
-            && !(pathElement->IsBroken()))
+        if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
         {
-            return res;
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
         }
 
-        if (_pathItemType != 0)
+        if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
+            && (pathElement->GetEdges()) == 0x0F)
         {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
-            if (sceneryEntry == nullptr)
-            {
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
-            }
-            uint16_t sceneryFlags = sceneryEntry->path_bit.flags;
-
-            if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
-            {
-                return MakeResult(
-                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
-                    STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
-            }
-
-            if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
-            {
-                return MakeResult(
-                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
-                    STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
-            }
-
-            if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
-                && (pathElement->GetEdges()) == 0x0F)
-            {
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
-            }
-
-            if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
-            {
-                return MakeResult(
-                    GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
-                    STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
-            }
-
-            res->Cost = sceneryEntry->path_bit.price;
-        }
-
-        // Should place a ghost?
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            // Check if there is something on the path already
-            if (pathElement->HasAddition())
-            {
-                return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE);
-            }
-        }
-        return res;
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto res = MakeResult();
-        res->Position = _loc;
-        res->Expenditure = ExpenditureType::Landscaping;
-
-        auto tileElement = map_get_footpath_element(_loc);
-        auto pathElement = tileElement->AsPath();
-
-        if (pathElement == nullptr)
-        {
-            log_error("Could not find path element.");
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
         }
 
-        // No change
-        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken())
-            && !pathElement->AdditionIsGhost())
+        if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
         {
-            return res;
+            return MakeResult(
+                GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        if (_pathItemType != 0)
-        {
-            rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
-            if (sceneryEntry == nullptr)
-            {
-                return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
-            }
+        res->Cost = sceneryEntry->path_bit.price;
+    }
 
-            res->Cost = sceneryEntry->path_bit.price;
+    // Should place a ghost?
+    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+    {
+        // Check if there is something on the path already
+        if (pathElement->HasAddition())
+        {
+            return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE);
         }
+    }
+    return res;
+}
 
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            pathElement->SetAdditionIsGhost(true);
-        }
-        else
-        {
-            footpath_interrupt_peeps(_loc);
-        }
+GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
+{
+    auto res = MakeResult();
+    res->Position = _loc;
+    res->Expenditure = ExpenditureType::Landscaping;
 
-        if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-            || (_pathItemType == 0 && pathElement->AdditionIsGhost()))
-        {
-            pathElement->SetAdditionIsGhost(false);
-        }
+    auto tileElement = map_get_footpath_element(_loc);
+    auto pathElement = tileElement->AsPath();
 
-        pathElement->SetAddition(_pathItemType);
-        pathElement->SetIsBroken(false);
-        if (_pathItemType != 0)
-        {
-            rct_scenery_entry* scenery_entry = get_footpath_item_entry(_pathItemType - 1);
-            if (scenery_entry != nullptr && scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
-            {
-                pathElement->SetAdditionStatus(255);
-            }
-        }
-        map_invalidate_tile_full(_loc);
+    if (pathElement == nullptr)
+    {
+        log_error("Could not find path element.");
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+    }
+
+    // No change
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && pathElement->GetAddition() == _pathItemType && !(pathElement->IsBroken())
+        && !pathElement->AdditionIsGhost())
+    {
         return res;
     }
-};
+
+    if (_pathItemType != 0)
+    {
+        rct_scenery_entry* sceneryEntry = get_footpath_item_entry(_pathItemType - 1);
+        if (sceneryEntry == nullptr)
+        {
+            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
+        }
+
+        res->Cost = sceneryEntry->path_bit.price;
+    }
+
+    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
+    {
+        pathElement->SetAdditionIsGhost(true);
+    }
+    else
+    {
+        footpath_interrupt_peeps(_loc);
+    }
+
+    if ((_pathItemType != 0 && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        || (_pathItemType == 0 && pathElement->AdditionIsGhost()))
+    {
+        pathElement->SetAdditionIsGhost(false);
+    }
+
+    pathElement->SetAddition(_pathItemType);
+    pathElement->SetIsBroken(false);
+    if (_pathItemType != 0)
+    {
+        rct_scenery_entry* scenery_entry = get_footpath_item_entry(_pathItemType - 1);
+        if (scenery_entry != nullptr && scenery_entry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
+        {
+            pathElement->SetAdditionStatus(255);
+        }
+    }
+    map_invalidate_tile_full(_loc);
+    return res;
+}

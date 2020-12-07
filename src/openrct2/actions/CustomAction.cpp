@@ -7,60 +7,28 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
-
 #ifdef ENABLE_SCRIPTING
+#    include "CustomAction.h"
 
 #    include "../Context.h"
 #    include "../scripting/ScriptEngine.h"
-#    include "GameAction.h"
 
-DEFINE_GAME_ACTION(CustomAction, GAME_COMMAND_CUSTOM, GameActions::Result)
+void CustomAction::Serialise(DataSerialiser& stream)
 {
-private:
-    std::string _id;
-    std::string _json;
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_id) << DS_TAG(_json);
+}
 
-public:
-    CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json)
-        : _id(id)
-        , _json(json)
-    {
-    }
+GameActions::Result::Ptr CustomAction::Query() const
+{
+    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
+}
 
-    std::string GetId() const
-    {
-        return _id;
-    }
-
-    std::string GetJson() const
-    {
-        return _json;
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_id) << DS_TAG(_json);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-        return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-        return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);
-    }
-};
+GameActions::Result::Ptr CustomAction::Execute() const
+{
+    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);
+}
 
 #endif
