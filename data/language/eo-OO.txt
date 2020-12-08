@@ -30,7 +30,7 @@ STR_0025    :Ŝtiprajdo
 STR_0026    :Rapidfluorajdo
 STR_0027    :Albatiĝantaj Ĉaroj
 STR_0028    :Svingiĝanta Ŝipo
-STR_0029    :Svingiĝanta Inversigiĝanta Ŝipo
+STR_0029    :Svingiĝanta Inversiĝanta Ŝipo
 STR_0030    :Manĝaĵbudo
 STR_0031    :Nekonata Budo (1D)
 STR_0032    :Trinkaĵbudo
@@ -58,7 +58,7 @@ STR_0053    :Ŝtala Onda Fervojo
 STR_0054    :Ligna Onda Fervojo
 STR_0055    :Onda Fervojo kun Flanka Froto
 STR_0056    :Ŝtala Sovaĝa Muŝo
-STR_0057    :Multaj-Dimensiaj Onda Fervojo
+STR_0057    :Onda Fervojo kun Multaj Dimensioj
 STR_0058    :Nekonata Atrakcio (38)
 STR_0059    :Fluganta Onda Fervojo
 STR_0060    :Nekonata Atrakcio (3A)
@@ -102,18 +102,18 @@ STR_0515    :Onda fervojo ŝtala kun trajnoj fiksitaj sub la trako, kun multaj k
 STR_0516    :Milda onda fervojo por tiuj, kiuj ne ankoraŭ havas la kuraĝon por rajdi sur pli grandaj ondaj fervojoj
 STR_0517    :Pasaĝeroj rajdas en miniaturaj trajnoj laŭ etŝpura fervojotrako
 STR_0518    :Pasaĝeroj veturas en elektraj trajnoj laŭ monorelotrako
-STR_0519    :Pasaĝeroj rajdas en malgrandaj ĉaroj penditaj sub la unuopa-rela trako, svingiĝante libere ambaŭflanken ĉe anguloj
+STR_0519    :Pasaĝeroj rajdas en malgrandaj ĉaroj penditaj sub la trako de unu relo, svingiĝante libere ambaŭflanken ĉe anguloj
 STR_0520    :Dokplatformo, kie gastoj povas veturigi/remigi iliajn proprajn akvoveturilojn sur la akvo
 STR_0521    :Onda fervojo rapida kaj kurboplena, kun subitaj kurbiĝoj kaj krutaj malleviĝoj. La intenseco verŝajne eblos trea.
 STR_0522    :Pli malgranda onda fervojo, kie la rajdantoj sidas super la trako, kun neniu ĉaro ĉirkaŭ de ili
 STR_0523    :La rajdantoj veturas malrapide en ŝaltitaj veturiloj laŭ trakeca vojo
 STR_0524    :La liberfaloveturilo estas lanĉita pneŭmatike por supreniri altan ŝtalan turon. Tiam, tiu veturilo falas libere
-STR_0525    :Rajdantoj rapide malsupreniras kurboplenan trakon, kaj estas gviditaj nur per la kurbeco kaj turnkliniĝoj de la duoncirkla trako
+STR_0525    :Rajdantoj rapide malsupreniras kurboplenan trakon, kaj estas gviditaj nur per la kurbeco kaj turnkliniĝo de la duoncirkla trako
 STR_0526    :Pasaĝeroj veturas en turniĝanta observadokajuto, kiu supreniras altan turon
-STR_0527    :Onda fervojo glata kun ŝtala trako, kiu eblas enhavi vertikalajn lopojn
+STR_0527    :Onda fervojo glata kun ŝtala trako, kapabla je vertikalaj lopoj
 STR_0528    :Rajdantoj veturas en plenblovitaj boatetoj, kiuj malsupreniras kurboplenan duoncirklan aŭ cirklan tubotrakon
-STR_0529    :Ondaj fervojaj trajnoj kun mintrajntemo rapidas laŭ ŝtala onda fervoja trako, kiu aspektas kiel malnova fervojotrako
-STR_0530    :Ĉaroj pendas de ŝtala kablo, kiu etendiĝas de unu flanko de la atrakcio ĝis la alia, kaj tiam etendiĝas ĝis la antaŭa flanko
+STR_0529    :Trajnoj de onda fervojo kun mintrajntemo rapidas laŭ ŝtala trako de onda fervojo, kiu aspektas kiel malnova fervojotrako
+STR_0530    :Ĉaroj pendas de ŝtala kablo, kiu etendiĝas de unu flanko de la atrakcio ĝis la alia, kaj tiam returnas
 STR_0531    :Onda fervojo kompakta kun ŝtala trako, sur kie la trajno veturas tra korktiriloj kaj lopoj
 STR_0532    :Labirinto konstruita de 6-futaj altaj heĝoj aŭ muroj. La gastoj vagas en tiu labirinto, kaj eliras nur kiam ili trovas la elirejon
 STR_0533    :Ligna konstruaĵo kun interna ŝtuparo kaj ekstera spirala tobogano, kiun oni uzas kun toboganomatoj
@@ -122,48 +122,48 @@ STR_0535    :Boatoj veturas laŭ akvokanalo, kaj plaŭde malsupreniras krutajn d
 STR_0536    :Rondaj boatoj vagas laŭ larĝa akvokanalo, plaŭdas tra akvofaloj, kaj ekscitas rajdantojn per ŝaŭmantaj rapidfluoj
 STR_0537    :Gastoj albatiĝas al unu la alian per elektraj albatiĝantaj ĉaroj, kiujn ili stiras
 STR_0538    :Granda svingiĝanta piratŝipo
-STR_0539    :La ŝipo estas fiksita al brako, kiu havas kontraŭpezon al la kontraŭa flanko, kaj svingiĝas tra plenaj 360 gradoj
+STR_0539    :La ŝipo estas fiksita al brako, kiu havas kontraŭpezon ĉe la kontraŭa flanko, kaj svingiĝas tra plenaj 360 gradoj
 STR_0540    :Budo, kie gastoj povas aĉeti manĝaĵojn
 STR_0542    :Budo, kie gastoj povas aĉeti trinkaĵojn
 STR_0544    :Budo, kiu vendas memoraĵojn
 STR_0545    :Tradicia turniĝanta karuselo kun ĉizitaj lignaj ĉevaloj
 STR_0547    :Budo, kie gastoj povas atingi mapojn de la parko, kaj aĉeti ombrelojn
 STR_0548    :Necesejo-konstruaĵo
-STR_0549    :Turniĝanta granda rado kun malfermitaj seĝoj
+STR_0549    :Turniĝanta granda rado kun subĉielaj seĝoj
 STR_0550    :Rajdantoj rigardas filmon en la moviĝadosimulilo, kiun hidraŭlika brako tordas kaj movas
-STR_0551    :Kinejo, kiu montras 3D filmojn en geodezika globoforma konstruaĵo
+STR_0551    :Kinejo, kiu montras 3D-ajn filmojn en geodezika globoforma konstruaĵo
 STR_0552    :Pasaĝeroj rajdas en gondolo pendita de grandaj turniĝantaj brakoj, kiuj turniĝas antaŭen, malantaŭen, kaj renversite
 STR_0553    :Samcentraj pivotantaj ringoj permesas, ke la rajdantoj turniĝas libere ĉiudirekte
 STR_0554    :Linearaj induktaj motoroj plirapidigas la ĉaron el la stacio laŭ longa ebena trako. Poste, la ĉaro supreniras vertikalan pintaĵon, kaj tiam falas libere por reveni al la stacio
-STR_0555    :Gastoj rajdas en lifto supren aŭ malsupren, por iri de unu nivelo al alia
-STR_0556    :Pliaj larĝaj veturiloj malsupreniras ekzaktajn vertikalajn trakojn por la pleja sperto de libera-fala onda fervojo
+STR_0555    :Gastoj rajdas en lifto de vertikala turo, por iri de unu nivelo al la alia
+STR_0556    :Pliaj larĝaj veturiloj malsupreniras ekzaktajn vertikalajn trakojn por la pleja sperto de onda fervojo kun libera falo
 STR_0557    :Monaŭtomato por gastoj, kiuj ne havas sufiĉe da mono
 STR_0558    :Rajdantoj rajdas en paroj da seĝoj, kiuj turniĝas ĉirkaŭ la finoj de tri longaj turniĝantaj brakoj
 STR_0559    :Granda konstruaĵo, kiu enhavas timigajn koridorojn kaj timigajn ĉambrojn
 STR_0560    :Ejo por malsanaj gastoj, por ke ili bonsanas pli rapide
 STR_0561    :Cirkospektaklo de bestoj en granda cirkotendo
 STR_0562    :Ŝaltitaj veturiloj veturas laŭ multnivela trako, preter timiga pejzaĝo kaj specialaj efikoj
-STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinosekurzonoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da 'en-aeraj periodoj' irante super la montetoj
-STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, kaj brua, kaj ankaŭ donas 'nedirektebla' sencon, kun sufiĉe da 'en-aeraj periodoj'
-STR_0565    :Simpla ligna onda fervojo, kiu povas enhavi nur mildajn deklivojn kaj kurbiĝojn. Nur la radoj ambaŭflanke, kiu donas froton, kaj la gravito, fiksas la ĉarojn sur la trakon
-STR_0566    :Unuopaj ondaj fervojaj ĉaroj rapidas sur kompakta zigzaga trakdesegnaĵo, kiu enhavas subitajn angulojn kaj mallongajn subitajn malleviĝojn
+STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da 'en-aeraj periodoj' irante super la montetoj
+STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas 'nedirekteblan' sencon, kun sufiĉe da 'en-aeraj periodoj'
+STR_0565    :Simpla ligna onda fervojo, kapabla je nur mildaj deklivoj kaj kurbiĝoj. Nur la radoj ambaŭflanke, kiuj donas froton, kaj la gravito, fiksas la ĉarojn sur la trako
+STR_0566    :Unuopaj ĉaroj de onda fervojo rapidas sur kompakta zigzaga trakdesegnaĵo, konsista el subitaj anguloj kaj mallongaj subitaj malleviĝoj
 STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigoj
 STR_0569    :Rajdantoj, kiuj rajdas en specialaj jungaĵoj sub la trako, flugas tra la aero por sperti la sencon de flugado
 STR_0571    :Rondaj ĉaroj turniĝas veturante laŭ la zigzaga ligna trako
 STR_0572    :Grandaj boatoj veturas laŭ larĝa akvokanalo, supreniras deklivojn per transportbendo, kaj plirapidiĝas malsuprenirante krutajn deklivojn, por trempi la rajdantojn per giganta plaŭdo
-STR_0573    :Rajdantoj, per pedalado, stiras helikopteroformajn veturilojn, kiuj estas gviditaj per ŝtala trako
+STR_0573    :Rajdantoj, per pedalado, stiras helikopteroformajn veturilojn laŭ ŝtala trako
 STR_0574    :Rajdantoj, kiuj estas en kuŝiĝanta pozicio, kaj kiuj estas tenitaj per specialaj jungaĵoj, veturas tra kurboplena trako kaj inversigoj, aŭ fronte al la ĉielo, aŭ fronte al la tero
 STR_0575    :Ŝaltitaj trajnoj penditaj de unuopa relo transportas homojn ĉirkaŭ la parko
-STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj ŝanĝas direkton ĉe specialaj trakpartoj
-STR_0578    :Ĉaroj veturas laŭ trako ĉirkaŭfermita per cirklaj ringetoj, kaj trapasas krutajn malleviĝojn kaj ĉe-korajn turnadojn
+STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj ŝanĝas direkton ĉe specialaj posteniĝantaj trakpartoj
+STR_0578    :Ĉaroj veturas laŭ trako ĉirkaŭfermita per cirklaj ringetoj, trapasante krutajn malleviĝojn kaj ĉe-korajn turnadojn
 STR_0579    :Milda ludo de miniatura golfo
-STR_0580    :Giganta ŝtala onda fervojo, kiu ebligas glatajn malleviĝojn kaj montetojn pli alta ol 300 futoj
+STR_0580    :Giganta ŝtala onda fervojo, kapabla je glataj malleviĝoj kaj montetoj pli altaj ol 300 futoj
 STR_0581    :Ringo da seĝoj, milde turniĝante, estas tirata al la supro de alta turo. Tiam, la ringo falas libere, kaj haltas milde al la malsupro per magnetaj bremsoj
 STR_0582    :Gastoj rajdas en kusenveturiloj, kiujn ili stiras libere
 STR_0583    :Konstruaĵo, kiu enhavas ĉambrojn torditajn kaj koridorojn angulajn por malorienti homojn tie
-STR_0584    :Specialaj bicikloj, kiujn la rajdantoj stiras per pedalado, veturas sur ŝtala monorelotrako
+STR_0584    :Specialaj bicikloj, kiujn la rajdantoj stiras per pedalado, veturas laŭ ŝtala monorelotrako
 STR_0585    :Rajdantoj, kiuj sidas en paroj da seĝoj penditaj sub la trako, lopas kaj tordiĝas tra krutaj inversigoj
-STR_0586    :Boatoformaj ĉaroj rapidas sur onda fervoja trako por ebligi kurboplenajn kurbiĝojn kaj krutajn malleviĝojn, foje plaŭdas en akvo dum mildaj riveropartoj
+STR_0586    :Boatoformaj ĉaroj rapidas sur trako de onda fervojo por veturi tra kurboplenaj kurbiĝoj kaj krutaj malleviĝoj, kaj por foje plaŭdi en akvo dum mildaj riveropartoj
 STR_0587    :Post vigliga lanĉo povigita de aero, la trajno rapide supreniras vertikalan trakon, iras super la supro, kaj malsupreniras vertikale sur la alia flanko por reveni al la stacio
 STR_0588    :Unuopaj ĉaroj rapidas sub zigzaga trako kun harpingloformaj kurbiĝoj kaj subitaj malleviĝoj
 STR_0589    :Granda ĉaro kun temo de fluganta tapiŝo, kiu movas supren kaj malsupren cikle sur la finoj de 4 brakoj
@@ -174,13 +174,13 @@ STR_0598    :Inversigitaj trajnoj de la onda fervojo plirapidiĝas el la stacio 
 STR_0599    :Kompakta onda fervojo kun unuopaj ĉaroj kaj glataj kurboplenaj malleviĝoj
 STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
 STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigojn
-STR_0603    :Ligna onda fervojo kun stala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
+STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
 STR_0770    :Gardisto {INT32}
 STR_0771    :Amuzisto {INT32}
-STR_0777    :Parko malnomita{POP16}{POP16}
+STR_0777    :Parko sennoma{POP16}{POP16}
 STR_0778    :Afiŝo
 STR_0779    :1a
 STR_0780    :2a
@@ -241,7 +241,7 @@ STR_0834    :{SMALLFONT}{BLACK}Agordoj de disko kaj ludo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 STR_0847    :Pri 'OpenRCT2'
-STR_0850    :{WINDOW_COLOUR_2}Aŭtorrajto © 2002 Chris Sawyer, tuta rajtoj estas rezervitaj
+STR_0850    :{WINDOW_COLOUR_2}Aŭtorrajto © 2002 Chris Sawyer, tutaj rajtoj estas rezervitaj
 STR_0851    :{WINDOW_COLOUR_2}Desegnita kaj programita de Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafikoj de Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sonoj kaj muzikoj de Allister Brimble
@@ -299,18 +299,18 @@ STR_0913    :{SMALLFONT}{BLACK}Movi al pasinta parto
 STR_0914    :{SMALLFONT}{BLACK}Movi al sekva parto
 STR_0915    :{SMALLFONT}{BLACK}Konstrui la elektitan parton
 STR_0916    :{SMALLFONT}{BLACK}Malkonstrui la emfazitan parton
-STR_0917    :{SMALLFONT}{BLACK}Vertikala Malleviĝo
-STR_0918    :{SMALLFONT}{BLACK}Kruta Malkreska Deklivo
-STR_0919    :{SMALLFONT}{BLACK}Malkreska Deklivo
-STR_0920    :{SMALLFONT}{BLACK}Ebena Trakoparto
-STR_0921    :{SMALLFONT}{BLACK}Kreska Deklivo
-STR_0922    :{SMALLFONT}{BLACK}Kruta Kreska Deklivo
-STR_0923    :{SMALLFONT}{BLACK}Vertikala Leviĝo
-STR_0924    :{SMALLFONT}{BLACK}Malkreska Helico
-STR_0925    :{SMALLFONT}{BLACK}Kreska Helico
+STR_0917    :{SMALLFONT}{BLACK}Vertikala malleviĝo
+STR_0918    :{SMALLFONT}{BLACK}Kruta malkreska deklivo
+STR_0919    :{SMALLFONT}{BLACK}Malkreska deklivo
+STR_0920    :{SMALLFONT}{BLACK}Ebena trakoparto
+STR_0921    :{SMALLFONT}{BLACK}Kreska deklivo
+STR_0922    :{SMALLFONT}{BLACK}Kruta kreska deklivo
+STR_0923    :{SMALLFONT}{BLACK}Vertikala leviĝo
+STR_0924    :{SMALLFONT}{BLACK}Malkreska helico
+STR_0925    :{SMALLFONT}{BLACK}Kreska helico
 STR_0926    :Ne eblas forigi tion…
 STR_0927    :Ne eblas konstrui tion ĉi tie…
-STR_0928    :{SMALLFONT}{BLACK}Ĉenlifto, por tiri ĉarojn sur kreskaj deklivecoj
+STR_0928    :{SMALLFONT}{BLACK}Ĉenlifto, por tiri ĉarojn sur kreskaj deklivoj
 STR_0929    :'S' Kurbo (maldekstre)
 STR_0930    :'S' Kurbo (dekstre)
 STR_0931    :Vertikala Lopo (maldekstre)
@@ -377,7 +377,7 @@ STR_0991    :Staciplatformo
 STR_0992    :{SMALLFONT}{BLACK}Malkonstrui tutan atrakcion
 STR_0993    :Malkonstrui atrakcion
 STR_0994    :Malkonstruiĝi
-STR_0995    :{WINDOW_COLOUR_1}Ĉu vi vere volas malkonstrui {STRINGID}?
+STR_0995    :{WINDOW_COLOUR_1}Ĉu vi vere volas malkonstrui je {STRINGID}?
 STR_0996    :Tuta vido
 STR_0997    :{SMALLFONT}{BLACK}Elekti vidon
 STR_0998    :Ne eblas konstrui pli da stacioj por ĉi tiu atrakcio
@@ -417,7 +417,7 @@ STR_1031    :Ne eblas konstrui ĉi tion subakve!
 STR_1032    :Eblas konstrui ĉi tion nur sur akvo!
 STR_1033    :Eblas konstrui ĉi tion nur surtere!
 STR_1034    :Eblas konstrui ĉi tion nur sur tero!
-STR_1035    :La loka aŭtoritato ne permesas konstruado pli alta ol arbalteco!
+STR_1035    :La loka aŭtoritato ne permesas konstruadon pli alta ol arbalteco!
 STR_1036    :Ŝargi Ludon
 STR_1037    :Ŝargi Pejzaĝon
 STR_1038    :Ŝanĝi konservitan ludon al scenaro
@@ -741,8 +741,8 @@ STR_1355    :{WINDOW_COLOUR_2}Malleviĝoj: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversigoj: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Truoj: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}Tuta 'en-aera' daŭro: {BLACK}{COMMA2DP32} sekundoj
-STR_1359    :{WINDOW_COLOUR_2}Vicatendada daŭro: {BLACK}{COMMA16} minuto
-STR_1360    :{WINDOW_COLOUR_2}Vicatendada daŭro: {BLACK}{COMMA16} minutoj
+STR_1359    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minuto
+STR_1360    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minutoj
 STR_1361    :Ne eblas ŝanĝi rapidecon…
 STR_1362    :Ne eblas ŝanĝi rapidecon de lanĉo…
 STR_1363    :Tro alta por apogiloj!
@@ -787,14 +787,14 @@ STR_1401    :Elirejo
 STR_1402    :{SMALLFONT}{BLACK}Konstrui aŭ movi enirejon al atrakcio
 STR_1403    :{SMALLFONT}{BLACK}Konstrui aŭ movi elirejon el atrakcio
 STR_1404    :{SMALLFONT}{BLACK}Turni 90°
-STR_1405    :{SMALLFONT}{BLACK}Spegulo-bildigi
+STR_1405    :{SMALLFONT}{BLACK}Speguli bildon
 STR_1406    :{SMALLFONT}{BLACK}Baskuligi pejzaĝon (se disponebla)
 STR_1407    :{WINDOW_COLOUR_2}Konstrui ĉi tion…
 STR_1408    :{WINDOW_COLOUR_2}Kosto: {BLACK}{CURRENCY}
 STR_1409    :Platformo por Eniri/Eliri
 STR_1410    :Vertikala Turo
 STR_1411    :{STRINGID} obstrukcas
-STR_1412    :{WINDOW_COLOUR_3}Protokolado de datumoj ne estas disponebla por ĉi tia atrakcio
+STR_1412    :{WINDOW_COLOUR_3}Protokolado de datumoj ne disponeblas por ĉi tia atrakcio
 STR_1413    :{WINDOW_COLOUR_3}Protokolado de datumoj komenciĝos kiam la sekva {STRINGID} ekveturas el {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Rapideco
@@ -1010,7 +1010,7 @@ STR_1624    :{SMALLFONT}“Mi ne pagas tiom por bovaĵaj nudeloj de {STRINGID}�
 STR_1625    :{SMALLFONT}“Mi ne pagas tiom por frititaj riznudeloj de {STRINGID}”
 STR_1626    :{SMALLFONT}“Mi ne pagas tiom por huntuna supo de {STRINGID}”
 STR_1627    :{SMALLFONT}“Mi ne pagas tiom por knela supo de {STRINGID}”
-STR_1628    :{SMALLFONT}“Mi ne pagas tiom por frukotsuko de {STRINGID}”
+STR_1628    :{SMALLFONT}“Mi ne pagas tiom por fruktosuko de {STRINGID}”
 STR_1629    :{SMALLFONT}“Mi ne pagas tiom por sojlakto de {STRINGID}”
 STR_1630    :{SMALLFONT}“Mi ne pagas tiom por suĝongvao de {STRINGID}”
 STR_1631    :{SMALLFONT}“Mi ne pagas tiom por subsandviĉo de {STRINGID}”
@@ -1108,7 +1108,7 @@ STR_1724    :Ne eblas fermi parkon…
 STR_1725    :Ne eblas aĉeti bienon…
 STR_1726    :Bieno ne estas aĉetebla!
 STR_1727    :Rajtoj de konstruado ne estas aĉeteblaj!
-STR_1728    :Ne eblas aĉeti rajtoj de konstruado ĉi tie…
+STR_1728    :Ne eblas aĉeti rajtojn de konstruado ĉi tie…
 STR_1729    :Bieno ne estas posedata de parko!
 STR_1730    :{RED}Fermita
 STR_1731    :{WHITE}{STRINGID} - - 
@@ -1164,7 +1164,7 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaŭtokostumo
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Banditokostumo
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Ŝerifokostumo
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratokostumo
-STR_1790    :{SMALLFONT}{BLACK}Elekti uniformkoloron por tiaspecaj dungitoj
+STR_1790    :{SMALLFONT}{BLACK}Elekti uniformkoloron de tiaj dungitoj
 STR_1791    :{WINDOW_COLOUR_2}Uniformkoloro:
 STR_1792    :Reagas al paneovoko de {STRINGID}
 STR_1793    :Iras al {STRINGID} por inspekto
@@ -1174,8 +1174,8 @@ STR_1796    :Paneita kaj bezonas riparon
 STR_1798    :Akvoturno
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :Sekuriga malŝaltado
-STR_1801    :Sekurzonoj ne eblas malŝlosiĝi
-STR_1802    :Sekurzonoj ne eblas ŝlosiĝi
+STR_1801    :Bridoj ne eblas malŝlosiĝi
+STR_1802    :Bridoj ne eblas ŝlosiĝi
 STR_1803    :Pordoj ne eblas malfermi
 STR_1804    :Pordoj ne eblas fermi
 STR_1805    :Paneo de veturilo
@@ -1224,8 +1224,8 @@ STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} gastoj
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} gastoj
 STR_1849    :{WINDOW_COLOUR_2}Ludi muzikon
 STR_1850    :{SMALLFONT}{BLACK}Elekti ĉu muziko devus ludi por ĉi tiu atrakcio
-STR_1851    :{WINDOW_COLOUR_2}Kosto por funkciado: {BLACK}po {CURRENCY2DP} por horo
-STR_1852    :{WINDOW_COLOUR_2}Kosto por funkciado: {BLACK}Nekonata
+STR_1851    :{WINDOW_COLOUR_2}Kosto por funkcii: {BLACK}po {CURRENCY2DP} por horo
+STR_1852    :{WINDOW_COLOUR_2}Kosto por funkcii: {BLACK}Nekonata
 STR_1853    :{WINDOW_COLOUR_2}Konstruita: {BLACK}Ĉi-jare
 STR_1854    :{WINDOW_COLOUR_2}Konstruita: {BLACK}Lastjare
 STR_1855    :{WINDOW_COLOUR_2}Konstruita: {BLACK}Antaŭ {COMMA16} jaroj
@@ -1530,7 +1530,7 @@ STR_2169    :Brecon
 STR_2170    :Varman Ĉokoladon
 STR_2171    :Glacian Teon
 STR_2172    :Funelkukon
-STR_2173    :paron de Sunokulvitroj
+STR_2173    :paron da Sunokulvitroj
 STR_2174    :iom da Bovaĵaj Nudeloj
 STR_2175    :iom da Frititaj Riznudeloj
 STR_2176    :iom da Huntuna Supo
@@ -1583,7 +1583,7 @@ STR_2225    :{WINDOW_COLOUR_2}Mono: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}Parkvaloro: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}Firmvaloro: {BLACK}{CURRENCY}
 STR_2228    :{WINDOW_COLOUR_2}Profito de pasinta monato pro vendado de{NEWLINE}manĝaĵoj/trinkaĵoj kaj komercaĵoj: {BLACK}{CURRENCY}
-STR_2229    :Deklivo vertikala parto
+STR_2229    :Deklivo al vertikala parto
 STR_2230    :Vertikala trako
 STR_2231    :Bremsoj por malleviĝo
 STR_2232    :Kablolifto monteto
