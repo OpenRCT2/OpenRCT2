@@ -121,12 +121,12 @@
     <ClInclude Include="actions\StaffSetNameAction.h" />
     <ClInclude Include="actions\StaffSetOrdersAction.h" />
     <ClInclude Include="actions\StaffSetPatrolAreaAction.h" />
-    <ClInclude Include="actions\SurfaceSetStyleAction.hpp" />
-    <ClInclude Include="actions\TileModifyAction.hpp" />
+    <ClInclude Include="actions\SurfaceSetStyleAction.h" />
+    <ClInclude Include="actions\TileModifyAction.h" />
     <ClInclude Include="actions\TrackDesignAction.h" />
-    <ClInclude Include="actions\TrackPlaceAction.hpp" />
-    <ClInclude Include="actions\TrackRemoveAction.hpp" />
-    <ClInclude Include="actions\TrackSetBrakeSpeedAction.hpp" />
+    <ClInclude Include="actions\TrackPlaceAction.h" />
+    <ClInclude Include="actions\TrackRemoveAction.h" />
+    <ClInclude Include="actions\TrackSetBrakeSpeedAction.h" />
     <ClInclude Include="actions\WallPlaceAction.hpp" />
     <ClInclude Include="actions\WallRemoveAction.hpp" />
     <ClInclude Include="actions\WallSetColourAction.hpp" />

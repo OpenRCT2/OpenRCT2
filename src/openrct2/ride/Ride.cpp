@@ -19,7 +19,7 @@
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
-#include "../actions/TrackRemoveAction.hpp"
+#include "../actions/TrackRemoveAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../common.h"

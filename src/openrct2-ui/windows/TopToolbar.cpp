@@ -40,7 +40,7 @@
 #include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
-#include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/actions/WallPlaceAction.hpp>
 #include <openrct2/actions/WallSetColourAction.hpp>
 #include <openrct2/actions/WaterLowerAction.hpp>

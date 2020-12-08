@@ -7,81 +7,57 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "TrackSetBrakeSpeedAction.h"
 
 #include "../management/Finance.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackSetBrakeSpeedAction, GAME_COMMAND_SET_BRAKES_SPEED, GameActions::Result)
+void TrackSetBrakeSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-private:
-    CoordsXYZ _loc;
-    track_type_t _trackType{};
-    uint8_t _brakeSpeed{};
+    visitor.Visit(_loc);
+    visitor.Visit("trackType", _trackType);
+    visitor.Visit("brakeSpeed", _brakeSpeed);
+}
 
-public:
-    TrackSetBrakeSpeedAction() = default;
-    TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
-        : _loc(loc)
-        , _trackType(trackType)
-        , _brakeSpeed(brakeSpeed)
+void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
+}
+
+GameActions::Result::Ptr TrackSetBrakeSpeedAction::Query() const
+{
+    return QueryExecute(false);
+}
+
+GameActions::Result::Ptr TrackSetBrakeSpeedAction::Execute() const
+{
+    return QueryExecute(true);
+}
+
+GameActions::Result::Ptr TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) const
+{
+    auto res = MakeResult();
+
+    res->Position = _loc;
+    res->Position.x += 16;
+    res->Position.y += 16;
+    res->Expenditure = ExpenditureType::RideConstruction;
+
+    if (!LocationValid(_loc))
     {
+        return MakeResult(GameActions::Status::NotOwned, STR_NONE);
     }
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
+    TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
+    if (tileElement == nullptr)
     {
-        visitor.Visit(_loc);
-        visitor.Visit("trackType", _trackType);
-        visitor.Visit("brakeSpeed", _brakeSpeed);
+        log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    if (isExecuting)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
     }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_brakeSpeed);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        return QueryExecute(false);
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        return QueryExecute(true);
-    }
-
-private:
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
-    {
-        auto res = MakeResult();
-
-        res->Position = _loc;
-        res->Position.x += 16;
-        res->Position.y += 16;
-        res->Expenditure = ExpenditureType::RideConstruction;
-
-        if (!LocationValid(_loc))
-        {
-            return MakeResult(GameActions::Status::NotOwned, STR_NONE);
-        }
-
-        TileElement* tileElement = map_get_track_element_at_of_type(_loc, _trackType);
-        if (tileElement == nullptr)
-        {
-            log_warning("Invalid game command for setting brakes speed. x = %d, y = %d", _loc.x, _loc.y);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        if (isExecuting)
-        {
-            tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
-        }
-        return res;
-    }
-};
+    return res;
+}
