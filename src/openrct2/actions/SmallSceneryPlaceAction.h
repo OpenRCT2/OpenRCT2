@@ -70,8 +70,6 @@ public:
     }
 
     void Serialise(DataSerialiser & stream) override;
-
     GameActions::Result::Ptr Query() const override;
-
     GameActions::Result::Ptr Execute() const override;
 };

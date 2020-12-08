@@ -18,7 +18,6 @@ private:
 
 public:
     FootpathAdditionRemoveAction() = default;
-
     FootpathAdditionRemoveAction(const CoordsXYZ& loc)
         : _loc(loc)
     {
@@ -31,8 +30,6 @@ public:
     }
 
     void Serialise(DataSerialiser & stream) override;
-
     GameActions::Result::Ptr Query() const override;
-
     GameActions::Result::Ptr Execute() const override;
 };

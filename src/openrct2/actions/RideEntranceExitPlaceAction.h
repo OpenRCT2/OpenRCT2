@@ -42,9 +42,7 @@ public:
     }
 
     void Serialise(DataSerialiser & stream) override;
-
     GameActions::Result::Ptr Query() const override;
-
     GameActions::Result::Ptr Execute() const override;
 
     static GameActions::Result::Ptr TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit)
