@@ -13,7 +13,7 @@
 #include "../Game.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
-#include "../actions/SetCheatAction.hpp"
+#include "../actions/SetCheatAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Imaging.h"

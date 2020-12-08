@@ -37,7 +37,7 @@
 #include <openrct2/actions/LargeScenerySetColourAction.h>
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/actions/PauseToggleAction.h>
-#include <openrct2/actions/SetCheatAction.hpp>
+#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>

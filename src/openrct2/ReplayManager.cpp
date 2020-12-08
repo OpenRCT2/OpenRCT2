@@ -19,7 +19,7 @@
 #include "actions/GameAction.h"
 #include "actions/RideEntranceExitPlaceAction.h"
 #include "actions/RideSetSettingAction.h"
-#include "actions/SetCheatAction.hpp"
+#include "actions/SetCheatAction.h"
 #include "actions/TileModifyAction.hpp"
 #include "actions/TrackPlaceAction.hpp"
 #include "config/Config.h"

@@ -19,7 +19,7 @@
 #include "../actions/ClimateSetAction.h"
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
-#include "../actions/SetCheatAction.hpp"
+#include "../actions/SetCheatAction.h"
 #include "../actions/StaffSetCostumeAction.hpp"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"

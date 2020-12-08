@@ -16,7 +16,7 @@
 #include "RideDemolishAction.h"
 #include "RideSetNameAction.h"
 #include "RideSetStatusAction.h"
-#include "SetParkEntranceFeeAction.hpp"
+#include "SetParkEntranceFeeAction.h"
 #include "StaffSetNameAction.hpp"
 #include "WallRemoveAction.hpp"
 

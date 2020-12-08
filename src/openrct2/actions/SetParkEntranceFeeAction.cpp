@@ -7,58 +7,39 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "SetParkEntranceFeeAction.h"
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
 #include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../world/Park.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActions::Result)
+void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
 {
-private:
-    money16 _fee{ MONEY16_UNDEFINED };
+    GameAction::Serialise(stream);
 
-public:
-    SetParkEntranceFeeAction() = default;
-    SetParkEntranceFeeAction(money16 fee)
-        : _fee(fee)
+    stream << DS_TAG(_fee);
+}
+
+GameActions::Result::Ptr SetParkEntranceFeeAction::Query() const
+{
+    bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
+    bool forceFreeEntry = !park_entry_price_unlocked();
+    if (noMoney || forceFreeEntry)
     {
+        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_NONE);
     }
-
-    uint16_t GetActionFlags() const override
+    if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
+    return std::make_unique<GameActions::Result>();
+}
 
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_fee);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-        bool forceFreeEntry = !park_entry_price_unlocked();
-        if (noMoney || forceFreeEntry)
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_NONE);
-        }
-        if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-        return std::make_unique<GameActions::Result>();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        gParkEntranceFee = _fee;
-        window_invalidate_by_class(WC_PARK_INFORMATION);
-        return std::make_unique<GameActions::Result>();
-    }
-};
+GameActions::Result::Ptr SetParkEntranceFeeAction::Execute() const
+{
+    gParkEntranceFee = _fee;
+    window_invalidate_by_class(WC_PARK_INFORMATION);
+    return std::make_unique<GameActions::Result>();
+}

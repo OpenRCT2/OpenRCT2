@@ -11,7 +11,7 @@
 
 #include "GameState.h"
 #include "actions/ParkSetLoanAction.h"
-#include "actions/SetCheatAction.hpp"
+#include "actions/SetCheatAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "localisation/Localisation.h"

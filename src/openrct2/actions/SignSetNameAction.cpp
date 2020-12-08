@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "SignSetNameAction.h"
 
 #include "../Context.h"
 #include "../Diagnostic.h"
@@ -17,75 +17,54 @@
 #include "../localisation/StringIds.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
-#include "GameAction.h"
 
 #include <string>
 
-DEFINE_GAME_ACTION(SignSetNameAction, GAME_COMMAND_SET_SIGN_NAME, GameActions::Result)
+void SignSetNameAction::Serialise(DataSerialiser& stream)
 {
-private:
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
-    std::string _name;
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
+}
 
-public:
-    SignSetNameAction() = default;
-    SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex)
-        , _name(name)
+GameActions::Result::Ptr SignSetNameAction::Query() const
+{
+    if (_bannerIndex >= MAX_BANNERS)
     {
+        log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
+    return MakeResult();
+}
 
-    uint16_t GetActionFlags() const override
+GameActions::Result::Ptr SignSetNameAction::Execute() const
+{
+    auto banner = GetBanner(_bannerIndex);
+
+    if (!_name.empty())
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+        banner->ride_index = RIDE_ID_NULL;
+        banner->text = _name;
     }
-
-    void Serialise(DataSerialiser & stream) override
+    else
     {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_bannerIndex >= MAX_BANNERS)
-        {
-            log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-        return MakeResult();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto banner = GetBanner(_bannerIndex);
-
-        if (!_name.empty())
+        // If empty name take closest ride name.
+        ride_id_t rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
+        if (rideIndex == RIDE_ID_NULL)
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
             banner->ride_index = RIDE_ID_NULL;
-            banner->text = _name;
+            banner->text = {};
         }
         else
         {
-            // If empty name take closest ride name.
-            ride_id_t rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
-            if (rideIndex == RIDE_ID_NULL)
-            {
-                banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-                banner->ride_index = RIDE_ID_NULL;
-                banner->text = {};
-            }
-            else
-            {
-                banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
-                banner->ride_index = rideIndex;
-                banner->text = {};
-            }
+            banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
+            banner->ride_index = rideIndex;
+            banner->text = {};
         }
-
-        scrolling_text_invalidate();
-        gfx_invalidate_screen();
-        return MakeResult();
     }
-};
+
+    scrolling_text_invalidate();
+    gfx_invalidate_screen();
+    return MakeResult();
+}

@@ -106,11 +106,11 @@
     <ClInclude Include="actions\RideSetSettingAction.h" />
     <ClInclude Include="actions\RideSetStatusAction.h" />
     <ClInclude Include="actions\RideSetVehicleAction.h" />
-    <ClInclude Include="actions\ScenarioSetSettingAction.hpp" />
-    <ClInclude Include="actions\SetCheatAction.hpp" />
-    <ClInclude Include="actions\SetParkEntranceFeeAction.hpp" />
-    <ClInclude Include="actions\SignSetNameAction.hpp" />
-    <ClInclude Include="actions\SignSetStyleAction.hpp" />
+    <ClInclude Include="actions\ScenarioSetSettingAction.h" />
+    <ClInclude Include="actions\SetCheatAction.h" />
+    <ClInclude Include="actions\SetParkEntranceFeeAction.h" />
+    <ClInclude Include="actions\SignSetNameAction.h" />
+    <ClInclude Include="actions\SignSetStyleAction.h" />
     <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
     <ClInclude Include="actions\SmallSceneryRemoveAction.h" />
     <ClInclude Include="actions\SmallScenerySetColourAction.hpp" />
