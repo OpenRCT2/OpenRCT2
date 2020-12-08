@@ -202,7 +202,6 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
         default:
             log_error("invalid instruction");
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-            break;
     }
 
     res->Position.x = _loc.x;

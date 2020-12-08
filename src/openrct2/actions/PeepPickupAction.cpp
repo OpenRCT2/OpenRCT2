@@ -85,7 +85,6 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
         default:
             log_error("Invalid pickup type: %u", _type);
             return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
-            break;
     }
     return res;
 }
@@ -156,7 +155,6 @@ GameActions::Result::Ptr PeepPickupAction::Execute() const
         default:
             log_error("Invalid pickup type: %u", _type);
             return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
-            break;
     }
     return res;
 }

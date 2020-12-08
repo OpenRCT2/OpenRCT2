@@ -9,6 +9,7 @@
 
 #include "WaterLowerAction.h"
 
+#include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "WaterSetHeightAction.h"
 

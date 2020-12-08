@@ -125,7 +125,6 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
         default:
             log_warning("Invalid RideSetSetting: %u", static_cast<uint8_t>(_setting));
             return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
-            break;
     }
 
     return std::make_unique<GameActions::Result>();
@@ -278,6 +277,5 @@ rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
             {
                 return STR_CANT_CHANGE_LAUNCH_SPEED;
             }
-            break;
     }
 }

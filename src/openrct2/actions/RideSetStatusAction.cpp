@@ -22,6 +22,13 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+static rct_string_id _StatusErrorTitles[] = {
+    STR_CANT_CLOSE,
+    STR_CANT_OPEN,
+    STR_CANT_TEST,
+    STR_CANT_SIMULATE,
+};
+
 void RideSetStatusAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);

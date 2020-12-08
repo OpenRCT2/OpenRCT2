@@ -56,7 +56,6 @@ GameActions::Result::Ptr ParkSetParameterAction::Execute() const
             break;
         default:
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-            break;
     }
 
     auto res = MakeResult();

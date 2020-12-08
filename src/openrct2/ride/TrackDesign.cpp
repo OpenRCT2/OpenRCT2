@@ -10,6 +10,7 @@
 #include "TrackDesign.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../TrackImporter.h"

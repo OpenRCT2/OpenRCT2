@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../ride/RideData.h"
+#include "../ride/TrackData.h"
 #include "../world/Scenery.h"
 #include "GameAction.h"
 

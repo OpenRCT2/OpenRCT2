@@ -15,8 +15,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/actions/ParkSetParameterAction.hpp>
-#include <openrct2/actions/RideSetPriceAction.hpp>
+#include <openrct2/actions/ParkSetParameterAction.h>
+#include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>

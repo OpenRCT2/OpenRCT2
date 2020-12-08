@@ -11,13 +11,6 @@
 
 #include "GameAction.h"
 
-static rct_string_id _StatusErrorTitles[] = {
-    STR_CANT_CLOSE,
-    STR_CANT_OPEN,
-    STR_CANT_TEST,
-    STR_CANT_SIMULATE,
-};
-
 DEFINE_GAME_ACTION(RideSetStatusAction, GAME_COMMAND_SET_RIDE_STATUS, GameActions::Result)
 {
 private:

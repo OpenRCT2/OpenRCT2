@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
 #include "../actions/SetCheatAction.h"

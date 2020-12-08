@@ -239,7 +239,6 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
         default:
             log_error("Invalid setting: %u", _setting);
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-            break;
     }
     window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
     return MakeResult();

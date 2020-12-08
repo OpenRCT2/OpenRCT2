@@ -200,33 +200,3 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
 
     return totalCost;
 }
-
-/**
- * Function to clear the flag that is set to prevent cost duplication
- * when using the clear scenery tool with large scenery.
- */
-static void ClearAction::ResetClearLargeSceneryFlag()
-{
-    // TODO: Improve efficiency of this
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-            do
-            {
-                if (tileElement == nullptr)
-                    break;
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
-                {
-                    tileElement->AsLargeScenery()->SetIsAccounted(false);
-                }
-            } while (!(tileElement++)->IsLastForTile());
-        }
-    }
-}
-
-static bool ClearAction::MapCanClearAt(const CoordsXY& location)
-{
-    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(location);
-}

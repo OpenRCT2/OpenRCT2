@@ -7,6 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../peep/Staff.h"
+#include "../ride/Track.h"
+#include "../world/Entrance.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 #include "GuestSetNameAction.h"
 #include "MazeSetTrackAction.h"

@@ -18,6 +18,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
@@ -25,6 +26,8 @@
 #include "../world/Sprite.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
+
+using namespace OpenRCT2;
 
 void RideDemolishAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {

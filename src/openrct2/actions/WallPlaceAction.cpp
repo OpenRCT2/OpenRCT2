@@ -11,9 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../management/Finance.h"
-#include "../ride/RideData.h"
 #include "../ride/Track.h"
-#include "../ride/TrackData.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Banner.h"
 #include "../world/LargeScenery.h"
@@ -579,31 +577,4 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     } while (!(tileElement++)->IsLastForTile());
 
     return MakeResult();
-}
-
-/**
- * Gets whether the given track type can have a wall placed on the edge of the given direction.
- * Some thin tracks for example are allowed to have walls either side of the track, but wider tracks can not.
- */
-static bool WallPlaceAction::TrackIsAllowedWallEdges(
-    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction)
-{
-    if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_NO_WALLS))
-    {
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            if (FlatRideTrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
-            {
-                return true;
-            }
-        }
-        else
-        {
-            if (TrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
-            {
-                return true;
-            }
-        }
-    }
-    return false;
 }
