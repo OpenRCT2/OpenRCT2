@@ -338,6 +338,11 @@ public:
     virtual GameActions::Result::Ptr Execute() const abstract;
 
     bool LocationValid(const CoordsXY& coords) const;
+
+    virtual GameAction::Ptr Get_Undo([[maybe_unused]] GameActions::Result& result) const
+    {
+        return nullptr;
+    };
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -402,6 +407,7 @@ namespace GameActions
 
     GameAction::Ptr Create(uint32_t id);
     GameAction::Ptr Clone(const GameAction* action);
+    void Undo();
 
     // This should be used if a round trip is to be expected.
     GameActions::Result::Ptr Query(const GameAction* action);

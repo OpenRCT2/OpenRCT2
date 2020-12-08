@@ -112,8 +112,8 @@
     <ClInclude Include="actions\SetParkEntranceFeeAction.hpp" />
     <ClInclude Include="actions\SignSetNameAction.hpp" />
     <ClInclude Include="actions\SignSetStyleAction.hpp" />
-    <ClInclude Include="actions\SmallSceneryPlaceAction.hpp" />
-    <ClInclude Include="actions\SmallSceneryRemoveAction.hpp" />
+    <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
+    <ClInclude Include="actions\SmallSceneryRemoveAction.h" />
     <ClInclude Include="actions\SmallScenerySetColourAction.hpp" />
     <ClInclude Include="actions\StaffFireAction.hpp" />
     <ClInclude Include="actions\StaffHireNewAction.hpp" />
@@ -464,6 +464,8 @@
     <ClCompile Include="actions\GameAction.cpp" />
     <ClCompile Include="actions\GameActionCompat.cpp" />
     <ClCompile Include="actions\GameActionRegistration.cpp" />
+    <ClCompile Include="actions\SmallSceneryPlaceAction.cpp" />
+    <ClCompile Include="actions\SmallSceneryRemoveAction.cpp" />
     <ClCompile Include="actions\TrackDesignAction.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />

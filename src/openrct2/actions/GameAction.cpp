@@ -110,6 +110,7 @@ namespace GameActions
 
     static GameActionFactory _actions[GAME_COMMAND_COUNT];
     static std::multiset<QueuedGameAction> _actionQueue;
+    static std::vector<GameAction::Ptr> _undoQueue;
     static uint32_t _nextUniqueId = 0;
     static bool _suspended = false;
 
@@ -270,6 +271,17 @@ namespace GameActions
         ga->Serialise(dsIn);
 
         return ga;
+    }
+
+    void Undo()
+    {
+        if (_undoQueue.empty())
+        {
+            return;
+        }
+        auto action = std::move(_undoQueue.back());
+        _undoQueue.pop_back();
+        Execute(action.get());
     }
 
     static bool CheckActionInPausedMode(uint32_t actionFlags)
@@ -445,6 +457,14 @@ namespace GameActions
             ActionLogContext_t logContext;
             LogActionBegin(logContext, action);
 
+            if (!(actionFlags & GameActions::Flags::ClientOnly))
+            {
+                auto undo = action->Get_Undo(*result);
+                if (undo != nullptr)
+                {
+                    _undoQueue.emplace_back(std::move(undo));
+                }
+            }
             // Execute the action, changing the game state
             result = action->Execute();
 #ifdef ENABLE_SCRIPTING

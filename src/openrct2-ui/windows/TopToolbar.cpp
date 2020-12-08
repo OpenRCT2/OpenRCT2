@@ -38,7 +38,7 @@
 #include <openrct2/actions/LoadOrQuitAction.hpp>
 #include <openrct2/actions/PauseToggleAction.hpp>
 #include <openrct2/actions/SetCheatAction.hpp>
-#include <openrct2/actions/SmallSceneryPlaceAction.hpp>
+#include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.hpp>
 #include <openrct2/actions/SurfaceSetStyleAction.hpp>
 #include <openrct2/actions/WallPlaceAction.hpp>

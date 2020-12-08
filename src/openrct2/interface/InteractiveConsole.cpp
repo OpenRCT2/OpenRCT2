@@ -1624,6 +1624,12 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
     return 0;
 }
 
+static int32_t cc_undo([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    GameActions::Undo();
+    return 0;
+}
+
 #pragma warning(push)
 #pragma warning(disable : 4702) // unreachable code
 static int32_t cc_abort([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
@@ -1805,6 +1811,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
     { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
+    {"undo", cc_undo, "Test"},
 
 };
 // clang-format on
