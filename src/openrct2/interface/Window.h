@@ -339,43 +339,6 @@ struct rct_window;
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
 #define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
 
-enum WINDOW_EVENTS
-{
-    WE_CLOSE = 0,
-    WE_MOUSE_UP = 1,
-    WE_RESIZE = 2,
-    WE_MOUSE_DOWN = 3,
-    WE_DROPDOWN = 4,
-    WE_UNKNOWN_05 = 5,
-    // Unknown 05: Used to update tabs that are not being animated
-    // see window_peep. When the overview tab is not highlighted the
-    // items being carried such as hats/balloons still need to be shown
-    // and removed. Probably called after anything that affects items
-    // being carried.
-    WE_UPDATE = 6,
-    WE_UNKNOWN_07 = 7,
-    WE_UNKNOWN_08 = 8,
-    WE_TOOL_UPDATE = 9,
-    WE_TOOL_DOWN = 10,
-    WE_TOOL_DRAG = 11,
-    WE_TOOL_UP = 12,
-    WE_TOOL_ABORT = 13,
-    WE_UNKNOWN_0E = 14,
-    WE_SCROLL_GETSIZE = 15,
-    WE_SCROLL_MOUSEDOWN = 16,
-    WE_SCROLL_MOUSEDRAG = 17,
-    WE_SCROLL_MOUSEOVER = 18,
-    WE_TEXT_INPUT = 19,
-    WE_VIEWPORT_ROTATE = 20,
-    WE_UNKNOWN_15 = 21, // scroll mouse move?
-    WE_TOOLTIP = 22,
-    WE_CURSOR = 23,
-    WE_MOVED = 24,
-    WE_INVALIDATE = 25,
-    WE_PAINT = 26,
-    WE_SCROLL_PAINT = 27,
-};
-
 enum WINDOW_FLAGS
 {
     /*
