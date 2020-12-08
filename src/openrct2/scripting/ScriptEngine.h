@@ -63,19 +63,25 @@ namespace OpenRCT2::Scripting
             ScriptExecutionInfo& _execInfo;
             std::shared_ptr<Plugin> _plugin;
 
+            std::shared_ptr<Plugin> _backupPlugin;
+            bool _backupIsGameStateMutable;
+
         public:
             PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin, bool isGameStateMutable)
                 : _execInfo(execInfo)
                 , _plugin(plugin)
             {
+                _backupPlugin = _execInfo._plugin;
+                _backupIsGameStateMutable = _execInfo._isGameStateMutable;
+
                 _execInfo._plugin = plugin;
                 _execInfo._isGameStateMutable = isGameStateMutable;
             }
             PluginScope(const PluginScope&) = delete;
             ~PluginScope()
             {
-                _execInfo._plugin = nullptr;
-                _execInfo._isGameStateMutable = false;
+                _execInfo._plugin = _backupPlugin;
+                _execInfo._isGameStateMutable = _backupIsGameStateMutable;
             }
         };
 
