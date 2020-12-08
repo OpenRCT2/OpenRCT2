@@ -14,7 +14,7 @@
 #    include "../PlatformEnvironment.h"
 #    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
-#    include "../actions/RideCreateAction.hpp"
+#    include "../actions/RideCreateAction.h"
 #    include "../actions/StaffHireNewAction.hpp"
 #    include "../config/Config.h"
 #    include "../core/File.h"

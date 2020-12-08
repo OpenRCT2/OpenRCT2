@@ -18,7 +18,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
-#include "RideSetSetting.hpp"
+#include "RideSetSettingAction.h"
 
 DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActions::Result)
 {

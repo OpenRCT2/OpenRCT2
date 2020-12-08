@@ -13,7 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
+#include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>

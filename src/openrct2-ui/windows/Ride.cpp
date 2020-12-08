@@ -24,10 +24,10 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
-#include <openrct2/actions/RideSetAppearanceAction.hpp>
-#include <openrct2/actions/RideSetColourScheme.hpp>
-#include <openrct2/actions/RideSetPriceAction.hpp>
-#include <openrct2/actions/RideSetSetting.hpp>
+#include <openrct2/actions/RideSetAppearanceAction.h>
+#include <openrct2/actions/RideSetColourSchemeAction.h>
+#include <openrct2/actions/RideSetPriceAction.h>
+#include <openrct2/actions/RideSetSettingAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>

@@ -17,7 +17,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
+#include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/actions/TrackPlaceAction.hpp>
 #include <openrct2/actions/TrackRemoveAction.hpp>
 #include <openrct2/actions/TrackSetBrakeSpeedAction.hpp>

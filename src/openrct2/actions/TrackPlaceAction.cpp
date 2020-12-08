@@ -18,7 +18,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 #include "GameAction.h"
-#include "RideSetSetting.hpp"
+#include "RideSetSettingAction.h"
 
 class TrackPlaceActionResult final : public GameActions::Result
 {
