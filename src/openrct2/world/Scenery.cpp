@@ -16,7 +16,7 @@
 #include "../actions/FootpathAdditionRemoveAction.h"
 #include "../actions/LargeSceneryRemoveAction.h"
 #include "../actions/SmallSceneryRemoveAction.h"
-#include "../actions/WallRemoveAction.hpp"
+#include "../actions/WallRemoveAction.h"
 #include "../common.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"

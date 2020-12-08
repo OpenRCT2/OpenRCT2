@@ -41,10 +41,10 @@
 #include <openrct2/actions/SmallSceneryPlaceAction.h>
 #include <openrct2/actions/SmallScenerySetColourAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
-#include <openrct2/actions/WallPlaceAction.hpp>
-#include <openrct2/actions/WallSetColourAction.hpp>
-#include <openrct2/actions/WaterLowerAction.hpp>
-#include <openrct2/actions/WaterRaiseAction.hpp>
+#include <openrct2/actions/WallPlaceAction.h>
+#include <openrct2/actions/WallSetColourAction.h>
+#include <openrct2/actions/WaterLowerAction.h>
+#include <openrct2/actions/WaterRaiseAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Chat.h>

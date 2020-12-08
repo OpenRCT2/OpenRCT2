@@ -20,7 +20,7 @@
 #include "FootpathRemoveAction.h"
 #include "LargeSceneryRemoveAction.h"
 #include "SmallSceneryRemoveAction.h"
-#include "WallRemoveAction.hpp"
+#include "WallRemoveAction.h"
 
 #include <algorithm>
 

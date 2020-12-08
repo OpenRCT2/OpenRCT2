@@ -82,12 +82,12 @@
 #include "TrackPlaceAction.h"
 #include "TrackRemoveAction.h"
 #include "TrackSetBrakeSpeedAction.h"
-#include "WallPlaceAction.hpp"
-#include "WallRemoveAction.hpp"
-#include "WallSetColourAction.hpp"
-#include "WaterLowerAction.hpp"
-#include "WaterRaiseAction.hpp"
-#include "WaterSetHeightAction.hpp"
+#include "WallPlaceAction.h"
+#include "WallRemoveAction.h"
+#include "WallSetColourAction.h"
+#include "WaterLowerAction.h"
+#include "WaterRaiseAction.h"
+#include "WaterSetHeightAction.h"
 
 namespace GameActions
 {

@@ -15,7 +15,7 @@
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/SignSetNameAction.h>
 #include <openrct2/actions/SignSetStyleAction.h>
-#include <openrct2/actions/WallRemoveAction.hpp>
+#include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>

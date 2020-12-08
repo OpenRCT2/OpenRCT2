@@ -13,7 +13,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../ParkImporter.h"
-#include "../actions/WallPlaceAction.hpp"
+#include "../actions/WallPlaceAction.h"
 #include "../audio/audio.h"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
