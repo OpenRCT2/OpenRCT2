@@ -113,7 +113,7 @@
     <ClInclude Include="actions\SignSetStyleAction.h" />
     <ClInclude Include="actions\SmallSceneryPlaceAction.h" />
     <ClInclude Include="actions\SmallSceneryRemoveAction.h" />
-    <ClInclude Include="actions\SmallScenerySetColourAction.hpp" />
+    <ClInclude Include="actions\SmallScenerySetColourAction.h" />
     <ClInclude Include="actions\StaffFireAction.hpp" />
     <ClInclude Include="actions\StaffHireNewAction.hpp" />
     <ClInclude Include="actions\StaffSetColourAction.hpp" />

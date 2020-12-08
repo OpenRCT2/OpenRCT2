@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "SmallScenerySetColourAction.h"
 
 #include "../Cheats.h"
 #include "../OpenRCT2.h"
@@ -25,97 +25,66 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(SmallScenerySetColourAction, GAME_COMMAND_SET_SCENERY_COLOUR, GameActions::Result)
+void SmallScenerySetColourAction::Serialise(DataSerialiser& stream)
 {
-private:
-    CoordsXYZ _loc;
-    uint8_t _quadrant{};
-    ObjectEntryIndex _sceneryType{};
-    uint8_t _primaryColour{};
-    uint8_t _secondaryColour{};
+    GameAction::Serialise(stream);
 
-public:
-    SmallScenerySetColourAction() = default;
+    stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
+}
 
-    SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
-        : _loc(loc)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
-        , _primaryColour(primaryColour)
-        , _secondaryColour(secondaryColour)
+GameActions::Result::Ptr SmallScenerySetColourAction::Query() const
+{
+    return QueryExecute(false);
+}
+
+GameActions::Result::Ptr SmallScenerySetColourAction::Execute() const
+{
+    return QueryExecute(true);
+}
+
+GameActions::Result::Ptr SmallScenerySetColourAction::QueryExecute(bool isExecuting) const
+{
+    auto res = MakeResult();
+    res->Expenditure = ExpenditureType::Landscaping;
+    res->Position.x = _loc.x + 16;
+    res->Position.y = _loc.y + 16;
+    res->Position.z = _loc.z;
+    res->ErrorTitle = STR_CANT_REPAINT_THIS;
+
+    if (!LocationValid(_loc))
     {
+        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    uint16_t GetActionFlags() const override
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour)
-               << DS_TAG(_secondaryColour);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        return QueryExecute(false);
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        return QueryExecute(true);
-    }
-
-private:
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const
-    {
-        auto res = MakeResult();
-        res->Expenditure = ExpenditureType::Landscaping;
-        res->Position.x = _loc.x + 16;
-        res->Position.y = _loc.y + 16;
-        res->Position.z = _loc.z;
-        res->ErrorTitle = STR_CANT_REPAINT_THIS;
-
-        if (!LocationValid(_loc))
+        if (!map_is_location_owned(_loc))
         {
             return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
+    }
 
-        if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
-        {
-            if (!map_is_location_owned(_loc))
-            {
-                return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
-            }
-        }
+    auto sceneryElement = map_get_small_scenery_element_at(_loc, _sceneryType, _quadrant);
 
-        auto sceneryElement = map_get_small_scenery_element_at(_loc, _sceneryType, _quadrant);
+    if (sceneryElement == nullptr)
+    {
+        log_error("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
+    }
 
-        if (sceneryElement == nullptr)
-        {
-            log_error("Small scenery not found at: x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS);
-        }
-
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->IsGhost()))
-        {
-            return res;
-        }
-
-        if (isExecuting)
-        {
-            sceneryElement->SetPrimaryColour(_primaryColour);
-            sceneryElement->SetSecondaryColour(_secondaryColour);
-
-            map_invalidate_tile_full(_loc);
-        }
-
+    if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(sceneryElement->IsGhost()))
+    {
         return res;
     }
-};
+
+    if (isExecuting)
+    {
+        sceneryElement->SetPrimaryColour(_primaryColour);
+        sceneryElement->SetSecondaryColour(_secondaryColour);
+
+        map_invalidate_tile_full(_loc);
+    }
+
+    return res;
+}

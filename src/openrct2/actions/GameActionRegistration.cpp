@@ -68,7 +68,7 @@
 #include "SignSetStyleAction.h"
 #include "SmallSceneryPlaceAction.h"
 #include "SmallSceneryRemoveAction.h"
-#include "SmallScenerySetColourAction.hpp"
+#include "SmallScenerySetColourAction.h"
 #include "StaffFireAction.hpp"
 #include "StaffHireNewAction.hpp"
 #include "StaffSetColourAction.hpp"
