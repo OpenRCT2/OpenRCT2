@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffSetColourAction.h"
 
 #include "../Context.h"
 #include "../core/MemoryStream.h"
@@ -18,62 +18,41 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetColourAction, GAME_COMMAND_SET_STAFF_COLOUR, GameActions::Result)
+void StaffSetColourAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint8_t _staffType{};
-    uint8_t _colour{};
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_staffType) << DS_TAG(_colour);
+}
 
-public:
-    StaffSetColourAction() = default;
-    StaffSetColourAction(StaffType staffType, uint8_t colour)
-        : _staffType(static_cast<uint8_t>(staffType))
-        , _colour(colour)
+GameActions::Result::Ptr StaffSetColourAction::Query() const
+{
+    auto staffType = static_cast<StaffType>(_staffType);
+    if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
     {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
+    return MakeResult();
+}
+
+GameActions::Result::Ptr StaffSetColourAction::Execute() const
+{
+    // Update global uniform colour property
+    if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
+    {
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    // Update each staff member's uniform
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_staffType) << DS_TAG(_colour);
-    }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        auto staffType = static_cast<StaffType>(_staffType);
-        if (staffType != StaffType::Handyman && staffType != StaffType::Mechanic && staffType != StaffType::Security)
+        if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            peep->TshirtColour = _colour;
+            peep->TrousersColour = _colour;
         }
-        return MakeResult();
     }
 
-    GameActions::Result::Ptr Execute() const override
-    {
-        // Update global uniform colour property
-        if (!staff_set_colour(static_cast<StaffType>(_staffType), _colour))
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        // Update each staff member's uniform
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
-        {
-            if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
-            {
-                peep->TshirtColour = _colour;
-                peep->TrousersColour = _colour;
-            }
-        }
-
-        gfx_invalidate_screen();
-        return MakeResult();
-    }
-};
+    gfx_invalidate_screen();
+    return MakeResult();
+}

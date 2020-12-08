@@ -20,7 +20,7 @@
 #include "../actions/RideSetPriceAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/SetCheatAction.h"
-#include "../actions/StaffSetCostumeAction.hpp"
+#include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"

@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffSetNameAction.h"
 
 #include "../Cheats.h"
 #include "../Context.h"
@@ -19,84 +19,62 @@
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetNameAction, GAME_COMMAND_SET_STAFF_NAME, GameActions::Result)
+void StaffSetNameAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
-    std::string _name;
+    GameAction::Serialise(stream);
 
-public:
-    StaffSetNameAction() = default;
-    StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
-        : _spriteIndex(spriteIndex)
-        , _name(name)
+    stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
+}
+
+GameActions::Result::Ptr StaffSetNameAction::Query() const
+{
+    if (_spriteIndex >= MAX_SPRITES)
     {
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    auto staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
+    return std::make_unique<GameActions::Result>();
+}
 
-        stream << DS_TAG(_spriteIndex) << DS_TAG(_name);
+GameActions::Result::Ptr StaffSetNameAction::Execute() const
+{
+    auto staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr)
+    {
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(
+            GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }
 
-    GameActions::Result::Ptr Query() const override
+    auto curName = staff->GetName();
+    if (curName == _name)
     {
-        if (_spriteIndex >= MAX_SPRITES)
-        {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
-        }
-
-        auto staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr)
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
-        }
-
-        return std::make_unique<GameActions::Result>();
+        return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
     }
 
-    GameActions::Result::Ptr Execute() const override
+    if (!staff->SetName(_name))
     {
-        auto staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr)
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
-        }
-
-        auto curName = staff->GetName();
-        if (curName == _name)
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::Ok, STR_NONE);
-        }
-
-        if (!staff->SetName(_name))
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
-        }
-
-        gfx_invalidate_screen();
-
-        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-        context_broadcast_intent(&intent);
-
-        auto res = std::make_unique<GameActions::Result>();
-        res->Position.x = staff->x;
-        res->Position.y = staff->y;
-        res->Position.z = staff->z;
-        return res;
+        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_NAME_GUEST, STR_NONE);
     }
-};
+
+    gfx_invalidate_screen();
+
+    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+    context_broadcast_intent(&intent);
+
+    auto res = std::make_unique<GameActions::Result>();
+    res->Position.x = staff->x;
+    res->Position.y = staff->y;
+    res->Position.z = staff->z;
+    return res;
+}

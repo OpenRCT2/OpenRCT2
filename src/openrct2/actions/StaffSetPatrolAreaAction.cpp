@@ -7,103 +7,81 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffSetPatrolAreaAction.h"
 
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GAME_COMMAND_SET_STAFF_PATROL, GameActions::Result)
+void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint16_t _spriteId{ SPRITE_INDEX_NULL };
-    CoordsXY _loc;
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_spriteId) << DS_TAG(_loc);
+}
 
-public:
-    StaffSetPatrolAreaAction() = default;
-    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
-        : _spriteId(spriteId)
-        , _loc(loc)
+GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
+{
+    if (_spriteId >= MAX_SPRITES)
     {
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    if (!LocationValid(_loc))
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    auto staff = TryGetEntity<Staff>(_spriteId);
+    if (staff == nullptr)
     {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_spriteId) << DS_TAG(_loc);
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    GameActions::Result::Ptr Query() const override
+    return MakeResult();
+}
+
+GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
+{
+    auto staff = TryGetEntity<Staff>(_spriteId);
+    if (staff == nullptr)
     {
-        if (_spriteId >= MAX_SPRITES)
-        {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        if (!LocationValid(_loc))
-        {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        auto staff = TryGetEntity<Staff>(_spriteId);
-        if (staff == nullptr)
-        {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        return MakeResult();
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    GameActions::Result::Ptr Execute() const override
+    int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
+
+    staff_toggle_patrol_area(staff->StaffId, _loc);
+
+    bool isPatrolling = false;
+    for (int32_t i = 0; i < 128; i++)
     {
-        auto staff = TryGetEntity<Staff>(_spriteId);
-        if (staff == nullptr)
+        if (gStaffPatrolAreas[patrolOffset + i])
         {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+            isPatrolling = true;
+            break;
         }
-
-        int32_t patrolOffset = staff->StaffId * STAFF_PATROL_AREA_SIZE;
-
-        staff_toggle_patrol_area(staff->StaffId, _loc);
-
-        bool isPatrolling = false;
-        for (int32_t i = 0; i < 128; i++)
-        {
-            if (gStaffPatrolAreas[patrolOffset + i])
-            {
-                isPatrolling = true;
-                break;
-            }
-        }
-
-        if (isPatrolling)
-        {
-            gStaffModes[staff->StaffId] = StaffMode::Patrol;
-        }
-        else if (gStaffModes[staff->StaffId] == StaffMode::Patrol)
-        {
-            gStaffModes[staff->StaffId] = StaffMode::Walk;
-        }
-
-        for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
-        {
-            for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
-            {
-                map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
-            }
-        }
-        staff_update_greyed_patrol_areas();
-
-        return MakeResult();
     }
-};
+
+    if (isPatrolling)
+    {
+        gStaffModes[staff->StaffId] = StaffMode::Patrol;
+    }
+    else if (gStaffModes[staff->StaffId] == StaffMode::Patrol)
+    {
+        gStaffModes[staff->StaffId] = StaffMode::Walk;
+    }
+
+    for (int32_t y = 0; y < 4 * COORDS_XY_STEP; y += COORDS_XY_STEP)
+    {
+        for (int32_t x = 0; x < 4 * COORDS_XY_STEP; x += COORDS_XY_STEP)
+        {
+            map_invalidate_tile_full({ (_loc.x & 0x1F80) + x, (_loc.y & 0x1F80) + y });
+        }
+    }
+    staff_update_greyed_patrol_areas();
+
+    return MakeResult();
+}

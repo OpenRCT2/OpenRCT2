@@ -15,7 +15,7 @@
 #    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
 #    include "../actions/RideCreateAction.h"
-#    include "../actions/StaffHireNewAction.hpp"
+#    include "../actions/StaffHireNewAction.h"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"

@@ -17,9 +17,9 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/PeepPickupAction.h>
-#include <openrct2/actions/StaffSetCostumeAction.hpp>
-#include <openrct2/actions/StaffSetOrdersAction.hpp>
-#include <openrct2/actions/StaffSetPatrolAreaAction.hpp>
+#include <openrct2/actions/StaffSetCostumeAction.h>
+#include <openrct2/actions/StaffSetOrdersAction.h>
+#include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>

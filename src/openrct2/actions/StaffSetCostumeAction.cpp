@@ -7,114 +7,71 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffSetCostumeAction.h"
 
 #include "../Context.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../peep/Staff.h"
 #include "../windows/Intent.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-/** rct2: 0x00982134 */
-constexpr const bool peep_slow_walking_types[] = {
-    false, // PeepSpriteType::Normal
-    false, // PeepSpriteType::Handyman
-    false, // PeepSpriteType::Mechanic
-    false, // PeepSpriteType::Security
-    false, // PeepSpriteType::EntertainerPanda
-    false, // PeepSpriteType::EntertainerTiger
-    false, // PeepSpriteType::EntertainerElephant
-    false, // PeepSpriteType::EntertainerRoman
-    false, // PeepSpriteType::EntertainerGorilla
-    false, // PeepSpriteType::EntertainerSnowman
-    false, // PeepSpriteType::EntertainerKnight
-    true,  // PeepSpriteType::EntertainerAstronaut
-    false, // PeepSpriteType::EntertainerBandit
-    false, // PeepSpriteType::EntertainerSheriff
-    true,  // PeepSpriteType::EntertainerPirate
-    true,  // PeepSpriteType::Balloon
-};
-
-DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActions::Result)
+void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
-    EntertainerCostume _costume = EntertainerCostume::Count;
+    GameAction::Serialise(stream);
 
-public:
-    StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
-        : _spriteIndex(spriteIndex)
-        , _costume(costume)
+    stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
+}
+
+GameActions::Result::Ptr StaffSetCostumeAction::Query() const
+{
+    if (_spriteIndex >= MAX_SPRITES)
     {
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    auto* staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    auto spriteType = EntertainerCostumeToSprite(_costume);
+    if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
     {
-        GameAction::Serialise(stream);
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
+    }
+    return std::make_unique<GameActions::Result>();
+}
 
-        stream << DS_TAG(_spriteIndex) << DS_TAG(_costume);
+GameActions::Result::Ptr StaffSetCostumeAction::Execute() const
+{
+    auto* staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr)
+    {
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    GameActions::Result::Ptr Query() const override
+    auto spriteType = EntertainerCostumeToSprite(_costume);
+    staff->SpriteType = spriteType;
+    staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
+    if (peep_slow_walking_types[EnumValue(spriteType)])
     {
-        if (_spriteIndex >= MAX_SPRITES)
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr)
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        auto spriteType = EntertainerCostumeToSprite(_costume);
-        if (EnumValue(spriteType) > std::size(peep_slow_walking_types))
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-        return std::make_unique<GameActions::Result>();
+        staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
     }
+    staff->ActionFrame = 0;
+    staff->UpdateCurrentActionSpriteType();
+    staff->Invalidate();
 
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr)
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
+    window_invalidate_by_number(WC_PEEP, _spriteIndex);
+    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+    context_broadcast_intent(&intent);
 
-        auto spriteType = EntertainerCostumeToSprite(_costume);
-        staff->SpriteType = spriteType;
-        staff->PeepFlags &= ~PEEP_FLAGS_SLOW_WALK;
-        if (peep_slow_walking_types[EnumValue(spriteType)])
-        {
-            staff->PeepFlags |= PEEP_FLAGS_SLOW_WALK;
-        }
-        staff->ActionFrame = 0;
-        staff->UpdateCurrentActionSpriteType();
-        staff->Invalidate();
-
-        window_invalidate_by_number(WC_PEEP, _spriteIndex);
-        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-        context_broadcast_intent(&intent);
-
-        auto res = std::make_unique<GameActions::Result>();
-        res->Position.x = staff->x;
-        res->Position.y = staff->y;
-        res->Position.z = staff->z;
-        return res;
-    }
-};
+    auto res = std::make_unique<GameActions::Result>();
+    res->Position.x = staff->x;
+    res->Position.y = staff->y;
+    res->Position.z = staff->z;
+    return res;
+}

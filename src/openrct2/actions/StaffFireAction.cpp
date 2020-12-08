@@ -7,64 +7,44 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffFireAction.h"
 
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffFireAction, GAME_COMMAND_FIRE_STAFF_MEMBER, GameActions::Result)
+void StaffFireAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint16_t _spriteId{ SPRITE_INDEX_NULL };
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_spriteId);
+}
 
-public:
-    StaffFireAction() = default;
-    StaffFireAction(uint16_t spriteId)
-        : _spriteId(spriteId)
+GameActions::Result::Ptr StaffFireAction::Query() const
+{
+    if (_spriteId >= MAX_SPRITES)
     {
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    auto staff = TryGetEntity<Staff>(_spriteId);
+    if (staff == nullptr)
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    return MakeResult();
+}
+
+GameActions::Result::Ptr StaffFireAction::Execute() const
+{
+    auto staff = TryGetEntity<Staff>(_spriteId);
+    if (staff == nullptr)
     {
-        GameAction::Serialise(stream);
-        stream << DS_TAG(_spriteId);
+        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
-
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_spriteId >= MAX_SPRITES)
-        {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        auto staff = TryGetEntity<Staff>(_spriteId);
-        if (staff == nullptr)
-        {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        return MakeResult();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto staff = TryGetEntity<Staff>(_spriteId);
-        if (staff == nullptr)
-        {
-            log_error("Invalid spriteId. spriteId = %u", _spriteId);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-        window_close_by_class(WC_FIRE_PROMPT);
-        peep_sprite_remove(staff);
-        return MakeResult();
-    }
-};
+    window_close_by_class(WC_FIRE_PROMPT);
+    peep_sprite_remove(staff);
+    return MakeResult();
+}

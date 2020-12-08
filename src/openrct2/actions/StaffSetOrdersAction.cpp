@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma once
+#include "StaffSetOrdersAction.h"
 
 #include "../Context.h"
 #include "../interface/Window.h"
@@ -15,71 +15,49 @@
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
-#include "../world/Sprite.h"
-#include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetOrdersAction, GAME_COMMAND_SET_STAFF_ORDERS, GameActions::Result)
+void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
 {
-private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
-    uint8_t _ordersId{};
+    GameAction::Serialise(stream);
 
-public:
-    StaffSetOrdersAction() = default;
-    StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
-        : _spriteIndex(spriteIndex)
-        , _ordersId(ordersId)
+    stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
+}
+
+GameActions::Result::Ptr StaffSetOrdersAction::Query() const
+{
+    if (_spriteIndex >= MAX_SPRITES)
     {
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    uint16_t GetActionFlags() const override
+    auto* staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr
+        || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
     {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    void Serialise(DataSerialiser & stream) override
+    return std::make_unique<GameActions::Result>();
+}
+
+GameActions::Result::Ptr StaffSetOrdersAction::Execute() const
+{
+    auto* staff = TryGetEntity<Staff>(_spriteIndex);
+    if (staff == nullptr)
     {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_spriteIndex) << DS_TAG(_ordersId);
+        log_warning("Invalid game command for sprite %u", _spriteIndex);
+        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
+    staff->StaffOrders = _ordersId;
 
-    GameActions::Result::Ptr Query() const override
-    {
-        if (_spriteIndex >= MAX_SPRITES)
-        {
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
+    window_invalidate_by_number(WC_PEEP, _spriteIndex);
+    auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+    context_broadcast_intent(&intent);
 
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr
-            || (staff->AssignedStaffType != StaffType::Handyman && staff->AssignedStaffType != StaffType::Mechanic))
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-
-        return std::make_unique<GameActions::Result>();
-    }
-
-    GameActions::Result::Ptr Execute() const override
-    {
-        auto* staff = TryGetEntity<Staff>(_spriteIndex);
-        if (staff == nullptr)
-        {
-            log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-        }
-        staff->StaffOrders = _ordersId;
-
-        window_invalidate_by_number(WC_PEEP, _spriteIndex);
-        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
-        context_broadcast_intent(&intent);
-
-        auto res = std::make_unique<GameActions::Result>();
-        res->Position.x = staff->x;
-        res->Position.y = staff->y;
-        res->Position.z = staff->z;
-        return res;
-    }
-};
+    auto res = std::make_unique<GameActions::Result>();
+    res->Position.x = staff->x;
+    res->Position.y = staff->y;
+    res->Position.z = staff->z;
+    return res;
+}

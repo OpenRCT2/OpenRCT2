@@ -17,7 +17,7 @@
 #include "RideSetNameAction.h"
 #include "RideSetStatusAction.h"
 #include "SetParkEntranceFeeAction.h"
-#include "StaffSetNameAction.hpp"
+#include "StaffSetNameAction.h"
 #include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
