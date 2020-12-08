@@ -67,6 +67,9 @@
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		6341F4E12400AA0F0052902B /* Drawing.Sprite.RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */; };
 		6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */; };
+		662578A625803AA90002C77E /* discord_rpc.h in Headers */ = {isa = PBXBuildFile; fileRef = 662578A525803AA90002C77E /* discord_rpc.h */; };
+		662578AD25803CE50002C77E /* libdiscord-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662578A325803A6C0002C77E /* libdiscord-rpc.a */; };
+		662578AE25803D040002C77E /* libdiscord-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662578A325803A6C0002C77E /* libdiscord-rpc.a */; settings = {ATTRIBUTES = (Required, ); }; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308DA00209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -999,6 +1002,8 @@
 		51160A24250C7A15002029F6 /* GuestPathfinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestPathfinding.h; sourceTree = "<group>"; };
 		6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.RLE.cpp; sourceTree = "<group>"; };
 		6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.BMP.cpp; sourceTree = "<group>"; };
+		662578A325803A6C0002C77E /* libdiscord-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libdiscord-rpc.a"; path = "discord-rpc/build/src/libdiscord-rpc.a"; sourceTree = "<group>"; };
+		662578A525803AA90002C77E /* discord_rpc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = discord_rpc.h; path = "discord-rpc/include/discord_rpc.h"; sourceTree = "<group>"; };
 		9308D9FA209908080079EE96 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
@@ -1911,6 +1916,7 @@
 				C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */,
 				D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */,
 				C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */,
+				662578AE25803D040002C77E /* libdiscord-rpc.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1918,6 +1924,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662578AD25803CE50002C77E /* libdiscord-rpc.a in Frameworks */,
 				C68878492028982B0084B384 /* Cocoa.framework in Frameworks */,
 				C6887848202897D10084B384 /* Foundation.framework in Frameworks */,
 				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
@@ -2612,6 +2619,8 @@
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
+				662578A525803AA90002C77E /* discord_rpc.h */,
+				662578A325803A6C0002C77E /* libdiscord-rpc.a */,
 				9391535A22D74359008E0780 /* OpenRCT2.entitlements */,
 				4CF67196206B7E720034ADDD /* object */,
 				D41B72431C21015A0080A7B9 /* Sources */,
@@ -3700,6 +3709,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662578A625803AA90002C77E /* discord_rpc.h in Headers */,
 				93DFD05624521C1A001FCBAF /* ScriptEngine.h in Headers */,
 				2ADE2F3122441905002598AF /* DiscordService.h in Headers */,
 				C67B28172002D67A00109C93 /* Viewport.h in Headers */,
@@ -3791,6 +3801,7 @@
 			buildConfigurationList = F76C809D1EC4D9FA00FA49E2 /* Build configuration list for PBXNativeTarget "libopenrct2" */;
 			buildPhases = (
 				F76C809F1EC4DB0300FA49E2 /* Get Git Variables */,
+				66257898258032500002C77E /* Get discord-rpc */,
 				F76C80961EC4D9FA00FA49E2 /* Sources */,
 				F76C88381EC4EB5900FA49E2 /* Resources */,
 				F76C80981EC4D9FA00FA49E2 /* Headers */,
@@ -3915,7 +3926,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.20\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
+			shellScript = "version=\"1.0.20\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
+		};
+		66257898258032500002C77E /* Get discord-rpc */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Get discord-rpc";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ ! -d \"${SRCROOT}/discord-rpc\" ]]; then\n    . ${SRCROOT}/scripts/get-discord-rpc\nfi\n\nif [[ -d \"${SRCROOT}/discord-rpc\" ]]; then\n    cd ${SRCROOT}/discord-rpc\n    mkdir build\n    cd build\n    cmake ..\n    cmake --build . --config Release\nfi\n";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3945,7 +3974,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/sprites.json\"";
+			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/sprites.json\"\n";
 		};
 		D4CA88671D4E962100060C11 /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3961,7 +3990,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4E09E831E049C0600F53CE3 /* Download Title Sequences */ = {
@@ -3976,7 +4005,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
+			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi\n";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4023,7 +4052,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
@@ -4717,6 +4746,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
@@ -4758,6 +4788,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
@@ -4778,6 +4809,14 @@
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					__ENABLE_LIGHTFX__,
+					ENABLE_SCRIPTING,
+					__ENABLE_DISCORD__,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = NO;
@@ -4815,6 +4854,14 @@
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					__ENABLE_LIGHTFX__,
+					ENABLE_SCRIPTING,
+					__ENABLE_DISCORD__,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = NO;
@@ -4862,6 +4909,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4891,6 +4939,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";

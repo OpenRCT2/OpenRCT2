@@ -1,7 +1,13 @@
 #!/bin/bash
 set -e
-
-basedir="$(readlink -f `dirname $0`/..)"
+if [[ $(uname) == "Linux" ]]; then
+    basedir="$(readlink -f `dirname $0`/..)"
+elif [[ $(uname) == "Darwin" ]]; then
+    basedir="$(perl -MCwd=abs_path -le 'print abs_path readlink(shift);' `dirname $0`/..)"
+else
+    echo "Error: unknown OS: $(uname)"
+    exit 1
+fi
 cd $basedir
 
 git clone https://github.com/discordapp/discord-rpc -b v3.4.0
