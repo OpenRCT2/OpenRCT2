@@ -302,11 +302,19 @@ if(NOT DISABLE_GUI)
 endif()
 
 # g2
-add_custom_command(
-    OUTPUT g2.dat
-    COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
+if (${CMAKE_GENERATOR} STREQUAL "Xcode")
+    add_custom_command(
+        OUTPUT g2.dat
+        COMMAND "./$(CONFIGURATION)/openrct2-cli" sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+else ()
+    add_custom_command(
+        OUTPUT g2.dat
+        COMMAND "./openrct2-cli" sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+endif ()
 add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 
 # Include tests
@@ -388,3 +396,123 @@ if (NOT DISABLE_GUI)
 endif()
 install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
+
+if(NOT DISABLE_GUI AND APPLE)
+    # update dylibs
+    set(MACOS_DYLIBS_VERSION "26")
+    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v26-x64-macos-dylibs.zip")
+    set(MACOS_DYLIBS_DIR "${ROOT_DIR}/libxc")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+    if (NOT EXISTS ${MACOS_DYLIBS_DIR})
+        set(DOWNLOAD_DYLIBS 1)
+    else ()
+        file(READ "${MACOS_DYLIBS_DIR}/libversion" MACOS_DYLIBS_CACHED_VERSION)
+        if (NOT ${MACOS_DYLIBS_CACHED_VERSION} STREQUAL ${MACOS_DYLIBS_VERSION})
+           message("Cached macOS dylibs out of date")
+           set(DOWNLOAD_DYLIBS 1)
+        endif ()
+    endif ()
+    if (DOWNLOAD_DYLIBS)
+        message("Downloading macOS dylibs")
+        file(DOWNLOAD "${MACOS_DYLIBS_URL}" "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+        file(ARCHIVE_EXTRACT
+            INPUT "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}"
+            DESTINATION "${MACOS_DYLIBS_DIR}"
+        )
+        file(WRITE
+            "${MACOS_DYLIBS_DIR}/libversion"
+            "${MACOS_DYLIBS_VERSION}"
+        )
+        file(REMOVE "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+    endif ()
+
+    # TODO: make the above routine a function, use it for objects, title sequences, and languages
+
+    # not yet used, but link against the dylibs (and embed them)
+    find_library(
+        DYLIB_SDL2
+        libSDL2.dylib
+        PATH ${MACOS_DYLIBS_DIR}
+        PATH_SUFFIXES lib
+        REQUIRED
+    )
+
+
+    set(BUNDLE_RESOURCE "${PROJECT}.app/Contents/Resources")
+    set(SOURCE_DATA_DIR "${ROOT_DIR}/data")
+    set(SOURCE_ICON_DIR "${ROOT_DIR}/resources/logo")
+    set(ICON_TARGET "${ROOT_DIR}/distribution/macos/Assets.xcassets")
+    set(ICON_OUTPUT "${ICON_TARGET}/AppIcon.appiconset")
+
+    add_custom_command(OUTPUT
+        ${ICON_OUTPUT}/icon_16x16.png
+        ${ICON_OUTPUT}/icon_16x16@2x.png
+        ${ICON_OUTPUT}/icon_32x32.png
+        ${ICON_OUTPUT}/icon_32x32@2x.png
+        ${ICON_OUTPUT}/icon_128x128.png
+        ${ICON_OUTPUT}/icon_128x128@2x.png
+        ${ICON_OUTPUT}/icon_256x256.png
+        ${ICON_OUTPUT}/icon_256x256@2x.png
+        ${ICON_OUTPUT}/icon_512x512.png
+        ${ICON_OUTPUT}/icon_512x512@2x.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x16.png ${ICON_OUTPUT}/icon_16x16.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x32.png ${ICON_OUTPUT}/icon_16x16@2x.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x32.png ${ICON_OUTPUT}/icon_32x32.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x64.png ${ICON_OUTPUT}/icon_32x32@2x.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x128.png ${ICON_OUTPUT}/icon_128x128.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x256.png ${ICON_OUTPUT}/icon_128x128@2x.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x256.png ${ICON_OUTPUT}/icon_256x256.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x512.png ${ICON_OUTPUT}/icon_256x256@2x.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x512.png ${ICON_OUTPUT}/icon_512x512.png
+        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x1024.png ${ICON_OUTPUT}/icon_512x512@2x.png
+        WORKING_DIRECTORY ${SOURCE_ICON_DIR})
+
+    target_sources(${PROJECT} PRIVATE ${ICON_TARGET})
+    set_source_files_properties(${ICON_TARGET} PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources
+    )
+
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "macOS 10.13")
+    execute_process(COMMAND ${CMAKE_COMMAND} -E xcrun --show-sdk-path OUTPUT_VARIABLE CMAKE_OSX_SYSROOT)
+
+    # Add distribution sources
+    target_sources(${PROJECT}
+        PUBLIC distribution/readme.txt
+        PUBLIC distribution/changelog.txt
+        PUBLIC g2.dat
+        PUBLIC ${ICON_OUTPUT}
+        PUBLIC ${SOURCE_DATA_DIR}/language
+        PUBLIC ${SOURCE_DATA_DIR}/object
+        PUBLIC ${SOURCE_DATA_DIR}/sequence)
+
+    # Specify the resources to move to the bundle
+    set(BUNDLE_RESOURCES
+        distribution/readme.txt
+        distribution/changelog.txt
+        g2.dat
+        ${ICON_OUTPUT}
+        ${SOURCE_DATA_DIR}/language
+        ${SOURCE_DATA_DIR}/object
+        ${SOURCE_DATA_DIR}/sequence
+        )
+
+
+    if(${OPENRCT2_BRANCH} EQUAL master)
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG}")
+    else()
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG} ${OPENRCT2_BRANCH}")
+    endif()
+
+    set(MACOSX_BUNDLE_COPYRIGHT "OpenRCT2 is licensed under the GNU General Public License version 3")
+    set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "io.openrct2.OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_NAME "OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
+
+    # Create as a bundle
+    set_target_properties(${PROJECT} PROPERTIES
+        MACOSX_BUNDLE ON
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
+        XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon
+        RESOURCE "${BUNDLE_RESOURCES}")
+endif()
