@@ -13,6 +13,7 @@
 #include "../util/Util.h"
 
 struct Ride;
+enum class PeepThoughtType : uint8_t;
 
 enum class ShopItem : uint8_t
 {
@@ -59,7 +60,7 @@ enum class ShopItem : uint8_t
     MeatballSoup,
     FruitJuice,
     SoybeanMilk,
-    SuJeongGwa,
+    Sujeonggwa,
     SubSandwich,
     Cookie,
     EmptyBowlRed,
@@ -72,10 +73,6 @@ enum class ShopItem : uint8_t
 };
 
 ShopItem& operator++(ShopItem& d, int);
-
-ShopItem operator+(const ShopItem& lhs, const ShopItem& rhs);
-
-ShopItem operator-(const ShopItem& lhs, const ShopItem& rhs);
 
 using ShopItemIndex = ShopItem;
 
@@ -98,8 +95,16 @@ struct ShopItemDescriptor
     uint32_t Image;
     ShopItemStrings Naming;
     uint16_t Flags;
+    uint8_t LitterType;
+    uint8_t ConsumptionTime;
+    ShopItem DiscardContainer;
+    PeepThoughtType TooMuchThought;
+    PeepThoughtType GoodValueThought;
 
-    bool HasFlag(const uint16_t flag) const;
+    constexpr bool HasFlag(const uint16_t flag) const
+    {
+        return (Flags & flag) != 0;
+    }
     bool IsFood() const;
     bool IsDrink() const;
     bool IsFoodOrDrink() const;
@@ -107,18 +112,22 @@ struct ShopItemDescriptor
     bool IsPhoto() const;
 };
 
+uint64_t ShopItemsGetAllFoods();
+uint64_t ShopItemsGetAllDrinks();
+uint64_t ShopItemsGetAllContainers();
+
 enum
 {
     SHOP_ITEM_FLAG_IS_FOOD = (1 << 0),
     SHOP_ITEM_FLAG_IS_DRINK = (1 << 1),
     SHOP_ITEM_FLAG_IS_SOUVENIR = (1 << 2),
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
+    SHOP_ITEM_FLAG_IS_CONTAINER = (1 << 4),
 };
 
-extern const ShopItemDescriptor ShopItems[EnumValue(ShopItem::Count)];
 extern uint64_t gSamePriceThroughoutPark;
 
 money32 shop_item_get_common_price(Ride* forRide, const ShopItem shopItem);
 bool shop_item_has_common_price(const ShopItem shopItem);
 
-ShopItemDescriptor GetShopItemDescriptor(ShopItem item);
+const ShopItemDescriptor& GetShopItemDescriptor(ShopItem item);

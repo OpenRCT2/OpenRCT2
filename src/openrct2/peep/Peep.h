@@ -157,7 +157,7 @@ enum class PeepThoughtType : uint8_t
     PizzaMuch = 85,
 
     PopcornMuch = 87,
-    Hot_dogMuch = 88,
+    HotDogMuch = 88,
     TentacleMuch = 89,
     HatMuch = 90,
     ToffeeAppleMuch = 91,
@@ -787,8 +787,10 @@ struct Guest : Peep
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
-    bool HasFood() const;
+    int64_t GetFoodOrDrinkFlags() const;
+    int64_t GetEmptyContainerFlags() const;
     bool HasDrink() const;
+    bool HasFoodOrDrink() const;
     bool HasEmptyContainer() const;
     void OnEnterRide(ride_id_t rideIndex);
     void OnExitRide(ride_id_t rideIndex);
@@ -812,10 +814,6 @@ public:
     bool HasRiddenRideType(int32_t rideType) const;
     void SetParkEntryTime(int32_t entryTime);
     int32_t GetParkEntryTime() const;
-    int32_t HasFoodStandardFlag() const;
-    int32_t HasFoodExtraFlag() const;
-    int32_t HasEmptyContainerStandardFlag() const;
-    int32_t HasEmptyContainerExtraFlag() const;
     void CheckIfLost();
     void CheckCantFindRide();
     void CheckCantFindExit();
