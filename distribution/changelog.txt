@@ -1,5 +1,6 @@
 0.3.2+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#6677] Add Discord RPC to macOS builds.
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13078] [Plugin] Add colour picker widget.
 - Feature: [#13376] Open custom window at specified tab.
