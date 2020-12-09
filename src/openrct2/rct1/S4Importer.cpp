@@ -2429,7 +2429,7 @@ private:
         {
             activeResearchTypes |= EnumToFlag(ResearchCategory::Shop);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMING)
         {
             activeResearchTypes |= EnumToFlag(ResearchCategory::SceneryGroup);
         }
