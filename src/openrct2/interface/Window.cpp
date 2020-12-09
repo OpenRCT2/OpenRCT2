@@ -1522,18 +1522,14 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
 
 OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    OpenRCT2String out;
-    out.str = STR_STRING_DEFINED_TOOLTIP;
-    out.args = Formatter();
     if (w->event_handlers->tooltip != nullptr)
     {
-        out.args.Add<rct_string_id>(w->event_handlers->tooltip(w, widgetIndex, fallback).str);
+        return w->event_handlers->tooltip(w, widgetIndex, fallback);
     }
     else
     {
-        out.args.Add<rct_string_id>(fallback);
+        return { fallback, {} };
     }
-    return out;
 }
 
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
