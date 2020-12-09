@@ -726,6 +726,10 @@ struct RCT2SpritePeep : RCT12SpriteBase
     uint8_t favourite_ride_rating;        // 0xFA
     uint8_t pad_FB;
     uint32_t item_standard_flags; // 0xFC
+    uint64_t GetItemFlags() const
+    {
+        return item_standard_flags | (static_cast<uint64_t>(item_extra_flags) << 32);
+    }
 };
 assert_struct_size(RCT2SpritePeep, 0x100);
 

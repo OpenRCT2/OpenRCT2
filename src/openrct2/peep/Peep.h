@@ -597,7 +597,6 @@ struct Peep : SpriteBase
     uint8_t WindowInvalidateFlags;
     money16 PaidOnDrink;
     uint8_t RideTypesBeenOn[16];
-    uint32_t ItemExtraFlags;
     ride_id_t Photo2RideRef;
     ride_id_t Photo3RideRef;
     ride_id_t Photo4RideRef;
@@ -725,7 +724,7 @@ struct Peep : SpriteBase
     uint8_t HatColour;
     ride_id_t FavouriteRide;
     uint8_t FavouriteRideRating;
-    uint32_t ItemStandardFlags;
+    uint64_t ItemFlags;
 
 public: // Peep
     Guest* AsGuest();
@@ -760,8 +759,8 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint64_t GetItemFlags(bool bit32Flag = false, bool ExtraItem = false) const;
-    void SetItemFlags(uint32_t ItemFlag, bool ExtraItem = false);
+    uint64_t GetItemFlags() const;
+    void SetItemFlags(uint64_t itemFlags);
     void RemoveAllItems();
     void RemoveItem(ShopItem item);
     void GiveItem(ShopItem item);

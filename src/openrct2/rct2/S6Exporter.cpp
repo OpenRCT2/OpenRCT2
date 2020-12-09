@@ -1173,7 +1173,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     {
         dst->ride_types_been_on[i] = src->RideTypesBeenOn[i];
     }
-    dst->item_extra_flags = src->GetItemFlags(true, true);
+    dst->item_extra_flags = static_cast<uint32_t>(src->GetItemFlags() >> 32);
     dst->photo2_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo2RideRef);
     dst->photo3_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo3RideRef);
     dst->photo4_ride_ref = OpenRCT2RideIdToRCT12RideId(src->Photo4RideRef);
@@ -1245,7 +1245,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->hat_colour = src->HatColour;
     dst->favourite_ride = OpenRCT2RideIdToRCT12RideId(src->FavouriteRide);
     dst->favourite_ride_rating = src->FavouriteRideRating;
-    dst->item_standard_flags = src->GetItemFlags(true);
+    dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
 void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)

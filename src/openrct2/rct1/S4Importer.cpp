@@ -1568,7 +1568,7 @@ private:
             dst->FavouriteRideRating = 0;
         }
 
-        dst->SetItemFlags(src->item_standard_flags, 0);
+        dst->SetItemFlags(src->GetItemFlags());
 
         if (dst->AssignedPeepType == PeepType::Guest)
         {

@@ -1461,7 +1461,7 @@ public:
         {
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
-        dst->SetItemFlags(src->item_extra_flags, 1);
+        dst->SetItemFlags(src->GetItemFlags());
         dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
         dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
         dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
@@ -1533,7 +1533,6 @@ public:
         dst->HatColour = src->hat_colour;
         dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
         dst->FavouriteRideRating = src->favourite_ride_rating;
-        dst->SetItemFlags(src->item_standard_flags, 0);
     }
 
     void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)
