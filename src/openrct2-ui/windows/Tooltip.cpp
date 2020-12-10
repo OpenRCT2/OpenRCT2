@@ -71,17 +71,9 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
         return;
 
     OpenRCT2String formattedMessage;
-    if (message.args.NumBytes() == 0)
-    {
-        formattedMessage.str = STR_STRING_DEFINED_TOOLTIP;
-        formattedMessage.args = message.args;
-        formattedMessage.args.Add<rct_string_id>(message.str);
-    }
-    else
-    {
-        formattedMessage.str = message.str;
-        formattedMessage.args = message.args;
-    }
+    formattedMessage.str = STR_STRING_DEFINED_TOOLTIP;
+    formattedMessage.args = message.args;
+    formattedMessage.args.Add<rct_string_id>(message.str);
     int32_t textWidth = FormatTextForTooltip(formattedMessage);
     int32_t width = textWidth + 3;
     int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM)) + 4;
