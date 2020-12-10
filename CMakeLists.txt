@@ -19,6 +19,8 @@ if (CCache_FOUND)
     endif (OPENRCT2_USE_CCACHE)
 endif (CCache_FOUND)
 
+set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
@@ -294,6 +296,58 @@ if (MINGW)
    add_definitions(-fstack-protector-strong)
 endif ()
 
+# if we'll build a macOS app bundle, we need to pull dependencies
+if (NOT DISABLE_GUI AND APPLE)
+    # update dylibs
+    set(MACOS_DYLIBS_VERSION "26")
+    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v26-x64-macos-dylibs.zip")
+    set(MACOS_DYLIBS_DIR "${ROOT_DIR}/libxc")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+    if (NOT EXISTS ${MACOS_DYLIBS_DIR})
+        set(DOWNLOAD_DYLIBS 1)
+    else ()
+        file(READ "${MACOS_DYLIBS_DIR}/libversion" MACOS_DYLIBS_CACHED_VERSION)
+        if (NOT ${MACOS_DYLIBS_CACHED_VERSION} STREQUAL ${MACOS_DYLIBS_VERSION})
+        message("Cached macOS dylibs out of date")
+        set(DOWNLOAD_DYLIBS 1)
+        endif ()
+    endif ()
+    if (DOWNLOAD_DYLIBS)
+        message("Downloading macOS dylibs")
+        file(DOWNLOAD "${MACOS_DYLIBS_URL}" "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+        file(ARCHIVE_EXTRACT
+            INPUT "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}"
+            DESTINATION "${MACOS_DYLIBS_DIR}"
+        )
+        file(WRITE
+            "${MACOS_DYLIBS_DIR}/libversion"
+            "${MACOS_DYLIBS_VERSION}"
+        )
+        file(REMOVE "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+    endif ()
+
+    # TODO: make the above routine a function, use it for objects, title sequences, and languages
+
+    # not yet used, but link against the dylibs (and embed them)
+    message("search dir: ${MACOS_DYLIBS_DIR}")
+    find_library(
+        DYLIB_SDL2
+        libSDL2.dylib
+        PATHS ${MACOS_DYLIBS_DIR}/lib
+        HINTS ${MACOS_DYLIBS_DIR}/lib
+        NO_DEFAULT_PATH
+        NO_PACKAGE_ROOT_PATH
+        NO_CMAKE_PATH
+        NO_CMAKE_ENVIRONMENT_PATH
+        NO_CMAKE_SYSTEM_PATH
+        NO_SYSTEM_ENVIRONMENT_PATH
+        REQUIRED
+    )
+    message("Found libsdl2.dylib: ${DYLIB_SDL2}")
+
+endif()
+
+
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
 include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
@@ -315,6 +369,7 @@ else ()
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
 endif ()
+add_dependencies(${PROJECT} openrct2-cli)
 add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 
 # Include tests
@@ -398,82 +453,29 @@ install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_IN
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
 
 if(NOT DISABLE_GUI AND APPLE)
-    # update dylibs
-    set(MACOS_DYLIBS_VERSION "26")
-    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v26-x64-macos-dylibs.zip")
-    set(MACOS_DYLIBS_DIR "${ROOT_DIR}/libxc")
-    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
-    if (NOT EXISTS ${MACOS_DYLIBS_DIR})
-        set(DOWNLOAD_DYLIBS 1)
-    else ()
-        file(READ "${MACOS_DYLIBS_DIR}/libversion" MACOS_DYLIBS_CACHED_VERSION)
-        if (NOT ${MACOS_DYLIBS_CACHED_VERSION} STREQUAL ${MACOS_DYLIBS_VERSION})
-           message("Cached macOS dylibs out of date")
-           set(DOWNLOAD_DYLIBS 1)
-        endif ()
-    endif ()
-    if (DOWNLOAD_DYLIBS)
-        message("Downloading macOS dylibs")
-        file(DOWNLOAD "${MACOS_DYLIBS_URL}" "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
-        file(ARCHIVE_EXTRACT
-            INPUT "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}"
-            DESTINATION "${MACOS_DYLIBS_DIR}"
-        )
-        file(WRITE
-            "${MACOS_DYLIBS_DIR}/libversion"
-            "${MACOS_DYLIBS_VERSION}"
-        )
-        file(REMOVE "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
-    endif ()
-
-    # TODO: make the above routine a function, use it for objects, title sequences, and languages
-
-    # not yet used, but link against the dylibs (and embed them)
-    find_library(
-        DYLIB_SDL2
-        libSDL2.dylib
-        PATH ${MACOS_DYLIBS_DIR}
-        PATH_SUFFIXES lib
-        REQUIRED
-    )
-
-
-    set(BUNDLE_RESOURCE "${PROJECT}.app/Contents/Resources")
+    set(OUTPUT_NAME "OpenRCT2")
+    set(MACOS_APP_NAME "${OUTPUT_NAME}.app")
+    set(BUNDLE_FRAMEWORK_DIR "${MACOS_APP_NAME}/Contents/Frameworks")
+    set(BUNDLE_RESOURCE_DIR "${MACOS_APP_NAME}/Contents/Resources")
     set(SOURCE_DATA_DIR "${ROOT_DIR}/data")
     set(SOURCE_ICON_DIR "${ROOT_DIR}/resources/logo")
     set(ICON_TARGET "${ROOT_DIR}/distribution/macos/Assets.xcassets")
-    set(ICON_OUTPUT "${ICON_TARGET}/AppIcon.appiconset")
-
+    set(ICON_OUTPUT "${ICON_TARGET}/AppIcon.iconset")
+    file(GLOB SOURCE_ICON_DIR "${SOURCE_ICON_DIR}/*.png")
+    file(COPY ${SOURCE_ICON_DIR} DESTINATION "${ICON_OUTPUT}")
     add_custom_command(OUTPUT
-        ${ICON_OUTPUT}/icon_16x16.png
-        ${ICON_OUTPUT}/icon_16x16@2x.png
-        ${ICON_OUTPUT}/icon_32x32.png
-        ${ICON_OUTPUT}/icon_32x32@2x.png
-        ${ICON_OUTPUT}/icon_128x128.png
-        ${ICON_OUTPUT}/icon_128x128@2x.png
-        ${ICON_OUTPUT}/icon_256x256.png
-        ${ICON_OUTPUT}/icon_256x256@2x.png
-        ${ICON_OUTPUT}/icon_512x512.png
-        ${ICON_OUTPUT}/icon_512x512@2x.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x16.png ${ICON_OUTPUT}/icon_16x16.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x32.png ${ICON_OUTPUT}/icon_16x16@2x.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x32.png ${ICON_OUTPUT}/icon_32x32.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x64.png ${ICON_OUTPUT}/icon_32x32@2x.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x128.png ${ICON_OUTPUT}/icon_128x128.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x256.png ${ICON_OUTPUT}/icon_128x128@2x.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x256.png ${ICON_OUTPUT}/icon_256x256.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x512.png ${ICON_OUTPUT}/icon_256x256@2x.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x512.png ${ICON_OUTPUT}/icon_512x512.png
-        COMMAND cp -r ${SOURCE_ICON_DIR}/icon_x1024.png ${ICON_OUTPUT}/icon_512x512@2x.png
-        WORKING_DIRECTORY ${SOURCE_ICON_DIR})
+        ${ICON_TARGET}/AppIcon.icns
+        COMMAND iconutil -c icns AppIcon.iconset
+        WORKING_DIRECTORY ${ICON_TARGET})
 
     target_sources(${PROJECT} PRIVATE ${ICON_TARGET})
     set_source_files_properties(${ICON_TARGET} PROPERTIES
         MACOSX_PACKAGE_LOCATION Resources
     )
 
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "macOS 10.13")
-    execute_process(COMMAND ${CMAKE_COMMAND} -E xcrun --show-sdk-path OUTPUT_VARIABLE CMAKE_OSX_SYSROOT)
+    # execute_process(COMMAND xcrun --show-sdk-path 
+    #     OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
+    #     OUTPUT_STRIP_TRAILING_WHITESPACE)
 
     # Add distribution sources
     target_sources(${PROJECT}
@@ -483,14 +485,21 @@ if(NOT DISABLE_GUI AND APPLE)
         PUBLIC ${ICON_OUTPUT}
         PUBLIC ${SOURCE_DATA_DIR}/language
         PUBLIC ${SOURCE_DATA_DIR}/object
-        PUBLIC ${SOURCE_DATA_DIR}/sequence)
+        PUBLIC ${SOURCE_DATA_DIR}/sequence
+        )
+    if (NOT ${CMAKE_GENERATOR} STREQUAL "Xcode")
+        target_sources(${PROJECT} PRIVATE ${ICON_TARGET}/AppIcon.icns)
+        set_source_files_properties(${ICON_TARGET}/AppIcon.icns PROPERTIES
+            MACOSX_PACKAGE_LOCATION Resources
+        )
+    endif ()
 
     # Specify the resources to move to the bundle
     set(BUNDLE_RESOURCES
         distribution/readme.txt
         distribution/changelog.txt
         g2.dat
-        ${ICON_OUTPUT}
+        # ${ICON_OUTPUT}
         ${SOURCE_DATA_DIR}/language
         ${SOURCE_DATA_DIR}/object
         ${SOURCE_DATA_DIR}/sequence
@@ -506,12 +515,24 @@ if(NOT DISABLE_GUI AND APPLE)
     set(MACOSX_BUNDLE_COPYRIGHT "OpenRCT2 is licensed under the GNU General Public License version 3")
     set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
     set(MACOSX_BUNDLE_GUI_IDENTIFIER "io.openrct2.OpenRCT2")
-    set(MACOSX_BUNDLE_BUNDLE_NAME "OpenRCT2")
     set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
+
+    # Copy DYLIBS
+    file(GLOB MACOS_DYLIBS_LIBS "${MACOS_DYLIBS_DIR}/lib/*.dylib")
+    file(MAKE_DIRECTORY "${BUNDLE_FRAMEWORK_DIR}")
+    file(COPY ${MACOS_DYLIBS_LIBS} DESTINATION "${BUNDLE_FRAMEWORK_DIR}")
+
+    # copy data
+    file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/object DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/sequence DESTINATION "${BUNDLE_RESOURCE_DIR}")
+
 
     # Create as a bundle
     set_target_properties(${PROJECT} PROPERTIES
         MACOSX_BUNDLE ON
+        OUTPUT_NAME ${OUTPUT_NAME}
+        MACOSX_BUNDLE_BUNDLE_NAME ${OUTPUT_NAME}
         MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
         XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon
         RESOURCE "${BUNDLE_RESOURCES}")

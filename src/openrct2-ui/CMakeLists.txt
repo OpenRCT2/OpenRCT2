@@ -44,10 +44,16 @@ add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 SET_CHECK_CXX_FLAGS(${PROJECT})
 ipo_set_target_properties(${PROJECT})
 
+
+if (APPLE)
+    target_link_libraries(${PROJECT} ${MACOS_DYLIBS_DIR}/lib/libSDL2.dylib)
+    # set(SDL2_LDFLAGS "-L${MACOS_DYLIBS_DIR}/lib;-lSDL2")
+endif ()
+message("sdl2 flags ${SDL2_LDFLAGS}")
 target_link_libraries(${PROJECT} "libopenrct2"
-                                 ${SDL2_LDFLAGS}
+                                #  ${SDL2_LDFLAGS}
                                  ${SPEEX_LDFLAGS})
-target_link_platform_libraries(${PROJECT})
+# target_link_platform_libraries(${PROJECT})
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
