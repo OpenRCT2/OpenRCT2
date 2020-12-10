@@ -925,7 +925,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
-        if (command.Type == TITLE_SCRIPT_LOAD && command.SaveIndex == SAVE_INDEX_INVALID)
+        if (command.Type == TitleScript::Load && command.SaveIndex == SAVE_INDEX_INVALID)
             error = true;
 
         auto ft = Formatter();
@@ -940,7 +940,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
 
         switch (command.Type)
         {
-            case TITLE_SCRIPT_LOAD:
+            case TitleScript::Load:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 if (command.SaveIndex == SAVE_INDEX_INVALID)
@@ -955,7 +955,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 }
                 break;
             }
-            case TITLE_SCRIPT_LOCATION:
+            case TitleScript::Location:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 ft.Add<rct_string_id>(commandName);
@@ -963,28 +963,28 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 ft.Add<uint16_t>(command.Y);
                 break;
             }
-            case TITLE_SCRIPT_ROTATE:
+            case TitleScript::Rotate:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
                 ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Rotations);
                 break;
             }
-            case TITLE_SCRIPT_ZOOM:
+            case TitleScript::Zoom:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
                 ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Zoom);
                 break;
             }
-            case TITLE_SCRIPT_SPEED:
+            case TitleScript::Speed:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
                 ft.Add<rct_string_id>(commandName);
                 ft.Add<rct_string_id>(SpeedNames[command.Speed - 1]);
                 break;
             }
-            case TITLE_SCRIPT_FOLLOW:
+            case TitleScript::Follow:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
                 if (command.SpriteIndex == SPRITE_INDEX_NULL)
@@ -999,26 +999,26 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 }
                 break;
             }
-            case TITLE_SCRIPT_WAIT:
+            case TitleScript::Wait:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
                 ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Milliseconds);
                 break;
             }
-            case TITLE_SCRIPT_RESTART:
+            case TitleScript::Restart:
             {
                 auto commandName = STR_TITLE_EDITOR_RESTART;
                 ft.Add<rct_string_id>(commandName);
                 break;
             }
-            case TITLE_SCRIPT_END:
+            case TitleScript::End:
             {
                 auto commandName = STR_TITLE_EDITOR_END;
                 ft.Add<rct_string_id>(commandName);
                 break;
             }
-            case TITLE_SCRIPT_LOADSC:
+            case TitleScript::LoadSc:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";
