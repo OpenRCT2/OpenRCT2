@@ -17,7 +17,7 @@
 #include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/LoadOrQuitAction.hpp>
+#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>

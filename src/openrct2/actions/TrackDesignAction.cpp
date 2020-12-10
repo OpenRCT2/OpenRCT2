@@ -15,11 +15,11 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/TrackDesign.h"
-#include "RideCreateAction.hpp"
-#include "RideDemolishAction.hpp"
-#include "RideSetName.hpp"
-#include "RideSetSetting.hpp"
-#include "RideSetVehiclesAction.hpp"
+#include "RideCreateAction.h"
+#include "RideDemolishAction.h"
+#include "RideSetNameAction.h"
+#include "RideSetSettingAction.h"
+#include "RideSetVehicleAction.h"
 
 static int32_t place_virtual_track(
     const TrackDesign& td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& loc)

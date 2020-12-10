@@ -13,7 +13,7 @@
 #include "../Editor.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/RideSetStatus.hpp"
+#include "../actions/RideSetStatusAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"

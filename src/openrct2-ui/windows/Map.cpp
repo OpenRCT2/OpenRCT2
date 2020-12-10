@@ -18,12 +18,13 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/LandSetRightsAction.hpp>
-#include <openrct2/actions/PlaceParkEntranceAction.hpp>
-#include <openrct2/actions/PlacePeepSpawnAction.hpp>
-#include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/LandSetRightsAction.h>
+#include <openrct2/actions/PlaceParkEntranceAction.h>
+#include <openrct2/actions/PlacePeepSpawnAction.h>
+#include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>

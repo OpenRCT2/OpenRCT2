@@ -15,8 +15,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
-#include <openrct2/actions/ParkSetLoanAction.hpp>
-#include <openrct2/actions/ParkSetResearchFundingAction.hpp>
+#include <openrct2/actions/ParkSetLoanAction.h>
+#include <openrct2/actions/ParkSetResearchFundingAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>

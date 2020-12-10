@@ -7,18 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../peep/Staff.h"
+#include "../ride/Track.h"
+#include "../world/Entrance.h"
+#include "../world/Park.h"
 #include "GameAction.h"
-#include "GuestSetNameAction.hpp"
-#include "MazeSetTrackAction.hpp"
-#include "PlaceParkEntranceAction.hpp"
-#include "PlacePeepSpawnAction.hpp"
-#include "RideCreateAction.hpp"
-#include "RideDemolishAction.hpp"
-#include "RideSetName.hpp"
-#include "RideSetStatus.hpp"
-#include "SetParkEntranceFeeAction.hpp"
-#include "StaffSetNameAction.hpp"
-#include "WallRemoveAction.hpp"
+#include "GuestSetNameAction.h"
+#include "MazeSetTrackAction.h"
+#include "PlaceParkEntranceAction.h"
+#include "PlacePeepSpawnAction.h"
+#include "RideCreateAction.h"
+#include "RideDemolishAction.h"
+#include "RideSetNameAction.h"
+#include "RideSetStatusAction.h"
+#include "SetParkEntranceFeeAction.h"
+#include "StaffSetNameAction.h"
+#include "WallRemoveAction.h"
 
 #pragma region PlaceParkEntranceAction
 /**

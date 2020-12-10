@@ -11,7 +11,7 @@
 
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetResearchFundingAction.hpp"
+#include "../actions/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"

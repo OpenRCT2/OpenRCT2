@@ -1,0 +1,202 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "ClearAction.h"
+
+#include "../Context.h"
+#include "../core/MemoryStream.h"
+#include "../drawing/Drawing.h"
+#include "../localisation/StringIds.h"
+#include "../management/Finance.h"
+#include "../world/LargeScenery.h"
+#include "../world/Location.hpp"
+#include "../world/Map.h"
+#include "FootpathRemoveAction.h"
+#include "LargeSceneryRemoveAction.h"
+#include "SmallSceneryRemoveAction.h"
+#include "WallRemoveAction.h"
+
+#include <algorithm>
+
+void ClearAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
+}
+
+GameActions::Result::Ptr ClearAction::Query() const
+{
+    return QueryExecute(false);
+}
+
+GameActions::Result::Ptr ClearAction::Execute() const
+{
+    return QueryExecute(true);
+}
+
+GameActions::Result::Ptr ClearAction::CreateResult() const
+{
+    auto result = MakeResult();
+    result->ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
+    result->Expenditure = ExpenditureType::Landscaping;
+
+    auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
+    auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
+    auto z = tile_element_height({ x, y });
+    result->Position = CoordsXYZ(x, y, z);
+
+    return result;
+}
+
+GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
+{
+    auto result = CreateResult();
+
+    auto noValidTiles = true;
+    auto error = GameActions::Status::Ok;
+    rct_string_id errorMessage = STR_NONE;
+    money32 totalCost = 0;
+
+    auto x0 = std::max(_range.GetLeft(), 32);
+    auto y0 = std::max(_range.GetTop(), 32);
+    auto x1 = std::min(_range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY));
+    auto y1 = std::min(_range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY));
+
+    for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
+    {
+        for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
+        {
+            if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
+            {
+                auto cost = ClearSceneryFromTile({ x, y }, executing);
+                if (cost != MONEY32_UNDEFINED)
+                {
+                    noValidTiles = false;
+                    totalCost += cost;
+                }
+            }
+            else
+            {
+                error = GameActions::Status::NotOwned;
+                errorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+            }
+        }
+    }
+
+    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
+    {
+        ResetClearLargeSceneryFlag();
+    }
+
+    if (noValidTiles)
+    {
+        result->Error = error;
+        result->ErrorMessage = errorMessage;
+    }
+
+    result->Cost = totalCost;
+    return result;
+}
+
+money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const
+{
+    // Pass down all flags.
+    TileElement* tileElement = nullptr;
+    money32 totalCost = 0;
+    bool tileEdited;
+    do
+    {
+        tileEdited = false;
+        tileElement = map_get_first_element_at(tilePos);
+        if (tileElement == nullptr)
+            return totalCost;
+        do
+        {
+            if (tileElement->IsGhost())
+                continue;
+
+            auto type = tileElement->GetType();
+            switch (type)
+            {
+                case TILE_ELEMENT_TYPE_PATH:
+                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
+                    {
+                        auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
+                        footpathRemoveAction.SetFlags(GetFlags());
+
+                        auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
+                                             : GameActions::QueryNested(&footpathRemoveAction);
+
+                        if (res->Error == GameActions::Status::Ok)
+                        {
+                            totalCost += res->Cost;
+                            tileEdited = executing;
+                        }
+                    }
+                    break;
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
+                    {
+                        auto removeSceneryAction = SmallSceneryRemoveAction(
+                            { tilePos, tileElement->GetBaseZ() }, tileElement->AsSmallScenery()->GetSceneryQuadrant(),
+                            tileElement->AsSmallScenery()->GetEntryIndex());
+                        removeSceneryAction.SetFlags(GetFlags());
+
+                        auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                             : GameActions::QueryNested(&removeSceneryAction);
+
+                        if (res->Error == GameActions::Status::Ok)
+                        {
+                            totalCost += res->Cost;
+                            tileEdited = executing;
+                        }
+                    }
+                    break;
+                case TILE_ELEMENT_TYPE_WALL:
+                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
+                    {
+                        CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
+                        auto wallRemoveAction = WallRemoveAction(wallLocation);
+                        wallRemoveAction.SetFlags(GetFlags());
+
+                        auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
+                                             : GameActions::QueryNested(&wallRemoveAction);
+
+                        if (res->Error == GameActions::Status::Ok)
+                        {
+                            totalCost += res->Cost;
+                            tileEdited = executing;
+                        }
+                    }
+                    break;
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                    if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
+                    {
+                        auto removeSceneryAction = LargeSceneryRemoveAction(
+                            { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
+                            tileElement->AsLargeScenery()->GetSequenceIndex());
+                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
+
+                        auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
+                                             : GameActions::QueryNested(&removeSceneryAction);
+
+                        if (res->Error == GameActions::Status::Ok)
+                        {
+                            totalCost += res->Cost;
+                            tileEdited = executing;
+                        }
+                    }
+                    break;
+            }
+        } while (!tileEdited && !(tileElement++)->IsLastForTile());
+    } while (tileEdited);
+
+    return totalCost;
+}

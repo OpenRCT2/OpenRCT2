@@ -15,8 +15,8 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/ParkSetDateAction.hpp>
-#include <openrct2/actions/SetCheatAction.hpp>
+#include <openrct2/actions/ParkSetDateAction.h>
+#include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>

@@ -12,10 +12,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2/actions/LargeSceneryRemoveAction.hpp>
-#include <openrct2/actions/SignSetNameAction.hpp>
-#include <openrct2/actions/SignSetStyleAction.hpp>
-#include <openrct2/actions/WallRemoveAction.hpp>
+#include <openrct2/actions/LargeSceneryRemoveAction.h>
+#include <openrct2/actions/SignSetNameAction.h>
+#include <openrct2/actions/SignSetStyleAction.h>
+#include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>

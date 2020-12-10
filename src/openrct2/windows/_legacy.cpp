@@ -11,7 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/TrackPlaceAction.hpp"
+#include "../actions/TrackPlaceAction.h"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"

@@ -12,10 +12,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2/actions/BannerRemoveAction.hpp>
-#include <openrct2/actions/BannerSetColourAction.hpp>
-#include <openrct2/actions/BannerSetNameAction.hpp>
-#include <openrct2/actions/BannerSetStyleAction.hpp>
+#include <openrct2/actions/BannerRemoveAction.h>
+#include <openrct2/actions/BannerSetColourAction.h>
+#include <openrct2/actions/BannerSetNameAction.h>
+#include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
