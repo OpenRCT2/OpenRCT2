@@ -20,18 +20,11 @@ private:
 
 public:
     GuestSetFlagsAction() = default;
-    GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
-        : _peepId(peepId)
-        , _newFlags(flags)
-    {
-    }
+    GuestSetFlagsAction(uint16_t peepId, uint32_t flags);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
