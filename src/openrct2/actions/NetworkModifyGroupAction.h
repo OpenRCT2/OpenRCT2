@@ -40,22 +40,11 @@ private:
 
 public:
     NetworkModifyGroupAction() = default;
-
     NetworkModifyGroupAction(
         ModifyGroupType type, uint8_t groupId = std::numeric_limits<uint8_t>::max(), const std::string name = "",
-        uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count)
-        : _type(type)
-        , _groupId(groupId)
-        , _name(name)
-        , _permissionIndex(permissionIndex)
-        , _permissionState(permissionState)
-    {
-    }
+        uint32_t permissionIndex = 0, PermissionState permissionState = PermissionState::Count);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -12,6 +12,21 @@
 #include "../network/network.h"
 #include "../util/Util.h"
 
+NetworkModifyGroupAction::NetworkModifyGroupAction(
+    ModifyGroupType type, uint8_t groupId, const std::string name, uint32_t permissionIndex, PermissionState permissionState)
+    : _type(type)
+    , _groupId(groupId)
+    , _name(name)
+    , _permissionIndex(permissionIndex)
+    , _permissionState(permissionState)
+{
+}
+
+uint16_t NetworkModifyGroupAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
