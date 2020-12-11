@@ -50,12 +50,13 @@ void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 // Returns the width of the new tooltip text
 static int32_t FormatTextForTooltip(const OpenRCT2String& message)
 {
-    format_string(_tooltipText, sizeof(_tooltipText), message.str, message.args.Data());
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    utf8 tempBuffer[sizeof(gCommonStringFormatBuffer)];
+    format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
 
     OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
-    formattedMessage.args.Add<const char*>(_tooltipText);
+    formattedMessage.args.Add<const char*>(tempBuffer);
     format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
+    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     auto textWidth = gfx_get_string_width_new_lined(_tooltipText);
     textWidth = std::min(textWidth, 196);
