@@ -15,12 +15,25 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
+BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
+    : _loc(loc)
+    , _bannerType(bannerType)
+    , _bannerIndex(bannerIndex)
+    , _primaryColour(primaryColour)
+{
+}
+
 void BannerPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("object", _bannerType);
     visitor.Visit("primaryColour", _primaryColour);
     _bannerIndex = create_new_banner(0);
+}
+
+uint16_t BannerPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void BannerPlaceAction::Serialise(DataSerialiser& stream)

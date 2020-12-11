@@ -16,11 +16,23 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
+BannerSetStyleAction::BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter)
+    : _type(type)
+    , _bannerIndex(bannerIndex)
+    , _parameter(parameter)
+{
+}
+
 void BannerSetStyleAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("id", _bannerIndex);
     visitor.Visit("type", _type);
     visitor.Visit("parameter", _parameter);
+}
+
+uint16_t BannerSetStyleAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void BannerSetStyleAction::Serialise(DataSerialiser& stream)

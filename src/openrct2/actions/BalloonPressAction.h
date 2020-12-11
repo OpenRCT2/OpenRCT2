@@ -18,16 +18,11 @@ DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActions::
 
 public:
     BalloonPressAction() = default;
-    BalloonPressAction(uint16_t spriteIndex)
-        : _spriteIndex(spriteIndex)
-    {
-    }
+    BalloonPressAction(uint16_t spriteIndex);
+
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
