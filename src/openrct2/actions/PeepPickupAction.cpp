@@ -13,6 +13,19 @@
 #include "../network/network.h"
 #include "../util/Util.h"
 
+PeepPickupAction::PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
+    : _type(type)
+    , _spriteId(spriteId)
+    , _loc(loc)
+    , _owner(owner)
+{
+}
+
+uint16_t PeepPickupAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void PeepPickupAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

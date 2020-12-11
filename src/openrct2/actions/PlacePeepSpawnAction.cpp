@@ -18,6 +18,16 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 
+PlacePeepSpawnAction::PlacePeepSpawnAction(const CoordsXYZD& location)
+    : _location(location)
+{
+}
+
+uint16_t PlacePeepSpawnAction::GetActionFlags() const
+{
+    return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
+}
+
 void PlacePeepSpawnAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -18,16 +18,9 @@ private:
 
 public:
     ParkEntranceRemoveAction() = default;
+    ParkEntranceRemoveAction(const CoordsXYZ& loc);
 
-    ParkEntranceRemoveAction(const CoordsXYZ& loc)
-        : _loc(loc)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

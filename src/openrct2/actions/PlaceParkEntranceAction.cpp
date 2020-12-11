@@ -21,6 +21,16 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location)
+    : _loc(location)
+{
+}
+
+uint16_t PlaceParkEntranceAction::GetActionFlags() const
+{
+    return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly;
+}
+
 void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

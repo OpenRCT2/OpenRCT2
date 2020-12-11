@@ -20,17 +20,9 @@ private:
 
 public:
     ParkMarketingAction() = default;
-    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
-        : _type(type)
-        , _item(item)
-        , _numWeeks(numWeeks)
-    {
-    }
+    ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

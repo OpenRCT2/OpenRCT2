@@ -18,16 +18,9 @@ DEFINE_GAME_ACTION(PauseToggleAction, GAME_COMMAND_TOGGLE_PAUSE, GameActions::Re
 public:
     PauseToggleAction() = default;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
-    GameActions::Result::Ptr Query() const override
-    {
-        return std::make_unique<GameActions::Result>();
-    }
-
+    GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;
 };
 // clang-format on

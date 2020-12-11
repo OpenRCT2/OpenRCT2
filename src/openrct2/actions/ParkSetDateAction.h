@@ -20,17 +20,9 @@ private:
 
 public:
     ParkSetDateAction() = default;
-    ParkSetDateAction(int32_t year, int32_t month, int32_t day)
-        : _year(year)
-        , _month(month)
-        , _day(day)
-    {
-    }
+    ParkSetDateAction(int32_t year, int32_t month, int32_t day);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

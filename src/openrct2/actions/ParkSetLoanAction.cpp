@@ -17,6 +17,16 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
+ParkSetLoanAction::ParkSetLoanAction(money32 value)
+    : _value(value)
+{
+}
+
+uint16_t ParkSetLoanAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void ParkSetLoanAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

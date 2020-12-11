@@ -19,15 +19,9 @@ private:
 public:
     PlayerKickAction() = default;
 
-    PlayerKickAction(NetworkPlayerId_t playerId)
-        : _playerId(playerId)
-    {
-    }
+    PlayerKickAction(NetworkPlayerId_t playerId);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

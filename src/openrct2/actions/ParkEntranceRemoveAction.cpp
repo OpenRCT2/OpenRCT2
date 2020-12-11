@@ -14,6 +14,16 @@
 #include "../world/Entrance.h"
 #include "../world/Park.h"
 
+ParkEntranceRemoveAction::ParkEntranceRemoveAction(const CoordsXYZ& loc)
+    : _loc(loc)
+{
+}
+
+uint16_t ParkEntranceRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+}
+
 void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

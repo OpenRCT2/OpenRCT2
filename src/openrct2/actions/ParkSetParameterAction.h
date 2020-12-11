@@ -29,16 +29,9 @@ private:
 
 public:
     ParkSetParameterAction() = default;
-    ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0)
-        : _parameter(parameter)
-        , _value(value)
-    {
-    }
+    ParkSetParameterAction(ParkParameter parameter, uint64_t value = 0);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
