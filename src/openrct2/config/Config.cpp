@@ -537,6 +537,7 @@ namespace Config
         {
             auto model = &gConfigPlugin;
             model->enable_hot_reloading = reader->GetBoolean("enable_hot_reloading", false);
+            model->allow_remote_hosts = reader->GetBoolean("allow_remote_hosts", false);
         }
     }
 
@@ -545,6 +546,7 @@ namespace Config
         auto model = &gConfigPlugin;
         writer->WriteSection("plugin");
         writer->WriteBoolean("enable_hot_reloading", model->enable_hot_reloading);
+        writer->WriteBoolean("allow_remote_hosts", model->allow_remote_hosts);
     }
 
     static bool SetDefaults()

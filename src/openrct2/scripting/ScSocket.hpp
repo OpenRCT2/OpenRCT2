@@ -166,7 +166,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
             }
-            else if (!IsLocalhostAddress(host))
+            else if (!IsLocalhostAddress(host) && !gConfigPlugin.allow_remote_hosts)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only connecting to localhost is allowed.");
             }

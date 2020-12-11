@@ -204,6 +204,7 @@ struct FontConfiguration
 struct PluginConfiguration
 {
     bool enable_hot_reloading;
+    bool allow_remote_hosts;
 };
 
 enum SORT
