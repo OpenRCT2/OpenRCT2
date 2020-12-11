@@ -21,10 +21,21 @@
 #include "../world/Scenery.h"
 #include "../world/Wall.h"
 
+FootpathAdditionPlaceAction::FootpathAdditionPlaceAction(const CoordsXYZ& loc, ObjectEntryIndex pathItemType)
+    : _loc(loc)
+    , _pathItemType(pathItemType)
+{
+}
+
 void FootpathAdditionPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("object", _pathItemType);
+}
+
+uint16_t FootpathAdditionPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
