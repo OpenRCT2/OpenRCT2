@@ -14,6 +14,17 @@
 #include "../world/Park.h"
 #include "../world/Surface.h"
 
+WaterSetHeightAction::WaterSetHeightAction(const CoordsXY& coords, uint8_t height)
+    : _coords(coords)
+    , _height(height)
+{
+}
+
+uint16_t WaterSetHeightAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
 void WaterSetHeightAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

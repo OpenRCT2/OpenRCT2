@@ -18,15 +18,9 @@ private:
 
 public:
     WaterRaiseAction() = default;
-    WaterRaiseAction(MapRange range)
-        : _range(range)
-    {
-    }
+    WaterRaiseAction(MapRange range);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -13,6 +13,16 @@
 #include "../audio/audio.h"
 #include "WaterSetHeightAction.h"
 
+WaterLowerAction::WaterLowerAction(MapRange range)
+    : _range(range)
+{
+}
+
+uint16_t WaterLowerAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
 void WaterLowerAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -20,6 +20,46 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
+WallPlaceActionResult::WallPlaceActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+{
+}
+
+WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err)
+    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE)
+{
+}
+
+WallPlaceActionResult::WallPlaceActionResult(GameActions::Status err, rct_string_id msg)
+    : GameActions::Result(err, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg)
+{
+}
+
+WallPlaceActionResult::WallPlaceActionResult(GameActions::Status error, rct_string_id msg, uint8_t* args)
+    : GameActions::Result(error, STR_CANT_BUILD_PARK_ENTRANCE_HERE, msg, args)
+{
+}
+
+WallPlaceAction::WallPlaceAction(
+    ObjectEntryIndex wallType, const CoordsXYZ& loc, uint8_t edge, int32_t primaryColour, int32_t secondaryColour,
+    int32_t tertiaryColour)
+    : _wallType(wallType)
+    , _loc(loc)
+    , _edge(edge)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
+{
+    rct_scenery_entry* sceneryEntry = get_wall_entry(_wallType);
+    if (sceneryEntry != nullptr)
+    {
+        if (sceneryEntry->wall.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            _bannerId = create_new_banner(0);
+        }
+    }
+}
+
 void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
@@ -36,6 +76,11 @@ void WallPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
             _bannerId = create_new_banner(0);
         }
     }
+}
+
+uint16_t WallPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void WallPlaceAction::Serialise(DataSerialiser& stream)
@@ -577,4 +622,26 @@ GameActions::Result::Ptr WallPlaceAction::WallCheckObstruction(
     } while (!(tileElement++)->IsLastForTile());
 
     return MakeResult();
+}
+
+bool WallPlaceAction::TrackIsAllowedWallEdges(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, uint8_t direction)
+{
+    if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_NO_WALLS))
+    {
+        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            if (FlatRideTrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if (TrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }

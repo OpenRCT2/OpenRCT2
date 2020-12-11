@@ -18,10 +18,7 @@ private:
 
 public:
     WallRemoveAction() = default;
-    WallRemoveAction(const CoordsXYZD& loc)
-        : _loc(loc)
-    {
-    }
+    WallRemoveAction(const CoordsXYZD& loc);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
     void Serialise(DataSerialiser & stream) override;

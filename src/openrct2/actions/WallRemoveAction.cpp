@@ -18,6 +18,11 @@
 #include "../world/Location.hpp"
 #include "../world/Wall.h"
 
+WallRemoveAction::WallRemoveAction(const CoordsXYZD& loc)
+    : _loc(loc)
+{
+}
+
 void WallRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
