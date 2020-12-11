@@ -24,14 +24,8 @@ static constexpr const PeepSpriteType spriteTypes[] = {
 class StaffHireNewActionResult final : public GameActions::Result
 {
 public:
-    StaffHireNewActionResult()
-        : GameActions::Result(GameActions::Status::Ok, STR_CANT_HIRE_NEW_STAFF)
-    {
-    }
-    StaffHireNewActionResult(GameActions::Status error, rct_string_id message)
-        : GameActions::Result(error, STR_CANT_HIRE_NEW_STAFF, message)
-    {
-    }
+    StaffHireNewActionResult();
+    StaffHireNewActionResult(GameActions::Status error, rct_string_id message);
 
     uint32_t peepSriteIndex = SPRITE_INDEX_NULL;
 };
@@ -46,20 +40,11 @@ private:
 
 public:
     StaffHireNewAction() = default;
-    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders)
-        : _autoPosition(autoPosition)
-        , _staffType(static_cast<uint8_t>(staffType))
-        , _entertainerType(entertainerType)
-        , _staffOrders(staffOrders)
-    {
-    }
+    StaffHireNewAction(bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -13,26 +13,6 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-/** rct2: 0x00982134 */
-constexpr const bool peep_slow_walking_types[] = {
-    false, // PeepSpriteType::Normal
-    false, // PeepSpriteType::Handyman
-    false, // PeepSpriteType::Mechanic
-    false, // PeepSpriteType::Security
-    false, // PeepSpriteType::EntertainerPanda
-    false, // PeepSpriteType::EntertainerTiger
-    false, // PeepSpriteType::EntertainerElephant
-    false, // PeepSpriteType::EntertainerRoman
-    false, // PeepSpriteType::EntertainerGorilla
-    false, // PeepSpriteType::EntertainerSnowman
-    false, // PeepSpriteType::EntertainerKnight
-    true,  // PeepSpriteType::EntertainerAstronaut
-    false, // PeepSpriteType::EntertainerBandit
-    false, // PeepSpriteType::EntertainerSheriff
-    true,  // PeepSpriteType::EntertainerPirate
-    true,  // PeepSpriteType::Balloon
-};
-
 DEFINE_GAME_ACTION(StaffSetCostumeAction, GAME_COMMAND_SET_STAFF_COSTUME, GameActions::Result)
 {
 private:
@@ -41,16 +21,9 @@ private:
 
 public:
     StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
-        : _spriteIndex(spriteIndex)
-        , _costume(costume)
-    {
-    }
+    StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

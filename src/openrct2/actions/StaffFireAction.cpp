@@ -12,6 +12,16 @@
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
 
+StaffFireAction::StaffFireAction(uint16_t spriteId)
+    : _spriteId(spriteId)
+{
+}
+
+uint16_t StaffFireAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffFireAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

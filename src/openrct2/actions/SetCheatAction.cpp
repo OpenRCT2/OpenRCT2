@@ -37,11 +37,23 @@
 
 using ParametersRange = std::pair<std::pair<int32_t, int32_t>, std::pair<int32_t, int32_t>>;
 
+SetCheatAction::SetCheatAction(CheatType cheatType, int32_t param1, int32_t param2)
+    : _cheatType(static_cast<int32_t>(cheatType))
+    , _param1(param1)
+    , _param2(param2)
+{
+}
+
 void SetCheatAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("type", _cheatType);
     visitor.Visit("param1", _param1);
     visitor.Visit("param2", _param2);
+}
+
+uint16_t SetCheatAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void SetCheatAction::Serialise(DataSerialiser& stream)

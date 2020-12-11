@@ -15,6 +15,16 @@
 #include "../localisation/StringIds.h"
 #include "../world/Park.h"
 
+SetParkEntranceFeeAction::SetParkEntranceFeeAction(money16 fee)
+    : _fee(fee)
+{
+}
+
+uint16_t SetParkEntranceFeeAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void SetParkEntranceFeeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -20,6 +20,17 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
+StaffSetNameAction::StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
+    : _spriteIndex(spriteIndex)
+    , _name(name)
+{
+}
+
+uint16_t StaffSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffSetNameAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

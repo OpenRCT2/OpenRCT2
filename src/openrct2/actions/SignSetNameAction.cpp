@@ -20,6 +20,17 @@
 
 #include <string>
 
+SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
+    : _bannerIndex(bannerIndex)
+    , _name(name)
+{
+}
+
+uint16_t SignSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void SignSetNameAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

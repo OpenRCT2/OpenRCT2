@@ -20,17 +20,9 @@ private:
 
 public:
     StaffSetNameAction() = default;
-    StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
-        : _spriteIndex(spriteIndex)
-        , _name(name)
-    {
-    }
+    StaffSetNameAction(uint16_t spriteIndex, const std::string& name);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
-
+    uint16_t GetActionFlags() const override;
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
     GameActions::Result::Ptr Execute() const override;

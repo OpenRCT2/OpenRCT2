@@ -19,16 +19,9 @@ private:
 
 public:
     SignSetNameAction() = default;
-    SignSetNameAction(BannerIndex bannerIndex, const std::string& name)
-        : _bannerIndex(bannerIndex)
-        , _name(name)
-    {
-    }
+    SignSetNameAction(BannerIndex bannerIndex, const std::string& name);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

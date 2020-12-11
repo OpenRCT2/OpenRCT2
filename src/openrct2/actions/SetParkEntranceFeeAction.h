@@ -18,15 +18,9 @@ private:
 
 public:
     SetParkEntranceFeeAction() = default;
-    SetParkEntranceFeeAction(money16 fee)
-        : _fee(fee)
-    {
-    }
+    SetParkEntranceFeeAction(money16 fee);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

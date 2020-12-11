@@ -20,13 +20,7 @@ private:
 
 public:
     SurfaceSetStyleAction() = default;
-
-    SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
-        : _range(range)
-        , _surfaceStyle(surfaceStyle)
-        , _edgeStyle(edgeStyle)
-    {
-    }
+    SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle);
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -26,6 +26,21 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 
+SmallScenerySetColourAction::SmallScenerySetColourAction(
+    const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    : _loc(loc)
+    , _quadrant(quadrant)
+    , _sceneryType(sceneryType)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+{
+}
+
+uint16_t SmallScenerySetColourAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void SmallScenerySetColourAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

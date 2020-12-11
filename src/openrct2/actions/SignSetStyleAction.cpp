@@ -19,6 +19,19 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 
+SignSetStyleAction::SignSetStyleAction(BannerIndex bannerIndex, uint8_t mainColour, uint8_t textColour, bool isLarge)
+    : _bannerIndex(bannerIndex)
+    , _mainColour(mainColour)
+    , _textColour(textColour)
+    , _isLarge(isLarge)
+{
+}
+
+uint16_t SignSetStyleAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void SignSetStyleAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
