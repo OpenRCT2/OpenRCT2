@@ -25,12 +25,29 @@
 #include "../util/Util.h"
 #include "../world/Park.h"
 
+constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
+                                                              STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
+                                                              STR_RIDE_SET_VEHICLE_TYPE_FAIL };
+
+RideSetVehicleAction::RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
+    : _rideIndex(rideIndex)
+    , _type(type)
+    , _value(value)
+    , _colour(colour)
+{
+}
+
 void RideSetVehicleAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("type", _type);
     visitor.Visit("value", _value);
     visitor.Visit("colour", _colour);
+}
+
+uint16_t RideSetVehicleAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetVehicleAction::Serialise(DataSerialiser& stream)

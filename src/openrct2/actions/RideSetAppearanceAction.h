@@ -34,20 +34,11 @@ private:
 
 public:
     RideSetAppearanceAction() = default;
-    RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
-        : _rideIndex(rideIndex)
-        , _type(type)
-        , _value(value)
-        , _index(index)
-    {
-    }
+    RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

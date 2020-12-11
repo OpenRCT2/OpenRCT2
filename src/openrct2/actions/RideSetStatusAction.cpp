@@ -29,10 +29,21 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_SIMULATE,
 };
 
+RideSetStatusAction::RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
+    : _rideIndex(rideIndex)
+    , _status(status)
+{
+}
+
 void RideSetStatusAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("status", _status);
+}
+
+uint16_t RideSetStatusAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetStatusAction::Serialise(DataSerialiser& stream)

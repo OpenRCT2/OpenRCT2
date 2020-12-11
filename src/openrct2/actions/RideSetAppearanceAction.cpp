@@ -21,12 +21,25 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
+RideSetAppearanceAction::RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint8_t value, uint32_t index)
+    : _rideIndex(rideIndex)
+    , _type(type)
+    , _value(value)
+    , _index(index)
+{
+}
+
 void RideSetAppearanceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("type", _type);
     visitor.Visit("value", _value);
     visitor.Visit("index", _index);
+}
+
+uint16_t RideSetAppearanceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetAppearanceAction::Serialise(DataSerialiser& stream)

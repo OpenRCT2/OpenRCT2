@@ -19,18 +19,11 @@ private:
 
 public:
     RideDemolishAction() = default;
-    RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
-        : _rideIndex(rideIndex)
-        , _modifyType(modifyType)
-    {
-    }
+    RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint32_t GetCooldownTime() const override
-    {
-        return 1000;
-    }
+    uint32_t GetCooldownTime() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

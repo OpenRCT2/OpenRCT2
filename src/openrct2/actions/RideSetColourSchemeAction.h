@@ -20,19 +20,11 @@ private:
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme)
-        : _loc(location)
-        , _trackType(trackType)
-        , _newColourScheme(newColourScheme)
-    {
-    }
+    RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

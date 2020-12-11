@@ -20,11 +20,23 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+RideSetColourSchemeAction::RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme)
+    : _loc(location)
+    , _trackType(trackType)
+    , _newColourScheme(newColourScheme)
+{
+}
+
 void RideSetColourSchemeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("colourScheme", _newColourScheme);
+}
+
+uint16_t RideSetColourSchemeAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
