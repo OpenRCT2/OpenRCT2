@@ -27,6 +27,51 @@ static int32_t place_virtual_track(
     return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
 }
 
+TrackDesignActionResult::TrackDesignActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message)
+    : GameActions::Result(error, title, message)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
+{
+}
+
+TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
+    : _loc(location)
+    , _td(td)
+{
+}
+
+void TrackDesignAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    // TODO visit the track design (it has a lot of sub fields)
+}
+
+uint16_t TrackDesignAction::GetActionFlags() const
+{
+    return GameActionBase::GetActionFlags();
+}
+
+void TrackDesignAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_loc);
+    _td.Serialise(stream);
+}
+
 GameActions::Result::Ptr TrackDesignAction::Query() const
 {
     auto res = MakeResult();

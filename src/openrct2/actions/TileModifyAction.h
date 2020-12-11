@@ -53,19 +53,9 @@ private:
 public:
     TileModifyAction() = default;
     TileModifyAction(
-        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {})
-        : _loc(loc)
-        , _setting(setting)
-        , _value1(value1)
-        , _value2(value2)
-        , _pasteElement(pasteElement)
-    {
-    }
+        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
