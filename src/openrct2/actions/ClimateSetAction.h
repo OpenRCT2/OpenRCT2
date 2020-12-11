@@ -19,16 +19,11 @@ private:
 
 public:
     ClimateSetAction() = default;
-    ClimateSetAction(ClimateType climate)
-        : _climate(climate)
-    {
-    }
+    ClimateSetAction(ClimateType climate);
+
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -9,9 +9,19 @@
 
 #include "ClimateSetAction.h"
 
+ClimateSetAction::ClimateSetAction(ClimateType climate)
+    : _climate(climate)
+{
+}
+
 void ClimateSetAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("climate", _climate);
+}
+
+uint16_t ClimateSetAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void ClimateSetAction::Serialise(DataSerialiser& stream)

@@ -13,6 +13,27 @@
 #    include "../Context.h"
 #    include "../scripting/ScriptEngine.h"
 
+CustomAction::CustomAction(const std::string& id, const std::string& json)
+    : _id(id)
+    , _json(json)
+{
+}
+
+std::string CustomAction::GetId() const
+{
+    return _id;
+}
+
+std::string CustomAction::GetJson() const
+{
+    return _json;
+}
+
+uint16_t CustomAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void CustomAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
