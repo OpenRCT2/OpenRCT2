@@ -21,6 +21,15 @@
 #include "../world/Footpath.h"
 #include "../world/Park.h"
 
+MazeSetTrackAction::MazeSetTrackAction(
+    const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+    : _loc(location)
+    , _initialPlacement(initialPlacement)
+    , _rideIndex(rideIndex)
+    , _mode(mode)
+{
+}
+
 void MazeSetTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);

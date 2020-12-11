@@ -19,13 +19,7 @@ private:
 
 public:
     MazePlaceTrackAction() = default;
-
-    MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
-        : _loc(location)
-        , _rideIndex(rideIndex)
-        , _mazeEntry(mazeEntry)
-    {
-    }
+    MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
     void Serialise(DataSerialiser & stream) override;

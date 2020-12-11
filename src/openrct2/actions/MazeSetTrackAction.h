@@ -47,13 +47,7 @@ private:
 
 public:
     MazeSetTrackAction() = default;
-    MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
-        : _loc(location)
-        , _initialPlacement(initialPlacement)
-        , _rideIndex(rideIndex)
-        , _mode(mode)
-    {
-    }
+    MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
     void Serialise(DataSerialiser & stream) override;
