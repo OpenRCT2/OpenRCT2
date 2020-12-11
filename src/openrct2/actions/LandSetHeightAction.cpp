@@ -23,6 +23,18 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+LandSetHeightAction::LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
+    : _coords(coords)
+    , _height(height)
+    , _style(style)
+{
+}
+
+uint16_t LandSetHeightAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+}
+
 void LandSetHeightAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
@@ -371,4 +383,17 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     }
 
     map_invalidate_tile_full(_coords);
+}
+
+int32_t LandSetHeightAction::map_set_land_height_clear_func(
+    TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
+    [[maybe_unused]] money32* price)
+{
+    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        return 0;
+
+    if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        return 0;
+
+    return 1;
 }

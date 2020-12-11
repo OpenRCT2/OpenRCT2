@@ -28,23 +28,10 @@ private:
 
 public:
     LandBuyRightsAction() = default;
+    LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting);
+    LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting);
 
-    LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
-        : _range(range)
-        , _setting(setting)
-    {
-    }
-
-    LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting)
-        : _range(coord.x, coord.y, coord.x, coord.y)
-        , _setting(setting)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

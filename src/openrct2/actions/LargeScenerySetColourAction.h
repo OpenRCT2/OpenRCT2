@@ -21,19 +21,9 @@ private:
 
 public:
     LargeScenerySetColourAction() = default;
+    LargeScenerySetColourAction(const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour);
 
-    LargeScenerySetColourAction(const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
-        : _loc(loc)
-        , _tileIndex(tileIndex)
-        , _primaryColour(primaryColour)
-        , _secondaryColour(secondaryColour)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

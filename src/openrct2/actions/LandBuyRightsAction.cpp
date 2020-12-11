@@ -25,6 +25,23 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+LandBuyRightsAction::LandBuyRightsAction(const MapRange& range, LandBuyRightSetting setting)
+    : _range(range)
+    , _setting(setting)
+{
+}
+
+LandBuyRightsAction::LandBuyRightsAction(const CoordsXY& coord, LandBuyRightSetting setting)
+    : _range(coord.x, coord.y, coord.x, coord.y)
+    , _setting(setting)
+{
+}
+
+uint16_t LandBuyRightsAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
 void LandBuyRightsAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

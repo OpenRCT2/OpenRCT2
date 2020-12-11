@@ -22,10 +22,21 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 
+LargeSceneryRemoveAction::LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex)
+    : _loc(location)
+    , _tileIndex(tileIndex)
+{
+}
+
 void LargeSceneryRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("tileIndex", _tileIndex);
+}
+
+uint16_t LargeSceneryRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void LargeSceneryRemoveAction::Serialise(DataSerialiser& stream)

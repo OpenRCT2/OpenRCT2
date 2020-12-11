@@ -12,6 +12,17 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 
+LoadOrQuitAction::LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMode)
+    : _mode(mode)
+    , _savePromptMode(savePromptMode)
+{
+}
+
+uint16_t LoadOrQuitAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void LoadOrQuitAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

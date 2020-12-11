@@ -25,6 +25,18 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+LandRaiseAction::LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
+    : _coords(coords)
+    , _range(range)
+    , _selectionType(selectionType)
+{
+}
+
+uint16_t LandRaiseAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
 void LandRaiseAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

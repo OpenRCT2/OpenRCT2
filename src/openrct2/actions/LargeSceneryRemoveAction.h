@@ -19,19 +19,11 @@ private:
 
 public:
     LargeSceneryRemoveAction() = default;
-
-    LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex)
-        : _loc(location)
-        , _tileIndex(tileIndex)
-    {
-    }
+    LargeSceneryRemoveAction(const CoordsXYZD& location, uint16_t tileIndex);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
