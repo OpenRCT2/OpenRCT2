@@ -29,10 +29,21 @@
 
 using namespace OpenRCT2;
 
+RideDemolishAction::RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
+    : _rideIndex(rideIndex)
+    , _modifyType(modifyType)
+{
+}
+
 void RideDemolishAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("modifyType", _modifyType);
+}
+
+uint32_t RideDemolishAction::GetCooldownTime() const
+{
+    return 1000;
 }
 
 void RideDemolishAction::Serialise(DataSerialiser& stream)

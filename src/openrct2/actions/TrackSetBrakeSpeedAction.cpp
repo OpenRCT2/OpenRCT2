@@ -11,11 +11,23 @@
 
 #include "../management/Finance.h"
 
+TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
+    : _loc(loc)
+    , _trackType(trackType)
+    , _brakeSpeed(brakeSpeed)
+{
+}
+
 void TrackSetBrakeSpeedAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("brakeSpeed", _brakeSpeed);
+}
+
+uint16_t TrackSetBrakeSpeedAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void TrackSetBrakeSpeedAction::Serialise(DataSerialiser& stream)

@@ -13,12 +13,26 @@
 #include "../ride/Station.h"
 #include "../world/Entrance.h"
 
+RideEntranceExitRemoveAction::RideEntranceExitRemoveAction(
+    const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
+    : _loc(loc)
+    , _rideIndex(rideIndex)
+    , _stationNum(stationNum)
+    , _isExit(isExit)
+{
+}
+
 void RideEntranceExitRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("station", _stationNum);
     visitor.Visit("isExit", _isExit);
+}
+
+uint16_t RideEntranceExitRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void RideEntranceExitRemoveAction::Serialise(DataSerialiser& stream)

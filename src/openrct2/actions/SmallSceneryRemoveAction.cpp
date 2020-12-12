@@ -24,11 +24,23 @@
 #include "GameAction.h"
 #include "SmallSceneryPlaceAction.h"
 
+SmallSceneryRemoveAction::SmallSceneryRemoveAction(const CoordsXYZ& location, uint8_t quadrant, ObjectEntryIndex sceneryType)
+    : _loc(location)
+    , _quadrant(quadrant)
+    , _sceneryType(sceneryType)
+{
+}
+
 void SmallSceneryRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("object", _sceneryType);
     visitor.Visit("quadrant", _quadrant);
+}
+
+uint16_t SmallSceneryRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)

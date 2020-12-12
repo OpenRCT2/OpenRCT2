@@ -19,18 +19,11 @@ private:
 
 public:
     RideSetStatusAction() = default;
-    RideSetStatusAction(ride_id_t rideIndex, uint8_t status)
-        : _rideIndex(rideIndex)
-        , _status(status)
-    {
-    }
+    RideSetStatusAction(ride_id_t rideIndex, uint8_t status);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -26,12 +26,36 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+StaffHireNewActionResult::StaffHireNewActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_HIRE_NEW_STAFF)
+{
+}
+
+StaffHireNewActionResult::StaffHireNewActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_CANT_HIRE_NEW_STAFF, message)
+{
+}
+
+StaffHireNewAction::StaffHireNewAction(
+    bool autoPosition, StaffType staffType, EntertainerCostume entertainerType, uint32_t staffOrders)
+    : _autoPosition(autoPosition)
+    , _staffType(static_cast<uint8_t>(staffType))
+    , _entertainerType(entertainerType)
+    , _staffOrders(staffOrders)
+{
+}
+
 void StaffHireNewAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("autoPosition", _autoPosition);
     visitor.Visit("staffType", _staffType);
     visitor.Visit("entertainerType", _entertainerType);
     visitor.Visit("staffOrders", _staffOrders);
+}
+
+uint16_t StaffHireNewAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void StaffHireNewAction::Serialise(DataSerialiser& stream)

@@ -21,10 +21,21 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
+RideSetNameAction::RideSetNameAction(ride_id_t rideIndex, const std::string& name)
+    : _rideIndex(rideIndex)
+    , _name(name)
+{
+}
+
 void RideSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("name", _name);
+}
+
+uint16_t RideSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetNameAction::Serialise(DataSerialiser& stream)

@@ -19,18 +19,11 @@ private:
 
 public:
     RideSetNameAction() = default;
-    RideSetNameAction(ride_id_t rideIndex, const std::string& name)
-        : _rideIndex(rideIndex)
-        , _name(name)
-    {
-    }
+    RideSetNameAction(ride_id_t rideIndex, const std::string& name);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

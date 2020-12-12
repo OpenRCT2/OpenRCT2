@@ -27,26 +27,13 @@ private:
     uint8_t _value{};
     uint8_t _colour{};
 
-    constexpr static rct_string_id SetVehicleTypeErrorTitle[] = { STR_RIDE_SET_VEHICLE_SET_NUM_TRAINS_FAIL,
-                                                                  STR_RIDE_SET_VEHICLE_SET_NUM_CARS_PER_TRAIN_FAIL,
-                                                                  STR_RIDE_SET_VEHICLE_TYPE_FAIL };
-
 public:
     RideSetVehicleAction() = default;
-    RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0)
-        : _rideIndex(rideIndex)
-        , _type(type)
-        , _value(value)
-        , _colour(colour)
-    {
-    }
+    RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

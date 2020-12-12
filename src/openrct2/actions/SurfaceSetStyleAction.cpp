@@ -19,6 +19,13 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 
+SurfaceSetStyleAction::SurfaceSetStyleAction(MapRange range, ObjectEntryIndex surfaceStyle, ObjectEntryIndex edgeStyle)
+    : _range(range)
+    , _surfaceStyle(surfaceStyle)
+    , _edgeStyle(edgeStyle)
+{
+}
+
 void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

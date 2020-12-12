@@ -25,12 +25,45 @@
 
 #include <algorithm>
 
+RideCreateGameActionResult::RideCreateGameActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_NONE)
+{
+}
+
+RideCreateGameActionResult::RideCreateGameActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
+{
+}
+
+RideCreateAction::RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
+    : _rideType(rideType)
+    , _subType(subType)
+    , _colour1(colour1)
+    , _colour2(colour2)
+{
+}
+
 void RideCreateAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("rideType", _rideType);
     visitor.Visit("rideObject", _subType);
     visitor.Visit("colour1", _colour1);
     visitor.Visit("colour2", _colour2);
+}
+
+int32_t RideCreateAction::GetRideType() const
+{
+    return _rideType;
+}
+
+int32_t RideCreateAction::GetRideObject() const
+{
+    return _subType;
+}
+
+uint16_t RideCreateAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideCreateAction::Serialise(DataSerialiser& stream)

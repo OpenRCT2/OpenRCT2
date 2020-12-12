@@ -15,22 +15,10 @@
 class SmallSceneryPlaceActionResult final : public GameActions::Result
 {
 public:
-    SmallSceneryPlaceActionResult()
-        : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
-    {
-    }
-    SmallSceneryPlaceActionResult(GameActions::Status error)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE)
-    {
-    }
-    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message)
-    {
-    }
-    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message, args)
-    {
-    }
+    SmallSceneryPlaceActionResult();
+    SmallSceneryPlaceActionResult(GameActions::Status error);
+    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message);
+    SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
 
     uint8_t GroundFlags{ 0 };
     TileElement* tileElement = nullptr;
@@ -47,27 +35,13 @@ private:
 
 public:
     SmallSceneryPlaceAction() = default;
-
     SmallSceneryPlaceAction(
-        const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
-        : _loc(loc)
-        , _quadrant(quadrant)
-        , _sceneryType(sceneryType)
-        , _primaryColour(primaryColour)
-        , _secondaryColour(secondaryColour)
-    {
-    }
+        const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
-    uint32_t GetCooldownTime() const override
-    {
-        return 20;
-    }
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint32_t GetCooldownTime() const override;
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

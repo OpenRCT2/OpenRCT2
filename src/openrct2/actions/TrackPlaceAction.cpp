@@ -19,6 +19,41 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+TrackPlaceActionResult::TrackPlaceActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
+{
+}
+
+TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE)
+{
+}
+
+TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
+{
+}
+
+TrackPlaceActionResult::TrackPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message, args)
+{
+}
+
+TrackPlaceAction::TrackPlaceAction(
+    NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
+    int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign)
+    : _rideIndex(rideIndex)
+    , _trackType(trackType)
+    , _origin(origin)
+    , _brakeSpeed(brakeSpeed)
+    , _colour(colour)
+    , _seatRotation(seatRotation)
+    , _trackPlaceFlags(liftHillAndAlternativeState)
+    , _fromTrackDesign(fromTrackDesign)
+{
+    _origin.direction &= 3;
+}
+
 void TrackPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_origin);
@@ -29,6 +64,11 @@ void TrackPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("seatRotation", _seatRotation);
     visitor.Visit("trackPlaceFlags", _trackPlaceFlags);
     visitor.Visit("isFromTrackDesign", _fromTrackDesign);
+}
+
+uint16_t TrackPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void TrackPlaceAction::Serialise(DataSerialiser& stream)

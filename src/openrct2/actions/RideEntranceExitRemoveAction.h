@@ -21,21 +21,11 @@ private:
 
 public:
     RideEntranceExitRemoveAction() = default;
-
-    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
-        : _loc(loc)
-        , _rideIndex(rideIndex)
-        , _stationNum(stationNum)
-        , _isExit(isExit)
-    {
-    }
+    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

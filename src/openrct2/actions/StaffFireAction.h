@@ -19,15 +19,9 @@ private:
 
 public:
     StaffFireAction() = default;
-    StaffFireAction(uint16_t spriteId)
-        : _spriteId(spriteId)
-    {
-    }
+    StaffFireAction(uint16_t spriteId);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

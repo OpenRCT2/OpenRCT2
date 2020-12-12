@@ -15,6 +15,37 @@
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 
+/** rct2: 0x00982134 */
+constexpr const bool peep_slow_walking_types[] = {
+    false, // PeepSpriteType::Normal
+    false, // PeepSpriteType::Handyman
+    false, // PeepSpriteType::Mechanic
+    false, // PeepSpriteType::Security
+    false, // PeepSpriteType::EntertainerPanda
+    false, // PeepSpriteType::EntertainerTiger
+    false, // PeepSpriteType::EntertainerElephant
+    false, // PeepSpriteType::EntertainerRoman
+    false, // PeepSpriteType::EntertainerGorilla
+    false, // PeepSpriteType::EntertainerSnowman
+    false, // PeepSpriteType::EntertainerKnight
+    true,  // PeepSpriteType::EntertainerAstronaut
+    false, // PeepSpriteType::EntertainerBandit
+    false, // PeepSpriteType::EntertainerSheriff
+    true,  // PeepSpriteType::EntertainerPirate
+    true,  // PeepSpriteType::Balloon
+};
+
+StaffSetCostumeAction::StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
+    : _spriteIndex(spriteIndex)
+    , _costume(costume)
+{
+}
+
+uint16_t StaffSetCostumeAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

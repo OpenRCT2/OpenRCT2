@@ -19,6 +19,17 @@
 #include "../windows/Intent.h"
 #include "../world/Sprite.h"
 
+StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
+    : _staffType(static_cast<uint8_t>(staffType))
+    , _colour(colour)
+{
+}
+
+uint16_t StaffSetColourAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffSetColourAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

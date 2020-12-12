@@ -19,16 +19,9 @@ private:
 
 public:
     WaterSetHeightAction() = default;
-    WaterSetHeightAction(const CoordsXY& coords, uint8_t height)
-        : _coords(coords)
-        , _height(height)
-    {
-    }
+    WaterSetHeightAction(const CoordsXY& coords, uint8_t height);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

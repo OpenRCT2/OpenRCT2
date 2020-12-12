@@ -20,20 +20,11 @@ private:
 
 public:
     TrackRemoveAction() = default;
-    TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
-        : _trackType(trackType)
-        , _sequence(sequence)
-        , _origin(origin)
-    {
-        _origin.direction &= 3;
-    }
+    TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override final
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override final;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

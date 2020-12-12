@@ -20,6 +20,20 @@
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
 
+WallSetColourAction::WallSetColourAction(
+    const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
+    : _loc(loc)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
+{
+}
+
+uint16_t WallSetColourAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void WallSetColourAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -22,11 +22,23 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+RideSetPriceAction::RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice)
+    : _rideIndex(rideIndex)
+    , _price(price)
+    , _primaryPrice(primaryPrice)
+{
+}
+
 void RideSetPriceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("price", _price);
     visitor.Visit("isPrimaryPrice", _primaryPrice);
+}
+
+uint16_t RideSetPriceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetPriceAction::Serialise(DataSerialiser& stream)

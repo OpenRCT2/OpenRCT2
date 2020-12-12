@@ -19,11 +19,24 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
+TrackRemoveAction::TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
+    : _trackType(trackType)
+    , _sequence(sequence)
+    , _origin(origin)
+{
+    _origin.direction &= 3;
+}
+
 void TrackRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_origin);
     visitor.Visit("trackType", _trackType);
     visitor.Visit("sequence", _sequence);
+}
+
+uint16_t TrackRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void TrackRemoveAction::Serialise(DataSerialiser& stream)

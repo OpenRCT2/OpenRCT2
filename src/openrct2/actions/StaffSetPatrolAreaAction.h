@@ -20,16 +20,9 @@ private:
 
 public:
     StaffSetPatrolAreaAction() = default;
-    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
-        : _spriteId(spriteId)
-        , _loc(loc)
-    {
-    }
+    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

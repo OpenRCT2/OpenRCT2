@@ -22,19 +22,11 @@ private:
 
 public:
     SetCheatAction() = default;
-    SetCheatAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0)
-        : _cheatType(static_cast<int32_t>(cheatType))
-        , _param1(param1)
-        , _param2(param2)
-    {
-    }
+    SetCheatAction(CheatType cheatType, int32_t param1 = 0, int32_t param2 = 0);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

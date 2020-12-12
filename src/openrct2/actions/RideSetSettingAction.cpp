@@ -12,11 +12,23 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 
+RideSetSettingAction::RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value)
+    : _rideIndex(rideIndex)
+    , _setting(setting)
+    , _value(value)
+{
+}
+
 void RideSetSettingAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("ride", _rideIndex);
     visitor.Visit("setting", _setting);
     visitor.Visit("value", _value);
+}
+
+uint16_t RideSetSettingAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void RideSetSettingAction::Serialise(DataSerialiser& stream)

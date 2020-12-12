@@ -20,16 +20,9 @@ private:
 
 public:
     StaffSetOrdersAction() = default;
-    StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
-        : _spriteIndex(spriteIndex)
-        , _ordersId(ordersId)
-    {
-    }
+    StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

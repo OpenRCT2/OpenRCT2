@@ -14,14 +14,8 @@
 class RideCreateGameActionResult final : public GameActions::Result
 {
 public:
-    RideCreateGameActionResult()
-        : GameActions::Result(GameActions::Status::Ok, STR_NONE)
-    {
-    }
-    RideCreateGameActionResult(GameActions::Status error, rct_string_id message)
-        : GameActions::Result(error, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, message)
-    {
-    }
+    RideCreateGameActionResult();
+    RideCreateGameActionResult(GameActions::Status error, rct_string_id message);
 
     ride_id_t rideIndex = RIDE_ID_NULL;
 };
@@ -36,31 +30,13 @@ private:
 
 public:
     RideCreateAction() = default;
-
-    RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
-        : _rideType(rideType)
-        , _subType(subType)
-        , _colour1(colour1)
-        , _colour2(colour2)
-    {
-    }
+    RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    int32_t GetRideType() const
-    {
-        return _rideType;
-    }
-
-    int32_t GetRideObject() const
-    {
-        return _subType;
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    int32_t GetRideType() const;
+    int32_t GetRideObject() const;
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

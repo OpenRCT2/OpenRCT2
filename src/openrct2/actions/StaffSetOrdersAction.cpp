@@ -16,6 +16,17 @@
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
 
+StaffSetOrdersAction::StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
+    : _spriteIndex(spriteIndex)
+    , _ordersId(ordersId)
+{
+}
+
+uint16_t StaffSetOrdersAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

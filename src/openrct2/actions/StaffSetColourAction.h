@@ -19,16 +19,9 @@ private:
 
 public:
     StaffSetColourAction() = default;
-    StaffSetColourAction(StaffType staffType, uint8_t colour)
-        : _staffType(static_cast<uint8_t>(staffType))
-        , _colour(colour)
-    {
-    }
+    StaffSetColourAction(StaffType staffType, uint8_t colour);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

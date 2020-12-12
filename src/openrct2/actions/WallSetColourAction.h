@@ -21,19 +21,9 @@ private:
 
 public:
     WallSetColourAction() = default;
+    WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour);
 
-    WallSetColourAction(const CoordsXYZD& loc, int32_t primaryColour, int32_t secondaryColour, int32_t tertiaryColour)
-        : _loc(loc)
-        , _primaryColour(primaryColour)
-        , _secondaryColour(secondaryColour)
-        , _tertiaryColour(tertiaryColour)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

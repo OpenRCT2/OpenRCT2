@@ -13,6 +13,17 @@
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 
+StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
+    : _spriteId(spriteId)
+    , _loc(loc)
+{
+}
+
+uint16_t StaffSetPatrolAreaAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -28,6 +28,36 @@
 #include "GameAction.h"
 #include "SmallSceneryRemoveAction.h"
 
+SmallSceneryPlaceActionResult::SmallSceneryPlaceActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+SmallSceneryPlaceActionResult::SmallSceneryPlaceActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+SmallSceneryPlaceActionResult::SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message)
+{
+}
+
+SmallSceneryPlaceActionResult::SmallSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message, args)
+{
+}
+
+SmallSceneryPlaceAction::SmallSceneryPlaceAction(
+    const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    : _loc(loc)
+    , _quadrant(quadrant)
+    , _sceneryType(sceneryType)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+{
+}
+
 void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
@@ -35,6 +65,16 @@ void SmallSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     visitor.Visit("object", _sceneryType);
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
+}
+
+uint32_t SmallSceneryPlaceAction::GetCooldownTime() const
+{
+    return 20;
+}
+
+uint16_t SmallSceneryPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)

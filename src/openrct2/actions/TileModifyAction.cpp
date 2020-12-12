@@ -11,6 +11,21 @@
 
 #include "../world/TileInspector.h"
 
+TileModifyAction::TileModifyAction(
+    CoordsXY loc, TileModifyType setting, uint32_t value1, uint32_t value2, TileElement pasteElement)
+    : _loc(loc)
+    , _setting(setting)
+    , _value1(value1)
+    , _value2(value2)
+    , _pasteElement(pasteElement)
+{
+}
+
+uint16_t TileModifyAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void TileModifyAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
