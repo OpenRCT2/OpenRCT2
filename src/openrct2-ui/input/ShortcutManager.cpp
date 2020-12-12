@@ -234,6 +234,16 @@ void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
     Shortcuts.push_back(shortcut);
 }
 
+RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
+{
+    auto result = std::find_if(Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& s) { return s.Id == id; });
+    return result == Shortcuts.end() ? nullptr : &(*result);
+}
+
+void ShortcutManager::SetPendingShortcutChange(std::string_view id)
+{
+}
+
 static ShortcutManager _shortcutManager;
 
 ShortcutManager& OpenRCT2::Ui::GetShortcutManager()

@@ -8,12 +8,15 @@
  *****************************************************************************/
 
 #include <openrct2-ui/input/KeyboardShortcuts.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+
+using namespace OpenRCT2::Ui;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
 static constexpr const int32_t WW = 250;
@@ -43,25 +46,30 @@ static rct_window_event_list window_shortcut_change_events([](auto& events)
 });
 // clang-format on
 
-static rct_string_id CurrentShortcutKeyStringId{};
+static rct_string_id _shortcutLocalisedName{};
 
 rct_window* window_shortcut_change_open(const std::string_view& shortcutId)
 {
-    return nullptr;
+    // Save the item we are selecting for new window
+    auto& shortcutManager = GetShortcutManager();
+    auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
+    if (registeredShortcut != nullptr)
+    {
+        _shortcutLocalisedName = registeredShortcut->LocalisedName;
 
-//     // Move this to window_shortcut_change_open
-//     window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-// 
-//     // Save the item we are selecting for new window
-//     gKeyboardShortcutChangeId = selected_key;
-//     CurrentShortcutKeyStringId = key_string_id;
-// 
-//     rct_window* w = window_create_centred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
-// 
-//     w->widgets = window_shortcut_change_widgets;
-//     w->enabled_widgets = (1ULL << WIDX_CLOSE);
-//     window_init_scroll_widgets(w);
-//     return w;
+        window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+        auto w = WindowCreateCentred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
+        w->widgets = window_shortcut_change_widgets;
+        w->enabled_widgets = (1ULL << WIDX_CLOSE);
+        WindowInitScrollWidgets(w);
+
+        shortcutManager.SetPendingShortcutChange(registeredShortcut->Id);
+        return w;
+    }
+    else
+    {
+        return nullptr;
+    }
 }
 
 /**
@@ -89,6 +97,6 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(CurrentShortcutKeyStringId);
+    ft.Add<rct_string_id>(_shortcutLocalisedName);
     gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

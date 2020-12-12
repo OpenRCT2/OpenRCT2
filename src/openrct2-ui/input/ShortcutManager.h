@@ -86,6 +86,8 @@ namespace OpenRCT2::Ui
 
         void RegisterShortcut(RegisteredShortcut&& shortcut);
         void RegisterDefaultShortcuts();
+        RegisteredShortcut* GetShortcut(std::string_view id);
+        void SetPendingShortcutChange(std::string_view id);
     };
 
     ShortcutManager& GetShortcutManager();
