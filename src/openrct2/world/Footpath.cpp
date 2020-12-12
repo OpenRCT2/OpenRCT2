@@ -876,7 +876,12 @@ static void loc_6A6D7E(
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                        if (ride == nullptr)
+                        {
+                            continue;
+                        }
+
+                        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
@@ -951,10 +956,16 @@ static void loc_6A6C85(
     if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
         auto ride = get_ride(tileElementPos.element->AsTrack()->GetRideIndex());
-        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (ride == nullptr)
         {
             return;
         }
+
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            return;
+        }
+
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
@@ -2032,7 +2043,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                     if (ride == nullptr)
                         continue;
 
-                    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
@@ -2121,7 +2132,10 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
     {
         auto rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
-        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (ride == nullptr)
+            return;
+
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             return;
     }
 
@@ -2272,5 +2286,5 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
+    return ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }

@@ -1060,7 +1060,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         }
 
         // For any suspended rides, move image higher in the vehicle tab on the rides window
-        if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SUSPENDED))
         {
             screenCoords.y /= 4;
         }
@@ -1138,8 +1138,9 @@ static void window_ride_disable_tabs(rct_window* w)
         return;
 
     uint8_t ride_type = ride->type; // ecx
+    const auto& rtd = ride->GetRideTypeDescriptor();
 
-    if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
         disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
 
     if (ride_type == RIDE_TYPE_MINI_GOLF)
@@ -1148,19 +1149,17 @@ static void window_ride_disable_tabs(rct_window* w)
     if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_NO_VEHICLES))
         disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
-    if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN)
-        && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
-        && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS)
-        && !ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
-        && !(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
+        && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
+        && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
         disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
     }
 
-    if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_SHOP))
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         disabled_tabs |= (1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_7); // 0x4C0
 
-    if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
         disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
     }
@@ -1874,8 +1873,10 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     gDropdownItemsArgs[0] = STR_OVERALL_VIEW;
     int32_t currentItem = 1;
 
+    const auto& rtd = ride->GetRideTypeDescriptor();
+
     // Vehicles
-    int32_t name = GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.vehicle).number;
+    int32_t name = GetRideComponentName(rtd.NameConvention.vehicle).number;
     for (int32_t i = 1; i <= ride->num_vehicles; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
@@ -1884,7 +1885,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
     }
 
     // Stations
-    name = GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station).number;
+    name = GetRideComponentName(rtd.NameConvention.station).number;
     for (int32_t i = 1; i <= ride->num_stations; i++)
     {
         gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;

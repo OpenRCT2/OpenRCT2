@@ -1884,8 +1884,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {
-                    auto rideType = RideTypeDescriptors[ride->type].Naming.Name;
-                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_WHITE, screenCoords);
+                    auto rideName = ride->GetRideTypeDescriptor().Naming.Name;
+                    gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideName, COLOUR_WHITE, screenCoords);
                 }
                 gfx_draw_string_left(
                     dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 11 });
