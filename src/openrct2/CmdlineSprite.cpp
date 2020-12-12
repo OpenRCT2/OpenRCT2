@@ -194,7 +194,7 @@ static void sprite_file_close()
     SafeFree(spriteFileData);
 }
 
-static bool sprite_file_export(rct_g1_element* spriteHeader, const char* outPath)
+static bool sprite_file_export(const rct_g1_element* spriteHeader, const char* outPath)
 {
     rct_drawpixelinfo dpi;
     uint8_t* pixels;
@@ -471,7 +471,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         ObjectType objectType = entry->GetType();
 
         auto& objManager = context->GetObjectManager();
-        auto metaObject = objManager.GetLoadedObject(objectType, entryIndex);
+        const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
 
         char outputPath[MAX_PATH];
         safe_strcpy(outputPath, argv[2], MAX_PATH);
@@ -483,58 +483,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        int32_t maxIndex = static_cast<int32_t>(metaObject->GetNumImages());
-        int32_t imagesOffset = 0;
-        switch (objectType)
-        {
-            case ObjectType::Ride:
-            {
-                auto rideEntry = get_ride_entry(entryIndex);
-                imagesOffset = rideEntry->images_offset;
-                break;
-            }
-            case ObjectType::SmallScenery:
-            case ObjectType::LargeScenery:
-            case ObjectType::Walls:
-            case ObjectType::Banners:
-            case ObjectType::PathBits:
-            {
-                auto obj = objManager.GetLoadedObject(objectType, entryIndex);
-                if (obj != nullptr)
-                {
-                    auto sceneryEntry = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
-                    imagesOffset = sceneryEntry->image;
-                }
-                break;
-            }
-            case ObjectType::Paths:
-            {
-                auto pathEntry = get_path_surface_entry(entryIndex);
-                imagesOffset = pathEntry->image;
-                break;
-            }
-            case ObjectType::SceneryGroup:
-            {
-                auto sceneryGroupEntry = get_scenery_group_entry(entryIndex);
-                imagesOffset = sceneryGroupEntry->image;
-                break;
-            }
-            case ObjectType::ParkEntrance:
-            {
-                auto obj = objManager.GetLoadedObject(objectType, entryIndex);
-                if (obj != nullptr)
-                {
-                    auto entranceEnty = static_cast<rct_entrance_type*>(obj->GetLegacyData());
-                    imagesOffset = entranceEnty->image_id;
-                }
-                break;
-            }
-            default:
-            {
-                fprintf(stderr, "Cannot extract images from this type of object.\n");
-                return -1;
-            }
-        }
+        auto maxIndex = metaObject->GetNumImages();
 
         int32_t numDigits = std::max(1, static_cast<int32_t>(std::floor(std::log(maxIndex))));
         size_t pathLen = strlen(outputPath);
@@ -551,23 +500,17 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
         safe_strcpy(outputPath + pathLen + numDigits, ".png", MAX_PATH - pathLen - numDigits);
 
-        for (int32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
+        for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
-            const rct_g1_element* g1 = gfx_get_g1_element(spriteIndex + imagesOffset);
-            if (g1 == nullptr)
-            {
-                fprintf(stderr, "Could not load image metadata\n");
-                return -1;
-            }
-
-            if (!sprite_file_export(const_cast<rct_g1_element*>(g1), outputPath))
+            const rct_g1_element g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
+            if (!sprite_file_export(&g1, outputPath))
             {
                 fprintf(stderr, "Could not export\n");
                 sprite_file_close();
                 return -1;
             }
 
-            fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", outputPath, g1->x_offset, g1->y_offset);
+            fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", outputPath, g1.x_offset, g1.y_offset);
 
             // Add to the index at the end of the file name
             char* counter = outputPath + pathLen + numDigits - 1;
@@ -579,8 +522,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 (*counter)++;
             }
         }
-
-        metaObject->Unload();
         return 1;
     }
     else if (_strcmpi(argv[0], "create") == 0)
