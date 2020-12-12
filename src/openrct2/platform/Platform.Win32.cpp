@@ -30,6 +30,7 @@
 #    endif
 
 #    include "../OpenRCT2.h"
+#    include "../common.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "Platform2.h"
@@ -518,6 +519,12 @@ namespace Platform
 
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
+        return false;
+    }
+
+    bool FindApp(const std::string& app, std::string* output)
+    {
+        log_warning("FindApp not implemented for Windows!");
         return false;
     }
 } // namespace Platform
