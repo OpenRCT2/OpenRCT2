@@ -1060,11 +1060,6 @@
         "forceBmp": true
     },
     {
-        "path": "font/left-curly-bracket-small.png",
-        "palette": "keep",
-        "forceBmp": true
-    },
-    {
         "path": "font/quotation-mark-small.png",
         "palette": "keep",
         "forceBmp": true
@@ -1666,11 +1661,6 @@
     },
     {
         "path": "font/tilde-bold.png",
-        "palette": "keep",
-        "forceBmp": true
-    },
-    {
-        "path": "font/left-curly-bracket-bold.png",
         "palette": "keep",
         "forceBmp": true
     },
@@ -2283,16 +2273,6 @@
     },
     {
         "path": "font/tilde-tiny.png",
-        "palette": "keep",
-        "forceBmp": true
-    },
-    {
-        "path": "font/left-curly-bracket-tiny.png",
-        "palette": "keep",
-        "forceBmp": true
-    },
-    {
-        "path": "font/quotation-mark-tiny.png",
         "palette": "keep",
         "forceBmp": true
     },
