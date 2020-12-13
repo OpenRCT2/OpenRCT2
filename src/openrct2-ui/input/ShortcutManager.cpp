@@ -84,18 +84,36 @@ static uint32_t ParseKey(const std::string_view& text)
     return 0;
 }
 
+size_t FindPlus(std::string_view s, size_t index)
+{
+    while (true)
+    {
+        index = s.find('+', index);
+        if (index != std::string::npos && index != 0 && s[index - 1] == ' ')
+        {
+            index++;
+            continue;
+        }
+        else
+        {
+            break;
+        }
+    }
+    return index;
+}
+
 ShortcutInput::ShortcutInput(const std::string_view& value)
 {
     uint32_t modifiers = 0;
     size_t index = 0;
-    auto sepIndex = value.find('+', index);
+    auto sepIndex = FindPlus(value, index);
     while (sepIndex != std::string::npos)
     {
         auto text = value.substr(index, sepIndex);
         auto mod = ParseModifier(text);
         modifiers |= mod;
         index = sepIndex + 1;
-        sepIndex = value.find('+', index);
+        sepIndex = FindPlus(value, index);
     }
 
     auto kind = ShortcutInputKind::Keyboard;
@@ -156,6 +174,56 @@ std::string ShortcutInput::ToString() const
             case SDLK_PAGEDOWN:
                 result += "PAGE DOWN";
                 break;
+
+            case SDLK_KP_DIVIDE:
+                result += "NUMPAD /";
+                break;
+            case SDLK_KP_MULTIPLY:
+                result += "NUMPAD *";
+                break;
+            case SDLK_KP_MINUS:
+                result += "NUMPAD -";
+                break;
+            case SDLK_KP_PLUS:
+                result += "NUMPAD +";
+                break;
+            case SDLK_KP_ENTER:
+                result += "NUMPAD RETURN";
+                break;
+            case SDLK_KP_1:
+                result += "NUMPAD 1";
+                break;
+            case SDLK_KP_2:
+                result += "NUMPAD 2";
+                break;
+            case SDLK_KP_3:
+                result += "NUMPAD 3";
+                break;
+            case SDLK_KP_4:
+                result += "NUMPAD 4";
+                break;
+            case SDLK_KP_5:
+                result += "NUMPAD 5";
+                break;
+            case SDLK_KP_6:
+                result += "NUMPAD 6";
+                break;
+            case SDLK_KP_7:
+                result += "NUMPAD 7";
+                break;
+            case SDLK_KP_8:
+                result += "NUMPAD 8";
+                break;
+            case SDLK_KP_9:
+                result += "NUMPAD 9";
+                break;
+            case SDLK_KP_0:
+                result += "NUMPAD 0";
+                break;
+            case SDLK_KP_PERIOD:
+                result += "NUMPAD .";
+                break;
+
             default:
                 if (Key & SDLK_SCANCODE_MASK)
                 {

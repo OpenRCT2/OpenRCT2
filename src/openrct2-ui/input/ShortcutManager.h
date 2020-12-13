@@ -17,6 +17,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <utility>
 #include <vector>
 
 namespace OpenRCT2::Ui
@@ -56,6 +57,13 @@ namespace OpenRCT2::Ui
         std::function<void()> Action;
 
         RegisteredShortcut() = default;
+        RegisteredShortcut(const std::string_view& id, rct_string_id localisedName, const std::function<void()>& action)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Action(action)
+        {
+        }
+
         RegisteredShortcut(
             const std::string_view& id, rct_string_id localisedName, const std::string_view& defaultChord,
             const std::function<void()>& action)
@@ -97,6 +105,10 @@ namespace OpenRCT2::Ui
         ShortcutManager(const ShortcutManager&) = delete;
 
         void RegisterShortcut(RegisteredShortcut&& shortcut);
+        template<typename... Args> void RegisterShortcut(Args&&... args)
+        {
+            RegisterShortcut(RegisteredShortcut(std::forward<Args>(args)...));
+        }
         void RegisterDefaultShortcuts();
         RegisteredShortcut* GetShortcut(std::string_view id);
         void SetPendingShortcutChange(std::string_view id);
