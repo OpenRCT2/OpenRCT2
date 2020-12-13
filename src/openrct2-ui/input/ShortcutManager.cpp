@@ -249,6 +249,34 @@ std::string_view RegisteredShortcut::GetGroup() const
     return {};
 }
 
+bool RegisteredShortcut::Matches(const InputEvent& e) const
+{
+    if (IsSuitableInputEvent(e))
+    {
+        auto result = std::find_if(
+            Current.begin(), Current.end(), [e](const ShortcutInput& action) { return action.Matches(e); });
+        return result != Current.end();
+    }
+    return false;
+}
+
+bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
+{
+    if (e.DeviceKind == InputDeviceKind::Mouse)
+    {
+        // Do not allow LMB or RMB to be shortcut
+        if (e.Button == 0 || e.Button == 1)
+        {
+            return false;
+        }
+        if (e.State == InputEventState::Down)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 ShortcutManager::ShortcutManager()
 {
     RegisterDefaultShortcuts();
@@ -270,39 +298,22 @@ void ShortcutManager::SetPendingShortcutChange(std::string_view id)
     _pendingShortcutChange = id;
 }
 
-bool ShortcutManager::IsSuitableInputEvent(const InputEvent& e)
-{
-    if (e.DeviceKind == InputDeviceKind::Mouse)
-    {
-        // Do not allow LMB or RMB to be shortcut
-        if (e.Button == 0 || e.Button == 1)
-        {
-            return false;
-        }
-    }
-    return true;
-}
-
 void ShortcutManager::ProcessEvent(const InputEvent& e)
 {
     if (_pendingShortcutChange.empty())
     {
         for (const auto& shortcut : Shortcuts)
         {
-            for (const auto& action : shortcut.Current)
+            if (shortcut.Matches(e))
             {
-                if (action.Matches(e))
-                {
-                    shortcut.Action();
-                    break;
-                }
+                shortcut.Action();
             }
         }
     }
-    else if (IsSuitableInputEvent(e))
+    else
     {
         auto shortcut = GetShortcut(_pendingShortcutChange);
-        if (shortcut != nullptr)
+        if (shortcut != nullptr && shortcut->IsSuitableInputEvent(e))
         {
             auto shortcutInput = ShortcutInput::FromInputEvent(e);
             if (shortcutInput)
@@ -310,9 +321,9 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
                 shortcut->Current.clear();
                 shortcut->Current.push_back(std::move(*shortcutInput));
             }
+            _pendingShortcutChange.clear();
+            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
         }
-        _pendingShortcutChange.clear();
-        window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
     }
 }
 

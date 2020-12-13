@@ -79,6 +79,8 @@ namespace OpenRCT2::Ui
         }
 
         std::string_view GetGroup() const;
+        bool Matches(const InputEvent& e) const;
+        bool IsSuitableInputEvent(const InputEvent& e) const;
 
     private:
     };
@@ -87,8 +89,6 @@ namespace OpenRCT2::Ui
     {
     private:
         std::string _pendingShortcutChange;
-
-        static bool IsSuitableInputEvent(const InputEvent& e);
 
     public:
         std::vector<RegisteredShortcut> Shortcuts;
