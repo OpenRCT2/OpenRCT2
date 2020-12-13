@@ -21,6 +21,18 @@
 
 #include <iterator>
 
+ParkMarketingAction::ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks)
+    : _type(type)
+    , _item(item)
+    , _numWeeks(numWeeks)
+{
+}
+
+uint16_t ParkMarketingAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void ParkMarketingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

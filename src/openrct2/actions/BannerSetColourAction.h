@@ -19,19 +19,11 @@ private:
 
 public:
     BannerSetColourAction() = default;
-
-    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
-        : _loc(loc)
-        , _primaryColour(primaryColour)
-    {
-    }
+    BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

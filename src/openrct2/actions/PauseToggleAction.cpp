@@ -9,6 +9,16 @@
 
 #include "PauseToggleAction.h"
 
+uint16_t PauseToggleAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
+GameActions::Result::Ptr PauseToggleAction::Query() const
+{
+    return std::make_unique<GameActions::Result>();
+}
+
 GameActions::Result::Ptr PauseToggleAction::Execute() const
 {
     pause_toggle();

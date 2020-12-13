@@ -24,6 +24,12 @@
 
 #include <algorithm>
 
+ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
+    : _range(range)
+    , _itemsToClear(itemsToClear)
+{
+}
+
 void ClearAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
@@ -199,4 +205,30 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
     } while (tileEdited);
 
     return totalCost;
+}
+
+void ClearAction::ResetClearLargeSceneryFlag()
+{
+    // TODO: Improve efficiency of this
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            auto tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            do
+            {
+                if (tileElement == nullptr)
+                    break;
+                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                {
+                    tileElement->AsLargeScenery()->SetIsAccounted(false);
+                }
+            } while (!(tileElement++)->IsLastForTile());
+        }
+    }
+}
+
+bool ClearAction::MapCanClearAt(const CoordsXY& location)
+{
+    return (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode || map_is_location_owned_or_has_rights(location);
 }

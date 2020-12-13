@@ -22,20 +22,11 @@ private:
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION)
-        : _loc(loc)
-        , _slope(slope)
-        , _type(type)
-        , _direction(direction)
-    {
-    }
+    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

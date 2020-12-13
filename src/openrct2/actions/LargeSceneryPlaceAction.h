@@ -16,22 +16,10 @@
 class LargeSceneryPlaceActionResult final : public GameActions::Result
 {
 public:
-    LargeSceneryPlaceActionResult()
-        : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
-    {
-    }
-    LargeSceneryPlaceActionResult(GameActions::Status error)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE)
-    {
-    }
-    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message)
-    {
-    }
-    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
-        : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message, args)
-    {
-    }
+    LargeSceneryPlaceActionResult();
+    LargeSceneryPlaceActionResult(GameActions::Status error);
+    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message);
+    LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args);
 
     uint8_t GroundFlags{ 0 };
     TileElement* tileElement = nullptr;
@@ -49,28 +37,12 @@ private:
 public:
     LargeSceneryPlaceAction() = default;
 
-    LargeSceneryPlaceAction(const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
-        : _loc(loc)
-        , _sceneryType(sceneryType)
-        , _primaryColour(primaryColour)
-        , _secondaryColour(secondaryColour)
-    {
-        rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
-        if (sceneryEntry != nullptr)
-        {
-            if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
-            {
-                _bannerId = create_new_banner(0);
-            }
-        }
-    }
+    LargeSceneryPlaceAction(
+        const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

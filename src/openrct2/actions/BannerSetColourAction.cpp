@@ -15,10 +15,21 @@
 #include "../world/Banner.h"
 #include "GameAction.h"
 
+BannerSetColourAction::BannerSetColourAction(const CoordsXYZD& loc, uint8_t primaryColour)
+    : _loc(loc)
+    , _primaryColour(primaryColour)
+{
+}
+
 void BannerSetColourAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("primaryColour", _primaryColour);
+}
+
+uint16_t BannerSetColourAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void BannerSetColourAction::Serialise(DataSerialiser& stream)

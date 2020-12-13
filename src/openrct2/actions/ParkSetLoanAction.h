@@ -18,15 +18,9 @@ private:
 
 public:
     ParkSetLoanAction() = default;
-    ParkSetLoanAction(money32 value)
-        : _value(value)
-    {
-    }
+    ParkSetLoanAction(money32 value);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

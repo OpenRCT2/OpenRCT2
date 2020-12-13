@@ -14,6 +14,17 @@
 #include "../util/Util.h"
 #include "../world/Park.h"
 
+ParkSetParameterAction::ParkSetParameterAction(ParkParameter parameter, uint64_t value)
+    : _parameter(parameter)
+    , _value(value)
+{
+}
+
+uint16_t ParkSetParameterAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void ParkSetParameterAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

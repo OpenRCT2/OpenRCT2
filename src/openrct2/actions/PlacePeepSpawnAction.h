@@ -18,15 +18,9 @@ private:
 
 public:
     PlacePeepSpawnAction() = default;
-    PlacePeepSpawnAction(const CoordsXYZD& location)
-        : _location(location)
-    {
-    }
+    PlacePeepSpawnAction(const CoordsXYZD& location);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

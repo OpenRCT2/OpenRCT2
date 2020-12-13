@@ -21,9 +21,19 @@
 #include "../world/Wall.h"
 #include "BannerRemoveAction.h"
 
+FootpathRemoveAction::FootpathRemoveAction(const CoordsXYZ& location)
+    : _loc(location)
+{
+}
+
 void FootpathRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
+}
+
+uint16_t FootpathRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void FootpathRemoveAction::Serialise(DataSerialiser& stream)

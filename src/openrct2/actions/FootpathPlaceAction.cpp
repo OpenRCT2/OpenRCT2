@@ -22,12 +22,25 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
+FootpathPlaceAction::FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction)
+    : _loc(loc)
+    , _slope(slope)
+    , _type(type)
+    , _direction(direction)
+{
+}
+
 void FootpathPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("object", _type);
     visitor.Visit("direction", _direction);
     visitor.Visit("slope", _slope);
+}
+
+uint16_t FootpathPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void FootpathPlaceAction::Serialise(DataSerialiser& stream)

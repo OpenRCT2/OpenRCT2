@@ -15,9 +15,19 @@
 #include "../world/Scenery.h"
 #include "GameAction.h"
 
+BannerRemoveAction::BannerRemoveAction(const CoordsXYZD& loc)
+    : _loc(loc)
+{
+}
+
 void BannerRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
+}
+
+uint16_t BannerRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void BannerRemoveAction::Serialise(DataSerialiser& stream)

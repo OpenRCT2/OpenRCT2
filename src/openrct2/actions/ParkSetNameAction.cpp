@@ -22,9 +22,19 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
+ParkSetNameAction::ParkSetNameAction(const std::string& name)
+    : _name(name)
+{
+}
+
 void ParkSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("name", _name);
+}
+
+uint16_t ParkSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void ParkSetNameAction::Serialise(DataSerialiser& stream)

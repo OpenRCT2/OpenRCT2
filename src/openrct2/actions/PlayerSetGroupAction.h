@@ -19,17 +19,9 @@ private:
 
 public:
     PlayerSetGroupAction() = default;
+    PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId);
 
-    PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
-        : _playerId(playerId)
-        , _groupId(groupId)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

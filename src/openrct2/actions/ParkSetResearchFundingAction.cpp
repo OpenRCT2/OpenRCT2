@@ -17,6 +17,17 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
+ParkSetResearchFundingAction::ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
+    : _priorities(priorities)
+    , _fundingAmount(fundingAmount)
+{
+}
+
+uint16_t ParkSetResearchFundingAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void ParkSetResearchFundingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

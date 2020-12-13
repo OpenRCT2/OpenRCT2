@@ -11,6 +11,17 @@
 
 #include "../network/network.h"
 
+PlayerSetGroupAction::PlayerSetGroupAction(NetworkPlayerId_t playerId, uint8_t groupId)
+    : _playerId(playerId)
+    , _groupId(groupId)
+{
+}
+
+uint16_t PlayerSetGroupAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

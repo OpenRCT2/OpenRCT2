@@ -20,17 +20,9 @@ private:
 
 public:
     LandLowerAction() = default;
-    LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType)
-        : _coords(coords)
-        , _range(range)
-        , _selectionType(selectionType)
-    {
-    }
+    LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

@@ -20,16 +20,9 @@ private:
 
 public:
     ParkSetResearchFundingAction() = default;
-    ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount)
-        : _priorities(priorities)
-        , _fundingAmount(fundingAmount)
-    {
-    }
+    ParkSetResearchFundingAction(uint32_t priorities, uint8_t fundingAmount);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

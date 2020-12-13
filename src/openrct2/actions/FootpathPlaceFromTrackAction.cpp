@@ -21,11 +21,25 @@
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 
+FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
+    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges)
+    : _loc(loc)
+    , _slope(slope)
+    , _type(type)
+    , _edges(edges)
+{
+}
+
 void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_edges);
+}
+
+uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 GameActions::Result::Ptr FootpathPlaceFromTrackAction::Query() const

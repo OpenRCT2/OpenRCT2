@@ -26,6 +26,19 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+LandSmoothAction::LandSmoothAction(const CoordsXY& coords, MapRange range, uint8_t selectionType, bool isLowering)
+    : _coords(coords)
+    , _range(range)
+    , _selectionType(selectionType)
+    , _isLowering(isLowering)
+{
+}
+
+uint16_t LandSmoothAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
 void LandSmoothAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

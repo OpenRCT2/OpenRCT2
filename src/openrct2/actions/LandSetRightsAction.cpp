@@ -25,6 +25,25 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
+LandSetRightsAction::LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership)
+    : _range(range)
+    , _setting(setting)
+    , _ownership(ownership)
+{
+}
+
+LandSetRightsAction::LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership)
+    : _range(coord.x, coord.y, coord.x, coord.y)
+    , _setting(setting)
+    , _ownership(ownership)
+{
+}
+
+uint16_t LandSetRightsAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
+}
+
 void LandSetRightsAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

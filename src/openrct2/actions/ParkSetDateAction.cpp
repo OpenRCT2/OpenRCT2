@@ -17,6 +17,18 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
+ParkSetDateAction::ParkSetDateAction(int32_t year, int32_t month, int32_t day)
+    : _year(year)
+    , _month(month)
+    , _day(day)
+{
+}
+
+uint16_t ParkSetDateAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void ParkSetDateAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -20,10 +20,21 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
+BannerSetNameAction::BannerSetNameAction(BannerIndex bannerIndex, const std::string& name)
+    : _bannerIndex(bannerIndex)
+    , _name(name)
+{
+}
+
 void BannerSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("id", _bannerIndex);
     visitor.Visit("name", _name);
+}
+
+uint16_t BannerSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void BannerSetNameAction::Serialise(DataSerialiser& stream)

@@ -18,16 +18,11 @@ private:
 
 public:
     FootpathAdditionRemoveAction() = default;
-    FootpathAdditionRemoveAction(const CoordsXYZ& loc)
-        : _loc(loc)
-    {
-    }
+    FootpathAdditionRemoveAction(const CoordsXYZ& loc);
+
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

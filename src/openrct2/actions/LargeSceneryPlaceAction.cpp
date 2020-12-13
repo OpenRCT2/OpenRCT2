@@ -17,6 +17,43 @@
 #include "../world/MapAnimation.h"
 #include "../world/Surface.h"
 
+LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE)
+{
+}
+
+LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message)
+{
+}
+
+LargeSceneryPlaceActionResult::LargeSceneryPlaceActionResult(GameActions::Status error, rct_string_id message, uint8_t* args)
+    : GameActions::Result(error, STR_CANT_POSITION_THIS_HERE, message, args)
+{
+}
+
+LargeSceneryPlaceAction::LargeSceneryPlaceAction(
+    const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    : _loc(loc)
+    , _sceneryType(sceneryType)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+{
+    rct_scenery_entry* sceneryEntry = get_large_scenery_entry(_sceneryType);
+    if (sceneryEntry != nullptr)
+    {
+        if (sceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+        {
+            _bannerId = create_new_banner(0);
+        }
+    }
+}
+
 void LargeSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
@@ -31,6 +68,11 @@ void LargeSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
             _bannerId = create_new_banner(0);
         }
     }
+}
+
+uint16_t LargeSceneryPlaceAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)

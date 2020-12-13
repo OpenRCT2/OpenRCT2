@@ -20,9 +20,19 @@
 #include "../world/Park.h"
 #include "../world/Wall.h"
 
+FootpathAdditionRemoveAction::FootpathAdditionRemoveAction(const CoordsXYZ& loc)
+    : _loc(loc)
+{
+}
+
 void FootpathAdditionRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
+}
+
+uint16_t FootpathAdditionRemoveAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void FootpathAdditionRemoveAction::Serialise(DataSerialiser& stream)

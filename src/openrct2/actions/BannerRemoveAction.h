@@ -18,17 +18,11 @@ private:
 
 public:
     BannerRemoveAction() = default;
-    BannerRemoveAction(const CoordsXYZD& loc)
-        : _loc(loc)
-    {
-    }
+    BannerRemoveAction(const CoordsXYZD& loc);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

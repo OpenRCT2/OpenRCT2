@@ -21,20 +21,11 @@ private:
 
 public:
     BannerPlaceAction() = default;
-    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
-        : _loc(loc)
-        , _bannerType(bannerType)
-        , _bannerIndex(bannerIndex)
-        , _primaryColour(primaryColour)
-    {
-    }
+    BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags();
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

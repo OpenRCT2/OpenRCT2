@@ -12,6 +12,13 @@
 #include "../ride/RideData.h"
 #include "../ride/TrackData.h"
 
+MazePlaceTrackAction::MazePlaceTrackAction(const CoordsXYZ& location, NetworkRideId_t rideIndex, uint16_t mazeEntry)
+    : _loc(location)
+    , _rideIndex(rideIndex)
+    , _mazeEntry(mazeEntry)
+{
+}
+
 void MazePlaceTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);

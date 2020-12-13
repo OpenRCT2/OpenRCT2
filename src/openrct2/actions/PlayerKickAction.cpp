@@ -11,6 +11,16 @@
 
 #include "../network/network.h"
 
+PlayerKickAction::PlayerKickAction(NetworkPlayerId_t playerId)
+    : _playerId(playerId)
+{
+}
+
+uint16_t PlayerKickAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void PlayerKickAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

@@ -20,17 +20,9 @@ private:
 
 public:
     LandSetHeightAction() = default;
-    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
-        : _coords(coords)
-        , _height(height)
-        , _style(style)
-    {
-    }
+    LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style);
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
@@ -53,14 +45,5 @@ private:
      */
     static int32_t map_set_land_height_clear_func(
         TileElement * *tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
-        [[maybe_unused]] money32* price)
-    {
-        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
-            return 0;
-
-        if ((*tile_element)->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
-            return 0;
-
-        return 1;
-    }
+        [[maybe_unused]] money32* price);
 };

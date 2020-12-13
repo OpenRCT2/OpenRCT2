@@ -13,6 +13,20 @@
 #include "../management/Finance.h"
 #include "../world/Scenery.h"
 
+LargeScenerySetColourAction::LargeScenerySetColourAction(
+    const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
+    : _loc(loc)
+    , _tileIndex(tileIndex)
+    , _primaryColour(primaryColour)
+    , _secondaryColour(secondaryColour)
+{
+}
+
+uint16_t LargeScenerySetColourAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+}
+
 void LargeScenerySetColourAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

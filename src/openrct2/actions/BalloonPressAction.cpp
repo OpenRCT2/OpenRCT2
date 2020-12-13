@@ -11,9 +11,19 @@
 
 #include "GameAction.h"
 
+BalloonPressAction::BalloonPressAction(uint16_t spriteIndex)
+    : _spriteIndex(spriteIndex)
+{
+}
+
 void BalloonPressAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("id", _spriteIndex);
+}
+
+uint16_t BalloonPressAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
 }
 
 void BalloonPressAction::Serialise(DataSerialiser& stream)

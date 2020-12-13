@@ -12,10 +12,21 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 
+GuestSetFlagsAction::GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
+    : _peepId(peepId)
+    , _newFlags(flags)
+{
+}
+
 void GuestSetFlagsAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("peep", _peepId);
     visitor.Visit("flags", _newFlags);
+}
+
+uint16_t GuestSetFlagsAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void GuestSetFlagsAction::Serialise(DataSerialiser& stream)

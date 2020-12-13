@@ -30,25 +30,10 @@ private:
 
 public:
     LandSetRightsAction() = default;
+    LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0);
+    LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0);
 
-    LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership = 0)
-        : _range(range)
-        , _setting(setting)
-        , _ownership(ownership)
-    {
-    }
-
-    LandSetRightsAction(const CoordsXY& coord, LandSetRightSetting setting, uint8_t ownership = 0)
-        : _range(coord.x, coord.y, coord.x, coord.y)
-        , _setting(setting)
-        , _ownership(ownership)
-    {
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;

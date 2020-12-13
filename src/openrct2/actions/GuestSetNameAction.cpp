@@ -20,10 +20,31 @@
 #include "../world/Park.h"
 #include "../world/Sprite.h"
 
+GuestSetNameAction::GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
+    : _spriteIndex(spriteIndex)
+    , _name(name)
+{
+}
+
+uint16_t GuestSetNameAction::GetSpriteIndex() const
+{
+    return _spriteIndex;
+}
+
+std::string GuestSetNameAction::GetGuestName() const
+{
+    return _name;
+}
+
 void GuestSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("peep", _spriteIndex);
     visitor.Visit("name", _name);
+}
+
+uint16_t GuestSetNameAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
 }
 
 void GuestSetNameAction::Serialise(DataSerialiser& stream)

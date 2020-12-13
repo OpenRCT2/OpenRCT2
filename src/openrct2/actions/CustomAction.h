@@ -21,26 +21,12 @@ private:
 
 public:
     CustomAction() = default;
-    CustomAction(const std::string& id, const std::string& json)
-        : _id(id)
-        , _json(json)
-    {
-    }
+    CustomAction(const std::string& id, const std::string& json);
 
-    std::string GetId() const
-    {
-        return _id;
-    }
+    std::string GetId() const;
+    std::string GetJson() const;
 
-    std::string GetJson() const
-    {
-        return _json;
-    }
-
-    uint16_t GetActionFlags() const override
-    {
-        return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
-    }
+    uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
