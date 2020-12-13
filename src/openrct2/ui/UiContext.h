@@ -116,7 +116,7 @@ namespace OpenRCT2
 
             virtual bool HasMenuSupport() abstract;
             // Creates a menu with a series of options, returns the index of the selected option
-            virtual int ShowMenuDialog(
+            virtual int32_t ShowMenuDialog(
                 const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
             virtual void OpenURL(const std::string& url) abstract;

@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui
         int32_t ShowMenuDialog(
             const std::vector<std::string>& options, const std::string& title, const std::string& text) override
         {
-            return options.size();
+            return static_cast<int32_t>(options.size());
         }
         void OpenFolder(const std::string& /*path*/) override
         {

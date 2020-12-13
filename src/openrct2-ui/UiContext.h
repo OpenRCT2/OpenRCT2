@@ -35,7 +35,7 @@ namespace OpenRCT2
 
             virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
             virtual bool HasMenuSupport() abstract;
-            virtual int ShowMenuDialog(
+            virtual int32_t ShowMenuDialog(
                 const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
 
