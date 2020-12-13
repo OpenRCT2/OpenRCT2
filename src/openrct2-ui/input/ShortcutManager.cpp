@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
 
 using namespace OpenRCT2::Ui;
@@ -214,6 +215,30 @@ bool ShortcutInput::AppendModifier(std::string& s, const std::string_view& text,
     return false;
 }
 
+bool ShortcutInput::Matches(const InputEvent& e) const
+{
+    if (e.DeviceKind == InputDeviceKind::Mouse)
+    {
+        if (Kind == ShortcutInputKind::Mouse && Key == e.Button)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
+{
+    if (e.DeviceKind == InputDeviceKind::Mouse)
+    {
+        ShortcutInput result;
+        result.Kind = ShortcutInputKind::Mouse;
+        result.Key = e.Button;
+        return result;
+    }
+    return {};
+}
+
 std::string_view RegisteredShortcut::GetGroup() const
 {
     auto fullstopIndex = Id.find('.');
@@ -242,6 +267,53 @@ RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
 
 void ShortcutManager::SetPendingShortcutChange(std::string_view id)
 {
+    _pendingShortcutChange = id;
+}
+
+bool ShortcutManager::IsSuitableInputEvent(const InputEvent& e)
+{
+    if (e.DeviceKind == InputDeviceKind::Mouse)
+    {
+        // Do not allow LMB or RMB to be shortcut
+        if (e.Button == 0 || e.Button == 1)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+void ShortcutManager::ProcessEvent(const InputEvent& e)
+{
+    if (_pendingShortcutChange.empty())
+    {
+        for (const auto& shortcut : Shortcuts)
+        {
+            for (const auto& action : shortcut.Current)
+            {
+                if (action.Matches(e))
+                {
+                    shortcut.Action();
+                    break;
+                }
+            }
+        }
+    }
+    else if (IsSuitableInputEvent(e))
+    {
+        auto shortcut = GetShortcut(_pendingShortcutChange);
+        if (shortcut != nullptr)
+        {
+            auto shortcutInput = ShortcutInput::FromInputEvent(e);
+            if (shortcutInput)
+            {
+                shortcut->Current.clear();
+                shortcut->Current.push_back(std::move(*shortcutInput));
+            }
+        }
+        _pendingShortcutChange.clear();
+        window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+    }
 }
 
 static ShortcutManager _shortcutManager;

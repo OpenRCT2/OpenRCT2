@@ -14,6 +14,7 @@
 #include "interface/Theme.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
@@ -517,6 +518,9 @@ public:
     void HandleKeyboard(bool isTitle) override
     {
         InputHandleKeyboard(isTitle);
+
+        auto& inputManager = GetInputManager();
+        inputManager.Process();
     }
 
     std::string GetKeyboardShortcutString(int32_t shortcut) override

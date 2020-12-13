@@ -35,12 +35,14 @@ static rct_widget window_shortcut_change_widgets[] = {
     { WIDGETS_END }
 };
 
+static void window_shortcut_change_close(rct_window *w);
 static void window_shortcut_change_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_shortcut_change_paint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x9A3F7C
 static rct_window_event_list window_shortcut_change_events([](auto& events)
 {
+    events.close = &window_shortcut_change_close;
     events.mouse_up = &window_shortcut_change_mouseup;
     events.paint = &window_shortcut_change_paint;
 });
@@ -70,6 +72,12 @@ rct_window* window_shortcut_change_open(const std::string_view& shortcutId)
     {
         return nullptr;
     }
+}
+
+static void window_shortcut_change_close(rct_window* w)
+{
+    auto& shortcutManager = GetShortcutManager();
+    shortcutManager.SetPendingShortcutChange({});
 }
 
 /**

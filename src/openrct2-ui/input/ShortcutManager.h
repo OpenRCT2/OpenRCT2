@@ -9,9 +9,12 @@
 
 #pragma once
 
+#include "InputManager.h"
+
 #include <cstdint>
 #include <functional>
 #include <openrct2/localisation/StringIds.h>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -34,6 +37,10 @@ namespace OpenRCT2::Ui
         ShortcutInput() = default;
         ShortcutInput(const std::string_view& value);
         std::string ToString() const;
+
+        bool Matches(const InputEvent& e) const;
+
+        static std::optional<ShortcutInput> FromInputEvent(const InputEvent& e);
 
     private:
         bool AppendModifier(std::string& s, const std::string_view& text, uint32_t left, uint32_t right) const;
@@ -78,6 +85,11 @@ namespace OpenRCT2::Ui
 
     class ShortcutManager
     {
+    private:
+        std::string _pendingShortcutChange;
+
+        static bool IsSuitableInputEvent(const InputEvent& e);
+
     public:
         std::vector<RegisteredShortcut> Shortcuts;
 
@@ -88,6 +100,7 @@ namespace OpenRCT2::Ui
         void RegisterDefaultShortcuts();
         RegisteredShortcut* GetShortcut(std::string_view id);
         void SetPendingShortcutChange(std::string_view id);
+        void ProcessEvent(const InputEvent& e);
     };
 
     ShortcutManager& GetShortcutManager();

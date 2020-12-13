@@ -26,6 +26,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <memory>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -415,6 +416,15 @@ public:
                             break;
                     }
                     _cursorState.touch = false;
+
+                    {
+                        InputEvent ie;
+                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Button = e.button.button;
+                        ie.State = InputEventState::Down;
+                        auto& inputManager = GetInputManager();
+                        inputManager.QueueInputEvent(std::move(ie));
+                    }
                     break;
                 }
                 case SDL_MOUSEBUTTONUP:
@@ -442,6 +452,15 @@ public:
                             break;
                     }
                     _cursorState.touch = false;
+
+                    {
+                        InputEvent ie;
+                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Button = e.button.button;
+                        ie.State = InputEventState::Release;
+                        auto& inputManager = GetInputManager();
+                        inputManager.QueueInputEvent(std::move(ie));
+                    }
                     break;
                 }
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
