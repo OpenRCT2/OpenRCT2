@@ -420,6 +420,7 @@ public:
                     {
                         InputEvent ie;
                         ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Down;
                         auto& inputManager = GetInputManager();
@@ -456,6 +457,7 @@ public:
                     {
                         InputEvent ie;
                         ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Release;
                         auto& inputManager = GetInputManager();
@@ -517,7 +519,27 @@ public:
 #endif
                 case SDL_KEYDOWN:
                     _textComposition.HandleMessage(&e);
+                    {
+                        InputEvent ie;
+                        ie.DeviceKind = InputDeviceKind::Keyboard;
+                        ie.Modifiers = e.key.keysym.mod;
+                        ie.Button = e.key.keysym.sym;
+                        ie.State = InputEventState::Down;
+                        auto& inputManager = GetInputManager();
+                        inputManager.QueueInputEvent(std::move(ie));
+                    }
                     break;
+                case SDL_KEYUP:
+                {
+                    InputEvent ie;
+                    ie.DeviceKind = InputDeviceKind::Keyboard;
+                    ie.Modifiers = e.key.keysym.mod;
+                    ie.Button = e.key.keysym.sym;
+                    ie.State = InputEventState::Release;
+                    auto& inputManager = GetInputManager();
+                    inputManager.QueueInputEvent(std::move(ie));
+                }
+                break;
                 case SDL_MULTIGESTURE:
                     if (e.mgesture.numFingers == 2)
                     {

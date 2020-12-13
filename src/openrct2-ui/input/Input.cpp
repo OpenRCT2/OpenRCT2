@@ -123,6 +123,10 @@ static int32_t InputScancodeToRCTKeycode(int32_t sdl_key)
 
 void InputHandleKeyboard(bool isTitle)
 {
+}
+
+void InputHandleKeyboard2(bool isTitle)
+{
     if (gOpenRCT2Headless)
     {
         return;
@@ -225,7 +229,7 @@ void InputHandleKeyboard(bool isTitle)
             }
             else
             {
-                KeyboardShortcutHandle(key);
+                // KeyboardShortcutHandle(key);
             }
         }
     }

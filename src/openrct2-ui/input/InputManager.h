@@ -29,6 +29,7 @@ namespace OpenRCT2::Ui
     struct InputEvent
     {
         InputDeviceKind DeviceKind;
+        uint32_t Modifiers;
         uint32_t Button;
         InputEventState State;
     };

@@ -40,42 +40,7 @@
 
 extern bool gWindowSceneryEyedropperEnabled;
 
-using shortcut_action = void (*)();
 using namespace OpenRCT2;
-
-Input::Shortcut gKeyboardShortcutChangeId;
-
-namespace
-{
-    extern const shortcut_action shortcut_table[Input::ShortcutsCount];
-}
-
-/**
- *
- *  rct2: 0x006E3E68
- */
-using namespace OpenRCT2;
-void KeyboardShortcutHandle(int32_t key)
-{
-    auto shortcut = KeyboardShortcutsGetFromKey(key);
-    if (shortcut != Input::Shortcut::Undefined)
-    {
-        KeyboardShortcutHandleCommand(shortcut);
-    }
-}
-
-void KeyboardShortcutHandleCommand(Input::Shortcut shortcut)
-{
-    size_t shortcutIndex = static_cast<size_t>(shortcut);
-    if (shortcutIndex < std::size(shortcut_table))
-    {
-        shortcut_action action = shortcut_table[shortcutIndex];
-        if (action != nullptr)
-        {
-            action();
-        }
-    }
-}
 
 #pragma region Shortcut Commands
 
@@ -461,102 +426,6 @@ static void ShortcutQuickSaveGame()
     }
 }
 
-static void ShortcutRideConstructionTurnLeft()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_turn_left();
-}
-
-static void ShortcutRideConstructionTurnRight()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_turn_right();
-}
-
-static void ShortcutRideConstructionUseTrackDefault()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_use_track_default();
-}
-
-static void ShortcutRideConstructionSlopeDown()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_slope_down();
-}
-
-static void ShortcutRideConstructionSlopeUp()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_slope_up();
-}
-
-static void ShortcutRideConstructionChainLiftToggle()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_chain_lift_toggle();
-}
-
-static void ShortcutRideConstructionBankLeft()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_bank_left();
-}
-
-static void ShortcutRideConstructionBankRight()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_bank_right();
-}
-
-static void ShortcutRideConstructionPreviousTrack()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_previous_track();
-}
-
-static void ShortcutRideConstructionNextTrack()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_next_track();
-}
-
-static void ShortcutRideConstructionBuildCurrent()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_build_current();
-}
-
-static void ShortcutRideConstructionDemolishCurrent()
-{
-    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
-        return;
-
-    window_ride_construction_keyboard_shortcut_demolish_current();
-}
-
 static void ShortcutLoadGame()
 {
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
@@ -725,58 +594,6 @@ static void ShortcutToggleClearanceChecks()
     GameActions::Execute(&setCheatAction);
 }
 
-namespace
-{
-    using namespace OpenRCT2::Input;
-    const shortcut_action shortcut_table[ShortcutsCount] = {
-        ShortcutAdjustLand,
-        ShortcutAdjustWater,
-        ShortcutBuildScenery,
-        ShortcutBuildPaths,
-        ShortcutBuildNewRide,
-        ShortcutShowFinancialInformation,
-        ShortcutShowResearchInformation,
-        ShortcutShowRidesList,
-        ShortcutShowParkInformation,
-        ShortcutShowGuestList,
-        ShortcutShowStaffList,
-        ShortcutShowRecentMessages,
-        ShortcutShowMap,
-
-        // new
-        ShortcutReduceGameSpeed,
-        ShortcutIncreaseGameSpeed,
-        ShortcutOpenCheatWindow,
-        ShortcutRemoveTopBottomToolbarToggle,
-        nullptr,
-        nullptr,
-        nullptr,
-        nullptr,
-        ShortcutQuickSaveGame,
-        nullptr,
-        ShortcutRideConstructionTurnLeft,
-        ShortcutRideConstructionTurnRight,
-        ShortcutRideConstructionUseTrackDefault,
-        ShortcutRideConstructionSlopeDown,
-        ShortcutRideConstructionSlopeUp,
-        ShortcutRideConstructionChainLiftToggle,
-        ShortcutRideConstructionBankLeft,
-        ShortcutRideConstructionBankRight,
-        ShortcutRideConstructionPreviousTrack,
-        ShortcutRideConstructionNextTrack,
-        ShortcutRideConstructionBuildCurrent,
-        ShortcutRideConstructionDemolishCurrent,
-        ShortcutLoadGame,
-        ShortcutClearScenery,
-        ShortcutOpenSceneryPicker,
-        ShortcutScaleUp,
-        ShortcutScaleDown,
-        ShortcutIncreaseElementHeight,
-        ShortcutDecreaseElementHeight,
-        ShortcutToggleClearanceChecks,
-    };
-} // anonymous namespace
-
 #pragma endregion
 
 using namespace OpenRCT2::Ui;
@@ -827,32 +644,16 @@ void ShortcutManager::RegisterDefaultShortcuts()
             }
         }
     });
-    RegisterShortcut("interface1.decrease_speed", STR_SHORTCUT_REDUCE_GAME_SPEED , "-", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && network_get_mode() == NETWORK_MODE_NONE)
-        {
-            game_reduce_game_speed();
-        }
-    });
-    RegisterShortcut("interface1.increase_speed", STR_SHORTCUT_INCREASE_GAME_SPEED , "=", []() {
-        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && network_get_mode() == NETWORK_MODE_NONE)
-        {
-            game_increase_game_speed();
-        }
-    });
-    RegisterShortcut("interface1.load_game", STR_LOAD_GAME, "CTRL+L", []() {
-        if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-        {
-            auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::OpenSavePrompt);
-            GameActions::Execute(&loadOrQuitAction);
-        }
-    });
+    RegisterShortcut("interface1.decrease_speed", STR_SHORTCUT_REDUCE_GAME_SPEED , "-", []() { ShortcutReduceGameSpeed(); });
+    RegisterShortcut("interface1.increase_speed", STR_SHORTCUT_INCREASE_GAME_SPEED , "=", []() { ShortcutIncreaseGameSpeed(); });
+    RegisterShortcut("interface1.load_game", STR_LOAD_GAME, "CTRL+L", []() { ShortcutLoadGame(); });
     RegisterShortcut("interface1.save_game", STR_LOAD_GAME, "CTRL+F10", []() { ShortcutQuickSaveGame(); });
     RegisterShortcut("interface1.show_options", STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WC_OPTIONS); });
     RegisterShortcut("interface1.screenshot", STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
     RegisterShortcut("interface1.mute", STR_SHORTCUT_MUTE_SOUND, []() { OpenRCT2::Audio::ToggleAllSounds(); });
 
     // Interface 2
-    RegisterShortcut("interface2.open_cheats", STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { OpenWindow(WC_CHEATS); });
+    RegisterShortcut("interface2.open_cheats", STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { ShortcutOpenCheatWindow(); });
     RegisterShortcut("interface2.disable_clearance", STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, []() { ShortcutToggleClearanceChecks(); });
 
     // Interface 3
@@ -871,13 +672,13 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut("interface4.build_new_ride", STR_SHORTCUT_BUILD_NEW_RIDE, "F5", []() { ShortcutBuildNewRide(); });
 
     // Interface 5
-    RegisterShortcut("interface5.show_finances", STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", []() { OpenWindow(WC_FINANCES); });
-    RegisterShortcut("interface5.show_research", STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", []() { OpenWindow(WC_RESEARCH); });
-    RegisterShortcut("interface5.show_rides", STR_SHORTCUT_SHOW_RIDES_LIST, "R", []() { OpenWindow(WC_RIDE_LIST); });
-    RegisterShortcut("interface5.show_park", STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", []() { OpenWindow(WC_PARK_INFORMATION); });
-    RegisterShortcut("interface5.show_guests", STR_SHORTCUT_SHOW_GUEST_LIST, "G", []() { OpenWindow(WC_GUEST_LIST); });
-    RegisterShortcut("interface5.show_staff", STR_SHORTCUT_SHOW_STAFF_LIST, "S", []() { OpenWindow(WC_STAFF_LIST); });
-    RegisterShortcut("interface5.show_messages", STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", []() { OpenWindow(WC_RECENT_NEWS); });
+    RegisterShortcut("interface5.show_finances", STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", []() { ShortcutShowFinancialInformation(); });
+    RegisterShortcut("interface5.show_research", STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", []() { ShortcutShowResearchInformation(); });
+    RegisterShortcut("interface5.show_rides", STR_SHORTCUT_SHOW_RIDES_LIST, "R", []() { ShortcutShowRidesList(); });
+    RegisterShortcut("interface5.show_park", STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", []() { ShortcutShowParkInformation(); });
+    RegisterShortcut("interface5.show_guests", STR_SHORTCUT_SHOW_GUEST_LIST, "G", []() { ShortcutShowGuestList(); });
+    RegisterShortcut("interface5.show_staff", STR_SHORTCUT_SHOW_STAFF_LIST, "S", []() { ShortcutShowStaffList(); });
+    RegisterShortcut("interface5.show_messages", STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", []() { ShortcutShowRecentMessages(); });
 
     // Multiplayer
     RegisterShortcut("multiplayer.show", STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
@@ -910,7 +711,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut("view.show_gridlines", STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", []() { ToggleViewFlag(VIEWPORT_FLAG_GRIDLINES); });
 
     // Interface 6
-    RegisterShortcut("interface6.open_scenery", STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutBuildScenery(); });
+    RegisterShortcut("interface6.scenery_picker", STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutOpenSceneryPicker(); });
     RegisterShortcut("interface6.rotate_construction", STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", []() { ShortcutRotateConstructionObject(); });
 
     // Ride construction

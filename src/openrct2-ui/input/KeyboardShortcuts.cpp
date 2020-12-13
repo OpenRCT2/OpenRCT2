@@ -153,7 +153,7 @@ void KeyboardShortcuts::Set(int32_t key)
     }
 
     // Map shortcut to this key
-    _keys[static_cast<size_t>(gKeyboardShortcutChangeId)] = key;
+    // _keys[static_cast<size_t>(gKeyboardShortcutChangeId)] = key;
     Save();
 }
 

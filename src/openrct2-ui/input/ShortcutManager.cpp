@@ -16,6 +16,8 @@
 
 using namespace OpenRCT2::Ui;
 
+constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
+
 static uint32_t ParseModifier(const std::string_view& text)
 {
     if (String::Equals(text, "CTRL", true))
@@ -232,9 +234,7 @@ std::string ShortcutInput::ToString() const
                 }
                 else
                 {
-                    char buffer[8]{};
-                    utf8_write_codepoint(buffer, Key);
-                    result += buffer;
+                    String::AppendCodepoint(result, std::toupper(Key));
                 }
                 break;
         }
@@ -285,9 +285,17 @@ bool ShortcutInput::AppendModifier(std::string& s, const std::string_view& text,
 
 bool ShortcutInput::Matches(const InputEvent& e) const
 {
+    auto modifiers = e.Modifiers & UsefulModifiers;
     if (e.DeviceKind == InputDeviceKind::Mouse)
     {
-        if (Kind == ShortcutInputKind::Mouse && Key == e.Button)
+        if (Kind == ShortcutInputKind::Mouse && Modifiers == modifiers && Key == e.Button)
+        {
+            return true;
+        }
+    }
+    else if (e.DeviceKind == InputDeviceKind::Keyboard)
+    {
+        if (Kind == ShortcutInputKind::Keyboard && Modifiers == modifiers && Key == e.Button)
         {
             return true;
         }
@@ -297,10 +305,20 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 
 std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
 {
+    auto modifiers = e.Modifiers & UsefulModifiers;
     if (e.DeviceKind == InputDeviceKind::Mouse)
     {
         ShortcutInput result;
         result.Kind = ShortcutInputKind::Mouse;
+        result.Modifiers = modifiers;
+        result.Key = e.Button;
+        return result;
+    }
+    else if (e.DeviceKind == InputDeviceKind::Keyboard)
+    {
+        ShortcutInput result;
+        result.Kind = ShortcutInputKind::Keyboard;
+        result.Modifiers = modifiers;
         result.Key = e.Button;
         return result;
     }
@@ -337,6 +355,13 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
         {
             return false;
         }
+        if (e.State == InputEventState::Down)
+        {
+            return false;
+        }
+    }
+    else if (e.DeviceKind == InputDeviceKind::Keyboard)
+    {
         if (e.State == InputEventState::Down)
         {
             return false;
