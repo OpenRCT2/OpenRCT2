@@ -524,8 +524,14 @@ namespace Platform
 
     bool FindApp(const std::string& app, std::string* output)
     {
-        log_warning("FindApp not implemented for Windows!");
+        log_warning("FindApp() not implemented for Windows!");
         return false;
+    }
+
+    int32_t Execute(const std::string& command, std::string* output)
+    {
+        log_warning("Execute() not implemented for Windows!");
+        return -1;
     }
 } // namespace Platform
 
