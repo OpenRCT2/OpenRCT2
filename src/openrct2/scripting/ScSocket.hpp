@@ -88,8 +88,10 @@ namespace OpenRCT2::Scripting
             char delimited = ',';
             size_t start_pos = 0;
             size_t end_pos = 0;
-            while((end_pos = gConfigPlugin.allowed_hosts.find(delimited, start_pos)) != std::string::npos){
-                if(s == gConfigPlugin.allowed_hosts.substr(start_pos, end_pos - start_pos)){
+            while ((end_pos = gConfigPlugin.allowed_hosts.find(delimited, start_pos)) != std::string::npos)
+            {
+                if (s == gConfigPlugin.allowed_hosts.substr(start_pos, end_pos - start_pos))
+                {
                     return true;
                 }
                 start_pos = end_pos + 1;
