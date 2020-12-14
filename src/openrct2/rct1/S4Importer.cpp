@@ -1773,7 +1773,7 @@ private:
         if (dst == nullptr)
             return;
         dst->frame = src->frame;
-        dst->state = src->state;
+        dst->state = static_cast<Duck::DuckState>(src->state);
     }
 
     uint16_t MapSpriteIndex(uint16_t originalSpriteIndex, const uint16_t* spriteIndexMap)
