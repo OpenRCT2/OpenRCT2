@@ -19,6 +19,7 @@
 #include <iterator>
 #include <limits>
 
+// clang-format off
 constexpr const int32_t DUCK_MAX_STATES = 5;
 
 static constexpr const CoordsXY DuckMoveOffset[] =
