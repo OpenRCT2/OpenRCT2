@@ -9,7 +9,17 @@
 
 #include "InputManager.h"
 
+#include <SDL.h>
+#include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/ShortcutManager.h>
+#include <openrct2-ui/interface/InGameConsole.h>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/interface/Chat.h>
+#include <openrct2/interface/Window.h>
+#include <openrct2/paint/VirtualFloor.h>
 
 using namespace OpenRCT2::Ui;
 
@@ -19,6 +29,66 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 }
 
 void InputManager::Process()
+{
+    HandleModifiers();
+    HandleMouseEdgeScrolling();
+    ProcessEvents();
+}
+
+void InputManager::HandleMouseEdgeScrolling()
+{
+    if (!gConfigGeneral.edge_scrolling)
+        return;
+
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    auto& console = GetInGameConsole();
+    if (console.IsOpen())
+        return;
+
+    if (input_get_state() != InputState::Normal)
+        return;
+
+    if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
+        return;
+
+    GameHandleEdgeScroll();
+}
+
+void InputManager::HandleModifiers()
+{
+    auto modifiers = SDL_GetModState();
+    gInputPlaceObjectModifier = PLACE_OBJECT_MODIFIER_NONE;
+    if (modifiers & KMOD_SHIFT)
+    {
+        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_SHIFT_Z;
+    }
+    if (modifiers & KMOD_CTRL)
+    {
+        gInputPlaceObjectModifier |= PLACE_OBJECT_MODIFIER_COPY_Z;
+    }
+    if (modifiers & KMOD_ALT)
+    {
+        gInputPlaceObjectModifier |= 4;
+    }
+#ifdef __MACOSX__
+    if (modifiers & KMOD_GUI)
+    {
+        gInputPlaceObjectModifier |= 8;
+    }
+#endif
+
+    if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
+    {
+        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+            virtual_floor_enable();
+        else
+            virtual_floor_disable();
+    }
+}
+
+void InputManager::ProcessEvents()
 {
     while (!_events.empty())
     {
@@ -31,7 +101,95 @@ void InputManager::Process()
 void InputManager::Process(const InputEvent& e)
 {
     auto& shortcutManager = GetShortcutManager();
-    shortcutManager.ProcessEvent(e);
+    auto& console = GetInGameConsole();
+    if (console.IsOpen())
+    {
+        if (!shortcutManager.ProcessEventForSpecificShortcut(e, SHORTCUT_ID_DEBUG_CONSOLE))
+        {
+            ProcessInGameConsole(e);
+        }
+    }
+    else if (gChatOpen)
+    {
+        ProcessChat(e);
+    }
+    else
+    {
+        if (e.DeviceKind == InputDeviceKind::Keyboard)
+        {
+            auto w = window_find_by_class(WC_TEXTINPUT);
+            if (w != nullptr)
+            {
+                if (e.State == InputEventState::Release)
+                {
+                    window_text_input_key(w, e.Button);
+                }
+                return;
+            }
+            else if (!gUsingWidgetTextBox)
+            {
+                return;
+            }
+        }
+        shortcutManager.ProcessEvent(e);
+    }
+}
+
+void InputManager::ProcessInGameConsole(const InputEvent& e)
+{
+    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Release)
+    {
+        auto input = ConsoleInput::None;
+        switch (e.Button)
+        {
+            case SDLK_ESCAPE:
+                input = ConsoleInput::LineClear;
+                break;
+            case SDLK_RETURN:
+            case SDLK_KP_ENTER:
+                input = ConsoleInput::LineExecute;
+                break;
+            case SDLK_UP:
+                input = ConsoleInput::HistoryPrevious;
+                break;
+            case SDLK_DOWN:
+                input = ConsoleInput::HistoryNext;
+                break;
+            case SDLK_PAGEUP:
+                input = ConsoleInput::ScrollPrevious;
+                break;
+            case SDLK_PAGEDOWN:
+                input = ConsoleInput::ScrollNext;
+                break;
+        }
+        if (input != ConsoleInput::None)
+        {
+            auto& console = GetInGameConsole();
+            console.Input(input);
+        }
+    }
+}
+
+void InputManager::ProcessChat(const InputEvent& e)
+{
+    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Release)
+    {
+        auto input = ChatInput::None;
+        switch (e.Button)
+        {
+            case SDLK_ESCAPE:
+                input = ChatInput::Close;
+                break;
+            case SDLK_RETURN:
+            case SDLK_KP_ENTER:
+                input = ChatInput::Send;
+                break;
+        }
+        if (input != ChatInput::None)
+        {
+            chat_input(input);
+        }
+    }
 }
 
 static InputManager _inputManager;

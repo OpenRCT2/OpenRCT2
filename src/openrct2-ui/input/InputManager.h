@@ -39,7 +39,12 @@ namespace OpenRCT2::Ui
     private:
         std::queue<InputEvent> _events;
 
+        void HandleMouseEdgeScrolling();
+        void HandleModifiers();
+        void ProcessEvents();
         void Process(const InputEvent& e);
+        void ProcessInGameConsole(const InputEvent& e);
+        void ProcessChat(const InputEvent& e);
 
     public:
         void QueueInputEvent(InputEvent&& e);

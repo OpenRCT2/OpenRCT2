@@ -113,8 +113,11 @@ namespace OpenRCT2::Ui
         RegisteredShortcut* GetShortcut(std::string_view id);
         void SetPendingShortcutChange(std::string_view id);
         void ProcessEvent(const InputEvent& e);
+        bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);
     };
 
     ShortcutManager& GetShortcutManager();
+
+    constexpr const char* SHORTCUT_ID_DEBUG_CONSOLE = "debug.console";
 
 } // namespace OpenRCT2::Ui

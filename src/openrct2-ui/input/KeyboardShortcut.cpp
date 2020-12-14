@@ -11,6 +11,8 @@
 #include "ShortcutManager.h"
 
 #include <iterator>
+#include <openrct2-ui/UiContext.h>
+#include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
@@ -41,6 +43,7 @@
 extern bool gWindowSceneryEyedropperEnabled;
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 #pragma region Shortcut Commands
 
@@ -594,6 +597,20 @@ static void ShortcutToggleClearanceChecks()
     GameActions::Execute(&setCheatAction);
 }
 
+static void ShortcutToggleConsole()
+{
+    auto& console = GetInGameConsole();
+    if (console.IsOpen())
+    {
+        console.Toggle();
+    }
+    else if (gConfigGeneral.debugging_tools && !context_is_input_active())
+    {
+        window_cancel_textbox();
+        console.Toggle();
+    }
+}
+
 #pragma endregion
 
 using namespace OpenRCT2::Ui;
@@ -762,6 +779,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut("tileinspector.decrease_height", STR_SHORTCUT_DECREASE_ELEM_HEIGHT, []() { ShortcutDecreaseElementHeight(); });
 
     // Debug
+    RegisterShortcut(SHORTCUT_ID_DEBUG_CONSOLE, STR_CONSOLE, "`", []() { ShortcutToggleConsole(); });
     RegisterShortcut("debug.advance_tick", STR_ADVANCE_TO_NEXT_TICK, []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {

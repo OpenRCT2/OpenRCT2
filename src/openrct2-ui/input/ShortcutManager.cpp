@@ -420,6 +420,17 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
     }
 }
 
+bool ShortcutManager::ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id)
+{
+    auto shortcut = GetShortcut(id);
+    if (shortcut != nullptr && shortcut->Matches(e))
+    {
+        shortcut->Action();
+        return true;
+    }
+    return false;
+}
+
 static ShortcutManager _shortcutManager;
 
 ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
