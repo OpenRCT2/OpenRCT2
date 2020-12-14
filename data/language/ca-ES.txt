@@ -328,7 +328,7 @@ STR_0943    :Veu a través de les decoracions
 STR_0944    :Desa
 STR_0945    :No desis
 STR_0946    :Cancel·la
-STR_0947    :Voleu desar la partida actual abans de carregar la nova?
+STR_0947    :Voleu desar la partida actual abans de carregar-ne una de nova?
 STR_0948    :Voleu desar-ho abans de sortir?
 STR_0949    :Voleu desar-ho abans de sortir?
 STR_0950    :Carrega una partida
@@ -376,7 +376,7 @@ STR_0991    :Andana
 STR_0992    :{SMALLFONT}{BLACK}Retira completament aquesta atracció
 STR_0993    :Retira l'atracció
 STR_0994    :Retira
-STR_0995    :{WINDOW_COLOUR_1}Esteu segur que voleu retirar completament {STRINGID}?
+STR_0995    :{WINDOW_COLOUR_1}Estàs segur que vols retirar completament {STRINGID}?
 STR_0996    :Vista general
 STR_0997    :{SMALLFONT}{BLACK}Selecció de vista
 STR_0998    :Aquesta atracció no admet més andanes.
@@ -470,10 +470,10 @@ STR_1085    :Pel·lícula: «Els passatgers més valents»
 STR_1086    :Pel·lícula 3D: «Caçadors de tempestes»
 STR_1087    :Pel·lícula 3D: «Invasors de l'espai»
 STR_1088    :Mode intens
-STR_1089    :Mode berserker
+STR_1089    :Mode esbojarrat
 STR_1090    :Mode casa encantada
 STR_1091    :Mode de circ
-STR_1092    :Llançament cap abaix
+STR_1092    :Llançament cap a baix
 STR_1093    :Mode casa deforme
 STR_1094    :Mode caiguda lliure
 STR_1095    :Mode circuit continu amb blocs de seccions
@@ -527,14 +527,14 @@ STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :No es pot construir/moure l'entrada d'aquesta atracció…
 STR_1145    :No es pot construir/moure la sortida d'aquesta atracció…
-STR_1146    :Encara no se n'ha construït l'entrada
-STR_1147    :Encara no se n'ha construït la sortida
+STR_1146    :Encara no se n'ha construït l'entrada.
+STR_1147    :Encara no se n'ha construït la sortida.
 STR_1148    :Una quarta part
 STR_1149    :La meitat
 STR_1150    :Tres quartes parts
 STR_1151    :Completa
 STR_1152    :Qualsevol
-STR_1153    :Marques d'alçada en les vies de les atraccions
+STR_1153    :Marques d'alçada a les vies de les atraccions
 STR_1154    :Marques d'alçada al terreny
 STR_1155    :Marques d'alçada als camins
 STR_1156    :{MOVE_X}{10}{STRINGID}
