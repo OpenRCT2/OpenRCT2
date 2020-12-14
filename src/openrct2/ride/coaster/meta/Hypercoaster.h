@@ -23,7 +23,7 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
                                   | (1ULL << TRACK_SLOPE_CURVE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)
                                   | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES)
                                   | (1ULL << TRACK_SLOPE_STEEP_LONG)),
-    SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_VERTICAL_LOOP) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_BOOSTER)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_corkscrew_rc),
