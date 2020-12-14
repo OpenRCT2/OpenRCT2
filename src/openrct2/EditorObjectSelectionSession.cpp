@@ -37,6 +37,7 @@ static void setup_in_use_selection_flags();
 static void setup_track_designer_objects();
 static void setup_track_manager_objects();
 static void window_editor_object_selection_select_default_objects();
+static void select_designer_objects();
 
 /**
  *
@@ -75,6 +76,7 @@ static void setup_track_designer_objects()
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
+    select_designer_objects();
     for (int32_t i = 0; i < numObjects; i++)
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
@@ -353,6 +355,21 @@ static void window_editor_object_selection_select_default_objects()
     }
 }
 
+static void select_designer_objects()
+{
+    if (_numSelectedObjectsForType[0] == 0)
+    {
+        for (auto designerSelectedObject : DesignerSelectedObjects)
+        {
+            window_editor_object_selection_select_object(
+                0,
+                INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
+                    | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
+                designerSelectedObject);
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006AA770
@@ -479,7 +496,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
         ObjectType objectType = item->ObjectEntry.GetType();
         uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER && objectType == ObjectType::Ride)
         {
             maxObjects = 4;
         }
