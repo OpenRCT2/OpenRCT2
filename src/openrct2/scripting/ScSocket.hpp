@@ -83,6 +83,20 @@ namespace OpenRCT2::Scripting
             return s == "localhost" || s == "127.0.0.1" || s == "::";
         }
 
+        static bool IsHostOnWhitelist(std::string_view s)
+        {
+            char delimited = ',';
+            size_t start_pos = 0;
+            size_t end_pos = 0;
+            while((end_pos = gConfigPlugin.allowed_hosts.find(delimited, start_pos)) != std::string::npos){
+                if(s == gConfigPlugin.allowed_hosts.substr(start_pos, end_pos - start_pos)){
+                    return true;
+                }
+                start_pos = end_pos + 1;
+            }
+            return s == gConfigPlugin.allowed_hosts.substr(start_pos, gConfigPlugin.allowed_hosts.length() - start_pos);
+        }
+
     public:
         ScSocketBase(const std::shared_ptr<Plugin>& plugin)
             : _plugin(plugin)
@@ -166,7 +180,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
             }
-            else if (!IsLocalhostAddress(host))
+            else if (!IsLocalhostAddress(host) && !IsHostOnWhitelist(host))
             {
                 duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only connecting to localhost is allowed.");
             }
