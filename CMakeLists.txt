@@ -74,7 +74,8 @@ if (MINGW)
 endif ()
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
-
+CMAKE_DEPENDENT_OPTION(MACOS_BUNDLE "Build macOS application bundle (OpenRCT2.app)" ON
+    "APPLE; NOT DISABLE_GUI" OFF)
 if (FORCE32)
     set(TARGET_M "-m32")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M}")
@@ -297,7 +298,7 @@ if (MINGW)
 endif ()
 
 # if we'll build a macOS app bundle, we need to pull dependencies
-if (NOT DISABLE_GUI AND APPLE)
+if (MACOS_BUNDLE)
     # update dylibs
     set(MACOS_DYLIBS_VERSION "26")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v26-x64-macos-dylibs.zip")
@@ -451,89 +452,3 @@ if (NOT DISABLE_GUI)
 endif()
 install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
-
-if(NOT DISABLE_GUI AND APPLE)
-    set(OUTPUT_NAME "OpenRCT2")
-    set(MACOS_APP_NAME "${OUTPUT_NAME}.app")
-    set(BUNDLE_FRAMEWORK_DIR "${MACOS_APP_NAME}/Contents/Frameworks")
-    set(BUNDLE_RESOURCE_DIR "${MACOS_APP_NAME}/Contents/Resources")
-    set(SOURCE_DATA_DIR "${ROOT_DIR}/data")
-    set(SOURCE_ICON_DIR "${ROOT_DIR}/resources/logo")
-    set(ICON_TARGET "${ROOT_DIR}/distribution/macos/Assets.xcassets")
-    set(ICON_OUTPUT "${ICON_TARGET}/AppIcon.iconset")
-    file(GLOB SOURCE_ICON_DIR "${SOURCE_ICON_DIR}/*.png")
-    file(COPY ${SOURCE_ICON_DIR} DESTINATION "${ICON_OUTPUT}")
-    add_custom_command(OUTPUT
-        ${ICON_TARGET}/AppIcon.icns
-        COMMAND iconutil -c icns AppIcon.iconset
-        WORKING_DIRECTORY ${ICON_TARGET})
-
-    target_sources(${PROJECT} PRIVATE ${ICON_TARGET})
-    set_source_files_properties(${ICON_TARGET} PROPERTIES
-        MACOSX_PACKAGE_LOCATION Resources
-    )
-
-    # execute_process(COMMAND xcrun --show-sdk-path 
-    #     OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
-    #     OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-    # Add distribution sources
-    target_sources(${PROJECT}
-        PUBLIC distribution/readme.txt
-        PUBLIC distribution/changelog.txt
-        PUBLIC g2.dat
-        PUBLIC ${ICON_OUTPUT}
-        PUBLIC ${SOURCE_DATA_DIR}/language
-        PUBLIC ${SOURCE_DATA_DIR}/object
-        PUBLIC ${SOURCE_DATA_DIR}/sequence
-        )
-    if (NOT ${CMAKE_GENERATOR} STREQUAL "Xcode")
-        target_sources(${PROJECT} PRIVATE ${ICON_TARGET}/AppIcon.icns)
-        set_source_files_properties(${ICON_TARGET}/AppIcon.icns PROPERTIES
-            MACOSX_PACKAGE_LOCATION Resources
-        )
-    endif ()
-
-    # Specify the resources to move to the bundle
-    set(BUNDLE_RESOURCES
-        distribution/readme.txt
-        distribution/changelog.txt
-        g2.dat
-        # ${ICON_OUTPUT}
-        ${SOURCE_DATA_DIR}/language
-        ${SOURCE_DATA_DIR}/object
-        ${SOURCE_DATA_DIR}/sequence
-        )
-
-
-    if(${OPENRCT2_BRANCH} EQUAL master)
-        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG}")
-    else()
-        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG} ${OPENRCT2_BRANCH}")
-    endif()
-
-    set(MACOSX_BUNDLE_COPYRIGHT "OpenRCT2 is licensed under the GNU General Public License version 3")
-    set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "io.openrct2.OpenRCT2")
-    set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
-
-    # Copy DYLIBS
-    file(GLOB MACOS_DYLIBS_LIBS "${MACOS_DYLIBS_DIR}/lib/*.dylib")
-    file(MAKE_DIRECTORY "${BUNDLE_FRAMEWORK_DIR}")
-    file(COPY ${MACOS_DYLIBS_LIBS} DESTINATION "${BUNDLE_FRAMEWORK_DIR}")
-
-    # copy data
-    file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
-    file(COPY ${SOURCE_DATA_DIR}/object DESTINATION "${BUNDLE_RESOURCE_DIR}")
-    file(COPY ${SOURCE_DATA_DIR}/sequence DESTINATION "${BUNDLE_RESOURCE_DIR}")
-
-
-    # Create as a bundle
-    set_target_properties(${PROJECT} PROPERTIES
-        MACOSX_BUNDLE ON
-        OUTPUT_NAME ${OUTPUT_NAME}
-        MACOSX_BUNDLE_BUNDLE_NAME ${OUTPUT_NAME}
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
-        XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon
-        RESOURCE "${BUNDLE_RESOURCES}")
-endif()

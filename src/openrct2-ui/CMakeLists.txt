@@ -45,12 +45,8 @@ SET_CHECK_CXX_FLAGS(${PROJECT})
 ipo_set_target_properties(${PROJECT})
 
 message("sdl2 flags ${SDL2_LDFLAGS}")
-if (APPLE)
-    target_link_libraries(${PROJECT} ${MACOS_DYLIBS_DIR}/lib/libSDL2.dylib)
-    # set(SDL2_LDFLAGS "-L${MACOS_DYLIBS_DIR}/lib;-lSDL2")
-else ()
-    target_link_libraries(${PROJECT} ${SDL2_LDFLAGS})
-endif ()
+
+target_link_libraries(${PROJECT} ${SDL2_LDFLAGS})
 target_link_libraries(${PROJECT} "libopenrct2"
                                  ${SPEEX_LDFLAGS})
 target_link_platform_libraries(${PROJECT})
@@ -127,3 +123,132 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
     set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${OPENRCT2_INCLUDE_DIRS}")
 endif ()
+
+if(MACOS_BUNDLE)
+    project(OpenRCT2.app CXX)
+    add_executable(${PROJECT_NAME} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
+    SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
+    ipo_set_target_properties(${PROJECT_NAME})
+
+    target_link_libraries(${PROJECT_NAME} ${MACOS_DYLIBS_DIR}/lib/libSDL2.dylib)
+    target_link_libraries(${PROJECT_NAME} ${SDL2_LDFLAGS})
+    target_link_libraries(${PROJECT_NAME} "libopenrct2"
+                                     ${SPEEX_LDFLAGS})
+    target_link_platform_libraries(${PROJECT_NAME})
+    
+    if (NOT DISABLE_OPENGL)
+        target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY})
+    endif ()
+    # Defines
+    if (DISABLE_OPENGL)
+        add_definitions(-DDISABLE_OPENGL)
+    else ()
+    # Makes OpenGL function get queried in run-time rather than linked-in
+        add_definitions(-DOPENGL_NO_LINK)
+    endif ()
+    
+    # Includes
+    target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
+                                                  ${SPEEX_INCLUDE_DIRS})
+    target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
+                                                         "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
+    
+    # Add headers check to verify all headers carry their dependencies.
+    # Only valid for Clang for now:
+    # - GCC 8 does not support -Wno-pragma-once-outside-header
+    # - Other compilers status unknown
+    if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+        set(OPENRCT2_HEADERS_CHECK ${OPENRCT2_UI_HEADERS})
+        # OpenGLAPIProc.h is not meant to be included directly.
+        list(REMOVE_ITEM OPENRCT2_HEADERS_CHECK "${CMAKE_CURRENT_LIST_DIR}/drawing/engines/opengl/OpenGLAPIProc.h")
+        add_library(${PROJECT_NAME}-headers-check OBJECT ${OPENRCT2_HEADERS_CHECK})
+        set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
+        set_source_files_properties(${OPENRCT2_HEADERS_CHECK} PROPERTIES LANGUAGE CXX)
+        add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
+        get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT_NAME} INCLUDE_DIRECTORIES)
+        set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${OPENRCT2_INCLUDE_DIRS}")
+    endif ()
+    set(OUTPUT_NAME "OpenRCT2")
+    set(MACOS_APP_NAME "${OUTPUT_NAME}.app")
+    set(BUNDLE_FRAMEWORK_DIR "${MACOS_APP_NAME}/Contents/Frameworks")
+    set(BUNDLE_RESOURCE_DIR "${MACOS_APP_NAME}/Contents/Resources")
+    set(SOURCE_DATA_DIR "${ROOT_DIR}/data")
+    set(SOURCE_ICON_DIR "${ROOT_DIR}/resources/logo")
+    set(ICON_TARGET "${ROOT_DIR}/distribution/macos/Assets.xcassets")
+    set(ICON_OUTPUT "${ICON_TARGET}/AppIcon.iconset")
+    file(GLOB SOURCE_ICON_DIR "${SOURCE_ICON_DIR}/*.png")
+    file(COPY ${SOURCE_ICON_DIR} DESTINATION "${ICON_OUTPUT}")
+    add_custom_command(OUTPUT
+        ${ICON_TARGET}/AppIcon.icns
+        COMMAND iconutil -c icns AppIcon.iconset
+        WORKING_DIRECTORY ${ICON_TARGET})
+
+    target_sources(${PROJECT_NAME} PRIVATE ${ICON_TARGET})
+    set_source_files_properties(${ICON_TARGET} PROPERTIES
+        MACOSX_PACKAGE_LOCATION Resources
+    )
+
+    # execute_process(COMMAND xcrun --show-sdk-path 
+    #     OUTPUT_VARIABLE CMAKE_OSX_SYSROOT
+    #     OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+    # Add distribution sources
+    target_sources(${PROJECT_NAME}
+        PUBLIC distribution/readme.txt
+        PUBLIC distribution/changelog.txt
+        PUBLIC g2.dat
+        PUBLIC ${ICON_OUTPUT}
+        PUBLIC ${SOURCE_DATA_DIR}/language
+        PUBLIC ${SOURCE_DATA_DIR}/object
+        PUBLIC ${SOURCE_DATA_DIR}/sequence
+        )
+    if (NOT ${CMAKE_GENERATOR} STREQUAL "Xcode")
+        target_sources(${PROJECT_NAME} PRIVATE ${ICON_TARGET}/AppIcon.icns)
+        set_source_files_properties(${ICON_TARGET}/AppIcon.icns PROPERTIES
+            MACOSX_PACKAGE_LOCATION Resources
+        )
+    endif ()
+
+    # Specify the resources to move to the bundle
+    set(BUNDLE_RESOURCES
+        distribution/readme.txt
+        distribution/changelog.txt
+        g2.dat
+        # ${ICON_OUTPUT}
+        ${SOURCE_DATA_DIR}/language
+        ${SOURCE_DATA_DIR}/object
+        ${SOURCE_DATA_DIR}/sequence
+        )
+
+
+    if(${OPENRCT2_BRANCH} EQUAL master)
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG}")
+    else()
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG} ${OPENRCT2_BRANCH}")
+    endif()
+
+    set(MACOSX_BUNDLE_COPYRIGHT "OpenRCT2 is licensed under the GNU General Public License version 3")
+    set(MACOSX_BUNDLE_ICON_FILE "AppIcon")
+    set(MACOSX_BUNDLE_GUI_IDENTIFIER "io.openrct2.OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
+
+    # Copy DYLIBS
+    file(GLOB MACOS_DYLIBS_LIBS "${MACOS_DYLIBS_DIR}/lib/*.dylib")
+    file(MAKE_DIRECTORY "${BUNDLE_FRAMEWORK_DIR}")
+    file(COPY ${MACOS_DYLIBS_LIBS} DESTINATION "${BUNDLE_FRAMEWORK_DIR}")
+
+    # copy data
+    file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/object DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/sequence DESTINATION "${BUNDLE_RESOURCE_DIR}")
+
+
+    # Create as a bundle
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE ON
+        OUTPUT_NAME ${OUTPUT_NAME}
+        MACOSX_BUNDLE_BUNDLE_NAME ${OUTPUT_NAME}
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
+        XCODE_ATTRIBUTE_ASSETCATALOG_COMPILER_APPICON_NAME AppIcon
+        RESOURCE "${BUNDLE_RESOURCES}")
+endif()
