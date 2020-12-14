@@ -57,9 +57,17 @@ struct Balloon : SpriteGeneric
 
 struct Duck : SpriteGeneric
 {
+    enum class DuckState : uint8_t
+    {
+        FlyToWater,
+        Swim,
+        Drink,
+        DoubleDrink,
+        FlyAway,
+    };
     int16_t target_x;
     int16_t target_y;
-    uint8_t state;
+    DuckState state;
 
     void Update();
     uint32_t GetFrameImage(int32_t direction) const;

@@ -1617,7 +1617,7 @@ public:
                 dst->frame = src->frame;
                 dst->target_x = src->target_x;
                 dst->target_y = src->target_y;
-                dst->state = src->state;
+                dst->state = static_cast<Duck::DuckState>(src->state);
                 break;
             }
             default:

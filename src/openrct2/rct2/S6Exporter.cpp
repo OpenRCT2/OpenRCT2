@@ -1331,7 +1331,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->frame = src->frame;
             dst->target_x = src->target_x;
             dst->target_y = src->target_y;
-            dst->state = src->state;
+            dst->state = static_cast<uint8_t>(src->state);
             break;
         }
         default:
