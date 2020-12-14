@@ -19,9 +19,9 @@
 #include <iterator>
 #include <limits>
 
-// clang-format off
-constexpr const int32_t DUCK_MAX_STATES = 5;
 
+constexpr const int32_t DUCK_MAX_STATES = 5;
+// clang-format off
 static constexpr const CoordsXY DuckMoveOffset[] =
 {
     { -1,  0 },
@@ -276,10 +276,10 @@ void Duck::UpdateFlyAway()
 uint32_t Duck::GetFrameImage(int32_t direction) const
 {
     uint32_t imageId = 0;
-    if (static_cast<int32_t>(state) < DUCK_MAX_STATES)
+    if (EnumValue(state) < DUCK_MAX_STATES)
     {
         // TODO: Check frame is in range
-        uint8_t imageOffset = DuckAnimations[static_cast<int32_t>(state)][frame];
+        uint8_t imageOffset = DuckAnimations[EnumValue(state)][frame];
         imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
     }
     return imageId;
@@ -331,7 +331,7 @@ void create_duck(const CoordsXY& pos)
 
 void Duck::Update()
 {
-    switch (static_cast<DuckState>(state))
+    switch (state)
     {
         case DuckState::FlyToWater:
             UpdateFlyToWater();
