@@ -17,7 +17,6 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.h"
 #include "../core/StringReader.h"
-#include "../ui/UiContext.h"
 #include "Language.h"
 #include "Localisation.h"
 
@@ -88,9 +87,6 @@ public:
         {
             Memory::Free(fileData);
             log_error("Unable to open %s: %s", path, ex.what());
-            auto uiContext = OpenRCT2::GetContext()->GetUiContext();
-            uiContext->ShowMessageBox(
-                "Missing language file: " + static_cast<std::string>(path) + "\n\nYour installation may be damaged.");
             return nullptr;
         }
 

@@ -364,6 +364,8 @@ namespace OpenRCT2
                 catch (const std::exception& eFallback)
                 {
                     log_fatal("Failed to open fallback language: %s", eFallback.what());
+                    auto uiContext = GetContext()->GetUiContext();
+                    uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
                     return false;
                 }
             }
