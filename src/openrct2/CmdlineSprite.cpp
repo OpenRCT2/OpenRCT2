@@ -51,6 +51,8 @@ struct SpriteFile
     rct_sprite_file_header Header;
     rct_g1_element* Entries;
     uint8_t* Data;
+    void MakeEntriesAbsolute();
+    void MakeEntriesRelative();
 };
 
 static SpriteFile spriteFile;
@@ -69,16 +71,16 @@ static FILE* fopen_utf8(const char* path, const char* mode)
 
 #endif
 
-static void sprite_entries_make_absolute()
+void SpriteFile::MakeEntriesAbsolute()
 {
-    for (uint32_t i = 0; i < spriteFile.Header.num_entries; i++)
-        spriteFile.Entries[i].offset += reinterpret_cast<uintptr_t>(spriteFile.Data);
+    for (uint32_t i = 0; i < Header.num_entries; i++)
+        Entries[i].offset += reinterpret_cast<uintptr_t>(Data);
 }
 
-static void sprite_entries_make_relative()
+void SpriteFile::MakeEntriesRelative()
 {
-    for (uint32_t i = 0; i < spriteFile.Header.num_entries; i++)
-        spriteFile.Entries[i].offset -= reinterpret_cast<uintptr_t>(spriteFile.Data);
+    for (uint32_t i = 0; i < Header.num_entries; i++)
+        Entries[i].offset -= reinterpret_cast<uintptr_t>(Data);
 }
 
 static bool sprite_file_open(const utf8* path)
@@ -593,9 +595,9 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         spriteFile.Entries = static_cast<rct_g1_element*>(
             realloc(spriteFile.Entries, spriteFile.Header.num_entries * sizeof(rct_g1_element)));
 
-        sprite_entries_make_relative();
+        spriteFile.MakeEntriesRelative();
         spriteFile.Data = static_cast<uint8_t*>(realloc(spriteFile.Data, spriteFile.Header.total_size));
-        sprite_entries_make_absolute();
+        spriteFile.MakeEntriesAbsolute();
 
         spriteFile.Entries[spriteFile.Header.num_entries - 1] = importResult->Element;
 
@@ -689,9 +691,9 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             spriteFile.Entries = static_cast<rct_g1_element*>(
                 realloc(spriteFile.Entries, spriteFile.Header.num_entries * sizeof(rct_g1_element)));
 
-            sprite_entries_make_relative();
+            spriteFile.MakeEntriesRelative();
             spriteFile.Data = static_cast<uint8_t*>(realloc(spriteFile.Data, spriteFile.Header.total_size));
-            sprite_entries_make_absolute();
+            spriteFile.MakeEntriesAbsolute();
 
             spriteFile.Entries[spriteFile.Header.num_entries - 1] = importResult->Element;
 
