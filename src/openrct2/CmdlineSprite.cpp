@@ -59,8 +59,6 @@ struct SpriteFile
     static std::optional<SpriteFile> Open(const utf8* path);
 };
 
-static SpriteFile spriteFile;
-
 #ifdef _WIN32
 
 static FILE* fopen_utf8(const char* path, const char* mode)
