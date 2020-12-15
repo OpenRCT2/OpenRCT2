@@ -13,6 +13,7 @@
 
 #include "Context.h"
 #include "OpenRCT2.h"
+#include "core/FileStream.h"
 #include "core/Imaging.h"
 #include "core/Json.hpp"
 #include "drawing/Drawing.h"
@@ -86,59 +87,29 @@ void SpriteFile::MakeEntriesRelative()
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
 {
-    FILE* file = fopen(path, "rb");
-    if (file == nullptr)
-        return std::nullopt;
-
-    SpriteFile sFile;
-    if (fread(&sFile.Header, sizeof(rct_sprite_file_header), 1, file) != 1)
+    try
     {
-        fclose(file);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
+
+        SpriteFile sFile;
+        stream.Read(&sFile.Header, sizeof(rct_sprite_file_header));
+
+        if (sFile.Header.num_entries > 0)
+        {
+            sFile.Entries.reserve(sFile.Header.num_entries);
+            stream.Read(sFile.Entries.data(), sFile.Header.num_entries * sizeof(rct_g1_element_32bit));
+
+            sFile.Data.reserve(sFile.Header.total_size);
+            stream.Read(sFile.Data.data(), sFile.Header.total_size);
+
+            sFile.MakeEntriesAbsolute();
+        }
+        return sFile;
+    }
+    catch (IOException& except)
+    {
         return std::nullopt;
     }
-
-    if (sFile.Header.num_entries > 0)
-    {
-        std::unique_ptr<rct_g1_element_32bit[]> openElements = std::make_unique<rct_g1_element_32bit[]>(
-            sFile.Header.num_entries);
-        if (openElements == nullptr)
-        {
-            fclose(file);
-            return std::nullopt;
-        }
-
-        if (fread(openElements.get(), sFile.Header.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
-        {
-            fclose(file);
-            return std::nullopt;
-        }
-
-        sFile.Data.reserve(sFile.Header.total_size);
-        if (fread(sFile.Data.data(), sFile.Header.total_size, 1, file) != 1)
-        {
-            fclose(file);
-            return std::nullopt;
-        }
-
-        sFile.Entries.reserve(sFile.Header.num_entries);
-        for (uint32_t i = 0; i < sFile.Header.num_entries; i++)
-        {
-            rct_g1_element_32bit* inElement = &openElements[i];
-            rct_g1_element* outElement = &sFile.Entries[i];
-
-            outElement->offset = reinterpret_cast<uint8_t*>(
-                (static_cast<uintptr_t>(inElement->offset) + reinterpret_cast<uintptr_t>(sFile.Data.data())));
-            outElement->width = inElement->width;
-            outElement->height = inElement->height;
-            outElement->x_offset = inElement->x_offset;
-            outElement->y_offset = inElement->y_offset;
-            outElement->flags = inElement->flags;
-            outElement->zoomed_offset = inElement->zoomed_offset;
-        }
-    }
-
-    fclose(file);
-    return sFile;
 }
 
 bool SpriteFile::Save(const utf8* path)
@@ -680,7 +651,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
             const auto& buffer = importResult->Buffer;
             std::memcpy(sFile->Data.data() + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
-            sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data() + (sFile->Header.total_size - buffer.size());
+            sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data()
+                + (sFile->Header.total_size - buffer.size());
 
             if (!sFile->Save(spriteFilePath))
             {
