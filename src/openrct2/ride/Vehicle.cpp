@@ -818,6 +818,44 @@ uint16_t Vehicle::GetTrackProgress() const
     return vehicle_get_move_info_size(TrackSubposition, track_type);
 }
 
+void Vehicle::SetRelativeTrackProgress(int16_t trackProgress)
+{
+    Ride* curRide = GetRide();
+
+    const uint16_t maximumProgress = GetTrackProgress();
+    const uint16_t trackType = GetTrackType();
+
+    if (trackProgress < 0)
+    {
+        uint16_t new_progress = 0;
+        if (UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, &new_progress))
+        {
+            SetRelativeTrackProgress(trackProgress + new_progress);
+        }
+        return;
+    }
+
+    if (trackProgress >= maximumProgress)
+    {
+        if (UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, GetRideEntry()))
+        {
+            SetRelativeTrackProgress(trackProgress - maximumProgress);
+        }
+        return;
+    }
+
+    track_progress = trackProgress;
+
+    const rct_vehicle_info* moveInfo = GetMoveInfo();
+
+    MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
+             TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset });
+
+    sprite_direction = moveInfo->direction;
+    bank_rotation = moveInfo->bank_rotation;
+    vehicle_sprite_type = moveInfo->vehicle_sprite_type;
+}
+
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);
