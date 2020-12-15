@@ -50,7 +50,7 @@ assert_struct_size(rct_sprite_file_header, 8);
 struct SpriteFile
 {
     rct_sprite_file_header Header;
-    rct_g1_element* Entries;
+    std::vector<rct_g1_element> Entries;
     uint8_t* Data;
     ~SpriteFile();
     void MakeEntriesAbsolute();
@@ -75,14 +75,14 @@ static FILE* fopen_utf8(const char* path, const char* mode)
 
 void SpriteFile::MakeEntriesAbsolute()
 {
-    for (uint32_t i = 0; i < Header.num_entries; i++)
-        Entries[i].offset += reinterpret_cast<uintptr_t>(Data);
+    for (auto& entry : Entries)
+        entry.offset += reinterpret_cast<uintptr_t>(Data);
 }
 
 void SpriteFile::MakeEntriesRelative()
 {
-    for (uint32_t i = 0; i < Header.num_entries; i++)
-        Entries[i].offset -= reinterpret_cast<uintptr_t>(Data);
+    for (auto& entry : Entries)
+        entry.offset -= reinterpret_cast<uintptr_t>(Data);
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
@@ -122,8 +122,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
             return std::nullopt;
         }
 
-        int32_t entryTableSize = sFile.Header.num_entries * sizeof(rct_g1_element);
-        sFile.Entries = static_cast<rct_g1_element*>(malloc(entryTableSize));
+        sFile.Entries.reserve(sFile.Header.num_entries);
         for (uint32_t i = 0; i < sFile.Header.num_entries; i++)
         {
             rct_g1_element_32bit* inElement = &openElements[i];
@@ -199,7 +198,6 @@ bool SpriteFile::Save(const utf8* path)
 
 SpriteFile::~SpriteFile()
 {
-    SafeFree(Entries);
     SafeFree(Data);
 }
 
@@ -583,8 +581,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         sFile->Header.num_entries++;
         sFile->Header.total_size += static_cast<uint32_t>(importResult->Buffer.size());
-        sFile->Entries = static_cast<rct_g1_element*>(
-            realloc(sFile->Entries, sFile->Header.num_entries * sizeof(rct_g1_element)));
+        sFile->Entries.reserve(sFile->Header.num_entries);
 
         sFile->MakeEntriesRelative();
         sFile->Data = static_cast<uint8_t*>(realloc(sFile->Data, sFile->Header.total_size));
@@ -680,8 +677,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
             sFile->Header.num_entries++;
             sFile->Header.total_size += static_cast<uint32_t>(importResult->Buffer.size());
-            sFile->Entries = static_cast<rct_g1_element*>(
-                realloc(sFile->Entries, sFile->Header.num_entries * sizeof(rct_g1_element)));
+            sFile->Entries.reserve(sFile->Header.num_entries);
 
             sFile->MakeEntriesRelative();
             sFile->Data = static_cast<uint8_t*>(realloc(sFile->Data, sFile->Header.total_size));
