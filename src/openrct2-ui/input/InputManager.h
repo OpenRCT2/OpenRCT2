@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <openrct2/world/Location.hpp>
 #include <queue>
 
 namespace OpenRCT2::Ui
@@ -38,8 +39,9 @@ namespace OpenRCT2::Ui
     {
     private:
         std::queue<InputEvent> _events;
+        ScreenCoordsXY _viewScroll;
 
-        void HandleMouseEdgeScrolling();
+        void HandleViewScrolling();
         void HandleModifiers();
         void ProcessEvents();
         void Process(const InputEvent& e);

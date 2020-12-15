@@ -707,7 +707,10 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut("multiplayer.chat", STR_SEND_MESSAGE, "C", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
-            chat_toggle();
+            if (chat_available())
+            {
+                chat_toggle();
+            }
         }
     });
 

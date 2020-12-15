@@ -9,7 +9,6 @@
 
 #include "WindowManager.h"
 
-#include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "interface/Theme.h"
 #include "windows/Window.h"
@@ -517,8 +516,6 @@ public:
 
     void HandleKeyboard(bool isTitle) override
     {
-        InputHandleKeyboard(isTitle);
-
         auto& inputManager = GetInputManager();
         inputManager.Process();
     }

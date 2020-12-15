@@ -31,15 +31,12 @@ void InputManager::QueueInputEvent(InputEvent&& e)
 void InputManager::Process()
 {
     HandleModifiers();
-    HandleMouseEdgeScrolling();
     ProcessEvents();
+    HandleViewScrolling();
 }
 
-void InputManager::HandleMouseEdgeScrolling()
+void InputManager::HandleViewScrolling()
 {
-    if (!gConfigGeneral.edge_scrolling)
-        return;
-
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
@@ -47,13 +44,25 @@ void InputManager::HandleMouseEdgeScrolling()
     if (console.IsOpen())
         return;
 
-    if (input_get_state() != InputState::Normal)
-        return;
+    // Shortcut scrolling
+    auto mainWindow = window_get_main();
+    if (mainWindow != nullptr && _viewScroll.x != 0 || _viewScroll.y != 0)
+    {
+        window_unfollow_sprite(mainWindow);
+    }
+    InputScrollViewport(_viewScroll);
 
-    if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
-        return;
+    // Mouse edge scrolling
+    if (gConfigGeneral.edge_scrolling)
+    {
+        if (input_get_state() != InputState::Normal)
+            return;
 
-    GameHandleEdgeScroll();
+        if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_SHIFT_Z | PLACE_OBJECT_MODIFIER_COPY_Z))
+            return;
+
+        GameHandleEdgeScroll();
+    }
 }
 
 void InputManager::HandleModifiers()
@@ -101,38 +110,43 @@ void InputManager::ProcessEvents()
 void InputManager::Process(const InputEvent& e)
 {
     auto& shortcutManager = GetShortcutManager();
-    auto& console = GetInGameConsole();
-    if (console.IsOpen())
+    if (e.DeviceKind == InputDeviceKind::Keyboard)
     {
-        if (!shortcutManager.ProcessEventForSpecificShortcut(e, SHORTCUT_ID_DEBUG_CONSOLE))
+        auto& console = GetInGameConsole();
+        if (console.IsOpen())
         {
-            ProcessInGameConsole(e);
-        }
-    }
-    else if (gChatOpen)
-    {
-        ProcessChat(e);
-    }
-    else
-    {
-        if (e.DeviceKind == InputDeviceKind::Keyboard)
-        {
-            auto w = window_find_by_class(WC_TEXTINPUT);
-            if (w != nullptr)
+            if (!shortcutManager.ProcessEventForSpecificShortcut(e, SHORTCUT_ID_DEBUG_CONSOLE))
             {
-                if (e.State == InputEventState::Release)
+                ProcessInGameConsole(e);
+            }
+            return;
+        }
+        else if (gChatOpen)
+        {
+            ProcessChat(e);
+            return;
+        }
+        else
+        {
+            if (e.DeviceKind == InputDeviceKind::Keyboard)
+            {
+                auto w = window_find_by_class(WC_TEXTINPUT);
+                if (w != nullptr)
                 {
-                    window_text_input_key(w, e.Button);
+                    if (e.State == InputEventState::Release)
+                    {
+                        window_text_input_key(w, e.Button);
+                    }
+                    return;
                 }
-                return;
-            }
-            else if (!gUsingWidgetTextBox)
-            {
-                return;
+                else if (gUsingWidgetTextBox)
+                {
+                    return;
+                }
             }
         }
-        shortcutManager.ProcessEvent(e);
     }
+    shortcutManager.ProcessEvent(e);
 }
 
 void InputManager::ProcessInGameConsole(const InputEvent& e)

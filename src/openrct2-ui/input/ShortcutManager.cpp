@@ -111,7 +111,7 @@ ShortcutInput::ShortcutInput(const std::string_view& value)
     auto sepIndex = FindPlus(value, index);
     while (sepIndex != std::string::npos)
     {
-        auto text = value.substr(index, sepIndex);
+        auto text = value.substr(index, sepIndex - index);
         auto mod = ParseModifier(text);
         modifiers |= mod;
         index = sepIndex + 1;
@@ -283,21 +283,51 @@ bool ShortcutInput::AppendModifier(std::string& s, const std::string_view& text,
     return false;
 }
 
-bool ShortcutInput::Matches(const InputEvent& e) const
+static bool HasModifier(uint32_t shortcut, uint32_t actual, uint32_t left, uint32_t right)
 {
-    auto modifiers = e.Modifiers & UsefulModifiers;
-    if (e.DeviceKind == InputDeviceKind::Mouse)
+    if (shortcut & (left | right))
     {
-        if (Kind == ShortcutInputKind::Mouse && Modifiers == modifiers && Key == e.Button)
+        if ((shortcut & left) && (actual & left))
         {
             return true;
         }
-    }
-    else if (e.DeviceKind == InputDeviceKind::Keyboard)
-    {
-        if (Kind == ShortcutInputKind::Keyboard && Modifiers == modifiers && Key == e.Button)
+        if ((shortcut & right) && (actual & right))
         {
             return true;
+        }
+        return false;
+    }
+    else if (actual & (left | right))
+    {
+        return false;
+    }
+    return true;
+}
+
+static bool CompareModifiers(uint32_t shortcut, uint32_t actual)
+{
+    shortcut &= UsefulModifiers;
+    return HasModifier(shortcut, actual, KMOD_LCTRL, KMOD_RCTRL) && HasModifier(shortcut, actual, KMOD_LSHIFT, KMOD_RSHIFT)
+        && HasModifier(shortcut, actual, KMOD_LALT, KMOD_RALT) && HasModifier(shortcut, actual, KMOD_LGUI, KMOD_RGUI);
+}
+
+bool ShortcutInput::Matches(const InputEvent& e) const
+{
+    if (CompareModifiers(Modifiers, e.Modifiers))
+    {
+        if (e.DeviceKind == InputDeviceKind::Mouse)
+        {
+            if (Kind == ShortcutInputKind::Mouse && Key == e.Button)
+            {
+                return true;
+            }
+        }
+        else if (e.DeviceKind == InputDeviceKind::Keyboard)
+        {
+            if (Kind == ShortcutInputKind::Keyboard && Key == e.Button)
+            {
+                return true;
+            }
         }
     }
     return false;
