@@ -1064,6 +1064,11 @@ declare global {
          * Current status of the car or train.
          */
         status: VehicleStatus;
+		
+        /**
+         * The progress on the current track piece, in steps.
+         */
+        trackProgress: number;
 
         /**
          * List of peep IDs ordered by seat.
