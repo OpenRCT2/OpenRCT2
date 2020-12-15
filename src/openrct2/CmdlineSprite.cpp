@@ -53,6 +53,7 @@ struct SpriteFile
     rct_sprite_file_header Header;
     std::vector<rct_g1_element> Entries;
     std::vector<uint8_t> Data;
+    bool isAbsolute = false;
     void MakeEntriesAbsolute();
     void MakeEntriesRelative();
     bool Save(const utf8* path);
@@ -77,12 +78,14 @@ void SpriteFile::MakeEntriesAbsolute()
 {
     for (auto& entry : Entries)
         entry.offset += reinterpret_cast<uintptr_t>(Data.data());
+    isAbsolute = true;
 }
 
 void SpriteFile::MakeEntriesRelative()
 {
     for (auto& entry : Entries)
         entry.offset -= reinterpret_cast<uintptr_t>(Data.data());
+    isAbsolute = false;
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
@@ -114,55 +117,33 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
 
 bool SpriteFile::Save(const utf8* path)
 {
-    FILE* file = fopen(path, "wb");
-    if (file == nullptr)
-        return false;
-
-    if (fwrite(&Header, sizeof(rct_sprite_file_header), 1, file) != 1)
+    try
     {
-        fclose(file);
+        OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_WRITE);
+        stream.Write(&Header, sizeof(rct_sprite_file_header));
+
+        if (Header.num_entries > 0)
+        {
+            bool wasAbsolute = isAbsolute;
+            if (wasAbsolute)
+            {
+                MakeEntriesRelative();
+            }
+
+            stream.Write(Entries.data(), sizeof(rct_g1_element) * Header.num_entries);
+            stream.Write(Data.data(), Header.total_size);
+
+            if (wasAbsolute)
+            {
+                MakeEntriesAbsolute();
+            }
+        }
+        return true;
+    }
+    catch (IOException& except)
+    {
         return false;
     }
-
-    if (Header.num_entries > 0)
-    {
-        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(Header.num_entries);
-        if (saveElements == nullptr)
-        {
-            fclose(file);
-            return false;
-        }
-
-        for (uint32_t i = 0; i < Header.num_entries; i++)
-        {
-            rct_g1_element* inElement = &Entries[i];
-            rct_g1_element_32bit* outElement = &saveElements[i];
-
-            outElement->offset = static_cast<uint32_t>(
-                (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(Data.data())));
-            outElement->width = inElement->width;
-            outElement->height = inElement->height;
-            outElement->x_offset = inElement->x_offset;
-            outElement->y_offset = inElement->y_offset;
-            outElement->flags = inElement->flags;
-            outElement->zoomed_offset = inElement->zoomed_offset;
-        }
-
-        if (fwrite(saveElements.get(), Header.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
-        {
-            fclose(file);
-            return false;
-        }
-
-        if (fwrite(Data.data(), Header.total_size, 1, file) != 1)
-        {
-            fclose(file);
-            return false;
-        }
-    }
-
-    fclose(file);
-    return true;
 }
 
 static bool sprite_file_export(const rct_g1_element* spriteHeader, const char* outPath)
