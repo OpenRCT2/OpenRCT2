@@ -9,7 +9,6 @@
 
 #include "LanguagePack.h"
 
-#include "../Context.h"
 #include "../common.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
