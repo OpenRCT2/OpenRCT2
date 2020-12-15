@@ -496,10 +496,6 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
         ObjectType objectType = item->ObjectEntry.GetType();
         uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER && objectType == ObjectType::Ride)
-        {
-            maxObjects = 4;
-        }
 
         if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
         {

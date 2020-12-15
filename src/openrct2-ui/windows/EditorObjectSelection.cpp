@@ -1001,8 +1001,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
 
         int32_t numSelected = _numSelectedObjectsForType[EnumValue(get_selected_object_type(w))];
         int32_t totalSelectable = object_entry_group_counts[EnumValue(get_selected_object_type(w))];
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-            totalSelectable = 4;
 
         auto ft = Formatter();
         ft.Add<uint16_t>(numSelected);
