@@ -12,13 +12,17 @@
 #include <openrct2/world/Location.hpp>
 #include <queue>
 
+typedef struct _SDL_Joystick SDL_Joystick;
+typedef union SDL_Event SDL_Event;
+
 namespace OpenRCT2::Ui
 {
     enum class InputDeviceKind
     {
         Mouse,
         Keyboard,
-        Gamepad,
+        JoyButton,
+        JoyHat,
     };
 
     enum class InputEventState
@@ -38,8 +42,12 @@ namespace OpenRCT2::Ui
     class InputManager
     {
     private:
+        uint32_t _lastJoystickCheck;
+        std::vector<SDL_Joystick*> _joysticks;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
+
+        void CheckJoysticks();
 
         void HandleViewScrolling();
         void HandleModifiers();
@@ -49,6 +57,7 @@ namespace OpenRCT2::Ui
         void ProcessChat(const InputEvent& e);
 
     public:
+        void QueueInputEvent(const SDL_Event& e);
         void QueueInputEvent(InputEvent&& e);
         void Process();
     };

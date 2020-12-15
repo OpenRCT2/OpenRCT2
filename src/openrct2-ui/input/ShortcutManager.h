@@ -22,18 +22,12 @@
 
 namespace OpenRCT2::Ui
 {
-    enum class ShortcutInputKind
-    {
-        Keyboard,
-        Mouse,
-    };
-
     struct ShortcutInput
     {
     public:
-        ShortcutInputKind Kind{};
+        InputDeviceKind Kind{};
         uint32_t Modifiers{};
-        uint32_t Key{};
+        uint32_t Button{};
 
         ShortcutInput() = default;
         ShortcutInput(const std::string_view& value);

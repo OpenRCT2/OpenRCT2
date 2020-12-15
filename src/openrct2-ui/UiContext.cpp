@@ -103,9 +103,9 @@ public:
         , _windowManager(CreateWindowManager())
         , _keyboardShortcuts(env)
     {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
-            SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
+            SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
         _cursorRepository.LoadCursors();
         _keyboardShortcuts.Reset();
@@ -567,7 +567,11 @@ public:
                     _textComposition.HandleMessage(&e);
                     break;
                 default:
+                {
+                    auto& inputManager = GetInputManager();
+                    inputManager.QueueInputEvent(e);
                     break;
+                }
             }
         }
 

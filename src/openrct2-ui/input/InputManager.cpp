@@ -23,13 +23,76 @@
 
 using namespace OpenRCT2::Ui;
 
+void InputManager::QueueInputEvent(const SDL_Event& e)
+{
+    switch (e.type)
+    {
+        case SDL_JOYHATMOTION:
+        {
+            if (e.jhat.value != SDL_HAT_CENTERED)
+            {
+                InputEvent ie;
+                ie.DeviceKind = InputDeviceKind::JoyHat;
+                ie.Modifiers = SDL_GetModState();
+                ie.Button = e.jhat.value;
+                ie.State = InputEventState::Down;
+                QueueInputEvent(std::move(ie));
+            }
+            break;
+        }
+        case SDL_JOYBUTTONDOWN:
+        {
+            InputEvent ie;
+            ie.DeviceKind = InputDeviceKind::JoyButton;
+            ie.Modifiers = SDL_GetModState();
+            ie.Button = e.jbutton.button;
+            ie.State = InputEventState::Down;
+            QueueInputEvent(std::move(ie));
+            break;
+        }
+        case SDL_JOYBUTTONUP:
+        {
+            InputEvent ie;
+            ie.DeviceKind = InputDeviceKind::JoyButton;
+            ie.Modifiers = SDL_GetModState();
+            ie.Button = e.jbutton.button;
+            ie.State = InputEventState::Release;
+            QueueInputEvent(std::move(ie));
+            break;
+        }
+    }
+}
+
 void InputManager::QueueInputEvent(InputEvent&& e)
 {
     _events.push(e);
 }
 
+void InputManager::CheckJoysticks()
+{
+    constexpr uint32_t CHECK_INTERVAL_MS = 5000;
+
+    auto tick = SDL_GetTicks();
+    if (tick > _lastJoystickCheck + CHECK_INTERVAL_MS)
+    {
+        _lastJoystickCheck = tick;
+
+        _joysticks.clear();
+        auto numJoysticks = SDL_NumJoysticks();
+        for (auto i = 0; i < numJoysticks; i++)
+        {
+            auto joystick = SDL_JoystickOpen(i);
+            if (joystick != nullptr)
+            {
+                _joysticks.push_back(joystick);
+            }
+        }
+    }
+}
+
 void InputManager::Process()
 {
+    CheckJoysticks();
     HandleModifiers();
     ProcessEvents();
     HandleViewScrolling();

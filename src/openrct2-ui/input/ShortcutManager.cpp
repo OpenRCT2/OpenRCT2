@@ -118,8 +118,8 @@ ShortcutInput::ShortcutInput(const std::string_view& value)
         sepIndex = FindPlus(value, index);
     }
 
-    auto kind = ShortcutInputKind::Keyboard;
-    auto key = 0u;
+    auto kind = InputDeviceKind::Keyboard;
+    auto button = 0u;
     auto colonIndex = value.find(':', index);
     if (colonIndex != std::string::npos)
     {
@@ -127,18 +127,18 @@ ShortcutInput::ShortcutInput(const std::string_view& value)
         if (device == "MOUSE")
         {
             auto rem = std::string(value.substr(colonIndex + 1));
-            kind = ShortcutInputKind::Mouse;
-            key = atoi(rem.c_str());
+            kind = InputDeviceKind::Mouse;
+            button = atoi(rem.c_str());
         }
     }
     else
     {
-        key = ParseKey(value.substr(index));
+        button = ParseKey(value.substr(index));
     }
 
     Kind = kind;
     Modifiers = modifiers;
-    Key = key;
+    Button = button;
 }
 
 std::string ShortcutInput::ToString() const
@@ -149,9 +149,9 @@ std::string ShortcutInput::ToString() const
     AppendModifier(result, "ALT", KMOD_LALT, KMOD_RALT);
     AppendModifier(result, "GUI", KMOD_LGUI, KMOD_RGUI);
 
-    if (Kind == ShortcutInputKind::Keyboard)
+    if (Kind == InputDeviceKind::Keyboard)
     {
-        switch (Key)
+        switch (Button)
         {
             case 0:
                 break;
@@ -227,21 +227,21 @@ std::string ShortcutInput::ToString() const
                 break;
 
             default:
-                if (Key & SDLK_SCANCODE_MASK)
+                if (Button & SDLK_SCANCODE_MASK)
                 {
-                    auto name = SDL_GetScancodeName(static_cast<SDL_Scancode>(Key & ~SDLK_SCANCODE_MASK));
+                    auto name = SDL_GetScancodeName(static_cast<SDL_Scancode>(Button & ~SDLK_SCANCODE_MASK));
                     result += name;
                 }
                 else
                 {
-                    String::AppendCodepoint(result, std::toupper(Key));
+                    String::AppendCodepoint(result, std::toupper(Button));
                 }
                 break;
         }
     }
-    else if (Kind == ShortcutInputKind::Mouse)
+    else if (Kind == InputDeviceKind::Mouse)
     {
-        switch (Key)
+        switch (Button)
         {
             case 0:
                 result += "LMB";
@@ -251,9 +251,27 @@ std::string ShortcutInput::ToString() const
                 break;
             default:
                 result += "MOUSE ";
-                result += std::to_string(Key);
+                result += std::to_string(Button + 1);
                 break;
         }
+    }
+    else if (Kind == InputDeviceKind::JoyButton)
+    {
+        result += "JOY ";
+        result += std::to_string(Button + 1);
+    }
+    else if (Kind == InputDeviceKind::JoyHat)
+    {
+        if (Button & SDL_HAT_LEFT)
+            result += "JOY LEFT";
+        else if (Button & SDL_HAT_RIGHT)
+            result += "JOY RIGHT";
+        else if (Button & SDL_HAT_UP)
+            result += "JOY UP";
+        else if (Button & SDL_HAT_DOWN)
+            result += "JOY DOWN";
+        else
+            result += "JOY ?";
     }
     return result;
 }
@@ -315,19 +333,9 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 {
     if (CompareModifiers(Modifiers, e.Modifiers))
     {
-        if (e.DeviceKind == InputDeviceKind::Mouse)
+        if (e.DeviceKind == Kind && Button == e.Button)
         {
-            if (Kind == ShortcutInputKind::Mouse && Key == e.Button)
-            {
-                return true;
-            }
-        }
-        else if (e.DeviceKind == InputDeviceKind::Keyboard)
-        {
-            if (Kind == ShortcutInputKind::Keyboard && Key == e.Button)
-            {
-                return true;
-            }
+            return true;
         }
     }
     return false;
@@ -335,24 +343,21 @@ bool ShortcutInput::Matches(const InputEvent& e) const
 
 std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
 {
+    // Assume any side modifier (more specific configurations can be done by manually editing config file)
     auto modifiers = e.Modifiers & UsefulModifiers;
-    if (e.DeviceKind == InputDeviceKind::Mouse)
+    for (auto mod : { KMOD_CTRL, KMOD_SHIFT, KMOD_ALT, KMOD_GUI })
     {
-        ShortcutInput result;
-        result.Kind = ShortcutInputKind::Mouse;
-        result.Modifiers = modifiers;
-        result.Key = e.Button;
-        return result;
+        if (modifiers & mod)
+        {
+            modifiers |= mod;
+        }
     }
-    else if (e.DeviceKind == InputDeviceKind::Keyboard)
-    {
-        ShortcutInput result;
-        result.Kind = ShortcutInputKind::Keyboard;
-        result.Modifiers = modifiers;
-        result.Key = e.Button;
-        return result;
-    }
-    return {};
+
+    ShortcutInput result;
+    result.Kind = e.DeviceKind;
+    result.Modifiers = modifiers;
+    result.Button = e.Button;
+    return result;
 }
 
 std::string_view RegisteredShortcut::GetGroup() const
@@ -378,6 +383,12 @@ bool RegisteredShortcut::Matches(const InputEvent& e) const
 
 bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
 {
+    // Do not intercept button releases
+    if (e.State == InputEventState::Release)
+    {
+        return false;
+    }
+
     if (e.DeviceKind == InputDeviceKind::Mouse)
     {
         // Do not allow LMB or RMB to be shortcut
@@ -385,18 +396,24 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
         {
             return false;
         }
-        if (e.State == InputEventState::Down)
-        {
-            return false;
-        }
     }
     else if (e.DeviceKind == InputDeviceKind::Keyboard)
     {
-        if (e.State == InputEventState::Down)
+        // Do not allow modifier keys alone
+        switch (e.Button)
         {
-            return false;
+            case SDLK_LCTRL:
+            case SDLK_RCTRL:
+            case SDLK_LSHIFT:
+            case SDLK_RSHIFT:
+            case SDLK_LALT:
+            case SDLK_RALT:
+            case SDLK_LGUI:
+            case SDLK_RGUI:
+                return false;
         }
     }
+
     return true;
 }
 
