@@ -23,8 +23,6 @@
 #include "object/ObjectRepository.h"
 #include "platform/platform.h"
 #include "util/Util.h"
-#include "world/Entrance.h"
-#include "world/Scenery.h"
 
 #include <cmath>
 #include <cstring>
@@ -36,22 +34,10 @@
 
 using namespace OpenRCT2::Drawing;
 
-#pragma pack(push, 1)
-
-struct rct_sprite_file_header
-{
-    uint32_t num_entries;
-    uint32_t total_size;
-};
-
-assert_struct_size(rct_sprite_file_header, 8);
-
-#pragma pack(pop)
-
 struct SpriteFile
 {
 public:
-    rct_sprite_file_header Header;
+    rct_g1_header Header;
     std::vector<rct_g1_element> Entries;
     std::vector<uint8_t> Data;
     void AddImage(ImageImporter::ImportResult& image);
@@ -99,7 +85,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
         OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
 
         SpriteFile sFile;
-        stream.Read(&sFile.Header, sizeof(rct_sprite_file_header));
+        stream.Read(&sFile.Header, sizeof(rct_g1_header));
 
         if (sFile.Header.num_entries > 0)
         {
@@ -124,7 +110,7 @@ bool SpriteFile::Save(const utf8* path)
     try
     {
         OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_WRITE);
-        stream.Write(&Header, sizeof(rct_sprite_file_header));
+        stream.Write(&Header, sizeof(rct_g1_header));
 
         if (Header.num_entries > 0)
         {
