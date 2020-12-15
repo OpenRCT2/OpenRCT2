@@ -172,12 +172,34 @@ int32_t bitscanforward(int32_t source)
     int32_t success = __builtin_ffs(source);
     return success - 1;
 #else
-#    pragma message "Falling back to iterative bitscan forward, consider using intrinsics"
+#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
     // This is a low-hanging optimisation boost, check if your compiler offers
     // any intrinsic.
     // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
     for (int32_t i = 0; i < 32; i++)
         if (source & (1u << i))
+            return i;
+
+    return -1;
+#endif
+}
+
+int32_t bitscanforward(int64_t source)
+{
+#if defined(_MSC_VER) && (_MSC_VER >= 1400) && defined(_M_X64) // Visual Studio 2005
+    DWORD i;
+    uint8_t success = _BitScanForward64(&i, static_cast<uint64_t>(source));
+    return success != 0 ? i : -1;
+#elif defined(__GNUC__)
+    int32_t success = __builtin_ffsll(source);
+    return success - 1;
+#else
+#    pragma message("Falling back to iterative bitscan forward, consider using intrinsics")
+    // This is a low-hanging optimisation boost, check if your compiler offers
+    // any intrinsic.
+    // cf. https://github.com/OpenRCT2/OpenRCT2/pull/2093
+    for (int32_t i = 0; i < 64; i++)
+        if (source & (1ull << i))
             return i;
 
     return -1;
