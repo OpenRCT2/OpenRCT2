@@ -146,27 +146,24 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
-static bool sprite_file_export(const rct_g1_element* spriteHeader, const char* outPath)
+static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* outPath)
 {
-    rct_drawpixelinfo dpi;
-    uint8_t* pixels;
-    int32_t pixelBufferSize;
-
-    pixelBufferSize = spriteHeader->width * spriteHeader->height;
+    const auto pixelBufferSize = spriteElement.width * spriteElement.height;
     std::unique_ptr<uint8_t[]> pixelBuffer(new uint8_t[pixelBufferSize]);
-    pixels = pixelBuffer.get();
+    auto pixels = pixelBuffer.get();
     std::fill_n(pixels, pixelBufferSize, 0x00);
 
+    rct_drawpixelinfo dpi;
     dpi.bits = pixels;
     dpi.x = 0;
     dpi.y = 0;
-    dpi.width = spriteHeader->width;
-    dpi.height = spriteHeader->height;
+    dpi.width = spriteElement.width;
+    dpi.height = spriteElement.height;
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
     DrawSpriteArgs args(
-        &dpi, ImageId(), PaletteMap::GetDefault(), *spriteHeader, 0, 0, spriteHeader->width, spriteHeader->height, pixels);
+        &dpi, ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);
     gfx_sprite_to_buffer(args);
 
     auto const pixels8 = dpi.bits;
@@ -190,7 +187,7 @@ static bool sprite_file_export(const rct_g1_element* spriteHeader, const char* o
     }
 }
 
-static std::optional<ImageImporter::ImportResult> sprite_file_import(
+static std::optional<ImageImporter::ImportResult> SpriteImageImport(
     const char* path, int16_t x_offset, int16_t y_offset, bool keep_palette, bool forceBmp, int32_t mode)
 {
     try
@@ -298,8 +295,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        rct_g1_element* spriteHeader = &sFile->Entries[spriteIndex];
-        if (!sprite_file_export(spriteHeader, outputPath))
+        const auto& spriteHeader = sFile->Entries[spriteIndex];
+        if (!SpriteImageExport(spriteHeader, outputPath))
         {
             fprintf(stderr, "Could not export\n");
             return -1;
@@ -357,8 +354,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
             }
 
-            rct_g1_element* spriteHeader = &sFile->Entries[spriteIndex];
-            if (!sprite_file_export(spriteHeader, outputPath))
+            const auto& spriteHeader = sFile->Entries[spriteIndex];
+            if (!SpriteImageExport(spriteHeader, outputPath))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
@@ -444,8 +441,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
-            const rct_g1_element g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
-            if (!sprite_file_export(&g1, outputPath))
+            const auto& g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
+            if (!SpriteImageExport(g1, outputPath))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
@@ -513,7 +510,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
         }
 
-        auto importResult = sprite_file_import(imagePath, x_offset, y_offset, false, false, gSpriteMode);
+        auto importResult = SpriteImageImport(imagePath, x_offset, y_offset, false, false, gSpriteMode);
         if (importResult == std::nullopt)
             return -1;
 
@@ -604,7 +601,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
             auto imagePath = platform_get_absolute_path(strPath.c_str(), directoryPath);
 
-            auto importResult = sprite_file_import(
+            auto importResult = SpriteImageImport(
                 imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), keep_palette,
                 forceBmp, gSpriteMode);
             if (importResult == std::nullopt)
