@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#pragma warning(disable : 4706) // assignment within conditional expression
-
 #include "CmdlineSprite.h"
 
 #include "Context.h"
@@ -34,10 +32,10 @@
 
 using namespace OpenRCT2::Drawing;
 
-struct SpriteFile
+class SpriteFile
 {
 public:
-    rct_g1_header Header;
+    rct_g1_header Header{};
     std::vector<rct_g1_element> Entries;
     std::vector<uint8_t> Data;
     void AddImage(ImageImporter::ImportResult& image);
@@ -45,6 +43,27 @@ public:
     static std::optional<SpriteFile> Open(const utf8* path);
 
 private:
+    class ScopedRelativeSpriteFile
+    {
+    private:
+        SpriteFile& _SpriteFile;
+        bool _WasAbsolute;
+
+    public:
+        ScopedRelativeSpriteFile(SpriteFile& sFile)
+            : _SpriteFile(sFile)
+            , _WasAbsolute(sFile.isAbsolute)
+        {
+            if (_WasAbsolute)
+                _SpriteFile.MakeEntriesRelative();
+        }
+
+        ~ScopedRelativeSpriteFile()
+        {
+            if (_WasAbsolute)
+                _SpriteFile.MakeEntriesAbsolute();
+        }
+    };
     bool isAbsolute = false;
     void MakeEntriesAbsolute();
     void MakeEntriesRelative();
@@ -52,15 +71,21 @@ private:
 
 void SpriteFile::MakeEntriesAbsolute()
 {
-    for (auto& entry : Entries)
-        entry.offset += reinterpret_cast<uintptr_t>(Data.data());
+    if (!isAbsolute)
+    {
+        for (auto& entry : Entries)
+            entry.offset += reinterpret_cast<uintptr_t>(Data.data());
+    }
     isAbsolute = true;
 }
 
 void SpriteFile::MakeEntriesRelative()
 {
-    for (auto& entry : Entries)
-        entry.offset -= reinterpret_cast<uintptr_t>(Data.data());
+    if (isAbsolute)
+    {
+        for (auto& entry : Entries)
+            entry.offset -= reinterpret_cast<uintptr_t>(Data.data());
+    }
     isAbsolute = false;
 }
 
@@ -70,12 +95,13 @@ void SpriteFile::AddImage(ImageImporter::ImportResult& image)
     Header.total_size += static_cast<uint32_t>(image.Buffer.size());
     Entries.reserve(Header.num_entries);
 
-    MakeEntriesRelative();
-    Data.reserve(Header.total_size);
-    Entries.push_back(image.Element);
-    const auto& buffer = image.Buffer;
-    std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
-    MakeEntriesAbsolute();
+    {
+        ScopedRelativeSpriteFile scopedRelative(*this);
+        Data.reserve(Header.total_size);
+        Entries.push_back(image.Element);
+        const auto& buffer = image.Buffer;
+        std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
+    }
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
@@ -84,20 +110,20 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
     {
         OpenRCT2::FileStream stream(path, OpenRCT2::FILE_MODE_OPEN);
 
-        SpriteFile sFile;
-        stream.Read(&sFile.Header, sizeof(rct_g1_header));
+        SpriteFile spriteFile;
+        stream.Read(&spriteFile.Header, sizeof(rct_g1_header));
 
-        if (sFile.Header.num_entries > 0)
+        if (spriteFile.Header.num_entries > 0)
         {
-            sFile.Entries.reserve(sFile.Header.num_entries);
-            stream.Read(sFile.Entries.data(), sFile.Header.num_entries * sizeof(rct_g1_element_32bit));
+            spriteFile.Entries.reserve(spriteFile.Header.num_entries);
+            stream.Read(spriteFile.Entries.data(), spriteFile.Header.num_entries * sizeof(rct_g1_element_32bit));
 
-            sFile.Data.reserve(sFile.Header.total_size);
-            stream.Read(sFile.Data.data(), sFile.Header.total_size);
+            spriteFile.Data.reserve(spriteFile.Header.total_size);
+            stream.Read(spriteFile.Data.data(), spriteFile.Header.total_size);
 
-            sFile.MakeEntriesAbsolute();
+            spriteFile.MakeEntriesAbsolute();
         }
-        return sFile;
+        return spriteFile;
     }
     catch (IOException&)
     {
@@ -114,19 +140,10 @@ bool SpriteFile::Save(const utf8* path)
 
         if (Header.num_entries > 0)
         {
-            bool wasAbsolute = isAbsolute;
-            if (wasAbsolute)
-            {
-                MakeEntriesRelative();
-            }
+            ScopedRelativeSpriteFile scopedRelative(*this);
 
             stream.Write(Entries.data(), sizeof(rct_g1_element) * Header.num_entries);
             stream.Write(Data.data(), Header.total_size);
-
-            if (wasAbsolute)
-            {
-                MakeEntriesAbsolute();
-            }
         }
         return true;
     }
@@ -224,35 +241,35 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         else if (argc == 2)
         {
             const char* spriteFilePath = argv[1];
-            auto sFile = SpriteFile::Open(spriteFilePath);
-            if (!sFile.has_value())
+            auto spriteFile = SpriteFile::Open(spriteFilePath);
+            if (!spriteFile.has_value())
             {
                 fprintf(stderr, "Unable to open input sprite file.\n");
                 return -1;
             }
 
-            printf("sprites: %u\n", sFile->Header.num_entries);
-            printf("data size: %u\n", sFile->Header.total_size);
+            printf("sprites: %u\n", spriteFile->Header.num_entries);
+            printf("data size: %u\n", spriteFile->Header.total_size);
             return 1;
         }
         else
         {
             const char* spriteFilePath = argv[1];
             int32_t spriteIndex = atoi(argv[2]);
-            auto sFile = SpriteFile::Open(spriteFilePath);
-            if (!sFile.has_value())
+            auto spriteFile = SpriteFile::Open(spriteFilePath);
+            if (!spriteFile.has_value())
             {
                 fprintf(stderr, "Unable to open input sprite file.\n");
                 return -1;
             }
 
-            if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(sFile->Header.num_entries))
+            if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
             {
                 fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
                 return -1;
             }
 
-            rct_g1_element* g1 = &sFile->Entries[spriteIndex];
+            rct_g1_element* g1 = &spriteFile->Entries[spriteIndex];
             printf("width: %d\n", g1->width);
             printf("height: %d\n", g1->height);
             printf("x offset: %d\n", g1->x_offset);
@@ -272,20 +289,20 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         const char* spriteFilePath = argv[1];
         int32_t spriteIndex = atoi(argv[2]);
         const char* outputPath = argv[3];
-        auto sFile = SpriteFile::Open(spriteFilePath);
-        if (!sFile.has_value())
+        auto spriteFile = SpriteFile::Open(spriteFilePath);
+        if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
         }
 
-        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(sFile->Header.num_entries))
+        if (spriteIndex < 0 || spriteIndex >= static_cast<int32_t>(spriteFile->Header.num_entries))
         {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
             return -1;
         }
 
-        const auto& spriteHeader = sFile->Entries[spriteIndex];
+        const auto& spriteHeader = spriteFile->Entries[spriteIndex];
         if (!SpriteImageExport(spriteHeader, outputPath))
         {
             fprintf(stderr, "Could not export\n");
@@ -304,8 +321,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         const char* spriteFilePath = argv[1];
         char outputPath[MAX_PATH];
 
-        auto sFile = SpriteFile::Open(spriteFilePath);
-        if (!sFile.has_value())
+        auto spriteFile = SpriteFile::Open(spriteFilePath);
+        if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
@@ -320,7 +337,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        int32_t maxIndex = static_cast<int32_t>(sFile->Header.num_entries);
+        int32_t maxIndex = static_cast<int32_t>(spriteFile->Header.num_entries);
         int32_t numbers = static_cast<int32_t>(std::floor(std::log(maxIndex)));
         size_t pathLen = strlen(outputPath);
 
@@ -344,7 +361,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
             }
 
-            const auto& spriteHeader = sFile->Entries[spriteIndex];
+            const auto& spriteHeader = spriteFile->Entries[spriteIndex];
             if (!SpriteImageExport(spriteHeader, outputPath))
             {
                 fprintf(stderr, "Could not export\n");
@@ -462,10 +479,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         const char* spriteFilePath = argv[1];
 
-        SpriteFile sFile;
-        sFile.Header.num_entries = 0;
-        sFile.Header.total_size = 0;
-        sFile.Save(spriteFilePath);
+        SpriteFile spriteFile;
+        spriteFile.Save(spriteFilePath);
         return 1;
     }
     else if (_strcmpi(argv[0], "append") == 0)
@@ -504,16 +519,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         if (importResult == std::nullopt)
             return -1;
 
-        auto sFile = SpriteFile::Open(spriteFilePath);
-        if (!sFile.has_value())
+        auto spriteFile = SpriteFile::Open(spriteFilePath);
+        if (!spriteFile.has_value())
         {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
         }
 
-        sFile->AddImage(importResult.value());
+        spriteFile->AddImage(importResult.value());
 
-        if (!sFile->Save(spriteFilePath))
+        if (!spriteFile->Save(spriteFilePath))
             return -1;
 
         return 1;
@@ -588,16 +603,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
 
-            auto sFile = SpriteFile::Open(spriteFilePath);
-            if (!sFile.has_value())
+            auto spriteFile = SpriteFile::Open(spriteFilePath);
+            if (!spriteFile.has_value())
             {
                 fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
                 return -1;
             }
 
-            sFile->AddImage(importResult.value());
+            spriteFile->AddImage(importResult.value());
 
-            if (!sFile->Save(spriteFilePath))
+            if (!spriteFile->Save(spriteFilePath))
             {
                 fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
                 return -1;
