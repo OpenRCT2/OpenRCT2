@@ -51,8 +51,7 @@ struct SpriteFile
 {
     rct_sprite_file_header Header;
     std::vector<rct_g1_element> Entries;
-    uint8_t* Data;
-    ~SpriteFile();
+    std::vector<uint8_t> Data;
     void MakeEntriesAbsolute();
     void MakeEntriesRelative();
     bool Save(const utf8* path);
@@ -76,13 +75,13 @@ static FILE* fopen_utf8(const char* path, const char* mode)
 void SpriteFile::MakeEntriesAbsolute()
 {
     for (auto& entry : Entries)
-        entry.offset += reinterpret_cast<uintptr_t>(Data);
+        entry.offset += reinterpret_cast<uintptr_t>(Data.data());
 }
 
 void SpriteFile::MakeEntriesRelative()
 {
     for (auto& entry : Entries)
-        entry.offset -= reinterpret_cast<uintptr_t>(Data);
+        entry.offset -= reinterpret_cast<uintptr_t>(Data.data());
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
@@ -114,10 +113,9 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
             return std::nullopt;
         }
 
-        sFile.Data = static_cast<uint8_t*>(malloc(sFile.Header.total_size));
-        if (fread(sFile.Data, sFile.Header.total_size, 1, file) != 1)
+        sFile.Data.reserve(sFile.Header.total_size);
+        if (fread(sFile.Data.data(), sFile.Header.total_size, 1, file) != 1)
         {
-            free(sFile.Data);
             fclose(file);
             return std::nullopt;
         }
@@ -129,7 +127,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
             rct_g1_element* outElement = &sFile.Entries[i];
 
             outElement->offset = reinterpret_cast<uint8_t*>(
-                (static_cast<uintptr_t>(inElement->offset) + reinterpret_cast<uintptr_t>(sFile.Data)));
+                (static_cast<uintptr_t>(inElement->offset) + reinterpret_cast<uintptr_t>(sFile.Data.data())));
             outElement->width = inElement->width;
             outElement->height = inElement->height;
             outElement->x_offset = inElement->x_offset;
@@ -170,7 +168,7 @@ bool SpriteFile::Save(const utf8* path)
             rct_g1_element_32bit* outElement = &saveElements[i];
 
             outElement->offset = static_cast<uint32_t>(
-                (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(Data)));
+                (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(Data.data())));
             outElement->width = inElement->width;
             outElement->height = inElement->height;
             outElement->x_offset = inElement->x_offset;
@@ -185,7 +183,7 @@ bool SpriteFile::Save(const utf8* path)
             return false;
         }
 
-        if (fwrite(Data, Header.total_size, 1, file) != 1)
+        if (fwrite(Data.data(), Header.total_size, 1, file) != 1)
         {
             fclose(file);
             return false;
@@ -194,11 +192,6 @@ bool SpriteFile::Save(const utf8* path)
 
     fclose(file);
     return true;
-}
-
-SpriteFile::~SpriteFile()
-{
-    SafeFree(Data);
 }
 
 static bool sprite_file_export(const rct_g1_element* spriteHeader, const char* outPath)
@@ -584,14 +577,14 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         sFile->Entries.reserve(sFile->Header.num_entries);
 
         sFile->MakeEntriesRelative();
-        sFile->Data = static_cast<uint8_t*>(realloc(sFile->Data, sFile->Header.total_size));
+        sFile->Data.reserve(sFile->Header.total_size);
         sFile->MakeEntriesAbsolute();
 
         sFile->Entries[sFile->Header.num_entries - 1] = importResult->Element;
 
         const auto& buffer = importResult->Buffer;
-        std::memcpy(sFile->Data + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
-        sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data + (sFile->Header.total_size - buffer.size());
+        std::memcpy(sFile->Data.data() + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
+        sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data() + (sFile->Header.total_size - buffer.size());
 
         if (!sFile->Save(spriteFilePath))
             return -1;
@@ -680,14 +673,14 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             sFile->Entries.reserve(sFile->Header.num_entries);
 
             sFile->MakeEntriesRelative();
-            sFile->Data = static_cast<uint8_t*>(realloc(sFile->Data, sFile->Header.total_size));
+            sFile->Data.reserve(sFile->Header.total_size);
             sFile->MakeEntriesAbsolute();
 
             sFile->Entries[sFile->Header.num_entries - 1] = importResult->Element;
 
             const auto& buffer = importResult->Buffer;
-            std::memcpy(sFile->Data + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
-            sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data + (sFile->Header.total_size - buffer.size());
+            std::memcpy(sFile->Data.data() + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
+            sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data() + (sFile->Header.total_size - buffer.size());
 
             if (!sFile->Save(spriteFilePath))
             {
