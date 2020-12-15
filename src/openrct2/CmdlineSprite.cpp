@@ -50,29 +50,19 @@ assert_struct_size(rct_sprite_file_header, 8);
 
 struct SpriteFile
 {
+public:
     rct_sprite_file_header Header;
     std::vector<rct_g1_element> Entries;
     std::vector<uint8_t> Data;
+    void AddImage(ImageImporter::ImportResult& image);
+    bool Save(const utf8* path);
+    static std::optional<SpriteFile> Open(const utf8* path);
+
+private:
     bool isAbsolute = false;
     void MakeEntriesAbsolute();
     void MakeEntriesRelative();
-    bool Save(const utf8* path);
-    static std::optional<SpriteFile> Open(const utf8* path);
 };
-
-#ifdef _WIN32
-
-static FILE* fopen_utf8(const char* path, const char* mode)
-{
-    auto pathW = String::ToWideChar(path);
-    auto modeW = String::ToWideChar(mode);
-    auto file = _wfopen(pathW.c_str(), modeW.c_str());
-    return file;
-}
-
-#    define fopen fopen_utf8
-
-#endif
 
 void SpriteFile::MakeEntriesAbsolute()
 {
@@ -86,6 +76,23 @@ void SpriteFile::MakeEntriesRelative()
     for (auto& entry : Entries)
         entry.offset -= reinterpret_cast<uintptr_t>(Data.data());
     isAbsolute = false;
+}
+
+void SpriteFile::AddImage(ImageImporter::ImportResult& image)
+{
+    Header.num_entries++;
+    Header.total_size += static_cast<uint32_t>(image.Buffer.size());
+    Entries.reserve(Header.num_entries);
+
+    MakeEntriesRelative();
+    Data.reserve(Header.total_size);
+    MakeEntriesAbsolute();
+
+    Entries[Header.num_entries - 1] = image.Element;
+
+    const auto& buffer = image.Buffer;
+    std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
+    Entries[Header.num_entries - 1].offset = Data.data() + (Header.total_size - buffer.size());
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
@@ -109,7 +116,7 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
         }
         return sFile;
     }
-    catch (IOException& except)
+    catch (IOException&)
     {
         return std::nullopt;
     }
@@ -140,7 +147,7 @@ bool SpriteFile::Save(const utf8* path)
         }
         return true;
     }
-    catch (IOException& except)
+    catch (IOException&)
     {
         return false;
     }
@@ -521,19 +528,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        sFile->Header.num_entries++;
-        sFile->Header.total_size += static_cast<uint32_t>(importResult->Buffer.size());
-        sFile->Entries.reserve(sFile->Header.num_entries);
-
-        sFile->MakeEntriesRelative();
-        sFile->Data.reserve(sFile->Header.total_size);
-        sFile->MakeEntriesAbsolute();
-
-        sFile->Entries[sFile->Header.num_entries - 1] = importResult->Element;
-
-        const auto& buffer = importResult->Buffer;
-        std::memcpy(sFile->Data.data() + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
-        sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data() + (sFile->Header.total_size - buffer.size());
+        sFile->AddImage(importResult.value());
 
         if (!sFile->Save(spriteFilePath))
             return -1;
@@ -617,20 +612,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
 
-            sFile->Header.num_entries++;
-            sFile->Header.total_size += static_cast<uint32_t>(importResult->Buffer.size());
-            sFile->Entries.reserve(sFile->Header.num_entries);
-
-            sFile->MakeEntriesRelative();
-            sFile->Data.reserve(sFile->Header.total_size);
-            sFile->MakeEntriesAbsolute();
-
-            sFile->Entries[sFile->Header.num_entries - 1] = importResult->Element;
-
-            const auto& buffer = importResult->Buffer;
-            std::memcpy(sFile->Data.data() + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
-            sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data.data()
-                + (sFile->Header.total_size - buffer.size());
+            sFile->AddImage(importResult.value());
 
             if (!sFile->Save(spriteFilePath))
             {
