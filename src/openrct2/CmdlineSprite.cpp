@@ -54,6 +54,7 @@ struct SpriteFile
     uint8_t* Data;
     void MakeEntriesAbsolute();
     void MakeEntriesRelative();
+    bool Save(const utf8* path);
 };
 
 static SpriteFile spriteFile;
@@ -142,35 +143,34 @@ static std::optional<SpriteFile> sprite_file_open(const utf8* path)
     return spriteFile;
 }
 
-static bool sprite_file_save(const char* path)
+bool SpriteFile::Save(const utf8* path)
 {
     FILE* file = fopen(path, "wb");
     if (file == nullptr)
         return false;
 
-    if (fwrite(&spriteFile.Header, sizeof(rct_sprite_file_header), 1, file) != 1)
+    if (fwrite(&Header, sizeof(rct_sprite_file_header), 1, file) != 1)
     {
         fclose(file);
         return false;
     }
 
-    if (spriteFile.Header.num_entries > 0)
+    if (Header.num_entries > 0)
     {
-        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(
-            spriteFile.Header.num_entries);
+        std::unique_ptr<rct_g1_element_32bit[]> saveElements = std::make_unique<rct_g1_element_32bit[]>(Header.num_entries);
         if (saveElements == nullptr)
         {
             fclose(file);
             return false;
         }
 
-        for (uint32_t i = 0; i < spriteFile.Header.num_entries; i++)
+        for (uint32_t i = 0; i < Header.num_entries; i++)
         {
-            rct_g1_element* inElement = &spriteFile.Entries[i];
+            rct_g1_element* inElement = &Entries[i];
             rct_g1_element_32bit* outElement = &saveElements[i];
 
             outElement->offset = static_cast<uint32_t>(
-                (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(spriteFile.Data)));
+                (reinterpret_cast<uintptr_t>(inElement->offset) - reinterpret_cast<uintptr_t>(Data)));
             outElement->width = inElement->width;
             outElement->height = inElement->height;
             outElement->x_offset = inElement->x_offset;
@@ -179,13 +179,13 @@ static bool sprite_file_save(const char* path)
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
-        if (fwrite(saveElements.get(), spriteFile.Header.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
+        if (fwrite(saveElements.get(), Header.num_entries * sizeof(rct_g1_element_32bit), 1, file) != 1)
         {
             fclose(file);
             return false;
         }
 
-        if (fwrite(spriteFile.Data, spriteFile.Header.total_size, 1, file) != 1)
+        if (fwrite(Data, Header.total_size, 1, file) != 1)
         {
             fclose(file);
             return false;
@@ -543,9 +543,10 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         const char* spriteFilePath = argv[1];
 
-        spriteFile.Header.num_entries = 0;
-        spriteFile.Header.total_size = 0;
-        sprite_file_save(spriteFilePath);
+        SpriteFile sFile;
+        sFile.Header.num_entries = 0;
+        sFile.Header.total_size = 0;
+        sFile.Save(spriteFilePath);
 
         sprite_file_close();
         return 1;
@@ -608,7 +609,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         std::memcpy(sFile->Data + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
         sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data + (sFile->Header.total_size - buffer.size());
 
-        if (!sprite_file_save(spriteFilePath))
+        if (!sFile->Save(spriteFilePath))
             return -1;
 
         return 1;
@@ -640,9 +641,10 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 
-        spriteFile.Header.num_entries = 0;
-        spriteFile.Header.total_size = 0;
-        sprite_file_save(spriteFilePath);
+        SpriteFile baseFile;
+        baseFile.Header.num_entries = 0;
+        baseFile.Header.total_size = 0;
+        baseFile.Save(spriteFilePath);
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
@@ -704,7 +706,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             std::memcpy(sFile->Data + (sFile->Header.total_size - buffer.size()), buffer.data(), buffer.size());
             sFile->Entries[sFile->Header.num_entries - 1].offset = sFile->Data + (sFile->Header.total_size - buffer.size());
 
-            if (!sprite_file_save(spriteFilePath))
+            if (!sFile->Save(spriteFilePath))
             {
                 fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
                 return -1;
