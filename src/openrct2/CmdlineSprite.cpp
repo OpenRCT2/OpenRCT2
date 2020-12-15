@@ -86,13 +86,10 @@ void SpriteFile::AddImage(ImageImporter::ImportResult& image)
 
     MakeEntriesRelative();
     Data.reserve(Header.total_size);
-    MakeEntriesAbsolute();
-
-    Entries[Header.num_entries - 1] = image.Element;
-
+    Entries.push_back(image.Element);
     const auto& buffer = image.Buffer;
     std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
-    Entries[Header.num_entries - 1].offset = Data.data() + (Header.total_size - buffer.size());
+    MakeEntriesAbsolute();
 }
 
 std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
