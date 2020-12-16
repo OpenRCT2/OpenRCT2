@@ -109,7 +109,7 @@ void InputManager::HandleViewScrolling()
 
     // Shortcut scrolling
     auto mainWindow = window_get_main();
-    if (mainWindow != nullptr && _viewScroll.x != 0 || _viewScroll.y != 0)
+    if (mainWindow != nullptr && (_viewScroll.x != 0 || _viewScroll.y != 0))
     {
         window_unfollow_sprite(mainWindow);
     }

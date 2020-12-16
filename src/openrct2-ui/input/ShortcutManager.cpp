@@ -86,7 +86,7 @@ static uint32_t ParseKey(const std::string_view& text)
     return 0;
 }
 
-size_t FindPlus(std::string_view s, size_t index)
+static size_t FindPlus(std::string_view s, size_t index)
 {
     while (true)
     {
