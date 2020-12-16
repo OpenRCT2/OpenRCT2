@@ -116,7 +116,22 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
         if (spriteFile.Header.num_entries > 0)
         {
             spriteFile.Entries.reserve(spriteFile.Header.num_entries);
-            stream.Read(spriteFile.Entries.data(), spriteFile.Header.num_entries * sizeof(rct_g1_element_32bit));
+
+            for (uint32_t i = 0; i < spriteFile.Header.num_entries; ++i)
+            {
+                rct_g1_element_32bit entry32bit{};
+                stream.Read(&entry32bit, sizeof(entry32bit));
+                rct_g1_element entry{};
+
+                entry.offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(entry32bit.offset));
+                entry.width = entry32bit.width;
+                entry.height = entry32bit.height;
+                entry.x_offset = entry32bit.x_offset;
+                entry.y_offset = entry32bit.y_offset;
+                entry.flags = entry32bit.flags;
+                entry.zoomed_offset = entry32bit.zoomed_offset;
+                spriteFile.Entries.push_back(std::move(entry));
+            }
 
             spriteFile.Data.reserve(spriteFile.Header.total_size);
             stream.Read(spriteFile.Data.data(), spriteFile.Header.total_size);
@@ -142,7 +157,20 @@ bool SpriteFile::Save(const utf8* path)
         {
             ScopedRelativeSpriteFile scopedRelative(*this);
 
-            stream.Write(Entries.data(), sizeof(rct_g1_element) * Header.num_entries);
+            for (const auto& entry : Entries)
+            {
+                rct_g1_element_32bit entry32bit{};
+
+                entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
+                entry32bit.width = entry.width;
+                entry32bit.height = entry.height;
+                entry32bit.x_offset = entry.x_offset;
+                entry32bit.y_offset = entry.y_offset;
+                entry32bit.flags = entry.flags;
+                entry32bit.zoomed_offset = entry.zoomed_offset;
+
+                stream.Write(&entry32bit, sizeof(entry32bit));
+            }
             stream.Write(Data.data(), Header.total_size);
         }
         return true;
