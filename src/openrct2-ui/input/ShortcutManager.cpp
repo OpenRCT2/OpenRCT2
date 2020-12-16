@@ -424,13 +424,22 @@ ShortcutManager::ShortcutManager()
 
 void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
 {
-    Shortcuts.push_back(shortcut);
+    if (!shortcut.Id.empty() && GetShortcut(shortcut.Id) == nullptr)
+    {
+        Shortcuts.push_back(shortcut);
+    }
 }
 
 RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
 {
     auto result = std::find_if(Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& s) { return s.Id == id; });
     return result == Shortcuts.end() ? nullptr : &(*result);
+}
+
+void ShortcutManager::RemoveShortcut(std::string_view id)
+{
+    Shortcuts.erase(std::remove_if(
+        Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& shortcut) { return shortcut.Id == id; }));
 }
 
 void ShortcutManager::SetPendingShortcutChange(std::string_view id)

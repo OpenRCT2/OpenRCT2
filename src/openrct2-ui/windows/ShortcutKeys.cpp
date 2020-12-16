@@ -71,6 +71,7 @@ struct ShortcutStringPair
     size_t ShortcutIndex;
     std::string ShortcutId;
     rct_string_id StringId = STR_NONE;
+    std::string CustomString;
 };
 
 static std::vector<ShortcutStringPair> _shortcutList;
@@ -103,6 +104,7 @@ static void InitialiseShortcutList()
         ssp.ShortcutIndex = index;
         ssp.ShortcutId = shortcut.Id;
         ssp.StringId = shortcut.LocalisedName;
+        ssp.CustomString = shortcut.CustomName;
         _shortcutList.push_back(std::move(ssp));
         index++;
     }
@@ -288,10 +290,20 @@ static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             gfx_filter_rect(dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), FilterPaletteID::PaletteDarken1);
         }
 
+        const auto& shortcut = _shortcutList[i];
+
         const int32_t bindingOffset = scrollWidth - 150;
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
-        ft.Add<rct_string_id>(_shortcutList[i].StringId);
+        if (shortcut.CustomString.empty())
+        {
+            ft.Add<rct_string_id>(shortcut.StringId);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(shortcut.CustomString.c_str());
+        }
         DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
 
         char keybinding[128];

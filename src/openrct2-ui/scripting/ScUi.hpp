@@ -307,6 +307,34 @@ namespace OpenRCT2::Scripting
             CustomMenuItems.emplace_back(owner, text, callback);
         }
 
+        void registerShortcut(DukValue desc)
+        {
+            try
+            {
+                auto& execInfo = _scriptEngine.GetExecInfo();
+                auto owner = execInfo.GetCurrentPlugin();
+                auto id = desc["id"].as_string();
+                auto text = desc["text"].as_string();
+
+                std::vector<std::string> bindings;
+                auto dukBindings = desc["bindings"];
+                if (dukBindings.is_array())
+                {
+                    for (auto binding : dukBindings.as_array())
+                    {
+                        bindings.push_back(binding.as_string());
+                    }
+                }
+
+                auto callback = desc["callback"];
+                CustomShortcuts.emplace_back(owner, id, text, bindings, callback);
+            }
+            catch (const DukException&)
+            {
+                duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -326,6 +354,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect");
             dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
+            dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
         }
 
     private:

@@ -49,6 +49,7 @@ static rct_window_event_list window_shortcut_change_events([](auto& events)
 // clang-format on
 
 static rct_string_id _shortcutLocalisedName{};
+static std::string _shortcutCustomName{};
 
 rct_window* window_shortcut_change_open(const std::string_view& shortcutId)
 {
@@ -58,6 +59,7 @@ rct_window* window_shortcut_change_open(const std::string_view& shortcutId)
     if (registeredShortcut != nullptr)
     {
         _shortcutLocalisedName = registeredShortcut->LocalisedName;
+        _shortcutCustomName = registeredShortcut->CustomName;
 
         window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
         auto w = WindowCreateCentred(WW, WH, &window_shortcut_change_events, WC_CHANGE_KEYBOARD_SHORTCUT, 0);
@@ -105,6 +107,14 @@ static void window_shortcut_change_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ScreenCoordsXY stringCoords(w->windowPos.x + 125, w->windowPos.y + 30);
 
     auto ft = Formatter();
-    ft.Add<rct_string_id>(_shortcutLocalisedName);
+    if (_shortcutCustomName.empty())
+    {
+        ft.Add<rct_string_id>(_shortcutLocalisedName);
+    }
+    else
+    {
+        ft.Add<rct_string_id>(STR_STRING);
+        ft.Add<const char*>(_shortcutCustomName.c_str());
+    }
     gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
 }

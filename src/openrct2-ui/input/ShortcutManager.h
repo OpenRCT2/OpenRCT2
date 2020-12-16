@@ -46,11 +46,19 @@ namespace OpenRCT2::Ui
     public:
         std::string Id;
         rct_string_id LocalisedName = STR_NONE;
+        std::string CustomName;
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
         std::function<void()> Action;
 
         RegisteredShortcut() = default;
+        RegisteredShortcut(const std::string_view& id, std::string_view name, const std::function<void()>& action)
+            : Id(id)
+            , CustomName(name)
+            , Action(action)
+        {
+        }
+
         RegisteredShortcut(const std::string_view& id, rct_string_id localisedName, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
@@ -105,6 +113,7 @@ namespace OpenRCT2::Ui
         }
         void RegisterDefaultShortcuts();
         RegisteredShortcut* GetShortcut(std::string_view id);
+        void RemoveShortcut(std::string_view id);
         void SetPendingShortcutChange(std::string_view id);
         void ProcessEvent(const InputEvent& e);
         bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);
