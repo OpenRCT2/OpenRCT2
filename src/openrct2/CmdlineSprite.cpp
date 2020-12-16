@@ -92,6 +92,8 @@ void SpriteFile::MakeEntriesRelative()
 void SpriteFile::AddImage(ImageImporter::ImportResult& image)
 {
     Header.num_entries++;
+    // New image will have its data inserted after previous image
+    uint8_t* newElementOffset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(Header.total_size));
     Header.total_size += static_cast<uint32_t>(image.Buffer.size());
     Entries.reserve(Header.num_entries);
 
@@ -99,8 +101,9 @@ void SpriteFile::AddImage(ImageImporter::ImportResult& image)
         ScopedRelativeSpriteFile scopedRelative(*this);
         Data.reserve(Header.total_size);
         Entries.push_back(image.Element);
+        Entries.back().offset = newElementOffset;
         const auto& buffer = image.Buffer;
-        std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
+        std::copy(buffer.begin(), buffer.end(), std::back_inserter(Data));
     }
 }
 
@@ -116,13 +119,26 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
         if (spriteFile.Header.num_entries > 0)
         {
             spriteFile.Entries.reserve(spriteFile.Header.num_entries);
-            stream.Read(spriteFile.Entries.data(), spriteFile.Header.num_entries * sizeof(rct_g1_element_32bit));
 
-            spriteFile.Data.reserve(spriteFile.Header.total_size);
+            for (uint32_t i = 0; i < spriteFile.Header.num_entries; ++i)
+            {
+                rct_g1_element_32bit entry32bit{};
+                stream.Read(&entry32bit, sizeof(entry32bit));
+                rct_g1_element entry{};
+
+                entry.offset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(entry32bit.offset));
+                entry.width = entry32bit.width;
+                entry.height = entry32bit.height;
+                entry.x_offset = entry32bit.x_offset;
+                entry.y_offset = entry32bit.y_offset;
+                entry.flags = entry32bit.flags;
+                entry.zoomed_offset = entry32bit.zoomed_offset;
+                spriteFile.Entries.push_back(std::move(entry));
+            }
+            spriteFile.Data.resize(spriteFile.Header.total_size);
             stream.Read(spriteFile.Data.data(), spriteFile.Header.total_size);
-
-            spriteFile.MakeEntriesAbsolute();
         }
+        spriteFile.MakeEntriesAbsolute();
         return spriteFile;
     }
     catch (IOException&)
@@ -142,7 +158,20 @@ bool SpriteFile::Save(const utf8* path)
         {
             ScopedRelativeSpriteFile scopedRelative(*this);
 
-            stream.Write(Entries.data(), sizeof(rct_g1_element) * Header.num_entries);
+            for (const auto& entry : Entries)
+            {
+                rct_g1_element_32bit entry32bit{};
+
+                entry32bit.offset = static_cast<uint32_t>(reinterpret_cast<uintptr_t>(const_cast<uint8_t*>(entry.offset)));
+                entry32bit.width = entry.width;
+                entry32bit.height = entry.height;
+                entry32bit.x_offset = entry.x_offset;
+                entry32bit.y_offset = entry.y_offset;
+                entry32bit.flags = entry.flags;
+                entry32bit.zoomed_offset = entry.zoomed_offset;
+
+                stream.Write(&entry32bit, sizeof(entry32bit));
+            }
             stream.Write(Data.data(), Header.total_size);
         }
         return true;
