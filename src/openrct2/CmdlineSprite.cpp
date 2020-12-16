@@ -92,6 +92,8 @@ void SpriteFile::MakeEntriesRelative()
 void SpriteFile::AddImage(ImageImporter::ImportResult& image)
 {
     Header.num_entries++;
+    // New image will have its data inserted after previous image
+    uint8_t* newElementOffset = reinterpret_cast<uint8_t*>(static_cast<uintptr_t>(Header.total_size));
     Header.total_size += static_cast<uint32_t>(image.Buffer.size());
     Entries.reserve(Header.num_entries);
 
@@ -99,8 +101,9 @@ void SpriteFile::AddImage(ImageImporter::ImportResult& image)
         ScopedRelativeSpriteFile scopedRelative(*this);
         Data.reserve(Header.total_size);
         Entries.push_back(image.Element);
+        Entries.back().offset = newElementOffset;
         const auto& buffer = image.Buffer;
-        std::memcpy(Data.data() + (Header.total_size - buffer.size()), buffer.data(), buffer.size());
+        std::copy(buffer.begin(), buffer.end(), std::back_inserter(Data));
     }
 }
 
@@ -132,12 +135,10 @@ std::optional<SpriteFile> SpriteFile::Open(const utf8* path)
                 entry.zoomed_offset = entry32bit.zoomed_offset;
                 spriteFile.Entries.push_back(std::move(entry));
             }
-
-            spriteFile.Data.reserve(spriteFile.Header.total_size);
+            spriteFile.Data.resize(spriteFile.Header.total_size);
             stream.Read(spriteFile.Data.data(), spriteFile.Header.total_size);
-
-            spriteFile.MakeEntriesAbsolute();
         }
+        spriteFile.MakeEntriesAbsolute();
         return spriteFile;
     }
     catch (IOException&)
