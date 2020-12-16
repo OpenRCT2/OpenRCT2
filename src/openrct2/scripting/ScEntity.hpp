@@ -243,7 +243,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
             dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
             dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
-            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, &ScVehicle::trackProgress_set, "trackProgress");            
+            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, &ScVehicle::trackProgress_set, "trackProgress");
             dukglue_register_property(
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
@@ -518,7 +518,7 @@ namespace OpenRCT2::Scripting
                 vehicle->track_direction |= coords.direction & 3;
             }
         }
-                
+
         int16_t trackProgress_get() const
         {
             auto vehicle = GetVehicle();
