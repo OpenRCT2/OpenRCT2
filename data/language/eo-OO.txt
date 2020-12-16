@@ -3769,8 +3769,8 @@ STR_DTLS    :Nur por amuziĝi!
 
 ## Added Attractions
 <Whispering Cliffs>
-STR_SCNR    :Flustradaj Klifoj
-STR_PARK    :Flustradaj Klifoj
+STR_SCNR    :Flustrantaj Klifoj
+STR_PARK    :Flustrantaj Klifoj
 STR_DTLS    :Disvolvu la apudmarajn klifojn al prospera amuzparko
 
 <Three Monkeys Park>
@@ -3791,22 +3791,22 @@ STR_DTLS    :Malnova senutila ponto estas via por disvolvi al amuzparko
 <Funtopia>
 STR_SCNR    :Amuzutopio
 STR_PARK    :Amuzutopio
-STR_DTLS    :Sur ambaŭ flankoj de aŭtovojo, ĉi tiu parko jam havas plurajn funkciantajn atrakciojn
+STR_DTLS    :Sur bieno ambaŭflanke de aŭtovojo, ĉi tiu parko jam havas plurajn funkciantajn atrakciojn
 
 <Haunted Harbour>
 STR_SCNR    :Fantoma Haveno
 STR_PARK    :Fantoma Haveno
-STR_DTLS    :La loka aŭtoritato permesis la malmultekostan vendadon de proksima bieno por ĉi tiu malgranda parko, sed certaj atrakcioj devas esti konservataj
+STR_DTLS    :La loka aŭtoritato permesis la malmultekostan vendadon de proksima bieno al ĉi tiu malgranda apudmara parko, sed certaj atrakcioj devas esti konservataj
 
 <Fun Fortress>
 STR_SCNR    :Amuza Fortreso
 STR_PARK    :Amuza Fortreso
-STR_DTLS    :Ĉi tiu fortreso estas vi por ŝanĝiĝi al amuzparko
+STR_DTLS    :Ĉi tiu fortreso estas tute via por ŝanĝiĝi al amuzparko
 
 <Future World>
 STR_SCNR    :Estonto-Mondo
 STR_PARK    :Estonto-Mondo
-STR_DTLS    :Ĉi tiu estonteca parko havas multe da spaco por novaj atrakcioj sur sia ekstertera pejzaĝo
+STR_DTLS    :Ĉi tiu estonteca parko havas multe da spaco por novaj atrakcioj sur ĝia ekstertera pejzaĝo
 
 <Gentle Glen>
 STR_SCNR    :Milda Valeto
@@ -3816,32 +3816,32 @@ STR_DTLS    :La lokaj homoj preferas mildajn atrakciojn, do via celo estas disvo
 <Jolly Jungle>
 STR_SCNR    :Gajega Ĝangalo
 STR_PARK    :Gajega Ĝangalo
-STR_DTLS    :Profunde en la ĝangalo estas granda areo de tero preta por esti transformita en amuzparko
+STR_DTLS    :Profunde en la ĝangalo estas granda areo de tero preta por esti transformita al amuzparko
 
 <Hydro Hills>
 STR_SCNR    :Akvo-Montetoj
 STR_PARK    :Akvo-Montetoj
-STR_DTLS    :Serio de lagoj fariĝas la bazo de ĉi tiu nova parko
+STR_DTLS    :Serio de lagoj fariĝas la bazon de ĉi tiu nova parko
 
 <Sprightly Park>
 STR_SCNR    :Vigla Parko
 STR_PARK    :Vigla Parko
-STR_DTLS    :Ĉi tiu malnova parko havas multajn historiajn atrakciojn, sed ankaŭ havas multe da ŝuldo
+STR_DTLS    :Ĉi tiu malnova parko havas multajn historiajn atrakciojn, sed ankaŭ dronas en ŝuldoj
 
 <Magic Quarters>
 STR_SCNR    :Magiaj Kvartaloj
 STR_PARK    :Magiaj Kvartaloj
-STR_DTLS    :Granda areo de tero vakigita kaj parte dekoraciita estas preta por vi, por disvolvi ĝin al bela amuzparko
+STR_DTLS    :Granda areo de tero vakigita kaj parte temita estas preta, por ke vi disvolvu ĝin al bela amuzparko
 
 <Fruit Farm>
 STR_SCNR    :Frukto-Farmo
 STR_PARK    :Frukto-Farmo
-STR_DTLS    :Prospera fruktofarmo konstruis fervojon por gajni pli da enspezo, via celo estas disvolvi ĝin al kompleta amuzparko
+STR_DTLS    :Prospera fruktofarmo konstruis fervojon por gajni pli da enspezo. Via celo estas disvolvi ĝin al kompleta amuzparko.
 
 <Butterfly Dam>
 STR_SCNR    :Papilio-Akvobaraĵo
 STR_PARK    :Papilio-Akvobaraĵo
-STR_DTLS    :La areo ĉirkaŭ akvobaraĵo estas disponebla por vi, por disvolvi ĝin al amuzparko
+STR_DTLS    :La areo ĉirkaŭ akvobaraĵo estas disponebla, por ke vi disvolvu ĝin al amuzparko
 
 <Coaster Canyon>
 STR_SCNR    :Onda-Fervojo-Kanjono
@@ -3851,7 +3851,7 @@ STR_DTLS    :Vasta kanjono estas via por ŝanĝiĝi al amuzparko
 <Thunderstorm Park>
 STR_SCNR    :Fulmotondro-Parko
 STR_PARK    :Fulmotondro-Parko
-STR_DTLS    :La vetero estas tiel malseka ĉi tie, ke giganta piramido estis konstruita por permesi, ke kelkaj atrakcioj esti konstruita subtere
+STR_DTLS    :La vetero estas tiel malseka ĉi tie, ke giganta piramido estis konstruita por permesi kelkajn atrakciojn konstruatajn subtere
 
 <Harmonic Hills>
 STR_SCNR    :Harmonaj Montetoj
@@ -3861,20 +3861,20 @@ STR_DTLS    :La loka aŭtoritato ne permesos la konstruadon super la arbalteco e
 <Roman Village>
 STR_SCNR    :Romana Vilaĝo
 STR_PARK    :Romana Vilaĝo
-STR_DTLS    :Disvolvu ĉi tiu parkon kun romana temo, per aldoni atrakciojn kaj ondajn fervojojn
+STR_DTLS    :Disvolvu ĉi tiun parkon kun romana temo, per aldoni atrakciojn kaj ondajn fervojojn
 
 <Swamp Cove>
 STR_SCNR    :Marĉejo-Golfeto
 STR_PARK    :Marĉejo-Golfeto
-STR_DTLS    :Konstruita parte sur serio de malgrandaj insuloj, ĉi tiu parko jam havas paron da grandaj ondaj fervojoj por siaj ĉefaj atrakcioj
+STR_DTLS    :Konstruita parte sur serio de malgrandaj insuloj, ĉi tiu parko jam havas paron da grandaj ondaj fervojoj kiel ĝiaj ĉefaĵo
 
 <Adrenaline Heights>
 STR_SCNR    :Adrenalino-Altaĵoj
 STR_PARK    :Adrenalino-Altaĵoj
-STR_DTLS    :Konstruu parkon por allogi lokajn homojn, kiuj volas altajn-intensajn ekscitajn atrakciojn
+STR_DTLS    :Konstruu parkon por allogi lokajn homojn, kiuj volas altajn-intensajn ekscitaĵojn
 
 <Utopia Park>
-STR_SCNR    :Utopia Parko
+STR_SCNR    :Utopio-Parko
 STR_PARK    :Utopio
 STR_DTLS    :Oazo en la mezo de la dezerto provizas nekutiman okazon por konstrui amuzparkon
 
@@ -3886,7 +3886,7 @@ STR_DTLS    :Surkreskata kaj kaduka, ĉu vi povas relevigi ĉi tiun bonintan amu
 <Fiasco Forest>
 STR_SCNR    :Fiasko-Arbaro
 STR_PARK    :Fiasko-Arbaro
-STR_DTLS    :Plena de malbone desegnitaj kaj danĝeraj atrakcioj, vi havas tre limigitan buĝeton kaj tempon por ripari la problemojn kaj rebonigi la parkon
+STR_DTLS    :Plene je malbone-desegnitaj kaj danĝeraj atrakcioj, vi havas tre limigitan buĝeton kaj tempon por ripari la problemojn kaj rebonigi la parkon
 
 <Pickle Park>
 STR_SCNR    :Peklaĵo-Parko
@@ -3896,12 +3896,12 @@ STR_DTLS    :La loka aŭtoritato ne permesos ian ajn reklamadon aŭ kampanjojn d
 <Giggle Downs>
 STR_SCNR    :Subrido-Malaltaĵoj
 STR_PARK    :Subrido-Malaltaĵoj
-STR_DTLS    :Kvarobla stipoĉejso estas la ĉefa atrakcio de ĉi tiu disvolvanta parko
+STR_DTLS    :Kvaropa-traka stipoĉejso estas la ĉefaĵo de ĉi tiu disvolvanta parko
 
 <Mineral Park>
 STR_SCNR    :Minerala Parko
 STR_PARK    :Minerala Parko
-STR_DTLS    :Ŝanĝi ĉi tiun forlasitan ŝtonejo al loko por allogi ekscitovolajn turistojn
+STR_DTLS    :Ŝanĝu ĉi tiun forlasitan ŝtonejon al loko por allogi ekscitovolajn turistojn
 
 <Coaster Crazy>
 STR_SCNR    :Onda-Fervojo-Frenezo
@@ -3923,27 +3923,27 @@ STR_DTLS    :Vi devas ŝanĝi grandan ĝardenoparkon al prospera amuzparko
 <Iceberg Islands>
 STR_SCNR    :Glacimonto-Insuloj
 STR_PARK    :Glacimonto-Insuloj
-STR_DTLS    :Aro de glacimontoj fariĝas malvarma okazejo por ĉi tiu ambicia amuzparko
+STR_DTLS    :Aro da glacimontoj fariĝas malvarman okazejon por ĉi tiu ambicia amuzparko
 
 <Volcania>
 STR_SCNR    :Vulkanlando
 STR_PARK    :Vulkanlando
-STR_DTLS    :Dormanta vulkano estas la okazejo de ĉi tiu defio por la konstruado de ondaj fervojoj
+STR_DTLS    :Dormanta vulkano estas la okazejo de ĉi tiu defio de la konstruado de ondaj fervojoj
 
 <Arid Heights>
 STR_SCNR    :Aridaj Altaĵoj
 STR_PARK    :Aridaj Altaĵoj
-STR_DTLS    :Sen financaj limigoj, via defio estas disvolvi ĉi tiun dezertparkon, kaj samtempe restigi, ke la gastoj estas feliĉaj
+STR_DTLS    :Sen financaj limigoj, via defio estas disvolvi ĉi tiun dezertparkon, kaj samtempe restigi la gastojn feliĉaj
 
 <Razor Rocks>
-STR_SCNR    :Razaj Rokoj
-STR_PARK    :Razaj Rokoj
-STR_DTLS    :Via celo estas konstrui grandegan parkon de ondaj fervojoj en Razaj Rokoj
+STR_SCNR    :Razilecaj Rokoj
+STR_PARK    :Razilecaj Rokoj
+STR_DTLS    :Via celo estas konstrui grandegan parkon da ondaj fervojoj ĉe Razilecaj Rokoj
 
 <Crater Lake>
 STR_SCNR    :Kratero-Lago
 STR_PARK    :Kratero-Lago
-STR_DTLS    :Granda lago en praa kratero estas la okazejo por ĉi tiu parko
+STR_DTLS    :Granda lago en praa kratero estas la okazejo de ĉi tiu parko
 
 <Vertigo Views>
 STR_SCNR    :Kapturnigaj Vidoj
@@ -3953,12 +3953,12 @@ STR_DTLS    :Ĉi tiu granda parko jam havas bonegan hiperan ondan fervojon, sed 
 <Paradise Pier 2>
 STR_SCNR    :Paradizo-Enŝipigejo 2
 STR_PARK    :Paradizo-Enŝipigejo 2
-STR_DTLS    :Paradizo-Enŝipigejo etendis sian reton de troturaroj super la maro, kaj via celo estas, ke vi disvolvas la parkon por uzi la ekstran spacon
+STR_DTLS    :Paradizo-Enŝipigejo etendis sian reton de troturaroj super la maro, kaj via celo estas disvolvi la parkon por uzi la ekstran spacon
 
 <Dragon's Cove>
 STR_SCNR    :Golfeto de Drako
 STR_PARK    :Golfeto de Drako
-STR_DTLS    :Apudmara golfeto estas la okazejo por ĉi tiu defio de la konstruado de ondaj fervojoj
+STR_DTLS    :Apudmara golfeto estas la okazejo de ĉi tiu defio de la konstruado de ondaj fervojoj
 
 <Good Knight Park>
 STR_SCNR    :Bona-Kavaliro-Parko
@@ -3968,37 +3968,37 @@ STR_DTLS    :Vi devas disvolvi kastelon, kun paro da ondaj fervojoj, al pli gran
 <Wacky Warren>
 STR_SCNR    :Komika Kuniklejo
 STR_PARK    :Komika Kuniklejo
-STR_DTLS    :Parko, kiu havas la plejparton de siaj trotuaroj kaj ondaj fervojoj subtere
+STR_DTLS    :Parko, kiu havas plejparton da siaj trotuaroj kaj ondaj fervojoj subtere
 
 <Grand Glacier>
 STR_SCNR    :Granda Glaĉero
 STR_PARK    :Granda Glaĉero
-STR_DTLS    :Valo kun glaĉero estas via, por disvolvi al amuzparko
+STR_DTLS    :Valo kun glaĉero estas via por disvolvi al amuzparko
 
 <Crazy Craters>
 STR_SCNR    :Frenezaj Krateroj
 STR_PARK    :Frenezaj Krateroj
-STR_DTLS    :En mondo for, kie mono ne necesas, vi devas konstrui centron de amuzaĵo por teni la homoj feliĉaj
+STR_DTLS    :En mondo for, kie mono ne necesas, vi devas konstrui centron de amuzaĵo por teni la homojn feliĉaj
 
 <Dusty Desert>
 STR_SCNR    :Polva Dezerto
 STR_PARK    :Polva Dezerto
-STR_DTLS    :Kvin ondaj fervojoj bezonas esti kompleta en ĉi tiu dezertparko
+STR_DTLS    :Kvin ondaj fervojoj bezonas kompletadon en ĉi tiu dezertparko
 
 <Woodworm Park>
 STR_SCNR    :Anobio-Parko
 STR_PARK    :Anobio-Parko
-STR_DTLS    :Oni povas konstrui nur malmodernajn atrakciojn en ĉi tiu historia parko
+STR_DTLS    :Eblas konstrui nur malmodernajn atrakciojn en ĉi tiu historia parko
 
 <Icarus Park>
-STR_SCNR    :Icaro-Parko
-STR_PARK    :Icaro-Parko
+STR_SCNR    :Ikaro-Parko
+STR_PARK    :Ikaro-Parko
 STR_DTLS    :Disvolvu ĉi tiun eksterteran parkon por maksimumigi sian profiton
 
 <Sunny Swamps>
 STR_SCNR    :Sunplenaj Marĉejoj
 STR_PARK    :Sunplenaj Marĉejoj
-STR_DTLS    :Ĉi tiu bela amuzparko jam havas multajn atrakciojn, sed ankoraŭ havas multe da spaco por disvolvi
+STR_DTLS    :Ĉi tiu bone-temita amuzparko jam havas multajn atrakciojn, sed ankoraŭ havas multe da spaco por disvolvi
 
 <Frightmare Hills>
 STR_SCNR    :Inkubo-Montetoj
@@ -4018,17 +4018,17 @@ STR_DTLS    :En ĉi tiu granda parko, vi devas desegni kaj konstrui dek grandajn
 <Pleasure Island>
 STR_SCNR    :Plezuro-Insulo
 STR_PARK    :Plezuro-Insulo
-STR_DTLS    :Longa kaj mallarĝa insulo fariĝas defia okazejo por konstrui elektaron de ondaj fervojoj
+STR_DTLS    :Longa mallarĝa insulo fariĝas defian okazejon por konstrui elektaron da ondaj fervojoj
 
 <Icicle Worlds>
 STR_SCNR    :Glacikonuso-Mondoj
 STR_PARK    :Glacikonuso-Mondoj
-STR_DTLS    :Glacian pejzaĝon bezonas ŝanĝi al prospera amuzparko
+STR_DTLS    :Vi devas ŝanĝi glacian pejzaĝon al prospera amuzparko
 
 <Southern Sands>
 STR_SCNR    :Sudaj Sablaĵoj
 STR_PARK    :Sudaj Sablaĵoj
-STR_DTLS    :Dezertparko kun iuj ondaj fervojoj lerte desegnitaj, estas via por disvolvi
+STR_DTLS    :Dezertparko, kun iuj ondaj fervojoj lerte desegnitaj, estas via por disvolvi
 
 <Tiny Towers>
 STR_SCNR    :Etaj Turoj
@@ -4043,27 +4043,27 @@ STR_DTLS    :Granda parko, kun nova sistemo de transportado ĉirkaŭ ĝia rando
 <Pacifica>
 STR_SCNR    :Pacifiko
 STR_PARK    :Pacifiko
-STR_DTLS    :Ĉi tiu granda insulo estas tuta via, por disvolvi al amuzparko
+STR_DTLS    :Ĉi tiu granda insulo estas tute via por disvolvi al amuzparko
 
 <Urban Jungle>
 STR_SCNR    :Urba Ĝangalo
 STR_PARK    :Urba Ĝangalo
-STR_DTLS    :Giganta forlasita ĉielskrapanto estas unika okazo por amuzparko-ellaboranto
+STR_DTLS    :Giganta forlasita ĉielskrapanto estas unika okazo por amuzparko-disvolvanto
 
 <Terror Town>
 STR_SCNR    :Teruro-Urbo
 STR_PARK    :Teruro-Urbo
-STR_DTLS    :Ĉi tiu urba areo estas tuta via, por disvolvi al amuzparko
+STR_DTLS    :Ĉi tiu urba areo estas tute via por disvolvi al amuzparko
 
 <Megaworld Park>
 STR_SCNR    :Mondego-Parko
 STR_PARK    :Mondego-Parko
-STR_DTLS    :Ĉi tiu giganta parko, kiu jam estas plena de atrakcioj, bezonas plibonigon
+STR_DTLS    :Ĉi tiu giganta parko, kiu jam estas plena je atrakcioj, bezonas plibonigon
 
 <Venus Ponds>
 STR_SCNR    :Venuso-Lagetoj
 STR_PARK    :Venuso-Lagetoj
-STR_DTLS    :Sur malproksima planedo, vi bezonas ŝanĝi ĉi tiun areon de lando al amuzparko
+STR_DTLS    :Sur malproksima planedo, vi bezonas ŝanĝi ĉi tiun bienoareon al amuzparko
 
 <Micro Park>
 STR_SCNR    :Mikro-Parko
@@ -4459,4 +4459,4 @@ STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la pose
 <Panda World>
 STR_SCNR    :Pando-Mondo
 STR_PARK    :Pando-Mondo
-STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-tema amuzparko
+STR_DTLS    :Aldonu pli da atrakcioj kaj allogu pli da homoj al ĉi tiu pando-temita amuzparko
