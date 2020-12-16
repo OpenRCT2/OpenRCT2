@@ -37,7 +37,7 @@ static void setup_in_use_selection_flags();
 static void setup_track_designer_objects();
 static void setup_track_manager_objects();
 static void window_editor_object_selection_select_default_objects();
-static void select_designer_objects();
+static void SelectDesignerObjects();
 
 /**
  *
@@ -76,7 +76,7 @@ static void setup_track_designer_objects()
 {
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
-    select_designer_objects();
+    SelectDesignerObjects();
     for (int32_t i = 0; i < numObjects; i++)
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
@@ -355,7 +355,7 @@ static void window_editor_object_selection_select_default_objects()
     }
 }
 
-static void select_designer_objects()
+static void SelectDesignerObjects()
 {
     if (_numSelectedObjectsForType[0] == 0)
     {
