@@ -8,7 +8,7 @@
 - Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
 - Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
 - Feature: [#13512] [Plugin] Add item separators to list view.
-- Feature: Add allowed_hosts to plugin section of config
+- Feature: [#13583] Add allowed_hosts to plugin section of config.
 - Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
@@ -22,6 +22,7 @@
 - Fix: [#13489] Mechanics continue heading to inspect broken down rides.
 - Fix: [#13510] [Plugin] list view scroll resets when items is set.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
+- Improved: [#13386] An GUI error message is now displayed if the language files are missing.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 
 0.3.2 (2020-11-01)
