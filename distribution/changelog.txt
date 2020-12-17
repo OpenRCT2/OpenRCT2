@@ -22,7 +22,7 @@
 - Fix: [#13489] Mechanics continue heading to inspect broken down rides.
 - Fix: [#13510] [Plugin] list view scroll resets when items is set.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
-- Improved: [#13386] An GUI error message is now displayed if the language files are missing.
+- Improved: [#13386] A GUI error message is now displayed if the language files are missing.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 
 0.3.2 (2020-11-01)
