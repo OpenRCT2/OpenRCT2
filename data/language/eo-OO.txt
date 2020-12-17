@@ -2431,7 +2431,7 @@ STR_3339    :{BLACK}{COMMA16} desegnaĵo estas disponebla, aŭ uzu propran deseg
 STR_3340    :{BLACK}{COMMA16} desegnaĵoj estas disponebla, aŭ uzu propran desegnaĵon
 STR_3341    :{SMALLFONT}{BLACK}Iloj de ludo
 STR_3342    :Scenaroredaktilo
-STR_3343    :Konverti ludon konservitan al scenaro
+STR_3343    :Konverti ludon konservitan en scenaron
 STR_3344    :Trakdesegnilo
 STR_3345    :Administrilo de Trakdesegnaĵoj
 STR_3346    :Ne eblas konservi trakdesegnaĵon…
@@ -3680,12 +3680,12 @@ STR_DTLS    :Diamanto-Altaĵoj jam estas sukcesa amuzparko kun bonegaj atrakcioj
 <Evergreen Gardens>
 STR_SCNR    :Ĉiamverdaj Ĝardenoj
 STR_PARK    :Ĉiamverdaj Ĝardenoj
-STR_DTLS    :Konvertu la belajn Ĉiamverdajn Ĝardenojn al prospera amuzparko
+STR_DTLS    :Konvertu la belajn Ĉiamverdajn Ĝardenojn en prosperan amuzparkon
 
 <Bumbly Beach>
 STR_SCNR    :Burda Plaĝo
 STR_PARK    :Burda Plaĝo
-STR_DTLS    :Disvolvu la malgrandan amuzparkon de Burda Plaĝo al prospera amuzparko
+STR_DTLS    :Ellaboru la malgrandan amuzparkon de Burda Plaĝo en prosperan amuzparkon
 
 <Trinity Islands>
 STR_SCNR    :Triunuaj Insuloj
@@ -3710,7 +3710,7 @@ STR_DTLS    :Ĉi tiu parko, kun kelkaj bonegaj akvo-atrakcioj, bezonas kreskadon
 <Millennium Mines>
 STR_SCNR    :Miljaraj Minoj
 STR_PARK    :Miljaraj Minoj
-STR_DTLS    :Konvertu grandan forlasitan minon de vidindaĵo al amuzparko
+STR_DTLS    :Konvertu grandan forlasitan minon de vidindaĵo en amuzparkon
 
 <Karts & Coasters>
 STR_SCNR    :Gokartoj k Ondaj Fervojoj
@@ -3730,7 +3730,7 @@ STR_DTLS    :En la ondaj arbaroj de Mistika Monto, konstruu amuzparkon komencant
 <Pacific Pyramids>
 STR_SCNR    :Pacifikaj Piramidoj
 STR_PARK    :Pacifikaj Piramidoj
-STR_DTLS    :Konvertu la vidindaĵon de Egiptaj Restaĵoj al prospera amuzparko
+STR_DTLS    :Konvertu la vidindaĵon de Egiptaj Restaĵoj en prosperan amuzparkon
 
 <Crumbly Woods>
 STR_SCNR    :Ĉifaj Arbaroj
@@ -3740,7 +3740,7 @@ STR_DTLS    :Granda parko kun bone-desegnitaj sed iomete malnovaj atrakcioj. Ans
 <Paradise Pier>
 STR_SCNR    :Paradizo-Enŝipigejo
 STR_PARK    :Paradizo-Enŝipigejo
-STR_DTLS    :Konvertu la enŝipigejon de ĉi tiu dormema urbeto al prospera atrakcio
+STR_DTLS    :Konvertu la enŝipigejon de ĉi tiu dormema urbeto en prosperan atrakcion
 
 <Lightning Peaks>
 STR_SCNR    :Fulmo-Montopintoj
@@ -3755,7 +3755,7 @@ STR_DTLS    :Bone-establita parko, kiu havas kelkajn problemojn
 <Rainbow Valley>
 STR_SCNR    :Ĉielarko-Valo
 STR_PARK    :Ĉielarko-Valo
-STR_DTLS    :La loka aŭtoritato de Ĉielarko-Valo ne permesos iun ajn ŝanĝadon de tero aŭ forigadon de grandaj arboj, sed vi devas disvolvi la areon al granda amuzparko
+STR_DTLS    :La loka aŭtoritato de Ĉielarko-Valo ne permesos iun ajn ŝanĝadon de tero aŭ forigadon de grandaj arboj, sed vi devas ellabori la areon en grandan amuzparkon
 
 <Thunder Rock>
 STR_SCNR    :Tondro-Ŝtonego
@@ -3771,7 +3771,7 @@ STR_DTLS    :Nur por amuziĝi!
 <Whispering Cliffs>
 STR_SCNR    :Flustrantaj Klifoj
 STR_PARK    :Flustrantaj Klifoj
-STR_DTLS    :Disvolvu la apudmarajn klifojn al prospera amuzparko
+STR_DTLS    :Ellaboru la apudmarajn klifojn en prosperan amuzparkon
 
 <Three Monkeys Park>
 STR_SCNR    :Tri-Simioj-Parko
@@ -3816,7 +3816,7 @@ STR_DTLS    :La lokaj homoj preferas mildajn atrakciojn, do via celo estas disvo
 <Jolly Jungle>
 STR_SCNR    :Gajega Ĝangalo
 STR_PARK    :Gajega Ĝangalo
-STR_DTLS    :Profunde en la ĝangalo estas granda areo de tero preta por esti transformita al amuzparko
+STR_DTLS    :Profunde en la ĝangalo estas granda areo de tero preta por esti transformita en amuzparkon
 
 <Hydro Hills>
 STR_SCNR    :Akvo-Montetoj
@@ -3861,7 +3861,7 @@ STR_DTLS    :La loka aŭtoritato ne permesos la konstruadon super la arbalteco e
 <Roman Village>
 STR_SCNR    :Romana Vilaĝo
 STR_PARK    :Romana Vilaĝo
-STR_DTLS    :Disvolvu ĉi tiun parkon kun romana temo, per aldoni atrakciojn kaj ondajn fervojojn
+STR_DTLS    :Ellaboru ĉi tiun parkon kun romana temo, per aldoni atrakciojn kaj ondajn fervojojn
 
 <Swamp Cove>
 STR_SCNR    :Marĉejo-Golfeto
@@ -3993,7 +3993,7 @@ STR_DTLS    :Eblas konstrui nur malmodernajn atrakciojn en ĉi tiu historia park
 <Icarus Park>
 STR_SCNR    :Ikaro-Parko
 STR_PARK    :Ikaro-Parko
-STR_DTLS    :Disvolvu ĉi tiun eksterteran parkon por maksimumigi sian profiton
+STR_DTLS    :Ellaboru ĉi tiun eksterteran parkon por maksimumigi sian profiton
 
 <Sunny Swamps>
 STR_SCNR    :Sunplenaj Marĉejoj
@@ -4165,12 +4165,12 @@ STR_NAME    :Muro de Lignaj Fostoj
 <Alpine Adventures>
 STR_SCNR    :Alpaj Aventuroj
 STR_PARK    :Alpaj Aventuroj
-STR_DTLS    :Konvertu skiejon ĉe malgranda monto al neĝtema amuzparko
+STR_DTLS    :Konvertu skiejon ĉe malgranda monto en neĝo-temitan amuzparkon
 
 <Amity Airfield>
 STR_SCNR    :Amikeco-Aerodromo
 STR_PARK    :Amikeco-Aerodromo
-STR_DTLS    :Konstruu amuzparkon kun flugotemo en ĉi tiu forlasita flughaveno
+STR_DTLS    :Konstruu amuzparkon kun flugado-temo en ĉi tiu forlasita flughaveno
 
 <Botany Breakers>
 STR_SCNR    :Botaniko-Rompiloj
@@ -4178,39 +4178,39 @@ STR_PARK    :Botaniko-Rompiloj
 STR_DTLS    :Via defio estas konstrui tre profitan parkon sur ĉi tiu paradiza insulo
 
 <Build your own Six Flags Belgium>
-STR_SCNR    :Konstrui je via propra Ses-Flagoj-Belgio
-STR_PARK    :Ses-Flagoj-Belgio
-STR_DTLS    :Konstruu vian propran version de ĉi tiu Eŭropa Ses-Flagoj parko
+STR_SCNR    :Konstrui je via propra Six Flags Belgium
+STR_PARK    :Six Flags Belgium
+STR_DTLS    :Konstruu vian propran version de ĉi tiu Eŭropa parko de Six Flags
 
 <Build your own Six Flags Great Adventure>
-STR_SCNR    :Konstrui je via propra Ses-Flagoj-Bonega-Aventuro
-STR_PARK    :Ses-Flagoj-Bonega-Aventuro
-STR_DTLS    :Uzu viajn kapablojn de desegnado por rekrei ĉi tiun parkon de Ses-Flagoj
+STR_SCNR    :Konstrui je via propra Six Flags Great Adventure
+STR_PARK    :Six Flags Great Adventure
+STR_DTLS    :Uzu viajn kapablojn de desegnado por rekrei ĉi tiun parkon de Six Flags
 
 <Build your own Six Flags Holland>
-STR_SCNR    :Konstrui je via propra Ses-Flagoj-Holando
-STR_PARK    :Ses-Flagoj-Holando
-STR_DTLS    :Konstruu ĉi tiun Eŭropan parkon de Ses-Flagoj tiel, kiel vi volas
+STR_SCNR    :Konstrui je via propra Six Flags Holland
+STR_PARK    :Six Flags Holland
+STR_DTLS    :Konstruu ĉi tiun Eŭropan parkon de Six Flags kiel vi volas
 
 <Build your own Six Flags Magic Mountain>
-STR_SCNR    :Konstrui je via propra Ses-Flagoj-Magia-Monto
-STR_PARK    :Ses-Flagoj-Magia-Monto
-STR_DTLS    :Krei vian propran version de ĉi tiu grandega parko de Ses-Flagoj
+STR_SCNR    :Konstrui je via propra Six Flags Magic Mountain
+STR_PARK    :Six Flags Magic Mountain
+STR_DTLS    :Kreu vian propran version de ĉi tiu grandega parko de Six Flags
 
 <Build your own Six Flags over Texas>
-STR_SCNR    :Konstrui je via propra Ses-Flagoj-sur-Teksaso
-STR_PARK    :Ses-Flagoj-sur-Teksaso
-STR_DTLS    :Komencante de nulo, konstruu la atrakciojn en ĉi tiu parko de Ses-Flagoj
+STR_SCNR    :Konstrui je via propra Six Flags over Texas
+STR_PARK    :Six Flags over Texas
+STR_DTLS    :Komencante de nulo, konstruu la atrakciojn en ĉi tiu parko de Six Flags
 
 <Build your own Six Flags Park>
-STR_SCNR    :Konstrui vian propran parko de Ses-Flagoj
-STR_PARK    :Ses-Flagoj
-STR_DTLS    :Konstruu vian propran desegnaĵon de parko de Ses-Flagoj - aŭ konstruu atrakciojn de aliaj parkoj de Ses-Flagoj, aŭ desegnu kaj konstruu viajn proprajn atrakciojn
+STR_SCNR    :Konstrui vian propran parkon de Six Flags
+STR_PARK    :Six Flags
+STR_DTLS    :Konstruu vian propran desegnaĵon de parko de Six Flags - aŭ konstruu atrakciojn de aliaj parkoj de Six Flags, aŭ desegnu kaj konstruu viajn proprajn atrakciojn
 
 <Bumbly Bazaar>
 STR_SCNR    :Burda Bazaro
 STR_PARK    :Burda Bazaro
-STR_DTLS    :Komencante kun malgranda bazaro, via defio estas konstrui atrakciojn kaj ondajn fervojojn por allogi pli da klientoj, do vi povas pliigi la profiton de la vendejoj kaj budoj
+STR_DTLS    :Komencante kun malgranda bazaro, via defio estas pliigi la profitan de vendejoj kaj budoj per konstrui atrakciojn kaj ondajn fervojojn por allogi pli da klientoj
 
 <Crazy Castle>
 STR_SCNR    :Freneza Kastelo
@@ -4230,12 +4230,12 @@ STR_DTLS    :Vi heredis malgrandan farmon, kaj via defio estas konstrui malgrand
 <Extreme Heights>
 STR_SCNR    :Ekstremaj Altaĵoj
 STR_PARK    :Ekstremaj Altaĵoj
-STR_DTLS    :Sen financaj limigoj, via defio estas disvolvi ĉi tiun dezertparkon, por allogi homojn, kiuj volas la plej ekscitajn atrakciojn
+STR_DTLS    :Sen financaj limigoj, via defio estas ellabori ĉi tiun dezertparkon por allogi homojn, kiuj volas la plejajn ekscitaĵojn
 
 <Factory Capers>
-STR_SCNR    :Fabrio-Kaprioloj
-STR_PARK    :Fabrio-Kaprioloj
-STR_DTLS    :Ĉi tiu forlasita fabriko estas okazo por konstrui amuzparkon kun mekanika temo
+STR_SCNR    :Fabriko-Kaprioloj
+STR_PARK    :Fabriko-Kaprioloj
+STR_DTLS    :Ĉi tiu forlasita fabriko-konstruaĵaro estas okazo por konstrui amuzparkon kun mekanika temo
 
 <Fungus Woods>
 STR_SCNR    :Fungo-Arbaro
@@ -4245,60 +4245,60 @@ STR_DTLS    :Via defio estas konstrui prosperan amuzparkon en Fungo-Arbaro, sed 
 <Ghost Town>
 STR_SCNR    :Fantoma Urbeto
 STR_PARK    :Fantoma Urbeto
-STR_DTLS    :Dungita de granda amuzparkofirmo, via celo estas konstrui gigantan amuzparkon de ondaj fervojoj ĉe forlasita minurbeto por tiu firmo
+STR_DTLS    :Dungita de granda amuzparkofirmo, via celo estas konstrui por ĝi gigantan amuzparkon de ondaj fervojoj ĉe forlasita minurbeto
 
 <Gravity Gardens>
 STR_SCNR    :Gravito-Ĝardenoj
 STR_PARK    :Gravito-Ĝardenoj
-STR_DTLS    :Via celo estas konstrui amuzparkon de ondaj fervojoj en la belaj Gravito-Ĝardenoj. La amuzparkon enhavos nur ondajn fervojojn!
+STR_DTLS    :Via celo estas konstrui amuzparkon de ondaj fervojoj en la belaj Gravito-Ĝardenoj. Neniuj aliaj atrakciotipoj, nur ondaj fervojoj!
 
 <Infernal Views>
 STR_SCNR    :Inferaj Vidoj
 STR_PARK    :Inferaj Vidoj
-STR_DTLS    :Parko, troviĝas malfirme sur lafoŝtonego kun riveroj de magmo
+STR_DTLS    :Parko troviĝanta malfirme sur lafoŝtonego kun riveroj de magmo
 
 <Lucky Lake>
 STR_SCNR    :Bonŝanca Lago
 STR_PARK    :Bonŝanca Lago
-STR_DTLS    :Kun senlima mono, sed malfacila laga loko, ĉi tiu parko estos defio por disvolvi kaj por administri
+STR_DTLS    :Kun senlima mono, sed malfacila lagoloko, ĉi tiu parko estos defio por ellabori kaj administri
 
 <Rainbow Summit>
 STR_SCNR    :Ĉielarko-Supraĵo
 STR_PARK    :Ĉielarko-Supraĵo
-STR_DTLS    :Konstruita ĉe montetoflanko, la aŭtoritato malpermesas altajn konstruaĵojn. Ĉu vi povas disvolvi la parkon, kaj farigi ĝin sukcesa?
+STR_DTLS    :Konstruita ĉe montetoflanko, la aŭtoritato malpermesas altajn konstruaĵojn. Ĉu vi povas ellabori la parkon kaj farigi ĝin sukcesa?
 
 <Six Flags Belgium>
-STR_SCNR    :Ses-Flagoj-Belgio
+STR_SCNR    :Six Flags Belgium
 STR_PARK    :Six Flags Belgium
-STR_DTLS    :Provu administri kaj plibonigi ĉi tiun parkon de Ses-Flagoj
+STR_DTLS    :Provu administri kaj plibonigi ĉi tiun parkon de Six Flags
 
 <Six Flags Great Adventure>
-STR_SCNR    :Ses-Flagoj-Bonega-Aventuro
+STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Konstruu la mankantajn atrakciojn de Ses-Flagoj, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parkon! Sed ne forgesu vian ĉefan celon: por allogi pli da gastoj al la parko!
+STR_DTLS    :Konstruu la mankantajn atrakciojn de Six Flags, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parkon! Sed ne forgesu vian ĉefan celon: por allogi pli da gastoj al la parko!
 
 <Six Flags Holland>
-STR_SCNR    :Ses-Flagoj-Holando
+STR_SCNR    :Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Provu administri kaj plibonigi ĉi tiun parkon de Ses-Flagoj
+STR_DTLS    :Provu administri kaj plibonigi ĉi tiun parkon de Six Flags
 
 <Six Flags Magic Mountain>
-STR_SCNR    :Ses-Flagoj-Magia-Monto
+STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Konstruu la mankantajn atrakciojn de Ses-Flagoj, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parko! Sed ne forgesu vian ĉefan celon: por repagi vian prunton, konservante la parkvaloro!
+STR_DTLS    :Konstruu la mankantajn atrakciojn de Six Flags, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parkon! Sed ne forgesu vian ĉefan celon: por repagi vian prunton, konservante la parkvaloron!
 
 <Six Flags over Texas>
-STR_SCNR    :Ses-Flagoj-sur-Teksaso
+STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Konstruu la mankantajn atrakciojn de Ses-Flagoj, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parkon! Sed ne forgesu vian ĉefan celon: por allogi pli da gastoj al la parko!
+STR_DTLS    :Konstruu la mankantajn atrakciojn de Six Flags, aŭ kreu viajn proprajn desegnaĵojn por plibonigi la parkon! Sed ne forgesu vian ĉefan celon: por allogi pli da gastoj al la parko!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
 ###############################################################################
 <Africa - African Diamond Mine>
-STR_SCNR    :Afriko - Afrika Diamanta Mino
+STR_SCNR    :Afriko - Afrika Diamanto-Mino
 STR_PARK    :Minoj de Afriko
-STR_DTLS    :Vi heredis ne plu uzitan diamantan minejon, kaj trovis valoran diamanton. Vi decidas investi tiun monon por konstrui mondfaman amuzparkon.
+STR_DTLS    :Vi heredis ne plu uzitan diamanto-minejon, kaj trovis valoran diamanton. Vi decidas investi tiun monon por konstrui mondfaman amuzparkon.
 
 <Africa - Oasis>
 STR_SCNR    :Afriko - Oazo
@@ -4306,79 +4306,79 @@ STR_PARK    :Miraĝo-Frenezo
 STR_DTLS    :Dezerta oazo estis malkovrita kaj provizus belan lokon por parko. Transporto al la oazo estis provizita.
 
 <Africa - Victoria Falls>
-STR_SCNR    :Afriko - Viktoria Akvofalo
+STR_SCNR    :Afriko - Akvofaloj de Viktoria
 STR_PARK    :Super La Rando
-STR_DTLS    :Oni konstruis digon ofertante abundan malmultekostan hidroelektran potencon kun kiu administri parkon. Vi devas atingi altan parkan valoron por helpi repagi la prunton por la digo.
+STR_DTLS    :Digo konstruita oferas abundan malmultekostan hidroelektran potencon por administri parkon. Vi devas atingi altan parkvaloron por helpi repagi la prunton de la digo.
 
 <Antarctic - Ecological Salvage>
 STR_SCNR    :Antarkto - Ekologia Savo
 STR_PARK    :Glaciaj Aventuroj
-STR_DTLS    :La media agentejo komisiis vin transformi malnovan naftorafinejon, ekologian malbelaĵon, en supran turisman vidindaĵon. Tereno estas malmultekosta sed pruntinterezo estas alta. Vi povas vendi la malnovajn konstruaĵojn por savado.
+STR_DTLS    :La biomedia agentejo komisiis vin por transformi malnovan nafto-rafinejon, ekologian malbelaĵon, en supran turismo-vidindaĵon. Tereno estas malmultekosta sed pruntinterezo estas alta. Vi povas vendi la malnovajn konstruaĵojn por savado.
 
 <Asia - Great Wall of China Tourism Enhancement>
 STR_SCNR    :Azio - Plibonigo de Turismo de la Granda Ĉina Muro
 STR_PARK    :La Granda Ĉina Muro
-STR_DTLS    :La aŭtoritatoj decidis plibonigi turismon ĉirkaŭ la Granda Muro konstruante amuzparkon sur la apuda tereno. Mono estas neniu celo!
+STR_DTLS    :La aŭtoritatoj decidis plibonigi turismon ĉirkaŭ la Granda Muro per konstrui amuzparkon sur la apuda tereno. Mono estas neniu problemo!
 
 <Asia - Japanese Coastal Reclaim>
 STR_SCNR    :Azio - Japana Marborda Reakiro
 STR_PARK    :Okinavo-Marbordo
-STR_DTLS    :Ekzistanta parko elĉerpiĝis de spaco. Via sola eblo estas konstrui en la maron, kaj tial vi elprenis prunton. Altecaj limigoj sur via konstruaĵo estas observigitaj pro fondaĵoj kaj tertremo-risko.
+STR_DTLS    :Ekzistanta parko elĉerpiĝis de spaco. Via sola eblo estas konstrui sur la maron, kaj tial vi elprenis prunton. Alteco-limigoj de viaj konstruaĵoj estas observigitaj pro fondaĵoj kaj tertremo-risko.
 
 <Asia - Maharaja Palace>
 STR_SCNR    :Azio - Maharaĝo-Palaco
 STR_PARK    :Parko-Maharaĝo
-STR_DTLS    :Vi estis komisiita de la Maharaĝo alporti amuzadon al la granda loka loĝantaro. Konstruu parkon inspiritan de la Maharaĝo-Palaco.
+STR_DTLS    :Vi estis komisiita de la Maharaĝo por alporti amuzadon al la granda loka loĝantaro. Konstruu parkon inspiritan de la palaco de Maharaĝo.
 
 <Australasia - Ayers Rock>
 STR_SCNR    :Aŭstralazio - Uluruo
 STR_PARK    :Uluru-Aventuro
-STR_DTLS    :Vi helpas aborigenojn konstrui parkon kiel parton de kultura konscia programo. Vi bezonas akiri multan gaston por eduki ilin en la unika heredaĵo de la aborigenoj.
+STR_DTLS    :Vi helpas aborigenojn per konstrui parkon kiel parto de programo de kultura konscio. Vi bezonas akiri multajn gastojn por eduki ilin pri la unika heredaĵo de la aborigenoj.
 
 <Australasia - Fun at the Beach>
 STR_SCNR    :Aŭstralazio - Amuzo ĉe la Plaĝo
-STR_PARK    :Kradostada Festo ĉe la Plaĝo
-STR_DTLS    :La marviva parko de loka entreprenisto eksenmoniĝis. Vi jam funkciigas malgrandan parkon kaj aĉetas la alian parkon de la konstrua kompanio. Disvolvu grandan kombinitan parkon.
+STR_PARK    :Kradostado-Festo ĉe la Plaĝo
+STR_DTLS    :La marvivo-parko de loka entreprenisto eksenmoniĝis. Vi jam funkciigas malgrandan parkon, kaj aĉetas la alian parkon de la konstruo-kompanio. Ellaboru grandan kombinitan parkon.
 
 <Europe - European Cultural Festival>
 STR_SCNR    :Eŭropo - Eŭropa Kultura Festivalo
 STR_PARK    :Eŭropa Ekstravagancaĵo
-STR_DTLS    :Vi estis alportita por transpreni Eŭropan Kulturan Vizitantan Vidindaĵon kaj devas pliigi la nombron de gastoj por repagi la EU-subvencion antaŭ la fino de la aktuala Eŭropa parlamenta termino.
+STR_DTLS    :Vi estis alportita por transpreni Eŭropan Kulturan Vizitanto-Vidindaĵon kaj devas pliigi la nombron de gastoj por repagi la EU-subvencion antaŭ la fino de la aktuala Eŭropa parlamento-oficdaŭro.
 
 <Europe - Renovation>
 STR_SCNR    :Eŭropo - Renovigo
 STR_PARK    :El La Cindroj
-STR_DTLS    :Malnova parko falis en kadukiĝon. Vi akiras subvencion de Eŭropa Unio por redoni ĉi tiun senigitan areon al sia iama gloro! Vi bezonas renovigi la parkon kaj repagi la subvencion.
+STR_DTLS    :Malnova parko falis je kadukiĝo. Vi akiras subvencion de Eŭropa Unio por redoni ĉi tiun senigitan areon al sia iama gloro! Vi bezonas renovigi la parkon kaj repagi la subvencion.
 
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :Nordameriko - Ekstrema Havaja Insulo
 STR_PARK    :Komika Waikiki
-STR_DTLS    :La homoj de Havajo estas enuigitaj de surfado kaj serĉas ion pli intensan. Vi devas konstrui parkon ĉi-rilate, por subteni la vidindaĵan valoron de la areo alta.
+STR_DTLS    :La homoj de Havajo estas enuigitaj de surfado kaj serĉas ion pli intensan. Vi devas konstrui parkon ĉi-rilate por subteni la vidindaĵo-valoron de la areo alta.
 
 <North America - Grand Canyon>
 STR_SCNR    :Nordameriko - Granda Kanjono
 STR_PARK    :Kanjono-Katastrofoj
-STR_DTLS    :Vi devas konstrui parkon sur limigita tereno ambaŭflanke de ĉi tiu natura trezoro - vi havas la oportunecon aĉeti najbaran terenon de la Indiĝenaj Amerikanoj. Vi devas kompletigi la celon daŭrigi la loĝantaron de la loka vilaĝo.
+STR_DTLS    :Vi devas konstrui parkon sur limigita tereno ambaŭflanke de ĉi tiu natura trezoro - vi havas la oportunecon por aĉeti najbaran terenon de la Indiĝenaj Amerikanoj. Vi devas kompletigi la celon por daŭrigi la loĝantaron de la loka vilaĝo.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :Nordameriko - Paradizo de Ondaj Fervojoj
 STR_PARK    :Paradizo de Ondaj Fervojoj
-STR_DTLS    :Vi estas sukcesa komerca magnato sur longa libertempo, kiu deziras uzi ĉi tiun tempon transformante la urban parkon en Onda-Fervojo-Paradizo. Mono estas neniu celo!
+STR_DTLS    :Vi estas sukcesa komerca magnato prenanta longan libertempon, kiu deziras uzi ĉi tiun tempon per transformi la urban parkon en Onda-Fervojo-Paradizon. Mono estas neniu problemo!
 
 <South America - Inca Lost City>
 STR_SCNR    :Sudameriko - La Perdita Inkaa Urbo
-STR_PARK    :La Fondinto de la Perdita Urbo
-STR_DTLS    :Por plue akceli la lokan turismon, vi devas konstrui parkon akordan kun sia ĉirkaŭaĵo kaj kun altecaj limigoj.
+STR_PARK    :Fondinto de la Perdita Urbo
+STR_DTLS    :Por plue akceli lokan turismon, vi devas konstrui parkon, kiu kaj akordas kun sia ĉirkaŭaĵo, kaj observas limigojn de alteco.
 
 <South America - Rain Forest Plateau>
 STR_SCNR    :Sudameriko - Pluvarbaro-Altebenaĵo
 STR_PARK    :Pluvarbaro-Kapriolo
-STR_DTLS    :Spaco estas limigita en la altvalora pluvarbaro - vi devas plenegigi kiel eble plej multe en la ekzistantan senarbejon, por havigi vivipovan alternativon al la loka ligna industrio.
+STR_DTLS    :Spaco estas limigita en la altvalora pluvarbaro - vi devas plenegigi kiel eble plej multe en la ekzistantan senarbejon, por havigi vivipovan alternativon je la loka ligno-industrio.
 
 <South America - Rio Carnival>
 STR_SCNR    :Sudameriko - La Karnavalo de Rio
 STR_PARK    :Sukerpano-Marbordoj
-STR_DTLS    :Vi administras malgrandan parkon proksime de Rio-de-Ĵanejro, sed la banko alvokis vian prunton. Vi devas rapide pliigi vian enspezan kapablon por repagi ĉi tiun neatenditan ŝuldon.
+STR_DTLS    :Vi administras malgrandan parkon proksime de Rio-de-Ĵanejro, sed la banko alvokis vian prunton. Vi devas rapide pliigi vian enspezado-kapablon por repagi ĉi tiun neatenditan ŝuldon.
 
 ###############################################################################
 ## Time Twister Scenarios
@@ -4386,62 +4386,62 @@ STR_DTLS    :Vi administras malgrandan parkon proksime de Rio-de-Ĵanejro, sed l
 <Dark Age - Castle>
 STR_SCNR    :Malluma Epoko - Kastelo
 STR_PARK    :Klifoflanko-Kastelo
-STR_DTLS    :Lokaj membroj de la batala rekonstruada socio estas sufiĉe seriozaj pri sia ŝatokupo. Ili konfidis vin la laboron konstrui Malluman Epokan amuzparkon sur la tereno de Klifoflanko-Kastelo.
+STR_DTLS    :Lokaj anoj de la socio de batalo-rekonstruoj estas sufiĉe seriozaj pri ilia ŝatokupo. Ili konfidis al vi la laboron de konstrui amuzparkon kun temo de Malluma Epoko sur la tereno de Klifoflanko-Kastelo.
 
 <Dark Age - Robin Hood>
 STR_SCNR    :Malluma Epoko - Kapuĉa Robĉjo
 STR_PARK    :Arbaro Sherwood
-STR_DTLS    :Por liberigi riĉaĵon de riĉuloj kaj disdoni ĝin al senhavuloj, vi kaj viaj Gajaj Viroj decidis konstrui amuzparkon en Arbaro Sherwood.
+STR_DTLS    :Por liberigi la riĉaĵon de riĉuloj kaj disdoni ĝin al senhavuloj, vi kaj viaj Gajaj Viroj decidis konstrui amuzparkon en Arbaro Sherwood.
 
 <Future - First Encounters>
 STR_SCNR    :Estonto - Unuaj Renkontoj
-STR_PARK    :Ekstertera Ekstravaganco
-STR_DTLS    :Vivo estis malkovrita sur malproksima planedo. Konstruu eksterteranan parkon por profiti de la senprecedenca ondo de intereso.
+STR_PARK    :Ekstertera Ekstravagancaĵo
+STR_DTLS    :Vivo estis malkovrita ĉe malproksima planedo. Konstruu eksterteran parkon por profiti de la senprecedenca ondo de intereso.
 
 <Future - Future World>
 STR_SCNR    :Estonto - Estonta Mondo
 STR_PARK    :Ĝemeloj-Urbo
-STR_DTLS    :Montru vian inventeman, utopian vizion de la estonteco - kreu futurisma parko-dezajno, kiu enkorpigas plej modernajn atrakciojn.
+STR_DTLS    :Montru vian inventeman, utopian konceptadon de la estonteco - kreu futurisman parko-dezegnaĵon, kiu enkorpigas la plej modernajn atrakciojn.
 
 <Mythological - Animatronic Film Set>
 STR_SCNR    :Mitologia - Animatronika Filmado-Loko
 STR_PARK    :Animatronikaj Burleskaĵoj
-STR_DTLS    :Vi ricevis la taskon funkciigi kaj plibonigi ekzistantan amuzparkon, kiu estis konstruita sur malnova filmado-loko. Konstruu tributon al la pioniraj haltmovadaj animistoj, kiuj unue vivigis mitajn kreitojn sur la film-ekrano.
+STR_DTLS    :Vi ricevis la taskon de funkciigi kaj plibonigi ekzistantan amuzparkon, kiu estis konstruita ĉe malnova filmado-loko. Konstruu tributon al la pioniraj haltmovado-animistoj, kiuj unue vivigis mitajn kreitojn sur la film-ekranon.
 
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :Mitologia - Naskiĝejo de Civilizo
 STR_PARK    :Mitologia Frenezo
-STR_DTLS    :Vi posedas insulon kun aparta arkeologia valoro. Vi decidis financi ĝian konservadon konstruante amuzparkon bazitan sur la riĉa Mitologia heredaĵo de la areo.
+STR_DTLS    :Vi posedas insulon de aparta arkeologia valoro. Vi decidis financi ĝian konservadon per konstrui amuzparkon surbaze de la riĉa Mitologia heredaĵo de la areo.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :Prahistoria - Post la Asteroido
 STR_PARK    :Kratero-Buĉado
-STR_DTLS    :Vi posedas polvan malnovan meteor-krateron. En la vera entreprenema vigleco, vi decidis konstrui asteroidan amuzparkon kaj konverti vian ŝajne senvaloran landon en konsiderindan riĉaĵon.
+STR_DTLS    :Vi posedas polvan malnovan meteor-krateron. Per vera entreprenema vigleco, vi decidis konstrui asteroidan amuzparkon kaj konverti vian ŝajne senvaloran bienon en konsiderindan riĉaĵon.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prahistoria - Ĵurasa Safario
 STR_PARK    :Onda-Fervojo-Dinosaŭro
-STR_DTLS    :Vi ricevis la taskon konstrui Ĵurasa-epokan amuzparkon. Por optimumigi la aliron de viaj vizitantoj al la ekzotikaj plantoj kaj bestaj ekspoziciaĵoj, vi bezonos konstrui atrakciojn irantajn super kaj en la valon.
+STR_DTLS    :Vi ricevis la taskon de konstrui Ĵurasa-epokan amuzparkon. Por optimumigi la aliron de viaj vizitantoj al la ekzotikaj ekspoziciaĵoj da kreskaĵoj kaj bestoj, vi bezonos konstrui atrakciojn irantajn super kaj en la valon.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :Prahistoria - Ŝtonepoko
 STR_PARK    :Rokaj Vagaĵoj
-STR_DTLS    :Malhelpi la ŝoseajn ellaborantojn kaj konservi la misterajn antikvajn ŝtonajn rondojn, vi bezonos konstrui Ŝtonepokan amuzparkon kaj gajni profiton. Tamen, allogi vizitantojn povus esti defio, ĉar la tereno estas iom negastama.
+STR_DTLS    :Por malhelpi la ŝoseajn ellaborantojn kaj konservi la misterajn antikvajn ŝtono-rondojn, vi bezonos konstrui Ŝtonepokan amuzparkon kaj gajni profiton. Tamen, eble estos defio por allogi vizitantojn, ĉar la tereno estas iom negastema.
 
 <Roaring Twenties - Prison Island>
-STR_SCNR    :Muĝadaj Dudekaj Jaroj - Prizono-Insulo
+STR_SCNR    :Muĝadaj Dudekaj - Prizono-Insulo
 STR_PARK    :Alkatrazo
-STR_DTLS    :La fifama Mallibereja Insulo - kies loĝantaro iam ŝveliĝis per piratistoj kaj eldevigantoj - nun estas aĉetebla. Vi decidis transformi ĝin en supran turisman vidindaĵon, kaj mono ne estas celo.
+STR_DTLS    :La fifama Mallibereja Insulo - kies loĝantaro iam ŝveliĝis per piratistoj kaj eldevigantoj - nun estas aĉetebla. Vi decidis transformi ĝin en supran turisman vidindaĵon, kaj mono estas neniu problemo.
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    :Muĝadaj Dudekaj Jaroj - Schneider-Trofeo
+STR_SCNR    :Muĝadaj Dudekaj - Schneider-Trofeo
 STR_PARK    :Schneider-Marbordoj
-STR_DTLS    :La 75-a datreveno de la Schneider-Trofea venko de via avo venas en kelkaj jaroj. Vi honoros lian atingon konstruante amuzparkon surbaze de la fama hidroplana vetkuro.
+STR_DTLS    :La 75-a datreveno de la Schneider-Trofeo-venko de via avo venas en kelkaj jaroj. Vi honoros lian atingon per konstrui amuzparkon surbaze de la fama hidroplano-vetkuro.
 
 <Roaring Twenties - Skyscrapers>
-STR_SCNR    :Muĝadaj Dudekaj Jaroj - Ĉielskrapantoj
+STR_SCNR    :Muĝadaj Dudekaj - Ĉielskrapantoj
 STR_PARK    :Metropolo
-STR_DTLS    :Vi posedas malplenan teron proksime de la malaltaĵa parto de la urbo. Por akiri la plej grandan parton de via urba propraĵo, konstruu ĉielskrapanto-teman amuzparkon inspiritan de la altegiĝia artodekora arkitekturo de la jaroj dudekaj.
+STR_DTLS    :Vi posedas malplenan teron proksime de la malaltaĵo-parto de la urbo. Por akiri la plej grandan parton de via urba propraĵo, konstruu ĉielskrapanto-temitan amuzparkon inspiritan de la altegiĝia artodekora arkitekturo de la dudekaj.
 
 <Rock 'n' Roll - Flower Power>
 STR_SCNR    :Rokenrolo - La Potenco de Floroj
@@ -4451,7 +4451,7 @@ STR_DTLS    :Granda jara muzikfestivalo okazas sur via tereno. Konstruu mojosan 
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :Rokenrolo - Rokenrolo
 STR_PARK    :La Revivigo de Rokenrolo
-STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la posedanton doni al ĝi eksmodan rokenrolan renovigon kaj transformi la lokon en sukcesan ejon.
+STR_DTLS    :Ĉi tiu maljuniĝa amuzparko vidis pli bonajn tagojn. Helpu la posedanton doni al ĝi eksmodan rokenrolan renovigon, kaj transformi la lokon en sukcesan ejon.
 
 ###############################################################################
 ## Official Custom Content Scenarios
