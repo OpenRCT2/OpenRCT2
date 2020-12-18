@@ -13,6 +13,7 @@
 #    ifndef DISABLE_NETWORK
 
 #        include "../Context.h"
+#        include "../config/Config.h"
 #        include "../network/Socket.h"
 #        include "Duktape.hpp"
 #        include "ScriptEngine.h"
