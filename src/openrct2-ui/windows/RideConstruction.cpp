@@ -2914,18 +2914,16 @@ static void window_ride_construction_update_widgets(rct_window* w)
         {
             // Enable helix
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
-            if (rideType != RIDE_TYPE_SPLASH_BOATS && !gCheatsEnableAllDrawableTrackPieces)
-                window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::Empty;
+            if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+                window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
         }
     }
 
     if (is_track_enabled(TRACK_SLOPE_STEEP))
     {
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
-        if (rideType == RIDE_TYPE_SPLASH_BOATS && !gCheatsEnableAllDrawableTrackPieces)
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::Empty;
+        if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
     }
 
     int32_t x;
