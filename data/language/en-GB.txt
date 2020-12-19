@@ -796,14 +796,14 @@ STR_1410    :Vertical Tower
 STR_1411    :{STRINGID} in the way
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
-STR_1414    :{DURATION}
+STR_1414    :{SMALLFONT}{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocity
 STR_1416    :{WINDOW_COLOUR_2}Altitude
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
-STR_1419    :{VELOCITY}
-STR_1420    :{LENGTH}
-STR_1421    :{COMMA16}g
+STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
+STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
+STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
 STR_1422    :Logging data from {POP16}{STRINGID}
 STR_1423    :Queue line path
 STR_1424    :Footpath
@@ -1576,7 +1576,7 @@ STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :Park Rating: {COMMA16}
-STR_2222    :{STRINGID}
+STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
@@ -1793,7 +1793,7 @@ STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
-STR_2454    :{CURRENCY2DP} -
+STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2457    :Show financial accounts
 STR_2458    :Show graph of cash (less loan) over time
 STR_2459    :Show graph of park value over time
@@ -3611,7 +3611,7 @@ STR_6356    :Spawns ducks if park contains water
 STR_6357    :Removes all ducks from the map
 STR_6358    :Page {UINT16}
 STR_6359    :{POP16}{POP16}Page {UINT16}
-STR_6360    :{COMMA32}
+STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Enable lighting effects on rides (experimental)
 STR_6362    :If enabled, vehicles for tracked rides will be lit up at night.
 STR_6363    :Copied text to clipboard
