@@ -2249,8 +2249,9 @@ static void window_ride_construction_invalidate(rct_window* w)
         {
             stringId = STR_LOG_BUMPS;
         }
-        else if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK
-                && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
+        else if (
+            stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE
+            && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
         {
             stringId = STR_BOOSTER;
         }
