@@ -4389,7 +4389,7 @@ STR_PARK    :Klifoflanko-Kastelo
 STR_DTLS    :Lokaj anoj de la socio de batalo-rekonstruoj estas sufiĉe seriozaj pri ilia ŝatokupo. Ili konfidis al vi la laboron de konstrui amuzparkon kun temo de Malluma Epoko sur la tereno de Klifoflanko-Kastelo.
 
 <Dark Age - Robin Hood>
-STR_SCNR    :Malluma Epoko - Kapuĉa Robĉjo
+STR_SCNR    :Malluma Epoko - Robin Hood
 STR_PARK    :Arbaro Sherwood
 STR_DTLS    :Por liberigi la riĉaĵon de riĉuloj kaj disdoni ĝin al senhavuloj, vi kaj viaj Gajaj Viroj decidis konstrui amuzparkon en Arbaro Sherwood.
 
