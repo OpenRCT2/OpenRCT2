@@ -12231,11 +12231,11 @@ namespace SingleRailRC
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 1), 0, 0, 1,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 2), 0, 0, 1,
                         24, 43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 2), 0, 0, 32,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 1), 0, 0, 32,
                         2, 43, height, 0, 4, height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session->TrackColours[SCHEME_SUPPORTS]);
@@ -12243,11 +12243,11 @@ namespace SingleRailRC
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 3), 0, 0, 1,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 4), 0, 0, 1,
                         24, 43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 4), 0, 0, 32,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 3), 0, 0, 32,
                         2, 43, height, 0, 4, height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session->TrackColours[SCHEME_SUPPORTS]);
@@ -12277,11 +12277,11 @@ namespace SingleRailRC
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 1), 0, 0, 1, 24,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 2), 0, 0, 1, 24,
                         43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 2), 0, 0, 32, 2,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 1), 0, 0, 32, 2,
                         43, height, 0, 4, height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session->TrackColours[SCHEME_SUPPORTS]);
@@ -12289,11 +12289,11 @@ namespace SingleRailRC
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 3), 0, 0, 1, 24,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 4), 0, 0, 1, 24,
                         43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 4), 0, 0, 32, 2,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 3), 0, 0, 32, 2,
                         43, height, 0, 4, height);
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_TUBES, 4, 0, height + 4, session->TrackColours[SCHEME_SUPPORTS]);
@@ -12338,22 +12338,22 @@ namespace SingleRailRC
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 7), 0, 0, 1,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 8), 0, 0, 1,
                         24, 43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 8), 0, 0, 32,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 7), 0, 0, 32,
                         2, 43, height, 0, 4, height);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 9), 0, 0, 1,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 10), 0, 0, 1,
                         24, 43, height, 29, 4, height + 2);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 10), 0, 0,
-                        32, 2, 43, height, 0, 4, height);
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_LIFT_TRACK_SMALL_FLAT_TO_STEEP + 9), 0, 0, 32,
+                        2, 43, height, 0, 4, height);
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -12377,11 +12377,11 @@ namespace SingleRailRC
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 7), 0, 0, 32, 2,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 8), 0, 0, 32, 2,
                         43, height, 0, 4, height);
                     PaintAddImageAsParentRotated(
                         session, direction,
-                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 8), 0, 0, 1, 24,
+                        session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_FLAT_TO_STEEP + 7), 0, 0, 1, 24,
                         43, height, 29, 4, height + 2);
                     break;
                 case 2:
