@@ -122,6 +122,8 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
+
+    NumImagesLoaded = GetImageTable().GetCount();
 }
 
 uint32_t TerrainSurfaceObject::GetImageId(

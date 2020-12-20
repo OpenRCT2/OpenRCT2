@@ -65,7 +65,7 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, uint8
     for (size_t i = 0; i < MAX_TERRAIN_SURFACE_OBJECTS; i++)
     {
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, i));
-        if (surfaceObj != nullptr)
+        if (surfaceObj != nullptr && surfaceObj->NumImagesLoaded > 1)
         {
             gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
             gDropdownItemsArgs[itemIndex] = surfaceObj->IconImageId;

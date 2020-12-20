@@ -307,6 +307,14 @@ static uint32_t get_surface_image(
     const paint_session* session, uint8_t index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
+    if (!is_csg_loaded() && index >= TERRAIN_RCT2_COUNT)
+    {
+        if (index == TERRAIN_ROOF_GREY)
+            index = TERRAIN_ROCK;
+        else
+            index = TERRAIN_DIRT;
+    }
+
     auto image = static_cast<uint32_t>(SPR_NONE);
     auto obj = get_surface_object(index);
     if (obj != nullptr)

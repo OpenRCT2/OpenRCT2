@@ -10,6 +10,7 @@
 - Feature: [#13512] [Plugin] Add item separators to list view.
 - Feature: [#13583] Add allowed_hosts to plugin section of config.
 - Feature: [#13587] Enhanced track designer with ability to add/remove scenery and footpaths.
+- Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Change: [#13346] Change FootpathScenery to FootpathAddition in all occurrences.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
