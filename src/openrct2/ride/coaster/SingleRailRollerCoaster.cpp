@@ -13058,7 +13058,6 @@ namespace SingleRailRC
         }
     }
 
-
     TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType)
     {
         switch (trackType)

@@ -4414,17 +4414,17 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
     ride_ratings_apply_scenery(&ratings, ride, 6693);
 
     if (ride->inversions == 0)
-        ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2);//Done
+        ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2); // Done
 
-    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2);//Done
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2); // Done
 
     if (ride->inversions == 0)
     {
-        ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);//Done
-        ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);//Done
+        ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2); // Done
+        ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);                     // Done
     }
 
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648);//Done
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648); // Done
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
@@ -4435,7 +4435,6 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
 
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
-
 
 #pragma endregion
 
