@@ -348,7 +348,7 @@ namespace OpenRCT2
 
         // Whole digits
         [[maybe_unused]] auto digitSep = GetDigitSeparator();
-        size_t groupLen = 0;
+        [[maybe_unused]] size_t groupLen = 0;
         do
         {
             if constexpr (TDigitSep)
