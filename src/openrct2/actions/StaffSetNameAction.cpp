@@ -26,6 +26,12 @@ StaffSetNameAction::StaffSetNameAction(uint16_t spriteIndex, const std::string& 
 {
 }
 
+void StaffSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("spriteIndex", _spriteIndex);
+    visitor.Visit("name", _name);
+}
+
 uint16_t StaffSetNameAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
