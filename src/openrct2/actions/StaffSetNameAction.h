@@ -22,6 +22,7 @@ public:
     StaffSetNameAction() = default;
     StaffSetNameAction(uint16_t spriteIndex, const std::string& name);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
     void Serialise(DataSerialiser & stream) override;
     GameActions::Result::Ptr Query() const override;
