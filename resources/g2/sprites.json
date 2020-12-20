@@ -9970,14 +9970,14 @@
     },
     {
         "path": "track/raptor/medium_turn_left_bank_gentle_up_3_3.png",
-        "x_offset": -21,
-        "y_offset": 6,
+        "x_offset": 0,
+        "y_offset": 0,
         "palette": "keep"
     },
     {
         "path": "track/raptor/medium_turn_left_bank_gentle_up_3_4.png",
-        "x_offset": 0,
-        "y_offset": 0,
+        "x_offset": 11,
+        "y_offset": -2,
         "palette": "keep"
     },
     {
@@ -10061,13 +10061,13 @@
     {
         "path": "track/raptor/medium_turn_right_bank_gentle_up_2_3.png",
         "x_offset": 0,
-        "y_offset": 6,
+        "y_offset": 0,
         "palette": "keep"
     },
     {
         "path": "track/raptor/medium_turn_right_bank_gentle_up_2_4.png",
-        "x_offset": 0,
-        "y_offset": 0,
+        "x_offset": -32,
+        "y_offset": -2,
         "palette": "keep"
     },
     {
