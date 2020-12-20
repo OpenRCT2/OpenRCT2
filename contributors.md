@@ -163,6 +163,7 @@ The following people are not part of the development team, but have been contrib
 * Ben Johnston (gsckoco)
 * (evilclownattack)
 * Adam Bloom (adam-bloom)
+* Christopher Sund (csunday95)
 
 ## Toolchain
 * (Balletie) - macOS
