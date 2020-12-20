@@ -9911,7 +9911,7 @@ namespace SingleRailRC
                             session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 1), 0, 0, 32, 20, 0,
                             height, 0, 6, height + 28);
                         metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 2, 0, height + 9, session->TrackColours[SCHEME_SUPPORTS]);
+                            session, METAL_SUPPORTS_TUBES, 2, 4, height + 1, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9923,7 +9923,7 @@ namespace SingleRailRC
                             session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 7), 0, 0, 32, 20, 0,
                             height, 0, 6, height + 28);
                         metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 3, 0, height + 9, session->TrackColours[SCHEME_SUPPORTS]);
+                            session, METAL_SUPPORTS_TUBES, 3, 4, height + 1, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10116,7 +10116,7 @@ namespace SingleRailRC
                             session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 37), 0, 0, 32, 20, 0,
                             height, 0, 6, height + 28);
                         metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 3, 0, height + 9, session->TrackColours[SCHEME_SUPPORTS]);
+                            session, METAL_SUPPORTS_TUBES, 3, 4, height + 1, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10128,7 +10128,7 @@ namespace SingleRailRC
                             session->TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_BARREL_ROLL + 43), 0, 0, 32, 20, 0,
                             height, 0, 6, height + 28);
                         metal_a_supports_paint_setup(
-                            session, METAL_SUPPORTS_TUBES, 1, 0, height + 9, session->TrackColours[SCHEME_SUPPORTS]);
+                            session, METAL_SUPPORTS_TUBES, 1, 4, height + 1, session->TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
                 if (direction == 0 || direction == 3)
