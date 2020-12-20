@@ -7221,6 +7221,18 @@
         "palette": "keep"
     },
     {
+        "path": "track/raptor/preview_track.png",
+        "x_offset": 9,
+        "y_offset": 3,
+        "palette": "keep"
+    },
+    {
+        "path": "track/raptor/preview_support.png",
+        "x_offset": 24,
+        "y_offset": 13,
+        "palette": "keep"
+    },
+    {
         "path": "track/raptor/flat_1.png",
         "x_offset": -18,
         "y_offset": 2,
