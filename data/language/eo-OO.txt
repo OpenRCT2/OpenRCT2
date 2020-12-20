@@ -107,7 +107,7 @@ STR_0520    :Dokplatformo, kie gastoj povas veturigi/remigi iliajn proprajn akvo
 STR_0521    :Onda fervojo rapida kaj kurboplena, kun subitaj kurbiĝoj kaj krutaj malleviĝoj. La intenseco verŝajne eblos trea.
 STR_0522    :Pli malgranda onda fervojo, kie la rajdantoj sidas super la trako, kun neniu ĉaro ĉirkaŭ de ili
 STR_0523    :La rajdantoj veturas malrapide en ŝaltitaj veturiloj laŭ trakeca vojo
-STR_0524    :La liberfaloveturilo estas lanĉita pneŭmatike por supreniri altan ŝtalan turon. Tiam, tiu veturilo falas libere
+STR_0524    :La liberfaloveturilo estas lanĉita pneŭmatike por supreniri altan ŝtalan turon. Tiam, tiu veturilo falas libere.
 STR_0525    :Rajdantoj rapide malsupreniras kurboplenan trakon, kaj estas gviditaj nur per la kurbeco kaj turnkliniĝo de la duoncirkla trako
 STR_0526    :Pasaĝeroj veturas en turniĝanta observadokajuto, kiu supreniras altan turon
 STR_0527    :Onda fervojo glata kun ŝtala trako, kapabla je vertikalaj lopoj
@@ -115,7 +115,7 @@ STR_0528    :Rajdantoj veturas en plenblovitaj boatetoj, kiuj malsupreniras kurb
 STR_0529    :Trajnoj de onda fervojo kun mintrajntemo rapidas laŭ ŝtala trako de onda fervojo, kiu aspektas kiel malnova fervojotrako
 STR_0530    :Ĉaroj pendas de ŝtala kablo, kiu etendiĝas de unu flanko de la atrakcio ĝis la alia, kaj tiam returnas
 STR_0531    :Onda fervojo kompakta kun ŝtala trako, sur kie la trajno veturas tra korktiriloj kaj lopoj
-STR_0532    :Labirinto konstruita de 6-futaj altaj heĝoj aŭ muroj. La gastoj vagas en tiu labirinto, kaj eliras nur kiam ili trovas la elirejon
+STR_0532    :Labirinto konstruita de 6-futaj altaj heĝoj aŭ muroj. La gastoj vagas en tiu labirinto, kaj eliras nur kiam ili trovas la elirejon.
 STR_0533    :Ligna konstruaĵo kun interna ŝtuparo kaj ekstera spirala tobogano, kiun oni uzas kun toboganomatoj
 STR_0534    :Gastoj vetkuras unu la alian en gokartoj sur asfalta trako
 STR_0535    :Boatoj veturas laŭ akvokanalo, kaj plaŭde malsupreniras krutajn deklivojn por trempi la rajdantojn
@@ -134,7 +134,7 @@ STR_0550    :Rajdantoj rigardas filmon en la moviĝadosimulilo, kiun hidraŭlika
 STR_0551    :Kinejo, kiu montras 3D-ajn filmojn en geodezika globoforma konstruaĵo
 STR_0552    :Pasaĝeroj rajdas en gondolo pendita de grandaj turniĝantaj brakoj, kiuj turniĝas antaŭen, malantaŭen, kaj renversite
 STR_0553    :Samcentraj pivotantaj ringoj permesas, ke la rajdantoj turniĝas libere ĉiudirekte
-STR_0554    :Linearaj induktaj motoroj plirapidigas la ĉaron el la stacio laŭ longa ebena trako. Poste, la ĉaro supreniras vertikalan pintaĵon, kaj tiam falas libere por reveni al la stacio
+STR_0554    :Linearaj induktaj motoroj plirapidigas la ĉaron el la stacio laŭ longa ebena trako. Poste, la ĉaro supreniras vertikalan pintaĵon, kaj tiam falas libere por reveni al la stacio.
 STR_0555    :Gastoj rajdas en lifto de vertikala turo, por iri de unu nivelo al la alia
 STR_0556    :Pliaj larĝaj veturiloj malsupreniras ekzaktajn vertikalajn trakojn por doni la plejan sperton de onda fervojo kun libera falo
 STR_0557    :Monaŭtomato por gastoj, kiuj ne havas sufiĉe da mono
@@ -145,7 +145,7 @@ STR_0561    :Cirkospektaklo de bestoj en granda cirkotendo
 STR_0562    :Ŝaltitaj veturiloj veturas laŭ multnivela trako, preter timiga pejzaĝo kaj specialaj efikoj
 STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da 'en-aeraj periodoj' irante super la montetoj
 STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas 'nedirekteblan' sencon, kun sufiĉe da 'en-aeraj periodoj'
-STR_0565    :Simpla ligna onda fervojo, kapabla je nur mildaj deklivoj kaj kurbiĝoj. Nur la radoj ambaŭflanke, kiuj donas froton, kaj la gravito, fiksas la ĉarojn sur la trako
+STR_0565    :Simpla ligna onda fervojo, kapabla je nur mildaj deklivoj kaj kurbiĝoj. Nur la radoj ambaŭflanke, kiuj donas froton, kaj la gravito, fiksas la ĉarojn sur la trako.
 STR_0566    :Unuopaj ĉaroj de onda fervojo rapidas sur kompakta zigzaga trakdesegnaĵo, konsista el subitaj anguloj kaj mallongaj subitaj malleviĝoj
 STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigoj
 STR_0569    :Rajdantoj, kiuj rajdas en specialaj jungaĵoj sub la trako, flugas tra la aero por sperti la sencon de flugado
@@ -158,7 +158,7 @@ STR_0577    :Ĉaroj kun boĝioj veturas sur lignaj trakoj, kaj ŝanĝas direkton
 STR_0578    :Ĉaroj veturas laŭ trako ĉirkaŭfermita per cirklaj ringetoj, trapasante krutajn malleviĝojn kaj ĉe-korajn turnadojn
 STR_0579    :Milda ludo de miniatura golfo
 STR_0580    :Giganta ŝtala onda fervojo, kapabla je glataj malleviĝoj kaj montetoj pli altaj ol 300 futoj
-STR_0581    :Ringo da seĝoj, milde turniĝante, estas tirata al la supro de alta turo. Tiam, la ringo falas libere, kaj haltas milde al la malsupro per magnetaj bremsoj
+STR_0581    :Ringo da seĝoj, milde turniĝante, estas tirata al la supro de alta turo. Tiam, la ringo falas libere, kaj haltas milde al la malsupro per magnetaj bremsoj.
 STR_0582    :Gastoj rajdas en kusenveturiloj, kiujn ili stiras libere
 STR_0583    :Konstruaĵo, kiu enhavas ĉambrojn torditajn kaj koridorojn angulajn por malorienti homojn tie
 STR_0584    :Specialaj bicikloj, kiujn la rajdantoj stiras per pedalado, veturas laŭ ŝtala monorelotrako
@@ -2420,10 +2420,10 @@ STR_3327    :Ekirejoj de homoj ne estas agorditaj
 STR_3328    :Ne eblas iri al sekva etapo de redaktilo…
 STR_3329    :Parkenirejo ankoraŭ ne estas konstruita
 STR_3330    :Parko devas posedi iom da bieno
-STR_3331    :Vojo de parkenirejo ĝis mapbordo estas aŭ nekompleta aŭ tro komplika. Vojo devas havi larĝon de nur 1 bloko, kun kiel eble plej malmulte da anguloj kaj kuniĝoj
+STR_3331    :Vojo de parkenirejo ĝis mapbordo estas aŭ nekompleta aŭ tro komplika. Vojo devas havi larĝon de nur 1 bloko, kun kiel eble plej malmulte da anguloj kaj kuniĝoj.
 STR_3332    :Parkenirejo estas dorsantaŭa, aŭ ne havas vojon al la mapbordo
 STR_3333    :Eksporti proprajn objektojn kun konservitaj ludoj
-STR_3334    :{SMALLFONT}{BLACK}Elekti ĉu programo konservas datumojn de aldonaj bezonataj propraj objektoj (aldonaj datumoj, kiuj ne estas provizitaj per la ĉefa produktaĵo) en dosierojn de konservitaj ludoj aŭ scenaroj. Se jes, iu, kiu ne havas la aldonajn objektodatumojn, povas ŝargi ludon
+STR_3334    :{SMALLFONT}{BLACK}Elekti ĉu programo konservas datumojn de aldonaj bezonataj propraj objektoj (aldonaj datumoj, kiuj ne estas provizitaj per la ĉefa produktaĵo) en dosierojn de konservitaj ludoj aŭ scenaroj. Se jes, iu, kiu ne havas la aldonajn objektodatumojn, povas ŝargi ludon.
 STR_3335    :Trakdesegnilo - Elekti Tipojn de Atrakcioj k Veturiloj
 STR_3336    :Administrilo de Trakdesegnaĵoj - Elekti Tipon de Atrakcio
 STR_3338    :{BLACK}Propra desegnaĵo
@@ -2515,7 +2515,7 @@ STR_5152    :.
 STR_5153    :Redakti Temojn…
 STR_5154    :Aparataro-ekrano
 STR_5155    :Permesi elprovadon de nefinitaj trakoj
-STR_5156    :{SMALLFONT}{BLACK}Permesas elprovadon de plejparto da atrakciotipoj, eĉ kiam la trako estas nefinita. Ne validas por reĝimoj de blokpartoj
+STR_5156    :{SMALLFONT}{BLACK}Permesas elprovadon de plejparto da atrakciotipoj, eĉ kiam la trako estas nefinita. Ne validas por reĝimoj de blokpartoj.
 STR_5158    :Forlasi al menuo
 STR_5159    :Eliri je OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Jaro {POP16}{COMMA16}
