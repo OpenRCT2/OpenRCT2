@@ -861,6 +861,11 @@ void ride_ratings_calculate_hybrid_coaster([[maybe_unused]] Ride* ride)
 {
 }
 
+void ride_ratings_calculate_single rail_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
     return RideTypeDescriptors[type];
