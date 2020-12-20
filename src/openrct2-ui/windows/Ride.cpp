@@ -5343,11 +5343,7 @@ static void window_ride_measurements_mousedown(rct_window* w, rct_widgetindex wi
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
         Dropdown::Flag::StayOpen, 2);
     gDropdownDefaultIndex = 0;
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-    {
-        Dropdown::SetDisabled(1, true);
-    }
-    else if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
     {
         // Disable saving without scenery if we're a flat ride
         Dropdown::SetDisabled(0, true);
