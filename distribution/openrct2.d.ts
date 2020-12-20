@@ -1064,12 +1064,12 @@ declare global {
          * Current status of the car or train.
          */
         status: VehicleStatus;
-		
+
         /**
          * The progress on the current track piece, in steps.
          */
         readonly trackProgress: number;
-		
+
         /**
          * The currently projected remaining distance the car will travel.
          */
@@ -1079,13 +1079,13 @@ declare global {
          * List of peep IDs ordered by seat.
          */
         peeps: (number | null)[];
-				
+
         /**
          * Moves the vehicle forward or backwards along the track, relative to its current 
-		 * position. A single visible step is about 8.000 to 14.000 in distance depending 
-		 * on the direction its moving in.
+         * position. A single visible step is about 8.000 to 14.000 in distance depending 
+         * on the direction its moving in.
          */
-		move(distance: number): void;
+        move(distance: number): void;
     }
 
     type VehicleStatus =
