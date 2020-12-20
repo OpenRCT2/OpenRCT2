@@ -675,7 +675,6 @@ static void window_top_toolbar_invalidate(rct_window* w)
 
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
-        window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_PARK].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_STAFF].type = WindowWidgetType::Empty;
         window_top_toolbar_widgets[WIDX_GUESTS].type = WindowWidgetType::Empty;
@@ -686,22 +685,24 @@ static void window_top_toolbar_invalidate(rct_window* w)
 
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
         {
-            window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_LAND].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_WATER].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::Empty;
-            window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
         }
 
         if (gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
+            window_top_toolbar_widgets[WIDX_RIDES].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_CONSTRUCT_RIDE].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
         }
 
         if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         {
+            window_top_toolbar_widgets[WIDX_MAP].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_SCENERY].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_PATH].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_CLEAR_SCENERY].type = WindowWidgetType::Empty;
+
             window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
             window_top_toolbar_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;

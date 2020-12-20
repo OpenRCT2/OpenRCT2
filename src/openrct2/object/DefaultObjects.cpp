@@ -49,3 +49,22 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.scgsnow",  // Snow and Ice Theming
     "rct2.scgwater", // Water Feature Theming
 };
+
+const std::string_view DesignerSelectedObjects[] = {
+    // An initial default selection + all standard footpaths
+    "rct2.scgtrees", // Scenery: Trees
+    "rct2.scgshrub", // Scenery: Shrubs and Ornaments
+    "rct2.scggardn", // Scenery: Gardens
+    "rct2.scgfence", // Scenery: Fences and Walls
+    "rct2.scgwalls", // Scenery: Walls and Roofs
+    "rct2.scgpathx", // Scenery: Signs and Items for Footpaths
+    "rct2.wtrcyan",  // Water: Natural Water
+    "rct2.pkent1",   // Park Entrance: Traditional Park Entrance
+    "rct2.tarmac",   // Footpath: Tarmac
+    "rct2.tarmacg",  // Footpath: Green Tarmac Footpath
+    "rct2.tarmacb",  // Footpath: Brown Tarmac Footpath
+    "rct2.pathspce", // Footpath: Space Style Footpath
+    "rct2.pathcrzy", // Footpath: Crazy Paving Footpath
+    "rct2.pathdirt", // Footpath: Dirt Footpath
+    "rct2.pathash",  // Footpath: Ash Footpath
+};
