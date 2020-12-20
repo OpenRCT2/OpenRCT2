@@ -4395,23 +4395,23 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
-    ride->unreliability_factor = 16;//Done
+    ride->unreliability_factor = 16;
     set_unreliability_factor(ride);
 
     RatingTuple ratings;
-    ride_ratings_set(&ratings, RIDE_RATING(3, 50), RIDE_RATING(0, 50), RIDE_RATING(0, 40));//Done
-    ride_ratings_apply_length(&ratings, ride, 6000, 764);//Done
-    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));//Done
-    ride_ratings_apply_train_length(&ratings, ride, 187245);//Done
-    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);//Done
-    ride_ratings_apply_average_speed(&ratings, ride, 364088, 400497);//Done
-    ride_ratings_apply_duration(&ratings, ride, 150, 26214);//Done
-    ride_ratings_apply_gforces(&ratings, ride, 36864, 30384, 49648);//Done
-    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);//Done
-    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);//Done
-    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);//Done
-    ride_ratings_apply_proximity(&ratings, 22367);//Done
-    ride_ratings_apply_scenery(&ratings, ride, 6693);//Done
+    ride_ratings_set(&ratings, RIDE_RATING(3, 50), RIDE_RATING(0, 60), RIDE_RATING(0, 40));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 36864, 35746, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
+    ride_ratings_apply_proximity(&ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 6693);
 
     if (ride->inversions == 0)
         ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2);//Done
