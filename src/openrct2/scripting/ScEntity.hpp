@@ -243,12 +243,14 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
             dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
             dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
-            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, &ScVehicle::trackProgress_set, "trackProgress");
+            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
+            dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
             dukglue_register_property(
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
             dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_method(ctx, &ScVehicle::move, "move");
         }
 
     private:
@@ -519,21 +521,16 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        int16_t trackProgress_get() const
+        uint16_t trackProgress_get() const
         {
             auto vehicle = GetVehicle();
             return vehicle != nullptr ? vehicle->track_progress : 0;
         }
-        void trackProgress_set(int16_t value)
+
+        int32_t remainingDistance_get() const
         {
-            ThrowIfGameStateNotMutable();
             auto vehicle = GetVehicle();
-            if (vehicle != nullptr)
-            {
-                vehicle->Invalidate2();
-                vehicle->SetRelativeTrackProgress(value);
-                vehicle->Invalidate2();
-            }
+            return vehicle != nullptr ? vehicle->remaining_distance : 0;
         }
 
         uint8_t poweredAcceleration_get() const
@@ -609,6 +606,18 @@ namespace OpenRCT2::Scripting
                 result.resize(len);
             }
             return result;
+        }
+
+        void move(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto vehicle = GetVehicle();
+            if (vehicle != nullptr)
+            {
+                vehicle->Invalidate2();
+                vehicle->MoveRelativeDistance(value);
+                vehicle->Invalidate2();
+            }
         }
     };
 

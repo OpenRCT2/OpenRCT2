@@ -335,11 +335,9 @@ struct Vehicle : SpriteBase
     Vehicle* TrainTail() const;
     void EnableCollisionsForTrain();
     /**
-     * Sets the track progress relative to the current track element.
-     * If the value is higher than the maximum, it will move to the next track piece.
-     * If the value is negative, the vehicle will move to the previous track piece.
+     * Instantly moves the specific car forward or backwards along the track.
      */
-    void SetRelativeTrackProgress(int16_t trackProgress);
+    void MoveRelativeDistance(int32_t distance);
 
     uint16_t GetTrackType() const
     {

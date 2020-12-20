@@ -818,34 +818,15 @@ uint16_t Vehicle::GetTrackProgress() const
     return vehicle_get_move_info_size(TrackSubposition, track_type);
 }
 
-void Vehicle::SetRelativeTrackProgress(int16_t trackProgress)
+void Vehicle::MoveRelativeDistance(int32_t distance)
 {
-    Ride* curRide = GetRide();
+    remaining_distance += distance;
 
-    const uint16_t maximumProgress = GetTrackProgress();
-    const uint16_t trackType = GetTrackType();
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
+    UpdateTrackMotion(nullptr);
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
 
-    if (trackProgress < 0)
-    {
-        uint16_t new_progress = 0;
-        if (UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, &new_progress))
-        {
-            SetRelativeTrackProgress(trackProgress + new_progress);
-        }
-        return;
-    }
-
-    if (trackProgress >= maximumProgress)
-    {
-        if (UpdateTrackMotionForwardsGetNewTrack(trackType, curRide, GetRideEntry()))
-        {
-            SetRelativeTrackProgress(trackProgress - maximumProgress);
-        }
-        return;
-    }
-
-    track_progress = trackProgress;
-
+    const Ride* curRide = GetRide();
     const rct_vehicle_info* moveInfo = GetMoveInfo();
 
     MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
