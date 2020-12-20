@@ -46,6 +46,7 @@
 		4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255954244A328A00CE7E45 /* UiExtensions.cpp */; };
 		4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255957244A328B00CE7E45 /* CustomWindow.cpp */; };
 		4C29DEB3218C6AE500E8707F /* RCT12.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C29DEB2218C6AE500E8707F /* RCT12.cpp */; };
+		4C2BF6C4258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C2BF6C3258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp */; };
 		4C358E5221C445F700ADE6BC /* ReplayManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C358E5021C445F700ADE6BC /* ReplayManager.cpp */; };
 		4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */; };
 		4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */; };
@@ -881,6 +882,7 @@
 		4C25596E244A330800CE7E45 /* dukexception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukexception.h; path = src/thirdparty/dukglue/dukexception.h; sourceTree = SOURCE_ROOT; };
 		4C25596F244A330800CE7E45 /* detail_typeinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_typeinfo.h; path = src/thirdparty/dukglue/detail_typeinfo.h; sourceTree = SOURCE_ROOT; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
+		4C2BF6C3258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SingleRailRollerCoaster.cpp; sourceTree = "<group>"; };
 		4C358E5021C445F700ADE6BC /* ReplayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplayManager.cpp; sourceTree = "<group>"; };
 		4C358E5121C445F700ADE6BC /* ReplayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayManager.h; sourceTree = "<group>"; };
 		4C3B4234205914F7000C5BB7 /* InGameConsole.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InGameConsole.cpp; sourceTree = "<group>"; };
@@ -3617,6 +3619,7 @@
 				4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */,
 				4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */,
 				4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */,
+				4C2BF6C3258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp */,
 				4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */,
 				4C93F1321F8B744400A9330D /* Steeplechase.cpp */,
 				4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */,
@@ -4496,6 +4499,7 @@
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
 				C68878C420289B710084B384 /* OpenGLAPI.cpp in Sources */,
 				933CBDBB20CB1B3F00134678 /* TitleSequencePlayer.cpp in Sources */,
+				4C2BF6C4258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp in Sources */,
 				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
