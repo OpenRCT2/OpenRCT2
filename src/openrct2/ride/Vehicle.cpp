@@ -8689,7 +8689,10 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
 
     _vehicleUnkF64E10 = 1;
     acceleration = dword_9A2970[vehicle_sprite_type];
-    remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
+    if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+    {
+        remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
+    }
     if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
         goto loc_6DCE02;
@@ -9232,6 +9235,12 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
+        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            if (outStation != nullptr)
+                *outStation = _vehicleStationIndex;
+            return _vehicleMotionTrackFlags;
+        }
         if (_vehicleVelocityF64E08 >= 0)
         {
             vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
@@ -9507,7 +9516,10 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         car->acceleration = dword_9A2970[car->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
 
-        car->remaining_distance += _vehicleVelocityF64E0C;
+        if (!car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            car->remaining_distance += _vehicleVelocityF64E0C;
+        }
 
         car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = car->x;
@@ -9568,6 +9580,12 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+        }
+        if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            if (outStation != nullptr)
+                *outStation = _vehicleStationIndex;
+            return _vehicleMotionTrackFlags;
         }
         if (_vehicleVelocityF64E08 >= 0)
         {
