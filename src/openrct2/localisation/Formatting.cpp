@@ -344,7 +344,7 @@ namespace OpenRCT2
             // handle case where value has fewer sig figs than required decimal places
             while (num == 0 && i < TDecimalPlace && i < sizeof(buffer))
             {
-                buffer[i++] = static_cast<char>('0');
+                buffer[i++] = '0';
             }
 
             auto decSep = GetDecimalSeparator();
