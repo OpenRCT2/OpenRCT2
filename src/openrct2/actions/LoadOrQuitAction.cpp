@@ -20,7 +20,7 @@ LoadOrQuitAction::LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMo
 
 uint16_t LoadOrQuitAction::GetActionFlags() const
 {
-    return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
+    return GameAction::GetActionFlags() | GameActions::Flags::ClientOnly | GameActions::Flags::AllowWhilePaused;
 }
 
 void LoadOrQuitAction::Serialise(DataSerialiser& stream)
