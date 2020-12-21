@@ -79,8 +79,7 @@ uint8_t RCT12SurfaceElement::GetSlope() const
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
 {
     uint32_t retVal = (terrain >> 5) & 7;
-    if (type & 1)
-        retVal |= (1 << 3);
+    retVal |= (type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
     return retVal;
 }
 
@@ -557,11 +556,9 @@ void RCT12LargeSceneryElement::SetBannerIndex(uint8_t newIndex)
 
 void RCT12SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
 {
-    // Bit 3 for terrain is stored in element.type bit 0
-    if (newStyle & 8)
-        type |= 1;
-    else
-        type &= ~1;
+    // Bits 3, 4 for terrain are stored in element.type bit 0, 1
+    type &= ~RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK;
+    type |= (newStyle >> 3) & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK;
 
     // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
     terrain &= ~0xE0;

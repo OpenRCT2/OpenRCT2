@@ -248,6 +248,10 @@ public:
         LoadObject("rct2.surface.gridgreen");
         LoadObject("rct2.surface.sandred");
         LoadObject("rct2.surface.sandbrown");
+        LoadObject("rct1.aa.surface.roofred");
+        LoadObject("rct1.ll.surface.roofgrey");
+        LoadObject("rct1.ll.surface.rust");
+        LoadObject("rct1.ll.surface.wood");
 
         // Edges
         LoadObject("rct2.edge.rock");
