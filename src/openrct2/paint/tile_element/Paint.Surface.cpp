@@ -307,6 +307,7 @@ static uint32_t get_surface_image(
     const paint_session* session, uint8_t index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
+    // Provide fallback for RCT1 surfaces if the user does have RCT1 linked.
     if (!is_csg_loaded() && index >= TERRAIN_RCT2_COUNT)
     {
         if (index == TERRAIN_ROOF_GREY)
