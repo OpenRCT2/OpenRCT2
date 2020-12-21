@@ -7650,7 +7650,7 @@ void Vehicle::UpdateReverserCarBogies()
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED) || HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
         return false;
 
     auto vehicleEntry = Entry();
