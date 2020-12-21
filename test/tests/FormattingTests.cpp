@@ -603,5 +603,4 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
     // declared. As such the following line won't be able to find
     // the necessary symbol to link with.
     // FormatArgument<double>(ss, FormatToken::Comma1dp16, 12.372);
-
 }
