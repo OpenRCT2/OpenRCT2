@@ -28,7 +28,7 @@ StaffSetNameAction::StaffSetNameAction(uint16_t spriteIndex, const std::string& 
 
 void StaffSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-    visitor.Visit("spriteIndex", _spriteIndex);
+    visitor.Visit("peep", _spriteIndex);
     visitor.Visit("name", _name);
 }
 

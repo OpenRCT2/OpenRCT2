@@ -30,6 +30,12 @@ ClearAction::ClearAction(MapRange range, ClearableItems itemsToClear)
 {
 }
 
+void ClearAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("range", _range);
+    visitor.Visit("items", _itemsToClear);
+}
+
 void ClearAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
