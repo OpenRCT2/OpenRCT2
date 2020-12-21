@@ -511,10 +511,11 @@ public:
     uint8_t GetSeatRotation() const;
     uint16_t GetMazeEntry() const;
     uint8_t GetPhotoTimeout() const;
-    // Used in RCT1, will be reintroduced at some point.
-    // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
+    // RCT1 feature, reintroduced by OpenRCT2. See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
+    void SetDoorAState(uint8_t newState);
+    void SetDoorBState(uint8_t newState);
 
     void SetTrackType(uint8_t newEntryIndex);
     void SetSequenceIndex(uint8_t newSequenceIndex);

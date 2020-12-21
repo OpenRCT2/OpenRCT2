@@ -7483,6 +7483,43 @@ void Vehicle::UpdateSceneryDoor() const
         { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
 }
 
+template<bool isBackwards> static void AnimateLandscapeDoor(TrackElement* trackElement, bool isLastVehicle)
+{
+    auto doorState = isBackwards ? trackElement->GetDoorAState() : trackElement->GetDoorBState();
+    if (!isLastVehicle && doorState == LANDSCAPE_DOOR_CLOSED)
+    {
+        if (isBackwards)
+            trackElement->SetDoorAState(LANDSCAPE_DOOR_OPEN);
+        else
+            trackElement->SetDoorBState(LANDSCAPE_DOOR_OPEN);
+        // TODO: play door open sound
+    }
+
+    if (isLastVehicle)
+    {
+        if (isBackwards)
+            trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
+        else
+            trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
+        // TODO: play door close sound
+    }
+}
+
+void Vehicle::UpdateLandscapeDoor() const
+{
+    if (!GetRide()->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    {
+        return;
+    }
+
+    auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
+    auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
+    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    {
+        AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
+    }
+}
+
 /**
  *
  *  rct2: 0x006DB38B
@@ -7537,6 +7574,21 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 
     AnimateSceneryDoor<true>(
         { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
+}
+
+void Vehicle::UpdateLandscapeDoorBackwards() const
+{
+    if (!GetRide()->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    {
+        return;
+    }
+
+    auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
+    auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
+    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    {
+        AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
+    }
 }
 
 static void vehicle_update_play_water_splash_sound()
@@ -7970,6 +8022,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
 
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoor();
+    UpdateLandscapeDoor();
 
     bool isGoingBack = false;
     switch (TrackSubposition)
@@ -8113,6 +8166,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
+    UpdateLandscapeDoorBackwards();
 
     return true;
 }

@@ -450,6 +450,8 @@ private:
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
     void UpdateSceneryDoorBackwards() const;
+    void UpdateLandscapeDoor() const;
+    void UpdateLandscapeDoorBackwards() const;
 };
 
 struct train_ref

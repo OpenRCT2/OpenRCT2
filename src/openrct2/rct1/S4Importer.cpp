@@ -2100,6 +2100,7 @@ private:
             {
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
+                auto rideType = _s4.rides[src2->GetRideIndex()].type;
 
                 dst2->SetTrackType(src2->GetTrackType());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
@@ -2108,12 +2109,18 @@ private:
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetDoorAState(src2->GetDoorAState());
-                dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
-                dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                if (rideType == RCT1_RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                }
                 // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
@@ -2127,7 +2134,7 @@ private:
                 }
 
                 // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
+                if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
