@@ -231,13 +231,13 @@ STR_0824    :{BLACK}❌
 STR_0825    :Nimi on jo käytössä
 STR_0826    :Liian monta nimeä määritetty
 STR_0827    :Rahaa ei ole tarpeeksi - tarvitaan {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Sulje ikkuna
-STR_0829    :{SMALLFONT}{BLACK}Ikkunan otsikko - Vedä tätä liikuttaaksesi ikkunaa
-STR_0830    :{SMALLFONT}{BLACK}Suurenna
-STR_0831    :{SMALLFONT}{BLACK}Pienennä
-STR_0832    :{SMALLFONT}{BLACK}Käännä 90° myötäpäivään
-STR_0833    :{SMALLFONT}{BLACK}Pysäytä peli
-STR_0834    :{SMALLFONT}{BLACK}Levy- ja peliasetukset
+STR_0828    :Sulje ikkuna
+STR_0829    :Ikkunan otsikko - Vedä tätä liikuttaaksesi ikkunaa
+STR_0830    :Suurenna
+STR_0831    :Pienennä
+STR_0832    :Käännä 90° myötäpäivään
+STR_0833    :Pysäytä peli
+STR_0834    :Levy- ja peliasetukset
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
@@ -281,37 +281,37 @@ STR_0894    :Maisematietoalue on täynnä !
 STR_0895    :Ei voi rakentaa osittain maan ylle ja alle
 STR_0896    :{POP16}{POP16}{STRINGID} Rakenne
 STR_0897    :Suunta
-STR_0898    :{SMALLFONT}{BLACK}Kaarre vasempaan
-STR_0899    :{SMALLFONT}{BLACK}Kaarre oikeaan
-STR_0900    :{SMALLFONT}{BLACK}Kaarre vasempaan (pieni säde)
-STR_0901    :{SMALLFONT}{BLACK}Kaarre oikeaan (pieni säde)
-STR_0902    :{SMALLFONT}{BLACK}Kaarre vasempaan (todella pieni säde)
-STR_0903    :{SMALLFONT}{BLACK}Kaarre oikeaan (todella pieni säde)
-STR_0904    :{SMALLFONT}{BLACK}Kaarre vasempaan (iso säde)
-STR_0905    :{SMALLFONT}{BLACK}Kaarre oikeaan (iso säde)
-STR_0906    :{SMALLFONT}{BLACK}Suora
+STR_0898    :Kaarre vasempaan
+STR_0899    :Kaarre oikeaan
+STR_0900    :Kaarre vasempaan (pieni säde)
+STR_0901    :Kaarre oikeaan (pieni säde)
+STR_0902    :Kaarre vasempaan (todella pieni säde)
+STR_0903    :Kaarre oikeaan (todella pieni säde)
+STR_0904    :Kaarre vasempaan (iso säde)
+STR_0905    :Kaarre oikeaan (iso säde)
+STR_0906    :Suora
 STR_0907    :Mäki
 STR_0908    :Kallistus
 STR_0909    :Istuimen kierto
-STR_0910    :{SMALLFONT}{BLACK}Kallistus vasempaan
-STR_0911    :{SMALLFONT}{BLACK}Kallistus oikeaan
-STR_0912    :{SMALLFONT}{BLACK}Ei kallistusta
-STR_0913    :{SMALLFONT}{BLACK}Siirry edelliseen osaan
-STR_0914    :{SMALLFONT}{BLACK}Siirry seuraavaan osaan
-STR_0915    :{SMALLFONT}{BLACK}Rakenna valittu osio
-STR_0916    :{SMALLFONT}{BLACK}Poista valittu osio
-STR_0917    :{SMALLFONT}{BLACK}Pystypudotus
-STR_0918    :{SMALLFONT}{BLACK}Jyrkkä mäki alas
-STR_0919    :{SMALLFONT}{BLACK}Mäki alas
-STR_0920    :{SMALLFONT}{BLACK}Tasanne
-STR_0921    :{SMALLFONT}{BLACK}Mäki ylös
-STR_0922    :{SMALLFONT}{BLACK}Jyrkkä mäki ylös
-STR_0923    :{SMALLFONT}{BLACK}Pystynousu
-STR_0924    :{SMALLFONT}{BLACK}Kierre alas
-STR_0925    :{SMALLFONT}{BLACK}Kierre ylös
+STR_0910    :Kallistus vasempaan
+STR_0911    :Kallistus oikeaan
+STR_0912    :Ei kallistusta
+STR_0913    :Siirry edelliseen osaan
+STR_0914    :Siirry seuraavaan osaan
+STR_0915    :Rakenna valittu osio
+STR_0916    :Poista valittu osio
+STR_0917    :Pystypudotus
+STR_0918    :Jyrkkä mäki alas
+STR_0919    :Mäki alas
+STR_0920    :Tasanne
+STR_0921    :Mäki ylös
+STR_0922    :Jyrkkä mäki ylös
+STR_0923    :Pystynousu
+STR_0924    :Kierre alas
+STR_0925    :Kierre ylös
 STR_0926    :Tämän poistaminen ei onnistu…
 STR_0927    :Tämän rakentaminen tähän ei onnistu…
-STR_0928    :{SMALLFONT}{BLACK}Ketjumäki, vaunujen mäessä vetämistä varten.
+STR_0928    :Ketjumäki, vaunujen mäessä vetämistä varten.
 STR_0929    :'S' mutka (vasen)
 STR_0930    :'S' mutka (oikea)
 STR_0931    :Pystysuora silmukka (vasen)
@@ -320,8 +320,8 @@ STR_0933    :Nosta tai laske maata ensin
 STR_0934    :Laitteen sisäänkäynti edessä
 STR_0935    :Laitteen uloskäynti edessä
 STR_0936    :Puiston sisäänkäynti edessä
-STR_0937    :{SMALLFONT}{BLACK}Näkymäasetukset
-STR_0938    :{SMALLFONT}{BLACK}Muokkaa maan korkeutta ja jyrkkyyttä
+STR_0937    :Näkymäasetukset
+STR_0938    :Muokkaa maan korkeutta ja jyrkkyyttä
 STR_0939    :Maanalainen näkymä
 STR_0940    :Poista pohjamaa
 STR_0941    :Poista pystysuorat pinnat
@@ -338,7 +338,7 @@ STR_0951    :Lopeta peli
 STR_0952    :Lopeta peli
 STR_0953    :Lataa maisema
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Valitse istuimen kiertokulma tähän radan osioon
+STR_0955    :Valitse istuimen kiertokulma tähän radan osioon
 STR_0956    :-180°
 STR_0957    :-135°
 STR_0958    :-90°
@@ -373,14 +373,14 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Liian monta laitetta/kohdetta
 STR_0988    :Ei pysty luomaan uutta laitetta/kohdetta…
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Rakennus
+STR_0990    :Rakennus
 STR_0991    :Asematasanne
-STR_0992    :{SMALLFONT}{BLACK}Romuta koko laite/kohde
+STR_0992    :Romuta koko laite/kohde
 STR_0993    :Romuta laite/nähtävyys
 STR_0994    :Romuta
 STR_0995    :{WINDOW_COLOUR_1}Oletko varma että haluat tuhota {STRINGID}:n?
 STR_0996    :Kokonaisnäkymä
-STR_0997    :{SMALLFONT}{BLACK}Katso valinta
+STR_0997    :Katso valinta
 STR_0998    :Ei lisää asemia sallittu tälle laitteelle
 STR_0999    :Vaatii asematasanteen
 STR_1000    :Rata ei tee täydellistä kierrosta
@@ -391,9 +391,9 @@ STR_1004    :Sulkeminen ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}…
 STR_1005    :Rakentaminen ei onnistu laitteessa {POP16}{POP16}{POP16}{STRINGID}…
 STR_1006    :Täytyy ensin sulkea
 STR_1007    :Ei voida luoda tarpeeksi kulkuneuvoja
-STR_1008    :{SMALLFONT}{BLACK}Avaa, sulje tai testaa laitetta/kohdetta
-STR_1009    :{SMALLFONT}{BLACK}Avaa tai sulje kaikki laitteet/kohteet
-STR_1010    :{SMALLFONT}{BLACK}Avaa tai sulje puisto
+STR_1008    :Avaa, sulje tai testaa laitetta/kohdetta
+STR_1009    :Avaa tai sulje kaikki laitteet/kohteet
+STR_1010    :Avaa tai sulje puisto
 STR_1011    :Sulje kaikki
 STR_1012    :Avaa kaikki
 STR_1013    :Sulje puisto
@@ -410,7 +410,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} autoa per juna
 STR_1024    :{COMMA16} auto per juna
 STR_1025    :{COMMA16} autoa per juna
 STR_1026    :Asematasanne on liian pitkä!
-STR_1027    :{SMALLFONT}{BLACK}Paikanna tämä päänäkymässä
+STR_1027    :Paikanna tämä päänäkymässä
 STR_1028    :Kentän laidan yli!
 STR_1029    :Ei voi rakentaa osittain veden pinnan ylle ja alle!
 STR_1030    :Tämän voi rakentaa ainoastaan veden alle!
@@ -436,10 +436,10 @@ STR_1049    :Maisematiedoston tallennus epäonnistui!
 STR_1050    :Avaaminen epäonnistui…{NEWLINE}Tiedosto sisältää virheellistä tietoa!
 STR_1051    :Näkymättömät tuet
 STR_1052    :Näkymättömät ihmiset
-STR_1053    :{SMALLFONT}{BLACK}Laitteet/kohteet puistossa
-STR_1054    :{SMALLFONT}{BLACK}Nimeä laite/kohde
-STR_1055    :{SMALLFONT}{BLACK}Nimeä henkilö
-STR_1056    :{SMALLFONT}{BLACK}Nimeä henkilöstön jäsen
+STR_1053    :Laitteet/kohteet puistossa
+STR_1054    :Nimeä laite/kohde
+STR_1055    :Nimeä henkilö
+STR_1056    :Nimeä henkilöstön jäsen
 STR_1057    :Laitteen/kohteen nimi
 STR_1058    :Kirjoita uusi nimi tälle laitteelle/kohteelle:
 STR_1059    :Ei pysty uudelleennimeämään laitetta/kohdetta…
@@ -519,12 +519,12 @@ STR_1132    :Ajoneuvo {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :Ajoneuvo {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Valitse pääväri
-STR_1137    :{SMALLFONT}{BLACK}Valitse lisäväri 1
-STR_1138    :{SMALLFONT}{BLACK}Valitse lisäväri 2
-STR_1139    :{SMALLFONT}{BLACK}Valitse tukirakenteiden väri
-STR_1140    :{SMALLFONT}{BLACK}Valitse ajoneuvon väriteema
-STR_1141    :{SMALLFONT}{BLACK}Valitse mitä ajoneuvoa/junaa muutetaan
+STR_1136    :Valitse pääväri
+STR_1137    :Valitse lisäväri 1
+STR_1138    :Valitse lisäväri 2
+STR_1139    :Valitse tukirakenteiden väri
+STR_1140    :Valitse ajoneuvon väriteema
+STR_1141    :Valitse mitä ajoneuvoa/junaa muutetaan
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Ei pysty rakentamaan/siirtämään tämän laitteen/kohteen sisäänkäyntiä…
@@ -542,8 +542,8 @@ STR_1155    :Korkeusmerkinnät poluissa
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Tämän poistaminen ei onnistu…
-STR_1159    :{SMALLFONT}{BLACK}Luo maisemaa, kasvillisuutta ja kaikenlaisia tilpehöörejä.
-STR_1160    :{SMALLFONT}{BLACK}Luo/säädä järviä ja vettä
+STR_1159    :Luo maisemaa, kasvillisuutta ja kaikenlaisia tilpehöörejä.
+STR_1160    :Luo/säädä järviä ja vettä
 STR_1161    :Tätä ei voi asettaa tähän…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Oikea klikkaus muokkaa)
@@ -556,7 +556,7 @@ STR_1169    :(Ei mitään)
 STR_1170    :{STRING}
 STR_1171    :{RED}Suljettu - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}Rakenna jalkakäytäviä ja jonotuslinjoja
+STR_1173    :Rakenna jalkakäytäviä ja jonotuslinjoja
 STR_1174    :Mainoskyltti on tiellä
 STR_1175    :Tätä ei voi rakentaa kaltevalle jalkakäytävälle
 STR_1176    :Jalkakäytävää ei voi rakentaa tähän…
@@ -568,12 +568,12 @@ STR_1181    :Jalkakäytävät
 STR_1182    :Tyyppi
 STR_1183    :Suunta
 STR_1184    :Mäki
-STR_1185    :{SMALLFONT}{BLACK}Suunta
-STR_1186    :{SMALLFONT}{BLACK}Mäki alas
-STR_1187    :{SMALLFONT}{BLACK}Tasanne
-STR_1188    :{SMALLFONT}{BLACK}Mäki ylös
-STR_1189    :{SMALLFONT}{BLACK}Rakenna valittu jalkakäytävän osio
-STR_1190    :{SMALLFONT}{BLACK}Poista valittu jalkakäytävän osio
+STR_1185    :Suunta
+STR_1186    :Mäki alas
+STR_1187    :Tasanne
+STR_1188    :Mäki ylös
+STR_1189    :Rakenna valittu jalkakäytävän osio
+STR_1190    :Poista valittu jalkakäytävän osio
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -592,26 +592,26 @@ STR_1205    :{COMMA16} minuutin jonotusaika
 STR_1206    :{WINDOW_COLOUR_2}Odota:
 STR_1207    :{WINDOW_COLOUR_2}Lähde jos toinen juna saapuu asemalle
 STR_1208    :{WINDOW_COLOUR_2}Lähde jos toinen vene saapuu asemalle
-STR_1209    :{SMALLFONT}{BLACK}Valitse pitäisikö odottaa matkustajia ennen lähtöä
-STR_1210    :{SMALLFONT}{BLACK}Valitse pitäisikö lähteä jos toinen vaunu saapuu samalle asemalle
+STR_1209    :Valitse pitäisikö odottaa matkustajia ennen lähtöä
+STR_1210    :Valitse pitäisikö lähteä jos toinen vaunu saapuu samalle asemalle
 STR_1211    :{WINDOW_COLOUR_2}Vähimmäisodotusaika:
 STR_1212    :{WINDOW_COLOUR_2}Enimmäisodotusaika:
-STR_1213    :{SMALLFONT}{BLACK}Valitse vähimmäisodotusaika ennen lähtöä
-STR_1214    :{SMALLFONT}{BLACK}Valitse enimmäisodotusaika ennen lähtöä
+STR_1213    :Valitse vähimmäisodotusaika ennen lähtöä
+STR_1214    :Valitse enimmäisodotusaika ennen lähtöä
 STR_1215    :{WINDOW_COLOUR_2}Synkronoi rinnakkaisasemien kanssa
-STR_1216    :{SMALLFONT}{BLACK}Valitse pitäisikö synkronoida lähtö kaikkien rinnakkaisasemien kanssa ('kilpa-ajoa' varten)
+STR_1216    :Valitse pitäisikö synkronoida lähtö kaikkien rinnakkaisasemien kanssa ('kilpa-ajoa' varten)
 STR_1217    :{COMMA16} sekuntia
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
 STR_1220    :Vain uloskäynti
 STR_1221    :Ei sisäänkäyntiä
 STR_1222    :Ei uloskäyntiä
-STR_1223    :{SMALLFONT}{BLACK}Kuljetuslaitteet
-STR_1224    :{SMALLFONT}{BLACK}Lempeät laitteet
-STR_1225    :{SMALLFONT}{BLACK}Vuoristoradat
-STR_1226    :{SMALLFONT}{BLACK}Jännittävät radat
-STR_1227    :{SMALLFONT}{BLACK}Vesilaitteet
-STR_1228    :{SMALLFONT}{BLACK}Kaupat ja kojut
+STR_1223    :Kuljetuslaitteet
+STR_1224    :Lempeät laitteet
+STR_1225    :Vuoristoradat
+STR_1226    :Jännittävät radat
+STR_1227    :Vesilaitteet
+STR_1228    :Kaupat ja kojut
 STR_1229    :juna
 STR_1230    :junaa
 STR_1231    :Juna
@@ -710,10 +710,10 @@ STR_1323    :Rataa
 STR_1324    :{COMMA16} rata
 STR_1325    :{COMMA16} rataa
 STR_1326    :Rata {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Käännä esineitä 90°
+STR_1327    :Käännä esineitä 90°
 STR_1328    :Vaaditaan tasainen maa
 STR_1329    :{WINDOW_COLOUR_2}Lähtönopeus:
-STR_1330    :{SMALLFONT}{BLACK}Enimmäisnopeus kun lähdetään asemalta
+STR_1330    :Enimmäisnopeus kun lähdetään asemalta
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -769,28 +769,28 @@ STR_1381    :Kaareva nostomäki (vasen)
 STR_1382    :Kaareva nostomäki (oikea)
 STR_1383    :Neljännesosasilmukka
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Muut radan asetukset
+STR_1385    :Muut radan asetukset
 STR_1386    :Erikoinen…
 STR_1387    :Maan tyyppiä ei voida muuttaa…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}Näkymä laitteesta/kohteesta
-STR_1393    :{SMALLFONT}{BLACK}Kulkuneuvon yksitoiskohdat ja asetukset
-STR_1394    :{SMALLFONT}{BLACK}Toiminta-asetukset
-STR_1395    :{SMALLFONT}{BLACK}Huoltoasetukset
-STR_1396    :{SMALLFONT}{BLACK}Värityylin asetukset
-STR_1397    :{SMALLFONT}{BLACK}Ääni- ja musiikkiasetukset
-STR_1398    :{SMALLFONT}{BLACK}Mitat- ja testitiedot
-STR_1399    :{SMALLFONT}{BLACK}Kaaviot
+STR_1392    :Näkymä laitteesta/kohteesta
+STR_1393    :Kulkuneuvon yksitoiskohdat ja asetukset
+STR_1394    :Toiminta-asetukset
+STR_1395    :Huoltoasetukset
+STR_1396    :Värityylin asetukset
+STR_1397    :Ääni- ja musiikkiasetukset
+STR_1398    :Mitat- ja testitiedot
+STR_1399    :Kaaviot
 STR_1400    :Sisäänkäynti
 STR_1401    :Uloskäynti
-STR_1402    :{SMALLFONT}{BLACK}Rakenna tai siirrä sisäänkäynti laitteeseen/kohteeseen
-STR_1403    :{SMALLFONT}{BLACK}Rakenna tai siirrä uloskäynti laitteesta/kohteesta
-STR_1404    :{SMALLFONT}{BLACK}Käännä 90°
-STR_1405    :{SMALLFONT}{BLACK}Peilaa kuva
-STR_1406    :{SMALLFONT}{BLACK}Vaihda maisema päälle/pois (vain jos saatavilla tälle suunnitelmalle)
+STR_1402    :Rakenna tai siirrä sisäänkäynti laitteeseen/kohteeseen
+STR_1403    :Rakenna tai siirrä uloskäynti laitteesta/kohteesta
+STR_1404    :Käännä 90°
+STR_1405    :Peilaa kuva
+STR_1406    :Vaihda maisema päälle/pois (vain jos saatavilla tälle suunnitelmalle)
 STR_1407    :{WINDOW_COLOUR_2}Rakenna tämä…
 STR_1408    :{WINDOW_COLOUR_2}Kustannus: {BLACK}{CURRENCY}
 STR_1409    :Sisään-/uloskäyntitasanne
@@ -806,9 +806,9 @@ STR_1418    :{WINDOW_COLOUR_2}Sivut. G-voima
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Kerätään tietoja kohteesta {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Jonolinjasto
-STR_1424    :{SMALLFONT}{BLACK}Jalkakäytävä
+STR_1422    :Kerätään tietoja kohteesta {POP16}{STRINGID}
+STR_1423    :Jonolinjasto
+STR_1424    :Jalkakäytävä
 STR_1425    :Jalkakäytävä
 STR_1426    :Jonolinjasto
 STR_1427    :{WINDOW_COLOUR_2}Asiakkaita: {BLACK}{COMMA32} per tunti
@@ -845,8 +845,8 @@ STR_1456    :{WINDOW_COLOUR_2}Rahaa käytetty: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Rahaa taskussa: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Aikaa kulutettu puistossa: {BLACK}{REALTIME}
 STR_1459    :Radan tyyli
-STR_1460    :{SMALLFONT}{BLACK}'U':n muotoinen avoin rata
-STR_1461    :{SMALLFONT}{BLACK}'O':n muotoinen ympäröity rata
+STR_1460    :'U':n muotoinen avoin rata
+STR_1461    :'O':n muotoinen ympäröity rata
 STR_1462    :Liian jyrkkä nostomäkeä varten
 STR_1463    :Vieraat
 STR_1464    :Ruuvikierre ylös (pieni)
@@ -857,7 +857,7 @@ STR_1468    :Henkilökunta
 STR_1469    :Laitteen pitää alkaa ja loppua asemilla
 STR_1470    :Asema ei ole tarpeeksi pitkä
 STR_1471    :{WINDOW_COLOUR_2}Nopeus:
-STR_1472    :{SMALLFONT}{BLACK}Tämän laitteen nopeus
+STR_1472    :Tämän laitteen nopeus
 STR_1473    :{WINDOW_COLOUR_2}Jännityksen arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Jännityksen arvosana: {BLACK}Ei viellä saatavilla
 STR_1475    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1039,8 +1039,8 @@ STR_1650    :{SMALLFONT}“Vau! Uutta laitetta rakennetaan!”
 # Two removed inside jokes about Intamin and Phoenix
 STR_1653    :{SMALLFONT}“…ja tässä me olemme {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
-STR_1655    :{SMALLFONT}{BLACK}Rakenna jalkakäytävä maahan
-STR_1656    :{SMALLFONT}{BLACK}Rakenna jalkakäytävätunneli tai -silta
+STR_1655    :Rakenna jalkakäytävä maahan
+STR_1656    :Rakenna jalkakäytävätunneli tai -silta
 STR_1657    :{WINDOW_COLOUR_2}Suosikkilaite
 STR_1658    :{WINDOW_COLOUR_2}Intensiteetti: {BLACK}vähemmän kuin {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}Intensiteetti: {BLACK}{COMMA16}:n ja {COMMA16}:n välillä
@@ -1060,7 +1060,7 @@ STR_1672    :Jarrut
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Jarrutusnopeus
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Aseta jarrujen nopeusrajoitus
+STR_1676    :Aseta jarrujen nopeusrajoitus
 STR_1677    :{WINDOW_COLOUR_2}Suosio: {BLACK}Tuntematon
 STR_1678    :{WINDOW_COLOUR_2}Suosio: {BLACK}{COMMA16}%
 STR_1679    :Ruuvikierre ylös (vasen)
@@ -1077,10 +1077,10 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Hinta: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Hinta: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Vieraat
-STR_1694    :{SMALLFONT}{BLACK}Henkilökunta
-STR_1695    :{SMALLFONT}{BLACK}Tulot ja kulut
-STR_1696    :{SMALLFONT}{BLACK}Asiakkaan tiedot
+STR_1693    :Vieraat
+STR_1694    :Henkilökunta
+STR_1695    :Tulot ja kulut
+STR_1696    :Asiakkaan tiedot
 STR_1697    :Näitä ei voi asettaa jonotusalueelle
 STR_1698    :Nämä täytyy asettaa jonotusalueelle
 STR_1699    :Liikaa henkilöitä pelissä
@@ -1089,10 +1089,10 @@ STR_1701    :Palkkaa uusi mekaanikko
 STR_1702    :Palkkaa uusi vartija
 STR_1703    :Palkkaa uusi viihdyttäjä
 STR_1704    :Henkilökunnan palkkaaminen ei onnistu…
-STR_1705    :{SMALLFONT}{BLACK}Irtisano tämä henkilökunnan jäsen
-STR_1706    :{SMALLFONT}{BLACK}Siirrä tämä henkilö uuteen sijaintiin
+STR_1705    :Irtisano tämä henkilökunnan jäsen
+STR_1706    :Siirrä tämä henkilö uuteen sijaintiin
 STR_1707    :Liikaa henkilökuntaa pelissä
-STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
+STR_1708    :Set patrol area for this staff member
 STR_1709    :Irtisano henkilökunta
 STR_1710    :Kyllä
 STR_1711    :{WINDOW_COLOUR_1}Haluatko varmasti irtisanoa {STRINGID}?
@@ -1104,7 +1104,7 @@ STR_1716    :Virheellinen nimi puistolle
 STR_1717    :Puiston nimeäminen ei onnistunut…
 STR_1718    :Puiston nimi
 STR_1719    :Anna nimi puistolle:
-STR_1720    :{SMALLFONT}{BLACK}Nimeä puisto
+STR_1720    :Nimeä puisto
 STR_1721    :Puisto suljettu
 STR_1722    :Puisto auki
 STR_1723    :Puiston avaus ei onnistunut…
@@ -1119,30 +1119,30 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Rakenna
 STR_1733    :Moodi
 STR_1734    :{WINDOW_COLOUR_2}Kierrosten määrä:
-STR_1735    :{SMALLFONT}{BLACK}Kierrosten määrä radalla
+STR_1735    :Kierrosten määrä radalla
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kierrosten määrää ei voitu muuttaa…
 STR_1739    :Kisan voitti vieras {INT32}
 STR_1740    :Kisan voitti {STRINGID}
 STR_1741    :Ei ole vielä rakennettu !
 STR_1742    :{WINDOW_COLOUR_2}Laitteen suurin kävijämäärä:
-STR_1743    :{SMALLFONT}{BLACK}Laitteen suurin sallittu kävijämäärä yhdellä kertaa
+STR_1743    :Laitteen suurin sallittu kävijämäärä yhdellä kertaa
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Tätä ei voitu muuttaa…
 STR_1747    :{WINDOW_COLOUR_2}Aikarajoitus:
-STR_1748    :{SMALLFONT}{BLACK}Aikarajoitus ajelulle
+STR_1748    :Aikarajoitus ajelulle
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Aikarajoitusta ajelulle ei voitu muuttaa…
-STR_1752    :{SMALLFONT}{BLACK}Näytä puiston yksittäiset vieraat
-STR_1753    :{SMALLFONT}{BLACK}Näytä puiston vieraat yhteenvetona
+STR_1752    :Näytä puiston yksittäiset vieraat
+STR_1753    :Näytä puiston vieraat yhteenvetona
 STR_1754    :{BLACK}{COMMA32} vieraat
 STR_1755    :{BLACK}{COMMA32} vieras
 STR_1756    :{WINDOW_COLOUR_2}Sisäänpääsymaksu:
 STR_1757    :{WINDOW_COLOUR_2}Luotettavuus: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Rakennustoiminto
-STR_1759    :{SMALLFONT}{BLACK}Siirtotoiminto
-STR_1760    :{SMALLFONT}{BLACK}Täyttötoiminto
-STR_1761    :{SMALLFONT}{BLACK}Rakenna labyrinttia tähän suuntaan
+STR_1758    :Rakennustoiminto
+STR_1759    :Siirtotoiminto
+STR_1760    :Täyttötoiminto
+STR_1761    :Rakenna labyrinttia tähän suuntaan
 STR_1762    :Vesiputoukset
 STR_1763    :Kosket
 STR_1764    :Log Bumps
@@ -1151,7 +1151,7 @@ STR_1766    :Reverser turntable
 STR_1767    :Pyörivä tunneli
 STR_1768    :Heilahdusten määrää ei voitu muuttaa…
 STR_1769    :{WINDOW_COLOUR_2}Heilahdusten määrä:
-STR_1770    :{SMALLFONT}{BLACK}Kokonaisten heilahdusten määrä
+STR_1770    :Kokonaisten heilahdusten määrä
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Vain yksi nostomäki sallittu per laite
@@ -1168,7 +1168,7 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronauttipuku
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Rosvopuku
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Seriffipuku
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Merirosvopuku
-STR_1790    :{SMALLFONT}{BLACK}Valitse virka-asun väri tämän tyyppisille henkilökunnille
+STR_1790    :Valitse virka-asun väri tämän tyyppisille henkilökunnille
 STR_1791    :{WINDOW_COLOUR_2}Virka-asun väri:
 STR_1792    :Vastaamassa {STRINGID}:n hajoamisilmoitukseen
 STR_1793    :Matkalla kohti {STRINGID} tarkistusta varten
@@ -1189,20 +1189,20 @@ STR_1808    :{WINDOW_COLOUR_2}Viimeisin konerikko: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nykyinen konerikko: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Kantaa:
 STR_1811    :Tätä ei voi rakentaa tähän…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{STRINGID}
 STR_1813    :Sekalaiset tavarat
 STR_1814    :Toiminnat
 STR_1815    :Ajatukset
-STR_1816    :{SMALLFONT}{BLACK}Valitse näytettävä tietotyyppi vieras listalle
+STR_1816    :Valitse näytettävä tietotyyppi vieras listalle
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Kaikki vieraat
 STR_1819    :{WINDOW_COLOUR_2}Kaikki vieraat (yhteenvetona)
 STR_1820    :{WINDOW_COLOUR_2}Vieraat {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Vieraat ajattelevat {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Vieraat ajattelevat {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Näytä vieraiden ajatukset tästä laitteesta/kohteesta
-STR_1824    :{SMALLFONT}{BLACK}Näytä vieraat tässä laitteessa/kohteessa
-STR_1825    :{SMALLFONT}{BLACK}Näytä tähän laitteeseen/kohteesen jonottavat vieraat
+STR_1823    :Näytä vieraiden ajatukset tästä laitteesta/kohteesta
+STR_1824    :Näytä vieraat tässä laitteessa/kohteessa
+STR_1825    :Näytä tähän laitteeseen/kohteesen jonottavat vieraat
 STR_1826    :Tilanne
 STR_1827    :Suosio
 STR_1828    :Tyytyväisyys
@@ -1221,13 +1221,13 @@ STR_1840    :Keskeytysaika: {COMMA16}%
 STR_1841    :Tuotto: {CURRENCY2DP} per tunti
 STR_1842    :{COMMA16} vieraan lempilaite
 STR_1843    :{COMMA16} vieraan lempilaite
-STR_1844    :{SMALLFONT}{BLACK}valitse tietotyyppi laite-/kohdelistalle
+STR_1844    :valitse tietotyyppi laite-/kohdelistalle
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} vierasta
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} vierasta
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} vierasta
 STR_1849    :{WINDOW_COLOUR_2}Toista musiikkia
-STR_1850    :{SMALLFONT}{BLACK}Valitse mitä musiikkia toistetaan tälle ajelulle
+STR_1850    :Valitse mitä musiikkia toistetaan tälle ajelulle
 STR_1851    :{WINDOW_COLOUR_2}Käyttökustannus: {BLACK}{CURRENCY2DP} per tunti
 STR_1852    :{WINDOW_COLOUR_2}Käyttökustannus: {BLACK}Tuntematon
 STR_1853    :{WINDOW_COLOUR_2}Rakennettu: {BLACK}Tämä vuosi
@@ -1247,7 +1247,7 @@ STR_1866    :Viihdyttäjä
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Kierrosten määrää ei voi muuttaa…
 STR_1869    :{WINDOW_COLOUR_2}Kierrosten määrä:
-STR_1870    :{SMALLFONT}{BLACK}Täysien kierrosten määrä
+STR_1870    :Täysien kierrosten määrä
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Tulo: {BLACK}{CURRENCY2DP} per tunti
 STR_1874    :{WINDOW_COLOUR_2}Tuotto: {BLACK}{CURRENCY2DP} per tunti
@@ -1266,12 +1266,12 @@ STR_1886    :Tarkistetaan {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Viimeinen tarkastus: {BLACK}{COMMA16} minuuttia sitten
 STR_1888    :{WINDOW_COLOUR_2}Viimeinen tarkistus: {BLACK}yli 4 tuntia sitten
 STR_1889    :{WINDOW_COLOUR_2}Keskeytysaika: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Valitse kuinka usein mekaanikko tarkistaa tämän ajelun
+STR_1890    :Valitse kuinka usein mekaanikko tarkistaa tämän ajelun
 STR_1891    :Puistossa ei vielä ole {STRINGID} !
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} myyty: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Rakenna uusi laite/kohde
+STR_1895    :Rakenna uusi laite/kohde
 STR_1896    :{WINDOW_COLOUR_2}Rahan käyttö/tulot
 STR_1897    :{WINDOW_COLOUR_2}Laitteiden rakennus
 STR_1898    :{WINDOW_COLOUR_2}Laitteiden käyttökulut
@@ -1297,33 +1297,33 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Ei voi lainata enempää rahaa!
 STR_1919    :Rahaa ei ole tarpeeksi!
 STR_1920    :Lainan takaisin maksaminen ei onnistunut!
-STR_1921    :{SMALLFONT}{BLACK}Aloita uusi peli
-STR_1922    :{SMALLFONT}{BLACK}Jatka tallennetun pelin pelaamista
-STR_1924    :{SMALLFONT}{BLACK}Lopeta
+STR_1921    :Aloita uusi peli
+STR_1922    :Jatka tallennetun pelin pelaamista
+STR_1924    :Lopeta
 STR_1925    :Henkilöä ei voi sijoittaa tähän…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} on hajonnut
 STR_1928    :{RED}{STRINGID} on hajonnut!
 STR_1929    :{RED}{STRINGID} ei vieläkään ole korjattu{NEWLINE}tarkista missä mekaanikkosi ovat ja pohdi niiden parempaa sijoittelua
-STR_1930    :{SMALLFONT}{BLACK}Laita vieraan seuranta päälle/pois - (kun seuranta on päällä, vieraan liikkeet raportoidaan viestialueelle)
+STR_1930    :Laita vieraan seuranta päälle/pois - (kun seuranta on päällä, vieraan liikkeet raportoidaan viestialueelle)
 STR_1931    :{STRINGID} on jonottamassa laitteeseen {STRINGID}
 STR_1932    :{STRINGID} on laitteessa {STRINGID}
 STR_1933    :{STRINGID} on laitteessa {STRINGID}
 STR_1934    :{STRINGID} poistui laitteesta {STRINGID}
 STR_1935    :{STRINGID} on lähtenyt puistosta
 STR_1936    :{STRINGID} osti {STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}Näytä tietoa tämän viestin kohteesta
-STR_1938    :{SMALLFONT}{BLACK}Näytä vierasnäkymä
-STR_1939    :{SMALLFONT}{BLACK}Näytä henkilöstönäkymä
-STR_1940    :{SMALLFONT}{BLACK}Näytä tämän vieraan iloisuus, energia, nälkä yms.
-STR_1941    :{SMALLFONT}{BLACK}Näytä missä laitteissa tämä vieras on käynyt
-STR_1942    :{SMALLFONT}{BLACK}Näytä vieraan taloustiedot
-STR_1943    :{SMALLFONT}{BLACK}Näytä vieraan viimeiset ajatukset
-STR_1944    :{SMALLFONT}{BLACK}Näytä mitä esineitä vieras kantaa
-STR_1945    :{SMALLFONT}{BLACK}Näytä henkilökunnan jäsenen ohjeet ja asetukset
-STR_1946    :{SMALLFONT}{BLACK}Valitse puku viihdyttäjälle
-STR_1947    :{SMALLFONT}{BLACK}Näytä valitun henkilökuntatyypin partiointialueet ja etsi lähin henkilökunnan jäsen
-STR_1948    :{SMALLFONT}{BLACK}Palkkaa uusi tietyn tyyppinen henkilöstön jäsen
+STR_1937    :Näytä tietoa tämän viestin kohteesta
+STR_1938    :Näytä vierasnäkymä
+STR_1939    :Näytä henkilöstönäkymä
+STR_1940    :Näytä tämän vieraan iloisuus, energia, nälkä yms.
+STR_1941    :Näytä missä laitteissa tämä vieras on käynyt
+STR_1942    :Näytä vieraan taloustiedot
+STR_1943    :Näytä vieraan viimeiset ajatukset
+STR_1944    :Näytä mitä esineitä vieras kantaa
+STR_1945    :Näytä henkilökunnan jäsenen ohjeet ja asetukset
+STR_1946    :Valitse puku viihdyttäjälle
+STR_1947    :Näytä valitun henkilökuntatyypin partiointialueet ja etsi lähin henkilökunnan jäsen
+STR_1948    :Palkkaa uusi tietyn tyyppinen henkilöstön jäsen
 STR_1949    :Taloudellinen yhteenveto
 STR_1950    :Talouskuvaaja
 STR_1951    :Puiston arvokuvaaja
@@ -1331,7 +1331,7 @@ STR_1952    :Tuottokuvaaja
 STR_1953    :Markkinointi
 STR_1954    :Tutkimustyön rahoitus
 STR_1955    :{WINDOW_COLOUR_2}Kierrosten määrä:
-STR_1956    :{SMALLFONT}{BLACK}Ratakierrosten määrä yhdellä käyntikerralla
+STR_1956    :Ratakierrosten määrä yhdellä käyntikerralla
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kierrosten määrää ei voi muuttaa…
@@ -1570,10 +1570,10 @@ STR_2206    :Tyhjä juomatölkki
 STR_2207    :Tyhjä mehukuppi
 STR_2208    :Paahdettu makkara
 STR_2209    :Tyhjä kulho
-STR_2210    :{SMALLFONT}{BLACK}Näytä puiston yleismiehet
-STR_2211    :{SMALLFONT}{BLACK}Näytä puiston mekaanikot
-STR_2212    :{SMALLFONT}{BLACK}Näytä puiston vartijat
-STR_2213    :{SMALLFONT}{BLACK}Näytä puiston viihdyttäjät
+STR_2210    :Näytä puiston yleismiehet
+STR_2211    :Näytä puiston mekaanikot
+STR_2212    :Näytä puiston vartijat
+STR_2213    :Näytä puiston viihdyttäjät
 STR_2214    :Rakentaminen ei ole mahdollista pelin ollessa pysäytettynä!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOU1R_2}{COMMA16}°C
@@ -1581,7 +1581,7 @@ STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} ihmistä kuoli tapaturmassa kohteessa {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Puiston luokitus: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}Puiston luokitus: {COMMA16}
+STR_2221    :Puiston luokitus: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Vieraiden määrä: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kassa: {BLACK}{CURRENCY2DP}
@@ -1593,7 +1593,7 @@ STR_2229    :Nousu pystysuoraan
 STR_2230    :Pystysuora rata
 STR_2231    :Pidätysjarru pudotukseen
 STR_2232    :Kaapelinostomäki
-STR_2233    :{SMALLFONT}{BLACK}Puiston tiedot
+STR_2233    :Puiston tiedot
 STR_2234    :Viimeiset viestit
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :Tammikuu
@@ -1634,9 +1634,9 @@ STR_2270    :{WINDOW_COLOUR_2}Edistys: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Odotettavista: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Laitteet/kohteet:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Maisemointi/teemaus:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Näytä tämän keksinnön tai kehityksen yksityiskohdat
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2274    :Näytä tämän keksinnön tai kehityksen yksityiskohdat
+STR_2275    :Show funding and options for research & development
+STR_2276    :Show research & development status
 STR_2277    :Tuntematon
 STR_2278    :Transportaatiolaite
 STR_2279    :Lempeä laite
@@ -1653,8 +1653,8 @@ STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :Valitse uuden pelin skenaario
 STR_2292    :{WINDOW_COLOUR_2}Käytyjä laitteita:
 STR_2293    :{BLACK} Ei mitään
-STR_2294    :{SMALLFONT}{BLACK}Vaihda pohjamaan tyyliä
-STR_2295    :{SMALLFONT}{BLACK}Vaihda pystysuorien seinämien tyyliä
+STR_2294    :Vaihda pohjamaan tyyliä
+STR_2295    :Vaihda pystysuorien seinämien tyyliä
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} Maksettu sisäänpääsyssä
 STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} Kulutettu {BLACK}{COMMA16} laitteessa
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} Kulutettu {BLACK}{COMMA16} laitteessa
@@ -1680,8 +1680,8 @@ STR_2321    :{WINDOW_COLOUR_2}Laitteiden/kohteiden määrä: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Henkilökunta: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Puiston koko: {BLACK}{COMMA32}sq.ft.
-STR_2325    :{SMALLFONT}{BLACK}Osta maata laajentaakseen puistoa
-STR_2326    :{SMALLFONT}{BLACK}Osta rakennusoikeudet maan päälle tai alle puiston ulkopuolella
+STR_2325    :Osta maata laajentaakseen puistoa
+STR_2326    :Osta rakennusoikeudet maan päälle tai alle puiston ulkopuolella
 STR_2327    :Asetukset
 STR_2328    :{WINDOW_COLOUR_2}Valuutta:
 STR_2329    :{WINDOW_COLOUR_2}Etäisyys ja nopeus:
@@ -1702,7 +1702,7 @@ STR_2343    :Euro (€)
 STR_2344    :Brittiläinen
 STR_2345    :Metrinen
 STR_2347    :{RED}{STRINGID} on hukkunut!
-STR_2348    :{SMALLFONT}{BLACK}Näytä tämän henkilökunnan jäsenen tarkemmat tiedot
+STR_2348    :Näytä tämän henkilökunnan jäsenen tarkemmat tiedot
 STR_2349    :{WINDOW_COLOUR_2}Palkat: {BLACK}{CURRENCY} per kuukausi
 STR_2350    :{WINDOW_COLOUR_2}Työllistetty: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Nurmikkoa ajettu: {BLACK}{COMMA16}
@@ -1715,9 +1715,9 @@ STR_2358    :Yksiköt
 STR_2359    :Oikeat arvot
 STR_2360    :{WINDOW_COLOUR_2}Näytön tarkkuus
 STR_2361    :Maan pehmennys
-STR_2362    :{SMALLFONT}{BLACK}Kytke maan ruutujen pehmennys päälle/pois
+STR_2362    :Kytke maan ruutujen pehmennys päälle/pois
 STR_2363    :Ruudukko maan päällä
-STR_2364    :{SMALLFONT}{BLACK}Kytke maan päällinen ruudukko päälle/pois
+STR_2364    :Kytke maan päällinen ruudukko päälle/pois
 STR_2365    :Pankki ei suostu korottamaan lainaasi!
 STR_2366    :Celsius (°C)
 STR_2367    :Fahrenheit (°F)
@@ -1731,10 +1731,10 @@ STR_2374    :Korkea
 STR_2375    :Todella korkea
 STR_2376    :Extreme
 STR_2377    :Ultra-Extreme
-STR_2378    :{SMALLFONT}{BLACK}Säädä pienempää maa-aluetta
-STR_2379    :{SMALLFONT}{BLACK}Säädä suurempaa maa-aluetta
-STR_2380    :{SMALLFONT}{BLACK}Säädä pienempää vesialuetta
-STR_2381    :{SMALLFONT}{BLACK}Säädä suurempaa vesialuetta
+STR_2378    :Säädä pienempää maa-aluetta
+STR_2379    :Säädä suurempaa maa-aluetta
+STR_2380    :Säädä pienempää vesialuetta
+STR_2381    :Säädä suurempaa vesialuetta
 STR_2382    :Maa
 STR_2383    :Vesi
 STR_2384    :{WINDOW_COLOUR_2}Tavoitteesi:
@@ -1765,7 +1765,7 @@ STR_2408    :Kuukausitulo ruuasta/kauppatavaroista
 STR_2409    :{WINDOW_COLOUR_2}Markkinointikampanjoja käynnissä
 STR_2410    :{BLACK}Ei mitään
 STR_2411    :{WINDOW_COLOUR_2}Markkinointikampanjoja saatavilla
-STR_2412    :{SMALLFONT}{BLACK}Aloita tämä markkinointikampanja
+STR_2412    :Aloita tämä markkinointikampanja
 STR_2413    :{BLACK}({CURRENCY2DP} viikossa)
 STR_2414    :(Ei valittu)
 STR_2415    :{WINDOW_COLOUR_2}Ajelu:
@@ -1800,40 +1800,40 @@ STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on loppunut
 STR_2452    :{WINDOW_COLOUR_2}Raha (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Raha (less loan): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Näytä taloustiedot
-STR_2458    :{SMALLFONT}{BLACK}Näytä kuvaaja rahan määrästä (less loan) over time
-STR_2459    :{SMALLFONT}{BLACK}Näytä kuvaaja puiston arvosta
-STR_2460    :{SMALLFONT}{BLACK}Näytä kuvaaja viikottaisesta tuotosta
-STR_2461    :{SMALLFONT}{BLACK}Näytä markkinointikampanjat
-STR_2462    :{SMALLFONT}{BLACK}Näytä puiston sisäänkäynti
-STR_2463    :{SMALLFONT}{BLACK}Näytä kuvaaja puiston arvosanasta
-STR_2464    :{SMALLFONT}{BLACK}Näytä kuvaaja vierasmääristä
-STR_2465    :{SMALLFONT}{BLACK}Näytä sisäänpääsyhinta ja -tiedot
-STR_2466    :{SMALLFONT}{BLACK}Näytä puiston tilastot
-STR_2467    :{SMALLFONT}{BLACK}Näytä pelin tavoitteet
-STR_2468    :{SMALLFONT}{BLACK}Näytä viimeiset palkinnot mitä tämä puisto on saanut
-STR_2469    :{SMALLFONT}{BLACK}Valitse tutkinnan ja kehityksen taso
-STR_2470    :{SMALLFONT}{BLACK}Kehitä uusia transportaatiolaitteita
-STR_2471    :{SMALLFONT}{BLACK}Kehitä uusia lempeitä laitteita
-STR_2472    :{SMALLFONT}{BLACK}Kehitä uusia vuoristoratoja
-STR_2473    :{SMALLFONT}{BLACK}Kehitä uusia jännittäviä laitteita
-STR_2474    :{SMALLFONT}{BLACK}Kehitä uusia vesilaitteita
-STR_2475    :{SMALLFONT}{BLACK}Kehitä uusia Kauppoja/Kojuja
-STR_2476    :{SMALLFONT}{BLACK}Kehitä maisemointia ja teemausta
-STR_2477    :{SMALLFONT}{BLACK}Valitse tämän laitteen/kohteen toimintamoodi
-STR_2478    :{SMALLFONT}{BLACK}Näytä nopeuden kuvaaja ajalle
-STR_2479    :{SMALLFONT}{BLACK}Näytä korkeuden kuvaaja ajalle
-STR_2480    :{SMALLFONT}{BLACK}Näytä pystysuoran kiihtyvyyden kuvaaja ajalle
-STR_2481    :{SMALLFONT}{BLACK}Näytä poikittaisen kiihtyvyyden kuvaaja ajalle
-STR_2482    :{SMALLFONT}{BLACK}Tuotto: {CURRENCY} viikossa,  puiston arvo: {CURRENCY}
+STR_2457    :Näytä taloustiedot
+STR_2458    :Näytä kuvaaja rahan määrästä (less loan) over time
+STR_2459    :Näytä kuvaaja puiston arvosta
+STR_2460    :Näytä kuvaaja viikottaisesta tuotosta
+STR_2461    :Näytä markkinointikampanjat
+STR_2462    :Näytä puiston sisäänkäynti
+STR_2463    :Näytä kuvaaja puiston arvosanasta
+STR_2464    :Näytä kuvaaja vierasmääristä
+STR_2465    :Näytä sisäänpääsyhinta ja -tiedot
+STR_2466    :Näytä puiston tilastot
+STR_2467    :Näytä pelin tavoitteet
+STR_2468    :Näytä viimeiset palkinnot mitä tämä puisto on saanut
+STR_2469    :Valitse tutkinnan ja kehityksen taso
+STR_2470    :Kehitä uusia transportaatiolaitteita
+STR_2471    :Kehitä uusia lempeitä laitteita
+STR_2472    :Kehitä uusia vuoristoratoja
+STR_2473    :Kehitä uusia jännittäviä laitteita
+STR_2474    :Kehitä uusia vesilaitteita
+STR_2475    :Kehitä uusia Kauppoja/Kojuja
+STR_2476    :Kehitä maisemointia ja teemausta
+STR_2477    :Valitse tämän laitteen/kohteen toimintamoodi
+STR_2478    :Näytä nopeuden kuvaaja ajalle
+STR_2479    :Näytä korkeuden kuvaaja ajalle
+STR_2480    :Näytä pystysuoran kiihtyvyyden kuvaaja ajalle
+STR_2481    :Näytä poikittaisen kiihtyvyyden kuvaaja ajalle
+STR_2482    :Tuotto: {CURRENCY} viikossa,  puiston arvo: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Viikottainen tuotto: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Viikottainen tuotto: {RED}{CURRENCY2DP}
 STR_2487    :Näytä vieraiden 'oikeat' nimet
-STR_2488    :{SMALLFONT}{BLACK}Vaihda vieraiden nimen ja numeron näyttämisen välillä
+STR_2488    :Vaihda vieraiden nimen ja numeron näyttämisen välillä
 STR_2489    :Pikanäppäimet…
 STR_2490    :Näppäimistön pikanäppäimet
 STR_2491    :Palauta näppäinasetukset
-STR_2492    :{SMALLFONT}{BLACK}Aseta kaikki pikanäppäimet takaisin alkuperäisiin asetuksiin
+STR_2492    :Aseta kaikki pikanäppäimet takaisin alkuperäisiin asetuksiin
 STR_2493    :Sulje päällimmäinen ikkuna
 STR_2494    :Sulje kaikki ikkunat
 STR_2495    :Poistu rakennustilasta
@@ -1910,7 +1910,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Kaikki tutkimustyö on tehty
 STR_2681    :{MEDIUMFONT}{BLACK}Saat {CURRENCY} lisää rahaa
-STR_2684    :{SMALLFONT}{BLACK}Suuri kävijäryhmä saapuu
+STR_2684    :Suuri kävijäryhmä saapuu
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Matala:
 STR_2687    :Korkea:
@@ -1989,7 +1989,7 @@ STR_2782    :SHIFT +
 STR_2783    :CTRL + 
 STR_2784    :Muuta näppäimistön pikanäppäintä
 STR_2785    :{WINDOW_COLOUR_2}Paina uusi näppäinyhdistelmä toiminnolle:{NEWLINE}“{STRINGID}”
-STR_2786    :{SMALLFONT}{BLACK}Paina pikanäppäimen kuvausta valitaksesi uuden näppäinyhdistelmän
+STR_2786    :Paina pikanäppäimen kuvausta valitaksesi uuden näppäinyhdistelmän
 STR_2787    :{WINDOW_COLOUR_2}Puiston arvo: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Onnittelut !{NEWLINE}{BLACK}Saavutit tavoitteesi ! Yhtiösi arvo: {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}Epäonnistuit tavoitteessasi !
@@ -1999,16 +1999,16 @@ STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Suorittanut {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Suorittanut: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} Yhtiön arvolla: {BLACK}{CURRENCY}
 STR_2795    :Järjestä
-STR_2796    :{SMALLFONT}{BLACK}Järjestä laitelistaus valitun tietotyypin mukaan
+STR_2796    :Järjestä laitelistaus valitun tietotyypin mukaan
 STR_2797    :Vieritä näkymää kun hiiri on näytön reunassa
-STR_2798    :{SMALLFONT}{BLACK}Valitse vieritetäänkö näkymää kun hiiri on näytön reunassa
-STR_2799    :{SMALLFONT}{BLACK}Näytä ja aseta näppäinasetukset
+STR_2798    :Valitse vieritetäänkö näkymää kun hiiri on näytön reunassa
+STR_2799    :Näytä ja aseta näppäinasetukset
 STR_2800    :{WINDOW_COLOUR_2}Sisäänpääsyt: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Tulot sisäänpääsyistä: {BLACK}{CURRENCY2DP}
 STR_2802    :Kartta
-STR_2803    :{SMALLFONT}{BLACK}Näytä nämä kävijät kartalla
-STR_2804    :{SMALLFONT}{BLACK}Näytä nämä henkilökunnan jäsenet kartalla
-STR_2805    :{SMALLFONT}{BLACK}Näytä puiston kartta
+STR_2803    :Näytä nämä kävijät kartalla
+STR_2804    :Näytä nämä henkilökunnan jäsenet kartalla
+STR_2805    :Näytä puiston kartta
 STR_2806    :{RED}Vieraat valittavat puistosi kuvottavista poluista{NEWLINE}Tarkista ja uudelleenjärjestele yleismiestesi sijainnit
 STR_2807    :{RED}Vieraat valittavat roskan määrästä puistossasi{NEWLINE}Tarkista ja uudelleenjärjestele yleismiestesi sijainnit
 STR_2808    :{RED}Vieraat valittavat puistosi vandalismista{NEWLINE}Tarkista ja uudelleenjärjestele yleismiestesi sijainnit
@@ -2110,8 +2110,8 @@ STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
 STR_2974    :Alternative colour scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint ride with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected colour scheme
+STR_2975    :Select which colour scheme to change, or paint ride with
+STR_2976    :Paint an individual area of this ride using the selected colour scheme
 STR_2977    :Henkilöstön jäsenen nimi
 STR_2978    :Anna tälle henkilöstön jäsenelle nimi:
 STR_2979    :Henkilöstön nimeäminen ei onnistu…
@@ -2121,16 +2121,16 @@ STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner…
 STR_2985    :Banner
-STR_2986    :{SMALLFONT}{BLACK}Change text on banner
-STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
-STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
-STR_2989    :{SMALLFONT}{BLACK}Valitse pääväri
-STR_2990    :{SMALLFONT}{BLACK}Valitse tekstille väri
+STR_2986    :Change text on banner
+STR_2987    :Set this banner as a 'no-entry' sign for guests
+STR_2988    :Demolish this banner
+STR_2989    :Valitse pääväri
+STR_2990    :Valitse tekstille väri
 STR_2991    :Kyltti
 STR_2992    :Tekstikyltti
 STR_2993    :Anna teksti tälle kyltille:
-STR_2994    :{SMALLFONT}{BLACK}Muuta teksti kyltille
-STR_2995    :{SMALLFONT}{BLACK}Romuta tämä kyltti
+STR_2994    :Muuta teksti kyltille
+STR_2995    :Romuta tämä kyltti
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -2180,7 +2180,7 @@ STR_3041    :Modernityyli
 STR_3042    :Merirosvotyyli
 STR_3043    :Kivityyli 3
 STR_3044    :Karkkityyli
-STR_3045    :{SMALLFONT}{BLACK}Valitse toistettavan musiikin tyyli
+STR_3045    :Valitse toistettavan musiikin tyyli
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf-reikä A
@@ -2193,8 +2193,8 @@ STR_3058    :Tiiliseinät
 STR_3059    :Pensasaidat
 STR_3060    :Jääpalat
 STR_3061    :Puiset aidat
-STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
-STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
+STR_3062    :Standard roller coaster track
+STR_3063    :Water channel (track submerged)
 STR_3064    :Aloittajan puistot
 STR_3065    :Haastavat puistot
 STR_3066    :Asiantuntijan puistot
@@ -2203,42 +2203,42 @@ STR_3068    :Muut puistot
 STR_3069    :Top Section
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}Sama hinta kaikkialla puistossa
-STR_3072    :{SMALLFONT}{BLACK}Valitse käytetäänkö samaa hintaa kaikkialla puistossa
+STR_3072    :Valitse käytetäänkö samaa hintaa kaikkialla puistossa
 STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
 STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}LAKKAUTUSTIEDOTE: Puistosi on suljettu !
-STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
+STR_3090    :Select style of entrance, exit, and station
 STR_3091    :Ei ole sallittua poistaa tätä aluetta!
 STR_3092    :You are not allowed to move or modify the station for this ride!
 STR_3093    :{WINDOW_COLOUR_2}Suosikki: {BLACK}{STRINGID}
 STR_3094    :Ei saatavilla
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3099    :{SMALLFONT}{BLACK}Valitse väri
-STR_3100    :{SMALLFONT}{BLACK}Valitse toinen väri
-STR_3101    :{SMALLFONT}{BLACK}Valitse kolmas väri
-STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
+STR_3097    :Select lift hill chain speed
+STR_3099    :Valitse väri
+STR_3100    :Valitse toinen väri
+STR_3101    :Valitse kolmas väri
+STR_3102    :Re-paint coloured scenery on landscape
 STR_3103    :Tämän uudelleenvärittäminen ei onnistunut…
-STR_3104    :{SMALLFONT}{BLACK}Ajelulista
-STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
-STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
+STR_3104    :Ajelulista
+STR_3105    :List shops and stalls
+STR_3106    :List information kiosks and other guest facilities
 STR_3107    :Sulje
 STR_3108    :Testi
 STR_3109    :Avaa
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
+STR_3111    :Click on design to build it
+STR_3112    :Click on design to rename or delete it
 STR_3113    :Valitse toinen suunnitelma
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3114    :Go back to design selection window
+STR_3115    :Save track design
+STR_3116    :Save track design (Not possible until ride has been tested and statistics have been generated)
 STR_3117    :{BLACK}Kutsutaan mekaanikkoa…
 STR_3118    :{BLACK}{STRINGID} menossa kohti ajelua
 STR_3119    :{BLACK}{STRINGID} korjaamassa ajelua
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
 STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
 STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
@@ -2261,9 +2261,9 @@ STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Kapasiteetti: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Näytä ihmiset kartalla
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
+STR_3143    :Näytä ihmiset kartalla
+STR_3144    :Show rides and stalls on map
+STR_3160    :Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
@@ -2298,7 +2298,7 @@ STR_3196    :{WINDOW_COLOUR_2}Tutkimusryhmä: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
 STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
 STR_3199    :Satunnainen sekoitus
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
+STR_3200    :Randomly shuffle the list of items to invent during the game
 STR_3201    :Object Selection
 STR_3202    :Landscape Editor
 STR_3203    :Invention List Set Up
@@ -2314,36 +2314,36 @@ STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Karttaa ei voi enempää pienentää
 STR_3214    :Karttaa ei voi enempää suurentaa
 STR_3215    :Liian lähellä kartan reunaa
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
+STR_3216    :Select park-owned land etc.
 STR_3217    :Maan omistaa
 STR_3218    :Rakennusoikeudet omistaa
 STR_3219    :Maata myytävänä
 STR_3220    :Rakennusoikeudet myytävänä
-STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
-STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
-STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Rakenna puistolle sisäänkäynti
+STR_3221    :Set land to be owned by the park
+STR_3222    :Set construction rights only to be owned by the park
+STR_3223    :Set land to be available to purchase by the park
+STR_3224    :Set construction rights to be available to purchase by the park
+STR_3225    :Toggle on/off building a random cluster of objects around the selected position
+STR_3226    :Rakenna puistolle sisäänkäynti
 STR_3227    :Liikaa sisäänkäyntejä puistolla!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3228    :Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
 STR_3232    :Asetukset - Talous
 STR_3233    :Asetukset - Vieraat
 STR_3234    :Asetukset - Puisto
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
+STR_3235    :Show financial options
+STR_3236    :Show guest options
+STR_3237    :Show park options
 STR_3238    :Ei rahaa
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
+STR_3239    :Make this park a 'no money' park with no financial restrictions
 STR_3240    :{WINDOW_COLOUR_2}Aloitusrahamäärä:
 STR_3241    :{WINDOW_COLOUR_2}Aloituslaina:
 STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
 STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
 STR_3244    :Kiellä markkinointikampanjat
-STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :Can't increase initial cash any further!
@@ -2355,47 +2355,47 @@ STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
 STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
+STR_3257    :Select whether guests should generally prefer less intense rides only
 STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
+STR_3259    :Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
 STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
 STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
 STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
 STR_3264    :Can't increase this any further!
 STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3266    :Select how this park charges for entrance and rides
 STR_3267    :Estä puiden poistaminen
-STR_3268    :{SMALLFONT}{BLACK}Estä korkeiden puiden poistaminen
+STR_3268    :Estä korkeiden puiden poistaminen
 STR_3269    :Forbid landscape changes
-STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
+STR_3270    :Forbid any changes to the landscape
 STR_3271    :Forbid high construction
-STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
+STR_3272    :Forbid any tall construction
 STR_3273    :Park rating higher difficult level
-STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
+STR_3274    :Make the park rating value more challenging
 STR_3275    :Guest generation higher difficult level
-STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
+STR_3276    :Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Sisäänpääsyhinta:
-STR_3282    :{SMALLFONT}{BLACK}Valitse tavoite ja puiston nimi
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3282    :Valitse tavoite ja puiston nimi
+STR_3283    :Select rides to be preserved
 STR_3284    :Tavoitteen valinta
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Tavoite:
-STR_3288    :{SMALLFONT}{BLACK}Valitse ilmasto
+STR_3288    :Valitse ilmasto
 STR_3289    :{WINDOW_COLOUR_2}Ilmasto:
 STR_3290    :Kylmä ja märkä
 STR_3291    :Lämmin
 STR_3292    :Kuuma ja kuiva
 STR_3293    :Kylmä
 STR_3294    :Muuta…
-STR_3295    :{SMALLFONT}{BLACK}Vaihda puiston nimi
-STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
-STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
+STR_3295    :Vaihda puiston nimi
+STR_3296    :Change name of scenario
+STR_3297    :Change detail notes about park / scenario
 STR_3298    :{WINDOW_COLOUR_2}Puiston nimi: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
 STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
@@ -2416,7 +2416,7 @@ STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
 STR_3316    :Enter description of this scenario:
 STR_3317    :Lisätietoja ei ole vielä saatavilla
-STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
+STR_3318    :Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file…
 STR_3321    :Uusia objekteja asennettu onnistuneesti
@@ -2429,13 +2429,13 @@ STR_3330    :Puiston pitää omistaa edes jonkin verran maata
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
-STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3334    :Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Pelityökalut
+STR_3341    :Pelityökalut
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
 STR_3344    :Roller Coaster Designer
@@ -2457,7 +2457,7 @@ STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Varoitus!
 STR_3361    :Too many track designs of this type - Some will not be listed.
 STR_3364    :Edistynyt
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ajelu
 STR_3367    :{BLACK}= Ruokakoju
 STR_3368    :{BLACK}= Juomakoju
@@ -2469,7 +2469,7 @@ STR_3373    :{BLACK}= Vessa
 STR_3374    :Varoitus: Liian monta objektia valittuna!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new track design…
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
+STR_3377    :Install a new track design file
 STR_3378    :Asenna
 STR_3379    :Peruuta
 STR_3380    :Unable to install this track design…
@@ -2479,7 +2479,7 @@ STR_3383    :Select new name for track design
 STR_3384    :An existing track design already has this name - Please select a new name for this design:
 STR_3389    :Unable to select additional item of scenery…
 STR_3390    :Liian monta esinettä valittuna
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3437    :Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Tyhjennä maisema
 STR_3445    :Set Patrol Area
@@ -2492,15 +2492,15 @@ STR_5122    :Valitse ajelut radan tyypin mukaan (kuten RCT1:ssä)
 STR_5123    :Uusi ajelut
 STR_5125    :Kaikki tuhottavat
 STR_5126    :Satunnainen otsikkomusiikki
-STR_5127    :{SMALLFONT}{BLACK}Estä maan korkeuden muuttaminen
+STR_5127    :Estä maan korkeuden muuttaminen
 STR_5128    :Valinnan koko
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Kartan koko
 STR_5131    :Enter map size between {COMMA16} and {COMMA16}
 STR_5132    :Korjaa kaikki ajelut
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
-STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5133    :Adjust smaller area of land rights
+STR_5134    :Adjust larger area of land rights
+STR_5135    :Buy land rights and construction rights
 STR_5136    :Maaoikeudet
 STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
@@ -2513,15 +2513,15 @@ STR_5144    :Nopeanopeus
 STR_5145    :Turbonopeus
 STR_5146    :Hypernopeus
 STR_5147    :Huijaukset
-STR_5148    :{SMALLFONT}{BLACK}Muuta pelin nopeus
-STR_5149    :{SMALLFONT}{BLACK}Avaa huijauksetikkuna
+STR_5148    :Muuta pelin nopeus
+STR_5149    :Avaa huijauksetikkuna
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
 STR_5153    :Muuta teemoja…
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5156    :Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5158    :Lopeta valikkoon
 STR_5159    :Lopeta OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Vuosi {POP16}{COMMA16}
@@ -2529,10 +2529,10 @@ STR_5161    :Päiväyksen tyyli:
 STR_5162    :Päivä/Kuukausi/Vuosi
 STR_5163    :Kuukausi/Päivä/Vuosi
 STR_5177    :Fullscreen mode:
-STR_5178    :{SMALLFONT}{BLACK}Näytä taloushuijaukset
-STR_5179    :{SMALLFONT}{BLACK}Näytä vierashuijaukset
-STR_5180    :{SMALLFONT}{BLACK}Näytä puistohuijaukset
-STR_5181    :{SMALLFONT}{BLACK}Näytä ajeluhuijaukset
+STR_5178    :Näytä taloushuijaukset
+STR_5179    :Näytä vierashuijaukset
+STR_5180    :Näytä puistohuijaukset
+STR_5181    :Näytä ajeluhuijaukset
 STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
@@ -2579,14 +2579,14 @@ STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
 STR_5226    :Track Delete Prompt
 STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Puisto
-STR_5230    :{SMALLFONT}{BLACK}Työkalut
-STR_5231    :{SMALLFONT}{BLACK}Rides and Peeps
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Sekalaiset
-STR_5234    :{SMALLFONT}{BLACK}Kehotteet
-STR_5235    :{SMALLFONT}{BLACK}Asetukset
+STR_5228    :Main UI
+STR_5229    :Puisto
+STR_5230    :Työkalut
+STR_5231    :Rides and Peeps
+STR_5232    :Editors
+STR_5233    :Sekalaiset
+STR_5234    :Kehotteet
+STR_5235    :Asetukset
 STR_5236    :Ikkuna:
 STR_5237    :Väripaletti:
 STR_5238    :Nykyinen teema:
@@ -2606,33 +2606,33 @@ STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Puiston tiedot
 STR_5254    :Luo
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
+STR_5255    :Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Poista nykyinen teema
-STR_5259    :{SMALLFONT}{BLACK}Uudelleennimeä nykyinen teema
+STR_5257    :Create a new theme based on the current one
+STR_5258    :Poista nykyinen teema
+STR_5259    :Uudelleennimeä nykyinen teema
 STR_5260    :Jättimäinen ruudunkaappaus
 STR_5261    :Suodatin
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Custom
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Näyttö
-STR_5267    :{SMALLFONT}{BLACK}Kulttuuri ja yksiköt
-STR_5268    :{SMALLFONT}{BLACK}Ääni
-STR_5269    :{SMALLFONT}{BLACK}Controls and interface
-STR_5270    :{SMALLFONT}{BLACK}Sekalaiset
+STR_5265    :Select which content sources are visible
+STR_5266    :Näyttö
+STR_5267    :Kulttuuri ja yksiköt
+STR_5268    :Ääni
+STR_5269    :Controls and interface
+STR_5270    :Sekalaiset
 # again, twitch is a name, and can't be translated
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Jalkakäytävä
+STR_5272    :Small Scenery
+STR_5273    :Large Scenery
+STR_5274    :Jalkakäytävä
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
 STR_5277    :Tyhjennä
 STR_5278    :Sandbox mode
 STR_5279    :Sandbox mode off
-STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
-STR_5281    :{SMALLFONT}{BLACK}Ominaisuuksia
+STR_5280    :Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
+STR_5281    :Ominaisuuksia
 STR_5282    :RCT1 Ajelu auki/suljettu -valot
 STR_5283    :RCT1 Puisto auki/kiinni -valot
 STR_5284    :RCT1 Scenario Selection Font
@@ -2641,15 +2641,15 @@ STR_5288    :Ajelu on suljettu
 STR_5289    :No breakdowns available for this ride
 STR_5290    :Korjaa ajelu
 STR_5291    :Can't force breakdown
-STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
-STR_5296    :{SMALLFONT}{BLACK}Sulje puisto
-STR_5297    :{SMALLFONT}{BLACK}Avaa puisto
+STR_5292    :Force a breakdown
+STR_5293    :Close ride/attraction
+STR_5294    :Test ride/attraction
+STR_5295    :Open ride/attraction
+STR_5296    :Sulje puisto
+STR_5297    :Avaa puisto
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
+STR_5300    :Quick fire staff
 STR_5301    :{MEDIUMFONT}{BLACK}Poista lainasi
 STR_5302    :Poista laina
 STR_5303    :Salli rakentelu pelin ollessa pysäytetty
@@ -2660,7 +2660,7 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Satunnainen
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5311    :Debug tools
 STR_5312    :Näytä komentokehote
 STR_5313    :Show tile inspector
 STR_5314    :Tile inspector
@@ -2676,7 +2676,7 @@ STR_5345    :Taloushuijaukset
 STR_5346    :Vierashuijaukset
 STR_5347    :Puiston huijaukset
 STR_5348    :Ajelun huijaukset
-STR_5349    :{SMALLFONT}{BLACK}Kaikki ajelut
+STR_5349    :Kaikki ajelut
 STR_5350    :Max
 STR_5351    :Min
 STR_5352    :{BLACK}Onnellisuus:
@@ -2687,7 +2687,7 @@ STR_5356    :{BLACK}Pahoinvointi:
 STR_5357    :{BLACK}Pahoinvoinnin sietoraja:
 STR_5358    :{BLACK}Vessa:
 STR_5359    :Poista vieraat
-STR_5360    :{SMALLFONT}{BLACK}Poista kaikki vieraat kartalta
+STR_5360    :Poista kaikki vieraat kartalta
 STR_5361    :Anna kaikille vieraille:
 STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
 STR_5363    :Enemmän kuin 1
@@ -2702,26 +2702,26 @@ STR_5373    :Nimi {STRINGID}
 STR_5374    :Päiväys {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :{SMALLFONT}{BLACK}Tallenteet
-STR_5378    :{SMALLFONT}{BLACK}Komentosarja
-STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
-STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
-STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
-STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
-STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
-STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
-STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
-STR_5386    :{SMALLFONT}{BLACK}Lisää uusi komento
-STR_5387    :{SMALLFONT}{BLACK}Muokkaa uusi komento
-STR_5388    :{SMALLFONT}{BLACK}Poista valittu komento
-STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
-STR_5390    :{SMALLFONT}{BLACK}Siirrä valittu komento alas
-STR_5391    :{SMALLFONT}{BLACK}Siirrä valittu komento ylös
-STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
-STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
-STR_5394    :{SMALLFONT}{BLACK}Uudelleennimeä valittu tallenne
-STR_5395    :{SMALLFONT}{BLACK}Lataa valittu tallenne pelissä
-STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
+STR_5377    :Tallenteet
+STR_5378    :Komentosarja
+STR_5379    :Skip to next wait command
+STR_5380    :Start playing title sequence
+STR_5381    :Stop playing title sequence
+STR_5382    :Restart title sequence
+STR_5383    :Create a new title sequence based on the current one
+STR_5384    :Delete the current title sequence
+STR_5385    :Rename the current title sequence
+STR_5386    :Lisää uusi komento
+STR_5387    :Muokkaa uusi komento
+STR_5388    :Poista valittu komento
+STR_5389    :Skip to the selected command in the title sequence
+STR_5390    :Siirrä valittu komento alas
+STR_5391    :Siirrä valittu komento ylös
+STR_5392    :Add a save to the title sequence
+STR_5393    :Remove the selected save from the title sequence
+STR_5394    :Uudelleennimeä valittu tallenne
+STR_5395    :Lataa valittu tallenne pelissä
+STR_5396    :Reload the title sequence if changes have been made to it outside of the game
 STR_5397    :Voidaan käyttää ainoastaan otsikkoruudussa
 STR_5398    :Cannot edit title sequence while it's playing
 STR_5399    :Press the stop button to continue editing
@@ -2765,7 +2765,7 @@ STR_5437    :Tallennusta ei valittuna
 STR_5438    :Muutosten teko ei onnistu komentojenmuokkaimen ollessa päällä
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
+STR_5441    :Identifies rides by track type,{NEWLINE}so vehicles can be changed{NEWLINE}afterwards, like in RCT1.
 STR_5442    :Pakota puiston luokitus:
 STR_5443    :Nopeus{MOVE_X}{87}{STRINGID}
 STR_5444    :Nopeus:
@@ -2811,8 +2811,8 @@ STR_5483    :{BLACK}({COMMA16} viikkoa jäljellä)
 STR_5484    :{BLACK}({COMMA16} viikko jäljellä)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Näytä viimeiset viestit
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5487    :Näytä viimeiset viestit
+STR_5489    :Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Keksinnötlista
 STR_5492    :Scenario options
@@ -2826,49 +2826,49 @@ STR_5500    :Lisää palvelin
 STR_5501    :Käynistä palvelin
 STR_5502    :Moninpeli
 STR_5503    :Anna isäntänimi tai IP-osoite:
-STR_5504    :{SMALLFONT}{BLACK}Näytä moninpelin tilanne
+STR_5504    :Näytä moninpelin tilanne
 STR_5505    :Yhdistäminen ei onnistunut.
 STR_5506    :Guests ignore intensities
 STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
+STR_5509    :Allows loading scenarios and saves that have an incorrect checksum, like the scenarios from the demo or damaged saves.
 STR_5510    :Oletus äänilaite
 STR_5511    :(TUNTEMATON)
 STR_5512    :Tallenna peli nimellä
 STR_5513    :(Pika) tallenna peli
 STR_5514    :Disable vandalism
-STR_5515    :{SMALLFONT}{BLACK}Estää vieraita tärvelemästä puistoasi heidän ollessa vihaisia
-STR_5516    :{SMALLFONT}{BLACK}Musta
-STR_5517    :{SMALLFONT}{BLACK}Harmaa
-STR_5518    :{SMALLFONT}{BLACK}Valkoinen
-STR_5519    :{SMALLFONT}{BLACK}Tummanvioletti
-STR_5520    :{SMALLFONT}{BLACK}Vaaleanvioletti
-STR_5521    :{SMALLFONT}{BLACK}Kirkkaanvioletti
-STR_5522    :{SMALLFONT}{BLACK}Tummansininen
-STR_5523    :{SMALLFONT}{BLACK}Vaaleansininen
-STR_5524    :{SMALLFONT}{BLACK}Jäinensininen
-STR_5525    :{SMALLFONT}{BLACK}Sinivihreä
-STR_5526    :{SMALLFONT}{BLACK}Akvamariini
-STR_5527    :{SMALLFONT}{BLACK}Kyllästettyvihreä
-STR_5528    :{SMALLFONT}{BLACK}Tummanvihreä
-STR_5529    :{SMALLFONT}{BLACK}Sammaleenvihreä
-STR_5530    :{SMALLFONT}{BLACK}Kirkkaanvihreä
-STR_5531    :{SMALLFONT}{BLACK}Oliivinvihreä
-STR_5532    :{SMALLFONT}{BLACK}Tummanoliivinvihreä
-STR_5533    :{SMALLFONT}{BLACK}Kirkkaankeltainen
-STR_5534    :{SMALLFONT}{BLACK}Keltainen
-STR_5535    :{SMALLFONT}{BLACK}Tummankeltainen
-STR_5536    :{SMALLFONT}{BLACK}Vaaleanoranssi
-STR_5537    :{SMALLFONT}{BLACK}Tummanoranssi
-STR_5538    :{SMALLFONT}{BLACK}Vaaleanruskea
-STR_5539    :{SMALLFONT}{BLACK}Kyllästettyruskea
-STR_5540    :{SMALLFONT}{BLACK}Tummanruskea
-STR_5541    :{SMALLFONT}{BLACK}Lohenvaaleanpunainen
-STR_5542    :{SMALLFONT}{BLACK}Bordeauxinpunainen
-STR_5543    :{SMALLFONT}{BLACK}Kyllästetynpunainen
-STR_5544    :{SMALLFONT}{BLACK}Kirkkaanpunainen
-STR_5545    :{SMALLFONT}{BLACK}Tummanvaaleanpunainen
-STR_5546    :{SMALLFONT}{BLACK}Kirkasvaaleanpunainen
-STR_5547    :{SMALLFONT}{BLACK}Vaaleanpunainen
+STR_5515    :Estää vieraita tärvelemästä puistoasi heidän ollessa vihaisia
+STR_5516    :Musta
+STR_5517    :Harmaa
+STR_5518    :Valkoinen
+STR_5519    :Tummanvioletti
+STR_5520    :Vaaleanvioletti
+STR_5521    :Kirkkaanvioletti
+STR_5522    :Tummansininen
+STR_5523    :Vaaleansininen
+STR_5524    :Jäinensininen
+STR_5525    :Sinivihreä
+STR_5526    :Akvamariini
+STR_5527    :Kyllästettyvihreä
+STR_5528    :Tummanvihreä
+STR_5529    :Sammaleenvihreä
+STR_5530    :Kirkkaanvihreä
+STR_5531    :Oliivinvihreä
+STR_5532    :Tummanoliivinvihreä
+STR_5533    :Kirkkaankeltainen
+STR_5534    :Keltainen
+STR_5535    :Tummankeltainen
+STR_5536    :Vaaleanoranssi
+STR_5537    :Tummanoranssi
+STR_5538    :Vaaleanruskea
+STR_5539    :Kyllästettyruskea
+STR_5540    :Tummanruskea
+STR_5541    :Lohenvaaleanpunainen
+STR_5542    :Bordeauxinpunainen
+STR_5543    :Kyllästetynpunainen
+STR_5544    :Kirkkaanpunainen
+STR_5545    :Tummanvaaleanpunainen
+STR_5546    :Kirkasvaaleanpunainen
+STR_5547    :Vaaleanpunainen
 STR_5548    :Show all operating modes
 STR_5549    :Vuosi/Kuukausi/Päivä
 STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}

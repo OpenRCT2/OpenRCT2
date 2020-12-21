@@ -234,13 +234,13 @@ STR_0824    :{BLACK}❌
 STR_0825    :该名称已被使用
 STR_0826    :过多名称被定义
 STR_0827    :现金不足 - 需要 {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}关闭窗口
-STR_0829    :{SMALLFONT}{BLACK}窗口标题 - 拖拽来移动窗口
-STR_0830    :{SMALLFONT}{BLACK}放大
-STR_0831    :{SMALLFONT}{BLACK}缩小
-STR_0832    :{SMALLFONT}{BLACK}顺时针旋转90°
-STR_0833    :{SMALLFONT}{BLACK}暂停游戏
-STR_0834    :{SMALLFONT}{BLACK}磁盘和游戏选项
+STR_0828    :关闭窗口
+STR_0829    :窗口标题 - 拖拽来移动窗口
+STR_0830    :放大
+STR_0831    :缩小
+STR_0832    :顺时针旋转90°
+STR_0833    :暂停游戏
+STR_0834    :磁盘和游戏选项
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
@@ -284,37 +284,37 @@ STR_0894    :Landscape data area full !
 STR_0895    :无法在一半地上一半地下的地形中建造
 STR_0896    :{POP16}{POP16}{STRINGID} 建造
 STR_0897    :方向
-STR_0898    :{SMALLFONT}{BLACK}左转
-STR_0899    :{SMALLFONT}{BLACK}右转
-STR_0900    :{SMALLFONT}{BLACK}左转 (小弧度)
-STR_0901    :{SMALLFONT}{BLACK}右转 (小弧度)
-STR_0902    :{SMALLFONT}{BLACK}左转（很小的弧度）
-STR_0903    :{SMALLFONT}{BLACK}右转（很小的弧度）
-STR_0904    :{SMALLFONT}{BLACK}左转（大弧度）
-STR_0905    :{SMALLFONT}{BLACK}右转（大弧度）
-STR_0906    :{SMALLFONT}{BLACK}直行
+STR_0898    :左转
+STR_0899    :右转
+STR_0900    :左转 (小弧度)
+STR_0901    :右转 (小弧度)
+STR_0902    :左转（很小的弧度）
+STR_0903    :右转（很小的弧度）
+STR_0904    :左转（大弧度）
+STR_0905    :右转（大弧度）
+STR_0906    :直行
 STR_0907    :坡度
 STR_0908    :滚动/倾斜
 STR_0909    :Seat Rot.
-STR_0910    :{SMALLFONT}{BLACK}Roll for left-hand curve
-STR_0911    :{SMALLFONT}{BLACK}Roll for right-hand curve
-STR_0912    :{SMALLFONT}{BLACK}No roll
-STR_0913    :{SMALLFONT}{BLACK}Move to previous section
-STR_0914    :{SMALLFONT}{BLACK}Move to next section
-STR_0915    :{SMALLFONT}{BLACK}Construct the selected section
-STR_0916    :{SMALLFONT}{BLACK}Remove the highlighted section
-STR_0917    :{SMALLFONT}{BLACK}垂直下坡
-STR_0918    :{SMALLFONT}{BLACK}陡峭下坡
-STR_0919    :{SMALLFONT}{BLACK}下坡
-STR_0920    :{SMALLFONT}{BLACK}水平
-STR_0921    :{SMALLFONT}{BLACK}上坡
-STR_0922    :{SMALLFONT}{BLACK}陡峭上坡
-STR_0923    :{SMALLFONT}{BLACK}垂直上坡
-STR_0924    :{SMALLFONT}{BLACK}向下螺旋
-STR_0925    :{SMALLFONT}{BLACK}向上螺旋
+STR_0910    :Roll for left-hand curve
+STR_0911    :Roll for right-hand curve
+STR_0912    :No roll
+STR_0913    :Move to previous section
+STR_0914    :Move to next section
+STR_0915    :Construct the selected section
+STR_0916    :Remove the highlighted section
+STR_0917    :垂直下坡
+STR_0918    :陡峭下坡
+STR_0919    :下坡
+STR_0920    :水平
+STR_0921    :上坡
+STR_0922    :陡峭上坡
+STR_0923    :垂直上坡
+STR_0924    :向下螺旋
+STR_0925    :向上螺旋
 STR_0926    :不能移除此物…
 STR_0927    :不能在此建造…
-STR_0928    :{SMALLFONT}{BLACK}提升坡将会把车厢拉上坡
+STR_0928    :提升坡将会把车厢拉上坡
 STR_0929    :'S'型弯道 (向左)
 STR_0930    :'S'型弯道 (向右)
 STR_0931    :垂直回环 (向左)
@@ -323,8 +323,8 @@ STR_0933    :请先将地面抬升或降低
 STR_0934    :游乐设施入口挡在此处
 STR_0935    :游乐设施出口挡在此处
 STR_0936    :游乐场的入口挡在此处
-STR_0937    :{SMALLFONT}{BLACK}查看选项
-STR_0938    :{SMALLFONT}{BLACK}调整地势高低及陡峭程度
+STR_0937    :查看选项
+STR_0938    :调整地势高低及陡峭程度
 STR_0939    :地下/内部 视图模式
 STR_0940    :隐藏地表
 STR_0941    :隐藏垂直地面
@@ -341,7 +341,7 @@ STR_0951    :退出游戏
 STR_0952    :退出游戏
 STR_0953    :加载地形
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}选择此轨道的座位旋转角度
+STR_0955    :选择此轨道的座位旋转角度
 STR_0956    :-180°
 STR_0957    :-135°
 STR_0958    :-90°
@@ -376,14 +376,14 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :太多游乐设施/店铺
 STR_0988    :不能新建游乐设施/店铺…
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}建造
+STR_0990    :建造
 STR_0991    :车站站台
-STR_0992    :{SMALLFONT}{BLACK}拆除整个游乐设施/店铺
+STR_0992    :拆除整个游乐设施/店铺
 STR_0993    :拆除游乐设施/店铺
 STR_0994    :拆除
 STR_0995    :{WINDOW_COLOUR_1}确定要完全拆除{STRINGID}?
 STR_0996    :整体外观
-STR_0997    :{SMALLFONT}{BLACK}View selection
+STR_0997    :View selection
 STR_0998    :此游乐设施的车站数量已达到上限
 STR_0999    :需要一个车站站台
 STR_1000    :轨道没有连接完整
@@ -394,9 +394,9 @@ STR_1004    :不能关闭 {POP16}{POP16}{POP16}{STRINGID}…
 STR_1005    :不能开始建造 {POP16}{POP16}{POP16}{STRINGID}…
 STR_1006    :必须先关闭
 STR_1007    :不能创建足够的车辆
-STR_1008    :{SMALLFONT}{BLACK}开放, 关闭或测试游乐设施/店铺
-STR_1009    :{SMALLFONT}{BLACK}开放或关闭所有游乐设施/店铺
-STR_1010    :{SMALLFONT}{BLACK}开放或关闭游乐园
+STR_1008    :开放, 关闭或测试游乐设施/店铺
+STR_1009    :开放或关闭所有游乐设施/店铺
+STR_1010    :开放或关闭游乐园
 STR_1011    :关闭所有游乐设施
 STR_1012    :开启所有游乐设施
 STR_1013    :关闭游乐园
@@ -413,7 +413,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} 车/列车
 STR_1024    :{COMMA16} 车/列车
 STR_1025    :{COMMA16} 车/列车
 STR_1026    :车站站台太长!
-STR_1027    :{SMALLFONT}{BLACK}将主视定位到此
+STR_1027    :将主视定位到此
 STR_1028    :离开地图边缘!
 STR_1029    :不能在半水上半水下地形上建造！
 STR_1030    :只能建造在水下！
@@ -439,10 +439,10 @@ STR_1049    :存储地形失败!
 STR_1050    :加载失败…{NEWLINE}文件中含有不可读取的数据!
 STR_1051    :隐藏支撑物
 STR_1052    :隐藏游客
-STR_1053    :{SMALLFONT}{BLACK}游乐园内的游乐设施
-STR_1054    :{SMALLFONT}{BLACK}命名游乐设施/店铺
-STR_1055    :{SMALLFONT}{BLACK}命名游客
-STR_1056    :{SMALLFONT}{BLACK}命名职员
+STR_1053    :游乐园内的游乐设施
+STR_1054    :命名游乐设施/店铺
+STR_1055    :命名游客
+STR_1056    :命名职员
 STR_1057    :游乐设施/店铺命名
 STR_1058    :请输入这个游乐设施/店铺的新名字：
 STR_1059    :重命名 设施/店铺 失败…
@@ -522,12 +522,12 @@ STR_1132    :车辆 {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :车辆 {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}选择主要配色
-STR_1137    :{SMALLFONT}{BLACK}选择额外配色 1
-STR_1138    :{SMALLFONT}{BLACK}选择额外配色 2
-STR_1139    :{SMALLFONT}{BLACK}选择支撑框架配色
-STR_1140    :{SMALLFONT}{BLACK}选择车辆配色主题
-STR_1141    :{SMALLFONT}{BLACK}选择需要魔改的车辆/列车
+STR_1136    :选择主要配色
+STR_1137    :选择额外配色 1
+STR_1138    :选择额外配色 2
+STR_1139    :选择支撑框架配色
+STR_1140    :选择车辆配色主题
+STR_1141    :选择需要魔改的车辆/列车
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :不能建造/移动这个游乐设施的入口…
@@ -545,8 +545,8 @@ STR_1155    :道路高度标记
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :不能移除此物…
-STR_1159    :{SMALLFONT}{BLACK}放置景观，花园和其他美化物
-STR_1160    :{SMALLFONT}{BLACK}创建/调整湖泊和水塘
+STR_1159    :放置景观，花园和其他美化物
+STR_1160    :创建/调整湖泊和水塘
 STR_1161    :不能放置于此…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(按右键修改)
@@ -559,7 +559,7 @@ STR_1169    :(无)
 STR_1170    :{STRING}
 STR_1171    :{RED}已关闭 - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
-STR_1173    :{SMALLFONT}{BLACK}建造道路和队列线
+STR_1173    :建造道路和队列线
 STR_1174    :横幅挡到了
 STR_1175    :不能在倾斜的小径上建造这个
 STR_1176    :不能在此建造道路…
@@ -571,12 +571,12 @@ STR_1181    :道路
 STR_1182    :类型
 STR_1183    :方向
 STR_1184    :坡度
-STR_1185    :{SMALLFONT}{BLACK}方向
-STR_1186    :{SMALLFONT}{BLACK}下坡
-STR_1187    :{SMALLFONT}{BLACK}水平
-STR_1188    :{SMALLFONT}{BLACK}上坡
-STR_1189    :{SMALLFONT}{BLACK}建造选中的道路
-STR_1190    :{SMALLFONT}{BLACK}移除上一段道路 
+STR_1185    :方向
+STR_1186    :下坡
+STR_1187    :水平
+STR_1188    :上坡
+STR_1189    :建造选中的道路
+STR_1190    :移除上一段道路 
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -595,26 +595,26 @@ STR_1205    :{COMMA16}分钟等候时间
 STR_1206    :{WINDOW_COLOUR_2}等待:
 STR_1207    :{WINDOW_COLOUR_2}当其他列车进站后就发车
 STR_1208    :{WINDOW_COLOUR_2}当其他船到站后就发车
-STR_1209    :{SMALLFONT}{BLACK}选择发车前是否等待乘客
-STR_1210    :{SMALLFONT}{BLACK}选择当其他车辆入站后，是否发车
+STR_1209    :选择发车前是否等待乘客
+STR_1210    :选择当其他车辆入站后，是否发车
 STR_1211    :{WINDOW_COLOUR_2}最短等待时间:
 STR_1212    :{WINDOW_COLOUR_2}最长等待时间:
-STR_1213    :{SMALLFONT}{BLACK}选择发车前最短等待时长
-STR_1214    :{SMALLFONT}{BLACK}选择发车前最长等待时长
+STR_1213    :选择发车前最短等待时长
+STR_1214    :选择发车前最长等待时长
 STR_1215    :{WINDOW_COLOUR_2}与相邻站同步
-STR_1216    :{SMALLFONT}{BLACK}选择是否与所有相邻车站同步发车（为了“赛车”）
+STR_1216    :选择是否与所有相邻车站同步发车（为了“赛车”）
 STR_1217    :{COMMA16} 秒
 STR_1218    :{BLACK}➕
 STR_1219    :{BLACK}➖
 STR_1220    :出口
 STR_1221    :没有入口
 STR_1222    :没有出口
-STR_1223    :{SMALLFONT}{BLACK}运输类游乐设施
-STR_1224    :{SMALLFONT}{BLACK}温和类游乐设施
-STR_1225    :{SMALLFONT}{BLACK}过山车
-STR_1226    :{SMALLFONT}{BLACK}惊险游乐设施
-STR_1227    :{SMALLFONT}{BLACK}水上游乐设施
-STR_1228    :{SMALLFONT}{BLACK}商店及摊贩
+STR_1223    :运输类游乐设施
+STR_1224    :温和类游乐设施
+STR_1225    :过山车
+STR_1226    :惊险游乐设施
+STR_1227    :水上游乐设施
+STR_1228    :商店及摊贩
 STR_1229    :列车
 STR_1230    :列车
 STR_1231    :列车
@@ -713,10 +713,10 @@ STR_1323    :场地
 STR_1324    :{COMMA16} 个场地
 STR_1325    :{COMMA16} 个场地
 STR_1326    :场地 {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}旋转物体 90°
+STR_1327    :旋转物体 90°
 STR_1328    :需要水平地面
 STR_1329    :{WINDOW_COLOUR_2}发车速度:
-STR_1330    :{SMALLFONT}{BLACK}离站时最高速度
+STR_1330    :离站时最高速度
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -771,28 +771,28 @@ STR_1381    :曲面提升坡 (向左转)
 STR_1382    :曲面提升坡 (向右转)
 STR_1383    :四分之一回环
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}其他轨道选项
+STR_1385    :其他轨道选项
 STR_1386    :特殊…
 STR_1387    :无法改变土地类型…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}观看游乐设施/ 店铺
-STR_1393    :{SMALLFONT}{BLACK}车辆详细与选项
-STR_1394    :{SMALLFONT}{BLACK}运行选项
-STR_1395    :{SMALLFONT}{BLACK}维修选项
-STR_1396    :{SMALLFONT}{BLACK}配色选项
-STR_1397    :{SMALLFONT}{BLACK}声音与音乐选项
-STR_1398    :{SMALLFONT}{BLACK}统计与测试数据
-STR_1399    :{SMALLFONT}{BLACK}图表
+STR_1392    :观看游乐设施/ 店铺
+STR_1393    :车辆详细与选项
+STR_1394    :运行选项
+STR_1395    :维修选项
+STR_1396    :配色选项
+STR_1397    :声音与音乐选项
+STR_1398    :统计与测试数据
+STR_1399    :图表
 STR_1400    :入口
 STR_1401    :出口
-STR_1402    :{SMALLFONT}{BLACK}建造或移动游乐设施入口
-STR_1403    :{SMALLFONT}{BLACK}建造或移动游乐设施出口
-STR_1404    :{SMALLFONT}{BLACK}旋转 90°
-STR_1405    :{SMALLFONT}{BLACK}镜像
-STR_1406    :{SMALLFONT}{BLACK}启用/弃用 景物 (如果设计附带景物)
+STR_1402    :建造或移动游乐设施入口
+STR_1403    :建造或移动游乐设施出口
+STR_1404    :旋转 90°
+STR_1405    :镜像
+STR_1406    :启用/弃用 景物 (如果设计附带景物)
 STR_1407    :{WINDOW_COLOUR_2}建造此…
 STR_1408    :{WINDOW_COLOUR_2}费用: {BLACK}{CURRENCY}
 STR_1409    :出/入 口
@@ -808,9 +808,9 @@ STR_1418    :{WINDOW_COLOUR_2}水平重力
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}来自 {POP16}{STRINGID}的记录数据
-STR_1423    :{SMALLFONT}{BLACK}队列线路
-STR_1424    :{SMALLFONT}{BLACK}道路
+STR_1422    :来自 {POP16}{STRINGID}的记录数据
+STR_1423    :队列线路
+STR_1424    :道路
 STR_1425    :道路
 STR_1426    :队列线
 STR_1427    :{WINDOW_COLOUR_2}乘客: {BLACK}{COMMA32} /小时
@@ -846,8 +846,8 @@ STR_1456    :{WINDOW_COLOUR_2}花费金额: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}钱包中金额: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}逗留时间: {BLACK}{REALTIME}
 STR_1459    :Track style
-STR_1460    :{SMALLFONT}{BLACK}U型开放式轨道
-STR_1461    :{SMALLFONT}{BLACK}O型封闭式轨道
+STR_1460    :U型开放式轨道
+STR_1461    :O型封闭式轨道
 STR_1462    :提升坡太陡了
 STR_1463    :游客
 STR_1464    :螺旋向上 (小)
@@ -858,7 +858,7 @@ STR_1468    :职员
 STR_1469    :设施必须要开始和结束于车站
 STR_1470    :车站长度过短
 STR_1471    :{WINDOW_COLOUR_2}速度:
-STR_1472    :{SMALLFONT}{BLACK}此车速度
+STR_1472    :此车速度
 STR_1473    :{WINDOW_COLOUR_2}兴奋度: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}兴奋度: {BLACK}暂无
 STR_1475    :{WINDOW_COLOUR_2}刺激度: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1040,8 +1040,8 @@ STR_1650    :{SMALLFONT}“喔!一个新的设施正在建造”
 # Two removed inside jokes about Intamin and Phoenix
 STR_1653    :{SMALLFONT}“…现在我们已经在{STRINGID}上!”
 STR_1654    :{WINDOW_COLOUR_2}最近的想法:
-STR_1655    :{SMALLFONT}{BLACK}在地上建造道路
-STR_1656    :{SMALLFONT}{BLACK}建造桥梁或隧道
+STR_1655    :在地上建造道路
+STR_1656    :建造桥梁或隧道
 STR_1657    :{WINDOW_COLOUR_2}游乐设施选项
 STR_1658    :{WINDOW_COLOUR_2}刺激度: {BLACK}少于{COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}刺激度: {BLACK}介于{COMMA16}和{COMMA16}之间
@@ -1061,7 +1061,7 @@ STR_1672    :刹车
 STR_1673    :控制旋转开/关轨道
 STR_1674    :刹车速度
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}设置刹车速度限制
+STR_1676    :设置刹车速度限制
 STR_1677    :{WINDOW_COLOUR_2}受欢迎度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}受欢迎度: {BLACK}{COMMA16}%
 STR_1679    :向上盘旋 (向左)
@@ -1078,10 +1078,10 @@ STR_1689    :刹车装置
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  费用: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  费用: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}游客
-STR_1694    :{SMALLFONT}{BLACK}职员
-STR_1695    :{SMALLFONT}{BLACK}收入和支出
-STR_1696    :{SMALLFONT}{BLACK}顾客信息
+STR_1693    :游客
+STR_1694    :职员
+STR_1695    :收入和支出
+STR_1696    :顾客信息
 STR_1697    :不能在等候区放置此物品
 STR_1698    :只能在等候区放置此物品
 STR_1699    :游戏中已有太多人
@@ -1090,10 +1090,10 @@ STR_1701    :雇佣新的机械师
 STR_1702    :雇佣新的安保人员
 STR_1703    :雇佣新的表演人员
 STR_1704    :不能雇佣新职员…
-STR_1705    :{SMALLFONT}{BLACK}解雇该员工
-STR_1706    :{SMALLFONT}{BLACK}移动该人物到新的位置
+STR_1705    :解雇该员工
+STR_1706    :移动该人物到新的位置
 STR_1707    :游戏里员工太多了
-STR_1708    :{SMALLFONT}{BLACK}为该员工设置巡逻区域
+STR_1708    :为该员工设置巡逻区域
 STR_1709    :解雇员工
 STR_1710    :确认
 STR_1711    :{WINDOW_COLOUR_1}你确定解雇{STRINGID}?
@@ -1105,7 +1105,7 @@ STR_1716    :无效的游乐园名称
 STR_1717    :不能重命名乐园…
 STR_1718    :乐园命名
 STR_1719    :请输入乐园的名称:
-STR_1720    :{SMALLFONT}{BLACK}命名乐园
+STR_1720    :命名乐园
 STR_1721    :游乐园已关闭
 STR_1722    :游乐园开放中
 STR_1723    :不能开放乐园…
@@ -1120,30 +1120,30 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :建造
 STR_1733    :模式
 STR_1734    :{WINDOW_COLOUR_2}圈数:
-STR_1735    :{SMALLFONT}{BLACK}每次循环的圈数
+STR_1735    :每次循环的圈数
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :不能更改圈数…
 STR_1739    :游客{INT32}赢得本比赛
 STR_1740    :{STRINGID}赢得本比赛
 STR_1741    :尚未建造 !
 STR_1742    :{WINDOW_COLOUR_2}设施最大载客量:
-STR_1743    :{SMALLFONT}{BLACK}该游乐设施同时最多可以乘坐的乘客数量、
+STR_1743    :该游乐设施同时最多可以乘坐的乘客数量、
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :不能更改…
 STR_1747    :{WINDOW_COLOUR_2}时间限制:
-STR_1748    :{SMALLFONT}{BLACK}此游乐设施的游玩时间限制
+STR_1748    :此游乐设施的游玩时间限制
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :不能更改此游乐设施的游玩时间限制…
-STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
-STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
+STR_1752    :Show list of individual guests in park
+STR_1753    :Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA32}名游客
 STR_1755    :{BLACK}{COMMA32}名游客
 STR_1756    :{WINDOW_COLOUR_2}门票价格:
 STR_1757    :{WINDOW_COLOUR_2}可靠性: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}建造模式
-STR_1759    :{SMALLFONT}{BLACK}移动模式
-STR_1760    :{SMALLFONT}{BLACK}填补模式
-STR_1761    :{SMALLFONT}{BLACK}以此方向建造迷宫
+STR_1758    :建造模式
+STR_1759    :移动模式
+STR_1760    :填补模式
+STR_1761    :以此方向建造迷宫
 STR_1762    :瀑布
 STR_1763    :急流
 STR_1764    :漩涡
@@ -1152,7 +1152,7 @@ STR_1766    :反向转盘
 STR_1767    :旋转隧道
 STR_1768    :不能改变摇摆次数…
 STR_1769    :{WINDOW_COLOUR_2}摇摆次数:
-STR_1770    :{SMALLFONT}{BLACK}完全摇摆次数
+STR_1770    :完全摇摆次数
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :每个游乐设施只能建造一个照相区域
 STR_1774    :每个游乐设施只能建造一个牵引轨道
@@ -1169,7 +1169,7 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} 宇航员服装
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} 土匪服装
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} 警长服装
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海盗服装
-STR_1790    :{SMALLFONT}{BLACK}选择这种员工的制服颜色
+STR_1790    :选择这种员工的制服颜色
 STR_1791    :{WINDOW_COLOUR_2}制服的颜色:
 STR_1792    :回应{STRINGID}的故障呼叫中
 STR_1793    :前往{STRINGID}检查中
@@ -1190,20 +1190,20 @@ STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}本次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}搬运中:
 STR_1811    :Can't build this here…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{STRINGID}
 STR_1813    :其他物体
 STR_1814    :动作
 STR_1815    :想法
-STR_1816    :{SMALLFONT}{BLACK}选择游客列表中要显示的信息类别
+STR_1816    :选择游客列表中要显示的信息类别
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}所有游客
 STR_1819    :{WINDOW_COLOUR_2}所有游客(汇总)
 STR_1820    :{WINDOW_COLOUR_2}{STRINGID}的游客
 STR_1821    :{WINDOW_COLOUR_2}在想{STRINGID}的游客
 STR_1822    :{WINDOW_COLOUR_2}在想{POP16}{STRINGID}的游客
-STR_1823    :{SMALLFONT}{BLACK}显示游客对此游乐设施/店铺的想法
-STR_1824    :{SMALLFONT}{BLACK}显示在此游乐设施/店铺的游客
-STR_1825    :{SMALLFONT}{BLACK}显示在此游乐设施/店铺排队等候的游客
+STR_1823    :显示游客对此游乐设施/店铺的想法
+STR_1824    :显示在此游乐设施/店铺的游客
+STR_1825    :显示在此游乐设施/店铺排队等候的游客
 STR_1826    :状态
 STR_1827    :人气
 STR_1828    :满意度
@@ -1222,13 +1222,13 @@ STR_1840    :故障度: {COMMA16}%
 STR_1841    :利润: 每小时{CURRENCY2DP}
 STR_1842    :{COMMA16}游客最喜爱的游乐设施
 STR_1843    :{COMMA16}游客最喜爱的游乐设施
-STR_1844    :{SMALLFONT}{BLACK}选择要在游乐设施/店面列表中显示的信息类别
+STR_1844    :选择要在游乐设施/店面列表中显示的信息类别
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32}游客
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32}游客
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32}游客
 STR_1849    :{WINDOW_COLOUR_2}播放音乐
-STR_1850    :{SMALLFONT}{BLACK}选择此游乐设施是否播放音乐
+STR_1850    :选择此游乐设施是否播放音乐
 STR_1851    :{WINDOW_COLOUR_2}运行成本: {BLACK}每小时{CURRENCY2DP}
 STR_1852    :{WINDOW_COLOUR_2}运行成本: {BLACK}未知
 STR_1853    :{WINDOW_COLOUR_2}建造年份: {BLACK}今年
@@ -1248,7 +1248,7 @@ STR_1866    :位表演人员
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :不能改变旋转次数…
 STR_1869    :{WINDOW_COLOUR_2}旋转次数:
-STR_1870    :{SMALLFONT}{BLACK}完整旋转次数
+STR_1870    :完整旋转次数
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}收入: {BLACK}{CURRENCY2DP}/时
 STR_1874    :{WINDOW_COLOUR_2}盈利: {BLACK}{CURRENCY2DP}/时
@@ -1267,12 +1267,12 @@ STR_1886    :检查 {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}上次检查时间: {BLACK}{COMMA16}分钟前
 STR_1888    :{WINDOW_COLOUR_2}上次检查时间: {BLACK}大于4小时
 STR_1889    :{WINDOW_COLOUR_2}故障度: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}选择维修人员检查此游乐设施的时间间隔
+STR_1890    :选择维修人员检查此游乐设施的时间间隔
 STR_1891    :在乐园里暂未有{STRINGID}!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}售出{STRINGID}: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}建造新的游乐设施/店铺
+STR_1895    :建造新的游乐设施/店铺
 STR_1896    :{WINDOW_COLOUR_2}支出/收入
 STR_1897    :{WINDOW_COLOUR_2}建造游乐设施
 STR_1898    :{WINDOW_COLOUR_2}运行游乐设施费用
@@ -1298,33 +1298,33 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :不能再借贷更多钱!
 STR_1919    :没有足够的现金!
 STR_1920    :不能偿还贷款!
-STR_1921    :{SMALLFONT}{BLACK}开始新游戏
-STR_1922    :{SMALLFONT}{BLACK}从存档继续玩
-STR_1924    :{SMALLFONT}{BLACK}退出游戏
+STR_1921    :开始新游戏
+STR_1922    :从存档继续玩
+STR_1924    :退出游戏
 STR_1925    :不能放置人物于此…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}发生故障了
 STR_1928    :{RED}{STRINGID}毁坏了!
 STR_1929    :{RED}{STRINGID}依然未修复好{NEWLINE}请检查机械师位置所在, 或考虑以更好的方法管理他们
-STR_1930    :{SMALLFONT}{BLACK}开启/关闭这位游客的追踪信息 - (假若开启追踪, 这位游客的行动将会报告于最近消息里)
+STR_1930    :开启/关闭这位游客的追踪信息 - (假若开启追踪, 这位游客的行动将会报告于最近消息里)
 STR_1931    :{STRINGID}已在轮候{STRINGID}
 STR_1932    :{STRINGID}已在{STRINGID}上
 STR_1933    :{STRINGID}已在{STRINGID}中
 STR_1934    :{STRINGID}已离开{STRINGID}
 STR_1935    :{STRINGID}已离开乐园
 STR_1936    :{STRINGID}已购买{STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}显示关于这个消息标题的信息
-STR_1938    :{SMALLFONT}{BLACK}显示游客所视
-STR_1939    :{SMALLFONT}{BLACK}显示员工所视
-STR_1940    :{SMALLFONT}{BLACK}显示这位游客的快乐度, 体力, 饥饿度等指标
-STR_1941    :{SMALLFONT}{BLACK}显示这位游客乘坐了甚么游乐设施
-STR_1942    :{SMALLFONT}{BLACK}显示这位游客的财政状况
-STR_1943    :{SMALLFONT}{BLACK}显示这位游客的最近想法
-STR_1944    :{SMALLFONT}{BLACK}显示这位游客携带中的对象
-STR_1945    :{SMALLFONT}{BLACK}显示有关这位员工的排序及选项
-STR_1946    :{SMALLFONT}{BLACK}选择这位表演人员的服装
-STR_1947    :{SMALLFONT}{BLACK}显示已分配被巡逻的区域, 以及将最近的员工定位
-STR_1948    :{SMALLFONT}{BLACK}雇用这个类别的新员工
+STR_1937    :显示关于这个消息标题的信息
+STR_1938    :显示游客所视
+STR_1939    :显示员工所视
+STR_1940    :显示这位游客的快乐度, 体力, 饥饿度等指标
+STR_1941    :显示这位游客乘坐了甚么游乐设施
+STR_1942    :显示这位游客的财政状况
+STR_1943    :显示这位游客的最近想法
+STR_1944    :显示这位游客携带中的对象
+STR_1945    :显示有关这位员工的排序及选项
+STR_1946    :选择这位表演人员的服装
+STR_1947    :显示已分配被巡逻的区域, 以及将最近的员工定位
+STR_1948    :雇用这个类别的新员工
 STR_1949    :财政概要
 STR_1950    :财政图表
 STR_1951    :乐园价值图表
@@ -1332,7 +1332,7 @@ STR_1952    :营利图表
 STR_1953    :营销计划
 STR_1954    :研发资金
 STR_1955    :{WINDOW_COLOUR_2}圈数:
-STR_1956    :{SMALLFONT}{BLACK}每次运转游乐设施的圈数
+STR_1956    :每次运转游乐设施的圈数
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :不能改变圈数…
@@ -1571,10 +1571,10 @@ STR_2206    :空饮料包装
 STR_2207    :空果汁杯
 STR_2208    :烤香肠
 STR_2209    :空碗
-STR_2210    :{SMALLFONT}{BLACK}列出乐园内的清洁工人
-STR_2211    :{SMALLFONT}{BLACK}列出乐园内的维修人员
-STR_2212    :{SMALLFONT}{BLACK}列出乐园内的安全警卫
-STR_2213    :{SMALLFONT}{BLACK}列出乐园内的表演人员
+STR_2210    :列出乐园内的清洁工人
+STR_2211    :列出乐园内的维修人员
+STR_2212    :列出乐园内的安全警卫
+STR_2213    :列出乐园内的表演人员
 STR_2214    :游戏暂停时无法建造任何物体!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
@@ -1582,7 +1582,7 @@ STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID}, {STRINGID}的一部份，尚未返回到{STRINGID}!{NEWLINE}检查是否被卡住或被停止了
 STR_2219    :{RED}{COMMA16}人已丧生于{STRINGID}的意外中
 STR_2220    :{WINDOW_COLOUR_2}乐园评价: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}乐园评价: {COMMA16}
+STR_2221    :乐园评价: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}园内游客: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}现金: {BLACK}{CURRENCY2DP}
@@ -1594,7 +1594,7 @@ STR_2229    :上坡到垂直的过渡轨道
 STR_2230    :垂直轨道
 STR_2231    :下落刹车设备
 STR_2232    :缆索坡道
-STR_2233    :{SMALLFONT}{BLACK}游乐园信息
+STR_2233    :游乐园信息
 STR_2234    :最近消息
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :1月
@@ -1635,9 +1635,9 @@ STR_2270    :{WINDOW_COLOUR_2}进度: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}预计完工日期: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}游乐设施/店铺:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}景物/主题景物:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}显示此研发项目的详细数据
-STR_2275    :{SMALLFONT}{BLACK}显示研发的资金分配及选项
-STR_2276    :{SMALLFONT}{BLACK}显示研发项目进度
+STR_2274    :显示此研发项目的详细数据
+STR_2275    :显示研发的资金分配及选项
+STR_2276    :显示研发项目进度
 STR_2277    :未知
 STR_2278    :运输类游乐设施
 STR_2279    :温和类游乐设施
@@ -1654,8 +1654,8 @@ STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :选择新游戏的剧情
 STR_2292    :{WINDOW_COLOUR_2}乘坐过的游乐设施:
 STR_2293    :{BLACK}无
-STR_2294    :{SMALLFONT}{BLACK}更改基础土地样式
-STR_2295    :{SMALLFONT}{BLACK}更改土地的垂直边界
+STR_2294    :更改基础土地样式
+STR_2295    :更改土地的垂直边界
 STR_2296    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}进入乐园
 STR_2297    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}乘坐{BLACK}{COMMA16}个游乐设施
 STR_2298    :{WINDOW_COLOUR_2}付了{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2}乘坐{BLACK}{COMMA16}个游乐设施
@@ -1681,8 +1681,8 @@ STR_2321    :{WINDOW_COLOUR_2}游乐设施/店铺数目: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}员工数目: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}乐园大小: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}乐园大小: {BLACK}{COMMA32}平方英尺
-STR_2325    :{SMALLFONT}{BLACK}购买土地来扩展乐园
-STR_2326    :{SMALLFONT}{BLACK}购买建造权来准许在乐园范围外的空中或地底建造对象
+STR_2325    :购买土地来扩展乐园
+STR_2326    :购买建造权来准许在乐园范围外的空中或地底建造对象
 STR_2327    :选项
 STR_2328    :{WINDOW_COLOUR_2}货币单位:
 STR_2329    :{WINDOW_COLOUR_2}距离和速度单位:
@@ -1703,7 +1703,7 @@ STR_2343    :欧元 (€)
 STR_2344    :英制
 STR_2345    :公制
 STR_2347    :{RED}{STRINGID}已被溺死!
-STR_2348    :{SMALLFONT}{BLACK}显示这位员工的统计数据
+STR_2348    :显示这位员工的统计数据
 STR_2349    :{WINDOW_COLOUR_2}工资: {BLACK}每个月{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}雇用日期: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}除草次数: {BLACK}{COMMA16}
@@ -1716,9 +1716,9 @@ STR_2358    :单位
 STR_2359    :真实数值
 STR_2360    :屏幕分辨率:
 STR_2361    :地表边缘平滑
-STR_2362    :{SMALLFONT}{BLACK}开启/关闭地表边缘平滑
+STR_2362    :开启/关闭地表边缘平滑
 STR_2363    :地表网格
-STR_2364    :{SMALLFONT}{BLACK}开启/关闭地表网格显示
+STR_2364    :开启/关闭地表网格显示
 STR_2365    :银行拒绝增加你的贷款额!
 STR_2366    :摄氏 (°C)
 STR_2367    :华氏 (°F)
@@ -1732,10 +1732,10 @@ STR_2374    :高
 STR_2375    :很高
 STR_2376    :极端
 STR_2377    :超极端
-STR_2378    :{SMALLFONT}{BLACK}调整较小的土地区域
-STR_2379    :{SMALLFONT}{BLACK}调整较大的土地区域
-STR_2380    :{SMALLFONT}{BLACK}调整较小的水塘区域
-STR_2381    :{SMALLFONT}{BLACK}调整较大的水塘区域
+STR_2378    :调整较小的土地区域
+STR_2379    :调整较大的土地区域
+STR_2380    :调整较小的水塘区域
+STR_2381    :调整较大的水塘区域
 STR_2382    :土地
 STR_2383    :水面
 STR_2384    :{WINDOW_COLOUR_2}你的目标：
@@ -1766,7 +1766,7 @@ STR_2408    :食物/饮料或其他商品的每月收入
 STR_2409    :{WINDOW_COLOUR_2}实行中的营销计划
 STR_2410    :{BLACK}无
 STR_2411    :{WINDOW_COLOUR_2}可以实行的营销计划
-STR_2412    :{SMALLFONT}{BLACK}开始实行这个营销计划
+STR_2412    :开始实行这个营销计划
 STR_2413    :{BLACK}(每周{CURRENCY2DP})
 STR_2414    :(尚未选择)
 STR_2415    :{WINDOW_COLOUR_2}游乐设施:
@@ -1800,7 +1800,7 @@ STR_2450    :{YELLOW}你针对乐园的推广计划现已结束
 STR_2451    :{YELLOW}你针对{STRINGID}的推广计划现已结束
 STR_2452    :{WINDOW_COLOUR_2}现金（减去贷款）:{BLACK} {CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}现金（减去贷款）:{RED} {CURRENCY2DP}
-STR_2454    :{SMALLFONT} {BLACK} {CURRENCY2DP} - 
+STR_2454    :{SMALLFONT}{BLACK}{SMALLFONT} {BLACK} {CURRENCY2DP} - 
 STR_2457    :{SMALLFONT} {BLACK}显示财政报表
 STR_2458    :{SMALLFONT} {BLACK}以图表显示过往到现在的净现金
 STR_2459    :{SMALLFONT} {BLACK}以图表显示过往到现在的乐园价格
@@ -1825,16 +1825,16 @@ STR_2477    :{SMALLFONT} {BLACK}选择这个游乐设施的运作模式
 STR_2478    :{SMALLFONT} {BLACK}以图表显示速度与运作时间的关系
 STR_2479    :{SMALLFONT} {BLACK}以图表显示高度与运作时间的关系
 STR_2480    :{SMALLFONT} {BLACK}以图表显示垂直加速与运作时间的关系
-STR_2481    :{SMALLFONT}{BLACK}以图表显示横向加速与运作时间的关系
-STR_2482    :{SMALLFONT}{BLACK}营利: 每周{CURRENCY}, 乐园价值: {CURRENCY}
+STR_2481    :以图表显示横向加速与运作时间的关系
+STR_2482    :营利: 每周{CURRENCY}, 乐园价值: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}每周营利: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每周营利: {RED}{CURRENCY2DP}
 STR_2487    :显示游客的'真实'姓名
-STR_2488    :{SMALLFONT}{BLACK}在游客'真实'姓名和游客编号之间切换
+STR_2488    :在游客'真实'姓名和游客编号之间切换
 STR_2489    :快捷键…
 STR_2490    :键盘快捷键
 STR_2491    :重置快捷键
-STR_2492    :{SMALLFONT}{BLACK}初始化所有快捷键设置
+STR_2492    :初始化所有快捷键设置
 STR_2493    :关闭最顶层的窗口
 STR_2494    :关闭所有窗口
 STR_2495    :退出建造模式
@@ -1911,7 +1911,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :所有项目已研发完毕
 STR_2681    :{MEDIUMFONT}{BLACK}增加{CURRENCY}到你的账上
-STR_2684    :{SMALLFONT}{BLACK}一大批游客到访
+STR_2684    :一大批游客到访
 STR_2685    :单形噪声参数
 STR_2686    :低值:
 STR_2687    :高值:
@@ -1990,7 +1990,7 @@ STR_2782    :SHIFT +
 STR_2783    :CTRL + 
 STR_2784    :变更快捷键
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
-STR_2786    :{SMALLFONT}{BLACK}点击快捷键描述来设置新的快捷键
+STR_2786    :点击快捷键描述来设置新的快捷键
 STR_2787    :{WINDOW_COLOUR_2}乐园价值: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}恭喜您!{NEWLINE}{BLACK}你已经达到你的目标, 并令公司价值增至 {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}你未达成目标 !
@@ -2000,16 +2000,16 @@ STR_2792    :请输入你要在剧情列表显示的名字:
 STR_2793    :{SMALLFONT}(由{STRINGID}达成)
 STR_2794    :{WINDOW_COLOUR_2}完成者: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} 公司价值: {BLACK}{CURRENCY}
 STR_2795    :排序
-STR_2796    :{SMALLFONT}{BLACK}将游乐设施按照不同类别排列
+STR_2796    :将游乐设施按照不同类别排列
 STR_2797    :当鼠标位于屏幕边缘时滚动视图
-STR_2798    :{SMALLFONT}{BLACK}当鼠标位于屏幕边缘时滚动视图
-STR_2799    :{SMALLFONT}{BLACK}查看或改变控制按键分配
+STR_2798    :当鼠标位于屏幕边缘时滚动视图
+STR_2799    :查看或改变控制按键分配
 STR_2800    :{WINDOW_COLOUR_2}总购票人数: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}门票收入: {BLACK}{CURRENCY2DP}
 STR_2802    :地图
-STR_2803    :{SMALLFONT}{BLACK}高亮显示游客
-STR_2804    :{SMALLFONT}{BLACK}高亮显示雇员
-STR_2805    :{SMALLFONT}{BLACK}显示游乐园地图
+STR_2803    :高亮显示游客
+STR_2804    :高亮显示雇员
+STR_2805    :显示游乐园地图
 STR_2806    :{RED}大量游客投诉乐园里的道路非常肮脏及恶心{NEWLINE}请检查你的清洁工人位置, 并考虑调整的管理方法
 STR_2807    :{RED}大量游客投诉乐园里随处可见的垃圾{NEWLINE}请检查你的清洁工人位置, 并考虑调整管理方法
 STR_2808    :{RED}大量游客投诉乐园里的公物被毁坏{NEWLINE}请检查你的安保人员位置, 并考虑调整管理方法
@@ -2111,8 +2111,8 @@ STR_2971    :主要配色主题
 STR_2972    :额外配色主题1
 STR_2973    :额外配色主题2
 STR_2974    :额外配色主题3
-STR_2975    :{SMALLFONT}{BLACK}选取游乐设施的配色选项来修改
-STR_2976    :{SMALLFONT}{BLACK}将指定区域使用目前选择的配色主题
+STR_2975    :选取游乐设施的配色选项来修改
+STR_2976    :将指定区域使用目前选择的配色主题
 STR_2977    :员工命名
 STR_2978    :请输入该员工的新名字:
 STR_2979    :不能更改该员工姓名…
@@ -2122,16 +2122,16 @@ STR_2982    :横幅内容
 STR_2983    :请输入新的内容:
 STR_2984    :不能设置新的横幅内容…
 STR_2985    :横幅
-STR_2986    :{SMALLFONT}{BLACK}修改横幅内容
-STR_2987    :{SMALLFONT}{BLACK}设置当前横幅为“游客止步”
-STR_2988    :{SMALLFONT}{BLACK}拆除该横幅
-STR_2989    :{SMALLFONT}{BLACK}选择横幅配色
-STR_2990    :{SMALLFONT}{BLACK}选择文字配色
+STR_2986    :修改横幅内容
+STR_2987    :设置当前横幅为“游客止步”
+STR_2988    :拆除该横幅
+STR_2989    :选择横幅配色
+STR_2990    :选择文字配色
 STR_2991    :标志
 STR_2992    :标志内容
 STR_2993    :请输入新的标志内容:
-STR_2994    :{SMALLFONT}{BLACK}修改标志的内容
-STR_2995    :{SMALLFONT}{BLACK}拆除该标志
+STR_2994    :修改标志的内容
+STR_2995    :拆除该标志
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -2181,7 +2181,7 @@ STR_3041    :摩登风格
 STR_3042    :海盗风格
 STR_3043    :摇滚风格3
 STR_3044    :糖果风格
-STR_3045    :{SMALLFONT}{BLACK}选择要播放的音乐风格:
+STR_3045    :选择要播放的音乐风格:
 STR_3047    :当地政府禁止拆除或修改此游乐设施
 STR_3048    :当地政府禁止所有推广计划进行
 STR_3049    :高尔夫球洞A
@@ -2194,8 +2194,8 @@ STR_3058    :砖墙
 STR_3059    :树篱
 STR_3060    :冰砖墙
 STR_3061    :木栅栏
-STR_3062    :{SMALLFONT}{BLACK}标准过山车轨道
-STR_3063    :{SMALLFONT}{BLACK}水溅轨道 (轨道半浸于水中)
+STR_3062    :标准过山车轨道
+STR_3063    :水溅轨道 (轨道半浸于水中)
 STR_3064    :新手级乐园
 STR_3065    :挑战级乐园
 STR_3066    :专家级乐园
@@ -2204,42 +2204,42 @@ STR_3068    :其他乐园
 STR_3069    :最上的区域
 STR_3070    :斜坡至平面
 STR_3071    :{WINDOW_COLOUR_2}划一乐园内的价格
-STR_3072    :{SMALLFONT}{BLACK}选择是否以此价格为划一价格
+STR_3072    :选择是否以此价格为划一价格
 STR_3073    :{RED}警告: 你的乐园评价已跌至低于700!{NEWLINE}如果你在4周内尚未改善乐园评价, 你的乐园将会被强制关闭
 STR_3074    :{RED}警告: 你的乐园评价仍然低于700!{NEWLINE}你还有3周去改善评价
 STR_3075    :{RED}警告: 你的乐园评价仍然低于700!{NEWLINE}你还有2周去改善评价, 否则你的乐园将会被强制关闭
 STR_3076    :{RED}最后通谍: 你的乐园评价仍然低于700!{NEWLINE}7日之内你的乐园将会被强制关闭, 除非你能改善乐园评价
 STR_3077    :{RED}关闭告示: 你的乐园已被强制关闭!
-STR_3090    :{SMALLFONT}{BLACK}选择入口, 出口以及车站的风格
+STR_3090    :选择入口, 出口以及车站的风格
 STR_3091    :你无法删除此轨道!
 STR_3092    :你无法移动或修改这个游乐设施的车站!
 STR_3093    :{WINDOW_COLOUR_2}最爱: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}提升坡的上升速度:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}选择提升坡的链条上拉速度
-STR_3099    :{SMALLFONT}{BLACK}选择颜色
-STR_3100    :{SMALLFONT}{BLACK}选择第二颜色
-STR_3101    :{SMALLFONT}{BLACK}选择第三颜色
-STR_3102    :{SMALLFONT}{BLACK}将地形的景物重新上色
+STR_3097    :选择提升坡的链条上拉速度
+STR_3099    :选择颜色
+STR_3100    :选择第二颜色
+STR_3101    :选择第三颜色
+STR_3102    :将地形的景物重新上色
 STR_3103    :不能重新上色这个对象…
-STR_3104    :{SMALLFONT}{BLACK}列出游乐设施
-STR_3105    :{SMALLFONT}{BLACK}列出商店及摊贩
-STR_3106    :{SMALLFONT}{BLACK}列出访客信息中心或其他游客设施
+STR_3104    :列出游乐设施
+STR_3105    :列出商店及摊贩
+STR_3106    :列出访客信息中心或其他游客设施
 STR_3107    :关闭
 STR_3108    :测试
 STR_3109    :开启
 STR_3110    :{WINDOW_COLOUR_2}刹车区间: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}点击建造设计
-STR_3112    :{SMALLFONT}{BLACK}点击删除或重命名设计
+STR_3111    :点击建造设计
+STR_3112    :点击删除或重命名设计
 STR_3113    :选择另一个设计
-STR_3114    :{SMALLFONT}{BLACK}返回选择设计窗口
-STR_3115    :{SMALLFONT}{BLACK}存储轨道设计
-STR_3116    :{SMALLFONT}{BLACK}存储轨道设计 (在测试完结及测试数据生成完毕前不可用)
+STR_3114    :返回选择设计窗口
+STR_3115    :存储轨道设计
+STR_3116    :存储轨道设计 (在测试完结及测试数据生成完毕前不可用)
 STR_3117    :{BLACK}调用维修人员中…
 STR_3118    :{BLACK}{STRINGID}正在前往到这个游乐设施
 STR_3119    :{BLACK}{STRINGID}正在修复这个游乐设施
-STR_3120    :{SMALLFONT}{BLACK}将最邻近, 或在维修此游乐设施的维修人员定位
+STR_3120    :将最邻近, 或在维修此游乐设施的维修人员定位
 STR_3121    :无法定位维修人员, 或者附近的维修人员都在工作中
 STR_3122    :{WINDOW_COLOUR_2}游客的最爱: {BLACK}{COMMA16}位游客
 STR_3123    :{WINDOW_COLOUR_2}游客的最爱: {BLACK}{COMMA16}位游客
@@ -2262,9 +2262,9 @@ STR_3139    :缆道坡道不能在这个运作模式运作
 STR_3140    :缆道坡道需要连接至车站
 STR_3141    :缆道坡道并不适合於单次多圈数的游乐设施
 STR_3142    :{WINDOW_COLOUR_2}载客量: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}在地图上显示所有人物
-STR_3144    :{SMALLFONT}{BLACK}在地图上显示所有游乐设施及店铺
-STR_3160    :{SMALLFONT}{BLACK}选择每次乘坐循环的次数
+STR_3143    :在地图上显示所有人物
+STR_3144    :在地图上显示所有游乐设施及店铺
+STR_3160    :选择每次乘坐循环的次数
 STR_3162    :无法分配足够的内存
 STR_3163    :安装新数据档中: 
 STR_3164    :{BLACK}已选择{COMMA16}项 (最多{COMMA16}项)
@@ -2299,7 +2299,7 @@ STR_3196    :{WINDOW_COLOUR_2}研发组别: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}游戏开始时已研发好的项目:
 STR_3198    :{WINDOW_COLOUR_2}需要在游戏中研发的项目:
 STR_3199    :随机分配
-STR_3200    :{SMALLFONT}{BLACK}将需要在游戏中研发的项目随机分配
+STR_3200    :将需要在游戏中研发的项目随机分配
 STR_3201    :选取对象
 STR_3202    :编辑地势
 STR_3203    :设置研发清单
@@ -2315,36 +2315,36 @@ STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :不能再缩小地图
 STR_3214    :不能再扩大地图
 STR_3215    :太接近地图的边缘
-STR_3216    :{SMALLFONT}{BLACK}选择乐园拥有的土地及其他选项
+STR_3216    :选择乐园拥有的土地及其他选项
 STR_3217    :已拥有的土地
 STR_3218    :已拥有建造权的土地
 STR_3219    :可供购买的土地
 STR_3220    :可供购买建造权的土地
-STR_3221    :{SMALLFONT}{BLACK}令乐园成为土地的拥有者
-STR_3222    :{SMALLFONT}{BLACK}令乐园拥有土地的建造权
-STR_3223    :{SMALLFONT}{BLACK}将土地设置成为可供乐园购买
-STR_3224    :{SMALLFONT}{BLACK}将土地的建造权设置成为可供乐园购买
-STR_3225    :{SMALLFONT}{BLACK}设置是否在选中的位置中随机建造一些对象
-STR_3226    :{SMALLFONT}{BLACK}建造乐园入口
+STR_3221    :令乐园成为土地的拥有者
+STR_3222    :令乐园拥有土地的建造权
+STR_3223    :将土地设置成为可供乐园购买
+STR_3224    :将土地的建造权设置成为可供乐园购买
+STR_3225    :设置是否在选中的位置中随机建造一些对象
+STR_3226    :建造乐园入口
 STR_3227    :太多乐园入口!
-STR_3228    :{SMALLFONT}{BLACK}设置游客的开始步行位置
+STR_3228    :设置游客的开始步行位置
 STR_3229    :区域煞车不能建造在车站之后
 STR_3230    :区域煞车不能建造在另一个区域煞车之后
 STR_3231    :区域煞车不能建造在这个提升坡的顶部之后
 STR_3232    :选项 - 财政
 STR_3233    :选项 - 游客
 STR_3234    :选项 - 乐园
-STR_3235    :{SMALLFONT}{BLACK}显示财政选项
-STR_3236    :{SMALLFONT}{BLACK}显示游客选项
-STR_3237    :{SMALLFONT}{BLACK}显示乐园选项
+STR_3235    :显示财政选项
+STR_3236    :显示游客选项
+STR_3237    :显示乐园选项
 STR_3238    :无金钱限制
-STR_3239    :{SMALLFONT}{BLACK}将这个乐园设置为无金钱限制的乐园
+STR_3239    :将这个乐园设置为无金钱限制的乐园
 STR_3240    :{WINDOW_COLOUR_2}初始现金:
 STR_3241    :{WINDOW_COLOUR_2}初始贷款额:
 STR_3242    :{WINDOW_COLOUR_2}最高贷款额:
 STR_3243    :{WINDOW_COLOUR_2}贷款年利率:
 STR_3244    :禁止营销计划
-STR_3245    :{SMALLFONT}{BLACK}禁止推销, 推广计划以及其他营销计划
+STR_3245    :禁止推销, 推广计划以及其他营销计划
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :不能再增加初始现金!
@@ -2356,47 +2356,47 @@ STR_3253    :不能再减少最高贷款额!
 STR_3254    :不能再增加贷款利率!
 STR_3255    :不能再减少贷款利率!
 STR_3256    :游客喜欢较温和的游乐设施
-STR_3257    :{SMALLFONT}{BLACK}选择普遍游客是否只喜欢较温和的游乐设施
+STR_3257    :选择普遍游客是否只喜欢较温和的游乐设施
 STR_3258    :游客喜欢较刺激的游乐设施
-STR_3259    :{SMALLFONT}{BLACK}选择普遍游客是否只喜欢较刺激的游乐设施
+STR_3259    :选择普遍游客是否只喜欢较刺激的游乐设施
 STR_3260    :{WINDOW_COLOUR_2}游客身上现金 (平均值):
 STR_3261    :{WINDOW_COLOUR_2}游客初始快乐度:
 STR_3262    :{WINDOW_COLOUR_2}游客初始饥饿度:
 STR_3263    :{WINDOW_COLOUR_2}游客初始口渴度:
 STR_3264    :不能再增加这个选项!
 STR_3265    :不能再减少这个选项!
-STR_3266    :{SMALLFONT}{BLACK}选择这个乐园的收费策略
+STR_3266    :选择这个乐园的收费策略
 STR_3267    :禁止移除树木
-STR_3268    :{SMALLFONT}{BLACK}禁止移除高壮的树木
+STR_3268    :禁止移除高壮的树木
 STR_3269    :禁止调整地形
-STR_3270    :{SMALLFONT}{BLACK}禁止对地形作任何调整
+STR_3270    :禁止对地形作任何调整
 STR_3271    :禁止高空建造
-STR_3272    :{SMALLFONT}{BLACK}禁止任何高空发展
+STR_3272    :禁止任何高空发展
 STR_3273    :较高难度的乐园评价公式
-STR_3274    :{SMALLFONT}{BLACK}使增加乐园评价更具挑战性
+STR_3274    :使增加乐园评价更具挑战性
 STR_3275    :较难生成游客
-STR_3276    :{SMALLFONT}{BLACK}使吸引游客更具挑战性
+STR_3276    :使吸引游客更具挑战性
 STR_3277    :{WINDOW_COLOUR_2}购买土地的费用:
 STR_3278    :{WINDOW_COLOUR_2}购买建造权利的费用:
 STR_3279    :免费进入乐园 / 需费乘搭游乐设施
 STR_3280    :需费进入乐园 / 免费乘搭游乐设施
 STR_3281    :{WINDOW_COLOUR_2}乐园门票价格:
-STR_3282    :{SMALLFONT}{BLACK}选择目标及乐园名称
-STR_3283    :{SMALLFONT}{BLACK}选择要保留的游乐设施/店铺
+STR_3282    :选择目标及乐园名称
+STR_3283    :选择要保留的游乐设施/店铺
 STR_3284    :选取目标
 STR_3285    :保留游乐设施/店铺
-STR_3286    :{SMALLFONT}{BLACK}选择此剧情的目标
+STR_3286    :选择此剧情的目标
 STR_3287    :{WINDOW_COLOUR_2}目标:
-STR_3288    :{SMALLFONT}{BLACK}选择气候
+STR_3288    :选择气候
 STR_3289    :{WINDOW_COLOUR_2}气候:
 STR_3290    :又冷又潮湿
 STR_3291    :温暖
 STR_3292    :又热又干燥
 STR_3293    :寒冷
 STR_3294    :更改…
-STR_3295    :{SMALLFONT}{BLACK}更改乐园名称
-STR_3296    :{SMALLFONT}{BLACK}更改剧情名称
-STR_3297    :{SMALLFONT}{BLACK}更改乐园/剧情的简介
+STR_3295    :更改乐园名称
+STR_3296    :更改剧情名称
+STR_3297    :更改乐园/剧情的简介
 STR_3298    :{WINDOW_COLOUR_2}乐园名称: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}乐园/剧情的简介:
 STR_3300    :{WINDOW_COLOUR_2}剧情名称: {BLACK}{STRINGID}
@@ -2417,7 +2417,7 @@ STR_3314    :请输入这个剧情的名称:
 STR_3315    :乐园/剧情的简介
 STR_3316    :请输入这个乐园/剧情的简介:
 STR_3317    :暂无简介
-STR_3318    :{SMALLFONT}{BLACK}选择这个剧情要在哪个组别中显示
+STR_3318    :选择这个剧情要在哪个组别中显示
 STR_3319    :{WINDOW_COLOUR_2}剧情组别:
 STR_3320    :无法存储剧情文件…
 STR_3321    :成功安装新对象
@@ -2430,13 +2430,13 @@ STR_3330    :乐园必需有一些己拥有的土地
 STR_3331    :由地图边缘到乐园入口的道路尚未连接好, 或者太复杂 - 这些道路必需是一格宽度, 并以越少交界及弯位越好
 STR_3332    :乐园入口倒转了, 或没有道路连接至地图边缘
 STR_3333    :在存档中导出附加物
-STR_3334    :{SMALLFONT}{BLACK}选择是否存储插件的储存文件，以便那些没有插件的玩家载入存档
+STR_3334    :选择是否存储插件的储存文件，以便那些没有插件的玩家载入存档
 STR_3335    :轨道设计工具 - 选择游乐设施的类型及车辆种类
 STR_3336    :轨道设计管理工具 - 选择游乐设施的类型
 STR_3338    :{BLACK}自定义布局
 STR_3339    :{BLACK}{COMMA16} 预设设计 或者 自定布局
 STR_3340    :{BLACK}{COMMA16} 预设设计 或者 自定布局
-STR_3341    :{SMALLFONT}{BLACK}游戏工具
+STR_3341    :游戏工具
 STR_3342    :剧情编辑器
 STR_3343    :将游戏存档转换成剧情关
 STR_3344    :轨道设计工具
@@ -2458,7 +2458,7 @@ STR_3359    :{BLACK}该设施没有已设计好的轨道设计
 STR_3360    :警告!
 STR_3361    :该设施有太多设计-列表不会完全列出
 STR_3364    :进阶
-STR_3365    :{SMALLFONT}{BLACK}在选择景物类别之外，允许选择单项景物
+STR_3365    :在选择景物类别之外，允许选择单项景物
 STR_3366    :{BLACK}= 游乐设施
 STR_3367    :{BLACK}= 食品店
 STR_3368    :{BLACK}= 饮品店
@@ -2470,7 +2470,7 @@ STR_3373    :{BLACK}= 厕所
 STR_3374    :警告: 选取了太多对象!
 STR_3375    :不是在此景观组别中的所有对象都能够选取
 STR_3376    :安装新的…
-STR_3377    :{SMALLFONT}{BLACK}安装新的轨道设计文件
+STR_3377    :安装新的轨道设计文件
 STR_3378    :安装
 STR_3379    :取消
 STR_3380    :无法安装这个轨道设计
@@ -2482,7 +2482,7 @@ STR_3389    :无法选择额外的景观对象…
 STR_3390    :选取了太多对象
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 # End of tutorial strings
-STR_3437    :{SMALLFONT}{BLACK}在地形中清理大范围内的景物
+STR_3437    :在地形中清理大范围内的景物
 STR_3438    :无法移除这里的所有景物…
 STR_3439    :移除景物
 STR_3445    :设置巡逻范围
@@ -2495,15 +2495,15 @@ STR_5122    :根据轨道类型选择游乐设施 (像RCT1一样)
 STR_5123    :翻新游乐设施
 STR_5125    :全可拆除
 STR_5126    :随机主题音乐
-STR_5127    :{SMALLFONT}{BLACK}拖曳调整地形, 而不调整地势
+STR_5127    :拖曳调整地形, 而不调整地势
 STR_5128    :选择大小
 STR_5129    :请输入介于{COMMA16}-{COMMA16}之间的数字
 STR_5130    :地图大小
 STR_5131    :请输入介于{COMMA16}-{COMMA16}之间的数字
 STR_5132    :维修全部游乐设施
-STR_5133    :{SMALLFONT}{BLACK}选择较小一些的土地范围
-STR_5134    :{SMALLFONT}{BLACK}选择较大一些的土地范围
-STR_5135    :{SMALLFONT}{BLACK}购买土地权和建造权
+STR_5133    :选择较小一些的土地范围
+STR_5134    :选择较大一些的土地范围
+STR_5135    :购买土地权和建造权
 STR_5136    :土地权
 STR_5137    :解锁操作限制
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
@@ -2516,15 +2516,15 @@ STR_5144    :加快速度
 STR_5145    :更快速度
 STR_5146    :超快速度
 STR_5147    :作弊
-STR_5148    :{SMALLFONT}{BLACK}调整游戏速度
-STR_5149    :{SMALLFONT}{BLACK}显示作弊选项
+STR_5148    :调整游戏速度
+STR_5149    :显示作弊选项
 STR_5150    :开启调试工具
 STR_5151    :,
 STR_5152    :.
 STR_5153    :编辑配色主题…
 STR_5154    :使用硬件渲染
 STR_5155    :允许测试未完成的轨道设计
-STR_5156    :{SMALLFONT}{BLACK}允许测试大多数轨道设计, 即使那些轨道未完成的设计. 但这不适用于区域刹车模式
+STR_5156    :允许测试大多数轨道设计, 即使那些轨道未完成的设计. 但这不适用于区域刹车模式
 STR_5158    :回到主菜单
 STR_5159    :退出OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
@@ -2532,10 +2532,10 @@ STR_5161    :日期格式:
 STR_5162    :日/月/年
 STR_5163    :月/日/年
 STR_5177    :显示模式:
-STR_5178    :{SMALLFONT}{BLACK}显示财务秘籍
-STR_5179    :{SMALLFONT}{BLACK}显示游客秘籍
-STR_5180    :{SMALLFONT}{BLACK}显示乐园秘籍
-STR_5181    :{SMALLFONT}{BLACK}显示设备秘籍
+STR_5178    :显示财务秘籍
+STR_5179    :显示游客秘籍
+STR_5180    :显示乐园秘籍
+STR_5181    :显示设备秘籍
 STR_5182    :{INT32}
 STR_5183    :地面高度
 STR_5184    :请输入介乎{COMMA16}及{COMMA16}的地面高度
@@ -2582,14 +2582,14 @@ STR_5224    :拆除游乐设施对话框
 STR_5225    :解雇员工对话框
 STR_5226    :删除轨道设计对话框
 STR_5227    :覆盖存盘对话框
-STR_5228    :{SMALLFONT}{BLACK}主界面
-STR_5229    :{SMALLFONT}{BLACK}公园
-STR_5230    :{SMALLFONT}{BLACK}工具
-STR_5231    :{SMALLFONT}{BLACK}游乐设施和游客
-STR_5232    :{SMALLFONT}{BLACK}编辑器
-STR_5233    :{SMALLFONT}{BLACK}杂项
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}设置
+STR_5228    :主界面
+STR_5229    :公园
+STR_5230    :工具
+STR_5231    :游乐设施和游客
+STR_5232    :编辑器
+STR_5233    :杂项
+STR_5234    :Prompts
+STR_5235    :设置
 STR_5236    :Window
 STR_5237    :调色板
 STR_5238    :当前主题:
@@ -2609,32 +2609,32 @@ STR_5251    :主界面选项按钮
 STR_5252    :主界面剧情选择按钮
 STR_5253    :乐园信息
 STR_5254    :创建
-STR_5255    :{SMALLFONT}{BLACK}建立全新的主界面动画
+STR_5255    :建立全新的主界面动画
 STR_5256    :创建新的主题用于
-STR_5257    :{SMALLFONT}{BLACK}基于当前主题创建新主题
-STR_5258    :{SMALLFONT}{BLACK}删除当前主题
-STR_5259    :{SMALLFONT}{BLACK}重命名当前主题
+STR_5257    :基于当前主题创建新主题
+STR_5258    :删除当前主题
+STR_5259    :重命名当前主题
 STR_5260    :大型截图
 STR_5261    :过滤
 STR_5262    :怪诞世界
 STR_5263    :扭曲时间
 STR_5264    :自定义
-STR_5265    :{SMALLFONT}{BLACK}选择哪些内容为可视
-STR_5266    :{SMALLFONT}{BLACK}显示
-STR_5267    :{SMALLFONT}{BLACK}语言及单位
-STR_5268    :{SMALLFONT}{BLACK}音效
-STR_5269    :{SMALLFONT}{BLACK}控制及界面
-STR_5270    :{SMALLFONT}{BLACK}杂项
-STR_5272    :{SMALLFONT}{BLACK}小型景观
-STR_5273    :{SMALLFONT}{BLACK}大型景观
-STR_5274    :{SMALLFONT}{BLACK}道路
+STR_5265    :选择哪些内容为可视
+STR_5266    :显示
+STR_5267    :语言及单位
+STR_5268    :音效
+STR_5269    :控制及界面
+STR_5270    :杂项
+STR_5272    :小型景观
+STR_5273    :大型景观
+STR_5274    :道路
 STR_5275    :搜索物件
 STR_5276    :输入名称以搜索物件
 STR_5277    :清除
 STR_5278    :沙盒模式
 STR_5279    :关闭沙盒模式
-STR_5280    :{SMALLFONT}{BLACK}允许从地图视窗中修改土地拥有权, 以及其他平常只适用于剧情编辑工具的选项
-STR_5281    :{SMALLFONT}{BLACK}功能
+STR_5280    :允许从地图视窗中修改土地拥有权, 以及其他平常只适用于剧情编辑工具的选项
+STR_5281    :功能
 STR_5282    :过山车大亨1式游乐设施开关灯
 STR_5283    :过山车大亨1式乐园开关开关灯
 STR_5284    :过山车大亨1式选择剧情字体
@@ -2643,15 +2643,15 @@ STR_5288    :游乐设施已关闭
 STR_5289    :没有故障适用于该设施
 STR_5290    :维修游乐设施
 STR_5291    :不能强制设施故障
-STR_5292    :{SMALLFONT}{BLACK}强制故障
-STR_5293    :{SMALLFONT}{BLACK}关闭游乐设施/店铺
-STR_5294    :{SMALLFONT}{BLACK}测试游乐设施/店铺
-STR_5295    :{SMALLFONT}{BLACK}开启游乐设施/店铺
-STR_5296    :{SMALLFONT}{BLACK}关闭乐园
-STR_5297    :{SMALLFONT}{BLACK}开启乐园
+STR_5292    :强制故障
+STR_5293    :关闭游乐设施/店铺
+STR_5294    :测试游乐设施/店铺
+STR_5295    :开启游乐设施/店铺
+STR_5296    :关闭乐园
+STR_5297    :开启乐园
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :{SMALLFONT}{BLACK}快速解雇员工
+STR_5300    :快速解雇员工
 STR_5301    :{MEDIUMFONT}{BLACK}清除你的贷款
 STR_5302    :清除贷款
 STR_5303    :允许在暂停模式下继续建造
@@ -2662,7 +2662,7 @@ STR_5307    :过山车大亨1 (+资料片1&2 - AA+LL)
 STR_5308    :过山车大亨2(RCT2)
 STR_5309    :OpenRCT2
 STR_5310    :随机
-STR_5311    :{SMALLFONT}{BLACK}调试工具
+STR_5311    :调试工具
 STR_5312    :显示控制台
 STR_5313    :显示地图网格检查工具
 STR_5314    :地图网格检查工具
@@ -2670,15 +2670,15 @@ STR_5335    :设施入口
 STR_5336    :设施出口
 STR_5337    :乐园入口
 STR_5338    :元素类型
-STR_5339    :{SMALLFONT}{BLACK}基础高度
-STR_5340    :{SMALLFONT}{BLACK}清理高度
+STR_5339    :基础高度
+STR_5340    :清理高度
 STR_5343    :自动放置员工
 STR_5344    :更新日志
 STR_5345    :财政秘籍
 STR_5346    :游客秘籍
 STR_5347    :乐园秘籍
 STR_5348    :设施秘籍
-STR_5349    :{SMALLFONT}{BLACK}全部游乐设施
+STR_5349    :全部游乐设施
 STR_5350    :最大
 STR_5351    :最小
 STR_5352    :{BLACK}兴奋度:
@@ -2689,7 +2689,7 @@ STR_5356    :{BLACK}恶心度:
 STR_5357    :{BLACK}恶心耐受度:
 STR_5358    :{BLACK}如厕度:
 STR_5359    :移除游客
-STR_5360    :{SMALLFONT}{BLACK}移除地图上的所有游客
+STR_5360    :移除地图上的所有游客
 STR_5361    :给所有游客:
 STR_5362    :{BLACK}设置所有客人的首选乘坐强度:
 STR_5363    :大于 1
@@ -2704,26 +2704,26 @@ STR_5373    :名称 {STRINGID}
 STR_5374    :日期 {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :{SMALLFONT}{BLACK}保存
-STR_5378    :{SMALLFONT}{BLACK}脚本
-STR_5379    :{SMALLFONT}{BLACK}跳到下一个等待命令
-STR_5380    :{SMALLFONT}{BLACK}开始播放此菜单动画
-STR_5381    :{SMALLFONT}{BLACK}停止播放此菜单动画
-STR_5382    :{SMALLFONT}{BLACK}重新开始播放此菜单动画
-STR_5383    :{SMALLFONT}{BLACK}基于当前菜单动画创建新菜单动画
-STR_5384    :{SMALLFONT}{BLACK}删除当前菜单动画
-STR_5385    :{SMALLFONT}{BLACK}重命名当前菜单动画
-STR_5386    :{SMALLFONT}{BLACK}插入新命令
-STR_5387    :{SMALLFONT}{BLACK}编辑选择的命令
-STR_5388    :{SMALLFONT}{BLACK}删除选择的命令
-STR_5389    :{SMALLFONT}{BLACK}跳过选择的命令
-STR_5390    :{SMALLFONT}{BLACK}向下移动选择的命令
-STR_5391    :{SMALLFONT}{BLACK}向上移动选择的命令
-STR_5392    :{SMALLFONT}{BLACK}在菜单动画上添加存档
-STR_5393    :{SMALLFONT}{BLACK}移除选中的存档
-STR_5394    :{SMALLFONT}{BLACK}重命名选择的存档
-STR_5395    :{SMALLFONT}{BLACK}在游戏中载入选中的存档
-STR_5396    :{SMALLFONT}{BLACK}重载菜单动画，以便显示游戏外所做的改动
+STR_5377    :保存
+STR_5378    :脚本
+STR_5379    :跳到下一个等待命令
+STR_5380    :开始播放此菜单动画
+STR_5381    :停止播放此菜单动画
+STR_5382    :重新开始播放此菜单动画
+STR_5383    :基于当前菜单动画创建新菜单动画
+STR_5384    :删除当前菜单动画
+STR_5385    :重命名当前菜单动画
+STR_5386    :插入新命令
+STR_5387    :编辑选择的命令
+STR_5388    :删除选择的命令
+STR_5389    :跳过选择的命令
+STR_5390    :向下移动选择的命令
+STR_5391    :向上移动选择的命令
+STR_5392    :在菜单动画上添加存档
+STR_5393    :移除选中的存档
+STR_5394    :重命名选择的存档
+STR_5395    :在游戏中载入选中的存档
+STR_5396    :重载菜单动画，以便显示游戏外所做的改动
 STR_5397    :只能用在主菜单中
 STR_5398    :不能在菜单动画播放时修改
 STR_5399    :点击停止按钮来继续编辑
@@ -2767,7 +2767,7 @@ STR_5437    :暂无存档被选中
 STR_5438    :当命令编辑器打开时不能做出改变
 STR_5439    :重新开始(Restart)命令需要加上4秒以上的等待(Wait)命令
 STR_5440    :当焦点失去时最小化全屏幕的游戏
-STR_5441    :{SMALLFONT}{BLACK}根据轨道类型区分游乐设施{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}(过山车大亨1行为).
+STR_5441    :根据轨道类型区分游乐设施{NEWLINE}使得车辆类型可以在建造后更改{NEWLINE}(过山车大亨1行为).
 STR_5442    :强制乐园评价:
 STR_5443    :速度{MOVE_X}{87}{STRINGID}
 STR_5444    :速度:
@@ -2813,8 +2813,8 @@ STR_5483    :{BLACK}(还剩{COMMA16}周结束)
 STR_5484    :{BLACK}(还剩{COMMA16}周结束)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}显示最近消息
-STR_5489    :{SMALLFONT}{BLACK}只显示追踪中的游客
+STR_5487    :显示最近消息
+STR_5489    :只显示追踪中的游客
 STR_5490    :游戏失去焦点时静音
 STR_5491    :研发列表
 STR_5492    :剧情选项
@@ -2828,58 +2828,58 @@ STR_5500    :新增服务器
 STR_5501    :开设服务器
 STR_5502    :多人联机模式
 STR_5503    :请输入主机名称或IP地址:
-STR_5504    :{SMALLFONT}{BLACK}显示多人联机状态
+STR_5504    :显示多人联机状态
 STR_5505    :无法连接至服务器.
 STR_5506    :游客忽略强烈程度
 STR_5508    :允许读取校验失败的文件
-STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
+STR_5509    :允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
 STR_5510    :默认音频设备
 STR_5511    :(UNKNOWN)
 STR_5512    :另存游戏
 STR_5513    :(快速)保存游戏
 STR_5514    :禁止故意破坏
-STR_5515    :{SMALLFONT}{BLACK}游客愤怒时阻止其可以毁坏公物
-STR_5516    :{SMALLFONT}{BLACK}黑色
-STR_5517    :{SMALLFONT}{BLACK}灰色
-STR_5518    :{SMALLFONT}{BLACK}白色
-STR_5519    :{SMALLFONT}{BLACK}暗紫色
-STR_5520    :{SMALLFONT}{BLACK}淡紫色
-STR_5521    :{SMALLFONT}{BLACK}亮紫色
-STR_5522    :{SMALLFONT}{BLACK}深蓝色
-STR_5523    :{SMALLFONT}{BLACK}淡蓝色
-STR_5524    :{SMALLFONT}{BLACK}冰蓝色
-STR_5525    :{SMALLFONT}{BLACK}深水配色
-STR_5526    :{SMALLFONT}{BLACK}浅水配色
-STR_5527    :{SMALLFONT}{BLACK}深绿色
-STR_5528    :{SMALLFONT}{BLACK}暗绿色
-STR_5529    :{SMALLFONT}{BLACK}苔绿色
-STR_5530    :{SMALLFONT}{BLACK}亮绿色
-STR_5531    :{SMALLFONT}{BLACK}橄榄绿色
-STR_5532    :{SMALLFONT}{BLACK}暗橄榄绿色
-STR_5533    :{SMALLFONT}{BLACK}亮黄色
-STR_5534    :{SMALLFONT}{BLACK}黄色
-STR_5535    :{SMALLFONT}{BLACK}暗黄色
-STR_5536    :{SMALLFONT}{BLACK}亮橙色
-STR_5537    :{SMALLFONT}{BLACK}暗橙色
-STR_5538    :{SMALLFONT}{BLACK}亮棕色
-STR_5539    :{SMALLFONT}{BLACK}深棕色
-STR_5540    :{SMALLFONT}{BLACK}暗棕色
-STR_5541    :{SMALLFONT}{BLACK}橙红色
-STR_5542    :{SMALLFONT}{BLACK}波尔多红色
-STR_5543    :{SMALLFONT}{BLACK}深红色
-STR_5544    :{SMALLFONT}{BLACK}亮红色
-STR_5545    :{SMALLFONT}{BLACK}暗红色
-STR_5546    :{SMALLFONT}{BLACK}亮粉色
-STR_5547    :{SMALLFONT}{BLACK}浅粉色
+STR_5515    :游客愤怒时阻止其可以毁坏公物
+STR_5516    :黑色
+STR_5517    :灰色
+STR_5518    :白色
+STR_5519    :暗紫色
+STR_5520    :淡紫色
+STR_5521    :亮紫色
+STR_5522    :深蓝色
+STR_5523    :淡蓝色
+STR_5524    :冰蓝色
+STR_5525    :深水配色
+STR_5526    :浅水配色
+STR_5527    :深绿色
+STR_5528    :暗绿色
+STR_5529    :苔绿色
+STR_5530    :亮绿色
+STR_5531    :橄榄绿色
+STR_5532    :暗橄榄绿色
+STR_5533    :亮黄色
+STR_5534    :黄色
+STR_5535    :暗黄色
+STR_5536    :亮橙色
+STR_5537    :暗橙色
+STR_5538    :亮棕色
+STR_5539    :深棕色
+STR_5540    :暗棕色
+STR_5541    :橙红色
+STR_5542    :波尔多红色
+STR_5543    :深红色
+STR_5544    :亮红色
+STR_5545    :暗红色
+STR_5546    :亮粉色
+STR_5547    :浅粉色
 STR_5548    :显示所有运行模式
 STR_5549    :年/月/日
 STR_5550    :{POP16}{POP16}{COMMA16}年, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
 STR_5552    :{POP16}{POP16}{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :当Steam overlay打开时暂停游戏
-STR_5554    :{SMALLFONT}{BLACK}启用山丘工具
+STR_5554    :启用山丘工具
 STR_5555    :显示来自其他类型轨道的车辆种类
-STR_5556    :{SMALLFONT}{BLACK}踢除玩家
+STR_5556    :踢除玩家
 STR_5557    :多人游戏不同步时依然保持联机
 STR_5558    :此设定会于重启游戏后生效
 STR_5559    :检查时间间隔为10分钟
@@ -2888,7 +2888,7 @@ STR_5561    :加载语言失败
 STR_5562    :警告！
 STR_5563    :此功能暂未稳定地使用，请多加留意.
 STR_5564    :插入已损坏元素
-STR_5565    :{SMALLFONT}{BLACK}在一个网格的最上插入一个已损坏的地图元素.此插入会隐藏其他元素.
+STR_5565    :在一个网格的最上插入一个已损坏的地图元素.此插入会隐藏其他元素.
 STR_5566    :密码:
 STR_5567    :广告
 STR_5568    :需要密码
@@ -2908,10 +2908,10 @@ STR_5581    :显示帧数
 STR_5582    :限制鼠标指针仅在窗口内移动
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}移除游乐设施的运行限制，例如允许链条上拉速度高达{VELOCITY}
+STR_5585    :移除游乐设施的运行限制，例如允许链条上拉速度高达{VELOCITY}
 STR_5586    :自动开放商店和摊位
-STR_5587    :{SMALLFONT}{BLACK}商店和摊位将在建造好后自动开放
-STR_5588    :{SMALLFONT}{BLACK}与其他玩家一起玩
+STR_5587    :商店和摊位将在建造好后自动开放
+STR_5588    :与其他玩家一起玩
 STR_5589    :消息选项
 STR_5590    :乐园奖项
 STR_5591    :推广计划已完结
@@ -2929,18 +2929,18 @@ STR_5603    :游客已离开游乐设施
 STR_5604    :游客已购买物品
 STR_5605    :游客已使用设施
 STR_5606    :游客已死亡
-STR_5607    :{SMALLFONT}{BLACK}强制移除选中的地图元素。
+STR_5607    :强制移除选中的地图元素。
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}移除选中的地图元素. 使用时请注意. 因为强制移除地图元素并不会对游戏中的现金做成影响.
+STR_5610    :移除选中的地图元素. 使用时请注意. 因为强制移除地图元素并不会对游戏中的现金做成影响.
 STR_5611    :G
-STR_5612    :{SMALLFONT}{BLACK}鬼旗
+STR_5612    :鬼旗
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}损坏标记
+STR_5614    :损坏标记
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}网格标记的最后一个元素
-STR_5617    :{SMALLFONT}{BLACK}将选中的元素移至上方.
-STR_5618    :{SMALLFONT}{BLACK}将选中的元素移至下方.
+STR_5616    :网格标记的最后一个元素
+STR_5617    :将选中的元素移至上方.
+STR_5618    :将选中的元素移至下方.
 STR_5619    :过山车大亨
 STR_5620    :过山车大亨：快乐天地
 STR_5621    :过山车大亨：极限反转
@@ -2961,8 +2961,8 @@ STR_5635    :{WINDOW_COLOUR_2}花费: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}命令运行: {BLACK}{COMMA16}
 STR_5637    :不能做此行为…
 STR_5638    :权限不够
-STR_5639    :{SMALLFONT}{BLACK}显示玩家列表
-STR_5640    :{SMALLFONT}{BLACK}组管理
+STR_5639    :显示玩家列表
+STR_5640    :组管理
 STR_5641    :默认组:
 STR_5642    :组
 STR_5643    :添加组
@@ -2991,7 +2991,7 @@ STR_5664    :作弊
 STR_5665    :切换风景群集
 STR_5666    :无密码登录
 STR_5701    :{WINDOW_COLOUR_2}最近的行为: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}定位玩家最近的动作
+STR_5702    :定位玩家最近的动作
 STR_5703    :不能踢出创建者
 STR_5704    :最近的行为
 STR_5705    :不能将此玩家分配到该组
@@ -3008,7 +3008,7 @@ STR_5715    :新游戏
 STR_5716    :不能在多人模式中使用
 # For identifying client network version in server list window
 STR_5717    :网络版本: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}网络版本: {STRING}
+STR_5718    :网络版本: {STRING}
 STR_5719    :晴天
 STR_5720    :多云间晴
 STR_5721    :多云
@@ -3016,18 +3016,18 @@ STR_5722    :下雨
 STR_5723    :大雨
 STR_5724    :大雷雨
 STR_5725    :{BLACK}强制设定天气为:
-STR_5726    :{SMALLFONT}{BLACK}设定游乐园当前的天气
+STR_5726    :设定游乐园当前的天气
 STR_5727    :缩放质量
 STR_5731    :线性
 # tooltip for tab in options window
-STR_5734    :{SMALLFONT}{BLACK}渲染
+STR_5734    :渲染
 STR_5735    :网络状态
 STR_5736    :玩家
 STR_5737    :已关闭, {COMMA16} 个游客仍在此游乐设施上
 STR_5738    :已关闭, {COMMA16} 个游客仍在此游乐设施上
 STR_5739    :{WINDOW_COLOUR_2}此游乐设施上的游客: {BLACK}{COMMA16}
 STR_5740    :永不结束的市场推广计划
-STR_5741    :{SMALLFONT}{BLACK}推广计划将不断进行下去
+STR_5741    :推广计划将不断进行下去
 STR_5742    :认证中 …
 STR_5743    :连接中 …
 STR_5744    :解析中 …
@@ -3076,90 +3076,90 @@ STR_5786    :不正确的组名称
 STR_5787    :{COMMA32} 玩家在线
 STR_5788    :默认检查的时间间隔:
 STR_5789    :禁用光影效果
-STR_5790    :{SMALLFONT}{BLACK}切换RCT1式的收费{NEWLINE}(例如同时收取游乐设施及入园门票费用)
-STR_5791    :{SMALLFONT}{BLACK}{SMALLFONT}{BLACK}设定所有游乐设施的可靠度为100%{NEWLINE}并重设他们的落成年份为“今年”
-STR_5792    :{SMALLFONT}{BLACK}修理所有已有故障的游乐设施
-STR_5793    :{SMALLFONT}{BLACK}重设指定游乐设施的故障记录，{NEWLINE}令游客不觉得该设施不安全
-STR_5794    :{SMALLFONT}{BLACK}此密技移除某些剧情禁止修改{NEWLINE}某些已预先建设好的游乐设施的限制
-STR_5795    :{SMALLFONT}{BLACK}游客会乘坐所有乐园内的游乐设施{NEWLINE}即使它们的刺激度极端地高
-STR_5796    :{SMALLFONT}{BLACK}强制开发或关闭游乐园
-STR_5797    :{SMALLFONT}{BLACK}禁止天气变化并{NEWLINE}固定于选择的天气
-STR_5798    :{SMALLFONT}{BLACK}暂停时允许建造
-STR_5799    :{SMALLFONT}{BLACK}禁止因刹车故障产生的损坏及撞毁
-STR_5800    :{SMALLFONT}{BLACK}防止游乐设施发生故障
+STR_5790    :切换RCT1式的收费{NEWLINE}(例如同时收取游乐设施及入园门票费用)
+STR_5791    :设定所有游乐设施的可靠度为100%{NEWLINE}并重设他们的落成年份为“今年”
+STR_5792    :修理所有已有故障的游乐设施
+STR_5793    :重设指定游乐设施的故障记录，{NEWLINE}令游客不觉得该设施不安全
+STR_5794    :此密技移除某些剧情禁止修改{NEWLINE}某些已预先建设好的游乐设施的限制
+STR_5795    :游客会乘坐所有乐园内的游乐设施{NEWLINE}即使它们的刺激度极端地高
+STR_5796    :强制开发或关闭游乐园
+STR_5797    :禁止天气变化并{NEWLINE}固定于选择的天气
+STR_5798    :暂停时允许建造
+STR_5799    :禁止因刹车故障产生的损坏及撞毁
+STR_5800    :防止游乐设施发生故障
 STR_5801    :禁止乱丢垃圾
-STR_5802    :{SMALLFONT}{BLACK}阻止游客乱丢垃圾或呕吐
-STR_5803    :{SMALLFONT}{BLACK}旋转选中的地图元素
+STR_5802    :阻止游客乱丢垃圾或呕吐
+STR_5803    :旋转选中的地图元素
 STR_5804    :静音
-STR_5805    :{SMALLFONT}{BLACK}若选中此选项, 你的服务器将会添加至{NEWLINE}公共服务区列表，所有玩家均可以找到它
+STR_5805    :若选中此选项, 你的服务器将会添加至{NEWLINE}公共服务区列表，所有玩家均可以找到它
 STR_5806    :切换窗口模式
 STR_5807    :{WINDOW_COLOUR_2}游乐设施数量: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}商店及摊贩数量: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}信息亭及其他设施数量: {BLACK}{COMMA16}
 STR_5810    :禁用车辆限制
-STR_5811    :{SMALLFONT}{BLACK}若选中此选项, 每列车将最多{NEWLINE}有255辆车厢以及每个游乐设施最多有31辆列车
+STR_5811    :若选中此选项, 每列车将最多{NEWLINE}有255辆车厢以及每个游乐设施最多有31辆列车
 STR_5812    :显示多人模式窗口
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
-STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
-STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
-STR_5817    :{SMALLFONT}{BLACK}设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
-STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
-STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
-STR_5822    :{SMALLFONT}{BLACK}日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
-STR_5823    :{SMALLFONT}{BLACK}横幅上显示全大写英文(RCT1效果)
-STR_5824    :{SMALLFONT}{BLACK}当暴风雨来临时{NEWLINE}禁用闪电效果
-STR_5825    :{SMALLFONT}{BLACK}在窗口内保持鼠标指针
-STR_5826    :{SMALLFONT}{BLACK}拖拽视野时时反转鼠标右键
-STR_5827    :{SMALLFONT}{BLACK}设置游戏界面使用的配色主题
-STR_5828    :{SMALLFONT}{BLACK}修改距离, 速度等度量单位.
-STR_5829    :{SMALLFONT}{BLACK}修改游戏使用的货币. 只是纯视觉效果并没有根据汇率换算
-STR_5830    :{SMALLFONT}{BLACK}修改游戏使用的语言
-STR_5831    :{SMALLFONT}{BLACK}修改温度显示的单位
-STR_5832    :{SMALLFONT}{BLACK}高度用通用单位替换"距离和速度单位"中设置的单位
-STR_5833    :{SMALLFONT}{BLACK}修改日期格式
-STR_5834    :{SMALLFONT}{BLACK}选择OpenRCT2使用的音频设备
-STR_5835    :{SMALLFONT}{BLACK}游戏窗口失焦时静音
-STR_5836    :{SMALLFONT}{BLACK}选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat', 或者在杂项窗口中设定过山车大亨1的路径.
-STR_5837    :{SMALLFONT}{BLACK}创建并管理自定义游戏界面配色主题
-STR_5838    :{SMALLFONT}{BLACK}在工具栏上为财务窗口显示一个单独的按钮
-STR_5839    :{SMALLFONT}{BLACK}在工具栏上为研发窗口显示一个单独的按钮
-STR_5840    :{SMALLFONT}{BLACK}在工具栏上为作弊窗口显示一个单独的按钮
-STR_5841    :{SMALLFONT}{BLACK}在工具栏上为最近消息窗口显示一个单独的按钮
-STR_5842    :{SMALLFONT}{BLACK}对剧情排序是根据困难度(过山车大亨2特色)还是游戏出处(过山车大亨1特色)
-STR_5843    :{SMALLFONT}{BLACK}允许剧情逐步解锁 (过山车大亨1特色)
-STR_5844    :{SMALLFONT}{BLACK}即使发生不同步或错误{NEWLINE}依然保持和多人服务器的连接
-STR_5845    :{SMALLFONT}{BLACK}在工具栏上为调试工具增加一个按钮.{NEWLINE}允许在调试控制台使用快捷键
-STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
-STR_5847    :{SMALLFONT}{BLACK}选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
-STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
-STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
-STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
-STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
-STR_5854    :{SMALLFONT}{BLACK}开启/关闭游乐设施音乐
-STR_5855    :{SMALLFONT}{BLACK}设置全屏, 窗口或无边框窗口显示
-STR_5856    :{SMALLFONT}{BLACK}全屏模式时设置游戏分辨率
-STR_5857    :{SMALLFONT}{BLACK}游戏选项
-STR_5858    :{SMALLFONT}{BLACK}使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
-STR_5859    :{SMALLFONT}{BLACK}启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
+STR_5815    :游戏内显示FPS帧数
+STR_5816    :设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
+STR_5817    :设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
+STR_5819    :[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
+STR_5820    :全屏模式时若游戏失焦{NEWLINE}则最小化游戏
+STR_5822    :日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
+STR_5823    :横幅上显示全大写英文(RCT1效果)
+STR_5824    :当暴风雨来临时{NEWLINE}禁用闪电效果
+STR_5825    :在窗口内保持鼠标指针
+STR_5826    :拖拽视野时时反转鼠标右键
+STR_5827    :设置游戏界面使用的配色主题
+STR_5828    :修改距离, 速度等度量单位.
+STR_5829    :修改游戏使用的货币. 只是纯视觉效果并没有根据汇率换算
+STR_5830    :修改游戏使用的语言
+STR_5831    :修改温度显示的单位
+STR_5832    :高度用通用单位替换"距离和速度单位"中设置的单位
+STR_5833    :修改日期格式
+STR_5834    :选择OpenRCT2使用的音频设备
+STR_5835    :游戏窗口失焦时静音
+STR_5836    :选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat', 或者在杂项窗口中设定过山车大亨1的路径.
+STR_5837    :创建并管理自定义游戏界面配色主题
+STR_5838    :在工具栏上为财务窗口显示一个单独的按钮
+STR_5839    :在工具栏上为研发窗口显示一个单独的按钮
+STR_5840    :在工具栏上为作弊窗口显示一个单独的按钮
+STR_5841    :在工具栏上为最近消息窗口显示一个单独的按钮
+STR_5842    :对剧情排序是根据困难度(过山车大亨2特色)还是游戏出处(过山车大亨1特色)
+STR_5843    :允许剧情逐步解锁 (过山车大亨1特色)
+STR_5844    :即使发生不同步或错误{NEWLINE}依然保持和多人服务器的连接
+STR_5845    :在工具栏上为调试工具增加一个按钮.{NEWLINE}允许在调试控制台使用快捷键
+STR_5846    :设置自动保存的频率
+STR_5847    :选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
+STR_5848    :创建并管理自定义主菜单动画
+STR_5849    :自动放置新雇佣的员工
+STR_5851    :设置新建游乐设施的默认检查的时间间隔
+STR_5853    :开启/关闭音效
+STR_5854    :开启/关闭游乐设施音乐
+STR_5855    :设置全屏, 窗口或无边框窗口显示
+STR_5856    :全屏模式时设置游戏分辨率
+STR_5857    :游戏选项
+STR_5858    :使用GPU代替CPU渲染画面. 提高截屏软件的兼容性. 可能会轻微降低游戏性能.
+STR_5859    :启用补帧从而平滑游戏表现. {NEWLINE}当禁用时,{NEWLINE}游戏帧数会稳定在40 FPS.
 STR_5860    :开启原版/反编译版本的轨道绘图模式
 STR_5861    :密码验证失败.
 STR_5862    :阻止未知玩家进入.
-STR_5863    :{SMALLFONT}{BLACK}只允许拥有已知密码的用户加入.
+STR_5863    :只允许拥有已知密码的用户加入.
 STR_5864    :本服务器只允许白名单用户连接.
 STR_5865    :保存聊天记录
-STR_5866    :{SMALLFONT}{BLACK}保存所有聊天记录到本地文件.
+STR_5866    :保存所有聊天记录到本地文件.
 STR_5867    :{WINDOW_COLOUR_2}服务器提供者姓名: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}服务器提供者E-mail: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}服务器提供者网站: {BLACK}{STRING}
-STR_5870    :{SMALLFONT}{BLACK}显示服务器信息
+STR_5870    :显示服务器信息
 STR_5871    :植物不会枯萎.
-STR_5872    :{SMALLFONT}{BLACK}禁用植物随时间变化以便它们不会枯萎.
+STR_5872    :禁用植物随时间变化以便它们不会枯萎.
 STR_5873    :允许在所有轨道配置中使用链式牵引
-STR_5874    :{SMALLFONT}{BLACK}允许将任何轨道变成链式牵引轨道
+STR_5874    :允许将任何轨道变成链式牵引轨道
 STR_5875    :渲染引擎:
-STR_5876    :{SMALLFONT}{BLACK}渲染游戏图像的引擎.
+STR_5876    :渲染游戏图像的引擎.
 STR_5877    :软件渲染
 STR_5878    :软件渲染(硬件显示)
 STR_5879    :OpenGL(实验性质)
@@ -3175,7 +3175,7 @@ STR_5888    :后缀
 STR_5889    :自定义货币符号
 STR_5890    :请输入用于显示的货币符号
 STR_5891    :默认
-STR_5892    :{SMALLFONT}{BLACK}前往默认文件夹
+STR_5892    :前往默认文件夹
 STR_5893    :汇率
 STR_5894    :请输入汇率
 STR_5895    :保存轨道设计
@@ -3187,11 +3187,11 @@ STR_5901    :显示分段高度
 STR_5902    :显示包围盒
 STR_5903    :显示debug窗口
 STR_5904    :重置日期
-STR_5905    :{SMALLFONT}{BLACK}一个能自动创建自定义地形的地图生成工具
+STR_5905    :一个能自动创建自定义地形的地图生成工具
 STR_5906    :放大到鼠标所在位置
-STR_5907    :{SMALLFONT}{BLACK}启用时将会以鼠标所在位置为中心进行放大, 而非屏幕中心.
+STR_5907    :启用时将会以鼠标所在位置为中心进行放大, 而非屏幕中心.
 STR_5908    :允许任意切换游乐设施类型
-STR_5909    :{SMALLFONT}{BLACK}允许自由切换游乐设施类型. 可能导致游戏崩溃.
+STR_5909    :允许自由切换游乐设施类型. 可能导致游戏崩溃.
 STR_5910    :应用
 STR_5911    :半透明道路
 STR_5912    :开启/关闭'半透明道路'选项
@@ -3203,9 +3203,9 @@ STR_5917    :{COMMA16}位玩家
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :渲染天气效果
-STR_5921    :{SMALLFONT}{BLACK}启用后，雷暴中的雨和灰雾的滤镜会被渲染在画面中.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}最多{STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}每列车最多为{COMMA16} {STRINGID}
+STR_5921    :启用后，雷暴中的雨和灰雾的滤镜会被渲染在画面中.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}最多{STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}每列车最多为{COMMA16} {STRINGID}
 STR_5924    :地面详情
 STR_5925    :道路详情
 STR_5926    :轨道详情
@@ -3235,7 +3235,7 @@ STR_5949    :{WINDOW_COLOUR_2}提升坡
 STR_5950    :{WINDOW_COLOUR_2}将改变应用于整个轨道组件中
 STR_5951    :{WINDOW_COLOUR_2}轨道组件ID:{BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}编号:{BLACK}{COMMA16}
-STR_5953    :{SMALLFONT}{BLACK}以底部高度排序目前网格上的地图元素
+STR_5953    :以底部高度排序目前网格上的地图元素
 STR_5954    :{WINDOW_COLOUR_2}景物年龄:{BLACK}{COMMA16}
 STR_5955    :{WINDOW_COLOUR_2}四角放置:{BLACK}{STRINGID}
 STR_5956    :西南
@@ -3256,7 +3256,7 @@ STR_5970    :{WINDOW_COLOUR_2}入口编号:{BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}出口编号:{BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}游乐设施编号:{BLACK}{COMMA16}
 STR_5973    :与下一地图元素并列
-STR_5974    :{SMALLFONT}{BLACK}将此元素的基准和净高度与下一元素调整一致. 这可以让在网格上建造变得更加容易.
+STR_5974    :将此元素的基准和净高度与下一元素调整一致. 这可以让在网格上建造变得更加容易.
 STR_5975    :坡道:
 STR_5976    :平坦
 STR_5977    :右边向上
@@ -3270,13 +3270,13 @@ STR_5984    :被挡住的道路:
 STR_5985    :新建文件夹
 STR_5986    :请输入新文件夹的名字
 STR_5987    :无法建立新文件夹
-STR_5988    :{SMALLFONT}{BLACK}已经没有可出售的土地使用权
-STR_5989    :{SMALLFONT}{BLACK}已经没有可出售的土地建造权
-STR_5990    :{SMALLFONT}{BLACK}已经没有可出售的土地使用权或建造权
+STR_5988    :已经没有可出售的土地使用权
+STR_5989    :已经没有可出售的土地建造权
+STR_5990    :已经没有可出售的土地使用权或建造权
 STR_5991    :无法粘贴元素…
 STR_5992    :地图元素已达上限
-STR_5993    :{SMALLFONT}{BLACK}复制所选元素
-STR_5994    :{SMALLFONT}{BLACK}粘贴所选元素
+STR_5993    :复制所选元素
+STR_5994    :粘贴所选元素
 STR_5995    :助推器
 STR_5996    :助推器速度
 STR_5997    :增加/设置金钱
@@ -3284,19 +3284,19 @@ STR_5998    :增加金钱
 STR_5999    :设置金钱
 STR_6000    :请输入一个新的值
 STR_6001    :启用光照效果(实验性质)
-STR_6002    :{SMALLFONT}{BLACK}夜晚时路灯和游乐设施将会被点亮.{NEWLINE}此功能需要先开启硬件渲染.
+STR_6002    :夜晚时路灯和游乐设施将会被点亮.{NEWLINE}此功能需要先开启硬件渲染.
 STR_6003    :剖视图
 STR_6004    :剖视图
 STR_6005    :启用剖视图
-STR_6006    :{SMALLFONT}{BLACK}剖视图只显示小于等于切割高度（垂直切割）和指定的面积（纵横切割）的地图元素
+STR_6006    :剖视图只显示小于等于切割高度（垂直切割）和指定的面积（纵横切割）的地图元素
 STR_6007    :切割高度
-STR_6008    :{SMALLFONT}{BLACK}单击在原始值或度量单位值之间切换
-STR_6009    :{SMALLFONT}{BLACK}选择切割高度
+STR_6008    :单击在原始值或度量单位值之间切换
+STR_6009    :选择切割高度
 STR_6010    :{COMMA2DP32}米
 STR_6011    :{COMMA1DP16}英尺
 STR_6012    :{COMMA1DP16}
-STR_6013    :{SMALLFONT}{BLACK}游客仅需付费购买游乐园门票和服务.{NEWLINE}搭乘游乐设施免费.
-STR_6014    :{SMALLFONT}{BLACK}游客仅需付费购买游乐设施门票和服务.{NEWLINE}进入游乐园免费.
+STR_6013    :游客仅需付费购买游乐园门票和服务.{NEWLINE}搭乘游乐设施免费.
+STR_6014    :游客仅需付费购买游乐设施门票和服务.{NEWLINE}进入游乐园免费.
 STR_6015    :坡道
 STR_6016    :修改网格
 STR_6017    :请调低速度
@@ -3312,16 +3312,16 @@ STR_6026    :游乐设施建造- 上一个轨道
 STR_6027    :游乐设施建造- 下一个轨道
 STR_6028    :游乐设施建造- 建造当前选中的
 STR_6029    :游乐设施建造- 拆除当前选中的
-STR_6030    :{SMALLFONT}{BLACK}景物选择器. 点击地图上任意景物来建造相同的景物.
+STR_6030    :景物选择器. 点击地图上任意景物来建造相同的景物.
 STR_6031    :服务器描述:
 STR_6032    :服务器欢迎信息:
 STR_6033    :过山车大亨1安装路径:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{STRING}
 STR_6035    :请选择你的过山车大亨1的目录
-STR_6036    :{SMALLFONT}{BLACK}清除
+STR_6036    :清除
 STR_6037    :请选择一个有效的过山车大亨1的目录
-STR_6038    :{SMALLFONT}{BLACK}如果你安装了过山车大亨1, 设置此选项到其路径以便读取剧情, 音乐等.
-STR_6039    :{SMALLFONT}{BLACK}快速拆除游乐设施
+STR_6038    :如果你安装了过山车大亨1, 设置此选项到其路径以便读取剧情, 音乐等.
+STR_6039    :快速拆除游乐设施
 STR_6040    :编辑剧情选项
 STR_6041    :{BLACK}没有雇佣机械师! 
 STR_6042    :加载高度图
@@ -3338,17 +3338,17 @@ STR_6052    :此高度图过大, 将被切开
 STR_6053    :此高度图不能被归一化
 STR_6054    :只支持24位的位图
 STR_6055    :OpenRCT2高度图文件
-STR_6056    :{SMALLFONT}{BLACK}静音
-STR_6057    :{SMALLFONT}{BLACK}在工具栏为静音选项显示一个单独的按钮
+STR_6056    :静音
+STR_6057    :在工具栏为静音选项显示一个单独的按钮
 STR_6058    :静音
 STR_6059    :»
 STR_6060    :将游客的购买行为用动画表现
-STR_6061    :{SMALLFONT}{BLACK}当游客购买时播放金钱动画效果{NEWLINE}.
+STR_6061    :当游客购买时播放金钱动画效果{NEWLINE}.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :拥有所有土地
 STR_6065    :记录用户操作
-STR_6066    :{SMALLFONT}{BLACK}在你的用户文件夹下用文件记录所有用户的操作.
+STR_6066    :在你的用户文件夹下用文件记录所有用户的操作.
 STR_6067    :服务器开启.
 STR_6068    :服务器关闭.
 STR_6069    :{STRING} 被{STRING}从服务器踢出.
@@ -3384,8 +3384,8 @@ STR_6098    :{STRING} 移除游乐设施的一条轨道.
 STR_6099    :你已连接到服务器.
 STR_6100    :你已从服务器断开.
 STR_6101    :游乐设施不会随时间流逝而贬值
-STR_6102    :{SMALLFONT}{BLACK}游乐设施的价值不会随时间流逝而贬值, 因此游客不会产生玩此游乐设施太贵的想法.
-STR_6103    :{SMALLFONT}{BLACK}此选项在联网模式下被禁用.
+STR_6102    :游乐设施的价值不会随时间流逝而贬值, 因此游客不会产生玩此游乐设施太贵的想法.
+STR_6103    :此选项在联网模式下被禁用.
 STR_6105    :超级过山车
 STR_6107    :怪兽卡车
 STR_6109    :超旋转式
@@ -3395,7 +3395,7 @@ STR_6115    :动力十足的4x4四驱卡车, 可以攀爬陡峭的斜坡
 STR_6116    :宽阔的过山车车厢沿着光滑的钢轨滑行，穿过各种倒置轨道
 STR_6119    :一种廉价且方便建造的过山车, 但是有高度限制
 STR_6120    :{BABYBLUE}新车辆可用于{STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}将游乐园土地所有权扩展至地图边缘
+STR_6121    :将游乐园土地所有权扩展至地图边缘
 STR_6122    :此剧情中没有足够的过山车!
 STR_6123    :加载错误的游乐园对象
 STR_6124    :对象名称
@@ -3407,7 +3407,7 @@ STR_6129    :复制
 STR_6130    :复制全部
 STR_6131    :对象源
 STR_6132    :忽略研究状态
-STR_6133    :{SMALLFONT}{BLACK}使用还未被研究出的游乐设施和景观
+STR_6133    :使用还未被研究出的游乐设施和景观
 STR_6134    :清除景物
 STR_6135    :客户端发送了无效的请求
 STR_6136    :服务器发送了无效的请求
@@ -3419,9 +3419,9 @@ STR_6141    :RCT1式底部工具栏
 STR_6142    :{WINDOW_COLOUR_2}轨道名称: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}游乐设施类型: {BLACK}{STRINGID}
 STR_6144    :显示无效块
-STR_6145    :{SMALLFONT}{BLACK}设置加速器的速度限制
+STR_6145    :设置加速器的速度限制
 STR_6146    :启用所有可喷涂的轨道部件
-STR_6147    :{SMALLFONT}{BLACK}不管车辆是否支持, 在建造窗口中启用游乐设施支持的所有类型的轨道部件.
+STR_6147    :不管车辆是否支持, 在建造窗口中启用游乐设施支持的所有类型的轨道部件.
 STR_6148    :正在连接主服务器…
 STR_6149    :无法连接主服务器
 STR_6150    :主服务器返回不正确的响应信息 (没有 JSON 数字)
@@ -3440,13 +3440,13 @@ STR_6162    :旋转野鼠
 STR_6163    :老鼠外形的车辆加速通过急弯和短下落, 温柔地旋转使乘客迷失方向
 STR_6164    :{WHITE}❌
 STR_6165    :使用垂直同步
-STR_6166    :{SMALLFONT}{BLACK}将每帧图像与显示器刷新率同步, 以避免画面撕裂.
-STR_6167    :{SMALLFONT}{BLACK}高级
+STR_6166    :将每帧图像与显示器刷新率同步, 以避免画面撕裂.
+STR_6167    :高级
 STR_6168    :主菜单动画
 STR_6169    :剧情选项
 STR_6170    :界面设定
 STR_6171    :查找
-STR_6172    :{SMALLFONT}{BLACK}查找
+STR_6172    :查找
 STR_6173    :请输入名字来查找:
 STR_6174    :加载存档
 STR_6175    :加载剧情
@@ -3464,7 +3464,7 @@ STR_6186    :没有选择sprite
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :呕吐物
 STR_6189    :样子
-STR_6190    :{SMALLFONT}{BLACK}当主界面激活时你无法选择一个sprite.
+STR_6190    :当主界面激活时你无法选择一个sprite.
 STR_6191    :表面
 STR_6192    :墙
 STR_6193    :{COMMA16}位游客
@@ -3477,20 +3477,20 @@ STR_6199    :设置日期
 STR_6200    :重置日期
 STR_6201    :{MONTH}
 STR_6202    :虚拟楼层类型：
-STR_6203    :{SMALLFONT}{BLACK}启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
+STR_6203    :启用后, 当按住Ctrl或Shift键时将会绘制一层虚拟楼层以便轻松地垂直放置元素.
 STR_6215    :建造
 STR_6216    :运营
 STR_6217    :游乐设施 / 轨道可用性
 STR_6218    :OpenRCT2官方
 STR_6219    :高亮道路相关物
 STR_6220    :使之可用
-STR_6221    :{SMALLFONT}{BLACK}每个站台只能有一个入口或出口可用.
+STR_6221    :每个站台只能有一个入口或出口可用.
 STR_6222    :无法在此放置游客入口…
 STR_6223    :必须在游乐园边界外!
 STR_6224    :{STRING}放置一个游客入口.
 STR_6225    :不支持OpenGL渲染
 STR_6226    :允许剧情提前完成
-STR_6227    :{SMALLFONT}{BLACK}当所有剧情目标在预定时间之前达成时将触发剧情完成.
+STR_6227    :当所有剧情目标在预定时间之前达成时将触发剧情完成.
 STR_6228    :剧情选项
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
@@ -3506,9 +3506,9 @@ STR_6239    :垂直切割
 STR_6240    :纵横切割
 STR_6241    :选择面积
 STR_6242    :清空选项
-STR_6243    :{SMALLFONT}{BLACK}翻新游乐设施,{NEWLINE}让其焕然一新
+STR_6243    :翻新游乐设施,{NEWLINE}让其焕然一新
 STR_6244    :无法翻新游乐设施…
-STR_6245    :{SMALLFONT}{BLACK}无需翻新游乐设施
+STR_6245    :无需翻新游乐设施
 STR_6246    :翻新
 STR_6247    :翻新游乐设施/胜地
 STR_6248    :{WINDOW_COLOUR_1}你是否要翻新 {STRINGID} 以获得 {CURRENCY}?
@@ -3523,9 +3523,9 @@ STR_6259    :已停用
 STR_6260    :显示受阻网格
 STR_6261    :显示宽阔走道
 STR_6262    :主音量
-STR_6263    :{SMALLFONT}{BLACK}切换所有声音开/关
+STR_6263    :切换所有声音开/关
 STR_6264    :总是使用系统的文件浏览器
-STR_6265    :{SMALLFONT}{BLACK}当启用后, 操作系统自带的文件浏览器将代替OpenRCT2的.
+STR_6265    :当启用后, 操作系统自带的文件浏览器将代替OpenRCT2的.
 STR_6266    :打开自定义内容文件夹
 STR_6267    :打开网格inspector
 STR_6268    :移至下一帧
@@ -3539,7 +3539,7 @@ STR_6275    :{WINDOW_COLOUR_2}车站类型:
 STR_6276    :{RED}{STRINGID} 有游客被困住了，这可能是因为无效的设施类型或者运行模式
 STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{STRINGID}
 STR_6278    :自动保存数量
-STR_6279    :{SMALLFONT}{BLACK}应该保留的自动保存数量
+STR_6279    :应该保留的自动保存数量
 STR_6284    :网络
 STR_6285    :网络信息
 STR_6286    :接收
@@ -3555,18 +3555,18 @@ STR_6295    :MiB
 STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :{STRING}/秒
-STR_6280    :{SMALLFONT}{BLACK}聊天室
-STR_6281    :{SMALLFONT}{BLACK}在工具栏中加入激活聊天窗口的按钮
+STR_6280    :聊天室
+STR_6281    :在工具栏中加入激活聊天窗口的按钮
 STR_6282    :聊天室
 STR_6283    :暂时无法聊天。你连接到服务器了吗？
 STR_6299    :下载全部
-STR_6300    :{SMALLFONT}{BLACK}从网络上下载可下载缺失文件
-STR_6301    :{SMALLFONT}{BLACK}将所选文件名称复制到剪贴板
-STR_6302    :{SMALLFONT}{BLACK}将整个缺失文件列表复制到剪贴板
+STR_6300    :从网络上下载可下载缺失文件
+STR_6301    :将所选文件名称复制到剪贴板
+STR_6302    :将整个缺失文件列表复制到剪贴板
 STR_6303    :下载文件 ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :打开景物选择器
 STR_6305    :多线程
-STR_6306    :{SMALLFONT}{BLACK}使用多个线程进行渲染的实验选项可能会导致游戏不稳定
+STR_6306    :使用多个线程进行渲染的实验选项可能会导致游戏不稳定
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 
 #############

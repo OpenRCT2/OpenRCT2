@@ -228,13 +228,13 @@ STR_0824    :{BLACK}❌
 STR_0825    :Gekozen naam is al in gebruik
 STR_0826    :Te veel namen gedefinieerd
 STR_0827    :Onvoldoende geld - {CURRENCY2DP} benodigd
-STR_0828    :{SMALLFONT}{BLACK}Venster sluiten
-STR_0829    :{SMALLFONT}{BLACK}Venstertitel - Sleep dit om het venster te verplaatsen
-STR_0830    :{SMALLFONT}{BLACK}Inzoomen
-STR_0831    :{SMALLFONT}{BLACK}Uitzoomen
-STR_0832    :{SMALLFONT}{BLACK}Beeld 90° met de klok mee draaien
-STR_0833    :{SMALLFONT}{BLACK}Spel pauzeren
-STR_0834    :{SMALLFONT}{BLACK}Schijf- en spelopties
+STR_0828    :Venster sluiten
+STR_0829    :Venstertitel - Sleep dit om het venster te verplaatsen
+STR_0830    :Inzoomen
+STR_0831    :Uitzoomen
+STR_0832    :Beeld 90° met de klok mee draaien
+STR_0833    :Spel pauzeren
+STR_0834    :Schijf- en spelopties
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
@@ -278,37 +278,37 @@ STR_0894    :‘Landscape data area’ zit vol!
 STR_0895    :Kan niet gedeeltelijk onder en boven de grond bouwen
 STR_0896    :{POP16}{POP16}Constructie {STRINGID}
 STR_0897    :Richting
-STR_0898    :{SMALLFONT}{BLACK}Bocht naar links
-STR_0899    :{SMALLFONT}{BLACK}Bocht naar rechts
-STR_0900    :{SMALLFONT}{BLACK}Bocht naar links (kleine straal)
-STR_0901    :{SMALLFONT}{BLACK}Bocht naar rechts (kleine straal)
-STR_0902    :{SMALLFONT}{BLACK}Bocht naar links (zeer kleine straal)
-STR_0903    :{SMALLFONT}{BLACK}Bocht naar rechts (zeer kleine straal)
-STR_0904    :{SMALLFONT}{BLACK}Bocht naar links (grote straal)
-STR_0905    :{SMALLFONT}{BLACK}Bocht naar rechts (grote straal)
-STR_0906    :{SMALLFONT}{BLACK}Recht stuk
+STR_0898    :Bocht naar links
+STR_0899    :Bocht naar rechts
+STR_0900    :Bocht naar links (kleine straal)
+STR_0901    :Bocht naar rechts (kleine straal)
+STR_0902    :Bocht naar links (zeer kleine straal)
+STR_0903    :Bocht naar rechts (zeer kleine straal)
+STR_0904    :Bocht naar links (grote straal)
+STR_0905    :Bocht naar rechts (grote straal)
+STR_0906    :Recht stuk
 STR_0907    :Helling
 STR_0908    :Verkanting
 STR_0909    :Stoelrot.
-STR_0910    :{SMALLFONT}{BLACK}Verkanting voor bocht naar links
-STR_0911    :{SMALLFONT}{BLACK}Verkanting voor bocht naar rechts
-STR_0912    :{SMALLFONT}{BLACK}Geen verkanting
-STR_0913    :{SMALLFONT}{BLACK}Ga naar vorig gedeelte
-STR_0914    :{SMALLFONT}{BLACK}Ga naar volgend gedeelte
-STR_0915    :{SMALLFONT}{BLACK}Bouw het geselecteerde gedeelte
-STR_0916    :{SMALLFONT}{BLACK}Verwijder het gemarkeerde gedeelte
-STR_0917    :{SMALLFONT}{BLACK}Verticale val
-STR_0918    :{SMALLFONT}{BLACK}Steile helling naar beneden
-STR_0919    :{SMALLFONT}{BLACK}Helling naar beneden
-STR_0920    :{SMALLFONT}{BLACK}Vlak
-STR_0921    :{SMALLFONT}{BLACK}Helling naar boven
-STR_0922    :{SMALLFONT}{BLACK}Steile helling naar boven
-STR_0923    :{SMALLFONT}{BLACK}Verticaal stuk naar boven
-STR_0924    :{SMALLFONT}{BLACK}Spiraal naar beneden
-STR_0925    :{SMALLFONT}{BLACK}Spiraal naar boven
+STR_0910    :Verkanting voor bocht naar links
+STR_0911    :Verkanting voor bocht naar rechts
+STR_0912    :Geen verkanting
+STR_0913    :Ga naar vorig gedeelte
+STR_0914    :Ga naar volgend gedeelte
+STR_0915    :Bouw het geselecteerde gedeelte
+STR_0916    :Verwijder het gemarkeerde gedeelte
+STR_0917    :Verticale val
+STR_0918    :Steile helling naar beneden
+STR_0919    :Helling naar beneden
+STR_0920    :Vlak
+STR_0921    :Helling naar boven
+STR_0922    :Steile helling naar boven
+STR_0923    :Verticaal stuk naar boven
+STR_0924    :Spiraal naar beneden
+STR_0925    :Spiraal naar boven
 STR_0926    :Kan dit niet verwijderen…
 STR_0927    :Kan dit hier niet bouwen…
-STR_0928    :{SMALLFONT}{BLACK}Kettinglift, om karretjes omhoog te trekken
+STR_0928    :Kettinglift, om karretjes omhoog te trekken
 STR_0929    :S-bocht (links)
 STR_0930    :S-bocht (rechts)
 STR_0931    :Verticale looping (links)
@@ -317,8 +317,8 @@ STR_0933    :Verhoog of verlaag eerst het land
 STR_0934    :Attractieingang staat in de weg
 STR_0935    :Attractieuitgang staat in de weg
 STR_0936    :Parkingang staat in de weg
-STR_0937    :{SMALLFONT}{BLACK}Beeldopties
-STR_0938    :{SMALLFONT}{BLACK}Landhoogte en -helling aanpassen
+STR_0937    :Beeldopties
+STR_0938    :Landhoogte en -helling aanpassen
 STR_0939    :Zicht ondergronds/binnen
 STR_0940    :Bovenkant land verbergen
 STR_0941    :Zijkant land verbergen
@@ -335,7 +335,7 @@ STR_0951    :Spel afsluiten
 STR_0952    :Spel afsluiten
 STR_0953    :Landschap laden
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Selecteer de draaiing van de stoelen voor dit gedeelte
+STR_0955    :Selecteer de draaiing van de stoelen voor dit gedeelte
 STR_0956    :-180°
 STR_0957    :-135°
 STR_0958    :-90°
@@ -370,14 +370,14 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :Te veel attracties
 STR_0988    :Kan geen nieuwe attractie aanmaken…
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Constructie
+STR_0990    :Constructie
 STR_0991    :Station
-STR_0992    :{SMALLFONT}{BLACK}Gehele attractie afbreken
+STR_0992    :Gehele attractie afbreken
 STR_0993    :Attractie afbreken
 STR_0994    :Afbreken
 STR_0995    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} helemaal wilt afbreken?
 STR_0996    :Totaaloverzicht
-STR_0997    :{SMALLFONT}{BLACK}Selectie bekijken
+STR_0997    :Selectie bekijken
 STR_0998    :Voor deze attractie zijn meer stations niet mogelijk
 STR_0999    :Vereist een station
 STR_1000    :Baan vormt geen volledig circuit
@@ -388,9 +388,9 @@ STR_1004    :Kan {POP16}{POP16}{POP16}{STRINGID} niet sluiten…
 STR_1005    :Kan de verbouwing van {POP16}{POP16}{POP16}{STRINGID} niet starten…
 STR_1006    :Moet eerst worden gesloten
 STR_1007    :Kan niet voldoende voertuigen aanmaken
-STR_1008    :{SMALLFONT}{BLACK}Attractie openen, sluiten of testen
-STR_1009    :{SMALLFONT}{BLACK}Alle attracties openen of sluiten
-STR_1010    :{SMALLFONT}{BLACK}Park openen of sluiten
+STR_1008    :Attractie openen, sluiten of testen
+STR_1009    :Alle attracties openen of sluiten
+STR_1010    :Park openen of sluiten
 STR_1011    :Alles sluiten
 STR_1012    :Alles openen
 STR_1013    :Park sluiten
@@ -407,7 +407,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} karretjes per trein
 STR_1024    :{COMMA16} karretje per trein
 STR_1025    :{COMMA16} karretjes per trein
 STR_1026    :Perron is te lang!
-STR_1027    :{SMALLFONT}{BLACK}Zoek dit op in het hoofdvenster
+STR_1027    :Zoek dit op in het hoofdvenster
 STR_1028    :Buiten de kaart!
 STR_1029    :Kan niet gedeeltelijk boven en onder water bouwen!
 STR_1030    :Dit kan alleen onder water worden gebouwd!
@@ -433,10 +433,10 @@ STR_1049    :Landschap opslaan mislukt!
 STR_1050    :Kan dit niet laden…{NEWLINE}Bestand bevat ongeldige gegevens!
 STR_1051    :Onzichtbare ondersteuningen
 STR_1052    :Onzichtbare mensen
-STR_1053    :{SMALLFONT}{BLACK}Attracties in park
-STR_1054    :{SMALLFONT}{BLACK}Attractienaam
-STR_1055    :{SMALLFONT}{BLACK}Persoonsnaam
-STR_1056    :{SMALLFONT}{BLACK}Werknemersnaam
+STR_1053    :Attracties in park
+STR_1054    :Attractienaam
+STR_1055    :Persoonsnaam
+STR_1056    :Werknemersnaam
 STR_1057    :Attractienaam
 STR_1058    :Voer een nieuwe naam in voor deze attractie:
 STR_1059    :Kan deze attractie geen andere naam geven…
@@ -516,12 +516,12 @@ STR_1132    :Voertuig {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :Voertuig {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Selecteer hoofdkleur
-STR_1137    :{SMALLFONT}{BLACK}Selecteer extra kleur 1
-STR_1138    :{SMALLFONT}{BLACK}Selecteer extra kleur 2
-STR_1139    :{SMALLFONT}{BLACK}Selecteer kleur ondersteuningen
-STR_1140    :{SMALLFONT}{BLACK}Selecteer kleurenschemaoptie voor voertuigen
-STR_1141    :{SMALLFONT}{BLACK}Selecteer welk voertuig je wilt aanpassen
+STR_1136    :Selecteer hoofdkleur
+STR_1137    :Selecteer extra kleur 1
+STR_1138    :Selecteer extra kleur 2
+STR_1139    :Selecteer kleur ondersteuningen
+STR_1140    :Selecteer kleurenschemaoptie voor voertuigen
+STR_1141    :Selecteer welk voertuig je wilt aanpassen
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Kan de ingang van deze attractie niet bouwen of verplaatsen…
@@ -539,8 +539,8 @@ STR_1155    :Hoogtemarkering op paden
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kan dit niet verwijderen…
-STR_1159    :{SMALLFONT}{BLACK}Decor, tuinen en andere accessoires neerzetten
-STR_1160    :{SMALLFONT}{BLACK}Waterniveaus bewerken
+STR_1159    :Decor, tuinen en andere accessoires neerzetten
+STR_1160    :Waterniveaus bewerken
 STR_1161    :Kan dit hier niet plaatsen…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Klik rechts om te bewerken)
@@ -553,7 +553,7 @@ STR_1169    :(Geen)
 STR_1170    :{STRING}
 STR_1171    :{RED}Gesloten
 STR_1172    :{YELLOW}{STRINGID}
-STR_1173    :{SMALLFONT}{BLACK}Voetpaden en wachtrijen aanleggen
+STR_1173    :Voetpaden en wachtrijen aanleggen
 STR_1174    :Lichtkrant in de weg
 STR_1175    :Kan dit niet op hellend voetpad neerzetten
 STR_1176    :Kan hier geen voetpad aanleggen…
@@ -565,12 +565,12 @@ STR_1181    :Voetpaden
 STR_1182    :Type
 STR_1183    :Richting
 STR_1184    :Helling
-STR_1185    :{SMALLFONT}{BLACK}Richting
-STR_1186    :{SMALLFONT}{BLACK}Helling naar beneden
-STR_1187    :{SMALLFONT}{BLACK}Vlak
-STR_1188    :{SMALLFONT}{BLACK}Helling naar boven
-STR_1189    :{SMALLFONT}{BLACK}Bouw het geselecteerde gedeelte
-STR_1190    :{SMALLFONT}{BLACK}Verwijder vorig gedeelte
+STR_1185    :Richting
+STR_1186    :Helling naar beneden
+STR_1187    :Vlak
+STR_1188    :Helling naar boven
+STR_1189    :Bouw het geselecteerde gedeelte
+STR_1190    :Verwijder vorig gedeelte
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -589,26 +589,26 @@ STR_1205    :{COMMA16} minuten wachttijd
 STR_1206    :{WINDOW_COLOUR_2}Wacht op:
 STR_1207    :{WINDOW_COLOUR_2}Vertrek als een andere trein binnenkomt
 STR_1208    :{WINDOW_COLOUR_2}Vertrek als een andere boot binnenkomt
-STR_1209    :{SMALLFONT}{BLACK}Selecteer of er moet worden gewacht op passagiers
-STR_1210    :{SMALLFONT}{BLACK}Selecteer of er moet worden vertrokken als een ander voertuig binnenkomt op het station
+STR_1209    :Selecteer of er moet worden gewacht op passagiers
+STR_1210    :Selecteer of er moet worden vertrokken als een ander voertuig binnenkomt op het station
 STR_1211    :{WINDOW_COLOUR_2}Minimumwachttijd:
 STR_1212    :{WINDOW_COLOUR_2}Maximumwachttijd:
-STR_1213    :{SMALLFONT}{BLACK}Selecteer de minimale wachttijd voor vertrek
-STR_1214    :{SMALLFONT}{BLACK}Selecteer de maximale wachttijd voor vertrek
+STR_1213    :Selecteer de minimale wachttijd voor vertrek
+STR_1214    :Selecteer de maximale wachttijd voor vertrek
 STR_1215    :{WINDOW_COLOUR_2}Synchroniseren met aangrenzende stations
-STR_1216    :{SMALLFONT}{BLACK}Selecteer of een trein op hetzelfde moment moet vertrekken als alle aangrenzende stations (om te ‘racen’)
+STR_1216    :Selecteer of een trein op hetzelfde moment moet vertrekken als alle aangrenzende stations (om te ‘racen’)
 STR_1217    :{COMMA16} seconden
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
 STR_1220    :Alleen een uitgang
 STR_1221    :Geen ingang
 STR_1222    :Geen uitgang
-STR_1223    :{SMALLFONT}{BLACK}Transportattracties
-STR_1224    :{SMALLFONT}{BLACK}Rustige attracties
-STR_1225    :{SMALLFONT}{BLACK}Achtbanen
-STR_1226    :{SMALLFONT}{BLACK}Spannende attracties
-STR_1227    :{SMALLFONT}{BLACK}Waterattracties
-STR_1228    :{SMALLFONT}{BLACK}Winkels en kraampjes
+STR_1223    :Transportattracties
+STR_1224    :Rustige attracties
+STR_1225    :Achtbanen
+STR_1226    :Spannende attracties
+STR_1227    :Waterattracties
+STR_1228    :Winkels en kraampjes
 STR_1229    :trein
 STR_1230    :treinen
 STR_1231    :Trein
@@ -707,10 +707,10 @@ STR_1323    :Parcours
 STR_1324    :{COMMA16} parcours
 STR_1325    :{COMMA16} parcours
 STR_1326    :Parcours {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Objecten 90° draaien
+STR_1327    :Objecten 90° draaien
 STR_1328    :Vlak land vereist
 STR_1329    :{WINDOW_COLOUR_2}Lanceersnelheid:
-STR_1330    :{SMALLFONT}{BLACK}Maximumsnelheid bij het verlaten van het station
+STR_1330    :Maximumsnelheid bij het verlaten van het station
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -765,28 +765,28 @@ STR_1381    :Gedraaide liftheuvel (links)
 STR_1382    :Gedraaide liftheuvel (rechts)
 STR_1383    :Kwartlooping
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Andere baanmogelijkheden
+STR_1385    :Andere baanmogelijkheden
 STR_1386    :Speciaal…
 STR_1387    :Kan het landtype niet aanpassen…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}Attractieoverzicht
-STR_1393    :{SMALLFONT}{BLACK}Voertuigopties en -details
-STR_1394    :{SMALLFONT}{BLACK}Bedrijfsopties
-STR_1395    :{SMALLFONT}{BLACK}Onderhoudsopties
-STR_1396    :{SMALLFONT}{BLACK}Opties voor kleurenschema
-STR_1397    :{SMALLFONT}{BLACK}Opties voor geluid en muziek
-STR_1398    :{SMALLFONT}{BLACK}Metingen en testgegevens
-STR_1399    :{SMALLFONT}{BLACK}Grafieken
+STR_1392    :Attractieoverzicht
+STR_1393    :Voertuigopties en -details
+STR_1394    :Bedrijfsopties
+STR_1395    :Onderhoudsopties
+STR_1396    :Opties voor kleurenschema
+STR_1397    :Opties voor geluid en muziek
+STR_1398    :Metingen en testgegevens
+STR_1399    :Grafieken
 STR_1400    :Ingang
 STR_1401    :Uitgang
-STR_1402    :{SMALLFONT}{BLACK}Attractieingang bouwen of verplaatsen
-STR_1403    :{SMALLFONT}{BLACK}Attractieuitgang bouwen of verplaatsen
-STR_1404    :{SMALLFONT}{BLACK}90° draaien
-STR_1405    :{SMALLFONT}{BLACK}Ontwerpen spiegelen
-STR_1406    :{SMALLFONT}{BLACK}Decor aan/uit (indien beschikbaar)
+STR_1402    :Attractieingang bouwen of verplaatsen
+STR_1403    :Attractieuitgang bouwen of verplaatsen
+STR_1404    :90° draaien
+STR_1405    :Ontwerpen spiegelen
+STR_1406    :Decor aan/uit (indien beschikbaar)
 STR_1407    :{WINDOW_COLOUR_2}Dit bouwen…
 STR_1408    :{WINDOW_COLOUR_2}Kosten: {BLACK}{CURRENCY}
 STR_1409    :Platform voor ingang/uitgang
@@ -802,9 +802,9 @@ STR_1418    :{WINDOW_COLOUR_2}Zijw. G
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Loggegevens van {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Wachtrijpad
-STR_1424    :{SMALLFONT}{BLACK}Voetpad
+STR_1422    :Loggegevens van {POP16}{STRINGID}
+STR_1423    :Wachtrijpad
+STR_1424    :Voetpad
 STR_1425    :Voetpad
 STR_1426    :Wachtrij
 STR_1427    :{WINDOW_COLOUR_2}Passagiers: {BLACK}{COMMA32} per uur
@@ -840,8 +840,8 @@ STR_1456    :{WINDOW_COLOUR_2}Uitgegeven bedrag: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Geld op zak: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Tijd in park: {BLACK}{REALTIME}
 STR_1459    :Baansoort
-STR_1460    :{SMALLFONT}{BLACK}Open baan in U-vorm
-STR_1461    :{SMALLFONT}{BLACK}Gesloten baan in O-vorm
+STR_1460    :Open baan in U-vorm
+STR_1461    :Gesloten baan in O-vorm
 STR_1462    :Te steil voor een kettinglift
 STR_1463    :Bezoekers
 STR_1464    :Spiraal omhoog (klein)
@@ -852,7 +852,7 @@ STR_1468    :Werknemers
 STR_1469    :Attracties moeten beginnen en eindigen met stations
 STR_1470    :Station is niet lang genoeg
 STR_1471    :{WINDOW_COLOUR_2}Snelheid:
-STR_1472    :{SMALLFONT}{BLACK}Snelheid van deze attractie
+STR_1472    :Snelheid van deze attractie
 STR_1473    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Plezierwaarde: {BLACK}Nog niet beschikbaar
 STR_1475    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1034,8 +1034,8 @@ STR_1650    :{SMALLFONT}“Wauw! Hier wordt een nieuwe attractie gebouwd!”
 # Two removed inside jokes about Intamin and Phoenix
 STR_1653    :{SMALLFONT}“… en nu zijn we in {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
-STR_1655    :{SMALLFONT}{BLACK}Voetpaden op land aanleggen
-STR_1656    :{SMALLFONT}{BLACK}Voetpad over bruggen of door tunnels aanleggen
+STR_1655    :Voetpaden op land aanleggen
+STR_1656    :Voetpad over bruggen of door tunnels aanleggen
 STR_1657    :{WINDOW_COLOUR_2}Voorkeursintensiteit:
 STR_1658    :{WINDOW_COLOUR_2}{BLACK}minder dan {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}{BLACK}tussen {COMMA16} en {COMMA16}
@@ -1055,7 +1055,7 @@ STR_1672    :Remmen
 STR_1673    :Draaistop
 STR_1674    :Remsnelheid
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Snelheidslimiet voor remmen instellen
+STR_1676    :Snelheidslimiet voor remmen instellen
 STR_1677    :{WINDOW_COLOUR_2}Populariteit: {BLACK}onbekend
 STR_1678    :{WINDOW_COLOUR_2}Populariteit: {BLACK}{COMMA16}%
 STR_1679    :Spiraal omhoog (links)
@@ -1072,10 +1072,10 @@ STR_1689    :Blokremmen
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Kosten: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Kosten: {BLACK}vanaf {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Bezoekers
-STR_1694    :{SMALLFONT}{BLACK}Werknemers
-STR_1695    :{SMALLFONT}{BLACK}Inkomsten en kosten
-STR_1696    :{SMALLFONT}{BLACK}Klantinformatie
+STR_1693    :Bezoekers
+STR_1694    :Werknemers
+STR_1695    :Inkomsten en kosten
+STR_1696    :Klantinformatie
 STR_1697    :Dit kan niet op wachtrijen worden geplaatst
 STR_1698    :Dit kan alleen op wachtrijen worden geplaatst
 STR_1699    :Te veel personen in het spel
@@ -1084,10 +1084,10 @@ STR_1701    :Monteur aannemen…
 STR_1702    :Bewaker aannemen…
 STR_1703    :Entertainer aannemen…
 STR_1704    :Kan geen nieuwe werknemer aannemen…
-STR_1705    :{SMALLFONT}{BLACK}Deze werknemer ontslaan
-STR_1706    :{SMALLFONT}{BLACK}Deze persoon naar een andere locatie verplaatsen
+STR_1705    :Deze werknemer ontslaan
+STR_1706    :Deze persoon naar een andere locatie verplaatsen
 STR_1707    :Te veel werknemers in dit park
-STR_1708    :{SMALLFONT}{BLACK}Werkgebied van deze werknemer instellen
+STR_1708    :Werkgebied van deze werknemer instellen
 STR_1709    :Werknemer ontslaan
 STR_1710    :Ja
 STR_1711    :{WINDOW_COLOUR_1}Weet je zeker dat je {STRINGID} wilt ontslaan?
@@ -1099,7 +1099,7 @@ STR_1716    :Ongeldige parknaam
 STR_1717    :Kan het park geen andere naam geven…
 STR_1718    :Parknaam
 STR_1719    :Voer een naam in voor het park:
-STR_1720    :{SMALLFONT}{BLACK}Parknaam aanpassen
+STR_1720    :Parknaam aanpassen
 STR_1721    :Park gesloten
 STR_1722    :Park open
 STR_1723    :Kan het park niet openen…
@@ -1114,30 +1114,30 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Bouwen
 STR_1733    :Modus
 STR_1734    :{WINDOW_COLOUR_2}Aantal rondes:
-STR_1735    :{SMALLFONT}{BLACK}Aantal rondes op het circuit
+STR_1735    :Aantal rondes op het circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Kan het aantal rondes niet aanpassen…
 STR_1739    :Race is gewonnen door bezoeker {INT32}
 STR_1740    :Race is gewonnen door {STRINGID}
 STR_1741    :Nog niet gebouwd!
 STR_1742    :{WINDOW_COLOUR_2}Max. aant. personen:
-STR_1743    :{SMALLFONT}{BLACK}Het maximale aantal personen dat tegelijkertijd in deze attractie mag zijn
+STR_1743    :Het maximale aantal personen dat tegelijkertijd in deze attractie mag zijn
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Kan dit niet aanpassen…
 STR_1747    :{WINDOW_COLOUR_2}Tijdslimiet:
-STR_1748    :{SMALLFONT}{BLACK}Tijdslimiet voor deze attractie
+STR_1748    :Tijdslimiet voor deze attractie
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Kan de tijdslimiet voor deze attractie niet aanpassen…
-STR_1752    :{SMALLFONT}{BLACK}Toon een lijst van individuele bezoekers in het park
-STR_1753    :{SMALLFONT}{BLACK}Toon een samengevatte lijst van bezoekers in het park
+STR_1752    :Toon een lijst van individuele bezoekers in het park
+STR_1753    :Toon een samengevatte lijst van bezoekers in het park
 STR_1754    :{BLACK}{COMMA32} bezoekers
 STR_1755    :{BLACK}{COMMA32} bezoeker
 STR_1756    :{WINDOW_COLOUR_2}Toegangsprijs:
 STR_1757    :{WINDOW_COLOUR_2}Betrouwbaarheid: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Bouwmodus
-STR_1759    :{SMALLFONT}{BLACK}Verplaatsmodus
-STR_1760    :{SMALLFONT}{BLACK}Dichtmaakmodus
-STR_1761    :{SMALLFONT}{BLACK}Bouw doolhof in deze richting
+STR_1758    :Bouwmodus
+STR_1759    :Verplaatsmodus
+STR_1760    :Dichtmaakmodus
+STR_1761    :Bouw doolhof in deze richting
 STR_1762    :Watervallen
 STR_1763    :Stroomversnelling
 STR_1764    :Balkendrempels
@@ -1146,7 +1146,7 @@ STR_1766    :Draaischijf
 STR_1767    :Draaiende tunnel
 STR_1768    :Kan het aantal schommelingen niet aanpassen…
 STR_1769    :{WINDOW_COLOUR_2}Aantal schommelingen:
-STR_1770    :{SMALLFONT}{BLACK}Aantal complete schommelingen
+STR_1770    :Aantal complete schommelingen
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Een attractie mag maar één actiefotogedeelte hebben
 STR_1774    :Een attractie mag maar één kabellift hebben
@@ -1163,7 +1163,7 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronautenpak
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandietenkostuum
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriffkostuum
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Piratenkostuum
-STR_1790    :{SMALLFONT}{BLACK}Selecteer de uniformkleur voor dit type werknemer
+STR_1790    :Selecteer de uniformkleur voor dit type werknemer
 STR_1791    :{WINDOW_COLOUR_2}Uniformkleur:
 STR_1792    :Gaat {STRINGID} repareren
 STR_1793    :Gaat {STRINGID} inspecteren
@@ -1184,20 +1184,20 @@ STR_1808    :{WINDOW_COLOUR_2}Laatste defect: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Huidig defect: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Heeft bij zich:
 STR_1811    :Kan dit hier niet bouwen…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{STRINGID}
 STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
-STR_1816    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de bezoekerslijst wilt zien
+STR_1816    :Selecteer het type informatie dat je in de bezoekerslijst wilt zien
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
 STR_1820    :{WINDOW_COLOUR_2}Bezoekers met de volgende status: {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Bezoekers met de volgende gedachte: {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Bezoekers met gedachten over {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Toon de gedachten van bezoekers over deze attractie
-STR_1824    :{SMALLFONT}{BLACK}Toon de bezoekers in deze attractie
-STR_1825    :{SMALLFONT}{BLACK}Toon de bezoekers die in de rij staan voor deze attractie
+STR_1823    :Toon de gedachten van bezoekers over deze attractie
+STR_1824    :Toon de bezoekers in deze attractie
+STR_1825    :Toon de bezoekers die in de rij staan voor deze attractie
 STR_1826    :Status
 STR_1827    :Populariteit
 STR_1828    :Voldoening
@@ -1216,13 +1216,13 @@ STR_1840    :Stilstandtijd: {COMMA16}%
 STR_1841    :Winst: {CURRENCY2DP} per uur
 STR_1842    :Favoriete attractie van: {COMMA16} bezoeker
 STR_1843    :Favoriete attractie van: {COMMA16} bezoekers
-STR_1844    :{SMALLFONT}{BLACK}Selecteer het type informatie dat je in de attractielijst wilt zien
+STR_1844    :Selecteer het type informatie dat je in de attractielijst wilt zien
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} bezoekers
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} bezoekers
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} bezoekers
 STR_1849    :{WINDOW_COLOUR_2}Draai muziek
-STR_1850    :{SMALLFONT}{BLACK}Selecteer of er in deze attractie muziek moet worden gedraaid
+STR_1850    :Selecteer of er in deze attractie muziek moet worden gedraaid
 STR_1851    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}{CURRENCY2DP} per uur
 STR_1852    :{WINDOW_COLOUR_2}Bedrijfskosten: {BLACK}Onbekend
 STR_1853    :{WINDOW_COLOUR_2}Bouw: {BLACK}dit jaar
@@ -1242,7 +1242,7 @@ STR_1866    :entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Kan het aantal rotaties niet aanpassen…
 STR_1869    :{WINDOW_COLOUR_2}Aantal rotaties:
-STR_1870    :{SMALLFONT}{BLACK}Aantal complete rotaties
+STR_1870    :Aantal complete rotaties
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Inkomsten: {BLACK}{CURRENCY2DP} per uur
 STR_1874    :{WINDOW_COLOUR_2}Winst: {BLACK}{CURRENCY2DP} per uur
@@ -1261,12 +1261,12 @@ STR_1886    :Inspecteert {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}{COMMA16} minuten
 STR_1888    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}meer dan 4 uur
 STR_1889    :{WINDOW_COLOUR_2}Stilstandtijd: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Selecteer hoe vaak een monteur deze attractie moet inspecteren
+STR_1890    :Selecteer hoe vaak een monteur deze attractie moet inspecteren
 STR_1891    :Nog geen {STRINGID} in het park!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} verkocht: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Nieuwe attractie bouwen
+STR_1895    :Nieuwe attractie bouwen
 STR_1896    :{WINDOW_COLOUR_2}Uitgaven/Inkomsten
 STR_1897    :{WINDOW_COLOUR_2}Attractiebouw
 STR_1898    :{WINDOW_COLOUR_2}Attractiebedrijf
@@ -1292,33 +1292,33 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Kan niet meer geld lenen!
 STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan lening niet terugbetalen!
-STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
-STR_1922    :{SMALLFONT}{BLACK}Verder gaan met een opgeslagen spel
-STR_1924    :{SMALLFONT}{BLACK}Afsluiten
+STR_1921    :Een nieuw spel starten
+STR_1922    :Verder gaan met een opgeslagen spel
+STR_1924    :Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} is kapot gegaan
 STR_1928    :{RED}{STRINGID} is neergestort!
 STR_1929    :{RED}{STRINGID} is nog steeds niet gerepareerd{NEWLINE}Controleer waar je monteurs zijn en overweeg ze beter te organiseren
-STR_1930    :{SMALLFONT}{BLACK}Volgen van bezoeker in- of uitschakelen - (Als volgen is ingeschakeld, worden de activiteiten van deze bezoeker vermeld in het berichtengebied)
+STR_1930    :Volgen van bezoeker in- of uitschakelen - (Als volgen is ingeschakeld, worden de activiteiten van deze bezoeker vermeld in het berichtengebied)
 STR_1931    :{STRINGID} staat nu in de rij voor {STRINGID}
 STR_1932    :{STRINGID} is nu in {STRINGID}
 STR_1933    :{STRINGID} is nu in {STRINGID}
 STR_1934    :{STRINGID} heeft {STRINGID} verlaten
 STR_1935    :{STRINGID} heeft het park verlaten
 STR_1936    :{STRINGID} heeft {STRINGID} gekocht
-STR_1937    :{SMALLFONT}{BLACK}Informatie tonen over het onderwerp van dit bericht
-STR_1938    :{SMALLFONT}{BLACK}Beeld van bezoeker tonen
-STR_1939    :{SMALLFONT}{BLACK}Beeld van werknemer tonen
-STR_1940    :{SMALLFONT}{BLACK}Stemming, energie, hongerniveau e.d. van deze bezoeker tonen
-STR_1941    :{SMALLFONT}{BLACK}Tonen in welke attracties deze bezoeker is geweest
-STR_1942    :{SMALLFONT}{BLACK}Financiële informatie over deze bezoeker tonen
-STR_1943    :{SMALLFONT}{BLACK}Recente gedachten van deze bezoeker tonen
-STR_1944    :{SMALLFONT}{BLACK}Toon de dingen die de bezoeker bij zich heeft
-STR_1945    :{SMALLFONT}{BLACK}Orders en opties voor deze werknemer tonen
-STR_1946    :{SMALLFONT}{BLACK}Kostuum van deze entertainer selecteren
-STR_1947    :{SMALLFONT}{BLACK}Werkgebieden van het geselecteerde type werknemer weergeven en de dichtstbijzijnde werknemer lokaliseren
-STR_1948    :{SMALLFONT}{BLACK}Nieuwe werknemer van het geselecteerde type aannemen
+STR_1937    :Informatie tonen over het onderwerp van dit bericht
+STR_1938    :Beeld van bezoeker tonen
+STR_1939    :Beeld van werknemer tonen
+STR_1940    :Stemming, energie, hongerniveau e.d. van deze bezoeker tonen
+STR_1941    :Tonen in welke attracties deze bezoeker is geweest
+STR_1942    :Financiële informatie over deze bezoeker tonen
+STR_1943    :Recente gedachten van deze bezoeker tonen
+STR_1944    :Toon de dingen die de bezoeker bij zich heeft
+STR_1945    :Orders en opties voor deze werknemer tonen
+STR_1946    :Kostuum van deze entertainer selecteren
+STR_1947    :Werkgebieden van het geselecteerde type werknemer weergeven en de dichtstbijzijnde werknemer lokaliseren
+STR_1948    :Nieuwe werknemer van het geselecteerde type aannemen
 STR_1949    :Samenvatting financiën
 STR_1950    :Grafiek van financiën
 STR_1951    :Grafiek van parkwaardering
@@ -1326,7 +1326,7 @@ STR_1952    :Winstgrafiek
 STR_1953    :Marketing
 STR_1954    :Onderzoeksbudget
 STR_1955    :{WINDOW_COLOUR_2}Aantal rondes:
-STR_1956    :{SMALLFONT}{BLACK}Aantal af te leggen rondes per rit
+STR_1956    :Aantal af te leggen rondes per rit
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Kan het aantal rondes niet aanpassen…
@@ -1565,10 +1565,10 @@ STR_2206    :Leeg drinkkarton
 STR_2207    :Lege sapbeker
 STR_2208    :Gebraden worst
 STR_2209    :Lege kom
-STR_2210    :{SMALLFONT}{BLACK}Toon lijst van klusjesmannen in het park
-STR_2211    :{SMALLFONT}{BLACK}Toon lijst van monteurs in het park
-STR_2212    :{SMALLFONT}{BLACK}Toon lijst van bewakers in het park
-STR_2213    :{SMALLFONT}{BLACK}Toon lijst van entertainers in het park
+STR_2210    :Toon lijst van klusjesmannen in het park
+STR_2211    :Toon lijst van monteurs in het park
+STR_2212    :Toon lijst van bewakers in het park
+STR_2213    :Toon lijst van entertainers in het park
 STR_2214    :Bouwen is niet mogelijk wanneer het spel is gepauzeerd!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16} °C
@@ -1576,7 +1576,7 @@ STR_2217    :{WINDOW_COLOUR_2}{COMMA16} °F
 STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de opstapplaats ({STRINGID})!{NEWLINE}Controleer of het is vastgelopen of stil komen te staan
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}Parkwaardering: {COMMA16}
+STR_2221    :Parkwaardering: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
@@ -1588,7 +1588,7 @@ STR_2229    :Helling omhoog naar verticaal
 STR_2230    :Verticale baan
 STR_2231    :Vasthoudrem voor afdaling
 STR_2232    :Kabelliftheuvel
-STR_2233    :{SMALLFONT}{BLACK}Parkinformatie
+STR_2233    :Parkinformatie
 STR_2234    :Recente berichten
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :januari
@@ -1629,9 +1629,9 @@ STR_2270    :{WINDOW_COLOUR_2}Voortgang: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Verwacht: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Attractie:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Decor/thema:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Details van deze uitvinding of ontwikkeling tonen
-STR_2275    :{SMALLFONT}{BLACK}Budget en opties voor onderzoek en ontwikkeling tonen
-STR_2276    :{SMALLFONT}{BLACK}Status van onderzoek en ontwikkeling tonen
+STR_2274    :Details van deze uitvinding of ontwikkeling tonen
+STR_2275    :Budget en opties voor onderzoek en ontwikkeling tonen
+STR_2276    :Status van onderzoek en ontwikkeling tonen
 STR_2277    :Onbekend
 STR_2278    :Transportattractie
 STR_2279    :Rustige attractie
@@ -1648,8 +1648,8 @@ STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :Selecteer een scenario voor een nieuw spel
 STR_2292    :{WINDOW_COLOUR_2}Bezochte attracties:
 STR_2293    :{BLACK} Niets
-STR_2294    :{SMALLFONT}{BLACK}Bovenkant land aanpassen
-STR_2295    :{SMALLFONT}{BLACK}Zijkant land aanpassen
+STR_2294    :Bovenkant land aanpassen
+STR_2295    :Zijkant land aanpassen
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} betaald voor entree
 STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} attractie
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} uitgegeven aan {BLACK}{COMMA16} attracties
@@ -1675,8 +1675,8 @@ STR_2321    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Werknemers: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Parkgrootte: {BLACK}{COMMA32}sq.ft.
-STR_2325    :{SMALLFONT}{BLACK}Land kopen om het park uit te breiden
-STR_2326    :{SMALLFONT}{BLACK}Bouwrechten kopen om boven of onder land buiten het park te kunnen bouwen
+STR_2325    :Land kopen om het park uit te breiden
+STR_2326    :Bouwrechten kopen om boven of onder land buiten het park te kunnen bouwen
 STR_2327    :Opties
 STR_2328    :{WINDOW_COLOUR_2}Valuta:
 STR_2329    :{WINDOW_COLOUR_2}Afstanden en snelheden:
@@ -1697,7 +1697,7 @@ STR_2343    :Euro's (€)
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2347    :{RED}{STRINGID} is verdronken!
-STR_2348    :{SMALLFONT}{BLACK}Statistieken voor deze werknemer tonen
+STR_2348    :Statistieken voor deze werknemer tonen
 STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per maand
 STR_2350    :{WINDOW_COLOUR_2}In dienst genomen: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA16}
@@ -1710,9 +1710,9 @@ STR_2358    :Eenheden
 STR_2359    :Echte waarden
 STR_2360    :Schermresolutie:
 STR_2361    :Landschapslijnen verzachten
-STR_2362    :{SMALLFONT}{BLACK}Verzachting van lijnen tussen vakjes aan- of uitzetten
+STR_2362    :Verzachting van lijnen tussen vakjes aan- of uitzetten
 STR_2363    :Raster weergeven op landschap
-STR_2364    :{SMALLFONT}{BLACK}Rasterlijnen op land aan- of uitzetten
+STR_2364    :Rasterlijnen op land aan- of uitzetten
 STR_2365    :De bank wil je lening niet verhogen!
 STR_2366    :Celsius (°C)
 STR_2367    :Fahrenheit (°F)
@@ -1726,10 +1726,10 @@ STR_2374    :Hoog
 STR_2375    :Zeer hoog
 STR_2376    :Extreem
 STR_2377    :Ultra-extreem
-STR_2378    :{SMALLFONT}{BLACK}Kleiner stuk land aanpassen
-STR_2379    :{SMALLFONT}{BLACK}Groter stuk land aanpassen
-STR_2380    :{SMALLFONT}{BLACK}Kleiner stuk water aanpassen
-STR_2381    :{SMALLFONT}{BLACK}Groter stuk water aanpassen
+STR_2378    :Kleiner stuk land aanpassen
+STR_2379    :Groter stuk land aanpassen
+STR_2380    :Kleiner stuk water aanpassen
+STR_2381    :Groter stuk water aanpassen
 STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Je doelstelling:
@@ -1760,7 +1760,7 @@ STR_2408    :Maandelijks inkomen uit etenswaren/souvenirs
 STR_2409    :{WINDOW_COLOUR_2}Lopende marketingcampagnes
 STR_2410    :{BLACK}Geen
 STR_2411    :{WINDOW_COLOUR_2}Beschikbare marketingcampagnes
-STR_2412    :{SMALLFONT}{BLACK}Deze marketingcampagne starten
+STR_2412    :Deze marketingcampagne starten
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(niet geselecteerd)
 STR_2415    :{WINDOW_COLOUR_2}Attractie:
@@ -1795,40 +1795,40 @@ STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is afgelopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Laat financiële posten zien
-STR_2458    :{SMALLFONT}{BLACK}Toon grafiek van saldoverloop (zonder lening)
-STR_2459    :{SMALLFONT}{BLACK}Toon grafiek van parkwaardeverloop
-STR_2460    :{SMALLFONT}{BLACK}Toon grafiek van wekelijkse winst
-STR_2461    :{SMALLFONT}{BLACK}Toon marketingcampagnes
-STR_2462    :{SMALLFONT}{BLACK}Toon beeld van de parkingang
-STR_2463    :{SMALLFONT}{BLACK}Toon grafiek van parkwaarderingsverloop
-STR_2464    :{SMALLFONT}{BLACK}Toon grafiek met verloop van het aantal bezoekers
-STR_2465    :{SMALLFONT}{BLACK}Toon de entreeprijs en -informatie
-STR_2466    :{SMALLFONT}{BLACK}Toon parkstatistieken
-STR_2467    :{SMALLFONT}{BLACK}Toon doelstellingen voor dit spel
-STR_2468    :{SMALLFONT}{BLACK}Toon recente prijzen die het park heeft gekregen
-STR_2469    :{SMALLFONT}{BLACK}Selecteer niveau van onderzoek en ontwikkeling
-STR_2470    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe transportattracties
-STR_2471    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe rustige attracties
-STR_2472    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe achtbanen
-STR_2473    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe spannende attracties
-STR_2474    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe waterattracties
-STR_2475    :{SMALLFONT}{BLACK}Onderzoek naar nieuwe winkels en kraampjes
-STR_2476    :{SMALLFONT}{BLACK}Onderzoek naar nieuw decor en nieuwe thema's
-STR_2477    :{SMALLFONT}{BLACK}Selecteer werkmodus voor deze attractie
-STR_2478    :{SMALLFONT}{BLACK}Toon grafiek van snelheidsverloop
-STR_2479    :{SMALLFONT}{BLACK}Toon grafiek van hoogteverloop
-STR_2480    :{SMALLFONT}{BLACK}Toon grafiek met verloop van verticale versnelling
-STR_2481    :{SMALLFONT}{BLACK}Toon grafiek met verloop van zijwaartse versnelling
-STR_2482    :{SMALLFONT}{BLACK}Winst: {CURRENCY} per week,  parkwaarde: {CURRENCY}
+STR_2457    :Laat financiële posten zien
+STR_2458    :Toon grafiek van saldoverloop (zonder lening)
+STR_2459    :Toon grafiek van parkwaardeverloop
+STR_2460    :Toon grafiek van wekelijkse winst
+STR_2461    :Toon marketingcampagnes
+STR_2462    :Toon beeld van de parkingang
+STR_2463    :Toon grafiek van parkwaarderingsverloop
+STR_2464    :Toon grafiek met verloop van het aantal bezoekers
+STR_2465    :Toon de entreeprijs en -informatie
+STR_2466    :Toon parkstatistieken
+STR_2467    :Toon doelstellingen voor dit spel
+STR_2468    :Toon recente prijzen die het park heeft gekregen
+STR_2469    :Selecteer niveau van onderzoek en ontwikkeling
+STR_2470    :Onderzoek naar nieuwe transportattracties
+STR_2471    :Onderzoek naar nieuwe rustige attracties
+STR_2472    :Onderzoek naar nieuwe achtbanen
+STR_2473    :Onderzoek naar nieuwe spannende attracties
+STR_2474    :Onderzoek naar nieuwe waterattracties
+STR_2475    :Onderzoek naar nieuwe winkels en kraampjes
+STR_2476    :Onderzoek naar nieuw decor en nieuwe thema's
+STR_2477    :Selecteer werkmodus voor deze attractie
+STR_2478    :Toon grafiek van snelheidsverloop
+STR_2479    :Toon grafiek van hoogteverloop
+STR_2480    :Toon grafiek met verloop van verticale versnelling
+STR_2481    :Toon grafiek met verloop van zijwaartse versnelling
+STR_2482    :Winst: {CURRENCY} per week,  parkwaarde: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Wekelijkse winst: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Wekelijkse winst: {RED}{CURRENCY2DP}
 STR_2487    :‘Echte’ namen van bezoekers tonen
-STR_2488    :{SMALLFONT}{BLACK}Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers
+STR_2488    :Wissel tussen het tonen van ‘echte’ namen van bezoekers en bezoekernummers
 STR_2489    :Sneltoetsen…
 STR_2490    :Sneltoetsen
 STR_2491    :Toetsen herstellen
-STR_2492    :{SMALLFONT}{BLACK}Alle sneltoetsen terugzetten op de standaardinstellingen
+STR_2492    :Alle sneltoetsen terugzetten op de standaardinstellingen
 STR_2493    :Sluit bovenste venster
 STR_2494    :Sluit alle openstaande vensters
 STR_2495    :Bouwmodus annuleren
@@ -1905,7 +1905,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Alle onderzoeken zijn voltooid
 STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
-STR_2684    :{SMALLFONT}{BLACK}Er arriveert een grote groep bezoekers
+STR_2684    :Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
 STR_2687    :Maximum:
@@ -1982,7 +1982,7 @@ STR_2782    :SHIFT +
 STR_2783    :CTRL + 
 STR_2784    :Sneltoets wijzigen
 STR_2785    :{WINDOW_COLOUR_2}Voer een nieuwe sneltoets in voor:{NEWLINE}‘{STRINGID}’
-STR_2786    :{SMALLFONT}{BLACK}Klik op de beschrijving om een nieuwe sneltoets in te stellen
+STR_2786    :Klik op de beschrijving om een nieuwe sneltoets in te stellen
 STR_2787    :{WINDOW_COLOUR_2}Parkwaarde: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Gefeliciteerd!{NEWLINE}{BLACK}Je hebt je doelstelling bereikt met een bedrijfswaarde van {CURRENCY}!
 STR_2789    :{WINDOW_COLOUR_2}Je hebt je doelstelling niet bereikt!
@@ -1992,16 +1992,16 @@ STR_2792    :Voer je naam in voor het scenario-overzicht:
 STR_2793    :{SMALLFONT}(Voltooid door {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Voltooid door: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} met een bedrijfswaarde van: {BLACK}{CURRENCY}
 STR_2795    :Sorteren
-STR_2796    :{SMALLFONT}{BLACK}Sorteer de lijst met attracties op basis van het aangegeven informatietype
+STR_2796    :Sorteer de lijst met attracties op basis van het aangegeven informatietype
 STR_2797    :Beeld verschuiven als aanwijzer op de rand staat
-STR_2798    :{SMALLFONT}{BLACK}Selecteer of het beeld moet verschuiven als de muisaanwijzer op de rand van het beeld staat
-STR_2799    :{SMALLFONT}{BLACK}Instellingen voor sneltoetsen bekijken of aanpassen
+STR_2798    :Selecteer of het beeld moet verschuiven als de muisaanwijzer op de rand van het beeld staat
+STR_2799    :Instellingen voor sneltoetsen bekijken of aanpassen
 STR_2800    :{WINDOW_COLOUR_2}Totale bezoeken: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Entree-inkomsten: {BLACK}{CURRENCY2DP}
 STR_2802    :Kaart
-STR_2803    :{SMALLFONT}{BLACK}Parkkaart tonen waarop deze bezoekers gemarkeerd zijn
-STR_2804    :{SMALLFONT}{BLACK}Parkkaart tonen waarop deze werknemers gemarkeerd zijn
-STR_2805    :{SMALLFONT}{BLACK}Parkkaart tonen
+STR_2803    :Parkkaart tonen waarop deze bezoekers gemarkeerd zijn
+STR_2804    :Parkkaart tonen waarop deze werknemers gemarkeerd zijn
+STR_2805    :Parkkaart tonen
 STR_2806    :{RED}Bezoekers klagen over de smerige voetpaden in je park{NEWLINE}Controleer waar je klusjesmannen zijn en overweeg om ze beter te organiseren
 STR_2807    :{RED}Bezoekers klagen over de hoeveelheid rommel in je park{NEWLINE}Controleer waar je klusjesmannen zijn en overweeg om ze beter te organiseren
 STR_2808    :{RED}Bezoekers klagen over het vandalisme in je park{NEWLINE}Controleer waar je bewakers zijn en overweeg om ze beter te organiseren
@@ -2103,8 +2103,8 @@ STR_2971    :Standaard kleurenschema
 STR_2972    :Alternatief kleurenschema 1
 STR_2973    :Alternatief kleurenschema 2
 STR_2974    :Alternatief kleurenschema 3
-STR_2975    :{SMALLFONT}{BLACK}Selecteer welk kleurenschema je wilt aanpassen of gebruiken
-STR_2976    :{SMALLFONT}{BLACK}Met het geselecteerde kleurenschema een onderdeel van de baan verven
+STR_2975    :Selecteer welk kleurenschema je wilt aanpassen of gebruiken
+STR_2976    :Met het geselecteerde kleurenschema een onderdeel van de baan verven
 STR_2977    :Naam werknemer
 STR_2978    :Voer een nieuwe naam in voor deze werknemer:
 STR_2979    :Kan de naam van deze werknemer niet veranderen…
@@ -2114,16 +2114,16 @@ STR_2982    :Lichtkranttekst
 STR_2983    :Voer een nieuwe tekst in voer deze lichtkrant:
 STR_2984    :Kan de tekst op deze lichtkrant niet veranderen…
 STR_2985    :Lichtkrant
-STR_2986    :{SMALLFONT}{BLACK}Tekst op deze lichtkrant aanpassen
-STR_2987    :{SMALLFONT}{BLACK}Deze lichtkrant instellen als bord voor ‘geen toegang’ voor de bezoekers
-STR_2988    :{SMALLFONT}{BLACK}Deze lichtkrant verwijderen
-STR_2989    :{SMALLFONT}{BLACK}Hoofdkleur selecteren
-STR_2990    :{SMALLFONT}{BLACK}Tekstkleur selecteren
+STR_2986    :Tekst op deze lichtkrant aanpassen
+STR_2987    :Deze lichtkrant instellen als bord voor ‘geen toegang’ voor de bezoekers
+STR_2988    :Deze lichtkrant verwijderen
+STR_2989    :Hoofdkleur selecteren
+STR_2990    :Tekstkleur selecteren
 STR_2991    :Bord
 STR_2992    :Bordtekst
 STR_2993    :Voer een nieuwe tekst in voor dit bord:
-STR_2994    :{SMALLFONT}{BLACK}Tekst op het bord veranderen
-STR_2995    :{SMALLFONT}{BLACK}Dit bord weghalen
+STR_2994    :Tekst op het bord veranderen
+STR_2995    :Dit bord weghalen
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -2173,7 +2173,7 @@ STR_3041    :Moderne stijl
 STR_3042    :Piratenstijl
 STR_3043    :Rockstijl 3
 STR_3044    :Snoepstijl
-STR_3045    :{SMALLFONT}{BLACK}Selecteer welke muziekstijl er moet worden gedraaid
+STR_3045    :Selecteer welke muziekstijl er moet worden gedraaid
 STR_3047    :De gemeente staat de sloop van en wijzigingen aan deze attractie niet toe
 STR_3048    :Marketingcampagnes worden niet toegestaan door de gemeente
 STR_3049    :Golfhole A
@@ -2186,8 +2186,8 @@ STR_3058    :Stenen muren
 STR_3059    :Heggen
 STR_3060    :Blokken ijs
 STR_3061    :Houten schuttingen
-STR_3062    :{SMALLFONT}{BLACK}Standaard achtbaanspoor
-STR_3063    :{SMALLFONT}{BLACK}Watergedeelte (spoor onder water)
+STR_3062    :Standaard achtbaanspoor
+STR_3063    :Watergedeelte (spoor onder water)
 STR_3064    :Eenvoudige parken
 STR_3065    :Uitdagende parken
 STR_3066    :Moeilijke parken
@@ -2196,42 +2196,42 @@ STR_3068    :Andere parken
 STR_3069    :Bovengedeelte
 STR_3070    :Van helling naar vlak
 STR_3071    :{WINDOW_COLOUR_2}Dezelfde prijs in het hele park
-STR_3072    :{SMALLFONT}{BLACK}Selecteer of deze prijs in het hele park moet worden gehanteerd
+STR_3072    :Selecteer of deze prijs in het hele park moet worden gehanteerd
 STR_3073    :{RED}WAARSCHUWING: Je parkwaardering is onder de 700 gekomen!{NEWLINE}Als je niet binnen 4 weken de waardering boven de 700 hebt gekregen, wordt je park gesloten
 STR_3074    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog 3 weken om de waardering te verhogen
 STR_3075    :{RED}WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog maar 2 weken om de waardering te verhogen, anders wordt je park gesloten
 STR_3076    :{RED}LAATSTE WAARSCHUWING: Je parkwaardering is nog steeds lager dan 700!{NEWLINE}Je hebt nog maar 7 dagen om die te verhogen, anders wordt je park gesloten
 STR_3077    :{RED}SLUITINGSBERICHT: Je park is gesloten!
-STR_3090    :{SMALLFONT}{BLACK}Selecteer de stijl van de ingang, uitgang, en het station
+STR_3090    :Selecteer de stijl van de ingang, uitgang, en het station
 STR_3091    :Je mag dit gedeelte niet verwijderen!
 STR_3092    :Je mag het station van deze attractie niet verplaatsen of veranderen!
 STR_3093    :{WINDOW_COLOUR_2}Favoriet: {BLACK}{STRINGID}
 STR_3094    :n.v.t.
 STR_3095    :{WINDOW_COLOUR_2}Snelheid kettingheuvel:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Selecteer de snelheid van de kettingheuvel
-STR_3099    :{SMALLFONT}{BLACK}Kleur selecteren
-STR_3100    :{SMALLFONT}{BLACK}Tweede kleur selecteren
-STR_3101    :{SMALLFONT}{BLACK}Derde kleur selecteren
-STR_3102    :{SMALLFONT}{BLACK}Gekleurd decor opnieuw verven
+STR_3097    :Selecteer de snelheid van de kettingheuvel
+STR_3099    :Kleur selecteren
+STR_3100    :Tweede kleur selecteren
+STR_3101    :Derde kleur selecteren
+STR_3102    :Gekleurd decor opnieuw verven
 STR_3103    :Kan dit niet opnieuw verversen…
-STR_3104    :{SMALLFONT}{BLACK}Toon een lijst van attracties
-STR_3105    :{SMALLFONT}{BLACK}Toon een lijst van winkels en kraampjes
-STR_3106    :{SMALLFONT}{BLACK}Toon een lijst van informatiekiosken en andere faciliteiten
+STR_3104    :Toon een lijst van attracties
+STR_3105    :Toon een lijst van winkels en kraampjes
+STR_3106    :Toon een lijst van informatiekiosken en andere faciliteiten
 STR_3107    :Sluiten
 STR_3108    :Testen
 STR_3109    :Openen
 STR_3110    :{WINDOW_COLOUR_2}Blokken: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Klik op het ontwerp om het te bouwen
-STR_3112    :{SMALLFONT}{BLACK}Klik op het ontwerp om het te verwijderen of om het een andere naam te geven
+STR_3111    :Klik op het ontwerp om het te bouwen
+STR_3112    :Klik op het ontwerp om het te verwijderen of om het een andere naam te geven
 STR_3113    :Een ander ontwerp selecteren
-STR_3114    :{SMALLFONT}{BLACK}Terug naar ontwerpselectie
-STR_3115    :{SMALLFONT}{BLACK}Baanontwerp opslaan
-STR_3116    :{SMALLFONT}{BLACK}Baanontwerp opslaan (Niet mogelijk voordat de attractie is getest en de statistieken zijn gegenereerd)
+STR_3114    :Terug naar ontwerpselectie
+STR_3115    :Baanontwerp opslaan
+STR_3116    :Baanontwerp opslaan (Niet mogelijk voordat de attractie is getest en de statistieken zijn gegenereerd)
 STR_3117    :{BLACK}Monteur wordt opgeroepen…
 STR_3118    :{BLACK}{STRINGID} gaat naar deze attractie
 STR_3119    :{BLACK}{STRINGID} is bezig deze attractie te repareren
-STR_3120    :{SMALLFONT}{BLACK}Vind de dichtstbijzijnde monteur of de monteur die de attractie aan het repareren is
+STR_3120    :Vind de dichtstbijzijnde monteur of de monteur die de attractie aan het repareren is
 STR_3121    :Kan geen monteur vinden of alle monteurs in de buurt zijn bezig
 STR_3122    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoeker
 STR_3123    :{WINDOW_COLOUR_2}Favoriet van: {BLACK}{COMMA16} bezoekers
@@ -2254,9 +2254,9 @@ STR_3139    :Kabellift kan niet functioneren in deze werkmodus
 STR_3140    :Kabellift moet meteen na het station beginnen
 STR_3141    :Meerdere circuits zijn niet mogelijk met een kabellift
 STR_3142    :{WINDOW_COLOUR_2}Capaciteit: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Laat bezoekers zien op kaart
-STR_3144    :{SMALLFONT}{BLACK}Laat attracties en kraampjes zien op kaart
-STR_3160    :{SMALLFONT}{BLACK}Selecteer het aantal rondes dat de trein per rit zal afleggen
+STR_3143    :Laat bezoekers zien op kaart
+STR_3144    :Laat attracties en kraampjes zien op kaart
+STR_3160    :Selecteer het aantal rondes dat de trein per rit zal afleggen
 STR_3162    :Kan niet voldoende geheugen toewijzen
 STR_3163    :Nieuwe data installeren: 
 STR_3164    :{BLACK}{COMMA16} geselecteerd (maximum: {COMMA16})
@@ -2291,7 +2291,7 @@ STR_3196    :{WINDOW_COLOUR_2}Onderzoeksgroep: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items die aan het begin al zijn uitgevonden:
 STR_3198    :{WINDOW_COLOUR_2}Items die tijdens het spel kunnen worden uitgevonden:
 STR_3199    :Willekeurige volgorde
-STR_3200    :{SMALLFONT}{BLACK}Zet de lijst van tijdens het spel uit te vinden items in een willekeurige volgorde
+STR_3200    :Zet de lijst van tijdens het spel uit te vinden items in een willekeurige volgorde
 STR_3201    :Objectselectie
 STR_3202    :Landschap bewerken
 STR_3203    :Uitvindingen instellen
@@ -2307,36 +2307,36 @@ STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Kan de kaart niet verder verkleinen
 STR_3214    :Kan de kaart niet verder vergroten
 STR_3215    :Te dicht bij de rand van de kaart
-STR_3216    :{SMALLFONT}{BLACK}Selecteer parkland etc.
+STR_3216    :Selecteer parkland etc.
 STR_3217    :Eigendom van het park
 STR_3218    :Bouwrechten voor het park
 STR_3219    :Te koop
 STR_3220    :Bouwrechten te koop
-STR_3221    :{SMALLFONT}{BLACK}Instellen welk land van het park is
-STR_3222    :{SMALLFONT}{BLACK}Instellen voor welk land het park bouwrechten heeft
-STR_3223    :{SMALLFONT}{BLACK}Instellen welk land gekocht kan worden door het park
-STR_3224    :{SMALLFONT}{BLACK}Instellen voor welk land bouwrechten te koop zijn
-STR_3225    :{SMALLFONT}{BLACK}Een willekeurig cluster van dit object neerzetten rondom de geselecteerde plek
-STR_3226    :{SMALLFONT}{BLACK}Parkingang bouwen
+STR_3221    :Instellen welk land van het park is
+STR_3222    :Instellen voor welk land het park bouwrechten heeft
+STR_3223    :Instellen welk land gekocht kan worden door het park
+STR_3224    :Instellen voor welk land bouwrechten te koop zijn
+STR_3225    :Een willekeurig cluster van dit object neerzetten rondom de geselecteerde plek
+STR_3226    :Parkingang bouwen
 STR_3227    :Te veel parkingangen!
-STR_3228    :{SMALLFONT}{BLACK}Geef startposities voor bezoekers aan
+STR_3228    :Geef startposities voor bezoekers aan
 STR_3229    :Blokremmen kunnen niet direct na het station geplaatst worden
 STR_3230    :Blokremmen kunnen niet direct achter elkaar gebruikt worden
 STR_3231    :Blokremmen kunnen niet direct achter de top van een kettingheuvel geplaatst worden
 STR_3232    :Opties - Financiën
 STR_3233    :Opties - Bezoekers
 STR_3234    :Opties - Park
-STR_3235    :{SMALLFONT}{BLACK}Toon financiële opties
-STR_3236    :{SMALLFONT}{BLACK}Toon bezoekersopties
-STR_3237    :{SMALLFONT}{BLACK}Toon parkopties
+STR_3235    :Toon financiële opties
+STR_3236    :Toon bezoekersopties
+STR_3237    :Toon parkopties
 STR_3238    :Zonder geld
-STR_3239    :{SMALLFONT}{BLACK}Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
+STR_3239    :Schakel geld compleet uit, zodat het park geen financiële beperkingen heeft
 STR_3240    :{WINDOW_COLOUR_2}Startsaldo:
 STR_3241    :{WINDOW_COLOUR_2}Startlening:
 STR_3242    :{WINDOW_COLOUR_2}Maximale lening:
 STR_3243    :{WINDOW_COLOUR_2}Jaarlijkse rente:
 STR_3244    :Marketingcampagnes niet toestaan
-STR_3245    :{SMALLFONT}{BLACK}Geen advertenties, promoties of andere marketingacties toestaan
+STR_3245    :Geen advertenties, promoties of andere marketingacties toestaan
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :Kan het startsaldo niet verder verhogen!
@@ -2348,47 +2348,47 @@ STR_3253    :Kan de maximumlening niet verder verlagen!
 STR_3254    :Kan de rente niet verder verhogen!
 STR_3255    :Kan de rente niet verder verlagen!
 STR_3256    :Bezoekers houden meer van rustigere attracties
-STR_3257    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
+STR_3257    :Selecteer of bezoekers in het algemeen meer van rustigere attracties houden
 STR_3258    :Bezoekers houden meer van spannende attracties
-STR_3259    :{SMALLFONT}{BLACK}Selecteer of bezoekers in het algemeen meer van spannende attracties houden
+STR_3259    :Selecteer of bezoekers in het algemeen meer van spannende attracties houden
 STR_3260    :{WINDOW_COLOUR_2}Geld per bezoeker (gemiddeld):
 STR_3261    :{WINDOW_COLOUR_2}Aanvankelijke stemming bezoekers:
 STR_3262    :{WINDOW_COLOUR_2}Aanvankelijke honger bezoekers:
 STR_3263    :{WINDOW_COLOUR_2}Aanvankelijke dorst bezoekers:
 STR_3264    :Kan dit niet verder verhogen!
 STR_3265    :Kan dit niet verder verlagen!
-STR_3266    :{SMALLFONT}{BLACK}Selecteer hoe dit park geld vraagt voor entree en attracties
+STR_3266    :Selecteer hoe dit park geld vraagt voor entree en attracties
 STR_3267    :Verbied verwijderen bomen
-STR_3268    :{SMALLFONT}{BLACK}Verbied het verwijderen van bomen
+STR_3268    :Verbied het verwijderen van bomen
 STR_3269    :Verbied veranderen landschap
-STR_3270    :{SMALLFONT}{BLACK}Verbied het veranderen van het landschap
+STR_3270    :Verbied het veranderen van het landschap
 STR_3271    :Verbied hoog bouwen
-STR_3272    :{SMALLFONT}{BLACK}Verbied bouwen boven boomhoogte
+STR_3272    :Verbied bouwen boven boomhoogte
 STR_3273    :Hogere eisen voor goede parkwaardering
-STR_3274    :{SMALLFONT}{BLACK}Maakt het krijgen van een goede parkwaardering uitdagender
+STR_3274    :Maakt het krijgen van een goede parkwaardering uitdagender
 STR_3275    :Hogere eisen voor trekken bezoekers
-STR_3276    :{SMALLFONT}{BLACK}Maakt het moeilijker om bezoekers aan te trekken
+STR_3276    :Maakt het moeilijker om bezoekers aan te trekken
 STR_3277    :{WINDOW_COLOUR_2}Prijs landaankoop:
 STR_3278    :{WINDOW_COLOUR_2}Prijs bouwrechten:
 STR_3279    :Gratis entree / Per rit betalen
 STR_3280    :Betaalde entree / Attracties gratis
 STR_3281    :{WINDOW_COLOUR_2}Entreeprijs:
-STR_3282    :{SMALLFONT}{BLACK}Doelstelling en parknaam selecteren
-STR_3283    :{SMALLFONT}{BLACK}Beschermde attracties selecteren
+STR_3282    :Doelstelling en parknaam selecteren
+STR_3283    :Beschermde attracties selecteren
 STR_3284    :Doelselectie
 STR_3285    :Beschermde attracties
-STR_3286    :{SMALLFONT}{BLACK}Selecteer doelstelling voor dit scenario
+STR_3286    :Selecteer doelstelling voor dit scenario
 STR_3287    :{WINDOW_COLOUR_2}Doelstelling:
-STR_3288    :{SMALLFONT}{BLACK}Selecteer klimaat:
+STR_3288    :Selecteer klimaat:
 STR_3289    :{WINDOW_COLOUR_2}Klimaat:
 STR_3290    :Koel en nat
 STR_3291    :Warm
 STR_3292    :Heet en droog
 STR_3293    :Koud
 STR_3294    :Aanpassen…
-STR_3295    :{SMALLFONT}{BLACK}Parknaam veranderen
-STR_3296    :{SMALLFONT}{BLACK}Scenarionaam veranderen
-STR_3297    :{SMALLFONT}{BLACK}Details van dit park/scenario aanpassen
+STR_3295    :Parknaam veranderen
+STR_3296    :Scenarionaam veranderen
+STR_3297    :Details van dit park/scenario aanpassen
 STR_3298    :{WINDOW_COLOUR_2}Parknaam: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}Parkdetails:
 STR_3300    :{WINDOW_COLOUR_2}Scenarionaam: {BLACK}{STRINGID}
@@ -2409,7 +2409,7 @@ STR_3314    :Voer een naam in voor het scenario:
 STR_3315    :Details park/scenario
 STR_3316    :Geef een beschrijving van dit scenario:
 STR_3317    :Nog geen details
-STR_3318    :{SMALLFONT}{BLACK}Selecteer in welke groep dit scenario moet verschijnen
+STR_3318    :Selecteer in welke groep dit scenario moet verschijnen
 STR_3319    :{WINDOW_COLOUR_2}Scenariogroep:
 STR_3320    :Kan scenariobestand niet opslaan…
 STR_3321    :Nieuwe objecten succesvol geïnstalleerd
@@ -2422,13 +2422,13 @@ STR_3330    :Park moet land bezitten
 STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te complex; het pad mag maar één vakje breed zijn en moet zo min mogelijk kruisingen en bochten bevatten
 STR_3332    :Parkingang staat achterstevoren of heeft geen pad naar de rand van de kaart
 STR_3333    :Niet-standaard objecten meeleveren in opgeslagen spellen
-STR_3334    :{SMALLFONT}{BLACK}Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
+STR_3334    :Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Baanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
 STR_3338    :{BLACK}Eigen ontwerp
 STR_3339    :{BLACK}{COMMA16} ontwerp beschikbaar, of maak een eigen ontwerp
 STR_3340    :{BLACK}{COMMA16} ontwerpen beschikbaar, of maak een eigen ontwerp
-STR_3341    :{SMALLFONT}{BLACK}Hulpmiddelen
+STR_3341    :Hulpmiddelen
 STR_3342    :Scenariobewerker
 STR_3343    :Opgeslagen spel omzetten naar scenario
 STR_3344    :Baanontwerper
@@ -2450,7 +2450,7 @@ STR_3359    :{BLACK}Geen baanontwerpen van dit type
 STR_3360    :Waarschuwing!
 STR_3361    :Te veel baanontwerpen van dit type; sommige staan niet in de lijst
 STR_3364    :Meer opties
-STR_3365    :{SMALLFONT}{BLACK}Maakt naast selectie van decorgroepen ook selectie van losse items mogelijk
+STR_3365    :Maakt naast selectie van decorgroepen ook selectie van losse items mogelijk
 STR_3366    :{BLACK}= Attractie
 STR_3367    :{BLACK}= Eetkraampje
 STR_3368    :{BLACK}= Drankkraampje
@@ -2462,7 +2462,7 @@ STR_3373    :{BLACK}= Toilet
 STR_3374    :Waarschuwing: te veel objecten geselecteerd!
 STR_3375    :Niet alle objecten in deze decorgroep kunnen worden geselecteerd
 STR_3376    :Installeren…
-STR_3377    :{SMALLFONT}{BLACK}Bestand met nieuw baanontwerp installeren
+STR_3377    :Bestand met nieuw baanontwerp installeren
 STR_3378    :Installeren
 STR_3379    :Annuleren
 STR_3380    :Kan dit baanontwerp niet installeren…
@@ -2472,7 +2472,7 @@ STR_3383    :Selecteer nieuwe naam voor dit baanontwerp
 STR_3384    :Er bestaat al een baanontwerp met deze naam; verzin een andere naam voor dit ontwerp:
 STR_3389    :Kan extra decorstukken niet selecteren…
 STR_3390    :Te veel items geselecteerd
-STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
+STR_3437    :Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen…
 STR_3439    :Decor verwijderen
 STR_3445    :Werkgebied instellen
@@ -2485,15 +2485,15 @@ STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
 STR_5125    :Afbreekbaar maken
 STR_5126    :Willekeurige titelmuziek
-STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
+STR_5127    :Landtype i.p.v. landhoogte aanpassen bij slepen
 STR_5128    :Selectiegrootte
 STR_5129    :Voer een selectiegrootte in tussen {COMMA16} en {COMMA16}
 STR_5130    :Kaartgrootte
 STR_5131    :Voer een kaartgrootte in tussen {COMMA16} en {COMMA16}
 STR_5132    :Alle attr. repareren
-STR_5133    :{SMALLFONT}{BLACK}Een kleiner gebied landrechten aanpassen
-STR_5134    :{SMALLFONT}{BLACK}Een groter gebied landrechten aanpassen
-STR_5135    :{SMALLFONT}{BLACK}Land en bouwrechten kopen
+STR_5133    :Een kleiner gebied landrechten aanpassen
+STR_5134    :Een groter gebied landrechten aanpassen
+STR_5135    :Land en bouwrechten kopen
 STR_5136    :Landrechten
 STR_5137    :Bedrijfslimieten van attracties opheffen
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
@@ -2506,8 +2506,8 @@ STR_5144    :Hard
 STR_5145    :Turbo
 STR_5146    :Nitro
 STR_5147    :Cheats
-STR_5148    :{SMALLFONT}{BLACK}Spelsnelheid veranderen
-STR_5149    :{SMALLFONT}{BLACK}Het cheatsvenster openen
+STR_5148    :Spelsnelheid veranderen
+STR_5149    :Het cheatsvenster openen
 STR_5150    :Debugging-hulpmiddelen inschakelen
 #Scheidingsteken voor duizendtallen
 STR_5151    :.
@@ -2516,7 +2516,7 @@ STR_5152    :,
 STR_5153    :Thema's
 STR_5154    :Weergave uitgevoerd door hardware
 STR_5155    :Testen van onvoltooide banen toestaan
-STR_5156    :{SMALLFONT}{BLACK}Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
+STR_5156    :Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
 STR_5158    :Terug naar het hoofdmenu
 STR_5159    :OpenRCT2 afsluiten
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, jaar {POP16}{COMMA16}
@@ -2524,10 +2524,10 @@ STR_5161    :Datumnotatie:
 STR_5162    :Dag/maand/jaar
 STR_5163    :Maand/dag/jaar
 STR_5177    :Schermmodus:
-STR_5178    :{SMALLFONT}{BLACK}Cheats voor financiën
-STR_5179    :{SMALLFONT}{BLACK}Cheats voor bezoekers
-STR_5180    :{SMALLFONT}{BLACK}Cheats voor park
-STR_5181    :{SMALLFONT}{BLACK}Cheats voor attracties
+STR_5178    :Cheats voor financiën
+STR_5179    :Cheats voor bezoekers
+STR_5180    :Cheats voor park
+STR_5181    :Cheats voor attracties
 STR_5182    :{INT32}
 STR_5183    :Basishoogte
 STR_5184    :Voer een basishoogte tussen {COMMA16} en {COMMA16} in
@@ -2574,14 +2574,14 @@ STR_5224    :Afbraakbevestiging
 STR_5225    :Ontslagbevestiging
 STR_5226    :Bevestiging verwijderen baanontwerp
 STR_5227    :Overschrijvingsbevestiging
-STR_5228    :{SMALLFONT}{BLACK}Hoofdinterface
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Hulpmiddelen
-STR_5231    :{SMALLFONT}{BLACK}Attracties en bezoekers
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Overigs
-STR_5234    :{SMALLFONT}{BLACK}Dialoogvensters
-STR_5235    :{SMALLFONT}{BLACK}Instellingen
+STR_5228    :Hoofdinterface
+STR_5229    :Park
+STR_5230    :Hulpmiddelen
+STR_5231    :Attracties en bezoekers
+STR_5232    :Editors
+STR_5233    :Overigs
+STR_5234    :Dialoogvensters
+STR_5235    :Instellingen
 STR_5236    :Venster
 STR_5237    :Palet
 STR_5238    :Huidig thema:
@@ -2601,32 +2601,32 @@ STR_5251    :Optiesknop titelscherm
 STR_5252    :Scenarioselectie titelscherm
 STR_5253    :Parkinformatie
 STR_5254    :Aanmaken
-STR_5255    :{SMALLFONT}{BLACK}Begint een nieuwe, lege titelpresentatie
+STR_5255    :Begint een nieuwe, lege titelpresentatie
 STR_5256    :Maak een nieuw thema aan om wijzigingen aan te brengen.
-STR_5257    :{SMALLFONT}{BLACK}Een nieuw thema aanmaken dat is gebaseerd op het huidige
-STR_5258    :{SMALLFONT}{BLACK}Het huidige thema verwijderen
-STR_5259    :{SMALLFONT}{BLACK}Het huidige thema hernoemen
+STR_5257    :Een nieuw thema aanmaken dat is gebaseerd op het huidige
+STR_5258    :Het huidige thema verwijderen
+STR_5259    :Het huidige thema hernoemen
 STR_5260    :Reuzenscreenshot
 STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Overig
-STR_5265    :{SMALLFONT}{BLACK}Selecteer uit welke bronnen objecten zichtbaar zijn
-STR_5266    :{SMALLFONT}{BLACK}Weergave
-STR_5267    :{SMALLFONT}{BLACK}Landinstellingen
-STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Bediening en interface
-STR_5270    :{SMALLFONT}{BLACK}Overig
-STR_5272    :{SMALLFONT}{BLACK}Klein decor
-STR_5273    :{SMALLFONT}{BLACK}Groot decor
-STR_5274    :{SMALLFONT}{BLACK}Voetpaden
+STR_5265    :Selecteer uit welke bronnen objecten zichtbaar zijn
+STR_5266    :Weergave
+STR_5267    :Landinstellingen
+STR_5268    :Audio
+STR_5269    :Bediening en interface
+STR_5270    :Overig
+STR_5272    :Klein decor
+STR_5273    :Groot decor
+STR_5274    :Voetpaden
 STR_5275    :Naar objecten zoeken
 STR_5276    :Voer de naam van een op te zoeken object in:
 STR_5277    :Wissen
 STR_5278    :Zandbakmodus
 STR_5279    :Zandbakmodus uit
-STR_5280    :{SMALLFONT}{BLACK}Maakt het aanpassen van landeigendom via het Kaart-venster en andere zaken die normaal gesproken alleen in de Scenariobewerker beschikbaar zijn mogelijk
-STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5280    :Maakt het aanpassen van landeigendom via het Kaart-venster en andere zaken die normaal gesproken alleen in de Scenariobewerker beschikbaar zijn mogelijk
+STR_5281    :Features
 STR_5282    :Attracties openen/sluiten via RCT1-stoplichten
 STR_5283    :Park openen/sluiten via RCT1-stoplichten
 STR_5284    :Scenarioselectie-lettertype in RCT1-stijl
@@ -2635,15 +2635,15 @@ STR_5288    :Attractie is gesloten
 STR_5289    :Deze attractie kan niet defect raken
 STR_5290    :Attractie repareren
 STR_5291    :Kan geen defect forceren
-STR_5292    :{SMALLFONT}{BLACK}Defect forceren
-STR_5293    :{SMALLFONT}{BLACK}Attractie sluiten
-STR_5294    :{SMALLFONT}{BLACK}Attractie testen
-STR_5295    :{SMALLFONT}{BLACK}Attractie openen
-STR_5296    :{SMALLFONT}{BLACK}Park sluiten
-STR_5297    :{SMALLFONT}{BLACK}Park openen
+STR_5292    :Defect forceren
+STR_5293    :Attractie sluiten
+STR_5294    :Attractie testen
+STR_5295    :Attractie openen
+STR_5296    :Park sluiten
+STR_5297    :Park openen
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :{SMALLFONT}{BLACK}Snel ontslaan
+STR_5300    :Snel ontslaan
 STR_5301    :{MEDIUMFONT}{BLACK}Wist je lening
 STR_5302    :Lening afbetalen
 STR_5303    :Bouwen in pauzemodus toestaan
@@ -2654,7 +2654,7 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Willekeurige
-STR_5311    :{SMALLFONT}{BLACK}Debugginghulpmiddelen
+STR_5311    :Debugginghulpmiddelen
 STR_5312    :Console tonen
 STR_5313    :Vakinspecteur tonen
 STR_5314    :Vakinspecteur
@@ -2662,15 +2662,15 @@ STR_5335    :Attractie-ingang
 STR_5336    :Attractie-uitgang
 STR_5337    :Parkingang
 STR_5338    :Elementtype
-STR_5339    :{SMALLFONT}{BLACK}Hoogte onderkant
-STR_5340    :{SMALLFONT}{BLACK}Hoogte bovenkant
+STR_5339    :Hoogte onderkant
+STR_5340    :Hoogte bovenkant
 STR_5343    :Werknemers automatisch plaatsen
 STR_5344    :Wijzigingsoverzicht
 STR_5345    :Cheats voor geld
 STR_5346    :Cheats voor bezoekers
 STR_5347    :Cheats voor het park
 STR_5348    :Cheats voor attracties
-STR_5349    :{SMALLFONT}{BLACK}Alle attracties
+STR_5349    :Alle attracties
 STR_5350    :Max
 STR_5351    :Min
 STR_5352    :{BLACK}Stemming:
@@ -2681,7 +2681,7 @@ STR_5356    :{BLACK}Misselijkh.:
 STR_5357    :{BLACK}Misselijkheidstol.:
 STR_5358    :{BLACK}WC:
 STR_5359    :Bez. verwijderen
-STR_5360    :{SMALLFONT}{BLACK}Verwijdert alle bezoekers van de kaart
+STR_5360    :Verwijdert alle bezoekers van de kaart
 STR_5361    :Geef alle bez.:
 STR_5362    :{BLACK}Zet de voorkeursintensiteit van alle bez. op:
 STR_5363    :Meer dan 1
@@ -2696,26 +2696,26 @@ STR_5373    :Naam {STRINGID}
 STR_5374    :Datum {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :{SMALLFONT}{BLACK}Opgeslagen spellen
-STR_5378    :{SMALLFONT}{BLACK}Script
-STR_5379    :{SMALLFONT}{BLACK}Ga naar volgend Wacht-commando
-STR_5380    :{SMALLFONT}{BLACK}Start het afspelen van de titelpresentatie
-STR_5381    :{SMALLFONT}{BLACK}Stopt het afspelen van de titelpresentatie
-STR_5382    :{SMALLFONT}{BLACK}Titelpresentatie herstarten
-STR_5383    :{SMALLFONT}{BLACK}Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
-STR_5384    :{SMALLFONT}{BLACK}Huidige titelpresentatie verwijderen
-STR_5385    :{SMALLFONT}{BLACK}Huidige titelpresentatie hernoemen
-STR_5386    :{SMALLFONT}{BLACK}Nieuw commando invoegen
-STR_5387    :{SMALLFONT}{BLACK}Geselecteerd commando bewerken
-STR_5388    :{SMALLFONT}{BLACK}Geselecteerd commando verwijderen
-STR_5389    :{SMALLFONT}{BLACK}Naar geselecteerd commando titelpresentatie springen
-STR_5390    :{SMALLFONT}{BLACK}Geselecteerd commando naar beneden verplaatsen
-STR_5391    :{SMALLFONT}{BLACK}Geselecteerd commando naar boven verplaatsen
-STR_5392    :{SMALLFONT}{BLACK}Opgeslagen spel aan titelpresentatie toevoegen
-STR_5393    :{SMALLFONT}{BLACK}Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
-STR_5394    :{SMALLFONT}{BLACK}Opgeslagen spel hernoemen
-STR_5395    :{SMALLFONT}{BLACK}Opgeslagen spel laden
-STR_5396    :{SMALLFONT}{BLACK}Titelpresentatie herladen als ze buiten het spel om is aangepast
+STR_5377    :Opgeslagen spellen
+STR_5378    :Script
+STR_5379    :Ga naar volgend Wacht-commando
+STR_5380    :Start het afspelen van de titelpresentatie
+STR_5381    :Stopt het afspelen van de titelpresentatie
+STR_5382    :Titelpresentatie herstarten
+STR_5383    :Een nieuwe titelpresentatie aanmaken die is gebaseerd op de huidige
+STR_5384    :Huidige titelpresentatie verwijderen
+STR_5385    :Huidige titelpresentatie hernoemen
+STR_5386    :Nieuw commando invoegen
+STR_5387    :Geselecteerd commando bewerken
+STR_5388    :Geselecteerd commando verwijderen
+STR_5389    :Naar geselecteerd commando titelpresentatie springen
+STR_5390    :Geselecteerd commando naar beneden verplaatsen
+STR_5391    :Geselecteerd commando naar boven verplaatsen
+STR_5392    :Opgeslagen spel aan titelpresentatie toevoegen
+STR_5393    :Geselecteerd opgeslagen spel uit titelpresentatie verwijderen
+STR_5394    :Opgeslagen spel hernoemen
+STR_5395    :Opgeslagen spel laden
+STR_5396    :Titelpresentatie herladen als ze buiten het spel om is aangepast
 STR_5397    :Kan enkel in het titelscherm worden gebruikt
 STR_5398    :Kan de titelpresentatie niet aanpassen wanneer deze wordt afgespeeld
 STR_5399    :Klik op Stop om verder te gaan met aanpassen
@@ -2759,7 +2759,7 @@ STR_5437    :Geen opgeslagen spel geselecteerd
 STR_5438    :Kan geen wijzigingen aanbrengen wanneer de commandobewerker open is
 STR_5439    :Een Herstart-commando moet worden voorafgegaan door een Wacht-commando van minstens vier seconden.
 STR_5440    :Volledig scherm minimaliseren bij focusverlies
-STR_5441    :{SMALLFONT}{BLACK}Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
+STR_5441    :Sorteert attracties per baantype,{NEWLINE}zodat achteraf wisselen van treintypes mogelijk{NEWLINE}wordt, zoals in RCT1.
 STR_5442    :Parkwaardering forc.:
 STR_5443    :Snelheid{MOVE_X}{87}{STRINGID}
 STR_5444    :Snelheid:
@@ -2805,8 +2805,8 @@ STR_5483    :{BLACK}({COMMA16} weken resterend)
 STR_5484    :{BLACK}({COMMA16} week resterend)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Recente berichten tonen
-STR_5489    :{SMALLFONT}{BLACK}Enkel bezoekers die gevolgd worden weergeven
+STR_5487    :Recente berichten tonen
+STR_5489    :Enkel bezoekers die gevolgd worden weergeven
 STR_5490    :Geluid dempen bij focusverlies
 STR_5491    :Uitvindingenlijst
 STR_5492    :Scenario-opties
@@ -2820,67 +2820,67 @@ STR_5500    :Server toevoegen
 STR_5501    :Server starten
 STR_5502    :Multiplayer
 STR_5503    :Hostnaam of IP-adres invoeren:
-STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
+STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
 STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
+STR_5509    :Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…
 STR_5513    :Spel (snel) opslaan
 STR_5514    :Vandalisme uitschakelen
-STR_5515    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers objecten in je park vernielen als ze kwaad zijn
-STR_5516    :{SMALLFONT}{BLACK}Zwart
-STR_5517    :{SMALLFONT}{BLACK}Grijs
-STR_5518    :{SMALLFONT}{BLACK}Wit
-STR_5519    :{SMALLFONT}{BLACK}Donkerpaars
-STR_5520    :{SMALLFONT}{BLACK}Lichtpaars
-STR_5521    :{SMALLFONT}{BLACK}Helder paars
-STR_5522    :{SMALLFONT}{BLACK}Donkerblauw
-STR_5523    :{SMALLFONT}{BLACK}Lichtblauw
-STR_5524    :{SMALLFONT}{BLACK}IJsblauw
-STR_5525    :{SMALLFONT}{BLACK}Donkere waterkleur
-STR_5526    :{SMALLFONT}{BLACK}Lichte waterkleur
-STR_5527    :{SMALLFONT}{BLACK}Verzadigd groen
-STR_5528    :{SMALLFONT}{BLACK}Donkergroen
-STR_5529    :{SMALLFONT}{BLACK}Mosgroen
-STR_5530    :{SMALLFONT}{BLACK}Helder groen
-STR_5531    :{SMALLFONT}{BLACK}Olijfgroen
-STR_5532    :{SMALLFONT}{BLACK}Donker olijfgroen
-STR_5533    :{SMALLFONT}{BLACK}Helder geel
-STR_5534    :{SMALLFONT}{BLACK}Geel
-STR_5535    :{SMALLFONT}{BLACK}Donkergeel
-STR_5536    :{SMALLFONT}{BLACK}Lichtoranje
-STR_5537    :{SMALLFONT}{BLACK}Donkeroranje
-STR_5538    :{SMALLFONT}{BLACK}Lichtbruin
-STR_5539    :{SMALLFONT}{BLACK}Verzadigd bruin
-STR_5540    :{SMALLFONT}{BLACK}Donkerbruin
-STR_5541    :{SMALLFONT}{BLACK}Zalmroze
-STR_5542    :{SMALLFONT}{BLACK}Bordeauxrood
-STR_5543    :{SMALLFONT}{BLACK}Verzadigd rood
-STR_5544    :{SMALLFONT}{BLACK}Helder rood
-STR_5545    :{SMALLFONT}{BLACK}Donkerroze
-STR_5546    :{SMALLFONT}{BLACK}Helder roze
-STR_5547    :{SMALLFONT}{BLACK}Lichtroze
+STR_5515    :Voorkomt dat bezoekers objecten in je park vernielen als ze kwaad zijn
+STR_5516    :Zwart
+STR_5517    :Grijs
+STR_5518    :Wit
+STR_5519    :Donkerpaars
+STR_5520    :Lichtpaars
+STR_5521    :Helder paars
+STR_5522    :Donkerblauw
+STR_5523    :Lichtblauw
+STR_5524    :IJsblauw
+STR_5525    :Donkere waterkleur
+STR_5526    :Lichte waterkleur
+STR_5527    :Verzadigd groen
+STR_5528    :Donkergroen
+STR_5529    :Mosgroen
+STR_5530    :Helder groen
+STR_5531    :Olijfgroen
+STR_5532    :Donker olijfgroen
+STR_5533    :Helder geel
+STR_5534    :Geel
+STR_5535    :Donkergeel
+STR_5536    :Lichtoranje
+STR_5537    :Donkeroranje
+STR_5538    :Lichtbruin
+STR_5539    :Verzadigd bruin
+STR_5540    :Donkerbruin
+STR_5541    :Zalmroze
+STR_5542    :Bordeauxrood
+STR_5543    :Verzadigd rood
+STR_5544    :Helder rood
+STR_5545    :Donkerroze
+STR_5546    :Helder roze
+STR_5547    :Lichtroze
 STR_5548    :Alle bedrijfsmodi tonen
 STR_5549    :Jaar/maand/dag
 STR_5550    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Jaar/dag/maand
 STR_5552    :{POP16}{POP16}Jaar {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Spel pauzeren als de Steam-overlay open staat
-STR_5554    :{SMALLFONT}{BLACK}Overgangen met omringend land gladstrijken
+STR_5554    :Overgangen met omringend land gladstrijken
 STR_5555    :Voertuigen van andere baantypen tonen
-STR_5556    :{SMALLFONT}{BLACK}Speler verwijderen
+STR_5556    :Speler verwijderen
 STR_5557    :Verbinding behouden na desynchronisatie (multiplayer)
 STR_5558    :Deze instelling wordt pas van kracht nadat je OpenRCT2 opnieuw hebt gestart.
 STR_5559    :Elke 10 min. inspect.
-STR_5560    :{SMALLFONT}{BLACK}Stelt het inspectieinterval van alle attracties in op ‘Elke 10 minuten’.
+STR_5560    :Stelt het inspectieinterval van alle attracties in op ‘Elke 10 minuten’.
 STR_5561    :Kon taal niet laden
 STR_5562    :WAARSCHUWING:
 STR_5563    :Deze functie is momenteel niet helemaal stabiel, wees voorzichtig.
 STR_5564    :Ongeldig element invoegen
-STR_5565    :{SMALLFONT}{BLACK}Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
+STR_5565    :Plaatst een ongeldig element boven de andere elementen van dit vakje. Alle elementen die boven dit ongeldige element worden geplaatst worden onzichtbaar.
 STR_5566    :Wachtwoord:
 STR_5567    :Bekendmaken
 STR_5568    :Wachtwoord vereist
@@ -2900,10 +2900,10 @@ STR_5581    :FPS tonen
 STR_5582    :Aanwijzer in venster vasthouden
 STR_5583    :{COMMA1DP16} m/s
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}Heft de limieten op het tabblad Bedrijfsopties van een attractie op, waardoor je bijvoorbeeld kettingsheuvels met snelheden tot {VELOCITY} kunt hebben.
+STR_5585    :Heft de limieten op het tabblad Bedrijfsopties van een attractie op, waardoor je bijvoorbeeld kettingsheuvels met snelheden tot {VELOCITY} kunt hebben.
 STR_5586    :Winkels en kraampjes automatisch openen
-STR_5587    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
-STR_5588    :{SMALLFONT}{BLACK}Multiplayer
+STR_5587    :Als deze optie is ingeschakeld zullen winkels en kraampjes na plaatsing automatisch worden geopend.
+STR_5588    :Multiplayer
 STR_5589    :Berichtinstellingen
 STR_5590    :Als het park een prijs heeft gekregen
 STR_5591    :Als een marketingcampagne is afgelopen
@@ -2921,18 +2921,18 @@ STR_5603    :Als een gevolgde bezoeker een attractie is uitgegaan
 STR_5604    :Als een gevolgde bezoeker iets gekocht heeft
 STR_5605    :Als een gevolgde bezoeker een faciliteit gebruikt
 STR_5606    :Als een bezoeker is overleden
-STR_5607    :{SMALLFONT}{BLACK}Geselecteerd kaartelement geforceerd verwijderen
+STR_5607    :Geselecteerd kaartelement geforceerd verwijderen
 STR_5608    :HO
 STR_5609    :HB
-STR_5610    :{SMALLFONT}{BLACK}Het geselecteerde kaartelement verwijderen. Dit zal worden geforceerd, waardoor er geen geld zal worden teruggegeven of gebruikt. Gebruik deze functie voorzichtig.
+STR_5610    :Het geselecteerde kaartelement verwijderen. Dit zal worden geforceerd, waardoor er geen geld zal worden teruggegeven of gebruikt. Gebruik deze functie voorzichtig.
 STR_5611    :S
-STR_5612    :{SMALLFONT}{BLACK}Spookelement (tijdelijk element)
+STR_5612    :Spookelement (tijdelijk element)
 STR_5613    :K
-STR_5614    :{SMALLFONT}{BLACK}Element is kapot
+STR_5614    :Element is kapot
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Is het laatste element van dit vakje.
-STR_5617    :{SMALLFONT}{BLACK}Geselecteerd element naar boven verplaatsen
-STR_5618    :{SMALLFONT}{BLACK}Geselecteerd element naar beneden verplaatsen
+STR_5616    :Is het laatste element van dit vakje.
+STR_5617    :Geselecteerd element naar boven verplaatsen
+STR_5618    :Geselecteerd element naar beneden verplaatsen
 STR_5619    :RollerCoaster Tycoon
 STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
@@ -2953,8 +2953,8 @@ STR_5635    :{WINDOW_COLOUR_2}Uitgegeven geld: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Uitgevoerde commando's: {BLACK}{COMMA16}
 STR_5637    :Kan dit niet uitvoeren…
 STR_5638    :Geen toestemming
-STR_5639    :{SMALLFONT}{BLACK}Spelerslijst tonen
-STR_5640    :{SMALLFONT}{BLACK}Groepen beheren
+STR_5639    :Spelerslijst tonen
+STR_5640    :Groepen beheren
 STR_5641    :Standaardgroep:
 STR_5642    :Groep
 STR_5643    :Groep toevoegen
@@ -2982,7 +2982,7 @@ STR_5664    :Cheaten
 STR_5665    :Clusters van decoritems bouwen
 STR_5666    :Inloggen zonder wachtwoord
 STR_5701    :{WINDOW_COLOUR_2}Laatste actie: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}Laatste actie van deze speler localiseren
+STR_5702    :Laatste actie van deze speler localiseren
 STR_5703    :De host kan niet worden verwijderd
 STR_5704    :Laatste actie
 STR_5705    :Kan de speler niet aan deze groep toewijzen
@@ -2999,7 +2999,7 @@ STR_5715    :Nieuw spel
 STR_5716    :Niet toegestaan in multiplayer
 # For identifying client network version in server list window
 STR_5717    :Netwerkversie: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Netwerkversie: {STRING}
+STR_5718    :Netwerkversie: {STRING}
 STR_5719    :Zon
 STR_5720    :Lichte bewolking
 STR_5721    :Bewolkt
@@ -3007,18 +3007,18 @@ STR_5722    :Regen
 STR_5723    :Flinke regen
 STR_5724    :Onweer
 STR_5725    :{BLACK}Weer veranderen:
-STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
+STR_5726    :Stelt het huidige weer in het park in
 STR_5727    :Opschaalkwaliteit:
 STR_5731    :Lineair
 # tooltip for tab in options window
-STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5734    :Rendering
 STR_5735    :Netwerkstatus
 STR_5736    :Speler
 STR_5737    :Gesloten, nog {COMMA16} passagier
 STR_5738    :Gesloten, nog {COMMA16} passagiers
 STR_5739    :{WINDOW_COLOUR_2}Huidig aantal passagiers: {BLACK}{COMMA16}
 STR_5740    :Oneindige marketingcampagnes
-STR_5741    :{SMALLFONT}{BLACK}Marketingcampagnes verlopen nooit
+STR_5741    :Marketingcampagnes verlopen nooit
 STR_5742    :Authenticeren…
 STR_5743    :Verbinding maken…
 STR_5744    :Opzoeken…
@@ -3067,89 +3067,89 @@ STR_5786    :Ongeldige groepsnaam
 STR_5787    :{COMMA32} spelers online
 STR_5788    :Standaard inspectie-interval:
 STR_5789    :Bliksemeffect uitschakelen
-STR_5790    :{SMALLFONT}{BLACK}Maakt geld vragen voor zowel het park als de attracties mogelijk,{NEWLINE}zoals in RCT1.
-STR_5791    :{SMALLFONT}{BLACK}Stelt het bouwjaar van alle attracties in op dit jaar{NEWLINE}en zet de betrouwbaarheid weer terug op 100%.
-STR_5792    :{SMALLFONT}{BLACK}Repareert alle defecte attracties.
-STR_5793    :{SMALLFONT}{BLACK}Wist de crashstatus van alle attracties,{NEWLINE}zodat de bezoekers ze niet als onveilig zien.
-STR_5794    :{SMALLFONT}{BLACK}In sommige scenario's kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
-STR_5795    :{SMALLFONT}{BLACK}Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
-STR_5796    :{SMALLFONT}{BLACK}Forceert het openen of sluiten van het park.
-STR_5797    :{SMALLFONT}{BLACK}Voorkomt dat het weer verandert.
-STR_5798    :{SMALLFONT}{BLACK}Staat bouwen in pauzemodus toe.
-STR_5799    :{SMALLFONT}{BLACK}Voorkomt dat de remmen van attracties kapot gaan, wat voor fatale botsingen kan zorgen.
-STR_5800    :{SMALLFONT}{BLACK}Voorkomt dat attracties kapot gaan.
+STR_5790    :Maakt geld vragen voor zowel het park als de attracties mogelijk,{NEWLINE}zoals in RCT1.
+STR_5791    :Stelt het bouwjaar van alle attracties in op dit jaar{NEWLINE}en zet de betrouwbaarheid weer terug op 100%.
+STR_5792    :Repareert alle defecte attracties.
+STR_5793    :Wist de crashstatus van alle attracties,{NEWLINE}zodat de bezoekers ze niet als onveilig zien.
+STR_5794    :In sommige scenario's kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
+STR_5795    :Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
+STR_5796    :Forceert het openen of sluiten van het park.
+STR_5797    :Voorkomt dat het weer verandert.
+STR_5798    :Staat bouwen in pauzemodus toe.
+STR_5799    :Voorkomt dat de remmen van attracties kapot gaan, wat voor fatale botsingen kan zorgen.
+STR_5800    :Voorkomt dat attracties kapot gaan.
 STR_5801    :Bevuiling voorkomen
-STR_5802    :{SMALLFONT}{BLACK}Voorkomt dat bezoekers braken of afval op de grond gooien.
-STR_5803    :{SMALLFONT}{BLACK}Geselecteerd kaartelement draaien
+STR_5802    :Voorkomt dat bezoekers braken of afval op de grond gooien.
+STR_5803    :Geselecteerd kaartelement draaien
 STR_5804    :Geluid dempen
-STR_5805    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal je server worden aangemeld{NEWLINE}bij de openbare serverlijst, zodat iedereen hem kan zien.
+STR_5805    :Als dit is ingeschakeld zal je server worden aangemeld{NEWLINE}bij de openbare serverlijst, zodat iedereen hem kan zien.
 STR_5806    :Omschakelen naar venstermodus
 STR_5807    :{WINDOW_COLOUR_2}Aantal attracties: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Aantal winkels en kraampjes: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Aantal informatiekiosken en andere faciliteiten: {BLACK}{COMMA16}
 STR_5810    :Voertuiglimieten uitschakelen
-STR_5811    :{SMALLFONT}{BLACK}Als dit is ingeschakeld kun je{NEWLINE}tot 255 karretjes per trein en 31{NEWLINE}treinen per attractie hebben
+STR_5811    :Als dit is ingeschakeld kun je{NEWLINE}tot 255 karretjes per trein en 31{NEWLINE}treinen per attractie hebben
 STR_5812    :Status multiplayer tonen
 STR_5813    :‘{STRING}’
 STR_5814    :{WINDOW_COLOUR_1}‘{STRING}’
-STR_5815    :{SMALLFONT}{BLACK}Toont FPS-teller aan de bovenkant van het scherm.
-STR_5816    :{SMALLFONT}{BLACK}Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5817    :{SMALLFONT}{BLACK}(Vereist weergave via hardware){NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}Lineair is sneller, maar niet zo scherp. SNN is scherp maar kost iets meer verwerkingskracht.
-STR_5819    :{SMALLFONT}{BLACK}[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
-STR_5820    :{SMALLFONT}{BLACK}Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
-STR_5822    :{SMALLFONT}{BLACK}Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
-STR_5823    :{SMALLFONT}{BLACK}Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
-STR_5824    :{SMALLFONT}{BLACK}Schakelt bliksemeffect tijdens onweer uit.
-STR_5825    :{SMALLFONT}{BLACK}Houdt de muisaanwijzer vast in het venster.
-STR_5826    :{SMALLFONT}{BLACK}Keert de scrollrichting bij het slepen met rechtermuisknop om.
-STR_5827    :{SMALLFONT}{BLACK}Stelt het kleurenschema dat de GUI gebruikt in.
-STR_5828    :{SMALLFONT}{BLACK}Stelt het gebruikte systeem voor onder meer afstanden, snelheden en hoogtes in.
-STR_5829    :{SMALLFONT}{BLACK}Stelt de valuta in. Dit is voornamelijk cosmetisch, er wordt geen exacte wisselkoers gebruikt.
-STR_5830    :{SMALLFONT}{BLACK}Stelt de gebruikte taal in.
-STR_5831    :{SMALLFONT}{BLACK}Stelt de temperatuureenheid in.
-STR_5832    :{SMALLFONT}{BLACK}Toon hoogtes in eenheden in plaats van echte maten.
-STR_5833    :{SMALLFONT}{BLACK}Stelt de datumindeling in.
-STR_5834    :{SMALLFONT}{BLACK}Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
-STR_5835    :{SMALLFONT}{BLACK}Dempt het geluid als het venster de focus kwijtraakt.
-STR_5836    :{SMALLFONT}{BLACK}Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
-STR_5837    :{SMALLFONT}{BLACK}Eigen thema's voor de GUI aanmaken en beheren.
-STR_5838    :{SMALLFONT}{BLACK}Toont een knop voor financiën in de werkbalk.
-STR_5839    :{SMALLFONT}{BLACK}Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
-STR_5840    :{SMALLFONT}{BLACK}Toont een knop voor cheats in de werkbalk.
-STR_5841    :{SMALLFONT}{BLACK}Toont een knop voor recente berichten in de werkbalk.
-STR_5842    :{SMALLFONT}{BLACK}Stelt in of scenarios moeten worden gegroepeerd op moeilijkheidgraad (zoals in RCT2) of op oorsprong (zoals in RCT1).
-STR_5843    :{SMALLFONT}{BLACK}Vereist dat gemakkelijke scenario's eerst worden voltooid voordat moeilijkere beschikbaar komen (zoals in RCT1).
-STR_5844    :{SMALLFONT}{BLACK}Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als er desynchronisatie optreedt.
-STR_5845    :{SMALLFONT}{BLACK}Toont knoppen om het spel te debuggen en geeft toegang tot de console.
-STR_5846    :{SMALLFONT}{BLACK}Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
-STR_5847    :{SMALLFONT}{BLACK}Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
-STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
-STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
-STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
-STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
-STR_5854    :{SMALLFONT}{BLACK}Attractiemuziek in-/uitschakelen.
-STR_5855    :{SMALLFONT}{BLACK}Stelt in of er volledig scherm, een randloos venster of een regulier venster moet worden gebruikt.
-STR_5856    :{SMALLFONT}{BLACK}Stelt de gebruikte schermresolutie bij volledig scherm in.
-STR_5857    :{SMALLFONT}{BLACK}Spelopties
-STR_5858    :{SMALLFONT}{BLACK}Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
-STR_5859    :{SMALLFONT}{BLACK}Frame tweening gebruiken om de weergave vloeiender te maken. Als dit is uitgeschakeld zal het spel draaien op 40 FPS.
+STR_5815    :Toont FPS-teller aan de bovenkant van het scherm.
+STR_5816    :Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
+STR_5817    :(Vereist weergave via hardware){NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}Lineair is sneller, maar niet zo scherp. SNN is scherp maar kost iets meer verwerkingskracht.
+STR_5819    :[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
+STR_5820    :Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
+STR_5822    :Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
+STR_5823    :Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
+STR_5824    :Schakelt bliksemeffect tijdens onweer uit.
+STR_5825    :Houdt de muisaanwijzer vast in het venster.
+STR_5826    :Keert de scrollrichting bij het slepen met rechtermuisknop om.
+STR_5827    :Stelt het kleurenschema dat de GUI gebruikt in.
+STR_5828    :Stelt het gebruikte systeem voor onder meer afstanden, snelheden en hoogtes in.
+STR_5829    :Stelt de valuta in. Dit is voornamelijk cosmetisch, er wordt geen exacte wisselkoers gebruikt.
+STR_5830    :Stelt de gebruikte taal in.
+STR_5831    :Stelt de temperatuureenheid in.
+STR_5832    :Toon hoogtes in eenheden in plaats van echte maten.
+STR_5833    :Stelt de datumindeling in.
+STR_5834    :Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
+STR_5835    :Dempt het geluid als het venster de focus kwijtraakt.
+STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
+STR_5837    :Eigen thema's voor de GUI aanmaken en beheren.
+STR_5838    :Toont een knop voor financiën in de werkbalk.
+STR_5839    :Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
+STR_5840    :Toont een knop voor cheats in de werkbalk.
+STR_5841    :Toont een knop voor recente berichten in de werkbalk.
+STR_5842    :Stelt in of scenarios moeten worden gegroepeerd op moeilijkheidgraad (zoals in RCT2) of op oorsprong (zoals in RCT1).
+STR_5843    :Vereist dat gemakkelijke scenario's eerst worden voltooid voordat moeilijkere beschikbaar komen (zoals in RCT1).
+STR_5844    :Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als er desynchronisatie optreedt.
+STR_5845    :Toont knoppen om het spel te debuggen en geeft toegang tot de console.
+STR_5846    :Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
+STR_5847    :Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
+STR_5848    :Eigen titelpresentaties maken en beheren.
+STR_5849    :Nieuwe werknemers automatisch plaatsen.
+STR_5851    :Stelt het standaardinspectie-interval voor nieuwe attracties in.
+STR_5853    :Geluidseffecten in-/uitschakelen.
+STR_5854    :Attractiemuziek in-/uitschakelen.
+STR_5855    :Stelt in of er volledig scherm, een randloos venster of een regulier venster moet worden gebruikt.
+STR_5856    :Stelt de gebruikte schermresolutie bij volledig scherm in.
+STR_5857    :Spelopties
+STR_5858    :Leidt de grafische uitvoer door de GPU. Dit verbetert de compatibiliteit met schermopnamesoftware, maar kan de prestaties iets verminderen.
+STR_5859    :Frame tweening gebruiken om de weergave vloeiender te maken. Als dit is uitgeschakeld zal het spel draaien op 40 FPS.
 STR_5860    :Wisselen tussen orginele en gedecompileerde baantekencode
 STR_5861    :Kon de sleutel niet verifiëren.
 STR_5862    :Onbekende spelers blokkeren
-STR_5863    :{SMALLFONT}{BLACK}Alleen spelers met bekende sleutels toelaten.
+STR_5863    :Alleen spelers met bekende sleutels toelaten.
 STR_5864    :Deze server laat enkel spelers toe die op de witte lijst staan.
 STR_5865    :Chatgeschiedenis bewaren
-STR_5866    :{SMALLFONT}{BLACK}Slaat de chatgeschiedenis op in je gebruikersmap.
+STR_5866    :Slaat de chatgeschiedenis op in je gebruikersmap.
 STR_5867    :{WINDOW_COLOUR_2}Naam provider: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}E-mailadres provider: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Website provider: {BLACK}{STRING}
-STR_5870    :{SMALLFONT}{BLACK}Serverinformatie tonen
+STR_5870    :Serverinformatie tonen
 STR_5871    :Bloemen verwelken nooit
-STR_5872    :{SMALLFONT}{BLACK}Schakelt het verwelken van bloemen uit.
+STR_5872    :Schakelt het verwelken van bloemen uit.
 STR_5873    :Kettingheuvels op elk onderdeel toestaan
-STR_5874    :{SMALLFONT}{BLACK}Maakt het gebruiken van kettingen op elk onderdeel mogelijk.
+STR_5874    :Maakt het gebruiken van kettingen op elk onderdeel mogelijk.
 STR_5875    :Renderengine:
-STR_5876    :{SMALLFONT}{BLACK}De engine die wordt gebruikt om het spel te renderen.
+STR_5876    :De engine die wordt gebruikt om het spel te renderen.
 STR_5877    :Software
 STR_5878    :Software (omgeleid via hardware)
 STR_5879    :OpenGL (experimenteel)
@@ -3165,7 +3165,7 @@ STR_5888    :Staat na het bedrag
 STR_5889    :Symbool eigen valuta
 STR_5890    :Voer het te gebruiken valutasymbool in:
 STR_5891    :Standaardmap
-STR_5892    :{SMALLFONT}{BLACK}Ga naar de standaardmap
+STR_5892    :Ga naar de standaardmap
 STR_5893    :Wisselkoers
 STR_5894    :Vul de wisselkoers in
 STR_5895    :Baanontwerp opslaan
@@ -3177,11 +3177,11 @@ STR_5901    :Segmenthoogten weergeven
 STR_5902    :Begrenzingsvak weergeven
 STR_5903    :Debugscherm tekencode weergeven
 STR_5904    :Datum resetten
-STR_5905    :{SMALLFONT}{BLACK}Opent een venster om automatisch een nieuw landschap te genereren
+STR_5905    :Opent een venster om automatisch een nieuw landschap te genereren
 STR_5906    :Zoomen op cursorpositie
-STR_5907    :{SMALLFONT}{BLACK}Laat het spel zoomen op de plaats van de cursor, in plaats van het midden van het scherm.
+STR_5907    :Laat het spel zoomen op de plaats van de cursor, in plaats van het midden van het scherm.
 STR_5908    :Attractietype veranderen toestaan
-STR_5909    :{SMALLFONT}{BLACK}Maakt het mogelijk om het baantype van een attractie te veranderen. Kan crashes veroorzaken.
+STR_5909    :Maakt het mogelijk om het baantype van een attractie te veranderen. Kan crashes veroorzaken.
 STR_5910    :Toepassen
 STR_5911    :Doorzichtige paden
 STR_5912    :Doorzichtige paden
@@ -3193,9 +3193,9 @@ STR_5917    :{COMMA16} spelers
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Toon weereffecten
-STR_5921    :{SMALLFONT}{BLACK}Als dit aanstaat worden regen en verduisterde kleuren niet getoond tijdens stormen
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maximum: {COMMA16} {STRINGID} per trein
+STR_5921    :Als dit aanstaat worden regen en verduisterde kleuren niet getoond tijdens stormen
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maximum: {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maximum: {COMMA16} {STRINGID} per trein
 STR_5924    :Details landschap
 STR_5925    :Details pad
 STR_5926    :Details baan
@@ -3225,7 +3225,7 @@ STR_5949    :{WINDOW_COLOUR_2}Ketting
 STR_5950    :{WINDOW_COLOUR_2}Wijzigingen op hele baanonderdeel doorvoeren
 STR_5951    :{WINDOW_COLOUR_2}Baanonderdeel-ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Volgnummer: {BLACK}{COMMA16}
-STR_5953    :{SMALLFONT}{BLACK}Elementen op het huidige vakje sorteren op de hoogte van de onderkant.
+STR_5953    :Elementen op het huidige vakje sorteren op de hoogte van de onderkant.
 STR_5954    :{WINDOW_COLOUR_2}Decorleeftijd: {BLACK}{COMMA16}
 STR_5955    :{WINDOW_COLOUR_2}Gekozen hoek: {BLACK}{STRINGID}
 STR_5956    :Zuidwest
@@ -3246,7 +3246,7 @@ STR_5970    :{WINDOW_COLOUR_2}Ingang-ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Uitgang-ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
 STR_5973    :Tegen volgend element plaatsen
-STR_5974    :{SMALLFONT}{BLACK}Wijzigt de hoogte van de onderkant en bovenkant zodat die aansluit op het volgende element op dit vakje. Dit maakt het makkelijker om op dit vakje te bouwen.
+STR_5974    :Wijzigt de hoogte van de onderkant en bovenkant zodat die aansluit op het volgende element op dit vakje. Dit maakt het makkelijker om op dit vakje te bouwen.
 STR_5975    :Helling:
 STR_5976    :Vlak
 STR_5977    :Rechterkant omhoog
@@ -3260,13 +3260,13 @@ STR_5984    :Geblokkeerde paden:
 STR_5985    :Nieuwe map
 STR_5986    :Naam voor de nieuwe map:
 STR_5987    :Kon map niet aanmaken
-STR_5988    :{SMALLFONT}{BLACK}Er is geen land meer te koop.
-STR_5989    :{SMALLFONT}{BLACK}Er zijn geen bouwrechten meer te koop.
-STR_5990    :{SMALLFONT}{BLACK}Er zijn geen land en geen bouwrechten meer te koop.
+STR_5988    :Er is geen land meer te koop.
+STR_5989    :Er zijn geen bouwrechten meer te koop.
+STR_5990    :Er zijn geen land en geen bouwrechten meer te koop.
 STR_5991    :Kan element niet plakken
 STR_5992    :De limiet voor kaartelementen is bereikt
-STR_5993    :{SMALLFONT}{BLACK}Geselecteerd element kopiëren
-STR_5994    :{SMALLFONT}{BLACK}Gekopieerd element plakken
+STR_5993    :Geselecteerd element kopiëren
+STR_5994    :Gekopieerd element plakken
 STR_5995    :Turbo
 STR_5996    :Turbosnelheid
 STR_5997    :Geld toevoegen/instellen
@@ -3274,19 +3274,19 @@ STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
 STR_6001    :Belichtingseffecten inschakelen (experimenteel)
-STR_6002    :{SMALLFONT}{BLACK}Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
+STR_6002    :Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
 STR_6003    :Opengewerkte weergave
 STR_6004    :Opengewerkte weergave
 STR_6005    :Opengewerkte weergave inschakelen
-STR_6006    :{SMALLFONT}{BLACK}Hiermee worden alleen elementen onder een bepaalde hoogte getoond,{NEWLINE}zodat de binnenkant van gebouwen zichtbaar wordt.
+STR_6006    :Hiermee worden alleen elementen onder een bepaalde hoogte getoond,{NEWLINE}zodat de binnenkant van gebouwen zichtbaar wordt.
 STR_6007    :Snijhoogte
-STR_6008    :{SMALLFONT}{BLACK}Klik hierop om te wisselen tussen interne waardes en toegankelijke waardes (zoals meters).
-STR_6009    :{SMALLFONT}{BLACK}Selecteer een hoogte waarboven kaartelementen niet meer moeten worden getekend.
+STR_6008    :Klik hierop om te wisselen tussen interne waardes en toegankelijke waardes (zoals meters).
+STR_6009    :Selecteer een hoogte waarboven kaartelementen niet meer moeten worden getekend.
 STR_6010    :{COMMA2DP32} m
 STR_6011    :{COMMA1DP16} ft
 STR_6012    :{COMMA1DP16}
-STR_6013    :{SMALLFONT}{BLACK}Bezoekers betalen om het park te betreden en voor faciliteiten.{NEWLINE}Attracties zijn gratis.
-STR_6014    :{SMALLFONT}{BLACK}Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEWLINE}Het park betreden is gratis.
+STR_6013    :Bezoekers betalen om het park te betreden en voor faciliteiten.{NEWLINE}Attracties zijn gratis.
+STR_6014    :Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEWLINE}Het park betreden is gratis.
 STR_6015    :Helling
 STR_6016    :Vakje aanpassen
 STR_6017    :Ietsje langzamer alsjeblieft.
@@ -3302,16 +3302,16 @@ STR_6026    :Attractiebouw: vorig baanstuk
 STR_6027    :Attractiebouw: volgend baanstuk
 STR_6028    :Attractiebouw: onderdeel bouwen
 STR_6029    :Attractiebouw: onderdeel verwijderen
-STR_6030    :{SMALLFONT}{BLACK}Decorselector. Klik op een al geplaatst decorstuk om het te selecteren in dit venster (inclusief de kleuren).
+STR_6030    :Decorselector. Klik op een al geplaatst decorstuk om het te selecteren in dit venster (inclusief de kleuren).
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
 STR_6033    :Locatie RCT1-bestanden:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
-STR_6036    :{SMALLFONT}{BLACK}Wissen
+STR_6036    :Wissen
 STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.
-STR_6038    :{SMALLFONT}{BLACK}Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
-STR_6039    :{SMALLFONT}{BLACK}Snel afbreken
+STR_6038    :Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
+STR_6039    :Snel afbreken
 STR_6040    :Scenario-opties bewerken
 STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
 STR_6042    :Hoogtekaart laden
@@ -3328,17 +3328,17 @@ STR_6052    :De hoogtekaart is te groot en zal worden bijgesneden
 STR_6053    :De hoogtekaart kan niet worden genormaliseerd
 STR_6054    :Alleen 24-bit bitmaps worden ondersteund
 STR_6055    :Hoogtekaart voor OpenRCT2
-STR_6056    :{SMALLFONT}{BLACK}Dempen
-STR_6057    :{SMALLFONT}{BLACK}Toon een knop in de werkbalk om het geluid te dempen
+STR_6056    :Dempen
+STR_6057    :Toon een knop in de werkbalk om het geluid te dempen
 STR_6058    :Dempen
 STR_6059    :»
 STR_6060    :Animatie tonen als bezoeker iets koopt
-STR_6061    :{SMALLFONT}{BLACK}Toont een geanimeerd bedrag{NEWLINE}als een bezoeker iets koopt.
+STR_6061    :Toont een geanimeerd bedrag{NEWLINE}als een bezoeker iets koopt.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Land toe-eigenen
 STR_6065    :Spelersacties loggen
-STR_6066    :{SMALLFONT}{BLACK}Schrijft alle acties van spelers naar een logbestand in de gebruikersmap.
+STR_6066    :Schrijft alle acties van spelers naar een logbestand in de gebruikersmap.
 STR_6067    :Server gestart.
 STR_6068    :Server afgesloten.
 STR_6069    :{STRING} is uit de server gezet door {STRING}.
@@ -3374,8 +3374,8 @@ STR_6098    :{STRING} heeft een baanonderdeel verwijderd.
 STR_6099    :Je verbond met de server.
 STR_6100    :Je verbrak de verbinding met de server.
 STR_6101    :Attracties verliezen geen waarde
-STR_6102    :{SMALLFONT}{BLACK}Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen.
-STR_6103    :{SMALLFONT}{BLACK}Deze optie is niet aan te passen tijdens multiplayer.
+STR_6102    :Voorkomt dat attracties waarde verliezen, waardoor bezoekers er minder voor willen betalen.
+STR_6103    :Deze optie is niet aan te passen tijdens multiplayer.
 STR_6105    :Hypercoaster
 STR_6107    :Monstertrucks
 STR_6109    :Hyper-twister
@@ -3385,7 +3385,7 @@ STR_6115    :Gigantische elektrische 4x4-trucks die steile hellingen kunnen neme
 STR_6116    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
 STR_6119    :Goedkoop en makkelijk te bouwen, maar kan niet zo hoog gebouwd worden.
 STR_6120    :{BABYBLUE}Nieuw voertuig beschikbaar voor {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}Neem al het land op de kaart in bezit
+STR_6121    :Neem al het land op de kaart in bezit
 STR_6122    :Er zijn te weinig achtbanen in het scenario!
 STR_6123    :Fout bij het laden van objecten in het park
 STR_6124    :Objectnaam
@@ -3397,7 +3397,7 @@ STR_6129    :Kopiëren
 STR_6130    :Alles kopiëren
 STR_6131    :Afkomst
 STR_6132    :Uitvindingsstatus negeren
-STR_6133    :{SMALLFONT}{BLACK}Maakt attracties en decor beschikbaar die nog niet zijn uitgevonden.
+STR_6133    :Maakt attracties en decor beschikbaar die nog niet zijn uitgevonden.
 STR_6134    :Decor verwijderen
 STR_6135    :Ongeldig verzoek van de client
 STR_6136    :Ongeldig verzoek van de server
@@ -3409,9 +3409,9 @@ STR_6141    :Onderste werkbalk in RCT1-stijl
 STR_6142    :{WINDOW_COLOUR_2}Naam ontwerp: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
 STR_6144    :Markeer opnieuw te tekenen blokken
-STR_6145    :{SMALLFONT}{BLACK}Snelheidslimiet voor turbo instellen
+STR_6145    :Snelheidslimiet voor turbo instellen
 STR_6146    :Alle tekenbare baanonderdelen tonen
-STR_6147    :{SMALLFONT}{BLACK}Toont tijdens het bouwen van attracties alle baanonderdelen die het attractietype kan tekenen, ongeacht of het voertuig deze onderdelen ondersteunt.
+STR_6147    :Toont tijdens het bouwen van attracties alle baanonderdelen die het attractietype kan tekenen, ongeacht of het voertuig deze onderdelen ondersteunt.
 STR_6148    :Verbinden met de hoofdserver…
 STR_6149    :Kon niet verbinden met de hoofdserver.
 STR_6150    :Ongeldig antwoord van de hoofdserver (geen JSON-getal)
@@ -3430,13 +3430,13 @@ STR_6162    :Draaiende wilde muis
 STR_6163    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
 STR_6164    :{WHITE}❌
 STR_6165    :Verticale synchronisatie
-STR_6166    :{SMALLFONT}{BLACK}Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
-STR_6167    :{SMALLFONT}{BLACK}Geavanceerd
+STR_6166    :Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
+STR_6167    :Geavanceerd
 STR_6168    :Titelpresentatie
 STR_6169    :Scenarioselectie
 STR_6170    :Overig
 STR_6171    :Zoeken
-STR_6172    :{SMALLFONT}{BLACK}Zoeken
+STR_6172    :Zoeken
 STR_6173    :Geef een naam op om te zoeken:
 STR_6174    :Opgeslagen park laden
 STR_6175    :Scenario laden
@@ -3454,7 +3454,7 @@ STR_6186    :Geen sprite geselecteerd
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Braaksel
 STR_6189    :Eend
-STR_6190    :{SMALLFONT}{BLACK}Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
+STR_6190    :Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
 STR_6191    :Land
 STR_6192    :Muur
 STR_6193    :{COMMA16} bezoeker
@@ -3467,20 +3467,20 @@ STR_6199    :Datum instellen
 STR_6200    :Datum resetten
 STR_6201    :{MONTH}
 STR_6202    :Stijl hulpraster:
-STR_6203    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
+STR_6203    :Als dit is ingeschakeld, zal er een hulpraster worden weergegeven als je CTRL of SHIFT ingedrukt houdt, om het plaatsen van elementen gemakkelijker te maken.
 STR_6215    :Bouw
 STR_6216    :Bedrijf
 STR_6217    :Beschikbaarheid attr./baanonderdelen
 STR_6218    :OpenRCT2 (officieel)
 STR_6219    :Paden inspecteren
 STR_6220    :Actief maken
-STR_6221    :{SMALLFONT}{BLACK}Hiermee maak je dit de officiële ingang/uitgang van de attractie. Er kan per station slechts één actieve ingang en één actieve uitgang zijn.
+STR_6221    :Hiermee maak je dit de officiële ingang/uitgang van de attractie. Er kan per station slechts één actieve ingang en één actieve uitgang zijn.
 STR_6222    :Kan hier geen toegangspunt plaatsen…
 STR_6223    :Locatie moet buiten het park liggen!
 STR_6224    :{STRING} heeft een bezoekerstoegangspunt geplaatst.
 STR_6225    :Niet ondersteund in de OpenGL-renderer.
 STR_6226    :Scenario's mogen vervroegd voltooid worden
-STR_6227    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal er elke dag gecheckt worden of alle scenariodoelen zijn behaald, in plaats van aan het einde van de vermelde periode.
+STR_6227    :Als dit is ingeschakeld, zal er elke dag gecheckt worden of alle scenariodoelen zijn behaald, in plaats van aan het einde van de vermelde periode.
 STR_6228    :Scenario-opties
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
@@ -3496,9 +3496,9 @@ STR_6239    :Verticale doorsnede
 STR_6240    :Horizontale doorsnede
 STR_6241    :Gebied selecteren
 STR_6242    :Selectie wissen
-STR_6243    :{SMALLFONT}{BLACK}Renoveert de attractie{NEWLINE}(maakt de attractie zo goed als nieuw)
+STR_6243    :Renoveert de attractie{NEWLINE}(maakt de attractie zo goed als nieuw)
 STR_6244    :Kan de attractie niet renoveren…
-STR_6245    :{SMALLFONT}{BLACK}Attractie hoeft niet gerenoveerd te worden
+STR_6245    :Attractie hoeft niet gerenoveerd te worden
 STR_6246    :Renoveren
 STR_6247    :Attractie renoveren
 STR_6248    :{WINDOW_COLOUR_1}Wil je {STRINGID} renoveren voor {CURRENCY}?
@@ -3513,9 +3513,9 @@ STR_6259    :Uitgeschakeld
 STR_6260    :Geblokkeerde vakjes tonen
 STR_6261    :Brede paden tonen
 STR_6262    :Hoofdvolume
-STR_6263    :{SMALLFONT}{BLACK}Alle geluiden en muziek in/uitschakelen.
+STR_6263    :Alle geluiden en muziek in/uitschakelen.
 STR_6264    :Altijd systeembestandsbrowser gebruiken
-STR_6265    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zal de bestandsbrowser van je systeem gebruikt worden in plaats van de ingebouwde bestandsbrowser van OpenRCT2 zelf.
+STR_6265    :Als dit is ingeschakeld zal de bestandsbrowser van je systeem gebruikt worden in plaats van de ingebouwde bestandsbrowser van OpenRCT2 zelf.
 STR_6266    :Map voor custom content openen
 STR_6267    :Vakinspecteur openen
 STR_6268    :Doorgaan naar volgende tick
@@ -3529,9 +3529,9 @@ STR_6275    :{WINDOW_COLOUR_2}Stationsstijl:
 STR_6276    :{RED}Bezoekers komen vast te zitten in {STRINGID}, mogelijk door een ongeldig attractietype of ongeldige bedrijfsmodus.
 STR_6277    :{WINDOW_COLOUR_2}Stationsindex: {BLACK}{STRINGID}
 STR_6278    :Aantal autosaves
-STR_6279    :{SMALLFONT}{BLACK}Het aantal autosaves dat moet worden bewaard.
-STR_6280    :{SMALLFONT}{BLACK}Chat
-STR_6281    :{SMALLFONT}{BLACK}Toont een knop voor het openen van de chat in de werkbalk.
+STR_6279    :Het aantal autosaves dat moet worden bewaard.
+STR_6280    :Chat
+STR_6281    :Toont een knop voor het openen van de chat in de werkbalk.
 STR_6282    :Chat
 STR_6283    :Chat is momenteel niet beschikbaar. Weet je zeker dat je verbonden bent met een server?
 STR_6284    :Netwerk
@@ -3550,13 +3550,13 @@ STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :{STRING}/sec
 STR_6299    :Alles downloaden
-STR_6300    :{SMALLFONT}{BLACK}Download alle ontbrekende objecten, mits ze online beschikbaar zijn.
-STR_6301    :{SMALLFONT}{BLACK}Kopieert de naam van het geselecteerde object naar het klembord.
-STR_6302    :{SMALLFONT}{BLACK}Kopieert de lijst van ontbrekende objecten naar het klembord.
+STR_6300    :Download alle ontbrekende objecten, mits ze online beschikbaar zijn.
+STR_6301    :Kopieert de naam van het geselecteerde object naar het klembord.
+STR_6302    :Kopieert de lijst van ontbrekende objecten naar het klembord.
 STR_6303    :Bezig met downloaden van object ({COMMA16} van {COMMA16}): [{STRING}]
 STR_6304    :Decorselector openen
 STR_6305    :Multithreading
-STR_6306    :{SMALLFONT}{BLACK}Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
+STR_6306    :Experimentele optie om met meerdere threads te renderen. Dit kan de snelheid verhogen, maar ook instabiliteit veroorzaken.
 STR_6307    :Kleurenschema: {BLACK}{STRINGID}
 STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Opnieuw verbinden
@@ -3575,10 +3575,10 @@ STR_6321    :{WINDOW_COLOUR_2}Straatmeubel is kapot
 STR_6322    :{WINDOW_COLOUR_2}Sprite-id: {BLACK}{INT32}
 STR_6323    :Simulatie
 STR_6324    :Simuleren
-STR_6325    :{SMALLFONT}{BLACK}Testrit simuleren
+STR_6325    :Testrit simuleren
 STR_6326    :Kan {POP16}{POP16}{POP16}{STRINGID} niet in simulatiemodus zetten…
 STR_6327    :Reuzenscreenshots hebben transparante achtergrond
-STR_6328    :{SMALLFONT}{BLACK}Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
+STR_6328    :Als deze optie is ingeschakeld, worden reuzenscreenshots met een transparante achtergrond genomen, in plaats van de zwarte standaardachtergrond.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :[{STRING}] wordt gedownload van {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Eenden aanmaken
@@ -3603,16 +3603,16 @@ STR_6349    :Willekeurige titelpresentatie
 STR_6350    :Cluster
 STR_6351    :Cluster van decorobjecten plaatsen
 STR_6352    :Dichtheid
-STR_6353    :{SMALLFONT}{BLACK}Lage dichtheid
-STR_6354    :{SMALLFONT}{BLACK}Gemiddelde dichtheid
-STR_6355    :{SMALLFONT}{BLACK}Hoge dichtheid
-STR_6356    :{SMALLFONT}{BLACK}Maakt eenden aan, mits er water op de kaart is.
-STR_6357    :{SMALLFONT}{BLACK}Verwijdert alle eenden van de kaart.
+STR_6353    :Lage dichtheid
+STR_6354    :Gemiddelde dichtheid
+STR_6355    :Hoge dichtheid
+STR_6356    :Maakt eenden aan, mits er water op de kaart is.
+STR_6357    :Verwijdert alle eenden van de kaart.
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
-STR_6362    :{SMALLFONT}{BLACK}Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
+STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
 STR_6363    :Tekst is naar het klembord gekopieerd.
 STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {STRINGID}
 STR_6365    :Slachtoffers bij ongelukken in attracties
@@ -3620,7 +3620,7 @@ STR_6366    :Vastgelopen of afgeslagen voertuigen
 STR_6367    :{WINDOW_COLOUR_2}Animatieframe:
 STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
 STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
-STR_6370    :{SMALLFONT}{BLACK}Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
+STR_6370    :Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
 STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van RollerCoaster Tycoon 1 naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
 STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes or RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
 STR_6373    :Hoogtecontroles in- of uitschakelen
@@ -3647,7 +3647,7 @@ STR_6393    :Doelselectie
 STR_6394    :Doel
 STR_6395    :Onderhoud
 STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
-STR_6397    :{SMALLFONT}{BLACK}Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
+STR_6397    :Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 STR_6398    :Bestand bevat niet-ondersteunde attractietypes. Update naar een nieuwere versie van OpenRCT2 om dit bestand te openen.
 STR_6399    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Voer het pad naar de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden in bij de variabele “game_path” in config.ini. Start daarna OpenRCT2 opnieuw op.
 

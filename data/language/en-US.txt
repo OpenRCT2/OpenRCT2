@@ -29,13 +29,13 @@ STR_1120    :Traveling at {VELOCITY}
 STR_1129    :All vehicles in same colors
 STR_1130    :Different colors per {STRINGID}
 STR_1131    :Different colors per vehicle
-STR_1136    :{SMALLFONT}{BLACK}Select main color
-STR_1137    :{SMALLFONT}{BLACK}Select additional color 1
-STR_1138    :{SMALLFONT}{BLACK}Select additional color 2
-STR_1139    :{SMALLFONT}{BLACK}Select support structure color
-STR_1140    :{SMALLFONT}{BLACK}Select vehicle color scheme option
+STR_1136    :Select main color
+STR_1137    :Select additional color 1
+STR_1138    :Select additional color 2
+STR_1139    :Select support structure color
+STR_1140    :Select vehicle color scheme option
 
-STR_1396    :{SMALLFONT}{BLACK}Color scheme options
+STR_1396    :Color scheme options
 
 STR_1442    :Emptying trash can
 
@@ -102,9 +102,9 @@ STR_1667    :{WINDOW_COLOUR_2}Bathroom:
 
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty trash cans
 
-STR_1753    :{SMALLFONT}{BLACK}Show summarized list of guests in park
+STR_1753    :Show summarized list of guests in park
 
-STR_1790    :{SMALLFONT}{BLACK}Select uniform color for this type of staff
+STR_1790    :Select uniform color for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform color:
 
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarized)
@@ -187,18 +187,18 @@ STR_2971    :Main color scheme
 STR_2972    :Alternative color scheme 1
 STR_2973    :Alternative color scheme 2
 STR_2974    :Alternative color scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which color scheme to change, or paint ride with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected color scheme
+STR_2975    :Select which color scheme to change, or paint ride with
+STR_2976    :Paint an individual area of this ride using the selected color scheme
 
-STR_2989    :{SMALLFONT}{BLACK}Select main color
-STR_2990    :{SMALLFONT}{BLACK}Select text color
+STR_2989    :Select main color
+STR_2990    :Select text color
 
 STR_3093    :{WINDOW_COLOUR_2}Favorite: {BLACK}{STRINGID}
 
-STR_3099    :{SMALLFONT}{BLACK}Select color
-STR_3100    :{SMALLFONT}{BLACK}Select second color
-STR_3101    :{SMALLFONT}{BLACK}Select third color
-STR_3102    :{SMALLFONT}{BLACK}Re-paint colored scenery on landscape
+STR_3099    :Select color
+STR_3100    :Select second color
+STR_3101    :Select third color
+STR_3102    :Re-paint colored scenery on landscape
 
 STR_3122    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guest
 STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
@@ -213,32 +213,32 @@ STR_5306    :RollerCoaster Tycoon 1 (CF)
 STR_5307    :RollerCoaster Tycoon 1 (CF + LL)
 STR_5428    :Counterclockwise rotations:
 STR_5440    :Minimize fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behavior)
+STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behavior)
 STR_5459    :Rotate counterclockwise
 STR_5460    :Rotate view counterclockwise
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalizing your park when they're angry
-STR_5517    :{SMALLFONT}{BLACK}Gray
+STR_5515    :Stops guests from vandalizing your park when they're angry
+STR_5517    :Gray
 STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
-STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
-STR_5820    :{SMALLFONT}{BLACK}Minimize the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behavior)
-STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
-STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behavior) or their source game (RCT1 behavior)
-STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behavior)
-STR_5872    :{SMALLFONT}{BLACK}Disable plant aging such that they don't wilt.
-STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the cursor, as opposed to the screen center.
-STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colors will be rendered during storms.
+STR_5817    :Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
+STR_5820    :Minimize the game if focus is{NEWLINE}lost while in fullscreen mode
+STR_5823    :Display banners in uppercase (RCT1 behavior)
+STR_5827    :Sets the color scheme used for the GUI
+STR_5842    :Sort scenarios into tabs by their difficulty (RCT2 behavior) or their source game (RCT1 behavior)
+STR_5843    :Enables progressive unlocking of scenarios (RCT1 behavior)
+STR_5872    :Disable plant aging such that they don't wilt.
+STR_5907    :When enabled, zooming in will center around the cursor, as opposed to the screen center.
+STR_5921    :If enabled, rain and gloomy colors will be rendered during storms.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
 STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
 STR_6159    :Smooth Nearest Neighbor
-STR_6166    :{SMALLFONT}{BLACK}Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6166    :Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
 STR_6274    :Can't set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}
-STR_6328    :{SMALLFONT}{BLACK}With this option enabled, giant screenshots will have a transparent background instead of the default black color.
+STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black color.
 
 #############
 # Scenarios #

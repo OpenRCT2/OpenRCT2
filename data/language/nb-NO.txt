@@ -229,13 +229,13 @@ STR_0824    :{BLACK}❌
 STR_0825    :Navnet er allerede i bruk
 STR_0826    :For mange navn definert
 STR_0827    :Ikke nok penger - {CURRENCY2DP} trengs
-STR_0828    :{SMALLFONT}{BLACK}Lukk vindu
-STR_0829    :{SMALLFONT}{BLACK}Vindustittel - dra denne for å flytte vinduet
-STR_0830    :{SMALLFONT}{BLACK}Zoom inn
-STR_0831    :{SMALLFONT}{BLACK}Zoom ut
-STR_0832    :{SMALLFONT}{BLACK}Rotate kameravinkelen 90° med klokken
-STR_0833    :{SMALLFONT}{BLACK}Pause spillet
-STR_0834    :{SMALLFONT}{BLACK}Disk- og spillinnstillinger
+STR_0828    :Lukk vindu
+STR_0829    :Vindustittel - dra denne for å flytte vinduet
+STR_0830    :Zoom inn
+STR_0831    :Zoom ut
+STR_0832    :Rotate kameravinkelen 90° med klokken
+STR_0833    :Pause spillet
+STR_0834    :Disk- og spillinnstillinger
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
@@ -279,37 +279,37 @@ STR_0894    :Landskapets dataområde er fullt !
 STR_0895    :Kan ikke bygge delvis under bakken
 STR_0896    :{POP16}{POP16}{STRINGID} Konstruksjon
 STR_0897    :Retning
-STR_0898    :{SMALLFONT}{BLACK}Venstrekurve
-STR_0899    :{SMALLFONT}{BLACK}Høyrekurve
-STR_0900    :{SMALLFONT}{BLACK}Venstrekurve (liten radius)
-STR_0901    :{SMALLFONT}{BLACK}Høyrekurve (liten radius)
-STR_0902    :{SMALLFONT}{BLACK}Venstrekurve (veldig liten radius)
-STR_0903    :{SMALLFONT}{BLACK}Høyrekurve (veldig liten radius)
-STR_0904    :{SMALLFONT}{BLACK}Venstrekurve (stor radius)
-STR_0905    :{SMALLFONT}{BLACK}Høyrekurve (stor radius)
-STR_0906    :{SMALLFONT}{BLACK}Rett
+STR_0898    :Venstrekurve
+STR_0899    :Høyrekurve
+STR_0900    :Venstrekurve (liten radius)
+STR_0901    :Høyrekurve (liten radius)
+STR_0902    :Venstrekurve (veldig liten radius)
+STR_0903    :Høyrekurve (veldig liten radius)
+STR_0904    :Venstrekurve (stor radius)
+STR_0905    :Høyrekurve (stor radius)
+STR_0906    :Rett
 STR_0907    :Bakke
 STR_0908    :Rull/helling
 STR_0909    :Seterotasjon
-STR_0910    :{SMALLFONT}{BLACK}Rull for venstrekurve
-STR_0911    :{SMALLFONT}{BLACK}Rull for høyrekurve
-STR_0912    :{SMALLFONT}{BLACK}Ingen rull
-STR_0913    :{SMALLFONT}{BLACK}Flytt til forrige seksjon
-STR_0914    :{SMALLFONT}{BLACK}Flytt til neste seksjon
-STR_0915    :{SMALLFONT}{BLACK}Konstruer valgt seksjon
-STR_0916    :{SMALLFONT}{BLACK}Fjern markert seksjon
-STR_0917    :{SMALLFONT}{BLACK}Vertikalt fall
-STR_0918    :{SMALLFONT}{BLACK}Bratt fall ned
-STR_0919    :{SMALLFONT}{BLACK}Bakke ned
-STR_0920    :{SMALLFONT}{BLACK}Vannrett
-STR_0921    :{SMALLFONT}{BLACK}Bakke opp
-STR_0922    :{SMALLFONT}{BLACK}Bratt bakke opp
-STR_0923    :{SMALLFONT}{BLACK}Vertikal stigning
-STR_0924    :{SMALLFONT}{BLACK}Heliks ned
-STR_0925    :{SMALLFONT}{BLACK}Heliks opp
+STR_0910    :Rull for venstrekurve
+STR_0911    :Rull for høyrekurve
+STR_0912    :Ingen rull
+STR_0913    :Flytt til forrige seksjon
+STR_0914    :Flytt til neste seksjon
+STR_0915    :Konstruer valgt seksjon
+STR_0916    :Fjern markert seksjon
+STR_0917    :Vertikalt fall
+STR_0918    :Bratt fall ned
+STR_0919    :Bakke ned
+STR_0920    :Vannrett
+STR_0921    :Bakke opp
+STR_0922    :Bratt bakke opp
+STR_0923    :Vertikal stigning
+STR_0924    :Heliks ned
+STR_0925    :Heliks opp
 STR_0926    :Denne kan ikke fjernes…
 STR_0927    :Denne kan ikke konstrueres her…
-STR_0928    :{SMALLFONT}{BLACK}Trekk, for å trekke vognene opp bakker
+STR_0928    :Trekk, for å trekke vognene opp bakker
 STR_0929    :'S'-kurve (venstre)
 STR_0930    :'S'-kurve (høyre)
 STR_0931    :Vertikal loop (venstre)
@@ -318,8 +318,8 @@ STR_0933    :Hev eller senk bakken først
 STR_0934    :Inngang i veien
 STR_0935    :Utgang i veien
 STR_0936    :Parkinngang i veien
-STR_0937    :{SMALLFONT}{BLACK}Innstillinger
-STR_0938    :{SMALLFONT}{BLACK}Endre bakkehøyde og helning
+STR_0937    :Innstillinger
+STR_0938    :Endre bakkehøyde og helning
 STR_0939    :Undergrunns-/innendørskamera
 STR_0940    :Skjul bakken
 STR_0941    :Skjul vertikale flater
@@ -336,7 +336,7 @@ STR_0951    :Avslutt spill
 STR_0952    :Avslutt spill
 STR_0953    :Last inn landskap
 STR_0954    :
-STR_0955    :{SMALLFONT}{BLACK}Velg seterotasjon for denne baneseksjonen
+STR_0955    :Velg seterotasjon for denne baneseksjonen
 STR_0956    :-180°
 STR_0957    :-135°
 STR_0958    :-90°
@@ -371,14 +371,14 @@ STR_0986    :{BLACK}{CURRENCY2DP}
 STR_0987    :For mange attraksjoner
 STR_0988    :Kan ikke konstruere ny attraksjon…
 STR_0989    :{STRINGID}
-STR_0990    :{SMALLFONT}{BLACK}Konstruksjon
+STR_0990    :Konstruksjon
 STR_0991    :Stasjonsplatform
-STR_0992    :{SMALLFONT}{BLACK}Riv hele attraksjonen
+STR_0992    :Riv hele attraksjonen
 STR_0993    :Riv attraksjon
 STR_0994    :Riv ned
 STR_0995    :{WINDOW_COLOUR_1}Er du sikker på at du vil rive {STRINGID}?
 STR_0996    :Oversiktsvisning
-STR_0997    :{SMALLFONT}{BLACK}Vis markering
+STR_0997    :Vis markering
 STR_0998    :Ingen flere stasjoner tillatt på denne attraksjonen
 STR_0999    :Krever stasjonsplatform
 STR_1000    :Banen er ikke en komplett krets
@@ -389,9 +389,9 @@ STR_1004    :Kan ikke stenge {POP16}{POP16}{POP16}{STRINGID}…
 STR_1005    :Kan ikke starte konstruksjon på {POP16}{POP16}{POP16}{STRINGID}…
 STR_1006    :Må stenges først
 STR_1007    :Kunne ikke opprette nok vogner
-STR_1008    :{SMALLFONT}{BLACK}Åpne, steng eller test attraksjon
-STR_1009    :{SMALLFONT}{BLACK}Åpne, stenge eller teste alle attraksjoner
-STR_1010    :{SMALLFONT}{BLACK}Åpne eller stenge park
+STR_1008    :Åpne, steng eller test attraksjon
+STR_1009    :Åpne, stenge eller teste alle attraksjoner
+STR_1010    :Åpne eller stenge park
 STR_1011    :Steng alle
 STR_1012    :Åpne alle
 STR_1013    :Steng park
@@ -408,7 +408,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vogner per tog
 STR_1024    :{COMMA16} vogn per tog
 STR_1025    :{COMMA16} vogner per tog
 STR_1026    :Stasjonsplatform for lang!
-STR_1027    :{SMALLFONT}{BLACK}Finn denne lokasjonen i hovedvisning
+STR_1027    :Finn denne lokasjonen i hovedvisning
 STR_1028    :Utenfor kartet!
 STR_1029    :Kan ikke bygge delvis under vann!
 STR_1030    :Kan kun bygges under vann!
@@ -434,10 +434,10 @@ STR_1049    :Klarte ikke lagre landskap!
 STR_1050    :Klarte ikke laste inn…{NEWLINE}Filen inneholder ugyldig data!
 STR_1051    :Usynlige støtter
 STR_1052    :Usynlige mennesker
-STR_1053    :{SMALLFONT}{BLACK}Attraksjoner i park
-STR_1054    :{SMALLFONT}{BLACK}Navngi attraksjon
-STR_1055    :{SMALLFONT}{BLACK}Navngi person
-STR_1056    :{SMALLFONT}{BLACK}Navngi ansatt
+STR_1053    :Attraksjoner i park
+STR_1054    :Navngi attraksjon
+STR_1055    :Navngi person
+STR_1056    :Navngi ansatt
 STR_1057    :Attraksjonsnavn
 STR_1058    :Skriv inn navn for denne attraksjonen:
 STR_1059    :Kan ikke navngi attraksjon…
@@ -517,12 +517,12 @@ STR_1132    :Kjøretøy {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1133    :Kjøretøy {POP16}{COMMA16}
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
-STR_1136    :{SMALLFONT}{BLACK}Velg hovedfarge
-STR_1137    :{SMALLFONT}{BLACK}Velg andre farge
-STR_1138    :{SMALLFONT}{BLACK}Velg tredje farge
-STR_1139    :{SMALLFONT}{BLACK}Velg farge for støttestrukturer
-STR_1140    :{SMALLFONT}{BLACK}Velg fargeoppsett for kjøretøy
-STR_1141    :{SMALLFONT}{BLACK}Velg hvilket kjøretøy/tog som skal modifiseres
+STR_1136    :Velg hovedfarge
+STR_1137    :Velg andre farge
+STR_1138    :Velg tredje farge
+STR_1139    :Velg farge for støttestrukturer
+STR_1140    :Velg fargeoppsett for kjøretøy
+STR_1141    :Velg hvilket kjøretøy/tog som skal modifiseres
 STR_1142    :{MOVE_X}{10}{STRINGID}
 STR_1143    :»{MOVE_X}{10}{STRINGID}
 STR_1144    :Kan ikke bygge/flytte inngang for denne attraksjonen…
@@ -540,8 +540,8 @@ STR_1155    :Høydemerker på gangstier
 STR_1156    :{MOVE_X}{10}{STRINGID}
 STR_1157    :✓{MOVE_X}{10}{STRINGID}
 STR_1158    :Kan ikke fjerne denne…
-STR_1159    :{SMALLFONT}{BLACK}Plasser kulisser, hager og annet tilbehør
-STR_1160    :{SMALLFONT}{BLACK}Lag/juster innsjøer og vann
+STR_1159    :Plasser kulisser, hager og annet tilbehør
+STR_1160    :Lag/juster innsjøer og vann
 STR_1161    :Kan ikke plassere denne her…
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Høyreklikk for å modifisere)
@@ -554,7 +554,7 @@ STR_1169    :(Ingenting)
 STR_1170    :{STRING}
 STR_1171    :{RED}Stengt
 STR_1172    :{YELLOW}{STRINGID}
-STR_1173    :{SMALLFONT}{BLACK}Bygg gangstier og køer
+STR_1173    :Bygg gangstier og køer
 STR_1174    :Skilt i veien
 STR_1175    :Kan ikke bygges på hellende gangsti
 STR_1176    :Kan ikke bygge gangsti her…
@@ -566,12 +566,12 @@ STR_1181    :Gangstier
 STR_1182    :Type
 STR_1183    :Retning
 STR_1184    :Helning
-STR_1185    :{SMALLFONT}{BLACK}Retning
-STR_1186    :{SMALLFONT}{BLACK}Helning nedover
-STR_1187    :{SMALLFONT}{BLACK}Nivå
-STR_1188    :{SMALLFONT}{BLACK}Helning oppover
-STR_1189    :{SMALLFONT}{BLACK}Bygg valgt gangstiseksjon
-STR_1190    :{SMALLFONT}{BLACK}Fjern forrige gangstiseksjon
+STR_1185    :Retning
+STR_1186    :Helning nedover
+STR_1187    :Nivå
+STR_1188    :Helning oppover
+STR_1189    :Bygg valgt gangstiseksjon
+STR_1190    :Fjern forrige gangstiseksjon
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
@@ -590,26 +590,26 @@ STR_1205    :{COMMA16} minutter køtid
 STR_1206    :{WINDOW_COLOUR_2}Vent på:
 STR_1207    :{WINDOW_COLOUR_2}Dra hvis et annet tog ankommer stasjonen
 STR_1208    :{WINDOW_COLOUR_2}Dra hvis en annen båt ankommer stasjonen
-STR_1209    :{SMALLFONT}{BLACK}Velg om toget skal vente på passasjerer før avgang
-STR_1210    :{SMALLFONT}{BLACK}Velg om man skal dra dersom et annet kjøretøy ankommer stasjonen
+STR_1209    :Velg om toget skal vente på passasjerer før avgang
+STR_1210    :Velg om man skal dra dersom et annet kjøretøy ankommer stasjonen
 STR_1211    :{WINDOW_COLOUR_2}Minimum ventetid:
 STR_1212    :{WINDOW_COLOUR_2}Maksimum ventetid:
-STR_1213    :{SMALLFONT}{BLACK}Velg minste tid å vente før avgang
-STR_1214    :{SMALLFONT}{BLACK}Velg største tid å vente før avgang
+STR_1213    :Velg minste tid å vente før avgang
+STR_1214    :Velg største tid å vente før avgang
 STR_1215    :{WINDOW_COLOUR_2}Synkroniser med stasjonen ved siden av
-STR_1216    :{SMALLFONT}{BLACK}Velg om avgang skal synkroniseres for alle tilliggende stasjoner (for 'løp')
+STR_1216    :Velg om avgang skal synkroniseres for alle tilliggende stasjoner (for 'løp')
 STR_1217    :{COMMA16} sekunder
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
 STR_1220    :Kun utgang
 STR_1221    :Ingen inngang
 STR_1222    :Ingen utgang
-STR_1223    :{SMALLFONT}{BLACK}Transportattraksjoner
-STR_1224    :{SMALLFONT}{BLACK}Rolige attraksjoner
-STR_1225    :{SMALLFONT}{BLACK}Berg-og-dal-baner
-STR_1226    :{SMALLFONT}{BLACK}Spennende attraksjoner
-STR_1227    :{SMALLFONT}{BLACK}Vannattraksjoner
-STR_1228    :{SMALLFONT}{BLACK}Boder
+STR_1223    :Transportattraksjoner
+STR_1224    :Rolige attraksjoner
+STR_1225    :Berg-og-dal-baner
+STR_1226    :Spennende attraksjoner
+STR_1227    :Vannattraksjoner
+STR_1228    :Boder
 STR_1229    :tog
 STR_1230    :tog
 STR_1231    :Tog
@@ -708,10 +708,10 @@ STR_1323    :Baner
 STR_1324    :{COMMA16} bane
 STR_1325    :{COMMA16} baner
 STR_1326    :Bane {COMMA16}
-STR_1327    :{SMALLFONT}{BLACK}Roter objekter 90°
+STR_1327    :Roter objekter 90°
 STR_1328    :Krever flatt land
 STR_1329    :{WINDOW_COLOUR_2}Utskytningsfart:
-STR_1330    :{SMALLFONT}{BLACK}Maksfart ved avgang
+STR_1330    :Maksfart ved avgang
 STR_1331    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
 STR_1332    :{VELOCITY}
 STR_1333    :{STRINGID} - {STRINGID}{POP16}
@@ -766,28 +766,28 @@ STR_1381    :Kurvetrekk (venstre)
 STR_1382    :Kurvetrekk (høyre)
 STR_1383    :Kvartloop
 STR_1384    :{YELLOW}{STRINGID}
-STR_1385    :{SMALLFONT}{BLACK}Andre banekonfigurasjoner
+STR_1385    :Andre banekonfigurasjoner
 STR_1386    :Spesial…
 STR_1387    :Kan ikke endre landtype…
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
 STR_1391    :{RED}{CURRENCY2DP}
-STR_1392    :{SMALLFONT}{BLACK}Attraksjonskamera
-STR_1393    :{SMALLFONT}{BLACK}Vogndetaljer og -innstillinger
-STR_1394    :{SMALLFONT}{BLACK}Operasjonsinnstillinger
-STR_1395    :{SMALLFONT}{BLACK}Vedlikeholdsinnstillinger
-STR_1396    :{SMALLFONT}{BLACK}Fargeinnstillinger
-STR_1397    :{SMALLFONT}{BLACK}Lyd- og musikkinnstillinger
-STR_1398    :{SMALLFONT}{BLACK}Målinger og testdata
-STR_1399    :{SMALLFONT}{BLACK}Grafer
+STR_1392    :Attraksjonskamera
+STR_1393    :Vogndetaljer og -innstillinger
+STR_1394    :Operasjonsinnstillinger
+STR_1395    :Vedlikeholdsinnstillinger
+STR_1396    :Fargeinnstillinger
+STR_1397    :Lyd- og musikkinnstillinger
+STR_1398    :Målinger og testdata
+STR_1399    :Grafer
 STR_1400    :Inngang
 STR_1401    :Utgang
-STR_1402    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsinngang
-STR_1403    :{SMALLFONT}{BLACK}Bygg eller flytt attraksjonsutgang
-STR_1404    :{SMALLFONT}{BLACK}Roter 90°
-STR_1405    :{SMALLFONT}{BLACK}Speilbilde
-STR_1406    :{SMALLFONT}{BLACK}Vis/skjul pynt (hvis gyldig for dette designet)
+STR_1402    :Bygg eller flytt attraksjonsinngang
+STR_1403    :Bygg eller flytt attraksjonsutgang
+STR_1404    :Roter 90°
+STR_1405    :Speilbilde
+STR_1406    :Vis/skjul pynt (hvis gyldig for dette designet)
 STR_1407    :{WINDOW_COLOUR_2}Bygg dette…
 STR_1408    :{WINDOW_COLOUR_2}Kost: {BLACK}{CURRENCY}
 STR_1409    :Inngangs-/utgangsplatform
@@ -803,9 +803,9 @@ STR_1418    :{WINDOW_COLOUR_2}Lat.G's
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
 STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
 STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
-STR_1422    :{SMALLFONT}{BLACK}Logger data fra {POP16}{STRINGID}
-STR_1423    :{SMALLFONT}{BLACK}Køsti
-STR_1424    :{SMALLFONT}{BLACK}Gangsti
+STR_1422    :Logger data fra {POP16}{STRINGID}
+STR_1423    :Køsti
+STR_1424    :Gangsti
 STR_1425    :Gangsti
 STR_1426    :Kø
 STR_1427    :{WINDOW_COLOUR_2}Kunder: {BLACK}{COMMA32} i timen
@@ -841,8 +841,8 @@ STR_1456    :{WINDOW_COLOUR_2}Penger brukt: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Penger i lommen: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Tid i park: {BLACK}{REALTIME}
 STR_1459    :Banestil
-STR_1460    :{SMALLFONT}{BLACK}Halvsirkelformet åpen bane
-STR_1461    :{SMALLFONT}{BLACK}Sirkelformet lukket bane
+STR_1460    :Halvsirkelformet åpen bane
+STR_1461    :Sirkelformet lukket bane
 STR_1462    :For bratt for trekk
 STR_1463    :Gjester
 STR_1464    :Helix opp (small)
@@ -853,7 +853,7 @@ STR_1468    :Ansatte
 STR_1469    :Attraksjon må starte og slutte med stasjoner
 STR_1470    :Stasjon ikke lang nok
 STR_1471    :{WINDOW_COLOUR_2}Fart:
-STR_1472    :{SMALLFONT}{BLACK}Attraksjonens fart
+STR_1472    :Attraksjonens fart
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
 STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1034,8 +1034,8 @@ STR_1649    :{SMALLFONT}“I'm running out of cash!”
 STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
 STR_1653    :{SMALLFONT}“…and here we are on {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
-STR_1655    :{SMALLFONT}{BLACK}Construct footpath on land
-STR_1656    :{SMALLFONT}{BLACK}Construct bridge or tunnel footpath
+STR_1655    :Construct footpath on land
+STR_1656    :Construct bridge or tunnel footpath
 STR_1657    :{WINDOW_COLOUR_2}Preferred ride
 STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
@@ -1055,7 +1055,7 @@ STR_1672    :Brakes
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :Brake speed
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
+STR_1676    :Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
 STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
 STR_1679    :Helix up (venstre)
@@ -1072,10 +1072,10 @@ STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
 STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
+STR_1693    :Guests
+STR_1694    :Staff
+STR_1695    :Income and costs
+STR_1696    :Customer information
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
@@ -1084,10 +1084,10 @@ STR_1701    :Hire new Mechanic
 STR_1702    :Hire new Security Guard
 STR_1703    :Hire new Entertainer
 STR_1704    :Can't hire new staff…
-STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
-STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
+STR_1705    :Sack this staff member
+STR_1706    :Move this person to a new location
 STR_1707    :Too many staff in game
-STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
+STR_1708    :Set patrol area for this staff member
 STR_1709    :Sack staff
 STR_1710    :Yes
 STR_1711    :{WINDOW_COLOUR_1}Are you sure you want to sack {STRINGID}?
@@ -1099,7 +1099,7 @@ STR_1716    :Invalid name for park
 STR_1717    :Can't rename park…
 STR_1718    :Park Name
 STR_1719    :Enter name for park:
-STR_1720    :{SMALLFONT}{BLACK}Name park
+STR_1720    :Name park
 STR_1721    :Park closed
 STR_1722    :Park open
 STR_1723    :Can't open park…
@@ -1114,30 +1114,30 @@ STR_1731    :{WHITE}{STRINGID} - -
 STR_1732    :Build
 STR_1733    :Mode
 STR_1734    :{WINDOW_COLOUR_2}Number of laps:
-STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
+STR_1735    :Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1738    :Can't change number of laps…
 STR_1739    :Race won by guest {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :Not yet constructed !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
-STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
+STR_1743    :Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :Can't change this…
 STR_1747    :{WINDOW_COLOUR_2}Time limit:
-STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
+STR_1748    :Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1751    :Can't change time limit for ride…
-STR_1752    :{SMALLFONT}{BLACK}Show list of individual guests in park
-STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
+STR_1752    :Show list of individual guests in park
+STR_1753    :Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA32} guests
 STR_1755    :{BLACK}{COMMA32} guest
 STR_1756    :{WINDOW_COLOUR_2}Admission price:
 STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1758    :{SMALLFONT}{BLACK}Build mode
-STR_1759    :{SMALLFONT}{BLACK}Move mode
-STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
-STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
+STR_1758    :Build mode
+STR_1759    :Move mode
+STR_1760    :Fill-in mode
+STR_1761    :Build maze in this direction
 STR_1762    :Waterfalls
 STR_1763    :Rapids
 STR_1764    :Log Bumps
@@ -1146,7 +1146,7 @@ STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings…
 STR_1769    :{WINDOW_COLOUR_2}Number of swings:
-STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
+STR_1770    :Number of complete swings
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
 STR_1774    :Only one cable lift hill allowed per ride
@@ -1163,7 +1163,7 @@ STR_1786    :{INLINE_SPRITE}{05}{20}{00}{00} Astronaut costume
 STR_1787    :{INLINE_SPRITE}{06}{20}{00}{00} Bandit costume
 STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} Sheriff costume
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} Pirate costume
-STR_1790    :{SMALLFONT}{BLACK}Select uniform colour for this type of staff
+STR_1790    :Select uniform colour for this type of staff
 STR_1791    :{WINDOW_COLOUR_2}Uniform colour:
 STR_1792    :Responding to {STRINGID} breakdown call
 STR_1793    :Heading to {STRINGID} for an inspection
@@ -1184,20 +1184,20 @@ STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
 STR_1811    :Can't build this here…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
-STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
+STR_1816    :Select information type to show in guest list
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}All guests
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
 STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
-STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
-STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
-STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
+STR_1823    :Show guests' thoughts about this ride/attraction
+STR_1824    :Show guests on this ride/attraction
+STR_1825    :Show guests queuing for this ride/attraction
 STR_1826    :Status
 STR_1827    :Popularity
 STR_1828    :Satisfaction
@@ -1216,13 +1216,13 @@ STR_1840    :Down-time: {COMMA16}%
 STR_1841    :Profit: {CURRENCY2DP} per hour
 STR_1842    :Favourite of: {COMMA16} guest
 STR_1843    :Favourite of: {COMMA16} guests
-STR_1844    :{SMALLFONT}{BLACK}Select information type to show in ride/attraction list
+STR_1844    :Select information type to show in ride/attraction list
 STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} guests
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} guests
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} guests
 STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
+STR_1850    :Select whether music should be played for this ride
 STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
 STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
 STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
@@ -1242,7 +1242,7 @@ STR_1866    :Entertainer
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Can't change number of rotations…
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
-STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
+STR_1870    :Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
 STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
@@ -1261,12 +1261,12 @@ STR_1886    :Inspecting {STRINGID}
 STR_1887    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}{COMMA16} minutes
 STR_1888    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}more than 4 hours
 STR_1889    :{WINDOW_COLOUR_2}Down-Time: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
+STR_1890    :Select how often a mechanic should check this ride
 STR_1891    :No {STRINGID} in park yet!
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
+STR_1895    :Build new ride/attraction
 STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
 STR_1897    :{WINDOW_COLOUR_2}Ride construction
 STR_1898    :{WINDOW_COLOUR_2}Ride running costs
@@ -1292,33 +1292,33 @@ STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
 STR_1918    :Can't borrow any more money!
 STR_1919    :Not enough cash available!
 STR_1920    :Can't pay back loan!
-STR_1921    :{SMALLFONT}{BLACK}Start a new game
-STR_1922    :{SMALLFONT}{BLACK}Continue playing a saved game
-STR_1924    :{SMALLFONT}{BLACK}Exit
+STR_1921    :Start a new game
+STR_1922    :Continue playing a saved game
+STR_1924    :Exit
 STR_1925    :Can't place person here…
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
-STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
+STR_1930    :Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
 STR_1932    :{STRINGID} is on {STRINGID}
 STR_1933    :{STRINGID} is in {STRINGID}
 STR_1934    :{STRINGID} has left {STRINGID}
 STR_1935    :{STRINGID} has left the park
 STR_1936    :{STRINGID} has bought {STRINGID}
-STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
-STR_1938    :{SMALLFONT}{BLACK}Show view of guest
-STR_1939    :{SMALLFONT}{BLACK}Show view of staff member
-STR_1940    :{SMALLFONT}{BLACK}Show happiness, energy, hunger etc. for this guest
-STR_1941    :{SMALLFONT}{BLACK}Show which rides this guest has been on
-STR_1942    :{SMALLFONT}{BLACK}Show financial information about this guest
-STR_1943    :{SMALLFONT}{BLACK}Show guest's recent thoughts
-STR_1944    :{SMALLFONT}{BLACK}Show items guest is carrying
-STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
-STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
-STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
-STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
+STR_1937    :Show information about the subject of this message
+STR_1938    :Show view of guest
+STR_1939    :Show view of staff member
+STR_1940    :Show happiness, energy, hunger etc. for this guest
+STR_1941    :Show which rides this guest has been on
+STR_1942    :Show financial information about this guest
+STR_1943    :Show guest's recent thoughts
+STR_1944    :Show items guest is carrying
+STR_1945    :Show orders and options for this staff member
+STR_1946    :Select costume for this entertainer
+STR_1947    :Show areas patrolled by selected staff type, and locate the nearest staff member
+STR_1948    :Hire a new staff member of the selected type
 STR_1949    :Financial Summary
 STR_1950    :Financial Graph
 STR_1951    :Park Value Graph
@@ -1326,7 +1326,7 @@ STR_1952    :Profit Graph
 STR_1953    :Marketing
 STR_1954    :Research Funding
 STR_1955    :{WINDOW_COLOUR_2}Number of circuits:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1956    :Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits…
@@ -1565,10 +1565,10 @@ STR_2206    :Empty Drink Carton
 STR_2207    :Empty Juice Cup
 STR_2208    :Roast Sausage
 STR_2209    :Empty Bowl
-STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
-STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
-STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
-STR_2213    :{SMALLFONT}{BLACK}Show list of entertainers in park
+STR_2210    :Show list of handymen in park
+STR_2211    :Show list of mechanics in park
+STR_2212    :Show list of security guards in park
+STR_2213    :Show list of entertainers in park
 STR_2214    :Construction not possible while game is paused!
 STR_2215    :{STRINGID}{NEWLINE}({STRINGID})
 STR_2216    :{WINDOW_COLOUR_2}{COMMA16}°C
@@ -1576,7 +1576,7 @@ STR_2217    :{WINDOW_COLOUR_2}{COMMA16}°F
 STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet!{NEWLINE}Check whether it is stuck or has stalled
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
-STR_2221    :{SMALLFONT}{BLACK}Park Rating: {COMMA16}
+STR_2221    :Park Rating: {COMMA16}
 STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
@@ -1588,7 +1588,7 @@ STR_2229    :Slope up to vertical
 STR_2230    :Vertical track
 STR_2231    :Holding brake for drop
 STR_2232    :Cable lift hill
-STR_2233    :{SMALLFONT}{BLACK}Park information
+STR_2233    :Park information
 STR_2234    :Recent Messages
 STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
 STR_2236    :January
@@ -1629,9 +1629,9 @@ STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
 STR_2273    :{WINDOW_COLOUR_2}Scenery/theming:{NEWLINE}{BLACK}{STRINGID}
-STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
-STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
-STR_2276    :{SMALLFONT}{BLACK}Show research & development status
+STR_2274    :Show details of this invention or development
+STR_2275    :Show funding and options for research & development
+STR_2276    :Show research & development status
 STR_2277    :Unknown
 STR_2278    :Transport Ride
 STR_2279    :Gentle Ride
@@ -1648,8 +1648,8 @@ STR_2289    :{STRINGID} {STRINGID}
 STR_2291    :Select scenario for new game
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
 STR_2293    :{BLACK} Nothing
-STR_2294    :{SMALLFONT}{BLACK}Change base land style
-STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
+STR_2294    :Change base land style
+STR_2295    :Change vertical edges of land
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
 STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} ride
 STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} rides
@@ -1675,8 +1675,8 @@ STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
 STR_2324    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}sq.ft.
-STR_2325    :{SMALLFONT}{BLACK}Buy land to extend park
-STR_2326    :{SMALLFONT}{BLACK}Buy construction rights to allow construction above or below land outside the park
+STR_2325    :Buy land to extend park
+STR_2326    :Buy construction rights to allow construction above or below land outside the park
 STR_2327    :Options
 STR_2328    :{WINDOW_COLOUR_2}Currency:
 STR_2329    :{WINDOW_COLOUR_2}Distance and Speed:
@@ -1697,7 +1697,7 @@ STR_2343    :Euros (€)
 STR_2344    :Imperial
 STR_2345    :Metric
 STR_2347    :{RED}{STRINGID} has drowned!
-STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
+STR_2348    :Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
@@ -1710,9 +1710,9 @@ STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:
 STR_2361    :Landscape Smoothing
-STR_2362    :{SMALLFONT}{BLACK}Toggle landscape tile edge smoothing on/off
+STR_2362    :Toggle landscape tile edge smoothing on/off
 STR_2363    :Gridlines on Landscape
-STR_2364    :{SMALLFONT}{BLACK}Toggle gridlines on landscape on/off
+STR_2364    :Toggle gridlines on landscape on/off
 STR_2365    :The bank refuses to increase your loan!
 STR_2366    :Celsius (°C)
 STR_2367    :Fahrenheit (°F)
@@ -1726,10 +1726,10 @@ STR_2374    :High
 STR_2375    :Very high
 STR_2376    :Extreme
 STR_2377    :Ultra-Extreme
-STR_2378    :{SMALLFONT}{BLACK}Adjust smaller area of land
-STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
-STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
-STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
+STR_2378    :Adjust smaller area of land
+STR_2379    :Adjust larger area of land
+STR_2380    :Adjust smaller area of water
+STR_2381    :Adjust larger area of water
 STR_2382    :Land
 STR_2383    :Water
 STR_2384    :{WINDOW_COLOUR_2}Your objective:
@@ -1760,7 +1760,7 @@ STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}Marketing campaigns in operation
 STR_2410    :{BLACK}None
 STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
-STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
+STR_2412    :Start this marketing campaign
 STR_2413    :{BLACK}({CURRENCY2DP} per week)
 STR_2414    :(Not Selected)
 STR_2415    :{WINDOW_COLOUR_2}Ride:
@@ -1795,40 +1795,40 @@ STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
-STR_2457    :{SMALLFONT}{BLACK}Show financial accounts
-STR_2458    :{SMALLFONT}{BLACK}Show graph of cash (less loan) over time
-STR_2459    :{SMALLFONT}{BLACK}Show graph of park value over time
-STR_2460    :{SMALLFONT}{BLACK}Show graph of weekly profit
-STR_2461    :{SMALLFONT}{BLACK}Show marketing campaigns
-STR_2462    :{SMALLFONT}{BLACK}Show view of park entrance
-STR_2463    :{SMALLFONT}{BLACK}Show graph of park ratings over time
-STR_2464    :{SMALLFONT}{BLACK}Show graph of guest numbers over time
-STR_2465    :{SMALLFONT}{BLACK}Show park entrance price and information
-STR_2466    :{SMALLFONT}{BLACK}Show park statistics
-STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
-STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
-STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
-STR_2470    :{SMALLFONT}{BLACK}Research new transport rides
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
-STR_2475    :{SMALLFONT}{BLACK}Research new shops and stalls
-STR_2476    :{SMALLFONT}{BLACK}Research new scenery and theming
-STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
-STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
-STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
-STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
-STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
-STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
+STR_2457    :Show financial accounts
+STR_2458    :Show graph of cash (less loan) over time
+STR_2459    :Show graph of park value over time
+STR_2460    :Show graph of weekly profit
+STR_2461    :Show marketing campaigns
+STR_2462    :Show view of park entrance
+STR_2463    :Show graph of park ratings over time
+STR_2464    :Show graph of guest numbers over time
+STR_2465    :Show park entrance price and information
+STR_2466    :Show park statistics
+STR_2467    :Show objectives for this game
+STR_2468    :Show recent awards this park has received
+STR_2469    :Select level of research & development
+STR_2470    :Research new transport rides
+STR_2471    :Research new gentle rides
+STR_2472    :Research new roller coasters
+STR_2473    :Research new thrill rides
+STR_2474    :Research new water rides
+STR_2475    :Research new shops and stalls
+STR_2476    :Research new scenery and theming
+STR_2477    :Select operating mode for this ride/attraction
+STR_2478    :Show graph of velocity against time
+STR_2479    :Show graph of altitude against time
+STR_2480    :Show graph of vertical acceleration against time
+STR_2481    :Show graph of lateral acceleration against time
+STR_2482    :Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
 STR_2487    :Show 'real' names of guests
-STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
+STR_2488    :Toggle between showing 'real' names of guests and guest numbers
 STR_2489    :Shortcut keys…
 STR_2490    :Keyboard shortcuts
 STR_2491    :Reset keys
-STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
+STR_2492    :Set all keyboard shortcuts back to default settings
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
 STR_2495    :Cancel construction mode
@@ -1905,7 +1905,7 @@ STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
 STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
-STR_2684    :{SMALLFONT}{BLACK}Large group of guests arrive
+STR_2684    :Large group of guests arrive
 STR_2685    :Parametere for Simplex-støy
 STR_2686    :Lav:
 STR_2687    :Høy:
@@ -1984,7 +1984,7 @@ STR_2782    :SHIFT +
 STR_2783    :CTRL + 
 STR_2784    :Change keyboard shortcut
 STR_2785    :{WINDOW_COLOUR_2}Press new shortcut key for:{NEWLINE}“{STRINGID}”
-STR_2786    :{SMALLFONT}{BLACK}Click on shortcut description to select new key
+STR_2786    :Click on shortcut description to select new key
 STR_2787    :{WINDOW_COLOUR_2}Park value: {BLACK}{CURRENCY}
 STR_2788    :{WINDOW_COLOUR_2}Congratulations !{NEWLINE}{BLACK}You achieved your objective with a company value of {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
@@ -1994,16 +1994,16 @@ STR_2792    :Please enter your name for the scenario chart:
 STR_2793    :{SMALLFONT}(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :Sort
-STR_2796    :{SMALLFONT}{BLACK}Sort the ride list into order using the information type displayed
+STR_2796    :Sort the ride list into order using the information type displayed
 STR_2797    :Scroll view when pointer at screen edge
-STR_2798    :{SMALLFONT}{BLACK}Scroll the view when the mouse pointer is at the screen edge
-STR_2799    :{SMALLFONT}{BLACK}View or change control key assignments
+STR_2798    :Scroll the view when the mouse pointer is at the screen edge
+STR_2799    :View or change control key assignments
 STR_2800    :{WINDOW_COLOUR_2}Total admissions: {BLACK}{COMMA32}
 STR_2801    :{WINDOW_COLOUR_2}Income from admissions: {BLACK}{CURRENCY2DP}
 STR_2802    :Map
-STR_2803    :{SMALLFONT}{BLACK}Show these guests highlighted on map
-STR_2804    :{SMALLFONT}{BLACK}Show these staff members highlighted on map
-STR_2805    :{SMALLFONT}{BLACK}Show map of park
+STR_2803    :Show these guests highlighted on map
+STR_2804    :Show these staff members highlighted on map
+STR_2805    :Show map of park
 STR_2806    :{RED}Guests are complaining about the disgusting state of the paths in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2807    :{RED}Guests are complaining about the amount of litter in your park{NEWLINE}Check where your handymen are and consider organising them better
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organising them better
@@ -2105,8 +2105,8 @@ STR_2971    :Main colour scheme
 STR_2972    :Alternative colour scheme 1
 STR_2973    :Alternative colour scheme 2
 STR_2974    :Alternative colour scheme 3
-STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint ride with
-STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected colour scheme
+STR_2975    :Select which colour scheme to change, or paint ride with
+STR_2976    :Paint an individual area of this ride using the selected colour scheme
 STR_2977    :Staff member name
 STR_2978    :Enter new name for this member of staff:
 STR_2979    :Can't name staff member…
@@ -2116,16 +2116,16 @@ STR_2982    :Banner text
 STR_2983    :Enter new text for this banner:
 STR_2984    :Can't set new text for banner…
 STR_2985    :Banner
-STR_2986    :{SMALLFONT}{BLACK}Change text on banner
-STR_2987    :{SMALLFONT}{BLACK}Set this banner as a 'no-entry' sign for guests
-STR_2988    :{SMALLFONT}{BLACK}Demolish this banner
-STR_2989    :{SMALLFONT}{BLACK}Select main colour
-STR_2990    :{SMALLFONT}{BLACK}Select text colour
+STR_2986    :Change text on banner
+STR_2987    :Set this banner as a 'no-entry' sign for guests
+STR_2988    :Demolish this banner
+STR_2989    :Select main colour
+STR_2990    :Select text colour
 STR_2991    :Sign
 STR_2992    :Sign text
 STR_2993    :Enter new text for this sign:
-STR_2994    :{SMALLFONT}{BLACK}Change text on sign
-STR_2995    :{SMALLFONT}{BLACK}Demolish this sign
+STR_2994    :Change text on sign
+STR_2995    :Demolish this sign
 STR_2996    :{BLACK}ABC
 STR_2997    :{GREY}ABC
 STR_2998    :{WHITE}ABC
@@ -2175,7 +2175,7 @@ STR_3041    :Modern style
 STR_3042    :Pirates style
 STR_3043    :Rock style 3
 STR_3044    :Candy style
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
+STR_3045    :Select style of music to play
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
 STR_3049    :Golf hole A
@@ -2188,8 +2188,8 @@ STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
 STR_3061    :Wooden fences
-STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
-STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
+STR_3062    :Standard roller coaster track
+STR_3063    :Water channel (track submerged)
 STR_3064    :Beginner Parks
 STR_3065    :Challenging Parks
 STR_3066    :Expert Parks
@@ -2198,42 +2198,42 @@ STR_3068    :Other Parks
 STR_3069    :Top Section
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}Same price throughout park
-STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
+STR_3072    :Select whether this price is used throughout the entire park
 STR_3073    :{RED}WARNING: Your park rating has dropped below 700 !{NEWLINE}If you haven't raised the park rating in 4 weeks, your park will be closed down
 STR_3074    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have 3 weeks to raise the park rating
 STR_3075    :{RED}WARNING: Your park rating is still below 700 !{NEWLINE}You have only 2 weeks to raise the park rating, or your park will be closed down
 STR_3076    :{RED}FINAL WARNING: Your park rating is still below 700 !{NEWLINE}In just 7 days your park will be closed down unless you can raise the rating
 STR_3077    :{RED}CLOSURE NOTICE: Your park has been closed down !
-STR_3090    :{SMALLFONT}{BLACK}Select style of entrance, exit, and station
+STR_3090    :Select style of entrance, exit, and station
 STR_3091    :You are not allowed to remove this section!
 STR_3092    :You are not allowed to move or modify the station for this ride!
 STR_3093    :{WINDOW_COLOUR_2}Favourite: {BLACK}{STRINGID}
 STR_3094    :N/A
 STR_3095    :{WINDOW_COLOUR_2}Lift hill chain speed:
 STR_3096    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{VELOCITY}
-STR_3097    :{SMALLFONT}{BLACK}Select lift hill chain speed
-STR_3099    :{SMALLFONT}{BLACK}Select colour
-STR_3100    :{SMALLFONT}{BLACK}Select second colour
-STR_3101    :{SMALLFONT}{BLACK}Select third colour
-STR_3102    :{SMALLFONT}{BLACK}Re-paint coloured scenery on landscape
+STR_3097    :Select lift hill chain speed
+STR_3099    :Select colour
+STR_3100    :Select second colour
+STR_3101    :Select third colour
+STR_3102    :Re-paint coloured scenery on landscape
 STR_3103    :Can't re-paint this…
-STR_3104    :{SMALLFONT}{BLACK}List rides
-STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
-STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
+STR_3104    :List rides
+STR_3105    :List shops and stalls
+STR_3106    :List information kiosks and other guest facilities
 STR_3107    :Close
 STR_3108    :Test
 STR_3109    :Open
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
-STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
-STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
+STR_3111    :Click on design to build it
+STR_3112    :Click on design to rename or delete it
 STR_3113    :Select a different design
-STR_3114    :{SMALLFONT}{BLACK}Go back to design selection window
-STR_3115    :{SMALLFONT}{BLACK}Save track design
-STR_3116    :{SMALLFONT}{BLACK}Save track design (Not possible until ride has been tested and statistics have been generated)
+STR_3114    :Go back to design selection window
+STR_3115    :Save track design
+STR_3116    :Save track design (Not possible until ride has been tested and statistics have been generated)
 STR_3117    :{BLACK}Calling mechanic…
 STR_3118    :{BLACK}{STRINGID} is heading for the ride
 STR_3119    :{BLACK}{STRINGID} is fixing the ride
-STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
+STR_3120    :Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
 STR_3122    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guest
 STR_3123    :{WINDOW_COLOUR_2}Favourite ride of: {BLACK}{COMMA16} guests
@@ -2256,9 +2256,9 @@ STR_3139    :Cable lift unable to work in this operating mode
 STR_3140    :Cable lift hill must start immediately after station
 STR_3141    :Multi-circuit per ride not possible with cable lift hill
 STR_3142    :{WINDOW_COLOUR_2}Capacity: {BLACK}{STRINGID}
-STR_3143    :{SMALLFONT}{BLACK}Show people on map
-STR_3144    :{SMALLFONT}{BLACK}Show rides and stalls on map
-STR_3160    :{SMALLFONT}{BLACK}Select the number of circuits per ride
+STR_3143    :Show people on map
+STR_3144    :Show rides and stalls on map
+STR_3160    :Select the number of circuits per ride
 STR_3162    :Unable to allocate enough memory
 STR_3163    :Installing new data: 
 STR_3164    :{BLACK}{COMMA16} selected (maximum {COMMA16})
@@ -2293,7 +2293,7 @@ STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
 STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
 STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
 STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
+STR_3200    :Randomly shuffle the list of items to invent during the game
 STR_3201    :Object Selection
 STR_3202    :Landscape Editor
 STR_3203    :Invention List Set Up
@@ -2309,36 +2309,36 @@ STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further
 STR_3215    :Too close to edge of map
-STR_3216    :{SMALLFONT}{BLACK}Select park-owned land etc.
+STR_3216    :Select park-owned land etc.
 STR_3217    :Land Owned
 STR_3218    :Construction Rights Owned
 STR_3219    :Land For Sale
 STR_3220    :Construction Rights For Sale
-STR_3221    :{SMALLFONT}{BLACK}Set land to be owned by the park
-STR_3222    :{SMALLFONT}{BLACK}Set construction rights only to be owned by the park
-STR_3223    :{SMALLFONT}{BLACK}Set land to be available to purchase by the park
-STR_3224    :{SMALLFONT}{BLACK}Set construction rights to be available to purchase by the park
-STR_3225    :{SMALLFONT}{BLACK}Toggle on/off building a random cluster of objects around the selected position
-STR_3226    :{SMALLFONT}{BLACK}Build park entrance
+STR_3221    :Set land to be owned by the park
+STR_3222    :Set construction rights only to be owned by the park
+STR_3223    :Set land to be available to purchase by the park
+STR_3224    :Set construction rights to be available to purchase by the park
+STR_3225    :Toggle on/off building a random cluster of objects around the selected position
+STR_3226    :Build park entrance
 STR_3227    :Too many park entrances!
-STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
+STR_3228    :Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
 STR_3232    :Options - Financial
 STR_3233    :Options - Guests
 STR_3234    :Options - Park
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
+STR_3235    :Show financial options
+STR_3236    :Show guest options
+STR_3237    :Show park options
 STR_3238    :No Money
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
+STR_3239    :Make this park a 'no money' park with no financial restrictions
 STR_3240    :{WINDOW_COLOUR_2}Initial cash:
 STR_3241    :{WINDOW_COLOUR_2}Initial loan:
 STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
 STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
 STR_3244    :Forbid marketing campaigns
-STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3245    :Forbid advertising, promotional schemes, and other marketing campaigns
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :Can't increase initial cash any further!
@@ -2350,47 +2350,47 @@ STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
 STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
+STR_3257    :Select whether guests should generally prefer less intense rides only
 STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
+STR_3259    :Select whether guests should generally prefer more intense rides only
 STR_3260    :{WINDOW_COLOUR_2}Cash per guest (average):
 STR_3261    :{WINDOW_COLOUR_2}Guests initial happiness:
 STR_3262    :{WINDOW_COLOUR_2}Guests initial hunger:
 STR_3263    :{WINDOW_COLOUR_2}Guests initial thirst:
 STR_3264    :Can't increase this any further!
 STR_3265    :Can't reduce this any further!
-STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
+STR_3266    :Select how this park charges for entrance and rides
 STR_3267    :Forbid tree removal
-STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
+STR_3268    :Forbid tall trees being removed
 STR_3269    :Forbid landscape changes
-STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
+STR_3270    :Forbid any changes to the landscape
 STR_3271    :Forbid high construction
-STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
+STR_3272    :Forbid any tall construction
 STR_3273    :Park rating higher difficult level
-STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
+STR_3274    :Make the park rating value more challenging
 STR_3275    :Guest generation higher difficult level
-STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
+STR_3276    :Make it more difficult to attract guests to the park
 STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
 STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
-STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
-STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
+STR_3282    :Select objective and park name
+STR_3283    :Select rides to be preserved
 STR_3284    :Objective Selection
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
+STR_3288    :Select climate
 STR_3289    :{WINDOW_COLOUR_2}Climate:
 STR_3290    :Cool and wet
 STR_3291    :Warm
 STR_3292    :Hot and dry
 STR_3293    :Cold
 STR_3294    :Change…
-STR_3295    :{SMALLFONT}{BLACK}Change name of park
-STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
-STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
+STR_3295    :Change name of park
+STR_3296    :Change name of scenario
+STR_3297    :Change detail notes about park / scenario
 STR_3298    :{WINDOW_COLOUR_2}Park Name: {BLACK}{STRINGID}
 STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
 STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
@@ -2411,7 +2411,7 @@ STR_3314    :Enter name for scenario:
 STR_3315    :Park/Scenario Details
 STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
-STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
+STR_3318    :Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file…
 STR_3321    :New objects installed successfully
@@ -2424,13 +2424,13 @@ STR_3330    :Park must own some land
 STR_3331    :Path from park entrance to map edge either not complete or too complex - Path must be single-width with as few junctions and corners as possible
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
-STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
+STR_3334    :Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
 STR_3335    :Spordesigner - Velg attraksjonstyper og vogner
 STR_3336    :Track Designs Manager - Select Ride Type
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
 STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
-STR_3341    :{SMALLFONT}{BLACK}Game tools
+STR_3341    :Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
 STR_3344    :Spordesigner
@@ -2452,7 +2452,7 @@ STR_3359    :{BLACK}No track designs of this type
 STR_3360    :Warning!
 STR_3361    :Too many track designs of this type - Some will not be listed.
 STR_3364    :Advanced
-STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :Allow selection of individual items of scenery in addition to scenery groups
 STR_3366    :{BLACK}= Ride
 STR_3367    :{BLACK}= Food Stall
 STR_3368    :{BLACK}= Drink Stall
@@ -2464,7 +2464,7 @@ STR_3373    :{BLACK}= Toilet
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Installer ny…
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
+STR_3377    :Install a new track design file
 STR_3378    :Install
 STR_3379    :Cancel
 STR_3380    :Unable to install this track design…
@@ -2476,7 +2476,7 @@ STR_3389    :Unable to select additional item of scenery…
 STR_3390    :Too many items selected
 # Start of tutorial strings. Not used at the moment, so not necessary to translate.
 # End of tutorial strings
-STR_3437    :{SMALLFONT}{BLACK}Clear large areas of scenery from landscape
+STR_3437    :Clear large areas of scenery from landscape
 STR_3438    :Unable to remove all scenery from here…
 STR_3439    :Clear Scenery
 STR_3445    :Set Patrol Area
@@ -2489,15 +2489,15 @@ STR_5122    :Select rides by track type (like in RCT1)
 STR_5123    :Renew rides
 STR_5125    :All destructible
 STR_5126    :Random title music
-STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
+STR_5127    :While dragging, paint landscape instead of changing elevation
 STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
 STR_5130    :Map size
 STR_5131    :Enter map size between {COMMA16} and {COMMA16}
 STR_5132    :Fix all rides
-STR_5133    :{SMALLFONT}{BLACK}Adjust smaller area of land rights
-STR_5134    :{SMALLFONT}{BLACK}Adjust larger area of land rights
-STR_5135    :{SMALLFONT}{BLACK}Buy land rights and construction rights
+STR_5133    :Adjust smaller area of land rights
+STR_5134    :Adjust larger area of land rights
+STR_5135    :Buy land rights and construction rights
 STR_5136    :Land rights
 STR_5137    :Unlock operating limits
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
@@ -2510,15 +2510,15 @@ STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
 STR_5147    :Cheats
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Show cheat options
+STR_5148    :Change the game speed
+STR_5149    :Show cheat options
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
 STR_5153    :Edit Themes…
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
-STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
+STR_5156    :Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
@@ -2526,10 +2526,10 @@ STR_5161    :Date Format:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5177    :Screen mode:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5178    :Show financial cheats
+STR_5179    :Show guest cheats
+STR_5180    :Show park cheats
+STR_5181    :Show ride cheats
 STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
@@ -2576,14 +2576,14 @@ STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
 STR_5226    :Track Delete Prompt
 STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Guests
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5228    :Main UI
+STR_5229    :Park
+STR_5230    :Tools
+STR_5231    :Rides and Guests
+STR_5232    :Editors
+STR_5233    :Miscellaneous
+STR_5234    :Prompts
+STR_5235    :Settings
 STR_5236    :Window
 STR_5237    :Palette
 STR_5238    :Current Theme:
@@ -2603,32 +2603,32 @@ STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
 STR_5254    :Create
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
+STR_5255    :Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5257    :Create a new theme based on the current one
+STR_5258    :Delete the current theme
+STR_5259    :Rename the current theme
 STR_5260    :Giant Screenshot
 STR_5261    :Filter
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
 STR_5264    :Custom
-STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
-STR_5268    :{SMALLFONT}{BLACK}Audio
-STR_5269    :{SMALLFONT}{BLACK}Controls and interface
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5272    :{SMALLFONT}{BLACK}Small Scenery
-STR_5273    :{SMALLFONT}{BLACK}Large Scenery
-STR_5274    :{SMALLFONT}{BLACK}Footpath
+STR_5265    :Select which content sources are visible
+STR_5266    :Display
+STR_5267    :Culture and Units
+STR_5268    :Audio
+STR_5269    :Controls and interface
+STR_5270    :Miscellaneous
+STR_5272    :Small Scenery
+STR_5273    :Large Scenery
+STR_5274    :Footpath
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
 STR_5277    :Clear
 STR_5278    :Sandbox mode
 STR_5279    :Sandbox mode off
-STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
-STR_5281    :{SMALLFONT}{BLACK}Features
+STR_5280    :Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
+STR_5281    :Features
 STR_5282    :RCT1 Ride Open/Close Lights
 STR_5283    :RCT1 Park Open/Close Lights
 STR_5284    :RCT1 Scenario Selection Font
@@ -2637,15 +2637,15 @@ STR_5288    :Ride is closed
 STR_5289    :No breakdowns available for this ride
 STR_5290    :Fix ride
 STR_5291    :Can't force breakdown
-STR_5292    :{SMALLFONT}{BLACK}Force a breakdown
-STR_5293    :{SMALLFONT}{BLACK}Close ride/attraction
-STR_5294    :{SMALLFONT}{BLACK}Test ride/attraction
-STR_5295    :{SMALLFONT}{BLACK}Open ride/attraction
-STR_5296    :{SMALLFONT}{BLACK}Close park
-STR_5297    :{SMALLFONT}{BLACK}Open park
+STR_5292    :Force a breakdown
+STR_5293    :Close ride/attraction
+STR_5294    :Test ride/attraction
+STR_5295    :Open ride/attraction
+STR_5296    :Close park
+STR_5297    :Open park
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
-STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
+STR_5300    :Quick fire staff
 STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
@@ -2656,7 +2656,7 @@ STR_5307    :RollerCoaster Tycoon 1 (AA + LL)
 STR_5308    :RollerCoaster Tycoon 2
 STR_5309    :OpenRCT2
 STR_5310    :Random
-STR_5311    :{SMALLFONT}{BLACK}Debug tools
+STR_5311    :Debug tools
 STR_5312    :Show console
 STR_5313    :Vis ruteinspektør
 STR_5314    :Ruteinspektør
@@ -2664,15 +2664,15 @@ STR_5335    :Ride entrance
 STR_5336    :Ride exit
 STR_5337    :Park entrance
 STR_5338    :Element type
-STR_5339    :{SMALLFONT}{BLACK}Base height
-STR_5340    :{SMALLFONT}{BLACK}Clearance height
+STR_5339    :Base height
+STR_5340    :Clearance height
 STR_5343    :Automatically place staff
 STR_5344    :Changelog
 STR_5345    :Financial cheats
 STR_5346    :Guest cheats
 STR_5347    :Park cheats
 STR_5348    :Ride cheats
-STR_5349    :{SMALLFONT}{BLACK}All Rides
+STR_5349    :All Rides
 STR_5350    :Max
 STR_5351    :Min
 STR_5352    :{BLACK}Happiness:
@@ -2683,7 +2683,7 @@ STR_5356    :{BLACK}Nausea:
 STR_5357    :{BLACK}Nausea tolerance:
 STR_5358    :{BLACK}Bathroom:
 STR_5359    :Remove guests
-STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
+STR_5360    :Removes all guests from the map
 STR_5361    :Give all guests:
 STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
 STR_5363    :More than 1
@@ -2698,26 +2698,26 @@ STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :{SMALLFONT}{BLACK}Saves
-STR_5378    :{SMALLFONT}{BLACK}Script
-STR_5379    :{SMALLFONT}{BLACK}Skip to next wait command
-STR_5380    :{SMALLFONT}{BLACK}Start playing title sequence
-STR_5381    :{SMALLFONT}{BLACK}Stop playing title sequence
-STR_5382    :{SMALLFONT}{BLACK}Restart title sequence
-STR_5383    :{SMALLFONT}{BLACK}Create a new title sequence based on the current one
-STR_5384    :{SMALLFONT}{BLACK}Delete the current title sequence
-STR_5385    :{SMALLFONT}{BLACK}Rename the current title sequence
-STR_5386    :{SMALLFONT}{BLACK}Insert a new command
-STR_5387    :{SMALLFONT}{BLACK}Edit the selected command
-STR_5388    :{SMALLFONT}{BLACK}Delete the selected command
-STR_5389    :{SMALLFONT}{BLACK}Skip to the selected command in the title sequence
-STR_5390    :{SMALLFONT}{BLACK}Move the selected command down
-STR_5391    :{SMALLFONT}{BLACK}Move the selected command up
-STR_5392    :{SMALLFONT}{BLACK}Add a save to the title sequence
-STR_5393    :{SMALLFONT}{BLACK}Remove the selected save from the title sequence
-STR_5394    :{SMALLFONT}{BLACK}Rename the selected save
-STR_5395    :{SMALLFONT}{BLACK}Load the selected save in game
-STR_5396    :{SMALLFONT}{BLACK}Reload the title sequence if changes have been made to it outside of the game
+STR_5377    :Saves
+STR_5378    :Script
+STR_5379    :Skip to next wait command
+STR_5380    :Start playing title sequence
+STR_5381    :Stop playing title sequence
+STR_5382    :Restart title sequence
+STR_5383    :Create a new title sequence based on the current one
+STR_5384    :Delete the current title sequence
+STR_5385    :Rename the current title sequence
+STR_5386    :Insert a new command
+STR_5387    :Edit the selected command
+STR_5388    :Delete the selected command
+STR_5389    :Skip to the selected command in the title sequence
+STR_5390    :Move the selected command down
+STR_5391    :Move the selected command up
+STR_5392    :Add a save to the title sequence
+STR_5393    :Remove the selected save from the title sequence
+STR_5394    :Rename the selected save
+STR_5395    :Load the selected save in game
+STR_5396    :Reload the title sequence if changes have been made to it outside of the game
 STR_5397    :Can only be used on the title screen
 STR_5398    :Cannot edit title sequence while it's playing
 STR_5399    :Press the stop button to continue editing
@@ -2761,7 +2761,7 @@ STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
-STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
+STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5443    :Speed{MOVE_X}{87}{STRINGID}
 STR_5444    :Speed:
@@ -2807,8 +2807,8 @@ STR_5483    :{BLACK}({COMMA16} weeks remaining)
 STR_5484    :{BLACK}({COMMA16} week remaining)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
+STR_5487    :Show recent messages
+STR_5489    :Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
@@ -2822,67 +2822,67 @@ STR_5500    :Add Server
 STR_5501    :Start Server
 STR_5502    :Multiplayer
 STR_5503    :Enter hostname or IP address:
-STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5504    :Show multiplayer status
 STR_5505    :Unable to connect to server.
 STR_5506    :Guests ignore intensities
 STR_5508    :Allow loading files with incorrect checksums
-STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
+STR_5509    :Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
 STR_5510    :Default sound device
 STR_5511    :(UNKNOWN)
 STR_5512    :Save Game As
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
-STR_5516    :{SMALLFONT}{BLACK}Black
-STR_5517    :{SMALLFONT}{BLACK}Grey
-STR_5518    :{SMALLFONT}{BLACK}White
-STR_5519    :{SMALLFONT}{BLACK}Dark purple
-STR_5520    :{SMALLFONT}{BLACK}Light purple
-STR_5521    :{SMALLFONT}{BLACK}Bright purple
-STR_5522    :{SMALLFONT}{BLACK}Dark blue
-STR_5523    :{SMALLFONT}{BLACK}Light blue
-STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Dark water
-STR_5526    :{SMALLFONT}{BLACK}Light water
-STR_5527    :{SMALLFONT}{BLACK}Saturated green
-STR_5528    :{SMALLFONT}{BLACK}Dark green
-STR_5529    :{SMALLFONT}{BLACK}Moss green
-STR_5530    :{SMALLFONT}{BLACK}Bright green
-STR_5531    :{SMALLFONT}{BLACK}Olive green
-STR_5532    :{SMALLFONT}{BLACK}Dark olive green
-STR_5533    :{SMALLFONT}{BLACK}Bright yellow
-STR_5534    :{SMALLFONT}{BLACK}Yellow
-STR_5535    :{SMALLFONT}{BLACK}Dark yellow
-STR_5536    :{SMALLFONT}{BLACK}Light orange
-STR_5537    :{SMALLFONT}{BLACK}Dark orange
-STR_5538    :{SMALLFONT}{BLACK}Light brown
-STR_5539    :{SMALLFONT}{BLACK}Saturated brown
-STR_5540    :{SMALLFONT}{BLACK}Dark brown
-STR_5541    :{SMALLFONT}{BLACK}Salmon pink
-STR_5542    :{SMALLFONT}{BLACK}Bordeaux red
-STR_5543    :{SMALLFONT}{BLACK}Saturated red
-STR_5544    :{SMALLFONT}{BLACK}Bright red
-STR_5545    :{SMALLFONT}{BLACK}Dark pink
-STR_5546    :{SMALLFONT}{BLACK}Bright pink
-STR_5547    :{SMALLFONT}{BLACK}Light pink
+STR_5515    :Stops guests from vandalising your park when they're angry
+STR_5516    :Black
+STR_5517    :Grey
+STR_5518    :White
+STR_5519    :Dark purple
+STR_5520    :Light purple
+STR_5521    :Bright purple
+STR_5522    :Dark blue
+STR_5523    :Light blue
+STR_5524    :Icy blue
+STR_5525    :Dark water
+STR_5526    :Light water
+STR_5527    :Saturated green
+STR_5528    :Dark green
+STR_5529    :Moss green
+STR_5530    :Bright green
+STR_5531    :Olive green
+STR_5532    :Dark olive green
+STR_5533    :Bright yellow
+STR_5534    :Yellow
+STR_5535    :Dark yellow
+STR_5536    :Light orange
+STR_5537    :Dark orange
+STR_5538    :Light brown
+STR_5539    :Saturated brown
+STR_5540    :Dark brown
+STR_5541    :Salmon pink
+STR_5542    :Bordeaux red
+STR_5543    :Saturated red
+STR_5544    :Bright red
+STR_5545    :Dark pink
+STR_5546    :Bright pink
+STR_5547    :Light pink
 STR_5548    :Show all operating modes
 STR_5549    :Year/Month/Day
 STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Year/Day/Month
 STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Pause game when Steam overlay is open
-STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
+STR_5554    :Enable mountain tool
 STR_5555    :Show vehicles from other track types
-STR_5556    :{SMALLFONT}{BLACK}Kick player
+STR_5556    :Kick player
 STR_5557    :Stay connected after desynchronisation (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
-STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5560    :Sets the inspection time to 'Every 10 minutes' on all rides
 STR_5561    :Failed to load language
 STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
-STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
+STR_5565    :Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :Password:
 STR_5567    :Advertise
 STR_5568    :Password Required
@@ -2902,10 +2902,10 @@ STR_5581    :Show FPS
 STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}m/s
 STR_5584    :SI
-STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
+STR_5585    :Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
-STR_5587    :{SMALLFONT}{BLACK}Shops and stalls will be automatically opened after building them
-STR_5588    :{SMALLFONT}{BLACK}Play with other players
+STR_5587    :Shops and stalls will be automatically opened after building them
+STR_5588    :Play with other players
 STR_5589    :Notification Settings
 STR_5590    :Park awards
 STR_5591    :Marketing campaign has finished
@@ -2923,18 +2923,18 @@ STR_5603    :Guest has left ride
 STR_5604    :Guest has bought item
 STR_5605    :Guest has used facility
 STR_5606    :Guest has died
-STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
+STR_5607    :Forcefully remove selected map element.
 STR_5608    :BH
 STR_5609    :CH
-STR_5610    :{SMALLFONT}{BLACK}Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
+STR_5610    :Remove the currently selected map element. This will forcefully remove it, so no cash will be used/gained. Use with caution.
 STR_5611    :G
-STR_5612    :{SMALLFONT}{BLACK}Ghost flag
+STR_5612    :Ghost flag
 STR_5613    :B
-STR_5614    :{SMALLFONT}{BLACK}Broken flag
+STR_5614    :Broken flag
 STR_5615    :L
-STR_5616    :{SMALLFONT}{BLACK}Last element for tile flag
-STR_5617    :{SMALLFONT}{BLACK}Move selected element up.
-STR_5618    :{SMALLFONT}{BLACK}Move selected element down.
+STR_5616    :Last element for tile flag
+STR_5617    :Move selected element up.
+STR_5618    :Move selected element down.
 STR_5619    :RollerCoaster Tycoon
 STR_5620    :Added Attractions
 STR_5621    :Loopy Landscapes
@@ -2955,8 +2955,8 @@ STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
 STR_5637    :Can't do this…
 STR_5638    :Permission denied
-STR_5639    :{SMALLFONT}{BLACK}Show list of players
-STR_5640    :{SMALLFONT}{BLACK}Manage groups
+STR_5639    :Show list of players
+STR_5640    :Manage groups
 STR_5641    :Default Group:
 STR_5642    :Group
 STR_5643    :Add Group
@@ -2984,7 +2984,7 @@ STR_5664    :Cheat
 STR_5665    :Toggle Scenery Cluster
 STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
+STR_5702    :Locate player's most recent action
 STR_5703    :Can't kick the host
 STR_5704    :Last Action
 STR_5705    :Can't set to this group
@@ -3001,7 +3001,7 @@ STR_5715    :New Game
 STR_5716    :Not allowed in multiplayer mode
 # For identifying client network version in server list window
 STR_5717    :Network version: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
+STR_5718    :Network version: {STRING}
 STR_5719    :Sunny
 STR_5720    :Partially Cloudy
 STR_5721    :Cloudy
@@ -3009,18 +3009,18 @@ STR_5722    :Rain
 STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5726    :Sets the current weather in park
 STR_5727    :Skaleringskvalitet:
 STR_5731    :Linear
 # tooltip for tab in options window
-STR_5734    :{SMALLFONT}{BLACK}Rendering
+STR_5734    :Rendering
 STR_5735    :Network Status
 STR_5736    :Player
 STR_5737    :Closed, {COMMA16} person still on ride
 STR_5738    :Closed, {COMMA16} people still on ride
 STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
 STR_5740    :Never-ending marketing campaigns
-STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
+STR_5741    :Marketing campaigns never end
 STR_5742    :Authenticating …
 STR_5743    :Connecting …
 STR_5744    :Resolving …
@@ -3069,91 +3069,91 @@ STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :Disable lightning effect
-STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
-STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
-STR_5793    :{SMALLFONT}{BLACK}Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
-STR_5794    :{SMALLFONT}{BLACK}Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
-STR_5795    :{SMALLFONT}{BLACK}Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
-STR_5796    :{SMALLFONT}{BLACK}Forces the park to close or open
-STR_5797    :{SMALLFONT}{BLACK}Disables weather changes and{NEWLINE}freezes the selected weather
-STR_5798    :{SMALLFONT}{BLACK}Allows building actions in pause mode
-STR_5799    :{SMALLFONT}{BLACK}Disables ride breakdowns and crashes due to brake failure
-STR_5800    :{SMALLFONT}{BLACK}Prevents rides from breaking down
+STR_5790    :Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
+STR_5791    :Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5792    :Fixes all broken down rides
+STR_5793    :Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
+STR_5794    :Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
+STR_5795    :Guests ride every attraction in the park{NEWLINE}even if the intensity is extremely high
+STR_5796    :Forces the park to close or open
+STR_5797    :Disables weather changes and{NEWLINE}freezes the selected weather
+STR_5798    :Allows building actions in pause mode
+STR_5799    :Disables ride breakdowns and crashes due to brake failure
+STR_5800    :Prevents rides from breaking down
 STR_5801    :Disable littering
-STR_5802    :{SMALLFONT}{BLACK}Stops guests from littering and vomiting
-STR_5803    :{SMALLFONT}{BLACK}Rotate selected map element
+STR_5802    :Stops guests from littering and vomiting
+STR_5803    :Rotate selected map element
 STR_5804    :Mute sound
-STR_5805    :{SMALLFONT}{BLACK}If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
+STR_5805    :If checked, your server will be added to the{NEWLINE}public server list so everyone can find it
 STR_5806    :Toggle windowed mode
 STR_5807    :{WINDOW_COLOUR_2}Number of rides: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Number of shops and stalls: {BLACK}{COMMA16}
 STR_5809    :{WINDOW_COLOUR_2}Number of information kiosks and other facilities: {BLACK}{COMMA16}
 STR_5810    :Skru av vognbegrensninger
-STR_5811    :{SMALLFONT}{BLACK}Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
+STR_5811    :Hvis merket kan du ha opp til {NEWLINE}255 vogner per tog, og 31{NEWLINE}tog per attraksjon
 STR_5812    :Show multiplayer window
 STR_5813    :“{STRING}”
 STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 
 #tooltips
-STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
-STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :{SMALLFONT}{BLACK}Setter skaleringsmetode for brukergrensesnitt. Krever hardware rendering.{NEWLINE}Lineær skalering er jevn, men utydelig. 'Jevn nærmeste-nabo'-skalering er skarp, men er mer krevende.
-STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
-STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
-STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
-STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
-STR_5825    :{SMALLFONT}{BLACK}Keep the mouse cursor in the window
-STR_5826    :{SMALLFONT}{BLACK}Invert høyre mouse dragging of the viewport
-STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
-STR_5828    :{SMALLFONT}{BLACK}Changes what measurement format is used for distances, speed, etc.
-STR_5829    :{SMALLFONT}{BLACK}Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
-STR_5830    :{SMALLFONT}{BLACK}Changes what language is used
-STR_5831    :{SMALLFONT}{BLACK}Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :{SMALLFONT}{BLACK}Show height as generic units instead of measurement format set under "Distance and Speed"
-STR_5833    :{SMALLFONT}{BLACK}Changes what date format is used
-STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
-STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
-STR_5836    :{SMALLFONT}{BLACK}Velg musikk for hovedmenyen.{NEWLINE}For å velge RCT1-musikk må du kopiere 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.dat' i din RCT2-installasjon – eller sett stien til din RCT1-installasjon i Diverse-fanen.
-STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
-STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
-STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
-STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
-STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
-STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
-STR_5843    :{SMALLFONT}{BLACK}Scenarier blir låst opp etterhvert som du fullfører dem (som i RCT1)
-STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
-STR_5845    :{SMALLFONT}{BLACK}Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
-STR_5846    :{SMALLFONT}{BLACK}Set often OpenRCT2 automatically saves
-STR_5847    :{SMALLFONT}{BLACK}Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5848    :{SMALLFONT}{BLACK}Create and manage custom title sequences
-STR_5849    :{SMALLFONT}{BLACK}Automatically place{NEWLINE}newly hired staff members
-STR_5851    :{SMALLFONT}{BLACK}Sets the default inspection interval{NEWLINE}on newly built rides
-STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
-STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
-STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
-STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
-STR_5857    :{SMALLFONT}{BLACK}Game options
-STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
-STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
+STR_5815    :Display FPS counter in-game
+STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
+STR_5817    :Setter skaleringsmetode for brukergrensesnitt. Krever hardware rendering.{NEWLINE}Lineær skalering er jevn, men utydelig. 'Jevn nærmeste-nabo'-skalering er skarp, men er mer krevende.
+STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
+STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
+STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
+STR_5823    :Display banners in uppercase (RCT1 behaviour)
+STR_5824    :Disables lightning effect{NEWLINE}during a thunderstorm
+STR_5825    :Keep the mouse cursor in the window
+STR_5826    :Invert høyre mouse dragging of the viewport
+STR_5827    :Sets the colour scheme used for the GUI
+STR_5828    :Changes what measurement format is used for distances, speed, etc.
+STR_5829    :Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
+STR_5830    :Changes what language is used
+STR_5831    :Changes what format the{NEWLINE}temperature is displayed in
+STR_5832    :Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5833    :Changes what date format is used
+STR_5834    :Select which audio device OpenRCT2 will use
+STR_5835    :Mute the game if the window loses focus
+STR_5836    :Velg musikk for hovedmenyen.{NEWLINE}For å velge RCT1-musikk må du kopiere 'data/css17.dat' fra din RCT1-installasjon til 'data/css50.dat' i din RCT2-installasjon – eller sett stien til din RCT1-installasjon i Diverse-fanen.
+STR_5837    :Create and manage custom UI themes
+STR_5838    :Show a separate button for the finance window in the toolbar
+STR_5839    :Show a separate button for the research and development window in the toolbar
+STR_5840    :Show a separate button for the cheats window in the toolbar
+STR_5841    :Show a separate button for the recent news window in the toolbar
+STR_5842    :Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
+STR_5843    :Scenarier blir låst opp etterhvert som du fullfører dem (som i RCT1)
+STR_5844    :Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
+STR_5845    :Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
+STR_5846    :Set often OpenRCT2 automatically saves
+STR_5847    :Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
+STR_5848    :Create and manage custom title sequences
+STR_5849    :Automatically place{NEWLINE}newly hired staff members
+STR_5851    :Sets the default inspection interval{NEWLINE}on newly built rides
+STR_5853    :Toggle sound effects on/off
+STR_5854    :Toggle ride music on/off
+STR_5855    :Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
+STR_5856    :Set game resolution when in fullscreen mode
+STR_5857    :Game options
+STR_5858    :Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
+STR_5859    :Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5860    :Original/dekompilert banetegning
 STR_5861    :Key verification failure.
 STR_5862    :Block unknown players.
-STR_5863    :{SMALLFONT}{BLACK}Only allow players with known keys to join.
+STR_5863    :Only allow players with known keys to join.
 STR_5864    :This server only allows whitelisted players to connect.
 STR_5865    :Loggfør chathistorie
-STR_5866    :{SMALLFONT}{BLACK}Loggfører all chathistorie til filer i din brukerkatalog.
+STR_5866    :Loggfører all chathistorie til filer i din brukerkatalog.
 STR_5867    :{WINDOW_COLOUR_2}Leverandørens navn: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Leverandørens epost: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Leverandørens nettside: {BLACK}{STRING}
-STR_5870    :{SMALLFONT}{BLACK}Vis serverinformasjon
+STR_5870    :Vis serverinformasjon
 STR_5871    :Planter eldes ikke
-STR_5872    :{SMALLFONT}{BLACK}Hindre planter i å eldes slik at de ikke visner
+STR_5872    :Hindre planter i å eldes slik at de ikke visner
 STR_5873    :Tillat trekk på alle deler av banen
-STR_5874    :{SMALLFONT}{BLACK}Gjør slik at hver del av banen kan brukes som trekk
+STR_5874    :Gjør slik at hver del av banen kan brukes som trekk
 STR_5875    :Grafikkmotor
-STR_5876    :{SMALLFONT}{BLACK}Motoren som bruker for å tegne spillgrafikk
+STR_5876    :Motoren som bruker for å tegne spillgrafikk
 STR_5877    :Software
 STR_5878    :Software (hardware rendering)
 STR_5879    :OpenGL (eksperimentelt)
@@ -3169,7 +3169,7 @@ STR_5888    :Suffiks
 STR_5889    :Symbol for egendefinert valuta
 STR_5890    :Skriv inn valutasymbol
 STR_5891    :Standard
-STR_5892    :{SMALLFONT}{BLACK}Gå til standardmappen
+STR_5892    :Gå til standardmappen
 STR_5893    :Valutakurs
 STR_5894    :Skriv inn valutakurs
 STR_5895    :Lagre bane
@@ -3181,11 +3181,11 @@ STR_5901    :Vis segmenthøyder
 STR_5902    :Vis markeringsrammer
 STR_5903    :Vis 'grafikk debug' vindu
 STR_5904    :Tilbakestill dato
-STR_5905    :{SMALLFONT}{BLACK}Et kartgenereringsverktøy som automatisk lager nye landskaper
+STR_5905    :Et kartgenereringsverktøy som automatisk lager nye landskaper
 STR_5906    :Zoom til museposisjon
-STR_5907    :{SMALLFONT}{BLACK}Hvis aktivert vil kameraet zoome mot musen istedenfor skjermens midtpunkt.
+STR_5907    :Hvis aktivert vil kameraet zoome mot musen istedenfor skjermens midtpunkt.
 STR_5908    :Tillat vilkårlig endring av attraksjonstype
-STR_5909    :{SMALLFONT}{BLACK}Tillater fri endring av attraksjonstype. Kan forårsake krasj.
+STR_5909    :Tillater fri endring av attraksjonstype. Kan forårsake krasj.
 STR_5910    :Bruk
 STR_5911    :Gjennomsiktige stier
 STR_5912    :Ikke-/Gjennomsiktige stier
@@ -3197,9 +3197,9 @@ STR_5917    :{COMMA16} spillere
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Vis væreffekter
-STR_5921    :{SMALLFONT}{BLACK}Skrur på regn og dystre fargeeffekter i storm.
-STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {STRINGID}
-STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Maks {COMMA16} {STRINGID} per tog
+STR_5921    :Skrur på regn og dystre fargeeffekter i storm.
+STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {STRINGID}
+STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}Maks {COMMA16} {STRINGID} per tog
 STR_5924    :Overflatedetaljer
 STR_5925    :Veidetaljer
 STR_5926    :Banedetaljer
@@ -3229,7 +3229,7 @@ STR_5949    :{WINDOW_COLOUR_2}Trekk
 STR_5950    :{WINDOW_COLOUR_2}Påfør endringer på banedel
 STR_5951    :{WINDOW_COLOUR_2}Baneeleent-ID: {BLACK}{COMMA16}
 STR_5952    :{WINDOW_COLOUR_2}Sekvensnummer: {BLACK}{COMMA16}
-STR_5953    :{SMALLFONT}{BLACK}Sorter elementer på denne ruten basert på grunnhøyde.
+STR_5953    :Sorter elementer på denne ruten basert på grunnhøyde.
 STR_5954    :{WINDOW_COLOUR_2}Pyntalder: {BLACK}{COMMA16}
 STR_5955    :{WINDOW_COLOUR_2}Kvadrantposisjon: {BLACK}{STRINGID}
 STR_5956    :Sørvest
@@ -3250,7 +3250,7 @@ STR_5970    :{WINDOW_COLOUR_2}Inngangs-ID: {BLACK}{COMMA16}
 STR_5971    :{WINDOW_COLOUR_2}Utgangs-ID: {BLACK}{COMMA16}
 STR_5972    :{WINDOW_COLOUR_2}Attraksjons-ID: {BLACK}{COMMA16}
 STR_5973    :Fest til neste
-STR_5974    :{SMALLFONT}{BLACK}Endrer grunn- og klareringshøyden til å være lik neste element på denne ruten. Dette gjør det enklere å bygge på ruten.
+STR_5974    :Endrer grunn- og klareringshøyden til å være lik neste element på denne ruten. Dette gjør det enklere å bygge på ruten.
 STR_5975    :Helning:
 STR_5976    :Vannrett
 STR_5977    :Høyre side opp
@@ -3264,13 +3264,13 @@ STR_5984    :Blokkerte gangstier:
 STR_5985    :Ny mappe
 STR_5986    :Skriv inn navnet på den nye mappen.
 STR_5987    :Kunne ikke opprette mappe
-STR_5988    :{SMALLFONT}{BLACK}Ingen gjenværende landrettigheter til salgs
-STR_5989    :{SMALLFONT}{BLACK}Ingen gjenværende byggerettigheter til salgs
-STR_5990    :{SMALLFONT}{BLACK}Ingen gjenværende landrettigheter eller byggerettigheter til salgs
+STR_5988    :Ingen gjenværende landrettigheter til salgs
+STR_5989    :Ingen gjenværende byggerettigheter til salgs
+STR_5990    :Ingen gjenværende landrettigheter eller byggerettigheter til salgs
 STR_5991    :Kunne ikke lime inn element…
 STR_5992    :Grensen for antall elementer har blitt nådd
-STR_5993    :{SMALLFONT}{BLACK}Kopier valgt element
-STR_5994    :{SMALLFONT}{BLACK}Lim inn valgt element
+STR_5993    :Kopier valgt element
+STR_5994    :Lim inn valgt element
 STR_5995    :Booster
 STR_5996    :Boosterfart
 STR_5997    :Legg til/sett penger
@@ -3278,19 +3278,19 @@ STR_5998    :Legg til penger
 STR_5999    :Sett penger
 STR_6000    :Skriv inn ny verdi
 STR_6001    :Skru på lyseffekter (eksperimentelt)
-STR_6002    :{SMALLFONT}{BLACK}Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt til hardware display.
+STR_6002    :Lamper og attraksjoner vil bli opplyst om natten.{NEWLINE}Krever at grafikkmotoren er satt til hardware display.
 STR_6003    :Utklippskamera
 STR_6004    :Utklippskamera
 STR_6005    :Skru på utklippskamera
-STR_6006    :{SMALLFONT}{BLACK}Utklippskamera skjuler elementer over utklippshøyden (for vertikal utklipping) og utenfor det valgte området (for horisontal utklipping).
+STR_6006    :Utklippskamera skjuler elementer over utklippshøyden (for vertikal utklipping) og utenfor det valgte området (for horisontal utklipping).
 STR_6007    :Utklippshøyde
-STR_6008    :{SMALLFONT}{BLACK}Skru på rå verdi<->verdi i måleenheter
-STR_6009    :{SMALLFONT}{BLACK}Velg utklippshøyde
+STR_6008    :Skru på rå verdi<->verdi i måleenheter
+STR_6009    :Velg utklippshøyde
 STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
-STR_6013    :{SMALLFONT}{BLACK}Gjester betaler kun for inngang, tjenester og kioskvarer.{NEWLINE}De betaler ikke for attraksjoner.
-STR_6014    :{SMALLFONT}{BLACK}Gjester betaler kun for attraksjoner, tjenester og kioskvarer.{NEWLINE}De betaler ikke for inngang.
+STR_6013    :Gjester betaler kun for inngang, tjenester og kioskvarer.{NEWLINE}De betaler ikke for attraksjoner.
+STR_6014    :Gjester betaler kun for attraksjoner, tjenester og kioskvarer.{NEWLINE}De betaler ikke for inngang.
 STR_6015    :Helning
 STR_6016    :Endre rute
 STR_6017    :Vennligst ro ned
@@ -3306,16 +3306,16 @@ STR_6026    :Attraksjonskonstruksjon - Flytt til forrige seksjon
 STR_6027    :Attraksjonskonstruksjon - Flytt til neste seksjon
 STR_6028    :Attraksjonskonstruksjon - Konstruer valgt seksjon
 STR_6029    :Attraksjonskonstruksjon - Fjern markert seksjon
-STR_6030    :{SMALLFONT}{BLACK}Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge samme element for konstruksjon.
+STR_6030    :Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge samme element for konstruksjon.
 STR_6031    :Serverbeskrivelse:
 STR_6032    :Server-velkomstbeskjed:
 STR_6033    :Sti til RCT1 insallasjonsmappe:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{STRING}
 STR_6035    :Velg din RCT1-mappe
-STR_6036    :{SMALLFONT}{BLACK}Visk ut
+STR_6036    :Visk ut
 STR_6037    :Vennligst velg en gyldig RCT1 mappe
-STR_6038    :{SMALLFONT}{BLACK}Hvis du har RCT1 installert kan du sette denne verdien for å hente inn blant annet scenarier og musikk
-STR_6039    :{SMALLFONT}{BLACK}Rask attraksjonsrivning
+STR_6038    :Hvis du har RCT1 installert kan du sette denne verdien for å hente inn blant annet scenarier og musikk
+STR_6039    :Rask attraksjonsrivning
 STR_6040    :Endre scenarioinnstillinger
 STR_6041    :{BLACK}Ingen mekanikere er ansatt!
 STR_6042    :Last inn høydekart
@@ -3332,19 +3332,19 @@ STR_6052    :Høydekartet er for stort og vil bli kuttet av
 STR_6053    :Høydekartet kunne ikke normaliseres
 STR_6054    :Kun 24-bit bitmaps er støttet
 STR_6055    :OpenRCT2 høydekartfil
-STR_6056    :{SMALLFONT}{BLACK}Demp lyd
-STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
-STR_6057    :{SMALLFONT}{BLACK}Vis en separat knapp for lyddemping i verktøylinjen
+STR_6056    :Demp lyd
+STR_6057    :Show a separate button for the Mute Option in the toolbar
+STR_6057    :Vis en separat knapp for lyddemping i verktøylinjen
 STR_6058    :Demp lyd
 STR_6059    :»
 STR_6060    :Vis gjestenes innkjøp som en animasjon
-STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
-STR_6061    :{SMALLFONT}{BLACK}Vis animert penge-effekt{NEWLINE}når gjester kjøper noe.
+STR_6061    :Show animated money effect{NEWLINE}when guests make purchases.
+STR_6061    :Vis animert penge-effekt{NEWLINE}når gjester kjøper noe.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Ta eierskap av alt land
 STR_6065    :Loggfør brukerhandlinger
-STR_6066    :{SMALLFONT}{BLACK}Loggerfører alle brukerhandlinger til filer i din brukerkatalog.
+STR_6066    :Loggerfører alle brukerhandlinger til filer i din brukerkatalog.
 STR_6067    :Server startet.
 STR_6068    :Server skrus av.
 STR_6069    :{STRING} ble sparket fra serveren av {STRING}.
@@ -3380,8 +3380,8 @@ STR_6098    :{STRING} fjernet et sporelement.
 STR_6099    :Du koblet til serveren.
 STR_6100    :Du koblet fra serveren.
 STR_6101    :Attraksjoners verdi synker ikke over tid
-STR_6102    :{SMALLFONT}{BLACK}Verdien til attraksjoner synker ikke over tid, slik at gjester ikke bestemmer seg for at en attraksjon har for høy inngangspris.
-STR_6103    :{SMALLFONT}{BLACK}Denne innstillingen er skrudd av for nettverksspill.
+STR_6102    :Verdien til attraksjoner synker ikke over tid, slik at gjester ikke bestemmer seg for at en attraksjon har for høy inngangspris.
+STR_6103    :Denne innstillingen er skrudd av for nettverksspill.
 STR_6105    :Hyper berg-og-dal-bane
 STR_6107    :Monster Trucker
 STR_6109    :Hyper-Twister
@@ -3391,7 +3391,7 @@ STR_6115    :Selvdrevne gigantiske firehjulstrucker som kan kjøre opp bratte ba
 STR_6116    :Vide berg-og-dal-bane-tog glir langs jevne stålspor, mens de går gjennom et stort utvalg opp-ned-seksjoner
 STR_6119    :En billig og lettbygd berg-og-dal-bane, men med knapp høydebegrensning
 STR_6120    :{BABYBLUE}Ny vogn nå tilgjengelig for {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}Utvider parkens landrettigheter til kartets kanter
+STR_6121    :Utvider parkens landrettigheter til kartets kanter
 STR_6122    :Det er ikke nok berg-og-dal-baner i dette scenariet!
 STR_6123    :Feil i lasting av objekter for park
 STR_6124    :Objektnavn
@@ -3403,7 +3403,7 @@ STR_6129    :Kopier
 STR_6130    :Kopier alt
 STR_6131    :Objektkilde
 STR_6132    :Ignorer forskningsstatus
-STR_6133    :{SMALLFONT}{BLACK}Gir tilgang til attraksjoner og pynt som ikke har blitt funnet opp enda
+STR_6133    :Gir tilgang til attraksjoner og pynt som ikke har blitt funnet opp enda
 STR_6134    :Slett pynt
 STR_6135    :Klient sendte ugyldig forespørsel
 STR_6136    :Server sendte ugyldig forespørsel
@@ -3415,9 +3415,9 @@ STR_6141    :RCT1 nedre verktøylinje
 STR_6142    :{WINDOW_COLOUR_2}Banenavn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Attraksjonstype: {BLACK}{STRINGID}
 STR_6144    :Vis blokkoppdateringer
-STR_6145    :{SMALLFONT}{BLACK}Set øvre fartsgrense for boostere
+STR_6145    :Set øvre fartsgrense for boostere
 STR_6146    :Tillat alle visbare banedeler
-STR_6147    :{SMALLFONT}{BLACK}Tillater alle banedeler for attraksjonen, uten hensyn til hva vogntypen støtter.
+STR_6147    :Tillater alle banedeler for attraksjonen, uten hensyn til hva vogntypen støtter.
 STR_6148    :Kobler til mesterserver.
 STR_6149    :Kunne ikke koble til mesterserver
 STR_6150    :Ugyldig svar fra mesterserver (mangler JSON-nummer)
@@ -3436,13 +3436,13 @@ STR_6162    :Spinnende ville mus
 STR_6163    :Museformede vogner suser gjennom skarpe svinger og små fall mens de sakte spinner for å desorientere passasjerene
 STR_6164    :{WHITE}❌
 STR_6165    :Bruk Vertical Sync
-STR_6166    :{SMALLFONT}{BLACK}Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer "screen tearing".
-STR_6167    :{SMALLFONT}{BLACK}Avansert
+STR_6166    :Synkroniserer visning av bilder med skjermens oppdateringsfrekvens; forhindrer "screen tearing".
+STR_6167    :Avansert
 STR_6168    :Tittelsekvens
 STR_6169    :Scenariovalg
 STR_6170    :Tilpass brukergrensesnitt
 STR_6171    :Søk
-STR_6172    :{SMALLFONT}{BLACK}Søk
+STR_6172    :Søk
 STR_6173    :Skriv inn navnet du ønsker å søke etter:
 STR_6174    :Last inn lagret spill
 STR_6175    :Last inn scenario
@@ -3460,7 +3460,7 @@ STR_6186    :Ingen sprite valgt
 STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Oppkast
 STR_6189    :And
-STR_6190    :{SMALLFONT}{BLACK}Du kan ikke velge sprite mens tittelsekvensen spilles av.
+STR_6190    :Du kan ikke velge sprite mens tittelsekvensen spilles av.
 STR_6191    :Overflate
 STR_6192    :Vegg
 STR_6193    :{COMMA16} gjest
@@ -3473,20 +3473,20 @@ STR_6199    :Sett dato
 STR_6200    :Tilbakestill dato
 STR_6201    :{MONTH}
 STR_6202    :Stil på virtuelt gulv
-STR_6203    :{SMALLFONT}{BLACK}Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
+STR_6203    :Viser et virtuelt gulv når Ctrl eller Shift holdes, for å assistere i plassering av elementer vertikalt.
 STR_6215    :Konstruksjon
 STR_6216    :Operasjon
 STR_6217    :Attraksjons- og sportilgjengelighet
 STR_6218    :OpenRCT2 offisielt
 STR_6219    :Fremhev problemer på gangstier
 STR_6220    :Gjør aktiv
-STR_6221    :{SMALLFONT}{BLACK}Sett attraksjonens kjente inngangs- og utgangsposisjon til den gjeldende ruten. Kun én inngangs- og utgangsposisjon per stasjon kan bli gjort aktiv.
+STR_6221    :Sett attraksjonens kjente inngangs- og utgangsposisjon til den gjeldende ruten. Kun én inngangs- og utgangsposisjon per stasjon kan bli gjort aktiv.
 STR_6222    :Kan ikke plassere gjesteinngangspunkt her…
 STR_6223    :Må være utenfor parkens grenser!
 STR_6224    :{STRING} plasserte et gjesteinngangspunkt.
 STR_6225    :Visningen ikke støttet i OpenGL-grafikkmotoren
 STR_6226    :Tillat å fullføre scenario før tidsfristen
-STR_6227    :{SMALLFONT}{BLACK}Trigger scenario-seier med en gang målene for scenariet er nådd, selv om tiden ikke er ute.
+STR_6227    :Trigger scenario-seier med en gang målene for scenariet er nådd, selv om tiden ikke er ute.
 STR_6228    :Scenarioinnstillinger
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{STRINGID}:
@@ -3502,9 +3502,9 @@ STR_6239    :Vertikal utklipping
 STR_6240    :Horisontal utklipping
 STR_6241    :Velg område
 STR_6242    :Fjern markering
-STR_6243    :{SMALLFONT}{BLACK}Pusser opp attraksjonen,{NEWLINE}gjør den som ny
+STR_6243    :Pusser opp attraksjonen,{NEWLINE}gjør den som ny
 STR_6244    :Kan ikke pusse opp attraksjon…
-STR_6245    :{SMALLFONT}{BLACK}Attraksjonen trenger ikke oppussing
+STR_6245    :Attraksjonen trenger ikke oppussing
 STR_6246    :Puss opp
 STR_6247    :Puss opp attraksjon
 STR_6248    :{WINDOW_COLOUR_1}Pusse opp {STRINGID} for {CURRENCY}?
@@ -3519,9 +3519,9 @@ STR_6259    :Av
 STR_6260    :Vis blokkerte ruter
 STR_6261    :Vis brede stier
 STR_6262    :Hovedvolum
-STR_6263    :{SMALLFONT}{BLACK}Skru all lyd av/på
+STR_6263    :Skru all lyd av/på
 STR_6264    :Alltid bruk systemets fildialog
-STR_6265    :{SMALLFONT}{BLACK}Alltid ta i bruk systemets egne fildialog-vindu istedenfor det fra OpenRCT2.
+STR_6265    :Alltid ta i bruk systemets egne fildialog-vindu istedenfor det fra OpenRCT2.
 STR_6266    :Åpne mappen for egendefinerte spillressurser
 STR_6267    :Åpne ruteinspektør
 STR_6268    :Gå fram ett tick
@@ -3535,9 +3535,9 @@ STR_6275    :{WINDOW_COLOUR_2}Stasjon-stil:
 STR_6276    :{RED}Gjester sitter fast i {STRINGID}, mulig grunnet ugyldig attraksjonstype eller operasjonsmodus.
 STR_6277    :{WINDOW_COLOUR_2}Stasjonsindeks: {BLACK}{STRINGID}
 STR_6278    :Antall autolagringer
-STR_6279    :{SMALLFONT}{BLACK}Antall automatiske lagringer som blir beholdt
-STR_6280    :{SMALLFONT}{BLACK}Chat
-STR_6281    :{SMALLFONT}{BLACK}Vis en separat knapp for chattevinduet i verktøyjinjen
+STR_6279    :Antall automatiske lagringer som blir beholdt
+STR_6280    :Chat
+STR_6281    :Vis en separat knapp for chattevinduet i verktøyjinjen
 STR_6282    :Chat
 STR_6283    :Chat not available at this time. Are you connected to a server?
 STR_6283    :Chatten er for øyeblikket ikke tilgjengelig. Er du koblet til en server?
@@ -3557,13 +3557,13 @@ STR_6296    :GiB
 STR_6297    :TiB
 STR_6298    :{STRING}/s
 STR_6299    :Last ned alt
-STR_6300    :{SMALLFONT}{BLACK}Last ned manglende objekter hvis de er tilgjengelige på nettet.
-STR_6301    :{SMALLFONT}{BLACK}Kopier navnet til det valgte objektet til utklippstavlen.
-STR_6302    :{SMALLFONT}{BLACK}Kopier hele listen manglende objekter til utklippstavlen.
+STR_6300    :Last ned manglende objekter hvis de er tilgjengelige på nettet.
+STR_6301    :Kopier navnet til det valgte objektet til utklippstavlen.
+STR_6302    :Kopier hele listen manglende objekter til utklippstavlen.
 STR_6303    :Laster ned objekt ({COMMA16} / {COMMA16}): [{STRING}]
 STR_6304    :Åpne pyntvelger
 STR_6305    :Multithreading
-STR_6306    :{SMALLFONT}{BLACK}Eksperimentelt valg for å bruke flere tråder til rendering. Kan gjøre spillet ustabilt.
+STR_6306    :Eksperimentelt valg for å bruke flere tråder til rendering. Kan gjøre spillet ustabilt.
 STR_6307    :Fargeskjema: {BLACK}{STRINGID}
 STR_6308    :{TOPAZ}“{STRINGID}{OUTLINE}{TOPAZ}”{NEWLINE}{STRINGID}
 STR_6309    :Koble til på nytt
@@ -3582,10 +3582,10 @@ STR_6321    :{WINDOW_COLOUR_2}Gangstitillegg er ødelagt
 STR_6322    :{WINDOW_COLOUR_2}Sprite-ID: {BLACK}{INT32}
 STR_6323    :Simulerer
 STR_6324    :Simuler
-STR_6325    :{SMALLFONT}{BLACK}Simuler attraksjon
+STR_6325    :Simuler attraksjon
 STR_6326    :Kan ikke simulere {POP16}{POP16}{POP16}{STRINGID}…
 STR_6327    :Gjennomsiktig bakgrunn for gigantiske skjermbilder
-STR_6328    :{SMALLFONT}{BLACK}Gigantiske skjermbilder blir lagret med gjennomsiktig bakgrunn istedenfor vanlig svart.
+STR_6328    :Gigantiske skjermbilder blir lagret med gjennomsiktig bakgrunn istedenfor vanlig svart.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Laster ned [{STRING}] fra {STRING} ({COMMA16} / {COMMA16})
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
