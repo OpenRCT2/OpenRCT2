@@ -16,8 +16,8 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <string>
 #include <sstream>
+#include <string>
 
 using namespace OpenRCT2;
 
