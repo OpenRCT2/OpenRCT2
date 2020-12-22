@@ -277,8 +277,9 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
 GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::Result::Ptr res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
+    uint32_t flags = GetFlags();
 
-    if (!(GetFlags() & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
+    if (!(flags & (GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST)))
     {
         footpath_remove_litter(_loc);
     }
