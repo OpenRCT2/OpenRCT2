@@ -37,7 +37,7 @@ static constexpr const uint8_t byte_993D0C[] = {
 };
 // clang-format on
 
-DEFINE_GAME_ACTION(MazeSetTrackAction, GAME_COMMAND_SET_MAZE_TRACK, GameActions::Result)
+DEFINE_GAME_ACTION(MazeSetTrackAction, GameCommand::SetMazeTrack, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

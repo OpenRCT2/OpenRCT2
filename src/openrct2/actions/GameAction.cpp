@@ -108,17 +108,19 @@ namespace GameActions
         }
     };
 
-    static GameActionFactory _actions[GAME_COMMAND_COUNT];
+    static GameActionFactory _actions[EnumValue(GameCommand::Count)];
     static std::multiset<QueuedGameAction> _actionQueue;
     static uint32_t _nextUniqueId = 0;
     static bool _suspended = false;
 
-    GameActionFactory Register(uint32_t id, GameActionFactory factory)
+    GameActionFactory Register(GameCommand id, GameActionFactory factory)
     {
-        Guard::Assert(id < std::size(_actions));
+        const auto idx = static_cast<size_t>(id);
+
+        Guard::Assert(idx < std::size(_actions));
         Guard::ArgumentNotNull(factory);
 
-        _actions[id] = factory;
+        _actions[idx] = factory;
         return factory;
     }
 
@@ -194,11 +196,13 @@ namespace GameActions
             // Remove ghost scenery so it doesn't interfere with incoming network command
             switch (queued.action->GetType())
             {
-                case GAME_COMMAND_PLACE_WALL:
-                case GAME_COMMAND_PLACE_LARGE_SCENERY:
-                case GAME_COMMAND_PLACE_BANNER:
-                case GAME_COMMAND_PLACE_SCENERY:
+                case GameCommand::PlaceWall:
+                case GameCommand::PlaceLargeScenery:
+                case GameCommand::PlaceBanner:
+                case GameCommand::PlaceScenery:
                     scenery_remove_ghost_tool_placement();
+                    break;
+                default:
                     break;
             }
 
@@ -234,14 +238,16 @@ namespace GameActions
         initialized = true;
     }
 
-    std::unique_ptr<GameAction> Create(uint32_t id)
+    std::unique_ptr<GameAction> Create(GameCommand id)
     {
         Initialize();
 
+        const auto idx = static_cast<size_t>(id);
+
         GameAction* result = nullptr;
-        if (id < std::size(_actions))
+        if (idx < std::size(_actions))
         {
-            GameActionFactory factory = _actions[id];
+            GameActionFactory factory = _actions[idx];
             if (factory != nullptr)
             {
                 result = factory();
@@ -345,7 +351,7 @@ namespace GameActions
         char temp[128] = {};
         snprintf(
             temp, sizeof(temp), "[%s] Tick: %u, GA: %s (%08X) (", GetRealm(), gCurrentTicks, action->GetName(),
-            action->GetType());
+            EnumValue(action->GetType()));
 
         output.Write(temp, strlen(temp));
 
@@ -574,7 +580,7 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
         obj.Set("x", coords.x);
         obj.Set("y", coords.y);
         obj.Set("player", _playerId);
-        obj.Set("type", _type);
+        obj.Set("type", EnumValue(_type));
 
         auto flags = GetActionFlags();
         obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GAME_COMMAND_PLACE_PATH_FROM_TRACK, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathPlaceFromTrackAction, GameCommand::PlacePathFromTrack, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

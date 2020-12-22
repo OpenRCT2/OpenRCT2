@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SurfaceSetStyleAction, GAME_COMMAND_CHANGE_SURFACE_STYLE, GameActions::Result)
+DEFINE_GAME_ACTION(SurfaceSetStyleAction, GameCommand::ChangeSurfaceStyle, GameActions::Result)
 {
 private:
     MapRange _range;

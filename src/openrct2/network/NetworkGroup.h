@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Game.h"
 #include "../common.h"
 #include "NetworkPacket.h"
 
@@ -39,7 +40,7 @@ public:
     void Write(NetworkPacket& packet);
     void ToggleActionPermission(NetworkPermission index);
     bool CanPerformAction(NetworkPermission index) const;
-    bool CanPerformCommand(int32_t command) const;
+    bool CanPerformCommand(GameCommand command) const;
 
     /**
      * Serialise a NetworkGroup object into a JSON object

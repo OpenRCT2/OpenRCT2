@@ -37,7 +37,7 @@ enum class ScenarioSetSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(ScenarioSetSettingAction, GAME_COMMAND_EDIT_SCENARIO_OPTIONS, GameActions::Result)
+DEFINE_GAME_ACTION(ScenarioSetSettingAction, GameCommand::EditScenarioOptions, GameActions::Result)
 {
 private:
     ScenarioSetSetting _setting{ ScenarioSetSetting::Count };

@@ -21,7 +21,7 @@ enum class BannerSetStyleType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(BannerSetStyleAction, GAME_COMMAND_SET_BANNER_STYLE, GameActions::Result)
+DEFINE_GAME_ACTION(BannerSetStyleAction, GameCommand::SetBannerStyle, GameActions::Result)
 {
 private:
     BannerSetStyleType _type{ BannerSetStyleType::Count };

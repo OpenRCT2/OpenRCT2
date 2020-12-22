@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideSetColourSchemeAction, GAME_COMMAND_SET_COLOUR_SCHEME, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetColourSchemeAction, GameCommand::SetColourScheme, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

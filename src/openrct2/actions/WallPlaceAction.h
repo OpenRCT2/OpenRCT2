@@ -25,7 +25,7 @@ public:
     TileElement* tileElement = nullptr;
 };
 
-DEFINE_GAME_ACTION(WallPlaceAction, GAME_COMMAND_PLACE_WALL, WallPlaceActionResult)
+DEFINE_GAME_ACTION(WallPlaceAction, GameCommand::PlaceWall, WallPlaceActionResult)
 {
 private:
     ObjectEntryIndex _wallType{ OBJECT_ENTRY_INDEX_NULL };

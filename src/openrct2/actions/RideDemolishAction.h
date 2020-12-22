@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(RideDemolishAction, GAME_COMMAND_DEMOLISH_RIDE, GameActions::Result)
+DEFINE_GAME_ACTION(RideDemolishAction, GameCommand::DemolishRide, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };

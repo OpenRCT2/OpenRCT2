@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerSetNameAction, GAME_COMMAND_SET_BANNER_NAME, GameActions::Result)
+DEFINE_GAME_ACTION(BannerSetNameAction, GameCommand::SetBannerName, GameActions::Result)
 {
 private:
     BannerIndex _bannerIndex{ BANNER_INDEX_NULL };

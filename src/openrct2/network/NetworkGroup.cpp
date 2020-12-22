@@ -118,7 +118,7 @@ bool NetworkGroup::CanPerformAction(NetworkPermission index) const
     return (ActionsAllowed[byte] & (1 << bit)) != 0;
 }
 
-bool NetworkGroup::CanPerformCommand(int32_t command) const
+bool NetworkGroup::CanPerformCommand(GameCommand command) const
 {
     NetworkPermission action = NetworkActions::FindCommand(command);
     if (action != NetworkPermission::Count)

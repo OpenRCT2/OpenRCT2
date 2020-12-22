@@ -12,7 +12,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(StaffSetNameAction, GAME_COMMAND_SET_STAFF_NAME, GameActions::Result)
+DEFINE_GAME_ACTION(StaffSetNameAction, GameCommand::SetStaffName, GameActions::Result)
 {
 private:
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(TrackRemoveAction, GAME_COMMAND_REMOVE_TRACK, GameActions::Result)
+DEFINE_GAME_ACTION(TrackRemoveAction, GameCommand::RemoveTrack, GameActions::Result)
 {
 private:
     int32_t _trackType{};

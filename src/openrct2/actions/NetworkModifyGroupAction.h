@@ -29,7 +29,7 @@ enum class PermissionState : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(NetworkModifyGroupAction, GAME_COMMAND_MODIFY_GROUPS, GameActions::Result)
+DEFINE_GAME_ACTION(NetworkModifyGroupAction, GameCommand::ModifyGroups, GameActions::Result)
 {
 private:
     ModifyGroupType _type{ ModifyGroupType::Count };

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActions::Result)
+DEFINE_GAME_ACTION(SetParkEntranceFeeAction, GameCommand::SetParkEntranceFee, GameActions::Result)
 {
 private:
     money16 _fee{ MONEY16_UNDEFINED };

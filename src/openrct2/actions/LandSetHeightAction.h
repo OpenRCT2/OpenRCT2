@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandSetHeightAction, GAME_COMMAND_SET_LAND_HEIGHT, GameActions::Result)
+DEFINE_GAME_ACTION(LandSetHeightAction, GameCommand::SetLandHeight, GameActions::Result)
 {
 private:
     CoordsXY _coords;

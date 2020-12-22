@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WallRemoveAction, GAME_COMMAND_REMOVE_WALL, GameActions::Result)
+DEFINE_GAME_ACTION(WallRemoveAction, GameCommand::RemoveWall, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

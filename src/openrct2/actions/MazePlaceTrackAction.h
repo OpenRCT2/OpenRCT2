@@ -10,7 +10,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(MazePlaceTrackAction, GAME_COMMAND_PLACE_MAZE_DESIGN, GameActions::Result)
+DEFINE_GAME_ACTION(MazePlaceTrackAction, GameCommand::PlaceMazeDesign, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

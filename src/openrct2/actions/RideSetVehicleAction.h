@@ -19,7 +19,7 @@ enum class RideSetVehicleType : uint8_t
     Count,
 };
 
-DEFINE_GAME_ACTION(RideSetVehicleAction, GAME_COMMAND_SET_RIDE_VEHICLES, GameActions::Result)
+DEFINE_GAME_ACTION(RideSetVehicleAction, GameCommand::SetRideVehicles, GameActions::Result)
 {
 private:
     NetworkRideId_t _rideIndex{ RideIdNewNull };

@@ -12,7 +12,7 @@
 #include "../world/Sprite.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BalloonPressAction, GAME_COMMAND_BALLOON_PRESS, GameActions::Result)
+DEFINE_GAME_ACTION(BalloonPressAction, GameCommand::BalloonPress, GameActions::Result)
 {
     uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
 

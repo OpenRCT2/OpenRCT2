@@ -12,7 +12,7 @@
 #include "../world/Footpath.h"
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(FootpathPlaceAction, GAME_COMMAND_PLACE_PATH, GameActions::Result)
+DEFINE_GAME_ACTION(FootpathPlaceAction, GameCommand::PlacePath, GameActions::Result)
 {
 private:
     CoordsXYZ _loc;

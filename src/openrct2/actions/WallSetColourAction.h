@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(WallSetColourAction, GAME_COMMAND_SET_WALL_COLOUR, GameActions::Result)
+DEFINE_GAME_ACTION(WallSetColourAction, GameCommand::SetWallColour, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;

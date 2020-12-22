@@ -21,7 +21,7 @@ enum class LandSetRightSetting : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(LandSetRightsAction, GAME_COMMAND_SET_LAND_OWNERSHIP, GameActions::Result)
+DEFINE_GAME_ACTION(LandSetRightsAction, GameCommand::SetLandOwnership, GameActions::Result)
 {
 private:
     MapRange _range;

@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkMarketingAction, GAME_COMMAND_START_MARKETING_CAMPAIGN, GameActions::Result)
+DEFINE_GAME_ACTION(ParkMarketingAction, GameCommand::StartMarketingCampaign, GameActions::Result)
 {
 private:
     int32_t _type{};

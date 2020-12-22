@@ -24,7 +24,7 @@ namespace CLEARABLE_ITEMS
     constexpr ClearableItems SCENERY_FOOTPATH = 1 << 2;
 } // namespace CLEARABLE_ITEMS
 
-DEFINE_GAME_ACTION(ClearAction, GAME_COMMAND_CLEAR_SCENERY, GameActions::Result)
+DEFINE_GAME_ACTION(ClearAction, GameCommand::ClearScenery, GameActions::Result)
 {
 private:
     MapRange _range;

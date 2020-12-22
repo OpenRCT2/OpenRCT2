@@ -20,7 +20,7 @@ enum class PeepPickupType : uint8_t
     Count
 };
 
-DEFINE_GAME_ACTION(PeepPickupAction, GAME_COMMAND_PICKUP_GUEST, GameActions::Result)
+DEFINE_GAME_ACTION(PeepPickupAction, GameCommand::PickupGuest, GameActions::Result)
 {
 private:
     PeepPickupType _type{ PeepPickupType::Count };

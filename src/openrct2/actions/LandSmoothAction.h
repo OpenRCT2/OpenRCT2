@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(LandSmoothAction, GAME_COMMAND_EDIT_LAND_SMOOTH, GameActions::Result)
+DEFINE_GAME_ACTION(LandSmoothAction, GameCommand::EditLandSmooth, GameActions::Result)
 {
 private:
     CoordsXY _coords;

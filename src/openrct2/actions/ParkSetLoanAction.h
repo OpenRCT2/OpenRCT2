@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(ParkSetLoanAction, GAME_COMMAND_SET_CURRENT_LOAN, GameActions::Result)
+DEFINE_GAME_ACTION(ParkSetLoanAction, GameCommand::SetCurrentLoan, GameActions::Result)
 {
 private:
     money32 _value{ MONEY32_UNDEFINED };

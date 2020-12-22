@@ -11,7 +11,7 @@
 
 #include "GameAction.h"
 
-DEFINE_GAME_ACTION(BannerPlaceAction, GAME_COMMAND_PLACE_BANNER, GameActions::Result)
+DEFINE_GAME_ACTION(BannerPlaceAction, GameCommand::PlaceBanner, GameActions::Result)
 {
 private:
     CoordsXYZD _loc;
