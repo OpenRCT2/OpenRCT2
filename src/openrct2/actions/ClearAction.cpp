@@ -35,7 +35,6 @@ void ClearAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit(_range);
     visitor.Visit("items", _itemsToClear);
 }
-
 void ClearAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
