@@ -341,6 +341,11 @@ namespace OpenRCT2
                 buffer[i++] = static_cast<char>('0' + (num % 10));
                 num /= 10;
             }
+            // handle case where value has fewer sig figs than required decimal places
+            while (num == 0 && i < TDecimalPlace && i < sizeof(buffer))
+            {
+                buffer[i++] = '0';
+            }
 
             auto decSep = GetDecimalSeparator();
             AppendSeparator(buffer, i, decSep);
