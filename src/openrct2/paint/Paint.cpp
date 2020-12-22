@@ -183,47 +183,66 @@ static std::optional<paint_struct> CreateNormalPaintStruct(
     return { ps };
 }
 
+template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* session)
+{
+    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
+    CoordsXY mapTile = {  static_cast<int16_t>((session->DPI.x) & 0xFFE0),  static_cast<int16_t>((session->DPI.y - 16) & 0xFFE0) };
+    mapTile.x = mapTile.y - mapTile.x / 2;
+    mapTile.y = mapTile.y + mapTile.x / 2;
+    mapTile = mapTile.Rotate(inverseRotationMapping[direction]);
+
+    if constexpr (direction & 1)
+    {
+        mapTile.y -= 16;
+    }
+    mapTile = mapTile.ToTileStart();
+
+    uint16_t num_vertical_quadrants = (session->DPI.height + 2128) >> 5;
+    constexpr CoordsXY bits[] = { CoordsXY{ -32, 32 }.Rotate(inverseRotationMapping[direction]),
+                                  CoordsXY{ 0, 32 }.Rotate(inverseRotationMapping[direction]),
+                                  CoordsXY{ 32, 0 }.Rotate(inverseRotationMapping[direction]),
+                                  CoordsXY{ 32, 32 }.Rotate(inverseRotationMapping[direction]) };
+    for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
+    {
+        tile_element_paint_setup(session, mapTile.x, mapTile.y);
+        sprite_paint_setup(session, mapTile.x, mapTile.y);
+        auto loc1 = mapTile + bits[0];
+
+        sprite_paint_setup(session, loc1.x, loc1.y);
+
+        auto loc2 = mapTile + bits[1];
+        tile_element_paint_setup(session, loc2.x, loc2.y);
+        sprite_paint_setup(session, loc2.x, loc2.y);
+
+        auto loc3 = mapTile + bits[2];
+        sprite_paint_setup(session, loc3.x, loc3.y);
+
+        mapTile += bits[3];
+    }
+}
+
 /**
  *
  *  rct2: 0x0068B6C2
  */
 void PaintSessionGenerate(paint_session* session)
 {
-    rct_drawpixelinfo* dpi = &session->DPI;
-
     session->CurrentRotation = get_current_rotation();
-
-    auto mapTile = viewport_coord_to_map_coord({ dpi->x & 0xFFE0, (dpi->y - 16) & 0xFFE0 }, 0)
-                       .Rotate(session->CurrentRotation)
-                       .ToTileStart();
 
     switch (session->CurrentRotation)
     {
-        case 1:
-        case 3:
-            mapTile.y -= 16;
+        case 0:
+            PaintSessionGenerateRotate<0>(session);
             break;
-    }
-
-    uint16_t num_vertical_quadrants = (dpi->height + 2128) >> 5;
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-
-    for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
-    {
-        tile_element_paint_setup(session, mapTile.x, mapTile.y);
-        sprite_paint_setup(session, mapTile.x, mapTile.y);
-        auto loc1 = mapTile + CoordsXY{ -32, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
-
-        sprite_paint_setup(session, loc1.x, loc1.y);
-
-        auto loc2 = mapTile + CoordsXY{ 0, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
-        tile_element_paint_setup(session, loc2.x, loc2.y);
-        sprite_paint_setup(session, loc2.x, loc2.y);
-
-        auto loc3 = mapTile + CoordsXY{ 32, 0 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
-        sprite_paint_setup(session, loc3.x, loc3.y);
-
-        mapTile += CoordsXY{ 32, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
+        case 1:
+            PaintSessionGenerateRotate<1>(session);
+            break;
+        case 2:
+            PaintSessionGenerateRotate<2>(session);
+            break;
+        case 3:
+            PaintSessionGenerateRotate<3>(session);
+            break;
     }
 }
 
