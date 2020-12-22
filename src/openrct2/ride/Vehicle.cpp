@@ -825,16 +825,6 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
     UpdateTrackMotion(nullptr);
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
-
-    const Ride* curRide = GetRide();
-    const rct_vehicle_info* moveInfo = GetMoveInfo();
-
-    MoveTo({ TrackLocation.x + moveInfo->x, TrackLocation.y + moveInfo->y,
-             TrackLocation.z + moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset });
-
-    sprite_direction = moveInfo->direction;
-    bank_rotation = moveInfo->bank_rotation;
-    vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 }
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
