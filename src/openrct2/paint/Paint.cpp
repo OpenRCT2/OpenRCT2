@@ -190,108 +190,40 @@ static std::optional<paint_struct> CreateNormalPaintStruct(
 void PaintSessionGenerate(paint_session* session)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
-    LocationXY16 mapTile = { static_cast<int16_t>(dpi->x & 0xFFE0), static_cast<int16_t>((dpi->y - 16) & 0xFFE0) };
-
-    int16_t half_x = mapTile.x >> 1;
-    uint16_t num_vertical_quadrants = (dpi->height + 2128) >> 5;
 
     session->CurrentRotation = get_current_rotation();
-    switch (get_current_rotation())
+
+    auto mapTile = viewport_coord_to_map_coord({ dpi->x & 0xFFE0, (dpi->y - 16) & 0xFFE0 }, 0)
+                       .Rotate(session->CurrentRotation)
+                       .ToTileStart();
+
+    switch (session->CurrentRotation)
     {
-        case 0:
-            mapTile.x = mapTile.y - half_x;
-            mapTile.y = mapTile.y + half_x;
-
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
-
-            for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
-            {
-                tile_element_paint_setup(session, mapTile.x, mapTile.y);
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                sprite_paint_setup(session, mapTile.x - 32, mapTile.y + 32);
-
-                tile_element_paint_setup(session, mapTile.x, mapTile.y + 32);
-                sprite_paint_setup(session, mapTile.x, mapTile.y + 32);
-
-                mapTile.x += 32;
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                mapTile.y += 32;
-            }
-            break;
         case 1:
-            mapTile.x = -mapTile.y - half_x;
-            mapTile.y = mapTile.y - half_x - 16;
-
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
-
-            for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
-            {
-                tile_element_paint_setup(session, mapTile.x, mapTile.y);
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                sprite_paint_setup(session, mapTile.x - 32, mapTile.y - 32);
-
-                tile_element_paint_setup(session, mapTile.x - 32, mapTile.y);
-                sprite_paint_setup(session, mapTile.x - 32, mapTile.y);
-
-                mapTile.y += 32;
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                mapTile.x -= 32;
-            }
-            break;
-        case 2:
-            mapTile.x = -mapTile.y + half_x;
-            mapTile.y = -mapTile.y - half_x;
-
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
-
-            for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
-            {
-                tile_element_paint_setup(session, mapTile.x, mapTile.y);
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                sprite_paint_setup(session, mapTile.x + 32, mapTile.y - 32);
-
-                tile_element_paint_setup(session, mapTile.x, mapTile.y - 32);
-                sprite_paint_setup(session, mapTile.x, mapTile.y - 32);
-
-                mapTile.x -= 32;
-
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                mapTile.y -= 32;
-            }
-            break;
         case 3:
-            mapTile.x = mapTile.y + half_x;
-            mapTile.y = -mapTile.y + half_x - 16;
-
-            mapTile.x &= 0xFFE0;
-            mapTile.y &= 0xFFE0;
-
-            for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
-            {
-                tile_element_paint_setup(session, mapTile.x, mapTile.y);
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                sprite_paint_setup(session, mapTile.x + 32, mapTile.y + 32);
-
-                tile_element_paint_setup(session, mapTile.x + 32, mapTile.y);
-                sprite_paint_setup(session, mapTile.x + 32, mapTile.y);
-
-                mapTile.y -= 32;
-
-                sprite_paint_setup(session, mapTile.x, mapTile.y);
-
-                mapTile.x += 32;
-            }
+            mapTile.y -= 16;
             break;
+    }
+
+    uint16_t num_vertical_quadrants = (dpi->height + 2128) >> 5;
+    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
+
+    for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
+    {
+        tile_element_paint_setup(session, mapTile.x, mapTile.y);
+        sprite_paint_setup(session, mapTile.x, mapTile.y);
+        auto loc1 = mapTile + CoordsXY{ -32, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
+
+        sprite_paint_setup(session, loc1.x, loc1.y);
+
+        auto loc2 = mapTile + CoordsXY{ 0, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
+        tile_element_paint_setup(session, loc2.x, loc2.y);
+        sprite_paint_setup(session, loc2.x, loc2.y);
+
+        auto loc3 = mapTile + CoordsXY{ 32, 0 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
+        sprite_paint_setup(session, loc3.x, loc3.y);
+
+        mapTile += CoordsXY{ 32, 32 }.Rotate(inverseRotationMapping[session->CurrentRotation]);
     }
 }
 
