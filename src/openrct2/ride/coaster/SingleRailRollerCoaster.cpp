@@ -85,7 +85,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -192,11 +192,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -271,11 +271,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -350,11 +350,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -441,11 +441,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -532,11 +532,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -611,7 +611,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -748,7 +748,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_vertical_tunnel(session, height + 56);
                 paint_util_set_segment_support_height(
@@ -797,10 +797,10 @@ namespace SingleRailRC
         switch (direction)
         {
             case 1:
-                paint_util_push_tunnel_right(session, height + 48, TUNNEL_SQUARE_8);
+                paint_util_push_tunnel_right(session, height + 48, TUNNEL_2);
                 break;
             case 2:
-                paint_util_push_tunnel_left(session, height + 48, TUNNEL_SQUARE_8);
+                paint_util_push_tunnel_left(session, height + 48, TUNNEL_2);
                 break;
         }
         paint_util_set_segment_support_height(
@@ -840,7 +840,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_SQUARE_8);
+                    paint_util_push_tunnel_rotated(session, direction, height + 48, TUNNEL_2);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -889,7 +889,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -965,10 +965,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -1025,7 +1025,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -1174,10 +1174,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -1234,7 +1234,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1399,7 +1399,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3618,7 +3618,7 @@ namespace SingleRailRC
         {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -3661,7 +3661,7 @@ namespace SingleRailRC
         {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -3720,11 +3720,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3770,11 +3770,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3820,7 +3820,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -3870,7 +3870,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -3940,7 +3940,7 @@ namespace SingleRailRC
         {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -5201,7 +5201,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -5281,10 +5281,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -5345,7 +5345,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -5498,10 +5498,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -5558,7 +5558,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5723,7 +5723,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -5904,7 +5904,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -5950,10 +5950,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6002,7 +6002,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -6054,10 +6054,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6122,7 +6122,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -6271,10 +6271,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6323,7 +6323,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -6472,10 +6472,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6541,7 +6541,7 @@ namespace SingleRailRC
                     0, 0, 28, 28, 1, height, 2, 2, height + 99);
                 break;
         }
-        track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+        track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
     }
@@ -6585,8 +6585,7 @@ namespace SingleRailRC
                     0, 0, 28, 28, 1, height, 2, 2, height + 99);
                 break;
         }
-        track_paint_util_right_quarter_turn_1_tile_tunnel(
-            session, direction, height, -8, TUNNEL_SQUARE_7, +56, TUNNEL_SQUARE_8);
+        track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 104, 0x20);
     }
@@ -6764,11 +6763,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -6816,11 +6815,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -6868,11 +6867,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -6920,11 +6919,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -6996,11 +6995,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7044,11 +7043,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7092,7 +7091,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -7140,7 +7139,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -7216,11 +7215,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7264,11 +7263,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7330,11 +7329,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7382,11 +7381,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -7434,7 +7433,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -7486,7 +7485,7 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
         }
         else
         {
@@ -7563,7 +7562,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -7609,10 +7608,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -7661,7 +7660,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -7713,10 +7712,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -7781,7 +7780,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -7930,10 +7929,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -7982,7 +7981,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -8131,10 +8130,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8195,7 +8194,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -8301,10 +8300,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8349,7 +8348,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -8455,10 +8454,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8511,7 +8510,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -8592,10 +8591,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8641,10 +8640,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8725,7 +8724,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -8778,7 +8777,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -8859,10 +8858,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8908,10 +8907,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8992,7 +8991,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -9071,7 +9070,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -9225,10 +9224,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -9274,10 +9273,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -9431,7 +9430,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -9483,7 +9482,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -9643,10 +9642,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -9692,10 +9691,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -9855,7 +9854,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -9952,7 +9951,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -10058,10 +10057,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_INVERTED_3);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_INVERTED_3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -10133,7 +10132,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -10239,10 +10238,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_INVERTED_3);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_INVERTED_9);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_INVERTED_3);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -10439,7 +10438,7 @@ namespace SingleRailRC
         {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -10497,7 +10496,7 @@ namespace SingleRailRC
                 break;
         }
         track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 48, 0x20);
     }
@@ -10543,7 +10542,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10659,10 +10658,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 24, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height + 24, TUNNEL_2);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 24, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height + 24, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -10712,7 +10711,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -10828,10 +10827,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 1:
-                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height + 8, TUNNEL_0);
                         break;
                     case 2:
-                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height + 8, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -10878,7 +10877,7 @@ namespace SingleRailRC
         {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -11288,7 +11287,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -11334,10 +11333,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_2);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -11390,7 +11389,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -11436,10 +11435,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_2);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_8);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_2);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -11488,7 +11487,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -11538,10 +11537,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 2:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 3:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -11590,7 +11589,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height - 6, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF,
@@ -11640,10 +11639,10 @@ namespace SingleRailRC
                 switch (direction)
                 {
                     case 0:
-                        paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_right(session, height, TUNNEL_0);
                         break;
                     case 1:
-                        paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
+                        paint_util_push_tunnel_left(session, height, TUNNEL_0);
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -11692,7 +11691,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -11914,7 +11913,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -11964,7 +11963,7 @@ namespace SingleRailRC
                     session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
                 }
                 paint_util_set_segment_support_height(
                     session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -12186,7 +12185,7 @@ namespace SingleRailRC
                 }
                 if (direction == 0 || direction == 3)
                 {
-                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+                    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
                 }
                 paint_util_set_segment_support_height(
                     session,
@@ -12310,11 +12309,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -12405,11 +12404,11 @@ namespace SingleRailRC
         }
         if (direction == 0 || direction == 3)
         {
-            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
+            paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
         }
         else
         {
-            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_FLAT);
+            paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_0);
         }
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
