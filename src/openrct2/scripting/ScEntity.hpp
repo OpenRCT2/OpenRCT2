@@ -614,9 +614,7 @@ namespace OpenRCT2::Scripting
             auto vehicle = GetVehicle();
             if (vehicle != nullptr)
             {
-                vehicle->Invalidate2();
                 vehicle->MoveRelativeDistance(value);
-                vehicle->Invalidate2();
             }
         }
     };
