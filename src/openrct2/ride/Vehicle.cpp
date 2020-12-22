@@ -822,9 +822,9 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
 {
     remaining_distance += distance;
 
-    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
     UpdateTrackMotion(nullptr);
-    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION);
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
 }
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
@@ -7640,7 +7640,7 @@ void Vehicle::UpdateReverserCarBogies()
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED) || HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
         return false;
 
     auto vehicleEntry = Entry();
