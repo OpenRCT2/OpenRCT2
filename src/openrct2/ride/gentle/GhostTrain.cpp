@@ -127,7 +127,7 @@ static constexpr const uint32_t ghost_train_track_pieces_brakes[4] = {
     SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE,
 };
 
-static uint8_t doorOpeningOutwardsToImage[] = {
+static constexpr const uint8_t doorOpeningOutwardsToImage[] = {
     TUNNEL_DOORS_2, // Closed
     TUNNEL_DOORS_2, // Unused?
     TUNNEL_DOORS_3, // Half open
@@ -137,7 +137,7 @@ static uint8_t doorOpeningOutwardsToImage[] = {
     TUNNEL_DOORS_2, // Unused?
 };
 
-static uint8_t doorOpeningInwardsToImage[] = {
+static constexpr const uint8_t doorOpeningInwardsToImage[] = {
     TUNNEL_DOORS_2, // Closed
     TUNNEL_DOORS_2, // Unused?
     TUNNEL_DOORS_5, // Half open
@@ -380,8 +380,6 @@ static void paint_ghost_train_station(
     PaintAddImageAsChildRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-
-    //    const uint8_t tunnelDoors = get_tunnel_doors_image(tileElement, direction);
 
     if (direction == 0 || direction == 2)
     {

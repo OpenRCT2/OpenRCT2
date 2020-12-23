@@ -7507,7 +7507,8 @@ template<bool isBackwards> static void AnimateLandscapeDoor(TrackElement* trackE
 
 void Vehicle::UpdateLandscapeDoor() const
 {
-    if (!GetRide()->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    const auto* currentRide = GetRide();
+    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
     {
         return;
     }
@@ -7578,7 +7579,8 @@ void Vehicle::UpdateSceneryDoorBackwards() const
 
 void Vehicle::UpdateLandscapeDoorBackwards() const
 {
-    if (!GetRide()->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    const auto* currentRide = GetRide();
+    if (currentRide == nullptr || !currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
     {
         return;
     }
