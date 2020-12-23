@@ -4254,10 +4254,6 @@ static void window_ride_colour_close(rct_window* w)
  */
 static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    auto ride = get_ride(w->number);
-    if (ride == nullptr)
-        return;
-
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
@@ -4279,13 +4275,17 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, TOOL_PAINT_DOWN);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
-            if (ride->sell_item_random_color)
+            auto ride = get_ride(w->number);
+            if (ride != nullptr)
             {
-                ride->sell_item_random_color = false;
-            }
-            else
-            {
-                ride->sell_item_random_color = true;
+                if (ride->sell_item_random_color)
+                {
+                    ride->sell_item_random_color = false;
+                }
+                else
+                {
+                    ride->sell_item_random_color = true;
+                }
             }
             break;
     }
