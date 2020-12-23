@@ -776,6 +776,7 @@ namespace OpenRCT2
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
                 case FormatToken::Length:
+                case FormatToken::Comma1dp16:
                     anyArgs.push_back(ReadFromArgs<uint16_t>(args));
                     break;
                 case FormatToken::StringId:
