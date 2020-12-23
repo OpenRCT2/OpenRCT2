@@ -598,6 +598,13 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         json_t sprite_description;
 
+        auto spriteFile = SpriteFile::Open(spriteFilePath);
+        if (!spriteFile.has_value())
+        {
+            fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
+            return -1;
+        }
+
         // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
         for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
         {
@@ -632,23 +639,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
 
-            auto spriteFile = SpriteFile::Open(spriteFilePath);
-            if (!spriteFile.has_value())
-            {
-                fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-                return -1;
-            }
-
             spriteFile->AddImage(importResult.value());
-
-            if (!spriteFile->Save(spriteFilePath))
-            {
-                fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
-                return -1;
-            }
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
+        }
+
+        if (!spriteFile->Save(spriteFilePath))
+        {
+            fprintf(stderr, "Could not save sprite file: Canceling\n");
+            return -1;
         }
 
         free(directoryPath);
