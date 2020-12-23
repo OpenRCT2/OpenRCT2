@@ -82,7 +82,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
@@ -137,7 +137,7 @@ namespace Editor
         climate_reset(gClimate);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectiveSelection;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         News::InitQueue();
@@ -160,7 +160,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -181,7 +181,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -240,7 +240,7 @@ namespace Editor
         load_from_sv4(path);
         ClearMapForEditing(true);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -254,7 +254,7 @@ namespace Editor
         load_from_sc4(path);
         ClearMapForEditing(false);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -283,7 +283,7 @@ namespace Editor
 
         ClearMapForEditing(loadedFromSave);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -380,7 +380,7 @@ namespace Editor
 
         switch (gS6Info.editor_step)
         {
-            case EDITOR_STEP_OBJECT_SELECTION:
+            case EditorStep::ObjectSelection:
                 if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
                 {
                     return;
@@ -398,7 +398,7 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_OBJECT_SELECTION);
                 break;
-            case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
+            case EditorStep::InventionsListSetUp:
                 if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
                 {
                     return;
@@ -406,7 +406,7 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_INVENTION_LIST);
                 break;
-            case EDITOR_STEP_OPTIONS_SELECTION:
+            case EditorStep::OptionsSelection:
                 if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
                 {
                     return;
@@ -414,13 +414,19 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
-            case EDITOR_STEP_OBJECTIVE_SELECTION:
+            case EditorStep::ObjectiveSelection:
                 if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
                 {
                     return;
                 }
 
                 context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+                break;
+            case EditorStep::LandscapeEditor:
+            case EditorStep::SaveScenario:
+            case EditorStep::RollercoasterDesigner:
+            case EditorStep::DesignsManager:
+            case EditorStep::Invalid:
                 break;
         }
     }

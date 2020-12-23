@@ -60,7 +60,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return info;
 
     info = get_map_coordinates_from_pos(
@@ -250,7 +250,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         return info;
 
     //
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return info;
 
     info = get_map_coordinates_from_pos(screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER));

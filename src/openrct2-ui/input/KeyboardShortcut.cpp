@@ -98,7 +98,7 @@ static void ShortcutCloseAllFloatingWindow()
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
         window_close_all();
-    else if (gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    else if (gS6Info.editor_step == EditorStep::LandscapeEditor)
         window_close_top();
 }
 
@@ -362,7 +362,7 @@ static void ShortcutAdjustLand()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -381,7 +381,7 @@ static void ShortcutAdjustWater()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -400,7 +400,7 @@ static void ShortcutBuildScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -419,7 +419,7 @@ static void ShortcutBuildPaths()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -526,7 +526,7 @@ static void ShortcutShowMap()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
             context_open_window(WC_MAP);
 }
@@ -574,7 +574,7 @@ static void ShortcutClearScenery()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -787,7 +787,7 @@ static void ShortcutAdvanceToNextTick()
 static void ShortcutOpenSceneryPicker()
 {
     if ((gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
-        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR))
+        || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step != EditorStep::LandscapeEditor))
         return;
 
     rct_window* window_scenery = window_find_by_class(WC_SCENERY);
