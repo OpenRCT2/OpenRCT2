@@ -186,7 +186,7 @@ namespace OpenRCT2::Scripting
                     // prevents abort from being called.
                     rct_widgetindex widgetIndex = -2;
                     tool_cancel();
-                    tool_set(toolbarWindow, widgetIndex, static_cast<TOOL_IDX>(customTool.Cursor));
+                    tool_set(toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);
                     ActiveCustomTool->Start();
                 }

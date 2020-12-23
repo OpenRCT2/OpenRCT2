@@ -227,7 +227,7 @@ static void window_staff_list_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         }
         case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-            if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, TOOL_CROSSHAIR))
+            if (!tool_set(w, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
             {
                 show_gridlines();
                 gStaffDrawPatrolAreas = _windowStaffListSelectedTab | 0x8000;

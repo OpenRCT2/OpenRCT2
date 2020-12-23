@@ -395,7 +395,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
                 if (window != nullptr)
                 {
                     window->Invalidate();
-                    if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW))
+                    if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                     {
                         input_set_flag(INPUT_FLAG_6, true);
                         context_open_window(WC_SCENERY);

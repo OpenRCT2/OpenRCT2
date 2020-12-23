@@ -801,11 +801,11 @@ static void window_scenery_update(rct_window* w)
 
     if (gWindowSceneryEyedropperEnabled)
     {
-        gCurrentToolId = TOOL_CROSSHAIR;
+        gCurrentToolId = Tool::Crosshair;
     }
     else if (gWindowSceneryPaintEnabled == 1)
     {
-        gCurrentToolId = TOOL_PAINT_DOWN;
+        gCurrentToolId = Tool::PaintDown;
     }
     else
     {
@@ -816,25 +816,24 @@ static void window_scenery_update(rct_window* w)
         {
             if (tabSelectedScenery.SceneryType == SCENERY_TYPE_BANNER)
             {
-                gCurrentToolId = TOOL_ENTRANCE_DOWN;
+                gCurrentToolId = Tool::EntranceDown;
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_LARGE)
             {
-                gCurrentToolId = static_cast<TOOL_IDX>(
+                gCurrentToolId = static_cast<Tool>(
                     get_large_scenery_entry(tabSelectedScenery.EntryIndex)->large_scenery.tool_id);
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
             {
-                gCurrentToolId = static_cast<TOOL_IDX>(get_wall_entry(tabSelectedScenery.EntryIndex)->wall.tool_id);
+                gCurrentToolId = static_cast<Tool>(get_wall_entry(tabSelectedScenery.EntryIndex)->wall.tool_id);
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_PATH_ITEM)
             { // path bit
-                gCurrentToolId = static_cast<TOOL_IDX>(
-                    get_footpath_item_entry(tabSelectedScenery.EntryIndex)->path_bit.tool_id);
+                gCurrentToolId = static_cast<Tool>(get_footpath_item_entry(tabSelectedScenery.EntryIndex)->path_bit.tool_id);
             }
             else
             { // small scenery
-                gCurrentToolId = static_cast<TOOL_IDX>(
+                gCurrentToolId = static_cast<Tool>(
                     get_small_scenery_entry(tabSelectedScenery.EntryIndex)->small_scenery.tool_id);
             }
         }

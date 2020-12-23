@@ -593,7 +593,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                 if (wind)
                 {
-                    tool_set(wind, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+                    tool_set(wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                 }
             });
             GameActions::Execute(&pickupAction);

@@ -4268,7 +4268,7 @@ static void window_ride_colour_mouseup(rct_window* w, rct_widgetindex widgetInde
             window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PAINT_INDIVIDUAL_AREA:
-            tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, TOOL_PAINT_DOWN);
+            tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
     }
 }
@@ -5174,7 +5174,7 @@ static void setup_scenery_selection(rct_window* w)
         cancel_scenery_selection();
     }
 
-    while (tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR))
+    while (tool_set(w, WIDX_BACKGROUND, Tool::Crosshair))
         ;
 
     gTrackDesignSaveRideIndex = w->number;

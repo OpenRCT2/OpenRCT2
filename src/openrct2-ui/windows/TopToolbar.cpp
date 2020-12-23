@@ -366,7 +366,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
             toggle_water_window(w, WIDX_WATER);
             break;
         case WIDX_SCENERY:
-            if (!tool_set(w, WIDX_SCENERY, TOOL_ARROW))
+            if (!tool_set(w, WIDX_SCENERY, Tool::Arrow))
             {
                 input_set_flag(INPUT_FLAG_6, true);
                 context_open_window(WC_SCENERY);
@@ -2092,7 +2092,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
 
     map_invalidate_selection_rect();
 
-    if (gCurrentToolId == TOOL_UP_DOWN_ARROW)
+    if (gCurrentToolId == Tool::UpDownArrow)
     {
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
@@ -2328,7 +2328,7 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
 {
     map_invalidate_selection_rect();
 
-    if (gCurrentToolId == TOOL_UP_DOWN_ARROW)
+    if (gCurrentToolId == Tool::UpDownArrow)
     {
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
@@ -2947,7 +2947,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
             {
                 auto action = GetClearAction();
                 GameActions::Execute(&action);
-                gCurrentToolId = TOOL_CROSSHAIR;
+                gCurrentToolId = Tool::Crosshair;
             }
             break;
         case WIDX_LAND:
@@ -2959,7 +2959,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
 
                 GameActions::Execute(&surfaceSetStyleAction);
 
-                gCurrentToolId = TOOL_UP_DOWN_ARROW;
+                gCurrentToolId = Tool::UpDownArrow;
             }
             else
             {
@@ -2969,7 +2969,7 @@ static void window_top_toolbar_tool_down(rct_window* w, rct_widgetindex widgetIn
         case WIDX_WATER:
             if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
             {
-                gCurrentToolId = TOOL_UP_DOWN_ARROW;
+                gCurrentToolId = Tool::UpDownArrow;
             }
             else
             {
@@ -3166,7 +3166,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
             {
                 auto action = GetClearAction();
                 GameActions::Execute(&action);
-                gCurrentToolId = TOOL_CROSSHAIR;
+                gCurrentToolId = Tool::Crosshair;
             }
             break;
         case WIDX_LAND:
@@ -3183,7 +3183,7 @@ static void window_top_toolbar_tool_drag(rct_window* w, rct_widgetindex widgetIn
 
                     // The tool is set to 12 here instead of 3 so that the dragging cursor is not the elevation change
                     // cursor
-                    gCurrentToolId = TOOL_CROSSHAIR;
+                    gCurrentToolId = Tool::Crosshair;
                 }
             }
             else
@@ -3230,17 +3230,17 @@ static void window_top_toolbar_tool_up(rct_window* w, rct_widgetindex widgetInde
         case WIDX_LAND:
             map_invalidate_selection_rect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gCurrentToolId = TOOL_DIG_DOWN;
+            gCurrentToolId = Tool::DigDown;
             break;
         case WIDX_WATER:
             map_invalidate_selection_rect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gCurrentToolId = TOOL_WATER_DOWN;
+            gCurrentToolId = Tool::WaterDown;
             break;
         case WIDX_CLEAR_SCENERY:
             map_invalidate_selection_rect();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-            gCurrentToolId = TOOL_CROSSHAIR;
+            gCurrentToolId = Tool::Crosshair;
             break;
 #ifdef ENABLE_SCRIPTING
         default:
@@ -3768,7 +3768,7 @@ static void toggle_land_window(rct_window* topToolbar, rct_widgetindex widgetInd
     {
         _landToolBlocked = false;
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, TOOL_DIG_DOWN);
+        tool_set(topToolbar, widgetIndex, Tool::DigDown);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_LAND);
     }
@@ -3788,7 +3788,7 @@ static void toggle_clear_scenery_window(rct_window* topToolbar, rct_widgetindex 
     else
     {
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, TOOL_CROSSHAIR);
+        tool_set(topToolbar, widgetIndex, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_CLEAR_SCENERY);
     }
@@ -3809,7 +3809,7 @@ static void toggle_water_window(rct_window* topToolbar, rct_widgetindex widgetIn
     {
         _landToolBlocked = false;
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, TOOL_WATER_DOWN);
+        tool_set(topToolbar, widgetIndex, Tool::WaterDown);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_WATER);
     }

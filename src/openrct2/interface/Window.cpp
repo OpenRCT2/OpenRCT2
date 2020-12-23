@@ -1331,7 +1331,7 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, TOOL_IDX tool)
+bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
