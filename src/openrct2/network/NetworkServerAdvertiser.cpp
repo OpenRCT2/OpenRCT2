@@ -34,12 +34,12 @@
 #    include <random>
 #    include <string>
 
-enum MASTER_SERVER_STATUS
+enum class MasterServerStatus
 {
-    MASTER_SERVER_STATUS_OK = 200,
-    MASTER_SERVER_STATUS_INVALID_TOKEN = 401,
-    MASTER_SERVER_STATUS_SERVER_NOT_FOUND = 404,
-    MASTER_SERVER_STATUS_INTERNAL_ERROR = 500
+    Ok = 200,
+    InvalidToken = 401,
+    ServerNotFound = 404,
+    InternalError = 500
 };
 
 #    ifndef DISABLE_HTTP
@@ -229,9 +229,9 @@ private:
     {
         Guard::Assert(jsonRoot.is_object(), "OnRegistrationResponse expects parameter jsonRoot to be object");
 
-        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
+        auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
 
-        if (status == MASTER_SERVER_STATUS_OK)
+        if (status == MasterServerStatus::Ok)
         {
             json_t jsonToken = jsonRoot["token"];
             if (jsonToken.is_string())
@@ -251,7 +251,7 @@ private:
             // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
             // Master server may not reply correctly if using IPv6, retry forcing IPv4,
             // don't wait the full timeout.
-            if (!_forceIPv4 && status == 500)
+            if (!_forceIPv4 && status == MasterServerStatus::InternalError)
             {
                 _forceIPv4 = true;
                 _lastAdvertiseTime = 0;
@@ -268,12 +268,12 @@ private:
     {
         Guard::Assert(jsonRoot.is_object(), "OnHeartbeatResponse expects parameter jsonRoot to be object");
 
-        int32_t status = Json::GetNumber<int32_t>(jsonRoot["status"]);
-        if (status == MASTER_SERVER_STATUS_OK)
+        auto status = Json::GetEnum<MasterServerStatus>(jsonRoot["status"], MasterServerStatus::InternalError);
+        if (status == MasterServerStatus::Ok)
         {
             // Master server has successfully updated our server status
         }
-        else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
+        else if (status == MasterServerStatus::InvalidToken)
         {
             _status = ADVERTISE_STATUS::UNREGISTERED;
             Console::WriteLine("Master server heartbeat failed: Invalid Token");
