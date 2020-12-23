@@ -364,6 +364,7 @@ public:
     uint8_t num_circuits;
     CoordsXYZ CableLiftLoc;
     uint16_t cable_lift;
+    uint8_t sell_item_random_color;
     // These fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.
     // They don't require export/import.
