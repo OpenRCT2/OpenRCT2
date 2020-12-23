@@ -450,6 +450,8 @@ namespace ObjectFactory
                 originalName = originalId.substr(9, 8);
                 entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
             }
+            // Always set, since originalId might be missing or incorrect.
+            entry.SetType(objectType);
             auto minLength = std::min<size_t>(8, originalName.length());
             std::memcpy(entry.name, originalName.c_str(), minLength);
 
