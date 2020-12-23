@@ -314,7 +314,7 @@ struct rct2_ride
     int16_t cable_lift_x;                                      // 0x1F8
     int16_t cable_lift_y;                                      // 0x1FA
     uint8_t cable_lift_z;                                      // 0x1FC
-    uint8_t pad_1FD;                                           // 0x1FD
+    uint8_t sell_item_random_color;                            // 0x1FD
     uint16_t cable_lift;                                       // 0x1FE
     uint16_t queue_length[RCT12_MAX_STATIONS_PER_RIDE];        // 0x200
     uint8_t pad_208[0x58];                                     // 0x208

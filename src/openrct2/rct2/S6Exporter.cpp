@@ -769,7 +769,9 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     dst->cable_lift_x = static_cast<int16_t>(src->CableLiftLoc.x);
     dst->cable_lift_y = static_cast<int16_t>(src->CableLiftLoc.y);
     dst->cable_lift_z = static_cast<int16_t>(src->CableLiftLoc.z / COORDS_Z_STEP);
-    // pad_1FD;
+    // Not present in original RCT2 save file
+    dst->sell_item_random_color = src->sell_item_random_color;
+
     dst->cable_lift = src->cable_lift;
 
     // pad_208[0x58];

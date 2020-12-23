@@ -801,7 +801,9 @@ public:
         dst->current_test_station = src->current_test_station;
         dst->num_circuits = src->num_circuits;
         dst->CableLiftLoc = { src->cable_lift_x, src->cable_lift_y, src->cable_lift_z * COORDS_Z_STEP };
-        // pad_1FD;
+        // Not present in original RCT2 save file
+        dst->sell_item_random_color = src->sell_item_random_color;
+
         dst->cable_lift = src->cable_lift;
 
         // pad_208[0x58];
