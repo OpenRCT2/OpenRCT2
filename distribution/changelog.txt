@@ -15,9 +15,10 @@
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
-- Fix: [#13427] Newly created Go-Karts show "Race won by <blank>".
+- Fix: [#13427] Newly created Go-Karts show “Race won by <blank>”.
 - Fix: [#13431] [Plugin] UI disabled widgets can still be interacted with.
 - Fix: [#13454] Plug-ins do not load on Windows if the user directory contains non-ASCII characters.
+- Fix: [#13466] “Build 5 roller coasters” excitement corrupted in Park window.
 - Fix: [#13469] Exception thrown from plugin in context.subscribe.
 - Fix: [#13477] Plug-in widget tooltips do not work.
 - Fix: [#13489] Mechanics continue heading to inspect broken down rides.
