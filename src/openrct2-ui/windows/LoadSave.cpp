@@ -477,13 +477,13 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_SORT_NAME:
-            if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+            if (gConfigGeneral.load_save_sort == Sort::NameAscending)
             {
-                gConfigGeneral.load_save_sort = SORT_NAME_DESCENDING;
+                gConfigGeneral.load_save_sort = Sort::NameDescending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = SORT_NAME_ASCENDING;
+                gConfigGeneral.load_save_sort = Sort::NameAscending;
             }
             config_save_default();
             window_loadsave_sort_list();
@@ -491,13 +491,13 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_SORT_DATE:
-            if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+            if (gConfigGeneral.load_save_sort == Sort::DateDescending)
             {
-                gConfigGeneral.load_save_sort = SORT_DATE_ASCENDING;
+                gConfigGeneral.load_save_sort = Sort::DateAscending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = SORT_DATE_DESCENDING;
+                gConfigGeneral.load_save_sort = Sort::DateDescending;
             }
             config_save_default();
             window_loadsave_sort_list();
@@ -710,9 +710,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Name button text
     rct_string_id id = STR_NONE;
-    if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+    if (gConfigGeneral.load_save_sort == Sort::NameAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
+    else if (gConfigGeneral.load_save_sort == Sort::NameDescending)
         id = STR_DOWN;
 
     // Draw name button indicator.
@@ -721,9 +721,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 });
 
     // Date button text
-    if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
+    if (gConfigGeneral.load_save_sort == Sort::DateAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+    else if (gConfigGeneral.load_save_sort == Sort::DateDescending)
         id = STR_DOWN;
     else
         id = STR_NONE;
@@ -797,13 +797,13 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
 
     switch (gConfigGeneral.load_save_sort)
     {
-        case SORT_NAME_ASCENDING:
+        case Sort::NameAscending:
             return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
-        case SORT_NAME_DESCENDING:
+        case Sort::NameDescending:
             return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
-        case SORT_DATE_DESCENDING:
+        case Sort::DateDescending:
             return -difftime(a.date_modified, b.date_modified) < 0;
-        case SORT_DATE_ASCENDING:
+        case Sort::DateAscending:
             return difftime(a.date_modified, b.date_modified) < 0;
         default:
             return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
