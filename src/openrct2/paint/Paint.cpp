@@ -185,11 +185,11 @@ static std::optional<paint_struct> CreateNormalPaintStruct(
 
 template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* session)
 {
-    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
-    CoordsXY mapTile = {  static_cast<int16_t>((session->DPI.x) & 0xFFE0),  static_cast<int16_t>((session->DPI.y - 16) & 0xFFE0) };
-    mapTile.x = mapTile.y - mapTile.x / 2;
-    mapTile.y = mapTile.y + mapTile.x / 2;
-    mapTile = mapTile.Rotate(inverseRotationMapping[direction]);
+    // Optimised modified version of viewport_coord_to_map_coord
+    ScreenCoordsXY screenCoord = { static_cast<int16_t>((session->DPI.x) & 0xFFE0),
+                                   static_cast<int16_t>((session->DPI.y - 16) & 0xFFE0) };
+    CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
+    mapTile = mapTile.Rotate(direction);
 
     if constexpr (direction & 1)
     {
@@ -197,27 +197,29 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t num_vertical_quadrants = (session->DPI.height + 2128) >> 5;
-    constexpr CoordsXY bits[] = { CoordsXY{ -32, 32 }.Rotate(inverseRotationMapping[direction]),
-                                  CoordsXY{ 0, 32 }.Rotate(inverseRotationMapping[direction]),
-                                  CoordsXY{ 32, 0 }.Rotate(inverseRotationMapping[direction]),
-                                  CoordsXY{ 32, 32 }.Rotate(inverseRotationMapping[direction]) };
-    for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
+    uint16_t numVerticalTiles = (session->DPI.height + 2128) >> 5;
+
+    // Adjacent tiles to also check due to overlapping of sprites
+    constexpr CoordsXY adjacentTiles[] = { CoordsXY{ -32, 32 }.Rotate(direction), CoordsXY{ 0, 32 }.Rotate(direction),
+                                           CoordsXY{ 32, 0 }.Rotate(direction) };
+    constexpr CoordsXY nextVerticalTile = CoordsXY{ 32, 32 }.Rotate(direction);
+
+    for (; numVerticalTiles > 0; --numVerticalTiles)
     {
         tile_element_paint_setup(session, mapTile.x, mapTile.y);
         sprite_paint_setup(session, mapTile.x, mapTile.y);
-        auto loc1 = mapTile + bits[0];
 
+        auto loc1 = mapTile + adjacentTiles[0];
         sprite_paint_setup(session, loc1.x, loc1.y);
 
-        auto loc2 = mapTile + bits[1];
+        auto loc2 = mapTile + adjacentTiles[1];
         tile_element_paint_setup(session, loc2.x, loc2.y);
         sprite_paint_setup(session, loc2.x, loc2.y);
 
-        auto loc3 = mapTile + bits[2];
+        auto loc3 = mapTile + adjacentTiles[2];
         sprite_paint_setup(session, loc3.x, loc3.y);
 
-        mapTile += bits[3];
+        mapTile += nextVerticalTile;
     }
 }
 
@@ -229,7 +231,9 @@ void PaintSessionGenerate(paint_session* session)
 {
     session->CurrentRotation = get_current_rotation();
 
-    switch (session->CurrentRotation)
+    // Extracted from viewport_coord_to_map_coord
+    constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
+    switch (inverseRotationMapping[session->CurrentRotation])
     {
         case 0:
             PaintSessionGenerateRotate<0>(session);
