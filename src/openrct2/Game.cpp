@@ -366,7 +366,7 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
     }
 }
@@ -377,9 +377,9 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
     // Scenario details
-    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+    gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
+    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
 
     // News items
     game_convert_news_items_to_utf8();

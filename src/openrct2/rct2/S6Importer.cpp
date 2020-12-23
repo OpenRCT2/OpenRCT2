@@ -198,9 +198,9 @@ public:
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
         if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
         {
-            auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            auto temp = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
             safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
-            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
             safe_strcpy(gS6Info.details, temp2.data(), sizeof(gS6Info.details));
         }
         else
@@ -1660,7 +1660,7 @@ public:
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
         auto originalStringView = std::string_view(
             originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
         auto justText = RCT12RemoveFormattingUTF8(asUtf8);
         return justText.data();
     }

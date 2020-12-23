@@ -653,7 +653,7 @@ private:
                             if (scBasic.CompanyValue > highscore->company_value)
                             {
                                 SafeFree(highscore->name);
-                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                                std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                                 highscore->name = String::Duplicate(name.c_str());
                                 highscore->company_value = scBasic.CompanyValue;
                                 highscore->timestamp = DATETIME64_MIN;
@@ -665,7 +665,7 @@ private:
                     {
                         scenario_highscore_entry* highscore = InsertHighscore();
                         highscore->fileName = String::Duplicate(scBasic.Path);
-                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
+                        std::string name = rct2_to_utf8(scBasic.CompletedBy, RCT2LanguageId::EnglishUK);
                         highscore->name = String::Duplicate(name.c_str());
                         highscore->company_value = scBasic.CompanyValue;
                         highscore->timestamp = DATETIME64_MIN;

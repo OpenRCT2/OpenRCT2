@@ -240,7 +240,7 @@ public:
             dst->objective_arg_3 = GetBuildTheBestRideId();
         }
 
-        auto name = rct2_to_utf8(_s4.scenario_name, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto name = rct2_to_utf8(_s4.scenario_name, RCT2LanguageId::EnglishUK);
         std::string details;
 
         // TryGetById won't set this property if the scenario is not recognised,
@@ -3006,7 +3006,7 @@ private:
         const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
         auto originalStringView = std::string_view(
             originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
-        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
         auto justText = RCT12RemoveFormattingUTF8(asUtf8);
         return justText.data();
     }
