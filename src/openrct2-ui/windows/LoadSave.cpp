@@ -805,9 +805,8 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
             return -difftime(a.date_modified, b.date_modified) < 0;
         case Sort::DateAscending:
             return difftime(a.date_modified, b.date_modified) < 0;
-        default:
-            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
     }
+    return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
 }
 
 static void window_loadsave_sort_list()
