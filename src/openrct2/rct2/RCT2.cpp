@@ -84,6 +84,35 @@ uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type)
     }
 }
 
+size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen)
+{
+    constexpr char MULTIBYTE = static_cast<char>(255);
+    size_t len = 0;
+    for (size_t i = 0; i < maxBufferLen; i++)
+    {
+        auto ch = buffer[i];
+        if (ch == MULTIBYTE)
+        {
+            i += 2;
+
+            // Check if reading two more bytes exceeds max buffer len
+            if (i < maxBufferLen)
+            {
+                len += 3;
+            }
+        }
+        else if (ch == '\0')
+        {
+            break;
+        }
+        else
+        {
+            len++;
+        }
+    }
+    return len;
+}
+
 uint8_t rct2_ride::GetMinCarsPerTrain() const
 {
     return min_max_cars_per_train >> 4;
