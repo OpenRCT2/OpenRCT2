@@ -1485,7 +1485,10 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<uint16_t>(gScenarioObjective.NumGuests);
         ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
-        ft.Add<money32>(gScenarioObjective.Currency);
+        if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
+        else
+            ft.Add<money32>(gScenarioObjective.Currency);
     }
 
     screenCoords.y += gfx_draw_string_left_wrapped(
