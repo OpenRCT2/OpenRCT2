@@ -5849,6 +5849,36 @@ void Ride::UpdateRideTypeForAllPieces()
     }
 }
 
+bool Ride::HasLifecycleFlag(uint32_t flag) const
+{
+    return (lifecycle_flags & flag) != 0;
+}
+
+void Ride::SetLifecycleFlag(uint32_t flag, bool on)
+{
+    if (on)
+        lifecycle_flags |= flag;
+    else
+        lifecycle_flags &= ~flag;
+}
+
+bool Ride::HasRecolourableShopItems() const
+{
+    const auto rideEntry = GetRideEntry();
+    if (rideEntry == nullptr)
+        return false;
+
+    for (size_t itemIndex = 0; itemIndex < std::size(rideEntry->shop_item); itemIndex++)
+    {
+        const ShopItem currentItem = rideEntry->shop_item[itemIndex];
+        if (currentItem != ShopItem::None && GetShopItemDescriptor(currentItem).IsRecolourable())
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 std::vector<RideId> GetTracklessRides()
 {
     // Iterate map and build list of seen ride IDs

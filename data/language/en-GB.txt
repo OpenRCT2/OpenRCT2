@@ -3606,6 +3606,7 @@ STR_6497    :Click on a tile to show its tile elements.{NEWLINE}Ctrl + click a t
 STR_6498    :Enable to maintain square map shape.
 STR_6499    :Vehicle type not supported by track design format
 STR_6500    :Track elements not supported by track design format
+STR_6501    :Random colour
 
 #############
 # Scenarios #

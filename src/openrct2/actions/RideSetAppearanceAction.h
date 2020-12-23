@@ -21,7 +21,8 @@ enum class RideSetAppearanceType : uint8_t
     VehicleColourTrim,
     VehicleColourTernary,
     VehicleColourScheme,
-    EntranceStyle
+    EntranceStyle,
+    SellingItemColourIsRandom
 };
 
 class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>

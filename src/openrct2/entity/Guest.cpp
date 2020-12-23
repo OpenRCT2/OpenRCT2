@@ -1613,18 +1613,19 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
     GiveItem(shopItem);
+    const auto hasRandomShopColour = ride->HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
 
     if (shopItem == ShopItem::TShirt)
-        TshirtColour = ride->track_colour[0].main;
+        TshirtColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Hat)
-        HatColour = ride->track_colour[0].main;
+        HatColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Balloon)
-        BalloonColour = ride->track_colour[0].main;
+        BalloonColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Umbrella)
-        UmbrellaColour = ride->track_colour[0].main;
+        UmbrellaColour = hasRandomShopColour ? scenario_rand_max(COLOUR_COUNT - 1) : ride->track_colour[0].main;
 
     if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
