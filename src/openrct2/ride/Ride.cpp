@@ -1984,9 +1984,22 @@ void Ride::UpdateAll()
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (EnumValue(gS6Info.editor_step) <= EnumValue(EditorStep::InventionsListSetUp))
-            for (auto& ride : GetRideManager())
-                ride.Delete();
+        switch (gS6Info.editor_step)
+        {
+            case EditorStep::ObjectSelection:
+            case EditorStep::LandscapeEditor:
+            case EditorStep::InventionsListSetUp:
+                for (auto& ride : GetRideManager())
+                    ride.Delete();
+                break;
+            case EditorStep::OptionsSelection:
+            case EditorStep::ObjectiveSelection:
+            case EditorStep::SaveScenario:
+            case EditorStep::RollercoasterDesigner:
+            case EditorStep::DesignsManager:
+            case EditorStep::Invalid:
+                break;
+        }
         return;
     }
 
