@@ -18,6 +18,7 @@
 enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
+enum class Sort : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
 
@@ -98,7 +99,7 @@ struct GeneralConfiguration
 
     // Loading and saving
     bool confirmation_prompt;
-    int32_t load_save_sort;
+    Sort load_save_sort;
     utf8* last_save_game_directory;
     utf8* last_save_landscape_directory;
     utf8* last_save_scenario_directory;
@@ -207,12 +208,12 @@ struct PluginConfiguration
     std::string allowed_hosts;
 };
 
-enum SORT
+enum class Sort : int32_t
 {
-    SORT_NAME_ASCENDING,
-    SORT_NAME_DESCENDING,
-    SORT_DATE_ASCENDING,
-    SORT_DATE_DESCENDING,
+    NameAscending,
+    NameDescending,
+    DateAscending,
+    DateDescending,
 };
 
 enum class TemperatureUnit : int32_t

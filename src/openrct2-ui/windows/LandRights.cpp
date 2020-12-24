@@ -106,7 +106,7 @@ rct_window* window_land_rights_open()
     gLandToolSize = 1;
 
     show_gridlines();
-    tool_set(window, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+    tool_set(window, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
     input_set_flag(INPUT_FLAG_6, true);
 
     show_land_rights();
@@ -144,7 +144,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_LAND_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
             {
-                tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                 show_land_rights();
                 w->Invalidate();
@@ -153,7 +153,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_CONSTRUCTION_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
             {
-                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                 show_construction_rights();
                 w->Invalidate();

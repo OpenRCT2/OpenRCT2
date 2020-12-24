@@ -20,7 +20,7 @@ widget_ref gPressedWidget;
 
 uint16_t _tooltipNotShownTicks;
 
-TOOL_IDX gCurrentToolId;
+Tool gCurrentToolId;
 widget_ref gCurrentToolWidget;
 
 /**

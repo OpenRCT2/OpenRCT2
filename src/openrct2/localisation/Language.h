@@ -46,24 +46,24 @@ enum
     LANGUAGE_COUNT
 };
 
-enum RCT2LanguageId
+enum class RCT2LanguageId
 {
-    RCT2_LANGUAGE_ID_ENGLISH_UK,
-    RCT2_LANGUAGE_ID_ENGLISH_US,
-    RCT2_LANGUAGE_ID_FRENCH,
-    RCT2_LANGUAGE_ID_GERMAN,
-    RCT2_LANGUAGE_ID_SPANISH,
-    RCT2_LANGUAGE_ID_ITALIAN,
-    RCT2_LANGUAGE_ID_DUTCH,
-    RCT2_LANGUAGE_ID_SWEDISH,
-    RCT2_LANGUAGE_ID_JAPANESE,
-    RCT2_LANGUAGE_ID_KOREAN,
-    RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
-    RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
-    RCT2_LANGUAGE_ID_12,
-    RCT2_LANGUAGE_ID_PORTUGUESE,
-    RCT2_LANGUAGE_ID_BLANK = 254,
-    RCT2_LANGUAGE_ID_END = 255
+    EnglishUK,
+    EnglishUS,
+    French,
+    German,
+    Spanish,
+    Italian,
+    Dutch,
+    Swedish,
+    Japanese,
+    Korean,
+    ChineseSimplified,
+    ChineseTraditional,
+    Undefined,
+    Portuguese,
+    Blank = 254,
+    End = 255
 };
 
 #define FONT_OPENRCT2_SPRITE NULL

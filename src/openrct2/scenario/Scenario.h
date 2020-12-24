@@ -27,6 +27,8 @@
 
 using random_engine_t = Random::Rct2::Engine;
 
+enum class EditorStep : uint8_t;
+
 struct ParkLoadResult;
 
 #pragma pack(push, 1)
@@ -51,7 +53,7 @@ assert_struct_size(rct_s6_header, 0x20);
  */
 struct rct_s6_info
 {
-    uint8_t editor_step;
+    EditorStep editor_step;
     uint8_t category;        // 0x01
     uint8_t objective_type;  // 0x02
     uint8_t objective_arg_1; // 0x03

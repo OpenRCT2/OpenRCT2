@@ -1756,7 +1756,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
         tool_set(
             constructionWindow,
             entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
-            TOOL_CROSSHAIR);
+            Tool::Crosshair);
         gRideEntranceExitPlaceType = entranceType;
         gRideEntranceExitPlaceRideIndex = rideIndex;
         gRideEntranceExitPlaceStationIndex = stationIndex;
@@ -1944,7 +1944,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
 
     w = ride_create_or_find_construction_window(ride->id);
 
-    tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, TOOL_CROSSHAIR);
+    tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
 
     ride = get_ride(_currentRideIndex);
@@ -1984,9 +1984,22 @@ void Ride::UpdateAll()
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step <= EDITOR_STEP_INVENTIONS_LIST_SET_UP)
-            for (auto& ride : GetRideManager())
-                ride.Delete();
+        switch (gS6Info.editor_step)
+        {
+            case EditorStep::ObjectSelection:
+            case EditorStep::LandscapeEditor:
+            case EditorStep::InventionsListSetUp:
+                for (auto& ride : GetRideManager())
+                    ride.Delete();
+                break;
+            case EditorStep::OptionsSelection:
+            case EditorStep::ObjectiveSelection:
+            case EditorStep::SaveScenario:
+            case EditorStep::RollercoasterDesigner:
+            case EditorStep::DesignsManager:
+            case EditorStep::Invalid:
+                break;
+        }
         return;
     }
 

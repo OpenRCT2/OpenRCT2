@@ -101,6 +101,13 @@ namespace Config
         ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
     });
 
+    static const auto Enum_Sort = ConfigEnum<Sort>({
+        ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
+        ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
+        ConfigEnumEntry<Sort>("DATE_ASCENDING", Sort::DateAscending),
+        ConfigEnumEntry<Sort>("DATE_DESCENDING", Sort::DateDescending),
+    });
+
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
         ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
         ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
@@ -183,7 +190,7 @@ namespace Config
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
             model->last_run_version = reader->GetCString("last_run_version", nullptr);
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
-            model->load_save_sort = reader->GetInt32("load_save_sort", SORT_NAME_ASCENDING);
+            model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->disable_screensaver = reader->GetBoolean("disable_screensaver", true);
 
@@ -263,7 +270,7 @@ namespace Config
         writer->WriteInt32("default_inspection_interval", model->default_inspection_interval);
         writer->WriteString("last_run_version", model->last_run_version);
         writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
-        writer->WriteInt32("load_save_sort", model->load_save_sort);
+        writer->WriteEnum<Sort>("load_save_sort", model->load_save_sort, Enum_Sort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
         writer->WriteBoolean("disable_screensaver", model->disable_screensaver);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);

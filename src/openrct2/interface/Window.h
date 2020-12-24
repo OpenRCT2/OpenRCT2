@@ -632,19 +632,19 @@ enum class GuestListFilterType : int32_t
     GuestsThinkingX,
 };
 
-enum TOOL_IDX
+enum class Tool
 {
-    TOOL_ARROW = 0,
-    TOOL_UP_ARROW = 2,
-    TOOL_UP_DOWN_ARROW = 3,
-    TOOL_PICKER = 7,
-    TOOL_CROSSHAIR = 12,
-    TOOL_PATH_DOWN = 17,
-    TOOL_DIG_DOWN = 18,
-    TOOL_WATER_DOWN = 19,
-    TOOL_WALK_DOWN = 22,
-    TOOL_PAINT_DOWN = 23,
-    TOOL_ENTRANCE_DOWN = 24,
+    Arrow = 0,
+    UpArrow = 2,
+    UpDownArrow = 3,
+    Picker = 7,
+    Crosshair = 12,
+    PathDown = 17,
+    DigDown = 18,
+    WaterDown = 19,
+    WalkDown = 22,
+    PaintDown = 23,
+    EntranceDown = 24,
 };
 
 using modal_callback = void (*)(int32_t result);
@@ -733,7 +733,7 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, TOOL_IDX tool);
+bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool);
 void tool_cancel();
 
 void window_close_construction_windows();

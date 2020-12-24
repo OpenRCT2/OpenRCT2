@@ -146,7 +146,7 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
     WindowInitScrollWidgets(w);
-    tool_set(w, WIDX_PRICE, TOOL_CROSSHAIR);
+    tool_set(w, WIDX_PRICE, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
     window_push_others_right(w);
     show_gridlines();

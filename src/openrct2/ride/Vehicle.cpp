@@ -915,7 +915,7 @@ bool Vehicle::SoundCanPlay() const
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return false;
 
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return false;
 
     if (sound1_id == OpenRCT2::Audio::SoundId::Null && sound2_id == OpenRCT2::Audio::SoundId::Null)
@@ -1359,7 +1359,7 @@ void vehicle_update_all()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return;
 
     for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))

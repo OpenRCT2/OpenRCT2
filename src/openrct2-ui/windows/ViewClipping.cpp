@@ -217,7 +217,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_CLIP_SELECTOR:
             // Activate the selection tool
-            tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
+            tool_set(w, WIDX_BACKGROUND, Tool::Crosshair);
             _toolActive = true;
             _dragging = false;
 

@@ -1971,7 +1971,7 @@ static void window_ride_construction_rotate(rct_window* w)
  */
 static void window_ride_construction_entrance_click(rct_window* w)
 {
-    if (tool_set(w, WIDX_ENTRANCE, TOOL_CROSSHAIR))
+    if (tool_set(w, WIDX_ENTRANCE, Tool::Crosshair))
     {
         auto ride = get_ride(_currentRideIndex);
         if (ride != nullptr && !ride_try_get_origin_element(ride, nullptr))
@@ -2001,7 +2001,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
  */
 static void window_ride_construction_exit_click(rct_window* w)
 {
-    if (tool_set(w, WIDX_EXIT, TOOL_CROSSHAIR))
+    if (tool_set(w, WIDX_EXIT, Tool::Crosshair))
     {
         auto ride = get_ride(_currentRideIndex);
         if (!ride_try_get_origin_element(ride, nullptr))
@@ -3794,7 +3794,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
-                        tool_set(w, WIDX_CONSTRUCT, TOOL_CROSSHAIR);
+                        tool_set(w, WIDX_CONSTRUCT, Tool::Crosshair);
                         input_set_flag(INPUT_FLAG_6, true);
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;

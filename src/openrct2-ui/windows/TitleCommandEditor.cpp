@@ -331,7 +331,7 @@ static void window_title_command_editor_mouseup(rct_window* w, rct_widgetindex w
         case WIDX_SELECT_SPRITE:
             if (!sprite_selector_tool_is_active())
             {
-                tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
+                tool_set(w, WIDX_BACKGROUND, Tool::Crosshair);
             }
             else
             {

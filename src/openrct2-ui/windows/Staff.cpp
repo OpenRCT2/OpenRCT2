@@ -423,7 +423,7 @@ void window_staff_overview_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                 if (wind)
                 {
-                    tool_set(wind, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
+                    tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                 }
             });
             GameActions::Execute(&pickupAction);
@@ -567,7 +567,7 @@ void window_staff_overview_dropdown(rct_window* w, rct_widgetindex widgetIndex, 
     }
     else
     {
-        if (!tool_set(w, widgetIndex, TOOL_WALK_DOWN))
+        if (!tool_set(w, widgetIndex, Tool::WalkDown))
         {
             show_gridlines();
             gStaffDrawPatrolAreas = w->number;

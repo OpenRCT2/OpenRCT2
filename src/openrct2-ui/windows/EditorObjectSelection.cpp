@@ -1271,7 +1271,7 @@ static void window_editor_object_selection_manage_tracks()
     set_every_ride_type_invented();
     set_every_ride_entry_invented();
 
-    gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
+    gS6Info.editor_step = EditorStep::DesignsManager;
 
     int32_t entry_index = 0;
     for (; object_entry_get_chunk(ObjectType::Ride, entry_index) == nullptr; entry_index++)
