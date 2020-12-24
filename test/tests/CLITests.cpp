@@ -79,11 +79,20 @@ TEST_F(CommandLineTests, cmdline_cmdline_for_sprite_build)
 
 TEST_F(CommandLineTests, cmdline_cmdline_for_sprite_failed_build)
 {
+    // run on correct manifest file
+    std::string manifestFilePath = ManifestFilePath();
+    std::string outputfilePath = BuildOutputfilePath();
+    const char* detailsCmd[3] = { "build", outputfilePath.c_str(), manifestFilePath.c_str() };
+    int32_t result = cmdline_for_sprite(detailsCmd, 3);
+    ASSERT_EQ(result, 1);
+    ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
+
     // now use bad manifest and make sure output file is not edited
     std::string badManifestFilePath = BadManifestFilePath();
-    std::string outputfilePath = BuildOutputfilePath();
-    const char* detailsCmd[3] = { "build", outputfilePath.c_str(), badManifestFilePath.c_str() };
-    int32_t result = cmdline_for_sprite(detailsCmd, 3);
+    detailsCmd[2] = badManifestFilePath.c_str();
+    result = cmdline_for_sprite(detailsCmd, 3);
     // check the command failed
     ASSERT_EQ(result, -1);
+    // validate the target file was unchanged
+    ASSERT_TRUE(CompareSpriteFiles(ExampleSpriteFilePath(), outputfilePath));
 }

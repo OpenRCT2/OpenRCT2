@@ -589,21 +589,15 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 
-        SpriteFile baseFile;
-        baseFile.Header.num_entries = 0;
-        baseFile.Header.total_size = 0;
-        baseFile.Save(spriteFilePath);
+        // keep sprite file entirely in memory until ready to write out a complete,
+        // correct file
+        SpriteFile spriteFile;
+        spriteFile.Header.num_entries = 0;
+        spriteFile.Header.total_size = 0;
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
         json_t sprite_description;
-
-        auto spriteFile = SpriteFile::Open(spriteFilePath);
-        if (!spriteFile.has_value())
-        {
-            fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-            return -1;
-        }
 
         // Note: jsonSprite is deliberately left non-const: json_t behaviour changes when const
         for (auto& [jsonKey, jsonSprite] : jsonSprites.items())
@@ -639,13 +633,13 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
 
-            spriteFile->AddImage(importResult.value());
+            spriteFile.AddImage(importResult.value());
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
         }
 
-        if (!spriteFile->Save(spriteFilePath))
+        if (!spriteFile.Save(spriteFilePath))
         {
             fprintf(stderr, "Could not save sprite file: Canceling\n");
             return -1;
