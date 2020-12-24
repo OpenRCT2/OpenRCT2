@@ -1,12 +1,12 @@
 
 #include "TestData.h"
 
-#include <gtest/gtest.h>
-#include <openrct2/core/Path.hpp>
-#include <openrct2/CmdlineSprite.h>
-#include <fstream>
-#include <iterator>
 #include <algorithm>
+#include <fstream>
+#include <gtest/gtest.h>
+#include <iterator>
+#include <openrct2/CmdlineSprite.h>
+#include <openrct2/core/Path.hpp>
 
 class CommandLineTests : public testing::Test
 {
@@ -49,10 +49,8 @@ public:
             return false;
         }
         return std::equal(
-            std::istreambuf_iterator<char>(originalFile.rdbuf()),
-            std::istreambuf_iterator<char>(),
-            std::istreambuf_iterator<char>(generatedFile.rdbuf())
-        );
+            std::istreambuf_iterator<char>(originalFile.rdbuf()), std::istreambuf_iterator<char>(),
+            std::istreambuf_iterator<char>(generatedFile.rdbuf()));
     }
 };
 
