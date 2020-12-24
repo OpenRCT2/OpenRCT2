@@ -12,6 +12,7 @@
 - Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
+- Fix: [#13102] Underflow on height chart (Ride measurements).
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.

@@ -768,16 +768,18 @@ namespace OpenRCT2
                 case FormatToken::Sprite:
                     anyArgs.push_back(ReadFromArgs<int32_t>(args));
                     break;
-                case FormatToken::Comma16:
                 case FormatToken::UInt16:
                 case FormatToken::MonthYear:
                 case FormatToken::Month:
                 case FormatToken::Velocity:
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
+                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    break;
+                case FormatToken::Comma16:
                 case FormatToken::Length:
                 case FormatToken::Comma1dp16:
-                    anyArgs.push_back(ReadFromArgs<uint16_t>(args));
+                    anyArgs.push_back(ReadFromArgs<int16_t>(args));
                     break;
                 case FormatToken::StringId:
                 {
