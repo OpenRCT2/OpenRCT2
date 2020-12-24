@@ -3,6 +3,7 @@
 - Feature: [#6677] Add Discord RPC to macOS builds.
 - Feature: [#6844] Enhanced track designer with ability to add/remove scenery and footpaths.
 - Feature: [#11859] Add on-ride photo section to Air Powered Vertical and Reverse Freefall Coaster.
+- Feature: [#12307] Allow extraction of GOG installer via innoextract (for Linux users).
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13078] [Plugin] Add colour picker widget.
 - Feature: [#13376] Open custom window at specified tab.
@@ -36,7 +37,6 @@
 
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
-- Feature: [#12307] For Linux users, allow extraction of GOG installer via innoextract.
 - Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.
 - Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
 - Feature: [#13000] objective_options command for console.

@@ -854,8 +854,10 @@ bool config_find_or_browse_install_directory()
                         chosenOption = options[optionIndex];
                     }
                 }
-
-                chosenOption = hdd;
+                else
+                {
+                    chosenOption = hdd;
+                }
 
                 std::string installPath;
                 if (chosenOption == hdd)
