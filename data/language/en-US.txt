@@ -70,13 +70,13 @@ STR_1540    :{SMALLFONT}“This coffee from {STRINGID} is a really good value”
 STR_1542    :{SMALLFONT}“This fried chicken from {STRINGID} is a really good value”
 STR_1543    :{SMALLFONT}“This lemonade from {STRINGID} is a really good value”
 
-STR_1559    :{SMALLFONT}“I'm not paying that much for fries from {STRINGID}”
+STR_1559    :{SMALLFONT}“I’m not paying that much for fries from {STRINGID}”
 
-STR_1561    :{SMALLFONT}“I'm not paying that much for cotton candy from {STRINGID}”
+STR_1561    :{SMALLFONT}“I’m not paying that much for cotton candy from {STRINGID}”
 
-STR_1571    :{SMALLFONT}“I'm not paying that much for a candy apple from {STRINGID}”
+STR_1571    :{SMALLFONT}“I’m not paying that much for a candy apple from {STRINGID}”
 
-STR_1573    :{SMALLFONT}“I'm not paying that much for a donut from {STRINGID}”
+STR_1573    :{SMALLFONT}“I’m not paying that much for a donut from {STRINGID}”
 
 STR_1584    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
 STR_1585    :{SMALLFONT}“This on-ride photo from {STRINGID} is a really good value”
@@ -114,7 +114,7 @@ STR_1834    :Guests favorite
 STR_1842    :Favorite of: {COMMA16} guest
 STR_1843    :Favorite of: {COMMA16} guests
 
-STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
+STR_1929    :{RED}{STRINGID} still hasn’t been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 
 STR_1967    :{WINDOW_COLOUR_2}Fries price:
 
@@ -175,13 +175,13 @@ STR_2806    :{RED}Guests are complaining about the disgusting state of the paths
 STR_2807    :{RED}Guests are complaining about the amount of trash in your park{NEWLINE}Check where your handymen are and consider organizing them better
 STR_2808    :{RED}Guests are complaining about the vandalism in your park{NEWLINE}Check where your security guards are and consider organizing them better
 
-STR_2811    :{RED}Guests are complaining because they can't find the bathrooms in your park
+STR_2811    :{RED}Guests are complaining because they can’t find the bathrooms in your park
 
 STR_2824    :{WINDOW_COLOUR_2}Best park bathrooms award
 
 STR_2828    :{WINDOW_COLOUR_2}Most dazzling ride color schemes award
 
-STR_2845    :{TOPAZ}Your park has received an award for being 'The park with the most dazzling choice of color schemes'!
+STR_2845    :{TOPAZ}Your park has received an award for being ‘The park with the most dazzling choice of color schemes’!
 
 STR_2971    :Main color scheme
 STR_2972    :Alternative color scheme 1
@@ -206,7 +206,7 @@ STR_3123    :{WINDOW_COLOUR_2}Favorite ride of: {BLACK}{COMMA16} guests
 STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Restroom
 
-STR_6274    :Can't set color scheme…
+STR_6274    :Can’t set color scheme…
 
 # Strings added by OpenRCT2. Only add strings that differ from UK English!
 STR_5306    :RollerCoaster Tycoon 1 (CF)
@@ -216,7 +216,7 @@ STR_5440    :Minimize fullscreen on focus loss
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behavior)
 STR_5459    :Rotate counterclockwise
 STR_5460    :Rotate view counterclockwise
-STR_5515    :Stops guests from vandalizing your park when they're angry
+STR_5515    :Stops guests from vandalizing your park when they’re angry
 STR_5517    :Gray
 STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5572    :Add To Favorites
@@ -228,15 +228,15 @@ STR_5823    :Display banners in uppercase (RCT1 behavior)
 STR_5827    :Sets the color scheme used for the GUI
 STR_5842    :Sort scenarios into tabs by their difficulty (RCT2 behavior) or their source game (RCT1 behavior)
 STR_5843    :Enables progressive unlocking of scenarios (RCT1 behavior)
-STR_5872    :Disable plant aging such that they don't wilt.
+STR_5872    :Disable plant aging such that they don’t wilt.
 STR_5907    :When enabled, zooming in will center around the cursor, as opposed to the screen center.
 STR_5921    :If enabled, rain and gloomy colors will be rendered during storms.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
 STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
 STR_6159    :Smooth Nearest Neighbor
-STR_6166    :Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
-STR_6274    :Can't set color scheme…
+STR_6166    :Synchronizes each frame displayed to the monitor’s refresh rate, preventing screen tearing.
+STR_6274    :Can’t set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}
 STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black color.
 
@@ -273,7 +273,7 @@ STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
 <Bumbly Beach>
 STR_SCNR    :Bumbly Beach
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :Develop Bumbly Beach’s small amusement park into a thriving theme park
 
 <Trinity Islands>
 STR_SCNR    :Trinity Islands
@@ -281,8 +281,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :Several islands form the basis for this new park
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's World
-STR_PARK    :Katie's World
+STR_SCNR    :Katie’s World
+STR_PARK    :Katie’s World
 STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
 
 <Pokey Park>
@@ -306,8 +306,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :A large park hidden in the forest, with only go-kart tracks and wooden roller coasters
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :This theme park has some well-designed modern rides, but plenty of space for expansion
 
 <Mystic Mountain>
@@ -328,7 +328,7 @@ STR_DTLS    :A large park with well-designed but rather old rides - Replace the 
 <Paradise Pier>
 STR_SCNR    :Big Pier
 STR_PARK    :Big Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Convert this sleepy town’s pier into a thriving attraction
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
@@ -343,7 +343,7 @@ STR_DTLS    :A well-established park, which has a few problems
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Rainbow Valley’s local authority won’t allow any landscape changes or large tree removal, but you must develop the area into a large theme park
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
@@ -444,7 +444,7 @@ STR_DTLS    :The weather is so wet here that a giant pyramid has been built to a
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :The local authority won’t allow you to build above tree height in this park
 
 <Roman Village>
 STR_SCNR    :Roman Village
@@ -543,8 +543,8 @@ STR_PARK    :Big Pier 2
 STR_DTLS    :Big Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
 
 <Good Knight Park>
@@ -655,7 +655,7 @@ STR_DTLS    :On a far-away planet this area of land needs turning into a theme p
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Try to create the world’s smallest profitable park
 
 ## Real Parks from RCT1
 # None of them had details
@@ -797,7 +797,7 @@ STR_DTLS    :Try your hand at running and improving this Six Flags park
 <Six Flags Great Adventure>
 STR_SCNR    :Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim - To attract more guests to the park!
 
 <Six Flags Holland>
 STR_SCNR    :Six Flags Holland
@@ -807,12 +807,12 @@ STR_DTLS    :Try your hand at running and improving this Six Flags park
 <Six Flags Magic Mountain>
 STR_SCNR    :Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To repay your loan while keeping the park value up!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim - To repay your loan while keeping the park value up!
 
 <Six Flags over Texas>
 STR_SCNR    :Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don't forget your ultimate aim - To attract more guests to the park!
+STR_DTLS    :Build the missing Six Flags rides, or create your own designs to improve the park! But don’t forget your ultimate aim - To attract more guests to the park!
 
 ###############################################################################
 ## Wacky Worlds Scenarios
@@ -850,7 +850,7 @@ STR_DTLS    :An existing park has run out of space. Your only option is to build
 <Asia - Maharaja Palace>
 STR_SCNR    :Asia - Maharaja Palace
 STR_PARK    :Park Maharaja
-STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja’s palace.
 
 <Australasia - Ayers Rock>
 STR_SCNR    :Australasia - Ayers Rock
@@ -860,7 +860,7 @@ STR_DTLS    :You are helping Aboriginal people to build a park as part of a cult
 <Australasia - Fun at the Beach>
 STR_SCNR    :Australasia - Fun at the Beach
 STR_PARK    :Beach Barbecue Blast
-STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+STR_DTLS    :A local entrepreneur’s sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
 
 <Europe - European Cultural Festival>
 STR_SCNR    :Europe - European Cultural Festival
@@ -875,12 +875,12 @@ STR_DTLS    :An old park has fallen into disrepair. You gain a European Union gr
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area’s tourist attraction rating high.
 
 <North America - Grand Canyon>
 STR_SCNR    :North America - Grand Canyon
 STR_PARK    :Canyon Calamities
-STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighboring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighboring land from the Native American Indians. You need to complete the objective to sustain the local town’s population.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :North America - Rollercoaster Heaven
@@ -908,7 +908,7 @@ STR_DTLS    :You run a small park near Rio but the bank has called in your loan.
 <Dark Age - Castle>
 STR_SCNR    :Dark Age - Castle
 STR_PARK    :Cliffside Castle
-STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They’ve entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
 
 <Dark Age - Robin Hood>
 STR_SCNR    :Dark Age - Robin Hood
@@ -933,17 +933,17 @@ STR_DTLS    :You have been given the task of running and improving an existing t
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :Mythological - Cradle of Civilization
 STR_PARK    :Mythological Madness
-STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+STR_DTLS    :You own an island of particular archaeological value. You’ve decided to fund its preservation by constructing a theme park based on the area’s rich Mythological heritage.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :Prehistoric - After the Asteroid
 STR_PARK    :Crater Carnage
-STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you’ve decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prehistoric - Jurassic Safari
 STR_PARK    :Coastersaurus
-STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+STR_DTLS    :You’ve been given the task of constructing a Jurassic era theme park. To optimize your visitors’ access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :Prehistoric - Stone Age
@@ -953,12 +953,12 @@ STR_DTLS    :To thwart the highway developers and preserve the mysterious ancien
 <Roaring Twenties - Prison Island>
 STR_SCNR    :Roaring Twenties - Prison Island
 STR_PARK    :Alcatraz
-STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object.
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You’ve decided to convert it into a top tourist attraction, and money is no object.
 
 <Roaring Twenties - Schneider Cup>
 STR_SCNR    :Roaring Twenties - Schneider Cup
 STR_PARK    :Schneider Shores
-STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honor his achievement by building a theme park based on the famous seaplane race.
+STR_DTLS    :The 75th anniversary of your grandfather’s Schneider Cup victory is coming up in a few years. You’re going to honor his achievement by building a theme park based on the famous seaplane race.
 
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :Roaring Twenties - Skyscrapers
@@ -966,11 +966,11 @@ STR_PARK    :Metropolis
 STR_DTLS    :You own an empty lot near the low-rise part of town. To squeeze the most out of your urban property, build a skyscraper theme park inspired by the soaring art deco architecture of the twenties.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_SCNR    :Rock ‘n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :A large annual music festival takes place on your land. Build a hip theme park to keep the free-spirited audience entertained.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+STR_SCNR    :Rock ‘n’ Roll - Rock ‘n’ Roll
+STR_PARK    :Rock ‘n’ Roll Revival
+STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock ‘n’ roll makeover and turn the place into a successful venue.

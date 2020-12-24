@@ -25,7 +25,7 @@ STR_0023    :Spiraalglijbaan
 STR_0024    :Go-karts
 STR_0025    :Boomstamattractie
 STR_0026    :Wildwaterbaan
-STR_0027    :Botsauto's
+STR_0027    :Botsauto’s
 STR_0028    :Schommelschip
 STR_0029    :Loopingschip
 STR_0030    :Eetkraam
@@ -117,7 +117,7 @@ STR_0533    :
 STR_0534    :Bezoekers racen tegen elkaar in go-karts op een asfaltbaan.
 STR_0535    :Bezoekers varen in bootjes door een waterbak, waarbij ze van steile hellingen afdalen en doorweekt raken.
 STR_0536    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
-STR_0537    :Bezoekers botsen tegen elkaar in elektrisch aangedreven botsauto's die ze zelf kunnen besturen.
+STR_0537    :Bezoekers botsen tegen elkaar in elektrisch aangedreven botsauto’s die ze zelf kunnen besturen.
 STR_0538    :
 STR_0539    :
 STR_0540    :
@@ -1389,8 +1389,8 @@ STR_2015    :Lege fles
 STR_2016    :Ballonnen
 STR_2017    :Knuffels
 STR_2018    :Parkplattegronden
-STR_2019    :Actiefoto's
-STR_2020    :Paraplu's
+STR_2019    :Actiefoto’s
+STR_2020    :Paraplu’s
 STR_2021    :Blikjes frisdrank
 STR_2022    :Hamburgers
 STR_2023    :Zakjes friet
@@ -1399,7 +1399,7 @@ STR_2025    :Suikerspinnen
 STR_2026    :Lege blikjes
 STR_2027    :Stuks rommel
 STR_2028    :Lege hamburgerdozen
-STR_2029    :Pizza's
+STR_2029    :Pizza’s
 STR_2030    :Bonnen
 STR_2031    :Bakjes popcorn
 STR_2032    :Hotdogs
@@ -1693,7 +1693,7 @@ STR_2339    :Peseta (Pts)
 STR_2340    :Lire (L)
 STR_2341    :Guldens (ƒ)
 STR_2342    :Kronen (kr)
-STR_2343    :Euro's (€)
+STR_2343    :Euro’s (€)
 STR_2344    :Engelse maten
 STR_2345    :Metriek stelsel
 STR_2347    :{RED}{STRINGID} is verdronken!
@@ -1814,7 +1814,7 @@ STR_2472    :Onderzoek naar nieuwe achtbanen
 STR_2473    :Onderzoek naar nieuwe spannende attracties
 STR_2474    :Onderzoek naar nieuwe waterattracties
 STR_2475    :Onderzoek naar nieuwe winkels en kraampjes
-STR_2476    :Onderzoek naar nieuw decor en nieuwe thema's
+STR_2476    :Onderzoek naar nieuw decor en nieuwe thema’s
 STR_2477    :Selecteer werkmodus voor deze attractie
 STR_2478    :Toon grafiek van snelheidsverloop
 STR_2479    :Toon grafiek van hoogteverloop
@@ -2057,7 +2057,7 @@ STR_2861    :{WINDOW_COLOUR_2}In licentie gegeven aan {NEWLINE}Infogrames Intera
 STR_2862    :Muziekdankwoord…
 STR_2863    :Muziekdankwoord
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) geen copyright
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole (Die schöne Spanierin):   (Robert Vollstedt) geen copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditioneel)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) geen copyright
@@ -2070,19 +2070,19 @@ STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Traditioneel)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, gebruikt met toestemming
 STR_2876    :{WINDOW_COLOUR_2}Titelmuziek RollerCoaster Tycoon 2:   (Allister Brimble) copyright © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) copyright © Chris Sawyer
 STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
 STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
 STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
 STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) copyright © Chris Sawyer
 STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) copyright © Chris Sawyer
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) copyright © Chris Sawyer
 STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
@@ -2282,7 +2282,7 @@ STR_3186    :Groot decor
 STR_3187    :Muren/hekken
 STR_3188    :Lichtkranten
 STR_3189    :Voetpaden
-STR_3190    :Extra's voor paden
+STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
 STR_3192    :Parkingang
 STR_3193    :Water
@@ -2422,7 +2422,7 @@ STR_3330    :Park moet land bezitten
 STR_3331    :Pad van de parkingang naar de rand van de kaart is incompleet of te complex; het pad mag maar één vakje breed zijn en moet zo min mogelijk kruisingen en bochten bevatten
 STR_3332    :Parkingang staat achterstevoren of heeft geen pad naar de rand van de kaart
 STR_3333    :Niet-standaard objecten meeleveren in opgeslagen spellen
-STR_3334    :Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario's moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
+STR_3334    :Selecteer of toegevoegde (niet-standaard) objecten in opgeslagen spellen en scenario’s moeten worden meegeleverd, zodat ze geopend kunnen worden door iemand die deze objecten nog niet heeft
 STR_3335    :Baanontwerper - Attractietypes en -voertuigen selecteren
 STR_3336    :Baanontwerpbeheer - Attractietype selecteren
 STR_3338    :{BLACK}Eigen ontwerp
@@ -2513,7 +2513,7 @@ STR_5150    :Debugging-hulpmiddelen inschakelen
 STR_5151    :.
 #Scheidingsteken voor decimalen
 STR_5152    :,
-STR_5153    :Thema's
+STR_5153    :Thema’s
 STR_5154    :Weergave uitgevoerd door hardware
 STR_5155    :Testen van onvoltooide banen toestaan
 STR_5156    :Maakt het mogelijk om de meeste attractietypes te testen, zelfs als de baan niet voltooid is. Werkt niet als de baan gebruik maakt van een blokremmodus.
@@ -2564,7 +2564,7 @@ STR_5214    :Kaartgenerator
 STR_5215    :Baanontwerpbeheer
 STR_5216    :Lijst baanontwerpbeheer
 STR_5217    :Cheats
-STR_5218    :Thema's
+STR_5218    :Thema’s
 STR_5219    :Opties
 STR_5220    :Sneltoetsen
 STR_5221    :Sneltoets aanpassen
@@ -2590,7 +2590,7 @@ STR_5240    :Voer een naam in voor dit thema
 STR_5241    :Kan dit thema niet wijzigen.
 STR_5242    :Themanaam bestaat al.
 STR_5243    :Er zijn ongeldige tekens gebruikt.
-STR_5244    :Thema's
+STR_5244    :Thema’s
 STR_5245    :Bovenste werkbalk
 STR_5246    :Onderste werkbalk
 STR_5247    :Onderste werkbalk baanontwerper/beheerder
@@ -2799,7 +2799,7 @@ STR_5477    :Kaartrendering
 STR_5478    :Bediening
 STR_5479    :Werkbalk
 STR_5480    :Knoppen in de werkbalk tonen voor:
-STR_5481    :Thema's
+STR_5481    :Thema’s
 STR_5482    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}1 minuut
 STR_5483    :{BLACK}({COMMA16} weken resterend)
 STR_5484    :{BLACK}({COMMA16} week resterend)
@@ -2824,7 +2824,7 @@ STR_5504    :Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
 STR_5508    :Bestanden met incorrecte checksum toch laden
-STR_5509    :Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
+STR_5509    :Maakt het mogelijk om scenario’s en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario’s uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
 STR_5511    :(ONBEKEND)
 STR_5512    :Spel opslaan als…
@@ -2944,13 +2944,13 @@ STR_5626    :Overige parken
 STR_5627    :Scenariolijst groeperen op:
 STR_5628    :Oorsprong
 STR_5629    :Moeilijkheidsgraad
-STR_5630    :Moeilijke scenario's ontgrendelden met gemakkelijke
+STR_5630    :Moeilijke scenario’s ontgrendelden met gemakkelijke
 STR_5631    :Originele DLC
 STR_5632    :Bouw je eigen…
 STR_5633    :CMD + 
 STR_5634    :OPTION + 
 STR_5635    :{WINDOW_COLOUR_2}Uitgegeven geld: {BLACK}{CURRENCY2DP}
-STR_5636    :{WINDOW_COLOUR_2}Uitgevoerde commando's: {BLACK}{COMMA16}
+STR_5636    :{WINDOW_COLOUR_2}Uitgevoerde commando’s: {BLACK}{COMMA16}
 STR_5637    :Kan dit niet uitvoeren…
 STR_5638    :Geen toestemming
 STR_5639    :Spelerslijst tonen
@@ -3061,7 +3061,7 @@ STR_5780    :Bedrijfskosten: {CURRENCY2DP} per uur
 STR_5781    :Bedrijfskosten: onbekend
 STR_5782    :Je bent nu verbonden met de server. Druk op ‘{STRING}’ om te chatten.
 STR_5783    :{WINDOW_COLOUR_2}Scenario is vergrendeld
-STR_5784    :{BLACK}Dit scenario is pas beschikbaar als je eerdere scenario's hebt voltooid.
+STR_5784    :{BLACK}Dit scenario is pas beschikbaar als je eerdere scenario’s hebt voltooid.
 STR_5785    :Kan de groep niet hernoemen…
 STR_5786    :Ongeldige groepsnaam
 STR_5787    :{COMMA32} spelers online
@@ -3071,7 +3071,7 @@ STR_5790    :Maakt geld vragen voor zowel het park als de attracties mogelijk,{N
 STR_5791    :Stelt het bouwjaar van alle attracties in op dit jaar{NEWLINE}en zet de betrouwbaarheid weer terug op 100%.
 STR_5792    :Repareert alle defecte attracties.
 STR_5793    :Wist de crashstatus van alle attracties,{NEWLINE}zodat de bezoekers ze niet als onveilig zien.
-STR_5794    :In sommige scenario's kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
+STR_5794    :In sommige scenario’s kun je bepaalde bestaande attracties niet aanpassen.{NEWLINE}Deze cheat heft deze beperkingen op.
 STR_5795    :Zorgt ervoor dat bezoekers in elke attractie gaan,{NEWLINE}zelfs als de intensiteit erg hoog is.
 STR_5796    :Forceert het openen of sluiten van het park.
 STR_5797    :Voorkomt dat het weer verandert.
@@ -3112,17 +3112,17 @@ STR_5833    :Stelt de datumindeling in.
 STR_5834    :Stelt in welk audioapparaat OpenRCT2 zal gebruiken.
 STR_5835    :Dempt het geluid als het venster de focus kwijtraakt.
 STR_5836    :Selecteert welke muziek er wordt gebruikt tijdens de titelpresentatie.{NEWLINE}Om de muziek van RCT1 te gebruiken moet je het bestand ‘data/css17.dat’ uit je RCT1-map kopiëren naar ‘data/css50.dat’ in je RCT2-map, of een pad naar je RCT1-bestanden instellen onder het tabblad ‘Overige instellingen’.
-STR_5837    :Eigen thema's voor de GUI aanmaken en beheren.
+STR_5837    :Eigen thema’s voor de GUI aanmaken en beheren.
 STR_5838    :Toont een knop voor financiën in de werkbalk.
 STR_5839    :Toont een knop voor onderzoek en ontwikkeling in de werkbalk.
 STR_5840    :Toont een knop voor cheats in de werkbalk.
 STR_5841    :Toont een knop voor recente berichten in de werkbalk.
 STR_5842    :Stelt in of scenarios moeten worden gegroepeerd op moeilijkheidgraad (zoals in RCT2) of op oorsprong (zoals in RCT1).
-STR_5843    :Vereist dat gemakkelijke scenario's eerst worden voltooid voordat moeilijkere beschikbaar komen (zoals in RCT1).
+STR_5843    :Vereist dat gemakkelijke scenario’s eerst worden voltooid voordat moeilijkere beschikbaar komen (zoals in RCT1).
 STR_5844    :Blijf altijd verbonden met een multiplayerserver,{NEWLINE}zelfs als er desynchronisatie optreedt.
 STR_5845    :Toont knoppen om het spel te debuggen en geeft toegang tot de console.
 STR_5846    :Stelt in hoe vaak OpenRCT2 automatisch een back-up maakt van je park.
-STR_5847    :Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
+STR_5847    :Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario’s hebt geïmporteerd.
 STR_5848    :Eigen titelpresentaties maken en beheren.
 STR_5849    :Nieuwe werknemers automatisch plaatsen.
 STR_5851    :Stelt het standaardinspectie-interval voor nieuwe attracties in.
@@ -3215,8 +3215,8 @@ STR_5939    :Parkafscheiding verwijderen
 STR_5940    :Parkafscheiding herstellen
 STR_5941    :{WINDOW_COLOUR_2}Hoogte onderkant:
 STR_5942    :{WINDOW_COLOUR_2}Naam pad: {BLACK}{STRINGID}
-STR_5943    :{WINDOW_COLOUR_2}Extra's: {BLACK}{STRINGID}
-STR_5944    :{WINDOW_COLOUR_2}Extra's: {BLACK}Geen
+STR_5943    :{WINDOW_COLOUR_2}Extra’s: {BLACK}{STRINGID}
+STR_5944    :{WINDOW_COLOUR_2}Extra’s: {BLACK}Geen
 STR_5945    :{WINDOW_COLOUR_2}Verbonden randen:
 STR_5946    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
 STR_5947    :{WINDOW_COLOUR_2}Attractie-ID: {BLACK}{COMMA16}
@@ -3274,7 +3274,7 @@ STR_5998    :Toevoegen
 STR_5999    :Instellen
 STR_6000    :Voer een bedrag in
 STR_6001    :Belichtingseffecten inschakelen (experimenteel)
-STR_6002    :Lampen zullen 's nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
+STR_6002    :Lampen zullen ’s nachts aangaan en attracties verlicht worden.{NEWLINE}Hiervoor moet weergave via hardware ingeschakeld zijn.
 STR_6003    :Opengewerkte weergave
 STR_6004    :Opengewerkte weergave
 STR_6005    :Opengewerkte weergave inschakelen
@@ -3310,7 +3310,7 @@ STR_6034    :{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :Wissen
 STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.
-STR_6038    :Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario's, baanontwerpen en graphics.
+STR_6038    :Als je RollerCoaster Tycoon 1 hebt, stel dan hier het pad in om gebruik te maken van de scenario’s, baanontwerpen en graphics.
 STR_6039    :Snel afbreken
 STR_6040    :Scenario-opties bewerken
 STR_6041    :{BLACK}Er zijn geen monteurs ingehuurd!
@@ -3479,7 +3479,7 @@ STR_6222    :Kan hier geen toegangspunt plaatsen…
 STR_6223    :Locatie moet buiten het park liggen!
 STR_6224    :{STRING} heeft een bezoekerstoegangspunt geplaatst.
 STR_6225    :Niet ondersteund in de OpenGL-renderer.
-STR_6226    :Scenario's mogen vervroegd voltooid worden
+STR_6226    :Scenario’s mogen vervroegd voltooid worden
 STR_6227    :Als dit is ingeschakeld, zal er elke dag gecheckt worden of alle scenariodoelen zijn behaald, in plaats van aan het einde van de vermelde periode.
 STR_6228    :Scenario-opties
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
@@ -3541,7 +3541,7 @@ STR_6287    :Verzonden
 STR_6288    :Totaal ontvangen
 STR_6289    :Totaal verzonden
 STR_6290    :Basisprotocol
-STR_6291    :Commando's
+STR_6291    :Commando’s
 STR_6292    :Kaart
 STR_6293    :B
 STR_6294    :KiB
@@ -3612,7 +3612,7 @@ STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
 STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
-STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben 's nachts verlicht worden.
+STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben ’s nachts verlicht worden.
 STR_6363    :Tekst is naar het klembord gekopieerd.
 STR_6364    :{RED}{COMMA16} persoon is om het leven gekomen bij een ongeluk in {STRINGID}
 STR_6365    :Slachtoffers bij ongelukken in attracties
@@ -3692,8 +3692,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :Verscheidene eilanden vormen de basis voor dit nieuwe park.
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
-STR_PARK    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :Een klein pretpark met een paar attracties en ruimte voor uitbreiding - jouw doel is om de parkwaarde te verdubbelen.
 
 <Pokey Park>
@@ -3717,8 +3717,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :Een groot park, verscholen in het bos, met alleen kartbanen en houten achtbanen.
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :Dit pretpark heeft goed ontworpen, moderne attracties, maar heeft ook veel ruimte voor uitbreiding.
 
 <Mystic Mountain>
@@ -3955,8 +3955,8 @@ STR_PARK    :Paradise Pier 2
 STR_DTLS    :Paradise Pier heeft extra pieren bijgebouwd, en het is je taak om het park erlangs uit te breiden.
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :Deze baai vormt de achtergrond van deze achtbaanuitdaging.
 
 <Good Knight Park>
@@ -4372,14 +4372,14 @@ STR_PARK    :Metropolis
 STR_DTLS    :Je bezit een lege kavel in de stad, tussen de laagbouw. Bouw een themapark van wolkenkrabbers, geïnspireerd door de artdecostijl van de jaren twintig.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :  Rock 'n' Roll - Flower Power
+STR_SCNR    :  Rock ‘n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :Een groot jaarlijks muziekfestival vindt plaats op jouw terrein. Bouw een hip themapark om het publiek van vrije geesten te vermaken.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :  Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :Dit verouderde themapark heeft betere tijden gekend. Geef het park een rock 'n' roll-makeover en verander het in een succesvolle onderneming.
+STR_SCNR    :  Rock ‘n’ Roll - Rock ‘n’ Roll
+STR_PARK    :Rock ‘n’ Roll Revival
+STR_DTLS    :Dit verouderde themapark heeft betere tijden gekend. Geef het park een rock ‘n’ roll-makeover en verander het in een succesvolle onderneming.
 
 #OCC
 <Panda World>
@@ -4445,7 +4445,7 @@ STR_CPTY    :18 passagiers
 #CC
 [INFO1MKY]
 STR_NAME    :Informatiekiosk
-STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu's kunnen kopen.
+STR_DESC    :Een kiosk waar bezoekers kaarten van het park en paraplu’s kunnen kopen.
 
 # End of Information Kiosks
 
