@@ -11,6 +11,7 @@
 - Feature: [#13512] [Plugin] Add item separators to list view.
 - Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
+- Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
@@ -23,6 +24,7 @@
 - Fix: [#13477] Plug-in widget tooltips do not work.
 - Fix: [#13489] Mechanics continue heading to inspect broken down rides.
 - Fix: [#13510] [Plugin] list view scroll resets when items is set.
+- Fix: [#13574] Crash when a JSON object does not set `originalId`.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Improved: [#13386] A GUI error message is now displayed if the language files are missing.
 - Improved: [#13587] Allow up to 128 ride objects to be selected in track designer.
