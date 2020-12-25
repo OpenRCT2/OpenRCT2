@@ -23,6 +23,7 @@ public:
     FootpathPlaceFromTrackAction() = default;
     FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
