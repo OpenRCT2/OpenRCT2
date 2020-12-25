@@ -31,7 +31,11 @@ LandLowerAction::LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t
 {
 }
 
+<<<<<<< HEAD
 void LandLowerAction::AcceptParameters(GameActionParameterVisitor& visitor)
+=======
+ void LandLowerAction::AcceptParameters(GameActionParameterVisitor& visitor)
+>>>>>>> 86a2e17d88f21c9e07a8bfd67739b083775992ec
 {
      visitor.Visit(_coords);
      visitor.Visit(_range);
