@@ -22,7 +22,11 @@ public:
     LandLowerAction() = default;
     LandLowerAction(const CoordsXY& coords, MapRange range, uint8_t selectionType);
 
+<<<<<<< HEAD
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
+=======
+     void AcceptParameters(GameActionParameterVisitor & visitor) override;
+>>>>>>> 86a2e17d88f21c9e07a8bfd67739b083775992ec
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
