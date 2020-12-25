@@ -191,6 +191,14 @@ public:
         Visit("direction", param.direction);
     }
 
+    void Visit(MapRange& param)
+    {
+        Visit("left", param.Point1.x);
+        Visit("top", param.Point1.y);
+        Visit("right", param.Point2.x);
+        Visit("bottom", param.Point2.y);
+    }
+
     template<typename T> void Visit(const std::string_view& name, T& param)
     {
         static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
