@@ -26,6 +26,12 @@ SignSetNameAction::SignSetNameAction(BannerIndex bannerIndex, const std::string&
 {
 }
 
+void SignSetNameAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("bannerIndex", _bannerIndex);
+    visitor.Visit("name", _name);
+}
+
 uint16_t SignSetNameAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

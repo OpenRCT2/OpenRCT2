@@ -21,6 +21,7 @@ public:
     StaffFireAction() = default;
     StaffFireAction(uint16_t spriteId);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;

@@ -18,6 +18,11 @@ WaterLowerAction::WaterLowerAction(MapRange range)
 {
 }
 
+void WaterLowerAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_range);
+}
+
 uint16_t WaterLowerAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();

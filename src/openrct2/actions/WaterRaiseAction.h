@@ -20,6 +20,7 @@ public:
     WaterRaiseAction() = default;
     WaterRaiseAction(MapRange range);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;

@@ -18,6 +18,12 @@
 
 #include <algorithm>
 
+void ScenarioSetSettingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("setting", _setting);
+    visitor.Visit("value", _value);
+}
+
 void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
