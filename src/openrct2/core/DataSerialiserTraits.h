@@ -477,9 +477,10 @@ template<> struct DataSerializerTraits_t<TileElement>
         stream->WriteValue(tileElement.Flags);
         stream->WriteValue(tileElement.base_height);
         stream->WriteValue(tileElement.clearance_height);
-        for (int i = 0; i < 4; ++i)
+        stream->WriteValue(tileElement.owner);
+        for (int i = 0; i < 3; ++i)
         {
-            stream->WriteValue(tileElement.pad_04[i]);
+            stream->WriteValue(tileElement.pad_05[i]);
         }
         for (int i = 0; i < 8; ++i)
         {
@@ -492,9 +493,10 @@ template<> struct DataSerializerTraits_t<TileElement>
         tileElement.Flags = stream->ReadValue<uint8_t>();
         tileElement.base_height = stream->ReadValue<uint8_t>();
         tileElement.clearance_height = stream->ReadValue<uint8_t>();
-        for (int i = 0; i < 4; ++i)
+        tileElement.owner = stream->ReadValue<uint8_t>();
+        for (int i = 0; i < 3; ++i)
         {
-            tileElement.pad_04[i] = stream->ReadValue<uint8_t>();
+            tileElement.pad_05[i] = stream->ReadValue<uint8_t>();
         }
         for (int i = 0; i < 8; ++i)
         {
