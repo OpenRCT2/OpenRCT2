@@ -32,6 +32,13 @@ LandRaiseAction::LandRaiseAction(const CoordsXY& coords, MapRange range, uint8_t
 {
 }
 
+void LandRaiseAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_coords);
+    visitor.Visit(_range);
+    visitor.Visit("selectionType", _selectionType);
+}
+
 uint16_t LandRaiseAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags();
