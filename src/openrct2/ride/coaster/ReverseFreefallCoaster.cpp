@@ -85,6 +85,9 @@ enum
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_4 = 22223,
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_6 = 22224,
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_5 = 22225,
+
+    SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE = 22226,
+    SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE = 22227,
 };
 
 static constexpr const uint32_t reverse_freefall_rc_track_pieces_station[4] = {
@@ -385,6 +388,40 @@ static void paint_reverse_freefall_rc_vertical(
     }
 }
 
+static void paint_reverse_freefall_rc_onride_photo(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    static constexpr const uint32_t imageIds[4] = {
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+    };
+
+    // The straight track without booster is borrowed from the APVC.
+    // It has one track colour, instead of the two that the Reverse Freefall Colour has.
+    uint32_t colour = session->TrackColours[SCHEME_TRACK];
+    if (!tileElement->IsGhost() && !tileElement->AsTrack()->IsHighlighted())
+    {
+        // Replace remap colour 1 (bits 19-23) with a copy of remap colour 2 (bits 24-28).
+        colour_t colour2 = (colour >> 24) & 31;
+        colour &= ~0xF80000;
+        colour |= (colour2 << 19);
+    }
+
+    uint32_t imageId = imageIds[direction] | colour;
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+
+    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int32_t trackType)
 {
     switch (trackType)
@@ -399,6 +436,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(int32_t trackT
             return paint_reverse_freefall_rc_slope;
         case TrackElemType::ReverseFreefallVertical:
             return paint_reverse_freefall_rc_vertical;
+        case TrackElemType::OnRidePhoto:
+            return paint_reverse_freefall_rc_onride_photo;
     }
     return nullptr;
 }
