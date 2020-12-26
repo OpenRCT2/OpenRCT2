@@ -641,7 +641,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         if (!spriteFile.Save(spriteFilePath))
         {
-            fprintf(stderr, "Could not save sprite file: Canceling\n");
+            log_error("Could not save sprite file, cancelling.");
             return -1;
         }
 
