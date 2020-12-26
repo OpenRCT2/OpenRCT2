@@ -22,6 +22,7 @@ public:
     ParkSetDateAction() = default;
     ParkSetDateAction(int32_t year, int32_t month, int32_t day);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;

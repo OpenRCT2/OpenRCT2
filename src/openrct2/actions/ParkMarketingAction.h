@@ -22,6 +22,7 @@ public:
     ParkMarketingAction() = default;
     ParkMarketingAction(int32_t type, int32_t item, int32_t numWeeks);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
