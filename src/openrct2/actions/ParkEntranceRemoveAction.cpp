@@ -19,6 +19,11 @@ ParkEntranceRemoveAction::ParkEntranceRemoveAction(const CoordsXYZ& loc)
 {
 }
 
+void ParkEntranceRemoveAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+}
+
 uint16_t ParkEntranceRemoveAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::EditorOnly;

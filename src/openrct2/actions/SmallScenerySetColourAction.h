@@ -25,6 +25,7 @@ public:
     SmallScenerySetColourAction(
         const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
