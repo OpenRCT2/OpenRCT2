@@ -23,6 +23,12 @@ ParkSetResearchFundingAction::ParkSetResearchFundingAction(uint32_t priorities, 
 {
 }
 
+void ParkSetResearchFundingAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("priorities", _priorities);
+    visitor.Visit("fundingAmount", _fundingAmount);
+}
+
 uint16_t ParkSetResearchFundingAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

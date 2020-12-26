@@ -20,6 +20,7 @@ public:
     PlaceParkEntranceAction() = default;
     PlaceParkEntranceAction(const CoordsXYZD& location);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;

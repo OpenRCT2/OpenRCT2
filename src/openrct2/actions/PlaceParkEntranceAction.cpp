@@ -26,6 +26,11 @@ PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location)
 {
 }
 
+void PlaceParkEntranceAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+}
+
 uint16_t PlaceParkEntranceAction::GetActionFlags() const
 {
     return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly;
