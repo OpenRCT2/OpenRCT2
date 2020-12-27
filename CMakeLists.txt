@@ -19,7 +19,12 @@ if (CCache_FOUND)
     endif (OPENRCT2_USE_CCACHE)
 endif (CCache_FOUND)
 
-set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+if (APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+    include_directories(${CMAKE_SOURCE_DIR}/libxc/inc)
+    link_directories(${CMAKE_SOURCE_DIR}/libxc/lib)
+endif ()
 
 project(openrct2 CXX)
 
@@ -328,23 +333,6 @@ if (MACOS_BUNDLE)
     endif ()
 
     # TODO: make the above routine a function, use it for objects, title sequences, and languages
-
-    # not yet used, but link against the dylibs (and embed them)
-    message("search dir: ${MACOS_DYLIBS_DIR}")
-    find_library(
-        DYLIB_SDL2
-        libSDL2.dylib
-        PATHS ${MACOS_DYLIBS_DIR}/lib
-        HINTS ${MACOS_DYLIBS_DIR}/lib
-        NO_DEFAULT_PATH
-        NO_PACKAGE_ROOT_PATH
-        NO_CMAKE_PATH
-        NO_CMAKE_ENVIRONMENT_PATH
-        NO_CMAKE_SYSTEM_PATH
-        NO_SYSTEM_ENVIRONMENT_PATH
-        REQUIRED
-    )
-    message("Found libsdl2.dylib: ${DYLIB_SDL2}")
 
 endif()
 

@@ -43,12 +43,18 @@ project(${PROJECT} CXX)
 add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 SET_CHECK_CXX_FLAGS(${PROJECT})
 ipo_set_target_properties(${PROJECT})
+find_library(
+        DYLIB_SPEEXDSP
+        speexdsp
+        PATHS ${MACOS_DYLIBS_DIR}/lib
+        NO_DEFAULT_PATH
+        REQUIRED
+    )
 
-message("sdl2 flags ${SDL2_LDFLAGS}")
-
-target_link_libraries(${PROJECT} ${SDL2_LDFLAGS})
+target_link_libraries(${PROJECT} ${DYLIB_SPEEXDSP})
 target_link_libraries(${PROJECT} "libopenrct2"
-                                 ${SPEEX_LDFLAGS})
+                                 ${SDL2_LDFLAGS})
+                                # ${SPEEX_LDFLAGS})
 target_link_platform_libraries(${PROJECT})
 
 if (NOT DISABLE_OPENGL)
@@ -130,10 +136,25 @@ if(MACOS_BUNDLE)
     SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
     ipo_set_target_properties(${PROJECT_NAME})
 
-    target_link_libraries(${PROJECT_NAME} ${MACOS_DYLIBS_DIR}/lib/libSDL2.dylib)
-    target_link_libraries(${PROJECT_NAME} ${SDL2_LDFLAGS})
-    target_link_libraries(${PROJECT_NAME} "libopenrct2"
-                                     ${SPEEX_LDFLAGS})
+    find_library(
+        DYLIB_SDL2
+        SDL2
+        PATHS ${MACOS_DYLIBS_DIR}/lib
+        NO_DEFAULT_PATH
+        REQUIRED
+    )
+
+    find_library(
+        DYLIB_SPEEXDSP
+        speexdsp
+        PATHS ${MACOS_DYLIBS_DIR}/lib
+        NO_DEFAULT_PATH
+        REQUIRED
+    )
+
+    target_link_libraries(${PROJECT_NAME} ${DYLIB_SDL2})
+    target_link_libraries(${PROJECT_NAME} ${DYLIB_SPEEXDSP})
+    target_link_libraries(${PROJECT_NAME} "libopenrct2")
     target_link_platform_libraries(${PROJECT_NAME})
     
     if (NOT DISABLE_OPENGL)
