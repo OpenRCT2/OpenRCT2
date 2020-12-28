@@ -86,7 +86,7 @@ static void BM_update(benchmark::State& state, const std::string& filename)
     }
 }
 
-static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
+static int cmdline_for_bench_sprite_sort(int argc, const char* const* argv)
 {
     // Add a baseline test on an empty park
     benchmark::RegisterBenchmark("baseline", BM_update, std::string{});
@@ -108,11 +108,11 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         }
         else
         {
-            argv_for_benchmark.push_back((char*)argv[i]);
+            argv_for_benchmark.push_back(const_cast<char*>(argv[i]));
         }
     }
     // Update argc with all the changes made
-    argc = (int)argv_for_benchmark.size();
+    argc = static_cast<int>(argv_for_benchmark.size());
     ::benchmark::Initialize(&argc, &argv_for_benchmark[0]);
     if (::benchmark::ReportUnrecognizedArguments(argc, &argv_for_benchmark[0]))
         return -1;
@@ -126,7 +126,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
 
 static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 {
-    const char** argv = (const char**)argEnumerator->GetArguments() + argEnumerator->GetIndex();
+    const char* const* argv = static_cast<const char* const*>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
     int32_t result = cmdline_for_bench_sprite_sort(argc, argv);
     if (result < 0)
