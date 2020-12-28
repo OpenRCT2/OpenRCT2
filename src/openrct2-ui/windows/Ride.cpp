@@ -4210,7 +4210,7 @@ static void window_ride_set_track_colour_scheme(rct_window* w, const ScreenCoord
     auto newColourScheme = static_cast<uint8_t>(w->ride_colour);
     auto info = get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_RIDE);
 
-    if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_RIDE)
+    if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
     if (info.Element->GetType() != TILE_ELEMENT_TYPE_TRACK)
         return;
@@ -5395,10 +5395,10 @@ static void window_ride_measurements_tooldown(rct_window* w, rct_widgetindex wid
     auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCF);
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        case VIEWPORT_INTERACTION_ITEM_WALL:
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Scenery:
+        case ViewportInteractionItem::LargeScenery:
+        case ViewportInteractionItem::Wall:
+        case ViewportInteractionItem::Footpath:
             _collectTrackDesignScenery = !track_design_save_contains_tile_element(info.Element);
             track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
@@ -5417,10 +5417,10 @@ static void window_ride_measurements_tooldrag(rct_window* w, rct_widgetindex wid
     auto info = get_map_coordinates_from_pos(screenCoords, 0xFCCF);
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        case VIEWPORT_INTERACTION_ITEM_WALL:
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Scenery:
+        case ViewportInteractionItem::LargeScenery:
+        case ViewportInteractionItem::Wall:
+        case ViewportInteractionItem::Footpath:
             track_design_save_select_tile_element(info.SpriteType, info.Loc, info.Element, _collectTrackDesignScenery);
             break;
         default:

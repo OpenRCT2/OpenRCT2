@@ -15,7 +15,7 @@
 #include "../world/Location.hpp"
 
 struct TileElement;
-enum ViewportInteractionItem : uint8_t;
+enum class ViewportInteractionItem : uint8_t;
 
 #pragma pack(push, 1)
 /* size 0x12 */

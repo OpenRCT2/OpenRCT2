@@ -965,7 +965,7 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
 void surface_paint(paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    session->InteractionType = ViewportInteractionItem::Terrain;
     session->DidPassSurface = true;
     session->SurfaceElement = tileElement;
 
@@ -1308,7 +1308,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if (waterHeight > 0 && !gTrackDesignSaveMode && !waterGetsClipped)
     {
         // loc_6615A9: (water height)
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
+        session->InteractionType = ViewportInteractionItem::Water;
 
         const uint16_t localHeight = height + 16;
 
@@ -1346,7 +1346,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if ((tileElement->AsSurface()->GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+        session->InteractionType = ViewportInteractionItem::Park;
 
         uint8_t rotatedFences = rol4(tileElement->AsSurface()->GetParkFences(), rotation);
 
@@ -1404,7 +1404,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
         }
     }
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
+    session->InteractionType = ViewportInteractionItem::Terrain;
     session->Unk141E9DB |= G141E9DB_FLAG_1;
 
     switch (surfaceShape)

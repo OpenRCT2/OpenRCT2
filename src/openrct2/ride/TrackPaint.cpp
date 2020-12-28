@@ -2154,7 +2154,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
 
         if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_TRACK_HEIGHTS))
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            session->InteractionType = ViewportInteractionItem::None;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
             {
                 uint16_t ax = RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
@@ -2167,7 +2167,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
             }
         }
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        session->InteractionType = ViewportInteractionItem::Ride;
         session->TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(
             ride->track_colour[trackColourScheme].main, ride->track_colour[trackColourScheme].additional);
         session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[trackColourScheme].supports);
@@ -2183,7 +2183,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
         if (tileElement->IsGhost())
         {
             uint32_t ghost_id = CONSTRUCTION_MARKER;
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            session->InteractionType = ViewportInteractionItem::None;
             session->TrackColours[SCHEME_TRACK] = ghost_id;
             session->TrackColours[SCHEME_SUPPORTS] = ghost_id;
             session->TrackColours[SCHEME_MISC] = ghost_id;

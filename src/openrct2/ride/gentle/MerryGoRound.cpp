@@ -41,7 +41,7 @@ static void paint_merry_go_round_structure(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Sprite;
         session->CurrentlyDrawnItem = vehicle;
 
         if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -95,7 +95,7 @@ static void paint_merry_go_round_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**

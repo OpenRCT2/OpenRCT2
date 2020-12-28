@@ -50,7 +50,7 @@ static void paint_motionsimulator_vehicle(
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
             vehicle = GetEntity<Vehicle>(spriteIndex);
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = ViewportInteractionItem::Sprite;
             session->CurrentlyDrawnItem = vehicle;
         }
     }
@@ -126,7 +126,7 @@ static void paint_motionsimulator_vehicle(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x008A85C4 */

@@ -417,7 +417,7 @@ static void sub_6A4101(
 
         uint8_t direction = tile_element->AsPath()->GetQueueBannerDirection();
         // Draw ride sign
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        session->InteractionType = ViewportInteractionItem::Ride;
         if (tile_element->AsPath()->IsSloped())
         {
             if (tile_element->AsPath()->GetSlopeDirection() == direction)
@@ -480,10 +480,10 @@ static void sub_6A4101(
                 1, 1, 21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
         }
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+        session->InteractionType = ViewportInteractionItem::Footpath;
         if (imageFlags != 0)
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+            session->InteractionType = ViewportInteractionItem::None;
         }
         return;
     }
@@ -694,10 +694,10 @@ static void sub_6A3F61(
         {
             if (tile_element->AsPath()->HasAddition())
             {
-                session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
+                session->InteractionType = ViewportInteractionItem::FootpathItem;
                 if (sceneryImageFlags != 0)
                 {
-                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                    session->InteractionType = ViewportInteractionItem::None;
                 }
 
                 // Draw additional path bits (bins, benches, lamps, queue screens)
@@ -738,11 +738,11 @@ static void sub_6A3F61(
                             break;
                     }
 
-                    session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                    session->InteractionType = ViewportInteractionItem::Footpath;
 
                     if (sceneryImageFlags != 0)
                     {
-                        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                        session->InteractionType = ViewportInteractionItem::None;
                     }
                 }
             }
@@ -807,7 +807,7 @@ static void sub_6A3F61(
  */
 void path_paint(paint_session* session, uint16_t height, const TileElement* tile_element)
 {
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+    session->InteractionType = ViewportInteractionItem::Footpath;
 
     bool hasSupports = false;
 
@@ -842,7 +842,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         imageFlags = CONSTRUCTION_MARKER;
     }
 

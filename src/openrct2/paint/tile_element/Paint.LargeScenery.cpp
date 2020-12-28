@@ -225,7 +225,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         return;
     }
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+    session->InteractionType = ViewportInteractionItem::LargeScenery;
     uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
     rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
     if (entry == nullptr)
@@ -250,7 +250,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     if (tileElement->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         sequenceNum = CONSTRUCTION_MARKER;
         image_id &= 0x7FFFF;
         dword_F4387C = sequenceNum;

@@ -36,7 +36,7 @@ static void paint_twist_structure(
     {
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Sprite;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -73,7 +73,7 @@ static void paint_twist_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x0076D858 */

@@ -49,7 +49,7 @@ static void paint_crooked_house_structure(
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = ViewportInteractionItem::Sprite;
             session->CurrentlyDrawnItem = vehicle;
         }
     }

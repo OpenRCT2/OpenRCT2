@@ -53,7 +53,7 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
-static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags);
+static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
 
 static constexpr int32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
 {
@@ -445,7 +445,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
     int16_t x = ps->x;
     int16_t y = ps->y;
 
-    if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_SPRITE)
+    if (ps->sprite_type == ViewportInteractionItem::Sprite)
     {
         if (dpi->zoom_level >= 1)
         {
@@ -521,7 +521,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
 
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
 {
-    const uint8_t colour = BoundBoxDebugColours[ps->sprite_type];
+    const uint8_t colour = BoundBoxDebugColours[static_cast<uint8_t>(ps->sprite_type)];
     const uint8_t rotation = get_current_rotation();
 
     const CoordsXYZ frontTop = {
@@ -615,7 +615,7 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imag
     gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
 }
 
-static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint32_t viewFlags)
+static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
 {
     constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
     constexpr uint32_t secondaryColour = COLOUR_GREY;
@@ -623,7 +623,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint
 
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
     {
-        if (spriteType == VIEWPORT_INTERACTION_ITEM_RIDE)
+        if (spriteType == ViewportInteractionItem::Ride)
         {
             imageId &= 0x7FFFF;
             imageId |= seeThoughFlags;
@@ -631,7 +631,7 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
-        if (spriteType == VIEWPORT_INTERACTION_ITEM_WALL)
+        if (spriteType == ViewportInteractionItem::Wall)
         {
             imageId &= 0x7FFFF;
             imageId |= seeThoughFlags;
@@ -641,9 +641,9 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint
     {
         switch (spriteType)
         {
-            case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-            case VIEWPORT_INTERACTION_ITEM_BANNER:
+            case ViewportInteractionItem::Footpath:
+            case ViewportInteractionItem::FootpathItem:
+            case ViewportInteractionItem::Banner:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
                 break;
@@ -653,9 +653,9 @@ static uint32_t PaintPSColourifyImage(uint32_t imageId, uint8_t spriteType, uint
     {
         switch (spriteType)
         {
-            case VIEWPORT_INTERACTION_ITEM_SCENERY:
-            case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-            case VIEWPORT_INTERACTION_ITEM_WALL:
+            case ViewportInteractionItem::Scenery:
+            case ViewportInteractionItem::LargeScenery:
+            case ViewportInteractionItem::Wall:
                 imageId &= 0x7FFFF;
                 imageId |= seeThoughFlags;
                 break;

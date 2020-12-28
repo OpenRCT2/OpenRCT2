@@ -63,7 +63,7 @@ static void top_spin_paint_vehicle(
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Sprite;
         session->CurrentlyDrawnItem = vehicle;
 
         armRotation = vehicle->vehicle_sprite_type;
@@ -240,7 +240,7 @@ static void top_spin_paint_vehicle(
         session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     session->CurrentlyDrawnItem = curTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**

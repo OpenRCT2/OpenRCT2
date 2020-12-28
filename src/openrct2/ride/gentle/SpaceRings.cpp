@@ -47,7 +47,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = ViewportInteractionItem::Sprite;
             session->CurrentlyDrawnItem = vehicle;
             frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
         }
@@ -80,7 +80,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x00767C40 */

@@ -299,7 +299,7 @@ void lightfx_prepare_light_list()
 
                 TileElement* tileElement = nullptr;
 
-                int32_t interactionType = 0;
+                ViewportInteractionItem interactionType = ViewportInteractionItem::None;
 
                 auto* w = window_get_main();
                 if (w != nullptr)
@@ -330,7 +330,7 @@ void lightfx_prepare_light_list()
                 int32_t minDist = 0;
                 int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
-                if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement)
+                if (interactionType != ViewportInteractionItem::Sprite && tileElement)
                 {
                     baseHeight = tileElement->GetBaseZ();
                 }
