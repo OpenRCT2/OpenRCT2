@@ -73,7 +73,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (info.SpriteType == ViewportInteractionItem::Sprite &&(sprite->Is<Balloon>() || sprite->Is<Duck>()))
+        if (info.SpriteType == ViewportInteractionItem::Sprite && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info;
         else
         {

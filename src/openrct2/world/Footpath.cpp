@@ -375,7 +375,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     info = get_map_coordinates_from_pos_window(
         window, screenCoords,
         VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
-    if (info.SpriteType == ViewportInteractionItem::Ride &&(*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
         if (directions & 0x0F)
