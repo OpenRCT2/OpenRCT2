@@ -508,6 +508,8 @@ static void track_design_save_remove_tile_element(
         case ViewportInteractionItem::Footpath:
             track_design_save_remove_footpath(loc, tileElement->AsPath());
             break;
+        default:
+            break;
     }
 }
 
