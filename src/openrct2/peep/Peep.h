@@ -874,6 +874,7 @@ public:
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
     bool IsMechanic() const;
+    bool HasPatrolArea() const;
     bool IsPatrolAreaSet(const CoordsXY& coords) const;
     bool IsLocationInPatrol(const CoordsXY& loc) const;
     bool IsLocationOnPatrolEdge(const CoordsXY& loc) const;

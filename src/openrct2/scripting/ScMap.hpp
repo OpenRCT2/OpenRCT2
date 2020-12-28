@@ -158,29 +158,6 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        std::vector<std::vector<bool>> getStaffPatrolArea(int32_t id)
-        {
-            std::vector<std::vector<bool>> patrolArea;
-            auto spriteId = static_cast<uint16_t>(id);
-            auto staff = GetEntity<Staff>(spriteId);
-            if (staff == nullptr)
-            {
-                return {};
-            }
-            for (int32_t y = 0; y < 64; y++)
-            {
-                patrolArea.push_back({});
-                auto y_index = y << 7;
-                for (int32_t x = 0; x < 64; x++)
-                {
-                    // multiply each by four to match the patrol area size, and by 32
-                    // to only step by whole coordinate
-                    patrolArea[y].push_back(staff->IsLocationInPatrol({ x << 7, y_index }));
-                }
-            }
-            return patrolArea;
-        }
-
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
@@ -191,7 +168,6 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScMap::getTile, "getTile");
             dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
             dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
-            dukglue_register_method(ctx, &ScMap::getStaffPatrolArea, "getStaffPatrolArea");
         }
 
     private:

@@ -1289,6 +1289,19 @@ declare global {
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
          */
         orders: number;
+        
+        /**
+         * The patrol area state of this staff member; true if a patrol area is set, false otherwise
+         */
+        hasPatrolArea: boolean;
+
+        /**
+         * Gets the current staff patrol area as an Array of CoordsXY of the patrol regions within
+         * this staf member's patrol area. Patrol regions are 4x4 sections of the map, so there are
+         * 64x64 possible patrol areas total. If no patrol area is set, this will return an array 
+         * with every patrol coordinate as true, as the staff member can go anywhere.
+         */
+        getPatrolArea(): CoordsXY[];
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

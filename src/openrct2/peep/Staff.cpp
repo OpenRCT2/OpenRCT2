@@ -393,6 +393,11 @@ static bool staff_is_patrol_area_set(int32_t staffIndex, const CoordsXY& coords)
     return gStaffPatrolAreas[peepOffset + offset] & (1UL << bitIndex);
 }
 
+bool Staff::HasPatrolArea() const
+{
+    return gStaffModes[StaffId] == StaffMode::Patrol;
+}
+
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
     return staff_is_patrol_area_set(StaffId, coords);

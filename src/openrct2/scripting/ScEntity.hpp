@@ -1072,6 +1072,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScStaff::colour_get, &ScStaff::colour_set, "colour");
             dukglue_register_property(ctx, &ScStaff::costume_get, &ScStaff::costume_set, "costume");
             dukglue_register_property(ctx, &ScStaff::orders_get, &ScStaff::orders_set, "orders");
+            dukglue_register_property(ctx, &ScStaff::has_patrolarea, nullptr, "hasPatrolArea");
+            dukglue_register_method(ctx, &ScStaff::getPatrolArea, "getPatrolArea");
         }
 
     private:
@@ -1187,6 +1189,37 @@ namespace OpenRCT2::Scripting
             {
                 peep->StaffOrders = value;
             }
+        }
+
+        bool has_patrolarea() const
+        {
+            auto staff = GetStaff();
+            return staff->HasPatrolArea();
+        }
+
+        std::vector<DukValue> getPatrolArea()
+        {
+            std::vector<DukValue> patrolArea;
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto staff = GetStaff();
+            if (staff == nullptr)
+            {
+                return {};
+            }
+            for (int32_t y = 0; y < 64; y++)
+            {
+                auto y_index = y << 7;
+                for (int32_t x = 0; x < 64; x++)
+                {
+                    // multiply each by four to match the patrol area size, and by 32
+                    // to only step by whole coordinate -> left shift by 7
+                    if (staff->IsLocationInPatrol({ x << 7, y_index }))
+                    {
+                        patrolArea.push_back(ToDuk<CoordsXY>(ctx, {x, y}));
+                    }
+                }
+            }
+            return patrolArea;
         }
     };
 
