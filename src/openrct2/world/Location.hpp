@@ -729,6 +729,16 @@ struct MapRange : public RectRange<CoordsXY>
     }
 };
 
+struct TileRange : public RectRange<TileCoordsXY>
+{
+    using RectRange::RectRange;
+
+    TileRange(const MapRange& mapRange)
+        : RectRange(TileCoordsXY(mapRange.Point1), TileCoordsXY(mapRange.Point2))
+    {
+    }
+};
+
 /**
  * Represents a line on the screen
  */

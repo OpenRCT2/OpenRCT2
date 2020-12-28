@@ -381,6 +381,16 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const TileRange& value)
+    {
+        DukObject dukTileRange(ctx);
+        dukTileRange.Set("x1", value.Point1.x);
+        dukTileRange.Set("y1", value.Point1.y);
+        dukTileRange.Set("x2", value.Point2.x);
+        dukTileRange.Set("y2", value.Point2.y);
+        return dukTileRange.Take();
+    }
+
 } // namespace OpenRCT2::Scripting
 
 #endif

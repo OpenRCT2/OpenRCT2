@@ -66,6 +66,17 @@ declare global {
     }
 
     /**
+     * a range of coordinates within the game client as a pair of map tile 
+     * x and y locations. These values will match what is show in the tile inspector.
+     */
+    interface TileRange {
+        x1: number;
+        y1: number;
+        x2: number; 
+        y2: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
@@ -1301,7 +1312,7 @@ declare global {
          * 64x64 possible patrol areas total. If no patrol area is set, this will return an array 
          * with every patrol coordinate as true, as the staff member can go anywhere.
          */
-        getPatrolArea(): CoordsXY[];
+        getPatrolArea(): TileRange[];
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

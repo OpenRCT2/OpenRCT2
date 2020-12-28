@@ -1215,7 +1215,9 @@ namespace OpenRCT2::Scripting
                     // to only step by whole coordinate -> left shift by 7
                     if (staff->IsLocationInPatrol({ x << 7, y_index }))
                     {
-                        patrolArea.push_back(ToDuk<CoordsXY>(ctx, { x, y }));
+                        // patrol region is multiplied by 4 to return to tile coordinates
+                        auto patrolRegion = TileRange({ x << 2, y << 2 }, { (x << 2) + 3, (y << 2) + 3 });
+                        patrolArea.push_back(ToDuk<TileRange>(ctx, patrolRegion));
                     }
                 }
             }
