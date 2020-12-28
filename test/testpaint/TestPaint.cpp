@@ -27,8 +27,8 @@ namespace TestPaint
 {
     void ResetEnvironment()
     {
-        gPaintInteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+        gPaintInteractionType = ViewportInteractionItem::Ride;
+        gPaintSession.InteractionType = ViewportInteractionItem::Ride;
 
         gTrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
         gTrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
