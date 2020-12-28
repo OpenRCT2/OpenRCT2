@@ -250,7 +250,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
             dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
-            dukglue_register_method(ctx, &ScVehicle::move, "move");
+            dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
 
     private:
@@ -608,7 +608,7 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
-        void move(int32_t value)
+        void travelBy(int32_t value)
         {
             ThrowIfGameStateNotMutable();
             auto vehicle = GetVehicle();

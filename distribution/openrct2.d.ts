@@ -1085,7 +1085,7 @@ declare global {
          * position. A single visible step is about 8.000 to 14.000 in distance depending 
          * on the direction its moving in.
          */
-        move(distance: number): void;
+        travelBy(distance: number): void;
     }
 
     type VehicleStatus =
