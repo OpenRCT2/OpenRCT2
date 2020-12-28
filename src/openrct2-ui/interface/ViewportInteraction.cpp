@@ -64,7 +64,8 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     info = get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_ENTITY & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE);
+        screenCoords,
+        VIEWPORT_INTERACTION_MASK_ENTITY & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE);
     auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
     // Only valid when info.SpriteType == ViewportInteractionItem::Entity, but can't assign nullptr without compiler
     // complaining
