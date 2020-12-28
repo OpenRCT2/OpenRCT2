@@ -1215,7 +1215,7 @@ namespace OpenRCT2::Scripting
                     // to only step by whole coordinate -> left shift by 7
                     if (staff->IsLocationInPatrol({ x << 7, y_index }))
                     {
-                        patrolArea.push_back(ToDuk<CoordsXY>(ctx, {x, y}));
+                        patrolArea.push_back(ToDuk<CoordsXY>(ctx, { x, y }));
                     }
                 }
             }
