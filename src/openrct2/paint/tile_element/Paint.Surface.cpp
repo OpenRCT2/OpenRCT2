@@ -1346,7 +1346,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if ((tileElement->AsSurface()->GetParkFences()) && !gTrackDesignSaveMode)
     {
         // Owned land boundary fences
-        session->InteractionType = ViewportInteractionItem::Park;
+        session->InteractionType = ViewportInteractionItem::ParkEntrance;
 
         uint8_t rotatedFences = rol4(tileElement->AsSurface()->GetParkFences(), rotation);
 

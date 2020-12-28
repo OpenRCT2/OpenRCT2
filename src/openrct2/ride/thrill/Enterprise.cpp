@@ -34,7 +34,7 @@ static void paint_enterprise_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
-        session->InteractionType = ViewportInteractionItem::Sprite;
+        session->InteractionType = ViewportInteractionItem::Entity;
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
     }

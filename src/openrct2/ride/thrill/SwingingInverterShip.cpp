@@ -61,7 +61,7 @@ static void paint_swinging_inverter_ship_structure(
     {
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
-        session->InteractionType = ViewportInteractionItem::Sprite;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 

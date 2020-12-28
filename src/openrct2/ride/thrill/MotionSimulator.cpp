@@ -50,7 +50,7 @@ static void paint_motionsimulator_vehicle(
         if (spriteIndex != SPRITE_INDEX_NULL)
         {
             vehicle = GetEntity<Vehicle>(spriteIndex);
-            session->InteractionType = ViewportInteractionItem::Sprite;
+            session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
         }
     }

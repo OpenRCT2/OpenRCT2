@@ -1277,8 +1277,7 @@ void viewport_set_visibility(uint8_t mode)
  */
 static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 {
-    if (ps->sprite_type == ViewportInteractionItem::None
-        || ps->sprite_type == ViewportInteractionItem::Label
+    if (ps->sprite_type == ViewportInteractionItem::None || ps->sprite_type == ViewportInteractionItem::Label
         || ps->sprite_type > ViewportInteractionItem::Banner)
         return false;
 

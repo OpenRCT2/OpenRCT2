@@ -330,7 +330,7 @@ void lightfx_prepare_light_list()
                 int32_t minDist = 0;
                 int32_t baseHeight = (-999) * COORDS_Z_STEP;
 
-                if (interactionType != ViewportInteractionItem::Sprite && tileElement)
+                if (interactionType != ViewportInteractionItem::Entity && tileElement)
                 {
                     baseHeight = tileElement->GetBaseZ();
                 }

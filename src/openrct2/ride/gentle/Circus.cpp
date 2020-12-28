@@ -33,7 +33,7 @@ static void paint_circus_tent(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = ViewportInteractionItem::Sprite;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 

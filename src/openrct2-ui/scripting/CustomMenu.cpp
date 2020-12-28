@@ -129,7 +129,7 @@ namespace OpenRCT2::Scripting
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
             obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (info.SpriteType == ViewportInteractionItem::Sprite && info.Entity != nullptr)
+            if (info.SpriteType == ViewportInteractionItem::Entity && info.Entity != nullptr)
             {
                 obj.Set("entityId", info.Entity->sprite_index);
             }

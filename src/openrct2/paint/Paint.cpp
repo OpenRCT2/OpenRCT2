@@ -445,7 +445,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
     int16_t x = ps->x;
     int16_t y = ps->y;
 
-    if (ps->sprite_type == ViewportInteractionItem::Sprite)
+    if (ps->sprite_type == ViewportInteractionItem::Entity)
     {
         if (dpi->zoom_level >= 1)
         {

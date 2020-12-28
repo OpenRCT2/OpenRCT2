@@ -64,16 +64,16 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         return info;
 
     info = get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK);
-    auto tileElement = info.SpriteType != ViewportInteractionItem::Sprite ? info.Element : nullptr;
-    // Only valid when info.SpriteType == ViewportInteractionItem::Sprite, but can't assign nullptr without compiler
+        screenCoords, VIEWPORT_INTERACTION_MASK_ENTITY & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE);
+    auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
+    // Only valid when info.SpriteType == ViewportInteractionItem::Entity, but can't assign nullptr without compiler
     // complaining
     auto sprite = info.Entity;
 
     // Allows only balloons to be popped and ducks to be quacked in title screen
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
     {
-        if (info.SpriteType == ViewportInteractionItem::Sprite && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
+        if (info.SpriteType == ViewportInteractionItem::Entity && (sprite->Is<Balloon>() || sprite->Is<Duck>()))
             return info;
         else
         {
@@ -84,7 +84,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
 
     switch (info.SpriteType)
     {
-        case ViewportInteractionItem::Sprite:
+        case ViewportInteractionItem::Entity:
             switch (sprite->sprite_identifier)
             {
                 case SpriteIdentifier::Vehicle:
@@ -118,7 +118,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         case ViewportInteractionItem::Ride:
             ride_set_map_tooltip(tileElement);
             break;
-        case ViewportInteractionItem::Park:
+        case ViewportInteractionItem::ParkEntrance:
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
             auto parkName = park.Name.c_str();
@@ -141,7 +141,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
         if (peep != nullptr)
         {
             info.Entity = peep;
-            info.SpriteType = ViewportInteractionItem::Sprite;
+            info.SpriteType = ViewportInteractionItem::Entity;
             info.Loc.x = peep->x;
             info.Loc.y = peep->y;
             peep_set_map_tooltip(peep);
@@ -157,9 +157,9 @@ bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords)
 
     switch (info.SpriteType)
     {
-        case ViewportInteractionItem::Sprite:
+        case ViewportInteractionItem::Entity:
         case ViewportInteractionItem::Ride:
-        case ViewportInteractionItem::Park:
+        case ViewportInteractionItem::ParkEntrance:
             return true;
         default:
             return false;
@@ -172,7 +172,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
 
     switch (info.SpriteType)
     {
-        case ViewportInteractionItem::Sprite:
+        case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
             switch (entity->sprite_identifier)
@@ -227,7 +227,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
             context_open_intent(&intent);
             return true;
         }
-        case ViewportInteractionItem::Park:
+        case ViewportInteractionItem::ParkEntrance:
             context_open_window(WC_PARK_INFORMATION);
             return true;
         default:
@@ -258,7 +258,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
 
     switch (info.SpriteType)
     {
-        case ViewportInteractionItem::Sprite:
+        case ViewportInteractionItem::Entity:
         {
             auto sprite = info.Entity;
             if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SpriteIdentifier::Vehicle)
@@ -472,7 +472,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             SetMapTooltip(ft);
             return info;
 
-        case ViewportInteractionItem::Park:
+        case ViewportInteractionItem::ParkEntrance:
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 break;
 
@@ -529,7 +529,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Label:
             return false;
 
-        case ViewportInteractionItem::Sprite:
+        case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
             if (entity->sprite_identifier == SpriteIdentifier::Vehicle)
@@ -560,7 +560,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::FootpathItem:
             ViewportInteractionRemoveFootpathItem(info.Element, info.Loc);
             break;
-        case ViewportInteractionItem::Park:
+        case ViewportInteractionItem::ParkEntrance:
             ViewportInteractionRemoveParkEntrance(info.Element, info.Loc);
             break;
         case ViewportInteractionItem::Wall:

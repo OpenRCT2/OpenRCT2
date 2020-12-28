@@ -627,7 +627,7 @@ static void window_title_command_editor_tool_down(
 {
     auto info = ViewportInteractionGetItemLeft(screenCoords);
 
-    if (info.SpriteType == ViewportInteractionItem::Sprite)
+    if (info.SpriteType == ViewportInteractionItem::Entity)
     {
         auto entity = info.Entity;
         bool validSprite = false;

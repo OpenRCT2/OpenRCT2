@@ -43,8 +43,10 @@ std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
-static bool track_design_save_add_tile_element(ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
-static void track_design_save_remove_tile_element(ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 
 void track_design_save_init()
 {
@@ -56,7 +58,8 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
+void track_design_save_select_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement))
     {
@@ -311,7 +314,8 @@ static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pat
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement))
     {
@@ -487,7 +491,8 @@ static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* 
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     switch (interactionType)
     {

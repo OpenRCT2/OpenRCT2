@@ -222,7 +222,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     }
 #endif
 
-    session->InteractionType = ViewportInteractionItem::Park;
+    session->InteractionType = ViewportInteractionItem::ParkEntrance;
     uint32_t image_id, ghost_id = 0;
     if (tile_element->IsGhost())
     {

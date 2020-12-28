@@ -47,7 +47,7 @@ static void paint_space_rings_structure(paint_session* session, Ride* ride, uint
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
-            session->InteractionType = ViewportInteractionItem::Sprite;
+            session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
             frameNum += static_cast<int8_t>(vehicle->vehicle_sprite_type) * 4;
         }
