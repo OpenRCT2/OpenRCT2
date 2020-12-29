@@ -818,6 +818,15 @@ uint16_t Vehicle::GetTrackProgress() const
     return vehicle_get_move_info_size(TrackSubposition, track_type);
 }
 
+void Vehicle::MoveRelativeDistance(int32_t distance)
+{
+    remaining_distance += distance;
+
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    UpdateTrackMotion(nullptr);
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+}
+
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);

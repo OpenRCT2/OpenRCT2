@@ -334,6 +334,10 @@ struct Vehicle : SpriteBase
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
     void EnableCollisionsForTrain();
+    /**
+     * Instantly moves the specific car forward or backwards along the track.
+     */
+    void MoveRelativeDistance(int32_t distance);
 
     uint16_t GetTrackType() const
     {
