@@ -589,10 +589,11 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 
-        SpriteFile baseFile;
-        baseFile.Header.num_entries = 0;
-        baseFile.Header.total_size = 0;
-        baseFile.Save(spriteFilePath);
+        // keep sprite file entirely in memory until ready to write out a complete,
+        // correct file
+        SpriteFile spriteFile;
+        spriteFile.Header.num_entries = 0;
+        spriteFile.Header.total_size = 0;
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
@@ -632,23 +633,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
 
-            auto spriteFile = SpriteFile::Open(spriteFilePath);
-            if (!spriteFile.has_value())
-            {
-                fprintf(stderr, "Unable to open sprite file: %s\nCanceling\n", spriteFilePath);
-                return -1;
-            }
-
-            spriteFile->AddImage(importResult.value());
-
-            if (!spriteFile->Save(spriteFilePath))
-            {
-                fprintf(stderr, "Could not save sprite file: %s\nCanceling\n", imagePath.c_str());
-                return -1;
-            }
+            spriteFile.AddImage(importResult.value());
 
             if (!silent)
                 fprintf(stdout, "Added: %s\n", imagePath.c_str());
+        }
+
+        if (!spriteFile.Save(spriteFilePath))
+        {
+            log_error("Could not save sprite file, cancelling.");
+            return -1;
         }
 
         free(directoryPath);
