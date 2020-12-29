@@ -153,7 +153,16 @@ if (ENABLE_SCRIPTING)
 endif ()
 
 if (NOT DISABLE_DISCORD_RPC)
-    if(EXISTS "${ROOT_DIR}/discord-rpc")
+    if (UNIX AND NOT APPLE)
+        find_package(DiscordRPC)
+        if(${DISCORDRPC_FOUND})
+            set(HAVE_DISCORD_RPC TRUE)
+            add_definitions(-D__ENABLE_DISCORD__)
+            include_directories(DISCORDRPC_PROCESS_INCLUDES)
+        endif()
+    endif()
+
+    if (NOT HAVE_DISCORD_RPC AND EXISTS "${ROOT_DIR}/discord-rpc")
         # Don't build discord's examples, some of which are in C and do not honour
         # the flags we set for C++. Also we don't use the provided examples.
         set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
