@@ -521,7 +521,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
 
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
 {
-    const uint8_t colour = BoundBoxDebugColours[static_cast<uint8_t>(ps->sprite_type)];
+    const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
     const uint8_t rotation = get_current_rotation();
 
     const CoordsXYZ frontTop = {

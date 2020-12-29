@@ -69,18 +69,17 @@ enum class ViewportInteractionItem : uint8_t
 enum
 {
     VIEWPORT_INTERACTION_MASK_NONE = 0,
-    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Terrain) - 1)),
-    VIEWPORT_INTERACTION_MASK_ENTITY = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Entity) - 1)),
-    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Ride) - 1)),
-    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Water) - 1)),
-    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Scenery) - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Footpath) - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::FootpathItem) - 1)),
-    VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::ParkEntrance) - 1)),
-    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::Wall) - 1)),
-    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (static_cast<uint8_t>(ViewportInteractionItem::LargeScenery) - 1)),
-    VIEWPORT_INTERACTION_MASK_BANNER = ~(
-        1 << (static_cast<uint8_t>(ViewportInteractionItem::Banner) - 2)), // Note the -2 for BANNER
+    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (EnumValue(ViewportInteractionItem::Terrain) - 1)),
+    VIEWPORT_INTERACTION_MASK_ENTITY = ~(1 << (EnumValue(ViewportInteractionItem::Entity) - 1)),
+    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (EnumValue(ViewportInteractionItem::Ride) - 1)),
+    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (EnumValue(ViewportInteractionItem::Water) - 1)),
+    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::Scenery) - 1)),
+    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (EnumValue(ViewportInteractionItem::Footpath) - 1)),
+    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (EnumValue(ViewportInteractionItem::FootpathItem) - 1)),
+    VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE = ~(1 << (EnumValue(ViewportInteractionItem::ParkEntrance) - 1)),
+    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (EnumValue(ViewportInteractionItem::Wall) - 1)),
+    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::LargeScenery) - 1)),
+    VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (EnumValue(ViewportInteractionItem::Banner) - 2)), // Note the -2 for BANNER
 };
 
 struct InteractionInfo

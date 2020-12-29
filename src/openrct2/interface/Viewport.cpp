@@ -1284,9 +1284,9 @@ static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
     uint16_t mask;
     if (ps->sprite_type == ViewportInteractionItem::Banner)
         // I think CS made a typo here. Let's replicate the original behaviour.
-        mask = 1 << (static_cast<uint8_t>(ps->sprite_type) - 3);
+        mask = 1 << (EnumValue(ps->sprite_type) - 3);
     else
-        mask = 1 << (static_cast<uint8_t>(ps->sprite_type) - 1);
+        mask = 1 << (EnumValue(ps->sprite_type) - 1);
 
     if (filter & mask)
     {
