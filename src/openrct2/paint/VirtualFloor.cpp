@@ -303,7 +303,7 @@ void virtual_floor_paint(paint_session* session)
     uint8_t direction = session->CurrentRotation;
 
     // This is a virtual floor, so no interactions
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+    session->InteractionType = ViewportInteractionItem::None;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 

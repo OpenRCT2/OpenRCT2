@@ -257,12 +257,12 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
-    if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
+    if (info.SpriteType != ViewportInteractionItem::Footpath
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
         info = get_map_coordinates_from_pos_window(
             window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
-        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        if (info.SpriteType == ViewportInteractionItem::None)
         {
             auto position = info.Loc;
             position.setNull();
@@ -275,7 +275,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     auto myTileElement = info.Element;
     auto position = info.Loc.ToTileCentre();
     auto z = 0;
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+    if (info.SpriteType == ViewportInteractionItem::Footpath)
     {
         z = myTileElement->GetBaseZ();
         if (myTileElement->AsPath()->IsSloped())
@@ -288,7 +288,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
 
     for (int32_t i = 0; i < 5; i++)
     {
-        if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+        if (info.SpriteType != ViewportInteractionItem::Footpath)
         {
             z = tile_element_height(position);
         }
@@ -356,7 +356,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
     *tileElement = info.Element;
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE
+    if (info.SpriteType == ViewportInteractionItem::Ride
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
@@ -375,7 +375,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     info = get_map_coordinates_from_pos_window(
         window, screenCoords,
         VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
         if (directions & 0x0F)

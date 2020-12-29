@@ -712,7 +712,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     auto info = get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE || info.Element == nullptr)
+    if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
     {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         footpath_provisional_update();
@@ -738,7 +738,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
         int32_t slope = 0;
         switch (info.SpriteType)
         {
-            case VIEWPORT_INTERACTION_ITEM_TERRAIN:
+            case ViewportInteractionItem::Terrain:
             {
                 auto surfaceElement = info.Element->AsSurface();
                 if (surfaceElement != nullptr)
@@ -747,7 +747,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
                 }
                 break;
             }
-            case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+            case ViewportInteractionItem::Footpath:
             {
                 auto pathElement = info.Element->AsPath();
                 if (pathElement != nullptr)
@@ -836,7 +836,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     const auto info = get_map_coordinates_from_pos(
         screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         return;
     }
@@ -845,10 +845,10 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     auto slope = 0;
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_TERRAIN:
+        case ViewportInteractionItem::Terrain:
             slope = DefaultPathSlope[info.Element->AsSurface()->GetSlope() & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             slope = info.Element->AsPath()->GetSlopeDirection();
             if (info.Element->AsPath()->IsSloped())
             {

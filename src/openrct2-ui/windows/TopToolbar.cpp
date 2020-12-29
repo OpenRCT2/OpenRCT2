@@ -989,7 +989,7 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
         {
             rct_scenery_entry* scenery_entry = info.Element->AsSmallScenery()->GetEntry();
 
@@ -1006,7 +1006,7 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             GameActions::Execute(&repaintScenery);
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
         {
             rct_scenery_entry* scenery_entry = info.Element->AsWall()->GetEntry();
 
@@ -1021,7 +1021,7 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             GameActions::Execute(&repaintScenery);
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
         {
             rct_scenery_entry* scenery_entry = info.Element->AsLargeScenery()->GetEntry();
 
@@ -1036,7 +1036,7 @@ static void repaint_scenery_tool_down(const ScreenCoordsXY& windowPos, rct_widge
             GameActions::Execute(&repaintScenery);
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_BANNER:
+        case ViewportInteractionItem::Banner:
         {
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
@@ -1067,7 +1067,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
 
     switch (info.SpriteType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
         {
             SmallSceneryElement* sceneryElement = info.Element->AsSmallScenery();
             auto entryIndex = sceneryElement->GetEntryIndex();
@@ -1084,7 +1084,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
             }
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
         {
             auto entryIndex = info.Element->AsWall()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_wall_entry(entryIndex);
@@ -1100,7 +1100,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
             }
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
         {
             auto entryIndex = info.Element->AsLargeScenery()->GetEntryIndex();
             rct_scenery_entry* sceneryEntry = get_large_scenery_entry(entryIndex);
@@ -1116,7 +1116,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
             }
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_BANNER:
+        case ViewportInteractionItem::Banner:
         {
             auto banner = info.Element->AsBanner()->GetBanner();
             if (banner != nullptr)
@@ -1132,7 +1132,7 @@ static void scenery_eyedropper_tool_down(const ScreenCoordsXY& windowPos, rct_wi
             }
             break;
         }
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
+        case ViewportInteractionItem::FootpathItem:
         {
             auto entryIndex = info.Element->AsPath()->GetAdditionEntryIndex();
             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(entryIndex);
@@ -1169,7 +1169,7 @@ static void sub_6E1F34_update_screen_coords_and_buttons_pressed(bool canRaiseIte
                     & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 auto info = get_map_coordinates_from_pos(screenPos, flags);
 
-                if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_NONE)
+                if (info.SpriteType != ViewportInteractionItem::None)
                 {
                     gSceneryCtrlPressed = true;
                     gSceneryCtrlPressZ = info.Element->GetBaseZ();
@@ -1339,7 +1339,7 @@ static void sub_6E1F34_small_scenery(
         auto info = get_map_coordinates_from_pos(screenPos, flags);
         gridPos = info.Loc;
 
-        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        if (info.SpriteType == ViewportInteractionItem::None)
         {
             gridPos.setNull();
             return;
@@ -1433,7 +1433,7 @@ static void sub_6E1F34_path_item(
     auto info = get_map_coordinates_from_pos(screenPos, flags);
     gridPos = info.Loc;
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         gridPos.setNull();
         return;
@@ -1656,7 +1656,7 @@ static void sub_6E1F34_banner(
     auto info = get_map_coordinates_from_pos(screenPos, flags);
     gridPos = info.Loc;
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         gridPos.setNull();
         return;
@@ -2357,7 +2357,7 @@ static void top_toolbar_tool_update_water(const ScreenCoordsXY& screenPos)
 
     auto info = get_map_coordinates_from_pos(screenPos, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);
 
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         if (gWaterToolRaiseCost != MONEY32_UNDEFINED || gWaterToolLowerCost != MONEY32_UNDEFINED)
         {

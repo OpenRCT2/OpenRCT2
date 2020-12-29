@@ -43,8 +43,10 @@ std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
-static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
-static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 
 void track_design_save_init()
 {
@@ -56,7 +58,8 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
+void track_design_save_select_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement))
     {
@@ -311,7 +314,8 @@ static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pat
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement))
     {
@@ -320,16 +324,16 @@ static bool track_design_save_add_tile_element(int32_t interactionType, const Co
 
     switch (interactionType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
             track_design_save_add_scenery(loc, tileElement->AsSmallScenery());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
             track_design_save_add_large_scenery(loc, tileElement->AsLargeScenery());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
             track_design_save_add_wall(loc, tileElement->AsWall());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             track_design_save_add_footpath(loc, tileElement->AsPath());
             return true;
         default:
@@ -487,21 +491,24 @@ static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* 
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     switch (interactionType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
             track_design_save_remove_scenery(loc, tileElement->AsSmallScenery());
             break;
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
             track_design_save_remove_large_scenery(loc, tileElement->AsLargeScenery());
             break;
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
             track_design_save_remove_wall(loc, tileElement->AsWall());
             break;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             track_design_save_remove_footpath(loc, tileElement->AsPath());
+            break;
+        default:
             break;
     }
 }
@@ -544,27 +551,27 @@ static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex
                 continue;
             do
             {
-                int32_t interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                ViewportInteractionItem interactionType = ViewportInteractionItem::None;
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
                         if (!tileElement->AsPath()->IsQueue())
-                            interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                            interactionType = ViewportInteractionItem::Footpath;
                         else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
-                            interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                            interactionType = ViewportInteractionItem::Footpath;
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
+                        interactionType = ViewportInteractionItem::Scenery;
                         break;
                     case TILE_ELEMENT_TYPE_WALL:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_WALL;
+                        interactionType = ViewportInteractionItem::Wall;
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+                        interactionType = ViewportInteractionItem::LargeScenery;
                         break;
                 }
 
-                if (interactionType != VIEWPORT_INTERACTION_ITEM_NONE)
+                if (interactionType != ViewportInteractionItem::None)
                 {
                     if (!track_design_save_contains_tile_element(tileElement))
                     {

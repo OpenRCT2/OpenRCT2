@@ -72,7 +72,7 @@ static void paint_ferris_wheel_structure(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -125,7 +125,7 @@ static void paint_ferris_wheel_structure(
         boundBox.offset_y, height);
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**

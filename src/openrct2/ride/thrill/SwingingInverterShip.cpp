@@ -61,7 +61,7 @@ static void paint_swinging_inverter_ship_structure(
     {
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -117,7 +117,7 @@ static void paint_swinging_inverter_ship_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x00760260 */

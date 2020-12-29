@@ -36,7 +36,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_BANNER;
+    session->InteractionType = ViewportInteractionItem::Banner;
 
     if (dpi->zoom_level > 1 || gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
@@ -71,7 +71,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     if (tile_element->IsGhost()) // if being placed
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         image_id |= CONSTRUCTION_MARKER;
     }
     else

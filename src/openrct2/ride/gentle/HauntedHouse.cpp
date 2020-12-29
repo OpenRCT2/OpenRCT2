@@ -51,7 +51,7 @@ static void paint_haunted_house_structure(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
         frameNum = vehicle->vehicle_sprite_type;
     }
@@ -87,7 +87,7 @@ static void paint_haunted_house_structure(
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**

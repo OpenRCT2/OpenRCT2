@@ -1146,7 +1146,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
     gPickupPeepImage = UINT32_MAX;
 
     auto info = get_map_coordinates_from_pos(screenCoords, VIEWPORT_INTERACTION_MASK_NONE);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    if (info.SpriteType == ViewportInteractionItem::None)
         return;
 
     gPickupPeepX = screenCoords.x - 1;

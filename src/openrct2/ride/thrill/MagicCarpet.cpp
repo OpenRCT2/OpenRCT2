@@ -186,7 +186,7 @@ static void paint_magic_carpet_structure(
     if (vehicle != nullptr)
     {
         swingImageId = vehicle->vehicle_sprite_type;
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -208,7 +208,7 @@ static void paint_magic_carpet_structure(
     paint_magic_carpet_pendulum(session, PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
     paint_magic_carpet_frame(session, PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
     session->CurrentlyDrawnItem = savedTileElement;
 }
 

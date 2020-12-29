@@ -89,12 +89,12 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
     colour_2 = ride->track_colour[0].additional;
     image_id = (colour_1 << 19) | (colour_2 << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
     uint32_t entranceImageId = 0;
 
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         image_id = CONSTRUCTION_MARKER;
         entranceImageId = image_id;
         if (transparant_image_id)
@@ -222,11 +222,11 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
     }
 #endif
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
+    session->InteractionType = ViewportInteractionItem::ParkEntrance;
     uint32_t image_id, ghost_id = 0;
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         ghost_id = CONSTRUCTION_MARKER;
     }
 
@@ -334,7 +334,7 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
  */
 void entrance_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
+    session->InteractionType = ViewportInteractionItem::Label;
 
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {

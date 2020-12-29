@@ -97,7 +97,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         session->CurrentlyDrawnItem = spr;
         session->SpritePosition.x = spr->x;
         session->SpritePosition.y = spr->y;
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
 
         switch (spr->sprite_identifier)
         {

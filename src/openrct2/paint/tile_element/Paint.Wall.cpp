@@ -156,7 +156,7 @@ static void fence_paint_wall(
  */
 void fence_paint(paint_session* session, uint8_t direction, int32_t height, const TileElement* tile_element)
 {
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
+    session->InteractionType = ViewportInteractionItem::Wall;
 
     rct_scenery_entry* sceneryEntry = tile_element->AsWall()->GetEntry();
     if (sceneryEntry == nullptr)
@@ -200,7 +200,7 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
 
     if (tile_element->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         dword_141F710 = CONSTRUCTION_MARKER;
     }
 
