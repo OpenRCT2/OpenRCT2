@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#6677] Add Discord RPC to macOS builds.
 - Feature: [#6844] Enhanced track designer with ability to add/remove scenery and footpaths.
+- Feature: [#11859] Add on-ride photo section to Air Powered Vertical and Reverse Freefall Coaster.
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13078] [Plugin] Add colour picker widget.
 - Feature: [#13376] Open custom window at specified tab.

@@ -929,6 +929,29 @@ static void air_powered_vertical_rc_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
+static void air_powered_vertical_rc_track_onride_photo(
+    paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TileElement* tileElement)
+{
+    static constexpr const uint32_t imageIds[4] = {
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_SW_NE,
+        SPR_AIR_POWERED_VERTICAL_RC_FLAT_NW_SE,
+    };
+
+    uint32_t imageId = imageIds[direction] | session->TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
+
+    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
+
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t trackType)
 {
     switch (trackType)
@@ -973,6 +996,8 @@ TRACK_PAINT_FUNCTION get_track_paint_function_air_powered_vertical_rc(int32_t tr
             return air_powered_vertical_rc_track_vertical_slope_down;
         case TrackElemType::Booster:
             return air_powered_vertical_rc_track_booster;
+        case TrackElemType::OnRidePhoto:
+            return air_powered_vertical_rc_track_onride_photo;
     }
     return nullptr;
 }
