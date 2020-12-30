@@ -13,6 +13,7 @@
 #include "FormatCodes.h"
 #include "Language.h"
 
+#include <cstring>
 #include <sstream>
 #include <stack>
 #include <string>
@@ -23,6 +24,114 @@
 
 namespace OpenRCT2
 {
+    template<typename T, size_t (*LenFn)(const T*), size_t StackSize = 256> class FormatBufferBase
+    {
+        T _storage[StackSize];
+        T* _buffer;
+        size_t _size;
+        // NOTE: Capacity is on purpose uint32_t to have a fixed position for the flag on each architecture.
+        uint32_t _capacity;
+
+        static constexpr uint32_t FlagLocalStorage = (1u << 31);
+
+    public:
+        explicit FormatBufferBase()
+            : _storage{}
+            , _buffer(_storage)
+            , _size{}
+            , _capacity(FlagLocalStorage | static_cast<uint32_t>(std::size(_storage)))
+        {
+        }
+
+        ~FormatBufferBase()
+        {
+            if (_capacity & FlagLocalStorage)
+                return;
+            delete[] _buffer;
+        }
+
+        size_t size() const
+        {
+            return _size;
+        }
+
+        size_t capacity() const
+        {
+            return _capacity & ~FlagLocalStorage;
+        }
+
+        void clear()
+        {
+            _size = 0;
+            _buffer[0] = T{};
+        }
+
+        const T* data() const
+        {
+            return _buffer;
+        }
+
+        T* data()
+        {
+            return _buffer;
+        }
+
+        auto& operator<<(const T* v)
+        {
+            if (!v)
+                return *this;
+
+            append(v, LenFn(v));
+            return *this;
+        }
+
+        auto& operator<<(const T v)
+        {
+            append(&v, 1);
+            return *this;
+        }
+
+        auto& operator<<(const std::basic_string_view<T> v)
+        {
+            append(v.data(), v.size());
+            return *this;
+        }
+
+    private:
+        void append(const T* buf, size_t len)
+        {
+            ensure_capacity(len);
+
+            std::copy(buf, buf + len, _buffer + _size);
+
+            _size += len;
+            _buffer[_size] = T{};
+        }
+
+        void ensure_capacity(size_t additionalSize)
+        {
+            const size_t curSize = size();
+            const size_t curCapacity = capacity();
+            const bool isLocalStorage = _capacity & FlagLocalStorage;
+
+            if (curSize + additionalSize < curCapacity)
+                return;
+
+            const size_t newCapacity = (curCapacity + additionalSize + 1) << 1;
+
+            T* newBuf = new T[newCapacity];
+            std::copy(_buffer, _buffer + curSize, newBuf);
+
+            if (!isLocalStorage)
+                delete[] _buffer;
+
+            _capacity = static_cast<uint32_t>(newCapacity);
+            _buffer = newBuf;
+        }
+    };
+
+    using FormatBuffer = FormatBufferBase<char, strlen>;
+
     using FormatArg_t = std::variant<uint16_t, int32_t, const char*, std::string>;
 
     class FmtString
@@ -76,15 +185,15 @@ namespace OpenRCT2
         std::string WithoutFormatTokens() const;
     };
 
-    template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg);
+    template<typename T> void FormatArgument(FormatBuffer& ss, FormatToken token, T arg);
 
     bool IsRealNameStringId(rct_string_id id);
-    void FormatRealName(std::stringstream& ss, rct_string_id id);
+    void FormatRealName(FormatBuffer& ss, rct_string_id id);
     FmtString GetFmtStringById(rct_string_id id);
-    std::stringstream& GetThreadFormatStream();
-    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss);
+    FormatBuffer& GetThreadFormatStream();
+    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, FormatBuffer& ss);
 
-    inline void FormatString(std::stringstream& ss, std::stack<FmtString::iterator>& stack)
+    inline void FormatString(FormatBuffer& ss, std::stack<FmtString::iterator>& stack)
     {
         while (!stack.empty())
         {
@@ -103,7 +212,7 @@ namespace OpenRCT2
     }
 
     template<typename TArg0, typename... TArgs>
-    static void FormatString(std::stringstream& ss, std::stack<FmtString::iterator>& stack, TArg0 arg0, TArgs&&... argN)
+    static void FormatString(FormatBuffer& ss, std::stack<FmtString::iterator>& stack, TArg0 arg0, TArgs&&... argN)
     {
         while (!stack.empty())
         {
@@ -144,7 +253,7 @@ namespace OpenRCT2
         }
     }
 
-    template<typename... TArgs> static void FormatString(std::stringstream& ss, const FmtString& fmt, TArgs&&... argN)
+    template<typename... TArgs> static void FormatString(FormatBuffer& ss, const FmtString& fmt, TArgs&&... argN)
     {
         std::stack<FmtString::iterator> stack;
         stack.push(fmt.begin());
@@ -155,7 +264,7 @@ namespace OpenRCT2
     {
         auto& ss = GetThreadFormatStream();
         FormatString(ss, fmt, argN...);
-        return ss.str();
+        return ss.data();
     }
 
     template<typename... TArgs>
@@ -166,7 +275,7 @@ namespace OpenRCT2
         return CopyStringStreamToBuffer(buffer, bufferLen, ss);
     }
 
-    template<typename... TArgs> static void FormatStringId(std::stringstream& ss, rct_string_id id, TArgs&&... argN)
+    template<typename... TArgs> static void FormatStringId(FormatBuffer& ss, rct_string_id id, TArgs&&... argN)
     {
         auto fmt = GetFmtStringById(id);
         FormatString(ss, fmt, argN...);
