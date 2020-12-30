@@ -13,6 +13,7 @@
 #include "../common.h"
 
 constexpr int32_t MAX_YEAR = 8192;
+constexpr int32_t TICKS_PER_MONTH = 0x10000;
 
 enum
 {

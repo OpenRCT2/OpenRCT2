@@ -39,9 +39,16 @@ namespace String
     std::string ToUtf8(const std::wstring_view& src);
     std::wstring ToWideChar(const std::string_view& src);
 
+    /**
+     * Creates a string_view from a char pointer with a length up to either the
+     * first null terminator or a given maximum length, whatever is smallest.
+     */
+    std::string_view ToStringView(const char* ch, size_t maxLen);
+
     bool IsNullOrEmpty(const utf8* str);
     int32_t Compare(const std::string& a, const std::string& b, bool ignoreCase = false);
     int32_t Compare(const utf8* a, const utf8* b, bool ignoreCase = false);
+    bool Equals(const std::string_view a, const std::string_view b, bool ignoreCase = false);
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase = false);
@@ -93,6 +100,7 @@ namespace String
     codepoint_t GetNextCodepoint(utf8* ptr, utf8** nextPtr = nullptr);
     codepoint_t GetNextCodepoint(const utf8* ptr, const utf8** nextPtr = nullptr);
     utf8* WriteCodepoint(utf8* dst, codepoint_t codepoint);
+    void AppendCodepoint(std::string& str, codepoint_t codepoint);
 
     bool IsWhiteSpace(codepoint_t codepoint);
     utf8* Trim(utf8* str);
@@ -110,10 +118,81 @@ namespace String
      * Returns an uppercased version of a UTF-8 string.
      */
     std::string ToUpper(const std::string_view& src);
-
-    /**
-     * Returns true if the string contains an RCT2 colour code.
-     */
-    bool ContainsColourCode(const std::string& string);
-
 } // namespace String
+
+class CodepointView
+{
+private:
+    std::string_view _str;
+
+public:
+    class iterator
+    {
+    private:
+        std::string_view _str;
+        size_t _index;
+
+    public:
+        iterator(std::string_view str, size_t index)
+            : _str(str)
+            , _index(index)
+        {
+        }
+
+        bool operator==(const iterator& rhs) const
+        {
+            return _index == rhs._index;
+        }
+        bool operator!=(const iterator& rhs) const
+        {
+            return _index != rhs._index;
+        }
+        char32_t operator*() const
+        {
+            return GetNextCodepoint(&_str[_index], nullptr);
+        }
+        iterator& operator++()
+        {
+            if (_index < _str.size())
+            {
+                const utf8* nextch;
+                GetNextCodepoint(&_str[_index], &nextch);
+                _index = nextch - _str.data();
+            }
+            return *this;
+        }
+        iterator operator++(int)
+        {
+            auto result = *this;
+            if (_index < _str.size())
+            {
+                const utf8* nextch;
+                GetNextCodepoint(&_str[_index], &nextch);
+                _index = nextch - _str.data();
+            }
+            return result;
+        }
+
+        size_t GetIndex() const
+        {
+            return _index;
+        }
+
+        static char32_t GetNextCodepoint(const char* ch, const char** next);
+    };
+
+    CodepointView(std::string_view str)
+        : _str(str)
+    {
+    }
+
+    iterator begin() const
+    {
+        return iterator(_str, 0);
+    }
+
+    iterator end() const
+    {
+        return iterator(_str, _str.size());
+    }
+};

@@ -24,8 +24,10 @@ namespace OpenRCT2::Ui::Windows
     void UpdateWindowTitle(rct_window* w, const std::string_view& value);
     void UpdateWidgetText(rct_window* w, rct_widgetindex widget, const std::string_view& string_view);
     void UpdateWidgetItems(rct_window* w, rct_widgetindex widgetIndex, const std::vector<std::string>& items);
+    void UpdateWidgetColour(rct_window* w, rct_widgetindex widgetIndex, colour_t colour);
     void UpdateWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex, int32_t selectedIndex);
     std::vector<std::string> GetWidgetItems(rct_window* w, rct_widgetindex widgetIndex);
+    colour_t GetWidgetColour(rct_window* w, rct_widgetindex widgetIndex);
     int32_t GetWidgetSelectedIndex(rct_window* w, rct_widgetindex widgetIndex);
     rct_window* FindCustomWindowByClassification(const std::string_view& classification);
     std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, const std::string_view& name);

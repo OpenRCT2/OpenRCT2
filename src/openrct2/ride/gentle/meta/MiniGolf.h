@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MINI_GOLF, STR_RIDE_DESCRIPTION_MINI_GOLF }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_PLAYER, RIDE_COMPONENT_TYPE_COURSE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Player, RideComponentType::Course, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MINI_GOLF)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 7, 32, 2, 2, }),
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(BuildCosts, { 50, 7, 20, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 23),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_SATURATED_GREEN, COLOUR_DARK_BROWN, COLOUR_BLACK },

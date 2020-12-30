@@ -24,7 +24,7 @@ static rct_window_event_list window_editor_main_events([](auto& events) {
 // clang-format on
 
 static rct_widget window_editor_main_widgets[] = {
-    MakeWidget({ 0, 0 }, { 0, 0 }, WWT_VIEWPORT, WindowColour::Primary, STR_VIEWPORT),
+    MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     { WIDGETS_END },
 };
 
@@ -36,7 +36,7 @@ rct_window* window_editor_main_open()
 {
     window_editor_main_widgets[0].right = context_get_width();
     window_editor_main_widgets[0].bottom = context_get_height();
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, 0), window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
         &window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
     window->widgets = window_editor_main_widgets;

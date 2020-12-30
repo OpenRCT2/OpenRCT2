@@ -34,15 +34,15 @@ enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
 // 0x009AEBA0
 static rct_widget window_ride_demolish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
-    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_DEMOLISH          ),
-    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
+    MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_DEMOLISH          ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
 static rct_widget window_ride_refurbish_widgets[] = {
     WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
-    MakeWidget({     10, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_REFURBISH         ),
-    MakeWidget({WW - 95, WH - 22}, {85, 14}, WWT_BUTTON, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
+    MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH         ),
+    MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     { WIDGETS_END }
 };
 
@@ -74,16 +74,16 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     {
         auto windowPos = w->windowPos;
         window_close(w);
-        w = window_create(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = WindowCreate(windowPos, WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
-        w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = WindowCreateCentred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
 
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->number = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
@@ -99,16 +99,16 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
     {
         auto windowPos = w->windowPos;
         window_close(w);
-        w = window_create(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = WindowCreate(windowPos, WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
     else
     {
-        w = window_create_centred(WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
+        w = WindowCreateCentred(WW, WH, &window_ride_refurbish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     }
 
     w->widgets = window_ride_refurbish_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_REFURBISH);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->number = ride->id;
     _demolishRideCost = -ride_get_refund_price(ride);
 
@@ -159,7 +159,7 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
  */
 static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     auto ride = get_ride(w->number);
     if (ride != nullptr)
@@ -176,7 +176,7 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     auto ride = get_ride(w->number);
     if (ride != nullptr)

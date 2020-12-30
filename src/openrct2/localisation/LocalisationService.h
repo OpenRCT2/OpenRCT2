@@ -60,7 +60,7 @@ namespace OpenRCT2::Localisation
         rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
-        void OpenLanguage(int32_t id, IObjectManager& objectManager);
+        void OpenLanguage(int32_t id);
         void CloseLanguages();
         rct_string_id AllocateObjectString(const std::string& target);
         void FreeObjectString(rct_string_id stringId);

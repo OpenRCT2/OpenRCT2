@@ -134,7 +134,7 @@ public:
 
     void Draw(rct_drawpixelinfo* dpi) override
     {
-        auto bgColour = theme_get_colour(WC_CHAT, 0);
+        auto bgColour = ThemeGetColour(WC_CHAT, 0);
         chat_draw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }
@@ -231,12 +231,12 @@ public:
         return _keysPressed;
     }
 
-    CURSOR_ID GetCursor() override
+    CursorID GetCursor() override
     {
         return _cursorRepository.GetCurrentCursor();
     }
 
-    void SetCursor(CURSOR_ID cursor) override
+    void SetCursor(CursorID cursor) override
     {
         _cursorRepository.SetCurrentCursor(cursor);
     }
@@ -401,7 +401,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, mousePos);
+                            StoreMouseInput(MouseState::LeftPress, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -409,7 +409,7 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, mousePos);
+                            StoreMouseInput(MouseState::RightPress, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
@@ -428,7 +428,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, mousePos);
+                            StoreMouseInput(MouseState::LeftRelease, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -436,7 +436,7 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, mousePos);
+                            StoreMouseInput(MouseState::RightRelease, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
@@ -461,13 +461,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, fingerPos);
+                        StoreMouseInput(MouseState::RightPress, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, fingerPos);
+                        StoreMouseInput(MouseState::LeftPress, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -482,13 +482,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, fingerPos);
+                        StoreMouseInput(MouseState::RightRelease, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, fingerPos);
+                        StoreMouseInput(MouseState::LeftRelease, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
@@ -624,6 +624,11 @@ public:
         return _platformUiContext->ShowDirectoryDialog(_window, title);
     }
 
+    bool HasFilePicker() const override
+    {
+        return _platformUiContext->HasFilePicker();
+    }
+
     IWindowManager* GetWindowManager() override
     {
         return _windowManager;
@@ -669,6 +674,8 @@ private:
             SDLException::Throw("SDL_CreateWindow(...)");
         }
 
+        ApplyScreenSaverLockSetting();
+
         SDL_SetWindowMinimumSize(_window, 720, 480);
         SetCursorTrap(gConfigGeneral.trap_cursor);
         _platformUiContext->SetWindowIcon(_window);
@@ -678,8 +685,13 @@ private:
         OnResize(width, height);
 
         UpdateFullscreenResolutions();
-        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
 
+        // Fix #4022: Force Mac to windowed to avoid cursor offset on launch issue
+#ifdef __MACOSX__
+        gConfigGeneral.fullscreen_mode = static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::WINDOWED);
+#else
+        SetFullscreenMode(static_cast<FULLSCREEN_MODE>(gConfigGeneral.fullscreen_mode));
+#endif
         TriggerResize();
     }
 

@@ -21,7 +21,7 @@ constexpr const RideTypeDescriptor SpinningWildMouseRTD =
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL)
                                   | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)
                                   | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE)),
-    SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_CURVE)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_wild_mouse),
@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor SpinningWildMouseRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_SPINNING_WILD_MOUSE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 16, 24, 4, 7, }),
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor SpinningWildMouseRTD =
     SET_FIELD(BuildCosts, { 55, 4, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_YELLOW },

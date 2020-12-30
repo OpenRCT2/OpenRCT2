@@ -17,6 +17,7 @@
 #    include "../core/String.hpp"
 #    include "../management/Finance.h"
 #    include "../management/NewsItem.h"
+#    include "../peep/Peep.h"
 #    include "../windows/Intent.h"
 #    include "../world/Park.h"
 #    include "Duktape.hpp"
@@ -63,7 +64,7 @@ namespace OpenRCT2::Scripting
         result.MonthYear = value["month"].as_int();
         result.Day = value["day"].as_int();
 
-        auto text = language_convert_string(value["text"].as_string());
+        auto text = value["text"].as_string();
         String::Set(result.Text, sizeof(result.Text), text.c_str());
         return result;
     }
@@ -207,7 +208,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                return language_convert_string_to_tokens(msg->Text);
+                return msg->Text;
             }
             return 0;
         }
@@ -218,8 +219,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                auto text = language_convert_string(value);
-                String::Set(msg->Text, sizeof(msg->Text), text.c_str());
+                String::Set(msg->Text, sizeof(msg->Text), value.c_str());
             }
         }
 
@@ -256,9 +256,13 @@ namespace OpenRCT2::Scripting
         void cash_set(money32 value)
         {
             ThrowIfGameStateNotMutable();
-            gCash = value;
-            auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+
+            if (gCash != value)
+            {
+                gCash = value;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+                context_broadcast_intent(&intent);
+            }
         }
 
         int32_t rating_get() const
@@ -268,9 +272,14 @@ namespace OpenRCT2::Scripting
         void rating_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            gParkRating = std::min(std::max(0, value), 999);
-            auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
-            context_broadcast_intent(&intent);
+
+            auto valueClamped = std::min(std::max(0, value), 999);
+            if (gParkRating != valueClamped)
+            {
+                gParkRating = std::min(std::max(0, value), 999);
+                auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
+                context_broadcast_intent(&intent);
+            }
         }
 
         money32 bankLoan_get() const
@@ -280,9 +289,13 @@ namespace OpenRCT2::Scripting
         void bankLoan_set(money32 value)
         {
             ThrowIfGameStateNotMutable();
-            gBankLoan = value;
-            auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+
+            if (gBankLoan != value)
+            {
+                gBankLoan = value;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+                context_broadcast_intent(&intent);
+            }
         }
 
         money32 maxBankLoan_get() const
@@ -292,9 +305,13 @@ namespace OpenRCT2::Scripting
         void maxBankLoan_set(money32 value)
         {
             ThrowIfGameStateNotMutable();
-            gMaxBankLoan = value;
-            auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
-            context_broadcast_intent(&intent);
+
+            if (gMaxBankLoan != value)
+            {
+                gMaxBankLoan = value;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+                context_broadcast_intent(&intent);
+            }
         }
 
         money16 entranceFee_get() const
@@ -304,7 +321,104 @@ namespace OpenRCT2::Scripting
         void entranceFee_set(money16 value)
         {
             ThrowIfGameStateNotMutable();
-            gParkEntranceFee = value;
+
+            if (gParkEntranceFee != value)
+            {
+                gParkEntranceFee = value;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+        }
+
+        uint32_t guests_get() const
+        {
+            return gNumGuestsInPark;
+        }
+
+        money32 value_get() const
+        {
+            return gParkValue;
+        }
+        void value_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gParkValue != value)
+            {
+                gParkValue = value;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+                context_broadcast_intent(&intent);
+            }
+        }
+
+        money32 companyValue_get() const
+        {
+            return gCompanyValue;
+        }
+        void companyValue_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gCompanyValue != value)
+            {
+                gCompanyValue = value;
+                auto intent = Intent(INTENT_ACTION_UPDATE_CASH);
+                context_broadcast_intent(&intent);
+            }
+        }
+
+        uint32_t totalAdmissions_get() const
+        {
+            return gTotalAdmissions;
+        }
+        void totalAdmissions_set(uint32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gTotalAdmissions != value)
+            {
+                gTotalAdmissions = value;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+        }
+
+        money32 totalIncomeFromAdmissions_get() const
+        {
+            return gTotalIncomeFromAdmissions;
+        }
+        void totalIncomeFromAdmissions_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+
+            if (gTotalIncomeFromAdmissions != value)
+            {
+                gTotalIncomeFromAdmissions = value;
+                window_invalidate_by_class(WC_PARK_INFORMATION);
+            }
+        }
+
+        money32 landPrice_get() const
+        {
+            return gLandPrice;
+        }
+        void landPrice_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gLandPrice = value;
+        }
+
+        money32 constructionRightsPrice_get() const
+        {
+            return gConstructionRightsPrice;
+        }
+        void constructionRightsPrice_set(money32 value)
+        {
+            ThrowIfGameStateNotMutable();
+            gConstructionRightsPrice = value;
+        }
+
+        uint16_t parkSize_get() const
+        {
+            return gParkSize;
         }
 
         std::string name_get() const
@@ -314,7 +428,13 @@ namespace OpenRCT2::Scripting
         void name_set(std::string value)
         {
             ThrowIfGameStateNotMutable();
-            GetContext()->GetGameState()->GetPark().Name = value;
+
+            auto& park = GetContext()->GetGameState()->GetPark();
+            if (park.Name != value)
+            {
+                park.Name = value;
+                gfx_invalidate_screen();
+            }
         }
 
         bool getFlag(const std::string& key) const
@@ -395,12 +515,12 @@ namespace OpenRCT2::Scripting
                 std::string text;
                 if (message.type() == DukValue::Type::STRING)
                 {
-                    text = language_convert_string(message.as_string());
+                    text = message.as_string();
                 }
                 else
                 {
                     type = GetParkMessageType(message["type"].as_string());
-                    text = language_convert_string(message["text"].as_string());
+                    text = message["text"].as_string();
                     if (type == News::ItemType::Blank)
                     {
                         assoc = static_cast<uint32_t>(((COORDS_NULL & 0xFFFF) << 16) | (COORDS_NULL & 0xFFFF));
@@ -427,6 +547,17 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScPark::bankLoan_get, &ScPark::bankLoan_set, "bankLoan");
             dukglue_register_property(ctx, &ScPark::maxBankLoan_get, &ScPark::maxBankLoan_set, "maxBankLoan");
             dukglue_register_property(ctx, &ScPark::entranceFee_get, &ScPark::entranceFee_set, "entranceFee");
+            dukglue_register_property(ctx, &ScPark::guests_get, nullptr, "guests");
+            dukglue_register_property(ctx, &ScPark::value_get, &ScPark::value_set, "value");
+            dukglue_register_property(ctx, &ScPark::companyValue_get, &ScPark::companyValue_set, "companyValue");
+            dukglue_register_property(ctx, &ScPark::totalAdmissions_get, &ScPark::totalAdmissions_set, "totalAdmissions");
+            dukglue_register_property(
+                ctx, &ScPark::totalIncomeFromAdmissions_get, &ScPark::totalIncomeFromAdmissions_set,
+                "totalIncomeFromAdmissions");
+            dukglue_register_property(ctx, &ScPark::landPrice_get, &ScPark::landPrice_set, "landPrice");
+            dukglue_register_property(
+                ctx, &ScPark::constructionRightsPrice_get, &ScPark::constructionRightsPrice_set, "constructionRightsPrice");
+            dukglue_register_property(ctx, &ScPark::parkSize_get, nullptr, "parkSize");
             dukglue_register_property(ctx, &ScPark::name_get, &ScPark::name_set, "name");
             dukglue_register_property(ctx, &ScPark::messages_get, &ScPark::messages_set, "messages");
             dukglue_register_method(ctx, &ScPark::getFlag, "getFlag");

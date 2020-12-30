@@ -15,13 +15,13 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
-#include "actions/FootpathPlaceAction.hpp"
+#include "actions/FootpathPlaceAction.h"
 #include "actions/GameAction.h"
-#include "actions/RideEntranceExitPlaceAction.hpp"
-#include "actions/RideSetSetting.hpp"
-#include "actions/SetCheatAction.hpp"
-#include "actions/TileModifyAction.hpp"
-#include "actions/TrackPlaceAction.hpp"
+#include "actions/RideEntranceExitPlaceAction.h"
+#include "actions/RideSetSettingAction.h"
+#include "actions/SetCheatAction.h"
+#include "actions/TileModifyAction.h"
+#include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -691,13 +691,17 @@ namespace OpenRCT2
             uint32_t actionType = 0;
             if (serialiser.IsSaving())
             {
-                actionType = command.action->GetType();
+                if (!command.action)
+                {
+                    return false;
+                }
+                actionType = EnumValue(command.action->GetType());
             }
             serialiser << actionType;
 
             if (serialiser.IsLoading())
             {
-                command.action = GameActions::Create(actionType);
+                command.action = GameActions::Create(static_cast<GameCommand>(actionType));
                 Guard::Assert(command.action != nullptr);
             }
 
@@ -847,8 +851,8 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActionResult::Ptr result = GameActions::Execute(action);
-                if (result->Error == GA_ERROR::OK)
+                GameActions::Result::Ptr result = GameActions::Execute(action);
+                if (result->Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;
                 }

@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 10, 27, 30, 17, 68, 1 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_GIGA_COASTER, STR_RIDE_DESCRIPTION_GIGA_COASTER }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_GIGA_COASTER)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE)),
     SET_FIELD(Heights, { 86, 24, 9, 11, }),
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(BuildCosts, { 120, 5, 55, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_ROCK_STYLE_3),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 120),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },

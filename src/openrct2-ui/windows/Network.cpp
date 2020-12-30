@@ -39,7 +39,7 @@ enum WINDOW_NETWORK_WIDGET_IDX {
 
 static rct_widget window_network_information_widgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
-    MakeWidget({  0, 43}, {450, 167}, WWT_RESIZE,  WindowColour::Secondary), // content panel
+    MakeWidget({  0, 43}, {450, 167}, WindowWidgetType::Resize,  WindowColour::Secondary), // content panel
     MakeTab   ({  3, 17}, STR_SHOW_SERVER_INFO_TIP                        ), // tab
     { WIDGETS_END }
 };
@@ -125,7 +125,7 @@ rct_window* window_network_open()
     rct_window* window = window_bring_to_front_by_class(WC_NETWORK);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(320, 144, &window_network_information_events, WC_NETWORK, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(320, 144, &window_network_information_events, WC_NETWORK, WF_10 | WF_RESIZABLE);
         window_network_set_page(window, WINDOW_NETWORK_PAGE_INFORMATION);
 
         // Fill the buffer so it will start scrolling in.
@@ -158,7 +158,7 @@ static void window_network_set_page(rct_window* w, int32_t page)
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -363,7 +363,7 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 {
     char textBuffer[200] = {};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_network_draw_tab_images(w, dpi);
 
     constexpr int32_t padding = 5;
@@ -449,7 +449,7 @@ static void window_network_draw_tab_image(rct_window* w, rct_drawpixelinfo* dpi,
 {
     rct_widgetindex widgetIndex = WIDX_TAB1 + page;
 
-    if (!widget_is_disabled(w, widgetIndex))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {

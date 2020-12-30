@@ -11,7 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/TrackPlaceAction.hpp"
+#include "../actions/TrackPlaceAction.h"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
@@ -86,7 +86,7 @@ money32 place_provisional_track_piece(
         // This command must not be sent over the network
         auto res = GameActions::Execute(&trackPlaceAction);
         auto tpar = dynamic_cast<TrackPlaceActionResult*>(res.get());
-        result = ((tpar == nullptr) || (res->Error == GA_ERROR::OK)) ? res->Cost : MONEY32_UNDEFINED;
+        result = ((tpar == nullptr) || (res->Error == GameActions::Status::Ok)) ? res->Cost : MONEY32_UNDEFINED;
         if (result == MONEY32_UNDEFINED)
             return result;
 
@@ -300,10 +300,11 @@ bool window_ride_construction_update_state(
         }
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
-        auto availablePieces = RideTypeDescriptors[ride->type].CoveredTrackPieces;
+        auto availablePieces = rtd.CoveredTrackPieces;
         auto alternativeType = AlternativeTrackTypes[trackType];
         if (alternativeType != -1 && availablePieces & (1ULL << trackType))
         {
@@ -434,7 +435,6 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         _currentTrackBegin.z = floor2(piecePos.z, COORDS_Z_STEP);
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;
         int32_t savedCurrentTrackCurve = _currentTrackCurve;
         int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
@@ -489,7 +489,6 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         _currentTrackPieceDirection = piecePos.direction;
         _currentTrackPieceType = type;
         _currentTrackSelectionFlags = 0;
-        _rideConstructionArrowPulseTime = 0;
         if (_rideConstructionState2 == RIDE_CONSTRUCTION_STATE_FRONT)
         {
             ride_select_next_section();

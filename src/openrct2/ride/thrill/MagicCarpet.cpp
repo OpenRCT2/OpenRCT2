@@ -83,13 +83,13 @@ static void paint_magic_carpet_frame(
     imageId |= session->TrackColours[SCHEME_TRACK];
     if (plane == PLANE_BACK)
     {
-        sub_98197C(
+        PaintAddImageAsParent(
             session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
             bbOffset.x, bbOffset.y, bbOffset.z);
     }
     else
     {
-        sub_98199C(
+        PaintAddImageAsChild(
             session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
             bbOffset.x, bbOffset.y, bbOffset.z);
     }
@@ -113,7 +113,7 @@ static void paint_magic_carpet_pendulum(
         imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NW : SPR_MAGIC_CARPET_PENDULUM_SE;
     }
     imageId |= session->TrackColours[SCHEME_TRACK];
-    sub_98199C(
+    PaintAddImageAsChild(
         session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
         bbOffset.x, bbOffset.y, bbOffset.z);
 }
@@ -150,7 +150,7 @@ static void paint_magic_carpet_vehicle(
     }
     offset.z += MagicCarpetOscillationZ[swingImageId];
 
-    sub_98199C(
+    PaintAddImageAsChild(
         session, vehicleImageId | imageColourFlags, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x,
         bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
 
@@ -167,7 +167,7 @@ static void paint_magic_carpet_vehicle(
                 uint32_t imageId = baseImageId + (peepIndex * 2);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127,
                     offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
             }
@@ -186,7 +186,7 @@ static void paint_magic_carpet_structure(
     if (vehicle != nullptr)
     {
         swingImageId = vehicle->vehicle_sprite_type;
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -208,7 +208,7 @@ static void paint_magic_carpet_structure(
     paint_magic_carpet_pendulum(session, PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
     paint_magic_carpet_frame(session, PLANE_FRONT, direction, offset, bbOffset, bbSize);
 
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
     session->CurrentlyDrawnItem = savedTileElement;
 }
 
@@ -240,7 +240,7 @@ static void paint_magic_carpet(
             }
 
             uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-            sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
             break;
     }
 

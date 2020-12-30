@@ -38,6 +38,8 @@ namespace OpenRCT2
             virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
+
+            virtual bool HasFilePicker() const abstract;
         };
 
         std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);

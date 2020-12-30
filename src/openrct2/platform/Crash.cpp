@@ -24,6 +24,7 @@
 #        error Breakpad support not implemented yet for this platform
 #    endif
 
+#    include "../Context.h"
 #    include "../Game.h"
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
@@ -33,8 +34,10 @@
 #    include "../core/String.hpp"
 #    include "../interface/Screenshot.h"
 #    include "../localisation/Language.h"
+#    include "../object/ObjectManager.h"
 #    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
+#    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
 #    include "platform.h"
 
@@ -61,7 +64,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=e374355abe60423e4aa417f84162342e5a089d2f9783bf6b74a1d6915ba0635d");
+                     L"post?format=minidump&token=98675313b384d2fb1d3d3ce8ad9cab3ed61b9e08186ae47b0e3342adc3ff0714");
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
@@ -168,6 +171,18 @@ static bool OnCrash(
     try
     {
         auto exporter = std::make_unique<S6Exporter>();
+
+        // Make sure the save is using the current viewport settings.
+        viewport_set_saved_view();
+
+        // Disable RLE encoding for better compression.
+        gUseRLE = false;
+
+        // Export all loaded objects to avoid having custom objects missing in the reports.
+        auto ctx = OpenRCT2::GetContext();
+        auto& objManager = ctx->GetObjectManager();
+        exporter->ExportObjectsList = objManager.GetPackableObjects();
+
         exporter->Export();
         exporter->SaveGame(saveFilePathUTF8.c_str());
         savedGameDumped = true;

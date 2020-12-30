@@ -51,14 +51,14 @@ static void paint_haunted_house_structure(
     auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
         frameNum = vehicle->vehicle_sprite_type;
     }
 
     uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
     haunted_house_bound_box boundBox = haunted_house_data[part];
-    sub_98197C(
+    PaintAddImageAsParent(
         session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
         boundBox.offset_y, height);
 
@@ -81,13 +81,13 @@ static void paint_haunted_house_structure(
                 break;
         }
         imageId = imageId | session->TrackColours[SCHEME_MISC];
-        sub_98199C(
+        PaintAddImageAsChild(
             session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**

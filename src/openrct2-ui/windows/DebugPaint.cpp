@@ -36,12 +36,12 @@ constexpr int32_t WINDOW_WIDTH = 200;
 constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
 
 static rct_widget window_debug_paint_widgets[] = {
-    MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WWT_FRAME,    WindowColour::Primary                                        ),
-    MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
-    MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
-    MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
-    MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
-    MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
+    MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
+    MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
+    MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
+    MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
+    MakeWidget({8, 8 + 15 * 3}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BOUND_BOXES    ),
+    MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
     { WIDGETS_END },
 };
 
@@ -66,14 +66,14 @@ rct_window* window_debug_paint_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
         &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
     window->enabled_widgets = (1 << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1 << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
         | (1 << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1 << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS) | (1 << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
@@ -150,14 +150,14 @@ static void window_debug_paint_invalidate(rct_window* w)
         w->Invalidate();
     }
 
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-    widget_set_checkbox_value(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
 }
 
 static void window_debug_paint_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }

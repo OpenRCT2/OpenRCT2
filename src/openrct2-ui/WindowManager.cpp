@@ -30,7 +30,7 @@ class WindowManager final : public IWindowManager
 public:
     void Init() override
     {
-        theme_manager_initialise();
+        ThemeManagerInitialise();
         window_guest_list_init_vars();
         window_new_ride_init_vars();
     }
@@ -57,7 +57,7 @@ public:
                 return window_editor_inventions_list_open();
             case WC_EDITOR_OBJECT_SELECTION:
                 return window_editor_object_selection_open();
-            case WC_EDTIOR_OBJECTIVE_OPTIONS:
+            case WC_EDITOR_OBJECTIVE_OPTIONS:
                 return window_editor_objective_options_open();
             case WC_EDITOR_SCENARIO_OPTIONS:
                 return window_editor_scenario_options_open();
@@ -505,18 +505,18 @@ public:
 
     void HandleInput() override
     {
-        game_handle_input();
+        GameHandleInput();
     }
 
     void HandleKeyboard(bool isTitle) override
     {
-        input_handle_keyboard(isTitle);
+        InputHandleKeyboard(isTitle);
     }
 
     std::string GetKeyboardShortcutString(int32_t shortcut) override
     {
         utf8 buffer[256];
-        keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
+        KeyboardShortcutsFormatString(buffer, sizeof(buffer), shortcut);
         return std::string(buffer);
     }
 
@@ -550,7 +550,7 @@ public:
 
     void UpdateMouseWheel() override
     {
-        window_all_wheel_input();
+        WindowAllWheelInput();
     }
 
     rct_window* GetOwner(const rct_viewport* viewport) override

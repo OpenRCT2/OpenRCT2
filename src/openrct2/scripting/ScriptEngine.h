@@ -32,7 +32,10 @@ struct duk_hthread;
 typedef struct duk_hthread duk_context;
 
 struct GameAction;
-class GameActionResult;
+namespace GameActions
+{
+    class Result;
+}
 class FileWatcher;
 class InteractiveConsole;
 
@@ -60,19 +63,25 @@ namespace OpenRCT2::Scripting
             ScriptExecutionInfo& _execInfo;
             std::shared_ptr<Plugin> _plugin;
 
+            std::shared_ptr<Plugin> _backupPlugin;
+            bool _backupIsGameStateMutable;
+
         public:
             PluginScope(ScriptExecutionInfo& execInfo, std::shared_ptr<Plugin> plugin, bool isGameStateMutable)
                 : _execInfo(execInfo)
                 , _plugin(plugin)
             {
+                _backupPlugin = _execInfo._plugin;
+                _backupIsGameStateMutable = _execInfo._isGameStateMutable;
+
                 _execInfo._plugin = plugin;
                 _execInfo._isGameStateMutable = isGameStateMutable;
             }
             PluginScope(const PluginScope&) = delete;
             ~PluginScope()
             {
-                _execInfo._plugin = nullptr;
-                _execInfo._isGameStateMutable = false;
+                _execInfo._plugin = _backupPlugin;
+                _execInfo._isGameStateMutable = _backupIsGameStateMutable;
             }
         };
 
@@ -184,12 +193,12 @@ namespace OpenRCT2::Scripting
 
         void AddNetworkPlugin(const std::string_view& code);
 
-        std::unique_ptr<GameActionResult> QueryOrExecuteCustomGameAction(
+        std::unique_ptr<GameActions::Result> QueryOrExecuteCustomGameAction(
             const std::string_view& id, const std::string_view& args, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query,
             const DukValue& execute);
-        void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute);
+        void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute);
         std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
 
         void SaveSharedStorage();
@@ -211,8 +220,8 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        std::unique_ptr<GameActionResult> DukToGameActionResult(const DukValue& d);
-        DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result);
+        std::unique_ptr<GameActions::Result> DukToGameActionResult(const DukValue& d);
+        DukValue GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActions::Result>& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(const std::string_view& expenditureType);
 

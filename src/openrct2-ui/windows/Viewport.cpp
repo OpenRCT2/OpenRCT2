@@ -33,11 +33,11 @@ enum {
 
 static rct_widget window_viewport_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WWT_RESIZE,   WindowColour::Secondary                                         ), // resize
-    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WWT_VIEWPORT, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, {     24,     24}, WWT_FLATBTN,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, {     24,     24}, WWT_FLATBTN,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, {     24,     24}, WWT_FLATBTN,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
+    MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
+    MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
+    MakeWidget({WW - 25, 17}, {     24,     24}, WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
+    MakeWidget({WW - 25, 41}, {     24,     24}, WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
+    MakeWidget({WW - 25, 65}, {     24,     24}, WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
     { WIDGETS_END },
 };
 
@@ -64,7 +64,7 @@ static int32_t _viewportNumber = 1;
  */
 rct_window* window_viewport_open()
 {
-    rct_window* w = window_create_auto_pos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
+    rct_window* w = WindowCreateAutoPos(WW, WH, &window_viewport_events, WC_VIEWPORT, WF_RESIZABLE);
     w->widgets = window_viewport_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT) | (1 << WIDX_LOCATE);
     w->number = _viewportNumber++;
@@ -193,7 +193,7 @@ static void window_viewport_invalidate(rct_window* w)
 
 static void window_viewport_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw viewport
     if (w->viewport != nullptr)

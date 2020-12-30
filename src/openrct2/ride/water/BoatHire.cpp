@@ -39,18 +39,18 @@ static void paint_boat_hire_track_flat(
     if (direction & 1)
     {
         imageId = SPR_BOAT_HIRE_FLAT_BACK_NW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 4, 0, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 3, height, 4, 0, height);
 
         imageId = SPR_BOAT_HIRE_FLAT_FRONT_NW_SE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 28, 0, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 1, 32, 3, height, 28, 0, height);
     }
     else
     {
         imageId = SPR_BOAT_HIRE_FLAT_BACK_SW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 4, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 3, height, 0, 4, height);
 
         imageId = SPR_BOAT_HIRE_FLAT_FRONT_SW_NE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 28, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 1, 3, height, 0, 28, height);
     }
 
     paint_util_set_segment_support_height(
@@ -96,31 +96,31 @@ static void paint_boat_hire_track_left_quarter_turn_1_tile(
     {
         case 0:
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
 
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
+            PaintAddImageAsParent(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
             break;
         case 1:
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
 
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
+            PaintAddImageAsParent(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
             break;
         case 2:
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
 
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
+            PaintAddImageAsParent(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
             break;
         case 3:
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
+            PaintAddImageAsParent(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2);
 
             imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | session->TrackColours[SCHEME_TRACK];
-            sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
+            PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height);
             break;
     }
 

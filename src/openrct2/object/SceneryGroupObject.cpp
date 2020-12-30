@@ -75,7 +75,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
     _legacyType.entry_count = 0;
     for (const auto& objectEntry : _items)
     {
-        auto ori = objectRepository.FindObject(&objectEntry);
+        auto ori = objectRepository.FindObject(objectEntry);
         if (ori == nullptr)
             continue;
         if (ori->LoadedObject == nullptr)
@@ -98,14 +98,14 @@ void SceneryGroupObject::SetRepositoryItem(ObjectRepositoryItem* item) const
     item->SceneryGroupInfo.Entries = _items;
 }
 
-std::vector<rct_object_entry> SceneryGroupObject::ReadItems(IStream* stream)
+std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream)
 {
-    auto items = std::vector<rct_object_entry>();
+    auto items = std::vector<ObjectEntryDescriptor>();
     while (stream->ReadValue<uint8_t>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         auto entry = stream->ReadValue<rct_object_entry>();
-        items.push_back(entry);
+        items.push_back(ObjectEntryDescriptor(entry));
     }
     return items;
 }
@@ -166,13 +166,13 @@ EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string
     return EntertainerCostume::Panda;
 }
 
-std::vector<rct_object_entry> SceneryGroupObject::ReadJsonEntries(json_t& jEntries)
+std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& jEntries)
 {
-    std::vector<rct_object_entry> entries;
+    std::vector<ObjectEntryDescriptor> entries;
 
     for (auto& jEntry : jEntries)
     {
-        auto entry = ParseObjectEntry(Json::GetString(jEntry));
+        auto entry = ObjectEntryDescriptor(Json::GetString(jEntry));
         entries.push_back(entry);
     }
     return entries;

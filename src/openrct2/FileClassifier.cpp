@@ -10,8 +10,9 @@
 #include "FileClassifier.h"
 
 #include "core/Console.hpp"
-#include "core/FileStream.hpp"
+#include "core/FileStream.h"
 #include "core/Path.hpp"
+#include "core/String.hpp"
 #include "rct12/SawyerChunkReader.h"
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"

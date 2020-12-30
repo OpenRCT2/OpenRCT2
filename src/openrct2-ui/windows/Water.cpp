@@ -32,9 +32,9 @@ enum WINDOW_WATER_WIDGET_IDX {
 
 static rct_widget window_water_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({16, 17}, {44, 32}, WWT_IMGBTN, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
-    MakeRemapWidget({17, 18}, {16, 16}, WWT_TRNBTN, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
-    MakeRemapWidget({43, 32}, {16, 16}, WWT_TRNBTN, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
+    MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
+    MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
+    MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
     { WIDGETS_END },
 };
 
@@ -72,11 +72,11 @@ rct_window* window_water_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
+    window = WindowCreate(ScreenCoordsXY(context_get_width() - 76, 29), 76, 77, &window_water_events, WC_WATER, 0);
     window->widgets = window_water_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gLandToolSize = 1;
@@ -182,7 +182,7 @@ static void window_water_invalidate(rct_window* w)
     w->pressed_widgets |= (1 << WIDX_PREVIEW);
 
     // Update the preview image
-    window_water_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_water_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**
@@ -194,7 +194,7 @@ static void window_water_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
                                         w->windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {

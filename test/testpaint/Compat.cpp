@@ -35,7 +35,7 @@ Ride gRideList[MAX_RIDES];
 int16_t gMapSizeUnits;
 int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
-uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
+ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
@@ -127,7 +127,7 @@ Ride* get_ride(ride_id_t index)
 
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[static_cast<int>(ObjectType::Ride)])
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;
@@ -153,7 +153,7 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+    return sprite_identifier == SpriteIdentifier::Peep;
 }
 
 template<> bool SpriteBase::Is<Guest>() const
@@ -164,7 +164,7 @@ template<> bool SpriteBase::Is<Guest>() const
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+    return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
 SpriteBase* get_sprite(size_t sprite_idx)
@@ -855,4 +855,13 @@ void ride_ratings_calculate_lim_launched_roller_coaster([[maybe_unused]] Ride* r
 
 void ride_ratings_calculate_drink_stall([[maybe_unused]] Ride* ride)
 {
+}
+
+void ride_ratings_calculate_hybrid_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
+{
+    return RideTypeDescriptors[type];
 }

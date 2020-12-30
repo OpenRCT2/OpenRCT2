@@ -105,47 +105,84 @@ struct TileElement : public TileElementBase
     uint8_t pad_04[4];
     uint8_t pad_08[8];
 
-    template<typename TType, TileElementType TClass> TType* as() const
+    template<typename TType, TileElementType TClass> const TType* as() const
     {
-        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(const_cast<TileElement*>(this))
-                                                                 : nullptr;
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+    }
+    template<typename TType, TileElementType TClass> TType* as()
+    {
+        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
 public:
-    SurfaceElement* AsSurface() const
+    const SurfaceElement* AsSurface() const
     {
         return as<SurfaceElement, TileElementType::Surface>();
     }
-    PathElement* AsPath() const
+    SurfaceElement* AsSurface()
+    {
+        return as<SurfaceElement, TileElementType::Surface>();
+    }
+    const PathElement* AsPath() const
     {
         return as<PathElement, TileElementType::Path>();
     }
-    TrackElement* AsTrack() const
+    PathElement* AsPath()
+    {
+        return as<PathElement, TileElementType::Path>();
+    }
+    const TrackElement* AsTrack() const
     {
         return as<TrackElement, TileElementType::Track>();
     }
-    SmallSceneryElement* AsSmallScenery() const
+    TrackElement* AsTrack()
+    {
+        return as<TrackElement, TileElementType::Track>();
+    }
+    const SmallSceneryElement* AsSmallScenery() const
     {
         return as<SmallSceneryElement, TileElementType::SmallScenery>();
     }
-    LargeSceneryElement* AsLargeScenery() const
+    SmallSceneryElement* AsSmallScenery()
+    {
+        return as<SmallSceneryElement, TileElementType::SmallScenery>();
+    }
+    const LargeSceneryElement* AsLargeScenery() const
     {
         return as<LargeSceneryElement, TileElementType::LargeScenery>();
     }
-    WallElement* AsWall() const
+    LargeSceneryElement* AsLargeScenery()
+    {
+        return as<LargeSceneryElement, TileElementType::LargeScenery>();
+    }
+    const WallElement* AsWall() const
     {
         return as<WallElement, TileElementType::Wall>();
     }
-    EntranceElement* AsEntrance() const
+    WallElement* AsWall()
+    {
+        return as<WallElement, TileElementType::Wall>();
+    }
+    const EntranceElement* AsEntrance() const
     {
         return as<EntranceElement, TileElementType::Entrance>();
     }
-    BannerElement* AsBanner() const
+    EntranceElement* AsEntrance()
+    {
+        return as<EntranceElement, TileElementType::Entrance>();
+    }
+    const BannerElement* AsBanner() const
+    {
+        return as<BannerElement, TileElementType::Banner>();
+    }
+    BannerElement* AsBanner()
     {
         return as<BannerElement, TileElementType::Banner>();
     }
 
     void ClearAs(uint8_t newType);
+
+    ride_id_t GetRideIndex() const;
 };
 assert_struct_size(TileElement, 16);
 
@@ -274,7 +311,7 @@ public:
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
 
-    bool ShouldDrawPathOverSupports();
+    bool ShouldDrawPathOverSupports() const;
     void SetShouldDrawPathOverSupports(bool on);
 
     bool IsLevelCrossing(const CoordsXY& coords) const;
@@ -384,9 +421,9 @@ struct SmallSceneryElement : TileElementBase
 {
 private:
     ObjectEntryIndex entryIndex; // 4
-    uint8_t age;                 // 5
-    uint8_t colour_1;            // 6
-    uint8_t colour_2;            // 7
+    uint8_t age;                 // 6
+    uint8_t colour_1;            // 7
+    uint8_t colour_2;            // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_09[7];
@@ -454,7 +491,7 @@ private:
     colour_t colour_2;           // 07
     colour_t colour_3;           // 08
     BannerIndex banner_index;    // 09
-    uint8_t animation;           // 0A 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
+    uint8_t animation;           // 0B 0b_dfff_ft00 d = direction, f = frame num, t = across track flag (not used)
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
     uint8_t pad_0C[4];
@@ -528,13 +565,12 @@ assert_struct_size(EntranceElement, 16);
 struct BannerElement : TileElementBase
 {
 private:
-    BannerIndex index; // 4
-    uint8_t position;  // 5
+    BannerIndex index;    // 4
+    uint8_t position;     // 6
+    uint8_t AllowedEdges; // 7
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t AllowedEdges; // 6
-    uint8_t unused;       // 7
-    uint8_t pad_09[7];
+    uint8_t pad_08[8];
 #pragma clang diagnostic pop
 public:
     Banner* GetBanner() const;
@@ -649,5 +685,3 @@ bool tile_element_is_underground(TileElement* tileElement);
 // ~Oli414: The banner functions should probably be part of banner.
 void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex);
 void tile_element_remove_banner_entry(TileElement* tileElement);
-
-uint8_t tile_element_get_ride_index(const TileElement* tileElement);

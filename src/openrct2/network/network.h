@@ -14,6 +14,7 @@
 #define NETWORK_LAN_BROADCAST_MSG "openrct2.server.query"
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
+#include "../Game.h"
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
 #include "../localisation/StringIds.h"
@@ -26,7 +27,10 @@
 struct GameAction;
 struct Peep;
 struct CoordsXYZ;
-class GameActionResult;
+namespace GameActions
+{
+    class Result;
+}
 enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 enum class NetworkPermission : uint32_t;
@@ -67,7 +71,7 @@ std::string network_get_player_ip_address(uint32_t id);
 std::string network_get_player_public_key_hash(uint32_t id);
 void network_add_player_money_spent(uint32_t index, money32 cost);
 int32_t network_get_player_last_action(uint32_t index, int32_t time);
-void network_set_player_last_action(uint32_t index, int32_t command);
+void network_set_player_last_action(uint32_t index, GameCommand command);
 CoordsXYZ network_get_player_last_action_coord(uint32_t index);
 void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord);
 uint32_t network_get_player_commands_ran(uint32_t index);
@@ -79,12 +83,12 @@ int32_t network_get_current_player_group_index();
 uint8_t network_get_group_id(uint32_t index);
 int32_t network_get_num_groups();
 const char* network_get_group_name(uint32_t index);
-std::unique_ptr<GameActionResult> network_set_player_group(
+std::unique_ptr<GameActions::Result> network_set_player_group(
     NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-std::unique_ptr<GameActionResult> network_modify_groups(
+std::unique_ptr<GameActions::Result> network_modify_groups(
     NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
     PermissionState permissionState, bool isExecuting);
-std::unique_ptr<GameActionResult> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
+std::unique_ptr<GameActions::Result> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
 uint8_t network_get_default_group();
 int32_t network_get_num_actions();
 rct_string_id network_get_action_name_string_id(uint32_t index);

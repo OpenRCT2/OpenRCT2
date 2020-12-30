@@ -25,11 +25,12 @@ struct IObjectManager
     }
 
     virtual Object* GetLoadedObject(size_t index) abstract;
-    virtual Object* GetLoadedObject(int32_t objectType, size_t index) abstract;
+    virtual Object* GetLoadedObject(ObjectType objectType, size_t index) abstract;
     virtual Object* GetLoadedObject(const rct_object_entry* entry) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) abstract;
     virtual std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) abstract;
 
+    virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
     virtual void LoadObjects(const rct_object_entry* entries, size_t count) abstract;
     virtual void LoadDefaultObjects() abstract;
@@ -44,10 +45,10 @@ struct IObjectManager
 
 std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRepository);
 
-void* object_manager_get_loaded_object_by_index(size_t index);
-void* object_manager_get_loaded_object(const rct_object_entry* entry);
+Object* object_manager_get_loaded_object_by_index(size_t index);
+Object* object_manager_get_loaded_object(const rct_object_entry* entry);
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject);
 void* object_manager_load_object(const rct_object_entry* entry);
 void object_manager_unload_objects(const std::vector<rct_object_entry>& entries);
 void object_manager_unload_all_objects();
-rct_string_id object_manager_get_source_game_string(const uint8_t sourceGame);
+rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);

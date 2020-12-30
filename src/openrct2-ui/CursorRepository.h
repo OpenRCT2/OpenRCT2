@@ -13,6 +13,7 @@
 #include <functional>
 #include <map>
 #include <openrct2/interface/Cursors.h>
+#include <openrct2/util/Util.h>
 
 struct SDL_Cursor;
 
@@ -24,35 +25,35 @@ namespace OpenRCT2::Ui
         class CursorSetHolder
         {
         private:
-            SDL_Cursor* _cursors[CURSOR_COUNT] = { nullptr };
+            SDL_Cursor* _cursors[EnumValue(CursorID::Count)] = { nullptr };
 
         public:
-            CursorSetHolder(const std::function<SDL_Cursor*(CURSOR_ID)>& getCursor)
+            CursorSetHolder(const std::function<SDL_Cursor*(CursorID)>& getCursor)
             {
-                for (size_t i = 0; i < CURSOR_COUNT; i++)
+                for (size_t i = 0; i < EnumValue(CursorID::Count); i++)
                 {
-                    _cursors[i] = getCursor(static_cast<CURSOR_ID>(i));
+                    _cursors[i] = getCursor(static_cast<CursorID>(i));
                 }
             }
 
             ~CursorSetHolder()
             {
-                for (size_t i = 0; i < CURSOR_COUNT; i++)
+                for (size_t i = 0; i < EnumValue(CursorID::Count); i++)
                 {
                     SDL_FreeCursor(_cursors[i]);
                 }
             }
 
-            SDL_Cursor* getScaledCursor(CURSOR_ID cursorId)
+            SDL_Cursor* getScaledCursor(CursorID cursorId)
             {
-                return _cursors[cursorId];
+                return _cursors[EnumValue(cursorId)];
             }
         };
 
         constexpr static int32_t BASE_CURSOR_WIDTH = 32;
         constexpr static int32_t BASE_CURSOR_HEIGHT = 32;
 
-        CURSOR_ID _currentCursor = CURSOR_UNDEFINED;
+        CursorID _currentCursor = CursorID::Undefined;
         uint8_t _currentCursorScale = 1;
 
         std::map<uint8_t, CursorSetHolder> _scaledCursors;
@@ -60,13 +61,13 @@ namespace OpenRCT2::Ui
     public:
         ~CursorRepository();
         void LoadCursors();
-        CURSOR_ID GetCurrentCursor();
-        void SetCurrentCursor(CURSOR_ID cursorId);
+        CursorID GetCurrentCursor();
+        void SetCurrentCursor(CursorID cursorId);
         void SetCursorScale(uint8_t cursorScale);
 
     private:
         SDL_Cursor* Create(const CursorData* cursorInfo, uint8_t scale);
         void GenerateScaledCursorSetHolder(uint8_t scale);
-        static const CursorData* GetCursorData(CURSOR_ID cursorId);
+        static const CursorData* GetCursorData(CursorID cursorId);
     };
 } // namespace OpenRCT2::Ui

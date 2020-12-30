@@ -15,7 +15,7 @@
 #include "../ParkImporter.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/IStream.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
@@ -33,6 +33,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Staff.h"
+#include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
 #include "../rct2/RCT2.h"
@@ -195,19 +196,11 @@ public:
         gS6Info = _s6.info;
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
-        // This is hard to detect. Therefore, consider invalid characters like colour codes as a sign the text is in UTF-8.
-        bool alreadyInUTF8 = false;
-
-        if (String::ContainsColourCode(_s6.info.name) || String::ContainsColourCode(_s6.info.details))
+        if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
         {
-            alreadyInUTF8 = true;
-        }
-
-        if (!alreadyInUTF8)
-        {
-            auto temp = rct2_to_utf8(_s6.info.name, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            auto temp = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
             safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
-            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2_LANGUAGE_ID_ENGLISH_UK);
+            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
             safe_strcpy(gS6Info.details, temp2.data(), sizeof(gS6Info.details));
         }
         else
@@ -272,7 +265,7 @@ public:
         gResearchProgressStage = _s6.research_progress_stage;
         if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
             gResearchLastItem = ResearchItem(
-                RCT12ResearchItem{ _s6.last_researched_item_subject, RESEARCH_CATEGORY_TRANSPORT });
+                RCT12ResearchItem{ _s6.last_researched_item_subject, EnumValue(ResearchCategory::Transport) });
         else
             gResearchLastItem = std::nullopt;
         // pad_01357CF8
@@ -415,8 +408,8 @@ public:
         // byte_13CA742
         // pad_013CA747
         gClimateUpdateTimer = _s6.climate_update_timer;
-        gClimateCurrent.Weather = _s6.current_weather;
-        gClimateNext.Weather = _s6.next_weather;
+        gClimateCurrent.Weather = WeatherType{ _s6.current_weather };
+        gClimateNext.Weather = WeatherType{ _s6.next_weather };
         gClimateCurrent.Temperature = _s6.temperature;
         gClimateNext.Temperature = _s6.next_temperature;
         gClimateCurrent.WeatherEffect = WeatherEffectType{ _s6.current_weather_effect };
@@ -523,6 +516,12 @@ public:
                 rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
             }
         }
+
+        if (rideType >= RIDE_TYPE_COUNT)
+        {
+            log_error("Invalid ride type for a ride in this save.");
+            throw UnsupportedRideTypeException(rideType);
+        }
         dst->type = rideType;
         dst->subtype = subtype;
         // pad_002;
@@ -621,7 +620,8 @@ public:
         dst->proposed_num_vehicles = src->proposed_num_vehicles;
         dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
         dst->max_trains = src->max_trains;
-        dst->min_max_cars_per_train = src->min_max_cars_per_train;
+        dst->SetMinCarsPerTrain(src->GetMinCarsPerTrain());
+        dst->SetMaxCarsPerTrain(src->GetMaxCarsPerTrain());
         dst->min_waiting_time = src->min_waiting_time;
         dst->max_waiting_time = src->max_waiting_time;
 
@@ -765,7 +765,7 @@ public:
         // This stall was not colourable in RCT2.
         if (dst->type == RIDE_TYPE_FOOD_STALL)
         {
-            auto entry = object_entry_get_entry(OBJECT_TYPE_RIDE, dst->subtype);
+            auto entry = object_entry_get_entry(ObjectType::Ride, dst->subtype);
             if (entry != nullptr)
             {
                 char name[DAT_NAME_LENGTH + 1];
@@ -1021,7 +1021,7 @@ public:
         uint16_t numRiders = 0;
         for (const auto& sprite : _s6.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Peep)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
@@ -1283,7 +1283,7 @@ public:
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
-                    campaign.ShopItemType = _s6.campaign_ride_index[i];
+                    campaign.ShopItemType = ShopItem(_s6.campaign_ride_index[i]);
                 }
                 gMarketingCampaigns.push_back(campaign);
             }
@@ -1313,19 +1313,19 @@ public:
         std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
-            case SPRITE_IDENTIFIER_NULL:
+            case SpriteIdentifier::Null:
                 ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
                 break;
-            case SPRITE_IDENTIFIER_VEHICLE:
+            case SpriteIdentifier::Vehicle:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
                 break;
-            case SPRITE_IDENTIFIER_PEEP:
+            case SpriteIdentifier::Peep:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
-            case SPRITE_IDENTIFIER_MISC:
+            case SpriteIdentifier::Misc:
                 ImportSpriteMisc(&dst->generic, &src->unknown);
                 break;
-            case SPRITE_IDENTIFIER_LITTER:
+            case SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
             default:
@@ -1461,11 +1461,11 @@ public:
         {
             dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
         }
-        dst->ItemExtraFlags = src->item_extra_flags;
-        dst->Photo2RideRef = src->photo2_ride_ref;
-        dst->Photo3RideRef = src->photo3_ride_ref;
-        dst->Photo4RideRef = src->photo4_ride_ref;
-        dst->CurrentRide = src->current_ride;
+        dst->SetItemFlags(src->GetItemFlags());
+        dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
+        dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
+        dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
+        dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
         dst->TimeToSitdown = src->time_to_sitdown;
@@ -1478,7 +1478,7 @@ public:
         dst->StepProgress = src->step_progress;
         dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
-        dst->InteractionRideIndex = src->interaction_ride_index;
+        dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->interaction_ride_index);
         dst->TimeInQueue = src->time_in_queue;
         for (size_t i = 0; i < std::size(src->rides_been_on); i++)
         {
@@ -1487,9 +1487,9 @@ public:
         dst->Id = src->id;
         dst->CashInPocket = src->cash_in_pocket;
         dst->CashSpent = src->cash_spent;
-        dst->TimeInPark = src->time_in_park;
+        dst->ParkEntryTime = src->park_entry_time;
         dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
-        dst->PreviousRide = src->previous_ride;
+        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
         for (size_t i = 0; i < std::size(src->thoughts); i++)
         {
@@ -1501,9 +1501,9 @@ public:
             dstThought->fresh_timeout = srcThought->fresh_timeout;
         }
         dst->PathCheckOptimisation = src->path_check_optimisation;
-        dst->GuestHeadingToRideId = src->guest_heading_to_ride_id;
+        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->Photo1RideRef = src->photo1_ride_ref;
+        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
         dst->PeepFlags = src->peep_flags;
         dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
@@ -1523,7 +1523,7 @@ public:
         dst->AmountOfSouvenirs = src->no_of_souvenirs;
         dst->VandalismSeen = src->vandalism_seen;
         dst->VoucherType = src->voucher_type;
-        dst->VoucherRideId = src->voucher_arguments;
+        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
         dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
         dst->Angriness = src->angriness;
         dst->TimeLost = src->time_lost;
@@ -1531,9 +1531,8 @@ public:
         dst->BalloonColour = src->balloon_colour;
         dst->UmbrellaColour = src->umbrella_colour;
         dst->HatColour = src->hat_colour;
-        dst->FavouriteRide = src->favourite_ride;
+        dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
         dst->FavouriteRideRating = src->favourite_ride_rating;
-        dst->ItemStandardFlags = src->item_standard_flags;
     }
 
     void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)
@@ -1618,7 +1617,7 @@ public:
                 dst->frame = src->frame;
                 dst->target_x = src->target_x;
                 dst->target_y = src->target_y;
-                dst->state = src->state;
+                dst->state = static_cast<Duck::DuckState>(src->state);
                 break;
             }
             default:
@@ -1659,10 +1658,11 @@ public:
     std::string GetUserString(rct_string_id stringId)
     {
         const auto originalString = _s6.custom_strings[(stringId - USER_STRING_START) % 1024];
-        std::string_view originalStringView(originalString, USER_STRING_MAX_LENGTH);
-        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2_LANGUAGE_ID_ENGLISH_UK);
-        utf8_remove_format_codes(asUtf8.data(), /*allow colour*/ false);
-        return asUtf8.data();
+        auto originalStringView = std::string_view(
+            originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+        auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
+        auto justText = RCT12RemoveFormattingUTF8(asUtf8);
+        return justText.data();
     }
 
     std::vector<rct_object_entry> GetRequiredObjects()
@@ -1672,7 +1672,7 @@ public:
         std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
 
         int objectIt = 0;
-        for (int16_t objectType = OBJECT_TYPE_RIDE; objectType <= OBJECT_TYPE_WATER; objectType++)
+        for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
@@ -1726,6 +1726,10 @@ void load_from_sv6(const char* path)
     {
         log_error("Error loading: %s", loadError.what());
         show_error(ERROR_TYPE_FILE_LOAD, STR_GAME_SAVE_FAILED);
+    }
+    catch (const UnsupportedRideTypeException&)
+    {
+        show_error(ERROR_TYPE_FILE_LOAD, STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES);
     }
     catch (const std::exception&)
     {

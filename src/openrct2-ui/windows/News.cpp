@@ -35,8 +35,8 @@ enum WINDOW_NEWS_WIDGET_IDX {
 
 static rct_widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({372, 18}, { 24,  24}, WWT_FLATBTN, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
-    MakeWidget({  4, 44}, {392, 252}, WWT_SCROLL,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
+    MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
+    MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
     { WIDGETS_END },
 };
 
@@ -70,10 +70,10 @@ rct_window* window_news_open()
     window = window_bring_to_front_by_class(WC_RECENT_NEWS);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
+        window = WindowCreateAutoPos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
         window->widgets = window_news_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->news.var_480 = -1;
     }
 
@@ -85,7 +85,7 @@ rct_window* window_news_open()
     window_get_scroll_size(window, 0, &width, &height);
     widget = &window_news_widgets[WIDX_SCROLL];
     window->scrolls[0].v_top = std::max(0, height - (widget->height() - 1));
-    widget_scroll_update_thumbs(window, WIDX_SCROLL);
+    WidgetScrollUpdateThumbs(window, WIDX_SCROLL);
 
     return window;
 }
@@ -209,7 +209,7 @@ static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, cons
  */
 static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**

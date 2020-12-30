@@ -32,7 +32,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(DefaultMode, RideMode::Dodgems),
     SET_FIELD(OperatingSettings, { 20, 180, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_DODGEMS, STR_RIDE_DESCRIPTION_DODGEMS }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_BUILDING, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Building, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_DODGEMS)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 9, 48, 2, 2, }),
@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(BuildCosts, { 55, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_DODGEMS_BEAT),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN, COLOUR_SATURATED_BROWN },

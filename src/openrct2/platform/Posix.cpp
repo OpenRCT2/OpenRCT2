@@ -9,17 +9,9 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
-#    include <cstring>
-#    include <ctype.h>
-#    include <dirent.h>
-#    include <errno.h>
-#    include <fcntl.h>
-#    include <fnmatch.h>
-#    if !defined(__EMSCRIPTEN__) && __has_include(<fts.h>)
-#        include <fts.h>
-#    endif
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
+#    include "../core/FileSystem.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
@@ -27,6 +19,12 @@
 #    include "../util/Util.h"
 #    include "Platform2.h"
 
+#    include <cstring>
+#    include <ctype.h>
+#    include <dirent.h>
+#    include <errno.h>
+#    include <fcntl.h>
+#    include <fnmatch.h>
 #    include <libgen.h>
 #    include <locale.h>
 #    include <locale>
@@ -139,66 +137,7 @@ bool platform_ensure_directory_exists(const utf8* path)
 
 bool platform_directory_delete(const utf8* path)
 {
-#    ifdef _FTS_H
-    log_verbose("Recursively deleting directory %s", path);
-
-    FTS* ftsp;
-    FTSENT *p, *chp;
-
-    // fts_open only accepts non const paths, so we have to take a copy
-    char* ourPath = _strdup(path);
-
-    utf8* const patharray[2] = { ourPath, NULL };
-    if ((ftsp = fts_open(patharray, FTS_COMFOLLOW | FTS_LOGICAL | FTS_NOCHDIR, NULL)) == nullptr)
-    {
-        log_error("fts_open returned NULL");
-        free(ourPath);
-        return false;
-    }
-
-    chp = fts_children(ftsp, 0);
-    if (chp == nullptr)
-    {
-        log_verbose("No files to traverse, deleting directory %s", path);
-        if (remove(path) != 0)
-        {
-            log_error("Failed to remove %s, errno = %d", path, errno);
-        }
-        free(ourPath);
-        return true; // No files to traverse
-    }
-
-    while ((p = fts_read(ftsp)) != nullptr)
-    {
-        switch (p->fts_info)
-        {
-            case FTS_DP: // Directory postorder, which means
-                         // the directory is empty
-
-            case FTS_F: // File
-                if (remove(p->fts_path))
-                {
-                    log_error("Could not remove %s", p->fts_path);
-                    fts_close(ftsp);
-                    free(ourPath);
-                    return false;
-                }
-                break;
-            case FTS_ERR:
-                log_error("Error traversing %s", path);
-                fts_close(ftsp);
-                free(ourPath);
-                return false;
-        }
-    }
-
-    free(ourPath);
-    fts_close(ftsp);
-
-#    else
-    log_warning("OpenRCT2 was compiled without fts.h, deleting '%s' not done.", path);
-#    endif // _FTS_H
-    return true;
+    return fs::remove_all(fs::u8path(path)) > 0;
 }
 
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)

@@ -31,7 +31,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/FileStream.hpp"
+#include "core/FileStream.h"
 #include "core/Guard.hpp"
 #include "core/Http.h"
 #include "core/MemoryStream.h"
@@ -350,6 +350,26 @@ namespace OpenRCT2
                 config_save_default();
             }
 
+            try
+            {
+                _localisationService->OpenLanguage(gConfigGeneral.language);
+            }
+            catch (const std::exception& e)
+            {
+                log_error("Failed to open configured language: %s", e.what());
+                try
+                {
+                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK);
+                }
+                catch (const std::exception& eFallback)
+                {
+                    log_fatal("Failed to open fallback language: %s", eFallback.what());
+                    auto uiContext = GetContext()->GetUiContext();
+                    uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
+                    return false;
+                }
+            }
+
             // TODO add configuration option to allow multiple instances
             // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
             //  log_fatal("OpenRCT2 is already running.");
@@ -378,24 +398,6 @@ namespace OpenRCT2
                 _discordService = std::make_unique<DiscordService>();
             }
 #endif
-
-            try
-            {
-                _localisationService->OpenLanguage(gConfigGeneral.language, *_objectManager);
-            }
-            catch (const std::exception& e)
-            {
-                log_error("Failed to open configured language: %s", e.what());
-                try
-                {
-                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK, *_objectManager);
-                }
-                catch (const std::exception&)
-                {
-                    log_fatal("Failed to open fallback language: %s", e.what());
-                    return false;
-                }
-            }
 
             if (platform_process_is_elevated())
             {
@@ -562,7 +564,11 @@ namespace OpenRCT2
                 else
                 {
                     auto fs = FileStream(path, FILE_MODE_OPEN);
-                    return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
+                    {
+                        return false;
+                    }
+                    return true;
                 }
             }
             catch (const std::exception& e)
@@ -606,6 +612,11 @@ namespace OpenRCT2
                 }
 
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+
+                // From this point onwards the currently loaded park will be corrupted if loading fails
+                // so reload the title screen if that happens.
+                loadTitleScreenFirstOnFail = true;
+
                 _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
                 parkImporter->Import();
                 gScenarioSavePath = path;
@@ -659,6 +670,11 @@ namespace OpenRCT2
             }
             catch (const ObjectLoadException& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 // The path needs to be duplicated as it's a const here
                 // which the window function doesn't like
                 auto intent = Intent(WC_OBJECT_LOAD_ERROR);
@@ -671,20 +687,34 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRCTCFlagException& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 auto windowManager = _uiContext->GetWindowManager();
                 auto ft = Formatter();
                 ft.Add<uint16_t>(e.Flag);
                 windowManager->ShowError(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE, ft);
             }
+            catch (const UnsupportedRideTypeException&)
+            {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+            }
             catch (const std::exception& e)
             {
+                // If loading the SV6 or SV4 failed return to the title screen if requested.
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
                 Console::Error::WriteLine(e.what());
-            }
-
-            // If loading the SV6 or SV4 failed return to the title screen if requested.
-            if (loadTitleScreenFirstOnFail)
-            {
-                title_load();
             }
 
             return false;
@@ -1159,7 +1189,7 @@ namespace OpenRCT2
             try
             {
                 res = Do(request);
-                if (res.status != Http::Status::OK)
+                if (res.status != Http::Status::Ok)
                     throw std::runtime_error("bad http status");
             }
             catch (std::exception& e)
@@ -1231,9 +1261,9 @@ void openrct2_finish()
     GetContext()->Finish();
 }
 
-void context_setcurrentcursor(int32_t cursor)
+void context_setcurrentcursor(CursorID cursor)
 {
-    GetContext()->GetUiContext()->SetCursor(static_cast<CURSOR_ID>(cursor));
+    GetContext()->GetUiContext()->SetCursor(cursor);
 }
 
 void context_update_cursor_scale()

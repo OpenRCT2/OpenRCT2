@@ -294,7 +294,7 @@ static void scenario_day_update()
         case OBJECTIVE_GUESTS_AND_RATING:
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             scenario_objective_check();
             break;
         default:
@@ -323,7 +323,7 @@ static void scenario_week_update()
     ride_check_all_reachable();
     ride_update_favourited_stat();
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
 
     if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
     {
@@ -356,7 +356,7 @@ static void scenario_update_daynight_cycle()
 
     if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
     {
-        float monthFraction = gDateMonthTicks / static_cast<float>(0x10000);
+        float monthFraction = gDateMonthTicks / static_cast<float>(TICKS_PER_MONTH);
         if (monthFraction < (1 / 8.0f))
         {
             gDayNightCycle = 0.0f;
@@ -867,7 +867,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
             {
                 if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
-                    if ((ride_get_total_length(&ride) >> 16) > MinimumLength)
+                    if ((ride_get_total_length(&ride) >> 16) >= MinimumLength)
                     {
                         type_already_counted[ride.subtype] = true;
                         rcs++;
@@ -981,7 +981,7 @@ ObjectiveStatus Objective::Check() const
             return Check10RollerCoastersLength();
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             return CheckFinish5RollerCoasters();
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             return CheckRepayLoanAndParkValue();
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             return CheckMonthlyFoodIncome();
@@ -996,7 +996,7 @@ bool ObjectiveNeedsMoney(const uint8_t objective)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-        case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
             return true;
     }

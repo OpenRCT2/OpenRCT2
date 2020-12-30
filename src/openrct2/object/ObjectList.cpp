@@ -69,11 +69,6 @@ bool object_entry_is_empty(const rct_object_entry* entry)
     return false;
 }
 
-uint8_t object_entry_get_source_game_legacy(const rct_object_entry* objectEntry)
-{
-    return (objectEntry->flags & 0xF0) >> 4;
-}
-
 /**
  *
  *  rct2: 0x006AB344
@@ -89,16 +84,16 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex)
+bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex)
 {
-    int32_t objectType = entry->GetType();
-    if (objectType >= OBJECT_TYPE_COUNT)
+    ObjectType objectType = entry->GetType();
+    if (objectType >= ObjectType::Count)
     {
         return false;
     }
 
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto maxObjects = object_entry_group_counts[objectType];
+    auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
     for (int32_t i = 0; i < maxObjects; i++)
     {
         auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
@@ -116,9 +111,9 @@ bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_ty
     return false;
 }
 
-void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex* outEntryIndex)
+void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
-    uint8_t objectType = OBJECT_TYPE_RIDE;
+    uint8_t objectType = EnumValue(ObjectType::Ride);
     for (size_t groupCount : object_entry_group_counts)
     {
         if (index >= groupCount)
@@ -133,14 +128,14 @@ void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex
     }
 
     if (outObjectType != nullptr)
-        *outObjectType = objectType;
+        *outObjectType = static_cast<ObjectType>(objectType);
     if (outEntryIndex != nullptr)
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
 }
 
 const rct_object_entry* get_loaded_object_entry(size_t index)
 {
-    uint8_t objectType;
+    ObjectType objectType;
     ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
@@ -149,7 +144,7 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
 
 void* get_loaded_object_chunk(size_t index)
 {
-    uint8_t objectType;
+    ObjectType objectType;
     ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
     return object_entry_get_chunk(objectType, entryIndex);
@@ -162,10 +157,10 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
     buffer[bufferSize - 1] = 0;
 }
 
-void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index)
+void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
 {
     ObjectEntryIndex objectIndex = index;
-    for (int32_t i = 0; i < objectType; i++)
+    for (int32_t i = 0; i < EnumValue(objectType); i++)
     {
         objectIndex += object_entry_group_counts[i];
     }
@@ -180,7 +175,7 @@ void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index)
     return result;
 }
 
-const rct_object_entry* object_entry_get_entry(int32_t objectType, ObjectEntryIndex index)
+const rct_object_entry* object_entry_get_entry(ObjectType objectType, ObjectEntryIndex index)
 {
     const rct_object_entry* result = nullptr;
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();

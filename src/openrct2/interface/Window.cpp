@@ -351,7 +351,7 @@ void window_close_top()
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+        if (gS6Info.editor_step != EditorStep::LandscapeEditor)
             return;
     }
 
@@ -431,11 +431,11 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     for (int32_t i = 0;; i++)
     {
         rct_widget* widget = &w->widgets[i];
-        if (widget->type == WWT_LAST)
+        if (widget->type == WindowWidgetType::Last)
         {
             break;
         }
-        else if (widget->type != WWT_EMPTY)
+        else if (widget->type != WindowWidgetType::Empty)
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
@@ -447,7 +447,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
     // Return next widget if a dropdown
     if (widget_index != -1)
-        if (w->widgets[widget_index].type == WWT_DROPDOWN)
+        if (w->widgets[widget_index].type == WindowWidgetType::DropdownMenu)
             widget_index++;
 
     // Return the widget index
@@ -510,7 +510,7 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
     {
-        assert(w->widgets[i].type != WWT_LAST);
+        assert(w->widgets[i].type != WindowWidgetType::Last);
     }
 #endif
 
@@ -575,9 +575,9 @@ void window_update_scroll_widgets(rct_window* w)
     widgetIndex = 0;
     scrollIndex = 0;
     assert(w != nullptr);
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         scroll = &w->scrolls[scrollIndex];
@@ -610,7 +610,7 @@ void window_update_scroll_widgets(rct_window* w)
 
         if (scrollPositionChanged)
         {
-            widget_scroll_update_thumbs(w, widgetIndex);
+            WidgetScrollUpdateThumbs(w, widgetIndex);
             w->Invalidate();
         }
         scrollIndex++;
@@ -625,7 +625,7 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
     assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        if (w->widgets[i].type == WWT_SCROLL)
+        if (w->widgets[i].type == WindowWidgetType::Scroll)
             result++;
     }
     return result;
@@ -948,7 +948,7 @@ void window_viewport_get_map_coords_by_cursor(
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Compute map coordinate by mouse position.
-    auto viewportPos = screen_coord_to_viewport_coord(w->viewport, mouseCoords);
+    auto viewportPos = w->viewport->ScreenToViewportCoord(mouseCoords);
     auto coordsXYZ = viewport_adjust_for_map_height(viewportPos);
     auto mapCoords = viewport_coord_to_map_coord(viewportPos, coordsXYZ.z);
     *map_x = mapCoords.x;
@@ -1084,7 +1084,7 @@ void main_window_zoom(bool zoomIn, bool atCursor)
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
         {
@@ -1331,7 +1331,7 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, TOOL_IDX tool)
+bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
@@ -1520,17 +1520,21 @@ void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t sc
         w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
-rct_string_id window_event_tooltip_call(rct_window* w, rct_widgetindex widgetIndex)
+OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    rct_string_id result = 0;
     if (w->event_handlers->tooltip != nullptr)
-        w->event_handlers->tooltip(w, widgetIndex, &result);
-    return result;
+    {
+        return w->event_handlers->tooltip(w, widgetIndex, fallback);
+    }
+    else
+    {
+        return { fallback, {} };
+    }
 }
 
-int32_t window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    int32_t cursorId = CURSOR_ARROW;
+    CursorID cursorId = CursorID::Arrow;
     if (w->event_handlers->cursor != nullptr)
         w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
@@ -1660,7 +1664,7 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         viewport->height = height;
         viewport->view_width = width * viewport->zoom;
         viewport->view_height = height * viewport->zoom;
-        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT)
+        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
             mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
@@ -1941,7 +1945,7 @@ void window_cancel_textbox()
         context_stop_text_input();
         gUsingWidgetTextBox = false;
         widget_invalidate(w, gCurrentTextBox.widget_index);
-        gCurrentTextBox.widget_index = WWT_LAST;
+        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
 }
 
@@ -1969,16 +1973,16 @@ bool window_is_visible(rct_window* w)
     if (w == nullptr)
         return false;
 
-    if (w->visibility == VC_VISIBLE)
+    if (w->visibility == VisibilityCache::Visible)
         return true;
-    if (w->visibility == VC_COVERED)
+    if (w->visibility == VisibilityCache::Covered)
         return false;
 
     // only consider viewports, consider the main window always visible
     if (w->viewport == nullptr || w->classification == WC_MAIN_WINDOW)
     {
         // default to previous behaviour
-        w->visibility = VC_VISIBLE;
+        w->visibility = VisibilityCache::Visible;
         return true;
     }
 
@@ -1993,15 +1997,15 @@ bool window_is_visible(rct_window* w)
             && w_other.windowPos.x + w_other.width >= w->windowPos.x + w->width
             && w_other.windowPos.y + w_other.height >= w->windowPos.y + w->height)
         {
-            w->visibility = VC_COVERED;
-            w->viewport->visibility = VC_COVERED;
+            w->visibility = VisibilityCache::Covered;
+            w->viewport->visibility = VisibilityCache::Covered;
             return false;
         }
     }
 
     // default to previous behaviour
-    w->visibility = VC_VISIBLE;
-    w->viewport->visibility = VC_VISIBLE;
+    w->visibility = VisibilityCache::Visible;
+    w->viewport->visibility = VisibilityCache::Visible;
     return true;
 }
 
@@ -2052,10 +2056,10 @@ void window_reset_visibilities()
 {
     // reset window visibility status to unknown
     window_visit_each([](rct_window* w) {
-        w->visibility = VC_UNKNOWN;
+        w->visibility = VisibilityCache::Unknown;
         if (w->viewport != nullptr)
         {
-            w->viewport->visibility = VC_UNKNOWN;
+            w->viewport->visibility = VisibilityCache::Unknown;
         }
     });
 }
@@ -2115,7 +2119,7 @@ rct_windowclass window_get_classification(rct_window* window)
  *
  *  rct2: 0x006EAF26
  */
-void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 {
     rct_widget* widget = &w->widgets[widget_index];
     rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];

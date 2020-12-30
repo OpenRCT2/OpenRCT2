@@ -1,24 +1,87 @@
-0.3.1+ (in development)
+0.3.2+ (in development)
 ------------------------------------------------------------------------
+- Feature: [#6677] Add Discord RPC to macOS builds.
+- Feature: [#6844] Enhanced track designer with ability to add/remove scenery and footpaths.
+- Feature: [#11859] Add on-ride photo section to Air Powered Vertical and Reverse Freefall Coaster.
+- Feature: [#13057] Make GameAction flags accessible by plugins.
+- Feature: [#13078] [Plugin] Add colour picker widget.
+- Feature: [#13376] Open custom window at specified tab.
+- Feature: [#13398] Add pause button to the Track Designer.
+- Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
+- Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
+- Feature: [#13512] [Plugin] Add item separators to list view.
+- Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
+- Feature: [#13593] [Plugin] Add ability to read and change the position of ride vehicles.
+- Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
+- Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
+- Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
+- Fix: [#13102] Underflow on height chart (Ride measurements).
+- Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
+- Fix: [#13334] Uninitialised variables in CustomTabDesc.
+- Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
+- Fix: [#13427] Newly created Go-Karts show “Race won by <blank>”.
+- Fix: [#13431] [Plugin] UI disabled widgets can still be interacted with.
+- Fix: [#13454] Plug-ins do not load on Windows if the user directory contains non-ASCII characters.
+- Fix: [#13466] “Build 5 roller coasters” excitement corrupted in Park window.
+- Fix: [#13469] Exception thrown from plugin in context.subscribe.
+- Fix: [#13477] Plug-in widget tooltips do not work.
+- Fix: [#13489] Mechanics continue heading to inspect broken down rides.
+- Fix: [#13510] [Plugin] list view scroll resets when items is set.
+- Fix: [#13574] Crash when a JSON object does not set `originalId`.
+- Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
+- Improved: [#13386] A GUI error message is now displayed if the language files are missing.
+- Improved: [#13587] Allow up to 128 ride objects to be selected in track designer.
+- Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
+
+0.3.2 (2020-11-01)
+------------------------------------------------------------------------
+- Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.
 - Feature: [#12999] .sea (RCT Classic) scenarios are now listed in the “New Scenario” dialog.
 - Feature: [#13000] objective_options command for console.
 - Feature: [#13096] Add Esperanto translation.
+- Feature: [#13164] Add 'Objective options' to Cheats menu.
 - Change: [#9568] Change lift sounds of Reverser Roller Coaster and Compact Inverted Coaster to better fitting ones.
+- Change: [#13160] The lay-out of the Park Cheats tab has been improved.
+- Fix: [#1324] Last track piece map selection still visible when placing ride entrance or exit (original bug).
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
+- Fix: [#4022] Fix Mac cursor offset on launch
 - Fix: [#4041] Garbled park option on scenario editor with custom theme.
+- Fix: [#4865] Offer an option to disable inhibiting the monitor power.
+- Fix: [#5178] Lighting effects cannot be disabled in software mode
 - Fix: [#5904] Empty errors on tile inspector base height change.
 - Fix: [#6086] Cannot install existing track design with another name.
+- Fix: [#6614, #8623] Colours are distorted when using OpenGL with Intel integrated graphics drivers.
+- Fix: [#7443] Construction arrows pulse at irregular intervals.
+- Fix: [#7518] Water isn't cut down by view clipping tool.
+- Fix: [#7748] Tooltips would not timeout for normal UI elements.
 - Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
 - Fix: [#8957] Error title missing when building with insufficient funds
 - Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
+- Fix: [#12368] Desync due to ghost station pieces affecting changing ride settings.
+- Fix: [#12940] Windows cause issues with snow drawing.
+- Fix: [#13019] Simulated trains sometimes open construction window when they crash.
 - Fix: [#13021] Mowed grass and weeds don't show up in extra zoom levels.
 - Fix: [#13024] Console cursor does not correctly render at current cursor position.
 - Fix: [#13029] Not all Junior Roller Coaster pieces are shown when "Show all track pieces" cheat is enabled.
 - Fix: [#13044] Rides in RCT1 saves all have "0 customers per hour".
 - Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
 - Fix: [#13083] Dialog for renaming conflicting track design crops text out.
+- Fix: [#13097] Missing direction arrow for stations
+- Fix: [#13098] UI buttons for entrance and exit don't toggle according to them being built.
+- Fix: [#13098] Maze can still be constructed while placing entrance and exit (original bug).
+- Fix: [#13118] Closing construction window resets ride viewport.
 - Fix: [#13129] Missing error message when waiting for train to leave station on the ride measurements graph.
+- Fix: [#13138] Fix logical sorting of list windows.
+- Fix: [#13158] Cursors are drawn incorrectly in text input fields.
+- Fix: [#13222] Vehicle collision causes negative number of passengers (original bug).
+- Fix: [#13226, #7280] No error is shown when attempting to load a corrupted save.
+- Fix: [#13266] Plugin API: Deleting key of sharedStorage not working.
+- Fix: [#13278] Desync caused by ghost tiles changing the ride mode.
+- Fix: [#13289] Litter and vomit sometimes not loading with RCT1 saved game or scenario
+- Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
+- Improved: [#13098] Improvements to the maze construction window user interface
+- Improved: [#13125] Selecting the RCT2 files now uses localised dialogs.
 
 0.3.1 (2020-09-27)
 ------------------------------------------------------------------------

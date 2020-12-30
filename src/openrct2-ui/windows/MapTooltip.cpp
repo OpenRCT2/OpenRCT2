@@ -18,7 +18,7 @@
 
 // clang-format off
 static rct_widget window_map_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 30}, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -57,7 +57,7 @@ const Formatter& GetMapTooltip()
  */
 void window_map_tooltip_update_visibility()
 {
-    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // The map tooltip is drawn by the bottom toolbar
         window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -80,7 +80,7 @@ void window_map_tooltip_update_visibility()
     std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));
 
     if (_cursorHoldDuration < 25 || stringId == STR_NONE
-        || input_test_place_object_modifier(
+        || InputTestPlaceObjectModifier(
             static_cast<PLACE_OBJECT_MODIFIER>(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
         || window_find_by_class(WC_ERROR) != nullptr)
     {
@@ -108,7 +108,7 @@ static void window_map_tooltip_open()
     w = window_find_by_class(WC_MAP_TOOLTIP);
     if (w == nullptr)
     {
-        w = window_create(
+        w = WindowCreate(
             pos, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
         w->widgets = window_map_tooltip_widgets;

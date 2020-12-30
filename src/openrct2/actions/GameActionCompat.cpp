@@ -7,18 +7,22 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../peep/Staff.h"
+#include "../ride/Track.h"
+#include "../world/Entrance.h"
+#include "../world/Park.h"
 #include "GameAction.h"
-#include "GuestSetNameAction.hpp"
-#include "MazeSetTrackAction.hpp"
-#include "PlaceParkEntranceAction.hpp"
-#include "PlacePeepSpawnAction.hpp"
-#include "RideCreateAction.hpp"
-#include "RideDemolishAction.hpp"
-#include "RideSetName.hpp"
-#include "RideSetStatus.hpp"
-#include "SetParkEntranceFeeAction.hpp"
-#include "StaffSetNameAction.hpp"
-#include "WallRemoveAction.hpp"
+#include "GuestSetNameAction.h"
+#include "MazeSetTrackAction.h"
+#include "PlaceParkEntranceAction.h"
+#include "PlacePeepSpawnAction.h"
+#include "RideCreateAction.h"
+#include "RideDemolishAction.h"
+#include "RideSetNameAction.h"
+#include "RideSetStatusAction.h"
+#include "SetParkEntranceFeeAction.h"
+#include "StaffSetNameAction.h"
+#include "WallRemoveAction.h"
 
 #pragma region PlaceParkEntranceAction
 /**
@@ -33,7 +37,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GA_ERROR::OK)
+    if (result->Error == GameActions::Status::Ok)
     {
         gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
@@ -64,7 +68,7 @@ void ride_construct_new(RideSelection listItem)
     auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
 
     gameAction.SetCallback([](const GameAction* ga, const RideCreateGameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+        if (result->Error != GameActions::Status::Ok)
             return;
 
         auto ride = get_ride(result->rideIndex);
@@ -131,7 +135,7 @@ money32 maze_set_track(
     auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
-    GameActionResult::Ptr res;
+    GameActions::Result::Ptr res;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         res = GameActions::Query(&gameAction);
@@ -149,7 +153,7 @@ money32 maze_set_track(
     else
         gGameCommandErrorText = STR_NONE;
 
-    if (res->Error != GA_ERROR::OK)
+    if (res->Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }

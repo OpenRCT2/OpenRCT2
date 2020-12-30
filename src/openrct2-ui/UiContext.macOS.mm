@@ -156,6 +156,11 @@ namespace OpenRCT2::Ui
             }
         }
 
+        bool HasFilePicker() const override
+        {
+            return true;
+        }
+
     private:
         static int32_t Execute(const std::string& command, std::string* output = nullptr)
         {

@@ -11,7 +11,7 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Path.hpp"
 #include "../platform/platform.h"
 #include "../sprites.h"

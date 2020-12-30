@@ -9,6 +9,7 @@
 
 #include "IStream.hpp"
 
+#include "../object/Object.h"
 #include "Memory.hpp"
 #include "String.hpp"
 
@@ -60,5 +61,4 @@ namespace OpenRCT2
     {
         WriteString(str.c_str());
     }
-
 } // namespace OpenRCT2

@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(DefaultMode, RideMode::Swing),
     SET_FIELD(OperatingSettings, { 7, 15, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAGIC_CARPET, STR_RIDE_DESCRIPTION_MAGIC_CARPET }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_STRUCTURE, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Structure, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MAGIC_CARPET)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 15, 176, 7, 11, }),
@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(BuildCosts, { 198, 2, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_EGYPTIAN),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 35),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_PURPLE, COLOUR_WHITE, COLOUR_BLACK },

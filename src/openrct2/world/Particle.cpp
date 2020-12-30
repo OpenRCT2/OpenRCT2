@@ -16,12 +16,12 @@
 
 template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 }
 
 template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASH_SPLASH;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_CRASH_SPLASH;
 }
 /**
  *
@@ -29,7 +29,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
-    VehicleCrashParticle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = &create_sprite(SpriteIdentifier::Misc)->crashed_vehicle_particle;
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -37,7 +37,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
         sprite->sprite_width = 8;
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(vehiclePos);
         sprite->type = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
@@ -121,13 +121,13 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;
         sprite->sprite_height_negative = 51;
         sprite->sprite_height_positive = 16;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
         sprite->type = SPRITE_MISC_CRASH_SPLASH;
         sprite->frame = 0;

@@ -15,7 +15,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetParameterAction.hpp"
+#include "../actions/ParkSetParameterAction.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../interface/Colour.h"
@@ -284,9 +284,9 @@ void Park::Initialise()
     gPeepSpawns.clear();
     reset_park_entrance();
 
-    gResearchPriorities = (1 << RESEARCH_CATEGORY_TRANSPORT) | (1 << RESEARCH_CATEGORY_GENTLE)
-        | (1 << RESEARCH_CATEGORY_ROLLERCOASTER) | (1 << RESEARCH_CATEGORY_THRILL) | (1 << RESEARCH_CATEGORY_WATER)
-        | (1 << RESEARCH_CATEGORY_SHOP) | (1 << RESEARCH_CATEGORY_SCENERY_GROUP);
+    gResearchPriorities = EnumsToFlags(
+        ResearchCategory::Transport, ResearchCategory::Gentle, ResearchCategory::Rollercoaster, ResearchCategory::Thrill,
+        ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
     gGuestInitialCash = MONEY(50, 00);
@@ -504,7 +504,8 @@ money32 Park::CalculateRideValue(const Ride* ride) const
     money32 result = 0;
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
-        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + RideTypeDescriptors[ride->type].BonusValue * 4);
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rtd.BonusValue * 4);
     }
     return result;
 }

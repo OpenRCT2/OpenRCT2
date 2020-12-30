@@ -15,11 +15,11 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/TrackDesign.h"
-#include "RideCreateAction.hpp"
-#include "RideDemolishAction.hpp"
-#include "RideSetName.hpp"
-#include "RideSetSetting.hpp"
-#include "RideSetVehiclesAction.hpp"
+#include "RideCreateAction.h"
+#include "RideDemolishAction.h"
+#include "RideSetNameAction.h"
+#include "RideSetSettingAction.h"
+#include "RideSetVehicleAction.h"
 
 static int32_t place_virtual_track(
     const TrackDesign& td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& loc)
@@ -27,7 +27,52 @@ static int32_t place_virtual_track(
     return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
 }
 
-GameActionResult::Ptr TrackDesignAction::Query() const
+TrackDesignActionResult::TrackDesignActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message)
+    : GameActions::Result(error, title, message)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
+{
+}
+
+TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
+    : _loc(location)
+    , _td(td)
+{
+}
+
+void TrackDesignAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    // TODO visit the track design (it has a lot of sub fields)
+}
+
+uint16_t TrackDesignAction::GetActionFlags() const
+{
+    return GameActionBase::GetActionFlags();
+}
+
+void TrackDesignAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_loc);
+    _td.Serialise(stream);
+}
+
+GameActions::Result::Ptr TrackDesignAction::Query() const
 {
     auto res = MakeResult();
     res->Position.x = _loc.x + 16;
@@ -38,12 +83,12 @@ GameActionResult::Ptr TrackDesignAction::Query() const
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GA_ERROR::INVALID_PARAMETERS);
+        return MakeResult(GameActions::Status::InvalidParameters);
     }
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {
@@ -61,16 +106,16 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
 
-    if (r->Error != GA_ERROR::OK)
+    if (r->Error != GameActions::Status::Ok)
     {
-        return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GA_ERROR::UNKNOWN);
+        return MakeResult(GameActions::Status::Unknown);
     }
 
     money32 cost = 0;
@@ -90,13 +135,13 @@ GameActionResult::Ptr TrackDesignAction::Query() const
     GameActions::ExecuteNested(&gameAction);
     if (cost == MONEY32_UNDEFINED)
     {
-        return MakeResult(GA_ERROR::DISALLOWED, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
     res->Cost = cost;
     return res;
 }
 
-GameActionResult::Ptr TrackDesignAction::Execute() const
+GameActions::Result::Ptr TrackDesignAction::Execute() const
 {
     auto res = MakeResult();
     res->Position.x = _loc.x + 16;
@@ -106,7 +151,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {
@@ -124,16 +169,16 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     auto rideIndex = static_cast<RideCreateGameActionResult*>(r.get())->rideIndex;
 
-    if (r->Error != GA_ERROR::OK)
+    if (r->Error != GameActions::Status::Ok)
     {
-        return MakeResult(GA_ERROR::NO_FREE_ELEMENTS, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GA_ERROR::UNKNOWN);
+        return MakeResult(GameActions::Status::Unknown);
     }
 
     money32 cost = 0;
@@ -171,10 +216,10 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         gameAction.SetFlags(GetFlags());
 
         GameActions::ExecuteNested(&gameAction);
-        return MakeResult(GA_ERROR::DISALLOWED, error_reason);
+        return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
 
-    if (entryIndex != 0xFF)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
@@ -221,7 +266,7 @@ GameActionResult::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
     }
 
-    for (int32_t count = 1; count == 1 || r->Error != GA_ERROR::OK; ++count)
+    for (int32_t count = 1; count == 1 || r->Error != GameActions::Status::Ok; ++count)
     {
         auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
         auto gameAction = RideSetNameAction(ride->id, name);

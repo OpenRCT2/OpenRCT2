@@ -130,16 +130,17 @@ static void DrawHeavyRain(IWeatherDrawer* weatherDrawer, int32_t left, int32_t t
 static void DrawLightSnow(IWeatherDrawer* weatherDrawer, int32_t left, int32_t top, int32_t width, int32_t height)
 {
     const uint32_t t = gScenarioTicks / 2;
-    const double t2 = static_cast<double>(gScenarioTicks) / 2.0f;
+    const int32_t negT = -static_cast<int32_t>(t);
+    const double cosTick = static_cast<double>(gScenarioTicks) * 0.05;
 
-    int32_t x_start = -static_cast<int32_t>(t) + 1 + (cos(1.0 + left + t2 / 10.0) * 3);
+    int32_t x_start = negT + 1 + (cos(1.0 + cosTick) * 6);
     int32_t y_start = t + 1;
     y_start = -y_start;
     x_start += left;
     y_start += top;
     weatherDrawer->Draw(left, top, width, height, x_start, y_start, SnowPattern);
 
-    x_start = -static_cast<int32_t>(t) + 16 + (cos(left + t2 / 10.0) * 3);
+    x_start = negT + 16 + (cos(cosTick) * 6);
     y_start = t + 16;
     y_start = -y_start;
     x_start += left;

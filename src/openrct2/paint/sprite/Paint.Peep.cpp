@@ -50,8 +50,7 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
                     return;
             }
 
-            lightfx_add_3d_light(
-                peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LightType::Spot1);
+            LightfxAdd3DLight(*peep, 0, { peep_x, peep_y, peep_z }, LightType::Spot1);
         }
     }
 #endif
@@ -76,32 +75,32 @@ void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection
         imageOffset = 0;
     }
 
-    // In the following 4 calls to sub_98197C/sub_98199C, we add 5 (instead of 3) to the
+    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
     //  bound_box_offset_z to make sure peeps are drawn on top of railways
     uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(peep->SpriteType, actionSpriteType).base_image
         + imageOffset * 4;
     uint32_t imageId = baseImageId | peep->TshirtColour << 19 | peep->TrousersColour << 24 | IMAGE_TYPE_REMAP
         | IMAGE_TYPE_REMAP_2_PLUS;
-    sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+    PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
 
     if (baseImageId >= 10717 && baseImageId < 10749)
     {
         imageId = (baseImageId + 32) | peep->HatColour << 19 | IMAGE_TYPE_REMAP;
-        sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
 
     if (baseImageId >= 10781 && baseImageId < 10813)
     {
         imageId = (baseImageId + 32) | peep->BalloonColour << 19 | IMAGE_TYPE_REMAP;
-        sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
 
     if (baseImageId >= 11197 && baseImageId < 11229)
     {
         imageId = (baseImageId + 32) | peep->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
-        sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
+        PaintAddImageAsChild(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 5);
         return;
     }
 }

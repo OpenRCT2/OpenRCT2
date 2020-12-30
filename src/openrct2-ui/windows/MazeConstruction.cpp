@@ -13,7 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/RideEntranceExitPlaceAction.hpp>
+#include <openrct2/actions/RideEntranceExitPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
@@ -48,36 +48,36 @@ enum {
 
 static rct_widget window_maze_construction_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 3,  17}, {160, 55}, WWT_GROUPBOX, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({35,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_BUILD,    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
-    MakeWidget({67,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_MOVE,     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
-    MakeWidget({99,  29}, { 32, 32}, WWT_FLATBTN,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_FILL_IN,  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 3,  80}, {160, 87}, WWT_GROUPBOX, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_BUILD                                                           ),
-    MakeWidget({83,  96}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-    MakeWidget({83, 125}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-    MakeWidget({38, 125}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-    MakeWidget({38,  96}, { 45, 29}, WWT_FLATBTN,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
-    MakeWidget({ 3, 168}, {160, 28}, WWT_GROUPBOX, WindowColour::Primary                                                                                          ),
-    MakeWidget({ 9, 178}, { 70, 12}, WWT_BUTTON,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_ENTRANCE, STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                    ),
-    MakeWidget({87, 178}, { 70, 12}, WWT_BUTTON,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
-    MakeWidget({ 0,   0}, {  1,  1}, WWT_EMPTY,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 3,  17}, {160, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({35,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_BUILD,    STR_RIDE_CONSTRUCTION_BUILD_MODE                      ),
+    MakeWidget({67,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_MOVE,     STR_RIDE_CONSTRUCTION_MOVE_MODE                       ),
+    MakeWidget({99,  29}, { 32, 32}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_MAZE_CONSTRUCTION_FILL_IN,  STR_RIDE_CONSTRUCTION_FILL_IN_MODE                    ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 3,  80}, {160, 87}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_BUILD                                                           ),
+    MakeWidget({83,  96}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({83, 125}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SE,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({38, 125}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({38,  96}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NW,  STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP),
+    MakeWidget({ 3, 168}, {160, 28}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                          ),
+    MakeWidget({ 9, 178}, { 70, 12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_ENTRANCE, STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                    ),
+    MakeWidget({87, 178}, { 70, 12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_RIDE_CONSTRUCTION_EXIT,     STR_RIDE_CONSTRUCTION_EXIT_TIP                        ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
+    MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
     { WIDGETS_END }
 };
 
@@ -120,7 +120,7 @@ static void window_maze_construction_construct(int32_t direction);
  */
 rct_window* window_maze_construction_open()
 {
-    rct_window* w = window_create(
+    rct_window* w = WindowCreate(
         ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
     w->widgets = window_maze_construction_widgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
@@ -128,7 +128,7 @@ rct_window* window_maze_construction_open()
         | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)
         | (1ULL << WIDX_MAZE_EXIT);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->number = _currentRideIndex;
 
@@ -148,6 +148,7 @@ static void window_maze_construction_close(rct_window* w)
 
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // In order to cancel the yellow arrow correctly the
     // selection tool should be cancelled.
@@ -176,7 +177,7 @@ static void window_maze_construction_close(rct_window* w)
 
 static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (tool_set(w, widgetIndex, TOOL_CROSSHAIR))
+    if (tool_set(w, widgetIndex, Tool::Crosshair))
         return;
 
     gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
@@ -186,11 +187,12 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
 
     ride_construction_invalidate_current_track();
 
-    // ???
-    uint8_t old_state = _rideConstructionState;
+    if (_rideConstructionState != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+    {
+        gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
+    }
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT;
-    if (old_state != RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
-        _rideConstructionState = old_state;
+
     window_maze_construction_update_pressed_widgets();
 }
 
@@ -232,6 +234,11 @@ static void window_maze_construction_resize(rct_window* w)
                 | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
                 | (1ULL << WIDX_MAZE_DIRECTION_SE));
     }
+    else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+    {
+        disabledWidgets = (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
+            | (1ULL << WIDX_MAZE_DIRECTION_SE);
+    }
 
     // Set and invalidate the changed widgets
     uint64_t currentDisabledWidgets = w->disabled_widgets;
@@ -248,6 +255,16 @@ static void window_maze_construction_resize(rct_window* w)
     w->disabled_widgets = disabledWidgets;
 }
 
+static void window_maze_construction_build_mode_mousedown(uint8_t rideConstructionState)
+{
+    if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT)
+    {
+        tool_cancel();
+    }
+    _rideConstructionState = rideConstructionState;
+    window_maze_construction_update_pressed_widgets();
+}
+
 /**
  *
  *  rct2: 0x006CD48C
@@ -257,16 +274,13 @@ static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex wi
     switch (widgetIndex)
     {
         case WIDX_MAZE_BUILD_MODE:
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_BUILD;
-            window_maze_construction_update_pressed_widgets();
+            window_maze_construction_build_mode_mousedown(RIDE_CONSTRUCTION_STATE_MAZE_BUILD);
             break;
         case WIDX_MAZE_MOVE_MODE:
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_MOVE;
-            window_maze_construction_update_pressed_widgets();
+            window_maze_construction_build_mode_mousedown(RIDE_CONSTRUCTION_STATE_MAZE_MOVE);
             break;
         case WIDX_MAZE_FILL_MODE:
-            _rideConstructionState = RIDE_CONSTRUCTION_STATE_MAZE_FILL;
-            window_maze_construction_update_pressed_widgets();
+            window_maze_construction_build_mode_mousedown(RIDE_CONSTRUCTION_STATE_MAZE_FILL);
             break;
     }
 }
@@ -287,14 +301,14 @@ static void window_maze_construction_update(rct_window* w)
     switch (_rideConstructionState)
     {
         case RIDE_CONSTRUCTION_STATE_PLACE:
-            if (!widget_is_active_tool(w, WIDX_MAZE_DIRECTION_GROUPBOX))
+            if (!WidgetIsActiveTool(w, WIDX_MAZE_DIRECTION_GROUPBOX))
             {
                 window_close(w);
                 return;
             }
             break;
         case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
-            if (!widget_is_active_tool(w, WIDX_MAZE_ENTRANCE) && !widget_is_active_tool(w, WIDX_MAZE_EXIT))
+            if (!WidgetIsActiveTool(w, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(w, WIDX_MAZE_EXIT))
             {
                 _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                 window_maze_construction_update_pressed_widgets();
@@ -360,8 +374,8 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
         entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex, gRideEntranceExitPlaceStationIndex,
         gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
 
-    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActionResult* result) {
-        if (result->Error != GA_ERROR::OK)
+    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
             return;
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
@@ -377,7 +391,10 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
         {
             gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
             window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-            gCurrentToolWidget.widget_index = gRideEntranceExitPlaceType ? WIDX_MAZE_ENTRANCE : WIDX_MAZE_EXIT;
+            gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
+                                                                                                          : WIDX_MAZE_EXIT;
+
+            window_maze_construction_update_pressed_widgets();
         }
     });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -427,7 +444,7 @@ static void window_maze_construction_invalidate(rct_window* w)
  */
 static void window_maze_construction_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**
@@ -443,20 +460,34 @@ void window_maze_construction_update_pressed_widgets()
         return;
 
     uint64_t pressedWidgets = w->pressed_widgets;
-    pressedWidgets &= ~(1ULL << WIDX_MAZE_BUILD_MODE);
-    pressedWidgets &= ~(1ULL << WIDX_MAZE_MOVE_MODE);
-    pressedWidgets &= ~(1ULL << WIDX_MAZE_FILL_MODE);
+
+    // Unpress all the mode buttons
+    pressedWidgets &= ~EnumToFlag(WIDX_MAZE_BUILD_MODE);
+    pressedWidgets &= ~EnumToFlag(WIDX_MAZE_MOVE_MODE);
+    pressedWidgets &= ~EnumToFlag(WIDX_MAZE_FILL_MODE);
+    pressedWidgets &= ~EnumToFlag(WIDX_MAZE_ENTRANCE);
+    pressedWidgets &= ~EnumToFlag(WIDX_MAZE_EXIT);
 
     switch (_rideConstructionState)
     {
+        case RIDE_CONSTRUCTION_STATE_ENTRANCE_EXIT:
+            if (gCurrentToolWidget.widget_index == WIDX_MAZE_ENTRANCE)
+            {
+                pressedWidgets |= EnumToFlag(WIDX_MAZE_ENTRANCE);
+            }
+            else
+            {
+                pressedWidgets |= EnumToFlag(WIDX_MAZE_EXIT);
+            }
+            break;
         case RIDE_CONSTRUCTION_STATE_MAZE_BUILD:
-            pressedWidgets |= (1ULL << WIDX_MAZE_BUILD_MODE);
+            pressedWidgets |= EnumToFlag(WIDX_MAZE_BUILD_MODE);
             break;
         case RIDE_CONSTRUCTION_STATE_MAZE_MOVE:
-            pressedWidgets |= (1ULL << WIDX_MAZE_MOVE_MODE);
+            pressedWidgets |= EnumToFlag(WIDX_MAZE_MOVE_MODE);
             break;
         case RIDE_CONSTRUCTION_STATE_MAZE_FILL:
-            pressedWidgets |= (1ULL << WIDX_MAZE_FILL_MODE);
+            pressedWidgets |= EnumToFlag(WIDX_MAZE_FILL_MODE);
             break;
     }
 
@@ -472,6 +503,9 @@ static void window_maze_construction_construct(int32_t direction)
 {
     int32_t x, y, z, flags, mode;
 
+    _currentTrackSelectionFlags = 0;
+    _rideConstructionNextArrowPulse = 0;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     ride_construction_invalidate_current_track();
 
     x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);

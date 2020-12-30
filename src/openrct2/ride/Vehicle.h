@@ -153,6 +153,8 @@ struct rct_vehicle_info
     uint8_t bank_rotation;       // 0x08
 };
 
+struct SoundIdVolume;
+
 struct Vehicle : SpriteBase
 {
     enum class Type : uint8_t
@@ -331,6 +333,11 @@ struct Vehicle : SpriteBase
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
+    void EnableCollisionsForTrain();
+    /**
+     * Instantly moves the specific car forward or backwards along the track.
+     */
+    void MoveRelativeDistance(int32_t distance);
 
     uint16_t GetTrackType() const
     {
@@ -396,6 +403,7 @@ private:
     void UpdateDoingCircusShow();
     void UpdateCrossings() const;
     void UpdateSound();
+    void GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound);
     OpenRCT2::Audio::SoundId UpdateScreamSound();
     OpenRCT2::Audio::SoundId ProduceScreamSound(const int32_t totalNumPeeps);
     void UpdateCrashSetup();
@@ -513,7 +521,7 @@ enum
 enum : uint32_t
 {
     VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
-    VEHICLE_UPDATE_FLAG_1 = (1 << 1),
+    VEHICLE_UPDATE_FLAG_COLLISION_DISABLED = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
     VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE = (1 << 3), // Shuttle is in reverse
     VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
@@ -526,7 +534,9 @@ enum : uint32_t
     VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES = (1 << 11), // Used on rides where trains can run for extended periods of time,
                                                           // i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_UPDATE_FLAG_12 = (1 << 12),
-    VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13) // After passing a rotation toggle track piece this will enable
+    VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13), // After passing a rotation toggle track piece this will enable
+    VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION = (1 << 14), // OpenRCT2 Flag: Used to override UpdateMotion to move the position of
+                                                         // an individual car on a train
 };
 
 enum : uint32_t
@@ -582,7 +592,7 @@ enum : uint32_t
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION = 1 << 7,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 = 1 << 8,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_9 = 1 << 9,
-    VEHICLE_UPDATE_MOTION_TRACK_FLAG_10 = 1 << 10,
+    VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE = 1 << 10,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_11 = 1 << 11,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_12 = 1 << 12,
 };

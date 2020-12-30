@@ -37,6 +37,8 @@ namespace Platform
     bool FileExists(const std::string path);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
+    bool FindApp(const std::string& app, std::string* output);
+    int32_t Execute(const std::string& command, std::string* output = nullptr);
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);

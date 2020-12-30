@@ -29,7 +29,7 @@ void FootpathObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* 
     // Validate properties
     if (_legacyType.support_type >= RailingEntrySupportType::Count)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "RailingEntrySupportType not supported.");
+        context->LogError(ObjectError::InvalidProperty, "RailingEntrySupportType not supported.");
     }
 }
 

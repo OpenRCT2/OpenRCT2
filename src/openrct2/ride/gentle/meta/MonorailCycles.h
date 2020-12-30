@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MONORAIL_CYCLES, STR_RIDE_DESCRIPTION_MONORAIL_CYCLES }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MONORAIL_CYCLES)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 5, 24, 8, 7, }),
@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(BuildCosts, { 20, 5, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 45),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_GREY, COLOUR_DARK_BROWN },

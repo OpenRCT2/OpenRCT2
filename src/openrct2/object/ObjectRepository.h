@@ -37,11 +37,12 @@ struct rct_drawpixelinfo;
 struct ObjectRepositoryItem
 {
     size_t Id;
+    std::string Identifier; // e.g. rct2.c3d
     rct_object_entry ObjectEntry;
     std::string Path;
     std::string Name;
     std::vector<std::string> Authors;
-    std::vector<uint8_t> Sources;
+    std::vector<ObjectSourceGame> Sources;
     Object* LoadedObject{};
     struct
     {
@@ -51,15 +52,15 @@ struct ObjectRepositoryItem
     } RideInfo;
     struct
     {
-        std::vector<rct_object_entry> Entries;
+        std::vector<ObjectEntryDescriptor> Entries;
     } SceneryGroupInfo;
 
-    OBJECT_SOURCE_GAME GetFirstSourceGame() const
+    ObjectSourceGame GetFirstSourceGame() const
     {
         if (Sources.empty())
-            return OBJECT_SOURCE_CUSTOM;
+            return ObjectSourceGame::Custom;
         else
-            return static_cast<OBJECT_SOURCE_GAME>(Sources[0]);
+            return static_cast<ObjectSourceGame>(Sources[0]);
     }
 };
 
@@ -71,10 +72,12 @@ struct IObjectRepository
     virtual void Construct(int32_t language) abstract;
     virtual size_t GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    virtual const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const abstract;
+    virtual const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
+    virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
 
-    virtual Object* LoadObject(const ObjectRepositoryItem* ori) abstract;
+    virtual std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) abstract;
     virtual void RegisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
@@ -93,7 +96,4 @@ size_t object_repository_get_items_count();
 const ObjectRepositoryItem* object_repository_get_items();
 const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_object_entry* entry);
 const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name);
-void* object_repository_load_object(const rct_object_entry* objectEntry);
-
-void object_delete(void* object);
-void object_draw_preview(const void* object, rct_drawpixelinfo* dpi, int32_t width, int32_t height);
+std::unique_ptr<Object> object_repository_load_object(const rct_object_entry* objectEntry);

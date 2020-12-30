@@ -33,7 +33,6 @@
 		2ADE2F28224418B2002598AF /* DataSerialiserTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F22224418B1002598AF /* DataSerialiserTag.h */; };
 		2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F23224418B1002598AF /* Numerics.hpp */; };
 		2ADE2F2A224418B2002598AF /* Meta.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F24224418B2002598AF /* Meta.hpp */; };
-		2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F25224418B2002598AF /* JobPool.hpp */; };
 		2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F26224418B2002598AF /* FileIndex.hpp */; };
 		2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2D224418E7002598AF /* ConversionTables.h */; };
 		2ADE2F3122441905002598AF /* DiscordService.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F2F22441905002598AF /* DiscordService.h */; };
@@ -42,6 +41,7 @@
 		2ADE2F3622441960002598AF /* RideTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F352244195F002598AF /* RideTypes.h */; };
 		2ADE2F382244198B002598AF /* SpriteBase.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F372244198A002598AF /* SpriteBase.h */; };
 		304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 304FE94F23A2996600470197 /* SceneryScatter.cpp */; };
+		4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */; };
 		4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C25594F244A328A00CE7E45 /* CustomMenu.cpp */; };
 		4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255954244A328A00CE7E45 /* UiExtensions.cpp */; };
 		4C25595A244A328B00CE7E45 /* CustomWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C255957244A328B00CE7E45 /* CustomWindow.cpp */; };
@@ -51,6 +51,11 @@
 		4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C724B2121F0AD790012ADD0 /* BenchSpriteSort.cpp */; };
 		4C81F7E124672C4D000E61BF /* CustomListView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C81F7DF24672C4D000E61BF /* CustomListView.cpp */; };
 		4C8A6FF323EB5326001A8255 /* Http.cURL.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8A6FF223EB5326001A8255 /* Http.cURL.cpp */; };
+		4C8BB67925533D4C005C8830 /* FileStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67825533D4C005C8830 /* FileStream.cpp */; };
+		4C8BB67C25533D59005C8830 /* JobPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67B25533D59005C8830 /* JobPool.cpp */; };
+		4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67D25533D64005C8830 /* StringBuilder.cpp */; };
+		4C8BB68225533D65005C8830 /* StringReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67E25533D64005C8830 /* StringReader.cpp */; };
+		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
@@ -62,6 +67,167 @@
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		6341F4E12400AA0F0052902B /* Drawing.Sprite.RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */; };
 		6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */; };
+		662578A625803AA90002C77E /* discord_rpc.h in Headers */ = {isa = PBXBuildFile; fileRef = 662578A525803AA90002C77E /* discord_rpc.h */; };
+		662578AD25803CE50002C77E /* libdiscord-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662578A325803A6C0002C77E /* libdiscord-rpc.a */; };
+		662578AE25803D040002C77E /* libdiscord-rpc.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 662578A325803A6C0002C77E /* libdiscord-rpc.a */; settings = {ATTRIBUTES = (Required, ); }; };
+		66A10EA2257F1DE100DD651A /* BalloonPressAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EA0257F1DE000DD651A /* BalloonPressAction.cpp */; };
+		66A10EA3257F1DE100DD651A /* BalloonPressAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EA1257F1DE000DD651A /* BalloonPressAction.h */; };
+		66A10EC0257F1DF800DD651A /* BannerPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EA6257F1DF600DD651A /* BannerPlaceAction.cpp */; };
+		66A10EC1257F1DF800DD651A /* FootpathAdditionRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EA7257F1DF600DD651A /* FootpathAdditionRemoveAction.h */; };
+		66A10EC2257F1DF800DD651A /* FootpathRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EA8257F1DF600DD651A /* FootpathRemoveAction.h */; };
+		66A10EC3257F1DF800DD651A /* FootpathPlaceFromTrackAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EA9257F1DF600DD651A /* FootpathPlaceFromTrackAction.cpp */; };
+		66A10EC4257F1DF800DD651A /* FootpathAdditionPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EAA257F1DF600DD651A /* FootpathAdditionPlaceAction.cpp */; };
+		66A10EC5257F1DF800DD651A /* BannerSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EAB257F1DF600DD651A /* BannerSetNameAction.cpp */; };
+		66A10EC6257F1DF800DD651A /* FootpathPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EAC257F1DF600DD651A /* FootpathPlaceAction.h */; };
+		66A10EC7257F1DF800DD651A /* FootpathRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EAD257F1DF700DD651A /* FootpathRemoveAction.cpp */; };
+		66A10EC8257F1DF800DD651A /* BannerPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EAE257F1DF700DD651A /* BannerPlaceAction.h */; };
+		66A10EC9257F1DF800DD651A /* CustomAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EAF257F1DF700DD651A /* CustomAction.h */; };
+		66A10ECA257F1DF800DD651A /* ClimateSetAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EB0257F1DF700DD651A /* ClimateSetAction.h */; };
+		66A10ECB257F1DF800DD651A /* BannerSetStyleAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB1257F1DF700DD651A /* BannerSetStyleAction.cpp */; };
+		66A10ECC257F1DF800DD651A /* ClearAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB2257F1DF700DD651A /* ClearAction.cpp */; };
+		66A10ECD257F1DF800DD651A /* BannerRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB3257F1DF700DD651A /* BannerRemoveAction.cpp */; };
+		66A10ECE257F1DF800DD651A /* BannerSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EB4257F1DF700DD651A /* BannerSetNameAction.h */; };
+		66A10ECF257F1DF800DD651A /* ClimateSetAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB5257F1DF700DD651A /* ClimateSetAction.cpp */; };
+		66A10ED0257F1DF800DD651A /* BannerSetColourAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EB6257F1DF700DD651A /* BannerSetColourAction.h */; };
+		66A10ED1257F1DF800DD651A /* CustomAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB7257F1DF700DD651A /* CustomAction.cpp */; };
+		66A10ED2257F1DF800DD651A /* FootpathAdditionRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EB8257F1DF700DD651A /* FootpathAdditionRemoveAction.cpp */; };
+		66A10ED3257F1DF800DD651A /* BannerRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EB9257F1DF700DD651A /* BannerRemoveAction.h */; };
+		66A10ED4257F1DF800DD651A /* ClearAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EBA257F1DF700DD651A /* ClearAction.h */; };
+		66A10ED5257F1DF800DD651A /* BannerSetStyleAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EBB257F1DF700DD651A /* BannerSetStyleAction.h */; };
+		66A10ED6257F1DF800DD651A /* FootpathPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EBC257F1DF800DD651A /* FootpathPlaceAction.cpp */; };
+		66A10ED7257F1DF800DD651A /* FootpathPlaceFromTrackAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EBD257F1DF800DD651A /* FootpathPlaceFromTrackAction.h */; };
+		66A10ED8257F1DF800DD651A /* BannerSetColourAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EBE257F1DF800DD651A /* BannerSetColourAction.cpp */; };
+		66A10ED9257F1DF800DD651A /* FootpathAdditionPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EBF257F1DF800DD651A /* FootpathAdditionPlaceAction.h */; };
+		66A10F4C257F1E1700DD651A /* PlaceParkEntranceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EDC257F1E1000DD651A /* PlaceParkEntranceAction.h */; };
+		66A10F4D257F1E1700DD651A /* StaffSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EDD257F1E1000DD651A /* StaffSetNameAction.h */; };
+		66A10F4E257F1E1700DD651A /* PauseToggleAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EDE257F1E1000DD651A /* PauseToggleAction.h */; };
+		66A10F4F257F1E1700DD651A /* ParkSetDateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EDF257F1E1000DD651A /* ParkSetDateAction.h */; };
+		66A10F50257F1E1700DD651A /* ParkEntranceRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EE0257F1E1000DD651A /* ParkEntranceRemoveAction.h */; };
+		66A10F51257F1E1700DD651A /* RideDemolishAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EE1257F1E1100DD651A /* RideDemolishAction.h */; };
+		66A10F52257F1E1700DD651A /* StaffSetCostumeAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EE2257F1E1100DD651A /* StaffSetCostumeAction.cpp */; };
+		66A10F53257F1E1700DD651A /* LandLowerAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EE3257F1E1100DD651A /* LandLowerAction.h */; };
+		66A10F54257F1E1700DD651A /* RideSetAppearanceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EE4257F1E1100DD651A /* RideSetAppearanceAction.h */; };
+		66A10F55257F1E1700DD651A /* SurfaceSetStyleAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EE5257F1E1100DD651A /* SurfaceSetStyleAction.cpp */; };
+		66A10F56257F1E1700DD651A /* SmallSceneryRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EE6257F1E1100DD651A /* SmallSceneryRemoveAction.h */; };
+		66A10F57257F1E1700DD651A /* RideSetAppearanceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EE7257F1E1100DD651A /* RideSetAppearanceAction.cpp */; };
+		66A10F58257F1E1700DD651A /* StaffSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EE8257F1E1100DD651A /* StaffSetNameAction.cpp */; };
+		66A10F59257F1E1700DD651A /* SetCheatAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EE9257F1E1100DD651A /* SetCheatAction.cpp */; };
+		66A10F5A257F1E1700DD651A /* GuestSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EEA257F1E1100DD651A /* GuestSetNameAction.h */; };
+		66A10F5B257F1E1700DD651A /* GuestSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EEB257F1E1100DD651A /* GuestSetNameAction.cpp */; };
+		66A10F5C257F1E1700DD651A /* SetParkEntranceFeeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EEC257F1E1100DD651A /* SetParkEntranceFeeAction.h */; };
+		66A10F5D257F1E1700DD651A /* RideSetStatusAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EED257F1E1100DD651A /* RideSetStatusAction.h */; };
+		66A10F5E257F1E1700DD651A /* LargeSceneryRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EEE257F1E1100DD651A /* LargeSceneryRemoveAction.h */; };
+		66A10F5F257F1E1700DD651A /* SmallScenerySetColourAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EEF257F1E1200DD651A /* SmallScenerySetColourAction.h */; };
+		66A10F60257F1E1700DD651A /* ParkEntranceRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EF0257F1E1200DD651A /* ParkEntranceRemoveAction.cpp */; };
+		66A10F61257F1E1700DD651A /* PlaceParkEntranceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EF1257F1E1200DD651A /* PlaceParkEntranceAction.cpp */; };
+		66A10F62257F1E1700DD651A /* SurfaceSetStyleAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF2257F1E1200DD651A /* SurfaceSetStyleAction.h */; };
+		66A10F63257F1E1700DD651A /* PlayerKickAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF3257F1E1200DD651A /* PlayerKickAction.h */; };
+		66A10F64257F1E1700DD651A /* LandRaiseAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EF4257F1E1200DD651A /* LandRaiseAction.cpp */; };
+		66A10F65257F1E1700DD651A /* TileModifyAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF5257F1E1200DD651A /* TileModifyAction.h */; };
+		66A10F66257F1E1700DD651A /* RideSetVehicleAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EF6257F1E1200DD651A /* RideSetVehicleAction.cpp */; };
+		66A10F67257F1E1700DD651A /* RideEntranceExitPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF7257F1E1200DD651A /* RideEntranceExitPlaceAction.h */; };
+		66A10F68257F1E1800DD651A /* NetworkModifyGroupAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF8257F1E1200DD651A /* NetworkModifyGroupAction.h */; };
+		66A10F69257F1E1800DD651A /* ParkSetLoanAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EF9257F1E1200DD651A /* ParkSetLoanAction.h */; };
+		66A10F6A257F1E1800DD651A /* LargeScenerySetColourAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EFA257F1E1200DD651A /* LargeScenerySetColourAction.cpp */; };
+		66A10F6B257F1E1800DD651A /* ParkSetLoanAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EFB257F1E1200DD651A /* ParkSetLoanAction.cpp */; };
+		66A10F6C257F1E1800DD651A /* LoadOrQuitAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EFC257F1E1200DD651A /* LoadOrQuitAction.cpp */; };
+		66A10F6D257F1E1800DD651A /* ParkSetParameterAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EFD257F1E1200DD651A /* ParkSetParameterAction.cpp */; };
+		66A10F6E257F1E1800DD651A /* LandRaiseAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10EFE257F1E1200DD651A /* LandRaiseAction.h */; };
+		66A10F6F257F1E1800DD651A /* RideEntranceExitPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10EFF257F1E1200DD651A /* RideEntranceExitPlaceAction.cpp */; };
+		66A10F70257F1E1800DD651A /* ParkSetDateAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F00257F1E1300DD651A /* ParkSetDateAction.cpp */; };
+		66A10F71257F1E1800DD651A /* StaffSetColourAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F01257F1E1300DD651A /* StaffSetColourAction.cpp */; };
+		66A10F72257F1E1800DD651A /* PlacePeepSpawnAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F02257F1E1300DD651A /* PlacePeepSpawnAction.h */; };
+		66A10F73257F1E1800DD651A /* LandSetHeightAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F03257F1E1300DD651A /* LandSetHeightAction.h */; };
+		66A10F74257F1E1800DD651A /* RideEntranceExitRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F04257F1E1300DD651A /* RideEntranceExitRemoveAction.h */; };
+		66A10F75257F1E1800DD651A /* RideSetPriceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F05257F1E1300DD651A /* RideSetPriceAction.cpp */; };
+		66A10F76257F1E1800DD651A /* SmallSceneryRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F06257F1E1300DD651A /* SmallSceneryRemoveAction.cpp */; };
+		66A10F77257F1E1800DD651A /* StaffSetOrdersAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F07257F1E1300DD651A /* StaffSetOrdersAction.h */; };
+		66A10F78257F1E1800DD651A /* StaffSetColourAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F08257F1E1300DD651A /* StaffSetColourAction.h */; };
+		66A10F79257F1E1800DD651A /* RideCreateAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F09257F1E1300DD651A /* RideCreateAction.cpp */; };
+		66A10F7A257F1E1800DD651A /* RideSetSettingAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F0A257F1E1300DD651A /* RideSetSettingAction.cpp */; };
+		66A10F7B257F1E1800DD651A /* MazeSetTrackAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F0B257F1E1300DD651A /* MazeSetTrackAction.h */; };
+		66A10F7C257F1E1800DD651A /* StaffHireNewAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F0C257F1E1300DD651A /* StaffHireNewAction.cpp */; };
+		66A10F7D257F1E1800DD651A /* ParkSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F0D257F1E1300DD651A /* ParkSetNameAction.cpp */; };
+		66A10F7E257F1E1800DD651A /* RideSetColourSchemeAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F0E257F1E1300DD651A /* RideSetColourSchemeAction.cpp */; };
+		66A10F7F257F1E1800DD651A /* MazePlaceTrackAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F0F257F1E1300DD651A /* MazePlaceTrackAction.cpp */; };
+		66A10F80257F1E1800DD651A /* NetworkModifyGroupAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F10257F1E1400DD651A /* NetworkModifyGroupAction.cpp */; };
+		66A10F81257F1E1800DD651A /* RideSetVehicleAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F11257F1E1400DD651A /* RideSetVehicleAction.h */; };
+		66A10F82257F1E1800DD651A /* PlayerSetGroupAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F12257F1E1400DD651A /* PlayerSetGroupAction.cpp */; };
+		66A10F83257F1E1800DD651A /* PlayerSetGroupAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F13257F1E1400DD651A /* PlayerSetGroupAction.h */; };
+		66A10F84257F1E1800DD651A /* StaffSetPatrolAreaAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F14257F1E1400DD651A /* StaffSetPatrolAreaAction.h */; };
+		66A10F85257F1E1800DD651A /* LandSetHeightAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F15257F1E1400DD651A /* LandSetHeightAction.cpp */; };
+		66A10F86257F1E1800DD651A /* LoadOrQuitAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F16257F1E1400DD651A /* LoadOrQuitAction.h */; };
+		66A10F87257F1E1800DD651A /* SmallSceneryPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F17257F1E1400DD651A /* SmallSceneryPlaceAction.h */; };
+		66A10F88257F1E1800DD651A /* SignSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F18257F1E1400DD651A /* SignSetNameAction.h */; };
+		66A10F89257F1E1800DD651A /* PauseToggleAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F19257F1E1400DD651A /* PauseToggleAction.cpp */; };
+		66A10F8A257F1E1800DD651A /* ParkSetResearchFundingAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1A257F1E1400DD651A /* ParkSetResearchFundingAction.h */; };
+		66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1B257F1E1400DD651A /* LandSmoothAction.h */; };
+		66A10F8C257F1E1800DD651A /* RideCreateAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1C257F1E1400DD651A /* RideCreateAction.h */; };
+		66A10F8D257F1E1800DD651A /* GuestSetFlagsAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1D257F1E1400DD651A /* GuestSetFlagsAction.h */; };
+		66A10F8E257F1E1800DD651A /* LandSetRightsAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1E257F1E1400DD651A /* LandSetRightsAction.h */; };
+		66A10F8F257F1E1800DD651A /* StaffSetCostumeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F1F257F1E1500DD651A /* StaffSetCostumeAction.h */; };
+		66A10F90257F1E1800DD651A /* MazePlaceTrackAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F20257F1E1500DD651A /* MazePlaceTrackAction.h */; };
+		66A10F91257F1E1800DD651A /* StaffHireNewAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F21257F1E1500DD651A /* StaffHireNewAction.h */; };
+		66A10F92257F1E1800DD651A /* ParkSetParameterAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F22257F1E1500DD651A /* ParkSetParameterAction.h */; };
+		66A10F93257F1E1800DD651A /* LandSmoothAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F23257F1E1500DD651A /* LandSmoothAction.cpp */; };
+		66A10F94257F1E1800DD651A /* StaffSetOrdersAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F24257F1E1500DD651A /* StaffSetOrdersAction.cpp */; };
+		66A10F95257F1E1800DD651A /* GuestSetFlagsAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F25257F1E1500DD651A /* GuestSetFlagsAction.cpp */; };
+		66A10F96257F1E1800DD651A /* SignSetStyleAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F26257F1E1500DD651A /* SignSetStyleAction.h */; };
+		66A10F97257F1E1800DD651A /* SetCheatAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F27257F1E1500DD651A /* SetCheatAction.h */; };
+		66A10F98257F1E1800DD651A /* PlacePeepSpawnAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F28257F1E1500DD651A /* PlacePeepSpawnAction.cpp */; };
+		66A10F99257F1E1800DD651A /* LargeScenerySetColourAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F29257F1E1500DD651A /* LargeScenerySetColourAction.h */; };
+		66A10F9A257F1E1800DD651A /* StaffFireAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F2A257F1E1500DD651A /* StaffFireAction.h */; };
+		66A10F9B257F1E1800DD651A /* ParkSetResearchFundingAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F2B257F1E1500DD651A /* ParkSetResearchFundingAction.cpp */; };
+		66A10F9C257F1E1800DD651A /* PeepPickupAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F2C257F1E1500DD651A /* PeepPickupAction.cpp */; };
+		66A10F9D257F1E1800DD651A /* StaffFireAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F2D257F1E1500DD651A /* StaffFireAction.cpp */; };
+		66A10F9E257F1E1800DD651A /* ParkMarketingAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F2E257F1E1600DD651A /* ParkMarketingAction.cpp */; };
+		66A10F9F257F1E1800DD651A /* LandBuyRightsAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F2F257F1E1600DD651A /* LandBuyRightsAction.h */; };
+		66A10FA0257F1E1800DD651A /* StaffSetPatrolAreaAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F30257F1E1600DD651A /* StaffSetPatrolAreaAction.cpp */; };
+		66A10FA1257F1E1800DD651A /* SmallScenerySetColourAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F31257F1E1600DD651A /* SmallScenerySetColourAction.cpp */; };
+		66A10FA2257F1E1800DD651A /* LargeSceneryPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F32257F1E1600DD651A /* LargeSceneryPlaceAction.h */; };
+		66A10FA3257F1E1800DD651A /* LandLowerAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F33257F1E1600DD651A /* LandLowerAction.cpp */; };
+		66A10FA4257F1E1800DD651A /* RideSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F34257F1E1600DD651A /* RideSetNameAction.cpp */; };
+		66A10FA5257F1E1800DD651A /* RideSetPriceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F35257F1E1600DD651A /* RideSetPriceAction.h */; };
+		66A10FA6257F1E1800DD651A /* ParkMarketingAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F36257F1E1600DD651A /* ParkMarketingAction.h */; };
+		66A10FA7257F1E1800DD651A /* PeepPickupAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F37257F1E1600DD651A /* PeepPickupAction.h */; };
+		66A10FA8257F1E1800DD651A /* RideEntranceExitRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F38257F1E1600DD651A /* RideEntranceExitRemoveAction.cpp */; };
+		66A10FA9257F1E1800DD651A /* ParkSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F39257F1E1600DD651A /* ParkSetNameAction.h */; };
+		66A10FAA257F1E1800DD651A /* SetParkEntranceFeeAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F3A257F1E1600DD651A /* SetParkEntranceFeeAction.cpp */; };
+		66A10FAB257F1E1800DD651A /* LandSetRightsAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F3B257F1E1600DD651A /* LandSetRightsAction.cpp */; };
+		66A10FAC257F1E1800DD651A /* RideSetSettingAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F3C257F1E1600DD651A /* RideSetSettingAction.h */; };
+		66A10FAD257F1E1800DD651A /* TileModifyAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F3D257F1E1700DD651A /* TileModifyAction.cpp */; };
+		66A10FAE257F1E1800DD651A /* SmallSceneryPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F3E257F1E1700DD651A /* SmallSceneryPlaceAction.cpp */; };
+		66A10FAF257F1E1800DD651A /* RideSetNameAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F3F257F1E1700DD651A /* RideSetNameAction.h */; };
+		66A10FB0257F1E1800DD651A /* SignSetStyleAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F40257F1E1700DD651A /* SignSetStyleAction.cpp */; };
+		66A10FB1257F1E1800DD651A /* RideDemolishAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F41257F1E1700DD651A /* RideDemolishAction.cpp */; };
+		66A10FB2257F1E1800DD651A /* LargeSceneryRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F42257F1E1700DD651A /* LargeSceneryRemoveAction.cpp */; };
+		66A10FB3257F1E1800DD651A /* MazeSetTrackAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F43257F1E1700DD651A /* MazeSetTrackAction.cpp */; };
+		66A10FB4257F1E1800DD651A /* ScenarioSetSettingAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F44257F1E1700DD651A /* ScenarioSetSettingAction.cpp */; };
+		66A10FB5257F1E1800DD651A /* SignSetNameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F45257F1E1700DD651A /* SignSetNameAction.cpp */; };
+		66A10FB6257F1E1800DD651A /* RideSetColourSchemeAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F46257F1E1700DD651A /* RideSetColourSchemeAction.h */; };
+		66A10FB7257F1E1800DD651A /* LandBuyRightsAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F47257F1E1700DD651A /* LandBuyRightsAction.cpp */; };
+		66A10FB8257F1E1800DD651A /* ScenarioSetSettingAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10F48257F1E1700DD651A /* ScenarioSetSettingAction.h */; };
+		66A10FB9257F1E1800DD651A /* RideSetStatusAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F49257F1E1700DD651A /* RideSetStatusAction.cpp */; };
+		66A10FBA257F1E1800DD651A /* PlayerKickAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F4A257F1E1700DD651A /* PlayerKickAction.cpp */; };
+		66A10FBB257F1E1800DD651A /* LargeSceneryPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10F4B257F1E1700DD651A /* LargeSceneryPlaceAction.cpp */; };
+		66A10FD0257F1E3000DD651A /* TrackPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FBE257F1E2D00DD651A /* TrackPlaceAction.h */; };
+		66A10FD1257F1E3000DD651A /* WaterRaiseAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FBF257F1E2D00DD651A /* WaterRaiseAction.cpp */; };
+		66A10FD2257F1E3000DD651A /* WallPlaceAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC0257F1E2D00DD651A /* WallPlaceAction.h */; };
+		66A10FD3257F1E3000DD651A /* TrackRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC1257F1E2D00DD651A /* TrackRemoveAction.h */; };
+		66A10FD4257F1E3000DD651A /* TrackSetBrakeSpeedAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FC2257F1E2E00DD651A /* TrackSetBrakeSpeedAction.cpp */; };
+		66A10FD5257F1E3000DD651A /* WaterRaiseAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC3257F1E2E00DD651A /* WaterRaiseAction.h */; };
+		66A10FD6257F1E3000DD651A /* WallRemoveAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC4257F1E2E00DD651A /* WallRemoveAction.h */; };
+		66A10FD7257F1E3000DD651A /* WaterLowerAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC5257F1E2E00DD651A /* WaterLowerAction.h */; };
+		66A10FD8257F1E3000DD651A /* TrackRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FC6257F1E2E00DD651A /* TrackRemoveAction.cpp */; };
+		66A10FD9257F1E3000DD651A /* WaterSetHeightAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FC7257F1E2E00DD651A /* WaterSetHeightAction.cpp */; };
+		66A10FDA257F1E3000DD651A /* WaterSetHeightAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FC8257F1E2F00DD651A /* WaterSetHeightAction.h */; };
+		66A10FDB257F1E3000DD651A /* WallPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FC9257F1E2F00DD651A /* WallPlaceAction.cpp */; };
+		66A10FDC257F1E3000DD651A /* TrackPlaceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FCA257F1E2F00DD651A /* TrackPlaceAction.cpp */; };
+		66A10FDD257F1E3000DD651A /* WallSetColourAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FCB257F1E2F00DD651A /* WallSetColourAction.h */; };
+		66A10FDE257F1E3000DD651A /* WaterLowerAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FCC257F1E2F00DD651A /* WaterLowerAction.cpp */; };
+		66A10FDF257F1E3000DD651A /* TrackSetBrakeSpeedAction.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A10FCD257F1E2F00DD651A /* TrackSetBrakeSpeedAction.h */; };
+		66A10FE0257F1E3000DD651A /* WallRemoveAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FCE257F1E2F00DD651A /* WallRemoveAction.cpp */; };
+		66A10FE1257F1E3000DD651A /* WallSetColourAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 66A10FCF257F1E3000DD651A /* WallSetColourAction.cpp */; };
 		9308D9FE209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308D9FF209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
 		9308DA00209908090079EE96 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9308D9FA209908080079EE96 /* TileElement.cpp */; };
@@ -110,6 +276,8 @@
 		939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */ = {isa = PBXBuildFile; fileRef = 939A35A120C12FFD00630B3F /* InteractiveConsole.h */; };
 		93AE2389252F948A00CD03C3 /* Formatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 93AE2387252F948A00CD03C3 /* Formatter.h */; };
 		93AE238A252F948A00CD03C3 /* Formatter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93AE2388252F948A00CD03C3 /* Formatter.cpp */; };
+		93B4DC1525487CDF008D63FF /* Formatting.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93B4DC1325487CDE008D63FF /* Formatting.cpp */; };
+		93B4DC1625487CDF008D63FF /* Formatting.h in Headers */ = {isa = PBXBuildFile; fileRef = 93B4DC1425487CDE008D63FF /* Formatting.h */; };
 		93CBA4C020A74FF200867D56 /* BitmapReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */; };
 		93CBA4C320A7502E00867D56 /* Imaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 93CBA4C120A7502D00867D56 /* Imaging.h */; };
 		93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 93CBA4C220A7502E00867D56 /* Imaging.cpp */; };
@@ -673,7 +841,6 @@
 		2ADE2F22224418B1002598AF /* DataSerialiserTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiserTag.h; sourceTree = "<group>"; };
 		2ADE2F23224418B1002598AF /* Numerics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Numerics.hpp; sourceTree = "<group>"; };
 		2ADE2F24224418B2002598AF /* Meta.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Meta.hpp; sourceTree = "<group>"; };
-		2ADE2F25224418B2002598AF /* JobPool.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JobPool.hpp; sourceTree = "<group>"; };
 		2ADE2F26224418B2002598AF /* FileIndex.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileIndex.hpp; sourceTree = "<group>"; };
 		2ADE2F2D224418E7002598AF /* ConversionTables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversionTables.h; sourceTree = "<group>"; };
 		2ADE2F2F22441905002598AF /* DiscordService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DiscordService.h; sourceTree = "<group>"; };
@@ -683,6 +850,7 @@
 		2ADE2F372244198A002598AF /* SpriteBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpriteBase.h; sourceTree = "<group>"; };
 		304FE94F23A2996600470197 /* SceneryScatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryScatter.cpp; sourceTree = "<group>"; };
 		4C1A53EC205FD19F000F8EF5 /* SceneryObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SceneryObject.cpp; sourceTree = "<group>"; };
+		4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HybridCoaster.cpp; sourceTree = "<group>"; };
 		4C25594E244A328A00CE7E45 /* CustomWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CustomWindow.h; path = scripting/CustomWindow.h; sourceTree = "<group>"; };
 		4C25594F244A328A00CE7E45 /* CustomMenu.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CustomMenu.cpp; path = scripting/CustomMenu.cpp; sourceTree = "<group>"; };
 		4C255950244A328A00CE7E45 /* ScUi.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ScUi.hpp; path = scripting/ScUi.hpp; sourceTree = "<group>"; };
@@ -712,7 +880,6 @@
 		4C25596D244A330800CE7E45 /* detail_method.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_method.h; path = src/thirdparty/dukglue/detail_method.h; sourceTree = SOURCE_ROOT; };
 		4C25596E244A330800CE7E45 /* dukexception.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dukexception.h; path = src/thirdparty/dukglue/dukexception.h; sourceTree = SOURCE_ROOT; };
 		4C25596F244A330800CE7E45 /* detail_typeinfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = detail_typeinfo.h; path = src/thirdparty/dukglue/detail_typeinfo.h; sourceTree = SOURCE_ROOT; };
-		4C255971244A342900CE7E45 /* CustomAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CustomAction.hpp; sourceTree = "<group>"; };
 		4C29DEB2218C6AE500E8707F /* RCT12.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT12.cpp; sourceTree = "<group>"; };
 		4C358E5021C445F700ADE6BC /* ReplayManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplayManager.cpp; sourceTree = "<group>"; };
 		4C358E5121C445F700ADE6BC /* ReplayManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayManager.h; sourceTree = "<group>"; };
@@ -851,6 +1018,17 @@
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
 		4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X8DrawingEngine.h; sourceTree = "<group>"; };
 		4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardwareDisplayDrawingEngine.cpp; sourceTree = "<group>"; };
+		4C8BB67625533D4B005C8830 /* FileSystem.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FileSystem.hpp; sourceTree = "<group>"; };
+		4C8BB67725533D4B005C8830 /* FileStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileStream.h; sourceTree = "<group>"; };
+		4C8BB67825533D4C005C8830 /* FileStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileStream.cpp; sourceTree = "<group>"; };
+		4C8BB67A25533D58005C8830 /* JobPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JobPool.h; sourceTree = "<group>"; };
+		4C8BB67B25533D59005C8830 /* JobPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JobPool.cpp; sourceTree = "<group>"; };
+		4C8BB67D25533D64005C8830 /* StringBuilder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringBuilder.cpp; sourceTree = "<group>"; };
+		4C8BB67E25533D64005C8830 /* StringReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringReader.cpp; sourceTree = "<group>"; };
+		4C8BB67F25533D64005C8830 /* StringReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringReader.h; sourceTree = "<group>"; };
+		4C8BB68025533D64005C8830 /* StringBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringBuilder.h; sourceTree = "<group>"; };
+		4C8BB68325533DB9005C8830 /* ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomLevel.h; sourceTree = "<group>"; };
+		4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZoomLevel.cpp; sourceTree = "<group>"; };
 		4C9196ED204FF3E000869A24 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
 		4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AirPoweredVerticalCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BobsleighCoaster.cpp; sourceTree = "<group>"; };
@@ -955,7 +1133,6 @@
 		4CC4B8E91FE00C5D00660D62 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intro.cpp; sourceTree = "<group>"; };
 		4CC4B8EB1FE00C5D00660D62 /* Intro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intro.h; sourceTree = "<group>"; };
-		4CC5258023A19C1C00D4366D /* MazePlaceTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MazePlaceTrackAction.hpp; sourceTree = "<group>"; };
 		4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignAction.cpp; sourceTree = "<group>"; };
 		4CC5258323A19C2E00D4366D /* TrackDesignAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesignAction.h; sourceTree = "<group>"; };
 		4CDCB0BC20A9902E00321367 /* ShopItem.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShopItem.cpp; sourceTree = "<group>"; };
@@ -981,93 +1158,175 @@
 		51160A24250C7A15002029F6 /* GuestPathfinding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestPathfinding.h; sourceTree = "<group>"; };
 		6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.RLE.cpp; sourceTree = "<group>"; };
 		6341F4E02400AA0F0052902B /* Drawing.Sprite.BMP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Drawing.Sprite.BMP.cpp; sourceTree = "<group>"; };
-		6341F4E32400AA1C0052902B /* ZoomLevel.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ZoomLevel.hpp; sourceTree = "<group>"; };
+		662578A325803A6C0002C77E /* libdiscord-rpc.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libdiscord-rpc.a"; path = "discord-rpc/build/src/libdiscord-rpc.a"; sourceTree = "<group>"; };
+		662578A525803AA90002C77E /* discord_rpc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = discord_rpc.h; path = "discord-rpc/include/discord_rpc.h"; sourceTree = "<group>"; };
+		66A10EA0257F1DE000DD651A /* BalloonPressAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BalloonPressAction.cpp; sourceTree = "<group>"; };
+		66A10EA1257F1DE000DD651A /* BalloonPressAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalloonPressAction.h; sourceTree = "<group>"; };
+		66A10EA6257F1DF600DD651A /* BannerPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BannerPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10EA7257F1DF600DD651A /* FootpathAdditionRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathAdditionRemoveAction.h; sourceTree = "<group>"; };
+		66A10EA8257F1DF600DD651A /* FootpathRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathRemoveAction.h; sourceTree = "<group>"; };
+		66A10EA9257F1DF600DD651A /* FootpathPlaceFromTrackAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathPlaceFromTrackAction.cpp; sourceTree = "<group>"; };
+		66A10EAA257F1DF600DD651A /* FootpathAdditionPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathAdditionPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10EAB257F1DF600DD651A /* BannerSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BannerSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10EAC257F1DF600DD651A /* FootpathPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathPlaceAction.h; sourceTree = "<group>"; };
+		66A10EAD257F1DF700DD651A /* FootpathRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10EAE257F1DF700DD651A /* BannerPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerPlaceAction.h; sourceTree = "<group>"; };
+		66A10EAF257F1DF700DD651A /* CustomAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomAction.h; sourceTree = "<group>"; };
+		66A10EB0257F1DF700DD651A /* ClimateSetAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClimateSetAction.h; sourceTree = "<group>"; };
+		66A10EB1257F1DF700DD651A /* BannerSetStyleAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BannerSetStyleAction.cpp; sourceTree = "<group>"; };
+		66A10EB2257F1DF700DD651A /* ClearAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClearAction.cpp; sourceTree = "<group>"; };
+		66A10EB3257F1DF700DD651A /* BannerRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BannerRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10EB4257F1DF700DD651A /* BannerSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerSetNameAction.h; sourceTree = "<group>"; };
+		66A10EB5257F1DF700DD651A /* ClimateSetAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ClimateSetAction.cpp; sourceTree = "<group>"; };
+		66A10EB6257F1DF700DD651A /* BannerSetColourAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerSetColourAction.h; sourceTree = "<group>"; };
+		66A10EB7257F1DF700DD651A /* CustomAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomAction.cpp; sourceTree = "<group>"; };
+		66A10EB8257F1DF700DD651A /* FootpathAdditionRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathAdditionRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10EB9257F1DF700DD651A /* BannerRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerRemoveAction.h; sourceTree = "<group>"; };
+		66A10EBA257F1DF700DD651A /* ClearAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ClearAction.h; sourceTree = "<group>"; };
+		66A10EBB257F1DF700DD651A /* BannerSetStyleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerSetStyleAction.h; sourceTree = "<group>"; };
+		66A10EBC257F1DF800DD651A /* FootpathPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10EBD257F1DF800DD651A /* FootpathPlaceFromTrackAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathPlaceFromTrackAction.h; sourceTree = "<group>"; };
+		66A10EBE257F1DF800DD651A /* BannerSetColourAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BannerSetColourAction.cpp; sourceTree = "<group>"; };
+		66A10EBF257F1DF800DD651A /* FootpathAdditionPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathAdditionPlaceAction.h; sourceTree = "<group>"; };
+		66A10EDC257F1E1000DD651A /* PlaceParkEntranceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceParkEntranceAction.h; sourceTree = "<group>"; };
+		66A10EDD257F1E1000DD651A /* StaffSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffSetNameAction.h; sourceTree = "<group>"; };
+		66A10EDE257F1E1000DD651A /* PauseToggleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PauseToggleAction.h; sourceTree = "<group>"; };
+		66A10EDF257F1E1000DD651A /* ParkSetDateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkSetDateAction.h; sourceTree = "<group>"; };
+		66A10EE0257F1E1000DD651A /* ParkEntranceRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkEntranceRemoveAction.h; sourceTree = "<group>"; };
+		66A10EE1257F1E1100DD651A /* RideDemolishAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideDemolishAction.h; sourceTree = "<group>"; };
+		66A10EE2257F1E1100DD651A /* StaffSetCostumeAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffSetCostumeAction.cpp; sourceTree = "<group>"; };
+		66A10EE3257F1E1100DD651A /* LandLowerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandLowerAction.h; sourceTree = "<group>"; };
+		66A10EE4257F1E1100DD651A /* RideSetAppearanceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetAppearanceAction.h; sourceTree = "<group>"; };
+		66A10EE5257F1E1100DD651A /* SurfaceSetStyleAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SurfaceSetStyleAction.cpp; sourceTree = "<group>"; };
+		66A10EE6257F1E1100DD651A /* SmallSceneryRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallSceneryRemoveAction.h; sourceTree = "<group>"; };
+		66A10EE7257F1E1100DD651A /* RideSetAppearanceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetAppearanceAction.cpp; sourceTree = "<group>"; };
+		66A10EE8257F1E1100DD651A /* StaffSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10EE9257F1E1100DD651A /* SetCheatAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetCheatAction.cpp; sourceTree = "<group>"; };
+		66A10EEA257F1E1100DD651A /* GuestSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestSetNameAction.h; sourceTree = "<group>"; };
+		66A10EEB257F1E1100DD651A /* GuestSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10EEC257F1E1100DD651A /* SetParkEntranceFeeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetParkEntranceFeeAction.h; sourceTree = "<group>"; };
+		66A10EED257F1E1100DD651A /* RideSetStatusAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetStatusAction.h; sourceTree = "<group>"; };
+		66A10EEE257F1E1100DD651A /* LargeSceneryRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargeSceneryRemoveAction.h; sourceTree = "<group>"; };
+		66A10EEF257F1E1200DD651A /* SmallScenerySetColourAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallScenerySetColourAction.h; sourceTree = "<group>"; };
+		66A10EF0257F1E1200DD651A /* ParkEntranceRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkEntranceRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10EF1257F1E1200DD651A /* PlaceParkEntranceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlaceParkEntranceAction.cpp; sourceTree = "<group>"; };
+		66A10EF2257F1E1200DD651A /* SurfaceSetStyleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SurfaceSetStyleAction.h; sourceTree = "<group>"; };
+		66A10EF3257F1E1200DD651A /* PlayerKickAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerKickAction.h; sourceTree = "<group>"; };
+		66A10EF4257F1E1200DD651A /* LandRaiseAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandRaiseAction.cpp; sourceTree = "<group>"; };
+		66A10EF5257F1E1200DD651A /* TileModifyAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileModifyAction.h; sourceTree = "<group>"; };
+		66A10EF6257F1E1200DD651A /* RideSetVehicleAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetVehicleAction.cpp; sourceTree = "<group>"; };
+		66A10EF7257F1E1200DD651A /* RideEntranceExitPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideEntranceExitPlaceAction.h; sourceTree = "<group>"; };
+		66A10EF8257F1E1200DD651A /* NetworkModifyGroupAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetworkModifyGroupAction.h; sourceTree = "<group>"; };
+		66A10EF9257F1E1200DD651A /* ParkSetLoanAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkSetLoanAction.h; sourceTree = "<group>"; };
+		66A10EFA257F1E1200DD651A /* LargeScenerySetColourAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeScenerySetColourAction.cpp; sourceTree = "<group>"; };
+		66A10EFB257F1E1200DD651A /* ParkSetLoanAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkSetLoanAction.cpp; sourceTree = "<group>"; };
+		66A10EFC257F1E1200DD651A /* LoadOrQuitAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoadOrQuitAction.cpp; sourceTree = "<group>"; };
+		66A10EFD257F1E1200DD651A /* ParkSetParameterAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkSetParameterAction.cpp; sourceTree = "<group>"; };
+		66A10EFE257F1E1200DD651A /* LandRaiseAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandRaiseAction.h; sourceTree = "<group>"; };
+		66A10EFF257F1E1200DD651A /* RideEntranceExitPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideEntranceExitPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10F00257F1E1300DD651A /* ParkSetDateAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkSetDateAction.cpp; sourceTree = "<group>"; };
+		66A10F01257F1E1300DD651A /* StaffSetColourAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffSetColourAction.cpp; sourceTree = "<group>"; };
+		66A10F02257F1E1300DD651A /* PlacePeepSpawnAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlacePeepSpawnAction.h; sourceTree = "<group>"; };
+		66A10F03257F1E1300DD651A /* LandSetHeightAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandSetHeightAction.h; sourceTree = "<group>"; };
+		66A10F04257F1E1300DD651A /* RideEntranceExitRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideEntranceExitRemoveAction.h; sourceTree = "<group>"; };
+		66A10F05257F1E1300DD651A /* RideSetPriceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetPriceAction.cpp; sourceTree = "<group>"; };
+		66A10F06257F1E1300DD651A /* SmallSceneryRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallSceneryRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10F07257F1E1300DD651A /* StaffSetOrdersAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffSetOrdersAction.h; sourceTree = "<group>"; };
+		66A10F08257F1E1300DD651A /* StaffSetColourAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffSetColourAction.h; sourceTree = "<group>"; };
+		66A10F09257F1E1300DD651A /* RideCreateAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideCreateAction.cpp; sourceTree = "<group>"; };
+		66A10F0A257F1E1300DD651A /* RideSetSettingAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetSettingAction.cpp; sourceTree = "<group>"; };
+		66A10F0B257F1E1300DD651A /* MazeSetTrackAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazeSetTrackAction.h; sourceTree = "<group>"; };
+		66A10F0C257F1E1300DD651A /* StaffHireNewAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffHireNewAction.cpp; sourceTree = "<group>"; };
+		66A10F0D257F1E1300DD651A /* ParkSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10F0E257F1E1300DD651A /* RideSetColourSchemeAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetColourSchemeAction.cpp; sourceTree = "<group>"; };
+		66A10F0F257F1E1300DD651A /* MazePlaceTrackAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MazePlaceTrackAction.cpp; sourceTree = "<group>"; };
+		66A10F10257F1E1400DD651A /* NetworkModifyGroupAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkModifyGroupAction.cpp; sourceTree = "<group>"; };
+		66A10F11257F1E1400DD651A /* RideSetVehicleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetVehicleAction.h; sourceTree = "<group>"; };
+		66A10F12257F1E1400DD651A /* PlayerSetGroupAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerSetGroupAction.cpp; sourceTree = "<group>"; };
+		66A10F13257F1E1400DD651A /* PlayerSetGroupAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerSetGroupAction.h; sourceTree = "<group>"; };
+		66A10F14257F1E1400DD651A /* StaffSetPatrolAreaAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffSetPatrolAreaAction.h; sourceTree = "<group>"; };
+		66A10F15257F1E1400DD651A /* LandSetHeightAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandSetHeightAction.cpp; sourceTree = "<group>"; };
+		66A10F16257F1E1400DD651A /* LoadOrQuitAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadOrQuitAction.h; sourceTree = "<group>"; };
+		66A10F17257F1E1400DD651A /* SmallSceneryPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallSceneryPlaceAction.h; sourceTree = "<group>"; };
+		66A10F18257F1E1400DD651A /* SignSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignSetNameAction.h; sourceTree = "<group>"; };
+		66A10F19257F1E1400DD651A /* PauseToggleAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PauseToggleAction.cpp; sourceTree = "<group>"; };
+		66A10F1A257F1E1400DD651A /* ParkSetResearchFundingAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkSetResearchFundingAction.h; sourceTree = "<group>"; };
+		66A10F1B257F1E1400DD651A /* LandSmoothAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandSmoothAction.h; sourceTree = "<group>"; };
+		66A10F1C257F1E1400DD651A /* RideCreateAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideCreateAction.h; sourceTree = "<group>"; };
+		66A10F1D257F1E1400DD651A /* GuestSetFlagsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GuestSetFlagsAction.h; sourceTree = "<group>"; };
+		66A10F1E257F1E1400DD651A /* LandSetRightsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandSetRightsAction.h; sourceTree = "<group>"; };
+		66A10F1F257F1E1500DD651A /* StaffSetCostumeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffSetCostumeAction.h; sourceTree = "<group>"; };
+		66A10F20257F1E1500DD651A /* MazePlaceTrackAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MazePlaceTrackAction.h; sourceTree = "<group>"; };
+		66A10F21257F1E1500DD651A /* StaffHireNewAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffHireNewAction.h; sourceTree = "<group>"; };
+		66A10F22257F1E1500DD651A /* ParkSetParameterAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkSetParameterAction.h; sourceTree = "<group>"; };
+		66A10F23257F1E1500DD651A /* LandSmoothAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandSmoothAction.cpp; sourceTree = "<group>"; };
+		66A10F24257F1E1500DD651A /* StaffSetOrdersAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffSetOrdersAction.cpp; sourceTree = "<group>"; };
+		66A10F25257F1E1500DD651A /* GuestSetFlagsAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GuestSetFlagsAction.cpp; sourceTree = "<group>"; };
+		66A10F26257F1E1500DD651A /* SignSetStyleAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignSetStyleAction.h; sourceTree = "<group>"; };
+		66A10F27257F1E1500DD651A /* SetCheatAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetCheatAction.h; sourceTree = "<group>"; };
+		66A10F28257F1E1500DD651A /* PlacePeepSpawnAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlacePeepSpawnAction.cpp; sourceTree = "<group>"; };
+		66A10F29257F1E1500DD651A /* LargeScenerySetColourAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargeScenerySetColourAction.h; sourceTree = "<group>"; };
+		66A10F2A257F1E1500DD651A /* StaffFireAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StaffFireAction.h; sourceTree = "<group>"; };
+		66A10F2B257F1E1500DD651A /* ParkSetResearchFundingAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkSetResearchFundingAction.cpp; sourceTree = "<group>"; };
+		66A10F2C257F1E1500DD651A /* PeepPickupAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepPickupAction.cpp; sourceTree = "<group>"; };
+		66A10F2D257F1E1500DD651A /* StaffFireAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffFireAction.cpp; sourceTree = "<group>"; };
+		66A10F2E257F1E1600DD651A /* ParkMarketingAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ParkMarketingAction.cpp; sourceTree = "<group>"; };
+		66A10F2F257F1E1600DD651A /* LandBuyRightsAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LandBuyRightsAction.h; sourceTree = "<group>"; };
+		66A10F30257F1E1600DD651A /* StaffSetPatrolAreaAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffSetPatrolAreaAction.cpp; sourceTree = "<group>"; };
+		66A10F31257F1E1600DD651A /* SmallScenerySetColourAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenerySetColourAction.cpp; sourceTree = "<group>"; };
+		66A10F32257F1E1600DD651A /* LargeSceneryPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargeSceneryPlaceAction.h; sourceTree = "<group>"; };
+		66A10F33257F1E1600DD651A /* LandLowerAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandLowerAction.cpp; sourceTree = "<group>"; };
+		66A10F34257F1E1600DD651A /* RideSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10F35257F1E1600DD651A /* RideSetPriceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetPriceAction.h; sourceTree = "<group>"; };
+		66A10F36257F1E1600DD651A /* ParkMarketingAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkMarketingAction.h; sourceTree = "<group>"; };
+		66A10F37257F1E1600DD651A /* PeepPickupAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeepPickupAction.h; sourceTree = "<group>"; };
+		66A10F38257F1E1600DD651A /* RideEntranceExitRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideEntranceExitRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10F39257F1E1600DD651A /* ParkSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ParkSetNameAction.h; sourceTree = "<group>"; };
+		66A10F3A257F1E1600DD651A /* SetParkEntranceFeeAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetParkEntranceFeeAction.cpp; sourceTree = "<group>"; };
+		66A10F3B257F1E1600DD651A /* LandSetRightsAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandSetRightsAction.cpp; sourceTree = "<group>"; };
+		66A10F3C257F1E1600DD651A /* RideSetSettingAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetSettingAction.h; sourceTree = "<group>"; };
+		66A10F3D257F1E1700DD651A /* TileModifyAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileModifyAction.cpp; sourceTree = "<group>"; };
+		66A10F3E257F1E1700DD651A /* SmallSceneryPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallSceneryPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10F3F257F1E1700DD651A /* RideSetNameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetNameAction.h; sourceTree = "<group>"; };
+		66A10F40257F1E1700DD651A /* SignSetStyleAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SignSetStyleAction.cpp; sourceTree = "<group>"; };
+		66A10F41257F1E1700DD651A /* RideDemolishAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideDemolishAction.cpp; sourceTree = "<group>"; };
+		66A10F42257F1E1700DD651A /* LargeSceneryRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeSceneryRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10F43257F1E1700DD651A /* MazeSetTrackAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MazeSetTrackAction.cpp; sourceTree = "<group>"; };
+		66A10F44257F1E1700DD651A /* ScenarioSetSettingAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSetSettingAction.cpp; sourceTree = "<group>"; };
+		66A10F45257F1E1700DD651A /* SignSetNameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SignSetNameAction.cpp; sourceTree = "<group>"; };
+		66A10F46257F1E1700DD651A /* RideSetColourSchemeAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideSetColourSchemeAction.h; sourceTree = "<group>"; };
+		66A10F47257F1E1700DD651A /* LandBuyRightsAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LandBuyRightsAction.cpp; sourceTree = "<group>"; };
+		66A10F48257F1E1700DD651A /* ScenarioSetSettingAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScenarioSetSettingAction.h; sourceTree = "<group>"; };
+		66A10F49257F1E1700DD651A /* RideSetStatusAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideSetStatusAction.cpp; sourceTree = "<group>"; };
+		66A10F4A257F1E1700DD651A /* PlayerKickAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerKickAction.cpp; sourceTree = "<group>"; };
+		66A10F4B257F1E1700DD651A /* LargeSceneryPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeSceneryPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10FBE257F1E2D00DD651A /* TrackPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPlaceAction.h; sourceTree = "<group>"; };
+		66A10FBF257F1E2D00DD651A /* WaterRaiseAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterRaiseAction.cpp; sourceTree = "<group>"; };
+		66A10FC0257F1E2D00DD651A /* WallPlaceAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallPlaceAction.h; sourceTree = "<group>"; };
+		66A10FC1257F1E2D00DD651A /* TrackRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackRemoveAction.h; sourceTree = "<group>"; };
+		66A10FC2257F1E2E00DD651A /* TrackSetBrakeSpeedAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackSetBrakeSpeedAction.cpp; sourceTree = "<group>"; };
+		66A10FC3257F1E2E00DD651A /* WaterRaiseAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterRaiseAction.h; sourceTree = "<group>"; };
+		66A10FC4257F1E2E00DD651A /* WallRemoveAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallRemoveAction.h; sourceTree = "<group>"; };
+		66A10FC5257F1E2E00DD651A /* WaterLowerAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterLowerAction.h; sourceTree = "<group>"; };
+		66A10FC6257F1E2E00DD651A /* TrackRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10FC7257F1E2E00DD651A /* WaterSetHeightAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterSetHeightAction.cpp; sourceTree = "<group>"; };
+		66A10FC8257F1E2F00DD651A /* WaterSetHeightAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterSetHeightAction.h; sourceTree = "<group>"; };
+		66A10FC9257F1E2F00DD651A /* WallPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WallPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10FCA257F1E2F00DD651A /* TrackPlaceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackPlaceAction.cpp; sourceTree = "<group>"; };
+		66A10FCB257F1E2F00DD651A /* WallSetColourAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WallSetColourAction.h; sourceTree = "<group>"; };
+		66A10FCC257F1E2F00DD651A /* WaterLowerAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterLowerAction.cpp; sourceTree = "<group>"; };
+		66A10FCD257F1E2F00DD651A /* TrackSetBrakeSpeedAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackSetBrakeSpeedAction.h; sourceTree = "<group>"; };
+		66A10FCE257F1E2F00DD651A /* WallRemoveAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WallRemoveAction.cpp; sourceTree = "<group>"; };
+		66A10FCF257F1E3000DD651A /* WallSetColourAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WallSetColourAction.cpp; sourceTree = "<group>"; };
 		9308D9FA209908080079EE96 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
 		9308D9FB209908080079EE96 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
 		9308D9FC209908080079EE96 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
 		930EEA6924FC00940070314E /* ScenarioSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSelect.cpp; sourceTree = "<group>"; };
-		932A20CD22D73CEE00C57EDB /* GuestSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GuestSetNameAction.hpp; sourceTree = "<group>"; };
-		932A20CE22D73CEE00C57EDB /* RideSetVehiclesAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetVehiclesAction.hpp; sourceTree = "<group>"; };
 		932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionCompat.cpp; sourceTree = "<group>"; };
-		932A20D022D73CEE00C57EDB /* RideSetSetting.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetSetting.hpp; sourceTree = "<group>"; };
-		932A20D122D73CEF00C57EDB /* WallPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WallPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20D222D73CEF00C57EDB /* SmallSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SmallSceneryRemoveAction.hpp; sourceTree = "<group>"; };
 		932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionRegistration.cpp; sourceTree = "<group>"; };
-		932A20D422D73CEF00C57EDB /* RideSetName.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetName.hpp; sourceTree = "<group>"; };
-		932A20D522D73CEF00C57EDB /* PlacePeepSpawnAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlacePeepSpawnAction.hpp; sourceTree = "<group>"; };
-		932A20D622D73CEF00C57EDB /* LandSetRightsAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetRightsAction.hpp; sourceTree = "<group>"; };
-		932A20D722D73CEF00C57EDB /* RideCreateAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideCreateAction.hpp; sourceTree = "<group>"; };
-		932A20D822D73CEF00C57EDB /* ParkEntranceRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkEntranceRemoveAction.hpp; sourceTree = "<group>"; };
-		932A20D922D73CEF00C57EDB /* ParkSetLoanAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkSetLoanAction.hpp; sourceTree = "<group>"; };
-		932A20DA22D73CF000C57EDB /* LandLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandLowerAction.hpp; sourceTree = "<group>"; };
-		932A20DB22D73CF000C57EDB /* FootpathPlaceFromTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathPlaceFromTrackAction.hpp; sourceTree = "<group>"; };
-		932A20DC22D73CF000C57EDB /* PlayerKickAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlayerKickAction.hpp; sourceTree = "<group>"; };
-		932A20DD22D73CF000C57EDB /* RideDemolishAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideDemolishAction.hpp; sourceTree = "<group>"; };
-		932A20DE22D73CF000C57EDB /* ClimateSetAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ClimateSetAction.hpp; sourceTree = "<group>"; };
-		932A20DF22D73CF000C57EDB /* PauseToggleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PauseToggleAction.hpp; sourceTree = "<group>"; };
-		932A20E022D73CF000C57EDB /* LargeSceneryPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeSceneryPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20E122D73CF000C57EDB /* LandSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSetHeightAction.hpp; sourceTree = "<group>"; };
-		932A20E222D73CF100C57EDB /* StaffSetColourAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetColourAction.hpp; sourceTree = "<group>"; };
-		932A20E322D73CF100C57EDB /* StaffSetCostumeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetCostumeAction.hpp; sourceTree = "<group>"; };
-		932A20E422D73CF100C57EDB /* StaffSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetNameAction.hpp; sourceTree = "<group>"; };
-		932A20E522D73CF100C57EDB /* BannerPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BannerPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20E622D73CF100C57EDB /* MazeSetTrackAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = MazeSetTrackAction.hpp; sourceTree = "<group>"; };
-		932A20E722D73CF100C57EDB /* StaffHireNewAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffHireNewAction.hpp; sourceTree = "<group>"; };
-		932A20E822D73CF100C57EDB /* RideSetPriceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetPriceAction.hpp; sourceTree = "<group>"; };
-		932A20E922D73CF200C57EDB /* WaterLowerAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterLowerAction.hpp; sourceTree = "<group>"; };
-		932A20EA22D73CF200C57EDB /* ParkSetParameterAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkSetParameterAction.hpp; sourceTree = "<group>"; };
-		932A20EB22D73CF200C57EDB /* SmallSceneryPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SmallSceneryPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20EC22D73CF200C57EDB /* LargeScenerySetColourAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeScenerySetColourAction.hpp; sourceTree = "<group>"; };
-		932A20ED22D73CF200C57EDB /* ParkSetResearchFundingAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkSetResearchFundingAction.hpp; sourceTree = "<group>"; };
-		932A20EE22D73CF200C57EDB /* ScenarioSetSettingAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ScenarioSetSettingAction.hpp; sourceTree = "<group>"; };
-		932A20EF22D73CF200C57EDB /* TrackRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackRemoveAction.hpp; sourceTree = "<group>"; };
-		932A20F022D73CF300C57EDB /* SignSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetNameAction.hpp; sourceTree = "<group>"; };
-		932A20F122D73CF300C57EDB /* RideEntranceExitRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideEntranceExitRemoveAction.hpp; sourceTree = "<group>"; };
-		932A20F222D73CF300C57EDB /* SetParkEntranceFeeAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SetParkEntranceFeeAction.hpp; sourceTree = "<group>"; };
-		932A20F322D73CF300C57EDB /* FootpathRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathRemoveAction.hpp; sourceTree = "<group>"; };
-		932A20F422D73CF300C57EDB /* RideSetAppearanceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetAppearanceAction.hpp; sourceTree = "<group>"; };
 		932A20F522D73CF300C57EDB /* GameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAction.h; sourceTree = "<group>"; };
-		932A20F622D73CF300C57EDB /* RideEntranceExitPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideEntranceExitPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20F722D73CF300C57EDB /* FootpathPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathPlaceAction.hpp; sourceTree = "<group>"; };
-		932A20F822D73CF400C57EDB /* SignSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SignSetStyleAction.hpp; sourceTree = "<group>"; };
-		932A20F922D73CF400C57EDB /* SmallScenerySetColourAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SmallScenerySetColourAction.hpp; sourceTree = "<group>"; };
-		932A20FA22D73CF400C57EDB /* SurfaceSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SurfaceSetStyleAction.hpp; sourceTree = "<group>"; };
-		932A20FB22D73CF400C57EDB /* RideSetStatus.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetStatus.hpp; sourceTree = "<group>"; };
-		932A20FC22D73CF400C57EDB /* ParkSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkSetNameAction.hpp; sourceTree = "<group>"; };
-		932A20FD22D73CF500C57EDB /* LandBuyRightsAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandBuyRightsAction.hpp; sourceTree = "<group>"; };
-		932A20FE22D73CF500C57EDB /* StaffSetPatrolAreaAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetPatrolAreaAction.hpp; sourceTree = "<group>"; };
-		932A20FF22D73CF500C57EDB /* PeepPickupAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PeepPickupAction.hpp; sourceTree = "<group>"; };
-		932A210022D73CF500C57EDB /* BannerSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BannerSetNameAction.hpp; sourceTree = "<group>"; };
-		932A210122D73CF500C57EDB /* SetCheatAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SetCheatAction.hpp; sourceTree = "<group>"; };
-		932A210222D73CF600C57EDB /* ParkMarketingAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkMarketingAction.hpp; sourceTree = "<group>"; };
-		932A210322D73CF600C57EDB /* StaffSetOrdersAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffSetOrdersAction.hpp; sourceTree = "<group>"; };
-		932A210422D73CF600C57EDB /* BannerSetColourAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BannerSetColourAction.hpp; sourceTree = "<group>"; };
-		932A210522D73CF600C57EDB /* FootpathSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathSceneryRemoveAction.hpp; sourceTree = "<group>"; };
-		932A210622D73CF600C57EDB /* GuestSetFlagsAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GuestSetFlagsAction.hpp; sourceTree = "<group>"; };
-		932A210722D73CF600C57EDB /* TrackPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackPlaceAction.hpp; sourceTree = "<group>"; };
-		932A210822D73CF700C57EDB /* PlaceParkEntranceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlaceParkEntranceAction.hpp; sourceTree = "<group>"; };
-		932A210922D73CF700C57EDB /* FootpathSceneryPlaceAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FootpathSceneryPlaceAction.hpp; sourceTree = "<group>"; };
-		932A210A22D73CF700C57EDB /* BannerRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BannerRemoveAction.hpp; sourceTree = "<group>"; };
-		932A210B22D73CF700C57EDB /* LandRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandRaiseAction.hpp; sourceTree = "<group>"; };
-		932A210C22D73CF700C57EDB /* LoadOrQuitAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LoadOrQuitAction.hpp; sourceTree = "<group>"; };
-		932A210D22D73CF700C57EDB /* StaffFireAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = StaffFireAction.hpp; sourceTree = "<group>"; };
-		932A210E22D73CF800C57EDB /* ParkSetDateAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ParkSetDateAction.hpp; sourceTree = "<group>"; };
-		932A210F22D73CF800C57EDB /* WallSetColourAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WallSetColourAction.hpp; sourceTree = "<group>"; };
-		932A211022D73CF800C57EDB /* WaterSetHeightAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterSetHeightAction.hpp; sourceTree = "<group>"; };
-		932A211122D73CF800C57EDB /* RideSetColourScheme.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetColourScheme.hpp; sourceTree = "<group>"; };
-		932A211222D73CF800C57EDB /* WaterRaiseAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WaterRaiseAction.hpp; sourceTree = "<group>"; };
-		932A211322D73CF800C57EDB /* WallRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = WallRemoveAction.hpp; sourceTree = "<group>"; };
-		932A211422D73CF800C57EDB /* LandSmoothAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LandSmoothAction.hpp; sourceTree = "<group>"; };
-		932A211522D73CF900C57EDB /* BalloonPressAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BalloonPressAction.hpp; sourceTree = "<group>"; };
-		932A211622D73CF900C57EDB /* ClearAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ClearAction.hpp; sourceTree = "<group>"; };
-		932A211722D73CF900C57EDB /* BannerSetStyleAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = BannerSetStyleAction.hpp; sourceTree = "<group>"; };
-		932A211822D73CF900C57EDB /* NetworkModifyGroupAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = NetworkModifyGroupAction.hpp; sourceTree = "<group>"; };
-		932A211922D73CF900C57EDB /* PlayerSetGroupAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = PlayerSetGroupAction.hpp; sourceTree = "<group>"; };
-		932A211A22D73CFA00C57EDB /* TileModifyAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TileModifyAction.hpp; sourceTree = "<group>"; };
-		932A211B22D73CFA00C57EDB /* TrackSetBrakeSpeedAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TrackSetBrakeSpeedAction.hpp; sourceTree = "<group>"; };
 		932A211C22D73CFA00C57EDB /* GameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameAction.cpp; sourceTree = "<group>"; };
-		932A211D22D73CFA00C57EDB /* LargeSceneryRemoveAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = LargeSceneryRemoveAction.hpp; sourceTree = "<group>"; };
 		93378D00252B4F550077D2D8 /* JsonFwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = JsonFwd.hpp; sourceTree = "<group>"; };
 		93378D02252B54140077D2D8 /* json_fwd.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = json_fwd.hpp; path = "build/json-3.9.1/include/nlohmann/json_fwd.hpp"; sourceTree = SOURCE_ROOT; };
 		933C55B424B858490057E64B /* SeaDecrypt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SeaDecrypt.cpp; sourceTree = "<group>"; };
@@ -1326,6 +1585,8 @@
 		939A35A120C12FFD00630B3F /* InteractiveConsole.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InteractiveConsole.h; sourceTree = "<group>"; };
 		93AE2387252F948A00CD03C3 /* Formatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatter.h; sourceTree = "<group>"; };
 		93AE2388252F948A00CD03C3 /* Formatter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatter.cpp; sourceTree = "<group>"; };
+		93B4DC1325487CDE008D63FF /* Formatting.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Formatting.cpp; sourceTree = "<group>"; };
+		93B4DC1425487CDE008D63FF /* Formatting.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Formatting.h; sourceTree = "<group>"; };
 		93CBA4BE20A74FF200867D56 /* BitmapReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BitmapReader.h; sourceTree = "<group>"; };
 		93CBA4BF20A74FF200867D56 /* BitmapReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BitmapReader.cpp; sourceTree = "<group>"; };
 		93CBA4C120A7502D00867D56 /* Imaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Imaging.h; sourceTree = "<group>"; };
@@ -1685,7 +1946,6 @@
 		F76C83801EC4E7CC00FA49E2 /* File.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileScanner.cpp; sourceTree = "<group>"; };
 		F76C83821EC4E7CC00FA49E2 /* FileScanner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileScanner.h; sourceTree = "<group>"; };
-		F76C83831EC4E7CC00FA49E2 /* FileStream.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = FileStream.hpp; sourceTree = "<group>"; };
 		F76C83841EC4E7CC00FA49E2 /* Guard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Guard.cpp; sourceTree = "<group>"; };
 		F76C83851EC4E7CC00FA49E2 /* Guard.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Guard.hpp; sourceTree = "<group>"; };
 		F76C83861EC4E7CC00FA49E2 /* IStream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IStream.cpp; sourceTree = "<group>"; };
@@ -1700,8 +1960,6 @@
 		F76C83901EC4E7CC00FA49E2 /* Path.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Path.hpp; sourceTree = "<group>"; };
 		F76C83921EC4E7CC00FA49E2 /* String.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = String.cpp; sourceTree = "<group>"; };
 		F76C83931EC4E7CC00FA49E2 /* String.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = String.hpp; sourceTree = "<group>"; };
-		F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringBuilder.hpp; sourceTree = "<group>"; };
-		F76C83951EC4E7CC00FA49E2 /* StringReader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = StringReader.hpp; sourceTree = "<group>"; };
 		F76C83991EC4E7CC00FA49E2 /* Zip.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Zip.cpp; sourceTree = "<group>"; };
 		F76C839A1EC4E7CC00FA49E2 /* Zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Zip.h; sourceTree = "<group>"; };
 		F76C839F1EC4E7CC00FA49E2 /* drawing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = drawing.h; sourceTree = "<group>"; };
@@ -1895,6 +2153,7 @@
 				C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */,
 				D45A38C21CF3006400659A24 /* libspeexdsp.dylib in Frameworks */,
 				C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */,
+				662578AE25803D040002C77E /* libdiscord-rpc.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1902,6 +2161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662578AD25803CE50002C77E /* libdiscord-rpc.a in Frameworks */,
 				C68878492028982B0084B384 /* Cocoa.framework in Frameworks */,
 				C6887848202897D10084B384 /* Foundation.framework in Frameworks */,
 				F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */,
@@ -1947,7 +2207,7 @@
 				4C25595D244A32E400CE7E45 /* linenoise.hpp */,
 			);
 			name = thirdparty;
-			path = openrct2;
+			path = ../thirdparty;
 			sourceTree = "<group>";
 		};
 		4C25595E244A32EA00CE7E45 /* dukglue */ = {
@@ -2280,91 +2540,170 @@
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
-				932A211522D73CF900C57EDB /* BalloonPressAction.hpp */,
-				932A20E522D73CF100C57EDB /* BannerPlaceAction.hpp */,
-				932A210A22D73CF700C57EDB /* BannerRemoveAction.hpp */,
-				932A210422D73CF600C57EDB /* BannerSetColourAction.hpp */,
-				932A210022D73CF500C57EDB /* BannerSetNameAction.hpp */,
-				932A211722D73CF900C57EDB /* BannerSetStyleAction.hpp */,
-				932A211622D73CF900C57EDB /* ClearAction.hpp */,
-				932A20DE22D73CF000C57EDB /* ClimateSetAction.hpp */,
-				4C255971244A342900CE7E45 /* CustomAction.hpp */,
-				932A20F722D73CF300C57EDB /* FootpathPlaceAction.hpp */,
-				932A20DB22D73CF000C57EDB /* FootpathPlaceFromTrackAction.hpp */,
-				932A20F322D73CF300C57EDB /* FootpathRemoveAction.hpp */,
-				932A210922D73CF700C57EDB /* FootpathSceneryPlaceAction.hpp */,
-				932A210522D73CF600C57EDB /* FootpathSceneryRemoveAction.hpp */,
+				66A10EA0257F1DE000DD651A /* BalloonPressAction.cpp */,
+				66A10EA1257F1DE000DD651A /* BalloonPressAction.h */,
+				66A10EA6257F1DF600DD651A /* BannerPlaceAction.cpp */,
+				66A10EAE257F1DF700DD651A /* BannerPlaceAction.h */,
+				66A10EB3257F1DF700DD651A /* BannerRemoveAction.cpp */,
+				66A10EB9257F1DF700DD651A /* BannerRemoveAction.h */,
+				66A10EBE257F1DF800DD651A /* BannerSetColourAction.cpp */,
+				66A10EB6257F1DF700DD651A /* BannerSetColourAction.h */,
+				66A10EAB257F1DF600DD651A /* BannerSetNameAction.cpp */,
+				66A10EB4257F1DF700DD651A /* BannerSetNameAction.h */,
+				66A10EB1257F1DF700DD651A /* BannerSetStyleAction.cpp */,
+				66A10EBB257F1DF700DD651A /* BannerSetStyleAction.h */,
+				66A10EB2257F1DF700DD651A /* ClearAction.cpp */,
+				66A10EBA257F1DF700DD651A /* ClearAction.h */,
+				66A10EB5257F1DF700DD651A /* ClimateSetAction.cpp */,
+				66A10EB0257F1DF700DD651A /* ClimateSetAction.h */,
+				66A10EB7257F1DF700DD651A /* CustomAction.cpp */,
+				66A10EAF257F1DF700DD651A /* CustomAction.h */,
+				66A10EAA257F1DF600DD651A /* FootpathAdditionPlaceAction.cpp */,
+				66A10EBF257F1DF800DD651A /* FootpathAdditionPlaceAction.h */,
+				66A10EB8257F1DF700DD651A /* FootpathAdditionRemoveAction.cpp */,
+				66A10EA7257F1DF600DD651A /* FootpathAdditionRemoveAction.h */,
+				66A10EBC257F1DF800DD651A /* FootpathPlaceAction.cpp */,
+				66A10EAC257F1DF600DD651A /* FootpathPlaceAction.h */,
+				66A10EA9257F1DF600DD651A /* FootpathPlaceFromTrackAction.cpp */,
+				66A10EBD257F1DF800DD651A /* FootpathPlaceFromTrackAction.h */,
+				66A10EAD257F1DF700DD651A /* FootpathRemoveAction.cpp */,
+				66A10EA8257F1DF600DD651A /* FootpathRemoveAction.h */,
 				932A211C22D73CFA00C57EDB /* GameAction.cpp */,
 				932A20F522D73CF300C57EDB /* GameAction.h */,
 				932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */,
 				932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */,
-				932A210622D73CF600C57EDB /* GuestSetFlagsAction.hpp */,
-				932A20CD22D73CEE00C57EDB /* GuestSetNameAction.hpp */,
-				932A20FD22D73CF500C57EDB /* LandBuyRightsAction.hpp */,
-				932A20DA22D73CF000C57EDB /* LandLowerAction.hpp */,
-				932A210B22D73CF700C57EDB /* LandRaiseAction.hpp */,
-				932A20E122D73CF000C57EDB /* LandSetHeightAction.hpp */,
-				932A20D622D73CEF00C57EDB /* LandSetRightsAction.hpp */,
-				932A211422D73CF800C57EDB /* LandSmoothAction.hpp */,
-				932A20E022D73CF000C57EDB /* LargeSceneryPlaceAction.hpp */,
-				932A211D22D73CFA00C57EDB /* LargeSceneryRemoveAction.hpp */,
-				932A20EC22D73CF200C57EDB /* LargeScenerySetColourAction.hpp */,
-				932A210C22D73CF700C57EDB /* LoadOrQuitAction.hpp */,
-				4CC5258023A19C1C00D4366D /* MazePlaceTrackAction.hpp */,
-				932A20E622D73CF100C57EDB /* MazeSetTrackAction.hpp */,
-				932A211822D73CF900C57EDB /* NetworkModifyGroupAction.hpp */,
-				932A20D822D73CEF00C57EDB /* ParkEntranceRemoveAction.hpp */,
-				932A210222D73CF600C57EDB /* ParkMarketingAction.hpp */,
-				932A210E22D73CF800C57EDB /* ParkSetDateAction.hpp */,
-				932A20D922D73CEF00C57EDB /* ParkSetLoanAction.hpp */,
-				932A20FC22D73CF400C57EDB /* ParkSetNameAction.hpp */,
-				932A20EA22D73CF200C57EDB /* ParkSetParameterAction.hpp */,
-				932A20ED22D73CF200C57EDB /* ParkSetResearchFundingAction.hpp */,
-				932A20DF22D73CF000C57EDB /* PauseToggleAction.hpp */,
-				932A20FF22D73CF500C57EDB /* PeepPickupAction.hpp */,
-				932A210822D73CF700C57EDB /* PlaceParkEntranceAction.hpp */,
-				932A20D522D73CEF00C57EDB /* PlacePeepSpawnAction.hpp */,
-				932A20DC22D73CF000C57EDB /* PlayerKickAction.hpp */,
-				932A211922D73CF900C57EDB /* PlayerSetGroupAction.hpp */,
-				932A20D722D73CEF00C57EDB /* RideCreateAction.hpp */,
-				932A20DD22D73CF000C57EDB /* RideDemolishAction.hpp */,
-				932A20F622D73CF300C57EDB /* RideEntranceExitPlaceAction.hpp */,
-				932A20F122D73CF300C57EDB /* RideEntranceExitRemoveAction.hpp */,
-				932A20F422D73CF300C57EDB /* RideSetAppearanceAction.hpp */,
-				932A211122D73CF800C57EDB /* RideSetColourScheme.hpp */,
-				932A20D422D73CEF00C57EDB /* RideSetName.hpp */,
-				932A20E822D73CF100C57EDB /* RideSetPriceAction.hpp */,
-				932A20D022D73CEE00C57EDB /* RideSetSetting.hpp */,
-				932A20FB22D73CF400C57EDB /* RideSetStatus.hpp */,
-				932A20CE22D73CEE00C57EDB /* RideSetVehiclesAction.hpp */,
-				932A20EE22D73CF200C57EDB /* ScenarioSetSettingAction.hpp */,
-				932A210122D73CF500C57EDB /* SetCheatAction.hpp */,
-				932A20F222D73CF300C57EDB /* SetParkEntranceFeeAction.hpp */,
-				932A20F022D73CF300C57EDB /* SignSetNameAction.hpp */,
-				932A20F822D73CF400C57EDB /* SignSetStyleAction.hpp */,
-				932A20EB22D73CF200C57EDB /* SmallSceneryPlaceAction.hpp */,
-				932A20D222D73CEF00C57EDB /* SmallSceneryRemoveAction.hpp */,
-				932A20F922D73CF400C57EDB /* SmallScenerySetColourAction.hpp */,
-				932A210D22D73CF700C57EDB /* StaffFireAction.hpp */,
-				932A20E722D73CF100C57EDB /* StaffHireNewAction.hpp */,
-				932A20E222D73CF100C57EDB /* StaffSetColourAction.hpp */,
-				932A20E322D73CF100C57EDB /* StaffSetCostumeAction.hpp */,
-				932A20E422D73CF100C57EDB /* StaffSetNameAction.hpp */,
-				932A210322D73CF600C57EDB /* StaffSetOrdersAction.hpp */,
-				932A20FE22D73CF500C57EDB /* StaffSetPatrolAreaAction.hpp */,
-				932A20FA22D73CF400C57EDB /* SurfaceSetStyleAction.hpp */,
-				932A211A22D73CFA00C57EDB /* TileModifyAction.hpp */,
+				66A10F25257F1E1500DD651A /* GuestSetFlagsAction.cpp */,
+				66A10F1D257F1E1400DD651A /* GuestSetFlagsAction.h */,
+				66A10EEB257F1E1100DD651A /* GuestSetNameAction.cpp */,
+				66A10EEA257F1E1100DD651A /* GuestSetNameAction.h */,
+				66A10F47257F1E1700DD651A /* LandBuyRightsAction.cpp */,
+				66A10F2F257F1E1600DD651A /* LandBuyRightsAction.h */,
+				66A10F33257F1E1600DD651A /* LandLowerAction.cpp */,
+				66A10EE3257F1E1100DD651A /* LandLowerAction.h */,
+				66A10EF4257F1E1200DD651A /* LandRaiseAction.cpp */,
+				66A10EFE257F1E1200DD651A /* LandRaiseAction.h */,
+				66A10F15257F1E1400DD651A /* LandSetHeightAction.cpp */,
+				66A10F03257F1E1300DD651A /* LandSetHeightAction.h */,
+				66A10F3B257F1E1600DD651A /* LandSetRightsAction.cpp */,
+				66A10F1E257F1E1400DD651A /* LandSetRightsAction.h */,
+				66A10F23257F1E1500DD651A /* LandSmoothAction.cpp */,
+				66A10F1B257F1E1400DD651A /* LandSmoothAction.h */,
+				66A10F4B257F1E1700DD651A /* LargeSceneryPlaceAction.cpp */,
+				66A10F32257F1E1600DD651A /* LargeSceneryPlaceAction.h */,
+				66A10F42257F1E1700DD651A /* LargeSceneryRemoveAction.cpp */,
+				66A10EEE257F1E1100DD651A /* LargeSceneryRemoveAction.h */,
+				66A10EFA257F1E1200DD651A /* LargeScenerySetColourAction.cpp */,
+				66A10F29257F1E1500DD651A /* LargeScenerySetColourAction.h */,
+				66A10EFC257F1E1200DD651A /* LoadOrQuitAction.cpp */,
+				66A10F16257F1E1400DD651A /* LoadOrQuitAction.h */,
+				66A10F0F257F1E1300DD651A /* MazePlaceTrackAction.cpp */,
+				66A10F20257F1E1500DD651A /* MazePlaceTrackAction.h */,
+				66A10F43257F1E1700DD651A /* MazeSetTrackAction.cpp */,
+				66A10F0B257F1E1300DD651A /* MazeSetTrackAction.h */,
+				66A10F10257F1E1400DD651A /* NetworkModifyGroupAction.cpp */,
+				66A10EF8257F1E1200DD651A /* NetworkModifyGroupAction.h */,
+				66A10EF0257F1E1200DD651A /* ParkEntranceRemoveAction.cpp */,
+				66A10EE0257F1E1000DD651A /* ParkEntranceRemoveAction.h */,
+				66A10F2E257F1E1600DD651A /* ParkMarketingAction.cpp */,
+				66A10F36257F1E1600DD651A /* ParkMarketingAction.h */,
+				66A10F00257F1E1300DD651A /* ParkSetDateAction.cpp */,
+				66A10EDF257F1E1000DD651A /* ParkSetDateAction.h */,
+				66A10EFB257F1E1200DD651A /* ParkSetLoanAction.cpp */,
+				66A10EF9257F1E1200DD651A /* ParkSetLoanAction.h */,
+				66A10F0D257F1E1300DD651A /* ParkSetNameAction.cpp */,
+				66A10F39257F1E1600DD651A /* ParkSetNameAction.h */,
+				66A10EFD257F1E1200DD651A /* ParkSetParameterAction.cpp */,
+				66A10F22257F1E1500DD651A /* ParkSetParameterAction.h */,
+				66A10F2B257F1E1500DD651A /* ParkSetResearchFundingAction.cpp */,
+				66A10F1A257F1E1400DD651A /* ParkSetResearchFundingAction.h */,
+				66A10F19257F1E1400DD651A /* PauseToggleAction.cpp */,
+				66A10EDE257F1E1000DD651A /* PauseToggleAction.h */,
+				66A10F2C257F1E1500DD651A /* PeepPickupAction.cpp */,
+				66A10F37257F1E1600DD651A /* PeepPickupAction.h */,
+				66A10EF1257F1E1200DD651A /* PlaceParkEntranceAction.cpp */,
+				66A10EDC257F1E1000DD651A /* PlaceParkEntranceAction.h */,
+				66A10F28257F1E1500DD651A /* PlacePeepSpawnAction.cpp */,
+				66A10F02257F1E1300DD651A /* PlacePeepSpawnAction.h */,
+				66A10F4A257F1E1700DD651A /* PlayerKickAction.cpp */,
+				66A10EF3257F1E1200DD651A /* PlayerKickAction.h */,
+				66A10F12257F1E1400DD651A /* PlayerSetGroupAction.cpp */,
+				66A10F13257F1E1400DD651A /* PlayerSetGroupAction.h */,
+				66A10F09257F1E1300DD651A /* RideCreateAction.cpp */,
+				66A10F1C257F1E1400DD651A /* RideCreateAction.h */,
+				66A10F41257F1E1700DD651A /* RideDemolishAction.cpp */,
+				66A10EE1257F1E1100DD651A /* RideDemolishAction.h */,
+				66A10EFF257F1E1200DD651A /* RideEntranceExitPlaceAction.cpp */,
+				66A10EF7257F1E1200DD651A /* RideEntranceExitPlaceAction.h */,
+				66A10F38257F1E1600DD651A /* RideEntranceExitRemoveAction.cpp */,
+				66A10F04257F1E1300DD651A /* RideEntranceExitRemoveAction.h */,
+				66A10EE7257F1E1100DD651A /* RideSetAppearanceAction.cpp */,
+				66A10EE4257F1E1100DD651A /* RideSetAppearanceAction.h */,
+				66A10F0E257F1E1300DD651A /* RideSetColourSchemeAction.cpp */,
+				66A10F46257F1E1700DD651A /* RideSetColourSchemeAction.h */,
+				66A10F34257F1E1600DD651A /* RideSetNameAction.cpp */,
+				66A10F3F257F1E1700DD651A /* RideSetNameAction.h */,
+				66A10F05257F1E1300DD651A /* RideSetPriceAction.cpp */,
+				66A10F35257F1E1600DD651A /* RideSetPriceAction.h */,
+				66A10F0A257F1E1300DD651A /* RideSetSettingAction.cpp */,
+				66A10F3C257F1E1600DD651A /* RideSetSettingAction.h */,
+				66A10F49257F1E1700DD651A /* RideSetStatusAction.cpp */,
+				66A10EED257F1E1100DD651A /* RideSetStatusAction.h */,
+				66A10EF6257F1E1200DD651A /* RideSetVehicleAction.cpp */,
+				66A10F11257F1E1400DD651A /* RideSetVehicleAction.h */,
+				66A10F44257F1E1700DD651A /* ScenarioSetSettingAction.cpp */,
+				66A10F48257F1E1700DD651A /* ScenarioSetSettingAction.h */,
+				66A10EE9257F1E1100DD651A /* SetCheatAction.cpp */,
+				66A10F27257F1E1500DD651A /* SetCheatAction.h */,
+				66A10F3A257F1E1600DD651A /* SetParkEntranceFeeAction.cpp */,
+				66A10EEC257F1E1100DD651A /* SetParkEntranceFeeAction.h */,
+				66A10F45257F1E1700DD651A /* SignSetNameAction.cpp */,
+				66A10F18257F1E1400DD651A /* SignSetNameAction.h */,
+				66A10F40257F1E1700DD651A /* SignSetStyleAction.cpp */,
+				66A10F26257F1E1500DD651A /* SignSetStyleAction.h */,
+				66A10F3E257F1E1700DD651A /* SmallSceneryPlaceAction.cpp */,
+				66A10F17257F1E1400DD651A /* SmallSceneryPlaceAction.h */,
+				66A10F06257F1E1300DD651A /* SmallSceneryRemoveAction.cpp */,
+				66A10EE6257F1E1100DD651A /* SmallSceneryRemoveAction.h */,
+				66A10F31257F1E1600DD651A /* SmallScenerySetColourAction.cpp */,
+				66A10EEF257F1E1200DD651A /* SmallScenerySetColourAction.h */,
+				66A10F2D257F1E1500DD651A /* StaffFireAction.cpp */,
+				66A10F2A257F1E1500DD651A /* StaffFireAction.h */,
+				66A10F0C257F1E1300DD651A /* StaffHireNewAction.cpp */,
+				66A10F21257F1E1500DD651A /* StaffHireNewAction.h */,
+				66A10F01257F1E1300DD651A /* StaffSetColourAction.cpp */,
+				66A10F08257F1E1300DD651A /* StaffSetColourAction.h */,
+				66A10EE2257F1E1100DD651A /* StaffSetCostumeAction.cpp */,
+				66A10F1F257F1E1500DD651A /* StaffSetCostumeAction.h */,
+				66A10EE8257F1E1100DD651A /* StaffSetNameAction.cpp */,
+				66A10EDD257F1E1000DD651A /* StaffSetNameAction.h */,
+				66A10F24257F1E1500DD651A /* StaffSetOrdersAction.cpp */,
+				66A10F07257F1E1300DD651A /* StaffSetOrdersAction.h */,
+				66A10F30257F1E1600DD651A /* StaffSetPatrolAreaAction.cpp */,
+				66A10F14257F1E1400DD651A /* StaffSetPatrolAreaAction.h */,
+				66A10EE5257F1E1100DD651A /* SurfaceSetStyleAction.cpp */,
+				66A10EF2257F1E1200DD651A /* SurfaceSetStyleAction.h */,
+				66A10F3D257F1E1700DD651A /* TileModifyAction.cpp */,
+				66A10EF5257F1E1200DD651A /* TileModifyAction.h */,
 				4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */,
 				4CC5258323A19C2E00D4366D /* TrackDesignAction.h */,
-				932A210722D73CF600C57EDB /* TrackPlaceAction.hpp */,
-				932A20EF22D73CF200C57EDB /* TrackRemoveAction.hpp */,
-				932A211B22D73CFA00C57EDB /* TrackSetBrakeSpeedAction.hpp */,
-				932A20D122D73CEF00C57EDB /* WallPlaceAction.hpp */,
-				932A211322D73CF800C57EDB /* WallRemoveAction.hpp */,
-				932A210F22D73CF800C57EDB /* WallSetColourAction.hpp */,
-				932A20E922D73CF200C57EDB /* WaterLowerAction.hpp */,
-				932A211222D73CF800C57EDB /* WaterRaiseAction.hpp */,
-				932A211022D73CF800C57EDB /* WaterSetHeightAction.hpp */,
+				66A10FCA257F1E2F00DD651A /* TrackPlaceAction.cpp */,
+				66A10FBE257F1E2D00DD651A /* TrackPlaceAction.h */,
+				66A10FC6257F1E2E00DD651A /* TrackRemoveAction.cpp */,
+				66A10FC1257F1E2D00DD651A /* TrackRemoveAction.h */,
+				66A10FC2257F1E2E00DD651A /* TrackSetBrakeSpeedAction.cpp */,
+				66A10FCD257F1E2F00DD651A /* TrackSetBrakeSpeedAction.h */,
+				66A10FC9257F1E2F00DD651A /* WallPlaceAction.cpp */,
+				66A10FC0257F1E2D00DD651A /* WallPlaceAction.h */,
+				66A10FCE257F1E2F00DD651A /* WallRemoveAction.cpp */,
+				66A10FC4257F1E2E00DD651A /* WallRemoveAction.h */,
+				66A10FCF257F1E3000DD651A /* WallSetColourAction.cpp */,
+				66A10FCB257F1E2F00DD651A /* WallSetColourAction.h */,
+				66A10FCC257F1E2F00DD651A /* WaterLowerAction.cpp */,
+				66A10FC5257F1E2E00DD651A /* WaterLowerAction.h */,
+				66A10FBF257F1E2D00DD651A /* WaterRaiseAction.cpp */,
+				66A10FC3257F1E2E00DD651A /* WaterRaiseAction.h */,
+				66A10FC7257F1E2E00DD651A /* WaterSetHeightAction.cpp */,
+				66A10FC8257F1E2F00DD651A /* WaterSetHeightAction.h */,
 			);
 			path = actions;
 			sourceTree = "<group>";
@@ -2596,6 +2935,8 @@
 		D497D06F1C20FD52002BF46A = {
 			isa = PBXGroup;
 			children = (
+				662578A525803AA90002C77E /* discord_rpc.h */,
+				662578A325803A6C0002C77E /* libdiscord-rpc.a */,
 				9391535A22D74359008E0780 /* OpenRCT2.entitlements */,
 				4CF67196206B7E720034ADDD /* object */,
 				D41B72431C21015A0080A7B9 /* Sources */,
@@ -2637,8 +2978,7 @@
 				D43407E11D0E14CE00C2B3D4 /* shaders */,
 				D4EC48E51C2637710024B507 /* sequence */,
 			);
-			name = data;
-			path = ../data;
+			path = data;
 			sourceTree = "<group>";
 		};
 		D4EC48811C2634870024B507 /* include */ = {
@@ -2826,7 +3166,9 @@
 				2ADE2F26224418B2002598AF /* FileIndex.hpp */,
 				F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */,
 				F76C83821EC4E7CC00FA49E2 /* FileScanner.h */,
-				F76C83831EC4E7CC00FA49E2 /* FileStream.hpp */,
+				4C8BB67825533D4C005C8830 /* FileStream.cpp */,
+				4C8BB67725533D4B005C8830 /* FileStream.h */,
+				4C8BB67625533D4B005C8830 /* FileSystem.hpp */,
 				93DFD02D24521BA0001FCBAF /* FileWatcher.cpp */,
 				93DFD02C24521B9F001FCBAF /* FileWatcher.h */,
 				F76C83841EC4E7CC00FA49E2 /* Guard.cpp */,
@@ -2837,7 +3179,8 @@
 				93CBA4C120A7502D00867D56 /* Imaging.h */,
 				F76C83861EC4E7CC00FA49E2 /* IStream.cpp */,
 				F76C83871EC4E7CC00FA49E2 /* IStream.hpp */,
-				2ADE2F25224418B2002598AF /* JobPool.hpp */,
+				4C8BB67B25533D59005C8830 /* JobPool.cpp */,
+				4C8BB67A25533D58005C8830 /* JobPool.h */,
 				F76C83881EC4E7CC00FA49E2 /* Json.cpp */,
 				F76C83891EC4E7CC00FA49E2 /* Json.hpp */,
 				93378D00252B4F550077D2D8 /* JsonFwd.hpp */,
@@ -2855,8 +3198,10 @@
 				4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */,
 				F76C83921EC4E7CC00FA49E2 /* String.cpp */,
 				F76C83931EC4E7CC00FA49E2 /* String.hpp */,
-				F76C83941EC4E7CC00FA49E2 /* StringBuilder.hpp */,
-				F76C83951EC4E7CC00FA49E2 /* StringReader.hpp */,
+				4C8BB67D25533D64005C8830 /* StringBuilder.cpp */,
+				4C8BB68025533D64005C8830 /* StringBuilder.h */,
+				4C8BB67E25533D64005C8830 /* StringReader.cpp */,
+				4C8BB67F25533D64005C8830 /* StringReader.h */,
 				F76C83991EC4E7CC00FA49E2 /* Zip.cpp */,
 				F76C839A1EC4E7CC00FA49E2 /* Zip.h */,
 			);
@@ -2926,7 +3271,8 @@
 				C67B28182002D7F200109C93 /* Window_internal.h */,
 				4C7B53F1200143C200A52E21 /* Window.cpp */,
 				4C7B53F2200143C200A52E21 /* Window.h */,
-				6341F4E32400AA1C0052902B /* ZoomLevel.hpp */,
+				4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */,
+				4C8BB68325533DB9005C8830 /* ZoomLevel.h */,
 			);
 			path = interface;
 			sourceTree = "<group>";
@@ -2944,6 +3290,8 @@
 				4C7B53B01FFF935B00A52E21 /* FormatCodes.h */,
 				93AE2388252F948A00CD03C3 /* Formatter.cpp */,
 				93AE2387252F948A00CD03C3 /* Formatter.h */,
+				93B4DC1325487CDE008D63FF /* Formatting.cpp */,
+				93B4DC1425487CDE008D63FF /* Formatting.h */,
 				4C7B53B11FFF935B00A52E21 /* Language.cpp */,
 				4C7B53C91FFF991000A52E21 /* Language.h */,
 				4C7B53B31FFF935B00A52E21 /* LanguagePack.cpp */,
@@ -3252,6 +3600,7 @@
 				4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */,
 				4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */,
 				4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */,
+				4C1EE63C24AB4A2700D7177F /* HybridCoaster.cpp */,
 				4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */,
 				4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */,
 				4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */,
@@ -3675,61 +4024,141 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				662578A625803AA90002C77E /* discord_rpc.h in Headers */,
 				93DFD05624521C1A001FCBAF /* ScriptEngine.h in Headers */,
+				66A10ED0257F1DF800DD651A /* BannerSetColourAction.h in Headers */,
+				66A10EC6257F1DF800DD651A /* FootpathPlaceAction.h in Headers */,
+				66A10FA9257F1E1800DD651A /* ParkSetNameAction.h in Headers */,
+				66A10F69257F1E1800DD651A /* ParkSetLoanAction.h in Headers */,
 				2ADE2F3122441905002598AF /* DiscordService.h in Headers */,
+				66A10FD2257F1E3000DD651A /* WallPlaceAction.h in Headers */,
+				66A10F8C257F1E1800DD651A /* RideCreateAction.h in Headers */,
+				66A10F65257F1E1700DD651A /* TileModifyAction.h in Headers */,
+				66A10ED4257F1DF800DD651A /* ClearAction.h in Headers */,
+				66A10F5F257F1E1700DD651A /* SmallScenerySetColourAction.h in Headers */,
+				66A10FA5257F1E1800DD651A /* RideSetPriceAction.h in Headers */,
 				C67B28172002D67A00109C93 /* Viewport.h in Headers */,
+				66A10FDD257F1E3000DD651A /* WallSetColourAction.h in Headers */,
+				66A10F8D257F1E1800DD651A /* GuestSetFlagsAction.h in Headers */,
+				66A10FA7257F1E1800DD651A /* PeepPickupAction.h in Headers */,
 				939A359C20C12FC800630B3F /* Paint.Sprite.h in Headers */,
 				93DFD05524521C1A001FCBAF /* ScMap.hpp in Headers */,
 				9308DA04209908090079EE96 /* TileElement.h in Headers */,
 				C67B28152002D67A00109C93 /* Widget.h in Headers */,
+				66A10F99257F1E1800DD651A /* LargeScenerySetColourAction.h in Headers */,
 				93378D01252B4F550077D2D8 /* JsonFwd.hpp in Headers */,
+				66A10F90257F1E1800DD651A /* MazePlaceTrackAction.h in Headers */,
+				66A10F6E257F1E1800DD651A /* LandRaiseAction.h in Headers */,
+				66A10F78257F1E1800DD651A /* StaffSetColourAction.h in Headers */,
+				66A10F67257F1E1700DD651A /* RideEntranceExitPlaceAction.h in Headers */,
+				66A10F8A257F1E1800DD651A /* ParkSetResearchFundingAction.h in Headers */,
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
+				66A10F50257F1E1700DD651A /* ParkEntranceRemoveAction.h in Headers */,
+				66A10F4D257F1E1700DD651A /* StaffSetNameAction.h in Headers */,
 				93DFD05124521C1A001FCBAF /* ScContext.hpp in Headers */,
+				66A10FD6257F1E3000DD651A /* WallRemoveAction.h in Headers */,
 				939A359F20C12FDE00630B3F /* Paint.Surface.h in Headers */,
+				66A10F7B257F1E1800DD651A /* MazeSetTrackAction.h in Headers */,
 				C67B28192002D7F200109C93 /* Window_internal.h in Headers */,
+				66A10F53257F1E1700DD651A /* LandLowerAction.h in Headers */,
+				66A10F5E257F1E1700DD651A /* LargeSceneryRemoveAction.h in Headers */,
+				66A10F5D257F1E1700DD651A /* RideSetStatusAction.h in Headers */,
 				93DFD05024521C1A001FCBAF /* ScPark.hpp in Headers */,
+				93B4DC1625487CDF008D63FF /* Formatting.h in Headers */,
 				93FB271F24ED32B7008241C9 /* json.hpp in Headers */,
+				66A10F86257F1E1800DD651A /* LoadOrQuitAction.h in Headers */,
 				93DFD02E24521BA0001FCBAF /* FileWatcher.h in Headers */,
 				2ADE2F28224418B2002598AF /* DataSerialiserTag.h in Headers */,
+				66A10F74257F1E1800DD651A /* RideEntranceExitRemoveAction.h in Headers */,
+				66A10F9A257F1E1800DD651A /* StaffFireAction.h in Headers */,
 				93DFD04C24521C1A001FCBAF /* ScDisposable.hpp in Headers */,
+				66A10FAC257F1E1800DD651A /* RideSetSettingAction.h in Headers */,
 				2ADE2F2E224418E7002598AF /* ConversionTables.h in Headers */,
 				933F2CBB20935668001B33FD /* LocalisationService.h in Headers */,
+				66A10EC9257F1DF800DD651A /* CustomAction.h in Headers */,
+				66A10FDF257F1E3000DD651A /* TrackSetBrakeSpeedAction.h in Headers */,
+				66A10F54257F1E1700DD651A /* RideSetAppearanceAction.h in Headers */,
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
+				66A10F5A257F1E1700DD651A /* GuestSetNameAction.h in Headers */,
+				66A10F87257F1E1800DD651A /* SmallSceneryPlaceAction.h in Headers */,
+				66A10ECA257F1DF800DD651A /* ClimateSetAction.h in Headers */,
+				66A10F77257F1E1800DD651A /* StaffSetOrdersAction.h in Headers */,
 				2ADE2F2C224418B2002598AF /* FileIndex.hpp in Headers */,
+				66A10FAF257F1E1800DD651A /* RideSetNameAction.h in Headers */,
 				93DFD04A24521C1A001FCBAF /* ScConfiguration.hpp in Headers */,
 				93CBA4CC20A7504500867D56 /* ImageImporter.h in Headers */,
+				66A10F62257F1E1700DD651A /* SurfaceSetStyleAction.h in Headers */,
+				66A10EC1257F1DF800DD651A /* FootpathAdditionRemoveAction.h in Headers */,
+				66A10FD0257F1E3000DD651A /* TrackPlaceAction.h in Headers */,
+				66A10F4C257F1E1700DD651A /* PlaceParkEntranceAction.h in Headers */,
+				66A10F96257F1E1800DD651A /* SignSetStyleAction.h in Headers */,
 				2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */,
 				93378D03252B54140077D2D8 /* json_fwd.hpp in Headers */,
+				66A10FD5257F1E3000DD651A /* WaterRaiseAction.h in Headers */,
 				93DFD04924521C1A001FCBAF /* ScTile.hpp in Headers */,
 				936F412B24CE030F00E07BCF /* NetworkBase.h in Headers */,
+				66A10EC2257F1DF800DD651A /* FootpathRemoveAction.h in Headers */,
+				66A10EA3257F1DE100DD651A /* BalloonPressAction.h in Headers */,
 				93DFD04524521C1A001FCBAF /* ScObject.hpp in Headers */,
 				2ADE2F382244198B002598AF /* SpriteBase.h in Headers */,
+				66A10EC8257F1DF800DD651A /* BannerPlaceAction.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				2ADE2F27224418B2002598AF /* Random.hpp in Headers */,
 				9344BEF920C1E6180047D165 /* Crypt.h in Headers */,
+				66A10F63257F1E1700DD651A /* PlayerKickAction.h in Headers */,
+				66A10FD7257F1E3000DD651A /* WaterLowerAction.h in Headers */,
 				939A35A220C12FFD00630B3F /* InteractiveConsole.h in Headers */,
 				93CBA4C320A7502E00867D56 /* Imaging.h in Headers */,
 				93DFD04D24521C1A001FCBAF /* ScEntity.hpp in Headers */,
+				66A10F4E257F1E1700DD651A /* PauseToggleAction.h in Headers */,
 				93DFD04E24521C1A001FCBAF /* Duktape.hpp in Headers */,
-				2ADE2F2B224418B2002598AF /* JobPool.hpp in Headers */,
+				66A10FA2257F1E1800DD651A /* LargeSceneryPlaceAction.h in Headers */,
 				2ADE2F3622441960002598AF /* RideTypes.h in Headers */,
+				66A10F68257F1E1800DD651A /* NetworkModifyGroupAction.h in Headers */,
 				93DFD05324521C1A001FCBAF /* ScRide.hpp in Headers */,
+				66A10F88257F1E1800DD651A /* SignSetNameAction.h in Headers */,
 				93AE2389252F948A00CD03C3 /* Formatter.h in Headers */,
 				93DFD05424521C1A001FCBAF /* ScDate.hpp in Headers */,
 				93FC08FF2418F3ED00CA3054 /* duktape.h in Headers */,
 				93DFD04F24521C1A001FCBAF /* ScConsole.hpp in Headers */,
+				66A10F91257F1E1800DD651A /* StaffHireNewAction.h in Headers */,
 				9308DA05209908090079EE96 /* Surface.h in Headers */,
+				66A10F9F257F1E1800DD651A /* LandBuyRightsAction.h in Headers */,
 				93DE9753209C3C1000FB1CC8 /* GameState.h in Headers */,
+				66A10ED9257F1DF800DD651A /* FootpathAdditionPlaceAction.h in Headers */,
 				936F412824CE030F00E07BCF /* NetworkClient.h in Headers */,
 				2ADE2F2A224418B2002598AF /* Meta.hpp in Headers */,
 				93DFD04624521C1A001FCBAF /* HookEngine.h in Headers */,
+				66A10F81257F1E1800DD651A /* RideSetVehicleAction.h in Headers */,
+				66A10F83257F1E1800DD651A /* PlayerSetGroupAction.h in Headers */,
+				66A10F8E257F1E1800DD651A /* LandSetRightsAction.h in Headers */,
 				93FC09002418F3ED00CA3054 /* duk_config.h in Headers */,
+				66A10FDA257F1E3000DD651A /* WaterSetHeightAction.h in Headers */,
+				66A10F51257F1E1700DD651A /* RideDemolishAction.h in Headers */,
+				66A10F73257F1E1800DD651A /* LandSetHeightAction.h in Headers */,
+				66A10F4F257F1E1700DD651A /* ParkSetDateAction.h in Headers */,
+				66A10FD3257F1E3000DD651A /* TrackRemoveAction.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				939A35A020C12FDE00630B3F /* Paint.TileElement.h in Headers */,
+				66A10ED3257F1DF800DD651A /* BannerRemoveAction.h in Headers */,
+				66A10F84257F1E1800DD651A /* StaffSetPatrolAreaAction.h in Headers */,
+				66A10F56257F1E1700DD651A /* SmallSceneryRemoveAction.h in Headers */,
+				66A10F5C257F1E1700DD651A /* SetParkEntranceFeeAction.h in Headers */,
 				93DFD04724521C1A001FCBAF /* ScNetwork.hpp in Headers */,
+				66A10F8F257F1E1800DD651A /* StaffSetCostumeAction.h in Headers */,
+				66A10ED5257F1DF800DD651A /* BannerSetStyleAction.h in Headers */,
+				66A10F97257F1E1800DD651A /* SetCheatAction.h in Headers */,
+				66A10F92257F1E1800DD651A /* ParkSetParameterAction.h in Headers */,
 				93DFD04424521C1A001FCBAF /* Plugin.h in Headers */,
+				66A10FB6257F1E1800DD651A /* RideSetColourSchemeAction.h in Headers */,
+				66A10FA6257F1E1800DD651A /* ParkMarketingAction.h in Headers */,
 				C67B28162002D67A00109C93 /* Window.h in Headers */,
+				66A10FB8257F1E1800DD651A /* ScenarioSetSettingAction.h in Headers */,
+				66A10F72257F1E1800DD651A /* PlacePeepSpawnAction.h in Headers */,
+				66A10ED7257F1DF800DD651A /* FootpathPlaceFromTrackAction.h in Headers */,
+				66A10ECE257F1DF800DD651A /* BannerSetNameAction.h in Headers */,
 				2ADE2F342244191E002598AF /* VirtualFloor.h in Headers */,
+				66A10F8B257F1E1800DD651A /* LandSmoothAction.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3766,6 +4195,7 @@
 			buildConfigurationList = F76C809D1EC4D9FA00FA49E2 /* Build configuration list for PBXNativeTarget "libopenrct2" */;
 			buildPhases = (
 				F76C809F1EC4DB0300FA49E2 /* Get Git Variables */,
+				66257898258032500002C77E /* Get discord-rpc */,
 				F76C80961EC4D9FA00FA49E2 /* Sources */,
 				F76C88381EC4EB5900FA49E2 /* Resources */,
 				F76C80981EC4D9FA00FA49E2 /* Headers */,
@@ -3890,7 +4320,25 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.17\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi";
+			shellScript = "version=\"1.0.20\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
+		};
+		66257898258032500002C77E /* Get discord-rpc */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Get discord-rpc";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ ! -d \"${SRCROOT}/discord-rpc\" ]]; then\n    . ${SRCROOT}/scripts/get-discord-rpc\nfi\n\nif [[ -d \"${SRCROOT}/discord-rpc\" ]]; then\n    cd ${SRCROOT}/discord-rpc\n    mkdir build\n    cd build\n    cmake ..\n    cmake --build . --config Release\nfi\n";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3920,7 +4368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/sprites.json\"";
+			shellScript = "\"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}\" sprite build \"${SRCROOT}/data/g2.dat\" \"${SRCROOT}/resources/g2/sprites.json\"\n";
 		};
 		D4CA88671D4E962100060C11 /* Get Git Variables */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3936,7 +4384,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D4E09E831E049C0600F53CE3 /* Download Title Sequences */ = {
@@ -3951,7 +4399,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi";
+			shellScript = "version=\"0.1.2c\"\nzipname=\"title-sequences.zip\"\nliburl=\"https://github.com/OpenRCT2/title-sequences/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/sequence\" || ! -e \"${SRCROOT}/sequencesversion\" || $(head -n 1 \"${SRCROOT}/sequencesversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/sequence\" ]]; then rm -r \"${SRCROOT}/data/sequence\"; fi\nmkdir -p \"${SRCROOT}/data/sequence\"\n\ncurl -L -o \"${SRCROOT}/data/sequence/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/sequence\" \"${SRCROOT}/data/sequence/$zipname\"\nrm \"${SRCROOT}/data/sequence/$zipname\"\n\necho $version > \"${SRCROOT}/sequencesversion\"\nfi\n";
 		};
 		D4EC012A1C25532B00DAFE69 /* Setup AppIcon */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3998,7 +4446,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"";
+			shellScript = "echo \"#define\" OPENRCT2_VERSION_TAG \\\"$(git describe HEAD | sed -E 's/-g.+$//')\\\" > \"${DERIVED_FILE_DIR}/gitversion.h\"\n\nbranch=$(git rev-parse --abbrev-ref HEAD)\nif [ \"$branch\" != \"master\" ]; then\necho \"#define\" OPENRCT2_BRANCH \\\"$branch\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\nshortsha1=$(git rev-parse --short HEAD)\nif [ \"$shortsha1\" != \"HEAD\" ]; then\necho \"#define\" OPENRCT2_COMMIT_SHA1_SHORT \\\"$shortsha1\\\" >> \"${DERIVED_FILE_DIR}/gitversion.h\"\nfi\n\ncp \"${SRCROOT}/distribution/macos/Info.plist\" \"${DERIVED_FILE_DIR}/Info.plist\"\nplutil -replace CFBundleVersion -string \"$(git rev-parse --short HEAD)\" \"${DERIVED_FILE_DIR}/Info.plist\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F7D7748C1EC66E9300BE6EBC /* Get Git Variables */ = {
@@ -4040,6 +4488,7 @@
 				9346F9DB208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
 				933F2CB720935653001B33FD /* LocalisationService.cpp in Sources */,
+				4C8BB68225533D65005C8830 /* StringReader.cpp in Sources */,
 				4C255958244A328B00CE7E45 /* CustomMenu.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
@@ -4054,6 +4503,7 @@
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */,
 				4C81F7E124672C4D000E61BF /* CustomListView.cpp in Sources */,
+				4C1EE63D24AB4A2700D7177F /* HybridCoaster.cpp in Sources */,
 				6341F4E22400AA0F0052902B /* Drawing.Sprite.BMP.cpp in Sources */,
 				C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
@@ -4083,6 +4533,7 @@
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				932A211F22D73CFA00C57EDB /* GameActionRegistration.cpp in Sources */,
+				4C8BB67925533D4C005C8830 /* FileStream.cpp in Sources */,
 				933CBDBD20CB1BA900134678 /* ViewportInteraction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
@@ -4133,6 +4584,7 @@
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
+				4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
@@ -4144,8 +4596,10 @@
 				C68878C320289B710084B384 /* DrawRectShader.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
+				4C8BB67C25533D59005C8830 /* JobPool.cpp in Sources */,
 				01C6F0C222FD519E0057E2F7 /* TrackImporter.cpp in Sources */,
 				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
+				4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				2A5354E922099C4F00A5440F /* Network.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
@@ -4183,9 +4637,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7C44AF82030E8D3007E099F /* AVX2Drawing.cpp in Sources */,
+				66A10FAE257F1E1800DD651A /* SmallSceneryPlaceAction.cpp in Sources */,
 				F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */,
 				C688791C20289B9B0084B384 /* Facility.cpp in Sources */,
 				C688790C20289B9B0084B384 /* CarRide.cpp in Sources */,
+				66A10F75257F1E1800DD651A /* RideSetPriceAction.cpp in Sources */,
+				66A10F6D257F1E1800DD651A /* ParkSetParameterAction.cpp in Sources */,
 				C688786820289A4A0084B384 /* Util.cpp in Sources */,
 				C688792720289B9B0084B384 /* TopSpin.cpp in Sources */,
 				C688787E20289ADE0084B384 /* Drawing.cpp in Sources */,
@@ -4197,18 +4654,22 @@
 				C688789E20289B200084B384 /* FormatCodes.cpp in Sources */,
 				C688785820289A0A0084B384 /* Balloon.cpp in Sources */,
 				C688788820289ADE0084B384 /* X8DrawingEngine.cpp in Sources */,
+				66A10F6A257F1E1800DD651A /* LargeScenerySetColourAction.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */,
 				C688790920289B9B0084B384 /* WildMouse.cpp in Sources */,
 				C688791420289B9B0084B384 /* Maze.cpp in Sources */,
+				66A10ED8257F1DF800DD651A /* BannerSetColourAction.cpp in Sources */,
 				C688784C202899BE0084B384 /* Game.cpp in Sources */,
 				F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */,
 				C68878E720289B9B0084B384 /* Platform.Posix.cpp in Sources */,
+				66A10F93257F1E1800DD651A /* LandSmoothAction.cpp in Sources */,
 				C68878CE20289B9B0084B384 /* ObjectList.cpp in Sources */,
 				C688788120289ADE0084B384 /* Line.cpp in Sources */,
 				93CBA4CA20A7504500867D56 /* ImageImporter.cpp in Sources */,
+				66A10F7F257F1E1800DD651A /* MazePlaceTrackAction.cpp in Sources */,
 				C688792520289B9B0084B384 /* RotoDrop.cpp in Sources */,
 				F76C85BA1EC4E88300FA49E2 /* CommandLine.cpp in Sources */,
 				C68878EE20289B9B0084B384 /* BolligerMabillardTrack.cpp in Sources */,
@@ -4220,12 +4681,14 @@
 				F76C85BE1EC4E88300FA49E2 /* ScreenshotCommands.cpp in Sources */,
 				C688786320289A0A0084B384 /* MapHelpers.cpp in Sources */,
 				F76C85BF1EC4E88300FA49E2 /* SpriteCommands.cpp in Sources */,
+				66A10F76257F1E1800DD651A /* SmallSceneryRemoveAction.cpp in Sources */,
 				F76C85C01EC4E88300FA49E2 /* UriHandler.cpp in Sources */,
 				C688786220289A0A0084B384 /* MapGen.cpp in Sources */,
 				C68878A820289B2A0084B384 /* NewsItem.cpp in Sources */,
 				93F76EED20BFF6F900D4512C /* Drawing.Sprite.cpp in Sources */,
 				933F2CB820935653001B33FD /* LocalisationService.cpp in Sources */,
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
+				66A10EC4257F1DF800DD651A /* FootpathAdditionPlaceAction.cpp in Sources */,
 				C688792920289B9B0084B384 /* Chairlift.cpp in Sources */,
 				C68878A020289B200084B384 /* LanguagePack.cpp in Sources */,
 				F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */,
@@ -4235,28 +4698,35 @@
 				93F76EF220BFF74200D4512C /* Localisation.Date.cpp in Sources */,
 				F76C85CC1EC4E88300FA49E2 /* Context.cpp in Sources */,
 				C68878E220289B9B0084B384 /* Staff.cpp in Sources */,
+				66A10F7E257F1E1800DD651A /* RideSetColourSchemeAction.cpp in Sources */,
 				F76C85CF1EC4E88300FA49E2 /* Console.cpp in Sources */,
 				C68878DC20289B9B0084B384 /* Painter.cpp in Sources */,
 				933C55B524B858490057E64B /* SeaDecrypt.cpp in Sources */,
 				C688790120289B9B0084B384 /* ReverserRollerCoaster.cpp in Sources */,
 				C688786120289A0A0084B384 /* MapAnimation.cpp in Sources */,
 				F76C85D11EC4E88300FA49E2 /* Diagnostics.cpp in Sources */,
+				66A10FB0257F1E1800DD651A /* SignSetStyleAction.cpp in Sources */,
 				F76C85D41EC4E88300FA49E2 /* File.cpp in Sources */,
 				C688790220289B9B0084B384 /* SideFrictionRollerCoaster.cpp in Sources */,
 				F76C85D61EC4E88300FA49E2 /* FileScanner.cpp in Sources */,
+				66A10F59257F1E1700DD651A /* SetCheatAction.cpp in Sources */,
 				C68878F820289B9B0084B384 /* LayDownRollerCoaster.cpp in Sources */,
 				C6887856202899FA0084B384 /* Scenery.cpp in Sources */,
 				C688785D20289A0A0084B384 /* Footpath.cpp in Sources */,
 				F76C85D91EC4E88300FA49E2 /* Guard.cpp in Sources */,
 				C688790520289B9B0084B384 /* SuspendedSwingingCoaster.cpp in Sources */,
 				C68878E920289B9B0084B384 /* Posix.cpp in Sources */,
+				66A10EA2257F1DE100DD651A /* BalloonPressAction.cpp in Sources */,
 				D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */,
+				66A10F79257F1E1800DD651A /* RideCreateAction.cpp in Sources */,
 				C688790320289B9B0084B384 /* StandUpRollerCoaster.cpp in Sources */,
 				C62D838A1FD36D6F008C04F1 /* EditorObjectSelectionSession.cpp in Sources */,
 				C6887851202899EA0084B384 /* Wall.cpp in Sources */,
 				F76C85DB1EC4E88300FA49E2 /* IStream.cpp in Sources */,
 				C688785A20289A0A0084B384 /* Climate.cpp in Sources */,
+				66A10FA8257F1E1800DD651A /* RideEntranceExitRemoveAction.cpp in Sources */,
 				C68878A920289B2A0084B384 /* Research.cpp in Sources */,
+				66A10F61257F1E1700DD651A /* PlaceParkEntranceAction.cpp in Sources */,
 				C6887850202899D40084B384 /* Cheats.cpp in Sources */,
 				C688784D202899C40084B384 /* Diagnostic.cpp in Sources */,
 				C688787020289A6F0084B384 /* VehiclePaint.cpp in Sources */,
@@ -4268,11 +4738,16 @@
 				F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */,
 				C68878DE20289B9B0084B384 /* Supports.cpp in Sources */,
 				C688791720289B9B0084B384 /* MiniHelicopters.cpp in Sources */,
+				93B4DC1525487CDF008D63FF /* Formatting.cpp in Sources */,
+				66A10EC3257F1DF800DD651A /* FootpathPlaceFromTrackAction.cpp in Sources */,
 				C688784F202899D00084B384 /* CmdlineSprite.cpp in Sources */,
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				C688793220289B9B0084B384 /* SplashBoats.cpp in Sources */,
+				66A10FB2257F1E1800DD651A /* LargeSceneryRemoveAction.cpp in Sources */,
 				F76C85F91EC4E88300FA49E2 /* Image.cpp in Sources */,
 				C68878FF20289B9B0084B384 /* MultiDimensionRollerCoaster.cpp in Sources */,
+				66A10F58257F1E1700DD651A /* StaffSetNameAction.cpp in Sources */,
+				66A10F6C257F1E1800DD651A /* LoadOrQuitAction.cpp in Sources */,
 				C688789220289B140084B384 /* FontFamilies.cpp in Sources */,
 				C68878F120289B9B0084B384 /* FlyingRollerCoaster.cpp in Sources */,
 				C688792B20289B9B0084B384 /* MiniatureRailway.cpp in Sources */,
@@ -4280,20 +4755,26 @@
 				F76C85FF1EC4E88300FA49E2 /* Weather.cpp in Sources */,
 				C688785920289A0A0084B384 /* Banner.cpp in Sources */,
 				C68878EC20289B9B0084B384 /* AirPoweredVerticalCoaster.cpp in Sources */,
+				66A10FAD257F1E1800DD651A /* TileModifyAction.cpp in Sources */,
 				C688790B20289B9B0084B384 /* WoodenWildMouse.cpp in Sources */,
 				C688792320289B9B0084B384 /* MotionSimulator.cpp in Sources */,
 				93DE9751209C3C1000FB1CC8 /* GameState.cpp in Sources */,
 				C68878EF20289B9B0084B384 /* CompactInvertedCoaster.cpp in Sources */,
 				C68878E320289B9B0084B384 /* Android.cpp in Sources */,
+				66A10F70257F1E1800DD651A /* ParkSetDateAction.cpp in Sources */,
 				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
 				F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */,
+				66A10FDE257F1E3000DD651A /* WaterLowerAction.cpp in Sources */,
 				C688786920289A660084B384 /* CableLift.cpp in Sources */,
 				C688790020289B9B0084B384 /* ReverseFreefallCoaster.cpp in Sources */,
 				93F76EF620BFF76E00D4512C /* Paint.Sprite.cpp in Sources */,
 				C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */,
+				66A10ECC257F1DF800DD651A /* ClearAction.cpp in Sources */,
+				66A10FDB257F1E3000DD651A /* WallPlaceAction.cpp in Sources */,
 				C688789F20289B200084B384 /* Language.cpp in Sources */,
 				C688791620289B9B0084B384 /* MiniGolf.cpp in Sources */,
 				C688787820289A780084B384 /* Track.cpp in Sources */,
+				66A10ED6257F1DF800DD651A /* FootpathPlaceAction.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,
 				C688788020289ADE0084B384 /* LightFX.cpp in Sources */,
 				F76C864B1EC4E88300FA49E2 /* NetworkConnection.cpp in Sources */,
@@ -4314,6 +4795,7 @@
 				93F76EF520BFF76E00D4512C /* Paint.Peep.cpp in Sources */,
 				C6887857202899FD0084B384 /* Park.cpp in Sources */,
 				F76C86601EC4E88300FA49E2 /* BannerObject.cpp in Sources */,
+				66A10FB4257F1E1800DD651A /* ScenarioSetSettingAction.cpp in Sources */,
 				C688792A20289B9B0084B384 /* Lift.cpp in Sources */,
 				F76C86621EC4E88300FA49E2 /* EntranceObject.cpp in Sources */,
 				93DFD04824521C1A001FCBAF /* HookEngine.cpp in Sources */,
@@ -4325,6 +4807,7 @@
 				9308DA02209908090079EE96 /* Surface.cpp in Sources */,
 				C68878DD20289B9B0084B384 /* PaintHelpers.cpp in Sources */,
 				F76C86661EC4E88300FA49E2 /* FootpathObject.cpp in Sources */,
+				66A10F80257F1E1800DD651A /* NetworkModifyGroupAction.cpp in Sources */,
 				C688793420289B9B0084B384 /* WaterCoaster.cpp in Sources */,
 				F76C86681EC4E88300FA49E2 /* ImageTable.cpp in Sources */,
 				C68878E620289B9B0084B384 /* Platform.Linux.cpp in Sources */,
@@ -4334,10 +4817,14 @@
 				C688788E20289AE70084B384 /* SSE41Drawing.cpp in Sources */,
 				F76C866C1EC4E88400FA49E2 /* Object.cpp in Sources */,
 				F76C866E1EC4E88400FA49E2 /* ObjectFactory.cpp in Sources */,
+				66A10FAB257F1E1800DD651A /* LandSetRightsAction.cpp in Sources */,
 				93FB272124ED3601008241C9 /* Cursors.cpp in Sources */,
 				C68878A220289B200084B384 /* RealNames.cpp in Sources */,
+				66A10F94257F1E1800DD651A /* StaffSetOrdersAction.cpp in Sources */,
+				66A10EC7257F1DF800DD651A /* FootpathRemoveAction.cpp in Sources */,
 				C688787120289A780084B384 /* Ride.cpp in Sources */,
 				F76C86701EC4E88400FA49E2 /* ObjectManager.cpp in Sources */,
+				66A10F52257F1E1700DD651A /* StaffSetCostumeAction.cpp in Sources */,
 				C688791D20289B9B0084B384 /* Shop.cpp in Sources */,
 				F76C86721EC4E88400FA49E2 /* ObjectRepository.cpp in Sources */,
 				F76C86741EC4E88400FA49E2 /* RideObject.cpp in Sources */,
@@ -4348,12 +4835,16 @@
 				C688792420289B9B0084B384 /* SwingingShip.cpp in Sources */,
 				C68878F420289B9B0084B384 /* InvertedHairpinCoaster.cpp in Sources */,
 				C68878A620289B2A0084B384 /* Finance.cpp in Sources */,
+				66A10FA4257F1E1800DD651A /* RideSetNameAction.cpp in Sources */,
 				C688788720289ADE0084B384 /* TTFSDLPort.cpp in Sources */,
 				F76C86761EC4E88400FA49E2 /* SceneryGroupObject.cpp in Sources */,
+				66A10FB1257F1E1800DD651A /* RideDemolishAction.cpp in Sources */,
 				C68878F620289B9B0084B384 /* InvertedRollerCoaster.cpp in Sources */,
+				66A10F55257F1E1700DD651A /* SurfaceSetStyleAction.cpp in Sources */,
 				C68878E420289B9B0084B384 /* Linux.cpp in Sources */,
 				F76C86791EC4E88400FA49E2 /* SmallSceneryObject.cpp in Sources */,
 				93F9DA3820B46F9D00D1BE92 /* ShopItem.cpp in Sources */,
+				66A10ECD257F1DF800DD651A /* BannerRemoveAction.cpp in Sources */,
 				C688787720289A780084B384 /* Station.cpp in Sources */,
 				C68878DF20289B9B0084B384 /* VirtualFloor.cpp in Sources */,
 				C68878CD20289B9B0084B384 /* DefaultObjects.cpp in Sources */,
@@ -4363,6 +4854,7 @@
 				C688790D20289B9B0084B384 /* Circus.cpp in Sources */,
 				C688788F20289B140084B384 /* Chat.cpp in Sources */,
 				C688789A20289B200084B384 /* ConversionTables.cpp in Sources */,
+				66A10ED2257F1DF800DD651A /* FootpathAdditionRemoveAction.cpp in Sources */,
 				C688791020289B9B0084B384 /* FerrisWheel.cpp in Sources */,
 				C688791120289B9B0084B384 /* FlyingSaucers.cpp in Sources */,
 				C688784A202899B40084B384 /* input.cpp in Sources */,
@@ -4374,28 +4866,46 @@
 				C68878DB20289B9B0084B384 /* Paint.cpp in Sources */,
 				F76C86811EC4E88400FA49E2 /* WaterObject.cpp in Sources */,
 				F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */,
+				66A10F89257F1E1800DD651A /* PauseToggleAction.cpp in Sources */,
+				66A10F66257F1E1700DD651A /* RideSetVehicleAction.cpp in Sources */,
 				C68878F320289B9B0084B384 /* HeartlineTwisterCoaster.cpp in Sources */,
 				C688788320289ADE0084B384 /* ScrollingText.cpp in Sources */,
 				C68878F720289B9B0084B384 /* JuniorRollerCoaster.cpp in Sources */,
+				66A10F6F257F1E1800DD651A /* RideEntranceExitPlaceAction.cpp in Sources */,
+				66A10F64257F1E1700DD651A /* LandRaiseAction.cpp in Sources */,
+				66A10F7D257F1E1800DD651A /* ParkSetNameAction.cpp in Sources */,
 				C688792020289B9B0084B384 /* GoKarts.cpp in Sources */,
+				66A10FD9257F1E3000DD651A /* WaterSetHeightAction.cpp in Sources */,
 				939A359B20C12FC800630B3F /* Paint.Misc.cpp in Sources */,
 				C688792E20289B9B0084B384 /* BoatHire.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
+				66A10ED1257F1DF800DD651A /* CustomAction.cpp in Sources */,
 				2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */,
 				C688789420289B140084B384 /* Screenshot.cpp in Sources */,
 				9346F9DC208A191900C77D91 /* GuestPathfinding.cpp in Sources */,
 				C688790620289B9B0084B384 /* TwisterRollerCoaster.cpp in Sources */,
 				C688786720289A4A0084B384 /* SawyerCoding.cpp in Sources */,
 				93F9DA3B20B4701100D1BE92 /* StdInOutConsole.cpp in Sources */,
+				66A10FA1257F1E1800DD651A /* SmallScenerySetColourAction.cpp in Sources */,
+				66A10F95257F1E1800DD651A /* GuestSetFlagsAction.cpp in Sources */,
+				66A10FB5257F1E1800DD651A /* SignSetNameAction.cpp in Sources */,
+				66A10FDC257F1E3000DD651A /* TrackPlaceAction.cpp in Sources */,
 				9344BEFA20C1E6180047D165 /* Crypt.OpenSSL.cpp in Sources */,
+				66A10ECB257F1DF800DD651A /* BannerSetStyleAction.cpp in Sources */,
 				93F76F0520BFF77B00D4512C /* Paint.TileElement.cpp in Sources */,
 				C68878FE20289B9B0084B384 /* MiniSuspendedCoaster.cpp in Sources */,
 				F76C86AD1EC4E88400FA49E2 /* PlatformEnvironment.cpp in Sources */,
+				66A10F6B257F1E1800DD651A /* ParkSetLoanAction.cpp in Sources */,
+				66A10FE0257F1E3000DD651A /* WallRemoveAction.cpp in Sources */,
+				66A10FBB257F1E1800DD651A /* LargeSceneryPlaceAction.cpp in Sources */,
+				66A10F7A257F1E1800DD651A /* RideSetSettingAction.cpp in Sources */,
 				C688791220289B9B0084B384 /* GhostTrain.cpp in Sources */,
 				C688787F20289ADE0084B384 /* Font.cpp in Sources */,
 				93CBA4C520A7502E00867D56 /* Imaging.cpp in Sources */,
 				F76C86AF1EC4E88400FA49E2 /* S4Importer.cpp in Sources */,
+				66A10F7C257F1E1800DD651A /* StaffHireNewAction.cpp in Sources */,
+				66A10F85257F1E1800DD651A /* LandSetHeightAction.cpp in Sources */,
 				F76C86B01EC4E88400FA49E2 /* Tables.cpp in Sources */,
 				C688788520289ADE0084B384 /* Text.cpp in Sources */,
 				F76C86B41EC4E88400FA49E2 /* SawyerChunk.cpp in Sources */,
@@ -4403,8 +4913,10 @@
 				C68878E120289B9B0084B384 /* PeepData.cpp in Sources */,
 				F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */,
 				F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */,
+				66A10FE1257F1E3000DD651A /* WallSetColourAction.cpp in Sources */,
 				C6887855202899F60084B384 /* Particle.cpp in Sources */,
 				C688784E202899CB0084B384 /* Date.cpp in Sources */,
+				66A10F9B257F1E1800DD651A /* ParkSetResearchFundingAction.cpp in Sources */,
 				F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */,
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				C68878E820289B9B0084B384 /* Platform.Win32.cpp in Sources */,
@@ -4416,46 +4928,65 @@
 				C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */,
 				C688787220289A780084B384 /* MusicList.cpp in Sources */,
 				93F76F0220BFF77B00D4512C /* Paint.Surface.cpp in Sources */,
+				66A10ECF257F1DF800DD651A /* ClimateSetAction.cpp in Sources */,
 				93DFD02F24521BA0001FCBAF /* FileWatcher.cpp in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
 				C68878FA20289B9B0084B384 /* LoopingRollerCoaster.cpp in Sources */,
+				66A10F57257F1E1700DD651A /* RideSetAppearanceAction.cpp in Sources */,
+				66A10FB9257F1E1800DD651A /* RideSetStatusAction.cpp in Sources */,
 				C68878A720289B2A0084B384 /* Marketing.cpp in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
 				C68878FB20289B9B0084B384 /* MineRide.cpp in Sources */,
+				66A10FD8257F1E3000DD651A /* TrackRemoveAction.cpp in Sources */,
 				9308D9FF209908090079EE96 /* TileElement.cpp in Sources */,
+				66A10FAA257F1E1800DD651A /* SetParkEntranceFeeAction.cpp in Sources */,
+				66A10F9E257F1E1800DD651A /* ParkMarketingAction.cpp in Sources */,
 				C688789020289B140084B384 /* Colour.cpp in Sources */,
+				66A10FA3257F1E1800DD651A /* LandLowerAction.cpp in Sources */,
+				66A10FB7257F1E1800DD651A /* LandBuyRightsAction.cpp in Sources */,
 				C68878EB20289B9B0084B384 /* Windows.cpp in Sources */,
 				C688789920289B140084B384 /* Window.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
 				F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */,
 				F76C873A1EC4E88400FA49E2 /* TitleSequence.cpp in Sources */,
+				66A10EC0257F1DF800DD651A /* BannerPlaceAction.cpp in Sources */,
 				C6887852202899ED0084B384 /* TileInspector.cpp in Sources */,
 				F76C873C1EC4E88400FA49E2 /* TitleSequenceManager.cpp in Sources */,
+				66A10F9D257F1E1800DD651A /* StaffFireAction.cpp in Sources */,
 				C688793320289B9B0084B384 /* SubmarineRide.cpp in Sources */,
 				93F76EEE20BFF6F900D4512C /* Drawing.String.cpp in Sources */,
 				C688785C20289A0A0084B384 /* Entrance.cpp in Sources */,
 				C688790E20289B9B0084B384 /* CrookedHouse.cpp in Sources */,
 				C68878F520289B9B0084B384 /* InvertedImpulseCoaster.cpp in Sources */,
 				C688793020289B9B0084B384 /* LogFlume.cpp in Sources */,
+				66A10F82257F1E1800DD651A /* PlayerSetGroupAction.cpp in Sources */,
 				2ADE2F3222441905002598AF /* DiscordService.cpp in Sources */,
 				C688786620289A430084B384 /* Intent.cpp in Sources */,
+				66A10FBA257F1E1800DD651A /* PlayerKickAction.cpp in Sources */,
 				C68878E520289B9B0084B384 /* Platform.Android.cpp in Sources */,
 				C68878EA20289B9B0084B384 /* Shared.cpp in Sources */,
 				F76C87451EC4E88400FA49E2 /* Version.cpp in Sources */,
 				9346F9D9208A191900C77D91 /* Guest.cpp in Sources */,
 				C688789C20289B200084B384 /* Currency.cpp in Sources */,
+				66A10F9C257F1E1800DD651A /* PeepPickupAction.cpp in Sources */,
 				C68879A420289C060084B384 /* Platform.macOS.mm in Sources */,
+				66A10FA0257F1E1800DD651A /* StaffSetPatrolAreaAction.cpp in Sources */,
+				66A10F5B257F1E1700DD651A /* GuestSetNameAction.cpp in Sources */,
 				C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */,
 				C688790F20289B9B0084B384 /* Dodgems.cpp in Sources */,
 				C688791E20289B9B0084B384 /* 3dCinema.cpp in Sources */,
 				C688786420289A0A0084B384 /* MoneyEffect.cpp in Sources */,
+				66A10F98257F1E1800DD651A /* PlacePeepSpawnAction.cpp in Sources */,
 				C68878A420289B200084B384 /* UTF8.cpp in Sources */,
 				C688786D20289A6F0084B384 /* TrackPaint.cpp in Sources */,
 				93F76F0620BFF77B00D4512C /* Paint.Entrance.cpp in Sources */,
 				C688792120289B9B0084B384 /* LaunchedFreefall.cpp in Sources */,
+				66A10FD4257F1E3000DD651A /* TrackSetBrakeSpeedAction.cpp in Sources */,
 				C688791920289B9B0084B384 /* ObservationTower.cpp in Sources */,
 				93F76EF020BFF71700D4512C /* InteractiveConsole.cpp in Sources */,
 				C6887853202899F00084B384 /* Sprite.cpp in Sources */,
+				66A10FB3257F1E1800DD651A /* MazeSetTrackAction.cpp in Sources */,
+				66A10EC5257F1DF800DD651A /* BannerSetNameAction.cpp in Sources */,
 				C688786F20289A6F0084B384 /* VehicleData.cpp in Sources */,
 				C688786520289A400084B384 /* _legacy.cpp in Sources */,
 				C688785F20289A0A0084B384 /* LargeScenery.cpp in Sources */,
@@ -4463,6 +4994,7 @@
 				C688792220289B9B0084B384 /* MagicCarpet.cpp in Sources */,
 				93F76F0120BFF77B00D4512C /* Paint.LargeScenery.cpp in Sources */,
 				C688790720289B9B0084B384 /* VerticalDropRollerCoaster.cpp in Sources */,
+				66A10F60257F1E1700DD651A /* ParkEntranceRemoveAction.cpp in Sources */,
 				93F9DA3A20B46FCA00D1BE92 /* SceneryObject.cpp in Sources */,
 				936F412924CE030F00E07BCF /* NetworkBase.cpp in Sources */,
 				C688787520289A780084B384 /* RideData.cpp in Sources */,
@@ -4471,7 +5003,9 @@
 				C688789320289B140084B384 /* Fonts.cpp in Sources */,
 				C688792F20289B9B0084B384 /* DingySlide.cpp in Sources */,
 				C688787920289A780084B384 /* TrackData.cpp in Sources */,
+				66A10F71257F1E1800DD651A /* StaffSetColourAction.cpp in Sources */,
 				C68878F020289B9B0084B384 /* CorkscrewRollerCoaster.cpp in Sources */,
+				66A10FD1257F1E3000DD651A /* WaterRaiseAction.cpp in Sources */,
 				C688791820289B9B0084B384 /* MonorailCycles.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4539,6 +5073,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4597,6 +5132,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = x86_64;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -4683,6 +5219,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
@@ -4724,6 +5261,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = io.openrct2.OpenRCT2;
@@ -4744,6 +5282,14 @@
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					__ENABLE_LIGHTFX__,
+					ENABLE_SCRIPTING,
+					__ENABLE_DISCORD__,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = NO;
@@ -4781,6 +5327,14 @@
 				CODE_SIGN_IDENTITY = "-";
 				EXECUTABLE_PREFIX = "";
 				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NDEBUG=1",
+					OPENGL_NO_LINK,
+					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
+					__ENABLE_LIGHTFX__,
+					ENABLE_SCRIPTING,
+					__ENABLE_DISCORD__,
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = NO;
@@ -4828,6 +5382,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4857,6 +5412,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/libxc/lib",
+					"$(PROJECT_DIR)/discord-rpc/build/src",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_NAME = "$(TARGET_NAME)";

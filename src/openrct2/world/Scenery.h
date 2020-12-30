@@ -25,7 +25,7 @@ struct rct_small_scenery_entry
 {
     uint32_t flags;                  // 0x06
     uint8_t height;                  // 0x0A
-    uint8_t tool_id;                 // 0x0B
+    CursorID tool_id;                // 0x0B
     int16_t price;                   // 0x0C
     int16_t removal_price;           // 0x0E
     uint8_t* frame_offsets;          // 0x10
@@ -80,7 +80,7 @@ enum LARGE_SCENERY_TEXT_FLAGS
 
 struct rct_large_scenery_entry
 {
-    uint8_t tool_id;
+    CursorID tool_id;
     uint8_t flags;
     int16_t price;
     int16_t removal_price;
@@ -102,7 +102,7 @@ enum LARGE_SCENERY_FLAGS
 
 struct rct_wall_scenery_entry
 {
-    uint8_t tool_id;
+    CursorID tool_id;
     uint8_t flags;
     uint8_t height;
     uint8_t flags2;
@@ -136,7 +136,7 @@ struct rct_path_bit_scenery_entry
 {
     uint16_t flags;                  // 0x06
     uint8_t draw_type;               // 0x08
-    uint8_t tool_id;                 // 0x09
+    CursorID tool_id;                // 0x09
     int16_t price;                   // 0x0A
     ObjectEntryIndex scenery_tab_id; // 0x0C
 };

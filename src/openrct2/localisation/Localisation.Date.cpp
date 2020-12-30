@@ -71,13 +71,13 @@ void date_set(int32_t year, int32_t month, int32_t day)
     month = std::clamp(month, 1, static_cast<int>(MONTH_COUNT));
     day = std::clamp(day, 1, static_cast<int>(days_in_month[month - 1]));
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
-    gDateMonthTicks = 0x10000 / days_in_month[month - 1] * (day - 1) + 4;
+    gDateMonthTicks = TICKS_PER_MONTH / days_in_month[month - 1] * (day - 1) + 4;
 }
 
 void date_update()
 {
     int32_t monthTicks = gDateMonthTicks + 4;
-    if (monthTicks >= 0x10000)
+    if (monthTicks >= TICKS_PER_MONTH)
     {
         gDateMonthTicks = 0;
         gDateMonthsElapsed++;

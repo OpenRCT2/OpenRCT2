@@ -12,9 +12,10 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
-#    include "../actions/CustomAction.hpp"
+#    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
-#    include "../actions/RideCreateAction.hpp"
+#    include "../actions/RideCreateAction.h"
+#    include "../actions/StaffHireNewAction.h"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
@@ -43,7 +44,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 7;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 16;
 
 struct ExpressionStringifier final
 {
@@ -726,7 +727,7 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
     LoadPlugin(plugin);
 }
 
-std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
+std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameAction(
     const std::string_view& id, const std::string_view& args, bool isExecute)
 {
     std::string actionz = std::string(id);
@@ -741,8 +742,8 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
         auto dukArgs = DuktapeTryParseJson(_context, argsz);
         if (!dukArgs)
         {
-            auto action = std::make_unique<GameActionResult>();
-            action->Error = GA_ERROR::INVALID_PARAMETERS;
+            auto action = std::make_unique<GameActions::Result>();
+            action->Error = GameActions::Status::InvalidParameters;
             action->ErrorTitle = "Invalid JSON";
             return action;
         }
@@ -761,17 +762,17 @@ std::unique_ptr<GameActionResult> ScriptEngine::QueryOrExecuteCustomGameAction(
     }
     else
     {
-        auto action = std::make_unique<GameActionResult>();
-        action->Error = GA_ERROR::UNKNOWN;
+        auto action = std::make_unique<GameActions::Result>();
+        action->Error = GameActions::Status::Unknown;
         action->ErrorTitle = "Unknown custom action";
         return action;
     }
 }
 
-std::unique_ptr<GameActionResult> ScriptEngine::DukToGameActionResult(const DukValue& d)
+std::unique_ptr<GameActions::Result> ScriptEngine::DukToGameActionResult(const DukValue& d)
 {
-    auto result = std::make_unique<GameActionResult>();
-    result->Error = static_cast<GA_ERROR>(AsOrDefault<int32_t>(d["error"]));
+    auto result = std::make_unique<GameActions::Result>();
+    result->Error = static_cast<GameActions::Status>(AsOrDefault<int32_t>(d["error"]));
     result->ErrorTitle = AsOrDefault<std::string>(d["errorTitle"]);
     result->ErrorMessage = AsOrDefault<std::string>(d["errorMessage"]);
     result->Cost = AsOrDefault<int32_t>(d["cost"]);
@@ -825,7 +826,7 @@ ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view& ex
     return ExpenditureType::Count;
 }
 
-DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActionResult>& result)
+DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std::unique_ptr<GameActions::Result>& result)
 {
     DukStackFrame frame(_context);
     DukObject obj(_context);
@@ -849,12 +850,20 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         obj.Set("expenditureType", ExpenditureTypeToString(result->Expenditure));
     }
 
-    if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
+    if (action.GetType() == GameCommand::CreateRide)
     {
         auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
         if (rideCreateResult.rideIndex != RIDE_ID_NULL)
         {
             obj.Set("ride", rideCreateResult.rideIndex);
+        }
+    }
+    else if (action.GetType() == GameCommand::HireNewStaffMember)
+    {
+        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
+        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        {
+            obj.Set("peep", staffHireResult.peepSriteIndex);
         }
     }
 
@@ -951,88 +960,88 @@ public:
     }
 };
 
-const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
-    { "balloonpress", GAME_COMMAND_BALLOON_PRESS },
-    { "bannerplace", GAME_COMMAND_PLACE_BANNER },
-    { "bannerremove", GAME_COMMAND_REMOVE_BANNER },
-    { "bannersetcolour", GAME_COMMAND_SET_BANNER_COLOUR },
-    { "bannersetname", GAME_COMMAND_SET_BANNER_NAME },
-    { "bannersetstyle", GAME_COMMAND_SET_BANNER_STYLE },
-    { "clearscenery", GAME_COMMAND_CLEAR_SCENERY },
-    { "climateset", GAME_COMMAND_SET_CLIMATE },
-    { "footpathplace", GAME_COMMAND_PLACE_PATH },
-    { "footpathplacefromtrack", GAME_COMMAND_PLACE_PATH_FROM_TRACK },
-    { "footpathremove", GAME_COMMAND_REMOVE_PATH },
-    { "footpathsceneryplace", GAME_COMMAND_PLACE_FOOTPATH_SCENERY },
-    { "footpathsceneryremove", GAME_COMMAND_REMOVE_FOOTPATH_SCENERY },
-    { "guestsetflags", GAME_COMMAND_GUEST_SET_FLAGS },
-    { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
-    { "landbuyrights", GAME_COMMAND_BUY_LAND_RIGHTS },
-    { "landlower", GAME_COMMAND_LOWER_LAND },
-    { "landraise", GAME_COMMAND_RAISE_LAND },
-    { "landsetheight", GAME_COMMAND_SET_LAND_HEIGHT },
-    { "landsetrights", GAME_COMMAND_SET_LAND_OWNERSHIP },
-    { "landsmoothaction", GAME_COMMAND_EDIT_LAND_SMOOTH },
-    { "largesceneryplace", GAME_COMMAND_PLACE_LARGE_SCENERY },
-    { "largesceneryremove", GAME_COMMAND_REMOVE_LARGE_SCENERY },
-    { "largescenerysetcolour", GAME_COMMAND_SET_SCENERY_COLOUR },
-    { "loadorquit", GAME_COMMAND_LOAD_OR_QUIT },
-    { "mazeplacetrack", GAME_COMMAND_PLACE_MAZE_DESIGN },
-    { "mazesettrack", GAME_COMMAND_SET_MAZE_TRACK },
-    { "networkmodifygroup", GAME_COMMAND_MODIFY_GROUPS },
-    { "parkentranceremove", GAME_COMMAND_REMOVE_PARK_ENTRANCE },
-    { "parkmarketing", GAME_COMMAND_START_MARKETING_CAMPAIGN },
-    { "parksetdate", GAME_COMMAND_SET_DATE },
-    { "parksetloan", GAME_COMMAND_SET_CURRENT_LOAN },
-    { "parksetname", GAME_COMMAND_SET_PARK_NAME },
-    { "parksetparameter", GAME_COMMAND_SET_PARK_OPEN },
-    { "parksetresearchfunding", GAME_COMMAND_SET_RESEARCH_FUNDING },
-    { "pausetoggle", GAME_COMMAND_TOGGLE_PAUSE },
-    { "peeppickup", GAME_COMMAND_PICKUP_GUEST },
-    { "placeparkentrance", GAME_COMMAND_PLACE_PARK_ENTRANCE },
-    { "placepeepspawn", GAME_COMMAND_PLACE_PEEP_SPAWN },
-    { "playerkick", GAME_COMMAND_KICK_PLAYER },
-    { "playersetgroup", GAME_COMMAND_SET_PLAYER_GROUP },
-    { "ridecreate", GAME_COMMAND_CREATE_RIDE },
-    { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
-    { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
-    { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
-    { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
-    { "ridesetcolourscheme", GAME_COMMAND_SET_COLOUR_SCHEME },
-    { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
-    { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
-    { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
-    { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
-    { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
-    { "scenariosetsetting", GAME_COMMAND_EDIT_SCENARIO_OPTIONS },
-    { "setcheataction", GAME_COMMAND_CHEAT },
-    { "setparkentrancefee", GAME_COMMAND_SET_PARK_ENTRANCE_FEE },
-    { "signsetname", GAME_COMMAND_SET_SIGN_NAME },
-    { "signsetstyle", GAME_COMMAND_SET_SIGN_STYLE },
-    { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
-    { "smallsceneryremove", GAME_COMMAND_REMOVE_SCENERY },
-    { "stafffire", GAME_COMMAND_FIRE_STAFF_MEMBER },
-    { "staffhire", GAME_COMMAND_HIRE_NEW_STAFF_MEMBER },
-    { "staffsetcolour", GAME_COMMAND_SET_STAFF_COLOUR },
-    { "staffsetcostume", GAME_COMMAND_SET_STAFF_COSTUME },
-    { "staffsetname", GAME_COMMAND_SET_STAFF_NAME },
-    { "staffsetorders", GAME_COMMAND_SET_STAFF_ORDERS },
-    { "staffsetpatrolarea", GAME_COMMAND_SET_STAFF_PATROL },
-    { "surfacesetstyle", GAME_COMMAND_CHANGE_SURFACE_STYLE },
-    { "tilemodify", GAME_COMMAND_MODIFY_TILE },
-    { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
-    { "trackplace", GAME_COMMAND_PLACE_TRACK },
-    { "trackremove", GAME_COMMAND_REMOVE_TRACK },
-    { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
-    { "wallplace", GAME_COMMAND_PLACE_WALL },
-    { "wallremove", GAME_COMMAND_REMOVE_WALL },
-    { "wallsetcolour", GAME_COMMAND_SET_WALL_COLOUR },
-    { "waterlower", GAME_COMMAND_LOWER_WATER },
-    { "waterraise", GAME_COMMAND_RAISE_WATER },
-    { "watersetheight", GAME_COMMAND_SET_WATER_HEIGHT }
+const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
+    { "balloonpress", GameCommand::BalloonPress },
+    { "bannerplace", GameCommand::PlaceBanner },
+    { "bannerremove", GameCommand::RemoveBanner },
+    { "bannersetcolour", GameCommand::SetBannerColour },
+    { "bannersetname", GameCommand::SetBannerName },
+    { "bannersetstyle", GameCommand::SetBannerStyle },
+    { "clearscenery", GameCommand::ClearScenery },
+    { "climateset", GameCommand::SetClimate },
+    { "footpathplace", GameCommand::PlacePath },
+    { "footpathplacefromtrack", GameCommand::PlacePathFromTrack },
+    { "footpathremove", GameCommand::RemovePath },
+    { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
+    { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
+    { "guestsetflags", GameCommand::GuestSetFlags },
+    { "guestsetname", GameCommand::SetGuestName },
+    { "landbuyrights", GameCommand::BuyLandRights },
+    { "landlower", GameCommand::LowerLand },
+    { "landraise", GameCommand::RaiseLand },
+    { "landsetheight", GameCommand::SetLandHeight },
+    { "landsetrights", GameCommand::SetLandOwnership },
+    { "landsmoothaction", GameCommand::EditLandSmooth },
+    { "largesceneryplace", GameCommand::PlaceLargeScenery },
+    { "largesceneryremove", GameCommand::RemoveLargeScenery },
+    { "largescenerysetcolour", GameCommand::SetSceneryColour },
+    { "loadorquit", GameCommand::LoadOrQuit },
+    { "mazeplacetrack", GameCommand::PlaceMazeDesign },
+    { "mazesettrack", GameCommand::SetMazeTrack },
+    { "networkmodifygroup", GameCommand::ModifyGroups },
+    { "parkentranceremove", GameCommand::RemoveParkEntrance },
+    { "parkmarketing", GameCommand::StartMarketingCampaign },
+    { "parksetdate", GameCommand::SetDate },
+    { "parksetloan", GameCommand::SetCurrentLoan },
+    { "parksetname", GameCommand::SetParkName },
+    { "parksetparameter", GameCommand::SetParkOpen },
+    { "parksetresearchfunding", GameCommand::SetResearchFunding },
+    { "pausetoggle", GameCommand::TogglePause },
+    { "peeppickup", GameCommand::PickupGuest },
+    { "placeparkentrance", GameCommand::PlaceParkEntrance },
+    { "placepeepspawn", GameCommand::PlacePeepSpawn },
+    { "playerkick", GameCommand::KickPlayer },
+    { "playersetgroup", GameCommand::SetPlayerGroup },
+    { "ridecreate", GameCommand::CreateRide },
+    { "ridedemolish", GameCommand::DemolishRide },
+    { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
+    { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
+    { "ridesetappearance", GameCommand::SetRideAppearance },
+    { "ridesetcolourscheme", GameCommand::SetColourScheme },
+    { "ridesetname", GameCommand::SetRideName },
+    { "ridesetprice", GameCommand::SetRidePrice },
+    { "ridesetsetting", GameCommand::SetRideSetting },
+    { "ridesetstatus", GameCommand::SetRideStatus },
+    { "ridesetvehicles", GameCommand::SetRideVehicles },
+    { "scenariosetsetting", GameCommand::EditScenarioOptions },
+    { "setcheataction", GameCommand::Cheat },
+    { "setparkentrancefee", GameCommand::SetParkEntranceFee },
+    { "signsetname", GameCommand::SetSignName },
+    { "signsetstyle", GameCommand::SetSignStyle },
+    { "smallsceneryplace", GameCommand::PlaceScenery },
+    { "smallsceneryremove", GameCommand::RemoveScenery },
+    { "stafffire", GameCommand::FireStaffMember },
+    { "staffhire", GameCommand::HireNewStaffMember },
+    { "staffsetcolour", GameCommand::SetStaffColour },
+    { "staffsetcostume", GameCommand::SetStaffCostume },
+    { "staffsetname", GameCommand::SetStaffName },
+    { "staffsetorders", GameCommand::SetStaffOrders },
+    { "staffsetpatrolarea", GameCommand::SetStaffPatrol },
+    { "surfacesetstyle", GameCommand::ChangeSurfaceStyle },
+    { "tilemodify", GameCommand::ModifyTile },
+    { "trackdesign", GameCommand::PlaceTrackDesign },
+    { "trackplace", GameCommand::PlaceTrack },
+    { "trackremove", GameCommand::RemoveTrack },
+    { "tracksetbrakespeed", GameCommand::SetBrakesSpeed },
+    { "wallplace", GameCommand::PlaceWall },
+    { "wallremove", GameCommand::RemoveWall },
+    { "wallsetcolour", GameCommand::SetWallColour },
+    { "waterlower", GameCommand::LowerWater },
+    { "waterraise", GameCommand::RaiseWater },
+    { "watersetheight", GameCommand::SetWaterHeight }
 };
 
-static std::string GetActionName(uint32_t commandId)
+static std::string GetActionName(GameCommand commandId)
 {
     auto it = std::find_if(
         ActionNameToType.begin(), ActionNameToType.end(), [commandId](const auto& kvp) { return kvp.second == commandId; });
@@ -1053,7 +1062,7 @@ static std::unique_ptr<GameAction> CreateGameActionFromActionId(const std::strin
     return nullptr;
 }
 
-void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActionResult>& result, bool isExecute)
+void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute)
 {
     DukStackFrame frame(_context);
 
@@ -1063,7 +1072,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
         DukObject obj(_context);
 
         auto actionId = action.GetType();
-        if (action.GetType() == GAME_COMMAND_CUSTOM)
+        if (action.GetType() == GameCommand::Custom)
         {
             auto customAction = static_cast<const CustomAction&>(action);
             obj.Set("action", customAction.GetId());
@@ -1090,14 +1099,15 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
             DukObject args(_context);
             DukFromGameActionParameterVisitor visitor(args);
             const_cast<GameAction&>(action).AcceptParameters(visitor);
+            const_cast<GameAction&>(action).AcceptFlags(visitor);
             obj.Set("args", args.Take());
         }
 
         obj.Set("player", action.GetPlayer());
-        obj.Set("type", actionId);
+        obj.Set("type", EnumValue(actionId));
 
         auto flags = action.GetActionFlags();
-        obj.Set("isClientOnly", (flags & GA_FLAGS::CLIENT_ONLY) != 0);
+        obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
 
         obj.Set("result", GameActionResultToDuk(action, result));
         auto dukEventArgs = obj.Take();
@@ -1112,7 +1122,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
                 auto error = AsOrDefault<int32_t>(dukResult["error"]);
                 if (error != 0)
                 {
-                    result->Error = static_cast<GA_ERROR>(error);
+                    result->Error = static_cast<GameActions::Status>(error);
                     result->ErrorTitle = AsOrDefault<std::string>(dukResult["errorTitle"]);
                     result->ErrorMessage = AsOrDefault<std::string>(dukResult["errorMessage"]);
                 }
@@ -1129,6 +1139,10 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
         DukValue argsCopy = args;
         DukToGameActionParameterVisitor visitor(std::move(argsCopy));
         action->AcceptParameters(visitor);
+        if (args["flags"].type() == DukValue::Type::NUMBER)
+        {
+            action->AcceptFlags(visitor);
+        }
         return action;
     }
     else
@@ -1253,7 +1267,7 @@ std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
 std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 {
     if (value.type() == DukValue::Type::STRING)
-        return language_convert_string(value.as_string());
+        return value.as_string();
     return {};
 }
 

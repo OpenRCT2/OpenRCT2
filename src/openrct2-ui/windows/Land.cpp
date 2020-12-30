@@ -43,13 +43,13 @@ enum WINDOW_LAND_WIDGET_IDX {
 
 static rct_widget window_land_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({19,  19}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
-    MakeWidget     ({55,  19}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
-    MakeWidget     ({27,  48}, {44, 32}, WWT_IMGBTN,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
-    MakeRemapWidget({28,  49}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
-    MakeRemapWidget({54,  63}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
-    MakeWidget     ({ 2, 106}, {47, 36}, WWT_FLATBTN, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
-    MakeWidget     ({49, 106}, {47, 36}, WWT_FLATBTN, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
+    MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
+    MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
+    MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
+    MakeRemapWidget({28,  49}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,         STR_ADJUST_SMALLER_LAND_TIP),  // decrement size
+    MakeRemapWidget({54,  63}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,         STR_ADJUST_LARGER_LAND_TIP),   // increment size
+    MakeWidget     ({ 2, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_BASE_LAND_TIP),     // floor texture
+    MakeWidget     ({49, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_CHANGE_VERTICAL_LAND_TIP), // wall texture
     { WIDGETS_END },
 };
 
@@ -92,12 +92,12 @@ rct_window* window_land_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 160, &window_land_events, WC_LAND, 0);
+    window = WindowCreate(ScreenCoordsXY(context_get_width() - 98, 29), 98, 160, &window_land_events, WC_LAND, 0);
     window->widgets = window_land_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_FLOOR)
         | (1 << WIDX_WALL) | (1 << WIDX_MOUNTAINMODE) | (1 << WIDX_PAINTMODE) | (1 << WIDX_PREVIEW);
     window->hold_down_widgets = (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gLandToolSize = 1;
@@ -160,10 +160,10 @@ static void window_land_mousedown(rct_window* w, rct_widgetindex widgetIndex, rc
     switch (widgetIndex)
     {
         case WIDX_FLOOR:
-            land_tool_show_surface_style_dropdown(w, widget, _selectedFloorTexture);
+            LandTool::ShowSurfaceStyleDropdown(w, widget, _selectedFloorTexture);
             break;
         case WIDX_WALL:
-            land_tool_show_edge_style_dropdown(w, widget, _selectedWallTexture);
+            LandTool::ShowEdgeStyleDropdown(w, widget, _selectedWallTexture);
             break;
         case WIDX_PREVIEW:
             window_land_inputsize(w);
@@ -279,7 +279,7 @@ static void window_land_invalidate(rct_window* w)
 
     auto& objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, _selectedFloorTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
     if (surfaceObj != nullptr)
     {
         surfaceImage = surfaceObj->IconImageId;
@@ -289,7 +289,7 @@ static void window_land_invalidate(rct_window* w)
         }
     }
     const auto edgeObj = static_cast<TerrainEdgeObject*>(
-        objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_EDGE, _selectedWallTexture));
+        objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
     if (edgeObj != nullptr)
     {
         edgeImage = edgeObj->IconImageId;
@@ -308,7 +308,7 @@ static void window_land_invalidate(rct_window* w)
     window_land_widgets[WIDX_FLOOR].image = surfaceImage;
     window_land_widgets[WIDX_WALL].image = edgeImage;
     // Update the preview image (for tool sizes up to 7)
-    window_land_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_land_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**
@@ -322,7 +322,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     money32 price;
     rct_widget* previewWidget = &window_land_widgets[WIDX_PREVIEW];
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -336,8 +336,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords = { w->windowPos.x + previewWidget->left, w->windowPos.y + previewWidget->top };
         int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
         gfx_draw_sprite(dpi, sprite, screenCoords, 0);
-        widget_draw(dpi, w, WIDX_DECREMENT);
-        widget_draw(dpi, w, WIDX_INCREMENT);
+        WidgetDraw(dpi, w, WIDX_DECREMENT);
+        WidgetDraw(dpi, w, WIDX_INCREMENT);
     }
 
     screenCoords = { w->windowPos.x + previewWidget->midX(), w->windowPos.y + previewWidget->bottom + 5 };
@@ -361,7 +361,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto& objManager = GetContext()->GetObjectManager();
             const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                objManager.GetLoadedObject(OBJECT_TYPE_TERRAIN_SURFACE, gLandToolTerrainSurface));
+                objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
             if (surfaceObj != nullptr)
             {
                 price += numTiles * surfaceObj->Price;

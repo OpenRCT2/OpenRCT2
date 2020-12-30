@@ -13,7 +13,7 @@
 #include "../Editor.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/RideSetStatus.hpp"
+#include "../actions/RideSetStatusAction.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -733,7 +733,7 @@ static const struct
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+    return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
 static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
@@ -816,6 +816,15 @@ static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposit
 uint16_t Vehicle::GetTrackProgress() const
 {
     return vehicle_get_move_info_size(TrackSubposition, track_type);
+}
+
+void Vehicle::MoveRelativeDistance(int32_t distance)
+{
+    remaining_distance += distance;
+
+    SetUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    UpdateTrackMotion(nullptr);
+    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
 }
 
 Vehicle* try_get_vehicle(uint16_t spriteIndex)
@@ -915,7 +924,7 @@ bool Vehicle::SoundCanPlay() const
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return false;
 
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return false;
 
     if (sound1_id == OpenRCT2::Audio::SoundId::Null && sound2_id == OpenRCT2::Audio::SoundId::Null)
@@ -1359,7 +1368,7 @@ void vehicle_update_all()
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 
-    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return;
 
     for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
@@ -1945,6 +1954,19 @@ static SoundIdVolume sub_6D7AC0(
     return { currentSoundId, currentVolume };
 }
 
+void Vehicle::GetLiftHillSound(Ride* curRide, SoundIdVolume& curSound)
+{
+    scream_sound_id = OpenRCT2::Audio::SoundId::Null;
+    if (curRide->type < std::size(RideTypeDescriptors))
+    {
+        // Get lift hill sound
+        curSound.id = RideTypeDescriptors[curRide->type].LiftData.sound_id;
+        curSound.volume = 243;
+        if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
+            curSound.id = OpenRCT2::Audio::SoundId::Null;
+    }
+}
+
 /**
  *
  *  rct2: 0x006D77F2
@@ -1964,6 +1986,9 @@ void Vehicle::Update()
 
     auto curRide = GetRide();
     if (curRide == nullptr)
+        return;
+
+    if (curRide->type >= RIDE_TYPE_COUNT)
         return;
 
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING))
@@ -3008,7 +3033,7 @@ void Vehicle::PeepEasterEggHereWeAre() const
             auto* curPeep = GetEntity<Guest>(vehicle->peep[i]);
             if (curPeep != nullptr && curPeep->PeepFlags & PEEP_FLAGS_HERE_WE_ARE)
             {
-                curPeep->InsertNewThought(PEEP_THOUGHT_TYPE_HERE_WE_ARE, curPeep->CurrentRide);
+                curPeep->InsertNewThought(PeepThoughtType::HereWeAre, curPeep->CurrentRide);
             }
         }
     }
@@ -3337,11 +3362,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
             }
         }
         else
@@ -3355,11 +3380,11 @@ void Vehicle::UpdateDeparting()
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
                         SetUpdateFlag(VEHICLE_UPDATE_FLAG_ZERO_VELOCITY);
-                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                        ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
                     }
                 }
                 else
-                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_1);
+                    ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
             }
         }
     }
@@ -3488,7 +3513,7 @@ void Vehicle::CheckIfMissing()
     if (gConfigNotifications.ride_stalled_vehicles)
     {
         Formatter ft;
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].number);
+        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[curRide->type].NameConvention.vehicle).number);
 
         uint8_t vehicleIndex = 0;
         for (; vehicleIndex < curRide->num_vehicles; ++vehicleIndex)
@@ -3498,7 +3523,7 @@ void Vehicle::CheckIfMissing()
         vehicleIndex++;
         ft.Add<uint16_t>(vehicleIndex);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.station].singular);
+        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[curRide->type].NameConvention.station).singular);
 
         News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride, ft);
     }
@@ -5275,7 +5300,6 @@ void Vehicle::KillPassengers(Ride* curRide)
             auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
             context_broadcast_intent(&intent);
         }
-        curRide->num_riders--;
         peep_sprite_remove(curPeep);
     }
 
@@ -5504,11 +5528,9 @@ void Vehicle::UpdateCrash()
 void Vehicle::UpdateSound()
 {
     // frictionVolume (bl) should be set before hand
-    uint8_t frictionVolume = 255;
-    auto frictionId = OpenRCT2::Audio::SoundId::Null;
+    SoundIdVolume frictionSound = { OpenRCT2::Audio::SoundId::Null, 255 };
     // bh screamVolume should be set before hand
-    auto screamId = OpenRCT2::Audio::SoundId::Null;
-    uint8_t screamVolume = 255;
+    SoundIdVolume screamSound = { OpenRCT2::Audio::SoundId::Null, 255 };
 
     auto curRide = GetRide();
     if (curRide == nullptr)
@@ -5523,81 +5545,81 @@ void Vehicle::UpdateSound()
     int32_t ecx = abs(velocity) - 0x10000;
     if (ecx >= 0)
     {
-        frictionId = vehicleEntry->friction_sound_id;
+        frictionSound.id = vehicleEntry->friction_sound_id;
         ecx >>= 15;
-        frictionVolume = std::min(208 + (ecx & 0xFF), 255);
+        frictionSound.volume = std::min(208 + (ecx & 0xFF), 255);
     }
 
     switch (vehicleEntry->sound_range)
     {
         case SOUND_RANGE_WHISTLE:
-            screamId = scream_sound_id;
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    GetLiftHillSound(curRide, screamSound);
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::TrainWhistle;
-                    screamVolume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                screamId = OpenRCT2::Audio::SoundId::Null;
-            screamVolume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         case SOUND_RANGE_BELL:
-            screamId = scream_sound_id;
+            screamSound.id = scream_sound_id;
             if (!(gCurrentTicks & 0x7F))
             {
                 if (velocity < 0x40000 || scream_sound_id != OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
+                {
+                    GetLiftHillSound(curRide, screamSound);
+                    break;
+                }
 
                 if ((scenario_rand() & 0xFFFF) <= 0x5555)
                 {
                     scream_sound_id = OpenRCT2::Audio::SoundId::Tram;
-                    screamVolume = 255;
+                    screamSound.volume = 255;
                     break;
                 }
             }
-            if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                screamId = OpenRCT2::Audio::SoundId::Null;
-            screamVolume = 255;
+            if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                screamSound.id = OpenRCT2::Audio::SoundId::Null;
+            screamSound.volume = 255;
             break;
 
         default:
             if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_RIDERS_SCREAM))
             {
-                screamId = UpdateScreamSound();
-                if (screamId == OpenRCT2::Audio::SoundId::NoScream)
-                    screamId = OpenRCT2::Audio::SoundId::Null;
-                else if (screamId == OpenRCT2::Audio::SoundId::Null)
-                    goto loc_6D7A97;
-                break;
+                screamSound.id = UpdateScreamSound();
+                if (screamSound.id == OpenRCT2::Audio::SoundId::NoScream)
+                {
+                    screamSound.id = OpenRCT2::Audio::SoundId::Null;
+                    break;
+                }
+                if (screamSound.id != OpenRCT2::Audio::SoundId::Null)
+                {
+                    break;
+                }
             }
-
-        loc_6D7A97:
-            scream_sound_id = OpenRCT2::Audio::SoundId::Null;
-            if (curRide->type < std::size(RideTypeDescriptors))
-            {
-                // Get lift hill sound
-                screamId = RideTypeDescriptors[curRide->type].LiftData.sound_id;
-                screamVolume = 243;
-                if (!(sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
-                    screamId = OpenRCT2::Audio::SoundId::Null;
-            }
+            GetLiftHillSound(curRide, screamSound);
     }
 
     // Friction sound
-    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionId, frictionVolume);
+    auto soundIdVolume = sub_6D7AC0(sound1_id, sound1_volume, frictionSound.id, frictionSound.volume);
     sound1_id = soundIdVolume.id;
     sound1_volume = soundIdVolume.volume;
 
     // Scream sound
-    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamId, screamVolume);
+    soundIdVolume = sub_6D7AC0(sound2_id, sound2_volume, screamSound.id, screamSound.volume);
     sound2_id = soundIdVolume.id;
     sound2_volume = soundIdVolume.volume;
 
@@ -6220,7 +6242,7 @@ GForces Vehicle::GetGForces() const
 void Vehicle::SetMapToolbar() const
 {
     auto curRide = GetRide();
-    if (curRide != nullptr)
+    if (curRide != nullptr && curRide->type < RIDE_TYPE_COUNT)
     {
         const Vehicle* vehicle = GetHead();
 
@@ -6233,7 +6255,7 @@ void Vehicle::SetMapToolbar() const
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_STRINGID);
         curRide->FormatNameTo(ft);
-        ft.Add<rct_string_id>(RideComponentNames[RideTypeDescriptors[curRide->type].NameConvention.vehicle].capitalised);
+        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[curRide->type].NameConvention.vehicle).capitalised);
         ft.Add<uint16_t>(vehicleIndex + 1);
         curRide->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -6630,7 +6652,7 @@ void Vehicle::ApplyNonStopBlockBrake()
 void Vehicle::ApplyStopBlockBrake()
 {
     // Slow it down till completely stop the car
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
     acceleration = 0;
     // If the this is slow enough, stop it. If not, slow it down
     if (velocity <= 0x20000)
@@ -6684,7 +6706,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
             break;
         case TrackElemType::EndStation:
             if (trackElement->AsTrack()->BlockBrakeClosed())
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
+                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE;
 
             break;
         case TrackElemType::Up25ToFlat:
@@ -7223,14 +7245,14 @@ static void steam_particle_create(const CoordsXYZ& coords)
     auto surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
-        SteamParticle* steam = &create_sprite(SPRITE_IDENTIFIER_MISC)->steam_particle;
+        SteamParticle* steam = &create_sprite(SpriteIdentifier::Misc)->steam_particle;
         if (steam == nullptr)
             return;
 
         steam->sprite_width = 20;
         steam->sprite_height_negative = 18;
         steam->sprite_height_positive = 16;
-        steam->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        steam->sprite_identifier = SpriteIdentifier::Misc;
         steam->type = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame = 256;
         steam->time_to_move = 0;
@@ -7618,7 +7640,7 @@ void Vehicle::UpdateReverserCarBogies()
  */
 bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
 {
-    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_1))
+    if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
         return false;
 
     auto vehicleEntry = Entry();
@@ -8095,7 +8117,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         if (curRide != nullptr)
         {
             uint16_t rideType = curRide->type;
-            if (trackType == TrackElemType::RotationControlToggle && rideType == RIDE_TYPE_SPINNING_WILD_MOUSE)
+            if (trackType == TrackElemType::RotationControlToggle
+                && (rideType == RIDE_TYPE_SPINNING_WILD_MOUSE || rideType == RIDE_TYPE_STEEL_WILD_MOUSE))
             {
                 update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
             }
@@ -8320,10 +8343,10 @@ loc_6DB967:
     }
     auto head = otherVeh->TrainHead();
 
-    regs.eax = abs(velocity - head->velocity);
+    auto velocityDelta = abs(velocity - head->velocity);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
     {
-        if (regs.eax > 0xE0000)
+        if (velocityDelta > 0xE0000)
         {
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
@@ -8675,7 +8698,10 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
 
     _vehicleUnkF64E10 = 1;
     acceleration = dword_9A2970[vehicle_sprite_type];
-    remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
+    if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+    {
+        remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
+    }
     if (remaining_distance >= 0 && remaining_distance < 0x368A)
     {
         goto loc_6DCE02;
@@ -9218,6 +9244,12 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
+        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            if (outStation != nullptr)
+                *outStation = _vehicleStationIndex;
+            return _vehicleMotionTrackFlags;
+        }
         if (_vehicleVelocityF64E08 >= 0)
         {
             vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
@@ -9493,7 +9525,10 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         car->acceleration = dword_9A2970[car->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
 
-        car->remaining_distance += _vehicleVelocityF64E0C;
+        if (!car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            car->remaining_distance += _vehicleVelocityF64E0C;
+        }
 
         car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = car->x;
@@ -9554,6 +9589,12 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
+        }
+        if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
+        {
+            if (outStation != nullptr)
+                *outStation = _vehicleStationIndex;
+            return _vehicleMotionTrackFlags;
         }
         if (_vehicleVelocityF64E08 >= 0)
         {
@@ -9883,4 +9924,13 @@ bool Vehicle::IsGhost() const
 {
     auto r = GetRide();
     return r != nullptr && r->status == RIDE_STATUS_SIMULATING;
+}
+
+void Vehicle::EnableCollisionsForTrain()
+{
+    assert(this->IsHead());
+    for (auto vehicle = this; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
+    {
+        vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
+    }
 }

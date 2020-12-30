@@ -158,7 +158,7 @@ private:
             req.method = Http::Method::GET;
             req.url = url;
             Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                if (response.status == Http::Status::OK)
+                if (response.status == Http::Status::Ok)
                 {
                     // Check that download operation hasn't been cancelled
                     if (_downloadingObjects)
@@ -208,7 +208,7 @@ private:
             req.method = Http::Method::GET;
             req.url = OPENRCT2_API_LEGACY_OBJECT_URL + name;
             Http::DoAsync(req, [this, entry, name](Http::Response response) {
-                if (response.status == Http::Status::OK)
+                if (response.status == Http::Status::Ok)
                 {
                     auto jresponse = Json::FromString(response.body);
                     if (jresponse.is_object())
@@ -269,14 +269,14 @@ constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
-    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
-    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
-    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
-    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
-    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
+    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+    MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
-    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
+    MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
     { WIDGETS_END },
 };
@@ -327,34 +327,34 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
     rct_string_id result;
     switch (entry->GetType())
     {
-        case OBJECT_TYPE_RIDE:
+        case ObjectType::Ride:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
             break;
-        case OBJECT_TYPE_SMALL_SCENERY:
+        case ObjectType::SmallScenery:
             result = STR_OBJECT_SELECTION_SMALL_SCENERY;
             break;
-        case OBJECT_TYPE_LARGE_SCENERY:
+        case ObjectType::LargeScenery:
             result = STR_OBJECT_SELECTION_LARGE_SCENERY;
             break;
-        case OBJECT_TYPE_WALLS:
+        case ObjectType::Walls:
             result = STR_OBJECT_SELECTION_WALLS_FENCES;
             break;
-        case OBJECT_TYPE_BANNERS:
+        case ObjectType::Banners:
             result = STR_OBJECT_SELECTION_PATH_SIGNS;
             break;
-        case OBJECT_TYPE_PATHS:
+        case ObjectType::Paths:
             result = STR_OBJECT_SELECTION_FOOTPATHS;
             break;
-        case OBJECT_TYPE_PATH_BITS:
+        case ObjectType::PathBits:
             result = STR_OBJECT_SELECTION_PATH_EXTRAS;
             break;
-        case OBJECT_TYPE_SCENERY_GROUP:
+        case ObjectType::SceneryGroup:
             result = STR_OBJECT_SELECTION_SCENERY_GROUPS;
             break;
-        case OBJECT_TYPE_PARK_ENTRANCE:
+        case ObjectType::ParkEntrance:
             result = STR_OBJECT_SELECTION_PARK_ENTRANCE;
             break;
-        case OBJECT_TYPE_WATER:
+        case ObjectType::Water:
             result = STR_OBJECT_SELECTION_WATER;
             break;
         default:
@@ -407,13 +407,13 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     rct_window* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
     if (window == nullptr)
     {
-        window = window_create_centred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
+        window = WindowCreateCentred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
 
         window->widgets = window_object_load_error_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL)
             | (1 << WIDX_DOWNLOAD_ALL);
 
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_LIGHT_BLUE;
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -438,7 +438,7 @@ static void window_object_load_error_update(rct_window* w)
     w->frame_no++;
 
     // Check if the mouse is hovering over the list
-    if (!widget_is_highlighted(w, WIDX_SCROLL))
+    if (!WidgetIsHighlighted(w, WIDX_SCROLL))
     {
         highlighted_index = -1;
         widget_invalidate(w, WIDX_SCROLL);
@@ -534,7 +534,7 @@ static void window_object_load_error_scrollgetsize(rct_window* w, int32_t scroll
 
 static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw explanatory message
     auto ft = Formatter();
@@ -580,8 +580,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
         gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
 
         // ... source game ...
-        rct_string_id sourceStringId = object_manager_get_source_game_string(
-            object_entry_get_source_game_legacy(&_invalid_entries[i]));
+        rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
         gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, { SOURCE_COL_LEFT - 3, screenCoords.y });
 
         // ... and type

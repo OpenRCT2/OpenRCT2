@@ -116,13 +116,13 @@ static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
 {
     switch (languageId)
     {
-        case RCT2_LANGUAGE_ID_JAPANESE:
+        case RCT2LanguageId::Japanese:
             return CODE_PAGE::CP_932;
-        case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
+        case RCT2LanguageId::ChineseSimplified:
             return CODE_PAGE::CP_936;
-        case RCT2_LANGUAGE_ID_KOREAN:
+        case RCT2LanguageId::Korean:
             return CODE_PAGE::CP_949;
-        case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
+        case RCT2LanguageId::ChineseTraditional:
             return CODE_PAGE::CP_950;
         default:
             return CODE_PAGE::CP_1252;

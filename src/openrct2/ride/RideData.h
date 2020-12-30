@@ -29,6 +29,8 @@
 #include "Track.h"
 #include "TrackPaint.h"
 
+enum class ResearchCategory : uint8_t;
+
 using ride_ratings_calculation = void (*)(Ride* ride);
 struct RideComponentName
 {
@@ -41,23 +43,23 @@ struct RideComponentName
     rct_string_id number;
 };
 
-enum RIDE_COMPONENT_TYPE
+enum class RideComponentType
 {
-    RIDE_COMPONENT_TYPE_TRAIN,
-    RIDE_COMPONENT_TYPE_BOAT,
-    RIDE_COMPONENT_TYPE_TRACK,
-    RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,
-    RIDE_COMPONENT_TYPE_STATION,
-    RIDE_COMPONENT_TYPE_CAR,
-    RIDE_COMPONENT_TYPE_BUILDING,
-    RIDE_COMPONENT_TYPE_STRUCTURE,
-    RIDE_COMPONENT_TYPE_SHIP,
-    RIDE_COMPONENT_TYPE_CABIN,
-    RIDE_COMPONENT_TYPE_WHEEL,
-    RIDE_COMPONENT_TYPE_RING,
-    RIDE_COMPONENT_TYPE_PLAYER,
-    RIDE_COMPONENT_TYPE_COURSE,
-    RIDE_COMPONENT_TYPE_COUNT
+    Train,
+    Boat,
+    Track,
+    DockingPlatform,
+    Station,
+    Car,
+    Building,
+    Structure,
+    Ship,
+    Cabin,
+    Wheel,
+    Ring,
+    Player,
+    Course,
+    Count
 };
 
 enum class RideColourKey : uint8_t
@@ -74,9 +76,9 @@ enum class RideColourKey : uint8_t
 
 struct RideNameConvention
 {
-    RIDE_COMPONENT_TYPE vehicle;
-    RIDE_COMPONENT_TYPE structure;
-    RIDE_COMPONENT_TYPE station;
+    RideComponentType vehicle;
+    RideComponentType structure;
+    RideComponentType station;
 };
 
 struct RideBuildCost
@@ -176,6 +178,7 @@ struct RideTypeDescriptor
     bool HasFlag(uint64_t flag) const;
     uint64_t GetAvailableTrackPieces() const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
+    ResearchCategory GetResearchCategory() const;
 };
 
 #ifdef _WIN32
@@ -290,6 +293,11 @@ constexpr const RideComponentName RideComponentNames[] =
 };
 // clang-format on
 
+constexpr const RideComponentName& GetRideComponentName(const RideComponentType type)
+{
+    return RideComponentNames[EnumValue(type)];
+}
+
 constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::ContinuousCircuit, RideMode::ContinuousCircuitBlockSectioned, RideMode::ReverseInclineLaunchedShuttle,
     RideMode::PoweredLaunchPasstrough, RideMode::Shuttle, RideMode::Normal, RideMode::BoatHire, RideMode::UpwardLaunch,
@@ -322,7 +330,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(DefaultMode, RideMode::ContinuousCircuit),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_UNKNOWN_RIDE, STR_RIDE_DESCRIPTION_UNKNOWN }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, "(INVALID)"),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 12, 64, 0, 0, }),
@@ -334,7 +342,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BuildCosts, { 0, 0, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_GENTLE),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),

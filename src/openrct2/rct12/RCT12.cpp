@@ -9,6 +9,7 @@
 
 #include "RCT12.h"
 
+#include "../core/String.hpp"
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
@@ -78,8 +79,7 @@ uint8_t RCT12SurfaceElement::GetSlope() const
 uint32_t RCT12SurfaceElement::GetSurfaceStyle() const
 {
     uint32_t retVal = (terrain >> 5) & 7;
-    if (type & 1)
-        retVal |= (1 << 3);
+    retVal |= (type & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK) << 3;
     return retVal;
 }
 
@@ -556,11 +556,9 @@ void RCT12LargeSceneryElement::SetBannerIndex(uint8_t newIndex)
 
 void RCT12SurfaceElement::SetSurfaceStyle(uint32_t newStyle)
 {
-    // Bit 3 for terrain is stored in element.type bit 0
-    if (newStyle & 8)
-        type |= 1;
-    else
-        type &= ~1;
+    // Bits 3, 4 for terrain are stored in element.type bit 0, 1
+    type &= ~RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK;
+    type |= (newStyle >> 3) & RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK;
 
     // Bits 0, 1, 2 for terrain are stored in element.terrain bit 5, 6, 7
     terrain &= ~0xE0;
@@ -1023,4 +1021,71 @@ RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex i
         return RCT12_OBJECT_ENTRY_INDEX_NULL;
 
     return index;
+}
+
+ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
+{
+    if (rideId == RCT12_RIDE_ID_NULL)
+        return RIDE_ID_NULL;
+
+    return rideId;
+}
+
+RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
+{
+    if (rideId == RIDE_ID_NULL)
+        return RCT12_RIDE_ID_NULL;
+
+    return rideId;
+}
+
+static bool RCT12IsFormatChar(codepoint_t c)
+{
+    if (c >= RCT2_STRING_FORMAT_ARG_START && c <= RCT2_STRING_FORMAT_ARG_END)
+    {
+        return true;
+    }
+    if (c >= RCT2_STRING_FORMAT_COLOUR_START && c <= RCT2_STRING_FORMAT_COLOUR_END)
+    {
+        return true;
+    }
+    return false;
+}
+
+static bool RCT12IsFormatChar(char c)
+{
+    return RCT12IsFormatChar(static_cast<codepoint_t>(c));
+}
+
+bool IsLikelyUTF8(std::string_view s)
+{
+    // RCT2 uses CP-1252 so some characters may be >= 128. However we don't expect any
+    // characters that are reserved for formatting strings, so if those are found, assume
+    // that the string is UTF-8.
+    for (auto c : s)
+    {
+        if (RCT12IsFormatChar(c))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::string RCT12RemoveFormattingUTF8(std::string_view s)
+{
+    std::string result;
+    result.reserve(s.size() * 2);
+
+    CodepointView codepoints(s);
+    for (auto codepoint : codepoints)
+    {
+        if (!RCT12IsFormatChar(codepoint))
+        {
+            String::AppendCodepoint(result, codepoint);
+        }
+    }
+
+    result.shrink_to_fit();
+    return result;
 }

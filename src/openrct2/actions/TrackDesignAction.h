@@ -12,30 +12,18 @@
 #include "../ride/TrackDesign.h"
 #include "GameAction.h"
 
-class TrackDesignActionResult final : public GameActionResult
+class TrackDesignActionResult final : public GameActions::Result
 {
 public:
-    TrackDesignActionResult()
-        : GameActionResult(GA_ERROR::OK, STR_NONE)
-    {
-    }
-    TrackDesignActionResult(GA_ERROR error)
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
-    {
-    }
-    TrackDesignActionResult(GA_ERROR error, rct_string_id title, rct_string_id message)
-        : GameActionResult(error, title, message)
-    {
-    }
-    TrackDesignActionResult(GA_ERROR error, rct_string_id message)
-        : GameActionResult(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
-    {
-    }
+    TrackDesignActionResult();
+    TrackDesignActionResult(GameActions::Status error);
+    TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message);
+    TrackDesignActionResult(GameActions::Status error, rct_string_id message);
 
     ride_id_t rideIndex = RIDE_ID_NULL;
 };
 
-DEFINE_GAME_ACTION(TrackDesignAction, GAME_COMMAND_PLACE_TRACK_DESIGN, TrackDesignActionResult)
+DEFINE_GAME_ACTION(TrackDesignAction, GameCommand::PlaceTrackDesign, TrackDesignActionResult)
 {
 private:
     CoordsXYZD _loc;
@@ -43,32 +31,14 @@ private:
 
 public:
     TrackDesignAction() = default;
+    TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td);
 
-    TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
-        : _loc(location)
-        , _td(td)
-    {
-    }
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
-    void AcceptParameters(GameActionParameterVisitor & visitor) override
-    {
-        visitor.Visit(_loc);
-        // TODO visit the track design (it has a lot of sub fields)
-    }
+    uint16_t GetActionFlags() const override;
 
-    uint16_t GetActionFlags() const override
-    {
-        return GameActionBase::GetActionFlags();
-    }
+    void Serialise(DataSerialiser & stream) override;
 
-    void Serialise(DataSerialiser & stream) override
-    {
-        GameAction::Serialise(stream);
-
-        stream << DS_TAG(_loc);
-        _td.Serialise(stream);
-    }
-
-    GameActionResult::Ptr Query() const override;
-    GameActionResult::Ptr Execute() const override;
+    GameActions::Result::Ptr Query() const override;
+    GameActions::Result::Ptr Execute() const override;
 };

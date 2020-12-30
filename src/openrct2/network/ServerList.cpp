@@ -14,7 +14,7 @@
 #    include "../Context.h"
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
-#    include "../core/FileStream.hpp"
+#    include "../core/FileStream.h"
 #    include "../core/Guard.hpp"
 #    include "../core/Http.h"
 #    include "../core/Json.hpp"
@@ -349,7 +349,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
         json_t root;
         try
         {
-            if (response.status != Http::Status::OK)
+            if (response.status != Http::Status::Ok)
             {
                 throw MasterServerException(STR_SERVER_LIST_NO_CONNECTION);
             }

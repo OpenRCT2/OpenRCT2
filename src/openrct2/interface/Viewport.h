@@ -49,38 +49,37 @@ enum
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
 };
 
-enum ViewportInteractionItem : uint8_t
+enum class ViewportInteractionItem : uint8_t
 {
-    VIEWPORT_INTERACTION_ITEM_NONE,
-    VIEWPORT_INTERACTION_ITEM_TERRAIN,
-    VIEWPORT_INTERACTION_ITEM_SPRITE,
-    VIEWPORT_INTERACTION_ITEM_RIDE,
-    VIEWPORT_INTERACTION_ITEM_WATER,
-    VIEWPORT_INTERACTION_ITEM_SCENERY,
-    VIEWPORT_INTERACTION_ITEM_FOOTPATH,
-    VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM,
-    VIEWPORT_INTERACTION_ITEM_PARK,
-    VIEWPORT_INTERACTION_ITEM_WALL,
-    VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY,
-    VIEWPORT_INTERACTION_ITEM_LABEL,
-    VIEWPORT_INTERACTION_ITEM_BANNER,
-
+    None,
+    Terrain,
+    Entity,
+    Ride,
+    Water,
+    Scenery,
+    Footpath,
+    FootpathItem,
+    ParkEntrance,
+    Wall,
+    LargeScenery,
+    Label,
+    Banner
 };
 
 enum
 {
     VIEWPORT_INTERACTION_MASK_NONE = 0,
-    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (VIEWPORT_INTERACTION_ITEM_TERRAIN - 1)),
-    VIEWPORT_INTERACTION_MASK_SPRITE = ~(1 << (VIEWPORT_INTERACTION_ITEM_SPRITE - 1)),
-    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (VIEWPORT_INTERACTION_ITEM_RIDE - 1)),
-    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (VIEWPORT_INTERACTION_ITEM_WATER - 1)),
-    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_SCENERY - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM - 1)),
-    VIEWPORT_INTERACTION_MASK_PARK = ~(1 << (VIEWPORT_INTERACTION_ITEM_PARK - 1)),
-    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (VIEWPORT_INTERACTION_ITEM_WALL - 1)),
-    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY - 1)),
-    VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (VIEWPORT_INTERACTION_ITEM_BANNER - 2)), // Note the -2 for BANNER
+    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (EnumValue(ViewportInteractionItem::Terrain) - 1)),
+    VIEWPORT_INTERACTION_MASK_ENTITY = ~(1 << (EnumValue(ViewportInteractionItem::Entity) - 1)),
+    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (EnumValue(ViewportInteractionItem::Ride) - 1)),
+    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (EnumValue(ViewportInteractionItem::Water) - 1)),
+    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::Scenery) - 1)),
+    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (EnumValue(ViewportInteractionItem::Footpath) - 1)),
+    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (EnumValue(ViewportInteractionItem::FootpathItem) - 1)),
+    VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE = ~(1 << (EnumValue(ViewportInteractionItem::ParkEntrance) - 1)),
+    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (EnumValue(ViewportInteractionItem::Wall) - 1)),
+    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::LargeScenery) - 1)),
+    VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (EnumValue(ViewportInteractionItem::Banner) - 2)), // Note the -2 for BANNER
 };
 
 struct InteractionInfo
@@ -93,7 +92,7 @@ struct InteractionInfo
         TileElement* Element = nullptr;
         SpriteBase* Entity;
     };
-    ViewportInteractionItem SpriteType = VIEWPORT_INTERACTION_ITEM_NONE;
+    ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
@@ -136,7 +135,6 @@ void viewport_paint(
 
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords);
 
-ScreenCoordsXY screen_coord_to_viewport_coord(rct_viewport* viewport, const ScreenCoordsXY& screenCoords);
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z);
 std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords, int32_t* direction);
 
@@ -152,14 +150,14 @@ InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords,
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
-InteractionInfo viewport_interaction_get_item_left(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_left_over(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_left_click(const ScreenCoordsXY& screenCoords);
-InteractionInfo viewport_interaction_get_item_right(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_right_over(const ScreenCoordsXY& screenCoords);
-bool viewport_interaction_right_click(const ScreenCoordsXY& screenCoords);
+InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
+InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionRightOver(const ScreenCoordsXY& screenCoords);
+bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 
-CoordsXY sub_68A15E(const ScreenCoordsXY& screenCoords);
+CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
 void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);

@@ -11,6 +11,7 @@
 
 #include "Theme.h"
 
+#include <SDL.h>
 #include <algorithm>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -27,11 +28,11 @@
 using namespace OpenRCT2;
 
 // The amount of pixels to scroll per wheel click
-constexpr int32_t WINDOW_SCROLL_PIXELS = 17;
+constexpr int32_t WindowScrollPixels = 17;
 
 static int32_t _previousAbsoluteWheel = 0;
 
-static bool window_fits_between_others(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+static bool WindowFitsBetweenOthers(const ScreenCoordsXY& loc, int32_t width, int32_t height)
 {
     for (auto& w : g_window_list)
     {
@@ -52,7 +53,7 @@ static bool window_fits_between_others(const ScreenCoordsXY& loc, int32_t width,
     return true;
 }
 
-static bool window_fits_within_space(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+static bool WindowFitsWithinSpace(const ScreenCoordsXY& loc, int32_t width, int32_t height)
 {
     if (loc.x < 0)
         return false;
@@ -62,10 +63,10 @@ static bool window_fits_within_space(const ScreenCoordsXY& loc, int32_t width, i
         return false;
     if (loc.y + height > context_get_height())
         return false;
-    return window_fits_between_others(loc, width, height);
+    return WindowFitsBetweenOthers(loc, width, height);
 }
 
-static bool window_fits_on_screen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
+static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t height)
 {
     uint16_t screenWidth = context_get_width();
     uint16_t screenHeight = context_get_height();
@@ -82,10 +83,10 @@ static bool window_fits_on_screen(const ScreenCoordsXY& loc, int32_t width, int3
     unk = screenHeight - (height / 4);
     if (loc.y > unk)
         return false;
-    return window_fits_between_others(loc, width, height);
+    return WindowFitsBetweenOthers(loc, width, height);
 }
 
-rct_window* window_create(
+rct_window* WindowCreate(
     const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
     rct_windowclass cls, uint16_t flags)
 {
@@ -170,7 +171,7 @@ rct_window* window_create(
     w->var_4AE = 0;
     w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
 
-    colour_scheme_update(w);
+    ColourSchemeUpdate(w);
     w->Invalidate();
     return w;
 }
@@ -186,7 +187,7 @@ static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32
     return screenPos;
 }
 
-rct_window* window_create_auto_pos(
+rct_window* WindowCreateAutoPos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
 {
     auto uiContext = GetContext()->GetUiContext();
@@ -203,8 +204,8 @@ rct_window* window_create_auto_pos(
 
     for (const auto& cornerPos : cornerPositions)
     {
-        if (window_fits_within_space(cornerPos, width, height))
-            return window_create(ClampWindowToScreen(cornerPos, screenWidth, width), width, height, event_handlers, cls, flags);
+        if (WindowFitsWithinSpace(cornerPos, width, height))
+            return WindowCreate(ClampWindowToScreen(cornerPos, screenWidth, width), width, height, event_handlers, cls, flags);
     }
 
     // Place window next to another
@@ -225,8 +226,8 @@ rct_window* window_create_auto_pos(
         for (const auto& offset : offsets)
         {
             auto screenPos = w->windowPos + offset;
-            if (window_fits_within_space(screenPos, width, height))
-                return window_create(
+            if (WindowFitsWithinSpace(screenPos, width, height))
+                return WindowCreate(
                     ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
         }
     }
@@ -249,8 +250,8 @@ rct_window* window_create_auto_pos(
         for (const auto& offset : offsets)
         {
             auto screenPos = w->windowPos + offset;
-            if (window_fits_on_screen(screenPos, width, height))
-                return window_create(
+            if (WindowFitsOnScreen(screenPos, width, height))
+                return WindowCreate(
                     ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
         }
     }
@@ -266,10 +267,10 @@ rct_window* window_create_auto_pos(
         }
     }
 
-    return window_create(ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
+    return WindowCreate(ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
 }
 
-rct_window* window_create_centred(
+rct_window* WindowCreateCentred(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
 {
     auto uiContext = GetContext()->GetUiContext();
@@ -277,41 +278,41 @@ rct_window* window_create_centred(
     auto screenHeight = uiContext->GetHeight();
 
     auto screenPos = ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
-    return window_create(screenPos, width, height, event_handlers, cls, flags);
+    return WindowCreate(screenPos, width, height, event_handlers, cls, flags);
 }
 
-static int32_t window_get_widget_index(rct_window* w, rct_widget* widget)
+static int32_t WindowGetWidgetIndex(rct_window* w, rct_widget* widget)
 {
     int32_t i = 0;
-    for (rct_widget* widget2 = w->widgets; widget2->type != WWT_LAST; widget2++, i++)
+    for (rct_widget* widget2 = w->widgets; widget2->type != WindowWidgetType::Last; widget2++, i++)
         if (widget == widget2)
             return i;
     return -1;
 }
 
-static int32_t window_get_scroll_index(rct_window* w, int32_t targetWidgetIndex)
+static int32_t WindowGetScrollIndex(rct_window* w, int32_t targetWidgetIndex)
 {
-    if (w->widgets[targetWidgetIndex].type != WWT_SCROLL)
+    if (w->widgets[targetWidgetIndex].type != WindowWidgetType::Scroll)
         return -1;
 
     int32_t scrollIndex = 0;
     rct_widgetindex widgetIndex = 0;
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
         if (widgetIndex == targetWidgetIndex)
             break;
-        if (widget->type == WWT_SCROLL)
+        if (widget->type == WindowWidgetType::Scroll)
             scrollIndex++;
     }
 
     return scrollIndex;
 }
 
-static rct_widget* window_get_scroll_widget(rct_window* w, int32_t scrollIndex)
+static rct_widget* WindowGetScrollWidget(rct_window* w, int32_t scrollIndex)
 {
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         if (scrollIndex == 0)
@@ -326,11 +327,11 @@ static rct_widget* window_get_scroll_widget(rct_window* w, int32_t scrollIndex)
  *
  *  rct2: 0x006E78E3
  */
-static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_t wheel)
+static void WindowScrollWheelInput(rct_window* w, int32_t scrollIndex, int32_t wheel)
 {
     rct_scroll* scroll = &w->scrolls[scrollIndex];
-    rct_widget* widget = window_get_scroll_widget(w, scrollIndex);
-    rct_widgetindex widgetIndex = window_get_widget_index(w, widget);
+    rct_widget* widget = WindowGetScrollWidget(w, scrollIndex);
+    rct_widgetindex widgetIndex = WindowGetWidgetIndex(w, widget);
 
     if (scroll->flags & VSCROLLBAR_VISIBLE)
     {
@@ -349,7 +350,7 @@ static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_
         scroll->h_left = std::min(std::max(0, scroll->h_left + wheel), size);
     }
 
-    widget_scroll_update_thumbs(w, widgetIndex);
+    WidgetScrollUpdateThumbs(w, widgetIndex);
     widget_invalidate(w, widgetIndex);
 }
 
@@ -357,19 +358,19 @@ static void window_scroll_wheel_input(rct_window* w, int32_t scrollIndex, int32_
  *
  *  rct2: 0x006E793B
  */
-static int32_t window_wheel_input(rct_window* w, int32_t wheel)
+static int32_t WindowWheelInput(rct_window* w, int32_t wheel)
 {
     int32_t i = 0;
-    for (rct_widget* widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (rct_widget* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         // Originally always checked first scroll view, bug maybe?
         rct_scroll* scroll = &w->scrolls[i];
         if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
         {
-            window_scroll_wheel_input(w, i, wheel);
+            WindowScrollWheelInput(w, i, wheel);
             return 1;
         }
         i++;
@@ -382,7 +383,7 @@ static int32_t window_wheel_input(rct_window* w, int32_t wheel)
  *
  *  rct2: 0x006E79FB
  */
-static void window_viewport_wheel_input(rct_window* w, int32_t wheel)
+static void WindowViewportWheelInput(rct_window* w, int32_t wheel)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO))
         return;
@@ -393,7 +394,7 @@ static void window_viewport_wheel_input(rct_window* w, int32_t wheel)
         window_zoom_out(w, true);
 }
 
-static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex, int32_t wheel)
+static bool WindowOtherWheelInput(rct_window* w, rct_widgetindex widgetIndex, int32_t wheel)
 {
     // HACK: Until we have a new window system that allows us to add new events like mouse wheel easily,
     //       this selective approach will have to do.
@@ -403,12 +404,12 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
 
     // Lower widgetIndex once or twice we got a type that matches, to allow scrolling on the increase/decrease buttons too
     int32_t attempts = 0;
-    while (widgetType != WWT_IMGBTN && widgetType != WWT_SPINNER && widgetIndex > 0)
+    while (widgetType != WindowWidgetType::ImgBtn && widgetType != WindowWidgetType::Spinner && widgetIndex > 0)
     {
         switch (widgetType)
         {
-            case WWT_TRNBTN: // + and - for preview widget
-            case WWT_BUTTON: // + and - for spinner widget
+            case WindowWidgetType::TrnBtn: // + and - for preview widget
+            case WindowWidgetType::Button: // + and - for spinner widget
             {
                 if (attempts > 0)
                 {
@@ -438,19 +439,19 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
     }
 
     rct_widgetindex buttonWidgetIndex;
-    uint16_t expectedType;
+    WindowWidgetType expectedType;
     uint32_t expectedContent[2];
     switch (widgetType)
     {
-        case WWT_IMGBTN:
+        case WindowWidgetType::ImgBtn:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 2 : widgetIndex + 1;
-            expectedType = WWT_TRNBTN;
+            expectedType = WindowWidgetType::TrnBtn;
             expectedContent[0] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE;
             expectedContent[1] = IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE;
             break;
-        case WWT_SPINNER:
+        case WindowWidgetType::Spinner:
             buttonWidgetIndex = wheel < 0 ? widgetIndex + 1 : widgetIndex + 2;
-            expectedType = WWT_BUTTON;
+            expectedType = WindowWidgetType::Button;
             expectedContent[0] = STR_NUMERIC_UP;
             expectedContent[1] = STR_NUMERIC_DOWN;
             break;
@@ -458,7 +459,7 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
             return false;
     }
 
-    if (widget_is_disabled(w, buttonWidgetIndex))
+    if (WidgetIsDisabled(w, buttonWidgetIndex))
     {
         return false;
     }
@@ -481,13 +482,13 @@ static bool window_other_wheel_input(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006E7868
  */
-void window_all_wheel_input()
+void WindowAllWheelInput()
 {
     // Get wheel value
     auto cursorState = context_get_cursor_state();
     int32_t absolute_wheel = cursorState->wheel;
     int32_t relative_wheel = absolute_wheel - _previousAbsoluteWheel;
-    int32_t pixel_scroll = relative_wheel * WINDOW_SCROLL_PIXELS;
+    int32_t pixel_scroll = relative_wheel * WindowScrollPixels;
     _previousAbsoluteWheel = absolute_wheel;
 
     if (relative_wheel == 0)
@@ -502,7 +503,7 @@ void window_all_wheel_input()
             // Check if main window
             if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT)
             {
-                window_viewport_wheel_input(w, relative_wheel);
+                WindowViewportWheelInput(w, relative_wheel);
                 return;
             }
 
@@ -511,37 +512,42 @@ void window_all_wheel_input()
             if (widgetIndex != -1)
             {
                 rct_widget* widget = &w->widgets[widgetIndex];
-                if (widget->type == WWT_SCROLL)
+                if (widget->type == WindowWidgetType::Scroll)
                 {
-                    int32_t scrollIndex = window_get_scroll_index(w, widgetIndex);
+                    int32_t scrollIndex = WindowGetScrollIndex(w, widgetIndex);
                     rct_scroll* scroll = &w->scrolls[scrollIndex];
                     if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE))
                     {
-                        window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), pixel_scroll);
+                        WindowScrollWheelInput(w, WindowGetScrollIndex(w, widgetIndex), pixel_scroll);
                         return;
                     }
                 }
                 else
                 {
-                    if (window_other_wheel_input(w, widgetIndex, pixel_scroll))
+                    if (WindowOtherWheelInput(w, widgetIndex, pixel_scroll))
                     {
                         return;
                     }
                 }
 
                 // Check other scroll views on window
-                if (window_wheel_input(w, pixel_scroll))
+                if (WindowWheelInput(w, pixel_scroll))
                     return;
             }
         }
     }
 }
 
+void ApplyScreenSaverLockSetting()
+{
+    gConfigGeneral.disable_screensaver ? SDL_DisableScreenSaver() : SDL_EnableScreenSaver();
+}
+
 /**
  * Initialises scroll widgets to their virtual size.
  *  rct2: 0x006EAEB8
  */
-void window_init_scroll_widgets(rct_window* w)
+void WindowInitScrollWidgets(rct_window* w)
 {
     rct_widget* widget;
     rct_scroll* scroll;
@@ -550,9 +556,9 @@ void window_init_scroll_widgets(rct_window* w)
 
     widget_index = 0;
     scroll_index = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
         {
             widget_index++;
             continue;
@@ -573,7 +579,7 @@ void window_init_scroll_widgets(rct_window* w)
         if (widget->content & SCROLL_VERTICAL)
             scroll->flags |= VSCROLLBAR_VISIBLE;
 
-        widget_scroll_update_thumbs(w, widget_index);
+        WidgetScrollUpdateThumbs(w, widget_index);
 
         widget_index++;
         scroll_index++;
@@ -584,23 +590,24 @@ void window_init_scroll_widgets(rct_window* w)
  *
  *  rct2: 0x006EB15C
  */
-void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
+void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
     rct_widgetindex widgetIndex;
 
     if ((w->flags & WF_TRANSPARENT) && !(w->flags & WF_NO_BACKGROUND))
-        gfx_filter_rect(dpi, { w->windowPos, w->windowPos + ScreenCoordsXY{ w->width - 1, w->height - 1 } }, PALETTE_51);
+        gfx_filter_rect(
+            dpi, { w->windowPos, w->windowPos + ScreenCoordsXY{ w->width - 1, w->height - 1 } }, FilterPaletteID::Palette51);
 
     // todo: some code missing here? Between 006EB18C and 006EB260
 
     widgetIndex = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         // Check if widget is outside the draw region
         if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
             if (w->windowPos.y + widget->top < dpi->y + dpi->height && w->windowPos.y + widget->bottom >= dpi->y)
-                widget_draw(dpi, w, widgetIndex);
+                WidgetDraw(dpi, w, widgetIndex);
 
         widgetIndex++;
     }
@@ -619,18 +626,18 @@ void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi)
  *
  *  rct2: 0x006EA776
  */
-static void window_invalidate_pressed_image_buttons(rct_window* w)
+static void WindowInvalidatePressedImageButton(rct_window* w)
 {
     rct_widgetindex widgetIndex;
     rct_widget* widget;
 
     widgetIndex = 0;
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
-        if (widget->type != WWT_IMGBTN)
+        if (widget->type != WindowWidgetType::ImgBtn)
             continue;
 
-        if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             gfx_set_dirty_blocks({ w->windowPos, w->windowPos + ScreenCoordsXY{ w->width, w->height } });
     }
 }
@@ -639,11 +646,11 @@ static void window_invalidate_pressed_image_buttons(rct_window* w)
  *
  *  rct2: 0x006EA73F
  */
-void invalidate_all_windows_after_input()
+void InvalidateAllWindowsAfterInput()
 {
     window_visit_each([](rct_window* w) {
         window_update_scroll_widgets(w);
-        window_invalidate_pressed_image_buttons(w);
+        WindowInvalidatePressedImageButton(w);
         window_event_resize_call(w);
     });
 }

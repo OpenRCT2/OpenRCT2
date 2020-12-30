@@ -11,6 +11,8 @@
 
 #include "Font.h"
 
+#include <string_view>
+
 bool ttf_initialise();
 void ttf_dispose();
 
@@ -26,8 +28,8 @@ struct TTFSurface
 
 TTFFontDescriptor* ttf_get_font_from_sprite_base(uint16_t spriteBase);
 void ttf_toggle_hinting();
-TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, const utf8* text);
-uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, const utf8* text);
+TTFSurface* ttf_surface_cache_get_or_add(TTF_Font* font, std::string_view text);
+uint32_t ttf_getwidth_cache_get_or_add(TTF_Font* font, std::string_view text);
 bool ttf_provides_glyph(const TTF_Font* font, codepoint_t codepoint);
 void ttf_free_surface(TTFSurface* surface);
 

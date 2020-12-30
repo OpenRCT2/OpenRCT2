@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <memory>
 #include <string_view>
 
 struct IObjectRepository;
@@ -19,11 +20,11 @@ struct rct_object_entry;
 
 namespace ObjectFactory
 {
-    Object* CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path);
-    Object* CreateObjectFromLegacyData(
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path);
+    std::unique_ptr<Object> CreateObjectFromLegacyData(
         IObjectRepository& objectRepository, const rct_object_entry* entry, const void* data, size_t dataSize);
-    Object* CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path);
-    Object* CreateObject(const rct_object_entry& entry);
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path);
+    std::unique_ptr<Object> CreateObject(const rct_object_entry& entry);
 
-    Object* CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path);
+    std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path);
 } // namespace ObjectFactory

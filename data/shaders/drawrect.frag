@@ -6,7 +6,7 @@ const int FLAG_MASK                 = (1 << 3);
 const int FLAG_CROSS_HATCH          = (1 << 4);
 
 uniform usampler2DArray uTexture;
-uniform usampler2DRect  uPaletteTex;
+uniform usampler2D      uPaletteTex;
 
 uniform sampler2D       uPeelingTex;
 uniform bool            uPeeling;
@@ -51,15 +51,15 @@ void main()
     int paletteCount = fFlags & MASK_REMAP_COUNT;
     if (paletteCount >= 3 && texel >= 0x2Eu && texel < 0x3Au)
     {
-        texel = texture(uPaletteTex, vec2(texel + 0xC5u, fPalettes.z)).r;
+        texel = texture(uPaletteTex, vec2(texel + 0xC5u, fPalettes.z) / 256.0f).r;
     }
     else if (paletteCount >= 2 && texel >= 0xCAu && texel < 0xD6u)
     {
-        texel = texture(uPaletteTex, vec2(texel + 0x29u, fPalettes.y)).r;
+        texel = texture(uPaletteTex, vec2(texel + 0x29u, fPalettes.y) / 256.f).r;
     }
     else if (paletteCount >= 1)
     {
-        texel = texture(uPaletteTex, vec2(texel, fPalettes.x)).r;
+        texel = texture(uPaletteTex, vec2(texel, fPalettes.x) / 256.f).r;
     }
 
     if (texel == 0u)

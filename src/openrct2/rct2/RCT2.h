@@ -318,6 +318,11 @@ struct rct2_ride
     uint16_t cable_lift;                                       // 0x1FE
     uint16_t queue_length[RCT12_MAX_STATIONS_PER_RIDE];        // 0x200
     uint8_t pad_208[0x58];                                     // 0x208
+
+    uint8_t GetMinCarsPerTrain() const;
+    uint8_t GetMaxCarsPerTrain() const;
+    void SetMinCarsPerTrain(uint8_t newValue);
+    void SetMaxCarsPerTrain(uint8_t newValue);
 };
 assert_struct_size(rct2_ride, 0x260);
 
@@ -608,11 +613,11 @@ struct RCT2SpritePeep : RCT12SpriteBase
     money16 paid_on_drink;           // 0x46
     uint8_t ride_types_been_on[16];  // 0x48
     uint32_t item_extra_flags;       // 0x58
-    uint8_t photo2_ride_ref;         // 0x5C
-    uint8_t photo3_ride_ref;         // 0x5D
-    uint8_t photo4_ride_ref;         // 0x5E
+    RCT12RideId photo2_ride_ref;     // 0x5C
+    RCT12RideId photo3_ride_ref;     // 0x5D
+    RCT12RideId photo4_ride_ref;     // 0x5E
     uint8_t pad_5F[0x09];            // 0x5F
-    uint8_t current_ride;            // 0x68
+    RCT12RideId current_ride;        // 0x68
     uint8_t current_ride_station;    // 0x69
     uint8_t current_train;           // 0x6A
     union
@@ -648,29 +653,29 @@ struct RCT2SpritePeep : RCT12SpriteBase
         uint8_t maze_last_edge; // 0x78
         uint8_t direction;
     };
-    uint8_t interaction_ride_index;
+    RCT12RideId interaction_ride_index;
     uint16_t time_in_queue;                             // 0x7A
     uint8_t rides_been_on[32];                          // 0x7C
     uint32_t id;                                        // 0x9C
     money32 cash_in_pocket;                             // 0xA0
     money32 cash_spent;                                 // 0xA4
-    int32_t time_in_park;                               // 0xA8
+    int32_t park_entry_time;                            // 0xA8
     int8_t rejoin_queue_timeout;                        // 0xAC
-    uint8_t previous_ride;                              // 0xAD
+    RCT12RideId previous_ride;                          // 0xAD
     uint16_t previous_ride_time_out;                    // 0xAE
     RCT12PeepThought thoughts[RCT12_PEEP_MAX_THOUGHTS]; // 0xB0
     uint8_t path_check_optimisation;                    // 0xC4
     union
     {
-        uint8_t staff_id;                 // 0xC5
-        uint8_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                     // 0xC5
+        RCT12RideId guest_heading_to_ride_id; // 0xC5
     };
     union
     {
         uint8_t staff_orders;           // 0xC6
         uint8_t peep_is_lost_countdown; // 0xC6
     };
-    uint8_t photo1_ride_ref;         // 0xC7
+    RCT12RideId photo1_ride_ref;     // 0xC7
     uint32_t peep_flags;             // 0xC8
     rct12_xyzd8 pathfind_goal;       // 0xCC
     rct12_xyzd8 pathfind_history[4]; // 0xD0
@@ -709,7 +714,7 @@ struct RCT2SpritePeep : RCT12SpriteBase
     uint8_t no_of_souvenirs;              // 0xEE
     uint8_t vandalism_seen;               // 0xEF 0xC0 vandalism thought timeout, 0x3F vandalism tiles seen
     uint8_t voucher_type;                 // 0xF0
-    uint8_t voucher_arguments;            // 0xF1 ride_id or string_offset_id
+    RCT12RideId voucher_arguments;        // 0xF1 ride_id or string_offset_id
     uint8_t surroundings_thought_timeout; // 0xF2
     uint8_t angriness;                    // 0xF3
     uint8_t time_lost;                    // 0xF4 the time the peep has been lost when it reaches 254 generates the lost thought
@@ -717,10 +722,14 @@ struct RCT2SpritePeep : RCT12SpriteBase
     uint8_t balloon_colour;               // 0xF6
     uint8_t umbrella_colour;              // 0xF7
     uint8_t hat_colour;                   // 0xF8
-    uint8_t favourite_ride;               // 0xF9
+    RCT12RideId favourite_ride;           // 0xF9
     uint8_t favourite_ride_rating;        // 0xFA
     uint8_t pad_FB;
     uint32_t item_standard_flags; // 0xFC
+    uint64_t GetItemFlags() const
+    {
+        return item_standard_flags | (static_cast<uint64_t>(item_extra_flags) << 32);
+    }
 };
 assert_struct_size(RCT2SpritePeep, 0x100);
 
@@ -770,3 +779,9 @@ std::vector<uint8_t> DecryptSea(const fs::path& path);
 ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
 bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
+
+/**
+ * Iterates an RCT2 string buffer and returns the length of the string in bytes.
+ * Handles single and multi-byte strings.
+ */
+size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen);

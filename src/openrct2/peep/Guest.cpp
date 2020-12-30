@@ -154,198 +154,24 @@ static constexpr const ride_rating NauseaMaximumThresholds[] = {
     300, 600, 800, 1000
 };
 
-/** rct2: 0x0097EFCC */
-static constexpr const uint8_t item_standard_litter[32] = {
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BALLOON
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOY
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_MAP
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PHOTO
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_UMBRELLA
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DRINK
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BURGER
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CHIPS
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_ICE_CREAM
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CANDYFLOSS
-    LITTER_TYPE_EMPTY_CAN,        // PEEP_ITEM_EMPTY_CAN
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_RUBBISH
-    LITTER_TYPE_EMPTY_BURGER_BOX, // PEEP_ITEM_EMPTY_BURGER_BOX
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_PIZZA
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_VOUCHER
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_POPCORN
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HOT_DOG
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TENTACLE
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HAT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOFFEE_APPLE
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TSHIRT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DOUGHNUT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_COFFEE
-    LITTER_TYPE_EMPTY_CUP,        // PEEP_ITEM_EMPTY_CUP
-    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_CHICKEN
-    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_LEMONADE
-    LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_EMPTY_BOX
-    LITTER_TYPE_EMPTY_BOTTLE,     // PEEP_ITEM_EMPTY_BOTTLE
-};
-
-/** rct2: 0x0097EFE8 */
-static constexpr const uint8_t item_extra_litter[32] = {
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO2
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO3
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO4
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PRETZEL
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_CHOCOLATE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ICED_TEA
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FUNNEL_CAKE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUNGLASSES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_BEEF_NOODLES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRIED_RICE_NOODLES
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_WONTON_SOUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_MEATBALL_SOUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_FRUIT_JUICE
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SOYBEAN_MILK
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SU_JONGKWA
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_SUB_SANDWICH
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_COOKIE
-    LITTER_TYPE_EMPTY_BOWL_RED,     // PEEP_ITEM_EMPTY_BOWL_RED
-    LITTER_TYPE_EMPTY_DRINK_CARTON, // PEEP_ITEM_EMPTY_DRINK_CARTON
-    LITTER_TYPE_EMPTY_JUICE_CUP,    // PEEP_ITEM_EMPTY_JUICE_CUP
-    LITTER_TYPE_RUBBISH,            // PEEP_ITEM_ROAST_SAUSAGE
-    LITTER_TYPE_EMPTY_BOWL_BLUE,    // PEEP_ITEM_EMPTY_BOWL_BLUE
-};
-
-/** rct2: 0x009822F4, 0x00982310 */
-static constexpr const uint8_t item_consumption_time[] = {
-    0,      // SHOP_ITEM_BALLOON
-    0,      // SHOP_ITEM_TOY
-    0,      // SHOP_ITEM_MAP
-    0,      // SHOP_ITEM_PHOTO
-    0,      // SHOP_ITEM_UMBRELLA
-    100,    // SHOP_ITEM_DRINK
-    150,    // SHOP_ITEM_BURGER
-    120,    // SHOP_ITEM_CHIPS
-    60,     // SHOP_ITEM_ICE_CREAM
-    50,     // SHOP_ITEM_CANDYFLOSS
-    0,      // SHOP_ITEM_EMPTY_CAN
-    0,      // SHOP_ITEM_RUBBISH
-    0,      // SHOP_ITEM_EMPTY_BURGER_BOX
-    150,    // SHOP_ITEM_PIZZA
-    0,      // SHOP_ITEM_VOUCHER
-    75,     // SHOP_ITEM_POPCORN
-    133,    // SHOP_ITEM_HOT_DOG
-    110,    // SHOP_ITEM_TENTACLE
-    0,      // SHOP_ITEM_HAT
-    50,     // SHOP_ITEM_TOFFEE_APPLE
-    0,      // SHOP_ITEM_TSHIRT
-    80,     // SHOP_ITEM_DOUGHNUT
-    90,     // SHOP_ITEM_COFFEE
-    0,      // SHOP_ITEM_EMPTY_CUP
-    170,    // SHOP_ITEM_CHICKEN
-    115,    // SHOP_ITEM_LEMONADE
-    0,      // SHOP_ITEM_EMPTY_BOX
-    0,      // SHOP_ITEM_EMPTY_BOTTLE
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0xFF,   // UNUSED
-    0,      // SHOP_ITEM_PHOTO2
-    0,      // SHOP_ITEM_PHOTO3
-    0,      // SHOP_ITEM_PHOTO4
-    70,     // SHOP_ITEM_PRETZEL
-    85,     // SHOP_ITEM_CHOCOLATE
-    95,     // SHOP_ITEM_ICED_TEA
-    90,     // SHOP_ITEM_FUNNEL_CAKE
-    0,      // SHOP_ITEM_SUNGLASSES
-    130,    // SHOP_ITEM_BEEF_NOODLES
-    120,    // SHOP_ITEM_FRIED_RICE_NOODLES
-    100,    // SHOP_ITEM_WONTON_SOUP
-    110,    // SHOP_ITEM_MEATBALL_SOUP
-    110,    // SHOP_ITEM_FRUIT_JUICE
-    90,     // SHOP_ITEM_SOYBEAN_MILK
-    100,    // SHOP_ITEM_SU_JONGKWA
-    130,    // SHOP_ITEM_SUB_SANDWICH
-    75,     // SHOP_ITEM_COOKIE
-    0,      // SHOP_ITEM_EMPTY_BOWL_RED
-    0,      // SHOP_ITEM_EMPTY_DRINK_CARTON
-    0,      // SHOP_ITEM_EMPTY_JUICE_CUP
-    115,    // SHOP_ITEM_ROAST_SAUSAGE
-    0       // SHOP_ITEM_EMPTY_BOWL_BLUE
-};
-
 /** rct2: 009823AC */
 static constexpr const PeepThoughtType crowded_thoughts[] = {
-    PEEP_THOUGHT_TYPE_LOST,
-    PEEP_THOUGHT_TYPE_TIRED,
-    PEEP_THOUGHT_TYPE_BAD_LITTER,
-    PEEP_THOUGHT_TYPE_HUNGRY,
-    PEEP_THOUGHT_TYPE_THIRSTY,
-    PEEP_THOUGHT_TYPE_VERY_CLEAN,
-    PEEP_THOUGHT_TYPE_CROWDED,
-    PEEP_THOUGHT_TYPE_SCENERY,
-    PEEP_THOUGHT_TYPE_VERY_CLEAN,
-    PEEP_THOUGHT_TYPE_MUSIC,
-    PEEP_THOUGHT_TYPE_WATCHED,
-    PEEP_THOUGHT_TYPE_NOT_HUNGRY,
-    PEEP_THOUGHT_TYPE_NOT_THIRSTY,
-    PEEP_THOUGHT_TYPE_TOILET,
-    PEEP_THOUGHT_TYPE_NONE,
-    PEEP_THOUGHT_TYPE_NONE,
-};
-
-/** rct2: 0x00982326 */
-static constexpr const uint8_t peep_item_containers[] = {
-    0xFF,                           // PEEP_ITEM_BALLOON
-    0xFF,                           // PEEP_ITEM_TOY
-    0xFF,                           // PEEP_ITEM_MAP
-    0xFF,                           // PEEP_ITEM_PHOTO
-    0xFF,                           // PEEP_ITEM_UMBRELLA
-    SHOP_ITEM_EMPTY_CAN,            // PEEP_ITEM_DRINK
-    SHOP_ITEM_EMPTY_BURGER_BOX,     // PEEP_ITEM_BURGER
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_CHIPS
-    0xFF,                           // PEEP_ITEM_ICE_CREAM
-    0xFF,                           // PEEP_ITEM_CANDYFLOSS
-    0xFF,                           // PEEP_ITEM_EMPTY_CAN
-    0xFF,                           // PEEP_ITEM_RUBBISH
-    0xFF,                           // PEEP_ITEM_EMPTY_BURGER_BOX
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_PIZZA
-    0xFF,                           // PEEP_ITEM_VOUCHER
-    SHOP_ITEM_RUBBISH,              // PEEP_ITEM_POPCORN
-    0xFF,                           // PEEP_ITEM_HOT_DOG
-    0xFF,                           // PEEP_ITEM_TENTACLE
-    0xFF,                           // PEEP_ITEM_HAT
-    0xFF,                           // PEEP_ITEM_TOFFEE_APPLE
-    0xFF,                           // PEEP_ITEM_TSHIRT
-    0xFF,                           // PEEP_ITEM_DOUGHNUT
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_COFFEE
-    0xFF,                           // PEEP_ITEM_EMPTY_CUP
-    SHOP_ITEM_EMPTY_BOX,            // PEEP_ITEM_CHICKEN
-    SHOP_ITEM_EMPTY_BOTTLE,         // PEEP_ITEM_LEMONADE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOX
-    0xFF,                           // PEEP_ITEM_EMPTY_BOTTLE
-};
-
-/** rct2: 0x00982342 */
-static constexpr const uint8_t peep_extra_item_containers[] = {
-    0xFF,                           // PEEP_ITEM_PHOTO2
-    0xFF,                           // PEEP_ITEM_PHOTO3
-    0xFF,                           // PEEP_ITEM_PHOTO4
-    0xFF,                           // PEEP_ITEM_PRETZEL
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_CHOCOLATE
-    SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_ICED_TEA
-    0xFF,                           // PEEP_ITEM_FUNNEL_CAKE
-    0xFF,                           // PEEP_ITEM_SUNGLASSES
-    SHOP_ITEM_EMPTY_BOWL_BLUE,      // PEEP_ITEM_BEEF_NOODLES
-    SHOP_ITEM_EMPTY_BOWL_BLUE,      // PEEP_ITEM_FRIED_RICE_NOODLES
-    SHOP_ITEM_EMPTY_BOWL_RED,       // PEEP_ITEM_WONTON_SOUP
-    SHOP_ITEM_EMPTY_BOWL_RED,       // PEEP_ITEM_MEATBALL_SOUP
-    SHOP_ITEM_EMPTY_JUICE_CUP,      // PEEP_ITEM_FRUIT_JUICE
-    SHOP_ITEM_EMPTY_DRINK_CARTON,   // PEEP_ITEM_SOYBEAN_MILK
-    SHOP_ITEM_EMPTY_DRINK_CARTON,   // PEEP_ITEM_SU_JONGKWA
-    0xFF,                           // PEEP_ITEM_SUB_SANDWICH
-    0xFF,                           // PEEP_ITEM_COOKIE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOWL_RED
-    0xFF,                           // PEEP_ITEM_EMPTY_DRINK_CARTON
-    0xFF,                           // PEEP_ITEM_EMPTY_JUICE_CUP
-    0xFF,                           // PEEP_ITEM_ROAST_SAUSAGE
-    0xFF,                           // PEEP_ITEM_EMPTY_BOWL_BLUE
+    PeepThoughtType::Lost,
+    PeepThoughtType::Tired,
+    PeepThoughtType::BadLitter,
+    PeepThoughtType::Hungry,
+    PeepThoughtType::Thirsty,
+    PeepThoughtType::VeryClean,
+    PeepThoughtType::Crowded,
+    PeepThoughtType::Scenery,
+    PeepThoughtType::VeryClean,
+    PeepThoughtType::Music,
+    PeepThoughtType::Watched,
+    PeepThoughtType::NotHungry,
+    PeepThoughtType::NotThirsty,
+    PeepThoughtType::Toilet,
+    PeepThoughtType::None,
+    PeepThoughtType::None,
 };
 
 static constexpr const char *gPeepEasterEggNames[] = {
@@ -448,10 +274,10 @@ void Guest::GivePassingPeepsPurpleClothes(Guest* passingPeep)
 
 void Guest::GivePassingPeepsPizza(Guest* passingPeep)
 {
-    if ((passingPeep->ItemStandardFlags & PEEP_ITEM_PIZZA))
+    if (passingPeep->HasItem(ShopItem::Pizza))
         return;
 
-    passingPeep->ItemStandardFlags |= PEEP_ITEM_PIZZA;
+    passingPeep->GiveItem(ShopItem::Pizza);
 
     int32_t peepDirection = (sprite_direction >> 3) ^ 2;
     int32_t otherPeepOppositeDirection = passingPeep->sprite_direction >> 3;
@@ -487,10 +313,10 @@ void Guest::GivePassingPeepsIceCream(Guest* passingPeep)
 {
     if (this == passingPeep)
         return;
-    if (passingPeep->ItemStandardFlags & PEEP_ITEM_ICE_CREAM)
+    if (passingPeep->HasItem(ShopItem::IceCream))
         return;
 
-    passingPeep->ItemStandardFlags |= PEEP_ITEM_ICE_CREAM;
+    passingPeep->GiveItem(ShopItem::IceCream);
     passingPeep->UpdateSpriteType();
 }
 
@@ -741,7 +567,7 @@ void Guest::loc_68F9F3()
 void Guest::loc_68FA89()
 {
     // 68FA89
-    if (TimeToConsume == 0 && HasFood())
+    if (TimeToConsume == 0 && HasFoodOrDrink())
     {
         TimeToConsume += 3;
     }
@@ -763,38 +589,20 @@ void Guest::loc_68FA89()
 
         if (TimeToConsume == 0)
         {
-            int32_t chosen_food = bitscanforward(HasFoodStandardFlag());
+            int32_t chosen_food = bitscanforward(GetFoodOrDrinkFlags());
             if (chosen_food != -1)
             {
-                ItemStandardFlags &= ~(1 << chosen_food);
+                ShopItem food = ShopItem(chosen_food);
+                RemoveItem(food);
 
-                uint8_t discard_container = peep_item_containers[chosen_food];
-                if (discard_container != 0xFF)
+                auto discardContainer = GetShopItemDescriptor(food).DiscardContainer;
+                if (discardContainer != ShopItem::None)
                 {
-                    ItemStandardFlags |= (1 << discard_container);
+                    GiveItem(discardContainer);
                 }
 
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                 UpdateSpriteType();
-            }
-            else
-            {
-                chosen_food = bitscanforward(HasFoodExtraFlag());
-                if (chosen_food != -1)
-                {
-                    ItemExtraFlags &= ~(1 << chosen_food);
-                    uint8_t discard_container = peep_extra_item_containers[chosen_food];
-                    if (discard_container != 0xFF)
-                    {
-                        if (discard_container >= 32)
-                            ItemExtraFlags |= (1 << (discard_container - 32));
-                        else
-                            ItemStandardFlags |= (1 << discard_container);
-                    }
-
-                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-                    UpdateSpriteType();
-                }
             }
         }
     }
@@ -880,7 +688,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (PeepFlags & PEEP_FLAGS_CROWDED)
         {
             PeepThoughtType thought_type = crowded_thoughts[scenario_rand() & 0xF];
-            if (thought_type != PEEP_THOUGHT_TYPE_NONE)
+            if (thought_type != PeepThoughtType::None)
             {
                 InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
             }
@@ -941,7 +749,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 {
                     PeepThoughtType thought_type = peep_assess_surroundings(x & 0xFFE0, y & 0xFFE0, z);
 
-                    if (thought_type != PEEP_THOUGHT_TYPE_NONE)
+                    if (thought_type != PeepThoughtType::None)
                     {
                         InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
                         HappinessTarget = std::min(PEEP_MAX_HAPPINESS, HappinessTarget + 45);
@@ -958,7 +766,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
             if (PeepFlags & PEEP_FLAGS_WOW)
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_WOW2, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::Wow2, PEEP_THOUGHT_ITEM_NONE);
             }
 
             if (GuestTimeOnRide > 15)
@@ -971,8 +779,8 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     if (ride != nullptr)
                     {
                         PeepThoughtType thought_type = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)
-                            ? PEEP_THOUGHT_TYPE_GET_OUT
-                            : PEEP_THOUGHT_TYPE_GET_OFF;
+                            ? PeepThoughtType::GetOut
+                            : PeepThoughtType::GetOff;
 
                         InsertNewThought(thought_type, CurrentRide);
                     }
@@ -983,7 +791,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
             && GuestHeadingToRideId == RIDE_ID_NULL)
         {
-            uint32_t time_duration = gScenarioTicks - TimeInPark;
+            uint32_t time_duration = gScenarioTicks - ParkEntryTime;
             time_duration /= 2048;
 
             if (time_duration >= 5)
@@ -1002,7 +810,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             }
         }
 
-        if ((scenario_rand() & 0xFFFF) <= ((ItemStandardFlags & PEEP_ITEM_MAP) ? 8192U : 2184U))
+        if ((scenario_rand() & 0xFFFF) <= ((HasItem(ShopItem::Map)) ? 8192U : 2184U))
         {
             PickRideToGoOn();
         }
@@ -1022,28 +830,28 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                 if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
                 {
-                    possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_GO_HOME;
+                    possible_thoughts[num_thoughts++] = PeepThoughtType::GoHome;
                 }
                 else
                 {
                     if (Energy <= 70 && Happiness < 128)
                     {
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TIRED;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Tired;
                     }
 
-                    if (Hunger <= 10 && !HasFood())
+                    if (Hunger <= 10 && !HasFoodOrDrink())
                     {
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_HUNGRY;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Hungry;
                     }
 
-                    if (Thirst <= 25 && !HasFood())
+                    if (Thirst <= 25 && !HasFoodOrDrink())
                     {
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Thirsty;
                     }
 
                     if (Toilet >= 160)
                     {
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_TOILET;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
                     if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && Energy >= 70)
@@ -1055,7 +863,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                          * 70 is also the threshold for tired thoughts (see above) and
                          * it makes sense that a tired peep might not think about getting
                          * more money. */
-                        possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_RUNNING_OUT;
+                        possible_thoughts[num_thoughts++] = PeepThoughtType::RunningOut;
                     }
                 }
 
@@ -1067,16 +875,16 @@ void Guest::Tick128UpdateGuest(int32_t index)
 
                     switch (chosen_thought)
                     {
-                        case PEEP_THOUGHT_TYPE_HUNGRY:
+                        case PeepThoughtType::Hungry:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
                             break;
-                        case PEEP_THOUGHT_TYPE_THIRSTY:
+                        case PeepThoughtType::Thirsty:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
-                        case PEEP_THOUGHT_TYPE_TOILET:
+                        case PeepThoughtType::Toilet:
                             peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
-                        case PEEP_THOUGHT_TYPE_RUNNING_OUT:
+                        case PeepThoughtType::RunningOut:
                             peep_head_for_nearest_ride_type(this, RIDE_TYPE_CASH_MACHINE);
                             break;
                         default:
@@ -1093,10 +901,10 @@ void Guest::Tick128UpdateGuest(int32_t index)
              * the alternate time to the true branch). */
             if (Nausea >= 140)
             {
-                PeepThoughtType thought_type = PEEP_THOUGHT_TYPE_SICK;
+                PeepThoughtType thought_type = PeepThoughtType::Sick;
                 if (Nausea >= 200)
                 {
-                    thought_type = PEEP_THOUGHT_TYPE_VERY_SICK;
+                    thought_type = PeepThoughtType::VerySick;
                     peep_head_for_nearest_ride_type(this, RIDE_TYPE_FIRST_AID);
                 }
                 InsertNewThought(thought_type, PEEP_THOUGHT_ITEM_NONE);
@@ -1205,7 +1013,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
 void Guest::TryGetUpFromSitting()
 {
     // Eats all food first
-    if (HasFood())
+    if (HasFoodOrDrink())
         return;
 
     TimeToSitdown--;
@@ -1283,7 +1091,7 @@ void Guest::UpdateSitting()
             return;
         }
 
-        if (HasFood())
+        if (HasFoodOrDrink())
         {
             if ((scenario_rand() & 0xFFFF) > 1310)
             {
@@ -1326,44 +1134,23 @@ void Guest::UpdateSitting()
     }
 }
 
-bool Guest::HasItem(int32_t peepItem) const
+/**
+ * To simplify check of 0x36BA3E0 and 0x11FF78
+ * returns false on no food.
+ */
+int64_t Guest::GetFoodOrDrinkFlags() const
 {
-    if (peepItem < 32)
-    {
-        return ItemStandardFlags & (1u << peepItem);
-    }
-    else
-    {
-        return ItemExtraFlags & (1u << (peepItem - 32));
-    }
+    return GetItemFlags() & (ShopItemsGetAllFoods() | ShopItemsGetAllDrinks());
 }
 
-int32_t Guest::HasFoodStandardFlag() const
+int64_t Guest::GetEmptyContainerFlags() const
 {
-    return ItemStandardFlags
-        & (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS | PEEP_ITEM_PIZZA
-           | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE | PEEP_ITEM_DOUGHNUT
-           | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
+    return GetItemFlags() & ShopItemsGetAllContainers();
 }
 
-int32_t Guest::HasFoodExtraFlag() const
+bool Guest::HasFoodOrDrink() const
 {
-    return ItemExtraFlags
-        & (PEEP_ITEM_PRETZEL | PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FUNNEL_CAKE | PEEP_ITEM_BEEF_NOODLES
-           | PEEP_ITEM_FRIED_RICE_NOODLES | PEEP_ITEM_WONTON_SOUP | PEEP_ITEM_MEATBALL_SOUP | PEEP_ITEM_FRUIT_JUICE
-           | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA | PEEP_ITEM_SUB_SANDWICH | PEEP_ITEM_COOKIE
-           | PEEP_ITEM_ROAST_SAUSAGE);
-}
-
-bool Guest::HasDrinkStandardFlag() const
-{
-    return ItemStandardFlags & (PEEP_ITEM_DRINK | PEEP_ITEM_COFFEE | PEEP_ITEM_LEMONADE);
-}
-
-bool Guest::HasDrinkExtraFlag() const
-{
-    return ItemExtraFlags
-        & (PEEP_ITEM_CHOCOLATE | PEEP_ITEM_ICED_TEA | PEEP_ITEM_FRUIT_JUICE | PEEP_ITEM_SOYBEAN_MILK | PEEP_ITEM_SU_JONGKWA);
+    return GetFoodOrDrinkFlags() != 0;
 }
 
 /**
@@ -1372,25 +1159,12 @@ bool Guest::HasDrinkExtraFlag() const
  */
 bool Guest::HasDrink() const
 {
-    return HasDrinkStandardFlag() || HasDrinkExtraFlag();
-}
-
-int32_t Guest::HasEmptyContainerStandardFlag() const
-{
-    return ItemStandardFlags
-        & (PEEP_ITEM_EMPTY_CAN | PEEP_ITEM_EMPTY_BURGER_BOX | PEEP_ITEM_EMPTY_CUP | PEEP_ITEM_RUBBISH | PEEP_ITEM_EMPTY_BOX
-           | PEEP_ITEM_EMPTY_BOTTLE);
-}
-
-int32_t Guest::HasEmptyContainerExtraFlag() const
-{
-    return ItemExtraFlags
-        & (PEEP_ITEM_EMPTY_BOWL_RED | PEEP_ITEM_EMPTY_DRINK_CARTON | PEEP_ITEM_EMPTY_JUICE_CUP | PEEP_ITEM_EMPTY_BOWL_BLUE);
+    return GetItemFlags() & ShopItemsGetAllDrinks();
 }
 
 bool Guest::HasEmptyContainer() const
 {
-    return HasEmptyContainerStandardFlag() || HasEmptyContainerExtraFlag();
+    return GetEmptyContainerFlags() != 0;
 }
 
 /**
@@ -1414,7 +1188,7 @@ void Guest::CheckIfLost()
             return;
         TimeLost = 230;
     }
-    InsertNewThought(PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
+    InsertNewThought(PeepThoughtType::Lost, PEEP_THOUGHT_ITEM_NONE);
 
     HappinessTarget = std::max(HappinessTarget - 30, 0);
 }
@@ -1432,7 +1206,7 @@ void Guest::CheckCantFindRide()
     // Peeps will think "I can't find ride X" twice before giving up completely.
     if (GuestIsLostCountdown == 30 || GuestIsLostCountdown == 60)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND, GuestHeadingToRideId);
+        InsertNewThought(PeepThoughtType::CantFind, GuestHeadingToRideId);
         HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
@@ -1464,7 +1238,7 @@ void Guest::CheckCantFindExit()
     // Peeps who can't find the park exit will continue to get less happy until they find it.
     if (GuestIsLostCountdown == 1)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::CantFindExit, PEEP_THOUGHT_ITEM_NONE);
         HappinessTarget = std::max(HappinessTarget - 30, 0);
     }
 
@@ -1485,125 +1259,109 @@ void Guest::CheckCantFindExit()
  *
  *  rct2: 0x0069AF1E
  */
-bool Guest::DecideAndBuyItem(Ride* ride, int32_t shopItem, money32 price)
+bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
 {
     money32 itemValue;
 
     bool hasVoucher = false;
 
-    if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE)
-        && (VoucherShopItem == shopItem))
+    bool isRainingAndUmbrella = shopItem == ShopItem::Umbrella && climate_is_raining();
+
+    if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_FOOD_OR_DRINK_FREE) && (VoucherShopItem == shopItem))
     {
         hasVoucher = true;
     }
 
     if (HasItem(shopItem))
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
+        InsertNewThought(PeepThoughtType::AlreadyGot, EnumValue(shopItem));
         return false;
     }
 
-    if (ShopItems[shopItem].IsFoodOrDrink())
+    if (GetShopItemDescriptor(shopItem).IsFoodOrDrink())
     {
-        int32_t food = -1;
-        if ((food = HasFoodStandardFlag()) != 0)
+        int32_t food = bitscanforward(GetFoodOrDrinkFlags());
+        if (food != -1)
         {
-            InsertNewThought(PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
-            return false;
-        }
-        else if ((food = HasFoodExtraFlag()) != 0)
-        {
-            InsertNewThought(PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
+            InsertNewThought(PeepThoughtType::HaventFinished, food);
             return false;
         }
         else if (Nausea >= 145)
             return false;
     }
 
-    if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM) || (shopItem == SHOP_ITEM_CANDYFLOSS)
-        || (shopItem == SHOP_ITEM_SUNGLASSES))
+    if ((shopItem == ShopItem::Balloon || shopItem == ShopItem::IceCream || shopItem == ShopItem::Candyfloss
+         || shopItem == ShopItem::Sunglasses)
+        && climate_is_raining())
     {
-        if (climate_is_raining())
-            return false;
-    }
-
-    if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM))
-    {
-        if (gClimateCurrent.Temperature < 12)
-            return false;
-    }
-
-    if (ShopItems[shopItem].IsFood() && (Hunger > 75))
-    {
-        InsertNewThought(PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (ShopItems[shopItem].IsDrink() && (Thirst > 75))
+    if ((shopItem == ShopItem::Sunglasses || shopItem == ShopItem::IceCream) && gClimateCurrent.Temperature < 12)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
-    if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
-        goto loc_69B119;
-
-    if ((shopItem != SHOP_ITEM_MAP) && ShopItems[shopItem].IsSouvenir() && !hasVoucher)
+    if (GetShopItemDescriptor(shopItem).IsFood() && (Hunger > 75))
     {
-        if (((scenario_rand() & 0x7F) + 0x73) > Happiness)
-            return false;
-        else if (GuestNumRides < 3)
+        InsertNewThought(PeepThoughtType::NotHungry, PEEP_THOUGHT_ITEM_NONE);
+        return false;
+    }
+
+    if (GetShopItemDescriptor(shopItem).IsDrink() && (Thirst > 75))
+    {
+        InsertNewThought(PeepThoughtType::NotThirsty, PEEP_THOUGHT_ITEM_NONE);
+        return false;
+    }
+
+    if (!isRainingAndUmbrella && (shopItem != ShopItem::Map) && GetShopItemDescriptor(shopItem).IsSouvenir() && !hasVoucher)
+    {
+        if (((scenario_rand() & 0x7F) + 0x73) > Happiness || GuestNumRides < 3)
             return false;
     }
 
-loc_69B119:
     if (!hasVoucher)
     {
         if (price != 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             if (CashInPocket == 0)
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
             if (price > CashInPocket)
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
+                InsertNewThought(PeepThoughtType::CantAffordItem, EnumValue(shopItem));
                 return false;
             }
         }
 
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[shopItem].HotValue;
+            itemValue = GetShopItemDescriptor(shopItem).HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[shopItem].ColdValue;
+            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
         else
-            itemValue = ShopItems[shopItem].BaseValue;
+            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
 
         if (itemValue < price)
         {
             itemValue -= price;
-            if (shopItem == SHOP_ITEM_UMBRELLA)
+
+            if (!isRainingAndUmbrella)
             {
-                if (climate_is_raining())
-                    goto loc_69B221;
-            }
-
-            itemValue = -itemValue;
-            if (Happiness >= 128)
-                itemValue /= 2;
-
-            if (Happiness >= 180)
-                itemValue /= 2;
-
-            if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
-            {
-                // "I'm not paying that much for x"
-                PeepThoughtType thought_type = static_cast<PeepThoughtType>(
-                    (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
-                                    : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem)));
-                InsertNewThought(thought_type, ride->id);
-                return false;
+                itemValue = -itemValue;
+                if (Happiness >= 128)
+                {
+                    itemValue /= 2;
+                    if (Happiness >= 180)
+                        itemValue /= 2;
+                }
+                if (itemValue > (static_cast<money16>(scenario_rand() & 0x07)))
+                {
+                    // "I'm not paying that much for x"
+                    InsertNewThought(GetShopItemDescriptor(shopItem).TooMuchThought, ride->id);
+                    return false;
+                }
             }
         }
         else
@@ -1616,10 +1374,7 @@ loc_69B119:
                 if (itemValue >= static_cast<money32>(scenario_rand() & 0x07))
                 {
                     // "This x is a really good value"
-                    PeepThoughtType thought_item = static_cast<PeepThoughtType>(
-                        (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2 + (shopItem - 32))
-                                        : (PEEP_THOUGHT_TYPE_BALLOON + shopItem)));
-                    InsertNewThought(thought_item, ride->id);
+                    InsertNewThought(GetShopItemDescriptor(shopItem).GoodValueThought, ride->id);
                 }
             }
 
@@ -1627,18 +1382,14 @@ loc_69B119:
             HappinessTarget = std::min((HappinessTarget + happinessGrowth), PEEP_MAX_HAPPINESS);
             Happiness = std::min((Happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
-    }
 
-loc_69B221:
-    if (!hasVoucher)
-    {
+        // reset itemValue for satisfaction calculation
         if (gClimateCurrent.Temperature >= 21)
-            itemValue = ShopItems[shopItem].HotValue;
+            itemValue = GetShopItemDescriptor(shopItem).HotValue;
         else if (gClimateCurrent.Temperature <= 11)
-            itemValue = ShopItems[shopItem].ColdValue;
+            itemValue = GetShopItemDescriptor(shopItem).ColdValue;
         else
-            itemValue = ShopItems[shopItem].BaseValue;
-
+            itemValue = GetShopItemDescriptor(shopItem).BaseValue;
         itemValue -= price;
         uint8_t satisfaction = 0;
         if (itemValue > -8)
@@ -1651,45 +1402,41 @@ loc_69B221:
                     satisfaction++;
             }
         }
-
         ride_update_satisfaction(ride, satisfaction);
     }
 
     // The peep has now decided to buy the item (or, specifically, has not been
     // dissuaded so far).
-    if (shopItem >= 32)
-        ItemExtraFlags |= (1u << (shopItem - 32));
-    else
-        ItemStandardFlags |= (1u << shopItem);
+    GiveItem(shopItem);
 
-    if (shopItem == SHOP_ITEM_TSHIRT)
+    if (shopItem == ShopItem::TShirt)
         TshirtColour = ride->track_colour[0].main;
 
-    if (shopItem == SHOP_ITEM_HAT)
+    if (shopItem == ShopItem::Hat)
         HatColour = ride->track_colour[0].main;
 
-    if (shopItem == SHOP_ITEM_BALLOON)
+    if (shopItem == ShopItem::Balloon)
         BalloonColour = ride->track_colour[0].main;
 
-    if (shopItem == SHOP_ITEM_UMBRELLA)
+    if (shopItem == ShopItem::Umbrella)
         UmbrellaColour = ride->track_colour[0].main;
 
-    if (shopItem == SHOP_ITEM_MAP)
+    if (shopItem == ShopItem::Map)
         ResetPathfindGoal();
 
-    uint16_t consumptionTime = item_consumption_time[shopItem];
+    uint16_t consumptionTime = GetShopItemDescriptor(shopItem).ConsumptionTime;
     TimeToConsume = std::min((TimeToConsume + consumptionTime), 255);
 
-    if (shopItem == SHOP_ITEM_PHOTO)
+    if (shopItem == ShopItem::Photo)
         Photo1RideRef = ride->id;
 
-    if (shopItem == SHOP_ITEM_PHOTO2)
+    if (shopItem == ShopItem::Photo2)
         Photo2RideRef = ride->id;
 
-    if (shopItem == SHOP_ITEM_PHOTO3)
+    if (shopItem == ShopItem::Photo3)
         Photo3RideRef = ride->id;
 
-    if (shopItem == SHOP_ITEM_PHOTO4)
+    if (shopItem == ShopItem::Photo4)
         Photo4RideRef = ride->id;
 
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -1698,52 +1445,52 @@ loc_69B221:
     {
         auto ft = Formatter();
         FormatNameTo(ft);
-        ft.Add<rct_string_id>(ShopItems[shopItem].Naming.Indefinite);
+        ft.Add<rct_string_id>(GetShopItemDescriptor(shopItem).Naming.Indefinite);
         if (gConfigNotifications.guest_bought_item)
         {
             News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_NOTIFICATION_BOUGHT_X, sprite_index, ft);
         }
     }
 
-    if (ShopItems[shopItem].IsFood())
+    if (GetShopItemDescriptor(shopItem).IsFood())
         AmountOfFood++;
 
-    if (ShopItems[shopItem].IsDrink())
+    if (GetShopItemDescriptor(shopItem).IsDrink())
         AmountOfDrinks++;
 
-    if (ShopItems[shopItem].IsSouvenir())
+    if (GetShopItemDescriptor(shopItem).IsSouvenir())
         AmountOfSouvenirs++;
 
     money16* expend_type = &PaidOnSouvenirs;
     ExpenditureType expenditure = ExpenditureType::ShopStock;
 
-    if (ShopItems[shopItem].IsFood())
+    if (GetShopItemDescriptor(shopItem).IsFood())
     {
         expend_type = &PaidOnFood;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
-    if (ShopItems[shopItem].IsDrink())
+    if (GetShopItemDescriptor(shopItem).IsDrink())
     {
         expend_type = &PaidOnDrink;
         expenditure = ExpenditureType::FoodDrinkStock;
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-        finance_payment(ShopItems[shopItem].Cost, expenditure);
+        finance_payment(GetShopItemDescriptor(shopItem).Cost, expenditure);
 
     // Sets the expenditure type to *_FOODDRINK_SALES or *_SHOP_SALES appropriately.
     expenditure = static_cast<ExpenditureType>(static_cast<int32_t>(expenditure) - 1);
     if (hasVoucher)
     {
-        ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+        RemoveItem(ShopItem::Voucher);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
     else if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         SpendMoney(*expend_type, price, expenditure);
     }
-    ride->total_profit += (price - ShopItems[shopItem].Cost);
+    ride->total_profit += (price - GetShopItemDescriptor(shopItem).Cost);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
     ride->cur_num_customers++;
     ride->total_customers++;
@@ -1826,7 +1573,7 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 
     if (ride != nullptr && peep_really_liked_ride(this, ride))
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_WAS_GREAT, rideIndex);
+        InsertNewThought(PeepThoughtType::WasGreat, rideIndex);
 
         static constexpr OpenRCT2::Audio::SoundId laughs[3] = { OpenRCT2::Audio::SoundId::Laugh1,
                                                                 OpenRCT2::Audio::SoundId::Laugh2,
@@ -1846,15 +1593,6 @@ void Guest::OnExitRide(ride_id_t rideIndex)
 }
 
 /**
- * To simplify check of 0x36BA3E0 and 0x11FF78
- * returns false on no food.
- */
-bool Guest::HasFood() const
-{
-    return HasFoodStandardFlag() || HasFoodExtraFlag();
-}
-
-/**
  *
  *  rct2: 0x00695DD2
  */
@@ -1866,7 +1604,7 @@ void Guest::PickRideToGoOn()
         return;
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
-    if (HasFood())
+    if (HasFoodOrDrink())
         return;
     if (x == LOCATION_NULL)
         return;
@@ -1881,7 +1619,7 @@ void Guest::PickRideToGoOn()
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 
         // Make peep look at their map if they have one
-        if (ItemStandardFlags & PEEP_ITEM_MAP)
+        if (HasItem(ShopItem::Map))
         {
             ReadMap();
         }
@@ -1919,7 +1657,7 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
     //      rides they haven't been on before.
-    if (ItemStandardFlags & PEEP_ITEM_MAP)
+    if (HasItem(ShopItem::Map))
     {
         // Consider rides that peep hasn't been on yet
         for (auto& ride : GetRideManager())
@@ -2070,11 +1808,11 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (CashInPocket <= 0)
                         {
-                            InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                            InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
                         }
                         else
                         {
-                            InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
+                            InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
                         }
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
@@ -2087,7 +1825,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             {
                 if (peepAtRide)
                 {
-                    InsertNewThought(PEEP_THOUGHT_TYPE_NOT_SAFE, ride->id);
+                    InsertNewThought(PeepThoughtType::NotSafe, ride->id);
                     if (HappinessTarget >= 64)
                     {
                         HappinessTarget -= 8;
@@ -2117,7 +1855,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 {
                     if (peepAtRide)
                     {
-                        InsertNewThought(PEEP_THOUGHT_TYPE_NOT_WHILE_RAINING, ride->id);
+                        InsertNewThought(PeepThoughtType::NotWhileRaining, ride->id);
                         if (HappinessTarget >= 64)
                         {
                             HappinessTarget -= 8;
@@ -2139,7 +1877,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PEEP_THOUGHT_TYPE_MORE_THRILLING, ride->id);
+                            InsertNewThought(PeepThoughtType::MoreThrilling, ride->id);
                             if (HappinessTarget >= 64)
                             {
                                 HappinessTarget -= 8;
@@ -2162,7 +1900,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (peepAtRide)
                         {
-                            InsertNewThought(PEEP_THOUGHT_TYPE_SICKENING, ride->id);
+                            InsertNewThought(PeepThoughtType::Sickening, ride->id);
                             if (HappinessTarget >= 64)
                             {
                                 HappinessTarget -= 8;
@@ -2218,7 +1956,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                 {
                     if (peepAtRide)
                     {
-                        InsertNewThought(PEEP_THOUGHT_TYPE_BAD_VALUE, ride->id);
+                        InsertNewThought(PeepThoughtType::BadValue, ride->id);
                         if (HappinessTarget >= 60)
                         {
                             HappinessTarget -= 16;
@@ -2236,7 +1974,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         if (!(PeepFlags & PEEP_FLAGS_HAS_PAID_FOR_PARK_ENTRY))
                         {
-                            InsertNewThought(PEEP_THOUGHT_TYPE_GOOD_VALUE, ride->id);
+                            InsertNewThought(PeepThoughtType::GoodValue, ride->id);
                         }
                     }
                 }
@@ -2285,7 +2023,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         {
             if (peepAtShop)
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_NOT_PAYING, ride->id);
+                InsertNewThought(PeepThoughtType::NotPaying, ride->id);
                 if (HappinessTarget >= 60)
                 {
                     HappinessTarget -= 16;
@@ -2314,11 +2052,11 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
         {
             if (CashInPocket <= 0)
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+                InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
             }
             else
             {
-                InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, ride->id);
+                InsertNewThought(PeepThoughtType::CantAffordRide, ride->id);
             }
         }
         ChoseNotToGoOnRide(ride, peepAtShop, true);
@@ -2399,6 +2137,16 @@ bool Guest::HasRiddenRideType(int32_t rideType) const
     return RideTypesBeenOn[rideType / 8] & (1 << (rideType % 8));
 }
 
+void Guest::SetParkEntryTime(int32_t entryTime)
+{
+    ParkEntryTime = entryTime;
+}
+
+int32_t Guest::GetParkEntryTime() const
+{
+    return ParkEntryTime;
+}
+
 void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
 {
     if (peepAtRide && updateLastRide)
@@ -2426,8 +2174,7 @@ void Guest::ReadMap()
 
 static bool peep_has_voucher_for_free_ride(Peep* peep, Ride* ride)
 {
-    return peep->ItemStandardFlags & PEEP_ITEM_VOUCHER && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
-        && peep->VoucherRideId == ride->id;
+    return peep->HasItem(ShopItem::Voucher) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE && peep->VoucherRideId == ride->id;
 }
 
 /**
@@ -2457,7 +2204,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
 {
     if (peepAtRide)
     {
-        peep->InsertNewThought(PEEP_THOUGHT_TYPE_INTENSE, ride->id);
+        peep->InsertNewThought(PeepThoughtType::Intense, ride->id);
         if (peep->HappinessTarget >= 64)
         {
             peep->HappinessTarget -= 8;
@@ -2648,20 +2395,20 @@ static void peep_update_ride_at_entrance_try_leave(Guest* peep)
 
 static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 ridePrice)
 {
-    if ((peep->ItemStandardFlags & PEEP_ITEM_VOUCHER) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
+    if ((peep->HasItem(ShopItem::Voucher)) && peep->VoucherType == VOUCHER_TYPE_RIDE_FREE
         && peep->VoucherRideId == peep->CurrentRide)
         return true;
 
     if (peep->CashInPocket <= 0 && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        peep->InsertNewThought(PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
+        peep->InsertNewThought(PeepThoughtType::SpentMoney, PEEP_THOUGHT_ITEM_NONE);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
 
     if (ridePrice > peep->CashInPocket)
     {
-        peep->InsertNewThought(PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->CurrentRide);
+        peep->InsertNewThought(PeepThoughtType::CantAffordRide, peep->CurrentRide);
         peep_update_ride_at_entrance_try_leave(peep);
         return false;
     }
@@ -2671,7 +2418,7 @@ static bool peep_check_ride_price_at_entrance(Guest* peep, Ride* ride, money32 r
     {
         if (value * 2 < ridePrice)
         {
-            peep->InsertNewThought(PEEP_THOUGHT_TYPE_BAD_VALUE, peep->CurrentRide);
+            peep->InsertNewThought(PeepThoughtType::BadValue, peep->CurrentRide);
             peep_update_ride_at_entrance_try_leave(peep);
             return false;
         }
@@ -2942,7 +2689,7 @@ static bool peep_really_liked_ride(Peep* peep, Ride* ride)
 static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre_y, int16_t centre_z)
 {
     if ((tile_element_height({ centre_x, centre_y })) > centre_z)
-        return PEEP_THOUGHT_TYPE_NONE;
+        return PeepThoughtType::None;
 
     uint16_t num_scenery = 0;
     uint16_t num_fountains = 0;
@@ -2975,7 +2722,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         scenery = tileElement->AsPath()->GetAdditionEntry();
                         if (scenery == nullptr)
                         {
-                            return PEEP_THOUGHT_TYPE_NONE;
+                            return PeepThoughtType::None;
                         }
                         if (tileElement->AsPath()->AdditionIsGhost())
                             break;
@@ -3038,19 +2785,19 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
     }
 
     if (num_fountains >= 5 && num_rubbish < 20)
-        return PEEP_THOUGHT_TYPE_FOUNTAINS;
+        return PeepThoughtType::Fountains;
 
     if (num_scenery >= 40 && num_rubbish < 8)
-        return PEEP_THOUGHT_TYPE_SCENERY;
+        return PeepThoughtType::Scenery;
 
     if (nearby_music == 1 && num_rubbish < 20)
-        return PEEP_THOUGHT_TYPE_MUSIC;
+        return PeepThoughtType::Music;
 
     if (num_rubbish < 2 && !gCheatsDisableLittering)
         // if disable littering cheat is enabled, peeps will not have the "clean and tidy park" thought
-        return PEEP_THOUGHT_TYPE_VERY_CLEAN;
+        return PeepThoughtType::VeryClean;
 
-    return PEEP_THOUGHT_TYPE_NONE;
+    return PeepThoughtType::None;
 }
 
 /**
@@ -3143,7 +2890,7 @@ static void peep_leave_park(Peep* peep)
         peep->PeepFlags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    peep->InsertNewThought(PEEP_THOUGHT_TYPE_GO_HOME, PEEP_THOUGHT_ITEM_NONE);
+    peep->InsertNewThought(PeepThoughtType::GoHome, PEEP_THOUGHT_ITEM_NONE);
 
     rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
     if (w != nullptr)
@@ -3171,7 +2918,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     std::bitset<MAX_RIDES> rideConsideration;
-    if (!considerOnlyCloseRides && (peep->ItemStandardFlags & PEEP_ITEM_MAP))
+    if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
         for (const auto& ride : GetRideManager())
@@ -3269,7 +3016,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
 
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
-    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFood())
+    if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
     {
         return;
     }
@@ -3286,17 +3033,17 @@ static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeF
  */
 void Guest::StopPurchaseThought(uint8_t ride_type)
 {
-    uint8_t thoughtType = PEEP_THOUGHT_TYPE_HUNGRY;
+    auto thoughtType = PeepThoughtType::Hungry;
 
     if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_FOOD))
     {
-        thoughtType = PEEP_THOUGHT_TYPE_THIRSTY;
+        thoughtType = PeepThoughtType::Thirsty;
         if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_SELLS_DRINKS))
         {
-            thoughtType = PEEP_THOUGHT_TYPE_RUNNING_OUT;
+            thoughtType = PeepThoughtType::RunningOut;
             if (ride_type != RIDE_TYPE_CASH_MACHINE)
             {
-                thoughtType = PEEP_THOUGHT_TYPE_TOILET;
+                thoughtType = PeepThoughtType::Toilet;
                 if (!ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     return;
@@ -3310,7 +3057,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
     {
         rct_peep_thought* thought = &Thoughts[i];
 
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+        if (thought->type == PeepThoughtType::None)
             break;
 
         if (thought->type != thoughtType)
@@ -3321,7 +3068,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
             memmove(thought, thought + 1, sizeof(rct_peep_thought) * (PEEP_MAX_THOUGHTS - i - 1));
         }
 
-        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PEEP_THOUGHT_TYPE_NONE;
+        Thoughts[PEEP_MAX_THOUGHTS - 1].type = PeepThoughtType::None;
 
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_THOUGHTS;
         i--;
@@ -3428,7 +3175,7 @@ void Guest::UpdateBuying()
             {
                 return;
             }
-            if (ride_type->shop_item[1] != SHOP_ITEM_NONE)
+            if (ride_type->shop_item[1] != ShopItem::None)
             {
                 money16 price = ride->price[1];
 
@@ -3439,7 +3186,7 @@ void Guest::UpdateBuying()
                 }
             }
 
-            if (!item_bought && ride_type->shop_item[0] != SHOP_ITEM_NONE)
+            if (!item_bought && ride_type->shop_item[0] != ShopItem::None)
             {
                 money16 price = ride->price[0];
 
@@ -3866,10 +3613,9 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if ((ItemStandardFlags & PEEP_ITEM_VOUCHER) && (VoucherType == VOUCHER_TYPE_RIDE_FREE)
-            && (VoucherRideId == CurrentRide))
+        if ((HasItem(ShopItem::Voucher)) && (VoucherType == VOUCHER_TYPE_RIDE_FREE) && (VoucherRideId == CurrentRide))
         {
-            ItemStandardFlags &= ~PEEP_ITEM_VOUCHER;
+            RemoveItem(ShopItem::Voucher);
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
         }
         else
@@ -4422,7 +4168,7 @@ void Guest::UpdateRideInExit()
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
-        uint8_t secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
+        ShopItem secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
         if (DecideAndBuyItem(ride, secondaryItem, ride->price[1]))
         {
             ride->no_secondary_items_sold++;
@@ -5350,26 +5096,14 @@ void Guest::UpdateWalking()
         if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
-            uint8_t pos_stnd = 0;
-            for (int32_t container = HasEmptyContainerStandardFlag(); pos_stnd < 32; pos_stnd++)
-                if (container & (1u << pos_stnd))
-                    break;
-
+            int32_t container = bitscanforward(GetEmptyContainerFlags());
             int32_t litterType = 0;
 
-            if (pos_stnd != 32)
+            if (container != -1)
             {
-                ItemStandardFlags &= ~(1u << pos_stnd);
-                litterType = item_standard_litter[pos_stnd];
-            }
-            else
-            {
-                uint8_t pos_extr = 0;
-                for (int32_t container = HasEmptyContainerExtraFlag(); pos_extr < 32; pos_extr++)
-                    if (container & (1u << pos_extr))
-                        break;
-                ItemExtraFlags &= ~(1u << pos_extr);
-                litterType = item_extra_litter[pos_extr];
+                auto item = static_cast<ShopItem>(container);
+                RemoveItem(item);
+                litterType = GetShopItemDescriptor(item).LitterType;
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5443,7 +5177,7 @@ void Guest::UpdateWalking()
     if (Toilet > 140)
         return;
 
-    uint16_t chance = HasFood() ? 13107 : 2849;
+    uint16_t chance = HasFoodOrDrink() ? 13107 : 2849;
 
     if ((scenario_rand() & 0xFFFF) > chance)
         return;
@@ -5537,11 +5271,11 @@ void Guest::UpdateWalking()
 
     if (CurrentSeat & 1)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::NewRide, PEEP_THOUGHT_ITEM_NONE);
     }
     if (CurrentRide == RIDE_ID_NULL)
     {
-        InsertNewThought(PEEP_THOUGHT_TYPE_SCENERY, PEEP_THOUGHT_ITEM_NONE);
+        InsertNewThought(PeepThoughtType::Scenery, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -5615,7 +5349,7 @@ void Guest::UpdateQueuing()
         if (TimeInQueue >= 3500 && (0xFFFF & scenario_rand()) <= 93)
         {
             // Create the I have been waiting in line ages thought
-            InsertNewThought(PEEP_THOUGHT_TYPE_QUEUING_AGES, CurrentRide);
+            InsertNewThought(PeepThoughtType::QueuingAges, CurrentRide);
         }
     }
     else
@@ -5694,7 +5428,7 @@ void Guest::UpdateEnteringPark()
     SetState(PeepState::Falling);
 
     OutsideOfPark = false;
-    TimeInPark = gScenarioTicks;
+    ParkEntryTime = gScenarioTicks;
     increment_guests_in_park();
     decrement_guests_heading_for_park();
     auto intent = Intent(INTENT_ACTION_UPDATE_GUEST_COUNT);
@@ -5781,7 +5515,7 @@ void Guest::UpdateWatching()
         }
         else
         {
-            if (HasFood())
+            if (HasFoodOrDrink())
             {
                 if ((scenario_rand() & 0xFFFF) <= 1310)
                 {
@@ -5839,9 +5573,9 @@ void Guest::UpdateWatching()
  */
 void Guest::UpdateUsingBin()
 {
-    switch (SubState)
+    switch (UsingBinSubState)
     {
-        case PEEP_USING_BIN_WALKING_TO_BIN:
+        case PeepUsingBinSubState::WalkingToBin:
         {
             if (!CheckForPath())
                 return;
@@ -5850,11 +5584,11 @@ void Guest::UpdateUsingBin()
             PerformNextAction(pathingResult);
             if (pathingResult & PATHING_DESTINATION_REACHED)
             {
-                SubState = PEEP_USING_BIN_GOING_BACK;
+                UsingBinSubState = PeepUsingBinSubState::GoingBack;
             }
             break;
         }
-        case PEEP_USING_BIN_GOING_BACK:
+        case PeepUsingBinSubState::GoingBack:
         {
             if (Action != PeepActionType::None2)
             {
@@ -5914,70 +5648,37 @@ void Guest::UpdateUsingBin()
             }
 
             // Bin selection is one of 4 corners
-            uint8_t selected_bin = Var37 * 2;
+            uint8_t selectedBin = Var37 * 2;
 
             // This counts down 2 = No rubbish, 0 = full
-            uint8_t space_left_in_bin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selected_bin);
-            uint32_t empty_containers = HasEmptyContainerStandardFlag();
+            uint8_t spaceLeftInBin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selectedBin);
+            uint64_t emptyContainers = GetEmptyContainerFlags();
 
-            for (uint8_t cur_container = 0; cur_container < 32; cur_container++)
+            for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
             {
-                if (!(empty_containers & (1u << cur_container)))
+                if (!(emptyContainers & (1ULL << curContainer)))
                     continue;
 
-                if (space_left_in_bin != 0)
+                auto item = ShopItem(curContainer);
+                if (spaceLeftInBin != 0)
                 {
                     // OpenRCT2 modification: This previously used
                     // the tick count as a simple random function
                     // switched to scenario_rand as it is more reliable
                     if ((scenario_rand() & 7) == 0)
-                        space_left_in_bin--;
-                    ItemStandardFlags &= ~(1 << cur_container);
+                        spaceLeftInBin--;
+                    RemoveItem(item);
                     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t litterType = item_standard_litter[cur_container];
+                uint8_t litterType = GetShopItemDescriptor(item).LitterType;
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;
 
                 litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                ItemStandardFlags &= ~(1 << cur_container);
-                WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-
-                UpdateSpriteType();
-            }
-
-            // Original bug: This would clear any rubbish placed by the previous function
-            // space_left_in_bin = 0x3 & (tile_element->properties.path.addition_status >> selected_bin);
-            empty_containers = HasEmptyContainerExtraFlag();
-
-            for (uint8_t cur_container = 0; cur_container < 32; cur_container++)
-            {
-                if (!(empty_containers & (1u << cur_container)))
-                    continue;
-
-                if (space_left_in_bin != 0)
-                {
-                    // OpenRCT2 modification: This previously used
-                    // the tick count as a simple random function
-                    // switched to scenario_rand as it is more reliable
-                    if ((scenario_rand() & 7) == 0)
-                        space_left_in_bin--;
-                    ItemExtraFlags &= ~(1 << cur_container);
-                    WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
-
-                    UpdateSpriteType();
-                    continue;
-                }
-                uint8_t litterType = item_extra_litter[cur_container];
-
-                int32_t litterX = x + (scenario_rand() & 7) - 3;
-                int32_t litterY = y + (scenario_rand() & 7) - 3;
-
-                litter_create({ litterX, litterY, z, static_cast<Direction>(scenario_rand() & 3) }, litterType);
-                ItemExtraFlags &= ~(1 << cur_container);
+                RemoveItem(item);
                 WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
 
                 UpdateSpriteType();
@@ -5985,9 +5686,9 @@ void Guest::UpdateUsingBin()
 
             uint8_t additionStatus = tileElement->AsPath()->GetAdditionStatus();
             // Place new amount in bin by first clearing the value
-            additionStatus &= ~(3 << selected_bin);
+            additionStatus &= ~(3 << selectedBin);
             // Then placing the new value.
-            additionStatus |= space_left_in_bin << selected_bin;
+            additionStatus |= spaceLeftInBin << selectedBin;
             tileElement->AsPath()->SetAdditionStatus(additionStatus);
 
             map_invalidate_tile_zoom0({ NextLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
@@ -6008,7 +5709,7 @@ bool Guest::ShouldFindBench()
         return false;
     }
 
-    if (HasFood())
+    if (HasFoodOrDrink())
     {
         if (Hunger < 128 || Happiness < 128)
         {
@@ -6191,7 +5892,7 @@ bool Guest::UpdateWalkingFindBin()
     peep->Var37 = chosen_edge;
 
     peep->SetState(PeepState::UsingBin);
-    peep->SubState = PEEP_USING_BIN_WALKING_TO_BIN;
+    peep->UsingBinSubState = PeepUsingBinSubState::WalkingToBin;
 
     int32_t binX = (peep->x & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].x;
     int32_t binY = (peep->y & 0xFFE0) + BinUseOffsets[peep->Var37 & 0x3].y;
@@ -6507,7 +6208,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            if (sceneryEntry == nullptr || !(sceneryEntry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
@@ -6798,45 +6500,43 @@ void Guest::SetSpriteType(PeepSpriteType new_sprite_type)
 
 struct item_pref_t
 {
-    uint8_t type;  // 0 for standard, 1 for extra
-    uint32_t item; // And this with the relevant flags
+    ShopItem item;
     PeepSpriteType sprite_type;
 };
 
 // clang-format off
 static item_pref_t item_order_preference[] = {
-        { 0, PEEP_ITEM_ICE_CREAM, PeepSpriteType::IceCream },
-        { 0, PEEP_ITEM_CHIPS, PeepSpriteType::Chips },
-        { 0, PEEP_ITEM_PIZZA, PeepSpriteType::Pizza },
-        { 0, PEEP_ITEM_BURGER, PeepSpriteType::Burger },
-        { 0, PEEP_ITEM_DRINK, PeepSpriteType::Drink },
-        { 0, PEEP_ITEM_COFFEE, PeepSpriteType::Coffee },
-        { 0, PEEP_ITEM_CHICKEN, PeepSpriteType::Chicken },
-        { 0, PEEP_ITEM_LEMONADE, PeepSpriteType::Lemonade },
-        { 0, PEEP_ITEM_CANDYFLOSS, PeepSpriteType::Candyfloss },
-        { 0, PEEP_ITEM_POPCORN, PeepSpriteType::Popcorn },
-        { 0, PEEP_ITEM_HOT_DOG, PeepSpriteType::HotDog  },
-        { 0, PEEP_ITEM_TENTACLE, PeepSpriteType::Tentacle },
-        { 0, PEEP_ITEM_TOFFEE_APPLE, PeepSpriteType::ToffeeApple },
-        { 0, PEEP_ITEM_DOUGHNUT, PeepSpriteType::Doughnut },
-        { 1, PEEP_ITEM_PRETZEL, PeepSpriteType::Pretzel },
-        { 1, PEEP_ITEM_COOKIE, PeepSpriteType::Pretzel },
-        { 1, PEEP_ITEM_CHOCOLATE, PeepSpriteType::Coffee },
-        { 1, PEEP_ITEM_ICED_TEA, PeepSpriteType::Coffee },
-        { 1, PEEP_ITEM_FUNNEL_CAKE, PeepSpriteType::FunnelCake },
-        { 1, PEEP_ITEM_BEEF_NOODLES, PeepSpriteType::Noodles },
-        { 1, PEEP_ITEM_FRIED_RICE_NOODLES, PeepSpriteType::Noodles },
-        { 1, PEEP_ITEM_WONTON_SOUP, PeepSpriteType::Soup },
-        { 1, PEEP_ITEM_MEATBALL_SOUP, PeepSpriteType::Soup },
-        { 1, PEEP_ITEM_FRUIT_JUICE, PeepSpriteType::Juice },
-        { 1, PEEP_ITEM_SOYBEAN_MILK, PeepSpriteType::SuJongkwa },
-        { 1, PEEP_ITEM_SU_JONGKWA, PeepSpriteType::SuJongkwa },
-        { 1, PEEP_ITEM_SUB_SANDWICH, PeepSpriteType::Sandwich },
-        { 1, PEEP_ITEM_ROAST_SAUSAGE, PeepSpriteType::Sausage },
-        { 0, PEEP_ITEM_BALLOON, PeepSpriteType::Balloon },
-        { 0, PEEP_ITEM_HAT, PeepSpriteType::Hat },
-        { 1, PEEP_ITEM_SUNGLASSES, PeepSpriteType::Sunglasses },
-        { 0xFF, 0xFFFFFFFF, PeepSpriteType::Invalid }
+    { ShopItem::IceCream,         PeepSpriteType::IceCream    },
+    { ShopItem::Chips,            PeepSpriteType::Chips       },
+    { ShopItem::Pizza,            PeepSpriteType::Pizza       },
+    { ShopItem::Burger,           PeepSpriteType::Burger      },
+    { ShopItem::Drink,            PeepSpriteType::Drink       },
+    { ShopItem::Coffee,           PeepSpriteType::Coffee      },
+    { ShopItem::Chicken,          PeepSpriteType::Chicken     },
+    { ShopItem::Lemonade,         PeepSpriteType::Lemonade    },
+    { ShopItem::Candyfloss,       PeepSpriteType::Candyfloss  },
+    { ShopItem::Popcorn,          PeepSpriteType::Popcorn     },
+    { ShopItem::HotDog,           PeepSpriteType::HotDog      },
+    { ShopItem::Tentacle,         PeepSpriteType::Tentacle    },
+    { ShopItem::ToffeeApple,      PeepSpriteType::ToffeeApple },
+    { ShopItem::Doughnut,         PeepSpriteType::Doughnut    },
+    { ShopItem::Pretzel,          PeepSpriteType::Pretzel     },
+    { ShopItem::Cookie,           PeepSpriteType::Pretzel     },
+    { ShopItem::Chocolate,        PeepSpriteType::Coffee      },
+    { ShopItem::IcedTea,          PeepSpriteType::Coffee      },
+    { ShopItem::FunnelCake,       PeepSpriteType::FunnelCake  },
+    { ShopItem::BeefNoodles,      PeepSpriteType::Noodles     },
+    { ShopItem::FriedRiceNoodles, PeepSpriteType::Noodles     },
+    { ShopItem::WontonSoup,       PeepSpriteType::Soup        },
+    { ShopItem::MeatballSoup,     PeepSpriteType::Soup        },
+    { ShopItem::FruitJuice,       PeepSpriteType::Juice       },
+    { ShopItem::SoybeanMilk,      PeepSpriteType::SuJongkwa   },
+    { ShopItem::Sujeonggwa,       PeepSpriteType::SuJongkwa   },
+    { ShopItem::SubSandwich,      PeepSpriteType::Sandwich    },
+    { ShopItem::RoastSausage,     PeepSpriteType::Sausage     },
+    { ShopItem::Balloon,          PeepSpriteType::Balloon     },
+    { ShopItem::Hat,              PeepSpriteType::Hat         },
+    { ShopItem::Sunglasses,       PeepSpriteType::Sunglasses  },
 };
 // clang-format on
 
@@ -6858,11 +6558,11 @@ void Guest::UpdateSpriteType()
             }
             create_balloon({ x, y, z + 9 }, BalloonColour, isBalloonPopped);
         }
-        ItemStandardFlags &= ~PEEP_ITEM_BALLOON;
+        RemoveItem(ShopItem::Balloon);
         WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (climate_is_raining() && (ItemStandardFlags & PEEP_ITEM_UMBRELLA) && x != LOCATION_NULL)
+    if (climate_is_raining() && (HasItem(ShopItem::Umbrella)) && x != LOCATION_NULL)
     {
         CoordsXY loc = { x, y };
         if (map_is_location_valid(loc.ToTileStart()))
@@ -6885,23 +6585,12 @@ void Guest::UpdateSpriteType()
         }
     }
 
-    for (item_pref_t* item_pref = item_order_preference; item_pref->type != 0xFF; item_pref++)
+    for (auto& itemPref : item_order_preference)
     {
-        if (item_pref->type == 0)
+        if (HasItem(itemPref.item))
         {
-            if (ItemStandardFlags & item_pref->item)
-            {
-                SetSpriteType(item_pref->sprite_type);
-                return;
-            }
-        }
-        else
-        {
-            if (ItemExtraFlags & item_pref->item)
-            {
-                SetSpriteType(item_pref->sprite_type);
-                return;
-            }
+            SetSpriteType(itemPref.sprite_type);
+            return;
         }
     }
 

@@ -18,6 +18,8 @@ struct CoordsXY;
 struct Vehicle;
 struct rct_drawpixelinfo;
 struct GamePalette;
+struct CoordsXYZ;
+struct SpriteBase;
 
 enum class LightType : uint8_t
 {
@@ -32,12 +34,6 @@ enum class LightType : uint8_t
     Spot1 = 9,
     Spot2 = 10,
     Spot3 = 11,
-};
-
-enum LIGHTFX_LIGHT_QUALIFIER
-{
-    LIGHTFX_LIGHT_QUALIFIER_SPRITE = 0x1,
-    LIGHTFX_LIGHT_QUALIFIER_MAP = 0x2
 };
 
 constexpr uint8_t GetLightTypeSize(LightType type)
@@ -65,7 +61,7 @@ void lightfx_update_viewport_settings();
 void* lightfx_get_front_buffer();
 const GamePalette& lightfx_get_palette();
 
-void lightfx_add_3d_light(uint32_t lightID, uint16_t lightIDqualifier, int16_t x, int16_t y, uint16_t z, LightType lightType);
+void LightfxAdd3DLight(const SpriteBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType);
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
     const CoordsXY& mapPosition, int16_t offsetX, int16_t offsetY, int16_t offsetZ, LightType lightType);

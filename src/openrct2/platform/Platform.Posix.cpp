@@ -104,6 +104,61 @@ namespace Platform
     {
         return false;
     }
+
+    bool FindApp(const std::string& app, std::string* output)
+    {
+        return Execute(String::StdFormat("which %s 2> /dev/null", app.c_str()), output) == 0;
+    }
+
+    int32_t Execute(const std::string& command, std::string* output)
+    {
+#    ifndef __EMSCRIPTEN__
+        log_verbose("executing \"%s\"...", command.c_str());
+        FILE* fpipe = popen(command.c_str(), "r");
+        if (fpipe == nullptr)
+        {
+            return -1;
+        }
+        if (output != nullptr)
+        {
+            // Read output into buffer
+            std::vector<char> outputBuffer;
+            char buffer[1024];
+            size_t readBytes;
+            while ((readBytes = fread(buffer, 1, sizeof(buffer), fpipe)) > 0)
+            {
+                outputBuffer.insert(outputBuffer.begin(), buffer, buffer + readBytes);
+            }
+
+            // Trim line breaks
+            size_t outputLength = outputBuffer.size();
+            for (size_t i = outputLength - 1; i != SIZE_MAX; i--)
+            {
+                if (outputBuffer[i] == '\n')
+                {
+                    outputLength = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // Convert to string
+            *output = std::string(outputBuffer.data(), outputLength);
+        }
+        else
+        {
+            fflush(fpipe);
+        }
+
+        // Return exit code
+        return pclose(fpipe);
+#    else
+        log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+        return -1;
+#    endif // __EMSCRIPTEN__
+    }
 } // namespace Platform
 
 #endif

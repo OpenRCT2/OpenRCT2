@@ -17,6 +17,7 @@
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
 #include "../ui/UiContext.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "Drawing.h"
 #include "IDrawingContext.h"
@@ -50,8 +51,8 @@ void X8WeatherDrawer::Draw(
     int32_t x, int32_t y, int32_t width, int32_t height, int32_t xStart, int32_t yStart, const uint8_t* weatherpattern)
 {
     const uint8_t* pattern = weatherpattern;
-    uint8_t patternXSpace = *pattern++;
-    uint8_t patternYSpace = *pattern++;
+    auto patternXSpace = *pattern++;
+    auto patternYSpace = *pattern++;
 
     uint8_t patternStartXOffset = xStart % patternXSpace;
     uint8_t patternStartYOffset = yStart % patternYSpace;
@@ -65,7 +66,7 @@ void X8WeatherDrawer::Draw(
     WeatherPixel* newPixels = &_weatherPixels[_weatherPixelsCount];
     for (; height != 0; height--)
     {
-        uint8_t patternX = pattern[patternYPos * 2];
+        auto patternX = pattern[patternYPos * 2];
         if (patternX != 0xFF)
         {
             if (_weatherPixelsCount < (_weatherPixelsCapacity - static_cast<uint32_t>(width)))
@@ -75,7 +76,7 @@ void X8WeatherDrawer::Draw(
                 uint32_t xPixelOffset = pixelOffset;
                 xPixelOffset += (static_cast<uint8_t>(patternX - patternStartXOffset)) % patternXSpace;
 
-                uint8_t patternPixel = pattern[patternYPos * 2 + 1];
+                auto patternPixel = pattern[patternYPos * 2 + 1];
                 for (; xPixelOffset < finalPixelOffset; xPixelOffset += patternXSpace)
                 {
                     uint8_t current_pixel = screenBits[xPixelOffset];
@@ -653,7 +654,7 @@ void X8DrawingContext::FillRect(uint32_t colour, int32_t left, int32_t top, int3
     }
 }
 
-void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void X8DrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     rct_drawpixelinfo* dpi = _dpi;
 
@@ -705,7 +706,7 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, int32_t left, int32
                        (startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
 
     // Find colour in colour table?
-    auto paletteMap = GetPaletteMapForColour(palette);
+    auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
     if (paletteMap)
     {
         const int32_t scaled_width = width / dpi->zoom_level;

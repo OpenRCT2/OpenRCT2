@@ -13,29 +13,29 @@
 #include "../common.h"
 
 // List of currencies
-enum CURRENCY_TYPE
+enum class CurrencyType : uint8_t
 {
-    CURRENCY_POUNDS,        // British Pound
-    CURRENCY_DOLLARS,       // US Dollar
-    CURRENCY_FRANC,         // French Franc
-    CURRENCY_DEUTSCHE_MARK, // Deutsche Mark
-    CURRENCY_YEN,           // Japanese Yen
-    CURRENCY_PESETA,        // Spanish Peseta
-    CURRENCY_LIRA,          // Italian Lira
-    CURRENCY_GUILDERS,      // Dutch Gilder
-    CURRENCY_KRONA,         // Swedish Krona
-    CURRENCY_EUROS,         // Euro
-    CURRENCY_WON,           // South Korean Won
-    CURRENCY_ROUBLE,        // Russian Rouble
-    CURRENCY_CZECH_KORUNA,  // Czech koruna
-    CURRENCY_HKD,           // Hong Kong Dollar
-    CURRENCY_TWD,           // New Taiwan Dollar
-    CURRENCY_YUAN,          // Chinese Yuan
-    CURRENCY_FORINT,        // Hungarian Forint
+    Pounds,       // British Pound
+    Dollars,      // US Dollar
+    Franc,        // French Franc
+    DeutscheMark, // Deutsche Mark
+    Yen,          // Japanese Yen
+    Peseta,       // Spanish Peseta
+    Lira,         // Italian Lira
+    Guilders,     // Dutch Gilder
+    Krona,        // Swedish Krona
+    Euros,        // Euro
+    Won,          // South Korean Won
+    Rouble,       // Russian Rouble
+    CzechKoruna,  // Czech koruna
+    HKD,          // Hong Kong Dollar
+    TWD,          // New Taiwan Dollar
+    Yuan,         // Chinese Yuan
+    Forint,       // Hungarian Forint
 
-    CURRENCY_CUSTOM, // Custom currency
+    Custom, // Custom currency
 
-    CURRENCY_END // Last item
+    Count // Last item
 };
 
 enum class CurrencyAffix
@@ -61,7 +61,7 @@ struct currency_descriptor
 };
 
 // List of currency formats
-extern currency_descriptor CurrencyDescriptors[CURRENCY_END];
+extern currency_descriptor CurrencyDescriptors[static_cast<uint8_t>(CurrencyType::Count)];
 
 /**
  * Loads custom currency saved parameters into {@link CurrencyDescriptors}'

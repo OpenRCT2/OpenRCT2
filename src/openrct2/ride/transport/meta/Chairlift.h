@@ -33,7 +33,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(DefaultMode, RideMode::StationToStation),
     SET_FIELD(OperatingSettings, { 1, 4, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_CHAIRLIFT, STR_RIDE_DESCRIPTION_CHAIRLIFT }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_CAR, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Car, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_CHAIRLIFT)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_SAFETY_CUT_OUT)),
     SET_FIELD(Heights, { 40, 32, 28, 2, }),
@@ -45,7 +45,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(BuildCosts, { 65, 1, 30, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 55),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_BORDEAUX_RED, COLOUR_BORDEAUX_RED, COLOUR_GREY },

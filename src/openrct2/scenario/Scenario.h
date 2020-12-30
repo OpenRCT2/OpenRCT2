@@ -20,11 +20,14 @@
 #include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Sprite.h"
 
 using random_engine_t = Random::Rct2::Engine;
+
+enum class EditorStep : uint8_t;
 
 struct ParkLoadResult;
 
@@ -50,7 +53,7 @@ assert_struct_size(rct_s6_header, 0x20);
  */
 struct rct_s6_info
 {
-    uint8_t editor_step;
+    EditorStep editor_step;
     uint8_t category;        // 0x01
     uint8_t objective_type;  // 0x02
     uint8_t objective_arg_1; // 0x03
@@ -343,7 +346,7 @@ enum
     OBJECTIVE_MONTHLY_RIDE_INCOME,
     OBJECTIVE_10_ROLLERCOASTERS_LENGTH,
     OBJECTIVE_FINISH_5_ROLLERCOASTERS,
-    OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE,
+    OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE,
     OBJECTIVE_MONTHLY_FOOD_INCOME,
 
     OBJECTIVE_COUNT

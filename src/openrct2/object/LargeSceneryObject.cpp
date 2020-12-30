@@ -26,7 +26,7 @@
 void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
-    _legacyType.large_scenery.tool_id = stream->ReadValue<uint8_t>();
+    _legacyType.large_scenery.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.large_scenery.flags = stream->ReadValue<uint8_t>();
     _legacyType.large_scenery.price = stream->ReadValue<int16_t>();
     _legacyType.large_scenery.removal_price = stream->ReadValue<int16_t>();
@@ -54,7 +54,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     // Validate properties
     if (_legacyType.large_scenery.price <= 0)
     {
-        context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+        context->LogError(ObjectError::InvalidProperty, "Price can not be free or negative.");
     }
     if (_legacyType.large_scenery.removal_price <= 0)
     {
@@ -62,7 +62,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
         money16 reimbursement = _legacyType.large_scenery.removal_price;
         if (reimbursement > _legacyType.large_scenery.price)
         {
-            context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Sell price can not be more than buy price.");
+            context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
 }
@@ -129,7 +129,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (properties.is_object())
     {
-        _legacyType.large_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CURSOR_STATUE_DOWN);
+        _legacyType.large_scenery.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
         _legacyType.large_scenery.price = Json::GetNumber<int16_t>(properties["price"]);
         _legacyType.large_scenery.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);

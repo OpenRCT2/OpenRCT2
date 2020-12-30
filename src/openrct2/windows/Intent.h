@@ -17,12 +17,12 @@
 
 struct IntentData
 {
-    enum DATATYPE
+    enum class DataType
     {
-        DT_INT,
-        DT_STRING,
-        DT_POINTER,
-        DT_CLOSE_CALLBACK
+        Int,
+        String,
+        Pointer,
+        CloseCallback
     } type;
 
     union

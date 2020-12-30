@@ -12,8 +12,8 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/StaffHireNewAction.hpp"
-#include "../actions/StaffSetOrdersAction.hpp"
+#include "../actions/StaffHireNewAction.h"
+#include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -31,6 +31,7 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
+#include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
@@ -132,7 +133,7 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
 
     auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
     hireStaffAction.SetCallback([=](const GameAction*, const StaffHireNewActionResult* res) -> void {
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
             return;
 
         // Open window for new staff.
@@ -143,7 +144,7 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     });
 
     auto res = GameActions::Execute(&hireStaffAction);
-    return res->Error == GA_ERROR::OK;
+    return res->Error == GameActions::Status::Ok;
 }
 
 /**
@@ -362,7 +363,7 @@ void Staff::ResetStats()
 {
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        peep->TimeInPark = gDateMonthsElapsed;
+        peep->SetHireDate(gDateMonthsElapsed);
         peep->StaffLawnsMown = 0;
         peep->StaffRidesFixed = 0;
         peep->StaffGardensWatered = 0;
@@ -1056,6 +1057,16 @@ void Staff::SetCostume(uint8_t value)
 {
     auto costume = static_cast<EntertainerCostume>(value);
     SpriteType = EntertainerCostumeToSprite(costume);
+}
+
+void Staff::SetHireDate(int32_t hireDate)
+{
+    HireDate = hireDate;
+}
+
+int32_t Staff::GetHireDate() const
+{
+    return HireDate;
 }
 
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType)
@@ -1822,7 +1833,7 @@ void Staff::Tick128UpdateStaff()
 bool Staff::IsMechanic() const
 {
     return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff
+        sprite_identifier == SpriteIdentifier::Peep && AssignedPeepType == PeepType::Staff
         && AssignedStaffType == StaffType::Mechanic);
 }
 
@@ -2569,15 +2580,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 {
     if (!firstRun)
     {
-        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
-
         if (State == PeepState::Inspecting)
         {
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
@@ -2600,7 +2609,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     }
 
     ride_fix_breakdown(ride, steps);
-
+    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
 

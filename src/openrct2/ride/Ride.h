@@ -17,6 +17,7 @@
 #include "../world/Map.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "ShopItem.h"
 #include "Vehicle.h"
 
 #include <limits>
@@ -125,7 +126,7 @@ struct rct_ride_entry
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    uint8_t shop_item[NUM_SHOP_ITEMS_PER_RIDE];
+    ShopItem shop_item[NUM_SHOP_ITEMS_PER_RIDE];
     rct_string_id capacity;
     void* obj;
 
@@ -221,7 +222,11 @@ struct Ride
     uint8_t proposed_num_vehicles;
     uint8_t proposed_num_cars_per_train;
     uint8_t max_trains;
+
+private:
     uint8_t min_max_cars_per_train;
+
+public:
     uint8_t min_waiting_time;
     uint8_t max_waiting_time;
     union
@@ -376,7 +381,11 @@ private:
     void UpdateChairlift();
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
+    bool CreateVehicles(const CoordsXYE& element, bool isApplying);
+    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money32 CalculateIncomePerHour() const;
+    void ChainQueues() const;
+    void ConstructMissingEntranceOrExit() const;
 
 public:
     bool CanBreakDown() const;
@@ -407,6 +416,9 @@ public:
 
     void StopGuestsQueuing();
 
+    bool Open(bool isApplying);
+    bool Test(int32_t newStatus, bool isApplying);
+
     RideMode GetDefaultMode() const;
 
     void SetColourPreset(uint8_t index);
@@ -436,6 +448,11 @@ public:
     TrackElement* GetOriginElement(StationIndex stationIndex) const;
 
     std::pair<RideMeasurement*, OpenRCT2String> GetMeasurement();
+
+    uint8_t GetMinCarsPerTrain() const;
+    uint8_t GetMaxCarsPerTrain() const;
+    void SetMinCarsPerTrain(uint8_t newValue);
+    void SetMaxCarsPerTrain(uint8_t newValue);
 };
 
 #pragma pack(push, 1)
@@ -624,12 +641,12 @@ enum
     RIDE_TYPE_MINE_RIDE,
     RIDE_TYPE_59,
     RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER = 90,
-
     RIDE_TYPE_HYPERCOASTER,
     RIDE_TYPE_HYPER_TWISTER,
     RIDE_TYPE_MONSTER_TRUCKS,
     RIDE_TYPE_SPINNING_WILD_MOUSE,
     RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
+    RIDE_TYPE_HYBRID_COASTER,
 
     RIDE_TYPE_COUNT
 };
@@ -1061,7 +1078,7 @@ extern CoordsXYZ _currentTrackBegin;
 extern uint8_t _currentTrackPieceDirection;
 extern track_type_t _currentTrackPieceType;
 extern uint8_t _currentTrackSelectionFlags;
-extern int8_t _rideConstructionArrowPulseTime;
+extern uint32_t _rideConstructionNextArrowPulse;
 extern uint8_t _currentTrackSlopeEnd;
 extern uint8_t _currentTrackBankEnd;
 extern uint8_t _currentTrackLiftHill;
@@ -1113,8 +1130,6 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
 void ride_measurements_update();
 void ride_breakdown_add_news_item(Ride* ride);
 Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
-int32_t ride_is_valid_for_open(Ride* ride, int32_t goingToBeOpen, bool isApplying);
-int32_t ride_is_valid_for_test(Ride* ride, int32_t status, bool isApplying);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(

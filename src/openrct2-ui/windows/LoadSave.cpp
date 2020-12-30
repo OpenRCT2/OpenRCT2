@@ -30,6 +30,7 @@
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/title/TitleScreen.h>
+#include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
@@ -63,15 +64,15 @@ enum
 static rct_widget window_loadsave_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({               0,  WH - 1}, { WW,   1}, WWT_RESIZE,       WindowColour::Secondary                                                             ), // tab content panel
-    MakeWidget({               4,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
-    MakeWidget({              88,      36}, { 84,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_UP                                  ), // Up
-    MakeWidget({             172,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
-    MakeWidget({             259,      36}, { 87,  14}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
-    MakeWidget({               4,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Name
-    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WWT_TABLE_HEADER, WindowColour::Primary                                                               ), // Date
-    MakeWidget({               4,      68}, {342, 303}, WWT_SCROLL,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
-    MakeWidget({               4, WH - 24}, {197,  19}, WWT_BUTTON,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
+    MakeWidget({               0,  WH - 1}, { WW,   1}, WindowWidgetType::Resize,       WindowColour::Secondary                                                             ), // tab content panel
+    MakeWidget({               4,      36}, { 84,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
+    MakeWidget({              88,      36}, { 84,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_UP                                  ), // Up
+    MakeWidget({             172,      36}, { 87,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FOLDER                          ), // New
+    MakeWidget({             259,      36}, { 87,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_NEW_FILE                            ), // New
+    MakeWidget({               4,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // Name
+    MakeWidget({(WW - 5) / 2 + 1,      55}, {170,  14}, WindowWidgetType::TableHeader, WindowColour::Primary                                                               ), // Date
+    MakeWidget({               4,      68}, {342, 303}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL                                            ), // File list
+    MakeWidget({               4, WH - 24}, {197,  19}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_USE_SYSTEM_WINDOW                          ), // Use native browser
     { WIDGETS_END }
 };
 
@@ -252,7 +253,8 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
         return nullptr;
 
     // Bypass the lot?
-    if (gConfigGeneral.use_native_browse_dialog)
+    auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+    if (gConfigGeneral.use_native_browse_dialog && hasFilePicker)
     {
         if (browse(isSave, path, sizeof(path)))
         {
@@ -264,7 +266,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr)
     {
-        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
+        w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE)
             | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
@@ -273,6 +275,13 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
         w->min_height = WH / 2;
         w->max_width = WW * 2;
         w->max_height = WH * 2;
+
+        if (!hasFilePicker)
+        {
+            w->enabled_widgets &= ~(1 << WIDX_BROWSE);
+            w->disabled_widgets |= (1 << WIDX_BROWSE);
+            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+        }
     }
 
     const char* pattern = getFilterPatternByType(type, isSave);
@@ -308,7 +317,7 @@ rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave
             openrct2_assert(true, "Unsupported load/save type: %d", type & 0x0F);
     }
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     window_loadsave_compute_max_date_width();
 
     return w;
@@ -438,7 +447,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_UP:
             safe_strcpy(path, _parentDirectory, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
 
@@ -462,19 +471,19 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 // If user cancels file dialog, refresh list
                 safe_strcpy(path, _directory, sizeof(path));
                 window_loadsave_populate_list(w, isSave, path, _extension);
-                window_init_scroll_widgets(w);
+                WindowInitScrollWidgets(w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
             break;
 
         case WIDX_SORT_NAME:
-            if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+            if (gConfigGeneral.load_save_sort == Sort::NameAscending)
             {
-                gConfigGeneral.load_save_sort = SORT_NAME_DESCENDING;
+                gConfigGeneral.load_save_sort = Sort::NameDescending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = SORT_NAME_ASCENDING;
+                gConfigGeneral.load_save_sort = Sort::NameAscending;
             }
             config_save_default();
             window_loadsave_sort_list();
@@ -482,13 +491,13 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_SORT_DATE:
-            if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+            if (gConfigGeneral.load_save_sort == Sort::DateDescending)
             {
-                gConfigGeneral.load_save_sort = SORT_DATE_ASCENDING;
+                gConfigGeneral.load_save_sort = Sort::DateAscending;
             }
             else
             {
-                gConfigGeneral.load_save_sort = SORT_DATE_DESCENDING;
+                gConfigGeneral.load_save_sort = Sort::DateDescending;
             }
             config_save_default();
             window_loadsave_sort_list();
@@ -498,7 +507,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_DEFAULT:
             getInitialDirectoryByType(_type, path, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
     }
@@ -530,7 +539,7 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
         safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
 
         w->no_list_items = static_cast<uint16_t>(_listItems.size());
     }
@@ -588,7 +597,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             w->selected_list_item = -1;
 
             window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
-            window_init_scroll_widgets(w);
+            WindowInitScrollWidgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             w->Invalidate();
@@ -682,31 +691,28 @@ static void window_loadsave_invalidate(rct_window* w)
 
 static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     if (_shortenedDirectory[0] == '\0')
     {
         shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8);
     }
 
-    utf8 buffer[256];
-
     // Format text
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_BLACK);
-    safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
+    thread_local std::string buffer;
+    buffer.assign("{MEDIUMFONT}{BLACK}");
+    buffer += _shortenedDirectory;
 
     // Draw path text
     auto ft = Formatter();
-    ft.Add<utf8*>(Platform::StrDecompToPrecomp(buffer));
+    ft.Add<const char*>(Platform::StrDecompToPrecomp(buffer.data()));
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
 
     // Name button text
     rct_string_id id = STR_NONE;
-    if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
+    if (gConfigGeneral.load_save_sort == Sort::NameAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
+    else if (gConfigGeneral.load_save_sort == Sort::NameDescending)
         id = STR_DOWN;
 
     // Draw name button indicator.
@@ -715,9 +721,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 });
 
     // Date button text
-    if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
+    if (gConfigGeneral.load_save_sort == Sort::DateAscending)
         id = STR_UP;
-    else if (gConfigGeneral.load_save_sort == SORT_DATE_DESCENDING)
+    else if (gConfigGeneral.load_save_sort == Sort::DateDescending)
         id = STR_DOWN;
     else
         id = STR_NONE;
@@ -750,7 +756,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (i == w->selected_list_item)
         {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, FilterPaletteID::PaletteDarken1);
         }
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded)
@@ -791,17 +797,16 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
 
     switch (gConfigGeneral.load_save_sort)
     {
-        case SORT_NAME_ASCENDING:
+        case Sort::NameAscending:
             return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
-        case SORT_NAME_DESCENDING:
+        case Sort::NameDescending:
             return -strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
-        case SORT_DATE_DESCENDING:
+        case Sort::DateDescending:
             return -difftime(a.date_modified, b.date_modified) < 0;
-        case SORT_DATE_ASCENDING:
+        case Sort::DateAscending:
             return difftime(a.date_modified, b.date_modified) < 0;
-        default:
-            return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
     }
+    return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
 }
 
 static void window_loadsave_sort_list()
@@ -824,8 +829,8 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
     _listItems.clear();
 
     // Show "new" buttons when saving
-    window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
-    window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
+    window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
+    window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
 
     int32_t drives = platform_get_drives();
     if (str_is_null_or_empty(directory) && drives)
@@ -1054,7 +1059,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
-            gS6Info.editor_step = 255;
+            gS6Info.editor_step = EditorStep::Invalid;
             safe_strcpy(gScenarioFileName, pathBuffer, sizeof(gScenarioFileName));
             int32_t success = scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2);
             gParkFlags = parkFlagsBackup;
@@ -1068,7 +1073,7 @@ static void window_loadsave_select(rct_window* w, const char* path)
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
-                gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+                gS6Info.editor_step = EditorStep::ObjectiveSelection;
                 window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
@@ -1132,9 +1137,9 @@ enum
 
 static rct_widget window_overwrite_prompt_widgets[] = {
     WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
-    { WWT_BUTTON, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
-    { WWT_BUTTON, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_SAVE_PROMPT_CANCEL,
-      STR_NONE },
+    { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
+    { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,
+      STR_SAVE_PROMPT_CANCEL, STR_NONE },
     { WIDGETS_END }
 };
 
@@ -1155,12 +1160,12 @@ static rct_window* window_overwrite_prompt_open(const char* name, const char* pa
 
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
-    w = window_create_centred(
+    w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OVERWRITE_CANCEL) | (1 << WIDX_OVERWRITE_OVERWRITE);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
@@ -1195,7 +1200,7 @@ static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widge
 
 static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);

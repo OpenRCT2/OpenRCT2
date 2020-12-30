@@ -19,17 +19,9 @@
 #include <iterator>
 #include <limits>
 
-// clang-format off
-enum DUCK_STATE
-{
-    FLY_TO_WATER,
-    SWIM,
-    DRINK,
-    DOUBLE_DRINK,
-    FLY_AWAY,
-};
 constexpr const int32_t DUCK_MAX_STATES = 5;
 
+// clang-format off
 static constexpr const CoordsXY DuckMoveOffset[] =
 {
     { -1,  0 },
@@ -76,7 +68,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 
 template<> bool SpriteBase::Is<Duck>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_DUCK;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_DUCK;
 }
 
 void Duck::Invalidate()
@@ -86,7 +78,7 @@ void Duck::Invalidate()
 
 bool Duck::IsFlying()
 {
-    return this->state == DUCK_STATE::FLY_AWAY || this->state == DUCK_STATE::FLY_TO_WATER;
+    return this->state == DuckState::FlyAway || this->state == DuckState::FlyToWater;
 }
 
 void Duck::Remove()
@@ -116,7 +108,7 @@ void Duck::UpdateFlyToWater()
     int32_t waterHeight = surfaceElement != nullptr ? surfaceElement->GetWaterHeight() : 0;
     if (waterHeight == 0)
     {
-        state = DUCK_STATE::FLY_AWAY;
+        state = DuckState::FlyAway;
         UpdateFlyAway();
     }
     else
@@ -145,12 +137,12 @@ void Duck::UpdateFlyToWater()
         {
             if (destination.z > 4)
             {
-                state = DUCK_STATE::FLY_AWAY;
+                state = DuckState::FlyAway;
                 UpdateFlyAway();
             }
             else
             {
-                state = DUCK_STATE::SWIM;
+                state = DuckState::Swim;
                 frame = 0;
                 UpdateSwim();
             }
@@ -168,13 +160,13 @@ void Duck::UpdateSwim()
     {
         if (randomNumber & 0x80000000)
         {
-            state = DUCK_STATE::DOUBLE_DRINK;
+            state = DuckState::DoubleDrink;
             frame = std::numeric_limits<uint16_t>::max();
             UpdateDoubleDrink();
         }
         else
         {
-            state = DUCK_STATE::DRINK;
+            state = DuckState::Drink;
             frame = std::numeric_limits<uint16_t>::max();
             UpdateDrink();
         }
@@ -184,7 +176,7 @@ void Duck::UpdateSwim()
         int32_t currentMonth = date_get_month(gDateMonthsElapsed);
         if (currentMonth >= MONTH_SEPTEMBER && (randomNumber >> 16) < 218)
         {
-            state = DUCK_STATE::FLY_AWAY;
+            state = DuckState::FlyAway;
             UpdateFlyAway();
         }
         else
@@ -195,7 +187,7 @@ void Duck::UpdateSwim()
 
             if (z < landZ || waterZ == 0)
             {
-                state = DUCK_STATE::FLY_AWAY;
+                state = DuckState::FlyAway;
                 UpdateFlyAway();
             }
             else
@@ -229,7 +221,7 @@ void Duck::UpdateDrink()
     frame++;
     if (DuckAnimationDrink[frame] == 0xFF)
     {
-        state = DUCK_STATE::SWIM;
+        state = DuckState::Swim;
         frame = 0;
         UpdateSwim();
     }
@@ -244,7 +236,7 @@ void Duck::UpdateDoubleDrink()
     frame++;
     if (DuckAnimationDoubleDrink[frame] == 0xFF)
     {
-        state = DUCK_STATE::SWIM;
+        state = DuckState::Swim;
         frame = 0;
         UpdateSwim();
     }
@@ -284,10 +276,10 @@ void Duck::UpdateFlyAway()
 uint32_t Duck::GetFrameImage(int32_t direction) const
 {
     uint32_t imageId = 0;
-    if (state < DUCK_MAX_STATES)
+    if (EnumValue(state) < DUCK_MAX_STATES)
     {
         // TODO: Check frame is in range
-        uint8_t imageOffset = DuckAnimations[state][frame];
+        uint8_t imageOffset = DuckAnimations[EnumValue(state)][frame];
         imageId = SPR_DUCK + (imageOffset * 4) + (direction / 8);
     }
     return imageId;
@@ -295,7 +287,7 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
 
 void create_duck(const CoordsXY& pos)
 {
-    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
+    rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
     if (sprite == nullptr)
         return;
 
@@ -305,7 +297,7 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
     sprite->generic.type = SPRITE_MISC_DUCK;
     auto duck = sprite->generic.As<Duck>();
     if (duck == nullptr)
@@ -333,27 +325,27 @@ void create_duck(const CoordsXY& pos)
     }
     duck->sprite_direction = direction << 3;
     duck->MoveTo({ targetPos.x, targetPos.y, 496 });
-    duck->state = DUCK_STATE::FLY_TO_WATER;
+    duck->state = Duck::DuckState::FlyToWater;
     duck->frame = 0;
 }
 
 void Duck::Update()
 {
-    switch (static_cast<DUCK_STATE>(state))
+    switch (state)
     {
-        case DUCK_STATE::FLY_TO_WATER:
+        case DuckState::FlyToWater:
             UpdateFlyToWater();
             break;
-        case DUCK_STATE::SWIM:
+        case DuckState::Swim:
             UpdateSwim();
             break;
-        case DUCK_STATE::DRINK:
+        case DuckState::Drink:
             UpdateDrink();
             break;
-        case DUCK_STATE::DOUBLE_DRINK:
+        case DuckState::DoubleDrink:
             UpdateDoubleDrink();
             break;
-        case DUCK_STATE::FLY_AWAY:
+        case DuckState::FlyAway:
             UpdateFlyAway();
             break;
     }

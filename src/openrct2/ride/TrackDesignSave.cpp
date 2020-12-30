@@ -43,8 +43,10 @@ std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
 
 static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
 static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
-static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
-static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement);
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 
 void track_design_save_init()
 {
@@ -56,7 +58,8 @@ void track_design_save_init()
  *
  *  rct2: 0x006D2B07
  */
-void track_design_save_select_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
+void track_design_save_select_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect)
 {
     if (track_design_save_contains_tile_element(tileElement))
     {
@@ -208,7 +211,7 @@ static void track_design_save_push_tile_element_desc(
 static void track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     int32_t entryType = sceneryElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
+    auto entry = object_entry_get_entry(ObjectType::SmallScenery, entryType);
 
     uint8_t flags = 0;
     flags |= sceneryElement->GetDirection();
@@ -234,7 +237,7 @@ static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeScener
     }
 
     int32_t entryType = tileElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
+    auto entry = object_entry_get_entry(ObjectType::LargeScenery, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     int32_t z = tileElement->base_height;
@@ -276,7 +279,7 @@ static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeScener
 static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     int32_t entryType = wallElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
+    auto entry = object_entry_get_entry(ObjectType::Walls, entryType);
 
     uint8_t flags = 0;
     flags |= wallElement->GetDirection();
@@ -293,7 +296,7 @@ static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallEle
 static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
     int32_t entryType = pathElement->GetSurfaceEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
+    auto entry = object_entry_get_entry(ObjectType::Paths, entryType);
 
     uint8_t flags = 0;
     flags |= pathElement->GetEdges();
@@ -311,7 +314,8 @@ static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pat
  *
  *  rct2: 0x006D2B3C
  */
-static bool track_design_save_add_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
+static bool track_design_save_add_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     if (!track_design_save_can_add_tile_element(tileElement))
     {
@@ -320,16 +324,16 @@ static bool track_design_save_add_tile_element(int32_t interactionType, const Co
 
     switch (interactionType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
             track_design_save_add_scenery(loc, tileElement->AsSmallScenery());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
             track_design_save_add_large_scenery(loc, tileElement->AsLargeScenery());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
             track_design_save_add_wall(loc, tileElement->AsWall());
             return true;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             track_design_save_add_footpath(loc, tileElement->AsPath());
             return true;
         default:
@@ -395,7 +399,7 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
 static void track_design_save_remove_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
     int32_t entryType = sceneryElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, entryType);
+    auto entry = object_entry_get_entry(ObjectType::SmallScenery, entryType);
 
     uint8_t flags = 0;
     flags |= sceneryElement->GetDirection();
@@ -417,7 +421,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
     }
 
     int32_t entryType = tileElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_LARGE_SCENERY, entryType);
+    auto entry = object_entry_get_entry(ObjectType::LargeScenery, entryType);
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     int32_t z = tileElement->base_height;
@@ -456,7 +460,7 @@ static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSce
 static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wallElement)
 {
     int32_t entryType = wallElement->GetEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_WALLS, entryType);
+    auto entry = object_entry_get_entry(ObjectType::Walls, entryType);
 
     uint8_t flags = 0;
     flags |= wallElement->GetDirection();
@@ -469,7 +473,7 @@ static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wall
 static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
     int32_t entryType = pathElement->GetSurfaceEntryIndex();
-    auto entry = object_entry_get_entry(OBJECT_TYPE_PATHS, entryType);
+    auto entry = object_entry_get_entry(ObjectType::Paths, entryType);
 
     uint8_t flags = 0;
     flags |= pathElement->GetEdges();
@@ -487,21 +491,24 @@ static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* 
  *
  *  rct2: 0x006D2B3C
  */
-static void track_design_save_remove_tile_element(int32_t interactionType, const CoordsXY& loc, TileElement* tileElement)
+static void track_design_save_remove_tile_element(
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement)
 {
     switch (interactionType)
     {
-        case VIEWPORT_INTERACTION_ITEM_SCENERY:
+        case ViewportInteractionItem::Scenery:
             track_design_save_remove_scenery(loc, tileElement->AsSmallScenery());
             break;
-        case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
+        case ViewportInteractionItem::LargeScenery:
             track_design_save_remove_large_scenery(loc, tileElement->AsLargeScenery());
             break;
-        case VIEWPORT_INTERACTION_ITEM_WALL:
+        case ViewportInteractionItem::Wall:
             track_design_save_remove_wall(loc, tileElement->AsWall());
             break;
-        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        case ViewportInteractionItem::Footpath:
             track_design_save_remove_footpath(loc, tileElement->AsPath());
+            break;
+        default:
             break;
     }
 }
@@ -544,27 +551,27 @@ static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex
                 continue;
             do
             {
-                int32_t interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
+                ViewportInteractionItem interactionType = ViewportInteractionItem::None;
                 switch (tileElement->GetType())
                 {
                     case TILE_ELEMENT_TYPE_PATH:
                         if (!tileElement->AsPath()->IsQueue())
-                            interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                            interactionType = ViewportInteractionItem::Footpath;
                         else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
-                            interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
+                            interactionType = ViewportInteractionItem::Footpath;
                         break;
                     case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
+                        interactionType = ViewportInteractionItem::Scenery;
                         break;
                     case TILE_ELEMENT_TYPE_WALL:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_WALL;
+                        interactionType = ViewportInteractionItem::Wall;
                         break;
                     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                        interactionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+                        interactionType = ViewportInteractionItem::LargeScenery;
                         break;
                 }
 
-                if (interactionType != VIEWPORT_INTERACTION_ITEM_NONE)
+                if (interactionType != ViewportInteractionItem::None)
                 {
                     if (!track_design_save_contains_tile_element(tileElement))
                     {

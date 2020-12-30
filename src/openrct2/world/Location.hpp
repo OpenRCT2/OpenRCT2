@@ -125,41 +125,41 @@ struct CoordsXY
     {
     }
 
-    CoordsXY& operator+=(const CoordsXY& rhs)
+    constexpr CoordsXY& operator+=(const CoordsXY& rhs)
     {
         x += rhs.x;
         y += rhs.y;
         return *this;
     }
 
-    CoordsXY& operator-=(const CoordsXY& rhs)
+    constexpr CoordsXY& operator-=(const CoordsXY& rhs)
     {
         x -= rhs.x;
         y -= rhs.y;
         return *this;
     }
 
-    bool operator>=(const CoordsXY& rhs) const
+    constexpr bool operator>=(const CoordsXY& rhs) const
     {
         return x >= rhs.x && y >= rhs.y;
     }
 
-    bool operator<=(const CoordsXY& rhs) const
+    constexpr bool operator<=(const CoordsXY& rhs) const
     {
         return x <= rhs.x && y <= rhs.y;
     }
 
-    const CoordsXY operator+(const CoordsXY& rhs) const
+    constexpr const CoordsXY operator+(const CoordsXY& rhs) const
     {
         return { x + rhs.x, y + rhs.y };
     }
 
-    const CoordsXY operator-(const CoordsXY& rhs) const
+    constexpr const CoordsXY operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
     }
 
-    CoordsXY Rotate(int32_t direction) const
+    constexpr CoordsXY Rotate(int32_t direction) const
     {
         CoordsXY rotatedCoords;
         switch (direction & 3)
@@ -186,32 +186,32 @@ struct CoordsXY
         return rotatedCoords;
     }
 
-    bool operator==(const CoordsXY& other) const
+    constexpr bool operator==(const CoordsXY& other) const
     {
         return x == other.x && y == other.y;
     }
 
-    bool operator!=(const CoordsXY& other) const
+    constexpr bool operator!=(const CoordsXY& other) const
     {
         return !(*this == other);
     }
 
-    CoordsXY ToTileCentre() const
+    constexpr CoordsXY ToTileCentre() const
     {
         return ToTileStart() + CoordsXY{ COORDS_XY_HALF_TILE, COORDS_XY_HALF_TILE };
     }
 
-    CoordsXY ToTileStart() const
+    constexpr CoordsXY ToTileStart() const
     {
         return { floor2(x, COORDS_XY_STEP), floor2(y, COORDS_XY_STEP) };
     }
 
-    bool isNull() const
+    constexpr bool isNull() const
     {
         return x == COORDS_NULL;
     };
 
-    void setNull()
+    constexpr void setNull()
     {
         x = COORDS_NULL;
         y = 0;

@@ -184,6 +184,13 @@ declare global {
         getRandom(min: number, max: number): number;
 
         /**
+         * Formats a new string using the given format string and the arguments.
+         * @param fmt The format string, e.g. "Guests: {COMMA16}"
+         * @param args The arguments to insert into the string.
+         */
+        formatString(fmt: string, ...args: any[]): string;
+
+        /**
          * Registers a new game action that allows clients to interact with the game.
          * @param action The unique name of the action.
          * @param query Logic for validating and returning a price for an action.
@@ -324,9 +331,9 @@ declare global {
         "climateset" |
         "footpathplace" |
         "footpathplacefromtrack" |
-        "foothpathremove" |
-        "footpathsceneryplace" |
-        "footpathsceneryremove" |
+        "footpathremove" |
+        "footpathadditionplace" |
+        "footpathadditionremove" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -1059,9 +1066,26 @@ declare global {
         status: VehicleStatus;
 
         /**
+         * The progress on the current track piece, in steps.
+         */
+        readonly trackProgress: number;
+
+        /**
+         * The currently projected remaining distance the car will travel.
+         */
+        readonly remainingDistance: number;
+
+        /**
          * List of peep IDs ordered by seat.
          */
         peeps: (number | null)[];
+
+        /**
+         * Moves the vehicle forward or backwards along the track, relative to its current 
+         * position. A single visible step is about 8.000 to 14.000 in distance depending 
+         * on the direction its moving in.
+         */
+        travelBy(distance: number): void;
     }
 
     type VehicleStatus =
@@ -1454,6 +1478,49 @@ declare global {
          */
         entranceFee: number;
 
+        /**
+         * The number of guests within the park, not including any outside the park but still
+         * on the map.
+         */
+        readonly guests: number;
+
+        /**
+         * The park value, will be updated every 512 ticks.
+         */
+        value: number;
+
+        /**
+         * The company value, will be updated every 512 ticks.
+         * Calculation is: `park.value + park.cash - park.bankLoan`
+         */
+        companyValue: number;
+
+        /**
+         * The total number of guests that have entered the park.
+         */
+        totalAdmissions: number;
+
+        /**
+         * The total amount of income gained from admissions into the park.
+         */
+        totalIncomeFromAdmissions: number;
+
+        /**
+         * The purchase price of one tile for park ownership.
+         */
+        landPrice: number;
+
+        /**
+         * The purchase price of one tile for construction rights.
+         */
+        constructionRightsPrice: number;
+
+        /**
+         * The number of tiles on the map with park ownership or construction rights.
+         * Updated every 4096 ticks.
+         */
+        readonly parkSize: number;
+
         name: string;
         messages: ParkMessage[];
 
@@ -1485,7 +1552,7 @@ declare global {
         "monthlyRideIncome" |
         "10RollercoastersLength" |
         "finish5Rollercoasters" |
-        "replayLoanAndParkValue" |
+        "repayLoanAndParkValue" |
         "monthlyFoodIncome";
 
     interface ScenarioObjective {
@@ -1741,7 +1808,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
+        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -1772,6 +1839,11 @@ declare global {
         onChange: (isChecked: boolean) => void;
     }
 
+    interface ColourPickerWidget extends Widget {
+        colour: number;
+        onChange: (colour: number) => void;
+    }
+
     interface DropdownWidget extends Widget {
         items: string[];
         selectedIndex: number;
@@ -1798,7 +1870,12 @@ declare global {
         maxWidth?: number;
     }
 
-    type ListViewItem = string[];
+    interface ListViewItemSeperator {
+        type: 'seperator';
+        text?: string;
+    }
+
+    type ListViewItem = ListViewItemSeperator | string[];
 
     interface RowColumn {
         row: number;
@@ -1866,10 +1943,11 @@ declare global {
         widgets?: Widget[];
         colours?: number[];
         tabs?: WindowTabDesc[];
+        tabIndex?: number;
 
         onClose?: () => void;
         onUpdate?: () => void;
-        tabChange?: () => void;
+        onTabChange?: () => void;
     }
 
     interface ImageAnimation {

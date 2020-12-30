@@ -16,10 +16,10 @@
 #include <memory>
 
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
-
+enum class TitleScript : uint8_t;
 struct TitleCommand
 {
-    uint8_t Type;
+    TitleScript Type;
     union
     {
         uint8_t SaveIndex; // LOAD (this index is internal only)
@@ -58,21 +58,21 @@ struct TitleSequenceParkHandle
     std::unique_ptr<OpenRCT2::IStream> Stream;
 };
 
-enum TITLE_SCRIPT
+enum class TitleScript : uint8_t
 {
-    TITLE_SCRIPT_UNDEFINED = 0xFF,
-    TITLE_SCRIPT_WAIT = 0,
-    TITLE_SCRIPT_LOCATION,
-    TITLE_SCRIPT_ROTATE,
-    TITLE_SCRIPT_ZOOM,
-    TITLE_SCRIPT_FOLLOW,
-    TITLE_SCRIPT_RESTART,
-    TITLE_SCRIPT_LOAD,
-    TITLE_SCRIPT_END,
-    TITLE_SCRIPT_SPEED,
-    TITLE_SCRIPT_LOOP,
-    TITLE_SCRIPT_ENDLOOP,
-    TITLE_SCRIPT_LOADSC,
+    Undefined = 0xFF,
+    Wait = 0,
+    Location,
+    Rotate,
+    Zoom,
+    Follow,
+    Restart,
+    Load,
+    End,
+    Speed,
+    Loop,
+    EndLoop,
+    LoadSc,
 };
 
 constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";

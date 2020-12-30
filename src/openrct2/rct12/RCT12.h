@@ -13,9 +13,15 @@
 
 #include "../common.h"
 #include "../object/Object.h"
+#include "../ride/RideTypes.h"
 
 #include <string>
 #include <string_view>
+
+constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
+constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
+constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
+constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_END = 156;
 
 constexpr const uint8_t RCT12_MAX_RIDES_IN_PARK = 255;
 constexpr const uint8_t RCT12_MAX_AWARDS = 4;
@@ -41,7 +47,8 @@ constexpr const uint8_t RCT12_USER_STRING_MAX_LENGTH = 32;
 
 constexpr const uint8_t RCT12_PEEP_MAX_THOUGHTS = 5;
 
-constexpr const uint8_t RCT12_RIDE_ID_NULL = 255;
+using RCT12RideId = uint8_t;
+constexpr const RCT12RideId RCT12_RIDE_ID_NULL = 255;
 constexpr const uint16_t RCT12_RIDE_MEASUREMENT_MAX_ITEMS = 4800;
 
 constexpr uint16_t const RCT12_MAX_INVERSIONS = 31;
@@ -72,12 +79,20 @@ constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
 
 constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
+enum class SpriteIdentifier : uint8_t;
+
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
     TD4_AA,
     TD6,
     unknown
+};
+
+enum
+{
+    RCT12_SURFACE_ELEMENT_TYPE_SURFACE_MASK = 0b00000011,
+    RCT12_SURFACE_ELEMENT_TYPE_EDGE_MASK = 0b01000000,
 };
 
 enum
@@ -301,42 +316,76 @@ struct RCT12TileElementBase
 struct RCT12TileElement : public RCT12TileElementBase
 {
     uint8_t pad_04[4];
-    template<typename TType, RCT12TileElementType TClass> TType* as() const
+    template<typename TType, RCT12TileElementType TClass> const TType* as() const
     {
-        return static_cast<RCT12TileElementType>(GetType()) == TClass
-            ? reinterpret_cast<TType*>(const_cast<RCT12TileElement*>(this))
-            : nullptr;
+        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+    }
+    template<typename TType, RCT12TileElementType TClass> TType* as()
+    {
+        return static_cast<RCT12TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-    RCT12SurfaceElement* AsSurface() const
+    const RCT12SurfaceElement* AsSurface() const
     {
         return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
     }
-    RCT12PathElement* AsPath() const
+    RCT12SurfaceElement* AsSurface()
+    {
+        return as<RCT12SurfaceElement, RCT12TileElementType::Surface>();
+    }
+    const RCT12PathElement* AsPath() const
     {
         return as<RCT12PathElement, RCT12TileElementType::Path>();
     }
-    RCT12TrackElement* AsTrack() const
+    RCT12PathElement* AsPath()
+    {
+        return as<RCT12PathElement, RCT12TileElementType::Path>();
+    }
+    const RCT12TrackElement* AsTrack() const
     {
         return as<RCT12TrackElement, RCT12TileElementType::Track>();
     }
-    RCT12SmallSceneryElement* AsSmallScenery() const
+    RCT12TrackElement* AsTrack()
+    {
+        return as<RCT12TrackElement, RCT12TileElementType::Track>();
+    }
+    const RCT12SmallSceneryElement* AsSmallScenery() const
     {
         return as<RCT12SmallSceneryElement, RCT12TileElementType::SmallScenery>();
     }
-    RCT12LargeSceneryElement* AsLargeScenery() const
+    RCT12SmallSceneryElement* AsSmallScenery()
+    {
+        return as<RCT12SmallSceneryElement, RCT12TileElementType::SmallScenery>();
+    }
+    const RCT12LargeSceneryElement* AsLargeScenery() const
     {
         return as<RCT12LargeSceneryElement, RCT12TileElementType::LargeScenery>();
     }
-    RCT12WallElement* AsWall() const
+    RCT12LargeSceneryElement* AsLargeScenery()
+    {
+        return as<RCT12LargeSceneryElement, RCT12TileElementType::LargeScenery>();
+    }
+    const RCT12WallElement* AsWall() const
     {
         return as<RCT12WallElement, RCT12TileElementType::Wall>();
     }
-    RCT12EntranceElement* AsEntrance() const
+    RCT12WallElement* AsWall()
+    {
+        return as<RCT12WallElement, RCT12TileElementType::Wall>();
+    }
+    const RCT12EntranceElement* AsEntrance() const
     {
         return as<RCT12EntranceElement, RCT12TileElementType::Entrance>();
     }
-    RCT12BannerElement* AsBanner() const
+    RCT12EntranceElement* AsEntrance()
+    {
+        return as<RCT12EntranceElement, RCT12TileElementType::Entrance>();
+    }
+    const RCT12BannerElement* AsBanner() const
+    {
+        return as<RCT12BannerElement, RCT12TileElementType::Banner>();
+    }
+    RCT12BannerElement* AsBanner()
     {
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }
@@ -627,25 +676,25 @@ assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
 struct RCT12SpriteBase
 {
-    uint8_t sprite_identifier;       // 0x00
-    uint8_t type;                    // 0x01
-    uint16_t next_in_quadrant;       // 0x02
-    uint16_t next;                   // 0x04
-    uint16_t previous;               // 0x06
-    uint8_t linked_list_type_offset; // 0x08
-    uint8_t sprite_height_negative;  // 0x09
-    uint16_t sprite_index;           // 0x0A
-    uint16_t flags;                  // 0x0C
-    int16_t x;                       // 0x0E
-    int16_t y;                       // 0x10
-    int16_t z;                       // 0x12
-    uint8_t sprite_width;            // 0x14
-    uint8_t sprite_height_positive;  // 0x15
-    int16_t sprite_left;             // 0x16
-    int16_t sprite_top;              // 0x18
-    int16_t sprite_right;            // 0x1A
-    int16_t sprite_bottom;           // 0x1C
-    uint8_t sprite_direction;        // 0x1E
+    SpriteIdentifier sprite_identifier; // 0x00
+    uint8_t type;                       // 0x01
+    uint16_t next_in_quadrant;          // 0x02
+    uint16_t next;                      // 0x04
+    uint16_t previous;                  // 0x06
+    uint8_t linked_list_type_offset;    // 0x08
+    uint8_t sprite_height_negative;     // 0x09
+    uint16_t sprite_index;              // 0x0A
+    uint16_t flags;                     // 0x0C
+    int16_t x;                          // 0x0E
+    int16_t y;                          // 0x10
+    int16_t z;                          // 0x12
+    uint8_t sprite_width;               // 0x14
+    uint8_t sprite_height_positive;     // 0x15
+    int16_t sprite_left;                // 0x16
+    int16_t sprite_top;                 // 0x18
+    int16_t sprite_right;               // 0x1A
+    int16_t sprite_bottom;              // 0x1C
+    uint8_t sprite_direction;           // 0x1E
 };
 assert_struct_size(RCT12SpriteBase, 0x1F);
 
@@ -822,3 +871,7 @@ assert_struct_size(RCT12ResearchItem, 5);
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
 RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
+ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
+RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
+bool IsLikelyUTF8(std::string_view s);
+std::string RCT12RemoveFormattingUTF8(std::string_view s);

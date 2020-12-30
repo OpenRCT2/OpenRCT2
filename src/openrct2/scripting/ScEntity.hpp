@@ -52,11 +52,11 @@ namespace OpenRCT2::Scripting
             {
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         return "car";
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                         return "peep";
-                    case SPRITE_IDENTIFIER_MISC:
+                    case SpriteIdentifier::Misc:
                         switch (entity->type)
                         {
                             case SPRITE_MISC_BALLOON:
@@ -65,8 +65,10 @@ namespace OpenRCT2::Scripting
                                 return "duck";
                         }
                         break;
-                    case SPRITE_IDENTIFIER_LITTER:
+                    case SpriteIdentifier::Litter:
                         return "litter";
+                    case SpriteIdentifier::Null:
+                        return "unknown";
                 }
             }
             return "unknown";
@@ -135,10 +137,10 @@ namespace OpenRCT2::Scripting
                 entity->Invalidate2();
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
                         break;
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                     {
                         auto peep = static_cast<Peep*>(entity);
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
@@ -153,9 +155,11 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     }
-                    case SPRITE_IDENTIFIER_MISC:
-                    case SPRITE_IDENTIFIER_LITTER:
+                    case SpriteIdentifier::Misc:
+                    case SpriteIdentifier::Litter:
                         sprite_remove(entity);
+                        break;
+                    case SpriteIdentifier::Null:
                         break;
                 }
             }
@@ -239,11 +243,14 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
             dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
             dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
+            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
+            dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
             dukglue_register_property(
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
             dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
 
     private:
@@ -514,6 +521,18 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        uint16_t trackProgress_get() const
+        {
+            auto vehicle = GetVehicle();
+            return vehicle != nullptr ? vehicle->track_progress : 0;
+        }
+
+        int32_t remainingDistance_get() const
+        {
+            auto vehicle = GetVehicle();
+            return vehicle != nullptr ? vehicle->remaining_distance : 0;
+        }
+
         uint8_t poweredAcceleration_get() const
         {
             auto vehicle = GetVehicle();
@@ -587,6 +606,16 @@ namespace OpenRCT2::Scripting
                 result.resize(len);
             }
             return result;
+        }
+
+        void travelBy(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto vehicle = GetVehicle();
+            if (vehicle != nullptr)
+            {
+                vehicle->MoveRelativeDistance(value);
+            }
         }
     };
 

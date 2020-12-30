@@ -24,8 +24,8 @@ Vehicle* cable_lift_segment_create(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
     Vehicle* current = &(
-        create_sprite(SPRITE_IDENTIFIER_VEHICLE, head ? EntityListId::TrainHead : EntityListId::Vehicle)->vehicle);
-    current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
+        create_sprite(SpriteIdentifier::Vehicle, head ? EntityListId::TrainHead : EntityListId::Vehicle)->vehicle);
+    current->sprite_identifier = SpriteIdentifier::Vehicle;
     current->ride = ride.id;
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)
@@ -74,7 +74,7 @@ Vehicle* cable_lift_segment_create(
     current->MoveTo({ 16, 16, z });
     current->track_type = (TrackElemType::CableLiftHill << 2) | (current->sprite_direction >> 3);
     current->track_progress = 164;
-    current->update_flags = VEHICLE_UPDATE_FLAG_1;
+    current->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
     current->num_peeps = 0;
     current->next_free_seat = 0;

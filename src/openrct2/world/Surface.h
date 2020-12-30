@@ -28,8 +28,15 @@ enum
     TERRAIN_GRID_GREEN,
     TERRAIN_SAND_DARK,
     TERRAIN_SAND_LIGHT,
-    TERRAIN_COUNT_REGULAR = 14, // The amount of surface types the user can actually select - what follows are technical types
-    TERRAIN_CHECKERBOARD_INVERTED = 14,
+
+    TERRAIN_RCT2_COUNT,
+
+    TERRAIN_ROOF_BROWN = TERRAIN_RCT2_COUNT,
+    TERRAIN_ROOF_GREY,
+    TERRAIN_ROOF_IRON,
+    TERRAIN_ROOF_LOG,
+    TERRAIN_COUNT_REGULAR, // The amount of surface types the user can actually select - what follows are technical types
+    TERRAIN_CHECKERBOARD_INVERTED = TERRAIN_COUNT_REGULAR,
     TERRAIN_UNDERGROUND_VIEW,
 };
 

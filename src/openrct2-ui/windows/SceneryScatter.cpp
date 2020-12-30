@@ -35,18 +35,18 @@ ScatterToolDensity gWindowSceneryScatterDensity;
 
 // clang-format off
 static rct_widget window_scenery_scatter_widgets[] = {
-    MakeWidget     ({ 0,  0}, {86, 100}, WWT_FRAME,    WindowColour::Secondary                                                                ), // panel / background
-    MakeWidget     ({ 1,  1}, {84,  14}, WWT_CAPTION,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
-    MakeWidget     ({73,  2}, {11,  12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
+    MakeWidget     ({ 0,  0}, {86, 100}, WindowWidgetType::Frame,    WindowColour::Secondary                                                                ), // panel / background
+    MakeWidget     ({ 1,  1}, {84,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
+    MakeWidget     ({73,  2}, {11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
 
-    MakeWidget     ({20, 17}, {44,  32}, WWT_IMGBTN,   WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
-    MakeRemapWidget({21, 18}, {16,  16}, WWT_TRNBTN,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
-    MakeRemapWidget({47, 32}, {16,  16}, WWT_TRNBTN,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
+    MakeWidget     ({20, 17}, {44,  32}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                          ), // preview box
+    MakeRemapWidget({21, 18}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP    ), // decrement size
+    MakeRemapWidget({47, 32}, {16,  16}, WindowWidgetType::TrnBtn,   WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP     ), // increment size
 
-    MakeWidget     ({ 3, 55}, {80,  42}, WWT_GROUPBOX, WindowColour::Secondary, STR_SCATTER_TOOL_DENSITY                                      ),
-    MakeRemapWidget({ 7, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
-    MakeRemapWidget({31, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
-    MakeRemapWidget({55, 68}, {24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
+    MakeWidget     ({ 3, 55}, {80,  42}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCATTER_TOOL_DENSITY                                      ),
+    MakeRemapWidget({ 7, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_LOW,    STR_SCATTER_TOOL_DENSITY_LOW   ), // low amount
+    MakeRemapWidget({31, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_MEDIUM, STR_SCATTER_TOOL_DENSITY_MEDIUM), // medium amount
+    MakeRemapWidget({55, 68}, {24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_G2_SCENERY_SCATTER_HIGH,   STR_SCATTER_TOOL_DENSITY_HIGH  ), // high amount
     { WIDGETS_END },
 };
 // clang-format on
@@ -80,13 +80,13 @@ rct_window* window_scenery_scatter_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_auto_pos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
+    window = WindowCreateAutoPos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
 
     window->widgets = window_scenery_scatter_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_DENSITY_LOW) | (1 << WIDX_DENSITY_MEDIUM) | (1 << WIDX_DENSITY_HIGH);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gWindowSceneryScatterEnabled = true;
@@ -204,12 +204,12 @@ static void window_scenery_scatter_invalidate(rct_window* w)
     }
 
     // Update the preview image (for tool sizes up to 7)
-    window_scenery_scatter_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gWindowSceneryScatterSize);
+    window_scenery_scatter_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
 }
 
 static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw area as a number for tool sizes bigger than 7
     if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)

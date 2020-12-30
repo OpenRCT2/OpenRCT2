@@ -12,6 +12,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../../ride/TrackDesign.h"
+#include "../../util/Util.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
@@ -36,8 +37,8 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         return;
     }
-    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
+    const SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+    session->InteractionType = ViewportInteractionItem::Scenery;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     boxoffset.x = 0;
@@ -49,12 +50,12 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
     if (tileElement->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         baseImageid = CONSTRUCTION_MARKER;
     }
     uint32_t dword_F64EB0 = baseImageid;
@@ -154,7 +155,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     }
     if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
-        sub_98197C(
+        PaintAddImageAsParent(
             session, baseImageid, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
             boxoffset.y, boxoffset.z);
     }
@@ -165,9 +166,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
-            int32_t image_id = (baseImageid & 0x7FFFF) + (GlassPaletteIds[sceneryElement->GetPrimaryColour()] << 19)
+            int32_t image_id = (baseImageid & 0x7FFFF) + (EnumValue(GlassPaletteIds[sceneryElement->GetPrimaryColour()]) << 19)
                 + 0x40000004;
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                 boxoffset.y, boxoffset.z);
         }
@@ -187,7 +188,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -199,7 +200,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -208,7 +209,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -217,7 +218,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -246,7 +247,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
@@ -260,7 +261,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -276,7 +277,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 {
                     image_id = (image_id & 0x7FFFF) | dword_F64EB0;
                 }
-                sub_98199C(
+                PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
             }
@@ -321,13 +322,13 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 }
                 if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
                 {
-                    sub_98197C(
+                    PaintAddImageAsParent(
                         session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                         boxoffset.y, boxoffset.z);
                 }
                 else
                 {
-                    sub_98199C(
+                    PaintAddImageAsChild(
                         session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                         boxoffset.y, boxoffset.z);
                 }

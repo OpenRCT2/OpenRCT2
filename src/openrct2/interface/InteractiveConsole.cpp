@@ -16,11 +16,11 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
-#include "../actions/ClimateSetAction.hpp"
-#include "../actions/RideSetPriceAction.hpp"
-#include "../actions/RideSetSetting.hpp"
-#include "../actions/SetCheatAction.hpp"
-#include "../actions/StaffSetCostumeAction.hpp"
+#include "../actions/ClimateSetAction.h"
+#include "../actions/RideSetPriceAction.h"
+#include "../actions/RideSetSettingAction.h"
+#include "../actions/SetCheatAction.h"
+#include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
@@ -739,8 +739,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get money");
@@ -947,8 +947,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsSandboxMode != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::SandboxMode, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_sandbox_mode");
@@ -965,8 +965,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsDisableClearanceChecks != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::DisableClearanceChecks, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_clearance_checks");
@@ -983,8 +983,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             if (gCheatsDisableSupportLimits != (int_val[0] != 0))
             {
                 auto setCheatAction = SetCheatAction(CheatType::DisableSupportLimits, int_val[0] != 0);
-                setCheatAction.SetCallback([&console](const GameAction*, const GameActionResult* res) {
-                    if (res->Error != GA_ERROR::OK)
+                setCheatAction.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
+                    if (res->Error != GameActions::Status::Ok)
                         console.WriteLineError("Network error: Permission denied!");
                     else
                         console.Execute("get cheat_disable_support_limits");
@@ -1073,8 +1073,8 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8_t objectType = entry->GetType();
-        if (objectType == OBJECT_TYPE_RIDE)
+        ObjectType objectType = entry->GetType();
+        if (objectType == ObjectType::Ride)
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
@@ -1087,7 +1087,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    uint8_t category = RideTypeDescriptors[rideType].Category;
+                    ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
                     research_insert_ride_entry(rideType, groupIndex, category, true);
                 }
             }
@@ -1096,7 +1096,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
+        else if (objectType == ObjectType::SceneryGroup)
         {
             research_insert_scenery_group_entry(groupIndex, true);
 
@@ -1124,17 +1124,18 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
     };
 
-    for (int32_t i = 0; i < 10; i++)
+    for (ObjectType i = ObjectType::Ride; i < ObjectType::ScenarioText; i++)
     {
         int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++)
+        for (; entryGroupIndex < object_entry_group_counts[EnumValue(i)]; entryGroupIndex++)
         {
             if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
-        console.WriteFormatLine("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
+        console.WriteFormatLine(
+            "%s: %d/%d", object_type_names[EnumValue(i)], entryGroupIndex, object_entry_group_counts[EnumValue(i)]);
     }
 
     return 0;
@@ -1162,7 +1163,7 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "objective_options" && invalidArguments(&invalidTitle, !title))
         {
-            context_open_window(WC_EDTIOR_OBJECTIVE_OPTIONS);
+            context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
         }
         else if (argv[0] == "options")
         {
@@ -1299,7 +1300,7 @@ static int32_t cc_for_date([[maybe_unused]] InteractiveConsole& console, [[maybe
     if (argv.size() <= 2)
     {
         day = std::clamp(
-            gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, 1, static_cast<int>(days_in_month[month - 1]));
+            gDateMonthTicks / (TICKS_PER_MONTH / days_in_month[month - 1]) + 1, 1, static_cast<int>(days_in_month[month - 1]));
     }
 
     // YYYY MM DD (year, month, and day provided)
@@ -1578,7 +1579,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
     for (int i = 0; i < MAX_SPRITES; i++)
     {
         auto* sprite = GetEntity(i);
-        if (sprite == nullptr || sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (sprite == nullptr || sprite->sprite_identifier == SpriteIdentifier::Null)
             continue;
 
         auto peep = sprite->As<Peep>();
@@ -1930,17 +1931,17 @@ void InteractiveConsole::Execute(const std::string& s)
 
 void InteractiveConsole::WriteLine(const std::string& s)
 {
-    WriteLine(s, FORMAT_WINDOW_COLOUR_2);
+    WriteLine(s, FormatToken::ColourWindow2);
 }
 
 void InteractiveConsole::WriteLineError(const std::string& s)
 {
-    WriteLine(s, FORMAT_RED);
+    WriteLine(s, FormatToken::ColourRed);
 }
 
 void InteractiveConsole::WriteLineWarning(const std::string& s)
 {
-    WriteLine(s, FORMAT_YELLOW);
+    WriteLine(s, FormatToken::ColourYellow);
 }
 
 void InteractiveConsole::WriteFormatLine(const char* format, ...)

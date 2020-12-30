@@ -27,7 +27,7 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 
 static rct_widget window_music_credits_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4, 18}, {502, 292}, WWT_SCROLL, WindowColour::Primary, SCROLL_VERTICAL), // scroll
+    MakeWidget({4, 18}, {502, 292}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL), // scroll
     { WIDGETS_END },
 };
 
@@ -106,12 +106,12 @@ rct_window* window_music_credits_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
+    window = WindowCreateCentred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
 
     window->widgets = window_music_credits_widgets;
     window->enabled_widgets = 1 << WIDX_CLOSE;
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BLUE;
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -149,7 +149,7 @@ static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollInde
  */
 static void window_music_credits_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**

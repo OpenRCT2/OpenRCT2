@@ -88,6 +88,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_MULTITHREADING_CHECKBOX,
     WIDX_USE_VSYNC_CHECKBOX,
     WIDX_MINIMIZE_FOCUS_LOSS,
+    WIDX_DISABLE_SCREENSAVER_LOCK,
 
     // Rendering
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
@@ -194,7 +195,7 @@ static constexpr const int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {WW, 289}, WWT_RESIZE, WindowColour::Secondary), \
+    MakeWidget({  0, 43}, {WW, 289}, WindowWidgetType::Resize, WindowColour::Secondary), \
     MakeTab   ({  3, 17}, STR_OPTIONS_DISPLAY_TIP                       ), \
     MakeTab   ({ 34, 17}, STR_OPTIONS_RENDERING_TIP                     ), \
     MakeTab   ({ 65, 17}, STR_OPTIONS_CULTURE_TIP                       ), \
@@ -205,107 +206,108 @@ static constexpr const int32_t WH = 332;
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget        ({  5,  53}, {300, 155}, WWT_GROUPBOX, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
-    MakeWidget        ({155,  68}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                                  ), // Fullscreen
-    MakeWidget        ({288,  69}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
-    MakeWidget        ({155,  83}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ), // Resolution
-    MakeWidget        ({288,  84}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
-    MakeSpinnerWidgets({155,  98}, {145,  12}, WWT_SPINNER,  WindowColour::Secondary, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
-    MakeWidget        ({155, 113}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                                  ),
-    MakeWidget        ({288, 114}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
-    MakeWidget        ({155, 128}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                                  ), // Scaling quality hint
-    MakeWidget        ({288, 129}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_SCALE_QUALITY_TIP                    ),
-    MakeWidget        ({ 25, 144}, {266,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
-    MakeWidget        ({ 11, 161}, {143,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
-    MakeWidget        ({155, 161}, {136,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
-    MakeWidget        ({155, 176}, {136,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
-    MakeWidget        ({ 11, 176}, {143,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
-    MakeWidget        ({ 11, 191}, {280,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
+    MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Fullscreen
+    MakeWidget        ({288,  69}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_FULLSCREEN_MODE_TIP                  ),
+    MakeWidget        ({155,  83}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_16_RESOLUTION_X_BY_Y                                                    ), // Resolution
+    MakeWidget        ({288,  84}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DISPLAY_RESOLUTION_TIP               ),
+    MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
+    MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
+    MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
+    MakeWidget        ({155, 128}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Scaling quality hint
+    MakeWidget        ({288, 129}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_SCALE_QUALITY_TIP                    ),
+    MakeWidget        ({ 25, 144}, {266,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+    MakeWidget        ({ 11, 161}, {143,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
+    MakeWidget        ({155, 161}, {136,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
+    MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
+    MakeWidget        ({ 11, 176}, {143,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_USE_VSYNC,                         STR_USE_VSYNC_TIP                        ), // Use vsync
+    MakeWidget        ({ 11, 191}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS, STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP), // Minimise fullscreen focus loss
+    MakeWidget        ({ 11, 206}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_SCREENSAVER,               STR_DISABLE_SCREENSAVER_TIP              ), // Disable screensaver
     { WIDGETS_END },
 };
 
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    MakeWidget({  5,  FRAME_RENDERING_START + 0}, {300, 108}, WWT_GROUPBOX, WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
-    MakeWidget({ 10, FRAME_RENDERING_START + 15}, {281,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
-    MakeWidget({ 10, FRAME_RENDERING_START + 30}, {281,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
-    MakeWidget({ 10, FRAME_RENDERING_START + 45}, {281,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
-    MakeWidget({ 10, FRAME_RENDERING_START + 60}, {281,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
-    MakeWidget({ 10, FRAME_RENDERING_START + 75}, {281,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
-    MakeWidget({ 10, FRAME_RENDERING_START + 90}, {281,  12}, WWT_LABEL,    WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE                                   ), // Virtual floor
-    MakeWidget({155, FRAME_RENDERING_START + 90}, {145,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
-    MakeWidget({288, FRAME_RENDERING_START + 91}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+    MakeWidget({  5,  FRAME_RENDERING_START + 0}, {300, 108}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
+    MakeWidget({ 10, FRAME_RENDERING_START + 15}, {281,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TILE_SMOOTHING,         STR_TILE_SMOOTHING_TIP        ), // Landscape smoothing
+    MakeWidget({ 10, FRAME_RENDERING_START + 30}, {281,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GRIDLINES,              STR_GRIDLINES_TIP             ), // Gridlines
+    MakeWidget({ 10, FRAME_RENDERING_START + 45}, {281,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_UPPERCASE_BANNERS,      STR_UPPERCASE_BANNERS_TIP     ), // Uppercase banners
+    MakeWidget({ 10, FRAME_RENDERING_START + 60}, {281,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SHOW_GUEST_PURCHASES,   STR_SHOW_GUEST_PURCHASES_TIP  ), // Guest purchases
+    MakeWidget({ 10, FRAME_RENDERING_START + 75}, {281,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_TRANSPARENT_SCREENSHOT, STR_TRANSPARENT_SCREENSHOT_TIP), // Transparent screenshot
+    MakeWidget({ 10, FRAME_RENDERING_START + 90}, {281,  12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_VIRTUAL_FLOOR_STYLE                                   ), // Virtual floor
+    MakeWidget({155, FRAME_RENDERING_START + 90}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                   STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
+    MakeWidget({288, FRAME_RENDERING_START + 91}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_VIRTUAL_FLOOR_STYLE_TIP   ), // Virtual floor dropdown
 #undef FRAME_RENDERING_START
 #define FRAME_EFFECTS_START 163
-    MakeWidget({ 5,  FRAME_EFFECTS_START + 0}, {300, 94}, WWT_GROUPBOX, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
-    MakeWidget({10, FRAME_EFFECTS_START + 15}, {281, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
-    MakeWidget({25, FRAME_EFFECTS_START + 30}, {266, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
-    MakeWidget({40, FRAME_EFFECTS_START + 45}, {251, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
-    MakeWidget({10, FRAME_EFFECTS_START + 60}, {281, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
-    MakeWidget({25, FRAME_EFFECTS_START + 75}, {266, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
+    MakeWidget({ 5,  FRAME_EFFECTS_START + 0}, {300, 94}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_EFFECTS_GROUP                                             ), // Rendering group
+    MakeWidget({10, FRAME_EFFECTS_START + 15}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CYCLE_DAY_NIGHT,          STR_CYCLE_DAY_NIGHT_TIP         ), // Cycle day-night
+    MakeWidget({25, FRAME_EFFECTS_START + 30}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_EFFECTS,  STR_ENABLE_LIGHTING_EFFECTS_TIP ), // Enable light fx
+    MakeWidget({40, FRAME_EFFECTS_START + 45}, {251, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ENABLE_LIGHTING_VEHICLES, STR_ENABLE_LIGHTING_VEHICLES_TIP), // Enable light fx for vehicles
+    MakeWidget({10, FRAME_EFFECTS_START + 60}, {281, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RENDER_WEATHER_EFFECTS,   STR_RENDER_WEATHER_EFFECTS_TIP  ), // Render weather effects
+    MakeWidget({25, FRAME_EFFECTS_START + 75}, {266, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DISABLE_LIGHTNING_EFFECT, STR_DISABLE_LIGHTNING_EFFECT_TIP), // Disable lightning effect
 #undef FRAME_EFFECTS_START
     { WIDGETS_END },
 };
 
 static rct_widget window_options_culture_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget({155,  53}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary, STR_STRING                                     ), // language
-    MakeWidget({288,  54}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_LANGUAGE_TIP           ),
-    MakeWidget({155,  68}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Currency
-    MakeWidget({288,  69}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_CURRENCY_TIP           ),
-    MakeWidget({155,  83}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Distance and speed
-    MakeWidget({288,  84}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DISTANCE_AND_SPEED_TIP ),
-    MakeWidget({155,  98}, {145, 13}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Temperature
-    MakeWidget({288,  99}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_TEMPERATURE_FORMAT_TIP ),
-    MakeWidget({155, 113}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Height labels
-    MakeWidget({288, 114}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_HEIGHT_LABELS_UNITS_TIP),
-    MakeWidget({155, 128}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                 ), // Date format
-    MakeWidget({288, 129}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DATE_FORMAT_TIP        ),
+    MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                     ), // language
+    MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_LANGUAGE_TIP           ),
+    MakeWidget({155,  68}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Currency
+    MakeWidget({288,  69}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_CURRENCY_TIP           ),
+    MakeWidget({155,  83}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Distance and speed
+    MakeWidget({288,  84}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DISTANCE_AND_SPEED_TIP ),
+    MakeWidget({155,  98}, {145, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Temperature
+    MakeWidget({288,  99}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_TEMPERATURE_FORMAT_TIP ),
+    MakeWidget({155, 113}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Height labels
+    MakeWidget({288, 114}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_HEIGHT_LABELS_UNITS_TIP),
+    MakeWidget({155, 128}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Date format
+    MakeWidget({288, 129}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_DATE_FORMAT_TIP        ),
     { WIDGETS_END },
 };
 
 static rct_widget window_options_audio_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget({ 10,  53}, {290, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                ), // Audio device
-    MakeWidget({288,  54}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
-    MakeWidget({ 10,  69}, {220, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
-    MakeWidget({ 10,  84}, {220, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
-    MakeWidget({ 10,  99}, {220, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
-    MakeWidget({ 10, 113}, {290, 13}, WWT_CHECKBOX, WindowColour::Secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
-    MakeWidget({ 10, 128}, {145, 13}, WWT_LABEL,    WindowColour::Secondary, STR_OPTIONS_MUSIC_LABEL                       ), // Title music label
-    MakeWidget({155, 127}, {145, 13}, WWT_DROPDOWN, WindowColour::Secondary                                                ), // Title music
-    MakeWidget({288, 128}, { 11, 11}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
-    MakeWidget({155,  68}, {145, 13}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
-    MakeWidget({155,  83}, {145, 13}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
-    MakeWidget({155,  98}, {145, 13}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
+    MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
+    MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
+    MakeWidget({ 10,  69}, {220, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MASTER_VOLUME,       STR_MASTER_VOLUME_TIP), // Enable / disable master sound
+    MakeWidget({ 10,  84}, {220, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SOUND_EFFECTS,       STR_SOUND_EFFECTS_TIP), // Enable / disable sound effects
+    MakeWidget({ 10,  99}, {220, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RIDE_MUSIC,          STR_RIDE_MUSIC_TIP   ), // Enable / disable ride music
+    MakeWidget({ 10, 113}, {290, 13}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_AUDIO_FOCUS,         STR_AUDIO_FOCUS_TIP  ), // Enable / disable audio disabled on focus lost
+    MakeWidget({ 10, 128}, {145, 13}, WindowWidgetType::Label,    WindowColour::Secondary, STR_OPTIONS_MUSIC_LABEL                       ), // Title music label
+    MakeWidget({155, 127}, {145, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Title music
+    MakeWidget({288, 128}, { 11, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_TITLE_MUSIC_TIP  ),
+    MakeWidget({155,  68}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Master volume
+    MakeWidget({155,  83}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Sound effect volume
+    MakeWidget({155,  98}, {145, 13}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_HORIZONTAL                             ), // Music volume
     { WIDGETS_END },
 };
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
-    MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WWT_GROUPBOX, WindowColour::Secondary, STR_CONTROLS_GROUP                                          ), // Controls group
-    MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WWT_CHECKBOX, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,   STR_SCREEN_EDGE_SCROLLING_TIP  ), // Edge scrolling
-    MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_TRAP_MOUSE,              STR_TRAP_MOUSE_TIP             ), // Trap mouse
-    MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG, STR_INVERT_RIGHT_MOUSE_DRAG_TIP), // Invert right mouse dragging
-    MakeWidget({ 10, CONTROLS_GROUP_START + 60}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,          STR_ZOOM_TO_CURSOR_TIP         ), // Zoom to cursor
-    MakeWidget({155, CONTROLS_GROUP_START + 75}, {145, 13}, WWT_BUTTON,   WindowColour::Secondary, STR_HOTKEY,                  STR_HOTKEY_TIP                 ), // Set hotkeys buttons
+    MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                          ), // Controls group
+    MakeWidget({ 10, CONTROLS_GROUP_START + 13}, {290, 14}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SCREEN_EDGE_SCROLLING,   STR_SCREEN_EDGE_SCROLLING_TIP  ), // Edge scrolling
+    MakeWidget({ 10, CONTROLS_GROUP_START + 30}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_TRAP_MOUSE,              STR_TRAP_MOUSE_TIP             ), // Trap mouse
+    MakeWidget({ 10, CONTROLS_GROUP_START + 45}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_INVERT_RIGHT_MOUSE_DRAG, STR_INVERT_RIGHT_MOUSE_DRAG_TIP), // Invert right mouse dragging
+    MakeWidget({ 10, CONTROLS_GROUP_START + 60}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_TO_CURSOR,          STR_ZOOM_TO_CURSOR_TIP         ), // Zoom to cursor
+    MakeWidget({155, CONTROLS_GROUP_START + 75}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_HOTKEY,                  STR_HOTKEY_TIP                 ), // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
 #define THEMES_GROUP_START 148
-    MakeWidget({  5,  THEMES_GROUP_START + 0}, {300, 48}, WWT_GROUPBOX, WindowColour::Secondary, STR_THEMES_GROUP                                  ), // Toolbar buttons group
-    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WWT_DROPDOWN, WindowColour::Secondary, STR_STRING                                        ), // Themes
-    MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_CURRENT_THEME_TIP     ),
-    MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WWT_BUTTON,   WindowColour::Secondary, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
+    MakeWidget({  5,  THEMES_GROUP_START + 0}, {300, 48}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_THEMES_GROUP                                  ), // Toolbar buttons group
+    MakeWidget({155, THEMES_GROUP_START + 14}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                        ), // Themes
+    MakeWidget({288, THEMES_GROUP_START + 15}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,     STR_CURRENT_THEME_TIP     ),
+    MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 200
-    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 76}, WWT_GROUPBOX, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
-    MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
-    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
-    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
-    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
+    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 76}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
+    MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
+    MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
+    MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
     { WIDGETS_END },
 #undef TOOLBAR_GROUP_START
 };
@@ -313,46 +315,46 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define TITLE_SEQUENCE_START 53
-    MakeWidget({  5,  TITLE_SEQUENCE_START + 0}, {300, 65}, WWT_GROUPBOX, WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                                            ),
-    MakeWidget({ 10, TITLE_SEQUENCE_START + 15}, {290, 16}, WWT_CHECKBOX, WindowColour::Tertiary , STR_OPTIONS_RANDOM_TITLE_SEQUENCE                                     ), // Random Title Sequence
-    MakeWidget({135, TITLE_SEQUENCE_START + 32}, {165, 12}, WWT_DROPDOWN, WindowColour::Secondary, STR_STRING                                                            ), // Title sequence dropdown
-    MakeWidget({288, TITLE_SEQUENCE_START + 33}, { 11, 12}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                STR_TITLE_SEQUENCE_TIP             ), // Title sequence dropdown button
-    MakeWidget({135, TITLE_SEQUENCE_START + 48}, {165, 13}, WWT_BUTTON,   WindowColour::Secondary, STR_EDIT_TITLE_SEQUENCES_BUTTON,   STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP), // Edit title sequences button
+    MakeWidget({  5,  TITLE_SEQUENCE_START + 0}, {300, 65}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                                            ),
+    MakeWidget({ 10, TITLE_SEQUENCE_START + 15}, {290, 16}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_OPTIONS_RANDOM_TITLE_SEQUENCE                                     ), // Random Title Sequence
+    MakeWidget({135, TITLE_SEQUENCE_START + 32}, {165, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                            ), // Title sequence dropdown
+    MakeWidget({288, TITLE_SEQUENCE_START + 33}, { 11, 12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                STR_TITLE_SEQUENCE_TIP             ), // Title sequence dropdown button
+    MakeWidget({135, TITLE_SEQUENCE_START + 48}, {165, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EDIT_TITLE_SEQUENCES_BUTTON,   STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP), // Edit title sequences button
 #undef TITLE_SEQUENCE_START
 #define SCENARIO_START 122
-    MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WWT_GROUPBOX, WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
-    MakeWidget({175, SCENARIO_START + 15}, {125, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                            ), // Scenario select mode
-    MakeWidget({288, SCENARIO_START + 16}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
-    MakeWidget({ 25, SCENARIO_START + 30}, {275, 16}, WWT_CHECKBOX, WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
+    MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
+    MakeWidget({175, SCENARIO_START + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario select mode
+    MakeWidget({288, SCENARIO_START + 16}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
+    MakeWidget({ 25, SCENARIO_START + 30}, {275, 16}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
 #undef SCENARIO_START
 #define SCENARIO_OPTIONS_START 177
-    MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WWT_GROUPBOX, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
-    MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WWT_CHECKBOX, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
+    MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
+    MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
 #undef SCENARIO_OPTIONS_START
 #define TWEAKS_START 216
-    MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WWT_GROUPBOX, WindowColour::Secondary, STR_OPTIONS_TWEAKS                                           ),
-    MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WWT_CHECKBOX, WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                  ), // Show 'real' names of guests
-    MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WWT_CHECKBOX, WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP       ), // Auto staff placement
-    MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WWT_CHECKBOX, WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP            ), // Automatically open shops & stalls
-    MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WWT_DROPDOWN, WindowColour::Secondary                                                               ), // Default inspection time dropdown
-    MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
+    MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_OPTIONS_TWEAKS                                           ),
+    MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                  ), // Show 'real' names of guests
+    MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP       ), // Auto staff placement
+    MakeWidget({ 10, TWEAKS_START + 45}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_AUTO_OPEN_SHOPS,      STR_AUTO_OPEN_SHOPS_TIP            ), // Automatically open shops & stalls
+    MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                               ), // Default inspection time dropdown
+    MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP), // Default inspection time dropdown button
 #undef TWEAKS_START
     { WIDGETS_END },
 };
 
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    MakeWidget        ({ 10,  54}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
-    MakeWidget        ({ 10,  69}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP), // Allow loading with incorrect checksum
-    MakeWidget        ({ 10,  84}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
-    MakeWidget        ({ 10,  99}, {290, 12}, WWT_CHECKBOX, WindowColour::Tertiary , STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
-    MakeWidget        ({ 10, 114}, {290, 12}, WWT_CHECKBOX, WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
-    MakeWidget        ({165, 130}, {135, 13}, WWT_DROPDOWN, WindowColour::Secondary                                                                                          ), // Autosave dropdown
-    MakeWidget        ({288, 131}, { 11, 11}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
-    MakeSpinnerWidgets({165, 150}, {135, 12}, WWT_SPINNER,  WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
-    MakeWidget        ({ 23, 169}, {276, 12}, WWT_LABEL,    WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
-    MakeWidget        ({ 24, 184}, {266, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
-    MakeWidget        ({289, 184}, { 11, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
+    MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
+    MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP), // Allow loading with incorrect checksum
+    MakeWidget        ({ 10,  84}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SAVE_PLUGIN_DATA,                      STR_SAVE_PLUGIN_DATA_TIP                     ), // Export plug-in objects with saved games
+    MakeWidget        ({ 10,  99}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_STAY_CONNECTED_AFTER_DESYNC,           STR_STAY_CONNECTED_AFTER_DESYNC_TIP          ), // Do not disconnect after the client desynchronises with the server
+    MakeWidget        ({ 10, 114}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ALWAYS_NATIVE_LOADSAVE,                STR_ALWAYS_NATIVE_LOADSAVE_TIP               ), // Use native load/save window
+    MakeWidget        ({165, 130}, {135, 13}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                          ), // Autosave dropdown
+    MakeWidget        ({288, 131}, { 11, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                        STR_AUTOSAVE_FREQUENCY_TIP                   ), // Autosave dropdown button
+    MakeSpinnerWidgets({165, 150}, {135, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_NONE,                                  STR_AUTOSAVE_AMOUNT_TIP                      ), // Autosave amount spinner
+    MakeWidget        ({ 23, 169}, {276, 12}, WindowWidgetType::Label,    WindowColour::Secondary, STR_PATH_TO_RCT1,                          STR_PATH_TO_RCT1_TIP                         ), // RCT 1 path text
+    MakeWidget        ({ 24, 184}, {266, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_NONE,                                  STR_STRING_TOOLTIP                           ), // RCT 1 path button
+    MakeWidget        ({289, 184}, { 11, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_CLOSE_X,                               STR_PATH_TO_RCT1_CLEAR_TIP                   ), // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -449,6 +451,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_MULTITHREADING_CHECKBOX) |
     (1 << WIDX_MINIMIZE_FOCUS_LOSS) |
     (1 << WIDX_STEAM_OVERLAY_PAUSE) |
+    (1 << WIDX_DISABLE_SCREENSAVER_LOCK) |
     (1 << WIDX_SCALE) |
     (1 << WIDX_SCALE_UP) |
     (1 << WIDX_SCALE_DOWN) |
@@ -567,18 +570,25 @@ static void window_options_common_invalidate_before(rct_window* w)
     if (window_options_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_options_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
     window_options_set_pressed_tab(w);
 
     w->disabled_widgets = 0;
+    auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
+    if (!hasFilePicker)
+    {
+        w->enabled_widgets &= ~WIDX_ALWAYS_NATIVE_LOADSAVE;
+        w->disabled_widgets |= WIDX_ALWAYS_NATIVE_LOADSAVE;
+        w->widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
+    }
 }
 
 static void window_options_common_invalidate_after(rct_window* w)
 {
     // Automatically adjust window height to fit widgets
     int32_t y = 0;
-    for (auto widget = &w->widgets[WIDX_PAGE_START]; widget->type != WWT_LAST; widget++)
+    for (auto widget = &w->widgets[WIDX_PAGE_START]; widget->type != WindowWidgetType::Last; widget++)
     {
         y = std::max<int32_t>(y, widget->bottom);
     }
@@ -636,11 +646,19 @@ static void window_options_display_mouseup(rct_window* w, rct_widgetindex widget
             config_save_default();
             w->Invalidate();
             break;
+        case WIDX_DISABLE_SCREENSAVER_LOCK:
+            gConfigGeneral.disable_screensaver ^= 1;
+            ApplyScreenSaverLockSetting();
+            config_save_default();
+            w->Invalidate();
+            break;
     }
 }
 
 static void window_options_display_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
+    widget = &w->widgets[widgetIndex - 1];
+
     switch (widgetIndex)
     {
         case WIDX_RESOLUTION_DROPDOWN:
@@ -670,7 +688,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
 
             if (selectedResolution != -1 && selectedResolution < 32)
             {
-                dropdown_set_checked(selectedResolution, true);
+                Dropdown::SetChecked(selectedResolution, true);
             }
         }
 
@@ -685,7 +703,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(gConfigGeneral.fullscreen_mode, true);
+            Dropdown::SetChecked(gConfigGeneral.fullscreen_mode, true);
             break;
         case WIDX_DRAWING_ENGINE_DROPDOWN:
         {
@@ -700,7 +718,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
             }
             window_options_show_dropdown(w, widget, numItems);
-            dropdown_set_checked(EnumValue(gConfigGeneral.drawing_engine), true);
+            Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
             break;
         }
         case WIDX_SCALE_UP:
@@ -727,7 +745,7 @@ static void window_options_display_mousedown(rct_window* w, rct_widgetindex widg
             window_options_show_dropdown(w, widget, 2);
 
             // Note: offset by one to compensate for lack of NN option.
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
             break;
     }
 }
@@ -849,12 +867,13 @@ static void window_options_display_invalidate(rct_window* w)
         w->disabled_widgets &= ~(1 << WIDX_USE_VSYNC_CHECKBOX);
     }
 
-    widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-    widget_set_checkbox_value(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-    widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-    widget_set_checkbox_value(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-    widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-    widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+    WidgetSetCheckboxValue(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+    WidgetSetCheckboxValue(w, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+    WidgetSetCheckboxValue(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+    WidgetSetCheckboxValue(w, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+    WidgetSetCheckboxValue(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+    WidgetSetCheckboxValue(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+    WidgetSetCheckboxValue(w, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
     // Dropdown captions for straightforward strings.
     window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
@@ -867,7 +886,7 @@ static void window_options_display_invalidate(rct_window* w)
 
 static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -980,6 +999,8 @@ static void window_options_rendering_mouseup(rct_window* w, rct_widgetindex widg
 
 static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
+    widget = &w->widgets[widgetIndex - 1];
+
     switch (widgetIndex)
     {
         case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -993,7 +1014,7 @@ static void window_options_rendering_mousedown(rct_window* w, rct_widgetindex wi
             widget = &w->widgets[widgetIndex - 1];
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.virtual_floor_style), true);
             break;
     }
 }
@@ -1016,12 +1037,12 @@ static void window_options_rendering_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-    widget_set_checkbox_value(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-    widget_set_checkbox_value(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-    widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-    widget_set_checkbox_value(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-    widget_set_checkbox_value(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+    WidgetSetCheckboxValue(w, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+    WidgetSetCheckboxValue(w, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+    WidgetSetCheckboxValue(w, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+    WidgetSetCheckboxValue(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+    WidgetSetCheckboxValue(w, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+    WidgetSetCheckboxValue(w, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
     rct_string_id VirtualFloorStyleStrings[] = { STR_VIRTUAL_FLOOR_STYLE_DISABLED, STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
                                                  STR_VIRTUAL_FLOOR_STYLE_GLASSY };
@@ -1029,7 +1050,7 @@ static void window_options_rendering_invalidate(rct_window* w)
     window_options_rendering_widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
         gConfigGeneral.virtual_floor_style)];
 
-    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
     {
         w->disabled_widgets &= ~(1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
@@ -1037,9 +1058,10 @@ static void window_options_rendering_invalidate(rct_window* w)
     else
     {
         w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
+        gConfigGeneral.enable_light_fx = false;
     }
 
-    widget_set_checkbox_value(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+    WidgetSetCheckboxValue(w, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
     if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
         && gConfigGeneral.enable_light_fx)
     {
@@ -1048,14 +1070,15 @@ static void window_options_rendering_invalidate(rct_window* w)
     else
     {
         w->disabled_widgets |= (1 << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX);
+        gConfigGeneral.enable_light_fx_for_vehicles = false;
     }
 
-    widget_set_checkbox_value(
+    WidgetSetCheckboxValue(
         w, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX, gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-    widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+    WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
     if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
     {
-        widget_set_checkbox_value(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+        WidgetSetCheckboxValue(w, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
         w->enabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         w->disabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
     }
@@ -1070,7 +1093,7 @@ static void window_options_rendering_invalidate(rct_window* w)
 
 static void window_options_rendering_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 }
 
@@ -1096,12 +1119,12 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
+            Dropdown::SetChecked(gConfigGeneral.show_height_as_units ? 0 : 1, true);
             break;
         case WIDX_CURRENCY_DROPDOWN:
         {
-            uint32_t num_items = CURRENCY_END + 1;             // All the currencies plus the separator
-            size_t num_ordinary_currencies = CURRENCY_END - 1; // All the currencies except custom currency
+            uint32_t num_items = EnumValue(CurrencyType::Count) + 1;             // All the currencies plus the separator
+            size_t num_ordinary_currencies = EnumValue(CurrencyType::Count) - 1; // All the currencies except custom currency
 
             for (size_t i = 0; i < num_ordinary_currencies; i++)
             {
@@ -1109,20 +1132,20 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
             }
 
-            gDropdownItemsFormat[num_ordinary_currencies] = DROPDOWN_SEPARATOR;
+            gDropdownItemsFormat[num_ordinary_currencies] = Dropdown::SeparatorString;
 
             gDropdownItemsFormat[num_ordinary_currencies + 1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[CURRENCY_CUSTOM].stringId;
+            gDropdownItemsArgs[num_ordinary_currencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
 
             window_options_show_dropdown(w, widget, num_items);
 
-            if (gConfigGeneral.currency_format == CURRENCY_CUSTOM)
+            if (gConfigGeneral.currency_format == CurrencyType::Custom)
             {
-                dropdown_set_checked(gConfigGeneral.currency_format + 1, true);
+                Dropdown::SetChecked(EnumValue(gConfigGeneral.currency_format) + 1, true);
             }
             else
             {
-                dropdown_set_checked(gConfigGeneral.currency_format, true);
+                Dropdown::SetChecked(EnumValue(gConfigGeneral.currency_format), true);
             }
             break;
         }
@@ -1136,7 +1159,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 3);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
             break;
         case WIDX_TEMPERATURE_DROPDOWN:
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
@@ -1146,7 +1169,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
 
             window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
+            Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.temperature_format), true);
             break;
         case WIDX_LANGUAGE_DROPDOWN:
             for (size_t i = 1; i < LANGUAGE_COUNT; i++)
@@ -1155,7 +1178,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
             }
             window_options_show_dropdown(w, widget, LANGUAGE_COUNT - 1);
-            dropdown_set_checked(LocalisationService_GetCurrentLanguage() - 1, true);
+            Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
             break;
         case WIDX_DATE_FORMAT_DROPDOWN:
             for (size_t i = 0; i < 4; i++)
@@ -1164,7 +1187,7 @@ static void window_options_culture_mousedown(rct_window* w, rct_widgetindex widg
                 gDropdownItemsArgs[i] = DateFormatStringIds[i];
             }
             window_options_show_dropdown(w, widget, 4);
-            dropdown_set_checked(gConfigGeneral.date_format, true);
+            Dropdown::SetChecked(gConfigGeneral.date_format, true);
             break;
     }
 }
@@ -1188,14 +1211,14 @@ static void window_options_culture_dropdown(rct_window* w, rct_widgetindex widge
             window_options_update_height_markers();
             break;
         case WIDX_CURRENCY_DROPDOWN:
-            if (dropdownIndex == CURRENCY_CUSTOM + 1)
+            if (dropdownIndex == EnumValue(CurrencyType::Custom) + 1)
             { // Add 1 because the separator occupies a position
-                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex) - 1;
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex - 1);
                 context_open_window(WC_CUSTOM_CURRENCY_CONFIG);
             }
             else
             {
-                gConfigGeneral.currency_format = static_cast<int8_t>(dropdownIndex);
+                gConfigGeneral.currency_format = static_cast<CurrencyType>(dropdownIndex);
             }
             config_save_default();
             gfx_invalidate_screen();
@@ -1260,7 +1283,8 @@ static void window_options_culture_invalidate(rct_window* w)
     ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
 
     // Currency: pounds, dollars, etc. (10 total)
-    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[gConfigGeneral.currency_format].stringId;
+    window_options_culture_widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)]
+                                                             .stringId;
 
     // Distance: metric / imperial / si
     {
@@ -1297,7 +1321,7 @@ static void window_options_culture_invalidate(rct_window* w)
 
 static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -1382,7 +1406,7 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
 
             window_options_show_dropdown(w, widget, OpenRCT2::Audio::GetDeviceCount());
 
-            dropdown_set_checked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
+            Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
             uint32_t num_items = 4;
@@ -1395,7 +1419,7 @@ static void window_options_audio_mousedown(rct_window* w, rct_widgetindex widget
 
             window_options_show_dropdown(w, widget, num_items);
 
-            dropdown_set_checked(gConfigSound.title_music, true);
+            Dropdown::SetChecked(gConfigSound.title_music, true);
             break;
     }
 }
@@ -1503,7 +1527,7 @@ static void initialize_scroll_position(rct_window* w, rct_widgetindex widget_ind
     int widget_size = scroll->h_right - (widget->width() - 1);
     scroll->h_left = ceil(volume / 100.0f * widget_size);
 
-    widget_scroll_update_thumbs(w, widget_index);
+    WidgetScrollUpdateThumbs(w, widget_index);
 }
 
 static void window_options_audio_invalidate(rct_window* w)
@@ -1539,12 +1563,12 @@ static void window_options_audio_invalidate(rct_window* w)
 
     window_options_audio_widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
-    widget_set_checkbox_value(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-    widget_set_checkbox_value(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-    widget_set_checkbox_value(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
-    widget_set_checkbox_value(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-    widget_set_enabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-    widget_set_enabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetCheckboxValue(w, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+    WidgetSetCheckboxValue(w, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+    WidgetSetEnabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+    WidgetSetEnabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
     // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
     if (w->frame_no == 0)
@@ -1559,7 +1583,7 @@ static void window_options_audio_invalidate(rct_window* w)
 
 static void window_options_audio_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 }
 
@@ -1646,19 +1670,19 @@ static void window_options_controls_mousedown(rct_window* w, rct_widgetindex wid
     switch (widgetIndex)
     {
         case WIDX_THEMES_DROPDOWN:
-            uint32_t num_items = static_cast<uint32_t>(theme_manager_get_num_available_themes());
+            uint32_t num_items = static_cast<uint32_t>(ThemeManagerGetNumAvailableThemes());
 
             for (size_t i = 0; i < num_items; i++)
             {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(theme_manager_get_available_theme_name(i));
+                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
             }
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            dropdown_set_checked(static_cast<int32_t>(theme_manager_get_active_available_theme_index()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
             widget_invalidate(w, WIDX_THEMES_DROPDOWN);
             break;
     }
@@ -1674,7 +1698,7 @@ static void window_options_controls_dropdown(rct_window* w, rct_widgetindex widg
         case WIDX_THEMES_DROPDOWN:
             if (dropdownIndex != -1)
             {
-                theme_manager_set_active_available_theme(dropdownIndex);
+                ThemeManagerSetActiveAvailableTheme(dropdownIndex);
             }
             config_save_default();
             break;
@@ -1685,19 +1709,19 @@ static void window_options_controls_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-    widget_set_checkbox_value(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
-    widget_set_checkbox_value(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-    widget_set_checkbox_value(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-    widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+    WidgetSetCheckboxValue(w, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+    WidgetSetCheckboxValue(w, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
+    WidgetSetCheckboxValue(w, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+    WidgetSetCheckboxValue(w, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
 
-    size_t activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
-    const utf8* activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
+    size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
+    const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
     auto ft = Formatter::Common();
     ft.Add<utf8*>(activeThemeName);
 
@@ -1706,7 +1730,7 @@ static void window_options_controls_invalidate(rct_window* w)
 
 static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -1780,11 +1804,11 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
                 gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
             }
 
-            window_dropdown_show_text(
+            WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
-                DROPDOWN_FLAG_STAY_OPEN, num_items);
+                Dropdown::Flag::StayOpen, num_items);
 
-            dropdown_set_checked(static_cast<int32_t>(title_get_current_sequence()), true);
+            Dropdown::SetChecked(static_cast<int32_t>(title_get_current_sequence()), true);
             break;
         case WIDX_SCENARIO_GROUPING_DROPDOWN:
             num_items = 2;
@@ -1794,11 +1818,11 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+                Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 
-            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
+            Dropdown::SetChecked(gConfigGeneral.scenario_select_mode, true);
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             for (size_t i = 0; i < 7; i++)
@@ -1808,7 +1832,7 @@ static void window_options_misc_mousedown(rct_window* w, rct_widgetindex widgetI
             }
 
             window_options_show_dropdown(w, widget, 7);
-            dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+            Dropdown::SetChecked(gConfigGeneral.default_inspection_interval, true);
             break;
     }
 }
@@ -1865,11 +1889,11 @@ static void window_options_misc_invalidate(rct_window* w)
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
     }
 
-    widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-    widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-    widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-    widget_set_checkbox_value(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
-    widget_set_checkbox_value(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+    WidgetSetCheckboxValue(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+    WidgetSetCheckboxValue(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+    WidgetSetCheckboxValue(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+    WidgetSetCheckboxValue(w, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
+    WidgetSetCheckboxValue(w, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
 
     // Disable title sequence dropdown if set to random
     if (gConfigInterface.random_title_sequence)
@@ -1888,7 +1912,7 @@ static void window_options_misc_invalidate(rct_window* w)
     else
         window_options_misc_widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
-    widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+    WidgetSetCheckboxValue(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
     if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
     {
@@ -1907,7 +1931,7 @@ static void window_options_misc_invalidate(rct_window* w)
 
 static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -2019,7 +2043,7 @@ static void window_options_advanced_mousedown(rct_window* w, rct_widgetindex wid
             }
 
             window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
+            Dropdown::SetChecked(gConfigGeneral.autosave_frequency, true);
             break;
         case WIDX_AUTOSAVE_AMOUNT_UP:
             gConfigGeneral.autosave_amount += 1;
@@ -2062,19 +2086,18 @@ static void window_options_advanced_invalidate(rct_window* w)
 {
     window_options_common_invalidate_before(w);
 
-    widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-    widget_set_checkbox_value(
-        w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-    widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-    widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-    widget_set_checkbox_value(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
+    WidgetSetCheckboxValue(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+    WidgetSetCheckboxValue(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+    WidgetSetCheckboxValue(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+    WidgetSetCheckboxValue(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+    WidgetSetCheckboxValue(w, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
 
     window_options_common_invalidate_after(w);
 }
 
 static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
     gfx_draw_string_left(
@@ -2107,21 +2130,24 @@ static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
 }
 
-static void window_options_advanced_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringid)
+static OpenRCT2String window_options_advanced_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
     {
         if (str_is_null_or_empty(gConfigGeneral.rct1_path))
         {
             // No tooltip if the path is empty
-            *stringid = STR_NONE;
+            return { STR_NONE, {} };
         }
         else
         {
-            auto ft = Formatter::Common();
+            auto ft = Formatter();
             ft.Add<utf8*>(gConfigGeneral.rct1_path);
+            return { fallback, ft };
         }
     }
+    return { fallback, {} };
 }
 
 #pragma region Event lists
@@ -2218,12 +2244,12 @@ rct_window* window_options_open()
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
+    w = WindowCreateCentred(WW, WH, &window_options_events_display, WC_OPTIONS, 0);
     w->widgets = window_options_display_widgets;
     w->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
     w->page = WINDOW_OPTIONS_PAGE_DISPLAY;
     w->frame_no = 0;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     return w;
 }
@@ -2240,7 +2266,7 @@ static void window_options_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -2297,9 +2323,9 @@ static void window_options_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w
 // helper function, all dropdown boxes have similar properties
 static void window_options_show_dropdown(rct_window* w, rct_widget* widget, int32_t num_items)
 {
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-        DROPDOWN_FLAG_STAY_OPEN, num_items, widget->width() - 3);
+        Dropdown::Flag::StayOpen, num_items, widget->width() - 3);
 }
 
 static void window_options_update_height_markers()

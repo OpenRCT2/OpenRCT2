@@ -57,8 +57,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CircularBuffer.cpp" />
+    <ClCompile Include="CLITests.cpp" />
     <ClCompile Include="CryptTests.cpp" />
     <ClCompile Include="Endianness.cpp" />
+    <ClCompile Include="FormattingTests.cpp" />
     <ClCompile Include="LanguagePackTest.cpp" />
     <ClCompile Include="ImageImporterTests.cpp" />
     <ClCompile Include="IniReaderTest.cpp" />
@@ -76,6 +78,11 @@
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
     <ClCompile Include="TileElements.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="testdata\sprites\badManifest.json" />
+    <None Include="testdata\sprites\example.dat" />
+    <None Include="testdata\sprites\manifest.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

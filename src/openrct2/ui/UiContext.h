@@ -117,11 +117,12 @@ namespace OpenRCT2
             virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
+            virtual bool HasFilePicker() const abstract;
 
             // Input
             virtual const CursorState* GetCursorState() abstract;
-            virtual CURSOR_ID GetCursor() abstract;
-            virtual void SetCursor(CURSOR_ID cursor) abstract;
+            virtual CursorID GetCursor() abstract;
+            virtual void SetCursor(CursorID cursor) abstract;
             virtual void SetCursorScale(uint8_t scale) abstract;
             virtual void SetCursorVisible(bool value) abstract;
             virtual ScreenCoordsXY GetCursorPosition() abstract;

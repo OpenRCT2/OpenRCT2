@@ -125,11 +125,11 @@ namespace RCT1
             TERRAIN_MARTIAN,
             TERRAIN_CHECKERBOARD,
             TERRAIN_GRASS_CLUMPS,
-            TERRAIN_DIRT,                 // Originally TERRAIN_ROOF_BROWN
+            TERRAIN_ROOF_BROWN,                 
             TERRAIN_ICE,
-            TERRAIN_DIRT,                 // Originally TERRAIN_ROOF_LOG
-            TERRAIN_DIRT,                 // Originally TERRAIN_ROOF_IRON
-            TERRAIN_ROCK,                 // Originally TERRAIN_ROOF_GREY
+            TERRAIN_ROOF_LOG,                 
+            TERRAIN_ROOF_IRON,                 
+            TERRAIN_ROOF_GREY,                 
             TERRAIN_GRID_RED,
             TERRAIN_GRID_YELLOW,
             TERRAIN_GRID_BLUE,
@@ -143,22 +143,22 @@ namespace RCT1
     {
         static constexpr const uint8_t map[] =
         {
-            TERRAIN_EDGE_ROCK,          // #RCT2ERO
-            TERRAIN_EDGE_BRICK,         // #RCT1EBR
-            TERRAIN_EDGE_IRON,          // #RCT1EIR
-            TERRAIN_EDGE_WOOD_RED,      // #RCT2EWR
-            TERRAIN_EDGE_GREY,          // #RCT1EGY
-            TERRAIN_EDGE_YELLOW,        // #RCT1EYE
-            TERRAIN_EDGE_WOOD_BLACK,    // #RCT2EWB
-            TERRAIN_EDGE_RED,           // #RCT1ERE
-            TERRAIN_EDGE_ICE,           // #RCT2EIC
-            TERRAIN_EDGE_PURPLE,        // #RCT2EIC
-            TERRAIN_EDGE_GREEN,         // #RCT1EGR
-            TERRAIN_EDGE_STONE_BROWN,   // #RCT1ESN
-            TERRAIN_EDGE_STONE_GREY,    // #RCT1ESG
-            TERRAIN_EDGE_SKYSCRAPER_A,  // #RCT1ESA
-            TERRAIN_EDGE_SKYSCRAPER_B,  // #RCT1ESB
-            TERRAIN_EDGE_ROCK           // #RCT2ERO (Unused)
+            TERRAIN_EDGE_ROCK,          // rct2.edge.rock
+            TERRAIN_EDGE_BRICK,         // rct1.edge.brick
+            TERRAIN_EDGE_IRON,          // rct1.edge.iron
+            TERRAIN_EDGE_WOOD_RED,      // rct2.edge.woodred
+            TERRAIN_EDGE_GREY,          // rct1.aa.edge.grey
+            TERRAIN_EDGE_YELLOW,        // rct1.aa.edge.yellow
+            TERRAIN_EDGE_WOOD_BLACK,    // rct2.edge.woodblack
+            TERRAIN_EDGE_RED,           // rct1.aa.edge.red
+            TERRAIN_EDGE_ICE,           // rct2.edge.ice
+            TERRAIN_EDGE_PURPLE,        // rct1.ll.edge.purple
+            TERRAIN_EDGE_GREEN,         // rct1.ll.edge.green
+            TERRAIN_EDGE_STONE_BROWN,   // rct1.ll.edge.stonebrown
+            TERRAIN_EDGE_STONE_GREY,    // rct1.ll.edge.stonegrey
+            TERRAIN_EDGE_SKYSCRAPER_A,  // rct1.ll.edge.skyscrapera
+            TERRAIN_EDGE_SKYSCRAPER_B,  // rct1.ll.edge.skyscraperb
+            TERRAIN_EDGE_ROCK           // rct2.edge.rock (Unused)
         };
         Guard::ArgumentInRange<size_t>(terrainEdge, 0, std::size(map), "Unsupported RCT1 terrain edge.");
         return map[terrainEdge];

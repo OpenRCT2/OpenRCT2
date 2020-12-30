@@ -11,9 +11,9 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
-#include "../actions/FootpathPlaceAction.hpp"
-#include "../actions/FootpathRemoveAction.hpp"
-#include "../actions/LandSetRightsAction.hpp"
+#include "../actions/FootpathPlaceAction.h"
+#include "../actions/FootpathRemoveAction.h"
+#include "../actions/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
@@ -23,6 +23,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
+#include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
@@ -153,8 +154,8 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GA_ERROR::OK ? res->Cost : MONEY32_UNDEFINED;
-    if (res->Error == GA_ERROR::OK)
+    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+    if (res->Error == GameActions::Status::Ok)
     {
         gFootpathProvisionalType = type;
         gFootpathProvisionalPosition = footpathLoc;
@@ -176,7 +177,7 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
 
     if (!scenery_tool_is_active())
     {
-        if (res->Error != GA_ERROR::OK)
+        if (res->Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);
@@ -256,12 +257,12 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH);
-    if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH
+    if (info.SpriteType != ViewportInteractionItem::Footpath
         || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)))
     {
         info = get_map_coordinates_from_pos_window(
             window, screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
-        if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+        if (info.SpriteType == ViewportInteractionItem::None)
         {
             auto position = info.Loc;
             position.setNull();
@@ -274,7 +275,7 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
     auto myTileElement = info.Element;
     auto position = info.Loc.ToTileCentre();
     auto z = 0;
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+    if (info.SpriteType == ViewportInteractionItem::Footpath)
     {
         z = myTileElement->GetBaseZ();
         if (myTileElement->AsPath()->IsSloped())
@@ -283,11 +284,11 @@ CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, i
         }
     }
 
-    auto start_vp_pos = screen_coord_to_viewport_coord(viewport, screenCoords);
+    auto start_vp_pos = viewport->ScreenToViewportCoord(screenCoords);
 
     for (int32_t i = 0; i < 5; i++)
     {
-        if (info.SpriteType != VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+        if (info.SpriteType != ViewportInteractionItem::Footpath)
         {
             z = tile_element_height(position);
         }
@@ -355,7 +356,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_RIDE);
     *tileElement = info.Element;
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE
+    if (info.SpriteType == ViewportInteractionItem::Ride
         && viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL)
         && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
@@ -374,7 +375,7 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
     info = get_map_coordinates_from_pos_window(
         window, screenCoords,
         VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_RIDE && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (info.SpriteType == ViewportInteractionItem::Ride && (*tileElement)->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
     {
         int32_t directions = entrance_get_directions(*tileElement);
         if (directions & 0x0F)
@@ -875,7 +876,12 @@ static void loc_6A6D7E(
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                        if (ride == nullptr)
+                        {
+                            continue;
+                        }
+
+                        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                         {
                             continue;
                         }
@@ -950,10 +956,16 @@ static void loc_6A6C85(
     if (tileElementPos.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
     {
         auto ride = get_ride(tileElementPos.element->AsTrack()->GetRideIndex());
-        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (ride == nullptr)
         {
             return;
         }
+
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            return;
+        }
+
         const auto trackType = tileElementPos.element->AsTrack()->GetTrackType();
         const uint8_t trackSequence = tileElementPos.element->AsTrack()->GetSequenceIndex();
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH))
@@ -1616,7 +1628,7 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
     type |= (direction << 6);
 }
 
-bool PathElement::ShouldDrawPathOverSupports()
+bool PathElement::ShouldDrawPathOverSupports() const
 {
     return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
 }
@@ -2031,7 +2043,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                     if (ride == nullptr)
                         continue;
 
-                    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                         break;
 
                     const auto trackType = tileElement->AsTrack()->GetTrackType();
@@ -2120,7 +2132,10 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
     {
         auto rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
-        if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (ride == nullptr)
+            return;
+
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             return;
     }
 
@@ -2177,7 +2192,7 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     // TODO: Change when moving to the new save format.
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex % MAX_PATH_OBJECTS);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
     if (obj != nullptr)
     {
         if (entryIndex < MAX_PATH_OBJECTS)
@@ -2192,7 +2207,7 @@ PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
 {
     PathRailingsEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATHS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
     if (obj != nullptr)
     {
         result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
@@ -2271,5 +2286,5 @@ bool PathElement::IsLevelCrossing(const CoordsXY& coords) const
         return false;
     }
 
-    return RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
+    return ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS);
 }

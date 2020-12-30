@@ -113,8 +113,8 @@ void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t
 std::string platform_get_username();
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
 utf8* platform_open_directory_browser(const utf8* title);
-uint8_t platform_get_locale_currency();
-uint8_t platform_get_currency_value(const char* currencyCode);
+CurrencyType platform_get_locale_currency();
+CurrencyType platform_get_currency_value(const char* currencyCode);
 uint16_t platform_get_locale_language();
 MeasurementFormat platform_get_locale_measurement_format();
 TemperatureUnit platform_get_locale_temperature_format();

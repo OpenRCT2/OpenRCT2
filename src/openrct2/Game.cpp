@@ -19,7 +19,7 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
-#include "actions/LoadOrQuitAction.hpp"
+#include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/FileScanner.h"
@@ -144,7 +144,7 @@ enum
  */
 void update_palette_effects()
 {
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -203,10 +203,10 @@ void update_palette_effects()
         if (gConfigGeneral.render_weather_gloom)
         {
             auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
-            if (paletteId != PALETTE_NULL)
+            if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
-                if (paletteId != PALETTE_DARKEN_1)
+                if (paletteId != FilterPaletteID::PaletteDarken1)
                 {
                     shade = 2;
                 }
@@ -366,7 +366,7 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
     }
 }
@@ -377,9 +377,9 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
     // Scenario details
-    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
+    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+    gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
+    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
 
     // News items
     game_convert_news_items_to_utf8();
@@ -571,6 +571,7 @@ void game_load_init()
         GameActions::ClearQueue();
     }
     reset_sprite_spatial_index();
+    reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
@@ -615,7 +616,7 @@ void reset_all_sprite_quadrant_placements()
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
         {
             spr->MoveTo({ spr->x, spr->y, spr->z });
         }
@@ -686,19 +687,19 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     size_t autosavesCount = 0;
     size_t numAutosavesToDelete = 0;
 
-    utf8 filter[MAX_PATH];
+    auto environment = GetContext()->GetPlatformEnvironment();
+    auto folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
+    char const* fileFilter = "autosave_*.sv6";
     if (processLandscapeFolder)
     {
-        platform_get_user_directory(filter, "landscape", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sc6", sizeof(filter));
+        folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::LANDSCAPE);
+        fileFilter = "autosave_*.sc6";
     }
-    else
-    {
-        platform_get_user_directory(filter, "save", sizeof(filter));
-        safe_strcat_path(filter, "autosave", sizeof(filter));
-        safe_strcat_path(filter, "autosave_*.sv6", sizeof(filter));
-    }
+
+    utf8 filter[MAX_PATH];
+    safe_strcpy(filter, folderDirectory.c_str(), sizeof(filter));
+    safe_strcat_path(filter, "autosave", sizeof(filter));
+    safe_strcat_path(filter, fileFilter, sizeof(filter));
 
     // At first, count how many autosaves there are
     {
@@ -723,14 +724,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
             autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
-                if (processLandscapeFolder)
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "landscape", sizeof(utf8) * MAX_PATH);
-                }
-                else
-                {
-                    platform_get_user_directory(autosaveFiles[i].data(), "save", sizeof(utf8) * MAX_PATH);
-                }
+                safe_strcpy(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
                 safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
@@ -746,7 +740,10 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        platform_file_delete(autosaveFiles[i].data());
+        if (!platform_file_delete(autosaveFiles[i].data()))
+        {
+            log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
+        }
     }
 }
 

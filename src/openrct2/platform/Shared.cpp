@@ -216,22 +216,22 @@ void platform_sleep(uint32_t ms)
 #endif
 }
 
-uint8_t platform_get_currency_value(const char* currCode)
+CurrencyType platform_get_currency_value(const char* currCode)
 {
     if (currCode == nullptr || strlen(currCode) < 3)
     {
-        return CURRENCY_POUNDS;
+        return CurrencyType::Pounds;
     }
 
-    for (int32_t currency = 0; currency < CURRENCY_END; ++currency)
+    for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
     {
         if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
         {
-            return currency;
+            return static_cast<CurrencyType>(currency);
         }
     }
 
-    return CURRENCY_POUNDS;
+    return CurrencyType::Pounds;
 }
 
 #ifndef _WIN32

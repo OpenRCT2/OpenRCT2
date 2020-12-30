@@ -469,5 +469,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(int32_t trackT
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(int32_t trackType);
 TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(int32_t trackType);
 TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(int32_t trackType);
+namespace HybridRC
+{
+    TRACK_PAINT_FUNCTION GetTrackPaintFunction(int32_t trackType);
+}
 
 #endif

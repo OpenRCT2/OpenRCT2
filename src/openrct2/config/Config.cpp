@@ -13,7 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -22,6 +22,8 @@
 #include "../localisation/Currency.h"
 #include "../localisation/Date.h"
 #include "../localisation/Language.h"
+#include "../localisation/Localisation.h"
+#include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform2.h"
@@ -49,25 +51,25 @@ namespace Config
         ConfigEnumEntry<MeasurementFormat>("SI", MeasurementFormat::SI),
     });
 
-    static const auto Enum_Currency = ConfigEnum<int32_t>({
-        ConfigEnumEntry<int32_t>("GBP", CURRENCY_POUNDS),
-        ConfigEnumEntry<int32_t>("USD", CURRENCY_DOLLARS),
-        ConfigEnumEntry<int32_t>("FRF", CURRENCY_FRANC),
-        ConfigEnumEntry<int32_t>("DEM", CURRENCY_DEUTSCHE_MARK),
-        ConfigEnumEntry<int32_t>("JPY", CURRENCY_YEN),
-        ConfigEnumEntry<int32_t>("ESP", CURRENCY_PESETA),
-        ConfigEnumEntry<int32_t>("ITL", CURRENCY_LIRA),
-        ConfigEnumEntry<int32_t>("NLG", CURRENCY_GUILDERS),
-        ConfigEnumEntry<int32_t>("SEK", CURRENCY_KRONA),
-        ConfigEnumEntry<int32_t>("EUR", CURRENCY_EUROS),
-        ConfigEnumEntry<int32_t>("KRW", CURRENCY_WON),
-        ConfigEnumEntry<int32_t>("RUB", CURRENCY_ROUBLE),
-        ConfigEnumEntry<int32_t>("CZK", CURRENCY_CZECH_KORUNA),
-        ConfigEnumEntry<int32_t>("HKD", CURRENCY_HKD),
-        ConfigEnumEntry<int32_t>("TWD", CURRENCY_TWD),
-        ConfigEnumEntry<int32_t>("CNY", CURRENCY_YUAN),
-        ConfigEnumEntry<int32_t>("HUF", CURRENCY_FORINT),
-        ConfigEnumEntry<int32_t>("CUSTOM", CURRENCY_CUSTOM),
+    static const auto Enum_Currency = ConfigEnum<CurrencyType>({
+        ConfigEnumEntry<CurrencyType>("GBP", CurrencyType::Pounds),
+        ConfigEnumEntry<CurrencyType>("USD", CurrencyType::Dollars),
+        ConfigEnumEntry<CurrencyType>("FRF", CurrencyType::Franc),
+        ConfigEnumEntry<CurrencyType>("DEM", CurrencyType::DeutscheMark),
+        ConfigEnumEntry<CurrencyType>("JPY", CurrencyType::Yen),
+        ConfigEnumEntry<CurrencyType>("ESP", CurrencyType::Peseta),
+        ConfigEnumEntry<CurrencyType>("ITL", CurrencyType::Lira),
+        ConfigEnumEntry<CurrencyType>("NLG", CurrencyType::Guilders),
+        ConfigEnumEntry<CurrencyType>("SEK", CurrencyType::Krona),
+        ConfigEnumEntry<CurrencyType>("EUR", CurrencyType::Euros),
+        ConfigEnumEntry<CurrencyType>("KRW", CurrencyType::Won),
+        ConfigEnumEntry<CurrencyType>("RUB", CurrencyType::Rouble),
+        ConfigEnumEntry<CurrencyType>("CZK", CurrencyType::CzechKoruna),
+        ConfigEnumEntry<CurrencyType>("HKD", CurrencyType::HKD),
+        ConfigEnumEntry<CurrencyType>("TWD", CurrencyType::TWD),
+        ConfigEnumEntry<CurrencyType>("CNY", CurrencyType::Yuan),
+        ConfigEnumEntry<CurrencyType>("HUF", CurrencyType::Forint),
+        ConfigEnumEntry<CurrencyType>("CUSTOM", CurrencyType::Custom),
     });
 
     static const auto Enum_CurrencySymbolAffix = ConfigEnum<CurrencyAffix>({
@@ -97,6 +99,13 @@ namespace Config
         ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
         ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
         ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
+    });
+
+    static const auto Enum_Sort = ConfigEnum<Sort>({
+        ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
+        ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
+        ConfigEnumEntry<Sort>("DATE_ASCENDING", Sort::DateAscending),
+        ConfigEnumEntry<Sort>("DATE_DESCENDING", Sort::DateDescending),
     });
 
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
@@ -142,7 +151,8 @@ namespace Config
             model->autosave_frequency = reader->GetInt32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
-            model->currency_format = reader->GetEnum<int32_t>("currency_format", platform_get_locale_currency(), Enum_Currency);
+            model->currency_format = reader->GetEnum<CurrencyType>(
+                "currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
@@ -180,14 +190,15 @@ namespace Config
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
             model->last_run_version = reader->GetCString("last_run_version", nullptr);
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
-            model->load_save_sort = reader->GetInt32("load_save_sort", SORT_NAME_ASCENDING);
+            model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
+            model->disable_screensaver = reader->GetBoolean("disable_screensaver", true);
 
             // Default config setting is false until the games canvas can be separated from the effect
             model->day_night_cycle = reader->GetBoolean("day_night_cycle", false);
-
-            model->enable_light_fx = reader->GetBoolean("enable_light_fx", false);
-            model->enable_light_fx_for_vehicles = reader->GetBoolean("enable_light_fx_for_vehicles", false);
+            const bool isHardware = model->drawing_engine != DrawingEngine::Software;
+            model->enable_light_fx = isHardware && reader->GetBoolean("enable_light_fx", false);
+            model->enable_light_fx_for_vehicles = isHardware && reader->GetBoolean("enable_light_fx_for_vehicles", false);
             model->upper_case_banners = reader->GetBoolean("upper_case_banners", false);
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
@@ -227,7 +238,7 @@ namespace Config
         writer->WriteInt32("autosave", model->autosave_frequency);
         writer->WriteInt32("autosave_amount", model->autosave_amount);
         writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
-        writer->WriteEnum<int32_t>("currency_format", model->currency_format, Enum_Currency);
+        writer->WriteEnum<CurrencyType>("currency_format", model->currency_format, Enum_Currency);
         writer->WriteInt32("custom_currency_rate", model->custom_currency_rate);
         writer->WriteEnum<CurrencyAffix>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
         writer->WriteString("custom_currency_symbol", model->custom_currency_symbol);
@@ -259,8 +270,9 @@ namespace Config
         writer->WriteInt32("default_inspection_interval", model->default_inspection_interval);
         writer->WriteString("last_run_version", model->last_run_version);
         writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
-        writer->WriteInt32("load_save_sort", model->load_save_sort);
+        writer->WriteEnum<Sort>("load_save_sort", model->load_save_sort, Enum_Sort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
+        writer->WriteBoolean("disable_screensaver", model->disable_screensaver);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
         writer->WriteBoolean("enable_light_fx", model->enable_light_fx);
         writer->WriteBoolean("enable_light_fx_for_vehicles", model->enable_light_fx_for_vehicles);
@@ -532,6 +544,7 @@ namespace Config
         {
             auto model = &gConfigPlugin;
             model->enable_hot_reloading = reader->GetBoolean("enable_hot_reloading", false);
+            model->allowed_hosts = reader->GetString("allowed_hosts", "");
         }
     }
 
@@ -540,6 +553,7 @@ namespace Config
         auto model = &gConfigPlugin;
         writer->WriteSection("plugin");
         writer->WriteBoolean("enable_hot_reloading", model->enable_hot_reloading);
+        writer->WriteString("allowed_hosts", model->allowed_hosts);
     }
 
     static bool SetDefaults()
@@ -789,15 +803,21 @@ bool config_find_or_browse_install_directory()
             return false;
         }
 
+        auto uiContext = GetContext()->GetUiContext();
+        if (!uiContext->HasFilePicker())
+        {
+            uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            return false;
+        }
+
         try
         {
+            const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work.\n"
-                                          "Please select the directory where you installed RollerCoaster Tycoon 2.");
+                uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
 
-                std::string installPath = uiContext->ShowDirectoryDialog("Please select your RCT2 directory");
+                std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));
                 if (installPath.empty())
                 {
                     return false;
@@ -811,9 +831,7 @@ bool config_find_or_browse_install_directory()
                     return true;
                 }
 
-                std::string message = String::StdFormat(
-                    "Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
-                uiContext->ShowMessageBox(message);
+                uiContext->ShowMessageBox(format_string(STR_COULD_NOT_FIND_AT_PATH, &g1DatPath));
             }
         }
         catch (const std::exception& ex)

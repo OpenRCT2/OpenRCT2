@@ -48,31 +48,31 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
 
 static rct_widget window_game_bottom_toolbar_widgets[] =
 {
-    MakeWidget({  0,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left outset panel
-    MakeWidget({  2,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left inset panel
-    MakeWidget({  2,  1}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-    MakeWidget({  2, 11}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Guests window
-    MakeWidget({  2, 21}, {138, 11}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+    MakeWidget({  0,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left outset panel
+    MakeWidget({  2,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left inset panel
+    MakeWidget({  2,  1}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+    MakeWidget({  2, 11}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Guests window
+    MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
-    MakeWidget({142,  0}, {356, 34}, WWT_IMGBTN,      WindowColour::Tertiary                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WWT_PLACEHOLDER, WindowColour::Tertiary                                                    ), // Middle inset panel
-    MakeWidget({147,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-    MakeWidget({469,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+    MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
+    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::Placeholder, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
+    MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
-    MakeWidget({498,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right outset panel
-    MakeWidget({500,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right inset panel
-    MakeWidget({500,  2}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Date
+    MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
+    MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
+    MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
     { WIDGETS_END },
 };
 
 uint8_t gToolbarDirtyFlags;
 
 static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static OpenRCT2String window_game_bottom_toolbar_tooltip(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback);
 static void window_game_bottom_toolbar_invalidate(rct_window *w);
 static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_game_bottom_toolbar_update(rct_window* w);
-static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t *cursorId);
+static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -112,7 +112,7 @@ rct_window* window_game_bottom_toolbar_open()
     uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
@@ -121,11 +121,11 @@ rct_window* window_game_bottom_toolbar_open()
         | (1 << WIDX_RIGHT_OUTSET) | (1 << WIDX_DATE);
 
     window->frame_no = 0;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Reset the middle widget to not show by default.
     // If it is required to be shown news_update will reshow it.
-    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
+    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
 
     return window;
 }
@@ -189,10 +189,11 @@ static void window_game_bottom_toolbar_mouseup(rct_window* w, rct_widgetindex wi
     }
 }
 
-static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id* stringId)
+static OpenRCT2String window_game_bottom_toolbar_tooltip(
+    rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
     int32_t month, day;
-    auto ft = Formatter::Common();
+    auto ft = Formatter();
 
     switch (widgetIndex)
     {
@@ -211,6 +212,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
             ft.Add<rct_string_id>(DateGameMonthNames[month]);
             break;
     }
+    return { fallback, ft };
 }
 
 /**
@@ -235,7 +237,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     // Reposition left widgets in accordance with line height... depending on whether there is money in play.
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
-        w->widgets[WIDX_MONEY].type = WWT_EMPTY;
+        w->widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
         w->widgets[WIDX_GUESTS].top = 1;
         w->widgets[WIDX_GUESTS].bottom = line_height + 7;
         w->widgets[WIDX_PARK_RATING].top = line_height + 8;
@@ -243,7 +245,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     }
     else
     {
-        w->widgets[WIDX_MONEY].type = WWT_FLATBTN;
+        w->widgets[WIDX_MONEY].type = WindowWidgetType::FlatBtn;
         w->widgets[WIDX_MONEY].bottom = w->widgets[WIDX_MONEY].top + line_height;
         w->widgets[WIDX_GUESTS].top = w->widgets[WIDX_MONEY].bottom + 1;
         w->widgets[WIDX_GUESTS].bottom = w->widgets[WIDX_GUESTS].top + line_height;
@@ -276,24 +278,24 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     window_game_bottom_toolbar_widgets[WIDX_DATE].left = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 2;
     window_game_bottom_toolbar_widgets[WIDX_DATE].right = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-    window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
-    window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
+    window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
+    window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
 
     if (News::IsQueueEmpty())
     {
-        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
         {
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
         }
         else
         {
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
         }
@@ -301,10 +303,10 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     else
     {
         News::Item* newsItem = News::GetItem(0);
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+        window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
+        window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
         w->disabled_widgets &= ~(1 << WIDX_NEWS_SUBJECT);
@@ -319,7 +321,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         if (!(newsItem->TypeHasSubject()))
         {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
         }
 
         if (newsItem->HasButton())
@@ -353,24 +355,24 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
         dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
         w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, PALETTE_51);
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, FilterPaletteID::Palette51);
     gfx_filter_rect(
         dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
         w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, FilterPaletteID::Palette51);
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         gfx_filter_rect(
             dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
             w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
             w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
+            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, FilterPaletteID::Palette51);
     }
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     window_game_bottom_toolbar_draw_left_panel(dpi, w);
     window_game_bottom_toolbar_draw_right_panel(dpi, w);
@@ -379,7 +381,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
     {
         window_game_bottom_toolbar_draw_news_item(dpi, w);
     }
-    else if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    else if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         window_game_bottom_toolbar_draw_middle_panel(dpi, w);
     }
@@ -700,7 +702,7 @@ static void window_game_bottom_toolbar_update(rct_window* w)
  *  rct2: 0x0066C644
  */
 static void window_game_bottom_toolbar_cursor(
-    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, int32_t* cursorId)
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     switch (widgetIndex)
     {

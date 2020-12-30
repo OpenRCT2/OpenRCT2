@@ -74,16 +74,16 @@ enum {
 
 static rct_widget window_scenarioselect_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({  0, 50}, {734, 284}, WWT_IMGBTN, WindowColour::Secondary),                  // tab content panel
-    MakeRemapWidget({  3, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
-    MakeRemapWidget({ 94, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
-    MakeRemapWidget({185, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 3
-    MakeRemapWidget({276, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 4
-    MakeRemapWidget({367, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 5
-    MakeRemapWidget({458, 17}, {136,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 6
-    MakeRemapWidget({594, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
-    MakeRemapWidget({685, 17}, { 91,  34}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
-    MakeWidget     ({  3, 54}, {553, 276}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL), // level list
+    MakeWidget     ({  0, 50}, {734, 284}, WindowWidgetType::ImgBtn, WindowColour::Secondary),                  // tab content panel
+    MakeRemapWidget({  3, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
+    MakeRemapWidget({ 94, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
+    MakeRemapWidget({185, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 3
+    MakeRemapWidget({276, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 4
+    MakeRemapWidget({367, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 5
+    MakeRemapWidget({458, 17}, {136,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 6
+    MakeRemapWidget({594, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 7
+    MakeRemapWidget({685, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 8
+    MakeWidget     ({  3, 54}, {553, 276}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // level list
     { WIDGETS_END },
 };
 
@@ -165,7 +165,7 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
     else
         windowWidth = 733;
 
-    window = window_create_centred(
+    window = WindowCreateCentred(
         windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
@@ -175,7 +175,7 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
     window_scenarioselect_init_tabs(window);
     initialise_list_items(window);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
 
@@ -229,11 +229,11 @@ static void window_scenarioselect_init_tabs(rct_window* w)
         rct_widget* widget = &w->widgets[i + WIDX_TAB1];
         if (!(showPages & (1 << i)))
         {
-            widget->type = WWT_EMPTY;
+            widget->type = WindowWidgetType::Empty;
             continue;
         }
 
-        widget->type = WWT_TAB;
+        widget->type = WindowWidgetType::Tab;
         widget->left = x;
         widget->right = x + 90;
         x += 91;
@@ -266,7 +266,7 @@ static void window_scenarioselect_mousedown(rct_window* w, rct_widgetindex widge
         w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
         w->Invalidate();
     }
 }
@@ -422,16 +422,16 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t format;
     const scenario_index_entry* scenario;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
-    format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
-                                                                                     : STR_WINDOW_COLOUR_2_STRINGID;
+    format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
+                                                                                   : STR_WINDOW_COLOUR_2_STRINGID;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
         rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
-        if (widget->type == WWT_EMPTY)
+        if (widget->type == WindowWidgetType::Empty)
             continue;
 
         auto ft = Formatter();
@@ -543,10 +543,10 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
+    rct_string_id highlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
         ? STR_WHITE_STRING
         : STR_WINDOW_COLOUR_2_STRINGID;
-    rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
+    rct_string_id unhighlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
         ? STR_WHITE_STRING
         : STR_BLACK_STRING;
 
@@ -585,7 +585,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 bool isHighlighted = w->highlighted_scenario == scenario;
                 if (isHighlighted)
                 {
-                    gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, PALETTE_DARKEN_1);
+                    gfx_filter_rect(dpi, 0, y, w->width, y + scenarioItemHeight - 1, FilterPaletteID::PaletteDarken1);
                 }
 
                 bool isCompleted = scenario->highscore != nullptr;

@@ -16,7 +16,7 @@
 
 template<> bool SpriteBase::Is<Balloon>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_BALLOON;
+    return sprite_identifier == SpriteIdentifier::Misc && type == SPRITE_MISC_BALLOON;
 }
 
 void Balloon::Update()
@@ -81,10 +81,10 @@ void Balloon::Pop()
 
 void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
-    rct_sprite* sprite = create_sprite(SPRITE_IDENTIFIER_MISC);
+    rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
     if (sprite == nullptr)
         return;
-    sprite->generic.sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
     sprite->generic.type = SPRITE_MISC_BALLOON;
     auto balloon = sprite->generic.As<Balloon>();
     if (balloon == nullptr)

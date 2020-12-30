@@ -158,14 +158,14 @@ namespace OpenRCT2
 // The current shortcut being changed.
 extern OpenRCT2::Input::Shortcut gKeyboardShortcutChangeId;
 
-void keyboard_shortcuts_reset();
-bool keyboard_shortcuts_load();
-bool keyboard_shortcuts_save();
-void keyboard_shortcuts_set(int32_t key);
-OpenRCT2::Input::Shortcut keyboard_shortcuts_get_from_key(int32_t key);
-void keyboard_shortcuts_format_string(char* buffer, size_t bufferSize, int32_t shortcut);
+void KeyboardShortcutsReset();
+bool KeyboardShortcutsLoad();
+bool KeyboardShortcutsSave();
+void KeyboardShortcutsSet(int32_t key);
+OpenRCT2::Input::Shortcut KeyboardShortcutsGetFromKey(int32_t key);
+void KeyboardShortcutsFormatString(char* buffer, size_t bufferSize, int32_t shortcut);
 
-void keyboard_shortcut_handle(int32_t key);
-void keyboard_shortcut_handle_command(OpenRCT2::Input::Shortcut shortcut);
+void KeyboardShortcutHandle(int32_t key);
+void KeyboardShortcutHandleCommand(OpenRCT2::Input::Shortcut shortcut);
 
-ScreenCoordsXY get_keyboard_map_scroll(const uint8_t* keysState);
+ScreenCoordsXY GetKeyboardMapScroll(const uint8_t* keysState);

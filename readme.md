@@ -10,7 +10,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.1-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.1+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.2-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.2+-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -92,7 +92,7 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
   - Desktop development with C++
 
 ### macOS:
-- Xcode 8
+- Xcode 10+
 
 The program can also be built as a command line program using CMake. This type of build requires:
 

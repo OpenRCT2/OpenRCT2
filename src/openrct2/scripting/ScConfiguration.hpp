@@ -251,7 +251,7 @@ namespace OpenRCT2::Scripting
                     obj.push();
                     if (value.type() == DukValue::Type::UNDEFINED)
                     {
-                        duk_del_prop_string(ctx, -1, key.c_str());
+                        duk_del_prop_lstring(ctx, -1, n.data(), n.size());
                     }
                     else
                     {
