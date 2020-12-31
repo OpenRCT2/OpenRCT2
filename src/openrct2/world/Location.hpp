@@ -17,6 +17,7 @@ constexpr const int16_t LOCATION_NULL = -32768;
 
 constexpr const int32_t COORDS_XY_STEP = 32;
 constexpr const int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
+constexpr const int32_t COORDS_XY_PATROL_STEP = 4;
 constexpr const int32_t COORDS_Z_STEP = 8;
 constexpr const int32_t COORDS_Z_PER_TINY_Z = 16;
 
@@ -726,16 +727,6 @@ struct MapRange : public RectRange<CoordsXY>
             std::min(GetLeft(), GetRight()), std::min(GetTop(), GetBottom()), std::max(GetLeft(), GetRight()),
             std::max(GetTop(), GetBottom()));
         return result;
-    }
-};
-
-struct TileRange : public RectRange<TileCoordsXY>
-{
-    using RectRange::RectRange;
-
-    TileRange(const MapRange& mapRange)
-        : RectRange(TileCoordsXY(mapRange.Point1), TileCoordsXY(mapRange.Point2))
-    {
     }
 };
 

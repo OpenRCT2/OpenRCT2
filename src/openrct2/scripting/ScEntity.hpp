@@ -1057,6 +1057,251 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScPatrolArea
+    {
+    public:
+        ScPatrolArea(uint16_t staffId, std::vector<MapRange> regions)
+            : _staffId(staffId)
+            , _regions(regions)
+        {
+            mergeRegions();
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScPatrolArea::staffId_get, nullptr, "staffId");
+            dukglue_register_property(ctx, &ScPatrolArea::regions_get, nullptr, "regions");
+            dukglue_register_method(ctx, &ScPatrolArea::add, "add");
+            dukglue_register_method(ctx, &ScPatrolArea::remove, "remove");
+            dukglue_register_method(ctx, &ScPatrolArea::contains, "contains");
+        }
+
+    private:
+
+        static inline int32_t patrolRegionHeight(const MapRange& region)
+        {
+            return (region.GetY2() - region.GetY1()) / (COORDS_XY_STEP * 4);
+        }
+
+        static inline int32_t patrolRegionWidth(const MapRange& region)
+        {
+            return (region.GetX2() - region.GetX1()) / (COORDS_XY_STEP * 4);
+        }
+
+        static inline void mergeRegions(MapRange& target, const MapRange& toMerge)
+        {
+            //printf(
+            //    "target %d %d %d %d\n", target.Point1.x / 128, target.Point1.y / 128, target.Point2.x / 128,
+            //    target.Point2.y / 128);
+            //printf(
+            //    "toMerge %d %d %d %d\n", toMerge.Point1.x / 128, toMerge.Point1.y / 128, toMerge.Point2.x / 128,
+            //    toMerge.Point2.y / 128);
+            target.Point1.x = std::min(target.Point1.x, toMerge.Point1.x);
+            target.Point1.y = std::min(target.Point1.y, toMerge.Point1.y);
+            target.Point2.x = std::max(target.Point2.x, toMerge.Point2.x);
+            target.Point2.y = std::max(target.Point2.y, toMerge.Point2.y);
+            //printf(
+            //    "merged %d %d %d %d\n\n", target.Point1.x / 128, target.Point1.y / 128, target.Point2.x / 128,
+            //    target.Point2.y / 128);
+        }
+
+        void mergeRegions()
+        {
+            // from top left, go across horizontal scanlines to create as many one
+            // horizontally maximized regions; then go through vertical scanlines and merge
+            // as many of the horizontal regions as possible into bigger rectangles; should
+            // produce minimum possible number of rectangular regions (though not
+            // necessarily the most "square" ones)
+            constexpr int32_t PATROL_REGION_STEP = COORDS_XY_STEP * COORDS_XY_PATROL_STEP;
+            std::array<std::array<MapRange*, 64>, 64> patrolBitmask = { nullptr };
+            std::unordered_set<MapRange*> mergedRegions;
+            MapRange* currentRegion = nullptr;
+            MapRange* nextRegion = nullptr;
+            int32_t currentHeight = 0;
+            int32_t currentWidth = 0;
+
+            // step through each region and populate a bitmask matrix
+            for (auto& region : _regions)
+            {
+                auto topLeft = region.Point1;
+                auto bottomRight = region.Point2;
+                // convert to patrol region coordinates
+                auto initialX = topLeft.x / PATROL_REGION_STEP;
+                auto initialY = topLeft.y / PATROL_REGION_STEP;
+                auto finalX = bottomRight.x / PATROL_REGION_STEP;
+                auto finalY = bottomRight.y / PATROL_REGION_STEP;
+                //printf("%d %d %d %d\n", initialX, initialY, finalX, finalY);
+                for (int32_t y = initialY; y < finalY; y++)
+                {
+                    for (int32_t x = initialX; x < finalX; x++)
+                    {
+                        patrolBitmask[y][x] = &region;
+                    }
+                }
+            }
+        
+            // horizontal scanning
+            for (int32_t y = 0; y < 64; y++)
+            {
+                // leave off last patrol region as it can't have another
+                // patrol region to its "right"
+                currentRegion = nullptr;
+                for (int32_t x = 0; x < 63; x++)
+                {
+                    nextRegion = patrolBitmask[y][x];
+                    if (nextRegion == currentRegion)
+                    {
+                        // if we are still within the current region, keep scanning
+                        continue;
+                    }
+                    else if (!nextRegion && currentRegion)
+                    {
+                        // if the next patrol coordinate is not in the patrol,
+                        // stop merging on this region
+                        currentRegion = nullptr;
+                        continue;
+                    }
+                    else if (nextRegion && !currentRegion)
+                    {
+                        // if we have encountered a new patrolled region and we
+                        // aren't currently merging, start merging on this new region
+                        currentRegion = nextRegion;
+                        currentHeight = patrolRegionHeight(*currentRegion);
+                        continue;
+                    }
+                    else if (nextRegion && currentRegion)
+                    {
+                        // check if height matches, and merge if so
+                        if (patrolRegionHeight(*nextRegion) == currentHeight)
+                        {
+                            mergeRegions(*currentRegion, *nextRegion);
+                            patrolBitmask[y][x] = currentRegion;
+                            mergedRegions.insert(currentRegion);
+                            // skip to end of combined region
+                            x = (currentRegion->GetRight() / PATROL_REGION_STEP) - 1;
+                        }
+                        else
+                        {
+                            currentRegion = nullptr;
+                        }
+                    }
+                }
+            }
+
+            // vertical scanning
+            for (int32_t x = 0; x < 64; x++)
+            {
+                // leave off last patrol region as it can't have another
+                // patrol region "below" it
+                currentRegion = nullptr;
+                for (int32_t y = 0; y < 63; y++)
+                {
+                    nextRegion = patrolBitmask[y][x];
+                    if (nextRegion == currentRegion)
+                    {
+                        // if we are still within the current region, skip to end
+                        // of region along this scanline and keep scanning
+
+                        continue;
+                    }
+                    else if (!nextRegion && currentRegion)
+                    {
+                        // if the next patrol coordinate is not in the patrol,
+                        // stop merging on this region
+                        currentRegion = nullptr;
+                        continue;
+                    }
+                    else if (nextRegion && !currentRegion)
+                    {
+                        // if we have encountered a new patrolled region and we
+                        // aren't currently merging, start merging on this new region
+                        currentRegion = nextRegion;
+                        currentWidth = patrolRegionWidth(*currentRegion);
+                        //printf("new region width: %d\n", currentWidth);
+                        continue;
+                    }
+                    else if (nextRegion && currentRegion)
+                    {
+                        // check if height matches, and merge if so
+                        if (patrolRegionWidth(*nextRegion) == currentWidth)
+                        {
+                            mergeRegions(*currentRegion, *nextRegion);
+                            patrolBitmask[y][x] = currentRegion;
+                            mergedRegions.erase(nextRegion);
+                            mergedRegions.insert(currentRegion);
+                            // skip to end of combined region
+                            y = (currentRegion->GetBottom() / PATROL_REGION_STEP) - 1;
+                        }
+                        else
+                        {
+                            currentRegion = nullptr;
+                        }
+                    }
+                }
+            }
+            // assemble new region vector
+            _regions.clear();
+            for(auto& regionPtr : mergedRegions)
+            {
+                //printf(
+                //    "Final region: %d %d %d %d\n", regionPtr->GetLeft() / PATROL_REGION_STEP,
+                //    regionPtr->GetTop() / PATROL_REGION_STEP, regionPtr->GetRight() / PATROL_REGION_STEP,
+                //    regionPtr->GetBottom() / PATROL_REGION_STEP);
+                _regions.push_back(*regionPtr);
+            }
+        }
+
+        uint16_t staffId_get()
+        {
+            return _staffId;
+        }
+
+        std::vector<DukValue> regions_get()
+        {
+            std::vector<DukValue> result;
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            for (const auto& region : _regions)
+            {
+                result.push_back(ToDuk<MapRange>(ctx, region));
+            }
+            return result;
+        }
+
+        void add(std::vector<DukValue> newRegions)
+        {
+            for (const auto& regionDukValue : newRegions)
+            {
+                auto newRegion = FromDuk<MapRange>(regionDukValue);
+                // add to merged regions
+            }
+        }
+
+        void remove(std::vector<DukValue> removeRegions)
+        {
+            for (const auto& regionDukValue : removeRegions)
+            {
+                auto removeRegion = FromDuk<MapRange>(regionDukValue);
+                // remove from merged regions
+            }
+        }
+
+        bool contains(const CoordsXY& toCheck)
+        {
+            for (auto& region : _regions)
+            {
+                if (toCheck.x >= region.GetLeft() && toCheck.x < region.GetRight() &&
+                    toCheck.y >= region.GetTop() && toCheck.y < region.GetBottom())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        uint16_t _staffId;
+        std::vector<MapRange> _regions;
+    };
+
     class ScStaff : public ScPeep
     {
     public:
@@ -1197,10 +1442,10 @@ namespace OpenRCT2::Scripting
             return staff->HasPatrolArea();
         }
 
-        std::vector<DukValue> getPatrolArea()
+        std::shared_ptr<ScPatrolArea> getPatrolArea() const
         {
-            std::vector<DukValue> patrolArea;
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            constexpr int32_t PATROL_REGION_STEP = COORDS_XY_STEP * COORDS_XY_PATROL_STEP;
+            std::vector<MapRange> patrolArea;
             auto staff = GetStaff();
             if (staff == nullptr)
             {
@@ -1208,20 +1453,23 @@ namespace OpenRCT2::Scripting
             }
             for (int32_t y = 0; y < 64; y++)
             {
-                auto y_index = y << 7;
+                auto y_index = y * PATROL_REGION_STEP;
                 for (int32_t x = 0; x < 64; x++)
                 {
                     // multiply each by four to match the patrol area size, and by 32
                     // to only step by whole coordinate -> left shift by 7
-                    if (staff->IsLocationInPatrol({ x << 7, y_index }))
+                    if (staff->IsPatrolAreaSet({ x * PATROL_REGION_STEP, y_index }))
                     {
+                        //printf("%d %d in patrol area\n", x, y);
                         // patrol region is multiplied by 4 to return to tile coordinates
-                        auto patrolRegion = TileRange({ x << 2, y << 2 }, { (x << 2) + 3, (y << 2) + 3 });
-                        patrolArea.push_back(ToDuk<TileRange>(ctx, patrolRegion));
+                        auto patrolRegion = MapRange(
+                            { x * PATROL_REGION_STEP, y * PATROL_REGION_STEP },
+                            { (x + 1) * PATROL_REGION_STEP, (y + 1) * PATROL_REGION_STEP });
+                        patrolArea.push_back(patrolRegion);
                     }
                 }
             }
-            return patrolArea;
+            return std::make_shared<ScPatrolArea>(staff->sprite_index, patrolArea);
         }
     };
 

@@ -1277,10 +1277,19 @@ declare global {
         cash: number;
     }
 
+    interface PatrolArea {
+        staffId: number;
+        tiles: CoordsXY[];
+    
+        add(coords: CoordsXY[]): void;
+        remove(coords: CoordsXY[]): void;
+        contains(coord: CoordsXY): boolean;
+    }
+
     /**
      * Represents a staff member.
      */
-    interface Staff extends Peep {
+    interface _Staff extends Peep {
         /**
          * The type of staff member, e.g. handyman, mechanic.
          */
@@ -1312,7 +1321,7 @@ declare global {
          * 64x64 possible patrol areas total. If no patrol area is set, this will return an array 
          * with every patrol coordinate as true, as the staff member can go anywhere.
          */
-        getPatrolArea(): TileRange[];
+        getPatrolArea(): PatrolArea;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";

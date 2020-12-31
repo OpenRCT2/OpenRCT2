@@ -381,14 +381,30 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
-    template<> inline DukValue ToDuk(duk_context* ctx, const TileRange& value)
+    template<> inline DukValue ToDuk(duk_context* ctx, const MapRange& value)
     {
-        DukObject dukTileRange(ctx);
-        dukTileRange.Set("x1", value.Point1.x);
-        dukTileRange.Set("y1", value.Point1.y);
-        dukTileRange.Set("x2", value.Point2.x);
-        dukTileRange.Set("y2", value.Point2.y);
-        return dukTileRange.Take();
+        DukObject dukMapRange(ctx);
+        dukMapRange.Set("x1", value.Point1.x);
+        dukMapRange.Set("y1", value.Point1.y);
+        dukMapRange.Set("x2", value.Point2.x);
+        dukMapRange.Set("y2", value.Point2.y);
+        return dukMapRange.Take();
+    }
+
+    template<> inline MapRange FromDuk(const DukValue& value)
+    {
+        MapRange result;
+        if (value.type() != DukValue::Type::OBJECT)
+        {
+            result.Point1.setNull();
+            result.Point2.setNull();
+            return result;
+        }
+        result.Point1.x = AsOrDefault(value["x1"], COORDS_NULL);
+        result.Point1.y = AsOrDefault(value["y1"], COORDS_NULL);
+        result.Point2.x = AsOrDefault(value["x2"], COORDS_NULL);
+        result.Point2.y = AsOrDefault(value["y1"], COORDS_NULL);
+        return result;
     }
 
 } // namespace OpenRCT2::Scripting
