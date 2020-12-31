@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Scripting
             return (region.GetX2() - region.GetX1()) / (COORDS_XY_STEP * 4);
         }
 
-        static inline void mergeRegions(MapRange& target, const MapRange& toMerge)
+        static inline void mergeIntoRegion(MapRange& target, const MapRange& toMerge)
         {
             //printf(
             //    "target %d %d %d %d\n", target.Point1.x / 128, target.Point1.y / 128, target.Point2.x / 128,
@@ -1174,7 +1174,7 @@ namespace OpenRCT2::Scripting
                         // check if height matches, and merge if so
                         if (patrolRegionHeight(*nextRegion) == currentHeight)
                         {
-                            mergeRegions(*currentRegion, *nextRegion);
+                            mergeIntoRegion(*currentRegion, *nextRegion);
                             patrolBitmask[y][x] = currentRegion;
                             mergedRegions.insert(currentRegion);
                             // skip to end of combined region
