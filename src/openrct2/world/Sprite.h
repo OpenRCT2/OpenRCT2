@@ -172,18 +172,18 @@ struct rct_sprite_checksum
 
 #pragma pack(pop)
 
-enum
+enum class MiscSpriteType : uint8_t
 {
-    SPRITE_MISC_STEAM_PARTICLE,
-    SPRITE_MISC_MONEY_EFFECT,
-    SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
-    SPRITE_MISC_EXPLOSION_CLOUD,
-    SPRITE_MISC_CRASH_SPLASH,
-    SPRITE_MISC_EXPLOSION_FLARE,
-    SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
-    SPRITE_MISC_BALLOON,
-    SPRITE_MISC_DUCK,
-    SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+    SteamParticle,
+    MoneyEffect,
+    CrashedVehicleParticle,
+    ExplosionCloud,
+    CrashSplash,
+    ExplosionFlare,
+    JumpingFountainWater,
+    Balloon,
+    Duck,
+    JumpingFountainSnow
 };
 
 enum

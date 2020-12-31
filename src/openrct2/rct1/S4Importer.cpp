@@ -1691,31 +1691,33 @@ private:
 
                 dst->MoveTo({ src->x, src->y, src->z });
 
-                switch (src->type)
+                switch (static_cast<MiscSpriteType>(src->type))
                 {
-                    case SPRITE_MISC_STEAM_PARTICLE:
+                    case MiscSpriteType::SteamParticle:
                         ImportSteamParticle(dst->As<SteamParticle>(), reinterpret_cast<RCT12SpriteSteamParticle*>(src));
                         break;
-                    case SPRITE_MISC_MONEY_EFFECT:
+                    case MiscSpriteType::MoneyEffect:
                         ImportMoneyEffect(dst->As<MoneyEffect>(), reinterpret_cast<RCT12SpriteMoneyEffect*>(src));
                         break;
-                    case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                    case MiscSpriteType::CrashedVehicleParticle:
                         break;
-                    case SPRITE_MISC_EXPLOSION_CLOUD:
+                    case MiscSpriteType::ExplosionCloud:
                         break;
-                    case SPRITE_MISC_CRASH_SPLASH:
+                    case MiscSpriteType::CrashSplash:
                         break;
-                    case SPRITE_MISC_EXPLOSION_FLARE:
+                    case MiscSpriteType::ExplosionFlare:
                         break;
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    case MiscSpriteType::JumpingFountainWater:
                         ImportJumpingFountainWater(
                             dst->As<JumpingFountain>(), reinterpret_cast<RCT12SpriteJumpingFountain*>(src));
                         break;
-                    case SPRITE_MISC_BALLOON:
+                    case MiscSpriteType::Balloon:
                         ImportBalloon(dst->As<Balloon>(), reinterpret_cast<RCT12SpriteBalloon*>(src));
                         break;
-                    case SPRITE_MISC_DUCK:
+                    case MiscSpriteType::Duck:
                         ImportDuck(dst->As<Duck>(), reinterpret_cast<RCT12SpriteDuck*>(src));
+                        break;
+                    default:
                         break;
                 }
 

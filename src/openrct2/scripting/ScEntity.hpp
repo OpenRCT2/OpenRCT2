@@ -57,11 +57,11 @@ namespace OpenRCT2::Scripting
                     case SpriteIdentifier::Peep:
                         return "peep";
                     case SpriteIdentifier::Misc:
-                        switch (entity->type)
+                        switch (static_cast<MiscSpriteType>(entity->type))
                         {
-                            case SPRITE_MISC_BALLOON:
+                            case MiscSpriteType::Balloon:
                                 return "balloon";
-                            case SPRITE_MISC_DUCK:
+                            case MiscSpriteType::Duck:
                                 return "duck";
                         }
                         break;

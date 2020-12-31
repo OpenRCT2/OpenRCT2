@@ -33,9 +33,9 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    switch (misc->type)
+    switch (static_cast<MiscSpriteType>(misc->type))
     {
-        case SPRITE_MISC_STEAM_PARTICLE: // 0
+        case MiscSpriteType::SteamParticle: // 0
         {
             auto particle = misc->As<SteamParticle>();
             if (particle == nullptr)
@@ -45,7 +45,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_MONEY_EFFECT: // 1
+        case MiscSpriteType::MoneyEffect: // 1
         {
             if (dpi->zoom_level > 0)
             {
@@ -61,7 +61,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE: // 2
+        case MiscSpriteType::CrashedVehicleParticle: // 2
         {
             if (dpi->zoom_level > 0)
             {
@@ -77,7 +77,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_EXPLOSION_CLOUD: // 3
+        case MiscSpriteType::ExplosionCloud: // 3
         {
             auto particle = misc->As<ExplosionCloud>();
             if (particle == nullptr)
@@ -87,7 +87,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_CRASH_SPLASH: // 4
+        case MiscSpriteType::CrashSplash: // 4
         {
             auto crashSplash = misc->As<CrashSplashParticle>();
             if (crashSplash == nullptr)
@@ -97,7 +97,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_EXPLOSION_FLARE: // 5
+        case MiscSpriteType::ExplosionFlare: // 5
         {
             // Like a flare
             auto flare = misc->As<ExplosionFlare>();
@@ -108,8 +108,8 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER: // 6
-        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:  // 9
+        case MiscSpriteType::JumpingFountainWater: // 6
+        case MiscSpriteType::JumpingFountainSnow:  // 9
         {
             if (dpi->zoom_level > 0)
             {
@@ -134,7 +134,9 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 isAntiClockwise = !isAntiClockwise;
             }
 
-            uint32_t baseImageId = (jumpingFountain->type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
+            uint32_t baseImageId = (static_cast<MiscSpriteType>(jumpingFountain->type) == MiscSpriteType::JumpingFountainSnow)
+                ? 23037
+                : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;
             constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 },
                                                                              CoordsXY{ 0, -3 } };
@@ -146,7 +148,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_BALLOON: // 7
+        case MiscSpriteType::Balloon: // 7
         {
             auto balloon = misc->As<Balloon>();
             if (balloon == nullptr)
@@ -162,7 +164,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
             break;
         }
 
-        case SPRITE_MISC_DUCK:
+        case MiscSpriteType::Duck:
             if (dpi->zoom_level <= 1)
             {
                 const Duck* duck = misc->As<Duck>();
