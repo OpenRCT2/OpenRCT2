@@ -593,31 +593,17 @@ namespace OpenRCT2
                 }
                 break;
             case FormatToken::String:
-                if constexpr (std::is_same<T, const char*>())
-                {
-                    if (arg != nullptr)
-                    {
-                        ss << arg;
-                    }
-                }
-                else if constexpr (std::is_same<T, const std::string&>())
-                {
-                    ss << arg.c_str();
-                }
-                else if constexpr (std::is_same<T, std::string>())
-                {
-                    ss << arg.c_str();
-                }
+                ss << arg;
                 break;
             case FormatToken::Sprite:
                 if constexpr (std::is_integral<T>())
                 {
                     auto idx = static_cast<uint32_t>(arg);
-                    ss << "{INLINE_SPRITE}";
-                    ss << "{" << ((idx >> 0) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 8) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 16) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 24) & 0xFF) << "}";
+                    char inlineBuf[64];
+                    size_t len = snprintf(
+                        inlineBuf, sizeof(inlineBuf), "{INLINE_SPRITE}{%u}{%u}{%u}{%u}", ((idx >> 0) & 0xFF),
+                        ((idx >> 8) & 0xFF), ((idx >> 16) & 0xFF), ((idx >> 24) & 0xFF));
+                    ss.append(inlineBuf, len);
                 }
                 break;
             default:
