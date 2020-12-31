@@ -331,11 +331,6 @@ Staff* Peep::AsStaff()
     return AssignedPeepType == PeepType::Staff ? static_cast<Staff*>(this) : nullptr;
 }
 
-void Peep::Invalidate()
-{
-    Invalidate2();
-}
-
 void Peep::MoveTo(const CoordsXYZ& newLocation)
 {
     Invalidate(); // Invalidate current position.

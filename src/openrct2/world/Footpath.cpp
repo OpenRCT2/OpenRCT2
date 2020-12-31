@@ -403,7 +403,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
         int32_t distanceZ = abs(litter->z - footpathPos.z);
         if (distanceZ <= 32)
         {
-            litter->Invalidate0();
+            litter->Invalidate();
             sprite_remove(litter);
         }
     }

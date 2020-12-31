@@ -832,11 +832,6 @@ Vehicle* try_get_vehicle(uint16_t spriteIndex)
     return TryGetEntity<Vehicle>(spriteIndex);
 }
 
-void Vehicle::Invalidate()
-{
-    Invalidate2();
-}
-
 namespace
 {
     template<typename T> class TrainIterator;

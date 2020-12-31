@@ -71,11 +71,6 @@ template<> bool SpriteBase::Is<Duck>() const
     return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::Duck;
 }
 
-void Duck::Invalidate()
-{
-    Invalidate1();
-}
-
 bool Duck::IsFlying()
 {
     return this->state == DuckState::FlyAway || this->state == DuckState::FlyToWater;

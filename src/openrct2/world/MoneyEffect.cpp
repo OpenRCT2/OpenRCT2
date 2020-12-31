@@ -99,7 +99,7 @@ void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
  */
 void MoneyEffect::Update()
 {
-    Invalidate2();
+    Invalidate();
     Wiggle++;
     if (Wiggle >= 22)
     {
