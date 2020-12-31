@@ -1289,7 +1289,7 @@ declare global {
     /**
      * Represents a staff member.
      */
-    interface _Staff extends Peep {
+    interface Staff extends Peep {
         /**
          * The type of staff member, e.g. handyman, mechanic.
          */
