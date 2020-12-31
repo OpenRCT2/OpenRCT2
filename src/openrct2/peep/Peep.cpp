@@ -331,13 +331,6 @@ Staff* Peep::AsStaff()
     return AssignedPeepType == PeepType::Staff ? static_cast<Staff*>(this) : nullptr;
 }
 
-void Peep::MoveTo(const CoordsXYZ& newLocation)
-{
-    Invalidate(); // Invalidate current position.
-    SpriteBase::MoveTo(newLocation);
-    Invalidate(); // Invalidate new position.
-}
-
 uint8_t Peep::GetNextDirection() const
 {
     return NextFlags & PEEP_NEXT_FLAG_DIRECTION_MASK;

@@ -107,7 +107,6 @@ void VehicleCrashParticle::Update()
         newLoc.z = landZ;
     }
     MoveTo(newLoc);
-    Invalidate();
 
     frame += 85;
     if (frame >= 3072)

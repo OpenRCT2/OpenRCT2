@@ -126,7 +126,6 @@ void Duck::UpdateFlyToWater()
                 destination.z = z;
             }
             MoveTo(destination);
-            Invalidate();
         }
         else
         {
@@ -259,7 +258,6 @@ void Duck::UpdateFlyAway()
         if (map_is_location_valid(destination))
         {
             MoveTo(destination);
-            Invalidate();
         }
         else
         {

@@ -730,7 +730,9 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
 }
 
 /**
- * Moves a sprite to a new location.
+ * Moves a sprite to a new location, invalidates the current position if valid
+ * and also the new position.
+ *
  *  rct2: 0x0069E9D3
  *
  * @param x (ax)

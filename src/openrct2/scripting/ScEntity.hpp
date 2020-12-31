@@ -104,9 +104,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate();
                 entity->MoveTo({ value, entity->y, entity->z });
-                entity->Invalidate();
             }
         }
 
@@ -122,9 +120,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate();
                 entity->MoveTo({ entity->x, value, entity->z });
-                entity->Invalidate();
             }
         }
 
@@ -140,9 +136,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate();
                 entity->MoveTo({ entity->x, entity->y, value });
-                entity->Invalidate();
             }
         }
 
