@@ -172,7 +172,7 @@ struct rct_sprite_checksum
 
 #pragma pack(pop)
 
-enum class MiscSpriteType : uint8_t
+enum class MiscEntityType : uint8_t
 {
     SteamParticle,
     MoneyEffect,

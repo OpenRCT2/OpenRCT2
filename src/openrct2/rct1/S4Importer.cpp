@@ -1691,30 +1691,30 @@ private:
 
                 dst->MoveTo({ src->x, src->y, src->z });
 
-                switch (static_cast<MiscSpriteType>(src->type))
+                switch (static_cast<MiscEntityType>(src->type))
                 {
-                    case MiscSpriteType::SteamParticle:
+                    case MiscEntityType::SteamParticle:
                         ImportSteamParticle(dst->As<SteamParticle>(), reinterpret_cast<RCT12SpriteSteamParticle*>(src));
                         break;
-                    case MiscSpriteType::MoneyEffect:
+                    case MiscEntityType::MoneyEffect:
                         ImportMoneyEffect(dst->As<MoneyEffect>(), reinterpret_cast<RCT12SpriteMoneyEffect*>(src));
                         break;
-                    case MiscSpriteType::CrashedVehicleParticle:
+                    case MiscEntityType::CrashedVehicleParticle:
                         break;
-                    case MiscSpriteType::ExplosionCloud:
+                    case MiscEntityType::ExplosionCloud:
                         break;
-                    case MiscSpriteType::CrashSplash:
+                    case MiscEntityType::CrashSplash:
                         break;
-                    case MiscSpriteType::ExplosionFlare:
+                    case MiscEntityType::ExplosionFlare:
                         break;
-                    case MiscSpriteType::JumpingFountainWater:
+                    case MiscEntityType::JumpingFountainWater:
                         ImportJumpingFountainWater(
                             dst->As<JumpingFountain>(), reinterpret_cast<RCT12SpriteJumpingFountain*>(src));
                         break;
-                    case MiscSpriteType::Balloon:
+                    case MiscEntityType::Balloon:
                         ImportBalloon(dst->As<Balloon>(), reinterpret_cast<RCT12SpriteBalloon*>(src));
                         break;
-                    case MiscSpriteType::Duck:
+                    case MiscEntityType::Duck:
                         ImportDuck(dst->As<Duck>(), reinterpret_cast<RCT12SpriteDuck*>(src));
                         break;
                     default:

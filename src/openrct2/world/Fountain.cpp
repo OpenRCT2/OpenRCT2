@@ -72,9 +72,9 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    const auto miscType = static_cast<MiscSpriteType>(type);
+    const auto miscType = static_cast<MiscEntityType>(type);
     return sprite_identifier == SpriteIdentifier::Misc
-        && (miscType == MiscSpriteType::JumpingFountainSnow || miscType == MiscSpriteType::JumpingFountainWater);
+        && (miscType == MiscEntityType::JumpingFountainSnow || miscType == MiscEntityType::JumpingFountainWater);
 }
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
@@ -140,8 +140,8 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
-        jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? EnumValue(MiscSpriteType::JumpingFountainSnow)
-                                                                      : EnumValue(MiscSpriteType::JumpingFountainWater);
+        jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? EnumValue(MiscEntityType::JumpingFountainSnow)
+                                                                      : EnumValue(MiscEntityType::JumpingFountainWater);
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
     }
@@ -162,9 +162,9 @@ void JumpingFountain::Update()
     Invalidate0();
     frame++;
 
-    switch (static_cast<MiscSpriteType>(type))
+    switch (static_cast<MiscEntityType>(type))
     {
-        case MiscSpriteType::JumpingFountainWater:
+        case MiscEntityType::JumpingFountainWater:
             if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
             {
                 AdvanceAnimation();
@@ -174,7 +174,7 @@ void JumpingFountain::Update()
                 AdvanceAnimation();
             }
             break;
-        case MiscSpriteType::JumpingFountainSnow:
+        case MiscEntityType::JumpingFountainSnow:
             if (frame == 16)
             {
                 AdvanceAnimation();
@@ -192,7 +192,7 @@ void JumpingFountain::Update()
 
 int32_t JumpingFountain::GetType() const
 {
-    const int32_t fountainType = static_cast<MiscSpriteType>(type) == MiscSpriteType::JumpingFountainSnow
+    const int32_t fountainType = static_cast<MiscEntityType>(type) == MiscEntityType::JumpingFountainSnow
         ? JUMPING_FOUNTAIN_TYPE_SNOW
         : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;

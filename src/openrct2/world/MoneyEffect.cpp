@@ -20,7 +20,7 @@ static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }
 
 template<> bool SpriteBase::Is<MoneyEffect>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscSpriteType>(type) == MiscSpriteType::MoneyEffect;
+    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::MoneyEffect;
 }
 
 /**
@@ -43,7 +43,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SpriteIdentifier::Misc;
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->type = EnumValue(MiscSpriteType::MoneyEffect);
+    moneyEffect->type = EnumValue(MiscEntityType::MoneyEffect);
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
 

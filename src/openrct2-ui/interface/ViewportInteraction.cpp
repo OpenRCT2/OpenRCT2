@@ -195,15 +195,15 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case SpriteIdentifier::Misc:
                     if (game_is_not_paused())
                     {
-                        switch (static_cast<MiscSpriteType>(entity->type))
+                        switch (static_cast<MiscEntityType>(entity->type))
                         {
-                            case MiscSpriteType::Balloon:
+                            case MiscEntityType::Balloon:
                             {
                                 auto balloonPress = BalloonPressAction(entity->sprite_index);
                                 GameActions::Execute(&balloonPress);
                             }
                             break;
-                            case MiscSpriteType::Duck:
+                            case MiscEntityType::Duck:
                             {
                                 auto duck = entity->As<Duck>();
                                 if (duck != nullptr)

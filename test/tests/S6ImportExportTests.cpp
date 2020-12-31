@@ -419,26 +419,28 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                switch (static_cast<MiscSpriteType>(left.generic.type))
+                switch (static_cast<MiscEntityType>(left.generic.type))
                 {
-                    case MiscSpriteType::SteamParticle:
+                    case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
                         break;
-                    case MiscSpriteType::MoneyEffect:
+                    case MiscEntityType::MoneyEffect:
                         CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
                         break;
-                    case MiscSpriteType::CrashedVehicleParticle:
+                    case MiscEntityType::CrashedVehicleParticle:
                         CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
                         break;
-                    case MiscSpriteType::JumpingFountainSnow:
-                    case MiscSpriteType::JumpingFountainWater:
+                    case MiscEntityType::JumpingFountainSnow:
+                    case MiscEntityType::JumpingFountainWater:
                         CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
                         break;
-                    case MiscSpriteType::Balloon:
+                    case MiscEntityType::Balloon:
                         CompareSpriteDataBalloon(left.balloon, right.balloon);
                         break;
-                    case MiscSpriteType::Duck:
+                    case MiscEntityType::Duck:
                         CompareSpriteDataDuck(left.duck, right.duck);
+                        break;
+                    default:
                         break;
                 }
                 break;

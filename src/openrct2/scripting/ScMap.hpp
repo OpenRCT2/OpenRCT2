@@ -103,7 +103,7 @@ namespace OpenRCT2::Scripting
             if (type == "balloon")
             {
                 targetList = EntityListId::Misc;
-                targetType = EnumValue(MiscSpriteType::Balloon);
+                targetType = EnumValue(MiscEntityType::Balloon);
             }
             if (type == "car")
             {
@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
             else if (type == "duck")
             {
                 targetList = EntityListId::Misc;
-                targetType = EnumValue(MiscSpriteType::Duck);
+                targetType = EnumValue(MiscEntityType::Duck);
             }
             else if (type == "peep")
             {

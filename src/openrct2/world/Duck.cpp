@@ -68,7 +68,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 
 template<> bool SpriteBase::Is<Duck>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscSpriteType>(type) == MiscSpriteType::Duck;
+    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::Duck;
 }
 
 void Duck::Invalidate()
@@ -298,7 +298,7 @@ void create_duck(const CoordsXY& pos)
     targetPos.y += offsetXY;
 
     sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
-    sprite->generic.type = EnumValue(MiscSpriteType::Duck);
+    sprite->generic.type = EnumValue(MiscEntityType::Duck);
     auto duck = sprite->generic.As<Duck>();
     if (duck == nullptr)
         return; // can never happen

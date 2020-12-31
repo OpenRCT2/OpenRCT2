@@ -65,17 +65,17 @@ template<> bool SpriteBase::Is<Litter>() const
 
 template<> bool SpriteBase::Is<SteamParticle>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscSpriteType>(type) == MiscSpriteType::SteamParticle;
+    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscSpriteType>(type) == MiscSpriteType::ExplosionFlare;
+    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscSpriteType>(type) == MiscSpriteType::ExplosionCloud;
+    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionCloud;
 }
 
 uint16_t GetEntityListCount(EntityListId list)
@@ -557,7 +557,7 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscSpriteType::ExplosionCloud);
+        sprite->type = EnumValue(MiscEntityType::ExplosionCloud);
         sprite->frame = 0;
     }
 }
@@ -590,7 +590,7 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscSpriteType::ExplosionFlare);
+        sprite->type = EnumValue(MiscEntityType::ExplosionFlare);
         sprite->frame = 0;
     }
 }
@@ -615,34 +615,34 @@ void ExplosionFlare::Update()
  */
 static void sprite_misc_update(SpriteBase* sprite)
 {
-    switch (static_cast<MiscSpriteType>(sprite->type))
+    switch (static_cast<MiscEntityType>(sprite->type))
     {
-        case MiscSpriteType::SteamParticle:
+        case MiscEntityType::SteamParticle:
             sprite->As<SteamParticle>()->Update();
             break;
-        case MiscSpriteType::MoneyEffect:
+        case MiscEntityType::MoneyEffect:
             sprite->As<MoneyEffect>()->Update();
             break;
-        case MiscSpriteType::CrashedVehicleParticle:
+        case MiscEntityType::CrashedVehicleParticle:
             sprite->As<VehicleCrashParticle>()->Update();
             break;
-        case MiscSpriteType::ExplosionCloud:
+        case MiscEntityType::ExplosionCloud:
             sprite->As<ExplosionCloud>()->Update();
             break;
-        case MiscSpriteType::CrashSplash:
+        case MiscEntityType::CrashSplash:
             sprite->As<CrashSplashParticle>()->Update();
             break;
-        case MiscSpriteType::ExplosionFlare:
+        case MiscEntityType::ExplosionFlare:
             sprite->As<ExplosionFlare>()->Update();
             break;
-        case MiscSpriteType::JumpingFountainWater:
-        case MiscSpriteType::JumpingFountainSnow:
+        case MiscEntityType::JumpingFountainWater:
+        case MiscEntityType::JumpingFountainSnow:
             sprite->As<JumpingFountain>()->Update();
             break;
-        case MiscSpriteType::Balloon:
+        case MiscEntityType::Balloon:
             sprite->As<Balloon>()->Update();
             break;
-        case MiscSpriteType::Duck:
+        case MiscEntityType::Duck:
             sprite->As<Duck>()->Update();
             break;
         default:

@@ -1538,9 +1538,9 @@ public:
     void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        switch (static_cast<MiscSpriteType>(cdst->type))
+        switch (static_cast<MiscEntityType>(cdst->type))
         {
-            case MiscSpriteType::SteamParticle:
+            case MiscEntityType::SteamParticle:
             {
                 auto src = static_cast<const RCT12SpriteSteamParticle*>(csrc);
                 auto dst = static_cast<SteamParticle*>(cdst);
@@ -1548,7 +1548,7 @@ public:
                 dst->frame = src->frame;
                 break;
             }
-            case MiscSpriteType::MoneyEffect:
+            case MiscEntityType::MoneyEffect:
             {
                 auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
                 auto dst = static_cast<MoneyEffect*>(cdst);
@@ -1560,7 +1560,7 @@ public:
                 dst->Wiggle = src->wiggle;
                 break;
             }
-            case MiscSpriteType::CrashedVehicleParticle:
+            case MiscEntityType::CrashedVehicleParticle:
             {
                 auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(csrc);
                 auto dst = static_cast<VehicleCrashParticle*>(cdst);
@@ -1578,17 +1578,17 @@ public:
                 dst->acceleration_z = src->acceleration_z;
                 break;
             }
-            case MiscSpriteType::ExplosionCloud:
-            case MiscSpriteType::ExplosionFlare:
-            case MiscSpriteType::CrashSplash:
+            case MiscEntityType::ExplosionCloud:
+            case MiscEntityType::ExplosionFlare:
+            case MiscEntityType::CrashSplash:
             {
                 auto src = static_cast<const RCT12SpriteParticle*>(csrc);
                 auto dst = static_cast<SpriteGeneric*>(cdst);
                 dst->frame = src->frame;
                 break;
             }
-            case MiscSpriteType::JumpingFountainWater:
-            case MiscSpriteType::JumpingFountainSnow:
+            case MiscEntityType::JumpingFountainWater:
+            case MiscEntityType::JumpingFountainSnow:
             {
                 auto* src = static_cast<const RCT12SpriteJumpingFountain*>(csrc);
                 auto* dst = static_cast<JumpingFountain*>(cdst);
@@ -1600,7 +1600,7 @@ public:
                 dst->Iteration = src->iteration;
                 break;
             }
-            case MiscSpriteType::Balloon:
+            case MiscEntityType::Balloon:
             {
                 auto src = static_cast<const RCT12SpriteBalloon*>(csrc);
                 auto dst = static_cast<Balloon*>(cdst);
@@ -1610,7 +1610,7 @@ public:
                 dst->colour = src->colour;
                 break;
             }
-            case MiscSpriteType::Duck:
+            case MiscEntityType::Duck:
             {
                 auto src = static_cast<const RCT12SpriteDuck*>(csrc);
                 auto dst = static_cast<Duck*>(cdst);
