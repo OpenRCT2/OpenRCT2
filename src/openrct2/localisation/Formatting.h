@@ -24,13 +24,14 @@
 
 namespace OpenRCT2
 {
-    template<typename T, size_t (*LenFn)(const T*), size_t StackSize = 256> class FormatBufferBase
+    template<typename T, size_t StackSize = 256, typename TTraits = std::char_traits<T>> class FormatBufferBase
     {
         T _storage[StackSize];
         T* _buffer;
         size_t _size;
         // NOTE: Capacity is on purpose uint32_t to have a fixed position for the flag on each architecture.
         uint32_t _capacity;
+        TTraits _traits;
 
         static constexpr uint32_t FlagLocalStorage = (1u << 31);
 
@@ -39,7 +40,7 @@ namespace OpenRCT2
             : _storage{}
             , _buffer(_storage)
             , _size{}
-            , _capacity(FlagLocalStorage | static_cast<uint32_t>(std::size(_storage)))
+            , _capacity(FlagLocalStorage | static_cast<uint32_t>(StackSize))
         {
         }
 
@@ -76,12 +77,9 @@ namespace OpenRCT2
             return _buffer;
         }
 
-        auto& operator<<(const T* v)
+        template<size_t N> auto& operator<<(T const (&v)[N])
         {
-            if (!v)
-                return *this;
-
-            append(v, LenFn(v));
+            append(v, N);
             return *this;
         }
 
@@ -91,13 +89,27 @@ namespace OpenRCT2
             return *this;
         }
 
+        auto& operator<<(const T* v)
+        {
+            if (!v)
+                return *this;
+
+            append(v, _traits.length(v));
+            return *this;
+        }
+
         auto& operator<<(const std::basic_string_view<T> v)
         {
             append(v.data(), v.size());
             return *this;
         }
 
-    private:
+        auto& operator<<(const std::basic_string<T>& v)
+        {
+            append(v.data(), v.size());
+            return *this;
+        }
+
         void append(const T* buf, size_t len)
         {
             ensure_capacity(len);
@@ -108,6 +120,7 @@ namespace OpenRCT2
             _buffer[_size] = T{};
         }
 
+    private:
         void ensure_capacity(size_t additionalSize)
         {
             const size_t curSize = size();
@@ -130,7 +143,7 @@ namespace OpenRCT2
         }
     };
 
-    using FormatBuffer = FormatBufferBase<char, strlen>;
+    using FormatBuffer = FormatBufferBase<char>;
 
     using FormatArg_t = std::variant<uint16_t, int32_t, const char*, std::string>;
 

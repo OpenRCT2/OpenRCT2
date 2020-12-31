@@ -607,7 +607,7 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
 
 TEST_F(FormattingTests, buffer_storage_swap)
 {
-    FormatBufferBase<char, strlen, 16> ss;
+    FormatBufferBase<char, 16> ss;
     ss << "Hello World";
     ASSERT_STREQ(ss.data(), "Hello World");
     ss << ", Exceeding local storage";
