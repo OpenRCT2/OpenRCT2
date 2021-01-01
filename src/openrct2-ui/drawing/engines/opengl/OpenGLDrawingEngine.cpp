@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -1010,12 +1010,6 @@ void OpenGLDrawingContext::HandleTransparency()
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo* dpi)
 {
-    if (dpi == _dpi)
-    {
-        // Don't need to recalculate anything if identical.
-        return;
-    }
-
     auto screenDPI = _engine->GetDPI();
     auto bytesPerRow = screenDPI->GetBytesPerRow();
     auto bitsOffset = static_cast<size_t>(dpi->bits - screenDPI->bits);
