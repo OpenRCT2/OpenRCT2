@@ -237,6 +237,34 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+
+        /**
+         * Registers a function to be called every so often in realtime, specified by the given delay.
+         * @param callback The function to call every time the delay has elapsed.
+         * @param delay The number of milliseconds to wait between each call to the given function.
+         */
+        setInterval(callback: Function, delay: number): number;
+
+        /**
+         * Like `setInterval`, except the callback will only execute once after the given delay.
+         * @param callback The function to call after the given delay has elapsed.
+         * @param delay The number of milliseconds to wait for before calling the given function.
+         */
+        setTimeout(callback: Function, delay: number): number;
+
+        /**
+         * Removes the registered interval specified by the numeric handle. The handles
+         * are shared with `setTimeout`.
+         * @param handle 
+         */
+        clearInterval(handle: number): void;
+
+        /**
+         * Removes the registered timeout specified by the numeric handle. The handles
+         * are shared with `setInterval`.
+         * @param handle The numerical handle of the registered timeout to remove.
+         */
+        clearTimeout(handle: number): void;
     }
 
     interface Configuration {

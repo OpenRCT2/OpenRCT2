@@ -117,6 +117,22 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    using IntervalHandle = int32_t;
+    struct ScriptInterval
+    {
+        std::shared_ptr<Plugin> Owner;
+        IntervalHandle Handle{};
+        uint32_t Delay{};
+        int64_t LastTimestamp{};
+        DukValue Callback;
+        bool Repeat{};
+
+        bool IsValid() const
+        {
+            return Handle != 0;
+        }
+    };
+
     class ScriptEngine
     {
     private:
@@ -132,6 +148,9 @@ namespace OpenRCT2::Scripting
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
         DukValue _sharedStorage;
+
+        uint32_t _lastIntervalTimestamp{};
+        std::vector<ScriptInterval> _intervals;
 
         std::unique_ptr<FileWatcher> _pluginFileWatcher;
         std::unordered_set<std::string> _changedPluginFiles;
@@ -203,6 +222,9 @@ namespace OpenRCT2::Scripting
 
         void SaveSharedStorage();
 
+        IntervalHandle AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback);
+        void RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle);
+
 #    ifndef DISABLE_NETWORK
         void AddSocket(const std::shared_ptr<ScSocketBase>& socket);
 #    endif
@@ -227,6 +249,10 @@ namespace OpenRCT2::Scripting
 
         void InitSharedStorage();
         void LoadSharedStorage();
+
+        IntervalHandle AllocateHandle();
+        void UpdateIntervals();
+        void RemoveIntervals(const std::shared_ptr<Plugin>& plugin);
 
         void UpdateSockets();
         void RemoveSockets(const std::shared_ptr<Plugin>& plugin);
