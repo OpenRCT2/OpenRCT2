@@ -34,7 +34,7 @@ struct rct_draw_scroll_text
     uint8_t bitmap[64 * 40];
 };
 
-constexpr int32_t MAX_SCROLLING_TEXT_ENTRIES = 32;
+constexpr int32_t MAX_SCROLLING_TEXT_ENTRIES = SPR_SCROLLING_TEXT_END - SPR_SCROLLING_TEXT_START;
 
 static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
@@ -99,8 +99,9 @@ void scrolling_text_initialise_bitmaps()
 
     for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
     {
-        int32_t imageId = SPR_SCROLLING_TEXT_START + i;
-        const rct_g1_element* g1original = gfx_get_g1_element(imageId);
+        const int32_t imageIdReference = SPR_SCROLLING_TEXT_LEGACY_START;
+        const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
+        const rct_g1_element* g1original = gfx_get_g1_element(imageIdReference);
         if (g1original != nullptr)
         {
             rct_g1_element g1 = *g1original;

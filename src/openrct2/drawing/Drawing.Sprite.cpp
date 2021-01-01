@@ -180,6 +180,7 @@ void mask_scalar(
 static rct_gx _g1 = {};
 static rct_gx _g2 = {};
 static rct_gx _csg = {};
+static rct_g1_element _scrollingText[256]{};
 static bool _csgLoaded = false;
 
 static rct_g1_element _g1Temp = {};
@@ -701,6 +702,14 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
             }
         }
     }
+    else if (offset < SPR_SCROLLING_TEXT_END)
+    {
+        size_t idx = offset - SPR_SCROLLING_TEXT_START;
+        if (idx < std::size(_scrollingText))
+        {
+            return &_scrollingText[idx];
+        }
+    }
     else if (offset < SPR_IMAGE_LIST_END)
     {
         size_t idx = offset - SPR_IMAGE_LIST_BEGIN;
@@ -737,6 +746,14 @@ void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
                 if (imageId < static_cast<int32_t>(_g1.elements.size()))
                 {
                     _g1.elements[imageId] = *g1;
+                }
+            }
+            else if (imageId < SPR_SCROLLING_TEXT_END)
+            {
+                size_t idx = static_cast<size_t>(imageId) - SPR_SCROLLING_TEXT_START;
+                if (idx < std::size(_scrollingText))
+                {
+                    _scrollingText[idx] = *g1;
                 }
             }
             else
