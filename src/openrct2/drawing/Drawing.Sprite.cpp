@@ -18,6 +18,7 @@
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "Drawing.h"
+#include "ScrollingText.h"
 
 #include <algorithm>
 #include <memory>
@@ -180,7 +181,7 @@ void mask_scalar(
 static rct_gx _g1 = {};
 static rct_gx _g2 = {};
 static rct_gx _csg = {};
-static rct_g1_element _scrollingText[256]{};
+static rct_g1_element _scrollingText[MaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
 
 static rct_g1_element _g1Temp = {};

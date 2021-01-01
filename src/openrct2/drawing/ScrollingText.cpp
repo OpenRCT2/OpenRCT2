@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -6,6 +6,8 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
+#include "ScrollingText.h"
 
 #include "../config/Config.h"
 #include "../core/String.hpp"
@@ -34,9 +36,7 @@ struct rct_draw_scroll_text
     uint8_t bitmap[64 * 40];
 };
 
-constexpr int32_t MAX_SCROLLING_TEXT_ENTRIES = SPR_SCROLLING_TEXT_END - SPR_SCROLLING_TEXT_START;
-
-static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
+static rct_draw_scroll_text _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
@@ -97,7 +97,7 @@ void scrolling_text_initialise_bitmaps()
         }
     }
 
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
     {
         const int32_t imageIdReference = SPR_SCROLLING_TEXT_LEGACY_START;
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
@@ -137,7 +137,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (int32_t i = 0; i < std::size(_drawScrollTextList); i++)
     {
         rct_draw_scroll_text* scrollText = &_drawScrollTextList[i];
         if (oldestId >= scrollText->id)
@@ -1438,9 +1438,8 @@ static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 
 void scrolling_text_invalidate()
 {
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (auto& scrollText : _drawScrollTextList)
     {
-        rct_draw_scroll_text& scrollText = _drawScrollTextList[i];
         scrollText.string_id = 0;
         std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
     }
