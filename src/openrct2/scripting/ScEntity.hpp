@@ -1001,6 +1001,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             return peep != nullptr ? peep->Intensity.GetMinimum() : 0;
         }
+
         void minIntensity_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
@@ -1077,7 +1078,6 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-
         static inline int32_t patrolRegionHeight(const MapRange& region)
         {
             return (region.GetY2() - region.GetY1()) / (COORDS_XY_STEP * 4);
@@ -1090,24 +1090,24 @@ namespace OpenRCT2::Scripting
 
         static inline void mergeIntoRegion(MapRange& target, const MapRange& toMerge)
         {
-            //printf(
+            // printf(
             //    "target %d %d %d %d\n", target.Point1.x / 128, target.Point1.y / 128, target.Point2.x / 128,
             //    target.Point2.y / 128);
-            //printf(
+            // printf(
             //    "toMerge %d %d %d %d\n", toMerge.Point1.x / 128, toMerge.Point1.y / 128, toMerge.Point2.x / 128,
             //    toMerge.Point2.y / 128);
             target.Point1.x = std::min(target.Point1.x, toMerge.Point1.x);
             target.Point1.y = std::min(target.Point1.y, toMerge.Point1.y);
             target.Point2.x = std::max(target.Point2.x, toMerge.Point2.x);
             target.Point2.y = std::max(target.Point2.y, toMerge.Point2.y);
-            //printf(
+            // printf(
             //    "merged %d %d %d %d\n\n", target.Point1.x / 128, target.Point1.y / 128, target.Point2.x / 128,
             //    target.Point2.y / 128);
         }
 
         void mergeRegions()
         {
-            // from top left, go across horizontal scanlines to create as many one
+            // from top left, go across horizontal scanlines to create as many
             // horizontally maximized regions; then go through vertical scanlines and merge
             // as many of the horizontal regions as possible into bigger rectangles; should
             // produce minimum possible number of rectangular regions (though not
@@ -1130,7 +1130,7 @@ namespace OpenRCT2::Scripting
                 auto initialY = topLeft.y / PATROL_REGION_STEP;
                 auto finalX = bottomRight.x / PATROL_REGION_STEP;
                 auto finalY = bottomRight.y / PATROL_REGION_STEP;
-                //printf("%d %d %d %d\n", initialX, initialY, finalX, finalY);
+                // printf("%d %d %d %d\n", initialX, initialY, finalX, finalY);
                 for (int32_t y = initialY; y < finalY; y++)
                 {
                     for (int32_t x = initialX; x < finalX; x++)
@@ -1139,7 +1139,7 @@ namespace OpenRCT2::Scripting
                     }
                 }
             }
-        
+
             // horizontal scanning
             for (int32_t y = 0; y < 64; y++)
             {
@@ -1217,7 +1217,7 @@ namespace OpenRCT2::Scripting
                         // aren't currently merging, start merging on this new region
                         currentRegion = nextRegion;
                         currentWidth = patrolRegionWidth(*currentRegion);
-                        //printf("new region width: %d\n", currentWidth);
+                        // printf("new region width: %d\n", currentWidth);
                         continue;
                     }
                     else if (nextRegion && currentRegion)
@@ -1225,7 +1225,7 @@ namespace OpenRCT2::Scripting
                         // check if height matches, and merge if so
                         if (patrolRegionWidth(*nextRegion) == currentWidth)
                         {
-                            mergeRegions(*currentRegion, *nextRegion);
+                            mergeIntoRegion(*currentRegion, *nextRegion);
                             patrolBitmask[y][x] = currentRegion;
                             mergedRegions.erase(nextRegion);
                             mergedRegions.insert(currentRegion);
@@ -1241,9 +1241,9 @@ namespace OpenRCT2::Scripting
             }
             // assemble new region vector
             _regions.clear();
-            for(auto& regionPtr : mergedRegions)
+            for (auto& regionPtr : mergedRegions)
             {
-                //printf(
+                // printf(
                 //    "Final region: %d %d %d %d\n", regionPtr->GetLeft() / PATROL_REGION_STEP,
                 //    regionPtr->GetTop() / PATROL_REGION_STEP, regionPtr->GetRight() / PATROL_REGION_STEP,
                 //    regionPtr->GetBottom() / PATROL_REGION_STEP);
@@ -1289,8 +1289,8 @@ namespace OpenRCT2::Scripting
         {
             for (auto& region : _regions)
             {
-                if (toCheck.x >= region.GetLeft() && toCheck.x < region.GetRight() &&
-                    toCheck.y >= region.GetTop() && toCheck.y < region.GetBottom())
+                if (toCheck.x >= region.GetLeft() && toCheck.x < region.GetRight() && toCheck.y >= region.GetTop()
+                    && toCheck.y < region.GetBottom())
                 {
                     return true;
                 }
@@ -1460,7 +1460,6 @@ namespace OpenRCT2::Scripting
                     // to only step by whole coordinate -> left shift by 7
                     if (staff->IsPatrolAreaSet({ x * PATROL_REGION_STEP, y_index }))
                     {
-                        //printf("%d %d in patrol area\n", x, y);
                         // patrol region is multiplied by 4 to return to tile coordinates
                         auto patrolRegion = MapRange(
                             { x * PATROL_REGION_STEP, y * PATROL_REGION_STEP },
