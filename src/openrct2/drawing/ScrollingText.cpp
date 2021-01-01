@@ -99,23 +99,25 @@ void scrolling_text_initialise_bitmaps()
 
     for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
     {
-        const int32_t imageIdReference = SPR_SCROLLING_TEXT_LEGACY_START;
         const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
-        const rct_g1_element* g1original = gfx_get_g1_element(imageIdReference);
-        if (g1original != nullptr)
-        {
-            rct_g1_element g1 = *g1original;
-            g1.offset = _drawScrollTextList[i].bitmap;
-            g1.width = 64;
-            g1.height = 40;
-            g1.offset[0] = 0xFF;
-            g1.offset[1] = 0xFF;
-            g1.offset[14] = 0;
-            g1.offset[15] = 0;
-            g1.offset[16] = 0;
-            g1.offset[17] = 0;
-            gfx_set_g1_element(imageId, &g1);
-        }
+
+        // Initialize the scrolling text sprite.
+        rct_g1_element g1{};
+        g1.offset = _drawScrollTextList[i].bitmap;
+        g1.x_offset = -32;
+        g1.y_offset = 0;
+        g1.flags = G1_FLAG_BMP;
+        g1.zoomed_offset = 766;
+        g1.width = 64;
+        g1.height = 40;
+        g1.offset[0] = 0xFF;
+        g1.offset[1] = 0xFF;
+        g1.offset[14] = 0;
+        g1.offset[15] = 0;
+        g1.offset[16] = 0;
+        g1.offset[17] = 0;
+
+        gfx_set_g1_element(imageId, &g1);
     }
 }
 
