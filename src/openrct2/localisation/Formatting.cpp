@@ -808,7 +808,8 @@ namespace OpenRCT2
 
     size_t FormatStringLegacy(char* buffer, size_t bufferLen, rct_string_id id, const void* args)
     {
-        std::vector<FormatArg_t> anyArgs;
+        thread_local std::vector<FormatArg_t> anyArgs;
+        anyArgs.clear();
         auto fmt = GetFmtStringById(id);
         BuildAnyArgListFromLegacyArgBuffer(fmt, anyArgs, args);
         return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
