@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -107,7 +107,6 @@ void scrolling_text_initialise_bitmaps()
         g1.x_offset = -32;
         g1.y_offset = 0;
         g1.flags = G1_FLAG_BMP;
-        g1.zoomed_offset = 766;
         g1.width = 64;
         g1.height = 40;
         g1.offset[0] = 0xFF;
