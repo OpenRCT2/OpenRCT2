@@ -137,13 +137,13 @@ static int32_t scrolling_text_get_matching_or_oldest(
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
-    for (int32_t i = 0; i < std::size(_drawScrollTextList); i++)
+    for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
     {
         rct_draw_scroll_text* scrollText = &_drawScrollTextList[i];
         if (oldestId >= scrollText->id)
         {
             oldestId = scrollText->id;
-            scrollIndex = i;
+            scrollIndex = static_cast<int32_t>(i);
         }
 
         // If exact match return the matching index
@@ -152,7 +152,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
             && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
             scrollText->id = _drawSCrollNextIndex;
-            return i + SPR_SCROLLING_TEXT_START;
+            return static_cast<int32_t>(i + SPR_SCROLLING_TEXT_START);
         }
     }
     return scrollIndex;
