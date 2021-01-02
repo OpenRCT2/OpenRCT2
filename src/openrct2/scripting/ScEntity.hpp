@@ -57,12 +57,30 @@ namespace OpenRCT2::Scripting
                     case SpriteIdentifier::Peep:
                         return "peep";
                     case SpriteIdentifier::Misc:
-                        switch (entity->type)
+                        switch (static_cast<MiscEntityType>(entity->type))
                         {
-                            case SPRITE_MISC_BALLOON:
+                            case MiscEntityType::SteamParticle:
+                                return "steam_particle";
+                            case MiscEntityType::MoneyEffect:
+                                return "money_effect";
+                            case MiscEntityType::CrashedVehicleParticle:
+                                return "crashed_vehicle_particle";
+                            case MiscEntityType::ExplosionCloud:
+                                return "explosion_cloud";
+                            case MiscEntityType::CrashSplash:
+                                return "crash_splash";
+                            case MiscEntityType::ExplosionFlare:
+                                return "explosion_flare";
+                            case MiscEntityType::JumpingFountainWater:
+                                return "jumping_fountain_water";
+                            case MiscEntityType::Balloon:
                                 return "balloon";
-                            case SPRITE_MISC_DUCK:
+                            case MiscEntityType::Duck:
                                 return "duck";
+                            case MiscEntityType::JumpingFountainSnow:
+                                return "jumping_fountain_snow";
+                            default:
+                                break;
                         }
                         break;
                     case SpriteIdentifier::Litter:

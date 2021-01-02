@@ -419,26 +419,28 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                switch (left.generic.type)
+                switch (static_cast<MiscEntityType>(left.generic.type))
                 {
-                    case SPRITE_MISC_STEAM_PARTICLE:
+                    case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
                         break;
-                    case SPRITE_MISC_MONEY_EFFECT:
+                    case MiscEntityType::MoneyEffect:
                         CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
                         break;
-                    case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                    case MiscEntityType::CrashedVehicleParticle:
                         CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
                         break;
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    case MiscEntityType::JumpingFountainSnow:
+                    case MiscEntityType::JumpingFountainWater:
                         CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
                         break;
-                    case SPRITE_MISC_BALLOON:
+                    case MiscEntityType::Balloon:
                         CompareSpriteDataBalloon(left.balloon, right.balloon);
                         break;
-                    case SPRITE_MISC_DUCK:
+                    case MiscEntityType::Duck:
                         CompareSpriteDataDuck(left.duck, right.duck);
+                        break;
+                    default:
                         break;
                 }
                 break;
