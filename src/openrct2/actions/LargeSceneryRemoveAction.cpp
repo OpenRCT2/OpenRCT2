@@ -136,7 +136,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    tile_element_remove_banner_entry(tileElement);
+    tileElement->RemoveBannerEntry();
 
     rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
 

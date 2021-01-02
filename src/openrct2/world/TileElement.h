@@ -183,6 +183,10 @@ public:
     void ClearAs(uint8_t newType);
 
     ride_id_t GetRideIndex() const;
+
+    void SetBannerIndex(BannerIndex newIndex);
+    void RemoveBannerEntry();
+    BannerIndex GetBannerIndex() const;
 };
 assert_struct_size(TileElement, 16);
 
@@ -679,9 +683,4 @@ enum
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
 
-BannerIndex tile_element_get_banner_index(TileElement* tileElement);
 bool tile_element_is_underground(TileElement* tileElement);
-
-// ~Oli414: The banner functions should probably be part of banner.
-void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex);
-void tile_element_remove_banner_entry(TileElement* tileElement);

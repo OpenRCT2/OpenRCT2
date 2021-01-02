@@ -175,7 +175,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
         {
             do
             {
-                if (tile_element_get_banner_index(tileElement) == bannerIndex)
+                if (tileElement->GetBannerIndex() == bannerIndex)
                 {
                     return tileElement;
                 }

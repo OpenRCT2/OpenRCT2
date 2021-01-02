@@ -84,7 +84,7 @@ GameActions::Result::Ptr WallRemoveAction::Execute() const
     res->Position.y = _loc.y + 16;
     res->Position.z = tile_element_height(res->Position);
 
-    tile_element_remove_banner_entry(wallElement);
+    wallElement->RemoveBannerEntry();
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });
     tile_element_remove(wallElement);
 
