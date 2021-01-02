@@ -341,260 +341,260 @@ TEST_F(FormattingTests, using_legacy_buffer_args)
 
 TEST_F(FormattingTests, format_number_basic)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test basic integral conversion
     FormatArgument<int32_t>(ss, FormatToken::UInt16, 123);
-    ASSERT_STREQ("123", ss.str().c_str());
+    ASSERT_STREQ("123", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_basic_int32)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test that case fallthrough works
     FormatArgument<int32_t>(ss, FormatToken::Int32, 123);
-    ASSERT_STREQ("123", ss.str().c_str());
+    ASSERT_STREQ("123", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test negative conversion
     FormatArgument<int32_t>(ss, FormatToken::Int32, -123);
-    ASSERT_STREQ("-123", ss.str().c_str());
+    ASSERT_STREQ("-123", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_basic)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test separator formatter
     // test base case separator formatter
     FormatArgument<int32_t>(ss, FormatToken::Comma16, 123);
-    ASSERT_STREQ("123", ss.str().c_str());
+    ASSERT_STREQ("123", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test separator formatter
     // test base case separator formatter
     FormatArgument<int32_t>(ss, FormatToken::Comma16, -123);
-    ASSERT_STREQ("-123", ss.str().c_str());
+    ASSERT_STREQ("-123", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_large)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test larger value for separator formatter
     FormatArgument<int32_t>(ss, FormatToken::Comma16, 123456789);
-    ASSERT_STREQ("123,456,789", ss.str().c_str());
+    ASSERT_STREQ("123,456,789", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_large_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test larger value for separator formatter with negative
     FormatArgument<int32_t>(ss, FormatToken::Comma16, -123456789);
-    ASSERT_STREQ("-123,456,789", ss.str().c_str());
+    ASSERT_STREQ("-123,456,789", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_uneven)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test non-multiple of 3
     FormatArgument<int32_t>(ss, FormatToken::Comma16, 12345678);
-    ASSERT_STREQ("12,345,678", ss.str().c_str());
+    ASSERT_STREQ("12,345,678", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_uneven_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test non-multiple of 3 with negative
     FormatArgument<int32_t>(ss, FormatToken::Comma16, -12345678);
-    ASSERT_STREQ("-12,345,678", ss.str().c_str());
+    ASSERT_STREQ("-12,345,678", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma16_zero)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test zero
     FormatArgument<int32_t>(ss, FormatToken::Comma16, 0);
-    ASSERT_STREQ("0", ss.str().c_str());
+    ASSERT_STREQ("0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_zero)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // zero case
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 0);
-    ASSERT_STREQ("0.0", ss.str().c_str());
+    ASSERT_STREQ("0.0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_leading_zero)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test leading zero
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 5);
-    ASSERT_STREQ("0.5", ss.str().c_str());
+    ASSERT_STREQ("0.5", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_leading_zero_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test leading zero with negative value
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -5);
-    ASSERT_STREQ("-0.5", ss.str().c_str());
+    ASSERT_STREQ("-0.5", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_small_value)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test small value
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 75);
-    ASSERT_STREQ("7.5", ss.str().c_str());
+    ASSERT_STREQ("7.5", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_small_value_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test small value with negative
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -75);
-    ASSERT_STREQ("-7.5", ss.str().c_str());
+    ASSERT_STREQ("-7.5", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_trailing_zeros)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with trailing zero, no commas
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 1000);
-    ASSERT_STREQ("100.0", ss.str().c_str());
+    ASSERT_STREQ("100.0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_trailing_zeros_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with trailing zero, no commas
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -1000);
-    ASSERT_STREQ("-100.0", ss.str().c_str());
+    ASSERT_STREQ("-100.0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_large_trailing_zeros)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with commas and trailing zeros
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 10000000);
-    ASSERT_STREQ("1,000,000.0", ss.str().c_str());
+    ASSERT_STREQ("1,000,000.0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_large_trailing_zeros_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with commas and trailing zeros
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -10000000);
-    ASSERT_STREQ("-1,000,000.0", ss.str().c_str());
+    ASSERT_STREQ("-1,000,000.0", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_large_value)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test large value
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, 123456789);
-    ASSERT_STREQ("12,345,678.9", ss.str().c_str());
+    ASSERT_STREQ("12,345,678.9", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma1dp16_large_value_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test large value
     FormatArgument<int32_t>(ss, FormatToken::Comma1dp16, -123456789);
-    ASSERT_STREQ("-12,345,678.9", ss.str().c_str());
+    ASSERT_STREQ("-12,345,678.9", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_zero)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // zero case
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 0);
-    ASSERT_STREQ("0.00", ss.str().c_str());
+    ASSERT_STREQ("0.00", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_less_sig_figs)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test leading zero
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 5);
-    ASSERT_STREQ("0.05", ss.str().c_str());
+    ASSERT_STREQ("0.05", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_less_sig_figs_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test leading zero
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -5);
-    ASSERT_STREQ("-0.05", ss.str().c_str());
+    ASSERT_STREQ("-0.05", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_leading_zero)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test small value
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 75);
-    ASSERT_STREQ("0.75", ss.str().c_str());
+    ASSERT_STREQ("0.75", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_leading_zero_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test small value
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -75);
-    ASSERT_STREQ("-0.75", ss.str().c_str());
+    ASSERT_STREQ("-0.75", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_trailing_zeros)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with trailing zero, no commas
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 1000);
-    ASSERT_STREQ("10.00", ss.str().c_str());
+    ASSERT_STREQ("10.00", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_trailing_zeros_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with trailing zero, no commas
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -1000);
-    ASSERT_STREQ("-10.00", ss.str().c_str());
+    ASSERT_STREQ("-10.00", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_large_trailing_zeros)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with commas and trailing zeros
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 10000000);
-    ASSERT_STREQ("100,000.00", ss.str().c_str());
+    ASSERT_STREQ("100,000.00", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_large_trailing_zeros_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test value with commas and trailing zeros
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -10000000);
-    ASSERT_STREQ("-100,000.00", ss.str().c_str());
+    ASSERT_STREQ("-100,000.00", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_large_value)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test large value
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, 123456789);
-    ASSERT_STREQ("1,234,567.89", ss.str().c_str());
+    ASSERT_STREQ("1,234,567.89", ss.data());
 }
 
 TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
 {
-    std::stringstream ss;
+    FormatBuffer ss;
     // test large value
     FormatArgument<int32_t>(ss, FormatToken::Comma2dp32, -123456789);
-    ASSERT_STREQ("-1,234,567.89", ss.str().c_str());
+    ASSERT_STREQ("-1,234,567.89", ss.data());
 
     // extra note:
     // for some reason the FormatArgument function contains constexpr
@@ -603,4 +603,15 @@ TEST_F(FormattingTests, format_number_comma2dp32_large_value_negative)
     // declared. As such the following line won't be able to find
     // the necessary symbol to link with.
     // FormatArgument<double>(ss, FormatToken::Comma1dp16, 12.372);
+}
+
+TEST_F(FormattingTests, buffer_storage_swap)
+{
+    FormatBufferBase<char, 16> ss;
+    ss << "Hello World";
+    ASSERT_STREQ(ss.data(), "Hello World");
+    ss << ", Exceeding local storage";
+    ASSERT_STREQ(ss.data(), "Hello World, Exceeding local storage");
+    ss << ", extended";
+    ASSERT_STREQ(ss.data(), "Hello World, Exceeding local storage, extended");
 }

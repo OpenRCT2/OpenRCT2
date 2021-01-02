@@ -19,7 +19,7 @@
 
 namespace OpenRCT2
 {
-    static void FormatMonthYear(std::stringstream& ss, int32_t month, int32_t year);
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year);
 
     static std::optional<int32_t> ParseNumericToken(std::string_view s)
     {
@@ -278,7 +278,7 @@ namespace OpenRCT2
         return sz != nullptr ? sz : std::string_view();
     }
 
-    void FormatRealName(std::stringstream& ss, rct_string_id id)
+    void FormatRealName(FormatBuffer& ss, rct_string_id id)
     {
         if (IsRealNameStringId(id))
         {
@@ -301,7 +301,7 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(std::stringstream& ss, T value)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatNumber(FormatBuffer& ss, T value)
     {
         char buffer[32];
         size_t i = 0;
@@ -379,7 +379,7 @@ namespace OpenRCT2
         }
     }
 
-    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(std::stringstream& ss, T rawValue)
+    template<size_t TDecimalPlace, bool TDigitSep, typename T> void FormatCurrency(FormatBuffer& ss, T rawValue)
     {
         auto currencyDesc = &CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)];
         auto value = static_cast<int64_t>(rawValue) * currencyDesc->rate;
@@ -434,7 +434,7 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatMinutesSeconds(std::stringstream& ss, T value)
+    template<typename T> static void FormatMinutesSeconds(FormatBuffer& ss, T value)
     {
         static constexpr const rct_string_id Formats[][2] = {
             { STR_DURATION_SEC, STR_DURATION_SECS },
@@ -456,7 +456,7 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> static void FormatHoursMinutes(std::stringstream& ss, T value)
+    template<typename T> static void FormatHoursMinutes(FormatBuffer& ss, T value)
     {
         static constexpr const rct_string_id Formats[][2] = {
             { STR_REALTIME_MIN, STR_REALTIME_MINS },
@@ -478,7 +478,7 @@ namespace OpenRCT2
         }
     }
 
-    template<typename T> void FormatArgument(std::stringstream& ss, FormatToken token, T arg)
+    template<typename T> void FormatArgument(FormatBuffer& ss, FormatToken token, T arg)
     {
         switch (token)
         {
@@ -593,31 +593,17 @@ namespace OpenRCT2
                 }
                 break;
             case FormatToken::String:
-                if constexpr (std::is_same<T, const char*>())
-                {
-                    if (arg != nullptr)
-                    {
-                        ss << arg;
-                    }
-                }
-                else if constexpr (std::is_same<T, const std::string&>())
-                {
-                    ss << arg.c_str();
-                }
-                else if constexpr (std::is_same<T, std::string>())
-                {
-                    ss << arg.c_str();
-                }
+                ss << arg;
                 break;
             case FormatToken::Sprite:
                 if constexpr (std::is_integral<T>())
                 {
                     auto idx = static_cast<uint32_t>(arg);
-                    ss << "{INLINE_SPRITE}";
-                    ss << "{" << ((idx >> 0) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 8) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 16) & 0xFF) << "}";
-                    ss << "{" << ((idx >> 24) & 0xFF) << "}";
+                    char inlineBuf[64];
+                    size_t len = snprintf(
+                        inlineBuf, sizeof(inlineBuf), "{INLINE_SPRITE}{%u}{%u}{%u}{%u}", ((idx >> 0) & 0xFF),
+                        ((idx >> 8) & 0xFF), ((idx >> 16) & 0xFF), ((idx >> 24) & 0xFF));
+                    ss.append(inlineBuf, len);
                 }
                 break;
             default:
@@ -625,12 +611,12 @@ namespace OpenRCT2
         }
     }
 
-    template void FormatArgument(std::stringstream&, FormatToken, uint16_t);
-    template void FormatArgument(std::stringstream&, FormatToken, int16_t);
-    template void FormatArgument(std::stringstream&, FormatToken, int32_t);
-    template void FormatArgument(std::stringstream&, FormatToken, int64_t);
-    template void FormatArgument(std::stringstream&, FormatToken, uint64_t);
-    template void FormatArgument(std::stringstream&, FormatToken, const char*);
+    template void FormatArgument(FormatBuffer&, FormatToken, uint16_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, int16_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, int32_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, int64_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, uint64_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, const char*);
 
     bool IsRealNameStringId(rct_string_id id)
     {
@@ -643,27 +629,24 @@ namespace OpenRCT2
         return FmtString(fmtc);
     }
 
-    std::stringstream& GetThreadFormatStream()
+    FormatBuffer& GetThreadFormatStream()
     {
-        thread_local std::stringstream ss;
-        // Reset the buffer (reported as most efficient way)
-        std::stringstream().swap(ss);
+        thread_local FormatBuffer ss;
+        ss.clear();
         return ss;
     }
 
-    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, std::stringstream& ss)
+    size_t CopyStringStreamToBuffer(char* buffer, size_t bufferLen, FormatBuffer& ss)
     {
-        auto stringLen = ss.tellp();
-        auto copyLen = std::min<size_t>(bufferLen - 1, stringLen);
+        auto copyLen = std::min<size_t>(bufferLen - 1, ss.size());
 
-        ss.seekg(0, std::ios::beg);
-        ss.read(buffer, copyLen);
+        std::copy(ss.data(), ss.data() + copyLen, buffer);
         buffer[copyLen] = '\0';
 
-        return stringLen;
+        return ss.size();
     }
 
-    static void FormatArgumentAny(std::stringstream& ss, FormatToken token, const FormatArg_t& value)
+    static void FormatArgumentAny(FormatBuffer& ss, FormatToken token, const FormatArg_t& value)
     {
         if (std::holds_alternative<uint16_t>(value))
         {
@@ -687,8 +670,7 @@ namespace OpenRCT2
         }
     }
 
-    static void FormatStringAny(
-        std::stringstream& ss, const FmtString& fmt, const std::vector<FormatArg_t>& args, size_t& argIndex)
+    static void FormatStringAny(FormatBuffer& ss, const FmtString& fmt, const std::vector<FormatArg_t>& args, size_t& argIndex)
     {
         for (const auto& token : fmt)
         {
@@ -735,7 +717,7 @@ namespace OpenRCT2
         auto& ss = GetThreadFormatStream();
         size_t argIndex = 0;
         FormatStringAny(ss, fmt, args, argIndex);
-        return ss.str();
+        return ss.data();
     }
 
     size_t FormatStringAny(char* buffer, size_t bufferLen, const FmtString& fmt, const std::vector<FormatArg_t>& args)
@@ -815,7 +797,7 @@ namespace OpenRCT2
         return FormatStringAny(buffer, bufferLen, fmt, anyArgs);
     }
 
-    static void FormatMonthYear(std::stringstream& ss, int32_t month, int32_t year)
+    static void FormatMonthYear(FormatBuffer& ss, int32_t month, int32_t year)
     {
         thread_local std::vector<FormatArg_t> tempArgs;
         tempArgs.clear();
