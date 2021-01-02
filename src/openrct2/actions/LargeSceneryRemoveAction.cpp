@@ -67,6 +67,9 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     }
 
     rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
+    // If we have a bugged scenery entry, do not touch the tile element.
+    if (scenery_entry == nullptr)
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
 
     auto rotatedOffsets = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
                                                scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
@@ -136,9 +139,12 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    tileElement->RemoveBannerEntry();
-
     rct_scenery_entry* scenery_entry = tileElement->AsLargeScenery()->GetEntry();
+    // If we have a bugged scenery entry, do not touch the tile element.
+    if (scenery_entry == nullptr)
+        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS);
+
+    tileElement->RemoveBannerEntry();
 
     auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ scenery_entry->large_scenery.tiles[_tileIndex].x_offset,
                                                  scenery_entry->large_scenery.tiles[_tileIndex].y_offset }
