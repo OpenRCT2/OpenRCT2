@@ -540,8 +540,11 @@ declare global {
     interface BaseTileElement {
         type: TileElementType;
         baseHeight: number;
+        baseZ: number;
         clearanceHeight: number;
+        clearanceZ: number;
         occupiedQuadrants: number;
+        isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
     }
 
@@ -559,65 +562,87 @@ declare global {
     }
 
     interface FootpathElement extends BaseTileElement {
-        footpathType: number;
-        edgesAndCorners: number;
+        object: number;
+
+        edges: number;
+        corners: number;
         slopeDirection: number | null;
         isBlockedByVehicle: boolean;
         isWide: boolean;
 
         isQueue: boolean;
         queueBannerDirection: number | null;
-        ride: number;
-        station: number;
+        ride: number | null;
+        station: number | null;
 
         addition: number | null;
-        isAdditionBroken: boolean;
-
-        direction: Direction;
+        additionStatus: number | null;
+        isAdditionBroken: boolean | null;
+        isAdditionGhost: boolean | null;
     }
 
     interface TrackElement extends BaseTileElement {
-        trackType: number;
-        sequence: number;
-        ride: number;
-        station: number;
-        hasChainLift: boolean;
         direction: Direction;
+        trackType: number;
+        sequence: number | null;
+        mazeEntry: number | null;
+
+        colourScheme: number | null;
+        seatRotation: number | null;
+
+        ride: number;
+        station: number | null;
+
+        brakeBoosterSpeed: number | null;
+        hasChainLift: boolean;
+        isInverted: boolean;
+        hasCableLift: boolean;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
+        direction: Direction;
         object: number;
         primaryColour: number;
         secondaryColour: number;
-        direction: Direction;
         quadrant: number;
-    }
-
-    interface EntranceElement extends BaseTileElement {
-        object: number;
-        sequence: number;
-        ride: number;
-        station: number;
+        age: number;
     }
 
     interface WallElement extends BaseTileElement {
-        object: number;
         direction: Direction;
-    }
-
-    interface LargeSceneryElement extends BaseTileElement {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
+        bannerIndex: number | null;
+        slope: Direction;
+    }
+
+    interface EntranceElement extends BaseTileElement {
+        direction: Direction;
+        object: number;
+        ride: number;
+        station: number;
+        sequence: number;
+        footpathObject: number;
+    }
+
+    interface LargeSceneryElement extends BaseTileElement {
+        direction: Direction;
+        object: number;
+        primaryColour: number;
+        secondaryColour: number;
+        bannerIndex: number | null;
+        sequence: number;
     }
 
     interface BannerElement extends BaseTileElement {
+        direction: Direction;
+        bannerIndex: number;
     }
 
     interface CorruptElement extends BaseTileElement {
     }
-
-    type TileElement = SurfaceElement | FootpathElement | TrackElement;
 
     /**
      * Represents a tile containing tile elements on the map. This is a fixed handle
@@ -629,7 +654,7 @@ declare global {
         /** The y position in tiles. */
         readonly y: number;
         /** Gets an array of all the tile elements on this tile. */
-        readonly elements: TileElement[];
+        readonly elements: BaseTileElement[];
         /** Gets the number of tile elements on this tile. */
         readonly numElements: number;
         /**
@@ -640,11 +665,11 @@ declare global {
         data: Uint8Array;
 
         /** Gets the tile element at the given index on this tile. */
-        getElement(index: number): TileElement;
+        getElement(index: number): BaseTileElement;
         /** Gets the tile element at the given index on this tile. */
         getElement<T extends BaseTileElement>(index: number): T;
         /** Inserts a new tile element at the given index on this tile. */
-        insertElement(index: number): TileElement;
+        insertElement(index: number): BaseTileElement;
         /** Removes the tile element at the given index from this tile. */
         removeElement(index: number): void;
     }
