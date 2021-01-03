@@ -33,9 +33,22 @@ else
     echo -e "\033[0;36mBuilding OpenRCT2...\033[0m"
     mkdir -p bin && cd bin
     export DESTDIR=install
-    cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
+
+    # macOS runners do not have Ninja installed by default
+    if [[ $(uname) == "Darwin" ]]; then
+        cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local "$@"
+    else
+        cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
+    fi
+
     if [[ "$TESTPAINT" == "true" ]]; then
         testpaint_target=testpaint
     fi
-    ninja -k0 $testpaint_target all install
+
+    # macOS runners do not have Ninja installed by default
+    if [[ $(uname) == "Darwin" ]]; then
+        make install
+    else
+        ninja -k0 $testpaint_target all install
+    fi
 fi
