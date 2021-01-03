@@ -46,7 +46,7 @@ static void* _light_rendered_buffer_front = nullptr;
 static uint32_t _lightPolution_back = 0;
 static uint32_t _lightPolution_front = 0;
 
-enum LightFXQualifier : uint8_t
+enum class LightFXQualifier : uint8_t
 {
     Entity,
     Map,
