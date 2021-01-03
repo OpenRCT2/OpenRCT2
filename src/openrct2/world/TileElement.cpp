@@ -86,43 +86,43 @@ bool tile_element_is_underground(TileElement* tileElement)
     return true;
 }
 
-BannerIndex tile_element_get_banner_index(TileElement* tileElement)
+BannerIndex TileElement::GetBannerIndex() const
 {
     rct_scenery_entry* sceneryEntry;
 
-    switch (tileElement->GetType())
+    switch (GetType())
     {
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
+            sceneryEntry = AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
-            return tileElement->AsLargeScenery()->GetBannerIndex();
+            return AsLargeScenery()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_WALL:
-            sceneryEntry = tileElement->AsWall()->GetEntry();
+            sceneryEntry = AsWall()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->wall.scrolling_mode == SCROLLING_MODE_NONE)
                 return BANNER_INDEX_NULL;
 
-            return tileElement->AsWall()->GetBannerIndex();
+            return AsWall()->GetBannerIndex();
         case TILE_ELEMENT_TYPE_BANNER:
-            return tileElement->AsBanner()->GetIndex();
+            return AsBanner()->GetIndex();
         default:
             return BANNER_INDEX_NULL;
     }
 }
 
-void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerIndex)
+void TileElement::SetBannerIndex(BannerIndex bannerIndex)
 {
-    switch (tileElement->GetType())
+    switch (GetType())
     {
         case TILE_ELEMENT_TYPE_WALL:
-            tileElement->AsWall()->SetBannerIndex(bannerIndex);
+            AsWall()->SetBannerIndex(bannerIndex);
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            tileElement->AsLargeScenery()->SetBannerIndex(bannerIndex);
+            AsLargeScenery()->SetBannerIndex(bannerIndex);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
-            tileElement->AsBanner()->SetIndex(bannerIndex);
+            AsBanner()->SetIndex(bannerIndex);
             break;
         default:
             log_error("Tried to set banner index on unsuitable tile element!");
@@ -130,9 +130,9 @@ void tile_element_set_banner_index(TileElement* tileElement, BannerIndex bannerI
     }
 }
 
-void tile_element_remove_banner_entry(TileElement* tileElement)
+void TileElement::RemoveBannerEntry()
 {
-    auto bannerIndex = tile_element_get_banner_index(tileElement);
+    auto bannerIndex = GetBannerIndex();
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {

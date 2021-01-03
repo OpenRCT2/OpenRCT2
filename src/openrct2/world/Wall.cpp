@@ -37,7 +37,7 @@ void wall_remove_at(const CoordsXYRangedZ& wallPos)
     for (auto wallElement = map_get_wall_element_at(wallPos); wallElement != nullptr;
          wallElement = map_get_wall_element_at(wallPos))
     {
-        tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(wallElement));
+        reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
         map_invalidate_tile_zoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
         tile_element_remove(reinterpret_cast<TileElement*>(wallElement));
     }
@@ -74,7 +74,7 @@ void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction di
         if (direction != tileElement->GetDirection())
             continue;
 
-        tile_element_remove_banner_entry(tileElement);
+        tileElement->RemoveBannerEntry();
         map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         tileElement--;

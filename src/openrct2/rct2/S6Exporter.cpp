@@ -1251,9 +1251,9 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    switch (cdst->type)
+    switch (static_cast<MiscEntityType>(cdst->type))
     {
-        case SPRITE_MISC_STEAM_PARTICLE:
+        case MiscEntityType::SteamParticle:
         {
             auto src = static_cast<const SteamParticle*>(csrc);
             auto dst = static_cast<RCT12SpriteSteamParticle*>(cdst);
@@ -1261,7 +1261,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->frame = src->frame;
             break;
         }
-        case SPRITE_MISC_MONEY_EFFECT:
+        case MiscEntityType::MoneyEffect:
         {
             auto src = static_cast<const MoneyEffect*>(csrc);
             auto dst = static_cast<RCT12SpriteMoneyEffect*>(cdst);
@@ -1273,7 +1273,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->wiggle = src->Wiggle;
             break;
         }
-        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+        case MiscEntityType::CrashedVehicleParticle:
         {
             auto src = static_cast<const VehicleCrashParticle*>(csrc);
             auto dst = static_cast<RCT12SpriteCrashedVehicleParticle*>(cdst);
@@ -1291,17 +1291,17 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->acceleration_z = src->acceleration_z;
             break;
         }
-        case SPRITE_MISC_EXPLOSION_CLOUD:
-        case SPRITE_MISC_EXPLOSION_FLARE:
-        case SPRITE_MISC_CRASH_SPLASH:
+        case MiscEntityType::ExplosionCloud:
+        case MiscEntityType::ExplosionFlare:
+        case MiscEntityType::CrashSplash:
         {
             auto src = static_cast<const SpriteGeneric*>(csrc);
             auto dst = static_cast<RCT12SpriteParticle*>(cdst);
             dst->frame = src->frame;
             break;
         }
-        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+        case MiscEntityType::JumpingFountainWater:
+        case MiscEntityType::JumpingFountainSnow:
         {
             auto* src = static_cast<const JumpingFountain*>(csrc);
             auto* dst = static_cast<RCT12SpriteJumpingFountain*>(cdst);
@@ -1314,7 +1314,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->iteration = src->Iteration;
             break;
         }
-        case SPRITE_MISC_BALLOON:
+        case MiscEntityType::Balloon:
         {
             auto src = static_cast<const Balloon*>(csrc);
             auto dst = static_cast<RCT12SpriteBalloon*>(cdst);
@@ -1324,7 +1324,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
             dst->colour = src->colour;
             break;
         }
-        case SPRITE_MISC_DUCK:
+        case MiscEntityType::Duck:
         {
             auto src = static_cast<const Duck*>(csrc);
             auto dst = static_cast<RCT12SpriteDuck*>(cdst);

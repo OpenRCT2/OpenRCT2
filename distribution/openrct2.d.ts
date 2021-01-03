@@ -937,7 +937,7 @@ declare global {
     }
 
     type EntityType =
-        "car" | "duck" | "peep";
+        "car" | "duck" | "peep" | "steam_particle" | "money_effect" | "crashed_vehicle_particle" | "explosion_cloud" | "crash_splash" | "explosion_flare" | "jumping_fountain_water" | "balloon" | "jumping_fountain_snow";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.

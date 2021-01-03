@@ -208,13 +208,13 @@ GameActionResultPtr tile_inspector_remove_element_at(const CoordsXY& loc, int16_
             // Only delete the banner entry if there are no other parts of the large scenery to delete
             if (numLargeScenerySequences(loc, largeScenery) == 1)
             {
-                tile_element_remove_banner_entry(tileElement);
+                tileElement->RemoveBannerEntry();
             }
         }
         else
         {
             // Removes any potential banners from the entry
-            tile_element_remove_banner_entry(tileElement);
+            tileElement->RemoveBannerEntry();
         }
 
         tile_element_remove(tileElement);
@@ -363,7 +363,7 @@ GameActionResultPtr tile_inspector_paste_element_at(const CoordsXY& loc, TileEle
     if (isExecuting)
     {
         // Check if the element to be pasted refers to a banner index
-        auto bannerIndex = tile_element_get_banner_index(&element);
+        auto bannerIndex = element.GetBannerIndex();
         if (bannerIndex != BANNER_INDEX_NULL)
         {
             // The element to be pasted refers to a banner index - make a copy of it
@@ -377,7 +377,7 @@ GameActionResultPtr tile_inspector_paste_element_at(const CoordsXY& loc, TileEle
             newBanner.position = tileLoc;
 
             // Use the new banner index
-            tile_element_set_banner_index(&element, newBannerIndex);
+            element.SetBannerIndex(newBannerIndex);
         }
 
         // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them

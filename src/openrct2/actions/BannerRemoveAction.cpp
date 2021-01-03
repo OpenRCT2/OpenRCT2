@@ -115,7 +115,7 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
         res->Cost = -((bannerEntry->banner.price * 3) / 4);
     }
 
-    tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(bannerElement));
+    reinterpret_cast<TileElement*>(bannerElement)->RemoveBannerEntry();
     map_invalidate_tile_zoom1({ _loc, _loc.z, _loc.z + 32 });
     bannerElement->Remove();
 
