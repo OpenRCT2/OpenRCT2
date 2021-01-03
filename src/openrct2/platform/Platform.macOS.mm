@@ -130,7 +130,6 @@ namespace Platform
         }
         return false;
     }
-
 }
 
 #endif
