@@ -159,7 +159,7 @@ void JumpingFountain::Update()
         return;
     }
 
-    Invalidate0();
+    Invalidate();
     frame++;
 
     switch (static_cast<MiscEntityType>(type))

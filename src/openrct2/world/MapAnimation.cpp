@@ -205,7 +205,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                     peep->ActionFrame = 0;
                     peep->ActionSpriteImageOffset = 0;
                     peep->UpdateCurrentActionSpriteType();
-                    peep->Invalidate1();
+                    peep->Invalidate();
                     break;
                 }
             }

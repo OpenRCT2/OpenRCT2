@@ -832,11 +832,6 @@ Vehicle* try_get_vehicle(uint16_t spriteIndex)
     return TryGetEntity<Vehicle>(spriteIndex);
 }
 
-void Vehicle::Invalidate()
-{
-    Invalidate2();
-}
-
 namespace
 {
     template<typename T> class TrainIterator;
@@ -3608,7 +3603,6 @@ void Vehicle::UpdateCollisionSetup()
         train->sprite_height_positive = 5;
 
         train->MoveTo({ train->x, train->y, train->z });
-        train->Invalidate();
 
         train->SwingSpeed = 0;
     }
@@ -4593,7 +4587,6 @@ void Vehicle::UpdateMotionBoatHire()
         }
 
         MoveTo(unk_F64E20);
-        Invalidate();
     }
 
     // loc_6DAAC9:
@@ -5365,7 +5358,6 @@ void Vehicle::CrashOnLand()
     sprite_height_positive = 5;
 
     MoveTo({ x, y, z });
-    Invalidate();
 
     crash_z = 0;
 }
@@ -5429,7 +5421,6 @@ void Vehicle::CrashOnWater()
     sprite_height_positive = 5;
 
     MoveTo({ x, y, z });
-    Invalidate();
 
     crash_z = -1;
 }
@@ -5513,7 +5504,6 @@ void Vehicle::UpdateCrash()
         }
 
         curVehicle->MoveTo(curPosition);
-        curVehicle->Invalidate();
 
         if (curVehicle->sub_state == 1)
         {
@@ -6375,9 +6365,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
         if (!DodgemsCarWouldCollideAt(location, &collideSprite))
         {
-            Invalidate();
             MoveTo(location);
-            Invalidate();
         }
     }
 
@@ -6389,8 +6377,6 @@ int32_t Vehicle::UpdateMotionDodgems()
         unk_F64E20.x = x;
         unk_F64E20.y = y;
         unk_F64E20.z = z;
-
-        Invalidate();
 
         while (true)
         {
@@ -6445,7 +6431,6 @@ int32_t Vehicle::UpdateMotionDodgems()
         }
 
         MoveTo(unk_F64E20);
-        Invalidate();
     }
 
     int32_t eax = velocity / 2;
@@ -9149,7 +9134,6 @@ loc_6DCD6B:
 
 loc_6DCDE4:
     MoveTo(unk_F64E20);
-    Invalidate();
 
 loc_6DCE02:
     acceleration /= _vehicleUnkF64E10;
@@ -9580,7 +9564,6 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
         // loc_6DBF20
         car->MoveTo(unk_F64E20);
-        car->Invalidate();
 
     loc_6DBF3E:
         car->Sub6DBF3E();
