@@ -540,12 +540,10 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     if (chunk == nullptr)
         return;
 
-    auto entry = object_entry_get_entry(objectEntryType, researchItem->entryIndex);
-
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
 
-    auto* object = object_manager_get_loaded_object(entry);
+    const auto* object = object_entry_get_object(objectEntryType, researchItem->entryIndex);
     if (object != nullptr)
     {
         rct_drawpixelinfo clipDPI;

@@ -233,10 +233,10 @@ std::string_view get_ride_entry_name(ObjectEntryIndex index)
         return {};
     }
 
-    auto objectEntry = object_entry_get_entry(ObjectType::Ride, index);
+    auto objectEntry = object_entry_get_object(ObjectType::Ride, index);
     if (objectEntry != nullptr)
     {
-        return objectEntry->GetName();
+        return objectEntry->GetLegacyIdentifier();
     }
     return {};
 }

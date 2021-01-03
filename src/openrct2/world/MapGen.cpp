@@ -46,36 +46,36 @@ static struct
 
 static constexpr const char* GrassTrees[] = {
     // Dark
-    "TCF     ", // Caucasian Fir Tree
-    "TRF     ", // Red Fir Tree
-    "TRF2    ", // Red Fir Tree
-    "TSP     ", // Scots Pine Tree
-    "TMZP    ", // Montezuma Pine Tree
-    "TAP     ", // Aleppo Pine Tree
-    "TCRP    ", // Corsican Pine Tree
-    "TBP     ", // Black Poplar Tree
+    "rct2.tcf",  // Caucasian Fir Tree
+    "rct2.trf",  // Red Fir Tree
+    "rct2.trf2", // Red Fir Tree
+    "rct2.tsp",  // Scots Pine Tree
+    "rct2.tmzp", // Montezuma Pine Tree
+    "rct2.tap",  // Aleppo Pine Tree
+    "rct2.tcrp", // Corsican Pine Tree
+    "rct2.tbp",  // Black Poplar Tree
 
     // Light
-    "TCL     ", // Cedar of Lebanon Tree
-    "TEL     ", // European Larch Tree
+    "rct2.tcl", // Cedar of Lebanon Tree
+    "rct2.tel", // European Larch Tree
 };
 
 static constexpr const char* DesertTrees[] = {
-    "TMP     ", // Monkey-Puzzle Tree
-    "THL     ", // Honey Locust Tree
-    "TH1     ", // Canary Palm Tree
-    "TH2     ", // Palm Tree
-    "TPM     ", // Palm Tree
-    "TROPT1  ", // Tree
-    "TBC     ", // Cactus
-    "TSC     ", // Cactus
+    "rct2.tmp",    // Monkey-Puzzle Tree
+    "rct2.thl",    // Honey Locust Tree
+    "rct2.th1",    // Canary Palm Tree
+    "rct2.th2",    // Palm Tree
+    "rct2.tpm",    // Palm Tree
+    "rct2.tropt1", // Tree
+    "rct2.tbc",    // Cactus
+    "rct2.tsc",    // Cactus
 };
 
 static constexpr const char* SnowTrees[] = {
-    "TCFS    ", // Snow-covered Caucasian Fir Tree
-    "TNSS    ", // Snow-covered Norway Spruce Tree
-    "TRF3    ", // Snow-covered Red Fir Tree
-    "TRFS    ", // Snow-covered Red Fir Tree
+    "rct2.tcfs", // Snow-covered Caucasian Fir Tree
+    "rct2.tnss", // Snow-covered Norway Spruce Tree
+    "rct2.trf3", // Snow-covered Red Fir Tree
+    "rct2.trfs", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
@@ -263,7 +263,7 @@ static void mapgen_place_trees()
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
         auto sceneryEntry = get_small_scenery_entry(i);
-        auto entry = object_entry_get_entry(ObjectType::SmallScenery, i);
+        auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
             continue;
@@ -271,7 +271,7 @@ static void mapgen_place_trees()
         uint32_t j;
         for (j = 0; j < std::size(GrassTrees); j++)
         {
-            if (strncmp(GrassTrees[j], entry->name, 8) == 0)
+            if (GrassTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(GrassTrees))
@@ -282,7 +282,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(DesertTrees); j++)
         {
-            if (strncmp(DesertTrees[j], entry->name, 8) == 0)
+            if (DesertTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(DesertTrees))
@@ -293,7 +293,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(SnowTrees); j++)
         {
-            if (strncmp(SnowTrees[j], entry->name, 8) == 0)
+            if (SnowTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(SnowTrees))

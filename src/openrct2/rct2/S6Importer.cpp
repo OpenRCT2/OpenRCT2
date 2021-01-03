@@ -765,15 +765,10 @@ public:
         // This stall was not colourable in RCT2.
         if (dst->type == RIDE_TYPE_FOOD_STALL)
         {
-            auto entry = object_entry_get_entry(ObjectType::Ride, dst->subtype);
-            if (entry != nullptr)
+            auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
+            if (object != nullptr && object->GetIdentifier() == "rct2.icecr1")
             {
-                char name[DAT_NAME_LENGTH + 1];
-                object_entry_get_name_fixed(name, sizeof(name), entry);
-                if (strncmp(name, "ICECR1  ", DAT_NAME_LENGTH) == 0)
-                {
-                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
-                }
+                dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
             }
         }
 
