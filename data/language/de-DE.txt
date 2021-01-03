@@ -1186,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Letzte Störung: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Aktuelle Störung: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Trägt:
 STR_1811    :Dies kann hier nicht gebaut werden…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
 STR_1815    :Gedanken
@@ -3304,7 +3304,7 @@ STR_6030    :Landschaftsauswahl. Wählen Sie ein Landschaftselement auf der Kart
 STR_6031    :Serverbeschreibung:
 STR_6032    :Serverbegrüßung:
 STR_6033    :Pfad zur RCT1-Installation:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :Leeren
 STR_6037    :Das gewählte Verzeichnis enthält keine gültige „RollerCoaster Tycoon 1“-Installation.

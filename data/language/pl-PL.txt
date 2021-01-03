@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}Poprzednia awaria: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Aktualna awaria: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Nosi:
 STR_1811    :Nie można tego tutaj wybudować…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Różne obiekty
 STR_1814    :Akcje
 STR_1815    :Myśli
@@ -3307,7 +3307,7 @@ STR_6030    :Przechwytywacz scenerii. Wybierz dowolny element scenerii na mapie 
 STR_6031    :Opis serwera:
 STR_6032    :Wiadomość powitalna:
 STR_6033    :Ścieżka do katalogu RCT1:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Proszę wybrać katalog z RCT1
 STR_6036    :Wyczyść
 STR_6037    :Proszę wybrać prawidłowy katalog RCT1

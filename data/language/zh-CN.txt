@@ -1190,7 +1190,7 @@ STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}本次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}搬运中:
 STR_1811    :Can't build this here…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :其他物体
 STR_1814    :动作
 STR_1815    :想法
@@ -3316,7 +3316,7 @@ STR_6030    :景物选择器. 点击地图上任意景物来建造相同的景�
 STR_6031    :服务器描述:
 STR_6032    :服务器欢迎信息:
 STR_6033    :过山车大亨1安装路径:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :请选择你的过山车大亨1的目录
 STR_6036    :清除
 STR_6037    :请选择一个有效的过山车大亨1的目录

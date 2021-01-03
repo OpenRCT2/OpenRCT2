@@ -1187,7 +1187,7 @@ STR_1808    :{WINDOW_COLOUR_2}Ultimo guasto: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Guasto attuale: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Sta trasportando:
 STR_1811    :Impossibile costruirlo qui…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Oggetti vari
 STR_1814    :Azioni
 STR_1815    :Pensieri
@@ -3314,7 +3314,7 @@ STR_6030    :Contagocce scenario. Fare clic su un qualsiasi elemento dello scena
 STR_6031    :Descrizione server:
 STR_6032    :Messaggio di benvenuto server:
 STR_6033    :Cartella di RCT1:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
 STR_6037    :Selezionare una cartella di installazione di RCT1 valida

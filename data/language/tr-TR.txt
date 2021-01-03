@@ -1183,7 +1183,7 @@ STR_1808    :{WINDOW_COLOUR_2}Son arıza: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Şu anki arıza: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Yanında taşıdıkları:
 STR_1811    :Bu buraya inşa edilemiyor…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Diğer cisimler
 STR_1814    :Yaptıkları
 STR_1815    :Düşünceleri
@@ -3304,7 +3304,7 @@ STR_6030    :Dekorasyon seçici. Bu araç ile seçdiğiniz dekorasyonun aynısı
 STR_6031    :Server açıklaması:
 STR_6032    :Server karşılaması:
 STR_6033    :RCT1 klasörü:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1'in kurulu olduğu klasörü belirleyiniz
 STR_6036    :Temizle
 STR_6037    :Lütfen geçerli bir RCT1 klasörü seçiniz

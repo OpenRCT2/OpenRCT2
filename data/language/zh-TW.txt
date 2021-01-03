@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}攜帶中:
 STR_1811    :不能建造於此…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :其他物件
 STR_1814    :動作
 STR_1815    :想法
@@ -3310,7 +3310,7 @@ STR_6030    :景物選取器. 點撃選取地圖上的景物來建造相同的�
 STR_6031    :伺服器描述:
 STR_6032    :伺服器歡迎訊息:
 STR_6033    :夢幻遊樂園(RCT1)安裝路徑:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :請選擇已安裝夢幻遊樂園(RCT1)的文件夾
 STR_6036    :清除
 STR_6037    :請選擇一個正確的夢幻遊樂園(RCT1)文件夾

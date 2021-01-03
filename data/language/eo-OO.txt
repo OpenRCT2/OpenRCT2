@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}Lasta paneo: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuna paneo: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Portas:
 STR_1811    :Ne eblas konstrui tion ĉi tie…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Diversaĵoj
 STR_1814    :Agadoj
 STR_1815    :Pensoj
@@ -3307,7 +3307,7 @@ STR_6030    :Pejzaĝo-elektilo. Alklaku iun ajn pejzaĝon sur la mapo por elekti
 STR_6031    :Priskribo de servilo:
 STR_6032    :Saluto de servilo:
 STR_6033    :Dosierindikon de RCT1-instalo:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Bonvolu elekti vian RCT1-dosierujon
 STR_6036    :Vakigi
 STR_6037    :La elektita dosierujo ne enhavas validan instalon de RollerCoaster Tycoon 1.

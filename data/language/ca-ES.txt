@@ -94,6 +94,7 @@ STR_0089    :Minimuntanya russa
 STR_0090    :La mina
 STR_0091    :Atracció desconeguda (59)
 STR_0092    :Muntanya russa d'impuls LIM
+STR_0093    :Muntanya russa híbrida
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
 STR_0514    :Els vagons suspesos baix dels rails es balancegen cap a fora en les corbes.
@@ -173,6 +174,7 @@ STR_0598    :Els vagons de la muntanya russa invertida acceleren per l'andana pe
 STR_0599    :Muntanya russa que compta amb vagons individuals i caigudes i girs suaus.
 STR_0600    :Trens d'estil miner autopropulsats per un recorregut amb girs suaus.
 STR_0602    :Els vagons d'aquesta muntanya russa s'acceleren fora de l'andana per motors d'inducció lineal per accelerar durant les inversions tortuoses.
+STR_0603    :Una muntanya russa estil fusta amb una via d'acer, el que permet unes caigudes empinades i inversions.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -1184,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Última avaria: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avaria actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Càrrega:
 STR_1811    :No es pot construir aquí…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Altres objectes
 STR_1814    :Accions
 STR_1815    :Pensaments
@@ -1960,16 +1962,16 @@ STR_2749    :El meu nou escenari
 STR_2750    :Moure tots els ítems cap amunt
 STR_2751    :Moure tots els ítems cap avall
 STR_2752    :Neteja la gespa
-STR_2753    :Sega la gespa
+STR_2753    :Gespa tallada
 STR_2754    :Rega les plantes
 STR_2755    :Repara el vandalisme
 STR_2756    :Neteja escombraries
 STR_2763    :???
-STR_2765    :Molts visitants
+STR_2765    :Grup de visitants
 STR_2766    :Objectiu
-STR_2767    :Mantén l'actual estat meteorològic
-STR_2769    :Obre el parc
-STR_2770    :Tanca el parc
+STR_2767    :Desactivar canvis climàtics
+STR_2769    :Obrir el parc
+STR_2770    :Tancar el parc
 STR_2773    :Finestra
 STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (sense vores)
@@ -3008,8 +3010,8 @@ STR_5721    :Ennuvolat
 STR_5722    :Pluja
 STR_5723    :Pluja forta
 STR_5724    :Tempesta
-STR_5725    :{BLACK}Força l'estat meteorològic:
-STR_5726    :Escolliu el temps que farà al parc.
+STR_5725    :{BLACK}Canviar clima a:
+STR_5726    :Establiu el clima actual al parc
 STR_5727    :Qualitat d'escalat:
 STR_5731    :Lineal
 # tooltip for tab in options window
@@ -3148,7 +3150,7 @@ STR_5867    :{WINDOW_COLOUR_2}Nom proveïdor: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Correu proveïdor: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Lloc web proveïdor: {BLACK}{STRING}
 STR_5870    :Mostra la informació del servidor.
-STR_5871    :No envellir plantes
+STR_5871    :Les plantes no envelleixen
 STR_5872    :Desactiva que les plantes es facin mústigues.
 STR_5873    :Més cadenes d'elevació
 STR_5874    :Permet que qualsevol secció de via pugui incorporar cadenes d'elevació.
@@ -3310,7 +3312,7 @@ STR_6030    :Seleccionador de decoracions. Seleccioneu una decoració del mapa p
 STR_6031    :Descripció del servidor:
 STR_6032    :Missatge de benvinguda:
 STR_6033    :Camí de la instal·lació del RCT1:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Seleccioneu el camí d'instal·lació del RCT1
 STR_6036    :Esborra
 STR_6037    :La carpeta seleccionada no conté una instal·lació del RCT1 vàlida.
@@ -3338,8 +3340,8 @@ STR_6058    :Silencia
 STR_6059    :»
 STR_6060    :Mostra animacions de compres
 STR_6061    :Mostra un efecte mostrant les compres{NEWLINE}que fan els visitants.
-STR_6062    :{OUTLINE}{GREEN}+{CURRENCY2DP}
-STR_6063    :{OUTLINE}{RED}-{CURRENCY2DP}
+STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
+STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Compra tots els terrenys
 STR_6065    :Registra accions d'usuari
 STR_6066    :Registra totes les accions d'usuari en un arxiu a la vostra carpeta.
@@ -3585,8 +3587,8 @@ STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :Si s'activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :S'està descarregant [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Crea ànecs
-STR_6332    :Treu els ànecs
+STR_6331    :Crear ànecs
+STR_6332    :Treure els ànecs
 STR_6333    :Augmenta el factor d'escala
 STR_6334    :Redueix el factor d'escala
 STR_6335    :Inspecció de casella: Insereix un element corromput
@@ -3638,6 +3640,22 @@ STR_6380    :Actualització disponible!
 STR_6381    :Uniu-vos al canal de l'OpenRCT2 de Discord!
 STR_6382    :Hi ha una versió nova de l'OpenRCT2 disponible: {STRING}!
 STR_6383    :Obre la pàgina de descàrrega
+STR_6384    :Neu
+STR_6385    :Neu intensa
+STR_6386    :Torb
+STR_6387    :No es pot baixar l'element aquí…
+STR_6388    :No es pot pujar l'element aquí…
+STR_6389    :Espai invàlid
+STR_6390    :OpenRCT2 necessita els arxius del joc RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, seleccioneu el directori on té instal·lat el RollerCoaster Tycoon 2.
+STR_6391    :Seleccioneu el directori de l'RCT2
+STR_6392    :No s'ha pogut trobar {STRING} en aquesta ruta.
+STR_6393    :Selecció d'objectiu
+STR_6394    :Objectiu
+STR_6395    :Manteniment
+STR_6396    :Desactivar protector i estalviador d'energia de la pantalla
+STR_6397    :Si es selecciona, el protector de pantalla i altres funcions d'estalvi d'energia seran inhibides mentre OpenRCT2 s'executa.
+STR_6398    :L'arxiu conté atraccions incompatibles. Si us plau, actualitzeu a una versió més nova d'OpenRCT2.
+STR_6399    :OpenRCT2 necessita arxius del joc original RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, establiu la variable "game_path" al config.ini apuntant al directori on vau instal·lar RollerCoaster Tycoon 2, i reinicieu l'OpenRCT2.
 
 #############
 # Scenarios #
@@ -4373,3 +4391,11 @@ STR_DTLS    :Hi ha un gran festival anual de música als teus terrenys. Constru�
 STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
 STR_PARK    :Revival del Rock 'n' Roll
 STR_DTLS    :Aquest parc temàtic ha vist millors dies. Ajudeu al propietari a donar-li un toc rock 'n' roll retro i convertiu el lloc en un lloc pròsper.
+
+###############################################################################
+## Official Custom Content Scenarios
+###############################################################################
+<Panda World>
+STR_SCNR    :Panda World
+STR_PARK    :Panda World
+STR_DTLS    :Afegiu més atraccions i atraieu més visitants en aquest parc temàtic inspirat en els pandes.

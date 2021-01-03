@@ -1184,7 +1184,7 @@ STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
 STR_1811    :Can’t build this here…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
@@ -3310,7 +3310,7 @@ STR_6030    :Scenery picker. Click any scenery on the map to select the same pie
 STR_6031    ::وصف السرفر
 STR_6032    :ترحيب السرفر:
 STR_6033    :Path to RCT1 installation:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Please select your RCT1 directory
 STR_6036    :Clear
 STR_6037    :Please select a valid RCT1 directory
