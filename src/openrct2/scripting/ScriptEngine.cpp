@@ -44,7 +44,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 16;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 17;
 
 struct ExpressionStringifier final
 {
@@ -489,6 +489,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     if (plugin->HasStarted())
     {
         RemoveCustomGameActions(plugin);
+        RemoveIntervals(plugin);
         RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
         for (auto callback : _pluginStoppedSubscriptions)
@@ -651,6 +652,7 @@ void ScriptEngine::Update()
         }
     }
 
+    UpdateIntervals();
     UpdateSockets();
     ProcessREPL();
 }
@@ -1208,6 +1210,95 @@ void ScriptEngine::SaveSharedStorage()
     catch (const std::exception&)
     {
         fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
+    }
+}
+
+IntervalHandle ScriptEngine::AllocateHandle()
+{
+    for (size_t i = 0; i < _intervals.size(); i++)
+    {
+        if (!_intervals[i].IsValid())
+        {
+            return static_cast<IntervalHandle>(i + 1);
+        }
+    }
+    _intervals.emplace_back();
+    return static_cast<IntervalHandle>(_intervals.size());
+}
+
+IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
+{
+    auto handle = AllocateHandle();
+    if (handle != 0)
+    {
+        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+        interval.Owner = plugin;
+        interval.Handle = handle;
+        interval.Delay = delay;
+        interval.LastTimestamp = _lastIntervalTimestamp;
+        interval.Callback = std::move(callback);
+        interval.Repeat = repeat;
+    }
+    return handle;
+}
+
+void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle)
+{
+    if (handle > 0 && static_cast<size_t>(handle) <= _intervals.size())
+    {
+        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+
+        // Only allow owner or REPL (nullptr) to remove intervals
+        if (plugin == nullptr || interval.Owner == plugin)
+        {
+            interval = {};
+        }
+    }
+}
+
+void ScriptEngine::UpdateIntervals()
+{
+    uint32_t timestamp = platform_get_ticks();
+    if (timestamp < _lastIntervalTimestamp)
+    {
+        // timestamp has wrapped, subtract all intervals by the remaining amount before wrap
+        auto delta = static_cast<int64_t>(std::numeric_limits<uint32_t>::max() - _lastIntervalTimestamp);
+        for (auto& interval : _intervals)
+        {
+            if (interval.IsValid())
+            {
+                interval.LastTimestamp = -delta;
+            }
+        }
+    }
+    _lastIntervalTimestamp = timestamp;
+
+    for (auto& interval : _intervals)
+    {
+        if (interval.IsValid())
+        {
+            if (timestamp >= interval.LastTimestamp + interval.Delay)
+            {
+                ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+                interval.LastTimestamp = timestamp;
+                if (!interval.Repeat)
+                {
+                    RemoveInterval(nullptr, interval.Handle);
+                }
+            }
+        }
+    }
+}
+
+void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
+{
+    for (auto& interval : _intervals)
+    {
+        if (interval.Owner == plugin)
+        {
+            interval = {};
+        }
     }
 }
 
