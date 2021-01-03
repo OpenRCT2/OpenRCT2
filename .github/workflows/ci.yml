@@ -119,8 +119,8 @@ jobs:
         with:
           name: "OpenRCT2-NT5.1"
           path: bin/openrct2.exe
-  macos:
-    name: macOS
+  macos-xcode:
+    name: macOS (Xcode)
     runs-on: macos-latest
     needs: [check-code-formatting]
     steps:
@@ -148,6 +148,21 @@ jobs:
           else
               echo 'Not going to push build'
           fi
+  macos-cmake:
+    name: macOS (cmake)
+    runs-on: macos-latest
+    needs: [check-code-formatting]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      # Note: Discord_RPC can be enabled soon, requires one more CMakeLists update
+      - name: Build OpenRCT2
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DDISABLE_DISCORD_RPC=on -DCMAKE_BUILD_TYPE=MinSizeRel
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
+      # Should we upload any of these artifacts? Probably not...
+
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
