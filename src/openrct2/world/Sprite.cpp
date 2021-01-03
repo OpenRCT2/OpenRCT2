@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -118,23 +118,11 @@ uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
-static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
-{
-    if (sprite->sprite_left == LOCATION_NULL)
-        return;
-
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0 && viewport->zoom <= maxZoom)
-        {
-            viewport_invalidate(viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right, sprite->sprite_bottom);
-        }
-    }
-}
-
 void SpriteBase::Invalidate()
 {
+    if (sprite_left == LOCATION_NULL)
+        return;
+
     int32_t maxZoom = 0;
     switch (sprite_identifier)
     {
@@ -171,7 +159,8 @@ void SpriteBase::Invalidate()
         default:
             break;
     }
-    invalidate_sprite_max_zoom(this, maxZoom);
+
+    viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
 }
 
 /**

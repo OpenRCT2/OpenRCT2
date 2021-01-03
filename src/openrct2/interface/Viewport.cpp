@@ -33,6 +33,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <list>
 
 using namespace OpenRCT2;
 
@@ -41,7 +42,7 @@ uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
 uint8_t gShowConstuctionRightsRefCount;
 
-rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
+static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
@@ -75,12 +76,6 @@ void viewport_init_all()
     }
 
     window_init_all();
-
-    // Setting up viewports
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        g_viewport_list[i].width = 0;
-    }
 
     // ?
     input_reset_flags();
@@ -141,20 +136,15 @@ void viewport_create(
     char flags, uint16_t sprite)
 {
     rct_viewport* viewport = nullptr;
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        if (g_viewport_list[i].width == 0)
-        {
-            viewport = &g_viewport_list[i];
-            break;
-        }
-    }
-    if (viewport == nullptr)
+    if (_viewports.size() >= MAX_VIEWPORT_COUNT)
     {
         log_error("No more viewport slots left to allocate.");
         return;
     }
 
+    auto itViewport = _viewports.insert(_viewports.end(), rct_viewport{});
+
+    viewport = &*itViewport;
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
@@ -200,6 +190,28 @@ void viewport_create(
     }
     w->savedViewPos = *centreLoc;
     viewport->viewPos = *centreLoc;
+}
+
+void viewport_remove(rct_viewport* viewport)
+{
+    auto it = std::find_if(_viewports.begin(), _viewports.end(), [viewport](const auto& vp) { return &vp == viewport; });
+    if (it == _viewports.end())
+    {
+        log_error("Unable to remove viewport: %p", viewport);
+        return;
+    }
+    _viewports.erase(it);
+}
+
+void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == -1 || vp.zoom <= maxZoom)
+        {
+            viewport_invalidate(&vp, left, top, right, bottom);
+        }
+    }
 }
 
 /**
@@ -836,8 +848,8 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
-    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy; there
-    // is no column information embedded in the session itself.
+    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
+    // there is no column information embedded in the session itself.
     (*recorded_sessions)[record_index] = (*session);
     paint_session* session_copy = &recorded_sessions->at(record_index);
 
