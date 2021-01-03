@@ -19,6 +19,11 @@ if (CCache_FOUND)
     endif (OPENRCT2_USE_CCACHE)
 endif (CCache_FOUND)
 
+if (APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+endif ()
+
 project(openrct2 CXX)
 
 include(cmake/platform.cmake)
@@ -36,7 +41,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
-set(CMAKE_MACOSX_RPATH 1)
 
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
@@ -55,6 +59,7 @@ option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." 
 option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
+option(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON)
 
 # Options
 option(STATIC "Create a static build.")
@@ -93,6 +98,48 @@ endif ()
 
 if (APPIMAGE)
     set(CMAKE_INSTALL_RPATH "$ORIGIN/../lib")
+endif ()
+
+if (APPLE AND MACOS_USE_DEPENDENCIES)
+    # if we're building on macOS, then we need the dependencies
+    # update dylibs
+    set(MACOS_DYLIBS_VERSION "26")
+    set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
+    set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+    if (NOT EXISTS ${MACOS_DYLIBS_DIR})
+        set(DOWNLOAD_DYLIBS 1)
+    else ()
+        file(READ "${MACOS_DYLIBS_DIR}/libversion" MACOS_DYLIBS_CACHED_VERSION)
+        if (NOT ${MACOS_DYLIBS_CACHED_VERSION} STREQUAL ${MACOS_DYLIBS_VERSION})
+        message("Cached macOS dylibs out of date")
+        set(DOWNLOAD_DYLIBS 1)
+        endif ()
+    endif ()
+    if (DOWNLOAD_DYLIBS)
+        message("Downloading macOS dylibs")
+        file(DOWNLOAD "${MACOS_DYLIBS_URL}" "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+        file(ARCHIVE_EXTRACT
+            INPUT "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}"
+            DESTINATION "${MACOS_DYLIBS_DIR}"
+        )
+        file(WRITE
+            "${MACOS_DYLIBS_DIR}/libversion"
+            "${MACOS_DYLIBS_VERSION}"
+        )
+        file(REMOVE "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
+    endif ()
+    # TODO: make the above routine a function, use it for objects, title sequences, and languages
+
+    set(CMAKE_MACOSX_RPATH 1)
+    list(APPEND CMAKE_PREFIX_PATH "${MACOS_DYLIBS_DIR}")
+    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+
+    # the RPATH to be used when installing, but only if it's not a system directory
+    list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
+    if("${isSystemDir}" STREQUAL "-1")
+        set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+    endif("${isSystemDir}" STREQUAL "-1")
 endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
@@ -399,3 +446,10 @@ if (NOT DISABLE_GUI)
 endif()
 install(FILES "distribution/linux/openrct2-mimeinfo.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/mime/packages/" RENAME "openrct2.xml")
 install(DIRECTORY "distribution/man/" DESTINATION "${CMAKE_INSTALL_MANDIR}/man6" FILES_MATCHING PATTERN "*.6")
+
+if (APPLE AND MACOS_USE_DEPENDENCIES)
+    # Note: dependencies may have the same names as system installed libraries
+    # (via homebrew). A local CMAKE_INSTALL_PREFIX is recommended to avoid issues
+    file(GLOB DYLIB_FILES "${MACOS_DYLIBS_DIR}/lib/*.dylib")
+    install(FILES ${DYLIB_FILES} DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+endif()
