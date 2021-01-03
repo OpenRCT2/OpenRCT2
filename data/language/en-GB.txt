@@ -3655,11 +3655,12 @@ STR_6400    :I have the GOG offline installer for RollerCoaster Tycoon 2 downloa
 STR_6401    :I have RollerCoaster Tycoon 2 installed already
 STR_6402    :OpenRCT2 Data Setup
 STR_6403    :Select which applies best to you
-STR_6404    :Please select GOG RollerCoaster Tycoon 2 installer
+STR_6404    :Please select the GOG RollerCoaster Tycoon 2 installer.
 STR_6405    :Select GOG Installer
 STR_6406    :GOG RollerCoaster Tycoon 2 Installer
 STR_6407    :This may take a few minutes.
-STR_6408    :Please install innoextract to extract GOG Installer.
+STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2.
+STR_6409    :The selected file is not the offline GOG Installer for RollerCoaster Tycoon 2. You may have downloaded the GOG Galaxy downloader stub or selected the wrong file.
 
 #############
 # Scenarios #
