@@ -155,9 +155,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
-      # Note: Discord_RPC can be enabled soon, requires one more CMakeLists update
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DDISABLE_DISCORD_RPC=on -DCMAKE_BUILD_TYPE=MinSizeRel
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests

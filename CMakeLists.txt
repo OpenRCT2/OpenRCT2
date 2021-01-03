@@ -207,9 +207,11 @@ if (NOT DISABLE_DISCORD_RPC)
             add_definitions(-D__ENABLE_DISCORD__)
             include_directories(DISCORDRPC_PROCESS_INCLUDES)
         endif()
-    endif()
-
-    if (NOT HAVE_DISCORD_RPC AND EXISTS "${ROOT_DIR}/discord-rpc")
+    elseif (APPLE AND MACOS_USE_DEPENDENCIES)
+        add_definitions(-D__ENABLE_DISCORD__)
+        set(HAVE_DISCORD_RPC TRUE)
+        message("Building with libdiscord-rpc.dylib")
+    elseif(NOT HAVE_DISCORD_RPC AND EXISTS "${ROOT_DIR}/discord-rpc")
         # Don't build discord's examples, some of which are in C and do not honour
         # the flags we set for C++. Also we don't use the provided examples.
         set(BUILD_EXAMPLES OFF CACHE BOOL "Build example apps")
