@@ -3905,6 +3905,16 @@ enum
 
     STR_NEEDS_RCT2_FILES_MANUAL = 6399,
 
+    STR_OBJECTIVE_PROGRESS_LABEL = 6400,
+    STR_OBJECTIVE_PROGRESS_NONE = 6401,
+    STR_OBJECTIVE_PROGRESS_GUESTS = 6402,
+    STR_OBJECTIVE_PROGRESS_RATING = 6403,
+    STR_OBJECTIVE_PROGRESS_PARK_VALUE = 6404,
+    STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT = 6405,
+    STR_OBJECTIVE_PROGRESS_MONTHLY_RIDE_INCOME = 6406,
+    STR_OBJECTIVE_PROGRESS_LOAN = 6407,
+    STR_OBJECTIVE_PROGRESS_SHOP_INCOME = 6408,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

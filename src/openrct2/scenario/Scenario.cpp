@@ -749,6 +749,50 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     return ObjectiveStatus::Undecided;
 }
 
+int Objective::Get10RollerCoastersProgress() const
+{
+    return Get10RollerCoastersLengthProgress(6, false);
+}
+
+int Objective::Get10RollerCoastersLengthProgress() const
+{
+    return Get10RollerCoastersLengthProgress(7, true);
+}
+
+int Objective::Get10RollerCoastersLengthProgress(int rating, bool checklength) const
+{
+    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    auto rcs = 0;
+    for (const auto& ride : GetRideManager())
+    {
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(rating, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
+        {
+            auto rideEntry = ride.GetRideEntry();
+            if (rideEntry != nullptr)
+            {
+                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
+                {
+                    if (checklength)
+                    {
+                        if ((ride_get_total_length(&ride) >> 16) >= MinimumLength)
+                        {
+                            type_already_counted[ride.subtype] = true;
+                            rcs++;
+                        }
+                    }
+                    else
+                    {
+                        type_already_counted[ride.subtype] = true;
+                        rcs++;
+                    }
+                }
+            }
+        }
+    }
+
+    return rcs;
+}
+
 /**
  * Checks if there are 10 rollercoasters of different subtype with
  * excitement >= 600 .
@@ -756,24 +800,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
  **/
 ObjectiveStatus Objective::Check10RollerCoasters() const
 {
-    auto rcs = 0;
-    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
-    for (const auto& ride : GetRideManager())
-    {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
-                {
-                    type_already_counted[ride.subtype] = true;
-                    rcs++;
-                }
-            }
-        }
-    }
-    if (rcs >= 10)
+    if (Get10RollerCoastersLengthProgress(6, false) >= 10)
     {
         return ObjectiveStatus::Success;
     }
@@ -838,10 +865,14 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
     return ObjectiveStatus::Undecided;
 }
 
+money32 Objective::GetMonthlyRideIncomeProgress() const
+{
+    return gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
+}
+
 ObjectiveStatus Objective::CheckMonthlyRideIncome() const
 {
-    money32 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
-    if (lastMonthRideIncome >= Currency)
+    if (GetMonthlyRideIncomeProgress() >= Currency)
     {
         return ObjectiveStatus::Success;
     }
@@ -856,27 +887,7 @@ ObjectiveStatus Objective::CheckMonthlyRideIncome() const
  */
 ObjectiveStatus Objective::Check10RollerCoastersLength() const
 {
-    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
-    auto rcs = 0;
-    for (const auto& ride : GetRideManager())
-    {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
-                {
-                    if ((ride_get_total_length(&ride) >> 16) >= MinimumLength)
-                    {
-                        type_already_counted[ride.subtype] = true;
-                        rcs++;
-                    }
-                }
-            }
-        }
-    }
-    if (rcs >= 10)
+    if (Get10RollerCoastersLengthProgress() >= 10)
     {
         return ObjectiveStatus::Success;
     }
@@ -884,7 +895,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     return ObjectiveStatus::Undecided;
 }
 
-ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
+int Objective::GetFinish5RollerCoastersProgress() const
 {
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
@@ -904,7 +915,13 @@ ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
             }
         }
     }
-    if (rcs >= 5)
+
+    return rcs;
+}
+
+ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
+{
+    if (GetFinish5RollerCoastersProgress() >= 5)
     {
         return ObjectiveStatus::Success;
     }
@@ -925,7 +942,7 @@ ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
     return ObjectiveStatus::Undecided;
 }
 
-ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
+int32_t Objective::GetMonthlyShopIncomeProgress() const
 {
     money32* lastMonthExpenditure = gExpenditureTable[1];
     int32_t lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
@@ -933,7 +950,12 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
         + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
 
-    if (lastMonthProfit >= Currency)
+    return lastMonthProfit;
+}
+
+ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
+{
+    if (GetMonthlyShopIncomeProgress() >= Currency)
     {
         return ObjectiveStatus::Success;
     }

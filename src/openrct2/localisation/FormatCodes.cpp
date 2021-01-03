@@ -35,6 +35,7 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
     { "COMMA2DP32",           FormatToken::Comma2dp32,          },
     { "COMMA16",              FormatToken::Comma16,             },
     { "UINT16",               FormatToken::UInt16,              },
+    { "UINT32",               FormatToken::UInt32,              },
     { "CURRENCY2DP",          FormatToken::Currency2dp,         },
     { "CURRENCY",             FormatToken::Currency,            },
     { "STRINGID",             FormatToken::StringId,            },
@@ -119,6 +120,7 @@ bool FormatTokenTakesArgument(FormatToken token)
         case FormatToken::Comma2dp32:
         case FormatToken::Comma16:
         case FormatToken::UInt16:
+        case FormatToken::UInt32:
         case FormatToken::Currency2dp:
         case FormatToken::Currency:
         case FormatToken::StringId:

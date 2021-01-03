@@ -1394,10 +1394,10 @@ static void window_park_objective_resize(rct_window* w)
 {
 #ifndef NO_TTF
     if (gCurrentTTFFontSet != nullptr)
-        window_set_resize(w, 230, 270, 230, 270);
+        window_set_resize(w, 230, 300, 230, 300);
     else
 #endif
-        window_set_resize(w, 230, 226, 230, 226);
+        window_set_resize(w, 230, 250, 230, 250);
 }
 
 /**
@@ -1493,6 +1493,131 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords.y += gfx_draw_string_left_wrapped(
         dpi, ft.Data(), screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
+    screenCoords.y += 5;
+
+    // Your progress
+    gfx_draw_string_left(dpi, STR_OBJECTIVE_PROGRESS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    screenCoords.y += LIST_ROW_HEIGHT;
+
+    // Progress
+    switch (gScenarioObjective.Type)
+    {
+        case OBJECTIVE_NONE:
+        case OBJECTIVE_HAVE_FUN:
+        case OBJECTIVE_BUILD_THE_BEST:
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, nullptr, screenCoords, 221, STR_OBJECTIVE_PROGRESS_NONE, COLOUR_BLACK);
+            break;
+        case OBJECTIVE_GUESTS_BY:
+        case OBJECTIVE_GUESTS_AND_RATING:
+        {
+            ft = Formatter();
+            ft.Add<uint32_t>(gNumGuestsInPark);
+            ft.Add<uint16_t>(gScenarioObjective.NumGuests);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_GUESTS, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            ft = Formatter();
+            ft.Add<uint16_t>(gParkRating);
+
+            if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
+            {
+                ft.Add<int32_t>(600);
+            }
+            else
+            {
+                ft.Add<int32_t>(700);
+            }
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_RATING, COLOUR_BLACK);
+
+            break;
+        }
+        case OBJECTIVE_PARK_VALUE_BY:
+        {
+            ft = Formatter();
+            ft.Add<money32>(gParkValue);
+            ft.Add<money32>(gScenarioObjective.Currency);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_PARK_VALUE, COLOUR_BLACK);
+
+            break;
+        }
+        case OBJECTIVE_10_ROLLERCOASTERS:
+        {
+            ft = Formatter();
+            ft.Add<int32_t>(gScenarioObjective.Get10RollerCoastersProgress());
+            ft.Add<int32_t>(10);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            break;
+        }
+        case OBJECTIVE_MONTHLY_RIDE_INCOME:
+        {
+            ft = Formatter();
+            ft.Add<money32>(gScenarioObjective.GetMonthlyRideIncomeProgress());
+            ft.Add<money32>(gScenarioObjective.Currency);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_MONTHLY_RIDE_INCOME, COLOUR_BLACK);
+            break;
+        }
+        case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+        {
+            ft = Formatter();
+            ft.Add<int32_t>(gScenarioObjective.Get10RollerCoastersLengthProgress());
+            ft.Add<int32_t>(10);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            break;
+        }
+        case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+        {
+            ft = Formatter();
+            ft.Add<int32_t>(gScenarioObjective.GetFinish5RollerCoastersProgress());
+            ft.Add<int32_t>(5);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            break;
+        }
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+        {
+            ft = Formatter();
+            ft.Add<money32>(gBankLoan);
+            ft.Add<money32>(0);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_LOAN, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            ft = Formatter();
+            ft.Add<money32>(gParkValue);
+            ft.Add<money32>(gScenarioObjective.Currency);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_PARK_VALUE, COLOUR_BLACK);
+            break;
+        }
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+        {
+            ft = Formatter();
+            ft.Add<money32>(gScenarioObjective.GetMonthlyShopIncomeProgress());
+            ft.Add<money32>(gScenarioObjective.Currency);
+
+            screenCoords.y += gfx_draw_string_left_wrapped(
+                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_SHOP_INCOME, COLOUR_BLACK);
+            break;
+        }
+        default:
+            break;
+    }
     screenCoords.y += 5;
 
     // Objective outcome

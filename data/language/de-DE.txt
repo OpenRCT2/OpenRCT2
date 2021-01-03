@@ -3648,6 +3648,15 @@ STR_6396    :Bildschirmschoner und -stromsparen deaktivieren
 STR_6397    :Falls ausgewählt, werden der Bildschirmschoner und andere Bildschirmstromsparfunktionen blockiert, solange OpenRCT2 läuft.
 STR_6398    :Datei enthält nicht unterstützte Fahrgeschäfttypen. Bitte aktualisieren Sie zu einer neueren Version von OpenRCT2.
 STR_6399    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2, um zu funktionieren. Bitte setzen Sie die „game_path“-Variable in config.ini auf das Verzeichnis, in das Sie RollerCoaster Tycoon 2 installiert haben, dann starten Sie OpenRCT2 neu.
+STR_6400    :{WINDOW_COLOUR_2}Ihr Fortschritt:
+STR_6401    :{BLACK}-
+STR_6402    :{BLACK}Gäste: {UINT32} von {COMMA16}
+STR_6403    :{BLACK}Bewertung: {COMMA16} von {INT32}
+STR_6404    :{BLACK}Parkwert: {CURRENCY} von {CURRENCY}
+STR_6405    :{BLACK}Achterbahnen: {INT32} von {INT32}
+STR_6406    :{BLACK}Fahrteinnahmen: {CURRENCY} von {CURRENCY}
+STR_6407    :{BLACK}Darlehen: {CURRENCY} von {CURRENCY}
+STR_6408    :{BLACK}Gesamtverkäufe: {CURRENCY} von {CURRENCY}
 
 #############
 # Scenarios #
