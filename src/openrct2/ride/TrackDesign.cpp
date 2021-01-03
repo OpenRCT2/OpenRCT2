@@ -104,11 +104,11 @@ static void track_design_preview_clear_map();
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
 {
     type = ride.type;
-    auto object = object_entry_get_entry(ObjectType::Ride, ride.subtype);
+    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
 
     // Note we are only copying rct_object_entry in size and
     // not the extended as we don't need the chunk size.
-    std::memcpy(&vehicle_object, object, sizeof(rct_object_entry));
+    std::memcpy(&vehicle_object, object->GetObjectEntry(), sizeof(rct_object_entry));
 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;

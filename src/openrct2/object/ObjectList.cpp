@@ -99,7 +99,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry
         auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
         if (loadedObj != nullptr)
         {
-            auto thisEntry = object_entry_get_entry(objectType, i);
+            auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
             if (object_entry_compare(thisEntry, entry))
             {
                 *entry_type = objectType;
@@ -139,7 +139,7 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
     ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
-    return object_entry_get_entry(objectType, entryIndex);
+    return object_entry_get_object(objectType, entryIndex)->GetObjectEntry();
 }
 
 void* get_loaded_object_chunk(size_t index)
@@ -175,14 +175,8 @@ void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
     return result;
 }
 
-const rct_object_entry* object_entry_get_entry(ObjectType objectType, ObjectEntryIndex index)
+const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index)
 {
-    const rct_object_entry* result = nullptr;
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(objectType, index);
-    if (obj != nullptr)
-    {
-        result = obj->GetObjectEntry();
-    }
-    return result;
+    return objectMgr.GetLoadedObject(objectType, index);
 }

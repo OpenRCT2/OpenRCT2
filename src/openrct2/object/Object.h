@@ -353,4 +353,4 @@ const rct_object_entry* object_list_find(rct_object_entry* entry);
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
-const rct_object_entry* object_entry_get_entry(ObjectType objectType, ObjectEntryIndex index);
+const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);
