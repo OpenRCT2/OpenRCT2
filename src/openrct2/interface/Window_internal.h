@@ -14,6 +14,8 @@
 #include <list>
 #include <memory>
 
+enum class TileInspectorPage : int16_t;
+
 struct ResearchItem;
 struct rct_object_entry;
 
@@ -57,7 +59,11 @@ struct rct_window
         error_variables error;
         void* custom_info;
     };
-    int16_t page;
+    union
+    {
+        int16_t page;
+        TileInspectorPage tileInspectorPage;
+    };
     union
     {
         int16_t picked_peep_old_x; // staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
