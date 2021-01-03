@@ -120,7 +120,7 @@ jobs:
           name: "OpenRCT2-NT5.1"
           path: bin/openrct2.exe
   macos-xcode:
-    name: macOS (Xcode)
+    name: macOS (x64) using Xcode
     runs-on: macos-latest
     needs: [check-code-formatting]
     steps:
@@ -149,7 +149,7 @@ jobs:
               echo 'Not going to push build'
           fi
   macos-cmake:
-    name: macOS (cmake)
+    name: macOS (x64) using CMake
     runs-on: macos-latest
     needs: [check-code-formatting]
     steps:
