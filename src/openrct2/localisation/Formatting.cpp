@@ -373,7 +373,7 @@ namespace OpenRCT2
         } while (num != 0 && i < sizeof(buffer));
 
         // Finally reverse append the string
-        for (int64_t j = static_cast<int64_t>(i - 1); j >= 0; j--)
+        for (int32_t j = static_cast<int32_t>(i - 1); j >= 0; j--)
         {
             ss << buffer[j];
         }
@@ -483,7 +483,6 @@ namespace OpenRCT2
         switch (token)
         {
             case FormatToken::UInt16:
-            case FormatToken::UInt32:
             case FormatToken::Int32:
                 if constexpr (std::is_integral<T>())
                 {
@@ -649,15 +648,7 @@ namespace OpenRCT2
 
     static void FormatArgumentAny(FormatBuffer& ss, FormatToken token, const FormatArg_t& value)
     {
-        if (std::holds_alternative<uint32_t>(value))
-        {
-            FormatArgument(ss, token, std::get<uint32_t>(value));
-        }
-        else if (std::holds_alternative<int64_t>(value))
-        {
-            FormatArgument(ss, token, std::get<int64_t>(value));
-        }
-        else if (std::holds_alternative<uint16_t>(value))
+        if (std::holds_alternative<uint16_t>(value))
         {
             FormatArgument(ss, token, std::get<uint16_t>(value));
         }
@@ -766,9 +757,6 @@ namespace OpenRCT2
                 case FormatToken::DurationShort:
                 case FormatToken::DurationLong:
                     anyArgs.push_back(ReadFromArgs<uint16_t>(args));
-                    break;
-                case FormatToken::UInt32:
-                    anyArgs.push_back(ReadFromArgs<uint32_t>(args));
                     break;
                 case FormatToken::Comma16:
                 case FormatToken::Length:
