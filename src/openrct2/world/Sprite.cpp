@@ -792,6 +792,8 @@ void sprite_remove(SpriteBase* sprite)
         peep->SetName({});
     }
 
+    EntityTweener::Get().RemoveEntity(sprite);
+
     move_sprite_to_list(sprite, EntityListId::Free);
     sprite->sprite_identifier = SpriteIdentifier::Null;
     _spriteFlashingList[sprite->sprite_index] = false;
@@ -925,15 +927,6 @@ uint16_t remove_floating_sprites()
     return removed;
 }
 
-static bool IsValidEntity(SpriteBase* ent)
-{
-    if (ent->sprite_identifier == SpriteIdentifier::Null)
-        return false;
-    if (ent->sprite_index == SPRITE_INDEX_NULL)
-        return false;
-    return true;
-}
-
 void EntityTweener::PopulateEntities(EntityListId id)
 {
     for (auto ent : EntityList(id))
@@ -954,9 +947,9 @@ void EntityTweener::PreTick()
 
 void EntityTweener::PostTick()
 {
-    for (auto ent : _ents)
+    for (auto* ent : _ents)
     {
-        if (!IsValidEntity(ent))
+        if (ent == nullptr)
         {
             // Sprite was removed, add a dummy position to keep the index aligned.
             _postPos.emplace_back(0, 0, 0);
@@ -968,17 +961,27 @@ void EntityTweener::PostTick()
     }
 }
 
+void EntityTweener::RemoveEntity(SpriteBase* entity)
+{
+    if (entity->sprite_identifier != SpriteIdentifier::Peep && entity->sprite_identifier != SpriteIdentifier::Vehicle)
+    {
+        // Only peeps and vehicles are tweened, bail if type is incorrect.
+        return;
+    }
+
+    auto it = std::find(_ents.begin(), _ents.end(), entity);
+    if (it != _ents.end())
+        *it = nullptr;
+}
+
 void EntityTweener::Tween(float alpha)
 {
     const float inv = (1.0f - alpha);
     for (size_t i = 0; i < _ents.size(); ++i)
     {
         auto* ent = _ents[i];
-        if (!IsValidEntity(ent))
-        {
-            // Sprite was removed, leave untouched.
+        if (ent == nullptr)
             continue;
-        }
 
         auto& posA = _prePos[i];
         auto& posB = _postPos[i];
@@ -1000,11 +1003,8 @@ void EntityTweener::Restore()
     for (size_t i = 0; i < _ents.size(); ++i)
     {
         auto* ent = _ents[i];
-        if (!IsValidEntity(ent))
-        {
-            // Sprite was removed, leave untouched.
+        if (ent == nullptr)
             continue;
-        }
 
         sprite_set_coordinates(_postPos[i], ent);
         ent->Invalidate();

@@ -387,6 +387,7 @@ public:
 
     void PreTick();
     void PostTick();
+    void RemoveEntity(SpriteBase* entity);
     void Tween(float alpha);
     void Restore();
     void Reset();
