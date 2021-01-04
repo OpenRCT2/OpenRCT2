@@ -3484,7 +3484,7 @@ STR_6226    :Aktiver tidlig scenarie færdiggørelse
 STR_6227    :Udløser scenarie færdiggørelse, når alle scenarie mål er nået før tiden løber ud.
 STR_6228    :Scenarie Indstillinger
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frossen
 STR_6233    :Beskåret synsfelt

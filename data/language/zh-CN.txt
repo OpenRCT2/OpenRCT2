@@ -3493,7 +3493,7 @@ STR_6226    :允许剧情提前完成
 STR_6227    :当所有剧情目标在预定时间之前达成时将触发剧情完成.
 STR_6228    :剧情选项
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :一动不动
 STR_6233    :剖视图视角

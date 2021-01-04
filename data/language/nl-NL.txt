@@ -3483,7 +3483,7 @@ STR_6226    :Scenario’s mogen vervroegd voltooid worden
 STR_6227    :Als dit is ingeschakeld, zal er elke dag gecheckt worden of alle scenariodoelen zijn behaald, in plaats van aan het einde van de vermelde periode.
 STR_6228    :Scenario-opties
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Nul
 STR_6233    :Opengewerkte weergave

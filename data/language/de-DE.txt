@@ -3481,7 +3481,7 @@ STR_6226    :Vorzeitiges Abschließen von Szenarios aktivieren
 STR_6227    :Aktiviert den Abschluss eines Szenarios bei erreichen aller Ziele, auch wenn das Zieldatum noch nicht erreicht wurde.
 STR_6228    :Szenario-Optionen
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Eingefroren
 STR_6233    :Schnittansicht

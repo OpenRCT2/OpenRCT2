@@ -3484,7 +3484,7 @@ STR_6226    :Habilitar conclusão antecipada de cenário
 STR_6227    :Ativa a conclusão do cenário quando todos os objetivos são alcançados antes da data prevista.
 STR_6228    :Opções de Cenário
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Congelado
 STR_6233    :Vista em corte

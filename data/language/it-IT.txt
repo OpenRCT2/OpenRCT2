@@ -3492,7 +3492,7 @@ STR_6226    :Attiva completamento anticipato dello scenario
 STR_6227    :Completa lo scenario non appena tutti gli obiettivi sono raggiunti, prima della data di scadenza.
 STR_6228    :Opzioni scenario
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Immobile
 STR_6233    :Visualizzazione spaccato
