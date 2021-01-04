@@ -41,7 +41,7 @@ TEST_F(FmtStringTests, iteration)
         actual += String::StdFormat("[%d:%s]", t.kind, std::string(t.text).c_str());
     }
 
-    ASSERT_EQ("[30:{BLACK}][1:Guests: ][8:{INT32}]", actual);
+    ASSERT_EQ("[29:{BLACK}][1:Guests: ][8:{INT32}]", actual);
 }
 
 TEST_F(FmtStringTests, iteration_escaped)
@@ -345,14 +345,6 @@ TEST_F(FormattingTests, format_number_basic)
     // test basic integral conversion
     FormatArgument<int32_t>(ss, FormatToken::UInt16, 123);
     ASSERT_STREQ("123", ss.data());
-}
-
-TEST_F(FormattingTests, format_number_large)
-{
-    std::stringstream ss;
-    // test basic integral conversion
-    FormatArgument<uint32_t>(ss, FormatToken::UInt32, 3123123123);
-    ASSERT_STREQ("3123123123", ss.str().c_str());
 }
 
 TEST_F(FormattingTests, format_number_basic_int32)
