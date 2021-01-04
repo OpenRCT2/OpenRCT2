@@ -71,11 +71,6 @@ template<> bool SpriteBase::Is<Duck>() const
     return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::Duck;
 }
 
-void Duck::Invalidate()
-{
-    Invalidate1();
-}
-
 bool Duck::IsFlying()
 {
     return this->state == DuckState::FlyAway || this->state == DuckState::FlyToWater;
@@ -131,7 +126,6 @@ void Duck::UpdateFlyToWater()
                 destination.z = z;
             }
             MoveTo(destination);
-            Invalidate();
         }
         else
         {
@@ -264,7 +258,6 @@ void Duck::UpdateFlyAway()
         if (map_is_location_valid(destination))
         {
             MoveTo(destination);
-            Invalidate();
         }
         else
         {

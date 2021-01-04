@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}Última quebra: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Quebra atual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Transportando:
 STR_1811    :Impossível construir isto aqui…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Objetos variados
 STR_1814    :Ações
 STR_1815    :Pensamentos
@@ -3307,7 +3307,7 @@ STR_6030    :Apanhador de cenário. Clique em qualquer cenário do mapa para sel
 STR_6031    :Descrição do Servidor:
 STR_6032    :Saudação do Servidor:
 STR_6033    :Caminho para a instalação do RCT1:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Por favor, selecione o diretório do seu RCT1
 STR_6036    :Limpar
 STR_6037    :O diretório selecionado não contém uma instalação válida de RollerCoaster 1.

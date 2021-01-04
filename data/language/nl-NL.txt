@@ -1184,7 +1184,7 @@ STR_1808    :{WINDOW_COLOUR_2}Laatste defect: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Huidig defect: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Heeft bij zich:
 STR_1811    :Kan dit hier niet bouwen…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
@@ -3306,7 +3306,7 @@ STR_6030    :Decorselector. Klik op een al geplaatst decorstuk om het te selecte
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
 STR_6033    :Locatie RCT1-bestanden:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :Wissen
 STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.

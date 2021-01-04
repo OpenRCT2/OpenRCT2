@@ -1186,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Última avería: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avería actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Lleva:
 STR_1811    :No puedes construir esto aquí…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Objetos misceláneos
 STR_1814    :Acciones
 STR_1815    :Pensamientos
@@ -3312,7 +3312,7 @@ STR_6030    :Selector de Escenario. Haz clic en cualquier escenario del mapa par
 STR_6031    :Descripción Servidor:
 STR_6032    :Msg. de Bienvenida:
 STR_6033    :Ruta de Instalación RCT1:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Por favor selecciona la carpeta de RCT1
 STR_6036    :Borrar
 STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1

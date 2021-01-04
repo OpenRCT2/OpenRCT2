@@ -1189,7 +1189,7 @@ STR_1808    :{WINDOW_COLOUR_2}Viimeisin konerikko: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nykyinen konerikko: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Kantaa:
 STR_1811    :Tätä ei voi rakentaa tähän…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Sekalaiset tavarat
 STR_1814    :Toiminnat
 STR_1815    :Ajatukset

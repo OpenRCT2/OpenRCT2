@@ -3,9 +3,11 @@
 - Feature: [#6677] Add Discord RPC to macOS builds.
 - Feature: [#6844] Enhanced track designer with ability to add/remove scenery and footpaths.
 - Feature: [#11859] Add on-ride photo section to Air Powered Vertical and Reverse Freefall Coaster.
+- Feature: [#12307] Allow extraction of GOG installer via innoextract (for Linux users).
 - Feature: [#13057] Make GameAction flags accessible by plugins.
 - Feature: [#13078] [Plugin] Add colour picker widget.
 - Feature: [#13376] Open custom window at specified tab.
+- Feature: [#13384] [Plugin] Expose all TileElement data.
 - Feature: [#13398] Add pause button to the Track Designer.
 - Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
 - Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
@@ -13,7 +15,9 @@
 - Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
 - Feature: [#13593] [Plugin] Add ability to read and change the position of ride vehicles.
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
+- Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
+- Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once (original bug).
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13102] Underflow on height chart (Ride measurements).
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.

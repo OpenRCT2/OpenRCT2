@@ -540,12 +540,10 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     if (chunk == nullptr)
         return;
 
-    auto entry = object_entry_get_entry(objectEntryType, researchItem->entryIndex);
-
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
 
-    auto* object = object_manager_get_loaded_object(entry);
+    const auto* object = object_entry_get_object(objectEntryType, researchItem->entryIndex);
     if (object != nullptr)
     {
         rct_drawpixelinfo clipDPI;
@@ -615,10 +613,6 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (researchItem.Equals(&_editorInventionsListDraggedItem))
             continue;
 
-        utf8 groupNameBuffer[256], vehicleNameBuffer[256];
-        utf8* groupNamePtr = groupNameBuffer;
-        utf8* vehicleNamePtr = vehicleNameBuffer;
-
         uint8_t colour;
         if (researchItem.IsAlwaysResearched())
         {
@@ -630,41 +624,37 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         }
         else
         {
-            // TODO: this is actually just a black colour.
-            colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
+            // TODO: this parameter by itself produces very light text.
+            // It needs a {BLACK} token in the string to work properly.
+            colour = COLOUR_BLACK;
             gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-            groupNamePtr = utf8_write_codepoint(groupNamePtr, colour);
-            vehicleNamePtr = utf8_write_codepoint(vehicleNamePtr, colour);
         }
 
-        rct_string_id itemNameId = researchItem.GetName();
+        const rct_string_id itemNameId = researchItem.GetName();
 
         if (researchItem.type == Research::EntryType::Ride
             && !RideTypeDescriptors[researchItem.baseRideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             const auto rideEntry = get_ride_entry(researchItem.entryIndex);
             const rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, rideEntry).Name;
-            format_string(
-                groupNamePtr, std::size(groupNameBuffer), STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME,
-                static_cast<const void*>(&rideTypeName));
-            format_string(vehicleNamePtr, std::size(vehicleNameBuffer), itemNameId, nullptr);
+
+            // Draw group name
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(rideTypeName);
+            DrawTextEllipsised(
+                dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft, colour);
+
+            // Draw vehicle name
+            ft = Formatter();
+            ft.Add<rct_string_id>(itemNameId);
+            DrawTextEllipsised(dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft, colour);
         }
         else
         {
-            format_string(groupNamePtr, std::size(groupNameBuffer), itemNameId, nullptr);
-            vehicleNamePtr = nullptr;
-        }
-
-        // Draw group name
-        gfx_clip_string(groupNameBuffer, columnSplitOffset);
-        gfx_draw_string(dpi, groupNameBuffer, colour, { 1, itemY });
-
-        // Draw vehicle name
-        if (vehicleNamePtr)
-        {
-            gfx_clip_string(vehicleNameBuffer, columnSplitOffset - 11);
-            gfx_draw_string(dpi, vehicleNameBuffer, colour, { columnSplitOffset + 1, itemY });
+            // Scenery group, flat ride or shop
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(itemNameId);
+            DrawTextEllipsised(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, colour);
         }
     }
 }

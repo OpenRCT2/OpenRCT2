@@ -1184,7 +1184,7 @@ STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
 STR_1811    :Can't build this here…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
@@ -3310,7 +3310,7 @@ STR_6030    :Pyntvelger. Klikk hvilken som helst pynt på kartet for å velge sa
 STR_6031    :Serverbeskrivelse:
 STR_6032    :Server-velkomstbeskjed:
 STR_6033    :Sti til RCT1 insallasjonsmappe:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Velg din RCT1-mappe
 STR_6036    :Visk ut
 STR_6037    :Vennligst velg en gyldig RCT1 mappe

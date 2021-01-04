@@ -71,7 +71,6 @@ struct Duck : SpriteGeneric
 
     void Update();
     uint32_t GetFrameImage(int32_t direction) const;
-    void Invalidate();
     bool IsFlying();
     void Remove();
 

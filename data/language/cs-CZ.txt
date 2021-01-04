@@ -1186,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Poslední porucha: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Současná porucha: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Návštěvník nese:
 STR_1811    :Tohle zde nelze postavit…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Ostatní objekty
 STR_1814    :Dle aktivity
 STR_1815    :Dle myšlenek
@@ -3308,7 +3308,7 @@ STR_6030    :Výběr kulis. Klikněte na jakoukoliv kulisu na mapě pro postaven
 STR_6031    :Popis serveru:
 STR_6032    :Uvítací zpráva serveru:
 STR_6033    :Cesta k RCT1 instalaci:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Prosím vyberte složku s RCT1
 STR_6036    :Zrušit
 STR_6037    :Vybraná složka neobsahuje instalaci RollerCoaster Tycoon 1.

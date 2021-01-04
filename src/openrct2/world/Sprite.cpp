@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -133,31 +133,47 @@ static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
     }
 }
 
-/**
- * Invalidate the sprite if at closest zoom.
- *  rct2: 0x006EC60B
- */
-void SpriteBase::Invalidate0()
+void SpriteBase::Invalidate()
 {
-    invalidate_sprite_max_zoom(this, 0);
-}
-
-/**
- * Invalidate sprite if at closest zoom or next zoom up from closest.
- *  rct2: 0x006EC53F
- */
-void SpriteBase::Invalidate1()
-{
-    invalidate_sprite_max_zoom(this, 1);
-}
-
-/**
- * Invalidate sprite if not at furthest zoom.
- *  rct2: 0x006EC473
- */
-void SpriteBase::Invalidate2()
-{
-    invalidate_sprite_max_zoom(this, 2);
+    int32_t maxZoom = 0;
+    switch (sprite_identifier)
+    {
+        case SpriteIdentifier::Vehicle:
+            maxZoom = 2;
+            break;
+        case SpriteIdentifier::Peep:
+            maxZoom = 0;
+            break;
+        case SpriteIdentifier::Misc:
+            switch (static_cast<MiscEntityType>(type))
+            {
+                case MiscEntityType::CrashedVehicleParticle:
+                case MiscEntityType::JumpingFountainWater:
+                case MiscEntityType::JumpingFountainSnow:
+                    maxZoom = 0;
+                    break;
+                case MiscEntityType::Duck:
+                    maxZoom = 1;
+                    break;
+                case MiscEntityType::SteamParticle:
+                case MiscEntityType::MoneyEffect:
+                case MiscEntityType::ExplosionCloud:
+                case MiscEntityType::CrashSplash:
+                case MiscEntityType::ExplosionFlare:
+                case MiscEntityType::Balloon:
+                    maxZoom = 2;
+                    break;
+                default:
+                    break;
+            }
+            break;
+        case SpriteIdentifier::Litter:
+            maxZoom = 0;
+            break;
+        default:
+            break;
+    }
+    invalidate_sprite_max_zoom(this, maxZoom);
 }
 
 /**
@@ -301,8 +317,8 @@ rct_sprite_checksum sprite_checksum()
                     copy.peep.Name = {};
 
                     // We set this to 0 because as soon the client selects a guest the window will remove the
-                    // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect
-                    // game state.
+                    // invalidation flags causing the sprite checksum to be different than on server, the flag does not
+                    // affect game state.
                     copy.peep.WindowInvalidateFlags = 0;
                 }
 
@@ -498,8 +514,8 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
 
     sprite->next = gSpriteListHead[static_cast<uint8_t>(
         newListIndex)]; // This sprite's next sprite is the old head, since we're the new head
-    gSpriteListHead[static_cast<uint8_t>(newListIndex)] = sprite->sprite_index; // Store this sprite's index as head of its new
-                                                                                // list
+    gSpriteListHead[static_cast<uint8_t>(newListIndex)] = sprite->sprite_index; // Store this sprite's index as head of its
+                                                                                // new list
 
     if (sprite->next != SPRITE_INDEX_NULL)
     {
@@ -527,9 +543,8 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
  */
 void SteamParticle::Update()
 {
-    Invalidate2();
-
     // Move up 1 z every 3 ticks (Starts after 4 ticks)
+    Invalidate();
     time_to_move++;
     if (time_to_move >= 4)
     {
@@ -568,7 +583,7 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
  */
 void ExplosionCloud::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 128;
     if (frame >= (36 * 128))
     {
@@ -601,7 +616,7 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
  */
 void ExplosionFlare::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 64;
     if (frame >= (124 * 64))
     {
@@ -715,7 +730,9 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
 }
 
 /**
- * Moves a sprite to a new location.
+ * Moves a sprite to a new location, invalidates the current position if valid
+ * and also the new position.
+ *
  *  rct2: 0x0069E9D3
  *
  * @param x (ax)
@@ -725,6 +742,12 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
  */
 void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
 {
+    if (x != LOCATION_NULL)
+    {
+        // Invalidate old position.
+        Invalidate();
+    }
+
     auto loc = newLocation;
     if (!map_is_location_valid(loc))
     {
@@ -743,6 +766,7 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     else
     {
         sprite_set_coordinates(loc, this);
+        Invalidate(); // Invalidate new position.
     }
 }
 
@@ -833,7 +857,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
 
         if (newestLitter != nullptr)
         {
-            newestLitter->Invalidate0();
+            newestLitter->Invalidate();
             sprite_remove(newestLitter);
         }
     }
@@ -849,7 +873,6 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     litter->sprite_identifier = SpriteIdentifier::Litter;
     litter->type = type;
     litter->MoveTo(offsetLitterPos);
-    litter->Invalidate0();
     litter->creationTick = gScenarioTicks;
 }
 
@@ -865,7 +888,7 @@ void litter_remove_at(const CoordsXYZ& litterPos)
         {
             if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
-                litter->Invalidate0();
+                litter->Invalidate();
                 sprite_remove(litter);
             }
         }
@@ -966,7 +989,7 @@ void sprite_position_tween_all(float alpha)
                   static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
                   static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
                 sprite);
-            sprite->Invalidate2();
+            sprite->Invalidate();
         }
     }
 }
@@ -981,7 +1004,7 @@ void sprite_position_tween_restore()
         auto* sprite = GetEntity(i);
         if (sprite != nullptr && sprite_should_tween(sprite))
         {
-            sprite->Invalidate2();
+            sprite->Invalidate();
 
             auto pos = _spritelocations2[i];
             sprite_set_coordinates(pos, sprite);

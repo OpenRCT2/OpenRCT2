@@ -1183,7 +1183,7 @@ STR_1808    :{WINDOW_COLOUR_2}最後の故障: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今の故障: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}所持品:
 STR_1811    :ここで建てることはできません。
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :雑貨のオブジェックト
 STR_1814    :活動
 STR_1815    :思考
@@ -3305,7 +3305,7 @@ STR_6030    :Scenery picker. Click any scenery on the map to select the same pie
 STR_6031    :サーバの説明:
 STR_6032    :サーバの挨拶:
 STR_6033    :RCT1インストールのパス:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1のダイレクトリーを選定します。
 STR_6036    :クリア
 STR_6037    :Please select a valid RCT1 directory

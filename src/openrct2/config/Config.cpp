@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
@@ -721,6 +722,39 @@ namespace Config
         }
         return std::string();
     }
+
+    static bool SelectGogInstaller(utf8* installerPath)
+    {
+        file_dialog_desc desc;
+        memset(&desc, 0, sizeof(desc));
+        desc.type = FileDialogType::Open;
+        desc.title = language_get_string(STR_SELECT_GOG_INSTALLER);
+        desc.filters[0].name = language_get_string(STR_GOG_INSTALLER);
+        desc.filters[0].pattern = "*.exe";
+        desc.filters[1].name = language_get_string(STR_ALL_FILES);
+        desc.filters[1].pattern = "*";
+        desc.filters[2].name = nullptr;
+
+        desc.initial_directory = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME).c_str();
+
+        return platform_open_common_file_dialog(installerPath, &desc, 4096);
+    }
+
+    static bool ExtractGogInstaller(const utf8* installerPath, const utf8* targetPath)
+    {
+        std::string path;
+        std::string output;
+
+        if (!Platform::FindApp("innoextract", &path))
+        {
+            log_error("Please install innoextract to extract files from GOG.");
+            return false;
+        }
+        int32_t exit_status = Platform::Execute(
+            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath, targetPath), &output);
+        log_info("Exit status %d", exit_status);
+        return exit_status == 0;
+    }
 } // namespace Config
 
 GeneralConfiguration gConfigGeneral;
@@ -816,13 +850,75 @@ bool config_find_or_browse_install_directory()
             while (true)
             {
                 uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
+                std::string gog = language_get_string(STR_OWN_ON_GOG);
+                std::string hdd = language_get_string(STR_INSTALLED_ON_HDD);
 
-                std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));
+                std::vector<std::string> options;
+                std::string chosenOption;
+
+                if (uiContext->HasMenuSupport())
+                {
+                    options.push_back(hdd);
+                    options.push_back(gog);
+                    int optionIndex = uiContext->ShowMenuDialog(
+                        options, language_get_string(STR_OPENRCT2_SETUP), language_get_string(STR_WHICH_APPLIES_BEST));
+                    if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
+                    {
+                        // graceful fallback if app errors or user exits out of window
+                        chosenOption = hdd;
+                    }
+                    else
+                    {
+                        chosenOption = options[optionIndex];
+                    }
+                }
+                else
+                {
+                    chosenOption = hdd;
+                }
+
+                std::string installPath;
+                if (chosenOption == hdd)
+                {
+                    installPath = uiContext->ShowDirectoryDialog(language_get_string(STR_PICK_RCT2_DIR));
+                }
+                else if (chosenOption == gog)
+                {
+                    // Check if innoextract is installed. If not, prompt the user to install it.
+                    std::string dummy;
+                    if (!Platform::FindApp("innoextract", &dummy))
+                    {
+                        uiContext->ShowMessageBox(format_string(STR_INSTALL_INNOEXTRACT, nullptr));
+                        return false;
+                    }
+
+                    const std::string dest = Path::Combine(
+                        GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+
+                    while (true)
+                    {
+                        uiContext->ShowMessageBox(language_get_string(STR_PLEASE_SELECT_GOG_INSTALLER));
+                        utf8 gogPath[4096];
+                        if (!Config::SelectGogInstaller(gogPath))
+                        {
+                            // The user clicked "Cancel", so stop trying.
+                            return false;
+                        }
+
+                        uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+
+                        if (Config::ExtractGogInstaller(gogPath, dest.c_str()))
+                            break;
+
+                        uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
+                    }
+
+                    installPath = Path::Combine(dest, "app");
+                }
                 if (installPath.empty())
                 {
                     return false;
                 }
-
                 Memory::Free(gConfigGeneral.rct2_path);
                 gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
 

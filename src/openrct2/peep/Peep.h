@@ -735,11 +735,9 @@ public: // Peep
     std::optional<CoordsXY> UpdateAction();
     void SetState(PeepState new_state);
     void Remove();
-    void Invalidate();
     void UpdateCurrentActionSpriteType();
     void SwitchToSpecialSprite(uint8_t special_sprite_id);
     void StateReset();
-    void MoveTo(const CoordsXYZ& newLocation);
     uint8_t GetNextDirection() const;
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;

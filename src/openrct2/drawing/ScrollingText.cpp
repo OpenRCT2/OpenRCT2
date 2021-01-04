@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ScrollingText.h"
+
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"
@@ -34,9 +36,7 @@ struct rct_draw_scroll_text
     uint8_t bitmap[64 * 40];
 };
 
-constexpr int32_t MAX_SCROLLING_TEXT_ENTRIES = 32;
-
-static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
+static rct_draw_scroll_text _drawScrollTextList[OpenRCT2::MaxScrollingTextEntries];
 static uint8_t _characterBitmaps[FONT_SPRITE_GLYPH_COUNT + SPR_G2_GLYPH_COUNT][8];
 static uint32_t _drawSCrollNextIndex = 0;
 static std::mutex _scrollingTextMutex;
@@ -97,24 +97,26 @@ void scrolling_text_initialise_bitmaps()
         }
     }
 
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (int32_t i = 0; i < OpenRCT2::MaxScrollingTextEntries; i++)
     {
-        int32_t imageId = SPR_SCROLLING_TEXT_START + i;
-        const rct_g1_element* g1original = gfx_get_g1_element(imageId);
-        if (g1original != nullptr)
-        {
-            rct_g1_element g1 = *g1original;
-            g1.offset = _drawScrollTextList[i].bitmap;
-            g1.width = 64;
-            g1.height = 40;
-            g1.offset[0] = 0xFF;
-            g1.offset[1] = 0xFF;
-            g1.offset[14] = 0;
-            g1.offset[15] = 0;
-            g1.offset[16] = 0;
-            g1.offset[17] = 0;
-            gfx_set_g1_element(imageId, &g1);
-        }
+        const int32_t imageId = SPR_SCROLLING_TEXT_START + i;
+
+        // Initialize the scrolling text sprite.
+        rct_g1_element g1{};
+        g1.offset = _drawScrollTextList[i].bitmap;
+        g1.x_offset = -32;
+        g1.y_offset = 0;
+        g1.flags = G1_FLAG_BMP;
+        g1.width = 64;
+        g1.height = 40;
+        g1.offset[0] = 0xFF;
+        g1.offset[1] = 0xFF;
+        g1.offset[14] = 0;
+        g1.offset[15] = 0;
+        g1.offset[16] = 0;
+        g1.offset[17] = 0;
+
+        gfx_set_g1_element(imageId, &g1);
     }
 }
 
@@ -136,13 +138,13 @@ static int32_t scrolling_text_get_matching_or_oldest(
 {
     uint32_t oldestId = 0xFFFFFFFF;
     int32_t scrollIndex = -1;
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (size_t i = 0; i < std::size(_drawScrollTextList); i++)
     {
         rct_draw_scroll_text* scrollText = &_drawScrollTextList[i];
         if (oldestId >= scrollText->id)
         {
             oldestId = scrollText->id;
-            scrollIndex = i;
+            scrollIndex = static_cast<int32_t>(i);
         }
 
         // If exact match return the matching index
@@ -151,7 +153,7 @@ static int32_t scrolling_text_get_matching_or_oldest(
             && scrollText->colour == colour && scrollText->position == scroll && scrollText->mode == scrollingMode)
         {
             scrollText->id = _drawSCrollNextIndex;
-            return i + SPR_SCROLLING_TEXT_START;
+            return static_cast<int32_t>(i + SPR_SCROLLING_TEXT_START);
         }
     }
     return scrollIndex;
@@ -1437,9 +1439,8 @@ static constexpr const int16_t* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
 
 void scrolling_text_invalidate()
 {
-    for (int32_t i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    for (auto& scrollText : _drawScrollTextList)
     {
-        rct_draw_scroll_text& scrollText = _drawScrollTextList[i];
         scrollText.string_id = 0;
         std::memset(scrollText.string_args, 0, sizeof(scrollText.string_args));
     }

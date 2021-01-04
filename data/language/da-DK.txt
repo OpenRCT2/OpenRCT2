@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}Sidste nedbrud: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuværende nedbrud: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bærer:
 STR_1811    :Kan ikke bygge det her…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Forskellige objekter
 STR_1814    :Aktiviteter
 STR_1815    :Tanker
@@ -3307,7 +3307,7 @@ STR_6030    :Sceneri vælger. Klik på et sceneri på kortet for at vælge det s
 STR_6031    :Server Beskrivelse:
 STR_6032    :Server Velkomst:
 STR_6033    :Sti til RCT1 installation:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vælg venligst din RCT1 filmappe
 STR_6036    :Ryd
 STR_6037    :Den valgte folder indeholder ikke en gyldig, RollerCoaster Tycoon 1 installation.

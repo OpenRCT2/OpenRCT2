@@ -60,7 +60,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
  */
 void VehicleCrashParticle::Update()
 {
-    Invalidate0();
+    Invalidate();
     time_to_live--;
     if (time_to_live == 0)
     {
@@ -107,7 +107,6 @@ void VehicleCrashParticle::Update()
         newLoc.z = landZ;
     }
     MoveTo(newLoc);
-    Invalidate0();
 
     frame += 85;
     if (frame >= 3072)
@@ -141,7 +140,7 @@ void crash_splash_create(const CoordsXYZ& splashPos)
  */
 void CrashSplashParticle::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 85;
     if (frame >= 7168)
     {

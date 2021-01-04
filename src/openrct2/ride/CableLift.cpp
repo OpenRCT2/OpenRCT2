@@ -431,8 +431,6 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 }
             }
             vehicle->MoveTo(unk_F64E20);
-
-            vehicle->Invalidate();
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

@@ -318,7 +318,6 @@ struct Vehicle : SpriteBase
     Vehicle* GetHead();
     const Vehicle* GetHead() const;
     Vehicle* GetCar(size_t carIndex) const;
-    void Invalidate();
     void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const;

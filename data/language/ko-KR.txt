@@ -1187,7 +1187,7 @@ STR_1808    :{WINDOW_COLOUR_2}최근 고장: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}현재 고장: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}보유 중:
 STR_1811    :여기에 건설할 수 없습니다…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :기타 오브젝트
 STR_1814    :행동
 STR_1815    :생각
@@ -3310,7 +3310,7 @@ STR_6030    :오브젝트 스포이드 기능입니다. 지도 상의 오브젝�
 STR_6031    :서버 설명:
 STR_6032    :서버 인사말:
 STR_6033    :RCT1 설치 경로:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :RCT1이 설치된 폴더를 선택하세요
 STR_6036    :초기화
 STR_6037    :선택한 폴더에는 RollerCoaster Tycoon 1이 올바르게 설치되어 있지 않습니다.

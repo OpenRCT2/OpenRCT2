@@ -1184,7 +1184,7 @@ STR_1808    :{WINDOW_COLOUR_2}Senaste haveri: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuvarande haveri: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bär på:
 STR_1811    :Kan inte bygga detta här …
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Diverse saker
 STR_1814    :Handlingar
 STR_1815    :Tankar
@@ -3308,7 +3308,7 @@ STR_6030    :Dekorationsväljaren. Klicka på en dekoration på kartan för att 
 STR_6031    :Serverbeskrivning:
 STR_6032    :Serverhälsning:
 STR_6033    :Sökvägen till RCT1-mappen:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vänligen välj installationsmappen för RCT1
 STR_6036    :Rensa
 STR_6037    :Vänligen välj en giltig sökväg till RCT1-mappen

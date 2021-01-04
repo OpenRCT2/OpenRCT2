@@ -1179,7 +1179,7 @@ STR_1808    :{WINDOW_COLOUR_2}Előző meghibásodás: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Jelenlegi meghibásodás: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Nála lévő dolgok:
 STR_1811    :Nem építheted ide…
-STR_1812    :{STRINGID}
+STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
 STR_1813    :Egyéb objektumok
 STR_1814    :Tevékenységek
 STR_1815    :Gondolatok
@@ -3274,7 +3274,7 @@ STR_6030    :Díszletválasztó. Kattints bármelyik díszletre a térképen, ho
 STR_6031    :Szerver leírása:
 STR_6032    :Szerver üdvözlés:
 STR_6033    :Az RCT1 telepítési útvonala:
-STR_6034    :{STRING}
+STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Kérlek válaszd ki az RCT1 mappádat
 STR_6036    :Törlés
 STR_6037    :A kiválasztott könyvtár nem tartalmaz érvényes RollerCoaster Tycoon 1 telepítést.
