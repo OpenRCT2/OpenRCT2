@@ -3653,7 +3653,7 @@ STR_6398    :File contains unsupported ride types. Please update to a newer vers
 STR_6399    :OpenRCT2 needs files from the original RollerCoaster Tycoon 2 in order to work. Please set the “game_path” variable in config.ini to the directory where you installed RollerCoaster Tycoon 2, then restart OpenRCT2.
 STR_6400    :{WINDOW_COLOUR_2}Your Progress:
 STR_6401    :{BLACK}-
-STR_6402    :{BLACK}Guests: {UINT32} of {COMMA16}
+STR_6402    :{BLACK}Guests: {COMMA16} of {COMMA16}
 STR_6403    :{BLACK}Rating: {COMMA16} of {INT32}
 STR_6404    :{BLACK}Park value: {CURRENCY} of {CURRENCY}
 STR_6405    :{BLACK}Roller coasters: {INT32} of {INT32}
