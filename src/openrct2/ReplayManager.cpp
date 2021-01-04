@@ -530,7 +530,7 @@ namespace OpenRCT2
 
                 importer->Import();
 
-                sprite_position_tween_reset();
+                EntityTweener::Get().Reset();
 
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);

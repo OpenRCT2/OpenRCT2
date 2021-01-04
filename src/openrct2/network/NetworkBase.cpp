@@ -2718,7 +2718,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
         AutoCreateMapAnimations();
 
         // Read checksum
