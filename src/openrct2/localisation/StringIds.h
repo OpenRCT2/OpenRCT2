@@ -3916,6 +3916,16 @@ enum
     STR_INSTALL_INNOEXTRACT = 6408,
     STR_NOT_THE_GOG_INSTALLER = 6409,
 
+    STR_OBJECTIVE_PROGRESS_LABEL = 6410,
+    STR_OBJECTIVE_PROGRESS_NONE = 6411,
+    STR_OBJECTIVE_PROGRESS_GUESTS = 6412,
+    STR_OBJECTIVE_PROGRESS_RATING = 6413,
+    STR_OBJECTIVE_PROGRESS_PARK_VALUE = 6414,
+    STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT = 6415,
+    STR_OBJECTIVE_PROGRESS_MONTHLY_RIDE_INCOME = 6416,
+    STR_OBJECTIVE_PROGRESS_LOAN = 6417,
+    STR_OBJECTIVE_PROGRESS_SHOP_INCOME = 6418,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

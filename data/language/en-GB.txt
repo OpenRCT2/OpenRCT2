@@ -3661,6 +3661,15 @@ STR_6406    :GOG RollerCoaster Tycoon 2 Installer
 STR_6407    :This may take a few minutes.
 STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2.
 STR_6409    :The selected file is not the offline GOG Installer for RollerCoaster Tycoon 2. You may have downloaded the GOG Galaxy downloader stub or selected the wrong file.
+STR_6410    :{WINDOW_COLOUR_2}Your Progress:
+STR_6411    :{BLACK}-
+STR_6412    :{BLACK}Guests: {COMMA16} of {COMMA16}
+STR_6413    :{BLACK}Rating: {COMMA16} of {INT32}
+STR_6414    :{BLACK}Park value: {CURRENCY} of {CURRENCY}
+STR_6415    :{BLACK}Roller coasters: {INT32} of {INT32}
+STR_6416    :{BLACK}Ride income: {CURRENCY} of {CURRENCY}
+STR_6417    :{BLACK}Current loan: {CURRENCY} of {CURRENCY}
+STR_6418    :{BLACK}Combined income: {CURRENCY} of {CURRENCY}
 
 #############
 # Scenarios #
