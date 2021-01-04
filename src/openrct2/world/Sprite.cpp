@@ -939,7 +939,7 @@ void EntityTweener::PopulateEntities(EntityListId id)
     for (auto ent : EntityList(id))
     {
         _ents.push_back(&(*ent));
-        _prePos.push_back({ ent->x, ent->y, ent->z });
+        _prePos.emplace_back(ent->x, ent->y, ent->z);
     }
 }
 
@@ -959,11 +959,11 @@ void EntityTweener::PostTick()
         if (!IsValidEntity(ent))
         {
             // Sprite was removed, add a dummy position to keep the index aligned.
-            _postPos.push_back({});
+            _postPos.emplace_back(0, 0, 0);
         }
         else
         {
-            _postPos.push_back({ ent->x, ent->y, ent->z });
+            _postPos.emplace_back(ent->x, ent->y, ent->z);
         }
     }
 }
