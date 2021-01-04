@@ -765,7 +765,8 @@ int Objective::Get10RollerCoastersLengthProgress(int rating, bool checklength) c
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(rating, 00) && ride.subtype != RIDE_ENTRY_INDEX_NULL)
+        if (ride.status == RIDE_STATUS_OPEN && ride.excitement >= RIDE_RATING(rating, 00)
+            && ride.subtype != RIDE_ENTRY_INDEX_NULL)
         {
             auto rideEntry = ride.GetRideEntry();
             if (rideEntry != nullptr)
