@@ -402,12 +402,12 @@ private:
     ObjectiveStatus CheckFinish5RollerCoasters() const;
     ObjectiveStatus CheckRepayLoanAndParkValue() const;
     ObjectiveStatus CheckMonthlyFoodIncome() const;
-    int Get10RollerCoastersLengthProgress(int rating, bool checklength) const;
+    int32_t Get10RollerCoastersLengthProgress(int rating, bool checklength) const;
 
 public:
-    int Get10RollerCoastersProgress() const;
-    int Get10RollerCoastersLengthProgress() const;
-    int GetFinish5RollerCoastersProgress() const;
+    int32_t Get10RollerCoastersProgress() const;
+    int32_t Get10RollerCoastersLengthProgress() const;
+    int32_t GetFinish5RollerCoastersProgress() const;
     money32 GetMonthlyRideIncomeProgress() const;
     int32_t GetMonthlyShopIncomeProgress() const;
 };

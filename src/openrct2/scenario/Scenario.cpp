@@ -749,17 +749,17 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     return ObjectiveStatus::Undecided;
 }
 
-int Objective::Get10RollerCoastersProgress() const
+int32_t Objective::Get10RollerCoastersProgress() const
 {
     return Get10RollerCoastersLengthProgress(6, false);
 }
 
-int Objective::Get10RollerCoastersLengthProgress() const
+int32_t Objective::Get10RollerCoastersLengthProgress() const
 {
     return Get10RollerCoastersLengthProgress(7, true);
 }
 
-int Objective::Get10RollerCoastersLengthProgress(int rating, bool checklength) const
+int32_t Objective::Get10RollerCoastersLengthProgress(int rating, bool checklength) const
 {
     std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
     auto rcs = 0;
@@ -896,7 +896,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
     return ObjectiveStatus::Undecided;
 }
 
-int Objective::GetFinish5RollerCoastersProgress() const
+int32_t Objective::GetFinish5RollerCoastersProgress() const
 {
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
