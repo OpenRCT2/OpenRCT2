@@ -44,21 +44,20 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
     boxoffset.x = 0;
     boxoffset.y = 0;
     boxoffset.z = height;
-    int32_t baseImageid = 0;
+    uint32_t marker = 0;
     const int32_t rotation = session->CurrentRotation;
     if (gTrackDesignSaveMode)
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            baseImageid = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
+            marker = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
     if (tileElement->IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
-        baseImageid = CONSTRUCTION_MARKER;
+        marker = CONSTRUCTION_MARKER;
     }
-    uint32_t dword_F64EB0 = baseImageid;
 
     rct_scenery_entry* entry = tileElement->AsSmallScenery()->GetEntry();
 
@@ -67,7 +66,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
         return;
     }
 
-    baseImageid = entry->image + direction;
+    int32_t baseImageid = entry->image + direction;
     boxlength.x = 2;
     boxlength.y = 2;
     int8_t x_offset = 0;
@@ -149,9 +148,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             baseImageid |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
         }
     }
-    if (dword_F64EB0 != 0)
+    if (marker != 0)
     {
-        baseImageid = (baseImageid & 0x7FFFF) | dword_F64EB0;
+        baseImageid = (baseImageid & 0x7FFFF) | marker;
     }
     if (!(scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
@@ -162,7 +161,7 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
 
     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        if (dword_F64EB0 == 0)
+        if (marker == 0)
         {
             // Draw translucent overlay:
             // TODO: Name palette entries
@@ -184,9 +183,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             {
                 // 6E0512:
                 int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 4;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -196,27 +195,27 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             {
                 // 6E043B:
                 int32_t image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 8;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
                 image_id = direction + entry->image + 4;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
                     boxoffset.y, boxoffset.z);
 
                 image_id = ((gCurrentTicks / 2) & 0xF) + entry->image + 24;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -243,9 +242,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 }
 
                 image_id = image_id + entry->image + 68;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -257,9 +256,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                     image_id -= 60;
                 }
                 image_id = image_id + entry->image + 8;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -273,9 +272,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                 image_id += session->SpritePosition.y / 4;
                 image_id = (image_id / 4) & 15;
                 image_id += entry->image;
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 PaintAddImageAsChild(
                     session, image_id, x_offset, y_offset, boxlength.x, boxlength.y, boxlength.z - 1, height, boxoffset.x,
@@ -316,9 +315,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
                         image_id |= SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
                     }
                 }
-                if (dword_F64EB0 != 0)
+                if (marker != 0)
                 {
-                    image_id = (image_id & 0x7FFFF) | dword_F64EB0;
+                    image_id = (image_id & 0x7FFFF) | marker;
                 }
                 if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED))
                 {
@@ -352,9 +351,9 @@ void scenery_paint(paint_session* session, uint8_t direction, int32_t height, co
             {
                 supportImageColourFlags = SPRITE_ID_PALETTE_COLOUR_1(sceneryElement->GetPrimaryColour());
             }
-            if (dword_F64EB0 != 0)
+            if (marker != 0)
             {
-                supportImageColourFlags = dword_F64EB0;
+                supportImageColourFlags = marker;
             }
             if (direction & 1)
             {
