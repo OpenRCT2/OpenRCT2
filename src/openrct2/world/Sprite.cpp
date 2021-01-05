@@ -931,8 +931,8 @@ void EntityTweener::PopulateEntities(EntityListId id)
 {
     for (auto ent : EntityList(id))
     {
-        _ents.push_back(&(*ent));
-        _prePos.emplace_back(ent->x, ent->y, ent->z);
+        Entities.push_back(&(*ent));
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
     }
 }
 
@@ -947,16 +947,16 @@ void EntityTweener::PreTick()
 
 void EntityTweener::PostTick()
 {
-    for (auto* ent : _ents)
+    for (auto* ent : Entities)
     {
         if (ent == nullptr)
         {
             // Sprite was removed, add a dummy position to keep the index aligned.
-            _postPos.emplace_back(0, 0, 0);
+            PostPos.emplace_back(0, 0, 0);
         }
         else
         {
-            _postPos.emplace_back(ent->x, ent->y, ent->z);
+            PostPos.emplace_back(ent->x, ent->y, ent->z);
         }
     }
 }
@@ -969,22 +969,22 @@ void EntityTweener::RemoveEntity(SpriteBase* entity)
         return;
     }
 
-    auto it = std::find(_ents.begin(), _ents.end(), entity);
-    if (it != _ents.end())
+    auto it = std::find(Entities.begin(), Entities.end(), entity);
+    if (it != Entities.end())
         *it = nullptr;
 }
 
 void EntityTweener::Tween(float alpha)
 {
     const float inv = (1.0f - alpha);
-    for (size_t i = 0; i < _ents.size(); ++i)
+    for (size_t i = 0; i < Entities.size(); ++i)
     {
-        auto* ent = _ents[i];
+        auto* ent = Entities[i];
         if (ent == nullptr)
             continue;
 
-        auto& posA = _prePos[i];
-        auto& posB = _postPos[i];
+        auto& posA = PrePos[i];
+        auto& posB = PostPos[i];
 
         if (posA == posB)
             continue;
@@ -1000,22 +1000,22 @@ void EntityTweener::Tween(float alpha)
 
 void EntityTweener::Restore()
 {
-    for (size_t i = 0; i < _ents.size(); ++i)
+    for (size_t i = 0; i < Entities.size(); ++i)
     {
-        auto* ent = _ents[i];
+        auto* ent = Entities[i];
         if (ent == nullptr)
             continue;
 
-        sprite_set_coordinates(_postPos[i], ent);
+        sprite_set_coordinates(PostPos[i], ent);
         ent->Invalidate();
     }
 }
 
 void EntityTweener::Reset()
 {
-    _ents.clear();
-    _prePos.clear();
-    _postPos.clear();
+    Entities.clear();
+    PrePos.clear();
+    PostPos.clear();
 }
 
 static EntityTweener tweener;

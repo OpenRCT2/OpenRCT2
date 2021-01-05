@@ -375,9 +375,9 @@ public:
 
 class EntityTweener
 {
-    std::vector<SpriteBase*> _ents;
-    std::vector<CoordsXYZ> _prePos;
-    std::vector<CoordsXYZ> _postPos;
+    std::vector<SpriteBase*> Entities;
+    std::vector<CoordsXYZ> PrePos;
+    std::vector<CoordsXYZ> PostPos;
 
 private:
     void PopulateEntities(EntityListId id);
