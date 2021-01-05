@@ -3270,17 +3270,8 @@ void Vehicle::UpdateDeparting()
         case RideMode::PoweredLaunchBlockSectioned:
         case RideMode::LimPoweredLaunch:
         case RideMode::UpwardLaunch:
-            if (curRide->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
-            {
-                if ((curRide->launch_speed << 16) > velocity)
-                {
-                    acceleration = curRide->launch_speed << 13;
-                }
-                break;
-            }
-
             if ((curRide->launch_speed << 16) > velocity)
-                acceleration = curRide->launch_speed << 12;
+                acceleration = curRide->launch_speed << 13;
             break;
         case RideMode::DownwardLaunch:
             if (var_CE >= 1)
