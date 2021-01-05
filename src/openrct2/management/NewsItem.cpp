@@ -19,7 +19,6 @@
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../ride/Ride.h"
-#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Location.hpp"
 #include "../world/Sprite.h"

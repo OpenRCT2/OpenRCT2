@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../util/Util.h"
 
 #include <algorithm>
 #include <array>
@@ -38,6 +39,12 @@ namespace News
 
     constexpr size_t ItemTypeCount = static_cast<size_t>(News::ItemType::Count);
 
+    enum class ItemTypeProperty : uint8_t
+    {
+        HasLocation = 1,
+        HasSubject = 2,
+    };
+
     enum ItemFlags : uint8_t
     {
         HasButton = 1 << 0,
@@ -61,6 +68,29 @@ namespace News
             return Type == News::ItemType::Null;
         }
 
+        constexpr uint8_t GetTypeProperties() const
+        {
+            switch (Type)
+            {
+                case News::ItemType::Blank:
+                    return EnumValue(News::ItemTypeProperty::HasLocation);
+                case News::ItemType::Money:
+                case News::ItemType::Research:
+                case News::ItemType::Peeps:
+                case News::ItemType::Award:
+                case News::ItemType::Graph:
+                    return EnumValue(News::ItemTypeProperty::HasSubject);
+                case News::ItemType::Ride:
+                case News::ItemType::PeepOnRide:
+                case News::ItemType::Peep:
+                    return EnumValue(News::ItemTypeProperty::HasLocation) | EnumValue(News::ItemTypeProperty::HasSubject);
+                case News::ItemType::Null:
+                case News::ItemType::Count:
+                default:
+                    return 0;
+            }
+        }
+
         void SetFlags(uint8_t flag)
         {
             Flags |= flag;
@@ -68,34 +98,12 @@ namespace News
 
         constexpr bool TypeHasSubject() const
         {
-            switch (Type)
-            {
-                case News::ItemType::Money:
-                case News::ItemType::Research:
-                case News::ItemType::Peeps:
-                case News::ItemType::Award:
-                case News::ItemType::Graph:
-                case News::ItemType::Ride:
-                case News::ItemType::PeepOnRide:
-                case News::ItemType::Peep:
-                    return true;
-                default:
-                    return false;
-            }
+            return this->GetTypeProperties() & EnumValue(News::ItemTypeProperty::HasSubject);
         }
 
         constexpr bool TypeHasLocation() const
         {
-            switch (Type)
-            {
-                case News::ItemType::Blank:
-                case News::ItemType::Ride:
-                case News::ItemType::PeepOnRide:
-                case News::ItemType::Peep:
-                    return true;
-                default:
-                    return false;
-            }
+            return this->GetTypeProperties() & EnumValue(News::ItemTypeProperty::HasLocation);
         }
 
         constexpr bool HasButton() const noexcept
