@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../config/Config.h"
+#include "../core/Guard.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
@@ -382,27 +383,7 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
     }
 }
 
-static paint_struct* PaintArrangeStructsHelper(paint_struct* ps_next, uint16_t quadrantIndex, uint8_t flag, uint8_t rotation)
-{
-    switch (rotation)
-    {
-        case 0:
-            return PaintArrangeStructsHelperRotation<0>(ps_next, quadrantIndex, flag);
-        case 1:
-            return PaintArrangeStructsHelperRotation<1>(ps_next, quadrantIndex, flag);
-        case 2:
-            return PaintArrangeStructsHelperRotation<2>(ps_next, quadrantIndex, flag);
-        case 3:
-            return PaintArrangeStructsHelperRotation<3>(ps_next, quadrantIndex, flag);
-    }
-    return nullptr;
-}
-
-/**
- *
- *  rct2: 0x00688217
- */
-void PaintSessionArrange(paint_session* session)
+template<int TRotation> static void PaintSessionArrange(paint_session* session, bool)
 {
     paint_struct* psHead = &session->PaintHead;
 
@@ -427,15 +408,35 @@ void PaintSessionArrange(paint_session* session)
             }
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
-        paint_struct* ps_cache = PaintArrangeStructsHelper(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT, session->CurrentRotation);
+        paint_struct* ps_cache = PaintArrangeStructsHelperRotation<TRotation>(
+            psHead, session->QuadrantBackIndex & 0xFFFF, PAINT_QUADRANT_FLAG_NEXT);
 
         quadrantIndex = session->QuadrantBackIndex;
         while (++quadrantIndex < session->QuadrantFrontIndex)
         {
-            ps_cache = PaintArrangeStructsHelper(ps_cache, quadrantIndex & 0xFFFF, 0, session->CurrentRotation);
+            ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, 0);
         }
     }
+}
+
+/**
+ *
+ *  rct2: 0x00688217
+ */
+void PaintSessionArrange(paint_session* session)
+{
+    switch (session->CurrentRotation)
+    {
+        case 0:
+            return PaintSessionArrange<0>(session, true);
+        case 1:
+            return PaintSessionArrange<1>(session, true);
+        case 2:
+            return PaintSessionArrange<2>(session, true);
+        case 3:
+            return PaintSessionArrange<3>(session, true);
+    }
+    Guard::Assert(false);
 }
 
 static void PaintDrawStruct(paint_session* session, paint_struct* ps)
