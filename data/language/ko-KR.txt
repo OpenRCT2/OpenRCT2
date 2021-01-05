@@ -3758,7 +3758,7 @@ STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원입니다.
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :무지개 계곡
-STR_DTLS    :무지개 계곡의 지역 당국은 풍경을 바꾸거나 큰 나무를 제거할 수 없게 했지만, 이 지역을 개발하여 대형 놀이공원으로 바꿔야만 합니다.
+STR_DTLS    :무지개 계곡의 지역 당국이 풍경을 바꾸거나 큰 나무를 제거할 수 없게 금지했지만, 이 지역을 개발하여 대형 놀이공원으로 바꿔야만 합니다.
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
@@ -3779,7 +3779,7 @@ STR_DTLS    :해변의 절벽을 인기 있는 놀이공원으로 발전시키�
 <Three Monkeys Park>
 STR_SCNR    :Three Monkeys Park
 STR_PARK    :세 원숭이 공원
-STR_DTLS    :개발 중인 이 거대한 공원의 한 가운데에는 동시에 경주하는 거대한 세쌍둥이 스틸 롤러코스터가 있습니다.
+STR_DTLS    :개발 중인 이 거대한 공원의 한 가운데에는 동시에 경주하는 거대한 세쌍둥이 철제 롤러코스터가 있습니다.
 
 <Canary Mines>
 STR_SCNR    :Canary Mines
@@ -3809,12 +3809,12 @@ STR_DTLS    :이 성은 이제 당신의 소유입니다. 이 성을 놀이공�
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :미래 세계
-STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 넓은 공간이 있습니다.
+STR_DTLS    :이 미래지향적인 공원에는 외계 지형 위에 새로운 놀이기구를 지을 넓은 공간이 있습니다.
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :얌전한 골짜기
-STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장해보세요.
+STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호합니다. 이 공원을 그들의 취향에 맞게 확장해보세요.
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
@@ -3834,7 +3834,7 @@ STR_DTLS    :이 오래된 공원에는 아주 역사적인 놀이기구가 많�
 <Magic Quarters>
 STR_SCNR    :Magic Quarters
 STR_PARK    :매직 쿼터
-STR_DTLS    :비어있는 넓은 지역의 일부분을 아름다운 풍경의 테마파크로 개발될 준비가 되었습니다.
+STR_DTLS    :비어있는 넓은 지역의 일부분을 아름다운 풍경의 테마파크로 개발할 준비가 되었습니다.
 
 <Fruit Farm>
 STR_SCNR    :Fruit Farm
@@ -3854,12 +3854,12 @@ STR_DTLS    :광대한 협곡을 테마파크로 개발할 수 있습니다.
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :폭풍우 공원
-STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 속에 두기로 했습니다.
+STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 일부 놀이기구를 그 속에 두기로 했습니다.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :조화로운 언덕
-STR_DTLS    :지역 당국은 이 공원에서 나무 높이 이상의 건설을 허용하지 않습니다.
+STR_DTLS    :이 공원의 지역 당국은 나무 높이 이상의 건설을 허용하지 않습니다.
 
 <Roman Village>
 STR_SCNR    :Roman Village
@@ -3894,7 +3894,7 @@ STR_DTLS    :위험하고 잘못 설계된 놀이기구가 많이 있습니다. 
 <Pickle Park>
 STR_SCNR    :Pickle Park
 STR_PARK    :피클 공원
-STR_DTLS    :지역 당국에서는 광고나 홍보를 허용하지 않으므로 이 공원은 사람들의 입을 통해서만 알릴 수 있습니다.
+STR_DTLS    :지역 당국이 광고나 홍보를 불허했기 때문에 이 공원은 사람들의 입을 통해서만 알릴 수 있습니다.
 
 <Giggle Downs>
 STR_SCNR    :Giggle Downs
@@ -4001,7 +4001,7 @@ STR_DTLS    :이 외계 공원을 개발하여 최대한의 매출을 올리세�
 <Sunny Swamps>
 STR_SCNR    :Sunny Swamps
 STR_PARK    :맑은 늪지
-STR_DTLS    :이 잘 구성된 놀이공원에는 이미 몇 개의 놀이기구가 있지만, 아직 확장할 수 있는 공간은 충분합니다.
+STR_DTLS    :이 잘 구성된 놀이공원에는 이미 몇 개의 놀이기구가 존재하지만, 아직은 확장할 수 있는 공간이 충분합니다.
 
 <Frightmare Hills>
 STR_SCNR    :Frightmare Hills
@@ -4031,7 +4031,7 @@ STR_DTLS    :얼음으로 덮인 땅을 번창하는 놀이공원으로 바꿔�
 <Southern Sands>
 STR_SCNR    :Southern Sands
 STR_PARK    :남부 사막
-STR_DTLS    :빈틈없이 세워진 롤러코스터가 있는 사막 공원이 확장을 위해 여러분에게 주어졌습니다.
+STR_DTLS    :잘 디자인된 롤러코스터가 있는 사막 공원을 확장해보세요.
 
 <Tiny Towers>
 STR_SCNR    :Tiny Towers
@@ -4041,7 +4041,7 @@ STR_DTLS    :이 조그마한 공원에 있는 다섯 개의 미완성된 롤러
 <Nevermore Park>
 STR_SCNR    :Nevermore Park
 STR_PARK    :네버모어 공원
-STR_DTLS    :공원 주변에 참신한 운송수단이 설치된 거대한 공원
+STR_DTLS    :공원 주변에 참신한 운송수단이 설치된 거대한 공원입니다.
 
 <Pacifica>
 STR_SCNR    :Pacifica
