@@ -1709,7 +1709,7 @@ void load_from_sv6(const char* path)
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
         gScreenAge = 0;
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
     }
@@ -1749,7 +1749,7 @@ void load_from_sc6(const char* path)
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
         return;
     }
     catch (const ObjectLoadException& loadError)
