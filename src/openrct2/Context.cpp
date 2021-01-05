@@ -987,6 +987,10 @@ namespace OpenRCT2
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 Update();
+
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
+
                 _accumulator -= GAME_UPDATE_TIME_MS;
             }
 
@@ -995,7 +999,6 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-                _drawingEngine->UpdateWindows();
             }
         }
 
@@ -1027,6 +1030,9 @@ namespace OpenRCT2
 
                 Update();
 
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
+
                 _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
@@ -1042,12 +1048,6 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-
-                // Note: It's important to call UpdateWindows after restoring the sprite positions, not in between,
-                // otherwise the window updates to positions of sprites could be reverted.
-                // This can be observed when changing ride settings using the mouse wheel that removes all
-                // vehicles and peeps from the ride: it can freeze the game.
-                _drawingEngine->UpdateWindows();
             }
         }
 
