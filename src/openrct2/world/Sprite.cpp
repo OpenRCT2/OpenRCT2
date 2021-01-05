@@ -139,10 +139,8 @@ void SpriteBase::Invalidate()
     switch (sprite_identifier)
     {
         case SpriteIdentifier::Vehicle:
-            maxZoom = 2;
-            break;
         case SpriteIdentifier::Peep:
-            maxZoom = 0;
+            maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
             switch (static_cast<MiscEntityType>(type))
