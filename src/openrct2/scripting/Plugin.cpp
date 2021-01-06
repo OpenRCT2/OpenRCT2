@@ -158,7 +158,7 @@ PluginType Plugin::ParsePluginType(std::string_view type)
 void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        log_error("Plugin %s does not specify a licence", std::string(pluginName).data());
+        log_error("Plugin %s does not specify a licence", std::string(pluginName).c_str());
 }
 
 #endif

@@ -31,7 +31,7 @@ public:
         }
 
         int32_t error;
-        _zip = zip_open(std::string(path).data(), zipOpenMode, &error);
+        _zip = zip_open(std::string(path).c_str(), zipOpenMode, &error);
         if (_zip == nullptr)
         {
             throw IOException("Unable to open zip file.");

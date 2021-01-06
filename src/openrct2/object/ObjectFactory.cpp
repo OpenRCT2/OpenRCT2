@@ -59,7 +59,7 @@ public:
 
     std::vector<uint8_t> GetData(std::string_view path) const override
     {
-        auto absolutePath = Path::Combine(_basePath, std::string(path).data());
+        auto absolutePath = Path::Combine(_basePath, std::string(path).c_str());
         return File::ReadAllBytes(absolutePath);
     }
 };
