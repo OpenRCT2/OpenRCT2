@@ -1017,6 +1017,11 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride", RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+        { "hypercoaster", RIDE_TYPE_HYPERCOASTER },
+        { "hyper_twister", RIDE_TYPE_HYPER_TWISTER },
+        { "monster_trucks", RIDE_TYPE_MONSTER_TRUCKS },
+        { "spinning_wild_mouse", RIDE_TYPE_SPINNING_WILD_MOUSE },
+        { "classic_mini_rc", RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER },
         { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
         { "single_rail_rc", RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER }
     };
