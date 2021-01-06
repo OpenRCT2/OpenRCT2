@@ -3656,6 +3656,18 @@ STR_6394    :Objectif
 STR_6395    :Maintenance
 STR_6396    :Désactiver écran de veille et économie d’énergie pour moniteur
 STR_6397    :Si coché, l’écran de veille et autres paramètres d’économie d’énergie pour moniteur seront désactivés pendant qu’OpenRCT2 tourne
+STR_6398    :Le fichier contient des types d'attractions non-supportés. Veuillez mettre à jour OpenRCT2.
+STR_6399    :OpenRCT2 a besoin des fichiers originaux de RollerCoaster Tycoon 2 pour fonctionner. Veuillez indiquez le chemin où vous avez installé RollerCoaster Tycoon 2 dans la variable "game_path" dans le fichier config.ini, puis redémarrez OpenRCT2.
+STR_6400    :J'ai téléchargé l'installeur GOG hors-ligne de RollerCoaster Tycoon 2, mais je ne l'ai pas encoré installé
+STR_6401    :J'ai déjà installé RollerCoaster Tycoon 2
+STR_6402    :Configuration des données OpenRCT2
+STR_6403    :Sélectionnez la situation qui s'applique dans votre cas
+STR_6404    :Veuillez sélectionnez l'installeur GOG de RollerCoaster Tycoon 2.
+STR_6405    :Selection installeur GOG
+STR_6406    :Installeur GOG RollerCoaster Tycoon 2
+STR_6407    :Ceci peut prendre quelques minutes.
+STR_6408    :Veuillez installer "innoextract" pour extraire l'installeur GOG, et redémarrez OpenRCT2.
+STR_6409    :Le fichier sélectionné n'est pas l'installeur GOG hors-ligne de RollerCoaster Tycoon 2. Soit vous avez téléchargé l'installeur de GOG Galaxy ou vous avez sélectionné le mauvais fichier.
 
 #############
 # Scenarios #

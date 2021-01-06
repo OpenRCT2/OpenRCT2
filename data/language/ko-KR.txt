@@ -3654,6 +3654,16 @@ STR_6396    :화면 보호기 및 모니터 꺼짐 비활성화
 STR_6397    :이 설정을 켜면, OpenRCT2를 실행시키는 중에는 화면 보호기와 모니터 전원 절약 기능이 작동하지 않습니다.
 STR_6398    :파일에 지원하지 않는 놀이기구 종류가 있습니다. OpenRCT2를 새 버전으로 업데이트하십시오.
 STR_6399    :OpenRCT2를 실행하려면 오리지널 RollerCoaster Tycoon 2의 파일이 필요합니다. RollerCoaster Tycoon 2를 설치한 폴더에 있는 config.ini 파일 안의 “game_path” 변수 값을 설정한 뒤에, OpenRCT2를 다시 실행해주세요.
+STR_6400    :다운로드한 RollerCoaster Tycoon 2를 설치하기 위한 GOG 오프라인 설치 프로그램이 있지만, 아직 설치하진 않았습니다
+STR_6401    :RollerCoaster Tycoon 2를 이미 설치했습니다
+STR_6402    :OpenRCT2 데이터 설정
+STR_6403    :나에게 맞는 항목을 선택하세요
+STR_6404    :GOG RollerCoaster Tycoon 2 설치 프로그램을 선택하세요.
+STR_6405    :GOG 설치 프로그램 선택
+STR_6406    :GOG RollerCoaster Tycoon 2 설치 프로그램
+STR_6407    :몇 분 걸릴 것입니다.
+STR_6408    :“innoextract”를 설치하여 GOG 설치 프로그램에서 파일을 추출한 다음, OpenRCT2를 다시 시작하세요.
+STR_6409    :선택된 파일은 RollerCoaster Tycoon 2를 위한 GOG 설치 프로그램이 아닙니다. GOG Galaxy 다운로더를 다운로드했거나 잘못된 파일을 선택했을 수 있습니다.
 
 #############
 # Scenarios #
