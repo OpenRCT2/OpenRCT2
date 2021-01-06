@@ -43,7 +43,7 @@
 struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever
@@ -52,14 +52,14 @@ private:
     std::string _basePath;
 
 public:
-    FileSystemDataRetriever(const std::string_view& basePath)
+    FileSystemDataRetriever(std::string_view basePath)
         : _basePath(basePath)
     {
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(std::string_view path) const override
     {
-        auto absolutePath = Path::Combine(_basePath, path.data());
+        auto absolutePath = Path::Combine(_basePath, std::string(path).data());
         return File::ReadAllBytes(absolutePath);
     }
 };
@@ -75,7 +75,7 @@ public:
     {
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(std::string_view path) const override
     {
         return _zipArchive.GetFileData(path);
     }
@@ -128,7 +128,7 @@ public:
         return _loadImages;
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) override
+    std::vector<uint8_t> GetData(std::string_view path) override
     {
         if (_fileDataRetriever != nullptr)
         {
@@ -351,7 +351,7 @@ namespace ObjectFactory
         return ObjectType::None;
     }
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path)
     {
         try
         {
@@ -372,7 +372,7 @@ namespace ObjectFactory
         }
         catch (const std::exception& e)
         {
-            Console::Error::WriteLine("Unable to open or read '%s': %s", path.data(), e.what());
+            Console::Error::WriteLine("Unable to open or read '%s': %s", std::string(path).c_str(), e.what());
         }
         return nullptr;
     }

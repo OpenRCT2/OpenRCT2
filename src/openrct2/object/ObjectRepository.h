@@ -72,7 +72,7 @@ struct IObjectRepository
     virtual void Construct(int32_t language) abstract;
     virtual size_t GetNumObjects() const abstract;
     virtual const ObjectRepositoryItem* GetObjects() const abstract;
-    virtual const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const abstract;
+    virtual const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(std::string_view identifier) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const rct_object_entry* objectEntry) const abstract;
     virtual const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& oed) const abstract;
@@ -82,7 +82,7 @@ struct IObjectRepository
     virtual void UnregisterLoadedObject(const ObjectRepositoryItem* ori, Object* object) abstract;
 
     virtual void AddObject(const rct_object_entry* objectEntry, const void* data, size_t dataSize) abstract;
-    virtual void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) abstract;
+    virtual void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) abstract;
 
     virtual void ExportPackedObject(OpenRCT2::IStream* stream) abstract;
     virtual void WritePackedObjects(OpenRCT2::IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) abstract;

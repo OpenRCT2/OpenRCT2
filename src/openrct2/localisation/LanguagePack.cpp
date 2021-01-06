@@ -191,7 +191,7 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) override
+    rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
     {
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 

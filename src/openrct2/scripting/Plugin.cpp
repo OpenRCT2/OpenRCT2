@@ -28,7 +28,7 @@ Plugin::Plugin(duk_context* context, const std::string& path)
 {
 }
 
-void Plugin::SetCode(const std::string_view& code)
+void Plugin::SetCode(std::string_view code)
 {
     _code = code;
 }
@@ -146,7 +146,7 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
     return metadata;
 }
 
-PluginType Plugin::ParsePluginType(const std::string_view& type)
+PluginType Plugin::ParsePluginType(std::string_view type)
 {
     if (type == "local")
         return PluginType::Local;
@@ -155,10 +155,10 @@ PluginType Plugin::ParsePluginType(const std::string_view& type)
     throw std::invalid_argument("Unknown plugin type.");
 }
 
-void Plugin::CheckForLicence(const DukValue& dukLicence, const std::string_view& pluginName)
+void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        log_error("Plugin %s does not specify a licence", pluginName.data());
+        log_error("Plugin %s does not specify a licence", std::string(pluginName).data());
 }
 
 #endif

@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
                 auto callback = desc["callback"];
                 window_text_input_open(
                     title, description, initialValue, std::max(0, maxLength),
-                    [this, plugin, callback](const std::string_view& value) {
+                    [this, plugin, callback](std::string_view value) {
                         auto dukValue = ToDuk(_scriptEngine.GetContext(), value);
                         _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
                     },

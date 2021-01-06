@@ -42,7 +42,7 @@ using namespace OpenRCT2::Drawing;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi->bits;
     auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;

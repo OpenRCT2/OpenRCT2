@@ -60,7 +60,7 @@ void colours_init_maps()
 
 namespace Colour
 {
-    colour_t FromString(const std::string_view& s, colour_t defaultValue)
+    colour_t FromString(std::string_view s, colour_t defaultValue)
     {
         static const std::unordered_map<std::string_view, colour_t> LookupTable{
             { "black", COLOUR_BLACK },

@@ -181,10 +181,10 @@ static void ttf_close_font(TTF_Font* font)
     TTF_CloseFont(font);
 }
 
-static uint32_t ttf_surface_cache_hash(TTF_Font* font, const std::string_view text)
+static uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
 {
     uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);
-    for (auto& c : text)
+    for (auto c : text)
     {
         hash = ror32(hash, 3) ^ (c * 13);
     }

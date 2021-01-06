@@ -1088,7 +1088,7 @@ namespace OpenRCT2::Ui::Windows
         return {};
     }
 
-    void UpdateWindowTitle(rct_window* w, const std::string_view& value)
+    void UpdateWindowTitle(rct_window* w, std::string_view value)
     {
         if (w->custom_info != nullptr)
         {
@@ -1097,7 +1097,7 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& value)
+    void UpdateWidgetText(rct_window* w, rct_widgetindex widgetIndex, std::string_view value)
     {
         if (w->custom_info != nullptr)
         {
@@ -1242,7 +1242,7 @@ namespace OpenRCT2::Ui::Windows
         return -1;
     }
 
-    rct_window* FindCustomWindowByClassification(const std::string_view& classification)
+    rct_window* FindCustomWindowByClassification(std::string_view classification)
     {
         for (auto w : g_window_list)
         {
@@ -1258,7 +1258,7 @@ namespace OpenRCT2::Ui::Windows
         return nullptr;
     }
 
-    std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, const std::string_view& name)
+    std::optional<rct_widgetindex> FindWidgetIndexByName(rct_window* w, std::string_view name)
     {
         if (w->custom_info != nullptr)
         {
@@ -1292,7 +1292,7 @@ namespace OpenRCT2::Ui::Windows
         return {};
     }
 
-    void SetWidgetName(rct_window* w, rct_widgetindex widgetIndex, const std::string_view& name)
+    void SetWidgetName(rct_window* w, rct_widgetindex widgetIndex, std::string_view name)
     {
         if (w->custom_info != nullptr)
         {

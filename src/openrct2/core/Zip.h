@@ -27,17 +27,17 @@ struct IZipArchive
     virtual size_t GetNumFiles() const abstract;
     virtual std::string GetFileName(size_t index) const abstract;
     virtual uint64_t GetFileSize(size_t index) const abstract;
-    virtual std::vector<uint8_t> GetFileData(const std::string_view& path) const abstract;
+    virtual std::vector<uint8_t> GetFileData(std::string_view path) const abstract;
 
     /**
      * Creates or overwrites a file within the zip archive to the given data buffer.
      * @param path The path of the file within the zip.
      * @param data The data to write.
      */
-    virtual void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) abstract;
+    virtual void SetFileData(std::string_view path, std::vector<uint8_t>&& data) abstract;
 
-    virtual void DeleteFile(const std::string_view& path) abstract;
-    virtual void RenameFile(const std::string_view& path, const std::string_view& newPath) abstract;
+    virtual void DeleteFile(std::string_view path) abstract;
+    virtual void RenameFile(std::string_view path, std::string_view newPath) abstract;
 };
 
 enum class ZIP_ACCESS
@@ -48,6 +48,6 @@ enum class ZIP_ACCESS
 
 namespace Zip
 {
-    std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS zipAccess);
-    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS zipAccess);
+    std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS zipAccess);
+    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS zipAccess);
 } // namespace Zip
