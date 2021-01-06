@@ -14,6 +14,7 @@
 - Feature: [#13512] [Plugin] Add item separators to list view.
 - Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
 - Feature: [#13593] [Plugin] Add ability to read and change the position of ride vehicles.
+- Feature: [#13613] Add single-rail roller coaster (Rocky Mountain Construction Raptor).
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.

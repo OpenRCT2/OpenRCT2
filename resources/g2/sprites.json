@@ -7219,5 +7219,4405 @@
         "x_offset": -24,
         "y_offset": -78,
         "palette": "keep"
+    },
+    {
+        "path": "track/raptor/preview_track.png",
+        "x_offset": 9,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/preview_support.png",
+        "x_offset": 24,
+        "y_offset": 13
+    },
+    {
+        "path": "track/raptor/flat_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/brake_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/brake_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/block_brake_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/block_brake_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_3.png",
+        "x_offset": -19,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_4.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_3.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_1.png",
+        "x_offset": -18,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_3.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_4.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_1.png",
+        "x_offset": -18,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_2_2.png",
+        "x_offset": -17,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_3_1.png",
+        "x_offset": 2,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_3_2.png",
+        "x_offset": -21,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_4.png",
+        "x_offset": -21,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_1.png",
+        "x_offset": -18,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_2_1.png",
+        "x_offset": -5,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_2_2.png",
+        "x_offset": -18,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_3_1.png",
+        "x_offset": -19,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_3_2.png",
+        "x_offset": -12,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_4.png",
+        "x_offset": -19,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_1.png",
+        "x_offset": -18,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/steep_2.png",
+        "x_offset": -18,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_3.png",
+        "x_offset": -21,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_4.png",
+        "x_offset": -21,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/steep_to_vertical_up_1.png",
+        "x_offset": -18,
+        "y_offset": -48
+    },
+    {
+        "path": "track/raptor/steep_to_vertical_up_2.png",
+        "x_offset": -18,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_to_vertical_up_3.png",
+        "x_offset": -6,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_to_vertical_up_4.png",
+        "x_offset": -6,
+        "y_offset": -48
+    },
+    {
+        "path": "track/raptor/vertical_to_steep_up_1.png",
+        "x_offset": -2,
+        "y_offset": -54
+    },
+    {
+        "path": "track/raptor/vertical_to_steep_up_2.png",
+        "x_offset": -2,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/vertical_to_steep_up_3.png",
+        "x_offset": -21,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/vertical_to_steep_up_4.png",
+        "x_offset": -21,
+        "y_offset": -54
+    },
+    {
+        "path": "track/raptor/vertical_1.png",
+        "x_offset": -2,
+        "y_offset": -24
+    },
+    {
+        "path": "track/raptor/vertical_2.png",
+        "x_offset": -2,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/vertical_3.png",
+        "x_offset": -6,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/vertical_4.png",
+        "x_offset": -6,
+        "y_offset": -24
+    },
+    {
+        "path": "track/raptor/small_turn_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_1_2.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_1_3.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_2_2.png",
+        "x_offset": -4,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_2_3.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_3_1.png",
+        "x_offset": -4,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_3_2.png",
+        "x_offset": 25,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_turn_left_3_3.png",
+        "x_offset": -7,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_4_1.png",
+        "x_offset": -28,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/small_turn_left_4_2.png",
+        "x_offset": -8,
+        "y_offset": 23
+    },
+    {
+        "path": "track/raptor/small_turn_left_4_3.png",
+        "x_offset": -18,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_turn_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_1_2.png",
+        "x_offset": -28,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_1_3.png",
+        "x_offset": 9,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_1_4.png",
+        "x_offset": -24,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/medium_turn_left_1_5.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_2_2.png",
+        "x_offset": -10,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_2_3.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_2_4.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_2_5.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_3_1.png",
+        "x_offset": -14,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_3_2.png",
+        "x_offset": 12,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/medium_turn_left_3_3.png",
+        "x_offset": -20,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_3_4.png",
+        "x_offset": 13,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_3_5.png",
+        "x_offset": -11,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_4_1.png",
+        "x_offset": -23,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_4_2.png",
+        "x_offset": -30,
+        "y_offset": 16
+    },
+    {
+        "path": "track/raptor/medium_turn_left_4_3.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_4_4.png",
+        "x_offset": -18,
+        "y_offset": 16
+    },
+    {
+        "path": "track/raptor/medium_turn_left_4_5.png",
+        "x_offset": -18,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_1_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_1_2.png",
+        "x_offset": -26,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_1_3.png",
+        "x_offset": 17,
+        "y_offset": 12
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_1_4.png",
+        "x_offset": -8,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_2_2.png",
+        "x_offset": -12,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_2_3.png",
+        "x_offset": -24,
+        "y_offset": 19
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_2_4.png",
+        "x_offset": -30,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_3_1.png",
+        "x_offset": -16,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_3_2.png",
+        "x_offset": -1,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_3_3.png",
+        "x_offset": -32,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_3_4.png",
+        "x_offset": -3,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_4_1.png",
+        "x_offset": -21,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_4_2.png",
+        "x_offset": -32,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_4_3.png",
+        "x_offset": -4,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_4_4.png",
+        "x_offset": 0,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_1_1.png",
+        "x_offset": -18,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_1_2.png",
+        "x_offset": -20,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_1_3.png",
+        "x_offset": -6,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_1_4.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_2_2.png",
+        "x_offset": -22,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_2_3.png",
+        "x_offset": 23,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_2_4.png",
+        "x_offset": -5,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_3_1.png",
+        "x_offset": -29,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_3_2.png",
+        "x_offset": -28,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_3_3.png",
+        "x_offset": -14,
+        "y_offset": 19
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_3_4.png",
+        "x_offset": 0,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_4_1.png",
+        "x_offset": -12,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_4_2.png",
+        "x_offset": 2,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_4_3.png",
+        "x_offset": -31,
+        "y_offset": 12
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_4_4.png",
+        "x_offset": -3,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/flat_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_diag_3.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_3.png",
+        "x_offset": -33,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_3.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -70
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_1_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_1_2.png",
+        "x_offset": 1,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_2_2.png",
+        "x_offset": -17,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_3.png",
+        "x_offset": -19,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_4.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_1.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_3_1.png",
+        "x_offset": -13,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_3_2.png",
+        "x_offset": -17,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_4_1.png",
+        "x_offset": -16,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_4_2.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_1_1.png",
+        "x_offset": -13,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_1_2.png",
+        "x_offset": -17,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_2_1.png",
+        "x_offset": -16,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_2_2.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_3.png",
+        "x_offset": -19,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_4.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_1.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_3_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_3_2.png",
+        "x_offset": -5,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_4_1.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_4_2.png",
+        "x_offset": -10,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_1_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_1_2.png",
+        "x_offset": 3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_2_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_2_2.png",
+        "x_offset": -16,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_3.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_4.png",
+        "x_offset": -17,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_1.png",
+        "x_offset": -18,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_3_1.png",
+        "x_offset": -13,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_3_2.png",
+        "x_offset": -17,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_4_1.png",
+        "x_offset": -17,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_4_2.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/left_bank_1.png",
+        "x_offset": -17,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_2.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_3.png",
+        "x_offset": -19,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/left_bank_4.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_diag_1_1.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_diag_1_2.png",
+        "x_offset": -30,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_diag_2.png",
+        "x_offset": -5,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_diag_3.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/flat_to_left_bank_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_diag_3_1.png",
+        "x_offset": -31,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_diag_3_2.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_to_right_bank_diag_4.png",
+        "x_offset": -6,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_diag_1_1.png",
+        "x_offset": -31,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_diag_1_2.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_diag_2.png",
+        "x_offset": -6,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_diag_3.png",
+        "x_offset": -33,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_diag_3_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_diag_3_2.png",
+        "x_offset": -31,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_diag_4.png",
+        "x_offset": -5,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_diag_1_1.png",
+        "x_offset": -32,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_diag_1_2.png",
+        "x_offset": -31,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_diag_2.png",
+        "x_offset": -5,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_diag_3.png",
+        "x_offset": -32,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_to_left_bank_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_diag_3_1.png",
+        "x_offset": -31,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_diag_3_2.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_right_bank_diag_4.png",
+        "x_offset": -6,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/left_bank_diag_1.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/left_bank_diag_2.png",
+        "x_offset": -6,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/left_bank_diag_3.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/left_bank_diag_4.png",
+        "x_offset": -2,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_1_1.png",
+        "x_offset": -5,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_1_2.png",
+        "x_offset": -17,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_1_3.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_1_4.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_2_1.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_2_2.png",
+        "x_offset": -4,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_2_3.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_3_1.png",
+        "x_offset": -6,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_3_2.png",
+        "x_offset": 23,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_3_3.png",
+        "x_offset": -8,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_3_4.png",
+        "x_offset": -9,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_4_1.png",
+        "x_offset": -26,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_4_2.png",
+        "x_offset": -8,
+        "y_offset": 22
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_4_3.png",
+        "x_offset": -19,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_1.png",
+        "x_offset": 3,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_2.png",
+        "x_offset": -17,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_3.png",
+        "x_offset": -26,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_4.png",
+        "x_offset": 12,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_5.png",
+        "x_offset": -22,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_1_6.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_2_1.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_2_2.png",
+        "x_offset": -10,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_2_3.png",
+        "x_offset": -30,
+        "y_offset": 16
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_2_4.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_2_5.png",
+        "x_offset": -30,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_1.png",
+        "x_offset": -15,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_2.png",
+        "x_offset": 9,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_3.png",
+        "x_offset": -23,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_4.png",
+        "x_offset": 11,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_5.png",
+        "x_offset": -6,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_3_6.png",
+        "x_offset": -11,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_4_1.png",
+        "x_offset": -20,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_4_2.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_4_3.png",
+        "x_offset": -12,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_4_4.png",
+        "x_offset": -20,
+        "y_offset": 15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_4_5.png",
+        "x_offset": -19,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_1_1.png",
+        "x_offset": -17,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_1_2.png",
+        "x_offset": -24,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_1_3.png",
+        "x_offset": 21,
+        "y_offset": 13
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_1_4.png",
+        "x_offset": -11,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_2_1.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_2_2.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_2_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_2_4.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_3_1.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_3_2.png",
+        "x_offset": -2,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_3_3.png",
+        "x_offset": -32,
+        "y_offset": 13
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_3_4.png",
+        "x_offset": -5,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_4_1.png",
+        "x_offset": -18,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_4_2.png",
+        "x_offset": -32,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_4_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_left_to_diag_bank_4_4.png",
+        "x_offset": 0,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_1_1.png",
+        "x_offset": -19,
+        "y_offset": 5
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_1_2.png",
+        "x_offset": -20,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_1_3.png",
+        "x_offset": -2,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_1_4.png",
+        "x_offset": -32,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_2_1.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_2_2.png",
+        "x_offset": -20,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_2_3.png",
+        "x_offset": 26,
+        "y_offset": 13
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_2_4.png",
+        "x_offset": -4,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_3_1.png",
+        "x_offset": -28,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_3_2.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_3_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_3_4.png",
+        "x_offset": 0,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_4_1.png",
+        "x_offset": -27,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_4_2.png",
+        "x_offset": 1,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_4_3.png",
+        "x_offset": -32,
+        "y_offset": 13
+    },
+    {
+        "path": "track/raptor/large_turn_right_to_diag_bank_4_4.png",
+        "x_offset": -6,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_1_1.png",
+        "x_offset": -24,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_1_2.png",
+        "x_offset": -13,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_2_1.png",
+        "x_offset": -12,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_2_2.png",
+        "x_offset": -38,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_3_1.png",
+        "x_offset": -13,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_3_2.png",
+        "x_offset": -1,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_4_1.png",
+        "x_offset": -26,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/small_turn_left_gentle_up_4_2.png",
+        "x_offset": -25,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_1_1.png",
+        "x_offset": -24,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_1_2.png",
+        "x_offset": -26,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_2_1.png",
+        "x_offset": -12,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_2_2.png",
+        "x_offset": -25,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_3_1.png",
+        "x_offset": -38,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_3_2.png",
+        "x_offset": -13,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_4_1.png",
+        "x_offset": -1,
+        "y_offset": -25
+    },
+    {
+        "path": "track/raptor/small_turn_right_gentle_up_4_2.png",
+        "x_offset": -13,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_1_1.png",
+        "x_offset": -18,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_1_2.png",
+        "x_offset": -27,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_1_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_1_4.png",
+        "x_offset": -27,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_1_5.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_2_2.png",
+        "x_offset": 0,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_2_3.png",
+        "x_offset": 0,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_2_4.png",
+        "x_offset": -12,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_2_5.png",
+        "x_offset": -17,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_3_1.png",
+        "x_offset": -20,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_3_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_3_3.png",
+        "x_offset": -20,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_3_4.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_3_5.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_4_1.png",
+        "x_offset": -26,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_4_2.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_4_3.png",
+        "x_offset": -18,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_4_4.png",
+        "x_offset": -16,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/medium_turn_left_gentle_up_4_5.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_1_1.png",
+        "x_offset": -18,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_1_2.png",
+        "x_offset": -10,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_1_3.png",
+        "x_offset": 0,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_1_4.png",
+        "x_offset": -16,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_1_5.png",
+        "x_offset": -21,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_2_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_2_3.png",
+        "x_offset": 0,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_2_4.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_2_5.png",
+        "x_offset": -19,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_3_1.png",
+        "x_offset": -32,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_3_2.png",
+        "x_offset": -32,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_3_3.png",
+        "x_offset": -26,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_3_4.png",
+        "x_offset": -22,
+        "y_offset": -24
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_3_5.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_4_1.png",
+        "x_offset": -12,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_4_2.png",
+        "x_offset": 12,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_4_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_4_4.png",
+        "x_offset": 12,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/medium_turn_right_gentle_up_4_5.png",
+        "x_offset": -13,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_1_1.png",
+        "x_offset": -21,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_1_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_2_1.png",
+        "x_offset": -10,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_2_2.png",
+        "x_offset": -18,
+        "y_offset": -31
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_3_1.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_3_2.png",
+        "x_offset": 6,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_4_1.png",
+        "x_offset": -9,
+        "y_offset": -33
+    },
+    {
+        "path": "track/raptor/very_small_turn_left_steep_up_4_2.png",
+        "x_offset": -21,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_1_1.png",
+        "x_offset": -18,
+        "y_offset": -24
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_1_2.png",
+        "x_offset": 0,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_2_1.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_2_2.png",
+        "x_offset": -21,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_3_1.png",
+        "x_offset": -21,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_3_2.png",
+        "x_offset": -10,
+        "y_offset": -33
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_4_1.png",
+        "x_offset": 6,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/very_small_turn_right_steep_up_4_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_1.png",
+        "x_offset": -6,
+        "y_offset": -88
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_2_1.png",
+        "x_offset": -2,
+        "y_offset": -88
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_2_2.png",
+        "x_offset": -2,
+        "y_offset": -41
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_3.png",
+        "x_offset": -6,
+        "y_offset": -86
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_4_1.png",
+        "x_offset": -6,
+        "y_offset": -40
+    },
+    {
+        "path": "track/raptor/vertical_twist_left_up_4_2.png",
+        "x_offset": -6,
+        "y_offset": -86
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_1_1.png",
+        "x_offset": -2,
+        "y_offset": -41
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_1_2.png",
+        "x_offset": -2,
+        "y_offset": -86
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_2.png",
+        "x_offset": -6,
+        "y_offset": -86
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_3_1.png",
+        "x_offset": -6,
+        "y_offset": -88
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_3_2.png",
+        "x_offset": -6,
+        "y_offset": -41
+    },
+    {
+        "path": "track/raptor/vertical_twist_right_up_4.png",
+        "x_offset": -6,
+        "y_offset": -88
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_left_bank_1.png",
+        "x_offset": -18,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_left_bank_2_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_left_bank_2_2.png",
+        "x_offset": -17,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_left_bank_3.png",
+        "x_offset": -20,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_left_bank_4.png",
+        "x_offset": -18,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_right_bank_1.png",
+        "x_offset": -18,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_right_bank_2.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_right_bank_3_1.png",
+        "x_offset": -9,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_right_bank_3_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_gentle_up_right_bank_4.png",
+        "x_offset": -20,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_gentle_up_1.png",
+        "x_offset": -17,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_gentle_up_2_1.png",
+        "x_offset": -16,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_gentle_up_2_2.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_gentle_up_3.png",
+        "x_offset": -19,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_gentle_up_4.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_gentle_up_1.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_gentle_up_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_gentle_up_3_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_gentle_up_3_2.png",
+        "x_offset": 0,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_gentle_up_4.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_left_bank_1.png",
+        "x_offset": -17,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_left_bank_2.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_left_bank_3.png",
+        "x_offset": -20,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/left_bank_to_gentle_up_left_bank_4.png",
+        "x_offset": -18,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_right_bank_1.png",
+        "x_offset": -19,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_right_bank_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_right_bank_3.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/right_bank_to_gentle_up_right_bank_4.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_left_bank_1.png",
+        "x_offset": -16,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_left_bank_2.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_left_bank_3.png",
+        "x_offset": -19,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_left_bank_4.png",
+        "x_offset": -17,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_right_bank_1.png",
+        "x_offset": -19,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_right_bank_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_right_bank_3.png",
+        "x_offset": -17,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_right_bank_4.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_1.png",
+        "x_offset": -16,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_2.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_3.png",
+        "x_offset": -20,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_4.png",
+        "x_offset": -18,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_1.png",
+        "x_offset": -19,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_3.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_4.png",
+        "x_offset": -20,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_left_bank_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_left_bank_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_left_bank_2_2.png",
+        "x_offset": -17,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_left_bank_3.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_left_bank_4.png",
+        "x_offset": -18,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_right_bank_1.png",
+        "x_offset": -18,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_right_bank_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_right_bank_3_1.png",
+        "x_offset": -3,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_right_bank_3_2.png",
+        "x_offset": -18,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_right_bank_4.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_flat_1.png",
+        "x_offset": -17,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_flat_2_1.png",
+        "x_offset": -16,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_flat_2_2.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_flat_3.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_left_bank_to_flat_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_flat_1.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_flat_2.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_flat_3_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_flat_3_2.png",
+        "x_offset": -3,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_right_bank_to_flat_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_1_1.png",
+        "x_offset": -23,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_1_2.png",
+        "x_offset": -12,
+        "y_offset": -18
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_2_1.png",
+        "x_offset": -13,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_2_2.png",
+        "x_offset": -38,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_3_1.png",
+        "x_offset": -15,
+        "y_offset": -3
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_3_2.png",
+        "x_offset": -3,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_4_1.png",
+        "x_offset": -26,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_gentle_up_4_2.png",
+        "x_offset": -26,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_1_1.png",
+        "x_offset": -25,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_1_2.png",
+        "x_offset": -26,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_2_1.png",
+        "x_offset": -11,
+        "y_offset": -3
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_2_2.png",
+        "x_offset": -24,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_3_1.png",
+        "x_offset": -38,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_3_2.png",
+        "x_offset": -14,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_4_1.png",
+        "x_offset": -3,
+        "y_offset": -25
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_gentle_up_4_2.png",
+        "x_offset": -15,
+        "y_offset": -18
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_1_1.png",
+        "x_offset": -17,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_1_2.png",
+        "x_offset": -25,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_1_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_1_4.png",
+        "x_offset": -25,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_1_5.png",
+        "x_offset": -18,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_2_1.png",
+        "x_offset": -19,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_2_2.png",
+        "x_offset": 0,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_2_3.png",
+        "x_offset": 0,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_2_4.png",
+        "x_offset": -11,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_2_5.png",
+        "x_offset": -16,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_3_1.png",
+        "x_offset": -22,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_3_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_3_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_3_4.png",
+        "x_offset": 11,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_3_5.png",
+        "x_offset": -15,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_4_1.png",
+        "x_offset": -24,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_4_2.png",
+        "x_offset": -32,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_4_3.png",
+        "x_offset": -18,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_4_4.png",
+        "x_offset": -16,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_left_bank_gentle_up_4_5.png",
+        "x_offset": -20,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_1_1.png",
+        "x_offset": -19,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_1_2.png",
+        "x_offset": -11,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_1_3.png",
+        "x_offset": 0,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_1_4.png",
+        "x_offset": -16,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_1_5.png",
+        "x_offset": -20,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_2_1.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_2_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_2_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_2_4.png",
+        "x_offset": -32,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_2_5.png",
+        "x_offset": -18,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_3_1.png",
+        "x_offset": -32,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_3_2.png",
+        "x_offset": -32,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_3_3.png",
+        "x_offset": -26,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_3_4.png",
+        "x_offset": -22,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_3_5.png",
+        "x_offset": -20,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_4_1.png",
+        "x_offset": -13,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_4_2.png",
+        "x_offset": 10,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_4_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_4_4.png",
+        "x_offset": 9,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/medium_turn_right_bank_gentle_up_4_5.png",
+        "x_offset": -15,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/s_bend_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/s_bend_left_1_2.png",
+        "x_offset": -26,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/s_bend_left_1_3.png",
+        "x_offset": 11,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/s_bend_left_1_4.png",
+        "x_offset": -15,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/s_bend_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/s_bend_left_2_2.png",
+        "x_offset": -10,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/s_bend_left_2_3.png",
+        "x_offset": -30,
+        "y_offset": 16
+    },
+    {
+        "path": "track/raptor/s_bend_left_2_4.png",
+        "x_offset": -22,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/s_bend_right_1_1.png",
+        "x_offset": -18,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/s_bend_right_1_2.png",
+        "x_offset": -19,
+        "y_offset": 16
+    },
+    {
+        "path": "track/raptor/s_bend_right_1_3.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/s_bend_right_1_4.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/s_bend_right_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/s_bend_right_2_2.png",
+        "x_offset": -23,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/s_bend_right_2_3.png",
+        "x_offset": 13,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/s_bend_right_2_4.png",
+        "x_offset": -12,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_1_1.png",
+        "x_offset": -6,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_1_2.png",
+        "x_offset": -17,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_1_3.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_1_4.png",
+        "x_offset": -17,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_2_1.png",
+        "x_offset": -19,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_2_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_2_3.png",
+        "x_offset": -32,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_3_1.png",
+        "x_offset": -7,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_3_2.png",
+        "x_offset": 23,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_3_3.png",
+        "x_offset": -2,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_3_4.png",
+        "x_offset": -7,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_4_1.png",
+        "x_offset": -26,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_4_2.png",
+        "x_offset": -8,
+        "y_offset": 17
+    },
+    {
+        "path": "track/raptor/small_helix_left_up_4_3.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_1_1.png",
+        "x_offset": -19,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_1_2.png",
+        "x_offset": -6,
+        "y_offset": 17
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_1_3.png",
+        "x_offset": -26,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_2_1.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_2_2.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_2_3.png",
+        "x_offset": -2,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_2_4.png",
+        "x_offset": -17,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_3_1.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_3_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_3_3.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_4_1.png",
+        "x_offset": -6,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_4_2.png",
+        "x_offset": -8,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_4_3.png",
+        "x_offset": 23,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_helix_right_up_4_4.png",
+        "x_offset": -8,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_1.png",
+        "x_offset": -1,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_2.png",
+        "x_offset": -17,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_3.png",
+        "x_offset": -27,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_4.png",
+        "x_offset": 10,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_5.png",
+        "x_offset": -20,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_1_6.png",
+        "x_offset": -17,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_2_1.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_2_2.png",
+        "x_offset": -6,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_2_3.png",
+        "x_offset": -32,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_2_4.png",
+        "x_offset": -4,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_2_5.png",
+        "x_offset": -32,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_1.png",
+        "x_offset": -16,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_2.png",
+        "x_offset": 9,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_3.png",
+        "x_offset": -22,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_4.png",
+        "x_offset": 15,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_5.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_3_6.png",
+        "x_offset": -6,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_4_1.png",
+        "x_offset": -18,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_4_2.png",
+        "x_offset": -32,
+        "y_offset": 12
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_4_3.png",
+        "x_offset": -8,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_4_4.png",
+        "x_offset": -28,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/medium_helix_left_up_4_5.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_1_1.png",
+        "x_offset": -19,
+        "y_offset": 4
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_1_2.png",
+        "x_offset": -22,
+        "y_offset": 12
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_1_3.png",
+        "x_offset": -8,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_1_4.png",
+        "x_offset": -32,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_1_5.png",
+        "x_offset": -12,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_1.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_2.png",
+        "x_offset": -21,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_3.png",
+        "x_offset": 7,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_4.png",
+        "x_offset": -30,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_5.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_2_6.png",
+        "x_offset": -17,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_3_1.png",
+        "x_offset": -32,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_3_2.png",
+        "x_offset": -10,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_3_3.png",
+        "x_offset": -32,
+        "y_offset": 10
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_3_4.png",
+        "x_offset": -2,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_3_5.png",
+        "x_offset": -20,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_1.png",
+        "x_offset": -6,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_2.png",
+        "x_offset": -10,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_3.png",
+        "x_offset": 13,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_4.png",
+        "x_offset": -22,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_5.png",
+        "x_offset": 9,
+        "y_offset": 7
+    },
+    {
+        "path": "track/raptor/medium_helix_right_up_4_6.png",
+        "x_offset": -18,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_2.png",
+        "x_offset": -5,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_3.png",
+        "x_offset": -21,
+        "y_offset": 22
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_4.png",
+        "x_offset": -20,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_5.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_1_6.png",
+        "x_offset": -9,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_2.png",
+        "x_offset": -17,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_3.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_4.png",
+        "x_offset": -28,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_5.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_2_6.png",
+        "x_offset": -32,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_1.png",
+        "x_offset": -28,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_3.png",
+        "x_offset": -26,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_4.png",
+        "x_offset": -27,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_5.png",
+        "x_offset": 2,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_3_6.png",
+        "x_offset": -18,
+        "y_offset": -19
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_1.png",
+        "x_offset": -11,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_3.png",
+        "x_offset": -11,
+        "y_offset": -19
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_4.png",
+        "x_offset": -10,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_5.png",
+        "x_offset": 8,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/barrel_roll_left_4_6.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_1.png",
+        "x_offset": -18,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_3.png",
+        "x_offset": -25,
+        "y_offset": -19
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_4.png",
+        "x_offset": 3,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_5.png",
+        "x_offset": -22,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_1_6.png",
+        "x_offset": -23,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_2.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_3.png",
+        "x_offset": -6,
+        "y_offset": -8
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_4.png",
+        "x_offset": 17,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_5.png",
+        "x_offset": -6,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_2_6.png",
+        "x_offset": -6,
+        "y_offset": -19
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_1.png",
+        "x_offset": -2,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_2.png",
+        "x_offset": -4,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_3.png",
+        "x_offset": 6,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_4.png",
+        "x_offset": 0,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_5.png",
+        "x_offset": -12,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_3_6.png",
+        "x_offset": -18,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_1.png",
+        "x_offset": -11,
+        "y_offset": 8
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_2.png",
+        "x_offset": -19,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_3.png",
+        "x_offset": -9,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_4.png",
+        "x_offset": -26,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_5.png",
+        "x_offset": 0,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/barrel_roll_right_4_6.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/half_loop_1_1.png",
+        "x_offset": -24,
+        "y_offset": -18
+    },
+    {
+        "path": "track/raptor/half_loop_1_2.png",
+        "x_offset": -19,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/half_loop_1_3.png",
+        "x_offset": -12,
+        "y_offset": -82
+    },
+    {
+        "path": "track/raptor/half_loop_1_4.png",
+        "x_offset": -18,
+        "y_offset": 23
+    },
+    {
+        "path": "track/raptor/half_loop_2_1.png",
+        "x_offset": -12,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/half_loop_2_2.png",
+        "x_offset": 1,
+        "y_offset": -31
+    },
+    {
+        "path": "track/raptor/half_loop_2_3.png",
+        "x_offset": -38,
+        "y_offset": -113
+    },
+    {
+        "path": "track/raptor/half_loop_2_4.png",
+        "x_offset": -18,
+        "y_offset": 11
+    },
+    {
+        "path": "track/raptor/half_loop_3_1.png",
+        "x_offset": -26,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/half_loop_3_2.png",
+        "x_offset": -25,
+        "y_offset": -27
+    },
+    {
+        "path": "track/raptor/half_loop_3_3.png",
+        "x_offset": 2,
+        "y_offset": -120
+    },
+    {
+        "path": "track/raptor/half_loop_3_4.png",
+        "x_offset": -22,
+        "y_offset": 3
+    },
+    {
+        "path": "track/raptor/half_loop_4_1.png",
+        "x_offset": -12,
+        "y_offset": -18
+    },
+    {
+        "path": "track/raptor/half_loop_4_2.png",
+        "x_offset": -12,
+        "y_offset": -42
+    },
+    {
+        "path": "track/raptor/half_loop_4_3.png",
+        "x_offset": 8,
+        "y_offset": -91
+    },
+    {
+        "path": "track/raptor/half_loop_4_4.png",
+        "x_offset": 5,
+        "y_offset": 15
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_1_1.png",
+        "x_offset": -18,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_1_2.png",
+        "x_offset": -19,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_1_3.png",
+        "x_offset": -17,
+        "y_offset": -25
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_1_4.png",
+        "x_offset": -18,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_2_2.png",
+        "x_offset": -24,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_2_3.png",
+        "x_offset": -25,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_2_4.png",
+        "x_offset": -20,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_3_1.png",
+        "x_offset": -20,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_3_2.png",
+        "x_offset": -22,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_3_3.png",
+        "x_offset": -23,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_3_4.png",
+        "x_offset": -21,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_4_1.png",
+        "x_offset": -19,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_4_2.png",
+        "x_offset": -21,
+        "y_offset": -17
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_4_3.png",
+        "x_offset": -20,
+        "y_offset": -25
+    },
+    {
+        "path": "track/raptor/flat_to_steep_up_4_4.png",
+        "x_offset": -21,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_1_1.png",
+        "x_offset": -18,
+        "y_offset": -41
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_1_2.png",
+        "x_offset": -20,
+        "y_offset": -26
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_1_3.png",
+        "x_offset": -20,
+        "y_offset": -18
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_1_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": -26
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_2_2.png",
+        "x_offset": -18,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_2_3.png",
+        "x_offset": -13,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_2_4.png",
+        "x_offset": -14,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_3_1.png",
+        "x_offset": -14,
+        "y_offset": -25
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_3_2.png",
+        "x_offset": -13,
+        "y_offset": -13
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_3_3.png",
+        "x_offset": -16,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_3_4.png",
+        "x_offset": -18,
+        "y_offset": -3
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_4_1.png",
+        "x_offset": -18,
+        "y_offset": -40
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_4_2.png",
+        "x_offset": -18,
+        "y_offset": -26
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_4_3.png",
+        "x_offset": -17,
+        "y_offset": -16
+    },
+    {
+        "path": "track/raptor/steep_to_flat_up_4_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_1_1.png",
+        "x_offset": -17,
+        "y_offset": -52
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_1_2.png",
+        "x_offset": 0,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_1_3.png",
+        "x_offset": -18,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_2_1.png",
+        "x_offset": -22,
+        "y_offset": -77
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_2_2.png",
+        "x_offset": -32,
+        "y_offset": -66
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_2_3.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_3_1.png",
+        "x_offset": -6,
+        "y_offset": -76
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_3_2.png",
+        "x_offset": -17,
+        "y_offset": -68
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_3_3.png",
+        "x_offset": 0,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_4_1.png",
+        "x_offset": -6,
+        "y_offset": -52
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_4_2.png",
+        "x_offset": -20,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/quarter_loop_up_4_3.png",
+        "x_offset": -32,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/corkscrew_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/corkscrew_left_1_2.png",
+        "x_offset": -17,
+        "y_offset": -29
+    },
+    {
+        "path": "track/raptor/corkscrew_left_1_3.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/corkscrew_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/corkscrew_left_2_2.png",
+        "x_offset": -32,
+        "y_offset": -28
+    },
+    {
+        "path": "track/raptor/corkscrew_left_2_3.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/corkscrew_left_3_1.png",
+        "x_offset": -26,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/corkscrew_left_3_2.png",
+        "x_offset": 5,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/corkscrew_left_3_3.png",
+        "x_offset": -19,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/corkscrew_left_4_1.png",
+        "x_offset": -29,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/corkscrew_left_4_2.png",
+        "x_offset": -27,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/corkscrew_left_4_3.png",
+        "x_offset": -18,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/corkscrew_right_1_1.png",
+        "x_offset": -18,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/corkscrew_right_1_2.png",
+        "x_offset": -6,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/corkscrew_right_1_3.png",
+        "x_offset": -19,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/corkscrew_right_2_1.png",
+        "x_offset": -18,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/corkscrew_right_2_2.png",
+        "x_offset": -13,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/corkscrew_right_2_3.png",
+        "x_offset": -18,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/corkscrew_right_3_1.png",
+        "x_offset": -20,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/corkscrew_right_3_2.png",
+        "x_offset": -18,
+        "y_offset": -28
+    },
+    {
+        "path": "track/raptor/corkscrew_right_3_3.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/corkscrew_right_4_1.png",
+        "x_offset": -22,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/corkscrew_right_4_2.png",
+        "x_offset": 5,
+        "y_offset": -29
+    },
+    {
+        "path": "track/raptor/corkscrew_right_4_3.png",
+        "x_offset": -20,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_1_1.png",
+        "x_offset": -23,
+        "y_offset": -16
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_1_2.png",
+        "x_offset": -13,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_2_1.png",
+        "x_offset": 26,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_2_2.png",
+        "x_offset": -13,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_2_3.png",
+        "x_offset": -38,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_3_1.png",
+        "x_offset": -14,
+        "y_offset": -3
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_3_2.png",
+        "x_offset": -2,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_4_1.png",
+        "x_offset": -26,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_turn_left_bank_to_gentle_up_4_2.png",
+        "x_offset": -25,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_1_1.png",
+        "x_offset": -25,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_1_2.png",
+        "x_offset": -26,
+        "y_offset": 6
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_2_1.png",
+        "x_offset": -11,
+        "y_offset": -3
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_2_2.png",
+        "x_offset": -24,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_3_1.png",
+        "x_offset": -38,
+        "y_offset": 0
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_3_2.png",
+        "x_offset": -38,
+        "y_offset": -2
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_3_3.png",
+        "x_offset": -13,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_4_1.png",
+        "x_offset": -2,
+        "y_offset": -16
+    },
+    {
+        "path": "track/raptor/small_turn_right_bank_to_gentle_up_4_2.png",
+        "x_offset": -14,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_1.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_2.png",
+        "x_offset": -16,
+        "y_offset": -36
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_3.png",
+        "x_offset": -16,
+        "y_offset": -64
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_4.png",
+        "x_offset": -20,
+        "y_offset": -80
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_5.png",
+        "x_offset": -12,
+        "y_offset": -65
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_6.png",
+        "x_offset": -8,
+        "y_offset": -172
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_1_7.png",
+        "x_offset": -18,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_1.png",
+        "x_offset": -18,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_2.png",
+        "x_offset": -6,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_3.png",
+        "x_offset": -9,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_4.png",
+        "x_offset": -8,
+        "y_offset": -69
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_5.png",
+        "x_offset": -32,
+        "y_offset": -118
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_6.png",
+        "x_offset": -22,
+        "y_offset": -191
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_2_7.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_1.png",
+        "x_offset": -24,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_2.png",
+        "x_offset": -29,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_3.png",
+        "x_offset": -24,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_4.png",
+        "x_offset": -3,
+        "y_offset": -56
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_5.png",
+        "x_offset": -3,
+        "y_offset": -111
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_6.png",
+        "x_offset": -19,
+        "y_offset": -191
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_3_7.png",
+        "x_offset": -25,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_1.png",
+        "x_offset": -21,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_2.png",
+        "x_offset": -27,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_3.png",
+        "x_offset": -32,
+        "y_offset": -40
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_4.png",
+        "x_offset": -32,
+        "y_offset": -69
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_5.png",
+        "x_offset": 20,
+        "y_offset": -58
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_6.png",
+        "x_offset": -12,
+        "y_offset": -176
+    },
+    {
+        "path": "track/raptor/large_half_loop_left_4_7.png",
+        "x_offset": -18,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_1.png",
+        "x_offset": -18,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_2.png",
+        "x_offset": -16,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_3.png",
+        "x_offset": -10,
+        "y_offset": -40
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_4.png",
+        "x_offset": 0,
+        "y_offset": -69
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_5.png",
+        "x_offset": -32,
+        "y_offset": -58
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_6.png",
+        "x_offset": -17,
+        "y_offset": -176
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_1_7.png",
+        "x_offset": -18,
+        "y_offset": -12
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_1.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_2.png",
+        "x_offset": -10,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_3.png",
+        "x_offset": -5,
+        "y_offset": -32
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_4.png",
+        "x_offset": -14,
+        "y_offset": -56
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_5.png",
+        "x_offset": -19,
+        "y_offset": -111
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_6.png",
+        "x_offset": -13,
+        "y_offset": -191
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_2_7.png",
+        "x_offset": -18,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_1.png",
+        "x_offset": -26,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_2.png",
+        "x_offset": -26,
+        "y_offset": -4
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_3.png",
+        "x_offset": -28,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_4.png",
+        "x_offset": -32,
+        "y_offset": -69
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_5.png",
+        "x_offset": 20,
+        "y_offset": -118
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_6.png",
+        "x_offset": 0,
+        "y_offset": -191
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_3_7.png",
+        "x_offset": -15,
+        "y_offset": -21
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_1.png",
+        "x_offset": -21,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_2.png",
+        "x_offset": -22,
+        "y_offset": -36
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_3.png",
+        "x_offset": -18,
+        "y_offset": -64
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_4.png",
+        "x_offset": -2,
+        "y_offset": -80
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_5.png",
+        "x_offset": -3,
+        "y_offset": -65
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_6.png",
+        "x_offset": -27,
+        "y_offset": -172
+    },
+    {
+        "path": "track/raptor/large_half_loop_right_4_7.png",
+        "x_offset": -27,
+        "y_offset": -9
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_1.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_2_2.png",
+        "x_offset": -13,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_3_1.png",
+        "x_offset": -3,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_3_2.png",
+        "x_offset": -21,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_4.png",
+        "x_offset": -21,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_1.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_2_1.png",
+        "x_offset": -10,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_2_2.png",
+        "x_offset": -18,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_3_1.png",
+        "x_offset": -18,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_3_2.png",
+        "x_offset": -4,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_4.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_1.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_2.png",
+        "x_offset": -3,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_3.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_4.png",
+        "x_offset": -3,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/flat_lift_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_3.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_lift_4.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_2.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_3.png",
+        "x_offset": -19,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_lift_4.png",
+        "x_offset": -19,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_3.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_up_to_flat_lift_4.png",
+        "x_offset": -18,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_lift_2.png",
+        "x_offset": -18,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_lift_3.png",
+        "x_offset": -19,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_lift_4.png",
+        "x_offset": -19,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_2_1.png",
+        "x_offset": -18,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_2_2.png",
+        "x_offset": -17,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_3_1.png",
+        "x_offset": 0,
+        "y_offset": -1
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_3_2.png",
+        "x_offset": -21,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_lift_4.png",
+        "x_offset": -21,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_2_1.png",
+        "x_offset": -5,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_2_2.png",
+        "x_offset": -18,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_3_1.png",
+        "x_offset": -19,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_3_2.png",
+        "x_offset": -12,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_lift_4.png",
+        "x_offset": -19,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/steep_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/steep_lift_2.png",
+        "x_offset": -18,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_lift_3.png",
+        "x_offset": -21,
+        "y_offset": -46
+    },
+    {
+        "path": "track/raptor/steep_lift_4.png",
+        "x_offset": -21,
+        "y_offset": -62
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": 9
+    },
+    {
+        "path": "track/raptor/flat_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_3.png",
+        "x_offset": -33,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/flat_to_gentle_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": 1
+    },
+    {
+        "path": "track/raptor/gentle_to_flat_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -14
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -7
+    },
+    {
+        "path": "track/raptor/gentle_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/gentle_to_steep_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -11
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -23
+    },
+    {
+        "path": "track/raptor/steep_to_gentle_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -38
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -55
+    },
+    {
+        "path": "track/raptor/steep_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -70
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_2_1.png",
+        "x_offset": -18,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_2_2.png",
+        "x_offset": -13,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_3_1.png",
+        "x_offset": -5,
+        "y_offset": 2
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_3_2.png",
+        "x_offset": -21,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_lift_4.png",
+        "x_offset": -21,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_1.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_2_1.png",
+        "x_offset": -10,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_2_2.png",
+        "x_offset": -18,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_3_1.png",
+        "x_offset": -18,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_3_2.png",
+        "x_offset": -4,
+        "y_offset": -5
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_lift_4.png",
+        "x_offset": -18,
+        "y_offset": -22
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -6
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_flat_to_steep_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -30
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_1.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_2.png",
+        "x_offset": -3,
+        "y_offset": -10
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_3.png",
+        "x_offset": -32,
+        "y_offset": -15
+    },
+    {
+        "path": "track/raptor/small_steep_to_flat_up_diag_lift_4.png",
+        "x_offset": -3,
+        "y_offset": -30
     }
 ]
