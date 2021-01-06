@@ -123,14 +123,12 @@ void finance_pay_wages()
  **/
 void finance_pay_research()
 {
-    uint8_t level;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    level = gResearchFundingLevel;
+    const uint8_t level = gResearchFundingLevel;
     finance_payment(research_cost_table[level] / 4, ExpenditureType::Research);
 }
 
@@ -140,18 +138,16 @@ void finance_pay_research()
  */
 void finance_pay_interest()
 {
-    // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
-    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    money64 current_loan = gBankLoan;
-    uint8_t current_interest_rate = gBankLoanInterestRate;
-    money32 interest_to_pay;
-
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
     }
 
-    interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
+    // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
+    // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
+    const money64 current_loan = gBankLoan;
+    const uint8_t current_interest_rate = gBankLoanInterestRate;
+    const money32 interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
 
     finance_payment(interest_to_pay, ExpenditureType::Interest);
 }
