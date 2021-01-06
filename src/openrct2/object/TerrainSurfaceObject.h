@@ -54,7 +54,7 @@ public:
     money32 Price{};
     TERRAIN_SURFACE_FLAGS Flags{};
 
-    uint32_t NumImagesLoaded;
+    uint32_t NumImagesLoaded{};
 
     explicit TerrainSurfaceObject(const rct_object_entry& entry)
         : Object(entry)

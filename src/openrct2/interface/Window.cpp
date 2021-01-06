@@ -1276,7 +1276,6 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& deltaCoords)
 
 void window_resize(rct_window* w, int32_t dw, int32_t dh)
 {
-    int32_t i;
     if (dw == 0 && dh == 0)
         return;
 
@@ -1291,7 +1290,7 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     window_event_invalidate_call(w);
 
     // Update scroll widgets
-    for (i = 0; i < 3; i++)
+    for (int32_t i = 0; i < 3; i++)
     {
         w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
         w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;

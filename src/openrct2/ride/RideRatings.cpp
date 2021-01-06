@@ -990,7 +990,6 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
     if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         int32_t excitementModifier;
-        int32_t nauseaModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
@@ -1000,7 +999,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         {
             excitementModifier = ride->total_air_time / 8;
         }
-        nauseaModifier = ride->total_air_time / 16;
+        int32_t nauseaModifier = ride->total_air_time / 16;
 
         ride_ratings_add(ratings, excitementModifier, 0, nauseaModifier);
     }
@@ -1013,7 +1012,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
  */
 static void ride_ratings_apply_intensity_penalty(RatingTuple* ratings)
 {
-    static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+    static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
     ride_rating excitement = ratings->Excitement;
     for (auto intensityBound : intensityBounds)
     {
@@ -2999,8 +2998,6 @@ void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
 
 void ride_ratings_calculate_lift(Ride* ride)
 {
-    int32_t totalLength;
-
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
@@ -3010,7 +3007,7 @@ void ride_ratings_calculate_lift(Ride* ride)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
 
-    totalLength = ride_get_total_length(ride) >> 16;
+    int32_t totalLength = ride_get_total_length(ride) >> 16;
     ride_ratings_add(&ratings, (totalLength * 45875) >> 16, 0, (totalLength * 26214) >> 16);
 
     ride_ratings_apply_proximity(&ratings, 11183);

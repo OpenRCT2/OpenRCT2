@@ -2088,7 +2088,8 @@ void Vehicle::UpdateMovingToEndOfStation()
     if (curRide == nullptr)
         return;
 
-    int32_t curFlags, station;
+    int32_t curFlags = 0;
+    int32_t station = 0;
 
     switch (curRide->mode)
     {
@@ -2836,10 +2837,9 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
      */
 
     int32_t direction = tileElement->GetDirectionWithOffset(1);
-    int32_t spaceBetween;
     int32_t maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
+    int32_t spaceBetween = maxCheckDistance;
 
-    spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
     {
         location += CoordsXYZ{ CoordsDirectionDelta[direction], 0 };
@@ -3891,6 +3891,8 @@ void Vehicle::UpdateArriving()
         return;
 
     uint8_t unkF64E35 = 1;
+    uint32_t curFlags = 0;
+
     switch (curRide->mode)
     {
         case RideMode::Swing:
@@ -4013,7 +4015,6 @@ void Vehicle::UpdateArriving()
         }
     }
 
-    uint32_t curFlags;
 loc_6D8E36:
     curFlags = UpdateTrackMotion(nullptr);
     if (curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
@@ -7128,7 +7129,7 @@ void Vehicle::UpdateSpinningCar()
     int32_t spinningInertia = vehicleEntry->spinning_inertia;
     int32_t trackType = GetTrackType();
     int32_t dword_F64E08 = _vehicleVelocityF64E08;
-    int32_t spinSpeed;
+    int32_t spinSpeed{};
     // An L spin adds to the spin speed, R does the opposite
     // The number indicates how much right shift of the velocity will become spin
     // The bigger the number the less change in spin.
@@ -7251,8 +7252,9 @@ static void steam_particle_create(const CoordsXYZ& coords)
  */
 void Vehicle::UpdateAdditionalAnimation()
 {
-    uint8_t al, ah;
-    uint32_t eax;
+    uint8_t al{};
+    uint8_t ah{};
+    uint32_t eax{};
 
     uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
     auto vehicleEntry = Entry();
@@ -8374,7 +8376,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
         return false;
 
     bool nextTileBackwards = true;
-    int32_t direction;
+    int32_t direction = 0;
     // loc_6DBB08:;
     auto trackPos = CoordsXYZ{ TrackLocation.x, TrackLocation.y, 0 };
 
@@ -8438,7 +8440,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
         // loc_6DBB4F:;
         CoordsXYE input;
         CoordsXYE output;
-        int32_t outputZ;
+        int32_t outputZ{};
 
         input.x = trackPos.x;
         input.y = trackPos.y;
@@ -8680,6 +8682,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
     TileElement* tileElement = nullptr;
     CoordsXYZ trackPos;
+    int32_t direction{};
 
     _vehicleUnkF64E10 = 1;
     acceleration = dword_9A2970[vehicle_sprite_type];
@@ -8794,10 +8797,10 @@ loc_6DC476:
     }
 
     tileElement = map_get_track_element_at_of_type_seq(TrackLocation, GetTrackType(), 0);
-    int32_t direction;
     {
         CoordsXYE output;
-        int32_t outZ, outDirection;
+        int32_t outZ{};
+        int32_t outDirection{};
         CoordsXYE input = { TrackLocation, tileElement };
         if (!track_block_get_next(&input, &output, &outZ, &outDirection))
         {
@@ -9748,8 +9751,8 @@ void Vehicle::UpdateCrossings() const
         backVehicle = this;
     }
 
-    track_begin_end output;
-    int32_t direction;
+    track_begin_end output{};
+    int32_t direction{};
 
     CoordsXYE xyElement = { frontVehicle->TrackLocation,
                             map_get_track_element_at_of_type_seq(

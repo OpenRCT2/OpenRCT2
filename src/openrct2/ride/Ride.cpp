@@ -3644,7 +3644,6 @@ int32_t ride_music_params_update(
             }
             OpenRCT2::Audio::RideMusic* ride_music = &OpenRCT2::Audio::gRideMusicList[0];
             int32_t channel = 0;
-            uint32_t a1;
             while (ride_music->ride_id != ride->id || ride_music->tune_id != *tuneId)
             {
                 ride_music++;
@@ -3652,9 +3651,8 @@ int32_t ride_music_params_update(
                 if (static_cast<size_t>(channel) >= OpenRCT2::Audio::MaxRideMusic)
                 {
                     OpenRCT2::Audio::RideMusicInfo* ride_music_info = &OpenRCT2::Audio::gRideMusicInfoList[*tuneId];
-                    a1 = position + ride_music_info->offset;
-
-                    return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
+                    const uint32_t offset = position + ride_music_info->offset;
+                    return ride_music_params_update_label_51(offset, tuneId, ride, v32, pan_x, sampleRate);
                 }
             }
             int32_t playing = Mixer_Channel_IsPlaying(OpenRCT2::Audio::gRideMusicList[channel].sound_channel);
@@ -3663,9 +3661,9 @@ int32_t ride_music_params_update(
                 *tuneId = 0xFF;
                 return 0;
             }
-            a1 = static_cast<uint32_t>(Mixer_Channel_GetOffset(OpenRCT2::Audio::gRideMusicList[channel].sound_channel));
-
-            return ride_music_params_update_label_51(a1, tuneId, ride, v32, pan_x, sampleRate);
+            const uint32_t offset = static_cast<uint32_t>(
+                Mixer_Channel_GetOffset(OpenRCT2::Audio::gRideMusicList[channel].sound_channel));
+            return ride_music_params_update_label_51(offset, tuneId, ride, v32, pan_x, sampleRate);
         }
         else
         {
@@ -3879,10 +3877,9 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
         return 1;
 
-    int32_t i;
     uint8_t entrance = 0;
     uint8_t exit = 0;
-    for (i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < MAX_STATIONS; i++)
     {
         if (ride->stations[i].Start.isNull())
             continue;
@@ -3960,21 +3957,18 @@ void Ride::ChainQueues() const
  */
 static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 {
-    rct_window* w;
-    track_circuit_iterator it;
-    int32_t type;
-
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
 
+    track_circuit_iterator it;
     track_circuit_iterator_begin(&it, *input);
     while (track_circuit_iterator_next(&it))
     {
         if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
         {
-            type = it.last.element->AsTrack()->GetTrackType();
+            int32_t type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
@@ -4180,7 +4174,6 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
  */
 static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 {
-    int32_t trackType;
     CoordsXYE trackBack, trackFront;
 
     ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
@@ -4196,7 +4189,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 
     // Check back of the track
     track_get_back(input, &trackBack);
-    trackType = trackBack.element->AsTrack()->GetTrackType();
+    int32_t trackType = trackBack.element->AsTrack()->GetTrackType();
     if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
@@ -6596,11 +6589,8 @@ static std::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
  */
 static int32_t ride_get_track_length(Ride* ride)
 {
-    rct_window* w;
     TileElement* tileElement = nullptr;
-    track_circuit_iterator it, slowIt;
-    ride_id_t rideIndex;
-    int32_t trackType, result;
+    int32_t trackType;
     CoordsXYZ trackStart;
     bool foundTrack = false;
 
@@ -6629,41 +6619,40 @@ static int32_t ride_get_track_length(Ride* ride)
         } while (!foundTrack && !(tileElement++)->IsLastForTile());
     }
 
-    if (foundTrack)
+    if (!foundTrack)
+        return 0;
+
+    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+
+    rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+    if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
     {
-        rideIndex = tileElement->AsTrack()->GetRideIndex();
+        ride_construction_invalidate_current_track();
+    }
 
-        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-        if (w != nullptr && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+    bool moveSlowIt = true;
+    int32_t result = 0;
+
+    track_circuit_iterator it;
+    track_circuit_iterator_begin(&it, { trackStart.x, trackStart.y, tileElement });
+
+    track_circuit_iterator slowIt = it;
+    while (track_circuit_iterator_next(&it))
+    {
+        trackType = it.current.element->AsTrack()->GetTrackType();
+        result += TrackPieceLengths[trackType];
+
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
         {
-            ride_construction_invalidate_current_track();
-        }
-
-        bool moveSlowIt = true;
-        result = 0;
-        track_circuit_iterator_begin(&it, { trackStart.x, trackStart.y, tileElement });
-        slowIt = it;
-        while (track_circuit_iterator_next(&it))
-        {
-            trackType = it.current.element->AsTrack()->GetTrackType();
-            result += TrackPieceLengths[trackType];
-
-            moveSlowIt = !moveSlowIt;
-            if (moveSlowIt)
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
             {
-                track_circuit_iterator_next(&slowIt);
-                if (track_circuit_iterators_match(&it, &slowIt))
-                {
-                    return 0;
-                }
+                return 0;
             }
         }
-        return result;
     }
-    else
-    {
-        return 0;
-    }
+    return result;
 }
 
 /**

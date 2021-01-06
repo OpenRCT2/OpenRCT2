@@ -188,20 +188,17 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t width;
-    rct_size16 logoSize;
-
     int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     ScreenCoordsXY aboutCoords(
         w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
-    width = w->width - 20;
+    int32_t width = w->width - 20;
 
     aboutCoords.y += gfx_draw_string_centred_wrapped(
                          dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
         + lineHeight;
 
-    logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
+    rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
     gfx_draw_sprite(dpi, SPR_G2_LOGO, aboutCoords - ScreenCoordsXY{ logoSize.width / 2, 0 }, 0);
     aboutCoords.y += logoSize.height + lineHeight * 2;
 
@@ -267,11 +264,9 @@ static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t yPage;
-
     window_about_openrct2_common_paint(w, dpi);
 
-    yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
+    int32_t yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 200, yPage + 5 };
 
