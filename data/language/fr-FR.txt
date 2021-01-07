@@ -63,7 +63,7 @@ STR_0058    :Manège Inconnu (38)
 STR_0059    :Montagnes russes volantes
 STR_0060    :Manège Inconnu (3A)
 STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
+STR_0062    :Bateaux éclabousseurs
 STR_0063    :Mini hélicoptères
 STR_0064    :Mont. russes - posit. couchée
 STR_0065    :Monorail suspendu
@@ -84,7 +84,7 @@ STR_0079    :Tapis volant
 STR_0080    :Balade sous-marine
 STR_0081    :Radeau
 STR_0082    :Manège Inconnu (50)
-STR_0083    :Enterprise
+STR_0083    :Entreprise
 STR_0084    :Manège Inconnu (52)
 STR_0085    :Manège Inconnu (53)
 STR_0086    :Manège Inconnu (54)
@@ -94,7 +94,7 @@ STR_0089    :Mini-montagnes russes
 STR_0090    :Mineur
 STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
-STR_0092    :Montagnes russes hybrides
+STR_0093    :Montagnes russes hybrides
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -1146,7 +1146,7 @@ STR_1762    :Cascades
 STR_1763    :Rapides
 STR_1764    :Rondins de bois
 STR_1765    :Section photo sur le vif
-STR_1766    :Reverser turntable
+STR_1766    :Plateau tournant inverseur
 STR_1767    :Tunnel tournoyant
 STR_1768    :Impossible de modifier le nombre de vrilles…
 STR_1769    :{WINDOW_COLOUR_2}Nombre de vrilles :
@@ -2770,7 +2770,7 @@ STR_5442    :Eval. du parc :
 STR_5443    :Vitesse{MOVE_X}{87}{STRINGID}
 STR_5444    :Vitesse:
 STR_5445    :Vitesse
-STR_5446    :Get
+STR_5446    :Obtenir
 STR_5447    :Type {STRINGID}
 STR_5448    :Attraction/véhicule {STRINGID}
 STR_5449    :Diminuer la vitesse de jeu
@@ -2871,9 +2871,9 @@ STR_5546    :Rose clair
 STR_5547    :Rose vif
 STR_5548    :Afficher tous les modes d’exploitation
 STR_5549    :Année/Mois/Jour
-STR_5550    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5550    :{POP16}{POP16}Année {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Année/Jour/Mois
-STR_5552    :{POP16}{POP16}Year {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5552    :{POP16}{POP16}Année {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :Mettre en pause quand l’overlay Steam est ouvert
 STR_5554    :Outil montagne
 STR_5555    :Afficher véhicules d’autres types de voie
@@ -3244,7 +3244,7 @@ STR_5960    :{WINDOW_COLOUR_2}Placement sur la case :
 STR_5961    :{WINDOW_COLOUR_2}Index : {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Détection de collision :
 STR_5963    :{WINDOW_COLOUR_2}Coins relevés :
-STR_5964    :{WINDOW_COLOUR_2}Diagonal
+STR_5964    :{WINDOW_COLOUR_2}Diagonale
 STR_5965    :{WINDOW_COLOUR_2}Type d’entrée : {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}Partie de l’entrée : {BLACK}{STRINGID}
 STR_5967    :milieu
@@ -3734,7 +3734,7 @@ STR_SCNR    :Karts & Grands Huit
 STR_PARK    :Karts & Grands Huit
 STR_DTLS    :Un grand parc caché dans la forêt, avec uniquement des pistes de karting et des montagnes russes en bois.
 
-<Mel’s World>
+<Mel's World>
 STR_SCNR    :Monde de Mel
 STR_PARK    :Monde de Mel
 STR_DTLS    :Ce parc à thème a quelques attractions modernes bien conçues, mais plein d’espace pour son expansion.
@@ -3972,7 +3972,7 @@ STR_SCNR    :Ponton Paradis 2
 STR_PARK    :Ponton Paradis 2
 STR_DTLS    :Ponton Paradis a étendu son réseau d’allées sur l’océan ; à vous d’exploiter cet espace en agrandissant le parc.
 
-<Dragon’s Cove>
+<Dragon's Cove>
 STR_SCNR    :Crique du Dragon
 STR_PARK    :Crique du Dragon
 STR_DTLS    :Ce défi à la construction de montagnes russes a pour site une crique sur la côte.
@@ -4418,6 +4418,10 @@ STR_DTLS    :Ajoutez davantage d’attractions et attirez plus de visiteurs avec
 ###########
 
 ## Start OpenRCT2 Official
+
+[TTPIRF02]
+STR_NAME    :Toit
+
 [TTPIRF03]
 STR_NAME    :Toit
 

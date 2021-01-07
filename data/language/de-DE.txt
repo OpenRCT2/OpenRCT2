@@ -3648,6 +3648,16 @@ STR_6396    :Bildschirmschoner und -stromsparen deaktivieren
 STR_6397    :Falls ausgewählt, werden der Bildschirmschoner und andere Bildschirmstromsparfunktionen blockiert, solange OpenRCT2 läuft.
 STR_6398    :Datei enthält nicht unterstützte Fahrgeschäfttypen. Bitte aktualisieren Sie zu einer neueren Version von OpenRCT2.
 STR_6399    :OpenRCT2 benötigt Dateien vom Originalspiel RollerCoaster Tycoon 2, um zu funktionieren. Bitte setzen Sie die „game_path“-Variable in config.ini auf das Verzeichnis, in das Sie RollerCoaster Tycoon 2 installiert haben, dann starten Sie OpenRCT2 neu.
+STR_6400    :Ich habe den GOG-Offline-Installer für RollerCoaster Tycoon 2 heruntergeladen, aber er ist nicht installiert
+STR_6401    :Ich habe RollerCoaster Tycoon 2 schon installiert
+STR_6402    :OpenRCT2-Daten-Setup
+STR_6403    :Wählen Sie, was am ehesten auf Sie zutrifft
+STR_6404    :Bitte wählen Sie den GOG-Installer für RollerCoaster Tycoon 2.
+STR_6405    :GOG-Installer wählen
+STR_6406    :GOG-Installer für RollerCoaster Tycoon 2
+STR_6407    :Das könnte ein paar Minuten dauern.
+STR_6408    :Bitte installieren Sie „innoextract“, um den GOG-Installer zu extrahieren, dann starten Sie OpenRCT 2 neu.
+STR_6409    :Die gewählte Datei ist nicht der Offline-GOG-Installer für RollerCoaster Tycoon 2. Sie haben vielleicht den GOG-Galaxy-Downloader-Stub heruntergeladen oder die falsche Datei ausgewählt.
 
 #############
 # Scenarios #
