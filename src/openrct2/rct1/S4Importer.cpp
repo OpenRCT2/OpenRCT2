@@ -1969,35 +1969,6 @@ private:
         return result;
     }
 
-    void GetInvalidObjects(
-        ObjectType objectType, const std::vector<const char*>& entries, std::vector<rct_object_entry>& missingObjects)
-    {
-        auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-        for (const char* objectName : entries)
-        {
-            rct_object_entry entry;
-            entry.flags = 0x00008000 + EnumValue(objectType);
-            std::copy_n(objectName, DAT_NAME_LENGTH, entry.name);
-            entry.checksum = 0;
-
-            const ObjectRepositoryItem* ori = objectRepository.FindObject(&entry);
-            if (ori == nullptr)
-            {
-                missingObjects.push_back(entry);
-                Console::Error::WriteLine("[%s] Object not found.", objectName);
-            }
-            else
-            {
-                auto object = objectRepository.LoadObject(ori);
-                if (object == nullptr && objectType != ObjectType::SceneryGroup)
-                {
-                    missingObjects.push_back(entry);
-                    Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
-                }
-            }
-        }
-    }
-
     void ImportTileElements()
     {
         gMapBaseZ = 7;
