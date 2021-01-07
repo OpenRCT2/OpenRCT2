@@ -175,25 +175,22 @@ struct paint_session
         return NextFreePaintStruct >= EndOfPaintStructArray;
     }
 
-    constexpr paint_struct* AllocateNormalPaintEntry(paint_struct&& entry) noexcept
+    constexpr paint_struct* AllocateNormalPaintEntry() noexcept
     {
-        NextFreePaintStruct->basic = entry;
         LastPS = &NextFreePaintStruct->basic;
         NextFreePaintStruct++;
         return LastPS;
     }
 
-    constexpr attached_paint_struct* AllocateAttachedPaintEntry(attached_paint_struct&& entry) noexcept
+    constexpr attached_paint_struct* AllocateAttachedPaintEntry() noexcept
     {
-        NextFreePaintStruct->attached = entry;
         LastAttachedPS = &NextFreePaintStruct->attached;
         NextFreePaintStruct++;
         return LastAttachedPS;
     }
 
-    constexpr paint_string_struct* AllocateStringPaintEntry(paint_string_struct&& entry) noexcept
+    constexpr paint_string_struct* AllocateStringPaintEntry() noexcept
     {
-        NextFreePaintStruct->string = entry;
         if (LastPSString == nullptr)
         {
             PSStringHead = &NextFreePaintStruct->string;

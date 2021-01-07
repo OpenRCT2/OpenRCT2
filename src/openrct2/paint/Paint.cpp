@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -135,17 +135,17 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
 /**
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
-static std::optional<paint_struct> CreateNormalPaintStruct(
+static paint_struct* CreateNormalPaintStruct(
     paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
     if (session->NoPaintStructsAvailable())
-        return std::nullopt;
+        return nullptr;
 
     auto* const g1 = gfx_get_g1_element(image_id & 0x7FFFF);
     if (g1 == nullptr)
     {
-        return std::nullopt;
+        return nullptr;
     }
 
     const uint8_t swappedRotation = (session->CurrentRotation * 3) % 4; // swaps 1 and 3
@@ -156,32 +156,32 @@ static std::optional<paint_struct> CreateNormalPaintStruct(
 
     if (!ImageWithinDPI(imagePos, *g1, session->DPI))
     {
-        return std::nullopt;
+        return nullptr;
     }
 
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
     const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
 
-    paint_struct ps;
-    ps.image_id = image_id;
-    ps.x = imagePos.x;
-    ps.y = imagePos.y;
-    ps.bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
-    ps.bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session->SpritePosition.y;
-    ps.bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
-    ps.bounds.x = rotBoundBoxOffset.x + session->SpritePosition.x;
-    ps.bounds.y = rotBoundBoxOffset.y + session->SpritePosition.y;
-    ps.bounds.z = rotBoundBoxOffset.z;
-    ps.flags = 0;
-    ps.attached_ps = nullptr;
-    ps.children = nullptr;
-    ps.sprite_type = session->InteractionType;
-    ps.var_29 = 0;
-    ps.map_x = session->MapPosition.x;
-    ps.map_y = session->MapPosition.y;
-    ps.tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
+    paint_struct* ps = session->AllocateNormalPaintEntry();
+    ps->image_id = image_id;
+    ps->x = imagePos.x;
+    ps->y = imagePos.y;
+    ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
+    ps->bounds.x = rotBoundBoxOffset.x + session->SpritePosition.x;
+    ps->bounds.y = rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.z = rotBoundBoxOffset.z;
+    ps->flags = 0;
+    ps->attached_ps = nullptr;
+    ps->children = nullptr;
+    ps->sprite_type = session->InteractionType;
+    ps->var_29 = 0;
+    ps->map_x = session->MapPosition.x;
+    ps->map_y = session->MapPosition.y;
+    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
 
-    return { ps };
+    return ps;
 }
 
 template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* session)
@@ -732,14 +732,13 @@ paint_struct* PaintAddImageAsParent(
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
     CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    auto newPS = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
-    if (!newPS.has_value())
+    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    if (ps == nullptr)
     {
         return nullptr;
     }
 
-    auto* ps = session->AllocateNormalPaintEntry(std::move(*newPS));
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
@@ -776,13 +775,14 @@ paint_struct* PaintAddImageAsParent(
     CoordsXYZ offset = { x_offset, y_offset, z_offset };
     CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
     CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-    auto ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
 
-    if (!ps.has_value())
+    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
+    if (ps == nullptr)
     {
         return nullptr;
     }
-    return session->AllocateNormalPaintEntry(std::move(*ps));
+
+    return ps;
 }
 
 /**
@@ -806,23 +806,22 @@ paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
-    if (session->LastPS == nullptr)
+    paint_struct* parentPS = session->LastPS;
+    if (parentPS == nullptr)
     {
         return PaintAddImageAsParent(
             session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
             boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
     }
 
-    auto newPS = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
-
-    if (!newPS.has_value())
+    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
+    if (ps == nullptr)
     {
         return nullptr;
     }
 
-    paint_struct* parentPS = session->LastPS;
-    auto ps = session->AllocateNormalPaintEntry(std::move(*newPS));
     parentPS->children = ps;
+
     return ps;
 }
 
@@ -848,24 +847,25 @@ paint_struct* PaintAddImageAsChild(
  */
 bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
 {
-    if (session->LastAttachedPS == nullptr)
-    {
-        return PaintAttachToPreviousPS(session, image_id, x, y);
-    }
-
     if (session->NoPaintStructsAvailable())
     {
         return false;
     }
-    attached_paint_struct ps;
-    ps.image_id = image_id;
-    ps.x = x;
-    ps.y = y;
-    ps.flags = 0;
-    ps.next = nullptr;
 
     attached_paint_struct* previousAttachedPS = session->LastAttachedPS;
-    previousAttachedPS->next = session->AllocateAttachedPaintEntry(std::move(ps));
+    if (previousAttachedPS == nullptr)
+    {
+        return PaintAttachToPreviousPS(session, image_id, x, y);
+    }
+
+    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    ps->image_id = image_id;
+    ps->x = x;
+    ps->y = y;
+    ps->flags = 0;
+    ps->next = nullptr;
+
+    previousAttachedPS->next = ps;
 
     return true;
 }
@@ -884,12 +884,6 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t 
     {
         return false;
     }
-    attached_paint_struct ps;
-
-    ps.image_id = image_id;
-    ps.x = x;
-    ps.y = y;
-    ps.flags = 0;
 
     paint_struct* masterPs = session->LastPS;
     if (masterPs == nullptr)
@@ -897,11 +891,15 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t 
         return false;
     }
 
-    auto* psPtr = session->AllocateAttachedPaintEntry(std::move(ps));
+    attached_paint_struct* ps = session->AllocateAttachedPaintEntry();
+    ps->image_id = image_id;
+    ps->x = x;
+    ps->y = y;
+    ps->flags = 0;
 
     attached_paint_struct* oldFirstAttached = masterPs->attached_ps;
-    masterPs->attached_ps = psPtr;
-    psPtr->next = oldFirstAttached;
+    masterPs->attached_ps = ps;
+    ps->next = oldFirstAttached;
 
     return true;
 }
@@ -925,15 +923,6 @@ void PaintFloatingMoneyEffect(
         return;
     }
 
-    paint_string_struct ps;
-    ps.string_id = string_id;
-    ps.next = nullptr;
-    ps.args[0] = amount;
-    ps.args[1] = y;
-    ps.args[2] = 0;
-    ps.args[3] = 0;
-    ps.y_offsets = reinterpret_cast<uint8_t*>(y_offsets);
-
     const CoordsXYZ position = {
         session->SpritePosition.x,
         session->SpritePosition.y,
@@ -941,10 +930,16 @@ void PaintFloatingMoneyEffect(
     };
     const auto coord = translate_3d_to_2d_with_z(rotation, position);
 
-    ps.x = coord.x + offset_x;
-    ps.y = coord.y;
-
-    session->AllocateStringPaintEntry(std::move(ps));
+    paint_string_struct* ps = session->AllocateStringPaintEntry();
+    ps->string_id = string_id;
+    ps->next = nullptr;
+    ps->args[0] = amount;
+    ps->args[1] = y;
+    ps->args[2] = 0;
+    ps->args[3] = 0;
+    ps->y_offsets = reinterpret_cast<uint8_t*>(y_offsets);
+    ps->x = coord.x + offset_x;
+    ps->y = coord.y;
 }
 
 /**
