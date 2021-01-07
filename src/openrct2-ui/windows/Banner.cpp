@@ -315,13 +315,9 @@ static void window_banner_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_banner_viewport_rotate(rct_window* w)
 {
-    rct_viewport* view = w->viewport;
-    w->viewport = nullptr;
-
-    view->width = 0;
+    w->RemoveViewport();
 
     auto banner = GetBanner(w->number);
-
     auto bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport

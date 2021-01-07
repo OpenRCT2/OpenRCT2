@@ -48,6 +48,6 @@ void rct_window::RemoveViewport()
     if (viewport == nullptr)
         return;
 
-    viewport->width = 0;
+    viewport_remove(viewport);
     viewport = nullptr;
 }

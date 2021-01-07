@@ -106,7 +106,6 @@ extern uint8_t gShowLandRightsRefCount;
 extern uint8_t gShowConstuctionRightsRefCount;
 
 // rct2: 0x014234BC
-extern rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 extern rct_viewport* g_music_tracking_viewport;
 extern ScreenCoordsXY gSavedView;
 extern ZoomLevel gSavedViewZoom;
@@ -120,6 +119,8 @@ std::optional<ScreenCoordsXY> centre_2d_coordinates(const CoordsXYZ& loc, rct_vi
 void viewport_create(
     rct_window* w, const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, int32_t zoom, CoordsXYZ centrePos,
     char flags, uint16_t sprite);
+void viewport_remove(rct_viewport* viewport);
+void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom = -1);
 void viewport_update_position(rct_window* window);
 void viewport_update_sprite_follow(rct_window* window);
 void viewport_update_smart_sprite_follow(rct_window* window);
