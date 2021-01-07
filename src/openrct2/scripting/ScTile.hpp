@@ -1121,6 +1121,26 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        // Deprecated in favor of seperate 'edges' and 'corners' properties,
+        // left here to maintain compatibility with older plugins.
+        /** @deprecated */
+        uint8_t edgesAndCorners_get() const
+        {
+            auto el = _element->AsPath();
+            return el != nullptr ? el->GetEdgesAndCorners() : 0;
+        }
+        /** @deprecated */
+        void edgesAndCorners_set(uint8_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetEdgesAndCorners(value);
+                Invalidate();
+            }
+        }
+
         DukValue edges_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -1509,6 +1529,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTileElement::parkFences_get, &ScTileElement::parkFences_set, "parkFences");
 
             // Footpath only
+            dukglue_register_property(
+                ctx, &ScTileElement::edgesAndCorners_get, &ScTileElement::edgesAndCorners_set, "edgesAndCorners");
             dukglue_register_property(ctx, &ScTileElement::edges_get, &ScTileElement::edges_set, "edges");
             dukglue_register_property(ctx, &ScTileElement::corners_get, &ScTileElement::corners_set, "corners");
             dukglue_register_property(
