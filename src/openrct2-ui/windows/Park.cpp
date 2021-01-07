@@ -1513,22 +1513,22 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             ft = Formatter();
             ft.Add<uint32_t>(gNumGuestsInPark);
-            ft.Add<uint16_t>(gScenarioObjective.NumGuests);
+            ft.Add<uint32_t>(static_cast<uint32_t>(gScenarioObjective.NumGuests));
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_GUESTS, COLOUR_BLACK);
             screenCoords.y += 1;
 
             ft = Formatter();
-            ft.Add<uint16_t>(gParkRating);
+            ft.Add<uint32_t>(static_cast<uint32_t>(gParkRating));
 
             if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
             {
-                ft.Add<int32_t>(600);
+                ft.Add<uint32_t>(static_cast<uint32_t>(600));
             }
             else
             {
-                ft.Add<int32_t>(700);
+                ft.Add<uint32_t>(static_cast<uint32_t>(700));
             }
 
             screenCoords.y += gfx_draw_string_left_wrapped(
