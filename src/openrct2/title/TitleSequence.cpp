@@ -311,7 +311,7 @@ static std::vector<std::string> GetSaves(IZipArchive* zip)
         auto ext = Path::GetExtension(name);
         if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
         {
-            saves.push_back(name);
+            saves.push_back(std::move(name));
         }
     }
     return saves;
@@ -395,7 +395,7 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
         }
         if (command.Type != TitleScript::Undefined)
         {
-            commands.push_back(command);
+            commands.push_back(std::move(command));
         }
     } while (fs.GetPosition() < fs.GetLength());
     return commands;

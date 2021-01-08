@@ -116,7 +116,7 @@ void JobPool::ProcessQueue()
 
             lock.lock();
 
-            _completed.push_back(taskData);
+            _completed.push_back(std::move(taskData));
 
             _processing--;
             _condComplete.notify_one();

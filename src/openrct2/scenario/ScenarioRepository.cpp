@@ -344,7 +344,7 @@ public:
         // Reload scenarios from index
         _scenarios.clear();
         auto scenarios = _fileIndex.LoadOrBuild(language);
-        for (auto scenario : scenarios)
+        for (const auto& scenario : scenarios)
         {
             AddScenario(scenario);
         }

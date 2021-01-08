@@ -90,8 +90,7 @@ namespace Platform
         // exeDir should come first to allow installing into build dir
         std::vector<std::string> prefixes;
         auto exePath = Platform::GetCurrentExecutablePath();
-        auto exeDirectory = Path::GetDirectory(exePath);
-        prefixes.push_back(exeDirectory);
+        prefixes.push_back(Path::GetDirectory(exePath));
         prefixes.push_back(GetCurrentWorkingDirectory());
         prefixes.push_back("/");
         static const char* SearchLocations[] = {

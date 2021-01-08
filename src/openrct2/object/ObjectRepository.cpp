@@ -420,7 +420,7 @@ private:
             size_t index = _items.size();
             auto copy = item;
             copy.Id = index;
-            _items.push_back(copy);
+            _items.push_back(std::move(copy));
             if (!item.Identifier.empty())
             {
                 _newItemMap[item.Identifier] = index;

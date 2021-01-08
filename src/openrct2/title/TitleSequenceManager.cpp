@@ -249,7 +249,7 @@ namespace TitleSequenceManager
             return;
         }
 
-        _items.push_back(item);
+        _items.push_back(std::move(item));
     }
 
     static std::string GetNameFromSequencePath(const std::string& path)

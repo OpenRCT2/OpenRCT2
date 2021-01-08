@@ -918,7 +918,7 @@ void EntityTweener::PopulateEntities(EntityListId id)
 {
     for (auto ent : EntityList(id))
     {
-        Entities.push_back(&(*ent));
+        Entities.push_back(ent);
         PrePos.emplace_back(ent->x, ent->y, ent->z);
     }
 }

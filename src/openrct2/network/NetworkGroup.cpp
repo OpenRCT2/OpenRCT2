@@ -57,7 +57,7 @@ json_t NetworkGroup::ToJson() const
     {
         if (CanPerformAction(static_cast<NetworkPermission>(i)))
         {
-            actionsArray.push_back(NetworkActions::Actions[i].PermissionName);
+            actionsArray.emplace_back(NetworkActions::Actions[i].PermissionName);
         }
     }
     jsonGroup["permissions"] = actionsArray;

@@ -2340,7 +2340,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         if (object == nullptr)
         {
             log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
-            _missingObjects.push_back(objectName);
+            _missingObjects.emplace_back(objectName);
         }
         else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
         {
@@ -3048,7 +3048,7 @@ void NetworkBase::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& c
         NetworkPlayer tempplayer;
         tempplayer.Read(packet);
 
-        pending.players.push_back(tempplayer);
+        pending.players.push_back(std::move(tempplayer));
     }
 }
 

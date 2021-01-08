@@ -927,9 +927,9 @@ public:
             }
 
             if (invented)
-                gResearchItemsInvented.push_back(ResearchItem(researchItem));
+                gResearchItemsInvented.emplace_back(researchItem);
             else
-                gResearchItemsUninvented.push_back(ResearchItem(researchItem));
+                gResearchItemsUninvented.emplace_back(researchItem);
         }
     }
 

@@ -152,14 +152,14 @@ private:
                 auto fileInfo = scanner->GetFileInfo();
                 auto path = std::string(scanner->GetPath());
 
-                files.push_back(path);
-
                 stats.TotalFiles++;
                 stats.TotalFileSize += fileInfo->Size;
                 stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
                     ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
+
+                files.push_back(std::move(path));
             }
             delete scanner;
         }

@@ -271,7 +271,7 @@ public:
             auto td = _fileIndex.Create(language, newPath);
             if (std::get<0>(td))
             {
-                _items.push_back(std::get<1>(td));
+                _items.push_back(std::move(std::get<1>(td)));
                 SortItems();
                 result = path;
             }

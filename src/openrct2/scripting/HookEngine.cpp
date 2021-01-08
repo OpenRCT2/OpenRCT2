@@ -48,8 +48,7 @@ uint32_t HookEngine::Subscribe(HOOK_TYPE type, std::shared_ptr<Plugin> owner, co
 {
     auto& hookList = GetHookList(type);
     auto cookie = _nextCookie++;
-    Hook hook(cookie, owner, function);
-    hookList.Hooks.push_back(hook);
+    hookList.Hooks.emplace_back(cookie, owner, function);
     return cookie;
 }
 
