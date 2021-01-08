@@ -177,6 +177,7 @@
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\RTL.h" />
+    <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
