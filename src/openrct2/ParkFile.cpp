@@ -945,7 +945,7 @@ namespace OpenRCT2
                 cs.ReadWrite(rideType);
                 return true;
             });
-            cs.ReadWrite(entity.ItemExtraFlags);
+            cs.ReadWrite(entity.ItemFlags);
             cs.ReadWrite(entity.Photo2RideRef);
             cs.ReadWrite(entity.Photo3RideRef);
             cs.ReadWrite(entity.Photo4RideRef);
@@ -977,7 +977,7 @@ namespace OpenRCT2
             cs.ReadWrite(entity.PreviousRide);
             cs.ReadWrite(entity.PreviousRideTimeOut);
             cs.ReadWriteArray(entity.Thoughts, [&cs](rct_peep_thought thought) {
-                if (thought.type != PEEP_THOUGHT_TYPE_NONE)
+                if (thought.type != PeepThoughtType::None)
                 {
                     cs.ReadWrite(thought.type);
                     cs.ReadWrite(thought.item);
@@ -1023,7 +1023,6 @@ namespace OpenRCT2
             cs.ReadWrite(entity.HatColour);
             cs.ReadWrite(entity.FavouriteRide);
             cs.ReadWrite(entity.FavouriteRideRating);
-            cs.ReadWrite(entity.ItemStandardFlags);
         }
 
         static void ReadWriteEntityMisc(OrcaStream::ChunkStream& cs, SpriteBase& entity)
