@@ -130,7 +130,7 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
         case RideSetSetting::RideType:
             if (!gCheatsAllowArbitraryRideTypeChanges)
             {
-                log_warning("Arbitary ride type changes not allowed.");
+                log_warning("Arbitrary ride type changes not allowed.");
                 return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_OPERATING_MODE);
             }
             break;
