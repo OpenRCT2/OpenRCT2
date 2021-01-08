@@ -311,7 +311,7 @@ std::vector<uint8_t> SmallSceneryObject::ReadJsonFrameOffsets(json_t& jFrameOffs
 {
     std::vector<uint8_t> offsets;
 
-    for (auto& jOffset : jFrameOffsets)
+    for (const auto& jOffset : jFrameOffsets)
     {
         offsets.push_back(Json::GetNumber<uint8_t>(jOffset));
     }

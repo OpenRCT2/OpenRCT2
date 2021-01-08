@@ -283,7 +283,7 @@ json_t UIThemeWindowEntry::ToJson() const
     for (uint8_t i = 0; i < wtDesc->NumColours; i++)
     {
         colour_t colour = Theme.Colours[i];
-        jsonColours.push_back(colour);
+        jsonColours.emplace_back(colour);
     }
 
     json_t jsonEntry = {

@@ -111,10 +111,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
 
     uint32_t flags = GetFlags();
 
-    CoordsXYZD parkEntrance;
-    parkEntrance = _loc;
-
-    gParkEntrances.push_back(parkEntrance);
+    gParkEntrances.push_back(_loc);
 
     auto zLow = _loc.z;
     auto zHigh = zLow + ParkEntranceHeight;

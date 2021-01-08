@@ -152,7 +152,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
                 entry[2].y = stream->ReadValue<int8_t>();
                 stream->ReadValue<uint16_t>(); // Skip blanks
 
-                _peepLoadingWaypoints[i].push_back(entry);
+                _peepLoadingWaypoints[i].push_back(std::move(entry));
             }
         }
         else
@@ -695,15 +695,13 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
         {
             if (jCar.is_object())
             {
-                auto car = ReadJsonCar(jCar);
-                cars.push_back(car);
+                cars.push_back(ReadJsonCar(jCar));
             }
         }
     }
     else if (jCars.is_object())
     {
-        auto car = ReadJsonCar(jCars);
-        cars.push_back(car);
+        cars.push_back(ReadJsonCar(jCars));
     }
 
     return cars;
@@ -777,7 +775,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                         }
                     }
 
-                    car.peep_loading_waypoints.push_back(entry);
+                    car.peep_loading_waypoints.push_back(std::move(entry));
                 }
             }
         }

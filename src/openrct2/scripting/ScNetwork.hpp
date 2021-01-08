@@ -71,8 +71,7 @@ namespace OpenRCT2::Scripting
             {
                 if (network_can_perform_action(index, static_cast<NetworkPermission>(permissionIndex)))
                 {
-                    auto p = TransformPermissionKeyToJS(action.PermissionName);
-                    result.push_back(p);
+                    result.push_back(TransformPermissionKeyToJS(action.PermissionName));
                 }
                 permissionIndex++;
             }

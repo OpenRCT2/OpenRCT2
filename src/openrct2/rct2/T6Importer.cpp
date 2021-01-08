@@ -202,7 +202,7 @@ public:
             sceneryElement.flags = t6SceneryElement.flags;
             sceneryElement.primary_colour = t6SceneryElement.primary_colour;
             sceneryElement.secondary_colour = t6SceneryElement.secondary_colour;
-            td->scenery_elements.push_back(sceneryElement);
+            td->scenery_elements.push_back(std::move(sceneryElement));
         }
 
         td->name = _name;

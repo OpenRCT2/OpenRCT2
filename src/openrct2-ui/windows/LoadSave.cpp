@@ -847,7 +847,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
                 newListItem.name = newListItem.path;
                 newListItem.type = TYPE_DIRECTORY;
 
-                _listItems.push_back(newListItem);
+                _listItems.push_back(std::move(newListItem));
             }
         }
     }
@@ -900,7 +900,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
             newListItem.type = TYPE_DIRECTORY;
             newListItem.loaded = false;
 
-            _listItems.push_back(newListItem);
+            _listItems.push_back(std::move(newListItem));
         }
 
         // List all files with the wanted extensions
@@ -940,7 +940,7 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
                     newListItem.name = Path::GetFileName(newListItem.path);
                 }
 
-                _listItems.push_back(newListItem);
+                _listItems.push_back(std::move(newListItem));
             }
 
             extToken = strtok(nullptr, ";");

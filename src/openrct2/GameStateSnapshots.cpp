@@ -588,7 +588,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 }
             }
 
-            res.spriteChanges.push_back(changeData);
+            res.spriteChanges.push_back(std::move(changeData));
         }
 
         return res;

@@ -235,8 +235,7 @@ static void window_changelog_process_changelog_text(const std::string& text)
     std::string::size_type prev = 0;
     while ((pos = text.find("\n", prev)) != std::string::npos)
     {
-        std::string line = text.substr(prev, pos - prev);
-        _changelogLines.push_back(line);
+        _changelogLines.push_back(text.substr(prev, pos - prev));
         prev = pos + 1;
     }
 
@@ -245,7 +244,7 @@ static void window_changelog_process_changelog_text(const std::string& text)
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     _changelogLongestLineWidth = 0;
-    for (auto line : _changelogLines)
+    for (const auto& line : _changelogLines)
     {
         auto width = gfx_get_string_width(line.c_str());
         _changelogLongestLineWidth = std::max(width, _changelogLongestLineWidth);
@@ -261,8 +260,8 @@ static void window_new_version_process_info()
     const char* version_info_ptr = _newVersionInfo->name.c_str();
     format_string(version_info, 256, STR_NEW_RELEASE_VERSION_INFO, &version_info_ptr);
 
-    _changelogLines.push_back(version_info);
-    _changelogLines.push_back("");
+    _changelogLines.emplace_back(version_info);
+    _changelogLines.emplace_back("");
 
     window_changelog_process_changelog_text(_newVersionInfo->changelog);
 }
