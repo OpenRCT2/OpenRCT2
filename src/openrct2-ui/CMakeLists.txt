@@ -38,31 +38,30 @@ if (APPLE)
 endif ()
 
 # Outputs
-set (PROJECT openrct2)
-project(${PROJECT} CXX)
-add_executable(${PROJECT} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
-SET_CHECK_CXX_FLAGS(${PROJECT})
-ipo_set_target_properties(${PROJECT})
+project(openrct2 CXX)
+add_executable(${PROJECT_NAME} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
+SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
+ipo_set_target_properties(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT} "libopenrct2"
+target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                  ${SDL2_LDFLAGS}
                                  ${SPEEX_LDFLAGS})
-target_link_platform_libraries(${PROJECT})
+target_link_platform_libraries(${PROJECT_NAME})
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
-        target_link_libraries(${PROJECT} opengl32)
+        target_link_libraries(${PROJECT_NAME} opengl32)
     elseif (APPLE)
-        target_link_libraries(${PROJECT} ${OPENGL_LIBRARY})
+        target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARY})
     else ()
-        target_link_libraries(${PROJECT} ${GL_LIBRARIES})
+        target_link_libraries(${PROJECT_NAME} ${GL_LIBRARIES})
     endif ()
 endif ()
 
 # Includes
-target_include_directories(${PROJECT} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
+target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
                                               ${SPEEX_INCLUDE_DIRS})
-target_include_directories(${PROJECT} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
+target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
                                                      "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
 
 # Compiler flags
@@ -70,10 +69,10 @@ if (WIN32)
     # mingw complains about "%zu" not being a valid format specifier for printf, unless we
     # tell it that it is
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__USE_MINGW_ANSI_STDIO=1")
-    target_link_libraries(${PROJECT} comdlg32)
+    target_link_libraries(${PROJECT_NAME} comdlg32)
     if (MSVC)
-        target_link_libraries(${PROJECT} SDL2::SDL2-static)
-        target_include_directories(${PROJECT} SYSTEM PRIVATE SDL2::SDL2-static)
+        target_link_libraries(${PROJECT_NAME} SDL2::SDL2-static)
+        target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE SDL2::SDL2-static)
     else ()
         # mingw does not provide proper CMake information like other configurations
         find_path(SDL2_INCLUDE_DIRS SDL2/SDL.h)
@@ -83,7 +82,7 @@ if (WIN32)
             find_library(SDL2_LDFLAGS sdl2)
         endif ()
         # Hardcode some of the libraries used by mingw builds
-        target_link_libraries(${PROJECT} imm32 winmm setupapi version)
+        target_link_libraries(${PROJECT_NAME} imm32 winmm setupapi version)
     endif ()
 endif ()
 if (MSVC)
@@ -114,10 +113,10 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(OPENRCT2_HEADERS_CHECK ${OPENRCT2_UI_HEADERS})
     # OpenGLAPIProc.h is not meant to be included directly.
     list(REMOVE_ITEM OPENRCT2_HEADERS_CHECK "${CMAKE_CURRENT_LIST_DIR}/drawing/engines/opengl/OpenGLAPIProc.h")
-    add_library(${PROJECT}-headers-check OBJECT ${OPENRCT2_HEADERS_CHECK})
-    set_target_properties(${PROJECT}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
+    add_library(${PROJECT_NAME}-headers-check OBJECT ${OPENRCT2_HEADERS_CHECK})
+    set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES LINKER_LANGUAGE CXX)
     set_source_files_properties(${OPENRCT2_HEADERS_CHECK} PROPERTIES LANGUAGE CXX)
     add_definitions("-x c++ -Wno-pragma-once-outside-header -Wno-unused-const-variable")
-    get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT} INCLUDE_DIRECTORIES)
-    set_target_properties(${PROJECT}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${OPENRCT2_INCLUDE_DIRS}")
+    get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT_NAME} INCLUDE_DIRECTORIES)
+    set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${OPENRCT2_INCLUDE_DIRS}")
 endif ()
