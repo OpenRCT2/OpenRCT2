@@ -1514,13 +1514,21 @@ void map_update_tiles()
 void map_calc_highest_tile_height()
 {
     gMapHighestTileHeight = 0;
-    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
     {
-        TileElement* tile = &gTileElements[i];
-        int32_t base_z = tile->GetBaseZ();
-        if (base_z > gMapHighestTileHeight)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
         {
-            gMapHighestTileHeight = base_z;
+            auto surface = map_get_surface_element_at(CoordsXY(x, y));
+            if (surface == nullptr)
+            {
+                continue;
+            }
+
+            int32_t height = std::max(surface->GetWaterHeight(), surface->GetClearanceZ());
+            if (height > gMapHighestTileHeight)
+            {
+                gMapHighestTileHeight = height;
+            }
         }
     }
 }
