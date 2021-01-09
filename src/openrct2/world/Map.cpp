@@ -99,6 +99,7 @@ int16_t gMapSizeMinus2;
 int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
+int32_t gMapHighestTileHeight;
 
 TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
@@ -1508,6 +1509,54 @@ void map_update_tiles()
         gGrassSceneryTileLoopPosition++;
         gGrassSceneryTileLoopPosition &= 0xFFFF;
     }
+}
+
+void map_calc_highest_tile_height()
+{
+    gMapHighestTileHeight = 0;
+    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    {
+        TileElement* tile = &gTileElements[i];
+        int32_t base_z = tile->GetBaseZ();
+        if (base_z > gMapHighestTileHeight)
+        {
+            gMapHighestTileHeight = base_z;
+        }
+    }
+}
+
+MapRange map_get_edge_limits()
+{
+    uint8_t rotation = get_current_rotation();
+
+    int32_t x1 = MAP_MINIMUM_X_Y;
+    int32_t y1 = MAP_MINIMUM_X_Y;
+    int32_t x2 = gMapSizeMinus2;
+    int32_t y2 = gMapSizeMinus2;
+
+    switch (rotation)
+    {
+        case 0:
+            x1 -= gMapHighestTileHeight;
+            y1 -= gMapHighestTileHeight;
+            break;
+        case 3:
+            x1 -= gMapHighestTileHeight;
+            y2 += gMapHighestTileHeight;
+            break;
+        case 2:
+            x2 += gMapHighestTileHeight;
+            y2 += gMapHighestTileHeight;
+            break;
+        case 1:
+            x2 += gMapHighestTileHeight;
+            y1 -= gMapHighestTileHeight;
+            break;
+        default:
+            log_error("Invalid rotation");
+    }
+
+    return MapRange(x1, y1, x2, y2);
 }
 
 void map_remove_provisional_elements()

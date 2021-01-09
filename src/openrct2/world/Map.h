@@ -107,6 +107,7 @@ extern int16_t gMapSizeMinus2;
 extern int16_t gMapSize;
 extern int16_t gMapSizeMaxXY;
 extern int16_t gMapBaseZ;
+extern int32_t gMapHighestTileHeight;
 
 extern uint16_t gMapSelectFlags;
 extern uint16_t gMapSelectType;
@@ -197,6 +198,8 @@ int16_t tile_element_water_height(const CoordsXY& loc);
 uint8_t map_get_highest_land_height(const MapRange& range);
 uint8_t map_get_lowest_land_height(const MapRange& range);
 bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection);
+void map_calc_highest_tile_height();
+MapRange map_get_edge_limits();
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
 void map_update_path_wide_flags();

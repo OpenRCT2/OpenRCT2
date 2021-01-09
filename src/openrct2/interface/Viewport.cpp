@@ -561,29 +561,30 @@ void viewport_update_position(rct_window* window)
                                             window->savedViewPos.y + viewport->view_height / 2 };
 
     auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint, 0);
+    auto mapEdgeLimits = map_get_edge_limits();
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;
-    if (mapCoord.x < MAP_MINIMUM_X_Y)
+    if (mapCoord.x < mapEdgeLimits.GetLeft())
     {
-        mapCoord.x = MAP_MINIMUM_X_Y;
+        mapCoord.x = mapEdgeLimits.GetLeft();
         at_map_edge = 1;
     }
-    if (mapCoord.y < MAP_MINIMUM_X_Y)
+    if (mapCoord.y < mapEdgeLimits.GetTop())
     {
-        mapCoord.y = MAP_MINIMUM_X_Y;
+        mapCoord.y = mapEdgeLimits.GetTop();
         at_map_edge = 1;
     }
 
     // Clamp to the map maximum value (scenario specific)
-    if (mapCoord.x > gMapSizeMinus2)
+    if (mapCoord.x > mapEdgeLimits.GetRight())
     {
-        mapCoord.x = gMapSizeMinus2;
+        mapCoord.x = mapEdgeLimits.GetRight();
         at_map_edge = 1;
     }
-    if (mapCoord.y > gMapSizeMinus2)
+    if (mapCoord.y > mapEdgeLimits.GetBottom())
     {
-        mapCoord.y = gMapSizeMinus2;
+        mapCoord.y = mapEdgeLimits.GetBottom();
         at_map_edge = 1;
     }
 

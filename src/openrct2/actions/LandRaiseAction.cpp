@@ -137,6 +137,11 @@ GameActions::Result::Ptr LandRaiseAction::QueryExecute(bool isExecuting) const
         return ownerShipResult;
     }
 
+    if (isExecuting)
+    {
+        map_calc_highest_tile_height();
+    }
+
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
