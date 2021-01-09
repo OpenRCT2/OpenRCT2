@@ -1651,7 +1651,7 @@ private:
 
                 Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
-                litter->l_type = srcLitter->type;
+                litter->l_type = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
                 litter->y = srcLitter->y;

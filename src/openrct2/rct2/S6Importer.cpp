@@ -1626,7 +1626,7 @@ public:
     void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
     {
         ImportSpriteCommonProperties(dst, src);
-        dst->l_type = src->type;
+        dst->l_type = LitterType(src->type);
         dst->creationTick = src->creationTick;
     }
 

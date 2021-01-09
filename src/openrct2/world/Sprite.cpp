@@ -824,7 +824,7 @@ static bool litter_can_be_at(const CoordsXYZ& mapPos)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(const CoordsXYZD& litterPos, int32_t type)
+void litter_create(const CoordsXYZD& litterPos, LitterType type)
 {
     if (gCheatsDisableLittering)
         return;
