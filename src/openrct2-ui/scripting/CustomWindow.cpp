@@ -703,7 +703,7 @@ namespace OpenRCT2::Ui::Windows
         const auto& customInfo = GetInfo(w);
         const auto& tabs = customInfo.Desc.Tabs;
         size_t tabIndex = 0;
-        for (auto tab : tabs)
+        for (const auto& tab : tabs)
         {
             auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
             auto widget = &w->widgets[widgetIndex];
@@ -1244,11 +1244,11 @@ namespace OpenRCT2::Ui::Windows
 
     rct_window* FindCustomWindowByClassification(const std::string_view& classification)
     {
-        for (auto w : g_window_list)
+        for (const auto& w : g_window_list)
         {
             if (w->classification == WC_CUSTOM)
             {
-                auto& customInfo = GetInfo(w.get());
+                const auto& customInfo = GetInfo(w.get());
                 if (customInfo.Desc.Classification == classification)
                 {
                     return w.get();

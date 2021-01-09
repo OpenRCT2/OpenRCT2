@@ -41,7 +41,7 @@ public:
     }
 
     StringVariant(std::string&& s)
-        : String(s)
+        : String(std::move(s))
     {
     }
 

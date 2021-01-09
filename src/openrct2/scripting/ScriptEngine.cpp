@@ -492,7 +492,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
         RemoveIntervals(plugin);
         RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
-        for (auto callback : _pluginStoppedSubscriptions)
+        for (const auto& callback : _pluginStoppedSubscriptions)
         {
             callback(plugin);
         }
@@ -912,7 +912,7 @@ private:
 
 public:
     DukToGameActionParameterVisitor(DukValue&& dukValue)
-        : _dukValue(dukValue)
+        : _dukValue(std::move(dukValue))
     {
     }
 

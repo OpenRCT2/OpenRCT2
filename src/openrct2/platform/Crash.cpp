@@ -59,7 +59,7 @@ const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 // https://documentation.backtrace.io/product_integration_minidump_breakpad/
 static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, int& error, std::wstring& response)
 {
-    for (auto file : files)
+    for (const auto& file : files)
     {
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }

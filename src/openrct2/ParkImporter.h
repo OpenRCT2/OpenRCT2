@@ -71,7 +71,7 @@ public:
     std::vector<rct_object_entry> const MissingObjects;
 
     explicit ObjectLoadException(std::vector<rct_object_entry>&& missingObjects)
-        : MissingObjects(missingObjects)
+        : MissingObjects(std::move(missingObjects))
     {
     }
 };

@@ -35,7 +35,7 @@ JobPool::~JobPool()
         _condPending.notify_all();
     }
 
-    for (auto&& th : _threads)
+    for (auto& th : _threads)
     {
         assert(th.joinable() != false);
         th.join();

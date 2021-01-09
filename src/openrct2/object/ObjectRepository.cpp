@@ -399,7 +399,7 @@ private:
     void AddItems(const std::vector<ObjectRepositoryItem>& items)
     {
         size_t numConflicts = 0;
-        for (auto item : items)
+        for (const auto& item : items)
         {
             if (!AddItem(item))
             {

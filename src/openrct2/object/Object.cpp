@@ -141,9 +141,9 @@ const std::vector<std::string>& Object::GetAuthors() const
     return _authors;
 }
 
-void Object::SetAuthors(const std::vector<std::string>&& authors)
+void Object::SetAuthors(std::vector<std::string>&& authors)
 {
-    _authors = authors;
+    _authors = std::move(authors);
 }
 
 std::optional<uint8_t> rct_object_entry::GetSceneryType() const

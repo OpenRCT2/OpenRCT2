@@ -319,7 +319,7 @@ public:
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
-    void SetAuthors(const std::vector<std::string>&& authors);
+    void SetAuthors(std::vector<std::string>&& authors);
 
     const ImageTable& GetImageTable() const
     {
