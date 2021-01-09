@@ -36,6 +36,7 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
+#include <openrct2/object/MusicObject.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/StationObject.h>
@@ -52,6 +53,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <vector>
+
 using namespace OpenRCT2;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_WINDOW_TITLE;
@@ -4938,15 +4941,20 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 #pragma region Music
 
 static constexpr const uint8_t MusicStyleOrder[] = {
-    MUSIC_STYLE_GENTLE,       MUSIC_STYLE_SUMMER,        MUSIC_STYLE_WATER,     MUSIC_STYLE_RAGTIME,      MUSIC_STYLE_TECHNO,
-    MUSIC_STYLE_MECHANICAL,   MUSIC_STYLE_MODERN,        MUSIC_STYLE_WILD_WEST, MUSIC_STYLE_PIRATES,      MUSIC_STYLE_ROCK,
-    MUSIC_STYLE_ROCK_STYLE_2, MUSIC_STYLE_ROCK_STYLE_3,  MUSIC_STYLE_FANTASY,   MUSIC_STYLE_HORROR,       MUSIC_STYLE_TOYLAND,
-    MUSIC_STYLE_CANDY_STYLE,  MUSIC_STYLE_ROMAN_FANFARE, MUSIC_STYLE_ORIENTAL,  MUSIC_STYLE_MARTIAN,      MUSIC_STYLE_SPACE,
-    MUSIC_STYLE_JUNGLE_DRUMS, MUSIC_STYLE_JURASSIC,      MUSIC_STYLE_EGYPTIAN,  MUSIC_STYLE_DODGEMS_BEAT, MUSIC_STYLE_SNOW,
-    MUSIC_STYLE_ICE,          MUSIC_STYLE_MEDIEVAL,      MUSIC_STYLE_URBAN,     MUSIC_STYLE_ORGAN
+    MUSIC_STYLE_GENTLE,        MUSIC_STYLE_SUMMER,        MUSIC_STYLE_WATER,
+    MUSIC_STYLE_RAGTIME,       MUSIC_STYLE_TECHNO,        MUSIC_STYLE_MECHANICAL,
+    MUSIC_STYLE_MODERN,        MUSIC_STYLE_WILD_WEST,     MUSIC_STYLE_PIRATES,
+    MUSIC_STYLE_ROCK,          MUSIC_STYLE_ROCK_STYLE_2,  MUSIC_STYLE_ROCK_STYLE_3,
+    MUSIC_STYLE_FANTASY,       MUSIC_STYLE_HORROR,        MUSIC_STYLE_TOYLAND,
+    MUSIC_STYLE_CANDY_STYLE,   MUSIC_STYLE_ROMAN_FANFARE, MUSIC_STYLE_ORIENTAL,
+    MUSIC_STYLE_MARTIAN,       MUSIC_STYLE_SPACE,         MUSIC_STYLE_JUNGLE_DRUMS,
+    MUSIC_STYLE_JURASSIC,      MUSIC_STYLE_EGYPTIAN,      MUSIC_STYLE_DODGEMS_BEAT,
+    MUSIC_STYLE_SNOW,          MUSIC_STYLE_ICE,           MUSIC_STYLE_MEDIEVAL,
+    MUSIC_STYLE_URBAN,         MUSIC_STYLE_ORGAN,         MUSIC_STYLE_CUSTOM_MUSIC_1,
+    MUSIC_STYLE_CUSTOM_MUSIC_2
 };
 
-static uint8_t window_ride_current_music_style_order[42];
+static std::vector<ObjectEntryIndex> window_ride_current_music_style_order;
 
 /**
  *
@@ -5001,6 +5009,25 @@ static void window_ride_music_resize(rct_window* w)
     window_set_resize(w, 316, 81, 316, 81);
 }
 
+static size_t GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
+
+    // Get the index in the order list
+    auto originalStyleId = musicObj->GetOriginalStyleId();
+    if (originalStyleId)
+    {
+        auto it = std::find(std::begin(MusicStyleOrder), std::end(MusicStyleOrder), *originalStyleId);
+        if (it != std::end(MusicStyleOrder))
+        {
+            return std::distance(std::begin(MusicStyleOrder), it);
+        }
+    }
+
+    return std::numeric_limits<size_t>::max();
+}
+
 /**
  *
  *  rct2: 0x006B1EFC
@@ -5015,37 +5042,67 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
     if (ride == nullptr)
         return;
 
-    int32_t numItems = 0;
-    if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
+    // Construct list of available music
+    auto& musicOrder = window_ride_current_music_style_order;
+    musicOrder.clear();
+    auto& objManager = GetContext()->GetObjectManager();
+    for (ObjectEntryIndex i = 0; i < MAX_MUSIC_OBJECTS; i++)
     {
-        window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_FAIRGROUND_ORGAN;
-    }
-    else
-    {
-        for (size_t n = 0; n < std::size(MusicStyleOrder); n++)
-            window_ride_current_music_style_order[numItems++] = MusicStyleOrder[n];
+        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, i));
+        if (musicObj != nullptr)
+        {
+            // Hide custom music if the WAV file does not exist
+            auto originalStyleId = musicObj->GetOriginalStyleId();
+            if (originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_1 || originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_2)
+            {
+                auto numTracks = musicObj->GetTrackCount();
+                if (numTracks > 0)
+                {
+                    auto track0 = musicObj->GetTrack(0);
+                    if (!track0->Asset.IsAvailable())
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    continue;
+                }
+            }
 
-        if (OpenRCT2::Audio::gRideMusicInfoList[36].length != 0)
-            window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_1;
-        if (OpenRCT2::Audio::gRideMusicInfoList[37].length != 0)
-            window_ride_current_music_style_order[numItems++] = MUSIC_STYLE_CUSTOM_MUSIC_2;
+            if (musicObj->SupportsRideType(ride->type))
+            {
+                musicOrder.push_back(i);
+            }
+        }
     }
 
-    for (auto i = 0; i < numItems; i++)
+    // Sort available music by the original RCT2 list order
+    std::stable_sort(musicOrder.begin(), musicOrder.end(), [](const ObjectEntryIndex& a, const ObjectEntryIndex& b) {
+        auto orderA = GetMusicStyleOrder(a);
+        auto orderB = GetMusicStyleOrder(b);
+        return orderA < orderB;
+    });
+
+    // Setup dropdown list
+    auto numItems = musicOrder.size();
+    for (size_t i = 0; i < numItems; i++)
     {
+        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicOrder[i]));
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = MusicStyleNames[window_ride_current_music_style_order[i]];
+        gDropdownItemsArgs[i] = musicObj->NameStringId;
     }
 
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
 
-    for (auto i = 0; i < numItems; i++)
+    // Set currently checked item
+    for (size_t i = 0; i < numItems; i++)
     {
-        if (window_ride_current_music_style_order[i] == ride->music)
+        if (musicOrder[i] == ride->music)
         {
-            Dropdown::SetChecked(i, true);
+            Dropdown::SetChecked(static_cast<int32_t>(i), true);
         }
     }
 }
@@ -5056,13 +5113,12 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
  */
 static void window_ride_music_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    uint8_t musicStyle;
-
-    if (widgetIndex != WIDX_MUSIC_DROPDOWN || dropdownIndex == -1)
-        return;
-
-    musicStyle = window_ride_current_music_style_order[dropdownIndex];
-    set_operating_setting(w->number, RideSetSetting::MusicType, musicStyle);
+    if (widgetIndex == WIDX_MUSIC_DROPDOWN && dropdownIndex >= 0
+        && static_cast<size_t>(dropdownIndex) < window_ride_current_music_style_order.size())
+    {
+        auto musicStyle = window_ride_current_music_style_order[dropdownIndex];
+        set_operating_setting(w->number, RideSetSetting::MusicType, musicStyle);
+    }
 }
 
 /**
@@ -5099,7 +5155,14 @@ static void window_ride_music_invalidate(rct_window* w)
     ride->FormatNameTo(ft);
 
     // Set selected music
-    window_ride_music_widgets[WIDX_MUSIC].text = MusicStyleNames[ride->music];
+    rct_string_id musicName = STR_NONE;
+    auto& objManager = GetContext()->GetObjectManager();
+    auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+    if (musicObj != nullptr)
+    {
+        musicName = musicObj->NameStringId;
+    }
+    window_ride_music_widgets[WIDX_MUSIC].text = musicName;
 
     // Set music activated
     auto isMusicActivated = (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC) != 0;

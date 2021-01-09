@@ -10,8 +10,10 @@
 #include "Object.h"
 
 #include "../Context.h"
+#include "../core/File.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -163,6 +165,84 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
         default:
             return std::nullopt;
     }
+}
+
+class zipstreamwrapper final : public std::istream
+{
+private:
+    std::unique_ptr<IZipArchive> _zipArchive;
+    std::unique_ptr<std::istream> _base;
+
+public:
+    zipstreamwrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<std::istream> base)
+        : std::istream(base->rdbuf())
+        , _zipArchive(std::move(zipArchive))
+        , _base(std::move(base))
+    {
+    }
+};
+
+bool ObjectAsset::IsAvailable() const
+{
+    if (_zipPath.empty())
+    {
+        return File::Exists(_path);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        return zipArchive != nullptr && zipArchive->Exists(_path);
+    }
+}
+
+size_t ObjectAsset::GetLength() const
+{
+    if (_zipPath.empty())
+    {
+        try
+        {
+            return File::ReadAllBytes(_path).size();
+        }
+        catch (...)
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto index = zipArchive->GetIndexFromPath(_path);
+            if (index)
+            {
+                auto size = zipArchive->GetFileSize(*index);
+                return size;
+            }
+        }
+    }
+    return 0;
+}
+
+std::unique_ptr<std::istream> ObjectAsset::GetStream() const
+{
+    if (_zipPath.empty())
+    {
+        return std::make_unique<std::ifstream>(_path, std::ios::binary);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto stream = zipArchive->GetFileStream(_path);
+            if (stream != nullptr)
+            {
+                return std::make_unique<zipstreamwrapper>(std::move(zipArchive), std::move(stream));
+            }
+        }
+    }
+    return {};
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

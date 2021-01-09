@@ -284,6 +284,40 @@ public:
         LoadObject("rct2.station.pagoda");
         LoadObject("rct2.station.space");
         LoadObject("openrct2.station.noentrance");
+
+        // Music
+        LoadObject("rct2.music.dodgems");
+        LoadObject("rct2.music.fairground");
+        LoadObject("rct2.music.roman");
+        LoadObject("rct2.music.oriental");
+        LoadObject("rct2.music.martian");
+        LoadObject("rct2.music.jungle");
+        LoadObject("rct2.music.egyptian");
+        LoadObject("rct2.music.toyland");
+        LoadObject("rct2.music.space");
+        LoadObject("rct2.music.horror");
+        LoadObject("rct2.music.techno");
+        LoadObject("rct2.music.gentle");
+        LoadObject("rct2.music.summer");
+        LoadObject("rct2.music.water");
+        LoadObject("rct2.music.wildwest");
+        LoadObject("rct2.music.jurassic");
+        LoadObject("rct2.music.rock1");
+        LoadObject("rct2.music.ragtime");
+        LoadObject("rct2.music.fantasy");
+        LoadObject("rct2.music.rock2");
+        LoadObject("rct2.music.ice");
+        LoadObject("rct2.music.snow");
+        LoadObject("rct2.music.custom1");
+        LoadObject("rct2.music.custom2");
+        LoadObject("rct2.music.medieval");
+        LoadObject("rct2.music.urban");
+        LoadObject("rct2.music.organ");
+        LoadObject("rct2.music.mechanical");
+        LoadObject("rct2.music.modern");
+        LoadObject("rct2.music.pirate");
+        LoadObject("rct2.music.rock3");
+        LoadObject("rct2.music.candy");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)

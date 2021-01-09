@@ -1137,9 +1137,6 @@ void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(
     const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
-int32_t ride_music_params_update(
-    const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);
-void ride_music_update_final();
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(Ride* ride, StationIndex stationIndex);
 TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos);

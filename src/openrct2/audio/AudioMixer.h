@@ -11,6 +11,9 @@
 
 #include "../common.h"
 
+#include <istream>
+#include <memory>
+
 #define MIXER_VOLUME_MAX 128
 #define MIXER_LOOP_NONE 0
 #define MIXER_LOOP_INFINITE (-1)
@@ -69,6 +72,8 @@ uint64_t Mixer_Channel_GetOffset(void* channel);
 int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
 void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
 void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
+void* Mixer_Play_Music(const char* path, int32_t loop);
+void* Mixer_Play_Music(std::unique_ptr<std::istream> stream, int32_t loop);
 void Mixer_SetVolume(float volume);
 
 int32_t DStoMixerVolume(int32_t volume);

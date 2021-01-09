@@ -11,6 +11,7 @@
 
 #include "../common.h"
 
+#include <istream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -34,6 +35,7 @@ namespace OpenRCT2::Audio
         virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
         virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;
+        virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<std::istream> stream) abstract;
 
         virtual void StartTitleMusic() abstract;
 

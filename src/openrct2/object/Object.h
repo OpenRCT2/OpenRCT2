@@ -15,6 +15,9 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <fstream>
+#include <istream>
+#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
@@ -200,6 +203,29 @@ enum class ObjectError : uint32_t
     UnexpectedEOF,
 };
 
+class ObjectAsset
+{
+private:
+    std::string _zipPath;
+    std::string _path;
+
+public:
+    ObjectAsset() = default;
+    ObjectAsset(std::string_view path)
+        : _path(path)
+    {
+    }
+    ObjectAsset(std::string_view zipPath, std::string_view path)
+        : _zipPath(zipPath)
+        , _path(path)
+    {
+    }
+
+    bool IsAvailable() const;
+    size_t GetLength() const;
+    std::unique_ptr<std::istream> GetStream() const;
+};
+
 struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
@@ -208,6 +234,7 @@ struct IReadObjectContext
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
     virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
+    virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;

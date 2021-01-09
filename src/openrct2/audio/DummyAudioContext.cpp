@@ -31,6 +31,11 @@ namespace OpenRCT2::Audio
             return nullptr;
         }
 
+        IAudioSource* CreateStreamFromWAV(std::unique_ptr<std::istream>) override
+        {
+            return nullptr;
+        }
+
         void StartTitleMusic() override
         {
         }

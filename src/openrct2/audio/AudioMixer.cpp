@@ -166,6 +166,54 @@ void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
     return channel;
 }
 
+void* Mixer_Play_Music(const char* path, int32_t loop)
+{
+    IAudioChannel* channel = nullptr;
+    IAudioMixer* mixer = GetMixer();
+    if (mixer != nullptr)
+    {
+        auto audioContext = GetContext()->GetAudioContext();
+        auto source = audioContext->CreateStreamFromWAV(path);
+        if (source != nullptr)
+        {
+            channel = mixer->Play(source, loop, false, true);
+            if (channel == nullptr)
+            {
+                delete source;
+            }
+        }
+    }
+    if (channel != nullptr)
+    {
+        channel->SetGroup(MixerGroup::RideMusic);
+    }
+    return channel;
+}
+
+void* Mixer_Play_Music(std::unique_ptr<std::istream> stream, int32_t loop)
+{
+    IAudioChannel* channel = nullptr;
+    IAudioMixer* mixer = GetMixer();
+    if (mixer != nullptr)
+    {
+        auto audioContext = GetContext()->GetAudioContext();
+        auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+        if (source != nullptr)
+        {
+            channel = mixer->Play(source, loop, false, true);
+            if (channel == nullptr)
+            {
+                delete source;
+            }
+        }
+    }
+    if (channel != nullptr)
+    {
+        channel->SetGroup(MixerGroup::RideMusic);
+    }
+    return channel;
+}
+
 void Mixer_SetVolume(float volume)
 {
     GetMixer()->SetVolume(volume);
