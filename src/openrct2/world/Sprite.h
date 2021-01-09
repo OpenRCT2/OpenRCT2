@@ -246,11 +246,6 @@ uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
 uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
-void sprite_position_tween_store_a();
-void sprite_position_tween_store_b();
-void sprite_position_tween_all(float nudge);
-void sprite_position_tween_restore();
-void sprite_position_tween_reset();
 
 ///////////////////////////////////////////////////////////////
 // Balloon
@@ -376,6 +371,26 @@ public:
     {
         return EntityListIterator(SPRITE_INDEX_NULL);
     }
+};
+
+class EntityTweener
+{
+    std::vector<SpriteBase*> Entities;
+    std::vector<CoordsXYZ> PrePos;
+    std::vector<CoordsXYZ> PostPos;
+
+private:
+    void PopulateEntities(EntityListId id);
+
+public:
+    static EntityTweener& Get();
+
+    void PreTick();
+    void PostTick();
+    void RemoveEntity(SpriteBase* entity);
+    void Tween(float alpha);
+    void Restore();
+    void Reset();
 };
 
 #endif

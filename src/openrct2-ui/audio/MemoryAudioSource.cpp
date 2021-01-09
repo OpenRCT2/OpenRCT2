@@ -111,17 +111,17 @@ namespace OpenRCT2::Audio
             SDL_RWops* rw = SDL_RWFromFile(path, "rb");
             if (rw != nullptr)
             {
-                uint32_t numSounds;
+                uint32_t numSounds{};
                 SDL_RWread(rw, &numSounds, sizeof(numSounds), 1);
                 if (index < numSounds)
                 {
                     SDL_RWseek(rw, index * 4, RW_SEEK_CUR);
 
-                    uint32_t pcmOffset;
+                    uint32_t pcmOffset{};
                     SDL_RWread(rw, &pcmOffset, sizeof(pcmOffset), 1);
                     SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
 
-                    uint32_t pcmSize;
+                    uint32_t pcmSize{};
                     SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
                     _length = pcmSize;
 

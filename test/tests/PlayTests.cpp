@@ -54,7 +54,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     scenery_set_default_placement_configuration();
     load_palette();
     map_reorganise_elements();
-    sprite_position_tween_reset();
+    EntityTweener::Get().Reset();
     AutoCreateMapAnimations();
     fix_invalid_vehicle_sprite_sizes();
 

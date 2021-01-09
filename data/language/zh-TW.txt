@@ -3490,7 +3490,7 @@ STR_6226    :啟用劇情提早完成
 STR_6227    :當劇情目前於指定日期前完成時便立即完成劇情.
 STR_6228    :劇情選項
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}:
 STR_6232    :涷結
 STR_6233    :切入檢視

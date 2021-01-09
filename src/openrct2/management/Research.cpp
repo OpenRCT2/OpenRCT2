@@ -177,7 +177,7 @@ static void research_next_design()
     gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
     gResearchItemsUninvented.erase(it);
-    gResearchItemsInvented.push_back(researchItem);
+    gResearchItemsInvented.push_back(std::move(researchItem));
 
     research_invalidate_related_windows();
 }
@@ -389,16 +389,16 @@ void research_reset_current_item()
  *
  *  rct2: 0x006857FA
  */
-static void research_insert_unresearched(ResearchItem item)
+static void research_insert_unresearched(ResearchItem&& item)
 {
-    gResearchItemsUninvented.push_back(item);
+    gResearchItemsUninvented.push_back(std::move(item));
 }
 
 /**
  *
  *  rct2: 0x00685826
  */
-static void research_insert_researched(ResearchItem item)
+static void research_insert_researched(ResearchItem&& item)
 {
     // First check to make sure that entry is not already accounted for
     if (item.Exists())
@@ -406,7 +406,7 @@ static void research_insert_researched(ResearchItem item)
         return;
     }
 
-    gResearchItemsInvented.push_back(item);
+    gResearchItemsInvented.push_back(std::move(item));
 }
 
 /**
@@ -435,15 +435,15 @@ void research_remove(ResearchItem* researchItem)
     }
 }
 
-void research_insert(ResearchItem item, bool researched)
+void research_insert(ResearchItem&& item, bool researched)
 {
     if (researched)
     {
-        research_insert_researched(item);
+        research_insert_researched(std::move(item));
     }
     else
     {
-        research_insert_unresearched(item);
+        research_insert_unresearched(std::move(item));
     }
 }
 
@@ -494,7 +494,7 @@ bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, R
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
-        research_insert(tmpItem, researched);
+        research_insert(std::move(tmpItem), researched);
         return true;
     }
 
@@ -520,7 +520,7 @@ bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool resea
     {
         auto tmpItem = ResearchItem(
             Research::EntryType::Scenery, entryIndex, RIDE_TYPE_NULL, ResearchCategory::SceneryGroup, 0);
-        research_insert(tmpItem, researched);
+        research_insert(std::move(tmpItem), researched);
         return true;
     }
     return false;

@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -45,9 +45,6 @@ const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_DRINK_CARTON,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
-
-static CoordsXYZ _spritelocations1[MAX_SPRITES];
-static CoordsXYZ _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
 static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex);
@@ -118,31 +115,17 @@ uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
-static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
-{
-    if (sprite->sprite_left == LOCATION_NULL)
-        return;
-
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0 && viewport->zoom <= maxZoom)
-        {
-            viewport_invalidate(viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right, sprite->sprite_bottom);
-        }
-    }
-}
-
 void SpriteBase::Invalidate()
 {
+    if (sprite_left == LOCATION_NULL)
+        return;
+
     int32_t maxZoom = 0;
     switch (sprite_identifier)
     {
         case SpriteIdentifier::Vehicle:
-            maxZoom = 2;
-            break;
         case SpriteIdentifier::Peep:
-            maxZoom = 0;
+            maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
             switch (static_cast<MiscEntityType>(type))
@@ -173,7 +156,8 @@ void SpriteBase::Invalidate()
         default:
             break;
     }
-    invalidate_sprite_max_zoom(this, maxZoom);
+
+    viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
 }
 
 /**
@@ -795,6 +779,8 @@ void sprite_remove(SpriteBase* sprite)
         peep->SetName({});
     }
 
+    EntityTweener::Get().RemoveEntity(sprite);
+
     move_sprite_to_list(sprite, EntityListId::Free);
     sprite->sprite_identifier = SpriteIdentifier::Null;
     _spriteFlashingList[sprite->sprite_index] = false;
@@ -928,104 +914,102 @@ uint16_t remove_floating_sprites()
     return removed;
 }
 
-/**
- * Determines whether it's worth tweening a sprite or not when frame smoothing is on.
- */
-static bool sprite_should_tween(SpriteBase* sprite)
+void EntityTweener::PopulateEntities(EntityListId id)
 {
-    switch (sprite->sprite_identifier)
+    for (auto ent : EntityList(id))
     {
-        case SpriteIdentifier::Peep:
-        case SpriteIdentifier::Vehicle:
-            return true;
-        case SpriteIdentifier::Misc:
-        case SpriteIdentifier::Litter:
-        case SpriteIdentifier::Null:
-            return false;
-    }
-    return false;
-}
-
-static void store_sprite_locations(CoordsXYZ* sprite_locations)
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        // skip going through `get_sprite` to not get stalled on assert,
-        // this can get very expensive for busy parks with uncap FPS option on
-        const rct_sprite* sprite = &_spriteList[i];
-        sprite_locations[i].x = sprite->generic.x;
-        sprite_locations[i].y = sprite->generic.y;
-        sprite_locations[i].z = sprite->generic.z;
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
     }
 }
 
-void sprite_position_tween_store_a()
+void EntityTweener::PreTick()
 {
-    store_sprite_locations(_spritelocations1);
+    Restore();
+    Reset();
+    PopulateEntities(EntityListId::Peep);
+    PopulateEntities(EntityListId::Vehicle);
+    PopulateEntities(EntityListId::TrainHead);
 }
 
-void sprite_position_tween_store_b()
+void EntityTweener::PostTick()
 {
-    store_sprite_locations(_spritelocations2);
+    for (auto* ent : Entities)
+    {
+        if (ent == nullptr)
+        {
+            // Sprite was removed, add a dummy position to keep the index aligned.
+            PostPos.emplace_back(0, 0, 0);
+        }
+        else
+        {
+            PostPos.emplace_back(ent->x, ent->y, ent->z);
+        }
+    }
 }
 
-void sprite_position_tween_all(float alpha)
+void EntityTweener::RemoveEntity(SpriteBase* entity)
+{
+    if (entity->sprite_identifier != SpriteIdentifier::Peep && entity->sprite_identifier != SpriteIdentifier::Vehicle)
+    {
+        // Only peeps and vehicles are tweened, bail if type is incorrect.
+        return;
+    }
+
+    auto it = std::find(Entities.begin(), Entities.end(), entity);
+    if (it != Entities.end())
+        *it = nullptr;
+}
+
+void EntityTweener::Tween(float alpha)
 {
     const float inv = (1.0f - alpha);
-
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    for (size_t i = 0; i < Entities.size(); ++i)
     {
-        auto* sprite = GetEntity(i);
-        if (sprite != nullptr && sprite_should_tween(sprite))
-        {
-            auto posA = _spritelocations1[i];
-            auto posB = _spritelocations2[i];
-            if (posA == posB)
-            {
-                continue;
-            }
-            sprite_set_coordinates(
-                { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
-                  static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
-                  static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
-                sprite);
-            sprite->Invalidate();
-        }
-    }
-}
-
-/**
- * Restore the real positions of the sprites so they aren't left at the mid-tween positions
- */
-void sprite_position_tween_restore()
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        auto* sprite = GetEntity(i);
-        if (sprite != nullptr && sprite_should_tween(sprite))
-        {
-            sprite->Invalidate();
-
-            auto pos = _spritelocations2[i];
-            sprite_set_coordinates(pos, sprite);
-        }
-    }
-}
-
-void sprite_position_tween_reset()
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        auto* sprite = GetEntity(i);
-        if (sprite == nullptr)
-        {
+        auto* ent = Entities[i];
+        if (ent == nullptr)
             continue;
-        }
 
-        _spritelocations1[i].x = _spritelocations2[i].x = sprite->x;
-        _spritelocations1[i].y = _spritelocations2[i].y = sprite->y;
-        _spritelocations1[i].z = _spritelocations2[i].z = sprite->z;
+        auto& posA = PrePos[i];
+        auto& posB = PostPos[i];
+
+        if (posA == posB)
+            continue;
+
+        sprite_set_coordinates(
+            { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
+              static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
+              static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
+            ent);
+        ent->Invalidate();
     }
+}
+
+void EntityTweener::Restore()
+{
+    for (size_t i = 0; i < Entities.size(); ++i)
+    {
+        auto* ent = Entities[i];
+        if (ent == nullptr)
+            continue;
+
+        sprite_set_coordinates(PostPos[i], ent);
+        ent->Invalidate();
+    }
+}
+
+void EntityTweener::Reset()
+{
+    Entities.clear();
+    PrePos.clear();
+    PostPos.clear();
+}
+
+static EntityTweener tweener;
+
+EntityTweener& EntityTweener::Get()
+{
+    return tweener;
 }
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing)

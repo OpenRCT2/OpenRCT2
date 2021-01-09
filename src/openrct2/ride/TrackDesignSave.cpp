@@ -205,7 +205,7 @@ static void track_design_save_push_tile_element_desc(
     item.primary_colour = primaryColour;
     item.secondary_colour = secondaryColour;
 
-    _trackSavedTileElementsDesc.push_back(item);
+    _trackSavedTileElementsDesc.push_back(std::move(item));
 }
 
 static void track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)

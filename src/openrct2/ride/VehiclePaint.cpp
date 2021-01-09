@@ -3133,7 +3133,6 @@ void vehicle_visual_default(
  */
 void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
 {
-    rct_ride_entry* rideEntry = nullptr;
     const rct_ride_entry_vehicle* vehicleEntry;
 
     int32_t x = vehicle->x;
@@ -3153,7 +3152,7 @@ void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t image
     }
     else
     {
-        rideEntry = vehicle->GetRideEntry();
+        auto rideEntry = vehicle->GetRideEntry();
         if (rideEntry == nullptr)
         {
             return;

@@ -766,7 +766,7 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
         ActionSpriteImageOffset = 0;
         ActionSpriteType = PeepActionSpriteType::None;
         PathCheckOptimisation = 0;
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
 
         if (AssignedPeepType == PeepType::Guest)
         {

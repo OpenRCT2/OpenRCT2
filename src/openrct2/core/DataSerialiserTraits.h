@@ -423,9 +423,9 @@ template<typename _Ty> struct DataSerializerTraits_t<std::vector<_Ty>>
         DataSerializerTraits<_Ty> s;
         for (auto i = 0; i < len; ++i)
         {
-            _Ty sub;
+            _Ty sub{};
             s.decode(stream, sub);
-            val.push_back(sub);
+            val.push_back(std::move(sub));
         }
     }
     static void log(OpenRCT2::IStream* stream, const std::vector<_Ty>& val)

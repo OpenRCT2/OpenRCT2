@@ -14,10 +14,11 @@
 - Feature: [#13512] [Plugin] Add item separators to list view.
 - Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
 - Feature: [#13593] [Plugin] Add ability to read and change the position of ride vehicles.
+- Feature: [#13613] Add single-rail roller coaster (Rocky Mountain Construction Raptor).
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
-- Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once (original bug).
+- Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13102] Underflow on height chart (Ride measurements).
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.

@@ -3484,7 +3484,7 @@ STR_6226    :Ebligi fruan kompletigon de scenaro
 STR_6227    :Ekagigas kompletigon de scenaro kiam ĉiuj scenaroceloj estas atingitaj antaŭ la celodato.
 STR_6228    :Agordoj de Scenaro
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Frostigita
 STR_6233    :Tranĉita vido

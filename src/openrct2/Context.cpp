@@ -624,7 +624,7 @@ namespace OpenRCT2
                 gFirstTimeSaving = true;
                 game_fix_save_vars();
                 AutoCreateMapAnimations();
-                sprite_position_tween_reset();
+                EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
@@ -1003,10 +1003,12 @@ namespace OpenRCT2
         {
             uint32_t currentTick = platform_get_ticks();
 
+            auto& tweener = EntityTweener::Get();
+
             bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
             if (_lastTick == 0)
             {
-                sprite_position_tween_reset();
+                tweener.Reset();
                 _lastTick = currentTick;
             }
 
@@ -1021,7 +1023,7 @@ namespace OpenRCT2
             {
                 // Get the original position of each sprite
                 if (draw)
-                    sprite_position_tween_store_a();
+                    tweener.PreTick();
 
                 Update();
 
@@ -1029,19 +1031,17 @@ namespace OpenRCT2
 
                 // Get the next position of each sprite
                 if (draw)
-                    sprite_position_tween_store_b();
+                    tweener.PostTick();
             }
 
             if (draw)
             {
                 const float alpha = std::min(static_cast<float>(_accumulator) / GAME_UPDATE_TIME_MS, 1.0f);
-                sprite_position_tween_all(alpha);
+                tweener.Tween(alpha);
 
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-
-                sprite_position_tween_restore();
 
                 // Note: It's important to call UpdateWindows after restoring the sprite positions, not in between,
                 // otherwise the window updates to positions of sprites could be reverted.

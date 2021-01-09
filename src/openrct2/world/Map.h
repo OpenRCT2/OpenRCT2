@@ -56,7 +56,7 @@ struct CoordsXYE : public CoordsXY
         , element(_e)
     {
     }
-    TileElement* element;
+    TileElement* element = nullptr;
 };
 
 enum

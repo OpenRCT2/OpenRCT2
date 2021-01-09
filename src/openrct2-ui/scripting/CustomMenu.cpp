@@ -150,11 +150,10 @@ namespace OpenRCT2::Scripting
                     } while (!(el++)->IsLastForTile());
                 }
             }
-            auto eventArgs = obj.Take();
 
             auto& scriptEngine = GetContext()->GetScriptEngine();
             std::vector<DukValue> args;
-            args.push_back(eventArgs);
+            args.emplace_back(obj.Take());
             scriptEngine.ExecutePluginCall(Owner, dukHandler, args, false);
         }
     }

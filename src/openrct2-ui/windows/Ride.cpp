@@ -2025,8 +2025,7 @@ static void populate_ride_type_dropdown()
     for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
     {
         auto name = get_ride_type_name_for_dropdown(i);
-        RideTypeLabel label = { i, name, ls.GetString(name) };
-        RideDropdownData.push_back(label);
+        RideDropdownData.push_back({ i, name, ls.GetString(name) });
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) {
@@ -2118,9 +2117,8 @@ static void populate_vehicle_type_dropdown(Ride* ride)
             if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
                 continue;
 
-            VehicleTypeLabel label = { rideEntryIndex, currentRideEntry->naming.Name,
-                                       ls.GetString(currentRideEntry->naming.Name) };
-            VehicleDropdownData.push_back(label);
+            VehicleDropdownData.push_back(
+                { rideEntryIndex, currentRideEntry->naming.Name, ls.GetString(currentRideEntry->naming.Name) });
         }
     }
 

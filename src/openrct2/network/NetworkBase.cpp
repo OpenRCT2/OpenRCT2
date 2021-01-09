@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "8"
+#define NETWORK_STREAM_VERSION "9"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -2340,7 +2340,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         if (object == nullptr)
         {
             log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
-            _missingObjects.push_back(objectName);
+            _missingObjects.emplace_back(objectName);
         }
         else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
         {
@@ -2718,7 +2718,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
         AutoCreateMapAnimations();
 
         // Read checksum
@@ -3048,7 +3048,7 @@ void NetworkBase::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& c
         NetworkPlayer tempplayer;
         tempplayer.Read(packet);
 
-        pending.players.push_back(tempplayer);
+        pending.players.push_back(std::move(tempplayer));
     }
 }
 

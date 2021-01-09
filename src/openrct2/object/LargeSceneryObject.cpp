@@ -115,7 +115,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStr
     {
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
-        tiles.push_back(tile);
+        tiles.push_back(std::move(tile));
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
     return tiles;
@@ -196,7 +196,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(json_t& jT
             auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
             tile.flags |= (walls & 0xFF) << 8;
 
-            tiles.push_back(tile);
+            tiles.push_back(std::move(tile));
         }
     }
 

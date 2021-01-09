@@ -105,7 +105,7 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadItems(IStream* stream
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         auto entry = stream->ReadValue<rct_object_entry>();
-        items.push_back(ObjectEntryDescriptor(entry));
+        items.emplace_back(entry);
     }
     return items;
 }
@@ -170,10 +170,9 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
 {
     std::vector<ObjectEntryDescriptor> entries;
 
-    for (auto& jEntry : jEntries)
+    for (const auto& jEntry : jEntries)
     {
-        auto entry = ObjectEntryDescriptor(Json::GetString(jEntry));
-        entries.push_back(entry);
+        entries.emplace_back(Json::GetString(jEntry));
     }
     return entries;
 }

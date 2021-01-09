@@ -152,7 +152,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
                 entry[2].y = stream->ReadValue<int8_t>();
                 stream->ReadValue<uint16_t>(); // Skip blanks
 
-                _peepLoadingWaypoints[i].push_back(entry);
+                _peepLoadingWaypoints[i].push_back(std::move(entry));
             }
         }
         else
@@ -695,15 +695,13 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
         {
             if (jCar.is_object())
             {
-                auto car = ReadJsonCar(jCar);
-                cars.push_back(car);
+                cars.push_back(ReadJsonCar(jCar));
             }
         }
     }
     else if (jCars.is_object())
     {
-        auto car = ReadJsonCar(jCars);
-        cars.push_back(car);
+        cars.push_back(ReadJsonCar(jCars));
     }
 
     return cars;
@@ -777,7 +775,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                         }
                     }
 
-                    car.peep_loading_waypoints.push_back(entry);
+                    car.peep_loading_waypoints.push_back(std::move(entry));
                 }
             }
         }
@@ -1017,7 +1015,13 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride", RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+        { "hypercoaster", RIDE_TYPE_HYPERCOASTER },
+        { "hyper_twister", RIDE_TYPE_HYPER_TWISTER },
+        { "monster_trucks", RIDE_TYPE_MONSTER_TRUCKS },
+        { "spinning_wild_mouse", RIDE_TYPE_SPINNING_WILD_MOUSE },
+        { "classic_mini_rc", RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER },
         { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
+        { "single_rail_rc", RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER }
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);

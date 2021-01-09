@@ -990,7 +990,6 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
     if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
     {
         int32_t excitementModifier;
-        int32_t nauseaModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
@@ -1000,7 +999,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         {
             excitementModifier = ride->total_air_time / 8;
         }
-        nauseaModifier = ride->total_air_time / 16;
+        int32_t nauseaModifier = ride->total_air_time / 16;
 
         ride_ratings_add(ratings, excitementModifier, 0, nauseaModifier);
     }
@@ -1013,7 +1012,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
  */
 static void ride_ratings_apply_intensity_penalty(RatingTuple* ratings)
 {
-    static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+    static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
     ride_rating excitement = ratings->Excitement;
     for (auto intensityBound : intensityBounds)
     {
@@ -2999,8 +2998,6 @@ void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
 
 void ride_ratings_calculate_lift(Ride* ride)
 {
-    int32_t totalLength;
-
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
@@ -3010,7 +3007,7 @@ void ride_ratings_calculate_lift(Ride* ride)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
 
-    totalLength = ride_get_total_length(ride) >> 16;
+    int32_t totalLength = ride_get_total_length(ride) >> 16;
     ride_ratings_add(&ratings, (totalLength * 45875) >> 16, 0, (totalLength * 26214) >> 16);
 
     ride_ratings_apply_proximity(&ratings, 11183);
@@ -4387,6 +4384,52 @@ void ride_ratings_calculate_hybrid_coaster(Ride* ride)
     ride->ratings = ratings;
     ride->upkeep_cost = ride_compute_upkeep(ride);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
+void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 16;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(3, 50), RIDE_RATING(0, 60), RIDE_RATING(0, 40));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 36864, 35746, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
+    ride_ratings_apply_proximity(&ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+    if (ride->inversions == 0)
+        ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2); // Done
+
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2); // Done
+
+    if (ride->inversions == 0)
+    {
+        ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2); // Done
+        ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);                     // Done
+    }
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648); // Done
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 

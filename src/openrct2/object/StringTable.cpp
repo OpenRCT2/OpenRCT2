@@ -68,7 +68,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
                 entry.Id = id;
                 entry.LanguageId = languageId;
                 entry.Text = stringAsUtf8;
-                _strings.push_back(entry);
+                _strings.push_back(std::move(entry));
             }
         }
     }
@@ -149,7 +149,7 @@ void StringTable::SetString(ObjectStringID id, uint8_t language, const std::stri
     entry.Id = id;
     entry.LanguageId = language;
     entry.Text = text;
-    _strings.push_back(entry);
+    _strings.push_back(std::move(entry));
 }
 
 void StringTable::Sort()

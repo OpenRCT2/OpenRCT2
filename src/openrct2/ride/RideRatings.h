@@ -140,4 +140,5 @@ void ride_ratings_calculate_mini_roller_coaster(Ride* ride);
 void ride_ratings_calculate_mine_ride(Ride* ride);
 void ride_ratings_calculate_lim_launched_roller_coaster(Ride* ride);
 void ride_ratings_calculate_hybrid_coaster(Ride* ride);
+void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride);
 void ride_ratings_calculate_drink_stall(Ride* ride);

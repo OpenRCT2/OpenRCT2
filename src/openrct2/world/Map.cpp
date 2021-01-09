@@ -1059,14 +1059,7 @@ void map_invalidate_selection_rect()
     bottom += 32;
     top -= 32 + 2080;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0)
-        {
-            viewport_invalidate(viewport, left, top, right, bottom);
-        }
-    }
+    viewports_invalidate(left, top, right, bottom);
 }
 
 /**
@@ -2028,14 +2021,7 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
     x2 = screenCoord.x + 32;
     y2 = screenCoord.y + 32 - z0;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0 && (maxZoom == -1 || viewport->zoom <= maxZoom))
-        {
-            viewport_invalidate(viewport, x1, y1, x2, y2);
-        }
-    }
+    viewports_invalidate(x1, y1, x2, y2, maxZoom);
 }
 
 /**
@@ -2096,14 +2082,7 @@ void map_invalidate_region(const CoordsXY& mins, const CoordsXY& maxs)
     bottom += 32;
     top -= 32 + 2080;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0)
-        {
-            viewport_invalidate(viewport, left, top, right, bottom);
-        }
-    }
+    viewports_invalidate(left, top, right, bottom);
 }
 
 int32_t map_get_tile_side(const CoordsXY& mapPos)

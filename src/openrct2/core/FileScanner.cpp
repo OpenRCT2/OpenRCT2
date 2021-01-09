@@ -201,8 +201,7 @@ private:
                 size_t length = static_cast<size_t>(ch - start);
                 if (length > 0)
                 {
-                    std::string newPattern = std::string(start, length);
-                    patterns.push_back(newPattern);
+                    patterns.emplace_back(start, length);
                 }
                 start = ch + 1;
             }
@@ -237,8 +236,7 @@ public:
             {
                 if (lstrcmpW(findData.cFileName, L".") != 0 && lstrcmpW(findData.cFileName, L"..") != 0)
                 {
-                    DirectoryChild child = CreateChild(&findData);
-                    children.push_back(child);
+                    children.push_back(CreateChild(&findData));
                 }
             } while (FindNextFileW(hFile, &findData));
             FindClose(hFile);
@@ -289,8 +287,7 @@ public:
                 const struct dirent* node = namelist[i];
                 if (!String::Equals(node->d_name, ".") && !String::Equals(node->d_name, ".."))
                 {
-                    DirectoryChild child = CreateChild(path.c_str(), node);
-                    children.push_back(child);
+                    children.push_back(CreateChild(path.c_str(), node));
                 }
                 free(namelist[i]);
             }

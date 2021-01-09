@@ -644,10 +644,7 @@ static void neighbour_list_sort(rct_neighbour_list* neighbourList)
 
 static TileElement* footpath_get_element(const CoordsXYRangedZ& footpathPos, int32_t direction)
 {
-    TileElement* tileElement;
-    int32_t slope;
-
-    tileElement = map_get_first_element_at(footpathPos);
+    TileElement* tileElement = map_get_first_element_at(footpathPos);
     if (tileElement == nullptr)
         return nullptr;
     do
@@ -659,7 +656,7 @@ static TileElement* footpath_get_element(const CoordsXYRangedZ& footpathPos, int
         {
             if (tileElement->AsPath()->IsSloped())
             {
-                slope = tileElement->AsPath()->GetSlopeDirection();
+                auto slope = tileElement->AsPath()->GetSlopeDirection();
                 if (slope != direction)
                     break;
             }
@@ -670,7 +667,7 @@ static TileElement* footpath_get_element(const CoordsXYRangedZ& footpathPos, int
             if (!tileElement->AsPath()->IsSloped())
                 break;
 
-            slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
+            auto slope = direction_reverse(tileElement->AsPath()->GetSlopeDirection());
             if (slope != direction)
                 break;
 

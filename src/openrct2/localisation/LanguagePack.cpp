@@ -404,7 +404,7 @@ private:
                         log_warning("Maximum number of localised object strings exceeded.");
                     }
 
-                    _objectOverrides.push_back(ObjectOverride());
+                    _objectOverrides.emplace_back();
                     _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
                     std::copy_n(_currentGroup.c_str(), 8, _currentObjectOverride->name);
                 }
@@ -448,7 +448,7 @@ private:
                     log_warning("Maximum number of scenario strings exceeded.");
                 }
 
-                _scenarioOverrides.push_back(ScenarioOverride());
+                _scenarioOverrides.emplace_back();
                 _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
                 _currentScenarioOverride->filename = std::string(sb.GetBuffer());
             }

@@ -171,7 +171,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
     if (!map_check_free_elements_and_reorganise(numElements))
     {
-        log_warning("Not enough free map elments to place track.");
+        log_warning("Not enough free map elements to place track.");
         return std::make_unique<TrackPlaceActionResult>(GameActions::Status::NoFreeElements, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
     const uint16_t* trackFlags = (rideTypeFlags & RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatTrackFlags : TrackFlags;

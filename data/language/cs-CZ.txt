@@ -3485,7 +3485,7 @@ STR_6226    :Povolit předčasné splnění scénáře
 STR_6227    :Umožní splnit úkoly a ukončit scénář před daným koncem scénáře
 STR_6228    :Nastavení scénáře
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
-STR_6230    :{STRINGID}:
+STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Zmrazený
 STR_6233    :Seříznuté zobrazení
