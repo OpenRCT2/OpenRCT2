@@ -122,7 +122,7 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;

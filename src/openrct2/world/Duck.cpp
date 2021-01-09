@@ -291,9 +291,9 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
-    sprite->generic.SubType = MiscEntityType::Duck;
-    auto duck = sprite->generic.As<Duck>();
+    sprite->misc.sprite_identifier = SpriteIdentifier::Misc;
+    sprite->misc.SubType = MiscEntityType::Duck;
+    auto duck = sprite->misc.As<Duck>();
     if (duck == nullptr)
         return; // can never happen
     duck->sprite_width = 9;

@@ -66,7 +66,7 @@ template<> bool SpriteBase::Is<MiscEntity>() const
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
-    {
+{
     auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::SteamParticle;
 }
@@ -105,7 +105,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].generic;
+    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].misc;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)
@@ -291,19 +291,19 @@ rct_sprite_checksum sprite_checksum()
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
-                copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
-                copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
+                copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
+                copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
 
                 // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
-                while (auto* nextSprite = GetEntity(copy.generic.next_in_quadrant))
+                while (auto* nextSprite = GetEntity(copy.misc.next_in_quadrant))
                 {
                     if (nextSprite->sprite_identifier == SpriteIdentifier::Misc)
-                        copy.generic.next_in_quadrant = nextSprite->next_in_quadrant;
+                        copy.misc.next_in_quadrant = nextSprite->next_in_quadrant;
                     else
                         break;
                 }
 
-                if (copy.generic.Is<Peep>())
+                if (copy.misc.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.Name = {};
@@ -556,7 +556,7 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -589,7 +589,7 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;

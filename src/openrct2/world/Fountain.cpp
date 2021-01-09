@@ -141,7 +141,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
         jumpingFountain->SubType = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? MiscEntityType::JumpingFountainSnow
-                                                                           : MiscEntityType::JumpingFountainWater;
+                                                                         : MiscEntityType::JumpingFountainWater;
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
     }
@@ -193,7 +193,7 @@ void JumpingFountain::Update()
 int32_t JumpingFountain::GetType() const
 {
     const int32_t fountainType = SubType == MiscEntityType::JumpingFountainSnow ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                                  : JUMPING_FOUNTAIN_TYPE_WATER;
+                                                                                : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;
 }
 

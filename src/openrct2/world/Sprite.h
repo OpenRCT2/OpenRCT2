@@ -145,7 +145,7 @@ struct SteamParticle : MiscEntity
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    MiscEntity generic;
+    MiscEntity misc;
     Peep peep;
     Litter litter;
     Vehicle vehicle;

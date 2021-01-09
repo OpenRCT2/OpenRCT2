@@ -110,7 +110,7 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
-            res->sprites[spriteIdx].generic.sprite_identifier = SpriteIdentifier::Null;
+            res->sprites[spriteIdx].misc.sprite_identifier = SpriteIdentifier::Null;
         else
             res->sprites[spriteIdx] = *sprite;
     }
@@ -405,10 +405,10 @@ static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 
 static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
 {
-    CompareSpriteDataCommon(left.generic, right.generic);
-    if (left.generic.sprite_identifier == right.generic.sprite_identifier)
+    CompareSpriteDataCommon(left.misc, right.misc);
+    if (left.misc.sprite_identifier == right.misc.sprite_identifier)
     {
-        switch (left.generic.sprite_identifier)
+        switch (left.misc.sprite_identifier)
         {
             case SpriteIdentifier::Peep:
                 CompareSpriteDataPeep(left.peep, right.peep);
@@ -420,8 +420,8 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                COMPARE_FIELD(generic.SubType);
-                switch (left.generic.SubType)
+                COMPARE_FIELD(misc.SubType);
+                switch (left.misc.SubType)
                 {
                     case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
@@ -466,8 +466,8 @@ static void CompareStates(
 
     for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; ++spriteIdx)
     {
-        if (importedState->sprites[spriteIdx].generic.sprite_identifier == SpriteIdentifier::Null
-            && exportedState->sprites[spriteIdx].generic.sprite_identifier == SpriteIdentifier::Null)
+        if (importedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null
+            && exportedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null)
         {
             continue;
         }

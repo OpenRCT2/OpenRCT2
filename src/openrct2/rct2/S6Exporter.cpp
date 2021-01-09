@@ -963,10 +963,10 @@ void S6Exporter::ExportSprites()
 void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
 {
     std::memset(dst, 0, sizeof(rct_sprite));
-    switch (src->generic.sprite_identifier)
+    switch (src->misc.sprite_identifier)
     {
         case SpriteIdentifier::Null:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Vehicle:
             ExportSpriteVehicle(&dst->vehicle, &src->vehicle);
@@ -975,14 +975,14 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
             ExportSpritePeep(&dst->peep, &src->peep);
             break;
         case SpriteIdentifier::Misc:
-            ExportSpriteMisc(&dst->unknown, &src->generic);
+            ExportSpriteMisc(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Litter:
             ExportSpriteLitter(&dst->litter, &src->litter);
             break;
         default:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
-            log_warning("Sprite identifier %d can not be exported.", src->generic.sprite_identifier);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
+            log_warning("Sprite identifier %d can not be exported.", src->misc.sprite_identifier);
             break;
     }
 }
@@ -1099,7 +1099,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
 void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
-    
+
     auto generateName = true;
     if (src->Name != nullptr)
     {

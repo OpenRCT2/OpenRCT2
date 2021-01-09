@@ -1318,7 +1318,7 @@ public:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
             case SpriteIdentifier::Misc:
-                ImportSpriteMisc(&dst->generic, &src->unknown);
+                ImportSpriteMisc(&dst->misc, &src->unknown);
                 break;
             case SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);

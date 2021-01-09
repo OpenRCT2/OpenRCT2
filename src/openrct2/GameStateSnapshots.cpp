@@ -49,7 +49,7 @@ struct GameStateSnapshot_t
             for (size_t i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(i);
-                if (entity == nullptr || entity->generic.sprite_identifier == SpriteIdentifier::Null)
+                if (entity == nullptr || entity->misc.sprite_identifier == SpriteIdentifier::Null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -76,9 +76,9 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.generic.sprite_identifier;
+            ds << sprite.misc.sprite_identifier;
 
-            switch (sprite.generic.sprite_identifier)
+            switch (sprite.misc.sprite_identifier)
             {
                 case SpriteIdentifier::Vehicle:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Vehicle)]>(sprite.vehicle);
@@ -91,8 +91,8 @@ struct GameStateSnapshot_t
                     break;
                 case SpriteIdentifier::Misc:
                 {
-                    ds << sprite.generic.SubType;
-                    switch (sprite.generic.SubType)
+                    ds << sprite.misc.SubType;
+                    switch (sprite.misc.SubType)
                     {
                         case MiscEntityType::MoneyEffect:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
@@ -176,7 +176,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.generic.sprite_identifier = SpriteIdentifier::Null;
+            sprite.misc.sprite_identifier = SpriteIdentifier::Null;
         }
 
         snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_SPRITES, false);
@@ -471,15 +471,16 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataGeneric(
         const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        COMPARE_FIELD(MiscEntity, SubType);
         COMPARE_FIELD(MiscEntity, frame);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataCommon(spriteBase.generic, spriteCmp.generic, changeData);
-        if (spriteBase.generic.sprite_identifier == spriteCmp.generic.sprite_identifier)
+        CompareSpriteDataCommon(spriteBase.misc, spriteCmp.misc, changeData);
+        if (spriteBase.misc.sprite_identifier == spriteCmp.misc.sprite_identifier)
         {
-            switch (spriteBase.generic.sprite_identifier)
+            switch (spriteBase.misc.sprite_identifier)
             {
                 case SpriteIdentifier::Peep:
                     CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
@@ -492,8 +493,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                     break;
                 case SpriteIdentifier::Misc:
                     // This is not expected to happen, as misc sprites do not constitute sprite checksum
-                    CompareSpriteDataGeneric(spriteBase.generic, spriteCmp.generic, changeData);
-                    switch (spriteBase.generic.SubType)
+                    CompareSpriteDataGeneric(spriteBase.misc, spriteCmp.misc, changeData);
+                    switch (spriteBase.misc.SubType)
                     {
                         case MiscEntityType::SteamParticle:
                             CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
@@ -549,27 +550,27 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteBase = spritesBase[i];
             const rct_sprite& spriteCmp = spritesCmp[i];
 
-            changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
-            changeData.miscIdentifier = spriteBase.generic.SubType;
+            changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
+            changeData.miscIdentifier = spriteBase.misc.SubType;
 
-            if (spriteBase.generic.sprite_identifier == SpriteIdentifier::Null
-                && spriteCmp.generic.sprite_identifier != SpriteIdentifier::Null)
+            if (spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier != SpriteIdentifier::Null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange_t::ADDED;
-                changeData.spriteIdentifier = spriteCmp.generic.sprite_identifier;
+                changeData.spriteIdentifier = spriteCmp.misc.sprite_identifier;
             }
             else if (
-                spriteBase.generic.sprite_identifier != SpriteIdentifier::Null
-                && spriteCmp.generic.sprite_identifier == SpriteIdentifier::Null)
+                spriteBase.misc.sprite_identifier != SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange_t::REMOVED;
-                changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
+                changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
             }
             else if (
-                spriteBase.generic.sprite_identifier == SpriteIdentifier::Null
-                && spriteCmp.generic.sprite_identifier == SpriteIdentifier::Null)
+                spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange_t::EQUAL;
