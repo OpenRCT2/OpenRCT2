@@ -173,15 +173,15 @@ struct rct_viewport
  */
 struct rct_scroll
 {
-    uint16_t flags;          // 0x00
-    uint16_t h_left;         // 0x02
-    uint16_t h_right;        // 0x04
-    uint16_t h_thumb_left;   // 0x06
-    uint16_t h_thumb_right;  // 0x08
-    uint16_t v_top;          // 0x0A
-    uint16_t v_bottom;       // 0x0C
-    uint16_t v_thumb_top;    // 0x0E
-    uint16_t v_thumb_bottom; // 0x10
+    uint16_t flags{};          // 0x00
+    uint16_t h_left{};         // 0x02
+    uint16_t h_right{};        // 0x04
+    uint16_t h_thumb_left{};   // 0x06
+    uint16_t h_thumb_right{};  // 0x08
+    uint16_t v_top{};          // 0x0A
+    uint16_t v_bottom{};       // 0x0C
+    uint16_t v_thumb_top{};    // 0x0E
+    uint16_t v_thumb_bottom{}; // 0x10
 };
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
@@ -673,12 +673,22 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
-    rct_windowclass cls, uint16_t flags);
+    std::unique_ptr<rct_window>&& w, rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height,
+    uint16_t flags);
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint16_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
+}
+
+rct_window* WindowCreate(
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    uint16_t flags);
 rct_window* WindowCreateAutoPos(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
 rct_window* WindowCreateCentred(
     int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);

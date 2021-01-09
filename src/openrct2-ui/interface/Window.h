@@ -12,5 +12,17 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/interface/Window_internal.h>
 
+struct Window : rct_window
+{
+    void InvalidateWidget(rct_widgetindex widgetIndex);
+    bool IsWidgetDisabled(rct_widgetindex widgetIndex) const;
+    bool IsWidgetPressed(rct_widgetindex widgetIndex) const;
+    void SetWidgetDisabled(rct_widgetindex widgetIndex, bool value);
+    void SetWidgetPressed(rct_widgetindex widgetIndex, bool value);
+    void SetCheckboxValue(rct_widgetindex widgetIndex, bool value);
+    void DrawWidgets(rct_drawpixelinfo& dpi);
+    void Close();
+};
+
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();

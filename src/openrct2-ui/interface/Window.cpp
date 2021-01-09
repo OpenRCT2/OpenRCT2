@@ -87,8 +87,8 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
 }
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
-    rct_windowclass cls, uint16_t flags)
+    std::unique_ptr<rct_window>&& wp, rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height,
+    uint16_t flags)
 {
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
@@ -129,7 +129,7 @@ rct_window* WindowCreate(
         }
     }
 
-    auto itNew = g_window_list.insert(itDestPos, std::make_unique<rct_window>());
+    auto itNew = g_window_list.insert(itDestPos, std::move(wp));
     auto w = itNew->get();
 
     // Setup window
@@ -140,23 +140,17 @@ rct_window* WindowCreate(
     if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, screenCoords.x + (width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
     }
 
-    w->number = 0;
-    w->windowPos = screenCoords;
+    w->windowPos = pos;
     w->width = width;
     w->height = height;
     w->min_width = width;
     w->max_width = width;
     w->min_height = height;
     w->max_height = height;
-    w->viewport = nullptr;
-    w->event_handlers = event_handlers;
-    w->enabled_widgets = 0;
-    w->disabled_widgets = 0;
-    w->pressed_widgets = 0;
-    w->hold_down_widgets = 0;
+
     w->viewport_focus_coordinates.var_480 = 0;
     w->viewport_focus_coordinates.x = 0;
     w->viewport_focus_coordinates.y = 0;
@@ -164,16 +158,21 @@ rct_window* WindowCreate(
     w->viewport_focus_coordinates.rotation = 0;
     w->page = 0;
     w->var_48C = 0;
-    w->frame_no = 0;
-    w->list_information_type = 0;
     w->var_492 = 0;
-    w->selected_tab = 0;
-    w->var_4AE = 0;
-    w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
 
     ColourSchemeUpdate(w);
     w->Invalidate();
+    w->OnOpen();
     return w;
+}
+
+rct_window* WindowCreate(
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    uint16_t flags)
+{
+    auto w = std::make_unique<rct_window>();
+    w->event_handlers = event_handlers;
+    return WindowCreate(std::move(w), cls, pos, width, height, flags);
 }
 
 static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t width)
@@ -653,4 +652,50 @@ void InvalidateAllWindowsAfterInput()
         WindowInvalidatePressedImageButton(w);
         window_event_resize_call(w);
     });
+}
+
+void Window::InvalidateWidget(rct_widgetindex widgetIndex)
+{
+    widget_invalidate(this, widgetIndex);
+}
+
+bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
+{
+    return (disabled_widgets & (1LL << widgetIndex)) != 0;
+}
+
+bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
+{
+    return (pressed_widgets & (1LL << widgetIndex)) != 0;
+}
+
+void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+        disabled_widgets |= (1ULL << widgetIndex);
+    else
+        disabled_widgets &= ~(1ULL << widgetIndex);
+}
+
+void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+        pressed_widgets |= (1ULL << widgetIndex);
+    else
+        pressed_widgets &= ~(1ULL << widgetIndex);
+}
+
+void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
+{
+    SetWidgetPressed(widgetIndex, value);
+}
+
+void Window::DrawWidgets(rct_drawpixelinfo& dpi)
+{
+    WindowDrawWidgets(this, &dpi);
+}
+
+void Window::Close()
+{
+    window_close(this);
 }
