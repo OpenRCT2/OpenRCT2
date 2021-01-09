@@ -2640,7 +2640,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
                 continue;
 
             litter_count++;
-            if (litter->l_type != LITTER_TYPE_SICK && litter->l_type != LITTER_TYPE_SICK_ALT)
+            if (litter->SubType != LITTER_TYPE_SICK && litter->SubType != LITTER_TYPE_SICK_ALT)
                 continue;
 
             litter_count--;

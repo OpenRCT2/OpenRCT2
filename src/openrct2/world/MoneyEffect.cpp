@@ -21,7 +21,7 @@ static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }
 template<> bool SpriteBase::Is<MoneyEffect>() const
 {
     auto* misc = As<SpriteGeneric>();
-    return misc && misc->misc_type == MiscEntityType::MoneyEffect;
+    return misc && misc->SubType == MiscEntityType::MoneyEffect;
 }
 
 /**
@@ -44,7 +44,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SpriteIdentifier::Misc;
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->misc_type = MiscEntityType::MoneyEffect;
+    moneyEffect->SubType = MiscEntityType::MoneyEffect;
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
 

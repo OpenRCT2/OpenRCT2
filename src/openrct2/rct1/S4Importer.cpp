@@ -1170,7 +1170,7 @@ private:
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->v_type = Vehicle::Type(src->type);
+        dst->SubType = Vehicle::Type(src->type);
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -1651,7 +1651,7 @@ private:
 
                 Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
-                litter->l_type = LitterType(srcLitter->type);
+                litter->SubType = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
                 litter->y = srcLitter->y;
@@ -1680,7 +1680,7 @@ private:
                     break;
                 }
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->misc_type = MiscEntityType(src->type);
+                dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;

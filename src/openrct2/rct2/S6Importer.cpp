@@ -1335,7 +1335,7 @@ public:
         const auto& ride = _s6.rides[src->ride];
 
         ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
-        dst->v_type = Vehicle::Type(src->type);
+        dst->SubType = Vehicle::Type(src->type);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1534,8 +1534,8 @@ public:
     void ImportSpriteMisc(SpriteGeneric* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        cdst->misc_type = MiscEntityType(csrc->type);
-        switch (cdst->misc_type)
+        cdst->SubType = MiscEntityType(csrc->type);
+        switch (cdst->SubType)
         {
             case MiscEntityType::SteamParticle:
             {
@@ -1618,7 +1618,7 @@ public:
                 break;
             }
             default:
-                log_warning("Misc. sprite type %d can not be imported.", cdst->misc_type);
+                log_warning("Misc. sprite type %d can not be imported.", cdst->SubType);
                 break;
         }
     }
@@ -1626,7 +1626,7 @@ public:
     void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
     {
         ImportSpriteCommonProperties(dst, src);
-        dst->l_type = LitterType(src->type);
+        dst->SubType = LitterType(src->type);
         dst->creationTick = src->creationTick;
     }
 

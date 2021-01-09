@@ -1014,7 +1014,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     const auto* ride = src->GetRide();
 
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
-    dst->type = static_cast<uint8_t>(src->v_type);
+    dst->type = static_cast<uint8_t>(src->SubType);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
@@ -1251,8 +1251,8 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    cdst->type = static_cast<uint8_t>(csrc->misc_type);
-    switch (csrc->misc_type)
+    cdst->type = static_cast<uint8_t>(csrc->SubType);
+    switch (csrc->SubType)
     {
         case MiscEntityType::SteamParticle:
         {
@@ -1344,7 +1344,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* cs
 void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src)
 {
     ExportSpriteCommonProperties(dst, src);
-    dst->type = static_cast<uint8_t>(src->l_type);
+    dst->type = static_cast<uint8_t>(src->SubType);
     dst->creationTick = src->creationTick;
 }
 

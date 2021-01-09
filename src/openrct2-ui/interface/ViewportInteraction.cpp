@@ -195,7 +195,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
                 case SpriteIdentifier::Misc:
                     if (game_is_not_paused())
                     {
-                        switch (entity->As<SpriteGeneric>()->misc_type)
+                        switch (entity->As<SpriteGeneric>()->SubType)
                         {
                             case MiscEntityType::Balloon:
                             {

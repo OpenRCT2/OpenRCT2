@@ -43,7 +43,7 @@ enum LitterType : uint8_t;
 
 struct Litter : SpriteBase
 {
-    LitterType l_type;
+    LitterType SubType;
     uint32_t creationTick;
 };
 

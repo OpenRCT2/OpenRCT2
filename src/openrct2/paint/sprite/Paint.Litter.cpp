@@ -77,9 +77,9 @@ void litter_paint(paint_session* session, const Litter* litter, int32_t imageDir
     imageDirection >>= 3;
     // Some litter types have only 1 direction so remove
     // anything that isn't required.
-    imageDirection &= litter_sprites[litter->l_type].direction_mask;
+    imageDirection &= litter_sprites[litter->SubType].direction_mask;
 
-    uint32_t image_id = imageDirection + litter_sprites[litter->l_type].base_id;
+    uint32_t image_id = imageDirection + litter_sprites[litter->SubType].base_id;
 
     // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
     //  bound_box_offset_z to make sure litter is drawn on top of railways

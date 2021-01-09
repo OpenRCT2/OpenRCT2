@@ -270,7 +270,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
-    COMPARE_FIELD(v_type);
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);
     COMPARE_FIELD(remaining_distance);
@@ -345,7 +345,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 
 static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 {
-    COMPARE_FIELD(l_type);
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(creationTick);
 }
 
@@ -420,8 +420,8 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                COMPARE_FIELD(generic.misc_type);
-                switch (left.generic.misc_type)
+                COMPARE_FIELD(generic.SubType);
+                switch (left.generic.SubType)
                 {
                     case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
