@@ -1531,7 +1531,7 @@ public:
         dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    void ImportSpriteMisc(SpriteGeneric* cdst, const RCT12SpriteBase* csrc)
+    void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
         cdst->SubType = MiscEntityType(csrc->type);
@@ -1580,7 +1580,7 @@ public:
             case MiscEntityType::CrashSplash:
             {
                 auto src = static_cast<const RCT12SpriteParticle*>(csrc);
-                auto dst = static_cast<SpriteGeneric*>(cdst);
+                auto dst = static_cast<MiscEntity*>(cdst);
                 dst->frame = src->frame;
                 break;
             }

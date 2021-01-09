@@ -68,7 +68,7 @@ static constexpr const uint8_t * DuckAnimations[] =
 
 template<> bool SpriteBase::Is<Duck>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::Duck;
 }
 

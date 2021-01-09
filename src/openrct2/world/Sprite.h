@@ -47,7 +47,7 @@ struct Litter : SpriteBase
     uint32_t creationTick;
 };
 
-struct Balloon : SpriteGeneric
+struct Balloon : MiscEntity
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -58,7 +58,7 @@ struct Balloon : SpriteGeneric
     void Press();
 };
 
-struct Duck : SpriteGeneric
+struct Duck : MiscEntity
 {
     enum class DuckState : uint8_t
     {
@@ -85,7 +85,7 @@ private:
     void UpdateFlyAway();
 };
 
-struct MoneyEffect : SpriteGeneric
+struct MoneyEffect : MiscEntity
 {
     uint16_t MoveDelay;
     uint8_t NumMovements;
@@ -100,7 +100,7 @@ struct MoneyEffect : SpriteGeneric
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct VehicleCrashParticle : SpriteGeneric
+struct VehicleCrashParticle : MiscEntity
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -115,22 +115,22 @@ struct VehicleCrashParticle : SpriteGeneric
     void Update();
 };
 
-struct ExplosionFlare : SpriteGeneric
+struct ExplosionFlare : MiscEntity
 {
     void Update();
 };
 
-struct ExplosionCloud : SpriteGeneric
+struct ExplosionCloud : MiscEntity
 {
     void Update();
 };
 
-struct CrashSplashParticle : SpriteGeneric
+struct CrashSplashParticle : MiscEntity
 {
     void Update();
 };
 
-struct SteamParticle : SpriteGeneric
+struct SteamParticle : MiscEntity
 {
     uint16_t time_to_move;
 
@@ -145,7 +145,7 @@ struct SteamParticle : SpriteGeneric
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    SpriteGeneric generic;
+    MiscEntity generic;
     Peep peep;
     Litter litter;
     Vehicle vehicle;

@@ -16,13 +16,13 @@
 
 template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::CrashedVehicleParticle;
 }
 
 template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::CrashSplash;
 }
 /**
@@ -122,7 +122,7 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;

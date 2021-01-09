@@ -1673,7 +1673,7 @@ private:
             if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SpriteIdentifier::Misc));
+                MiscEntity* dst = reinterpret_cast<MiscEntity*>(create_sprite(SpriteIdentifier::Misc));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");

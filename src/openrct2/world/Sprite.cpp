@@ -60,26 +60,26 @@ template<> bool SpriteBase::Is<Litter>() const
     return sprite_identifier == SpriteIdentifier::Litter;
 }
 
-template<> bool SpriteBase::Is<SpriteGeneric>() const
+template<> bool SpriteBase::Is<MiscEntity>() const
 {
     return sprite_identifier == SpriteIdentifier::Misc;
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
     {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc && misc->SubType == MiscEntityType::ExplosionCloud;
 }
 
@@ -136,7 +136,7 @@ void SpriteBase::Invalidate()
             maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
-            switch (this->As<SpriteGeneric>()->SubType)
+            switch (this->As<MiscEntity>()->SubType)
             {
                 case MiscEntityType::CrashedVehicleParticle:
                 case MiscEntityType::JumpingFountainWater:
@@ -556,7 +556,7 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -589,7 +589,7 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
@@ -620,7 +620,7 @@ void ExplosionFlare::Update()
  *
  *  rct2: 0x006731CD
  */
-static void sprite_misc_update(SpriteGeneric* sprite)
+static void sprite_misc_update(MiscEntity* sprite)
 {
     switch (sprite->SubType)
     {
@@ -663,7 +663,7 @@ static void sprite_misc_update(SpriteGeneric* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList<SpriteGeneric>(EntityListId::Misc))
+    for (auto entity : EntityList<MiscEntity>(EntityListId::Misc))
     {
         sprite_misc_update(entity);
     }

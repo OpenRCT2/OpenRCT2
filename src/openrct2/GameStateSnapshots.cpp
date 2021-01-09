@@ -469,9 +469,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     }
 
     void CompareSpriteDataGeneric(
-        const SpriteGeneric& spriteBase, const SpriteGeneric& spriteCmp, GameStateSpriteChange_t& changeData) const
+        const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(SpriteGeneric, frame);
+        COMPARE_FIELD(MiscEntity, frame);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -508,7 +508,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                         case MiscEntityType::ExplosionCloud:
                         case MiscEntityType::CrashSplash:
                         case MiscEntityType::ExplosionFlare:
-                            // SpriteGeneric
+                            // MiscEntity
                             break;
                         case MiscEntityType::JumpingFountainWater:
                         case MiscEntityType::JumpingFountainSnow:

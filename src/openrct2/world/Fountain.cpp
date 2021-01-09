@@ -72,7 +72,7 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    auto* misc = As<SpriteGeneric>();
+    auto* misc = As<MiscEntity>();
     return misc
         && (misc->SubType == MiscEntityType::JumpingFountainSnow || misc->SubType == MiscEntityType::JumpingFountainWater);
 }

@@ -1248,7 +1248,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
-void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* csrc)
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const MiscEntity* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
     cdst->type = static_cast<uint8_t>(csrc->SubType);
@@ -1296,7 +1296,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* cs
         case MiscEntityType::ExplosionFlare:
         case MiscEntityType::CrashSplash:
         {
-            auto src = static_cast<const SpriteGeneric*>(csrc);
+            auto src = static_cast<const MiscEntity*>(csrc);
             auto dst = static_cast<RCT12SpriteParticle*>(cdst);
             dst->frame = src->frame;
             break;

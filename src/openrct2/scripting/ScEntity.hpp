@@ -57,7 +57,7 @@ namespace OpenRCT2::Scripting
                     case SpriteIdentifier::Peep:
                         return "peep";
                     case SpriteIdentifier::Misc:
-                        switch (entity->As<SpriteGeneric>()->SubType)
+                        switch (entity->As<MiscEntity>()->SubType)
                         {
                             case MiscEntityType::SteamParticle:
                                 return "steam_particle";

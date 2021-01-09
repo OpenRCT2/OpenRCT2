@@ -115,7 +115,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 break;
             case SpriteIdentifier::Misc:
                 // TODO: Update misc_paint to take a specific sprite type
-                misc_paint(session, spr->As<SpriteGeneric>(), image_direction);
+                misc_paint(session, spr->As<MiscEntity>(), image_direction);
                 break;
             case SpriteIdentifier::Litter:
                 litter_paint(session, spr->As<Litter>(), image_direction);
