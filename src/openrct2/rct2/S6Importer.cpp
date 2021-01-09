@@ -1534,8 +1534,8 @@ public:
     void ImportSpriteMisc(SpriteGeneric* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        cdst->misc_type = csrc->type;
-        switch (static_cast<MiscEntityType>(cdst->misc_type))
+        cdst->misc_type = MiscEntityType(csrc->type);
+        switch (cdst->misc_type)
         {
             case MiscEntityType::SteamParticle:
             {

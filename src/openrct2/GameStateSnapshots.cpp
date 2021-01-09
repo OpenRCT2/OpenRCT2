@@ -92,7 +92,7 @@ struct GameStateSnapshot_t
                 case SpriteIdentifier::Misc:
                 {
                     ds << sprite.generic.misc_type;
-                    switch (static_cast<MiscEntityType>(sprite.generic.misc_type))
+                    switch (sprite.generic.misc_type)
                     {
                         case MiscEntityType::MoneyEffect:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
@@ -493,7 +493,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 case SpriteIdentifier::Misc:
                     // This is not expected to happen, as misc sprites do not constitute sprite checksum
                     CompareSpriteDataGeneric(spriteBase.generic, spriteCmp.generic, changeData);
-                    switch (static_cast<MiscEntityType>(spriteBase.generic.misc_type))
+                    switch (spriteBase.generic.misc_type)
                     {
                         case MiscEntityType::SteamParticle:
                             CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
@@ -654,8 +654,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             if (change.changeType == GameStateSpriteChange_t::EQUAL)
                 continue;
 
-            const char* typeName = GetSpriteIdentifierName(
-                change.spriteIdentifier, static_cast<MiscEntityType>(change.miscIdentifier));
+            const char* typeName = GetSpriteIdentifierName(change.spriteIdentifier, change.miscIdentifier);
 
             if (change.changeType == GameStateSpriteChange_t::ADDED)
             {

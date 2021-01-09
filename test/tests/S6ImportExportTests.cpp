@@ -421,7 +421,7 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 break;
             case SpriteIdentifier::Misc:
                 COMPARE_FIELD(generic.misc_type);
-                switch (static_cast<MiscEntityType>(left.generic.misc_type))
+                switch (left.generic.misc_type)
                 {
                     case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);

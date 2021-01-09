@@ -46,8 +46,9 @@ struct SpriteBase
     }
 };
 
+enum class MiscEntityType : uint8_t;
 struct SpriteGeneric : SpriteBase
 {
-    uint8_t misc_type;
+    MiscEntityType misc_type;
     uint16_t frame;
 };

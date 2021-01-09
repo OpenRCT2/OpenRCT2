@@ -99,11 +99,11 @@ namespace OpenRCT2::Scripting
         std::vector<DukValue> getAllEntities(const std::string& type) const
         {
             EntityListId targetList{};
-            uint8_t targetType{};
+            MiscEntityType targetType{};
             if (type == "balloon")
             {
                 targetList = EntityListId::Misc;
-                targetType = EnumValue(MiscEntityType::Balloon);
+                targetType = MiscEntityType::Balloon;
             }
             if (type == "car")
             {
@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
             else if (type == "duck")
             {
                 targetList = EntityListId::Misc;
-                targetType = EnumValue(MiscEntityType::Duck);
+                targetType = MiscEntityType::Duck;
             }
             else if (type == "peep")
             {

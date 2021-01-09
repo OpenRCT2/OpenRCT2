@@ -1251,8 +1251,8 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    cdst->type = csrc->misc_type;
-    switch (static_cast<MiscEntityType>(csrc->misc_type))
+    cdst->type = static_cast<uint8_t>(csrc->misc_type);
+    switch (csrc->misc_type)
     {
         case MiscEntityType::SteamParticle:
         {

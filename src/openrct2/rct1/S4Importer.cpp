@@ -1680,7 +1680,7 @@ private:
                     break;
                 }
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->misc_type = src->type;
+                dst->misc_type = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;
