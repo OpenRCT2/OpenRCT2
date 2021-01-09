@@ -334,7 +334,7 @@ private:
         // Avoid reusing the value used for last import
         _parkValueConversionFactor = 0;
 
-        uint16_t mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
+        uint16_t mapSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
 
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
@@ -1973,21 +1973,59 @@ private:
     {
         gMapBaseZ = 7;
 
-        for (uint32_t index = 0, dstOffset = 0; index < RCT1_MAX_TILE_ELEMENTS; index++)
+        // Build tile pointer cache (needed to get the first element at a certain location)
+        constexpr const uint16_t MaxTileElementPointers = RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE;
+        RCT12TileElement* tilePointers[MaxTileElementPointers];
+        for (size_t i = 0; i < MaxTileElementPointers; i++)
         {
-            auto src = &_s4.tile_elements[index];
-            auto dst = &gTileElements[index + dstOffset];
-            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+            tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
+        }
+
+        RCT12TileElement* tileElement = _s4.tile_elements;
+        RCT12TileElement** tile = tilePointers;
+        for (size_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
+        {
+            for (size_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
             {
-                std::memcpy(dst, src, sizeof(*src));
-            }
-            else
-            {
-                ImportTileElement(dst, src);
+                *tile++ = tileElement;
+                while (!(tileElement++)->IsLastForTile())
+                    ;
             }
         }
 
-        ClearExtraTileEntries();
+        TileElement* dstElement = gTileElements;
+
+        for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
+        {
+            for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
+            {
+                if (coords.x >= RCT1_MAX_MAP_SIZE || coords.y >= RCT1_MAX_MAP_SIZE)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
+                RCT12TileElement* srcElement = tilePointers[coords.x + (coords.y * RCT1_MAX_MAP_SIZE)];
+                do
+                {
+                    if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                        continue;
+
+                    ImportTileElement(dstElement, srcElement);
+                    dstElement->SetLastForTile(false);
+                    dstElement++;
+                } while (!(srcElement++)->IsLastForTile());
+
+                // Set last element flag in case the original last element was never added
+                (dstElement - 1)->SetLastForTile(true);
+            }
+        }
+
+        map_update_tile_pointers();
+
         FixWalls();
         FixEntrancePositions();
     }
@@ -2724,63 +2762,6 @@ private:
         gSavedView = ScreenCoordsXY{ _s4.view_x, _s4.view_y };
         gSavedViewZoom = _s4.view_zoom;
         gSavedViewRotation = _s4.view_rotation;
-    }
-
-    void ClearExtraTileEntries()
-    {
-        // Reset the map tile pointers
-        std::fill(std::begin(gTileElementTilePointers), std::end(gTileElementTilePointers), nullptr);
-
-        // Get the first free map element
-        TileElement* nextFreeTileElement = gTileElements;
-        for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
-        {
-            while (!(nextFreeTileElement++)->IsLastForTile())
-                ;
-        }
-
-        TileElement* tileElement = gTileElements;
-        TileElement** tilePointer = gTileElementTilePointers;
-
-        // 128 rows of map data from RCT1 map
-        for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
-        {
-            // Assign the first half of this row
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                *tilePointer++ = tileElement;
-                while (!(tileElement++)->IsLastForTile())
-                    ;
-            }
-
-            // Fill the rest of the row with blank tiles
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                nextFreeTileElement->SetLastForTile(true);
-                nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-                nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-                nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
-                nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-                *tilePointer++ = nextFreeTileElement++;
-            }
-        }
-
-        // 128 extra rows left to fill with blank tiles
-        for (int32_t y = 0; y < 128 * 256; y++)
-        {
-            nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-            nextFreeTileElement->SetLastForTile(true);
-            nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-            nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-            nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
-            nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-            nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-            *tilePointer++ = nextFreeTileElement++;
-        }
-
-        gNextFreeTileElement = nextFreeTileElement;
     }
 
     void FixWalls()
