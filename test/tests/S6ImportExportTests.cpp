@@ -131,7 +131,6 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
 {
     COMPARE_FIELD(sprite_identifier);
-    COMPARE_FIELD(type);
     COMPARE_FIELD(next_in_quadrant);
     COMPARE_FIELD(next);
     COMPARE_FIELD(previous);
@@ -271,6 +270,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
+    COMPARE_FIELD(v_type);
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);
     COMPARE_FIELD(remaining_distance);
@@ -345,6 +345,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 
 static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 {
+    COMPARE_FIELD(l_type);
     COMPARE_FIELD(creationTick);
 }
 
@@ -419,7 +420,8 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                switch (static_cast<MiscEntityType>(left.generic.type))
+                COMPARE_FIELD(generic.misc_type);
+                switch (static_cast<MiscEntityType>(left.generic.misc_type))
                 {
                     case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);

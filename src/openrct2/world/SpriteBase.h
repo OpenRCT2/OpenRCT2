@@ -9,7 +9,6 @@ enum class SpriteIdentifier : uint8_t;
 struct SpriteBase
 {
     SpriteIdentifier sprite_identifier;
-    uint8_t type;
     uint16_t next_in_quadrant;
     uint16_t next;
     uint16_t previous;
@@ -49,5 +48,6 @@ struct SpriteBase
 
 struct SpriteGeneric : SpriteBase
 {
+    uint8_t misc_type;
     uint16_t frame;
 };

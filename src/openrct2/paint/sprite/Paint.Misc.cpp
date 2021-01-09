@@ -29,11 +29,11 @@ const uint32_t vehicle_particle_base_sprites[] = {
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDirection)
+void misc_paint(paint_session* session, const SpriteGeneric* misc, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    switch (static_cast<MiscEntityType>(misc->type))
+    switch (static_cast<MiscEntityType>(misc->misc_type))
     {
         case MiscEntityType::SteamParticle: // 0
         {
@@ -134,7 +134,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 isAntiClockwise = !isAntiClockwise;
             }
 
-            uint32_t baseImageId = (static_cast<MiscEntityType>(jumpingFountain->type) == MiscEntityType::JumpingFountainSnow)
+            uint32_t baseImageId = (static_cast<MiscEntityType>(jumpingFountain->misc_type) == MiscEntityType::JumpingFountainSnow)
                 ? 23037
                 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;

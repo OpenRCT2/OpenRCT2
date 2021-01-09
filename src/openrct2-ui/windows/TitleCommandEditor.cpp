@@ -657,10 +657,10 @@ static void window_title_command_editor_tool_down(
         }
         else if (litter != nullptr)
         {
-            if (litter->type < std::size(litterNames))
+            if (litter->l_type < std::size(litterNames))
             {
                 validSprite = true;
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);
+                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->l_type], nullptr);
             }
         }
         else if (balloon != nullptr)

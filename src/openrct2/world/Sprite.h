@@ -41,6 +41,7 @@ enum class EntityListId : uint8_t
 
 struct Litter : SpriteBase
 {
+    uint8_t l_type;
     uint32_t creationTick;
 };
 
@@ -82,7 +83,7 @@ private:
     void UpdateFlyAway();
 };
 
-struct MoneyEffect : SpriteBase
+struct MoneyEffect : SpriteGeneric
 {
     uint16_t MoveDelay;
     uint8_t NumMovements;

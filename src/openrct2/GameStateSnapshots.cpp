@@ -91,8 +91,8 @@ struct GameStateSnapshot_t
                     break;
                 case SpriteIdentifier::Misc:
                 {
-                    ds << sprite.generic.type;
-                    switch (static_cast<MiscEntityType>(sprite.generic.type))
+                    ds << sprite.generic.misc_type;
+                    switch (static_cast<MiscEntityType>(sprite.generic.misc_type))
                     {
                         case MiscEntityType::MoneyEffect:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
@@ -200,7 +200,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         COMPARE_FIELD(SpriteBase, sprite_identifier);
-        COMPARE_FIELD(SpriteBase, type);
         COMPARE_FIELD(SpriteBase, next_in_quadrant);
         COMPARE_FIELD(SpriteBase, next);
         COMPARE_FIELD(SpriteBase, previous);
@@ -494,7 +493,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 case SpriteIdentifier::Misc:
                     // This is not expected to happen, as misc sprites do not constitute sprite checksum
                     CompareSpriteDataGeneric(spriteBase.generic, spriteCmp.generic, changeData);
-                    switch (static_cast<MiscEntityType>(spriteBase.generic.type))
+                    switch (static_cast<MiscEntityType>(spriteBase.generic.misc_type))
                     {
                         case MiscEntityType::SteamParticle:
                             CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
@@ -551,7 +550,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteCmp = spritesCmp[i];
 
             changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
-            changeData.miscIdentifier = spriteBase.generic.type;
+            changeData.miscIdentifier = spriteBase.generic.misc_type;
 
             if (spriteBase.generic.sprite_identifier == SpriteIdentifier::Null
                 && spriteCmp.generic.sprite_identifier != SpriteIdentifier::Null)

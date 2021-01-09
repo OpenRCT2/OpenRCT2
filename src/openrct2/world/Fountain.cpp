@@ -72,9 +72,10 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    const auto miscType = static_cast<MiscEntityType>(type);
-    return sprite_identifier == SpriteIdentifier::Misc
-        && (miscType == MiscEntityType::JumpingFountainSnow || miscType == MiscEntityType::JumpingFountainWater);
+    auto* misc = As<SpriteGeneric>();
+    return misc
+        && (static_cast<MiscEntityType>(misc->misc_type) == MiscEntityType::JumpingFountainSnow
+            || static_cast<MiscEntityType>(misc->misc_type) == MiscEntityType::JumpingFountainWater);
 }
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
@@ -140,7 +141,7 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
-        jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? EnumValue(MiscEntityType::JumpingFountainSnow)
+        jumpingFountain->misc_type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? EnumValue(MiscEntityType::JumpingFountainSnow)
                                                                       : EnumValue(MiscEntityType::JumpingFountainWater);
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
@@ -162,7 +163,7 @@ void JumpingFountain::Update()
     Invalidate();
     frame++;
 
-    switch (static_cast<MiscEntityType>(type))
+    switch (static_cast<MiscEntityType>(misc_type))
     {
         case MiscEntityType::JumpingFountainWater:
             if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
@@ -192,7 +193,7 @@ void JumpingFountain::Update()
 
 int32_t JumpingFountain::GetType() const
 {
-    const int32_t fountainType = static_cast<MiscEntityType>(type) == MiscEntityType::JumpingFountainSnow
+    const int32_t fountainType = static_cast<MiscEntityType>(misc_type) == MiscEntityType::JumpingFountainSnow
         ? JUMPING_FOUNTAIN_TYPE_SNOW
         : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;

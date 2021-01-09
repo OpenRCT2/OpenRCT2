@@ -990,7 +990,6 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
-    dst->type = src->type;
     dst->next_in_quadrant = src->next_in_quadrant;
     dst->next = src->next;
     dst->previous = src->previous;
@@ -1015,6 +1014,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     const auto* ride = src->GetRide();
 
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    dst->type = static_cast<uint8_t>(src->v_type);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
@@ -1099,7 +1099,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
 void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 {
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
-
+    
     auto generateName = true;
     if (src->Name != nullptr)
     {
@@ -1248,10 +1248,11 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
-void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteGeneric* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    switch (static_cast<MiscEntityType>(cdst->type))
+    cdst->type = csrc->misc_type;
+    switch (static_cast<MiscEntityType>(csrc->misc_type))
     {
         case MiscEntityType::SteamParticle:
         {
@@ -1343,6 +1344,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
 void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src)
 {
     ExportSpriteCommonProperties(dst, src);
+    dst->type = static_cast<uint8_t>(src->l_type);
     dst->creationTick = src->creationTick;
 }
 

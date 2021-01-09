@@ -60,19 +60,27 @@ template<> bool SpriteBase::Is<Litter>() const
     return sprite_identifier == SpriteIdentifier::Litter;
 }
 
-template<> bool SpriteBase::Is<SteamParticle>() const
+template<> bool SpriteBase::Is<SpriteGeneric>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::SteamParticle;
+    return sprite_identifier == SpriteIdentifier::Misc;
+}
+
+template<> bool SpriteBase::Is<SteamParticle>() const
+    {
+    auto* misc = As<SpriteGeneric>();
+    return misc && static_cast<MiscEntityType>(misc->misc_type) == MiscEntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionFlare;
+    auto* misc = As<SpriteGeneric>();
+    return misc && static_cast<MiscEntityType>(misc->misc_type) == MiscEntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionCloud;
+    auto* misc = As<SpriteGeneric>();
+    return misc && static_cast<MiscEntityType>(misc->misc_type) == MiscEntityType::ExplosionCloud;
 }
 
 uint16_t GetEntityListCount(EntityListId list)
@@ -128,7 +136,7 @@ void SpriteBase::Invalidate()
             maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
-            switch (static_cast<MiscEntityType>(type))
+            switch (static_cast<MiscEntityType>(reinterpret_cast<SpriteGeneric*>(this)->misc_type))
             {
                 case MiscEntityType::CrashedVehicleParticle:
                 case MiscEntityType::JumpingFountainWater:
@@ -556,7 +564,7 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscEntityType::ExplosionCloud);
+        sprite->misc_type = EnumValue(MiscEntityType::ExplosionCloud);
         sprite->frame = 0;
     }
 }
@@ -589,7 +597,7 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscEntityType::ExplosionFlare);
+        sprite->misc_type = EnumValue(MiscEntityType::ExplosionFlare);
         sprite->frame = 0;
     }
 }
@@ -612,9 +620,9 @@ void ExplosionFlare::Update()
  *
  *  rct2: 0x006731CD
  */
-static void sprite_misc_update(SpriteBase* sprite)
+static void sprite_misc_update(SpriteGeneric* sprite)
 {
-    switch (static_cast<MiscEntityType>(sprite->type))
+    switch (static_cast<MiscEntityType>(sprite->misc_type))
     {
         case MiscEntityType::SteamParticle:
             sprite->As<SteamParticle>()->Update();
@@ -655,7 +663,7 @@ static void sprite_misc_update(SpriteBase* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList(EntityListId::Misc))
+    for (auto entity : EntityList<SpriteGeneric>(EntityListId::Misc))
     {
         sprite_misc_update(entity);
     }
@@ -857,7 +865,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SpriteIdentifier::Litter;
-    litter->type = type;
+    litter->l_type = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gScenarioTicks;
 }

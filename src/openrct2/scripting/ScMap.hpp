@@ -131,7 +131,7 @@ namespace OpenRCT2::Scripting
             for (auto sprite : EntityList(targetList))
             {
                 // Only the misc list checks the type property
-                if (targetList != EntityListId::Misc || sprite->type == targetType)
+                if (targetList != EntityListId::Misc || sprite->As<SpriteGeneric>()->misc_type == targetType)
                 {
                     if (targetList == EntityListId::Peep)
                     {

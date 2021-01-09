@@ -198,6 +198,7 @@ struct Vehicle : SpriteBase
         StoppedByBlockBrakes
     };
 
+    Type v_type;
     uint8_t vehicle_sprite_type;
     uint8_t bank_rotation;
     int32_t remaining_distance;
@@ -312,7 +313,7 @@ struct Vehicle : SpriteBase
 
     constexpr bool IsHead() const
     {
-        return type == static_cast<uint8_t>(Vehicle::Type::Head);
+        return v_type == Vehicle::Type::Head;
     }
     void Update();
     Vehicle* GetHead();
