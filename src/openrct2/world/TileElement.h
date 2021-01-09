@@ -527,11 +527,6 @@ public:
     void SetAcrossTrack(bool acrossTrack);
     bool AnimationIsBackwards() const;
     void SetAnimationIsBackwards(bool isBackwards);
-
-    void SetRawRCT1Data(uint32_t rawData);
-    int32_t GetRCT1WallType(int32_t edge) const;
-    colour_t GetRCT1WallColour() const;
-    uint8_t GetRCT1Slope() const;
 };
 assert_struct_size(WallElement, 16);
 

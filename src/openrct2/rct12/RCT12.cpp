@@ -420,11 +420,6 @@ bool RCT12WallElement::AnimationIsBackwards() const
     return (animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) != 0;
 }
 
-uint32_t RCT12WallElement::GetRawRCT1WallTypeData() const
-{
-    return entryIndex | (colour_3 << 8) | (colour_1 << 16) | (animation << 24);
-}
-
 int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 {
     uint8_t var_05 = colour_3;
@@ -446,6 +441,11 @@ int32_t RCT12WallElement::GetRCT1WallType(int32_t edge) const
 colour_t RCT12WallElement::GetRCT1WallColour() const
 {
     return ((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5);
+}
+
+uint8_t RCT12WallElement::GetRCT1Slope() const
+{
+    return entryIndex & 0b00011111;
 }
 
 uint8_t RCT12EntranceElement::GetEntranceType() const
