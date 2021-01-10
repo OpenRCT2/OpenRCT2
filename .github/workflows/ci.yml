@@ -156,15 +156,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build OpenRCT2
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel
+        run: |
+          brew install ninja
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on -DDISABLE_DISCORD_RPC=on
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
+      - name: Build artifacts
+        shell: bash
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-macOS-cmake"
-          path: build/install/*
+          path: artifacts
 
   linux-portable:
     name: Linux (x64, portable)
