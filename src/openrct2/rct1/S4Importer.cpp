@@ -1974,24 +1974,8 @@ private:
         gMapBaseZ = 7;
 
         // Build tile pointer cache (needed to get the first element at a certain location)
-        constexpr const uint16_t MaxTileElementPointers = RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE;
-        RCT12TileElement* tilePointers[MaxTileElementPointers];
-        for (size_t i = 0; i < MaxTileElementPointers; i++)
-        {
-            tilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
-        }
-
-        RCT12TileElement* tileElement = _s4.tile_elements;
-        RCT12TileElement** tile = tilePointers;
-        for (size_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-        {
-            for (size_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
-            {
-                *tile++ = tileElement;
-                while (!(tileElement++)->IsLastForTile())
-                    ;
-            }
-        }
+        std::vector<RCT12TileElement*> tilePointers = ParkImporter::CreateTilePointers<RCT12TileElement>(
+            RCT1_MAX_MAP_SIZE, _s4.tile_elements);
 
         TileElement* dstElement = gTileElements;
 
