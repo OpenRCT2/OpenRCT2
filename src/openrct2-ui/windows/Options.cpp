@@ -1570,7 +1570,7 @@ static void window_options_audio_invalidate(rct_window* w)
     WidgetSetEnabled(w, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
     WidgetSetEnabled(w, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
-    // Initialize only on first frame, otherwise the scrollbars wont be able to be modified
+    // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
     if (w->frame_no == 0)
     {
         initialize_scroll_position(w, WIDX_MASTER_VOLUME, 0, gConfigSound.master_volume);

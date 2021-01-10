@@ -17,7 +17,7 @@
 
 /**
  * Decodes an RCT2 string to a wide char string still in the original code page.
- * An RCT2 string is a multi-byte string where every two-byte code point is preceeded with a byte value of 255.
+ * An RCT2 string is a multi-byte string where every two-byte code point is preceded with a byte value of 255.
  */
 static std::wstring DecodeToWideChar(std::string_view src)
 {

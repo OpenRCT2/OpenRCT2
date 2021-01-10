@@ -1439,7 +1439,7 @@ void S6Exporter::ExportTileElements()
 
 void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
 {
-    // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+    // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
     uint8_t tileElementType = src->GetType();
     dst->ClearAs(tileElementType);
     dst->SetDirection(src->GetDirection());

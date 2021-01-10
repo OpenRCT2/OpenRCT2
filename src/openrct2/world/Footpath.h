@@ -89,7 +89,7 @@ enum
     FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in TileElement.properties.path.edges
+// Masks and flags for values stored in TileElement.properties.path.edges
 enum
 {
     FOOTPATH_PROPERTIES_EDGES_EDGES_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),

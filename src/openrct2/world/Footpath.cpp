@@ -1258,7 +1258,7 @@ static void footpath_fix_ownership(const CoordsXY& mapPos)
         {
             ownership = OWNERSHIP_UNOWNED;
         }
-        // If the tile is safe to own construction rights of, do not erase contruction rights.
+        // If the tile is safe to own construction rights of, do not erase construction rights.
         else
         {
             ownership = surfaceElement->GetOwnership();

@@ -84,7 +84,7 @@ static TileElement* get_banner_on_path(TileElement* path_element)
         // Found a banner
         if (bannerElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
             return bannerElement;
-        // Last element so there cant be any other banners
+        // Last element so there can't be any other banners
         if (bannerElement->IsLastForTile())
             return nullptr;
 

@@ -268,7 +268,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     BeginServerLog();
 
     // We need to wait for the map load before we execute any actions.
-    // If the client has the title screen running then theres a potential
+    // If the client has the title screen running then there's a potential
     // risk of tick collision with the server map and title screen map.
     GameActions::SuspendQueue();
 
@@ -3571,7 +3571,7 @@ GameActions::Result::Ptr network_modify_groups(
         case ModifyGroupType::SetPermissions:
         {
             if (groupId == 0)
-            { // cant change admin group permissions
+            { // can't change admin group permissions
                 return std::make_unique<GameActions::Result>(
                     GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }

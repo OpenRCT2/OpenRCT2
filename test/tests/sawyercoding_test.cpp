@@ -83,7 +83,7 @@ TEST_F(SawyerCodingTest, write_read_chunk_rotate)
 
 // Note we only check if provided data decompresses to the same data, not if it compresses the same.
 // The reason for that is we may improve encoding at some point, but the test won't be affected,
-// as we already do a decode test and rountrip (encode + decode), which validates all uses.
+// as we already do a decode test and roundtrip (encode + decode), which validates all uses.
 
 TEST_F(SawyerCodingTest, decode_chunk_none)
 {

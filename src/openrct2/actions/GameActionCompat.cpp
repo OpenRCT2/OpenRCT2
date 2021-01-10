@@ -143,7 +143,7 @@ money32 maze_set_track(
         res = GameActions::Execute(&gameAction);
 
     // NOTE: ride_construction_tooldown_construct requires them to be set.
-    // Refactor result type once theres no C code referencing this function.
+    // Refactor result type once there's no C code referencing this function.
     if (auto title = res->ErrorTitle.AsStringId())
         gGameCommandErrorTitle = *title;
     else

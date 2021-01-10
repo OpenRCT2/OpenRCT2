@@ -122,7 +122,7 @@ namespace OpenRCT2
         uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
-        // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+        // If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to
         // false.
         bool _finished = false;
 

@@ -45,7 +45,7 @@ declare global {
     var ui: Ui;
 
     /**
-     * Registers the plugin. This only only be called once.
+     * Registers the plugin. This may only be called once.
      * @param metadata Information about the plugin and the entry point.
      */
     function registerPlugin(metadata: PluginMetadata): void;
@@ -144,7 +144,7 @@ declare global {
         configuration: Configuration;
 
         /**
-         * Shared generic storage for all plugins. Data is persistant across instances
+         * Shared generic storage for all plugins. Data is persistent across instances
          * of OpenRCT2 and is stored externally as a single JSON file in the OpenRCT2
          * user directory. Internally it is a JavaScript object. Objects and arrays
          * are only copied by reference. The external file is only written when using
@@ -2030,7 +2030,7 @@ declare global {
     }
 
     /**
-     * Listens for incomming connections.
+     * Listens for incoming connections.
      * Based on node.js net.Server, see https://nodejs.org/api/net.html for more information.
      */
     interface Listener {

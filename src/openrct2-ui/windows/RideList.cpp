@@ -497,7 +497,7 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
 
-    // if close buttton is on the right then it must move
+    // if close button is on the right then it must move
     w->widgets[WIDX_CLOSE].left = w->width - 13;
     w->widgets[WIDX_CLOSE].right = w->width - 3;
 
