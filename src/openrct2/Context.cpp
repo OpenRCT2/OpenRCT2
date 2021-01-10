@@ -46,6 +46,8 @@
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
+#include "network/NetworkClient.h"
+#include "network/NetworkServer.h"
 #include "network/network.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
@@ -635,38 +637,29 @@ namespace OpenRCT2
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
-                bool sendMap = false;
+                if (auto* client = _network->As<NetworkClient>())
+                {
+                    client->Close();
+                }
+
                 if (info.Type == FILE_TYPE::SAVED_GAME)
                 {
-                    if (_network->GetMode() == NETWORK_MODE_CLIENT)
-                    {
-                        _network->Close();
-                    }
                     game_load_init();
-                    if (_network->GetMode() == NETWORK_MODE_SERVER)
-                    {
-                        sendMap = true;
-                    }
                 }
                 else
                 {
                     scenario_begin();
-                    if (_network->GetMode() == NETWORK_MODE_SERVER)
-                    {
-                        sendMap = true;
-                    }
-                    if (_network->GetMode() == NETWORK_MODE_CLIENT)
-                    {
-                        _network->Close();
-                    }
                 }
+
                 // This ensures that the newly loaded save reflects the user's
                 // 'show real names of guests' option, now that it's a global setting
                 peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                if (sendMap)
+
+                if (auto* server = _network->As<NetworkServer>())
                 {
-                    _network->SendMap();
+                    server->SendMap();
                 }
+
 #ifdef USE_BREAKPAD
                 if (NetworkGetMode() == NETWORK_MODE_NONE)
                 {

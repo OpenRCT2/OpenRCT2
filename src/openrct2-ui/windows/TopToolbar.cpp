@@ -50,6 +50,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/network/NetworkClient.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
@@ -3589,6 +3590,8 @@ static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
 
 static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
 {
+    auto* client = OpenRCT2::GetContext()->GetNetwork()->As<NetworkClient>();
+
     rct_window* w = window_get_main();
     if (w)
     {
@@ -3601,7 +3604,10 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 context_open_window(WC_NETWORK);
                 break;
             case DDIDX_MULTIPLAYER_RECONNECT:
-                OpenRCT2::GetContext()->GetNetwork()->Reconnect();
+                if (client != nullptr)
+                {
+                    client->Reconnect();
+                }
                 break;
         }
     }

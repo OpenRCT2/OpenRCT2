@@ -15,21 +15,31 @@
 class NetworkBase
 {
 public:
-    NetworkBase();
+    // General chunk size is 63 KiB, this can not be any larger because the packet size is encoded
+    // with uint16_t and needs some spare room for other data in the packet.
+    static constexpr uint32_t PacketChunkSize = 1024 * 63;
 
-public: // Uncategorized
-    bool BeginServer(uint16_t port, const std::string& address);
-    bool BeginClient(const std::string& host, uint16_t port);
+public:
+    NetworkBase(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
+    virtual ~NetworkBase() = default;
 
 public: // Common
-    void SetEnvironment(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
     bool Init();
-    void Close();
+
+    virtual void Update();
+    virtual void PostUpdate();
+    virtual void Close();
+    virtual void SendGameAction(const GameAction* action)
+    {
+    }
+    virtual void Flush();
+    virtual int32_t GetMode() const
+    {
+        return NETWORK_MODE_NONE;
+    }
+
     uint32_t GetServerTick();
-    void Update();
-    void Flush();
-    void ProcessPending();
-    void ProcessPlayerList();
+
     std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
@@ -41,7 +51,7 @@ public: // Common
     void BeginChatLog();
     void AppendChatLog(const std::string& s);
     void CloseChatLog();
-    NetworkStats_t GetStats() const;
+    virtual NetworkStats_t GetStats() const;
     json_t GetServerInfoAsJson() const;
     bool ProcessConnection(NetworkConnection& connection);
     void CloseConnection();
@@ -49,12 +59,12 @@ public: // Common
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 
 public: // Key managment
-    void NetworkGetPublicKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
-    void NetworkGetPrivateKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName);
+    void GetKeysDirectory(utf8* buffer, size_t bufferSize);
+    void GetPublicKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
+    void GetPrivateKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName);
 
 public: // Server
     NetworkConnection* GetPlayerConnection(uint8_t id);
-    void KickPlayer(int32_t playerId);
     NetworkGroup* AddGroup();
     void LoadGroups();
     void SetDefaultGroup(uint8_t id);
@@ -70,94 +80,39 @@ public: // Server
     std::string GenerateAdvertiseKey();
     void SetupDefaultGroups();
     void RemovePlayer(std::unique_ptr<NetworkConnection>& connection);
-    void UpdateServer();
-    void ServerClientDisconnected(std::unique_ptr<NetworkConnection>& connection);
-    bool SaveMap(OpenRCT2::IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    std::vector<uint8_t> save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const;
     std::string MakePlayerNameUnique(const std::string& name);
 
-    // Packet dispatchers.
-    void Server_Send_AUTH(NetworkConnection& connection);
-    void Server_Send_TOKEN(NetworkConnection& connection);
-    void Server_Send_MAP(NetworkConnection* connection = nullptr);
-    void Server_Send_CHAT(const char* text, const std::vector<uint8_t>& playerIds = {});
-    void Server_Send_GAME_ACTION(const GameAction* action);
-    void Server_Send_TICK();
-    void Server_Send_PLAYERINFO(int32_t playerId);
-    void Server_Send_PLAYERLIST();
-    void Server_Send_PING();
-    void Server_Send_PINGLIST();
-    void Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, const char* msg);
-    void Server_Send_GAMEINFO(NetworkConnection& connection);
-    void Server_Send_SHOWERROR(NetworkConnection& connection, rct_string_id title, rct_string_id message);
-    void Server_Send_GROUPLIST(NetworkConnection& connection);
-    void Server_Send_EVENT_PLAYER_JOINED(const char* playerName);
-    void Server_Send_EVENT_PLAYER_DISCONNECTED(const char* playerName, const char* reason);
-    void Server_Send_OBJECTS_LIST(NetworkConnection& connection, const std::vector<const ObjectRepositoryItem*>& objects) const;
-    void Server_Send_SCRIPTS(NetworkConnection& connection) const;
-
-    // Handlers
-    void Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_HEARTBEAT(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Client_Joined(const char* name, const std::string& keyhash, NetworkConnection& connection);
-    void Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-    void Server_Handle_MAPREQUEST(NetworkConnection& connection, NetworkPacket& packet);
-
 public: // Client
-    void Reconnect();
-    int32_t GetMode();
-    NetworkAuth GetAuthStatus();
+    virtual NetworkAuth GetAuthStatus()
+    {
+        return NetworkAuth::None;
+    }
+
     int32_t GetStatus();
+
     uint8_t GetPlayerID();
-    void ProcessPlayerInfo();
-    void ProcessDisconnectedClients();
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
     void SendPacketToClients(const NetworkPacket& packet, bool front = false, bool gameCmd = false);
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
     bool CheckDesynchronizaton();
-    void RequestStateSnapshot();
     bool IsDesynchronised();
     NetworkServerState_t GetServerState() const;
-    void ServerClientDisconnected();
     bool LoadMap(OpenRCT2::IStream* stream);
-    void UpdateClient();
 
-    // Packet dispatchers.
-    void Client_Send_RequestGameState(uint32_t tick);
-    void Client_Send_TOKEN();
-    void Client_Send_AUTH(
-        const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature);
-    void Client_Send_CHAT(const char* text);
-    void Client_Send_GAME_ACTION(const GameAction* action);
-    void Client_Send_PING();
-    void Client_Send_GAMEINFO();
-    void Client_Send_MAPREQUEST(const std::vector<std::string>& objects);
-    void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
+protected: // Scripting
+    void ProcessPlayerJoinedPluginHooks(uint8_t playerId);
+    void ProcessPlayerLeftPluginHooks(uint8_t playerId);
 
-    // Handlers.
-    void Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_CHAT(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_TICK(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_PLAYERINFO(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_PLAYERLIST(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_PING(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_PINGLIST(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_SETDISCONNECTMSG(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_GAMEINFO(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_EVENT(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPacket& packet);
-    void Client_Handle_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet);
+public:
+    void SetPickupPeep(uint8_t playerid, Peep* peep);
+    Peep* GetPickupPeep(uint8_t playerid);
+    void SetPickupPeepOldX(uint8_t playerid, int32_t x);
+    int32_t GetPickupPeepOldX(uint8_t playerid);
+
+    void ChatShowConnectedMessage();
+
+    // Display server greeting if one exists
+    void ChatShowServerGreeting();
 
     std::vector<uint8_t> _challenge;
     std::map<uint32_t, GameAction::Callback_t> _gameActionCallbacks;
@@ -174,22 +129,27 @@ public: // Public common
     std::vector<std::unique_ptr<NetworkPlayer>> player_list;
     std::vector<std::unique_ptr<NetworkGroup>> group_list;
 
-private: // Common Data
-    using CommandHandler = void (NetworkBase::*)(NetworkConnection& connection, NetworkPacket& packet);
+protected: // Common Data
+    using CommandHandler = std::function<void(NetworkConnection& connection, NetworkPacket& packet)>;
+
+    std::unordered_map<NetworkCommand, CommandHandler> command_handlers;
+
+    template<typename T> void SetupCommandHandler(NetworkCommand cmd, void (T::*fn)(NetworkConnection&, NetworkPacket&))
+    {
+        command_handlers[cmd] = std::bind(fn, static_cast<T*>(this), std::placeholders::_1, std::placeholders::_2);
+    }
 
     std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
     std::vector<uint8_t> chunk_buffer;
     std::ofstream _chat_log_fs;
     uint32_t _lastUpdateTime = 0;
     uint32_t _currentDeltaTime = 0;
-    int32_t mode = NETWORK_MODE_NONE;
     uint8_t default_group = 0;
     bool _closeLock = false;
     bool _requireClose = false;
     bool wsa_initialized = false;
 
-private: // Server Data
-    std::unordered_map<NetworkCommand, CommandHandler> server_command_handlers;
+protected: // Server Data
     std::unique_ptr<ITcpSocket> _listenSocket;
     std::unique_ptr<INetworkServerAdvertiser> _advertiser;
     std::list<std::unique_ptr<NetworkConnection>> client_connection_list;
@@ -199,7 +159,7 @@ private: // Server Data
     uint16_t listening_port = 0;
     bool _playerListInvalidated = false;
 
-private: // Client Data
+protected: // Client Data
     struct PlayerListUpdate
     {
         std::vector<NetworkPlayer> players;
@@ -212,16 +172,18 @@ private: // Client Data
         std::string spriteHash;
     };
 
-    std::unordered_map<NetworkCommand, CommandHandler> client_command_handlers;
     std::unique_ptr<NetworkConnection> _serverConnection;
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
     std::map<uint32_t, ServerTickData_t> _serverTickData;
     std::vector<std::string> _missingObjects;
+
     std::string _host;
+    uint16_t _port = 0;
+
     std::string _chatLogPath;
-    std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _password;
+    std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     OpenRCT2::MemoryStream _serverGameState;
     NetworkServerState_t _serverState;
     uint32_t _lastSentHeartbeat = 0;
@@ -230,7 +192,6 @@ private: // Client Data
     uint32_t _actionId;
     int32_t status = NETWORK_STATUS_NONE;
     uint8_t player_id = 0;
-    uint16_t _port = 0;
     SocketStatus _lastConnectStatus = SocketStatus::Closed;
     bool _requireReconnect = false;
     bool _clientMapLoaded = false;

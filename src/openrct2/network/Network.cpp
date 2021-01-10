@@ -47,16 +47,14 @@ namespace OpenRCT2
 
     public:
         Network(std::shared_ptr<IPlatformEnvironment> env)
-            : _network(std::make_unique<NetworkBase>())
+            : _network(std::make_unique<NetworkBase>(env))
             , _env(env)
-
         {
-            _network->SetEnvironment(env);
         }
 
-        void SetEnv(const std::shared_ptr<IPlatformEnvironment>& env) override
+        NetworkBase* GetBase() override
         {
-            _network->SetEnvironment(env);
+            return _network.get();
         }
 
         void Close() override
@@ -64,21 +62,9 @@ namespace OpenRCT2
             _network->Close();
         }
 
-        void Reconnect() override
-        {
-            _network->Reconnect();
-        }
-
-        void Disconnect() override
-        {
-            _network->ServerClientDisconnected();
-        }
-
         bool BeginClient(const std::string& host, int32_t port) override
         {
-            auto client = std::make_unique<NetworkClient>();
-            client->SetEnvironment(_env);
-
+            auto client = std::make_unique<NetworkClient>(_env);
             if (!client->BeginClient(host, port))
                 return false;
 
@@ -90,9 +76,7 @@ namespace OpenRCT2
 
         bool BeginServer(int32_t port, const std::string& address) override
         {
-            auto server = std::make_unique<NetworkClient>();
-            server->SetEnvironment(_env);
-
+            auto server = std::make_unique<NetworkServer>(_env);
             if (!server->BeginServer(port, address))
                 return false;
 
@@ -109,7 +93,7 @@ namespace OpenRCT2
 
         void ProcessPending() override
         {
-            _network->ProcessPending();
+            _network->PostUpdate();
         }
 
         void Flush() override
@@ -119,7 +103,7 @@ namespace OpenRCT2
 
         int32_t GetMode() override
         {
-            return _network->GetMode();
+            return _mode;
         }
 
         int32_t GetStatus() override
@@ -135,16 +119,6 @@ namespace OpenRCT2
         bool CheckDesynchronisation() override
         {
             return _network->CheckDesynchronizaton();
-        }
-
-        void RequestGamestateSnapshot() override
-        {
-            return _network->RequestStateSnapshot();
-        }
-
-        void SendTick() override
-        {
-            _network->Server_Send_TICK();
         }
 
         NetworkAuth GetAuthStatus() override
@@ -533,14 +507,14 @@ namespace OpenRCT2
 
             if (isExecuting)
             {
-                if (_network->GetMode() == NETWORK_MODE_SERVER)
+                if (auto* server = As<NetworkServer>())
                 {
-                    _network->KickPlayer(playerId);
+                    server->KickPlayer(playerId);
 
-                    NetworkUserManager* networkUserManager = &_network->_userManager;
-                    networkUserManager->Load();
-                    networkUserManager->RemoveUser(player->KeyHash);
-                    networkUserManager->Save();
+                    NetworkUserManager& networkUserManager = server->_userManager;
+                    networkUserManager.Load();
+                    networkUserManager.RemoveUser(player->KeyHash);
+                    networkUserManager.Save();
                 }
             }
             return std::make_unique<GameActions::Result>();
@@ -584,7 +558,7 @@ namespace OpenRCT2
 
         void SetPickupPeep(uint8_t playerid, Peep* peep) override
         {
-            if (_network->GetMode() == NETWORK_MODE_NONE)
+            if (GetMode() == NETWORK_MODE_NONE)
             {
                 _pickup_peep = peep;
             }
@@ -600,7 +574,7 @@ namespace OpenRCT2
 
         Peep* GetPickupPeep(uint8_t playerid) override
         {
-            if (_network->GetMode() == NETWORK_MODE_NONE)
+            if (GetMode() == NETWORK_MODE_NONE)
             {
                 return _pickup_peep;
             }
@@ -617,7 +591,7 @@ namespace OpenRCT2
 
         void SetPickupPeepOldX(uint8_t playerid, int32_t x) override
         {
-            if (_network->GetMode() == NETWORK_MODE_NONE)
+            if (GetMode() == NETWORK_MODE_NONE)
             {
                 _pickup_peep_old_x = x;
             }
@@ -633,7 +607,7 @@ namespace OpenRCT2
 
         int32_t GetPickupPeepOldX(uint8_t playerid) override
         {
-            if (_network->GetMode() == NETWORK_MODE_NONE)
+            if (GetMode() == NETWORK_MODE_NONE)
             {
                 return _pickup_peep_old_x;
             }
@@ -656,11 +630,6 @@ namespace OpenRCT2
                 return GetGroupIndex(player->Group);
             }
             return -1;
-        }
-
-        void SendMap()
-        {
-            _network->Server_Send_MAP();
         }
 
         static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
@@ -701,11 +670,11 @@ namespace OpenRCT2
 
         void SendChat(const char* text, const std::vector<uint8_t>& playerIds) override
         {
-            if (_network->GetMode() == NETWORK_MODE_CLIENT)
+            if (auto* client = As<NetworkClient>())
             {
-                _network->Client_Send_CHAT(text);
+                client->SendChat(text);
             }
-            else if (_network->GetMode() == NETWORK_MODE_SERVER)
+            else if (auto* server = As<NetworkServer>())
             {
                 std::string message = text;
                 if (ProcessChatMessagePluginHooks(_network->GetPlayerID(), message))
@@ -720,7 +689,7 @@ namespace OpenRCT2
                             // Server is one of the recipients
                             chat_history_add(formatted);
                         }
-                        _network->Server_Send_CHAT(formatted, playerIds);
+                        server->SendChat(formatted, playerIds);
                     }
                 }
             }
@@ -728,44 +697,7 @@ namespace OpenRCT2
 
         void SendGameAction(const GameAction* action) override
         {
-            switch (_network->GetMode())
-            {
-                case NETWORK_MODE_SERVER:
-                    _network->Server_Send_GAME_ACTION(action);
-                    break;
-                case NETWORK_MODE_CLIENT:
-                    _network->Client_Send_GAME_ACTION(action);
-                    break;
-            }
-        }
-
-        void SendPassword(const std::string& password) override
-        {
-            utf8 keyPath[MAX_PATH];
-            _network->NetworkGetPrivateKeyPath(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-            if (!Platform::FileExists(keyPath))
-            {
-                log_error("Private key %s missing! Restart the game to generate it.", keyPath);
-                return;
-            }
-            try
-            {
-                auto fs = FileStream(keyPath, FILE_MODE_OPEN);
-                _network->_key.LoadPrivate(&fs);
-            }
-            catch (const std::exception&)
-            {
-                log_error("Error reading private key from %s.", keyPath);
-                return;
-            }
-            const std::string pubkey = _network->_key.PublicKeyString();
-
-            std::vector<uint8_t> signature;
-            _network->_key.Sign(_network->_challenge.data(), _network->_challenge.size(), signature);
-            // Don't keep private key in memory. There's no need and it may get leaked
-            // when process dump gets collected at some point in future.
-            _network->_key.Unload();
-            _network->Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
+            _network->SendGameAction(action);
         }
 
         void SetPassword(const char* password) override

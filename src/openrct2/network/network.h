@@ -35,6 +35,10 @@ enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 enum class NetworkPermission : uint32_t;
 
+class NetworkBase;
+class NetworkServer;
+class NetworkClient;
+
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
@@ -43,19 +47,32 @@ namespace OpenRCT2
     {
         virtual ~INetwork() = default;
 
-        virtual void SetEnv(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env) = 0;
-        virtual void Close() = 0;
-        virtual void Reconnect() = 0;
-        virtual void Disconnect() = 0;
+        virtual NetworkBase* GetBase() = 0;
+
+        template<typename T> T* As();
+
+        template<> NetworkServer* As<NetworkServer>()
+        {
+            if (GetMode() == NETWORK_MODE_SERVER)
+                return reinterpret_cast<NetworkServer*>(GetBase());
+            return nullptr;
+        }
+
+        template<> NetworkClient* As<NetworkClient>()
+        {
+            if (GetMode() == NETWORK_MODE_CLIENT)
+                return reinterpret_cast<NetworkClient*>(GetBase());
+            return nullptr;
+        }
+
         virtual bool BeginClient(const std::string& host, int32_t port) = 0;
         virtual bool BeginServer(int32_t port, const std::string& address) = 0;
+        virtual void Close() = 0;
 
         virtual int32_t GetMode() = 0;
         virtual int32_t GetStatus() = 0;
         virtual bool IsDesynchronised() = 0;
         virtual bool CheckDesynchronisation() = 0;
-        virtual void RequestGamestateSnapshot() = 0;
-        virtual void SendTick() = 0;
         virtual bool GamestateSnapshotsEnabled() = 0;
         virtual void Update() = 0;
         virtual void ProcessPending() = 0;
@@ -103,10 +120,8 @@ namespace OpenRCT2
         virtual void SetPickupPeepOldX(uint8_t playerid, int32_t x) = 0;
         virtual int32_t GetPickupPeepOldX(uint8_t playerid) = 0;
 
-        virtual void SendMap() = 0;
         virtual void SendChat(const char* text, const std::vector<uint8_t>& playerIds = {}) = 0;
         virtual void SendGameAction(const GameAction* action) = 0;
-        virtual void SendPassword(const std::string& password) = 0;
 
         virtual void SetPassword(const char* password) = 0;
 

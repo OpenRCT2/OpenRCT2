@@ -12,6 +12,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/NetworkClient.h>
 #include <openrct2/network/network.h>
 #include <openrct2/util/Util.h>
 
@@ -134,13 +135,18 @@ static void window_network_status_textinput(rct_window* w, rct_widgetindex widge
                 safe_strcpy(_password, text, sizeof(_password));
             break;
     }
+
+    auto* client = OpenRCT2::GetContext()->GetNetwork()->As<NetworkClient>();
+    if (!client)
+        return;
+
     if (text == nullptr)
     {
-        OpenRCT2::GetContext()->GetNetwork()->Disconnect();
+        client->Close();
     }
     else
     {
-        OpenRCT2::GetContext()->GetNetwork()->SendPassword(_password);
+        client->SendPassword(_password);
     }
 }
 
