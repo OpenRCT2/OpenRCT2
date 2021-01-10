@@ -191,8 +191,8 @@ namespace OpenRCT2::Scripting
             try
             {
                 auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
-                const auto& title = desc["title"].as_string();
-                const auto& description = desc["description"].as_string();
+                auto title = desc["title"].as_string();
+                auto description = desc["description"].as_string();
                 auto initialValue = AsOrDefault(desc["maxLength"], "");
                 auto maxLength = AsOrDefault(desc["maxLength"], std::numeric_limits<int32_t>::max());
                 auto callback = desc["callback"];
