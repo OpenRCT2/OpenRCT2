@@ -297,6 +297,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::Climate);
     map_update_tiles();
     report_time(LogicTimePart::MapTiles);
+    map_calc_highest_tile_height(false);
+    report_time(LogicTimePart::CalcHighestTile);
     // Temporarily remove provisional paths to prevent peep from interacting with them
     map_remove_provisional_elements();
     report_time(LogicTimePart::MapStashProvisionalElements);

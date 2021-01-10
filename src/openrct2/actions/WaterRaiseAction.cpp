@@ -129,7 +129,6 @@ GameActions::Result::Ptr WaterRaiseAction::QueryExecute(bool isExecuting) const
     if (isExecuting && hasChanged)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res->Position);
-        map_calc_highest_tile_height();
     }
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

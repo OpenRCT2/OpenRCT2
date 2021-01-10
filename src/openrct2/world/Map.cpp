@@ -99,6 +99,8 @@ int16_t gMapSizeMinus2;
 int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
+int32_t gMapHighestTileHeightLoopPosition;
+int32_t gMapHighestTileHeightPending;
 int32_t gMapHighestTileHeight;
 
 TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
@@ -1511,25 +1513,55 @@ void map_update_tiles()
     }
 }
 
-void map_calc_highest_tile_height()
+void map_calc_highest_tile_height(bool fullCheck)
 {
-    gMapHighestTileHeight = 0;
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
-    {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
-        {
-            auto surface = map_get_surface_element_at(CoordsXY(x, y));
-            if (surface == nullptr)
-            {
-                continue;
-            }
+    int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    int32_t tilesToCheck = maxTileIndex;
 
-            int32_t height = std::max(surface->GetWaterHeight(), surface->GetClearanceZ());
-            if (height > gMapHighestTileHeight)
-            {
-                gMapHighestTileHeight = height;
-            }
+    // If we're doing a full check of the map then zero out the loop
+    // position to start at tile zero, checking all tiles before returning.
+    // Otherwise check a limited number of tiles per each time the
+    // function is called.
+    if (fullCheck)
+    {
+        gMapHighestTileHeightLoopPosition = 0;
+    }
+    else
+    {
+        tilesToCheck /= 128;
+    }
+
+    for (int32_t i = 0; i < tilesToCheck; i++)
+    {
+        gMapHighestTileHeightLoopPosition++;
+        gMapHighestTileHeightLoopPosition %= maxTileIndex;
+
+        if (gMapHighestTileHeightLoopPosition == 0)
+        {
+            gMapHighestTileHeight = gMapHighestTileHeightPending;
+            gMapHighestTileHeightPending = 0;
         }
+
+        int32_t x = (gMapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
+        int32_t y = (gMapHighestTileHeightLoopPosition / MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
+        auto tileCoords = CoordsXY(x, y);
+        auto tileElement = map_get_first_element_at(tileCoords);
+
+        // Loop through elements on the current tile and find the tallest
+        do
+        {
+            if (tileElement == nullptr)
+                break;
+
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_CORRUPT)
+                continue;
+
+            int32_t height = tileElement->GetClearanceZ();
+            if (height > gMapHighestTileHeightPending)
+            {
+                gMapHighestTileHeightPending = height;
+            }
+        } while (!(tileElement++)->IsLastForTile());
     }
 }
 

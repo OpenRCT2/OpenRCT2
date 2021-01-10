@@ -547,7 +547,7 @@ void game_load_init()
     reset_sprite_spatial_index();
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
-    map_calc_highest_tile_height();
+    map_calc_highest_tile_height(true);
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     context_broadcast_intent(&intent);

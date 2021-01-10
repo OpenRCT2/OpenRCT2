@@ -28,6 +28,7 @@ namespace OpenRCT2
         Scenario,
         Climate,
         MapTiles,
+        CalcHighestTile,
         MapStashProvisionalElements,
         MapPathWideFlags,
         Peep,
