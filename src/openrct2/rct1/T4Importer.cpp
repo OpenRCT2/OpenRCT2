@@ -146,7 +146,7 @@ private:
             td->ride_mode = RideMode::PoweredLaunch;
         }
 
-        // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.
+        // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
         rct_object_entry vehicleObject = { 0x80, "        " };
         if (td4Base.type == RIDE_TYPE_MAZE)
         {

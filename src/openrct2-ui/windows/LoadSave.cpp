@@ -644,7 +644,7 @@ static void window_loadsave_compute_max_date_width()
 
     std::time_t long_time = mktime(&tm);
 
-    // Check how how this date is represented (e.g. 2000-02-20, or 00/02/20)
+    // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
     maxDateWidth = gfx_get_string_width(date.c_str()) + DATE_TIME_GAP;
 
@@ -653,7 +653,7 @@ static void window_loadsave_compute_max_date_width()
     tm.tm_yday = 294;
     long_time = mktime(&tm);
 
-    // Again, check how how this date is represented (e.g. 2000-10-20, or 00/10/20)
+    // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
     date = Platform::FormatShortDate(long_time);
     maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str()) + DATE_TIME_GAP);
 

@@ -55,7 +55,7 @@ struct GameStateCompareData_t
 };
 
 /*
- * Interface to create and capture game states. It only allows to have 32 active snapshots
+ * Interface to create and capture game states. It only allows one to have 32 active snapshots
  * the oldest snapshot will be removed from the buffer. Never store the snapshot pointer
  * as it may become invalid at any time when a snapshot is created, rather Link the snapshot
  * to a specific tick which can be obtained by that later again assuming its still valid.

@@ -941,7 +941,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
     auto rideType = researchItem->baseRideType;
     if (rideType >= RIDE_TYPE_COUNT)
     {
-        log_error("Research item has non-existant ride type index %d", rideType);
+        log_error("Research item has non-existent ride type index %d", rideType);
         return;
     }
 

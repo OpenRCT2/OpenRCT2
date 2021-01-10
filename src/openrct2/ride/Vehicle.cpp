@@ -9892,7 +9892,7 @@ Vehicle* Vehicle::GetCar(size_t carIndex) const
         car = GetEntity<Vehicle>(car->next_vehicle_on_train);
         if (car == nullptr)
         {
-            log_error("Tried to get non-existant car from index!");
+            log_error("Tried to get non-existent car from index!");
             return nullptr;
         }
     }

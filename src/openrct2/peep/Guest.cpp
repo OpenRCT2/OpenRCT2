@@ -1196,7 +1196,7 @@ void Guest::CheckIfLost()
 /**
  *
  *  rct2: 0x69C26B
- * Check if cant find ride.
+ * Check if can't find ride.
  */
 void Guest::CheckCantFindRide()
 {
@@ -1228,7 +1228,7 @@ void Guest::CheckCantFindRide()
 /**
  *
  *  rct2: 0x69C2D0
- * Check if cant find exit.
+ * Check if can't find exit.
  */
 void Guest::CheckCantFindExit()
 {

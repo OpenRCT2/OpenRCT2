@@ -142,7 +142,7 @@ enum
     RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in RCT12TileElement.properties.path.additions
+// Masks and flags for values stored in RCT12TileElement.properties.path.additions
 enum
 {
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
