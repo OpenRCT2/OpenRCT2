@@ -151,11 +151,11 @@ namespace GameActions
 
     void Enqueue(GameAction::Ptr&& ga, uint32_t tick)
     {
-        if (ga->GetPlayer() == -1 && network_get_mode() != NETWORK_MODE_NONE)
+        if (ga->GetPlayer() == -1 && OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
         {
             // Server can directly invoke actions and will have no player id assigned
             // as that normally happens when receiving them over network.
-            ga->SetPlayer(network_get_current_player_id());
+            ga->SetPlayer(OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId());
         }
         _actionQueue.emplace(tick, std::move(ga), _nextUniqueId++);
     }
@@ -175,7 +175,7 @@ namespace GameActions
             // run all the game commands at the current tick
             const QueuedGameAction& queued = *_actionQueue.begin();
 
-            if (network_get_mode() == NETWORK_MODE_CLIENT)
+            if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_CLIENT)
             {
                 if (queued.tick < currentTick)
                 {
@@ -212,10 +212,11 @@ namespace GameActions
             Guard::Assert(action != nullptr);
 
             GameActions::Result::Ptr result = Execute(action);
-            if (result->Error == GameActions::Status::Ok && network_get_mode() == NETWORK_MODE_SERVER)
+            if (result->Error == GameActions::Status::Ok
+                && OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
             {
                 // Relay this action to all other clients.
-                network_send_game_action(action);
+                OpenRCT2::GetContext()->GetNetwork()->SendGameAction(action);
             }
 
             _actionQueue.erase(_actionQueue.begin());
@@ -332,9 +333,9 @@ namespace GameActions
 
     static const char* GetRealm()
     {
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_CLIENT)
             return "cl";
-        else if (network_get_mode() == NETWORK_MODE_SERVER)
+        else if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
             return "sv";
         return "sp";
     }
@@ -381,7 +382,7 @@ namespace GameActions
         const char* text = static_cast<const char*>(output.GetData());
         log_verbose("%s", text);
 
-        network_append_server_log(text);
+        OpenRCT2::GetContext()->GetNetwork()->AppendServerLog(text);
     }
 
     static GameActions::Result::Ptr ExecuteInternal(const GameAction* action, bool topLevel)
@@ -411,7 +412,8 @@ namespace GameActions
         GameActions::Result::Ptr result = QueryInternal(action, topLevel);
 #ifdef ENABLE_SCRIPTING
         if (result->Error == GameActions::Status::Ok
-            && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
+            && ((OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
+                || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             scriptEngine.RunGameActionHooks(*action, result, false);
@@ -423,18 +425,18 @@ namespace GameActions
             if (topLevel)
             {
                 // Networked games send actions to the server to be run
-                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_CLIENT)
                 {
                     // As a client we have to wait or send it first.
                     if (!(actionFlags & GameActions::Flags::ClientOnly) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                     {
                         log_verbose("[%s] GameAction::Execute %s (Out)", GetRealm(), action->GetName());
-                        network_send_game_action(action);
+                        OpenRCT2::GetContext()->GetNetwork()->SendGameAction(action);
 
                         return result;
                     }
                 }
-                else if (network_get_mode() == NETWORK_MODE_SERVER)
+                else if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
                 {
                     // If player is the server it would execute right away as where clients execute the commands
                     // at the beginning of the frame, so we have to put them into the queue.
@@ -477,23 +479,23 @@ namespace GameActions
 
             if (!(actionFlags & GameActions::Flags::ClientOnly) && result->Error == GameActions::Status::Ok)
             {
-                if (network_get_mode() != NETWORK_MODE_NONE)
+                if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
                 {
                     NetworkPlayerId_t playerId = action->GetPlayer();
 
-                    int32_t playerIndex = network_get_player_index(playerId.id);
+                    int32_t playerIndex = OpenRCT2::GetContext()->GetNetwork()->GetPlayerIndex(playerId.id);
                     Guard::Assert(
                         playerIndex != -1, "Unable to find player %u for game action %u", playerId, action->GetType());
 
-                    network_set_player_last_action(playerIndex, action->GetType());
+                    OpenRCT2::GetContext()->GetNetwork()->SetPlayerLastAction(playerIndex, action->GetType());
                     if (result->Cost != 0)
                     {
-                        network_add_player_money_spent(playerIndex, result->Cost);
+                        OpenRCT2::GetContext()->GetNetwork()->AddPlayerMoneySpent(playerIndex, result->Cost);
                     }
 
                     if (!result->Position.isNull())
                     {
-                        network_set_player_last_action_coord(playerIndex, result->Position);
+                        OpenRCT2::GetContext()->GetNetwork()->SetPlayerLastActionCoord(playerIndex, result->Position);
                     }
                 }
                 else
@@ -533,12 +535,12 @@ namespace GameActions
         bool shouldShowError = !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_NO_SPEND) && topLevel;
 
         // In network mode the error should be only shown to the issuer of the action.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
         {
             // If the action was never networked and query fails locally the player id is not assigned.
             // So compare only if the action went into the queue otherwise show errors by default.
             const bool isActionFromNetwork = (action->GetFlags() & GAME_COMMAND_FLAG_NETWORKED) != 0;
-            if (isActionFromNetwork && action->GetPlayer() != network_get_current_player_id())
+            if (isActionFromNetwork && action->GetPlayer() != OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId())
             {
                 shouldShowError = false;
             }

@@ -99,6 +99,7 @@ namespace OpenRCT2
         std::unique_ptr<IScenarioRepository> _scenarioRepository;
         std::unique_ptr<IReplayManager> _replayManager;
         std::unique_ptr<IGameStateSnapshots> _gameStateSnapshots;
+        std::unique_ptr<INetwork> _network;
 #ifdef __ENABLE_DISCORD__
         std::unique_ptr<DiscordService> _discordService;
 #endif
@@ -152,7 +153,7 @@ namespace OpenRCT2
         {
             // Can't have more than one context currently.
             Guard::Assert(Instance == nullptr);
-
+            _network = CreateNetwork(_env);
             Instance = this;
         }
 
@@ -162,7 +163,7 @@ namespace OpenRCT2
             //       If objects use GetContext() in their destructor things won't go well.
 
             GameActions::ClearQueue();
-            network_close();
+            _network->Close();
             window_close_all();
 
             // Unload objects after closing all windows, this is to overcome windows like
@@ -250,6 +251,11 @@ namespace OpenRCT2
         IDrawingEngine* GetDrawingEngine() override
         {
             return _drawingEngine.get();
+        }
+
+        INetwork* GetNetwork() override
+        {
+            return _network.get();
         }
 
         virtual Paint::Painter* GetPainter() override
@@ -393,6 +399,7 @@ namespace OpenRCT2
             _scenarioRepository = CreateScenarioRepository(_env);
             _replayManager = CreateReplayManager();
             _gameStateSnapshots = CreateGameStateSnapshots();
+
 #ifdef __ENABLE_DISCORD__
             if (!gOpenRCT2Headless)
             {
@@ -454,7 +461,6 @@ namespace OpenRCT2
                 gGameSoundsOff = !gConfigSound.master_sound_enabled;
             }
 
-            network_set_env(_env);
             chat_init();
             CopyOriginalUserFilesOver();
 
@@ -632,12 +638,12 @@ namespace OpenRCT2
                 bool sendMap = false;
                 if (info.Type == FILE_TYPE::SAVED_GAME)
                 {
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (_network->GetMode() == NETWORK_MODE_CLIENT)
                     {
-                        network_close();
+                        _network->Close();
                     }
                     game_load_init();
-                    if (network_get_mode() == NETWORK_MODE_SERVER)
+                    if (_network->GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
                     }
@@ -645,13 +651,13 @@ namespace OpenRCT2
                 else
                 {
                     scenario_begin();
-                    if (network_get_mode() == NETWORK_MODE_SERVER)
+                    if (_network->GetMode() == NETWORK_MODE_SERVER)
                     {
                         sendMap = true;
                     }
-                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    if (_network->GetMode() == NETWORK_MODE_CLIENT)
                     {
-                        network_close();
+                        _network->Close();
                     }
                 }
                 // This ensures that the newly loaded save reflects the user's
@@ -659,10 +665,10 @@ namespace OpenRCT2
                 peep_update_names(gConfigGeneral.show_real_names_of_guests);
                 if (sendMap)
                 {
-                    network_send_map();
+                    _network->SendMap();
                 }
 #ifdef USE_BREAKPAD
-                if (network_get_mode() == NETWORK_MODE_NONE)
+                if (NetworkGetMode() == NETWORK_MODE_NONE)
                 {
                     start_silent_record();
                 }
@@ -862,13 +868,13 @@ namespace OpenRCT2
 
                         if (String::IsNullOrEmpty(gCustomPassword))
                         {
-                            network_set_password(gConfigNetwork.default_password.c_str());
+                            _network->SetPassword(gConfigNetwork.default_password.c_str());
                         }
                         else
                         {
-                            network_set_password(gCustomPassword);
+                            _network->SetPassword(gCustomPassword);
                         }
-                        network_begin_server(gNetworkStartPort, gNetworkStartAddress);
+                        _network->BeginServer(gNetworkStartPort, gNetworkStartAddress);
                     }
                     else
 #endif // DISABLE_NETWORK
@@ -898,7 +904,7 @@ namespace OpenRCT2
                 {
                     gNetworkStartPort = gConfigNetwork.default_port;
                 }
-                network_begin_client(gNetworkStartHost, gNetworkStartPort);
+                _network->BeginClient(gNetworkStartHost, gNetworkStartPort);
             }
 #endif // DISABLE_NETWORK
 

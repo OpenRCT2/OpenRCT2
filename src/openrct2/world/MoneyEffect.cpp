@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
@@ -72,7 +73,7 @@ void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
-        if (network_get_mode() != NETWORK_MODE_NONE)
+        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
         {
             log_warning("Attempted to create money effect without a valid location in multiplayer");
             return;

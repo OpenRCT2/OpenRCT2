@@ -480,7 +480,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
                 type = TrackElemType::BeginStation;
             }
         }
-        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_CLIENT)
         {
             // rideConstructionState needs to be set again to the proper value, this only affects the client
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_SELECTED;

@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../Context.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
@@ -133,7 +134,7 @@ private:
 
     json_t GetBroadcastJson()
     {
-        json_t root = network_get_server_info_as_json();
+        json_t root = OpenRCT2::GetContext()->GetNetwork()->GetServerInfoAsJson();
         root["port"] = _port;
         return root;
     }
@@ -282,7 +283,7 @@ private:
 
     json_t GetHeartbeatJson()
     {
-        uint32_t numPlayers = network_get_num_players();
+        uint32_t numPlayers = OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers();
 
         json_t root = {
             { "token", _token },

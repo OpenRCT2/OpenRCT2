@@ -1380,8 +1380,9 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 
 static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() == NETWORK_MODE_NONE || network_get_status() != NETWORK_STATUS_CONNECTED
-        || network_get_authstatus() != NetworkAuth::Ok)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE
+        || OpenRCT2::GetContext()->GetNetwork()->GetStatus() != NETWORK_STATUS_CONNECTED
+        || OpenRCT2::GetContext()->GetNetwork()->GetAuthStatus() != NetworkAuth::Ok)
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
@@ -1390,7 +1391,7 @@ static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
     {
         if (!argv.empty())
         {
-            network_send_chat(argv[0].c_str());
+            OpenRCT2::GetContext()->GetNetwork()->SendChat(argv[0].c_str());
             return 1;
         }
         else
@@ -1403,7 +1404,7 @@ static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 
 static int32_t cc_replay_startrecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1450,7 +1451,7 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
 static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1485,7 +1486,7 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
 
 static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1527,7 +1528,7 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
 
 static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1545,7 +1546,7 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& ar
 
 static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;

@@ -405,7 +405,7 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top });
 
     // Draw version number
-    std::string version = network_get_version();
+    std::string version = OpenRCT2::GetContext()->GetNetwork()->GetVersion();
     const char* versionCStr = version.c_str();
     gfx_draw_string_left(
         dpi, STR_NETWORK_VERSION, static_cast<void*>(&versionCStr), COLOUR_WHITE,
@@ -490,7 +490,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         else
         {
             // Server online... check version
-            bool correctVersion = serverDetails.Version == network_get_version();
+            bool correctVersion = serverDetails.Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
             compatibilitySpriteId = correctVersion ? SPR_G2_RCT1_OPEN_BUTTON_2 : SPR_G2_RCT1_CLOSE_BUTTON_2;
         }
         gfx_draw_sprite(dpi, compatibilitySpriteId, { right, screenCoords.y + 1 }, 0);
@@ -543,7 +543,7 @@ static void join_server(std::string address)
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address.c_str(), port))
+    if (!OpenRCT2::GetContext()->GetNetwork()->BeginClient(address.c_str(), port))
     {
         context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }

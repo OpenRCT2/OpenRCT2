@@ -41,10 +41,10 @@ namespace OpenRCT2::Scripting
         std::string name_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_group_index(_id);
+            auto index = GetContext()->GetNetwork()->GetGroupIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_group_name(index);
+            return GetContext()->GetNetwork()->GetGroupName(index);
 #    else
             return {};
 #    endif
@@ -60,7 +60,7 @@ namespace OpenRCT2::Scripting
         std::vector<std::string> permissions_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_group_index(_id);
+            auto index = GetContext()->GetNetwork()->GetGroupIndex(_id);
             if (index == -1)
                 return {};
 
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
             auto permissionIndex = 0;
             for (const auto& action : NetworkActions::Actions)
             {
-                if (network_can_perform_action(index, static_cast<NetworkPermission>(permissionIndex)))
+                if (GetContext()->GetNetwork()->CanPerformAction(index, static_cast<NetworkPermission>(permissionIndex)))
                 {
                     result.push_back(TransformPermissionKeyToJS(action.PermissionName));
                 }
@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
         void permissions_set(std::vector<std::string> value)
         {
 #    ifndef DISABLE_NETWORK
-            auto groupIndex = network_get_group_index(_id);
+            auto groupIndex = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_id);
             if (groupIndex == -1)
                 return;
 
@@ -113,7 +113,8 @@ namespace OpenRCT2::Scripting
             {
                 auto toggle
                     = (enabledPermissions[i]
-                       != (network_can_perform_action(groupIndex, static_cast<NetworkPermission>(i)) != 0));
+                       != (OpenRCT2::GetContext()->GetNetwork()->CanPerformAction(groupIndex, static_cast<NetworkPermission>(i))
+                           != 0));
                 if (toggle)
                 {
                     auto networkAction2 = NetworkModifyGroupAction(
@@ -172,10 +173,10 @@ namespace OpenRCT2::Scripting
         std::string name_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
+            auto index = GetContext()->GetNetwork()->GetPlayerIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_player_name(index);
+            return GetContext()->GetNetwork()->GetPlayerName(index);
 #    else
             return {};
 #    endif
@@ -184,10 +185,10 @@ namespace OpenRCT2::Scripting
         int32_t group_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
+            auto index = GetContext()->GetNetwork()->GetPlayerIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_player_group(index);
+            return GetContext()->GetNetwork()->GetPlayerGroup(index);
 #    else
             return 0;
 #    endif
@@ -203,10 +204,10 @@ namespace OpenRCT2::Scripting
         int32_t ping_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
+            auto index = GetContext()->GetNetwork()->GetPlayerIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_player_ping(index);
+            return GetContext()->GetNetwork()->GetPlayerPing(index);
 #    else
             return 0;
 #    endif
@@ -215,10 +216,10 @@ namespace OpenRCT2::Scripting
         int32_t commandsRan_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
+            auto index = GetContext()->GetNetwork()->GetPlayerIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_player_commands_ran(index);
+            return GetContext()->GetNetwork()->GetPlayerCommandsRan(index);
 #    else
             return 0;
 #    endif
@@ -227,10 +228,10 @@ namespace OpenRCT2::Scripting
         int32_t moneySpent_get() const
         {
 #    ifndef DISABLE_NETWORK
-            auto index = network_get_player_index(_id);
+            auto index = GetContext()->GetNetwork()->GetPlayerIndex(_id);
             if (index == -1)
                 return {};
-            return network_get_player_money_spent(index);
+            return GetContext()->GetNetwork()->GetPlayerMoneySpent(index);
 #    else
             return 0;
 #    endif
@@ -238,12 +239,12 @@ namespace OpenRCT2::Scripting
 
         std::string ipAddress_get() const
         {
-            return network_get_player_ip_address(_id);
+            return GetContext()->GetNetwork()->GetPlayerIPAddress(_id);
         }
 
         std::string publicKeyHash_get() const
         {
-            return network_get_player_public_key_hash(_id);
+            return GetContext()->GetNetwork()->GetPlayerPublicKeyHash(_id);
         }
 
         static void Register(duk_context* ctx)
@@ -276,7 +277,7 @@ namespace OpenRCT2::Scripting
         std::string mode_get() const
         {
 #    ifndef DISABLE_NETWORK
-            switch (network_get_mode())
+            switch (GetContext()->GetNetwork()->GetMode())
             {
                 case NETWORK_MODE_SERVER:
                     return "server";
@@ -289,7 +290,7 @@ namespace OpenRCT2::Scripting
         int32_t numPlayers_get() const
         {
 #    ifndef DISABLE_NETWORK
-            return network_get_num_players();
+            return GetContext()->GetNetwork()->GetNumPlayers();
 #    else
             return 0;
 #    endif
@@ -297,7 +298,7 @@ namespace OpenRCT2::Scripting
         int32_t numGroups_get() const
         {
 #    ifndef DISABLE_NETWORK
-            return network_get_num_groups();
+            return GetContext()->GetNetwork()->GetNumGroups();
 #    else
             return 0;
 #    endif
@@ -305,7 +306,7 @@ namespace OpenRCT2::Scripting
         int32_t defaultGroup_get() const
         {
 #    ifndef DISABLE_NETWORK
-            return network_get_default_group();
+            return GetContext()->GetNetwork()->GetDefaultGroup();
 #    else
             return 0;
 #    endif
@@ -322,10 +323,10 @@ namespace OpenRCT2::Scripting
         {
             std::vector<std::shared_ptr<ScPlayerGroup>> groups;
 #    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
+            auto numGroups = GetContext()->GetNetwork()->GetNumGroups();
             for (int32_t i = 0; i < numGroups; i++)
             {
-                auto groupId = network_get_group_id(i);
+                auto groupId = GetContext()->GetNetwork()->GetGroupId(i);
                 groups.push_back(std::make_shared<ScPlayerGroup>(groupId));
             }
 #    endif
@@ -336,10 +337,10 @@ namespace OpenRCT2::Scripting
         {
             std::vector<std::shared_ptr<ScPlayer>> players;
 #    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
+            auto numPlayers = GetContext()->GetNetwork()->GetNumPlayers();
             for (int32_t i = 0; i < numPlayers; i++)
             {
-                auto playerId = network_get_player_id(i);
+                auto playerId = GetContext()->GetNetwork()->GetPlayerId(i);
                 players.push_back(std::make_shared<ScPlayer>(playerId));
             }
 #    endif
@@ -350,7 +351,7 @@ namespace OpenRCT2::Scripting
         {
             std::shared_ptr<ScPlayer> player;
 #    ifndef DISABLE_NETWORK
-            auto playerId = network_get_current_player_id();
+            auto playerId = GetContext()->GetNetwork()->GetCurrentPlayerId();
             player = std::make_shared<ScPlayer>(playerId);
 #    endif
             return player;
@@ -359,10 +360,10 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScPlayer> getPlayer(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
+            auto numPlayers = GetContext()->GetNetwork()->GetNumPlayers();
             if (index < numPlayers)
             {
-                auto playerId = network_get_player_id(index);
+                auto playerId = GetContext()->GetNetwork()->GetPlayerId(index);
                 return std::make_shared<ScPlayer>(playerId);
             }
 #    endif
@@ -372,10 +373,10 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
+            auto numGroups = GetContext()->GetNetwork()->GetNumGroups();
             if (index < numGroups)
             {
-                auto groupId = network_get_group_id(index);
+                auto groupId = GetContext()->GetNetwork()->GetGroupId(index);
                 return std::make_shared<ScPlayerGroup>(groupId);
             }
 #    endif
@@ -393,10 +394,10 @@ namespace OpenRCT2::Scripting
         void removeGroup(int32_t index)
         {
 #    ifndef DISABLE_NETWORK
-            auto numGroups = network_get_num_groups();
+            auto numGroups = GetContext()->GetNetwork()->GetNumGroups();
             if (index < numGroups)
             {
-                auto groupId = network_get_group_id(index);
+                auto groupId = GetContext()->GetNetwork()->GetGroupId(index);
                 auto networkAction = NetworkModifyGroupAction(ModifyGroupType::RemoveGroup, groupId);
                 GameActions::Execute(&networkAction);
             }
@@ -406,10 +407,10 @@ namespace OpenRCT2::Scripting
         void kickPlayer(int32_t index)
         {
 #    ifndef DISABLE_NETWORK
-            auto numPlayers = network_get_num_players();
+            auto numPlayers = GetContext()->GetNetwork()->GetNumPlayers();
             if (index < numPlayers)
             {
-                auto playerId = network_get_player_id(index);
+                auto playerId = GetContext()->GetNetwork()->GetPlayerId(index);
                 auto kickPlayerAction = PlayerKickAction(playerId);
                 GameActions::Execute(&kickPlayerAction);
             }
@@ -421,7 +422,7 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
             if (players.is_array())
             {
-                if (network_get_mode() == NETWORK_MODE_SERVER)
+                if (GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
                 {
                     std::vector<uint8_t> playerIds;
                     auto playerArray = players.as_array();
@@ -434,7 +435,7 @@ namespace OpenRCT2::Scripting
                     }
                     if (!playerArray.empty())
                     {
-                        network_send_chat(message.c_str(), playerIds);
+                        GetContext()->GetNetwork()->SendChat(message.c_str(), playerIds);
                     }
                 }
                 else
@@ -444,7 +445,7 @@ namespace OpenRCT2::Scripting
             }
             else
             {
-                network_send_chat(message.c_str());
+                GetContext()->GetNetwork()->SendChat(message.c_str());
             }
 #    endif
         }

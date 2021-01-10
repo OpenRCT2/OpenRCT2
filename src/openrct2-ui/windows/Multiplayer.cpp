@@ -287,24 +287,25 @@ static void window_multiplayer_groups_show_group_dropdown(rct_window* w, rct_wid
 
     dropdownWidget = widget - 1;
 
-    numItems = network_get_num_groups();
+    numItems = OpenRCT2::GetContext()->GetNetwork()->GetNumGroups();
 
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
         w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
-    for (i = 0; i < network_get_num_groups(); i++)
+    for (i = 0; i < OpenRCT2::GetContext()->GetNetwork()->GetNumGroups(); i++)
     {
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(OpenRCT2::GetContext()->GetNetwork()->GetGroupName(i));
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
-        Dropdown::SetChecked(network_get_group_index(network_get_default_group()), true);
+        Dropdown::SetChecked(
+            OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(OpenRCT2::GetContext()->GetNetwork()->GetDefaultGroup()), true);
     }
     else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
     {
-        Dropdown::SetChecked(network_get_group_index(_selectedGroup), true);
+        Dropdown::SetChecked(OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_selectedGroup), true);
     }
 }
 
@@ -347,14 +348,14 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
-        utf8* buffer = _strdup(network_get_server_name());
+        utf8* buffer = _strdup(OpenRCT2::GetContext()->GetNetwork()->GetServerName());
         gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
     // Likewise, for the optional server description -- which can be a little longer.
-    const utf8* descString = network_get_server_description();
+    const utf8* descString = OpenRCT2::GetContext()->GetNetwork()->GetServerDescription();
     if (!str_is_null_or_empty(descString))
     {
         utf8* buffer = _strdup(descString);
@@ -365,15 +366,15 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
 
     // Finally, account for provider info, if present.
     {
-        const utf8* providerName = network_get_server_provider_name();
+        const utf8* providerName = OpenRCT2::GetContext()->GetNetwork()->GetServerProviderName();
         if (!str_is_null_or_empty(providerName))
             height += LIST_ROW_HEIGHT;
 
-        const utf8* providerEmail = network_get_server_provider_email();
+        const utf8* providerEmail = OpenRCT2::GetContext()->GetNetwork()->GetServerProviderEmail();
         if (!str_is_null_or_empty(providerEmail))
             height += LIST_ROW_HEIGHT;
 
-        const utf8* providerWebsite = network_get_server_provider_website();
+        const utf8* providerWebsite = OpenRCT2::GetContext()->GetNetwork()->GetServerProvideWebsite();
         if (!str_is_null_or_empty(providerWebsite))
             height += LIST_ROW_HEIGHT;
     }
@@ -415,14 +416,14 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
         auto screenCoords = ScreenCoordsXY{ 3, 50 };
         int32_t width = w->width - 6;
 
-        const utf8* name = network_get_server_name();
+        const utf8* name = OpenRCT2::GetContext()->GetNetwork()->GetServerName();
         {
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, static_cast<void*>(&name), screenCoords, width, STR_STRING, w->colours[1]);
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const utf8* description = network_get_server_description();
+        const utf8* description = OpenRCT2::GetContext()->GetNetwork()->GetServerDescription();
         if (!str_is_null_or_empty(description))
         {
             screenCoords.y += gfx_draw_string_left_wrapped(
@@ -430,21 +431,21 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
-        const utf8* providerName = network_get_server_provider_name();
+        const utf8* providerName = OpenRCT2::GetContext()->GetNetwork()->GetServerProviderName();
         if (!str_is_null_or_empty(providerName))
         {
             gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const utf8* providerEmail = network_get_server_provider_email();
+        const utf8* providerEmail = OpenRCT2::GetContext()->GetNetwork()->GetServerProviderEmail();
         if (!str_is_null_or_empty(providerEmail))
         {
             gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, screenCoords);
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
-        const utf8* providerWebsite = network_get_server_provider_website();
+        const utf8* providerWebsite = OpenRCT2::GetContext()->GetNetwork()->GetServerProvideWebsite();
         if (!str_is_null_or_empty(providerWebsite))
         {
             gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, screenCoords);
@@ -479,7 +480,7 @@ static void window_multiplayer_players_resize(rct_window* w)
 {
     window_set_resize(w, 420, 124, 500, 450);
 
-    w->no_list_items = network_get_num_players();
+    w->no_list_items = OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers();
     w->list_item_positions[0] = 0;
 
     w->widgets[WIDX_HEADER_PING].right = w->width - 5;
@@ -504,7 +505,7 @@ static void window_multiplayer_players_scrollgetsize(rct_window* w, int32_t scro
         w->Invalidate();
     }
 
-    *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
+    *height = OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_players_widgets[WIDX_LIST].bottom + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -526,7 +527,7 @@ static void window_multiplayer_players_scrollmousedown(rct_window* w, int32_t sc
     w->selected_list_item = index;
     w->Invalidate();
 
-    window_player_open(network_get_player_id(index));
+    window_player_open(OpenRCT2::GetContext()->GetNetwork()->GetPlayerId(index));
 }
 
 static void window_multiplayer_players_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -567,7 +568,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 {
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    for (int32_t i = 0; i < network_get_num_players(); i++)
+    for (int32_t i = 0; i < OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers(); i++)
     {
         if (screenCoords.y > dpi->y + dpi->height)
         {
@@ -586,12 +587,12 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 gfx_filter_rect(
                     dpi, 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
-                buffer += network_get_player_name(i);
+                buffer += OpenRCT2::GetContext()->GetNetwork()->GetPlayerName(i);
                 colour = w->colours[2];
             }
             else
             {
-                if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER)
+                if (OpenRCT2::GetContext()->GetNetwork()->GetPlayerFlags(i) & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
                     buffer += "{BABYBLUE}";
                 }
@@ -599,7 +600,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 {
                     buffer += "{BLACK}";
                 }
-                buffer += network_get_player_name(i);
+                buffer += OpenRCT2::GetContext()->GetNetwork()->GetPlayerName(i);
             }
             screenCoords.x = 0;
             gfx_clip_string(buffer.data(), 230);
@@ -607,22 +608,23 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
             // Draw group name
             buffer.resize(0);
-            int32_t group = network_get_group_index(network_get_player_group(i));
+            int32_t group = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(
+                OpenRCT2::GetContext()->GetNetwork()->GetPlayerGroup(i));
             if (group != -1)
             {
                 buffer += "{BLACK}";
                 screenCoords.x = 173;
-                buffer += network_get_group_name(group);
+                buffer += OpenRCT2::GetContext()->GetNetwork()->GetGroupName(group);
                 gfx_clip_string(buffer.data(), 80);
                 gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
             }
 
             // Draw last action
-            int32_t action = network_get_player_last_action(i, 2000);
+            int32_t action = OpenRCT2::GetContext()->GetNetwork()->GetPlayerLastAction(i, 2000);
             auto ft = Formatter();
             if (action != -999)
             {
-                ft.Add<rct_string_id>(network_get_action_name_string_id(action));
+                ft.Add<rct_string_id>(OpenRCT2::GetContext()->GetNetwork()->GetActionNameStringId(action));
             }
             else
             {
@@ -632,7 +634,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
 
             // Draw ping
             buffer.resize(0);
-            int32_t ping = network_get_player_ping(i);
+            int32_t ping = OpenRCT2::GetContext()->GetNetwork()->GetPlayerPing(i);
             if (ping <= 100)
             {
                 buffer += "{GREEN}";
@@ -690,8 +692,8 @@ static void window_multiplayer_groups_mouseup(rct_window* w, rct_widgetindex wid
         }
         break;
         case WIDX_RENAME_GROUP:;
-            int32_t groupIndex = network_get_group_index(_selectedGroup);
-            const utf8* groupName = network_get_group_name(groupIndex);
+            int32_t groupIndex = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_selectedGroup);
+            const utf8* groupName = OpenRCT2::GetContext()->GetNetwork()->GetGroupName(groupIndex);
             window_text_input_raw_open(w, widgetIndex, STR_GROUP_NAME, STR_ENTER_NEW_NAME_FOR_THIS_GROUP, groupName, 32);
             break;
     }
@@ -701,7 +703,7 @@ static void window_multiplayer_groups_resize(rct_window* w)
 {
     window_set_resize(w, 320, 200, 320, 500);
 
-    w->no_list_items = network_get_num_actions();
+    w->no_list_items = OpenRCT2::GetContext()->GetNetwork()->GetNumActions();
     w->list_item_positions[0] = 0;
 
     w->selected_list_item = -1;
@@ -733,12 +735,12 @@ static void window_multiplayer_groups_dropdown(rct_window* w, rct_widgetindex wi
         case WIDX_DEFAULT_GROUP_DROPDOWN:
         {
             auto networkModifyGroup = NetworkModifyGroupAction(
-                ModifyGroupType::SetDefault, network_get_group_id(dropdownIndex));
+                ModifyGroupType::SetDefault, OpenRCT2::GetContext()->GetNetwork()->GetGroupId(dropdownIndex));
             GameActions::Execute(&networkModifyGroup);
         }
         break;
         case WIDX_SELECTED_GROUP_DROPDOWN:
-            _selectedGroup = network_get_group_id(dropdownIndex);
+            _selectedGroup = OpenRCT2::GetContext()->GetNetwork()->GetGroupId(dropdownIndex);
             break;
     }
 
@@ -761,7 +763,7 @@ static void window_multiplayer_groups_scrollgetsize(rct_window* w, int32_t scrol
         w->Invalidate();
     }
 
-    *height = network_get_num_actions() * SCROLLABLE_ROW_HEIGHT;
+    *height = OpenRCT2::GetContext()->GetNetwork()->GetNumActions() * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_groups_widgets[WIDX_LIST].bottom + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -821,7 +823,7 @@ static void window_multiplayer_groups_invalidate(rct_window* w)
     window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 
     // select other group if one is removed
-    while (network_get_group_index(_selectedGroup) == -1 && _selectedGroup > 0)
+    while (OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_selectedGroup) == -1 && _selectedGroup > 0)
     {
         _selectedGroup--;
     }
@@ -835,11 +837,12 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
     window_multiplayer_draw_tab_images(w, dpi);
 
     rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
-    int32_t group = network_get_group_index(network_get_default_group());
+    int32_t group = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(
+        OpenRCT2::GetContext()->GetNetwork()->GetDefaultGroup());
     if (group != -1)
     {
         buffer.assign("{WINDOW_COLOUR_2}");
-        buffer += network_get_group_name(group);
+        buffer += OpenRCT2::GetContext()->GetNetwork()->GetGroupName(group);
 
         auto ft = Formatter();
         ft.Add<const char*>(buffer.c_str());
@@ -860,11 +863,11 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         dpi, screenPos.x, screenPos.y - 6, screenPos.x + 310, screenPos.y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
 
     widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
-    group = network_get_group_index(_selectedGroup);
+    group = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_selectedGroup);
     if (group != -1)
     {
         buffer.assign("{WINDOW_COLOUR_2}");
-        buffer += network_get_group_name(group);
+        buffer += OpenRCT2::GetContext()->GetNetwork()->GetGroupName(group);
         auto ft = Formatter();
         ft.Add<const char*>(buffer.c_str());
         DrawTextEllipsised(
@@ -881,7 +884,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
     gfx_fill_rect(
         dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
 
-    for (int32_t i = 0; i < network_get_num_actions(); i++)
+    for (int32_t i = 0; i < OpenRCT2::GetContext()->GetNetwork()->GetNumActions(); i++)
     {
         if (i == w->selected_list_item)
         {
@@ -895,10 +898,10 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 
         if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
-            int32_t groupindex = network_get_group_index(_selectedGroup);
+            int32_t groupindex = OpenRCT2::GetContext()->GetNetwork()->GetGroupIndex(_selectedGroup);
             if (groupindex != -1)
             {
-                if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
+                if (OpenRCT2::GetContext()->GetNetwork()->CanPerformAction(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
                     gfx_draw_string(dpi, u8"{WINDOW_COLOUR_2}✓", COLOUR_BLACK, screenCoords);
@@ -907,7 +910,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
 
             // Draw action name
             auto ft = Formatter();
-            ft.Add<uint16_t>(network_get_action_name_string_id(i));
+            ft.Add<uint16_t>(OpenRCT2::GetContext()->GetNetwork()->GetActionNameStringId(i));
             gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), COLOUR_BLACK, { 10, screenCoords.y });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
@@ -966,7 +969,7 @@ static void window_multiplayer_options_invalidate(rct_window* w)
     window_multiplayer_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_CLIENT)
     {
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }

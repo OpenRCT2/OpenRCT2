@@ -245,7 +245,7 @@ GameActions::Result::Ptr SetCheatAction::Execute() const
         break;
     }
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         config_save_default();
     }

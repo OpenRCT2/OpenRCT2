@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -31,9 +31,9 @@
 #include <iterator>
 #include <stdexcept>
 
-// This string specifies which version of network stream current build uses.
-// It is used for making sure only compatible builds get connected, even within
-// single OpenRCT2 version.
+ // This string specifies which version of network stream current build uses.
+ // It is used for making sure only compatible builds get connected, even within
+ // single OpenRCT2 version.
 #define NETWORK_STREAM_VERSION "15"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
@@ -91,12 +91,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include <vector>
 
 using namespace OpenRCT2;
-
-static void network_chat_show_connected_message();
-static void network_chat_show_server_greeting();
-static void network_get_keys_directory(utf8* buffer, size_t bufferSize);
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName);
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
 
 static NetworkBase gNetwork;
 
@@ -237,6 +231,27 @@ void NetworkBase::CloseConnection()
     _lastConnectStatus = SocketStatus::Closed;
 }
 
+static void NetworkGetKeysDirectory(utf8* buffer, size_t bufferSize)
+{
+    platform_get_user_directory(buffer, "keys", bufferSize);
+}
+
+void NetworkBase::NetworkGetPrivateKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName)
+{
+    NetworkGetKeysDirectory(buffer, bufferSize);
+    Path::Append(buffer, bufferSize, playerName.c_str());
+    String::Append(buffer, bufferSize, ".privkey");
+}
+
+void NetworkBase::NetworkGetPublicKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash)
+{
+    NetworkGetKeysDirectory(buffer, bufferSize);
+    Path::Append(buffer, bufferSize, playerName.c_str());
+    String::Append(buffer, bufferSize, "-");
+    String::Append(buffer, bufferSize, hash);
+    String::Append(buffer, bufferSize, ".pubkey");
+}
+
 bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 {
     if (GetMode() != NETWORK_MODE_NONE)
@@ -273,7 +288,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     GameActions::SuspendQueue();
 
     utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
+    NetworkGetPrivateKeyPath(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
     if (!Platform::FileExists(keyPath))
     {
         Console::WriteLine("Generating key... This may take a while");
@@ -282,7 +297,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         Console::WriteLine("Key generated, saving private bits as %s", keyPath);
 
         utf8 keysDirectory[MAX_PATH];
-        network_get_keys_directory(keysDirectory, sizeof(keysDirectory));
+        NetworkGetKeysDirectory(keysDirectory, sizeof(keysDirectory));
         if (!platform_ensure_directory_exists(keysDirectory))
         {
             log_error("Unable to create directory %s.", keysDirectory);
@@ -302,7 +317,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
         const std::string hash = _key.PublicKeyHash();
         const utf8* publicKeyHash = hash.c_str();
-        network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
+        NetworkGetPublicKeyPath(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
         Console::WriteLine("Key generated, saving public bits as %s", keyPath);
 
         try
@@ -338,6 +353,33 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     }
 
     return true;
+}
+
+static void network_chat_show_connected_message()
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    std::string s = windowManager->GetKeyboardShortcutString(41 /* SHORTCUT_OPEN_CHAT_WINDOW */);
+    const char* sptr = s.c_str();
+
+    utf8 buffer[256];
+    format_string(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
+
+    NetworkPlayer server;
+    server.Name = "Server";
+    const char* formatted = NetworkBase::FormatChat(&server, buffer);
+    chat_history_add(formatted);
+}
+
+// Display server greeting if one exists
+static void network_chat_show_server_greeting(const std::string_view greeting)
+{
+    if (greeting.empty())
+        return;
+
+    thread_local std::string greeting_formatted;
+    greeting_formatted.assign("{OUTLINE}{GREEN}");
+    greeting_formatted += greeting;
+    chat_history_add(greeting_formatted.c_str());
 }
 
 bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
@@ -381,7 +423,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     player->Group = 0;
     player_id = player->Id;
 
-    if (network_get_mode() == NETWORK_MODE_SERVER)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
     {
         // Add SERVER to users.json and save.
         NetworkUser* networkUser = _userManager.GetOrAddUser(player->KeyHash);
@@ -391,8 +433,9 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     }
 
     printf("Ready for clients...\n");
+
     network_chat_show_connected_message();
-    network_chat_show_server_greeting();
+    network_chat_show_server_greeting(ServerGreeting);
 
     status = NETWORK_STATUS_CONNECTED;
     listening_port = port;
@@ -461,12 +504,12 @@ void NetworkBase::Update()
 
     switch (GetMode())
     {
-        case NETWORK_MODE_SERVER:
-            UpdateServer();
-            break;
-        case NETWORK_MODE_CLIENT:
-            UpdateClient();
-            break;
+    case NETWORK_MODE_SERVER:
+        UpdateServer();
+        break;
+    case NETWORK_MODE_CLIENT:
+        UpdateClient();
+        break;
     }
 
     // If the Close() was called during the update, close it for real
@@ -539,114 +582,114 @@ void NetworkBase::UpdateClient()
 
     switch (status)
     {
-        case NETWORK_STATUS_CONNECTING:
+    case NETWORK_STATUS_CONNECTING:
+    {
+        switch (_serverConnection->Socket->GetStatus())
         {
-            switch (_serverConnection->Socket->GetStatus())
+        case SocketStatus::Resolving:
+        {
+            if (_lastConnectStatus != SocketStatus::Resolving)
             {
-                case SocketStatus::Resolving:
-                {
-                    if (_lastConnectStatus != SocketStatus::Resolving)
-                    {
-                        _lastConnectStatus = SocketStatus::Resolving;
-                        char str_resolving[256];
-                        format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
+                _lastConnectStatus = SocketStatus::Resolving;
+                char str_resolving[256];
+                format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
 
-                        auto intent = Intent(WC_NETWORK_STATUS);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
-                        context_open_intent(&intent);
-                    }
-                    break;
-                }
-                case SocketStatus::Connecting:
-                {
-                    if (_lastConnectStatus != SocketStatus::Connecting)
-                    {
-                        _lastConnectStatus = SocketStatus::Connecting;
-                        char str_connecting[256];
-                        format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
-
-                        auto intent = Intent(WC_NETWORK_STATUS);
-                        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
-                        intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
-                        context_open_intent(&intent);
-
-                        server_connect_time = platform_get_ticks();
-                    }
-                    break;
-                }
-                case SocketStatus::Connected:
-                {
-                    status = NETWORK_STATUS_CONNECTED;
-                    _serverConnection->ResetLastPacketTime();
-                    Client_Send_TOKEN();
-                    char str_authenticating[256];
-                    format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
-
-                    auto intent = Intent(WC_NETWORK_STATUS);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
-                    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
-                    context_open_intent(&intent);
-                    break;
-                }
-                default:
-                {
-                    const char* error = _serverConnection->Socket->GetError();
-                    if (error != nullptr)
-                    {
-                        Console::Error::WriteLine(error);
-                    }
-
-                    Close();
-                    context_force_close_window_by_class(WC_NETWORK_STATUS);
-                    context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
-                    break;
-                }
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_resolving });
+                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
+                context_open_intent(&intent);
             }
             break;
         }
-        case NETWORK_STATUS_CONNECTED:
+        case SocketStatus::Connecting:
         {
-            if (!ProcessConnection(*_serverConnection))
+            if (_lastConnectStatus != SocketStatus::Connecting)
             {
-                // Do not show disconnect message window when password window closed/canceled
-                if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
-                {
-                    context_force_close_window_by_class(WC_NETWORK_STATUS);
-                }
-                else
-                {
-                    char str_disconnected[256];
+                _lastConnectStatus = SocketStatus::Connecting;
+                char str_connecting[256];
+                format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
 
-                    if (_serverConnection->GetLastDisconnectReason())
-                    {
-                        const char* disconnect_reason = _serverConnection->GetLastDisconnectReason();
-                        format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
-                    }
-                    else
-                    {
-                        format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
-                    }
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_connecting });
+                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
+                context_open_intent(&intent);
 
-                    auto intent = Intent(WC_NETWORK_STATUS);
-                    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
-                    context_open_intent(&intent);
-                }
-                window_close_by_class(WC_MULTIPLAYER);
-                Close();
+                server_connect_time = platform_get_ticks();
+            }
+            break;
+        }
+        case SocketStatus::Connected:
+        {
+            status = NETWORK_STATUS_CONNECTED;
+            _serverConnection->ResetLastPacketTime();
+            Client_Send_TOKEN();
+            char str_authenticating[256];
+            format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
+
+            auto intent = Intent(WC_NETWORK_STATUS);
+            intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_authenticating });
+            intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { gNetwork.Close(); });
+            context_open_intent(&intent);
+            break;
+        }
+        default:
+        {
+            const char* error = _serverConnection->Socket->GetError();
+            if (error != nullptr)
+            {
+                Console::Error::WriteLine(error);
+            }
+
+            Close();
+            context_force_close_window_by_class(WC_NETWORK_STATUS);
+            context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
+            break;
+        }
+        }
+        break;
+    }
+    case NETWORK_STATUS_CONNECTED:
+    {
+        if (!ProcessConnection(*_serverConnection))
+        {
+            // Do not show disconnect message window when password window closed/canceled
+            if (_serverConnection->AuthStatus == NetworkAuth::RequirePassword)
+            {
+                context_force_close_window_by_class(WC_NETWORK_STATUS);
             }
             else
             {
-                uint32_t ticks = platform_get_ticks();
-                if (ticks - _lastSentHeartbeat >= 3000)
-                {
-                    Client_Send_HEARTBEAT(*_serverConnection);
-                    _lastSentHeartbeat = ticks;
-                }
-            }
+                char str_disconnected[256];
 
-            break;
+                if (_serverConnection->GetLastDisconnectReason())
+                {
+                    const char* disconnect_reason = _serverConnection->GetLastDisconnectReason();
+                    format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_WITH_REASON, &disconnect_reason);
+                }
+                else
+                {
+                    format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
+                }
+
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_disconnected });
+                context_open_intent(&intent);
+            }
+            window_close_by_class(WC_MULTIPLAYER);
+            Close();
         }
+        else
+        {
+            uint32_t ticks = platform_get_ticks();
+            if (ticks - _lastSentHeartbeat >= 3000)
+            {
+                Client_Send_HEARTBEAT(*_serverConnection);
+                _lastSentHeartbeat = ticks;
+            }
+        }
+
+        break;
+    }
     }
 }
 
@@ -877,8 +920,8 @@ NetworkGroup* NetworkBase::AddGroup()
     for (int32_t id = 0; id < 255; id++)
     {
         if (std::find_if(
-                group_list.begin(), group_list.end(),
-                [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
+            group_list.begin(), group_list.end(),
+            [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
             == group_list.end())
         {
             newid = id;
@@ -1210,7 +1253,7 @@ void NetworkBase::Client_Send_AUTH(
     const std::string& name, const std::string& password, const std::string& pubkey, const std::vector<uint8_t>& signature)
 {
     NetworkPacket packet(NetworkCommand::Auth);
-    packet.WriteString(network_get_version().c_str());
+    packet.WriteString(OpenRCT2::GetContext()->GetNetwork()->GetVersion().c_str());
     packet.WriteString(name.c_str());
     packet.WriteString(password.c_str());
     packet.WriteString(pubkey.c_str());
@@ -1348,7 +1391,7 @@ void NetworkBase::Server_Send_AUTH(NetworkConnection& connection)
     packet << static_cast<uint32_t>(connection.AuthStatus) << new_playerid;
     if (connection.AuthStatus == NetworkAuth::BadVersion)
     {
-        packet.WriteString(network_get_version().c_str());
+        packet.WriteString(OpenRCT2::GetContext()->GetNetwork()->GetVersion().c_str());
     }
     connection.QueuePacket(std::move(packet));
     if (connection.AuthStatus != NetworkAuth::Ok && connection.AuthStatus != NetworkAuth::RequirePassword)
@@ -1588,10 +1631,14 @@ void NetworkBase::Server_Send_SETDISCONNECTMSG(NetworkConnection& connection, co
 json_t NetworkBase::GetServerInfoAsJson() const
 {
     json_t jsonObj = {
-        { "name", gConfigNetwork.server_name },         { "requiresPassword", _password.size() > 0 },
-        { "version", network_get_version() },           { "players", player_list.size() },
-        { "maxPlayers", gConfigNetwork.maxplayers },    { "description", gConfigNetwork.server_description },
-        { "greeting", gConfigNetwork.server_greeting }, { "dedicated", gOpenRCT2Headless },
+        { "name", gConfigNetwork.server_name },
+        { "requiresPassword", _password.size() > 0 },
+        { "version", OpenRCT2::GetContext()->GetNetwork()->GetVersion() },
+        { "players", player_list.size() },
+        { "maxPlayers", gConfigNetwork.maxplayers },
+        { "description", gConfigNetwork.server_description },
+        { "greeting", gConfigNetwork.server_greeting },
+        { "dedicated", gOpenRCT2Headless },
     };
     return jsonObj;
 }
@@ -1661,27 +1708,27 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
-            case NetworkReadPacket::Disconnected:
-                // closed connection or network error
-                if (!connection.GetLastDisconnectReason())
-                {
-                    connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-                }
+        case NetworkReadPacket::Disconnected:
+            // closed connection or network error
+            if (!connection.GetLastDisconnectReason())
+            {
+                connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+            }
+            return false;
+        case NetworkReadPacket::Success:
+            // done reading in packet
+            ProcessPacket(connection, connection.InboundPacket);
+            if (connection.Socket == nullptr)
+            {
                 return false;
-            case NetworkReadPacket::Success:
-                // done reading in packet
-                ProcessPacket(connection, connection.InboundPacket);
-                if (connection.Socket == nullptr)
-                {
-                    return false;
-                }
-                break;
-            case NetworkReadPacket::MoreData:
-                // more data required to be read
-                break;
-            case NetworkReadPacket::NoData:
-                // could not read anything from socket
-                break;
+            }
+            break;
+        case NetworkReadPacket::MoreData:
+            // more data required to be read
+            break;
+        case NetworkReadPacket::NoData:
+            // could not read anything from socket
+            break;
         }
     } while (packetStatus == NetworkReadPacket::Success);
 
@@ -1882,8 +1929,8 @@ void NetworkBase::ProcessPlayerList()
                 std::remove_if(
                     player_list.begin(), player_list.end(),
                     [&removedPlayers](const std::unique_ptr<NetworkPlayer>& player) {
-                        return std::find(removedPlayers.begin(), removedPlayers.end(), player->Id) != removedPlayers.end();
-                    }),
+                return std::find(removedPlayers.begin(), removedPlayers.end(), player->Id) != removedPlayers.end();
+            }),
                 player_list.end());
 
             _pendingPlayerLists.erase(itPending);
@@ -1966,13 +2013,13 @@ void NetworkBase::ServerClientDisconnected(std::unique_ptr<NetworkConnection>& c
     }
 
     chat_history_add(text);
-    Peep* pickup_peep = network_get_pickup_peep(connection_player->Id);
+    Peep* pickup_peep = OpenRCT2::GetContext()->GetNetwork()->GetPickupPeep(connection_player->Id);
     if (pickup_peep)
     {
         PeepPickupAction pickupAction{ PeepPickupType::Cancel,
                                        pickup_peep->sprite_index,
-                                       { network_get_pickup_peep_old_x(connection_player->Id), 0, 0 },
-                                       network_get_current_player_id() };
+                                       { OpenRCT2::GetContext()->GetNetwork()->GetPickupPeepOldX(connection_player->Id), 0, 0 },
+                                       OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId() };
         auto res = GameActions::Execute(&pickupAction);
     }
     gNetwork.Server_Send_EVENT_PLAYER_DISCONNECTED(
@@ -2010,8 +2057,8 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
         for (int32_t id = 0; id < 255; id++)
         {
             if (std::find_if(
-                    player_list.begin(), player_list.end(),
-                    [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
+                player_list.begin(), player_list.end(),
+                [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
                 == player_list.end())
             {
                 newid = id;
@@ -2111,7 +2158,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
 void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
 {
     utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
+    NetworkGetPrivateKeyPath(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
     if (!Platform::FileExists(keyPath))
     {
         log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
@@ -2213,43 +2260,43 @@ void NetworkBase::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacke
     connection.AuthStatus = static_cast<NetworkAuth>(auth_status);
     switch (connection.AuthStatus)
     {
-        case NetworkAuth::Ok:
-            Client_Send_GAMEINFO();
-            break;
-        case NetworkAuth::BadName:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
-            connection.Socket->Disconnect();
-            break;
-        case NetworkAuth::BadVersion:
-        {
-            const char* version = packet.ReadString();
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
-            connection.Socket->Disconnect();
-            break;
-        }
-        case NetworkAuth::BadPassword:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
-            connection.Socket->Disconnect();
-            break;
-        case NetworkAuth::VerificationFailure:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
-            connection.Socket->Disconnect();
-            break;
-        case NetworkAuth::Full:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
-            connection.Socket->Disconnect();
-            break;
-        case NetworkAuth::RequirePassword:
-            context_open_window_view(WV_NETWORK_PASSWORD);
-            break;
-        case NetworkAuth::UnknownKeyDisallowed:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
-            connection.Socket->Disconnect();
-            break;
-        default:
-            connection.SetLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
-            connection.Socket->Disconnect();
-            break;
+    case NetworkAuth::Ok:
+        Client_Send_GAMEINFO();
+        break;
+    case NetworkAuth::BadName:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PLAYER_NAME);
+        connection.Socket->Disconnect();
+        break;
+    case NetworkAuth::BadVersion:
+    {
+        const char* version = packet.ReadString();
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION, &version);
+        connection.Socket->Disconnect();
+        break;
+    }
+    case NetworkAuth::BadPassword:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_BAD_PASSWORD);
+        connection.Socket->Disconnect();
+        break;
+    case NetworkAuth::VerificationFailure:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
+        connection.Socket->Disconnect();
+        break;
+    case NetworkAuth::Full:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_FULL);
+        connection.Socket->Disconnect();
+        break;
+    case NetworkAuth::RequirePassword:
+        context_open_window_view(WV_NETWORK_PASSWORD);
+        break;
+    case NetworkAuth::UnknownKeyDisallowed:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
+        connection.Socket->Disconnect();
+        break;
+    default:
+        connection.SetLastDisconnectReason(STR_MULTIPLAYER_RECEIVED_INVALID_DATA);
+        connection.Socket->Disconnect();
+        break;
     }
 }
 
@@ -2562,7 +2609,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
             passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
         }
-        if (!gameversion || network_get_version() != gameversion)
+        if (!gameversion || OpenRCT2::GetContext()->GetNetwork()->GetVersion() != gameversion)
         {
             connection.AuthStatus = NetworkAuth::BadVersion;
         }
@@ -2818,6 +2865,7 @@ void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connect
     }
 }
 
+// FIXME: Duplicate function
 static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
 #    ifdef ENABLE_SCRIPTING
@@ -3133,29 +3181,29 @@ void NetworkBase::Client_Handle_EVENT([[maybe_unused]] NetworkConnection& connec
     packet >> eventType;
     switch (eventType)
     {
-        case SERVER_EVENT_PLAYER_JOINED:
+    case SERVER_EVENT_PLAYER_JOINED:
+    {
+        const char* playerName = packet.ReadString();
+        format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
+        chat_history_add(text);
+        break;
+    }
+    case SERVER_EVENT_PLAYER_DISCONNECTED:
+    {
+        const char* playerName = packet.ReadString();
+        const char* reason = packet.ReadString();
+        const char* args[] = { playerName, reason };
+        if (str_is_null_or_empty(reason))
         {
-            const char* playerName = packet.ReadString();
-            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_JOINED_THE_GAME, &playerName);
-            chat_history_add(text);
-            break;
+            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
         }
-        case SERVER_EVENT_PLAYER_DISCONNECTED:
+        else
         {
-            const char* playerName = packet.ReadString();
-            const char* reason = packet.ReadString();
-            const char* args[] = { playerName, reason };
-            if (str_is_null_or_empty(reason))
-            {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_NO_REASON, args);
-            }
-            else
-            {
-                format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
-            }
-            chat_history_add(text);
-            break;
+            format_string(text, 256, STR_MULTIPLAYER_PLAYER_HAS_DISCONNECTED_WITH_REASON, args);
         }
+        chat_history_add(text);
+        break;
+    }
     }
 }
 
@@ -3188,1043 +3236,7 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
         }
     }
 
-    network_chat_show_server_greeting();
+    network_chat_show_server_greeting(ServerGreeting);
 }
 
-void network_set_env(const std::shared_ptr<IPlatformEnvironment>& env)
-{
-    gNetwork.SetEnvironment(env);
-}
-
-void network_close()
-{
-    gNetwork.Close();
-}
-
-void network_reconnect()
-{
-    gNetwork.Reconnect();
-}
-
-void network_shutdown_client()
-{
-    gNetwork.ServerClientDisconnected();
-}
-
-int32_t network_begin_client(const std::string& host, int32_t port)
-{
-    return gNetwork.BeginClient(host, port);
-}
-
-int32_t network_begin_server(int32_t port, const std::string& address)
-{
-    return gNetwork.BeginServer(port, address);
-}
-
-void network_update()
-{
-    gNetwork.Update();
-}
-
-void network_process_pending()
-{
-    gNetwork.ProcessPending();
-}
-
-void network_flush()
-{
-    gNetwork.Flush();
-}
-
-int32_t network_get_mode()
-{
-    return gNetwork.GetMode();
-}
-
-int32_t network_get_status()
-{
-    return gNetwork.GetStatus();
-}
-
-bool network_is_desynchronised()
-{
-    return gNetwork.IsDesynchronised();
-}
-
-bool network_check_desynchronisation()
-{
-    return gNetwork.CheckDesynchronizaton();
-}
-
-void network_request_gamestate_snapshot()
-{
-    return gNetwork.RequestStateSnapshot();
-}
-
-void network_send_tick()
-{
-    gNetwork.Server_Send_TICK();
-}
-
-NetworkAuth network_get_authstatus()
-{
-    return gNetwork.GetAuthStatus();
-}
-
-uint32_t network_get_server_tick()
-{
-    return gNetwork.GetServerTick();
-}
-
-uint8_t network_get_current_player_id()
-{
-    return gNetwork.GetPlayerID();
-}
-
-int32_t network_get_num_players()
-{
-    return static_cast<int32_t>(gNetwork.player_list.size());
-}
-
-const char* network_get_player_name(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return static_cast<const char*>(gNetwork.player_list[index]->Name.c_str());
-}
-
-uint32_t network_get_player_flags(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->Flags;
-}
-
-int32_t network_get_player_ping(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->Ping;
-}
-
-int32_t network_get_player_id(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->Id;
-}
-
-money32 network_get_player_money_spent(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->MoneySpent;
-}
-
-std::string network_get_player_ip_address(uint32_t id)
-{
-    auto conn = gNetwork.GetPlayerConnection(id);
-    if (conn != nullptr && conn->Socket != nullptr)
-    {
-        return conn->Socket->GetIpAddress();
-    }
-    return {};
-}
-
-std::string network_get_player_public_key_hash(uint32_t id)
-{
-    auto player = gNetwork.GetPlayerByID(id);
-    if (player != nullptr)
-    {
-        return player->KeyHash;
-    }
-    return {};
-}
-
-void network_add_player_money_spent(uint32_t index, money32 cost)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    gNetwork.player_list[index]->AddMoneySpent(cost);
-}
-
-int32_t network_get_player_last_action(uint32_t index, int32_t time)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    if (time && platform_get_ticks() > gNetwork.player_list[index]->LastActionTime + time)
-    {
-        return -999;
-    }
-    return gNetwork.player_list[index]->LastAction;
-}
-
-void network_set_player_last_action(uint32_t index, GameCommand command)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    gNetwork.player_list[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
-    gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
-}
-
-CoordsXYZ network_get_player_last_action_coord(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->LastActionCoord;
-}
-
-void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    if (index < gNetwork.player_list.size())
-    {
-        gNetwork.player_list[index]->LastActionCoord = coord;
-    }
-}
-
-uint32_t network_get_player_commands_ran(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->CommandsRan;
-}
-
-int32_t network_get_player_index(uint32_t id)
-{
-    auto it = gNetwork.GetPlayerIteratorByID(id);
-    if (it == gNetwork.player_list.end())
-    {
-        return -1;
-    }
-    return static_cast<int32_t>(gNetwork.GetPlayerIteratorByID(id) - gNetwork.player_list.begin());
-}
-
-uint8_t network_get_player_group(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-
-    return gNetwork.player_list[index]->Group;
-}
-
-void network_set_player_group(uint32_t index, uint32_t groupindex)
-{
-    Guard::IndexInRange(index, gNetwork.player_list);
-    Guard::IndexInRange(groupindex, gNetwork.group_list);
-
-    gNetwork.player_list[index]->Group = gNetwork.group_list[groupindex]->Id;
-}
-
-int32_t network_get_group_index(uint8_t id)
-{
-    auto it = gNetwork.GetGroupIteratorByID(id);
-    if (it == gNetwork.group_list.end())
-    {
-        return -1;
-    }
-    return static_cast<int32_t>(gNetwork.GetGroupIteratorByID(id) - gNetwork.group_list.begin());
-}
-
-uint8_t network_get_group_id(uint32_t index)
-{
-    Guard::IndexInRange(index, gNetwork.group_list);
-
-    return gNetwork.group_list[index]->Id;
-}
-
-int32_t network_get_num_groups()
-{
-    return static_cast<int32_t>(gNetwork.group_list.size());
-}
-
-const char* network_get_group_name(uint32_t index)
-{
-    return gNetwork.group_list[index]->GetName().c_str();
-}
-
-void network_chat_show_connected_message()
-{
-    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    std::string s = windowManager->GetKeyboardShortcutString(41 /* SHORTCUT_OPEN_CHAT_WINDOW */);
-    const char* sptr = s.c_str();
-
-    utf8 buffer[256];
-    format_string(buffer, sizeof(buffer), STR_MULTIPLAYER_CONNECTED_CHAT_HINT, &sptr);
-
-    NetworkPlayer server;
-    server.Name = "Server";
-    const char* formatted = NetworkBase::FormatChat(&server, buffer);
-    chat_history_add(formatted);
-}
-
-// Display server greeting if one exists
-void network_chat_show_server_greeting()
-{
-    auto greeting = network_get_server_greeting();
-    if (!str_is_null_or_empty(greeting))
-    {
-        thread_local std::string greeting_formatted;
-        greeting_formatted.assign("{OUTLINE}{GREEN}");
-        greeting_formatted += greeting;
-        chat_history_add(greeting_formatted.c_str());
-    }
-}
-
-GameActions::Result::Ptr network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
-{
-    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
-
-    NetworkGroup* fromgroup = gNetwork.GetGroupByID(actionPlayerId);
-    if (player == nullptr)
-    {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
-    }
-
-    if (!gNetwork.GetGroupByID(groupId))
-    {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS);
-    }
-
-    if (player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
-    {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_CHANGE_GROUP_THAT_THE_HOST_BELONGS_TO);
-    }
-
-    if (groupId == 0 && fromgroup && fromgroup->Id != 0)
-    {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_SET_TO_THIS_GROUP);
-    }
-
-    if (isExecuting)
-    {
-        player->Group = groupId;
-
-        if (network_get_mode() == NETWORK_MODE_SERVER)
-        {
-            // Add or update saved user
-            NetworkUserManager* userManager = &gNetwork._userManager;
-            NetworkUser* networkUser = userManager->GetOrAddUser(player->KeyHash);
-            networkUser->GroupId = groupId;
-            networkUser->Name = player->Name;
-            userManager->Save();
-        }
-
-        window_invalidate_by_number(WC_PLAYER, playerId);
-
-        // Log set player group event
-        NetworkPlayer* game_command_player = gNetwork.GetPlayerByID(actionPlayerId);
-        NetworkGroup* new_player_group = gNetwork.GetGroupByID(groupId);
-        char log_msg[256];
-        const char* args[3] = {
-            player->Name.c_str(),
-            new_player_group->GetName().c_str(),
-            game_command_player->Name.c_str(),
-        };
-        format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
-        network_append_server_log(log_msg);
-    }
-    return std::make_unique<GameActions::Result>();
-}
-
-GameActions::Result::Ptr network_modify_groups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting)
-{
-    switch (type)
-    {
-        case ModifyGroupType::AddGroup:
-        {
-            if (isExecuting)
-            {
-                NetworkGroup* newgroup = gNetwork.AddGroup();
-                if (newgroup == nullptr)
-                {
-                    return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_CANT_DO_THIS);
-                }
-            }
-        }
-        break;
-        case ModifyGroupType::RemoveGroup:
-        {
-            if (groupId == 0)
-            {
-                return std::make_unique<GameActions::Result>(
-                    GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
-            }
-            for (const auto& it : gNetwork.player_list)
-            {
-                if ((it.get())->Group == groupId)
-                {
-                    return std::make_unique<GameActions::Result>(
-                        GameActions::Status::Disallowed, STR_CANT_REMOVE_GROUP_THAT_PLAYERS_BELONG_TO);
-                }
-            }
-            if (isExecuting)
-            {
-                gNetwork.RemoveGroup(groupId);
-            }
-        }
-        break;
-        case ModifyGroupType::SetPermissions:
-        {
-            if (groupId == 0)
-            { // can't change admin group permissions
-                return std::make_unique<GameActions::Result>(
-                    GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
-            }
-            NetworkGroup* mygroup = nullptr;
-            NetworkPlayer* player = gNetwork.GetPlayerByID(actionPlayerId);
-            auto networkPermission = static_cast<NetworkPermission>(permissionIndex);
-            if (player != nullptr && permissionState == PermissionState::Toggle)
-            {
-                mygroup = gNetwork.GetGroupByID(player->Group);
-                if (mygroup == nullptr || !mygroup->CanPerformAction(networkPermission))
-                {
-                    return std::make_unique<GameActions::Result>(
-                        GameActions::Status::Disallowed, STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF);
-                }
-            }
-            if (isExecuting)
-            {
-                NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-                if (group != nullptr)
-                {
-                    if (permissionState != PermissionState::Toggle)
-                    {
-                        if (mygroup != nullptr)
-                        {
-                            if (permissionState == PermissionState::SetAll)
-                            {
-                                group->ActionsAllowed = mygroup->ActionsAllowed;
-                            }
-                            else
-                            {
-                                group->ActionsAllowed.fill(0x00);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        group->ToggleActionPermission(networkPermission);
-                    }
-                }
-            }
-        }
-        break;
-        case ModifyGroupType::SetName:
-        {
-            NetworkGroup* group = gNetwork.GetGroupByID(groupId);
-            const char* oldName = group->GetName().c_str();
-
-            if (strcmp(oldName, name.c_str()) == 0)
-            {
-                return std::make_unique<GameActions::Result>();
-            }
-
-            if (name.empty())
-            {
-                return std::make_unique<GameActions::Result>(
-                    GameActions::Status::InvalidParameters, STR_CANT_RENAME_GROUP, STR_INVALID_GROUP_NAME);
-            }
-
-            if (isExecuting)
-            {
-                if (group != nullptr)
-                {
-                    group->SetName(name);
-                }
-            }
-        }
-        break;
-        case ModifyGroupType::SetDefault:
-        {
-            if (groupId == 0)
-            {
-                return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_CANT_SET_TO_THIS_GROUP);
-            }
-            if (isExecuting)
-            {
-                gNetwork.SetDefaultGroup(groupId);
-            }
-        }
-        break;
-        default:
-            log_error("Invalid Modify Group Type: %u", static_cast<uint8_t>(type));
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
-    }
-
-    gNetwork.SaveGroups();
-
-    return std::make_unique<GameActions::Result>();
-}
-
-GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
-{
-    NetworkPlayer* player = gNetwork.GetPlayerByID(playerId);
-    if (player == nullptr)
-    {
-        // Player might be already removed by the PLAYERLIST command, need to refactor non-game commands executing too
-        // early.
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
-    }
-
-    if (player && player->Flags & NETWORK_PLAYER_FLAG_ISSERVER)
-    {
-        return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_CANT_KICK_THE_HOST);
-    }
-
-    if (isExecuting)
-    {
-        if (gNetwork.GetMode() == NETWORK_MODE_SERVER)
-        {
-            gNetwork.KickPlayer(playerId);
-
-            NetworkUserManager* networkUserManager = &gNetwork._userManager;
-            networkUserManager->Load();
-            networkUserManager->RemoveUser(player->KeyHash);
-            networkUserManager->Save();
-        }
-    }
-    return std::make_unique<GameActions::Result>();
-}
-
-uint8_t network_get_default_group()
-{
-    return gNetwork.GetDefaultGroup();
-}
-
-int32_t network_get_num_actions()
-{
-    return static_cast<int32_t>(NetworkActions::Actions.size());
-}
-
-rct_string_id network_get_action_name_string_id(uint32_t index)
-{
-    if (index < NetworkActions::Actions.size())
-    {
-        return NetworkActions::Actions[index].Name;
-    }
-    else
-    {
-        return STR_NONE;
-    }
-}
-
-int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index)
-{
-    Guard::IndexInRange(groupindex, gNetwork.group_list);
-
-    return gNetwork.group_list[groupindex]->CanPerformAction(index);
-}
-
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
-{
-    Guard::IndexInRange(groupindex, gNetwork.group_list);
-
-    return gNetwork.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
-}
-
-void network_set_pickup_peep(uint8_t playerid, Peep* peep)
-{
-    if (gNetwork.GetMode() == NETWORK_MODE_NONE)
-    {
-        _pickup_peep = peep;
-    }
-    else
-    {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-        if (player)
-        {
-            player->PickupPeep = peep;
-        }
-    }
-}
-
-Peep* network_get_pickup_peep(uint8_t playerid)
-{
-    if (gNetwork.GetMode() == NETWORK_MODE_NONE)
-    {
-        return _pickup_peep;
-    }
-    else
-    {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-        if (player)
-        {
-            return player->PickupPeep;
-        }
-        return nullptr;
-    }
-}
-
-void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x)
-{
-    if (gNetwork.GetMode() == NETWORK_MODE_NONE)
-    {
-        _pickup_peep_old_x = x;
-    }
-    else
-    {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-        if (player)
-        {
-            player->PickupPeepOldX = x;
-        }
-    }
-}
-
-int32_t network_get_pickup_peep_old_x(uint8_t playerid)
-{
-    if (gNetwork.GetMode() == NETWORK_MODE_NONE)
-    {
-        return _pickup_peep_old_x;
-    }
-    else
-    {
-        NetworkPlayer* player = gNetwork.GetPlayerByID(playerid);
-        if (player)
-        {
-            return player->PickupPeepOldX;
-        }
-        return -1;
-    }
-}
-
-int32_t network_get_current_player_group_index()
-{
-    NetworkPlayer* player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
-    if (player)
-    {
-        return network_get_group_index(player->Group);
-    }
-    return -1;
-}
-
-void network_send_map()
-{
-    gNetwork.Server_Send_MAP();
-}
-
-void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
-{
-    if (gNetwork.GetMode() == NETWORK_MODE_CLIENT)
-    {
-        gNetwork.Client_Send_CHAT(text);
-    }
-    else if (gNetwork.GetMode() == NETWORK_MODE_SERVER)
-    {
-        std::string message = text;
-        if (ProcessChatMessagePluginHooks(gNetwork.GetPlayerID(), message))
-        {
-            auto player = gNetwork.GetPlayerByID(gNetwork.GetPlayerID());
-            if (player != nullptr)
-            {
-                auto formatted = gNetwork.FormatChat(player, message.c_str());
-                if (playerIds.empty()
-                    || std::find(playerIds.begin(), playerIds.end(), gNetwork.GetPlayerID()) != playerIds.end())
-                {
-                    // Server is one of the recipients
-                    chat_history_add(formatted);
-                }
-                gNetwork.Server_Send_CHAT(formatted, playerIds);
-            }
-        }
-    }
-}
-
-void network_send_game_action(const GameAction* action)
-{
-    switch (gNetwork.GetMode())
-    {
-        case NETWORK_MODE_SERVER:
-            gNetwork.Server_Send_GAME_ACTION(action);
-            break;
-        case NETWORK_MODE_CLIENT:
-            gNetwork.Client_Send_GAME_ACTION(action);
-            break;
-    }
-}
-
-void network_send_password(const std::string& password)
-{
-    utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!Platform::FileExists(keyPath))
-    {
-        log_error("Private key %s missing! Restart the game to generate it.", keyPath);
-        return;
-    }
-    try
-    {
-        auto fs = FileStream(keyPath, FILE_MODE_OPEN);
-        gNetwork._key.LoadPrivate(&fs);
-    }
-    catch (const std::exception&)
-    {
-        log_error("Error reading private key from %s.", keyPath);
-        return;
-    }
-    const std::string pubkey = gNetwork._key.PublicKeyString();
-
-    std::vector<uint8_t> signature;
-    gNetwork._key.Sign(gNetwork._challenge.data(), gNetwork._challenge.size(), signature);
-    // Don't keep private key in memory. There's no need and it may get leaked
-    // when process dump gets collected at some point in future.
-    gNetwork._key.Unload();
-    gNetwork.Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
-}
-
-void network_set_password(const char* password)
-{
-    gNetwork.SetPassword(password);
-}
-
-void network_append_chat_log(const utf8* text)
-{
-    gNetwork.AppendChatLog(text);
-}
-
-void network_append_server_log(const utf8* text)
-{
-    gNetwork.AppendServerLog(text);
-}
-
-static void network_get_keys_directory(utf8* buffer, size_t bufferSize)
-{
-    platform_get_user_directory(buffer, "keys", bufferSize);
-}
-
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName)
-{
-    network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName.c_str());
-    String::Append(buffer, bufferSize, ".privkey");
-}
-
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash)
-{
-    network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName.c_str());
-    String::Append(buffer, bufferSize, "-");
-    String::Append(buffer, bufferSize, hash);
-    String::Append(buffer, bufferSize, ".pubkey");
-}
-
-const utf8* network_get_server_name()
-{
-    return gNetwork.ServerName.c_str();
-}
-const utf8* network_get_server_description()
-{
-    return gNetwork.ServerDescription.c_str();
-}
-const utf8* network_get_server_greeting()
-{
-    return gNetwork.ServerGreeting.c_str();
-}
-const utf8* network_get_server_provider_name()
-{
-    return gNetwork.ServerProviderName.c_str();
-}
-const utf8* network_get_server_provider_email()
-{
-    return gNetwork.ServerProviderEmail.c_str();
-}
-const utf8* network_get_server_provider_website()
-{
-    return gNetwork.ServerProviderWebsite.c_str();
-}
-
-std::string network_get_version()
-{
-    return NETWORK_STREAM_ID;
-}
-
-NetworkStats_t network_get_stats()
-{
-    return gNetwork.GetStats();
-}
-
-NetworkServerState_t network_get_server_state()
-{
-    return gNetwork.GetServerState();
-}
-
-bool network_gamestate_snapshots_enabled()
-{
-    return network_get_server_state().gamestateSnapshotsEnabled;
-}
-
-json_t network_get_server_info_as_json()
-{
-    return gNetwork.GetServerInfoAsJson();
-}
-#else
-int32_t network_get_mode()
-{
-    return NETWORK_MODE_NONE;
-}
-int32_t network_get_status()
-{
-    return NETWORK_STATUS_NONE;
-}
-NetworkAuth network_get_authstatus()
-{
-    return NetworkAuth::None;
-}
-uint32_t network_get_server_tick()
-{
-    return gCurrentTicks;
-}
-void network_flush()
-{
-}
-void network_send_tick()
-{
-}
-bool network_is_desynchronised()
-{
-    return false;
-}
-bool network_gamestate_snapshots_enabled()
-{
-    return false;
-}
-bool network_check_desynchronisation()
-{
-    return false;
-}
-void network_request_gamestate_snapshot()
-{
-}
-void network_send_game_action(const GameAction* action)
-{
-}
-void network_send_map()
-{
-}
-void network_update()
-{
-}
-void network_process_pending()
-{
-}
-int32_t network_begin_client(const std::string& host, int32_t port)
-{
-    return 1;
-}
-int32_t network_begin_server(int32_t port, const std::string& address)
-{
-    return 1;
-}
-int32_t network_get_num_players()
-{
-    return 1;
-}
-const char* network_get_player_name(uint32_t index)
-{
-    return "local (OpenRCT2 compiled without MP)";
-}
-uint32_t network_get_player_flags(uint32_t index)
-{
-    return 0;
-}
-int32_t network_get_player_ping(uint32_t index)
-{
-    return 0;
-}
-int32_t network_get_player_id(uint32_t index)
-{
-    return 0;
-}
-money32 network_get_player_money_spent(uint32_t index)
-{
-    return MONEY(0, 0);
-}
-std::string network_get_player_ip_address(uint32_t id)
-{
-    return {};
-}
-std::string network_get_player_public_key_hash(uint32_t id)
-{
-    return {};
-}
-void network_add_player_money_spent(uint32_t index, money32 cost)
-{
-}
-int32_t network_get_player_last_action(uint32_t index, int32_t time)
-{
-    return -999;
-}
-void network_set_player_last_action(uint32_t index, GameCommand command)
-{
-}
-CoordsXYZ network_get_player_last_action_coord(uint32_t index)
-{
-    return { 0, 0, 0 };
-}
-void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord)
-{
-}
-uint32_t network_get_player_commands_ran(uint32_t index)
-{
-    return 0;
-}
-int32_t network_get_player_index(uint32_t id)
-{
-    return -1;
-}
-uint8_t network_get_player_group(uint32_t index)
-{
-    return 0;
-}
-void network_set_player_group(uint32_t index, uint32_t groupindex)
-{
-}
-int32_t network_get_group_index(uint8_t id)
-{
-    return -1;
-}
-uint8_t network_get_group_id(uint32_t index)
-{
-    return 0;
-}
-int32_t network_get_num_groups()
-{
-    return 0;
-}
-const char* network_get_group_name(uint32_t index)
-{
-    return "";
-};
-
-GameActions::Result::Ptr network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting)
-{
-    return std::make_unique<GameActions::Result>();
-}
-GameActions::Result::Ptr network_modify_groups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting)
-{
-    return std::make_unique<GameActions::Result>();
-}
-GameActions::Result::Ptr network_kick_player(NetworkPlayerId_t playerId, bool isExecuting)
-{
-    return std::make_unique<GameActions::Result>();
-}
-uint8_t network_get_default_group()
-{
-    return 0;
-}
-int32_t network_get_num_actions()
-{
-    return 0;
-}
-rct_string_id network_get_action_name_string_id(uint32_t index)
-{
-    return -1;
-}
-int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index)
-{
-    return 0;
-}
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
-{
-    return 0;
-}
-void network_set_pickup_peep(uint8_t playerid, Peep* peep)
-{
-    _pickup_peep = peep;
-}
-Peep* network_get_pickup_peep(uint8_t playerid)
-{
-    return _pickup_peep;
-}
-void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x)
-{
-    _pickup_peep_old_x = x;
-}
-int32_t network_get_pickup_peep_old_x(uint8_t playerid)
-{
-    return _pickup_peep_old_x;
-}
-void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds)
-{
-}
-void network_send_password(const std::string& password)
-{
-}
-void network_close()
-{
-}
-void network_reconnect()
-{
-}
-void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>&)
-{
-}
-void network_shutdown_client()
-{
-}
-void network_set_password(const char* password)
-{
-}
-uint8_t network_get_current_player_id()
-{
-    return 0;
-}
-int32_t network_get_current_player_group_index()
-{
-    return 0;
-}
-void network_append_chat_log(const utf8* text)
-{
-}
-void network_append_server_log(const utf8* text)
-{
-}
-const utf8* network_get_server_name()
-{
-    return nullptr;
-}
-const utf8* network_get_server_description()
-{
-    return nullptr;
-}
-const utf8* network_get_server_greeting()
-{
-    return nullptr;
-}
-const utf8* network_get_server_provider_name()
-{
-    return nullptr;
-}
-const utf8* network_get_server_provider_email()
-{
-    return nullptr;
-}
-const utf8* network_get_server_provider_website()
-{
-    return nullptr;
-}
-std::string network_get_version()
-{
-    return "Multiplayer disabled";
-}
-NetworkStats_t network_get_stats()
-{
-    return NetworkStats_t{};
-}
-NetworkServerState_t network_get_server_state()
-{
-    return NetworkServerState_t{};
-}
-json_t network_get_server_info_as_json()
-{
-    return {};
-}
 #endif /* DISABLE_NETWORK */

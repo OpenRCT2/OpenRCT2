@@ -46,8 +46,8 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Local ? -1 : 1;
     }
 
-    bool serverACompatible = a.Version == network_get_version();
-    bool serverBCompatible = b.Version == network_get_version();
+    bool serverACompatible = a.Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
+    bool serverBCompatible = b.Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible ? -1 : 1;
@@ -68,7 +68,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
 
 bool ServerListEntry::IsVersionValid() const
 {
-    return Version.empty() || Version == network_get_version();
+    return Version.empty() || Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
 }
 
 std::optional<ServerListEntry> ServerListEntry::FromJson(json_t& server)

@@ -30,10 +30,10 @@ void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
 }
 GameActions::Result::Ptr PlayerSetGroupAction::Query() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, false);
+    return OpenRCT2::GetContext()->GetNetwork()->SetPlayerGroup(GetPlayer(), _playerId, _groupId, false);
 }
 
 GameActions::Result::Ptr PlayerSetGroupAction::Execute() const
 {
-    return network_set_player_group(GetPlayer(), _playerId, _groupId, true);
+    return OpenRCT2::GetContext()->GetNetwork()->SetPlayerGroup(GetPlayer(), _playerId, _groupId, true);
 }

@@ -36,10 +36,12 @@ void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr NetworkModifyGroupAction::Query() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
+    return OpenRCT2::GetContext()->GetNetwork()->ModifyGroups(
+        GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
 }
 
 GameActions::Result::Ptr NetworkModifyGroupAction::Execute() const
 {
-    return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
+    return OpenRCT2::GetContext()->GetNetwork()->ModifyGroups(
+        GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
 }

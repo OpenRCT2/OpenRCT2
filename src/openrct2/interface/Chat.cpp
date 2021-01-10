@@ -46,8 +46,9 @@ static int32_t chat_history_draw_string(
 
 bool chat_available()
 {
-    return network_get_mode() != NETWORK_MODE_NONE && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NetworkAuth::Ok;
+    return OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE
+        && OpenRCT2::GetContext()->GetNetwork()->GetStatus() == NETWORK_STATUS_CONNECTED
+        && OpenRCT2::GetContext()->GetNetwork()->GetAuthStatus() == NetworkAuth::Ok;
 }
 
 void chat_open()
@@ -226,7 +227,7 @@ void chat_history_add(const char* src)
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
-    network_append_chat_log(src);
+    OpenRCT2::GetContext()->GetNetwork()->AppendChatLog(src);
 
     Mixer_Play_Effect(OpenRCT2::Audio::SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
@@ -238,7 +239,7 @@ void chat_input(ChatInput input)
         case ChatInput::Send:
             if (strlen(_chatCurrentLine) > 0)
             {
-                network_send_chat(_chatCurrentLine);
+                OpenRCT2::GetContext()->GetNetwork()->SendChat(_chatCurrentLine);
             }
             chat_clear_input();
             chat_close();

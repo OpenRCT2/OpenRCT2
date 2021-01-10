@@ -445,7 +445,7 @@ void ScriptEngine::LoadPlugins()
             }
         }
 
-        if (gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+        if (gConfigPlugin.enable_hot_reloading && OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
         {
             SetupHotReloading();
         }
@@ -601,7 +601,7 @@ void ScriptEngine::StartPlugins()
 
 bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
 {
-    auto networkMode = network_get_mode();
+    auto networkMode = OpenRCT2::GetContext()->GetNetwork()->GetMode();
     if (networkMode == NETWORK_MODE_CLIENT)
     {
         // Only client plugins and plugins downloaded from server should be started
@@ -1365,7 +1365,7 @@ std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         return true;
     }
@@ -1380,7 +1380,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto& execInfo = scriptEngine.GetExecInfo();

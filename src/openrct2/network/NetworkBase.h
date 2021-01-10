@@ -48,6 +48,10 @@ public: // Common
     NetworkPlayer* AddPlayer(const std::string& name, const std::string& keyhash);
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 
+public: // Key managment
+    void NetworkGetPublicKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
+    void NetworkGetPrivateKeyPath(utf8* buffer, size_t bufferSize, const std::string& playerName);
+
 public: // Server
     NetworkConnection* GetPlayerConnection(uint8_t id);
     void KickPlayer(int32_t playerId);

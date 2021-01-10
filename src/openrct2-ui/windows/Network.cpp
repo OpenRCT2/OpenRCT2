@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/CircularBuffer.h>
@@ -136,7 +137,7 @@ rct_window* window_network_open()
         }
     }
 
-    _networkStats = network_get_stats();
+    _networkStats = OpenRCT2::GetContext()->GetNetwork()->GetStats();
     _networkAccumulatedStats = {};
 
     return window;
@@ -212,7 +213,7 @@ static void window_network_information_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB1 + w->page);
     w->Invalidate();
 
-    NetworkStats_t curStats = network_get_stats();
+    NetworkStats_t curStats = OpenRCT2::GetContext()->GetNetwork()->GetStats();
 
     uint32_t currentTicks = platform_get_ticks();
 

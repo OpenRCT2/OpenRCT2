@@ -4030,7 +4030,7 @@ static void window_ride_maintenance_invalidate(rct_window* w)
     window_ride_anchor_border_widgets(w);
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
 
-    if (gConfigGeneral.debugging_tools && network_get_mode() == NETWORK_MODE_NONE)
+    if (gConfigGeneral.debugging_tools && OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         window_ride_maintenance_widgets[WIDX_FORCE_BREAKDOWN].type = WindowWidgetType::FlatBtn;
     }

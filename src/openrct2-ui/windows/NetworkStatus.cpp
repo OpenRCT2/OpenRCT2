@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -135,11 +136,11 @@ static void window_network_status_textinput(rct_window* w, rct_widgetindex widge
     }
     if (text == nullptr)
     {
-        network_shutdown_client();
+        OpenRCT2::GetContext()->GetNetwork()->Disconnect();
     }
     else
     {
-        network_send_password(_password);
+        OpenRCT2::GetContext()->GetNetwork()->SendPassword(_password);
     }
 }
 

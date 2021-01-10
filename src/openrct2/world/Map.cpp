@@ -1553,7 +1553,8 @@ void map_remove_provisional_elements()
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+        && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL);
         context_broadcast_intent(&intent);
@@ -1574,7 +1575,8 @@ void map_restore_provisional_elements()
     }
     // This is in non performant so only make network games suffer for it
     // non networked games do not need this as its to prevent desyncs.
-    if ((network_get_mode() != NETWORK_MODE_NONE) && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
+    if ((OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+        && window_find_by_class(WC_TRACK_DESIGN_PLACE) != nullptr)
     {
         auto intent = Intent(INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL);
         context_broadcast_intent(&intent);

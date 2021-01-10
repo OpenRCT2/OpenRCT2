@@ -38,87 +38,94 @@ enum class NetworkPermission : uint32_t;
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
-}
 
-void network_set_env(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
-void network_close();
-void network_reconnect();
-void network_shutdown_client();
-int32_t network_begin_client(const std::string& host, int32_t port);
-int32_t network_begin_server(int32_t port, const std::string& address);
+    struct INetwork
+    {
+        virtual ~INetwork() = default;
 
-int32_t network_get_mode();
-int32_t network_get_status();
-bool network_is_desynchronised();
-bool network_check_desynchronisation();
-void network_request_gamestate_snapshot();
-void network_send_tick();
-bool network_gamestate_snapshots_enabled();
-void network_update();
-void network_process_pending();
-void network_flush();
+        virtual void SetEnv(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env) = 0;
+        virtual void Close() = 0;
+        virtual void Reconnect() = 0;
+        virtual void Disconnect() = 0;
+        virtual bool BeginClient(const std::string& host, int32_t port) = 0;
+        virtual bool BeginServer(int32_t port, const std::string& address) = 0;
 
-NetworkAuth network_get_authstatus();
-uint32_t network_get_server_tick();
-uint8_t network_get_current_player_id();
-int32_t network_get_num_players();
-const char* network_get_player_name(uint32_t index);
-uint32_t network_get_player_flags(uint32_t index);
-int32_t network_get_player_ping(uint32_t index);
-int32_t network_get_player_id(uint32_t index);
-money32 network_get_player_money_spent(uint32_t index);
-std::string network_get_player_ip_address(uint32_t id);
-std::string network_get_player_public_key_hash(uint32_t id);
-void network_add_player_money_spent(uint32_t index, money32 cost);
-int32_t network_get_player_last_action(uint32_t index, int32_t time);
-void network_set_player_last_action(uint32_t index, GameCommand command);
-CoordsXYZ network_get_player_last_action_coord(uint32_t index);
-void network_set_player_last_action_coord(uint32_t index, const CoordsXYZ& coord);
-uint32_t network_get_player_commands_ran(uint32_t index);
-int32_t network_get_player_index(uint32_t id);
-uint8_t network_get_player_group(uint32_t index);
-void network_set_player_group(uint32_t index, uint32_t groupindex);
-int32_t network_get_group_index(uint8_t id);
-int32_t network_get_current_player_group_index();
-uint8_t network_get_group_id(uint32_t index);
-int32_t network_get_num_groups();
-const char* network_get_group_name(uint32_t index);
-std::unique_ptr<GameActions::Result> network_set_player_group(
-    NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting);
-std::unique_ptr<GameActions::Result> network_modify_groups(
-    NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name, uint32_t permissionIndex,
-    PermissionState permissionState, bool isExecuting);
-std::unique_ptr<GameActions::Result> network_kick_player(NetworkPlayerId_t playerId, bool isExecuting);
-uint8_t network_get_default_group();
-int32_t network_get_num_actions();
-rct_string_id network_get_action_name_string_id(uint32_t index);
-int32_t network_can_perform_action(uint32_t groupindex, NetworkPermission index);
-int32_t network_can_perform_command(uint32_t groupindex, int32_t index);
-void network_set_pickup_peep(uint8_t playerid, Peep* peep);
-Peep* network_get_pickup_peep(uint8_t playerid);
-void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
-int32_t network_get_pickup_peep_old_x(uint8_t playerid);
+        virtual int32_t GetMode() = 0;
+        virtual int32_t GetStatus() = 0;
+        virtual bool IsDesynchronised() = 0;
+        virtual bool CheckDesynchronisation() = 0;
+        virtual void RequestGamestateSnapshot() = 0;
+        virtual void SendTick() = 0;
+        virtual bool GamestateSnapshotsEnabled() = 0;
+        virtual void Update() = 0;
+        virtual void ProcessPending() = 0;
+        virtual void Flush() = 0;
 
-void network_send_map();
-void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds = {});
-void network_send_game_action(const GameAction* action);
-void network_enqueue_game_action(const GameAction* action);
-void network_send_password(const std::string& password);
+        virtual NetworkAuth GetAuthStatus() = 0;
+        virtual uint32_t GetServerTick() = 0;
+        virtual uint8_t GetCurrentPlayerId() = 0;
+        virtual int32_t GetNumPlayers() = 0;
+        virtual const char* GetPlayerName(uint32_t index) = 0;
+        virtual uint32_t GetPlayerFlags(uint32_t index) = 0;
+        virtual int32_t GetPlayerPing(uint32_t index) = 0;
+        virtual int32_t GetPlayerId(uint32_t index) = 0;
+        virtual money32 GetPlayerMoneySpent(uint32_t index) = 0;
+        virtual std::string GetPlayerIPAddress(uint32_t id) = 0;
+        virtual std::string GetPlayerPublicKeyHash(uint32_t id) = 0;
+        virtual void AddPlayerMoneySpent(uint32_t index, money32 cost) = 0;
+        virtual int32_t GetPlayerLastAction(uint32_t index, int32_t time) = 0;
+        virtual void SetPlayerLastAction(uint32_t index, GameCommand command) = 0;
+        virtual CoordsXYZ GetPlayerLastActionCoord(uint32_t index) = 0;
+        virtual void SetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord) = 0;
+        virtual uint32_t GetPlayerCommandsRan(uint32_t index) = 0;
+        virtual int32_t GetPlayerIndex(uint32_t id) = 0;
+        virtual uint8_t GetPlayerGroup(uint32_t index) = 0;
+        virtual void SetPlayerGroup(uint32_t index, uint32_t groupindex) = 0;
+        virtual int32_t GetGroupIndex(uint8_t id) = 0;
+        virtual int32_t GetCurrentPlayerGroupIndex() = 0;
+        virtual uint8_t GetGroupId(uint32_t index) = 0;
+        virtual int32_t GetNumGroups() = 0;
+        virtual const char* GetGroupName(uint32_t index) = 0;
+        virtual std::unique_ptr<GameActions::Result>
+            SetPlayerGroup(NetworkPlayerId_t actionPlayerId, NetworkPlayerId_t playerId, uint8_t groupId, bool isExecuting) = 0;
+        virtual std::unique_ptr<GameActions::Result> ModifyGroups(
+            NetworkPlayerId_t actionPlayerId, ModifyGroupType type, uint8_t groupId, const std::string& name,
+            uint32_t permissionIndex, PermissionState permissionState, bool isExecuting)
+            = 0;
+        virtual std::unique_ptr<GameActions::Result> KickPlayer(NetworkPlayerId_t playerId, bool isExecuting) = 0;
+        virtual uint8_t GetDefaultGroup() = 0;
+        virtual int32_t GetNumActions() = 0;
+        virtual rct_string_id GetActionNameStringId(uint32_t index) = 0;
+        virtual int32_t CanPerformAction(uint32_t groupindex, NetworkPermission index) = 0;
+        virtual int32_t CanPerformCommand(uint32_t groupindex, int32_t index) = 0;
+        virtual void SetPickupPeep(uint8_t playerid, Peep* peep) = 0;
+        virtual Peep* GetPickupPeep(uint8_t playerid) = 0;
+        virtual void SetPickupPeepOldX(uint8_t playerid, int32_t x) = 0;
+        virtual int32_t GetPickupPeepOldX(uint8_t playerid) = 0;
 
-void network_set_password(const char* password);
+        virtual void SendMap() = 0;
+        virtual void SendChat(const char* text, const std::vector<uint8_t>& playerIds = {}) = 0;
+        virtual void SendGameAction(const GameAction* action) = 0;
+        virtual void SendPassword(const std::string& password) = 0;
 
-void network_print_error();
-void network_append_chat_log(const utf8* text);
-void network_append_server_log(const utf8* text);
-const utf8* network_get_server_name();
-const utf8* network_get_server_description();
-const utf8* network_get_server_greeting();
-const utf8* network_get_server_provider_name();
-const utf8* network_get_server_provider_email();
-const utf8* network_get_server_provider_website();
+        virtual void SetPassword(const char* password) = 0;
 
-std::string network_get_version();
+        virtual void AppendChatLog(const utf8* text) = 0;
+        virtual void AppendServerLog(const utf8* text) = 0;
+        virtual const utf8* GetServerName() = 0;
+        virtual const utf8* GetServerDescription() = 0;
+        virtual const utf8* GetServerGreeting() = 0;
+        virtual const utf8* GetServerProviderName() = 0;
+        virtual const utf8* GetServerProviderEmail() = 0;
+        virtual const utf8* GetServerProvideWebsite() = 0;
 
-NetworkStats_t network_get_stats();
-NetworkServerState_t network_get_server_state();
-json_t network_get_server_info_as_json();
+        virtual std::string GetVersion() = 0;
+
+        virtual NetworkStats_t GetStats() = 0;
+        virtual NetworkServerState_t GetServerState() = 0;
+        virtual json_t GetServerInfoAsJson() = 0;
+    };
+
+    std::unique_ptr<INetwork> CreateNetwork(const std::shared_ptr<IPlatformEnvironment>& env);
+
+} // namespace OpenRCT2

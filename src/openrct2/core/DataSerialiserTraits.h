@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
@@ -198,10 +199,10 @@ template<> struct DataSerializerTraits_t<NetworkPlayerId_t>
 
         stream->Write(playerId, strlen(playerId));
 
-        int32_t playerIndex = network_get_player_index(val.id);
+        int32_t playerIndex = OpenRCT2::GetContext()->GetNetwork()->GetPlayerIndex(val.id);
         if (playerIndex != -1)
         {
-            const char* playerName = network_get_player_name(playerIndex);
+            const char* playerName = OpenRCT2::GetContext()->GetNetwork()->GetPlayerName(playerIndex);
             if (playerName != nullptr)
             {
                 stream->Write(" \"", 2);

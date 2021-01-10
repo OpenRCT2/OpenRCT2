@@ -1825,7 +1825,7 @@ static void window_ride_construction_construct(rct_window* w)
     }
     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, trackPos);
 
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK_PLACE_ACTION_QUEUED;
     }

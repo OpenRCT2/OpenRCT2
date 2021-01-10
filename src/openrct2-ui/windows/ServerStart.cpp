@@ -131,10 +131,10 @@ static void window_server_start_close(rct_window* w)
 
 static void window_server_start_scenarioselect_callback(const utf8* path)
 {
-    network_set_password(_password);
+    OpenRCT2::GetContext()->GetNetwork()->SetPassword(_password);
     if (context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        OpenRCT2::GetContext()->GetNetwork()->BeginServer(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
     }
 }
 
@@ -142,7 +142,7 @@ static void window_server_start_loadsave_callback(int32_t result, const utf8* pa
 {
     if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        OpenRCT2::GetContext()->GetNetwork()->BeginServer(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
     }
 }
 
@@ -193,7 +193,7 @@ static void window_server_start_mouseup(rct_window* w, rct_widgetindex widgetInd
             window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
             break;
         case WIDX_LOAD_SERVER:
-            network_set_password(_password);
+            OpenRCT2::GetContext()->GetNetwork()->SetPassword(_password);
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
             intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_server_start_loadsave_callback));

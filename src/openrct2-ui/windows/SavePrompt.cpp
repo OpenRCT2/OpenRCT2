@@ -112,7 +112,7 @@ rct_window* window_save_prompt_open()
          * and game_load_or_quit() are not called by the original binary anymore.
          */
 
-        if (gScreenAge < 3840 && network_get_mode() == NETWORK_MODE_NONE)
+        if (gScreenAge < 3840 && OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
         {
             game_load_or_quit_no_save_prompt();
             return nullptr;
@@ -153,7 +153,7 @@ rct_window* window_save_prompt_open()
     WindowInitScrollWidgets(window);
 
     // Pause the game if not network play.
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         gGamePaused |= GAME_PAUSED_MODAL;
         OpenRCT2::Audio::StopAll();
@@ -179,7 +179,7 @@ rct_window* window_save_prompt_open()
 static void window_save_prompt_close(rct_window* w)
 {
     // Unpause the game
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         gGamePaused &= ~GAME_PAUSED_MODAL;
         OpenRCT2::Audio::Resume();

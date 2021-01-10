@@ -542,7 +542,7 @@ static void ShortcutReduceGameSpeed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
         game_reduce_game_speed();
 }
 
@@ -551,7 +551,7 @@ static void ShortcutIncreaseGameSpeed()
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
 
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
         game_increase_game_speed();
 }
 
@@ -631,7 +631,7 @@ static void ShortcutWindowsModeToggle()
 
 static void ShortcutShowMultiplayer()
 {
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
         context_open_window(WC_MULTIPLAYER);
 }
 

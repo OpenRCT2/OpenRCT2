@@ -91,17 +91,17 @@ void DiscordService::RefreshPresence()
     {
         default:
             details = GetParkName();
-            if (network_get_mode() == NETWORK_MODE_NONE)
+            if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
             {
                 state = "Playing Solo";
             }
             else
             {
-                state = String::ToStd(network_get_server_name());
+                state = String::ToStd(OpenRCT2::GetContext()->GetNetwork()->GetServerName());
 
                 // NOTE: the party size is displayed next to state
-                discordPresence.partyId = network_get_server_name();
-                discordPresence.partySize = network_get_num_players();
+                discordPresence.partyId = OpenRCT2::GetContext()->GetNetwork()->GetServerName();
+                discordPresence.partySize = OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers();
                 discordPresence.partyMax = 256;
 
                 // TODO generate secrets for the server
