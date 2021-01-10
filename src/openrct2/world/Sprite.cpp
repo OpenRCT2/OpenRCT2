@@ -795,16 +795,21 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
  */
 void litter_remove_at(const CoordsXYZ& litterPos)
 {
+    std::vector<Litter*> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
     {
         if (abs(litter->z - litterPos.z) <= 16)
         {
             if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
-                litter->Invalidate();
-                sprite_remove(litter);
+                removals.push_back(litter);
             }
         }
+    }
+    for (auto* litter : removals)
+    {
+        litter->Invalidate();
+        sprite_remove(litter);
     }
 }
 

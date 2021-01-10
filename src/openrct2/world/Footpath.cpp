@@ -397,15 +397,19 @@ CoordsXY footpath_bridge_get_info_from_pos(const ScreenCoordsXY& screenCoords, i
  */
 void footpath_remove_litter(const CoordsXYZ& footpathPos)
 {
-    auto quad = EntityTileList<Litter>(footpathPos);
-    for (auto litter : quad)
+    std::vector<Litter*> removals;
+    for (auto litter : EntityTileList<Litter>(footpathPos))
     {
         int32_t distanceZ = abs(litter->z - footpathPos.z);
         if (distanceZ <= 32)
         {
-            litter->Invalidate();
-            sprite_remove(litter);
+            removals.push_back(litter);
         }
+    }
+    for (auto* litter : removals)
+    {
+        litter->Invalidate();
+        sprite_remove(litter);
     }
 }
 
