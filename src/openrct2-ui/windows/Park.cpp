@@ -1446,6 +1446,22 @@ static void window_park_objective_invalidate(rct_window* w)
     window_park_anchor_border_widgets(w);
 }
 
+static void window_park_objective_bars_paint(
+    float value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
+{
+    if (value > 1)
+    {
+        value = 1;
+    }
+
+    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 221 - 3, y + 9, w->colours[1], INSET_RECT_F_30);
+    int16_t barLength = static_cast<int16_t>((221 - 4) * value);
+    if (barLength > 2)
+    {
+        gfx_fill_rect_inset(dpi, x + 3, y + 2, x + barLength, y + 8, colour, 0);
+    }
+}
+
 /**
  *
  *  rct2: 0x0066945C
@@ -1500,6 +1516,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Progress
+    int32_t barColour = COLOUR_BRIGHT_GREEN;
+
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_NONE:
@@ -1511,6 +1529,10 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_GUESTS_AND_RATING:
         {
+            float guestsInParkPercentage
+                = (static_cast<float>(gNumGuestsInPark) / static_cast<float>(gScenarioObjective.NumGuests));
+            float parkRatingPercentage;
+
             ft = Formatter();
             ft.Add<uint32_t>(gNumGuestsInPark);
             ft.Add<uint32_t>(static_cast<uint32_t>(gScenarioObjective.NumGuests));
@@ -1519,20 +1541,29 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_GUESTS, COLOUR_BLACK);
             screenCoords.y += 1;
 
+            window_park_objective_bars_paint(guestsInParkPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour, false);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             ft = Formatter();
             ft.Add<uint32_t>(static_cast<uint32_t>(gParkRating));
 
             if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
             {
                 ft.Add<uint32_t>(static_cast<uint32_t>(600));
+                parkRatingPercentage = (static_cast<float>(gParkRating) / static_cast<float>(600));
             }
             else
             {
                 ft.Add<uint32_t>(static_cast<uint32_t>(700));
+                parkRatingPercentage = (static_cast<float>(gParkRating) / static_cast<float>(700));
             }
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_RATING, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(parkRatingPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour, false);
+            screenCoords.y += LIST_ROW_HEIGHT;
 
             break;
         }
