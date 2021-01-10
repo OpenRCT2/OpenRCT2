@@ -369,7 +369,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     if (timings != nullptr)
     {
-        timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASURMENTS_COUNT;
+        timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASUREMENTS_COUNT;
     }
 }
 

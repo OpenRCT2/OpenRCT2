@@ -13,8 +13,8 @@
 
 #include <array>
 #include <chrono>
-#include <map>
 #include <memory>
+#include <unordered_map>
 
 namespace OpenRCT2
 {
@@ -48,10 +48,11 @@ namespace OpenRCT2
     };
 
     // ~6.5s at 40Hz
-    constexpr size_t LOGIC_UPDATE_MEASURMENTS_COUNT = 256;
+    constexpr size_t LOGIC_UPDATE_MEASUREMENTS_COUNT = 256;
 
     // In order not to cause allocations, collect multiple samples into single pre-allocated struct
-    using LogicTimingInfo = std::map<LogicTimePart, std::array<std::chrono::duration<double>, LOGIC_UPDATE_MEASURMENTS_COUNT>>;
+    using LogicTimingInfo = std::unordered_map<
+        LogicTimePart, std::array<std::chrono::duration<double>, LOGIC_UPDATE_MEASUREMENTS_COUNT>>;
 
     struct LogicTimings
     {

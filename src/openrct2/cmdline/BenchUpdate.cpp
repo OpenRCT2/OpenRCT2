@@ -20,6 +20,7 @@
 #    include <benchmark/benchmark.h>
 #    include <cstdint>
 #    include <iterator>
+#    include <numeric>
 #    include <vector>
 
 using namespace OpenRCT2;
@@ -39,7 +40,7 @@ static void BM_update(benchmark::State& state, const std::string& filename)
         int currentTimingIdx = 0;
         for (auto _ : state)
         {
-            if (timings[currentTimingIdx].CurrentIdx == (LOGIC_UPDATE_MEASURMENTS_COUNT - 1))
+            if (timings[currentTimingIdx].CurrentIdx == (LOGIC_UPDATE_MEASUREMENTS_COUNT - 1))
             {
                 timings.resize(timings.size() + 1);
                 currentTimingIdx++;
@@ -52,8 +53,8 @@ static void BM_update(benchmark::State& state, const std::string& filename)
             std::chrono::duration<double> timesum;
             for (const auto& timing : timings)
             {
-                for (const auto& PartTime : timing.TimingInfo.at(part))
-                    timesum += PartTime;
+                timesum = std::accumulate(
+                    timing.TimingInfo.at(part).begin(), timing.TimingInfo.at(part).end(), std::chrono::duration<double>());
             }
             return std::chrono::duration_cast<std::chrono::milliseconds>(timesum).count();
         };
@@ -86,7 +87,7 @@ static void BM_update(benchmark::State& state, const std::string& filename)
     }
 }
 
-static int cmdline_for_bench_sprite_sort(int argc, const char* const* argv)
+static int CmdlineForBenchSpriteSort(int argc, const char* const* argv)
 {
     // Add a baseline test on an empty park
     benchmark::RegisterBenchmark("baseline", BM_update, std::string{});
@@ -128,7 +129,7 @@ static exitcode_t HandleBenchUpdate(CommandLineArgEnumerator* argEnumerator)
 {
     const char* const* argv = static_cast<const char* const*>(argEnumerator->GetArguments()) + argEnumerator->GetIndex();
     int32_t argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    int32_t result = cmdline_for_bench_sprite_sort(argc, argv);
+    int32_t result = CmdlineForBenchSpriteSort(argc, argv);
     if (result < 0)
     {
         return EXITCODE_FAIL;
