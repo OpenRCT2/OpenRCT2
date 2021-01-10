@@ -290,6 +290,18 @@ uint8_t RCT12TrackElement::GetDoorBState() const
     return (colour & RCT12_TRACK_ELEMENT_DOOR_B_MASK) >> 5;
 }
 
+void RCT12TrackElement::SetDoorAState(uint8_t newState)
+{
+    colour &= ~RCT12_TRACK_ELEMENT_DOOR_B_MASK;
+    colour |= ((newState << 2) & RCT12_TRACK_ELEMENT_DOOR_B_MASK);
+}
+
+void RCT12TrackElement::SetDoorBState(uint8_t newState)
+{
+    colour &= ~RCT12_TRACK_ELEMENT_DOOR_B_MASK;
+    colour |= ((newState << 5) & RCT12_TRACK_ELEMENT_DOOR_B_MASK);
+}
+
 bool RCT12TrackElement::IsIndestructible() const
 {
     return (flags & RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE) != 0;

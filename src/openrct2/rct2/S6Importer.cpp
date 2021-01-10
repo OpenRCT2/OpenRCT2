@@ -1126,7 +1126,6 @@ public:
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
-                dst2->SetSeatRotation(src2->GetSeatRotation());
                 // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
@@ -1144,6 +1143,15 @@ public:
                 if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
+                else if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
                 }
 
                 break;

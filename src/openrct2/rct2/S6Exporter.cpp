@@ -1511,7 +1511,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
             dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
             dst2->SetIsIndestructible(src2->IsIndestructible());
-            dst2->SetSeatRotation(src2->GetSeatRotation());
+
             // Skipping IsHighlighted()
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
@@ -1522,6 +1522,20 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
+                else if (ride->type == RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+            }
+            // _Should_ not happen, but if it does, pick the most likely option.
+            else
+            {
+                dst2->SetSeatRotation(src2->GetSeatRotation());
             }
 
             break;

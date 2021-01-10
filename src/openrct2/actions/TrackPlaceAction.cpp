@@ -629,6 +629,11 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         {
             tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
         }
+        else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        {
+            tileElement->AsTrack()->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
+            tileElement->AsTrack()->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
+        }
         else
         {
             tileElement->AsTrack()->SetSeatRotation(_seatRotation);

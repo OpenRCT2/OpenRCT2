@@ -1211,6 +1211,10 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
+    const auto* ride = get_ride(GetRideIndex());
+    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        return DEFAULT_SEAT_ROTATION;
+
     return ColourScheme >> 4;
 }
 
