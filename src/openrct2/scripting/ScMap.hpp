@@ -130,26 +130,26 @@ namespace OpenRCT2::Scripting
             std::vector<DukValue> result;
             for (auto sprite : EntityList(targetList))
             {
-                // Only the misc list checks the type property
-                if (targetList != EntityListId::Misc || sprite->As<MiscEntity>()->SubType == targetType)
+                if (targetList == EntityListId::Peep)
                 {
-                    if (targetList == EntityListId::Peep)
-                    {
-                        if (sprite->Is<Staff>())
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
-                        else
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
-                    }
-                    else if (targetList == EntityListId::TrainHead)
-                    {
-                        for (auto carId = sprite->sprite_index; carId != SPRITE_INDEX_NULL;)
-                        {
-                            auto car = GetEntity<Vehicle>(carId);
-                            result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                            carId = car->next_vehicle_on_train;
-                        }
-                    }
+                    if (sprite->Is<Staff>())
+                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                     else
+                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                }
+                else if (targetList == EntityListId::TrainHead)
+                {
+                    for (auto carId = sprite->sprite_index; carId != SPRITE_INDEX_NULL;)
+                    {
+                        auto car = GetEntity<Vehicle>(carId);
+                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
+                        carId = car->next_vehicle_on_train;
+                    }
+                }
+                else if (targetList == EntityListId::Misc)
+                {
+                    auto* misc = sprite->As<MiscEntity>();
+                    if (misc && misc->SubType == targetType)
                     {
                         result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
                     }

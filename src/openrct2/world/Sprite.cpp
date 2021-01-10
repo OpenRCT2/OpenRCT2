@@ -136,7 +136,13 @@ void SpriteBase::Invalidate()
             maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
-            switch (this->As<MiscEntity>()->SubType)
+        {
+            auto* misc = As<MiscEntity>();
+            if (misc == nullptr)
+            {
+                return;
+            }
+            switch (misc->SubType)
             {
                 case MiscEntityType::CrashedVehicleParticle:
                 case MiscEntityType::JumpingFountainWater:
@@ -157,7 +163,8 @@ void SpriteBase::Invalidate()
                 default:
                     break;
             }
-            break;
+        }
+        break;
         case SpriteIdentifier::Litter:
             maxZoom = 0;
             break;
