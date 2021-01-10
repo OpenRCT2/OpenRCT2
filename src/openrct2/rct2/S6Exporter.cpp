@@ -992,7 +992,6 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->sprite_identifier = src->sprite_identifier;
     dst->next_in_quadrant = src->next_in_quadrant;
     dst->next = src->next;
-    dst->previous = src->previous;
     dst->linked_list_type_offset = static_cast<uint8_t>(src->linked_list_index) * 2;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;

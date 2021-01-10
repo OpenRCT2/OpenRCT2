@@ -133,7 +133,6 @@ static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& ri
     COMPARE_FIELD(sprite_identifier);
     COMPARE_FIELD(next_in_quadrant);
     COMPARE_FIELD(next);
-    COMPARE_FIELD(previous);
     COMPARE_FIELD(linked_list_index);
     COMPARE_FIELD(sprite_index);
     COMPARE_FIELD(flags);

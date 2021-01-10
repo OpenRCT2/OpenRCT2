@@ -208,12 +208,10 @@ void reset_sprite_list()
 
         if (previous_spr != nullptr)
         {
-            spr->previous = previous_spr->sprite_index;
             previous_spr->next = i;
         }
         else
         {
-            spr->previous = SPRITE_INDEX_NULL;
             gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = i;
         }
         _spriteFlashingList[i] = false;
@@ -350,7 +348,6 @@ static void sprite_reset(SpriteBase* sprite)
     auto llto = sprite->linked_list_index;
     uint16_t next = sprite->next;
     uint16_t next_in_quadrant = sprite->next_in_quadrant;
-    uint16_t prev = sprite->previous;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
@@ -359,7 +356,6 @@ static void sprite_reset(SpriteBase* sprite)
     sprite->linked_list_index = llto;
     sprite->next = next;
     sprite->next_in_quadrant = next_in_quadrant;
-    sprite->previous = prev;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SpriteIdentifier::Null;
 }
@@ -476,59 +472,28 @@ static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
 
     // If the sprite is currently the head of the list, the
     // sprite following this one becomes the new head of the list.
-    if (sprite->previous == SPRITE_INDEX_NULL)
+    if (sprite->sprite_index == gSpriteListHead[static_cast<uint8_t>(oldListIndex)])
     {
         gSpriteListHead[static_cast<uint8_t>(oldListIndex)] = sprite->next;
     }
     else
     {
-        // Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-        auto previous = GetEntity(sprite->previous);
-        if (previous == nullptr)
+        // Find previous sprite in chain and hook up previous->next to sprite->next, removing the sprite from its old list
+        auto* previous = GetEntity(gSpriteListHead[EnumValue(oldListIndex)]);
+        while (previous->next != sprite->sprite_index)
         {
-            log_error("Broken previous entity id. Entity list corrupted!");
+            previous = GetEntity(previous->next);
         }
-        else
-        {
-            previous->next = sprite->next;
-        }
+
+        previous->next = sprite->next;
     }
 
-    // Similarly, hook up sprite->next->previous to sprite->previous
-    if (sprite->next != SPRITE_INDEX_NULL)
-    {
-        auto next = GetEntity(sprite->next);
-        if (next == nullptr)
-        {
-            log_error("Broken next entity id. Entity list corrupted!");
-        }
-        else
-        {
-            next->previous = sprite->previous;
-        }
-    }
-
-    sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
     sprite->linked_list_index = newListIndex;
 
     sprite->next = gSpriteListHead[static_cast<uint8_t>(
         newListIndex)]; // This sprite's next sprite is the old head, since we're the new head
     gSpriteListHead[static_cast<uint8_t>(newListIndex)] = sprite->sprite_index; // Store this sprite's index as head of its
                                                                                 // new list
-
-    if (sprite->next != SPRITE_INDEX_NULL)
-    {
-        // Fix the chain by settings sprite->next->previous to sprite_index
-        auto next = GetEntity(sprite->next);
-        if (next == nullptr)
-        {
-            log_error("Broken next entity id. Entity list corrupted!");
-        }
-        else
-        {
-            next->previous = sprite->sprite_index;
-        }
-    }
 
     // These globals are probably counters for each sprite list?
     // Decrement old list counter, increment new list counter.
@@ -1104,7 +1069,6 @@ int32_t check_for_sprite_list_cycles(bool fix)
                     log_error("SpriteListHead is corrupted!");
                     return -1;
                 }
-                head->previous = SPRITE_INDEX_NULL;
 
                 // Store the leftover part of cycle to be fixed
                 uint16_t cycle_next = cycle_start->next;
@@ -1123,7 +1087,6 @@ int32_t check_for_sprite_list_cycles(bool fix)
                         return -1;
                     }
                     cycle_start->next = cycle_next;
-                    spr->previous = cycle_start->sprite_index;
                     cycle_next = spr->next;
                     spr->next = SPRITE_INDEX_NULL;
                     cycle_start = spr;
@@ -1176,12 +1139,10 @@ int32_t fix_disjoint_sprites()
                 if (null_list_tail == nullptr)
                 {
                     gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = sprite_idx;
-                    spr->previous = SPRITE_INDEX_NULL;
                 }
                 else
                 {
                     null_list_tail->next = sprite_idx;
-                    spr->previous = null_list_tail->sprite_index;
                 }
                 spr->next = SPRITE_INDEX_NULL;
                 null_list_tail = spr;

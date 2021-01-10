@@ -1643,7 +1643,6 @@ public:
         dst->sprite_identifier = src->sprite_identifier;
         dst->next_in_quadrant = src->next_in_quadrant;
         dst->next = src->next;
-        dst->previous = src->previous;
         dst->linked_list_index = static_cast<EntityListId>(src->linked_list_type_offset >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
