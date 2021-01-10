@@ -195,7 +195,12 @@ if (NOT DISABLE_TTF)
 endif ()
 
 if (HAVE_DISCORD_RPC)
-    target_link_libraries(libopenrct2 discord-rpc)
+    if(${DISCORDRPC_FOUND})
+        target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${DISCORDRPC_INCLUDE_DIR})
+        target_link_libraries(${PROJECT_NAME} ${DISCORDRPC_LIBRARY})
+    else()
+        target_link_libraries(libopenrct2 discord-rpc)
+    endif()
 endif()
 
 # Includes
