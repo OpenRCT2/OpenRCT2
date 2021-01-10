@@ -1730,7 +1730,7 @@ void NetworkBase::ProcessPending()
 }
 
 static bool ProcessPlayerAuthenticatePluginHooks(
-    const NetworkConnection& connection, const std::string_view& name, const std::string_view& publicKeyHash)
+    const NetworkConnection& connection, std::string_view name, std::string_view publicKeyHash)
 {
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;

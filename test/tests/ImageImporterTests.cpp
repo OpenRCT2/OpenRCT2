@@ -19,9 +19,9 @@ using namespace OpenRCT2::Drawing;
 class ImageImporterTests : public testing::Test
 {
 public:
-    static std::string GetImagePath(const std::string_view& name)
+    static std::string GetImagePath(const std::string& name)
     {
-        return Path::Combine(TestData::GetBasePath(), "images", name.data());
+        return Path::Combine(TestData::GetBasePath(), "images", name.c_str());
     }
 
     static uint32_t GetHash(void* buffer, size_t bufferLength)

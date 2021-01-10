@@ -32,8 +32,8 @@ namespace Crypt
     public:
         virtual ~RsaKey() = default;
         virtual void Generate() = 0;
-        virtual void SetPrivate(const std::string_view& pem) = 0;
-        virtual void SetPublic(const std::string_view& pem) = 0;
+        virtual void SetPrivate(std::string_view pem) = 0;
+        virtual void SetPublic(std::string_view pem) = 0;
         virtual std::string GetPrivate() = 0;
         virtual std::string GetPublic() = 0;
     };

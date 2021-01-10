@@ -5537,7 +5537,7 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
     return false;
 }
 
-bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
+bool Ride::NameExists(std::string_view name, ride_id_t excludeRideId)
 {
     char buffer[256]{};
     for (auto& ride : GetRideManager())
@@ -5547,7 +5547,7 @@ bool Ride::NameExists(const std::string_view& name, ride_id_t excludeRideId)
             Formatter ft;
             ride.FormatNameTo(ft);
             format_string(buffer, 256, STR_STRINGID, ft.Data());
-            if (std::string_view(buffer) == name && ride_has_any_track_elements(&ride))
+            if (name == buffer && ride_has_any_track_elements(&ride))
             {
                 return true;
             }

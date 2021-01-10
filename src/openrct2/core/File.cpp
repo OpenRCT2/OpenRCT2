@@ -43,21 +43,20 @@ namespace File
         return platform_file_move(srcPath.c_str(), dstPath.c_str());
     }
 
-    std::vector<uint8_t> ReadAllBytes(const std::string_view& path)
+    std::vector<uint8_t> ReadAllBytes(std::string_view path)
     {
-        std::vector<uint8_t> result;
-
 #if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToWideChar(std::string(path));
+        auto pathW = String::ToWideChar(path);
         std::ifstream fs(pathW, std::ios::in | std::ios::binary);
 #else
         std::ifstream fs(std::string(path), std::ios::in | std::ios::binary);
 #endif
         if (!fs.is_open())
         {
-            throw IOException("Unable to open " + std::string(path.data()));
+            throw IOException("Unable to open " + std::string(path));
         }
 
+        std::vector<uint8_t> result;
         fs.seekg(0, std::ios::end);
         auto fsize = static_cast<size_t>(fs.tellg());
         if (fsize > SIZE_MAX)
@@ -76,7 +75,7 @@ namespace File
         return result;
     }
 
-    std::string ReadAllText(const std::string_view& path)
+    std::string ReadAllText(std::string_view path)
     {
         auto bytes = ReadAllBytes(path);
         // TODO skip BOM
@@ -85,13 +84,7 @@ namespace File
         return result;
     }
 
-    void WriteAllBytes(const std::string& path, const void* buffer, size_t length)
-    {
-        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
-        fs.Write(buffer, length);
-    }
-
-    std::vector<std::string> ReadAllLines(const std::string& path)
+    std::vector<std::string> ReadAllLines(std::string_view path)
     {
         std::vector<std::string> lines;
         auto data = ReadAllBytes(path);
@@ -120,11 +113,17 @@ namespace File
         return lines;
     }
 
+    void WriteAllBytes(const std::string& path, const void* buffer, size_t length)
+    {
+        auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
+        fs.Write(buffer, length);
+    }
+
     uint64_t GetLastModified(const std::string& path)
     {
         uint64_t lastModified = 0;
 #ifdef _WIN32
-        auto pathW = String::ToWideChar(path.c_str());
+        auto pathW = String::ToWideChar(path);
         auto hFile = CreateFileW(pathW.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
         if (hFile != INVALID_HANDLE_VALUE)
         {

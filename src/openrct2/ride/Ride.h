@@ -439,7 +439,7 @@ public:
     void FormatStatusTo(Formatter&) const;
 
     static void UpdateAll();
-    static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
+    static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
     std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 

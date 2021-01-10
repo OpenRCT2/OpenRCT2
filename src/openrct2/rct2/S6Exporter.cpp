@@ -1619,7 +1619,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
     }
 }
 
-std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
+std::optional<uint16_t> S6Exporter::AllocateUserString(std::string_view value)
 {
     auto nextId = _userStrings.size();
     if (nextId < RCT12_MAX_USER_STRINGS)
@@ -1630,7 +1630,7 @@ std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& v
     return std::nullopt;
 }
 
-static std::string GetTruncatedRCT2String(const std::string_view& src)
+static std::string GetTruncatedRCT2String(std::string_view src)
 {
     auto rct2encoded = utf8_to_rct2(src);
     if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)

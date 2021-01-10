@@ -22,7 +22,7 @@ private:
     std::vector<std::vector<uint8_t>> _writeBuffers;
 
 public:
-    ZipArchive(const std::string_view& path, ZIP_ACCESS access)
+    ZipArchive(std::string_view path, ZIP_ACCESS access)
     {
         auto zipOpenMode = ZIP_RDONLY;
         if (access == ZIP_ACCESS::WRITE)
@@ -31,7 +31,7 @@ public:
         }
 
         int32_t error;
-        _zip = zip_open(path.data(), zipOpenMode, &error);
+        _zip = zip_open(std::string(path).c_str(), zipOpenMode, &error);
         if (_zip == nullptr)
         {
             throw IOException("Unable to open zip file.");
@@ -74,7 +74,7 @@ public:
         }
     }
 
-    std::vector<uint8_t> GetFileData(const std::string_view& path) const override
+    std::vector<uint8_t> GetFileData(std::string_view path) const override
     {
         std::vector<uint8_t> result;
         auto index = GetIndexFromPath(path);
@@ -97,7 +97,7 @@ public:
         return result;
     }
 
-    void SetFileData(const std::string_view& path, std::vector<uint8_t>&& data) override
+    void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override
     {
         // Push buffer to an internal list as libzip requires access to it until the zip
         // handle is closed.
@@ -116,13 +116,13 @@ public:
         }
     }
 
-    void DeleteFile(const std::string_view& path) override
+    void DeleteFile(std::string_view path) override
     {
         auto index = GetIndexFromPath(path);
         zip_delete(_zip, index);
     }
 
-    void RenameFile(const std::string_view& path, const std::string_view& newPath) override
+    void RenameFile(std::string_view path, std::string_view newPath) override
     {
         auto index = GetIndexFromPath(path);
         zip_file_rename(_zip, index, newPath.data(), ZIP_FL_ENC_GUESS);
@@ -132,7 +132,7 @@ private:
     /**
      * Normalises both the given path and the stored paths and finds the first match.
      */
-    zip_int64_t GetIndexFromPath(const std::string_view& path) const
+    zip_int64_t GetIndexFromPath(std::string_view path) const
     {
         auto normalisedPath = NormalisePath(path);
         if (!normalisedPath.empty())
@@ -150,13 +150,12 @@ private:
         return -1;
     }
 
-    static std::string NormalisePath(const std::string_view& path)
+    static std::string NormalisePath(std::string_view path)
     {
-        std::string result;
+        std::string result(path);
         if (!path.empty())
         {
             // Convert back slashes to forward slashes
-            result = std::string(path);
             for (auto ch = result.data(); *ch != '\0'; ch++)
             {
                 if (*ch == '\\')
@@ -171,12 +170,12 @@ private:
 
 namespace Zip
 {
-    std::unique_ptr<IZipArchive> Open(const std::string_view& path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> Open(std::string_view path, ZIP_ACCESS access)
     {
         return std::make_unique<ZipArchive>(path, access);
     }
 
-    std::unique_ptr<IZipArchive> TryOpen(const std::string_view& path, ZIP_ACCESS access)
+    std::unique_ptr<IZipArchive> TryOpen(std::string_view path, ZIP_ACCESS access)
     {
         std::unique_ptr<IZipArchive> result;
         try

@@ -54,7 +54,7 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message, const 
     return window_error_open(titlez, messagez);
 }
 
-rct_window* window_error_open(const std::string_view& title, const std::string_view& message)
+rct_window* window_error_open(std::string_view title, std::string_view message)
 {
     int32_t numLines, fontHeight, width, height, maxY;
     rct_window* w;

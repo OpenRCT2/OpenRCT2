@@ -522,7 +522,7 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
     info->x += characterWidth;
 }
 
-static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, const std::string_view text, text_draw_info* info)
+static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     CodepointView codepoints(text);
     for (auto codepoint : codepoints)
@@ -778,7 +778,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
     }
 }
 
-static void ttf_process_string_literal(rct_drawpixelinfo* dpi, const std::string_view text, text_draw_info* info)
+static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;

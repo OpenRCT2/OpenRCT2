@@ -46,10 +46,10 @@ using ImageReaderFunc = std::function<Image(std::istream&, IMAGE_FORMAT)>;
 
 namespace Imaging
 {
-    IMAGE_FORMAT GetImageFormatFromPath(const std::string_view& path);
-    Image ReadFromFile(const std::string_view& path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+    IMAGE_FORMAT GetImageFormatFromPath(std::string_view path);
+    Image ReadFromFile(std::string_view path, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
     Image ReadFromBuffer(const std::vector<uint8_t>& buffer, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
-    void WriteToFile(const std::string_view& path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
+    void WriteToFile(std::string_view path, const Image& image, IMAGE_FORMAT format = IMAGE_FORMAT::AUTOMATIC);
 
     void SetReader(IMAGE_FORMAT format, ImageReaderFunc impl);
 } // namespace Imaging

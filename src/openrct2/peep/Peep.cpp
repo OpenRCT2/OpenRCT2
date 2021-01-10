@@ -1952,7 +1952,7 @@ std::string Peep::GetName() const
     return format_string(STR_STRINGID, ft.Data());
 }
 
-bool Peep::SetName(const std::string_view& value)
+bool Peep::SetName(std::string_view value)
 {
     if (value.empty())
     {

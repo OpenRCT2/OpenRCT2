@@ -76,6 +76,6 @@ private:
     void ExportTileElements();
     void ExportTileElement(RCT12TileElement* dst, TileElement* src);
 
-    std::optional<uint16_t> AllocateUserString(const std::string_view& value);
+    std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();
 };

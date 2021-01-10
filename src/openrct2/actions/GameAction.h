@@ -158,15 +158,15 @@ class GameActionParameterVisitor
 public:
     virtual ~GameActionParameterVisitor() = default;
 
-    virtual void Visit(const std::string_view& name, bool& param)
+    virtual void Visit(std::string_view name, bool& param)
     {
     }
 
-    virtual void Visit(const std::string_view& name, int32_t& param)
+    virtual void Visit(std::string_view name, int32_t& param)
     {
     }
 
-    virtual void Visit(const std::string_view& name, std::string& param)
+    virtual void Visit(std::string_view name, std::string& param)
     {
     }
 
@@ -191,7 +191,7 @@ public:
         Visit("direction", param.direction);
     }
 
-    template<typename T> void Visit(const std::string_view& name, T& param)
+    template<typename T> void Visit(std::string_view name, T& param)
     {
         static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
         auto value = static_cast<int32_t>(param);
@@ -199,7 +199,7 @@ public:
         param = static_cast<T>(value);
     }
 
-    template<typename T, size_t _TypeID> void Visit(const std::string_view& name, NetworkObjectId_t<T, _TypeID>& param)
+    template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId_t<T, _TypeID>& param)
     {
         Visit(name, param.id);
     }
