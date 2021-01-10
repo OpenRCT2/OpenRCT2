@@ -231,7 +231,6 @@ uint16_t GetEntityListCount(EntityListId list);
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
-extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
@@ -336,14 +335,14 @@ public:
 template<typename T> class EntityTileIterator
 {
 private:
-    const std::vector<uint16_t>& vec;
     std::vector<uint16_t>::const_iterator iter;
+    std::vector<uint16_t>::const_iterator end;
     T* Entity = nullptr;
 
 public:
-    EntityTileIterator(const std::vector<uint16_t>& _vec, std::vector<uint16_t>::const_iterator _iter)
-        : vec(_vec)
-        , iter(_iter)
+    EntityTileIterator( std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
+        : iter(_iter)
+        , end(_end)
     {
         ++(*this);
     }
@@ -351,7 +350,7 @@ public:
     {
         Entity = nullptr;
 
-        while (iter != std::end(vec) && Entity == nullptr)
+        while (iter != end && Entity == nullptr)
         {
             Entity = GetEntity<T>(*iter++);
         }
@@ -397,11 +396,11 @@ public:
 
     EntityTileIterator<T> begin()
     {
-        return EntityTileIterator<T>(vec, std::begin(vec));
+        return EntityTileIterator<T>(std::begin(vec), std::end(vec));
     }
     EntityTileIterator<T> end()
     {
-        return EntityTileIterator<T>(vec, std::end(vec));
+        return EntityTileIterator<T>(std::end(vec), std::end(vec));
     }
 };
 

@@ -31,8 +31,7 @@ static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLi
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
-uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
-std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex2;
+std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -120,7 +119,7 @@ SpriteBase* get_sprite(size_t spriteIndex)
 
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex2[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
+    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
 void SpriteBase::Invalidate()
@@ -254,7 +253,7 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
  */
 void reset_sprite_spatial_index()
 {
-    for (auto& vec : gSpriteSpatialIndex2)
+    for (auto& vec : gSpriteSpatialIndex)
     {
         vec.clear();
     }
@@ -281,7 +280,7 @@ static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
         index = (flooredX << 3) | tileY;
     }
 
-    if (index >= sizeof(gSpriteSpatialIndex2))
+    if (index >= sizeof(gSpriteSpatialIndex))
     {
         return SPATIAL_INDEX_LOCATION_NULL;
     }
@@ -591,7 +590,7 @@ void sprite_misc_update_all()
 static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
-    auto& spatialVector = gSpriteSpatialIndex2[newIndex];
+    auto& spatialVector = gSpriteSpatialIndex[newIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     spatialVector.insert(index, sprite->sprite_index);
 }
@@ -599,7 +598,7 @@ static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
 static void SpriteSpatialRemove(SpriteBase* sprite)
 {
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    auto& spatialVector = gSpriteSpatialIndex2[currentIndex];
+    auto& spatialVector = gSpriteSpatialIndex[currentIndex];
     auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
     if (index != std::end(spatialVector) && *index == sprite->sprite_index)
     {
