@@ -98,7 +98,6 @@ rct_window* window_player_open(uint8_t id);
 rct_window* window_new_campaign_open(int16_t campaignType);
 
 rct_window* window_install_track_open(const utf8* path);
-void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
 rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
