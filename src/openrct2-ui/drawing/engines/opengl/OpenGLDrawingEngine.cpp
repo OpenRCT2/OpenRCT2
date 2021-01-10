@@ -338,11 +338,6 @@ public:
         window_draw_all(&_bitsDPI, 0, 0, _width, _height);
     }
 
-    void UpdateWindows() override
-    {
-        window_update_all();
-    }
-
     void PaintWeather() override
     {
         _drawingContext->SetDPI(&_bitsDPI);
