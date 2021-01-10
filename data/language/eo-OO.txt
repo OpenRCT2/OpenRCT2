@@ -3651,6 +3651,16 @@ STR_6396    :Malŝalti ekrankurtenon kaj energiŝparon de ekrano
 STR_6397    :Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
 STR_6398    :Dosiero enhavas nesubtenatajn atrakciotipojn. Bonvolu ĝisdatigi al pli nova versio de OpenRCT2.
 STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en "config.ini" al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
+STR_6400    :Mi elŝutis la GOG eksterretan instalilon de RollerCoaster Tycoon 2, sed mi ne jam instalis la ludon
+STR_6401    :Mi jam instalis je RollerCoaster Tycoon 2
+STR_6402    :Agordo de Datumoj de OpenRCT2
+STR_6403    :Elektu la opcion, kiu taŭgas al vi
+STR_6404    :Bonvolu elekti la GOG instalilon de RollerCoaster Tycoon 2.
+STR_6405    :Elekti GOG Instalilon
+STR_6406    :GOG Instalilo de RollerCoaster Tycoon 2
+STR_6407    :Ĉi tiu funkciado povas daŭri kelkajn minutojn.
+STR_6408    :Bonvolu instali “innoextract” por eltiri la Instalilon GOG, tiam restartigi OpenRCT2.
+STR_6409    :La elektita doserio ne estas la eksterreta GOG Instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
 
 #############
 # Scenarios #
