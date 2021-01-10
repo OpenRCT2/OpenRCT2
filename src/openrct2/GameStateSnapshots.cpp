@@ -468,7 +468,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, Iteration);
     }
 
-    void CompareSpriteDataGeneric(
+    void CompareSpriteDataMisc(
         const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         COMPARE_FIELD(MiscEntity, SubType);
@@ -493,7 +493,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                     break;
                 case SpriteIdentifier::Misc:
                     // This is not expected to happen, as misc sprites do not constitute sprite checksum
-                    CompareSpriteDataGeneric(spriteBase.misc, spriteCmp.misc, changeData);
+                    CompareSpriteDataMisc(spriteBase.misc, spriteCmp.misc, changeData);
                     switch (spriteBase.misc.SubType)
                     {
                         case MiscEntityType::SteamParticle:
@@ -551,6 +551,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteCmp = spritesCmp[i];
 
             changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
+            // This will be nonsense information for all types apart from MiscEntities.
+            // This is not an issue though as only MiscEntities will use this field in GetSpriteIdentifierName
+            // TODO: Don't do this.
             changeData.miscIdentifier = spriteBase.misc.SubType;
 
             if (spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
