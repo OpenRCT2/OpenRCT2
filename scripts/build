@@ -36,7 +36,7 @@ else
 
     # macOS runners do not have Ninja installed by default
     if [[ $(uname) == "Darwin" ]]; then
-        cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local "$@"
+        cmake .. -DCMAKE_INSTALL_PREFIX=./install "$@"
     else
         cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
     fi

@@ -160,7 +160,11 @@ jobs:
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
-      # Should we upload any of these artifacts? Probably not...
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: "OpenRCT2-macOS-cmake"
+          path: build/install/*
 
   linux-portable:
     name: Linux (x64, portable)
