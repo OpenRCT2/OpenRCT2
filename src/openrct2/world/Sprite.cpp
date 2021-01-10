@@ -322,15 +322,6 @@ rct_sprite_checksum sprite_checksum()
                 copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
                 copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
 
-                // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
-                while (auto* nextSprite = GetEntity(copy.misc.next_in_quadrant))
-                {
-                    if (nextSprite->sprite_identifier == SpriteIdentifier::Misc)
-                        copy.misc.next_in_quadrant = nextSprite->next_in_quadrant;
-                    else
-                        break;
-                }
-
                 if (copy.misc.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
@@ -369,14 +360,12 @@ static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
     auto llto = sprite->linked_list_index;
-    uint16_t next_in_quadrant = sprite->next_in_quadrant;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
     sprite->linked_list_index = llto;
-    sprite->next_in_quadrant = next_in_quadrant;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SpriteIdentifier::Null;
 }
@@ -392,13 +381,6 @@ void sprite_clear_all_unused()
         sprite_reset(sprite);
         sprite->linked_list_index = EntityListId::Free;
 
-        // sprite->next_in_quadrant will only end up as zero owing to corruption
-        // most likely due to previous builds not preserving it when resetting sprites
-        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
-        if (sprite->next_in_quadrant == 0)
-        {
-            sprite->next_in_quadrant = SPRITE_INDEX_NULL;
-        }
         _spriteFlashingList[sprite->sprite_index] = false;
     }
 }

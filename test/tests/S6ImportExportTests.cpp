@@ -131,7 +131,6 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
 {
     COMPARE_FIELD(sprite_identifier);
-    COMPARE_FIELD(next_in_quadrant);
     COMPARE_FIELD(linked_list_index);
     COMPARE_FIELD(sprite_index);
     COMPARE_FIELD(flags);

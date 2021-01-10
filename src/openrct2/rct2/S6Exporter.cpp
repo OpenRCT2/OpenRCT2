@@ -1046,7 +1046,6 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
-    dst->next_in_quadrant = src->next_in_quadrant;
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
