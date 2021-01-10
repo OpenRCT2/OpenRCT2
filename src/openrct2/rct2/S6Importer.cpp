@@ -1318,7 +1318,7 @@ public:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
             case SpriteIdentifier::Misc:
-                ImportSpriteMisc(&dst->generic, &src->unknown);
+                ImportSpriteMisc(&dst->misc, &src->unknown);
                 break;
             case SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);
@@ -1335,6 +1335,7 @@ public:
         const auto& ride = _s6.rides[src->ride];
 
         ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
+        dst->SubType = Vehicle::Type(src->type);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1530,10 +1531,11 @@ public:
         dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)
+    void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        switch (static_cast<MiscEntityType>(cdst->type))
+        cdst->SubType = MiscEntityType(csrc->type);
+        switch (cdst->SubType)
         {
             case MiscEntityType::SteamParticle:
             {
@@ -1578,7 +1580,7 @@ public:
             case MiscEntityType::CrashSplash:
             {
                 auto src = static_cast<const RCT12SpriteParticle*>(csrc);
-                auto dst = static_cast<SpriteGeneric*>(cdst);
+                auto dst = static_cast<MiscEntity*>(cdst);
                 dst->frame = src->frame;
                 break;
             }
@@ -1616,7 +1618,7 @@ public:
                 break;
             }
             default:
-                log_warning("Misc. sprite type %d can not be imported.", cdst->type);
+                log_warning("Misc. sprite type %d can not be imported.", cdst->SubType);
                 break;
         }
     }
@@ -1624,13 +1626,13 @@ public:
     void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
     {
         ImportSpriteCommonProperties(dst, src);
+        dst->SubType = LitterType(src->type);
         dst->creationTick = src->creationTick;
     }
 
     void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
         dst->sprite_identifier = src->sprite_identifier;
-        dst->type = src->type;
         dst->next_in_quadrant = src->next_in_quadrant;
         dst->next = src->next;
         dst->previous = src->previous;

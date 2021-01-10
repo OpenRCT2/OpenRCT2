@@ -1170,7 +1170,7 @@ private:
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->type = src->type;
+        dst->SubType = Vehicle::Type(src->type);
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -1651,7 +1651,7 @@ private:
 
                 Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
-                litter->type = srcLitter->type;
+                litter->SubType = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
                 litter->y = srcLitter->y;
@@ -1673,14 +1673,14 @@ private:
             if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SpriteIdentifier::Misc));
+                MiscEntity* dst = reinterpret_cast<MiscEntity*>(create_sprite(SpriteIdentifier::Misc));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
                     break;
                 }
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->type = src->type;
+                dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;

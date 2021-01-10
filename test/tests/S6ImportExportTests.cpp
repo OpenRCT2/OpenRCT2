@@ -110,7 +110,7 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
-            res->sprites[spriteIdx].generic.sprite_identifier = SpriteIdentifier::Null;
+            res->sprites[spriteIdx].misc.sprite_identifier = SpriteIdentifier::Null;
         else
             res->sprites[spriteIdx] = *sprite;
     }
@@ -131,7 +131,6 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
 {
     COMPARE_FIELD(sprite_identifier);
-    COMPARE_FIELD(type);
     COMPARE_FIELD(next_in_quadrant);
     COMPARE_FIELD(next);
     COMPARE_FIELD(previous);
@@ -271,6 +270,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);
     COMPARE_FIELD(remaining_distance);
@@ -345,6 +345,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 
 static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(creationTick);
 }
 
@@ -404,10 +405,10 @@ static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 
 static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
 {
-    CompareSpriteDataCommon(left.generic, right.generic);
-    if (left.generic.sprite_identifier == right.generic.sprite_identifier)
+    CompareSpriteDataCommon(left.misc, right.misc);
+    if (left.misc.sprite_identifier == right.misc.sprite_identifier)
     {
-        switch (left.generic.sprite_identifier)
+        switch (left.misc.sprite_identifier)
         {
             case SpriteIdentifier::Peep:
                 CompareSpriteDataPeep(left.peep, right.peep);
@@ -419,7 +420,8 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
             case SpriteIdentifier::Misc:
-                switch (static_cast<MiscEntityType>(left.generic.type))
+                COMPARE_FIELD(misc.SubType);
+                switch (left.misc.SubType)
                 {
                     case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
@@ -464,8 +466,8 @@ static void CompareStates(
 
     for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; ++spriteIdx)
     {
-        if (importedState->sprites[spriteIdx].generic.sprite_identifier == SpriteIdentifier::Null
-            && exportedState->sprites[spriteIdx].generic.sprite_identifier == SpriteIdentifier::Null)
+        if (importedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null
+            && exportedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null)
         {
             continue;
         }

@@ -39,12 +39,15 @@ enum class EntityListId : uint8_t
     Count,
 };
 
+enum LitterType : uint8_t;
+
 struct Litter : SpriteBase
 {
+    LitterType SubType;
     uint32_t creationTick;
 };
 
-struct Balloon : SpriteGeneric
+struct Balloon : MiscEntity
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -55,7 +58,7 @@ struct Balloon : SpriteGeneric
     void Press();
 };
 
-struct Duck : SpriteGeneric
+struct Duck : MiscEntity
 {
     enum class DuckState : uint8_t
     {
@@ -82,7 +85,7 @@ private:
     void UpdateFlyAway();
 };
 
-struct MoneyEffect : SpriteBase
+struct MoneyEffect : MiscEntity
 {
     uint16_t MoveDelay;
     uint8_t NumMovements;
@@ -97,7 +100,7 @@ struct MoneyEffect : SpriteBase
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct VehicleCrashParticle : SpriteGeneric
+struct VehicleCrashParticle : MiscEntity
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -112,22 +115,22 @@ struct VehicleCrashParticle : SpriteGeneric
     void Update();
 };
 
-struct ExplosionFlare : SpriteGeneric
+struct ExplosionFlare : MiscEntity
 {
     void Update();
 };
 
-struct ExplosionCloud : SpriteGeneric
+struct ExplosionCloud : MiscEntity
 {
     void Update();
 };
 
-struct CrashSplashParticle : SpriteGeneric
+struct CrashSplashParticle : MiscEntity
 {
     void Update();
 };
 
-struct SteamParticle : SpriteGeneric
+struct SteamParticle : MiscEntity
 {
     uint16_t time_to_move;
 
@@ -142,7 +145,7 @@ struct SteamParticle : SpriteGeneric
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    SpriteGeneric generic;
+    MiscEntity misc;
     Peep peep;
     Litter litter;
     Vehicle vehicle;
@@ -192,7 +195,7 @@ enum
     SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
 
-enum
+enum LitterType : uint8_t
 {
     LITTER_TYPE_SICK,
     LITTER_TYPE_SICK_ALT,
@@ -240,7 +243,7 @@ void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
-void litter_create(const CoordsXYZD& litterPos, int32_t type);
+void litter_create(const CoordsXYZD& litterPos, LitterType type);
 void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);

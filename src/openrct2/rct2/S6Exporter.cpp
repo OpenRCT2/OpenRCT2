@@ -963,10 +963,10 @@ void S6Exporter::ExportSprites()
 void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
 {
     std::memset(dst, 0, sizeof(rct_sprite));
-    switch (src->generic.sprite_identifier)
+    switch (src->misc.sprite_identifier)
     {
         case SpriteIdentifier::Null:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Vehicle:
             ExportSpriteVehicle(&dst->vehicle, &src->vehicle);
@@ -975,14 +975,14 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
             ExportSpritePeep(&dst->peep, &src->peep);
             break;
         case SpriteIdentifier::Misc:
-            ExportSpriteMisc(&dst->unknown, &src->generic);
+            ExportSpriteMisc(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Litter:
             ExportSpriteLitter(&dst->litter, &src->litter);
             break;
         default:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
-            log_warning("Sprite identifier %d can not be exported.", src->generic.sprite_identifier);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
+            log_warning("Sprite identifier %d can not be exported.", src->misc.sprite_identifier);
             break;
     }
 }
@@ -990,7 +990,6 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
-    dst->type = src->type;
     dst->next_in_quadrant = src->next_in_quadrant;
     dst->next = src->next;
     dst->previous = src->previous;
@@ -1015,6 +1014,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     const auto* ride = src->GetRide();
 
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    dst->type = EnumValue(src->SubType);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
@@ -1248,10 +1248,11 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
-void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const MiscEntity* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    switch (static_cast<MiscEntityType>(cdst->type))
+    cdst->type = EnumValue(csrc->SubType);
+    switch (csrc->SubType)
     {
         case MiscEntityType::SteamParticle:
         {
@@ -1295,7 +1296,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
         case MiscEntityType::ExplosionFlare:
         case MiscEntityType::CrashSplash:
         {
-            auto src = static_cast<const SpriteGeneric*>(csrc);
+            auto src = static_cast<const MiscEntity*>(csrc);
             auto dst = static_cast<RCT12SpriteParticle*>(cdst);
             dst->frame = src->frame;
             break;
@@ -1343,6 +1344,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
 void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src)
 {
     ExportSpriteCommonProperties(dst, src);
+    dst->type = EnumValue(src->SubType);
     dst->creationTick = src->creationTick;
 }
 

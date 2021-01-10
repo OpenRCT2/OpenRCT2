@@ -60,19 +60,27 @@ template<> bool SpriteBase::Is<Litter>() const
     return sprite_identifier == SpriteIdentifier::Litter;
 }
 
+template<> bool SpriteBase::Is<MiscEntity>() const
+{
+    return sprite_identifier == SpriteIdentifier::Misc;
+}
+
 template<> bool SpriteBase::Is<SteamParticle>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::SteamParticle;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionFlare;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::ExplosionCloud;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::ExplosionCloud;
 }
 
 uint16_t GetEntityListCount(EntityListId list)
@@ -97,7 +105,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].generic;
+    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].misc;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)
@@ -128,7 +136,13 @@ void SpriteBase::Invalidate()
             maxZoom = 2;
             break;
         case SpriteIdentifier::Misc:
-            switch (static_cast<MiscEntityType>(type))
+        {
+            auto* misc = As<MiscEntity>();
+            if (misc == nullptr)
+            {
+                return;
+            }
+            switch (misc->SubType)
             {
                 case MiscEntityType::CrashedVehicleParticle:
                 case MiscEntityType::JumpingFountainWater:
@@ -149,7 +163,8 @@ void SpriteBase::Invalidate()
                 default:
                     break;
             }
-            break;
+        }
+        break;
         case SpriteIdentifier::Litter:
             maxZoom = 0;
             break;
@@ -283,19 +298,19 @@ rct_sprite_checksum sprite_checksum()
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
-                copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
-                copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
+                copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
+                copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
 
                 // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
-                while (auto* nextSprite = GetEntity(copy.generic.next_in_quadrant))
+                while (auto* nextSprite = GetEntity(copy.misc.next_in_quadrant))
                 {
                     if (nextSprite->sprite_identifier == SpriteIdentifier::Misc)
-                        copy.generic.next_in_quadrant = nextSprite->next_in_quadrant;
+                        copy.misc.next_in_quadrant = nextSprite->next_in_quadrant;
                     else
                         break;
                 }
 
-                if (copy.generic.Is<Peep>())
+                if (copy.misc.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.Name = {};
@@ -548,7 +563,7 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
@@ -556,7 +571,7 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_height_positive = 34;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscEntityType::ExplosionCloud);
+        sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
     }
 }
@@ -581,7 +596,7 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    SpriteGeneric* sprite = &create_sprite(SpriteIdentifier::Misc)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
@@ -589,7 +604,7 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_height_positive = 8;
         sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = EnumValue(MiscEntityType::ExplosionFlare);
+        sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
     }
 }
@@ -612,9 +627,9 @@ void ExplosionFlare::Update()
  *
  *  rct2: 0x006731CD
  */
-static void sprite_misc_update(SpriteBase* sprite)
+static void sprite_misc_update(MiscEntity* sprite)
 {
-    switch (static_cast<MiscEntityType>(sprite->type))
+    switch (sprite->SubType)
     {
         case MiscEntityType::SteamParticle:
             sprite->As<SteamParticle>()->Update();
@@ -655,7 +670,7 @@ static void sprite_misc_update(SpriteBase* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList(EntityListId::Misc))
+    for (auto entity : EntityList<MiscEntity>(EntityListId::Misc))
     {
         sprite_misc_update(entity);
     }
@@ -816,7 +831,7 @@ static bool litter_can_be_at(const CoordsXYZ& mapPos)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(const CoordsXYZD& litterPos, int32_t type)
+void litter_create(const CoordsXYZD& litterPos, LitterType type)
 {
     if (gCheatsDisableLittering)
         return;
@@ -857,7 +872,7 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
     litter->sprite_identifier = SpriteIdentifier::Litter;
-    litter->type = type;
+    litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gScenarioTicks;
 }
