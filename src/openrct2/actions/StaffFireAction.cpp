@@ -17,6 +17,11 @@ StaffFireAction::StaffFireAction(uint16_t spriteId)
 {
 }
 
+void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("peep", _spriteId);
+}
+
 uint16_t StaffFireAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

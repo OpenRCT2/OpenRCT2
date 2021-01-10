@@ -41,6 +41,12 @@ StaffSetCostumeAction::StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCo
 {
 }
 
+void StaffSetCostumeAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("peep", _spriteIndex);
+    visitor.Visit("costume", _costume);
+}
+
 uint16_t StaffSetCostumeAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

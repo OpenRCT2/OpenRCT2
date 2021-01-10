@@ -30,6 +30,14 @@ FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
 {
 }
 
+void FootpathPlaceFromTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    visitor.Visit("slope", _slope);
+    visitor.Visit("type", _type);
+    visitor.Visit("edges", _edges);
+}
+
 void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);

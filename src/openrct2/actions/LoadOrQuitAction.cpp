@@ -18,6 +18,12 @@ LoadOrQuitAction::LoadOrQuitAction(LoadOrQuitModes mode, PromptMode savePromptMo
 {
 }
 
+void LoadOrQuitAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("mode", _mode);
+    visitor.Visit("savePromptMode", _savePromptMode);
+}
+
 uint16_t LoadOrQuitAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::ClientOnly | GameActions::Flags::AllowWhilePaused;

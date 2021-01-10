@@ -20,6 +20,7 @@ public:
     ParkEntranceRemoveAction() = default;
     ParkEntranceRemoveAction(const CoordsXYZ& loc);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;

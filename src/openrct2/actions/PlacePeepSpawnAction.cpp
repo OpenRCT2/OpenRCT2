@@ -23,6 +23,11 @@ PlacePeepSpawnAction::PlacePeepSpawnAction(const CoordsXYZD& location)
 {
 }
 
+void PlacePeepSpawnAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_location);
+}
+
 uint16_t PlacePeepSpawnAction::GetActionFlags() const
 {
     return GameActionBase::GetActionFlags() | GameActions::Flags::EditorOnly | GameActions::Flags::AllowWhilePaused;

@@ -24,6 +24,13 @@ ParkSetDateAction::ParkSetDateAction(int32_t year, int32_t month, int32_t day)
 {
 }
 
+void ParkSetDateAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("year", _year);
+    visitor.Visit("month", _month);
+    visitor.Visit("day", _day);
+}
+
 uint16_t ParkSetDateAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

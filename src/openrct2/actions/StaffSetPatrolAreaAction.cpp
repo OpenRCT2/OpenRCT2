@@ -19,6 +19,12 @@ StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const Coor
 {
 }
 
+void StaffSetPatrolAreaAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("peep", _spriteId);
+    visitor.Visit(_loc);
+}
+
 uint16_t StaffSetPatrolAreaAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;

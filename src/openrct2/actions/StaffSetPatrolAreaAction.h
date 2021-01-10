@@ -22,6 +22,7 @@ public:
     StaffSetPatrolAreaAction() = default;
     StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc);
 
+    void AcceptParameters(GameActionParameterVisitor & visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser & stream) override;
