@@ -1663,6 +1663,11 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             break;
         }
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
@@ -1677,6 +1682,11 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_SHOP_INCOME, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             break;
         }
         default:
