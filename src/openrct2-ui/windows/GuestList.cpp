@@ -20,6 +20,7 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
+#include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>
 #include <vector>
 
@@ -114,6 +115,14 @@ private:
         uint8_t Faces[58]{};
     };
 
+    struct GuestItem
+    {
+        using CompareFunc = bool (*)(const GuestItem&, const GuestItem&);
+
+        uint16_t Id;
+        char Name[256];
+    };
+
     static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
     static constexpr const auto GUESTS_PER_PAGE = 2000;
     static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
@@ -134,7 +143,7 @@ private:
     uint32_t _lastFindGroupsWait{};
     std::vector<GuestGroup> _groups;
 
-    std::vector<uint16_t> _guestList;
+    std::vector<GuestItem> _guestList;
     std::optional<size_t> _highlightedIndex;
 
     uint32_t _tabAnimationIndex{};
@@ -542,11 +551,11 @@ public:
             {
                 auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
                 i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
-                for (auto spriteIndex : _guestList)
+                for (const auto& guestItem : _guestList)
                 {
                     if (i == 0)
                     {
-                        auto guest = GetEntity<Guest>(spriteIndex);
+                        auto guest = GetEntity<Guest>(guestItem.Id);
                         if (guest != nullptr)
                         {
                             window_guest_open(guest);
@@ -601,6 +610,7 @@ public:
         else
         {
             _guestList.clear();
+
             for (auto peep : EntityList<Guest>(EntityListId::Peep))
             {
                 sprite_set_flashing(peep, false);
@@ -614,12 +624,16 @@ public:
                 }
                 if (!GuestShouldBeVisible(*peep))
                     continue;
-                _guestList.push_back(peep->sprite_index);
+
+                auto& item = _guestList.emplace_back();
+                item.Id = peep->sprite_index;
+
+                Formatter ft;
+                peep->FormatNameTo(ft);
+                format_string(item.Name, sizeof(item.Name), STR_STRINGID, ft.Data());
             }
 
-            std::sort(_guestList.begin(), _guestList.end(), [](const uint16_t a, const uint16_t b) {
-                return peep_compare(a, b) < 0;
-            });
+            std::sort(_guestList.begin(), _guestList.end(), GetGuestCompareFunc());
         }
     }
 
@@ -642,7 +656,7 @@ private:
     {
         size_t index = 0;
         auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
-        for (auto spriteIndex : _guestList)
+        for (const auto& guestItem : _guestList)
         {
             // Check if y is beyond the scroll control
             if (y + SCROLLABLE_ROW_HEIGHT + 1 >= -0x7FFF && y + SCROLLABLE_ROW_HEIGHT + 1 > dpi.y && y < 0x7FFF
@@ -657,7 +671,7 @@ private:
                 }
 
                 // Guest name
-                auto peep = GetEntity<Guest>(spriteIndex);
+                auto peep = GetEntity<Guest>(guestItem.Id);
                 if (peep == nullptr)
                 {
                     continue;
@@ -913,6 +927,36 @@ private:
             case GuestFilterType::GuestsThinkingAbout:
                 return STR_GUESTS_FILTER_THINKING_ABOUT;
         }
+    }
+
+    template<bool TRealNames> static bool CompareGuestItem(const GuestItem& a, const GuestItem& b)
+    {
+        const auto* peepA = GetEntity<Peep>(a.Id);
+        const auto* peepB = GetEntity<Peep>(b.Id);
+        if (peepA != nullptr && peepB != nullptr)
+        {
+            // Compare types
+            if (peepA->AssignedPeepType != peepB->AssignedPeepType)
+            {
+                return static_cast<int32_t>(peepA->AssignedPeepType) < static_cast<int32_t>(peepB->AssignedPeepType);
+            }
+
+            // Compare name
+            if constexpr (!TRealNames)
+            {
+                if (peepA->Name == nullptr && peepB->Name == nullptr)
+                {
+                    // Simple ID comparison for when both peeps use a number or a generated name
+                    return peepA->Id < peepB->Id;
+                }
+            }
+        }
+        return strlogicalcmp(a.Name, b.Name) < 0;
+    }
+
+    static GuestItem::CompareFunc GetGuestCompareFunc()
+    {
+        return gParkFlags & PARK_FLAGS_SHOW_REAL_GUEST_NAMES ? CompareGuestItem<true> : CompareGuestItem<false>;
     }
 };
 
