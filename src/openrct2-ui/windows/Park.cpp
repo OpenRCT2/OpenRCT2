@@ -1512,7 +1512,8 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 5;
 
     // Your progress
-    if (gScenarioObjective.Check() == ObjectiveStatus::Undecided)
+    //if (gScenarioObjective.Check() == ObjectiveStatus::Undecided)
+    if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED)
     {
         gfx_draw_string_left(dpi, STR_OBJECTIVE_PROGRESS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
