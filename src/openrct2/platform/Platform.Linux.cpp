@@ -104,7 +104,7 @@ namespace Platform
             "/var/lib/openrct2",
             "/usr/share/openrct2",
         };
-        for (auto prefix : prefixes)
+        for (const auto& prefix : prefixes)
         {
             for (auto searchLocation : SearchLocations)
             {

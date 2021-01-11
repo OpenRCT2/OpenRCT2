@@ -219,7 +219,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
     ScreenCoordsXY screenCoords(3, 3 - lineHeight);
-    for (auto line : _changelogLines)
+    for (const auto& line : _changelogLines)
     {
         screenCoords.y += lineHeight;
         if (screenCoords.y + lineHeight < dpi->y || screenCoords.y >= dpi->y + dpi->height)

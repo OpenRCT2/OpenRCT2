@@ -1830,7 +1830,7 @@ void NetworkBase::ProcessPlayerList()
             std::vector<uint8_t> newPlayers;
             std::vector<uint8_t> removedPlayers;
 
-            for (auto&& pendingPlayer : itPending->second.players)
+            for (const auto& pendingPlayer : itPending->second.players)
             {
                 activePlayerIds.push_back(pendingPlayer.Id);
 

@@ -160,7 +160,7 @@ namespace OpenRCT2::Scripting
             {
                 auto index = a.as_int();
                 auto i = 0;
-                for (auto w : g_window_list)
+                for (const auto& w : g_window_list)
                 {
                     if (i == index)
                     {
@@ -171,7 +171,7 @@ namespace OpenRCT2::Scripting
             }
             else if (a.type() == DukValue::Type::STRING)
             {
-                auto classification = a.as_string();
+                const auto& classification = a.as_string();
                 auto w = FindCustomWindowByClassification(classification);
                 if (w != nullptr)
                 {

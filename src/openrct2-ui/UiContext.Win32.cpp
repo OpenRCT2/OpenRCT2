@@ -235,7 +235,7 @@ namespace OpenRCT2::Ui
         static std::wstring GetFilterString(const std::vector<FileDialogDesc::Filter> filters)
         {
             std::wstringstream filtersb;
-            for (auto filter : filters)
+            for (const auto& filter : filters)
             {
                 filtersb << String::ToWideChar(filter.Name) << '\0' << String::ToWideChar(filter.Pattern) << '\0';
             }
