@@ -1394,10 +1394,10 @@ static void window_park_objective_resize(rct_window* w)
 {
 #ifndef NO_TTF
     if (gCurrentTTFFontSet != nullptr)
-        window_set_resize(w, 230, 300, 230, 300);
+        window_set_resize(w, 230, 320, 230, 300);
     else
 #endif
-        window_set_resize(w, 230, 250, 230, 250);
+        window_set_resize(w, 230, 270, 230, 250);
 }
 
 /**
