@@ -138,8 +138,6 @@ extern bool gClearFootpath;
 extern uint16_t gLandRemainingOwnershipSales;
 extern uint16_t gLandRemainingConstructionSales;
 
-extern bool gMapLandRightsUpdateSuccess;
-
 constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
 extern const uint8_t tile_element_lower_styles[9][32];
 extern const uint8_t tile_element_raise_styles[9][32];

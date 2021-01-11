@@ -17,7 +17,6 @@ template<typename _TType, size_t _TMax> class CircularBuffer
 public:
     using value_type = _TType;
     using pointer = _TType*;
-    using const_pointer = const _TType*;
     using reference = _TType&;
     using const_reference = const _TType&;
     using size_type = size_t;

@@ -103,7 +103,6 @@ public:
 class S4Importer final : public IParkImporter
 {
 private:
-    std::string _s4Path;
     rct1_s4 _s4 = {};
     uint8_t _gameVersion = 0;
     uint8_t _parkValueConversionFactor = 0;
@@ -172,7 +171,6 @@ public:
         IStream* stream, bool isScenario, [[maybe_unused]] bool skipObjectCheck, const utf8* path) override
     {
         _s4 = *ReadAndDecodeS4(stream, isScenario);
-        _s4Path = path;
         _isScenario = isScenario;
         _gameVersion = sawyercoding_detect_rct1_version(_s4.game_version) & FILE_VERSION_MASK;
 

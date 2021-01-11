@@ -6440,19 +6440,6 @@ void ride_update_vehicle_colours(Ride* ride)
     }
 }
 
-/**
- *
- *  rct2: 0x006DE4CD
- * trainLayout: Originally fixed to 0x00F64E38. This no longer postfixes with 255.
- */
-void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout)
-{
-    for (int32_t i = 0; i < numCarsPerTrain; i++)
-    {
-        trainLayout[i] = ride_entry_get_vehicle_at_position(rideEntryIndex, numCarsPerTrain, i);
-    }
-}
-
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position)
 {
     rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);

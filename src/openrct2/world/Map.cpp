@@ -116,8 +116,6 @@ bool gClearFootpath;
 uint16_t gLandRemainingOwnershipSales;
 uint16_t gLandRemainingConstructionSales;
 
-bool gMapLandRightsUpdateSuccess;
-
 static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
 

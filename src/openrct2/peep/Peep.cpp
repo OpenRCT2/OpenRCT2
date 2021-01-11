@@ -66,7 +66,6 @@ uint32_t gNextGuestNumber;
 uint8_t gPeepWarningThrottle[16];
 
 static uint8_t _unk_F1AEF0;
-static TileElement* _peepRideEntranceExitElement;
 
 static void* _crowdSoundChannel = nullptr;
 
@@ -2291,12 +2290,10 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
     if (entranceType == ENTRANCE_TYPE_RIDE_EXIT)
     {
         pathing_result |= PATHING_RIDE_EXIT;
-        _peepRideEntranceExitElement = tile_element;
     }
     else if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
         pathing_result |= PATHING_RIDE_ENTRANCE;
-        _peepRideEntranceExitElement = tile_element;
     }
 
     if (entranceType == ENTRANCE_TYPE_RIDE_EXIT)

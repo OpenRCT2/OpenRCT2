@@ -122,7 +122,6 @@ namespace News
 
         using value_type = typename std::array<News::Item, N>::value_type;
         using pointer = value_type*;
-        using const_pointer = const value_type*;
         using reference = value_type&;
         using const_reference = const value_type&;
         using iterator = typename std::array<News::Item, N>::iterator;

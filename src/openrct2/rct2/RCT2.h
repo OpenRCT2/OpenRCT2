@@ -86,17 +86,6 @@ constexpr const int32_t rct2_object_entry_group_counts[] = {
 };
 // clang-format on
 
-struct rct2_install_info
-{
-    uint32_t installLevel;
-    char title[260];
-    char path[260];
-    uint32_t var_20C;
-    uint8_t pad_210[256];
-    char expansionPackNames[16][128];
-    uint32_t activeExpansionPacks; // 0xB10
-};
-
 #pragma pack(push, 1)
 
 /**
