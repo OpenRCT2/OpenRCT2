@@ -536,7 +536,7 @@ public:
         // Set correct active tab
         for (auto i = 0; i < WINDOW_CHEATS_PAGE_COUNT; i++)
             SetWidgetPressed(WIDX_TAB_1 + i, false);
-        SetWidgetPressed(WIDX_TAB_1 + page, false);
+        SetWidgetPressed(WIDX_TAB_1 + page, true);
 
         // Set title
         widgets[WIDX_TITLE].text = window_cheats_page_titles[page];
@@ -545,15 +545,15 @@ public:
         {
             case WINDOW_CHEATS_PAGE_MONEY:
             {
-                auto moneyEnabled = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-                SetCheckboxValue(WIDX_NO_MONEY, !moneyEnabled);
-                SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyEnabled);
-                SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyEnabled);
-                SetWidgetDisabled(WIDX_MONEY_SPINNER_INCREMENT, moneyEnabled);
-                SetWidgetDisabled(WIDX_MONEY_SPINNER_DECREMENT, moneyEnabled);
-                SetWidgetDisabled(WIDX_ADD_MONEY, moneyEnabled);
-                SetWidgetDisabled(WIDX_SET_MONEY, moneyEnabled);
-                SetWidgetDisabled(WIDX_CLEAR_LOAN, moneyEnabled);
+                auto moneyDisabled = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
+                SetCheckboxValue(WIDX_NO_MONEY, moneyDisabled);
+                SetWidgetDisabled(WIDX_ADD_SET_MONEY_GROUP, moneyDisabled);
+                SetWidgetDisabled(WIDX_MONEY_SPINNER, moneyDisabled);
+                SetWidgetDisabled(WIDX_MONEY_SPINNER_INCREMENT, moneyDisabled);
+                SetWidgetDisabled(WIDX_MONEY_SPINNER_DECREMENT, moneyDisabled);
+                SetWidgetDisabled(WIDX_ADD_MONEY, moneyDisabled);
+                SetWidgetDisabled(WIDX_SET_MONEY, moneyDisabled);
+                SetWidgetDisabled(WIDX_CLEAR_LOAN, moneyDisabled);
                 break;
             }
             case WINDOW_CHEATS_PAGE_GUESTS:
