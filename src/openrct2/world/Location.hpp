@@ -17,6 +17,7 @@ constexpr const int16_t LOCATION_NULL = -32768;
 
 constexpr const int32_t COORDS_XY_STEP = 32;
 constexpr const int32_t COORDS_XY_HALF_TILE = (COORDS_XY_STEP / 2);
+constexpr const int32_t COORDS_XY_PATROL_STEP = 4;
 constexpr const int32_t COORDS_Z_STEP = 8;
 constexpr const int32_t COORDS_Z_PER_TINY_Z = 16;
 

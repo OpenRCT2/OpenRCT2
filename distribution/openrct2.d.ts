@@ -66,6 +66,17 @@ declare global {
     }
 
     /**
+     * a range of coordinates within the game client as a pair of map tile 
+     * x and y locations. These values will match what is show in the tile inspector.
+     */
+    interface TileRange {
+        x1: number;
+        y1: number;
+        x2: number; 
+        y2: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
@@ -1336,6 +1347,15 @@ declare global {
         cash: number;
     }
 
+    interface PatrolArea {
+        staffId: number;
+        tiles: CoordsXY[];
+    
+        add(coords: CoordsXY[]): void;
+        remove(coords: CoordsXY[]): void;
+        contains(coord: CoordsXY): boolean;
+    }
+
     /**
      * Represents a staff member.
      */
@@ -1359,6 +1379,19 @@ declare global {
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
          */
         orders: number;
+        
+        /**
+         * The patrol area state of this staff member; true if a patrol area is set, false otherwise
+         */
+        hasPatrolArea: boolean;
+
+        /**
+         * Gets the current staff patrol area as an Array of CoordsXY of the patrol regions within
+         * this staf member's patrol area. Patrol regions are 4x4 sections of the map, so there are
+         * 64x64 possible patrol areas total. If no patrol area is set, this will return an array 
+         * with every patrol coordinate as true, as the staff member can go anywhere.
+         */
+        getPatrolArea(): PatrolArea;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
