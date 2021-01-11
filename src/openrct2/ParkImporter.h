@@ -63,25 +63,6 @@ namespace ParkImporter
 
     bool ExtensionIsRCT1(const std::string& extension);
     bool ExtensionIsScenario(const std::string& extension);
-    template<typename T> std::vector<T*> CreateTilePointers(uint16_t mapSize, T* tileElements)
-    {
-        const uint16_t MaxTileElementPointers = mapSize * mapSize;
-        std::vector<T*> tilePointers;
-        tilePointers.reserve(MaxTileElementPointers);
-
-        T* tileElement = tileElements;
-        for (size_t y = 0; y < mapSize; y++)
-        {
-            for (size_t x = 0; x < mapSize; x++)
-            {
-                tilePointers.emplace_back(tileElement);
-                while (!(tileElement++)->IsLastForTile())
-                    ;
-            }
-        }
-
-        return tilePointers;
-    }
 } // namespace ParkImporter
 
 class ObjectLoadException : public std::exception

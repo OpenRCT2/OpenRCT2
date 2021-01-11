@@ -1974,8 +1974,7 @@ private:
         gMapBaseZ = 7;
 
         // Build tile pointer cache (needed to get the first element at a certain location)
-        std::vector<RCT12TileElement*> tilePointers = ParkImporter::CreateTilePointers<RCT12TileElement>(
-            RCT1_MAX_MAP_SIZE, _s4.tile_elements);
+        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT1_MAX_MAP_SIZE, _s4.tile_elements);
 
         TileElement* dstElement = gTileElements;
 
@@ -1992,7 +1991,7 @@ private:
                 }
 
                 // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
-                RCT12TileElement* srcElement = tilePointers[coords.x + (coords.y * RCT1_MAX_MAP_SIZE)];
+                RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                 do
                 {
                     if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)

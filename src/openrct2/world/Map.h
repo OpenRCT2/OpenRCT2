@@ -144,6 +144,36 @@ constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
 extern const uint8_t tile_element_lower_styles[9][32];
 extern const uint8_t tile_element_raise_styles[9][32];
 
+template<typename T> class TilePointerIndex
+{
+    std::vector<T*> TilePointers;
+    uint16_t MapSize;
+
+public:
+    explicit TilePointerIndex(const uint16_t mapSize, T* tileElements)
+    {
+        MapSize = mapSize;
+        const uint16_t MaxTileElementPointers = MapSize * MapSize;
+        TilePointers.reserve(MaxTileElementPointers);
+
+        T* tileElement = tileElements;
+        for (size_t y = 0; y < MapSize; y++)
+        {
+            for (size_t x = 0; x < MapSize; x++)
+            {
+                TilePointers.emplace_back(tileElement);
+                while (!(tileElement++)->IsLastForTile())
+                    ;
+            }
+        }
+    }
+
+    T* GetFirstElementAt(TileCoordsXY coords)
+    {
+        return TilePointers[coords.x + (coords.y * MapSize)];
+    }
+};
+
 void map_init(int32_t size);
 
 void map_count_remaining_land_rights();
