@@ -1447,15 +1447,15 @@ static void window_park_objective_invalidate(rct_window* w)
 }
 
 static void window_park_objective_bars_paint(
-    float value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
+    float percentage, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour)
 {
-    if (value > 1)
+    if (percentage > 1)
     {
-        value = 1;
+        percentage = 1;
     }
+    int16_t barLength = static_cast<int16_t>((221 - 4) * percentage);
 
     gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 221 - 3, y + 9, w->colours[1], INSET_RECT_F_30);
-    int16_t barLength = static_cast<int16_t>((221 - 4) * value);
     if (barLength > 2)
     {
         gfx_fill_rect_inset(dpi, x + 3, y + 2, x + barLength, y + 8, colour, 0);
@@ -1541,7 +1541,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_GUESTS, COLOUR_BLACK);
             screenCoords.y += 1;
 
-            window_park_objective_bars_paint(guestsInParkPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour, false);
+            window_park_objective_bars_paint(guestsInParkPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
@@ -1562,54 +1562,101 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_RATING, COLOUR_BLACK);
             screenCoords.y += 1;
 
-            window_park_objective_bars_paint(parkRatingPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour, false);
+            window_park_objective_bars_paint(parkRatingPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             break;
         }
         case OBJECTIVE_PARK_VALUE_BY:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         {
+            float parkValuePercentage = (static_cast<float>(gParkValue) / static_cast<float>(gScenarioObjective.Currency));
+
+            if (gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
+            {
+                ft = Formatter();
+                ft.Add<money32>(gBankLoan);
+                ft.Add<money32>(0);
+
+                screenCoords.y += gfx_draw_string_left_wrapped(
+                    dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_LOAN, COLOUR_BLACK);
+                screenCoords.y += 1;
+            }
+
             ft = Formatter();
             ft.Add<money32>(gParkValue);
             ft.Add<money32>(gScenarioObjective.Currency);
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_PARK_VALUE, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(parkValuePercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
 
             break;
         }
         case OBJECTIVE_10_ROLLERCOASTERS:
         {
+            int32_t l10RollerCoastersProgress = gScenarioObjective.Get10RollerCoastersProgress();
+            float rollerCoasterCountPercentage
+                = (static_cast<float>(l10RollerCoastersProgress) / static_cast<float>(10));
+
             ft = Formatter();
-            ft.Add<int32_t>(gScenarioObjective.Get10RollerCoastersProgress());
+            ft.Add<int32_t>(l10RollerCoastersProgress);
             ft.Add<int32_t>(10);
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             break;
         }
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         {
+            money32 monthlyRideIncomeProgress = gScenarioObjective.GetMonthlyRideIncomeProgress();
+            float monthlyRideIncomePercentage
+                = (static_cast<float>(monthlyRideIncomeProgress) / static_cast<float>(gScenarioObjective.Currency));
+
             ft = Formatter();
-            ft.Add<money32>(gScenarioObjective.GetMonthlyRideIncomeProgress());
+            ft.Add<money32>(monthlyRideIncomeProgress);
             ft.Add<money32>(gScenarioObjective.Currency);
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_MONTHLY_RIDE_INCOME, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(monthlyRideIncomePercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             break;
         }
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         {
+            int32_t l10RollerCoastersLengthProgress = gScenarioObjective.Get10RollerCoastersLengthProgress();
+            float rollerCoasterCountPercentage = (static_cast<float>(l10RollerCoastersLengthProgress) / static_cast<float>(10));
+
             ft = Formatter();
-            ft.Add<int32_t>(gScenarioObjective.Get10RollerCoastersLengthProgress());
+            ft.Add<int32_t>(l10RollerCoastersLengthProgress);
             ft.Add<int32_t>(10);
 
             screenCoords.y += gfx_draw_string_left_wrapped(
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
+            screenCoords.y += 1;
+
+            window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords.x, screenCoords.y, w, dpi, barColour);
+            screenCoords.y += LIST_ROW_HEIGHT;
+
             break;
         }
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         {
+            int32_t finish5RollerCoastersProgress = gScenarioObjective.Get10RollerCoastersLengthProgress();
+            float rollerCoasterCountPercentage = (static_cast<float>(finish5RollerCoastersProgress) / static_cast<float>(5));
+
             ft = Formatter();
             ft.Add<int32_t>(gScenarioObjective.GetFinish5RollerCoastersProgress());
             ft.Add<int32_t>(5);
@@ -1618,28 +1665,14 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
             break;
         }
-        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-        {
-            ft = Formatter();
-            ft.Add<money32>(gBankLoan);
-            ft.Add<money32>(0);
-
-            screenCoords.y += gfx_draw_string_left_wrapped(
-                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_LOAN, COLOUR_BLACK);
-            screenCoords.y += 1;
-
-            ft = Formatter();
-            ft.Add<money32>(gParkValue);
-            ft.Add<money32>(gScenarioObjective.Currency);
-
-            screenCoords.y += gfx_draw_string_left_wrapped(
-                dpi, ft.Data(), screenCoords, 221, STR_OBJECTIVE_PROGRESS_PARK_VALUE, COLOUR_BLACK);
-            break;
-        }
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
         {
+            int32_t monthlyShopIncomeProgress = gScenarioObjective.GetMonthlyShopIncomeProgress();
+            float rollerCoasterCountPercentage
+                = (static_cast<float>(monthlyShopIncomeProgress) / static_cast<float>(gScenarioObjective.Currency));
+
             ft = Formatter();
-            ft.Add<money32>(gScenarioObjective.GetMonthlyShopIncomeProgress());
+            ft.Add<money32>(monthlyShopIncomeProgress);
             ft.Add<money32>(gScenarioObjective.Currency);
 
             screenCoords.y += gfx_draw_string_left_wrapped(
