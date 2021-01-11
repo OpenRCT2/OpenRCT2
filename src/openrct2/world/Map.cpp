@@ -102,6 +102,7 @@ int16_t gMapBaseZ;
 int32_t gMapHighestTileHeightLoopPosition;
 int32_t gMapHighestTileHeightPending;
 int32_t gMapHighestTileHeight;
+bool gCalcHighestTileHeightScheduled;
 
 TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
@@ -915,25 +916,7 @@ bool map_is_location_at_edge(const CoordsXY& loc)
  */
 void tile_element_remove(TileElement* tileElement)
 {
-    // Replace Nth element by (N+1)th element.
-    // This loop will make tileElement point to the old last element position,
-    // after copy it to it's new position
-    if (!tileElement->IsLastForTile())
-    {
-        do
-        {
-            *tileElement = *(tileElement + 1);
-        } while (!(++tileElement)->IsLastForTile());
-    }
-
-    // Mark the latest element with the last element flag.
-    (tileElement - 1)->SetLastForTile(true);
-    tileElement->base_height = MAX_ELEMENT_HEIGHT;
-
-    if ((tileElement + 1) == gNextFreeTileElement)
-    {
-        gNextFreeTileElement--;
-    }
+    tileElement->Remove();
 }
 
 /**
@@ -1513,8 +1496,18 @@ void map_update_tiles()
     }
 }
 
-void map_calc_highest_tile_height(bool fullCheck)
+void mapScheduleCalcHighestTileHeight()
 {
+    gCalcHighestTileHeightScheduled = true;
+}
+
+void mapTryCalcHighestTileHeight(bool fullCheck)
+{
+    if (!fullCheck && !gCalcHighestTileHeightScheduled)
+    {
+        return;
+    }
+
     int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
     int32_t tilesToCheck = maxTileIndex;
 
@@ -1528,7 +1521,7 @@ void map_calc_highest_tile_height(bool fullCheck)
     }
     else
     {
-        tilesToCheck /= 128;
+        tilesToCheck /= 64;
     }
 
     for (int32_t i = 0; i < tilesToCheck; i++)
@@ -1538,8 +1531,13 @@ void map_calc_highest_tile_height(bool fullCheck)
 
         if (gMapHighestTileHeightLoopPosition == 0)
         {
+            if (gMapHighestTileHeight != gMapHighestTileHeightPending)
+            {
+                printf("new highest height %d -> %d\n", gMapHighestTileHeight, gMapHighestTileHeightPending);
+            }
             gMapHighestTileHeight = gMapHighestTileHeightPending;
             gMapHighestTileHeightPending = 0;
+            gCalcHighestTileHeightScheduled = false;
         }
 
         int32_t x = (gMapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
@@ -1565,7 +1563,7 @@ void map_calc_highest_tile_height(bool fullCheck)
     }
 }
 
-MapRange map_get_edge_limits()
+MapRange mapGetEdgeLimits()
 {
     uint8_t rotation = get_current_rotation();
 
