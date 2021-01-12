@@ -119,6 +119,9 @@ struct rct_window
     virtual void OnClose()
     {
     }
+    virtual void OnResize()
+    {
+    }
     virtual void OnUpdate()
     {
     }
@@ -142,6 +145,19 @@ struct rct_window
     {
     }
     virtual void OnTextInput(rct_widgetindex widgetIndex, std::string_view text)
+    {
+    }
+    virtual ScreenSize OnScrollGetSize(int32_t scrollIndex)
+    {
+        return {};
+    }
+    virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
+    virtual void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
+    virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi)
     {
     }
 };

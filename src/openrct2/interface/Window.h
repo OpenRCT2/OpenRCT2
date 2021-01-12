@@ -364,7 +364,11 @@ enum WINDOW_FLAGS
     WF_WHITE_BORDER_ONE = (1 << 12),
     WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 
-    WF_NO_SNAPPING = (1 << 15)
+    WF_NO_SNAPPING = (1 << 15),
+
+    // Create only flags
+    WF_AUTO_POSITION = (1 << 16),
+    WF_CENTRE_SCREEN = (1 << 17),
 };
 
 enum SCROLL_FLAGS
@@ -673,21 +677,25 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* WindowCreate(
-    std::unique_ptr<rct_window>&& w, rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height,
-    uint16_t flags);
+    std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint16_t flags = 0)
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
 }
 
 rct_window* WindowCreate(
     const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
-    uint16_t flags);
+    uint32_t flags);
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
 
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
