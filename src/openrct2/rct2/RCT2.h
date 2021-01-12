@@ -54,6 +54,8 @@ constexpr const uint8_t RCT2_RIDE_TYPE_COUNT = 91;
 
 constexpr const rct_string_id RCT2_RIDE_STRING_START = 2;
 
+constexpr const uint16_t RCT2_MAXIMUM_MAP_SIZE_TECHNICAL = 256;
+
 // clang-format off
 constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
     RCT2_MAX_RIDE_OBJECTS +
