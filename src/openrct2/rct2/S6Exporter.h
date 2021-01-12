@@ -78,4 +78,6 @@ private:
 
     std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();
+
+    void RebuildEntityLinks();
 };
