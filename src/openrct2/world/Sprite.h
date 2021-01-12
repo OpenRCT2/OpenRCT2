@@ -340,7 +340,7 @@ private:
     T* Entity = nullptr;
 
 public:
-    EntityTileIterator( std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
+    EntityTileIterator(std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
         : iter(_iter)
         , end(_end)
     {
