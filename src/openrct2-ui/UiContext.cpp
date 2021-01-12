@@ -14,7 +14,7 @@
 #include "TextComposition.h"
 #include "WindowManager.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
-#include "input/KeyboardShortcuts.h"
+#include "input/ShortcutManager.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
 #include "scripting/UiExtensions.h"
@@ -49,7 +49,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Input;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
@@ -80,7 +79,7 @@ private:
     bool _steamOverlayActive = false;
 
     // Input
-    KeyboardShortcuts _keyboardShortcuts;
+    ShortcutManager _shortcutManager;
     TextComposition _textComposition;
     CursorState _cursorState = {};
     uint32_t _lastKeyPressed = 0;
@@ -98,18 +97,22 @@ public:
         return _inGameConsole;
     }
 
+    ShortcutManager& GetShortcutManager()
+    {
+        return _shortcutManager;
+    }
+
     explicit UiContext(const std::shared_ptr<IPlatformEnvironment>& env)
         : _platformUiContext(CreatePlatformUiContext())
         , _windowManager(CreateWindowManager())
-        , _keyboardShortcuts(env)
+        , _shortcutManager(env)
     {
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
         _cursorRepository.LoadCursors();
-        _keyboardShortcuts.Reset();
-        _keyboardShortcuts.Load();
+        _shortcutManager.LoadUserBindings();
     }
 
     ~UiContext() override
@@ -955,4 +958,10 @@ InGameConsole& OpenRCT2::Ui::GetInGameConsole()
 {
     auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
     return uiContext->GetInGameConsole();
+}
+
+ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
+{
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
+    return uiContext->GetShortcutManager();
 }

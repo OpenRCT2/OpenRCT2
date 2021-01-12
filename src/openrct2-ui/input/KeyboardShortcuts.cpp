@@ -98,7 +98,7 @@ bool KeyboardShortcuts::Load()
     Reset();
     try
     {
-        std::string path = _env->GetFilePath(PATHID::CONFIG_KEYBOARD);
+        std::string path = _env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY);
         if (File::Exists(path))
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
@@ -127,7 +127,7 @@ bool KeyboardShortcuts::Save()
     bool result = false;
     try
     {
-        std::string path = _env->GetFilePath(PATHID::CONFIG_KEYBOARD);
+        std::string path = _env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY);
         auto fs = FileStream(path, FILE_MODE_WRITE);
         fs.WriteValue<uint16_t>(KeyboardShortcuts::CURRENT_FILE_VERSION);
         for (size_t i = 0; i < ShortcutsCount; i++)

@@ -12,7 +12,67 @@
 #include "DataSerialiserTraits.h"
 #include "MemoryStream.h"
 
+#include <iostream>
 #include <type_traits>
+#include <variant>
+
+class BinarySerialiser
+{
+private:
+    std::variant<std::istream*, std::ostream*> _stream{};
+
+public:
+    BinarySerialiser(std::istream* stream)
+        : _stream(stream)
+    {
+    }
+
+    BinarySerialiser(std::ostream* stream)
+        : _stream(stream)
+    {
+    }
+
+    bool IsReading() const
+    {
+        return std::holds_alternative<std::istream*>(_stream);
+    }
+
+    bool IsWriting() const
+    {
+        return std::holds_alternative<std::ostream*>(_stream);
+    }
+
+    template<typename T> BinarySerialiser& operator<<(const T& data)
+    {
+        if (auto istream = std::get_if<std::istream*>(&_stream))
+        {
+            DataSerializerTraits<T>::decode(**istream, const_cast<T&>(data));
+        }
+        else if (auto ostream = std::get_if<std::ostream*>(&_stream))
+        {
+            DataSerializerTraits<T>::encode(**ostream, data);
+        }
+        return *this;
+    }
+};
+
+class BinaryReader : public BinarySerialiser
+{
+public:
+    BinaryReader(std::istream* stream)
+        : BinarySerialiser(stream)
+    {
+    }
+};
+
+class BinaryWriter : public BinarySerialiser
+{
+public:
+    BinaryWriter(std::ostream* stream)
+        : BinarySerialiser(stream)
+    {
+    }
+};
 
 class DataSerialiser
 {

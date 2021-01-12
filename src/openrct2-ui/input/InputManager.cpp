@@ -178,7 +178,7 @@ void InputManager::Process(const InputEvent& e)
         auto& console = GetInGameConsole();
         if (console.IsOpen())
         {
-            if (!shortcutManager.ProcessEventForSpecificShortcut(e, SHORTCUT_ID_DEBUG_CONSOLE))
+            if (!shortcutManager.ProcessEventForSpecificShortcut(e, ShortcutId::DebugToggleConsole))
             {
                 ProcessInGameConsole(e);
             }

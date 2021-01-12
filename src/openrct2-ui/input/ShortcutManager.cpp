@@ -10,6 +10,11 @@
 #include "ShortcutManager.h"
 
 #include <SDL.h>
+#include <fstream>
+#include <openrct2/Context.h>
+#include <openrct2/PlatformEnvironment.h>
+#include <openrct2/core/DataSerialiser.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
@@ -417,7 +422,8 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
     return true;
 }
 
-ShortcutManager::ShortcutManager()
+ShortcutManager::ShortcutManager(const std::shared_ptr<IPlatformEnvironment>& env)
+    : _env(env)
 {
     RegisterDefaultShortcuts();
 }
@@ -487,9 +493,217 @@ bool ShortcutManager::ProcessEventForSpecificShortcut(const InputEvent& e, std::
     return false;
 }
 
-static ShortcutManager _shortcutManager;
-
-ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
+void ShortcutManager::LoadUserBindings()
 {
-    return _shortcutManager;
+    try
+    {
+        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        if (fs::exists(path))
+        {
+            LoadUserBindings(path);
+        }
+        else
+        {
+            try
+            {
+                std::printf("Importing legacy shortcuts...\n");
+                auto legacyPath = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY));
+                if (fs::exists(legacyPath))
+                {
+                    LoadLegacyBindings(legacyPath);
+                    SaveUserBindings();
+                    std::printf("Legacy shortcuts imported\n");
+                }
+            }
+            catch (const std::exception& e)
+            {
+                std::fprintf(stderr, "Unable to import legacy shortcut bindings: %s\n", e.what());
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        std::fprintf(stderr, "Unable to load shortcut bindings: %s\n", e.what());
+    }
+}
+
+std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t binding)
+{
+    constexpr uint16_t nullBinding = 0xFFFF;
+    constexpr uint16_t shift = 0x100;
+    constexpr uint16_t ctrl = 0x200;
+    constexpr uint16_t alt = 0x400;
+    constexpr uint16_t cmd = 0x800;
+
+    if (binding == nullBinding)
+    {
+        return {};
+    }
+    else
+    {
+        ShortcutInput result;
+        result.Kind = InputDeviceKind::Keyboard;
+        if (binding & shift)
+            result.Modifiers |= KMOD_SHIFT;
+        if (binding & ctrl)
+            result.Modifiers |= KMOD_CTRL;
+        if (binding & alt)
+            result.Modifiers |= KMOD_ALT;
+        if (binding & cmd)
+            result.Modifiers |= KMOD_GUI;
+        result.Button = SDL_GetKeyFromScancode(static_cast<SDL_Scancode>(binding & 0xFF));
+        return result;
+    }
+}
+
+void ShortcutManager::LoadLegacyBindings(const fs::path& path)
+{
+    constexpr int32_t SUPPORTED_FILE_VERSION = 1;
+
+    auto fs = std::ifstream(path);
+    if (fs)
+    {
+        auto br = BinaryReader(&fs);
+
+        uint16_t version{};
+        br << version;
+
+        if (version == SUPPORTED_FILE_VERSION)
+        {
+            for (size_t i = 0; i < 85; i++)
+            {
+                uint16_t value{};
+                br << value;
+
+                auto shortcutId = GetLegacyShortcutId(i);
+                if (!shortcutId.empty())
+                {
+                    auto shortcut = GetShortcut(shortcutId);
+                    if (shortcut != nullptr)
+                    {
+                        shortcut->Current.clear();
+                        auto input = ConvertLegacyBinding(value);
+                        if (input)
+                        {
+                            shortcut->Current.push_back(std::move(*input));
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+void ShortcutManager::LoadUserBindings(const fs::path& path)
+{
+}
+
+void ShortcutManager::SaveUserBindings()
+{
+    try
+    {
+        auto path = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS));
+        SaveUserBindings(path);
+    }
+    catch (const std::exception& e)
+    {
+        std::fprintf(stderr, "Unable to save shortcut bindings: %s\n", e.what());
+    }
+}
+
+void ShortcutManager::SaveUserBindings(const fs::path& path)
+{
+}
+
+std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
+{
+    static constexpr const char* LegacyMap[] = {
+        ShortcutId::InterfaceCloseTop,
+        ShortcutId::InterfaceCloseAll,
+        ShortcutId::InterfaceCancelConstruction,
+        ShortcutId::InterfacePause,
+        ShortcutId::InterfaceZoomOut,
+        ShortcutId::InterfaceZoomIn,
+        ShortcutId::InterfaceRotateClockwise,
+        ShortcutId::InterfaceRotateAnticlockwise,
+        ShortcutId::InterfaceRotateConstruction,
+        ShortcutId::ViewToggleUnderground,
+        ShortcutId::ViewToggleBaseLand,
+        ShortcutId::ViewToggleVerticalLand,
+        ShortcutId::ViewToggleRides,
+        ShortcutId::ViewToggleScenery,
+        ShortcutId::ViewToggleSupports,
+        ShortcutId::ViewTogglePeeps,
+        ShortcutId::ViewToggleLandHeightMarkers,
+        ShortcutId::ViewToggleTrackHeightMarkers,
+        ShortcutId::ViewToggleFootpathHeightMarkers,
+        ShortcutId::InterfaceOpenLand,
+        ShortcutId::InterfaceOpenWater,
+        ShortcutId::InterfaceOpenScenery,
+        ShortcutId::InterfaceOpenFootpaths,
+        ShortcutId::InterfaceOpenNewRide,
+        ShortcutId::InterfaceOpenFinances,
+        ShortcutId::InterfaceOpenResearch,
+        ShortcutId::InterfaceOpenRides,
+        ShortcutId::InterfaceOpenPark,
+        ShortcutId::InterfaceOpenGuests,
+        ShortcutId::InterfaceOpenStaff,
+        ShortcutId::InterfaceOpenMessages,
+        ShortcutId::InterfaceOpenMap,
+        ShortcutId::InterfaceScreenshot,
+        ShortcutId::InterfaceDecreaseSpeed,
+        ShortcutId::InterfaceIncreaseSpeed,
+        ShortcutId::InterfaceOpenCheats,
+        ShortcutId::InterfaceToggleToolbars,
+        ShortcutId::ScrollUp,
+        ShortcutId::ScrollLeft,
+        ShortcutId::ScrollRight,
+        ShortcutId::ScrollDown,
+        ShortcutId::MultiplayerChat,
+        ShortcutId::InterfaceSaveGame,
+        ShortcutId::InterfaceShowOptions,
+        ShortcutId::InterfaceMute,
+        ShortcutId::ScaleToggleWindowMode,
+        ShortcutId::MultiplayerShow,
+        nullptr,
+        ShortcutId::DebugTogglePaintDebugWindow,
+        ShortcutId::ViewToggleFootpaths,
+        ShortcutId::WindowRideConstructionTurnLeft,
+        ShortcutId::WindowRideConstructionTurnRight,
+        ShortcutId::WindowRideConstructionDefault,
+        ShortcutId::WindowRideConstructionSlopeDown,
+        ShortcutId::WindowRideConstructionSlopeUp,
+        ShortcutId::WindowRideConstructionChainLift,
+        ShortcutId::WindowRideConstructionBankLeft,
+        ShortcutId::WindowRideConstructionBankRight,
+        ShortcutId::WindowRideConstructionPrevious,
+        ShortcutId::WindowRideConstructionNext,
+        ShortcutId::WindowRideConstructionBuild,
+        ShortcutId::WindowRideConstructionDemolish,
+        ShortcutId::InterfaceLoadGame,
+        ShortcutId::InterfaceClearScenery,
+        ShortcutId::ViewToggleGridlines,
+        ShortcutId::ViewToggleCutAway,
+        ShortcutId::ViewToogleFootpathIssues,
+        ShortcutId::InterfaceOpenTileInspector,
+        ShortcutId::DebugAdvanceTick,
+        ShortcutId::InterfaceSceneryPicker,
+        ShortcutId::InterfaceScaleIncrease,
+        ShortcutId::InterfaceScaleDecrease,
+        ShortcutId::WindowTileInspectorInsertCorrupt,
+        ShortcutId::WindowTileInspectorCopy,
+        ShortcutId::WindowTileInspectorPaste,
+        ShortcutId::WindowTileInspectorRemove,
+        ShortcutId::WindowTileInspectorMoveUp,
+        ShortcutId::WindowTileInspectorMoveDown,
+        ShortcutId::WindowTileInspectorIncreaseX,
+        ShortcutId::WindowTileInspectorDecreaseX,
+        ShortcutId::WindowTileInspectorIncreaseY,
+        ShortcutId::WindowTileInspectorDecreaseY,
+        ShortcutId::WindowTileInspectorIncreaseHeight,
+        ShortcutId::WindowTileInspectorDecreaseHeight,
+        ShortcutId::InterfaceDisableClearance,
+    };
+    auto sz = index < std::size(LegacyMap) ? LegacyMap[index] : nullptr;
+    return sz == nullptr ? std::string_view() : std::string_view(sz);
 }
