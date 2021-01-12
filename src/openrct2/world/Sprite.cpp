@@ -31,7 +31,7 @@ static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLi
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
-std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
+static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -46,7 +46,25 @@ const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
 
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
+{
+    size_t index = SPATIAL_INDEX_LOCATION_NULL;
+    if (x != LOCATION_NULL)
+    {
+        x = std::clamp(x, 0, 0xFFFF);
+        y = std::clamp(y, 0, 0xFFFF);
+
+        int16_t flooredX = floor2(x, 32);
+        uint8_t tileY = y >> 5;
+        index = (flooredX << 3) | tileY;
+    }
+
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
+    return index;
+}
 
 // Required for GetEntity to return a default
 template<> bool SpriteBase::Is<SpriteBase>() const
@@ -267,26 +285,6 @@ void reset_sprite_spatial_index()
     }
 }
 
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
-{
-    size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != LOCATION_NULL)
-    {
-        x = std::clamp(x, 0, 0xFFFF);
-        y = std::clamp(y, 0, 0xFFFF);
-
-        int16_t flooredX = floor2(x, 32);
-        uint8_t tileY = y >> 5;
-        index = (flooredX << 3) | tileY;
-    }
-
-    if (index >= sizeof(gSpriteSpatialIndex))
-    {
-        return SPATIAL_INDEX_LOCATION_NULL;
-    }
-    return index;
-}
-
 #ifndef DISABLE_NETWORK
 
 rct_sprite_checksum sprite_checksum()
@@ -383,8 +381,6 @@ void sprite_clear_all_unused()
         _spriteFlashingList[sprite->sprite_index] = false;
     }
 }
-
-static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
