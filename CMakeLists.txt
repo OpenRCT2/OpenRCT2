@@ -137,13 +137,18 @@ if (APPLE AND MACOS_USE_DEPENDENCIES)
 
     set(CMAKE_MACOSX_RPATH 1)
     list(APPEND CMAKE_PREFIX_PATH "${MACOS_DYLIBS_DIR}")
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
     # the RPATH to be used when installing, but only if it's not a system directory
     list(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_PREFIX}/lib" isSystemDir)
     if("${isSystemDir}" STREQUAL "-1")
         set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
     endif("${isSystemDir}" STREQUAL "-1")
+
+    # if the DESTDIR env var is defined, use it in the install RPATH
+    if(DEFINED ENV{DESTDIR})
+        get_filename_component(destdirRealPath "$ENV{DESTDIR}" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
+        set(CMAKE_INSTALL_RPATH "${destdirRealPath}${CMAKE_INSTALL_PREFIX}/lib")
+    endif()
 endif ()
 
 # LIST of supported flags, use SET_CHECK_CXX_FLAGS() to apply to target.
