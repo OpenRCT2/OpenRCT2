@@ -42,7 +42,9 @@ project(openrct2 CXX)
 add_executable(${PROJECT_NAME} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 ipo_set_target_properties(${PROJECT_NAME})
-if (NOT MSVC)
+
+# mingw builds cannot use the PkgConfig imported targets
+if (NOT MSVC AND NOT WIN32)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     PkgConfig::SDL2
                                     PkgConfig::SPEEX)
