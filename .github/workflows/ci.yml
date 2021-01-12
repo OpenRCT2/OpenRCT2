@@ -158,7 +158,7 @@ jobs:
       - name: Build OpenRCT2
         run: |
           brew install ninja
-          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on -DDISABLE_DISCORD_RPC=on
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
