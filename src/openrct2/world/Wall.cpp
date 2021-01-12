@@ -186,16 +186,3 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
     if (isBackwards)
         animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
 }
-
-void WallElement::SetRawRCT1Data(uint32_t rawData)
-{
-    entryIndex = rawData & 0xFF;
-    colour_3 = (rawData >> 8) & 0xFF;
-    colour_1 = (rawData >> 16) & 0xFF;
-    animation = (rawData >> 24) & 0xFF;
-}
-
-uint8_t WallElement::GetRCT1Slope() const
-{
-    return entryIndex & 0b00011111;
-}

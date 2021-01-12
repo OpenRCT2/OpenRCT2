@@ -600,9 +600,9 @@ public:
     uint8_t GetBannerIndex() const;
     bool IsAcrossTrack() const;
     bool AnimationIsBackwards() const;
-    uint32_t GetRawRCT1WallTypeData() const;
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
+    uint8_t GetRCT1Slope() const;
 
     void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetSlope(uint8_t newslope);
