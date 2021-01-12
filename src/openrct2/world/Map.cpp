@@ -1731,28 +1731,48 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            GameActions::Execute(&parkEntranceRemoveAction);
+            auto result = GameActions::Execute(&parkEntranceRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
-            GameActions::Execute(&wallRemoveAction);
+            auto result = GameActions::Execute(&wallRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            GameActions::Execute(&removeSceneryAction);
+            auto result = GameActions::Execute(&removeSceneryAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
         {
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            GameActions::Execute(&bannerRemoveAction);
+            auto result = GameActions::Execute(&bannerRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         default:
