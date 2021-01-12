@@ -187,11 +187,7 @@ endif ()
 
 if (NOT DISABLE_TTF)
     if (STATIC)
-        if (NOT MSVC)
-            target_link_libraries(${PROJECT_NAME} PkgConfig::FREETYPE_STATIC)
-        else ()
-            target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
-        endif ()
+        target_link_libraries(${PROJECT_NAME} ${FREETYPE_STATIC_LIBRARIES})
             
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_STATIC_LIBRARIES})
