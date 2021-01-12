@@ -684,6 +684,11 @@ void window_update_all();
 
 void window_set_window_limit(int32_t value);
 
+rct_window* window_bring_to_front(rct_window* w);
+rct_window* window_bring_to_front_by_class(rct_windowclass cls);
+rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
+rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
+
 rct_window* WindowCreate(
     std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
@@ -695,6 +700,16 @@ template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::val
 T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowFocusOrCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    auto* w = window_bring_to_front_by_class(cls);
+    if (w == nullptr)
+    {
+        w = WindowCreate<T>(cls, width, height, flags);
+    }
+    return static_cast<T*>(w);
 }
 
 rct_window* WindowCreate(
@@ -725,11 +740,6 @@ void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, r
 void WindowInitScrollWidgets(rct_window* w);
 void window_update_scroll_widgets(rct_window* w);
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index);
-
-rct_window* window_bring_to_front(rct_window* w);
-rct_window* window_bring_to_front_by_class(rct_windowclass cls);
-rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
-rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
 
 void window_push_others_right(rct_window* w);
 void window_push_others_below(rct_window* w1);

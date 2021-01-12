@@ -44,18 +44,6 @@
 #include <algorithm>
 #include <iterator>
 
-/**
- * Monthly staff wages
- *
- * rct2: 0x00992A00
- */
-const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)] = {
-    MONEY(50, 00), // Handyman
-    MONEY(80, 00), // Mechanic
-    MONEY(60, 00), // Security guard
-    MONEY(55, 00), // Entertainer
-};
-
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
@@ -2675,5 +2663,21 @@ void Staff::UpdateRideInspected(ride_id_t rideIndex)
         ride->last_inspection = 0;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN
             | RIDE_INVALIDATE_RIDE_LIST;
+    }
+}
+
+money32 GetStaffWage(StaffType type)
+{
+    switch (type)
+    {
+        default:
+        case StaffType::Handyman:
+            return MONEY(50, 00);
+        case StaffType::Mechanic:
+            return MONEY(80, 00);
+        case StaffType::Security:
+            return MONEY(60, 00);
+        case StaffType::Entertainer:
+            return MONEY(55, 00);
     }
 }

@@ -1096,7 +1096,7 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         auto ft = Formatter();
-        ft.Add<money32>(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)]);
+        ft.Add<money32>(GetStaffWage(peep->AssignedStaffType));
         gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, ft.Data(), COLOUR_BLACK, screenCoords);
         screenCoords.y += LIST_ROW_HEIGHT;
     }

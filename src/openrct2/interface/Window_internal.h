@@ -160,6 +160,12 @@ struct rct_window
     virtual void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi)
     {
     }
+    virtual void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
+    virtual void OnToolAbort(rct_widgetindex widgetIndex)
+    {
+    }
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
