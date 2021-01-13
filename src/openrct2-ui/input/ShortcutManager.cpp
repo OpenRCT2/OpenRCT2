@@ -365,9 +365,19 @@ std::optional<ShortcutInput> ShortcutInput::FromInputEvent(const InputEvent& e)
     return result;
 }
 
-std::string_view RegisteredShortcut::GetGroup() const
+std::string_view RegisteredShortcut::GetTopLevelGroup() const
 {
     auto fullstopIndex = Id.find('.');
+    if (fullstopIndex != std::string::npos)
+    {
+        return std::string_view(Id.c_str(), fullstopIndex);
+    }
+    return {};
+}
+
+std::string_view RegisteredShortcut::GetGroup() const
+{
+    auto fullstopIndex = Id.find_last_of('.');
     if (fullstopIndex != std::string::npos)
     {
         return std::string_view(Id.c_str(), fullstopIndex);

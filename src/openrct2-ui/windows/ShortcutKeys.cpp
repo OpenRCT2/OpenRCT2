@@ -13,6 +13,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/sprites.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -29,14 +30,17 @@ enum WINDOW_SHORTCUT_WIDGET_IDX
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_TAB_CONTENT_PANEL,
     WIDX_SCROLL,
-    WIDX_RESET
+    WIDX_RESET,
+    WIDX_TAB_0,
 };
 
 // clang-format off
 static rct_widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4,    18}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+    MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
+    MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
     MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
     { WIDGETS_END }
 };
@@ -138,17 +142,27 @@ private:
         std::string Binding;
     };
 
+    struct ShortcutTabDesc
+    {
+        std::string_view IdGroup;
+        uint32_t ImageId;
+        uint32_t ImageDivisor;
+        uint32_t ImageNumFrames;
+    };
+
+    std::vector<ShortcutTabDesc> _tabs;
+    std::vector<rct_widget> _widgets;
     std::vector<ShortcutStringPair> _list;
     std::optional<size_t> _highlightedItem;
+    size_t _currentTabIndex{};
+    uint32_t _tabAnimationIndex{};
 
 public:
     void OnOpen() override
     {
+        InitialiseTabs();
+        InitialiseWidgets();
         InitialiseList();
-
-        widgets = window_shortcut_widgets;
-        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
-        WindowInitScrollWidgets(this);
 
         min_width = WW;
         min_height = WH;
@@ -161,6 +175,11 @@ public:
         window_set_resize(this, min_width, min_height, max_width, max_height);
     }
 
+    void OnUpdate() override
+    {
+        _tabAnimationIndex++;
+    }
+
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
         switch (widgetIndex)
@@ -170,8 +189,15 @@ public:
                 break;
             case WIDX_RESET:
                 ResetAll();
-                Invalidate();
                 break;
+            default:
+            {
+                auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_TAB_0);
+                if (tabIndex < _tabs.size())
+                {
+                    SetTab(tabIndex);
+                }
+            }
         }
     }
 
@@ -182,15 +208,26 @@ public:
         widgets[WIDX_TITLE].right = width - 2;
         widgets[WIDX_CLOSE].right = width - 3;
         widgets[WIDX_CLOSE].left = width - 13;
+        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
+        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
         widgets[WIDX_SCROLL].right = width - 5;
-        widgets[WIDX_SCROLL].bottom = height - 18;
-        widgets[WIDX_RESET].top = height - 15;
-        widgets[WIDX_RESET].bottom = height - 4;
+        widgets[WIDX_SCROLL].bottom = height - 19;
+        widgets[WIDX_RESET].top = height - 16;
+        widgets[WIDX_RESET].bottom = height - 5;
+        window_align_tabs(this, WIDX_TAB_0, static_cast<rct_widgetindex>(WIDX_TAB_0 + _tabs.size()));
+
+        // Set selected tab
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + i), false);
+        }
+        SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex), true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         DrawWidgets(dpi);
+        DrawTabImages(dpi);
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
@@ -264,8 +301,35 @@ public:
     }
 
 private:
+    bool IsInCurrentTab(const RegisteredShortcut& shortcut)
+    {
+        auto groupFilter = _tabs[_currentTabIndex].IdGroup;
+        auto group = shortcut.GetTopLevelGroup();
+        if (groupFilter.empty())
+        {
+            // Check it doesn't belong in any other tab
+            for (const auto& tab : _tabs)
+            {
+                if (!tab.IdGroup.empty())
+                {
+                    if (tab.IdGroup == group)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return group == groupFilter;
+        }
+    }
+
     void InitialiseList()
     {
+        auto groupFilter = _tabs[_currentTabIndex].IdGroup;
+
         _list.clear();
 
         size_t index = 0;
@@ -273,29 +337,76 @@ private:
         auto& shortcutManager = GetShortcutManager();
         for (auto& shortcut : shortcutManager.Shortcuts)
         {
-            if (group.empty())
+            if (IsInCurrentTab(shortcut))
             {
-                group = shortcut.GetGroup();
-            }
-            else
-            {
-                auto groupName = shortcut.GetGroup();
-                if (group != groupName)
+                if (group.empty())
                 {
-                    // Add separator
-                    group = groupName;
-                    _list.emplace_back();
+                    group = shortcut.GetGroup();
                 }
-            }
+                else
+                {
+                    auto groupName = shortcut.GetGroup();
+                    if (group != groupName)
+                    {
+                        // Add separator
+                        group = groupName;
+                        _list.emplace_back();
+                    }
+                }
 
-            ShortcutStringPair ssp;
-            ssp.ShortcutIndex = index;
-            ssp.ShortcutId = shortcut.Id;
-            ssp.StringId = shortcut.LocalisedName;
-            ssp.CustomString = shortcut.CustomName;
-            ssp.Binding = FormatKeyChordsString(shortcut);
-            _list.push_back(std::move(ssp));
-            index++;
+                ShortcutStringPair ssp;
+                ssp.ShortcutIndex = index;
+                ssp.ShortcutId = shortcut.Id;
+                ssp.StringId = shortcut.LocalisedName;
+                ssp.CustomString = shortcut.CustomName;
+                ssp.Binding = FormatKeyChordsString(shortcut);
+                _list.push_back(std::move(ssp));
+                index++;
+            }
+        }
+
+        Invalidate();
+    }
+
+    void InitialiseTabs()
+    {
+        _tabs.clear();
+        _tabs.push_back({ "interface", SPR_TAB_GEARS_0, 2, 4 });
+        _tabs.push_back({ "view", 0, 0, 0 });
+        _tabs.push_back({ "window", SPR_TAB_PARK_ENTRANCE, 0, 0 });
+        _tabs.push_back({ {}, SPR_TAB_WRENCH_0, 2, 16 });
+    }
+
+    void InitialiseWidgets()
+    {
+        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
+
+        _widgets.clear();
+        _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
+
+        int32_t x = 3;
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            auto tab = MakeTab({ x, 17 }, STR_NONE);
+            _widgets.push_back(tab);
+            x += 31;
+
+            enabled_widgets |= (1ULL << (WIDX_TAB_0 + i));
+        }
+
+        _widgets.push_back({ WIDGETS_END });
+        widgets = _widgets.data();
+
+        WindowInitScrollWidgets(this);
+    }
+
+    void SetTab(size_t index)
+    {
+        if (_currentTabIndex != index)
+        {
+            _currentTabIndex = index;
+            _tabAnimationIndex = 0;
+            InitialiseList();
         }
     }
 
@@ -312,6 +423,35 @@ private:
         }
         shortcutManager.SaveUserBindings();
         RefreshBindings();
+    }
+
+    void DrawTabImages(rct_drawpixelinfo& dpi) const
+    {
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            DrawTabImage(dpi, i);
+        }
+    }
+
+    void DrawTabImage(rct_drawpixelinfo& dpi, size_t tabIndex) const
+    {
+        const auto& tabDesc = _tabs[tabIndex];
+        auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
+        if (!IsWidgetDisabled(widgetIndex))
+        {
+            auto imageId = tabDesc.ImageId;
+            if (imageId != 0)
+            {
+                if (tabIndex == _currentTabIndex && tabDesc.ImageDivisor != 0 && tabDesc.ImageNumFrames != 0)
+                {
+                    auto frame = _tabAnimationIndex / tabDesc.ImageDivisor;
+                    imageId += frame % tabDesc.ImageNumFrames;
+                }
+
+                const auto& widget = widgets[widgetIndex];
+                gfx_draw_sprite(&dpi, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top }, 0);
+            }
+        }
     }
 
     void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
