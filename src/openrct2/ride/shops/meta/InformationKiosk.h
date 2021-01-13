@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::InfoKiosk),
+    SET_FIELD(TrackBehaviours,{RideBoosterBehaviour::SpeedController,RideRapidsBehaviour::LogBumps})
 };
 // clang-format on

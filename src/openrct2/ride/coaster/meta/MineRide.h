@@ -20,7 +20,7 @@ constexpr const RideTypeDescriptor MineRideRTD =
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
     SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_ON_RIDE_PHOTO)),
-    SET_FIELD(ExtraTrackPieces, 0),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_BOOSTER)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_mine_ride),
@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor MineRideRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(TrackBehaviours,{RideBoosterBehaviour::Booster,RideRapidsBehaviour::LogBumps})
 };
 // clang-format on
