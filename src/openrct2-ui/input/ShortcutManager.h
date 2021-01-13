@@ -141,16 +141,59 @@ namespace OpenRCT2::Ui
 
     namespace ShortcutId
     {
-        // original
-        constexpr const char* InterfaceCloseTop = "interface0.close_top";
-        constexpr const char* InterfaceCloseAll = "interface0.close_all";
-        constexpr const char* InterfaceCancelConstruction = "interface0.cancel_construction";
-        constexpr const char* InterfacePause = "interface1.pause";
-        constexpr const char* InterfaceZoomOut = "interface3.zoom_out";
-        constexpr const char* InterfaceZoomIn = "interface3.zoom_in";
-        constexpr const char* InterfaceRotateClockwise = "interface3.rotate_clockwise";
-        constexpr const char* InterfaceRotateAnticlockwise = "interface3.rotate_anticlockwise";
-        constexpr const char* InterfaceRotateConstruction = "interface6.rotate_construction";
+        // Interface / general
+        constexpr const char* InterfaceCloseTop = "interface.general.close_top";
+        constexpr const char* InterfaceCloseAll = "interface.general.close_all";
+        constexpr const char* InterfaceCancelConstruction = "interface.general.cancel_construction";
+        constexpr const char* InterfacePause = "interface.general.pause";
+        constexpr const char* InterfaceZoomOut = "interface.general.zoom_out";
+        constexpr const char* InterfaceZoomIn = "interface.general.zoom_in";
+        constexpr const char* InterfaceRotateClockwise = "interface.general.rotate_clockwise";
+        constexpr const char* InterfaceRotateAnticlockwise = "interface.general.rotate_anticlockwise";
+        constexpr const char* InterfaceRotateConstruction = "interface.general.rotate_construction";
+        constexpr const char* InterfaceDecreaseSpeed = "interface.misc.decrease_speed";
+        constexpr const char* InterfaceIncreaseSpeed = "interface.misc.increase_speed";
+        constexpr const char* InterfaceToggleToolbars = "interface.misc.toggle_toolbars";
+        constexpr const char* InterfaceScreenshot = "interface.misc.screenshot";
+        constexpr const char* InterfaceLoadGame = "interface.misc.load_game";
+        constexpr const char* InterfaceSaveGame = "interface.misc.save_game";
+        constexpr const char* InterfaceMute = "interface.misc.mute";
+        constexpr const char* InterfaceSceneryPicker = "interface.misc.scenery_picker";
+        constexpr const char* InterfaceDisableClearance = "interface.misc.disable_clearance";
+        constexpr const char* MultiplayerChat = "interface.misc.multiplayer_chat";
+
+        // Interface / scroll
+        constexpr const char* ScrollUp = "interface.scroll.up";
+        constexpr const char* ScrollLeft = "interface.scroll.left";
+        constexpr const char* ScrollRight = "interface.scroll.right";
+        constexpr const char* ScrollDown = "interface.scroll.down";
+
+        // Interface / graphics
+        constexpr const char* ScaleToggleWindowMode = "interface.graphics.toggle_window_mode";
+        constexpr const char* InterfaceScaleIncrease = "interface.graphics.increase";
+        constexpr const char* InterfaceScaleDecrease = "interface.graphics.decrease";
+
+        // Interface / open
+        constexpr const char* InterfaceOpenLand = "interface.open.land";
+        constexpr const char* InterfaceOpenWater = "interface.open.water";
+        constexpr const char* InterfaceClearScenery = "interface.open.clear_scenery";
+        constexpr const char* InterfaceOpenScenery = "interface.open.scenery";
+        constexpr const char* InterfaceOpenFootpaths = "interface.open.footpaths";
+        constexpr const char* InterfaceOpenNewRide = "interface.open.new_ride";
+        constexpr const char* InterfaceOpenFinances = "interface.open.finances";
+        constexpr const char* InterfaceOpenResearch = "interface.open.research";
+        constexpr const char* InterfaceOpenRides = "interface.open.rides";
+        constexpr const char* InterfaceOpenPark = "interface.open.park";
+        constexpr const char* InterfaceOpenGuests = "interface.open.guests";
+        constexpr const char* InterfaceOpenStaff = "interface.open.staff";
+        constexpr const char* InterfaceOpenMessages = "interface.open.messages";
+        constexpr const char* InterfaceOpenMap = "interface.open.map";
+        constexpr const char* InterfaceShowOptions = "interface.open.options";
+        constexpr const char* InterfaceOpenCheats = "interface.open.cheats";
+        constexpr const char* InterfaceOpenTileInspector = "interface.open.tileinspector";
+        constexpr const char* MultiplayerShow = "interface.open.multiplayer";
+
+        // View
         constexpr const char* ViewToggleUnderground = "view.show_underground";
         constexpr const char* ViewToggleBaseLand = "view.hide_base_land";
         constexpr const char* ViewToggleVerticalLand = "view.hide_vertical_land";
@@ -161,38 +204,12 @@ namespace OpenRCT2::Ui
         constexpr const char* ViewToggleLandHeightMarkers = "view.show_land_height";
         constexpr const char* ViewToggleTrackHeightMarkers = "view.show_track_height";
         constexpr const char* ViewToggleFootpathHeightMarkers = "view.show_footpath_height";
-        constexpr const char* InterfaceOpenLand = "interface4.adjust_land";
-        constexpr const char* InterfaceOpenWater = "interface4.adjust_water";
-        constexpr const char* InterfaceOpenScenery = "interface4.build_scenery";
-        constexpr const char* InterfaceOpenFootpaths = "interface4.build_footpaths";
-        constexpr const char* InterfaceOpenNewRide = "interface4.build_new_ride";
-        constexpr const char* InterfaceOpenFinances = "interface5.show_finances";
-        constexpr const char* InterfaceOpenResearch = "interface5.show_research";
-        constexpr const char* InterfaceOpenRides = "interface5.show_rides";
-        constexpr const char* InterfaceOpenPark = "interface5.show_park";
-        constexpr const char* InterfaceOpenGuests = "interface5.show_guests";
-        constexpr const char* InterfaceOpenStaff = "interface5.show_staff";
-        constexpr const char* InterfaceOpenMessages = "interface5.show_messages";
-        constexpr const char* InterfaceOpenMap = "interface3.show_map";
-        constexpr const char* InterfaceScreenshot = "interface1.screenshot";
-        // new
-        constexpr const char* InterfaceDecreaseSpeed = "interface1.decrease_speed";
-        constexpr const char* InterfaceIncreaseSpeed = "interface1.increase_speed";
-        constexpr const char* InterfaceOpenCheats = "interface2.open_cheats";
-        constexpr const char* InterfaceToggleToolbars = "interface0.toggle_toolbars";
-        constexpr const char* ScrollUp = "scroll.up";
-        constexpr const char* ScrollLeft = "scroll.left";
-        constexpr const char* ScrollRight = "scroll.right";
-        constexpr const char* ScrollDown = "scroll.down";
-        constexpr const char* MultiplayerChat = "multiplayer.chat";
-        constexpr const char* InterfaceSaveGame = "interface1.save_game";
-        constexpr const char* InterfaceShowOptions = "interface1.show_options";
-        constexpr const char* InterfaceMute = "interface1.mute";
-        constexpr const char* ScaleToggleWindowMode = "scale.toggle_window_mode";
-        constexpr const char* MultiplayerShow = "multiplayer.show";
-        // paint original
-        constexpr const char* DebugTogglePaintDebugWindow = "debug.toggle_paint_debug_window";
         constexpr const char* ViewToggleFootpaths = "view.transparent_footpaths";
+        constexpr const char* ViewToggleGridlines = "view.show_gridlines";
+        constexpr const char* ViewToggleCutAway = "view.toggle_cut_away";
+        constexpr const char* ViewToogleFootpathIssues = "view.highlight_path_issues";
+
+        // Window / ride construction
         constexpr const char* WindowRideConstructionTurnLeft = "window.rideconstruction.turn_left";
         constexpr const char* WindowRideConstructionTurnRight = "window.rideconstruction.turn_right";
         constexpr const char* WindowRideConstructionDefault = "window.rideconstruction.default";
@@ -205,16 +222,8 @@ namespace OpenRCT2::Ui
         constexpr const char* WindowRideConstructionNext = "window.rideconstruction.next";
         constexpr const char* WindowRideConstructionBuild = "window.rideconstruction.build";
         constexpr const char* WindowRideConstructionDemolish = "window.rideconstruction.demolish";
-        constexpr const char* InterfaceLoadGame = "interface1.load_game";
-        constexpr const char* InterfaceClearScenery = "interface4.clear_scenery";
-        constexpr const char* ViewToggleGridlines = "view.show_gridlines";
-        constexpr const char* ViewToggleCutAway = "view.toggle_cut_away";
-        constexpr const char* ViewToogleFootpathIssues = "view.highlight_path_issues";
-        constexpr const char* InterfaceOpenTileInspector = "tileinspector.open";
-        constexpr const char* DebugAdvanceTick = "debug.advance_tick";
-        constexpr const char* InterfaceSceneryPicker = "interface6.scenery_picker";
-        constexpr const char* InterfaceScaleIncrease = "scale.increase";
-        constexpr const char* InterfaceScaleDecrease = "scale.decrease";
+
+        // Window / tile inspector
         constexpr const char* WindowTileInspectorInsertCorrupt = "window.tileinspector.insert_corrupt";
         constexpr const char* WindowTileInspectorCopy = "window.tileinspector.copy";
         constexpr const char* WindowTileInspectorPaste = "window.tileinspector.paste";
@@ -227,9 +236,11 @@ namespace OpenRCT2::Ui
         constexpr const char* WindowTileInspectorDecreaseY = "window.tileinspector.decrease_y";
         constexpr const char* WindowTileInspectorIncreaseHeight = "window.tileinspector.increase_height";
         constexpr const char* WindowTileInspectorDecreaseHeight = "window.tileinspector.decrease_height";
-        constexpr const char* InterfaceDisableClearance = "interface2.disable_clearance";
-        // even newer
+
+        // Debug
         constexpr const char* DebugToggleConsole = "debug.console";
+        constexpr const char* DebugTogglePaintDebugWindow = "debug.toggle_paint_debug_window";
+        constexpr const char* DebugAdvanceTick = "debug.advance_tick";
     } // namespace ShortcutId
 
 } // namespace OpenRCT2::Ui

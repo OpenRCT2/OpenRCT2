@@ -135,7 +135,6 @@ class ShortcutKeysWindow final : public Window
 private:
     struct ShortcutStringPair
     {
-        size_t ShortcutIndex{};
         std::string ShortcutId;
         rct_string_id StringId = STR_NONE;
         std::string CustomString;
@@ -328,44 +327,57 @@ private:
 
     void InitialiseList()
     {
-        auto groupFilter = _tabs[_currentTabIndex].IdGroup;
+        // Get shortcuts and sort by group
+        auto shortcuts = GetShortcutsForCurrentTab();
+        std::stable_sort(shortcuts.begin(), shortcuts.end(), [](const RegisteredShortcut* a, const RegisteredShortcut* b) {
+            return a->GetGroup().compare(b->GetGroup()) < 0;
+        });
 
+        // Create list items with a separator between each group
         _list.clear();
-
         size_t index = 0;
         std::string group;
-        auto& shortcutManager = GetShortcutManager();
-        for (auto& shortcut : shortcutManager.Shortcuts)
+        for (const auto* shortcut : shortcuts)
         {
-            if (IsInCurrentTab(shortcut))
+            if (group.empty())
             {
-                if (group.empty())
-                {
-                    group = shortcut.GetGroup();
-                }
-                else
-                {
-                    auto groupName = shortcut.GetGroup();
-                    if (group != groupName)
-                    {
-                        // Add separator
-                        group = groupName;
-                        _list.emplace_back();
-                    }
-                }
-
-                ShortcutStringPair ssp;
-                ssp.ShortcutIndex = index;
-                ssp.ShortcutId = shortcut.Id;
-                ssp.StringId = shortcut.LocalisedName;
-                ssp.CustomString = shortcut.CustomName;
-                ssp.Binding = FormatKeyChordsString(shortcut);
-                _list.push_back(std::move(ssp));
-                index++;
+                group = shortcut->GetGroup();
             }
+            else
+            {
+                auto groupName = shortcut->GetGroup();
+                if (group != groupName)
+                {
+                    // Add separator
+                    group = groupName;
+                    _list.emplace_back();
+                }
+            }
+
+            ShortcutStringPair ssp;
+            ssp.ShortcutId = shortcut->Id;
+            ssp.StringId = shortcut->LocalisedName;
+            ssp.CustomString = shortcut->CustomName;
+            ssp.Binding = FormatKeyChordsString(*shortcut);
+            _list.push_back(std::move(ssp));
+            index++;
         }
 
         Invalidate();
+    }
+
+    std::vector<const RegisteredShortcut*> GetShortcutsForCurrentTab()
+    {
+        std::vector<const RegisteredShortcut*> result;
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& shortcut : shortcutManager.Shortcuts)
+        {
+            if (IsInCurrentTab(shortcut))
+            {
+                result.push_back(&shortcut);
+            }
+        }
+        return result;
     }
 
     void InitialiseTabs()
