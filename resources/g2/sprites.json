@@ -476,6 +476,9 @@
         "y_offset": -15
     },
     {
+        "path": "icons/view.png"
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

@@ -372,7 +372,7 @@ private:
     {
         _tabs.clear();
         _tabs.push_back({ "interface", SPR_TAB_GEARS_0, 2, 4 });
-        _tabs.push_back({ "view", 0, 0, 0 });
+        _tabs.push_back({ "view", SPR_G2_VIEW, 0, 0 });
         _tabs.push_back({ "window", SPR_TAB_PARK_ENTRANCE, 0, 0 });
         _tabs.push_back({ {}, SPR_TAB_WRENCH_0, 2, 16 });
     }
