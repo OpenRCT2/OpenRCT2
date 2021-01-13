@@ -64,8 +64,6 @@ namespace OpenRCT2::Scripting
                     return "large_scenery";
                 case TILE_ELEMENT_TYPE_BANNER:
                     return "banner";
-                case TILE_ELEMENT_TYPE_CORRUPT:
-                    return "openrct2_corrupt_deprecated";
                 default:
                     return "unknown";
             }
@@ -803,77 +801,12 @@ namespace OpenRCT2::Scripting
 
         bool isHidden_get() const
         {
-            // TODO: Simply return the 'hidden' field once corrupt elements are superseded.
-            const TileElement* element = map_get_first_element_at(_coords);
-            bool previousElementWasUsefulCorrupt = false;
-            do
-            {
-                if (element == _element)
-                    return previousElementWasUsefulCorrupt;
-
-                if (element->GetType() == TILE_ELEMENT_TYPE_CORRUPT)
-                    previousElementWasUsefulCorrupt = !previousElementWasUsefulCorrupt;
-                else
-                    previousElementWasUsefulCorrupt = false;
-            } while (!(element++)->IsLastForTile());
-
-            Guard::Assert(false);
-            return false;
+            return _element->IsInvisible();
         }
         void isHidden_set(bool hide)
         {
-            // TODO: Simply update the 'hidden' field once corrupt elements are superseded.
             ThrowIfGameStateNotMutable();
-            const bool isHidden = isHidden_get();
-            if (hide == isHidden)
-                return;
-
-            if (hide)
-            {
-                // Get index of our current element (has to be done now before inserting the corrupt element)
-                const auto elementIndex = _element - map_get_first_element_at(_coords);
-
-                // Insert corrupt element at the end of the list for this tile
-                // Note: Z = MAX_ELEMENT_HEIGHT to guarantee this
-                TileElement* insertedElement = tile_element_insert(
-                    { _coords, MAX_ELEMENT_HEIGHT }, 0, TileElementType::Corrupt);
-                if (insertedElement == nullptr)
-                {
-                    // TODO: Show error
-                    return;
-                }
-
-                // Since inserting a new element may move the tile elements in memory, we have to update the local pointer
-                _element = map_get_first_element_at(_coords) + elementIndex;
-
-                // Move the corrupt element down in the list until it's right under our element
-                while (insertedElement > _element)
-                {
-                    std::swap<TileElement>(*insertedElement, *(insertedElement - 1));
-                    insertedElement--;
-
-                    // Un-swap the last-for-tile flag
-                    if (insertedElement->IsLastForTile())
-                    {
-                        insertedElement->SetLastForTile(false);
-                        (insertedElement + 1)->SetLastForTile(true);
-                    }
-                }
-
-                // Now the corrupt element took the hidden element's place, increment it by one
-                _element++;
-
-                // Update base and clearance heights of inserted corrupt element to match the element to hide
-                insertedElement->base_height = insertedElement->clearance_height = _element->base_height;
-            }
-            else
-            {
-                TileElement* const elementToRemove = _element - 1;
-                Guard::Assert(elementToRemove->GetType() == TILE_ELEMENT_TYPE_CORRUPT);
-                tile_element_remove(elementToRemove);
-                _element--;
-            }
-
+            _element->SetInvisible(hide);
             Invalidate();
         }
 

@@ -39,9 +39,6 @@ enum
     TILE_ELEMENT_TYPE_WALL = (5 << 2),
     TILE_ELEMENT_TYPE_LARGE_SCENERY = (6 << 2),
     TILE_ELEMENT_TYPE_BANNER = (7 << 2),
-    // The corrupt element type is used for skipping drawing other following
-    // elements on a given tile.
-    TILE_ELEMENT_TYPE_CORRUPT = (8 << 2),
 };
 
 enum class TileElementType : uint8_t
@@ -89,6 +86,8 @@ struct TileElementBase
     void SetLastForTile(bool on);
     bool IsGhost() const;
     void SetGhost(bool isGhost);
+    bool IsInvisible() const;
+    void SetInvisible(bool on);
 
     uint8_t GetOccupiedQuadrants() const;
     void SetOccupiedQuadrants(uint8_t quadrants);
@@ -682,6 +681,7 @@ enum
 enum
 {
     TILE_ELEMENT_FLAG_GHOST = (1 << 4),
+    TILE_ELEMENT_FLAG_INVISIBLE = (1 << 5),
     TILE_ELEMENT_FLAG_LAST_TILE = (1 << 7)
 };
 

@@ -1030,10 +1030,15 @@ public:
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
 
         TileElement* dstElement = gTileElements;
+        bool nextElementInvisible = false;
+        bool restOfTileInvisible = false;
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
+                nextElementInvisible = false;
+                restOfTileInvisible = false;
+
                 if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
                 {
                     dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
@@ -1056,22 +1061,29 @@ public:
                 {
                     if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
                     {
-                        std::memcpy(dstElement, srcElement, sizeof(*srcElement));
-                    }
-                    else
-                    {
-                        auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
-                        // Todo: replace with setting invisibility bit
-                        if (tileElementType == RCT12TileElementType::Corrupt
-                            || tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                            || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                            std::memcpy(dstElement, srcElement, sizeof(*srcElement));
-                        else
-                            ImportTileElement(dstElement, srcElement);
+                        continue;
                     }
 
+                    auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                    if (tileElementType == RCT12TileElementType::Corrupt)
+                    {
+                        nextElementInvisible = true;
+                        continue;
+                    }
+                    if (tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                        || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                    {
+                        restOfTileInvisible = true;
+                        continue;
+                    }
+
+                    ImportTileElement(dstElement, srcElement, nextElementInvisible || restOfTileInvisible);
+                    nextElementInvisible = false;
                     dstElement++;
                 } while (!(srcElement++)->IsLastForTile());
+
+                // Set last element flag in case the original last element was never added
+                (dstElement - 1)->SetLastForTile(true);
             }
         }
 
@@ -1080,7 +1092,7 @@ public:
         map_update_tile_pointers();
     }
 
-    void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
+    void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
     {
         // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
         uint8_t tileElementType = src->GetType();
@@ -1093,6 +1105,7 @@ public:
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
         dst->SetGhost(src->IsGhost());
         dst->SetLastForTile(src->IsLastForTile());
+        dst->SetInvisible(invisible);
 
         switch (tileElementType)
         {

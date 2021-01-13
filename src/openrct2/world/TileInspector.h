@@ -21,10 +21,10 @@ namespace OpenRCT2::TileInspector
 {
     using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
 
-    GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
     GameActionResultPtr SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
     GameActionResultPtr RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+    GameActionResultPtr ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
     GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
     GameActionResultPtr SortElementsAt(const CoordsXY& loc, bool isExecuting);
     GameActionResultPtr AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
@@ -50,6 +50,5 @@ namespace OpenRCT2::TileInspector
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
     GameActionResultPtr BannerToggleBlockingEdge(
         const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting);
-    GameActionResultPtr CorruptClamp(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
 
 } // namespace OpenRCT2::TileInspector

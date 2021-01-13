@@ -244,6 +244,11 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
     int32_t previousBaseZ = 0;
     do
     {
+        if (tile_element->IsInvisible())
+        {
+            continue;
+        }
+
         // Only paint tile_elements below the clip height.
         if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW) && (tile_element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
             continue;
@@ -261,6 +266,11 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             TileElement* tile_element_sub_iterator = tile_element;
             while (!(tile_element_sub_iterator++)->IsLastForTile())
             {
+                if (tile_element->IsInvisible())
+                {
+                    continue;
+                }
+
                 if (tile_element_sub_iterator->GetBaseZ() != tile_element->GetBaseZ())
                 {
                     break;
@@ -272,15 +282,6 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
                         break;
                     case TILE_ELEMENT_TYPE_TRACK:
                         session->TrackElementOnSameHeight = tile_element_sub_iterator;
-                        break;
-                    case TILE_ELEMENT_TYPE_CORRUPT:
-                        // To preserve regular behaviour, make an element hidden by
-                        //  corruption also invisible to this method.
-                        if (tile_element->IsLastForTile())
-                        {
-                            break;
-                        }
-                        tile_element_sub_iterator++;
                         break;
                 }
             }
@@ -315,16 +316,6 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             case TILE_ELEMENT_TYPE_BANNER:
                 banner_paint(session, direction, baseZ, tile_element);
                 break;
-            // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
-            case TILE_ELEMENT_TYPE_CORRUPT:
-                if (tile_element->IsLastForTile())
-                    return;
-                tile_element++;
-                break;
-            default:
-                // An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of
-                // all elements after it.
-                return;
         }
         session->MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
