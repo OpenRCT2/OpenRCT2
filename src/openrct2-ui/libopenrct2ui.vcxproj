@@ -167,7 +167,6 @@
     <ClCompile Include="windows\SceneryScatter.cpp" />
     <ClCompile Include="windows\ServerList.cpp" />
     <ClCompile Include="windows\ServerStart.cpp" />
-    <ClCompile Include="windows\ShortcutKeyChange.cpp" />
     <ClCompile Include="windows\ShortcutKeys.cpp" />
     <ClCompile Include="windows\Sign.cpp" />
     <ClCompile Include="windows\Staff.cpp" />
