@@ -951,6 +951,12 @@ namespace OpenRCT2
             {
                 _lastTick = 0;
                 _variableFrame = useVariableFrame;
+
+                // Switching from variable to fixed frame requires reseting
+                // of entity positions back to end of tick positions
+                auto& tweener = EntityTweener::Get();
+                tweener.Restore();
+                tweener.Reset();
             }
 
             if (useVariableFrame)
