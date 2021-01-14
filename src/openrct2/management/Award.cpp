@@ -263,21 +263,15 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
         return false;
 
-    auto peepCount = 0;
     auto staffCount = 0;
     auto staffTypeFlags = 0;
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    for (auto staff : EntityList<Staff>(EntityListId::Peep))
     {
-        if (peep->AssignedPeepType == PeepType::Staff)
-        {
-            staffCount++;
-            staffTypeFlags |= (1 << static_cast<uint8_t>(peep->AssignedStaffType));
-        }
-        else
-        {
-            peepCount++;
-        }
+        staffCount++;
+        staffTypeFlags |= (1 << static_cast<uint8_t>(staff->AssignedStaffType));
     }
+    auto guests = EntityList<Guest>(EntityListId::Peep);
+    auto peepCount = std::distance(guests.begin(), guests.end());
 
     return ((staffTypeFlags & 0xF) && staffCount >= 20 && staffCount >= peepCount / 32);
 }

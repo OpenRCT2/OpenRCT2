@@ -656,13 +656,10 @@ void SetCheatAction::RemoveAllGuests() const
     }
 
     // Do not use the FOR_ALL_PEEPS macro for this as next sprite index
-    // will be fetched on a deleted peep.
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    // will be fetched on a deleted guest.
+    for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
-        if (peep->AssignedPeepType == PeepType::Guest)
-        {
-            peep->Remove();
-        }
+        guest->Remove();
     }
 
     window_invalidate_by_class(WC_RIDE);
