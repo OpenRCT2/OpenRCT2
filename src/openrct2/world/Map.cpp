@@ -1551,10 +1551,6 @@ void mapTryCalcHighestTileHeight(bool fullCheck)
 
         if (gMapHighestTileHeightLoopPosition == 0)
         {
-            if (gMapHighestTileHeight != gMapHighestTileHeightPending)
-            {
-                printf("new highest height %d -> %d\n", gMapHighestTileHeight, gMapHighestTileHeightPending);
-            }
             gMapHighestTileHeight = gMapHighestTileHeightPending;
             gMapHighestTileHeightPending = 0;
             gCalcHighestTileHeightScheduled = false;
