@@ -92,6 +92,7 @@ STR_0090    :Aangedreven mijntrein
 STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
+STR_0094    :Achtbaan met enkele rail
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -172,6 +173,7 @@ STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkele
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
+STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, waar ze met hoge snelheid door krappe bochten en over de kop gaan.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -3650,6 +3652,16 @@ STR_6396    :Schermbeveiliging en -energiebesparing uitschakelen
 STR_6397    :Als dit is ingeschakeld, zal (zolang OpenRCT2 loopt) de schermbeveiliging niet worden ingeschakeld en gaat het scherm ook niet na verloop van tijd op zwart.
 STR_6398    :Bestand bevat niet-ondersteunde attractietypes. Update naar een nieuwere versie van OpenRCT2 om dit bestand te openen.
 STR_6399    :OpenRCT2 heeft bestanden van een RollerCoaster Tycoon 2-installatie nodig. Voer het pad naar de map waar de bestanden van RollerCoaster Tycoon 2 zich bevinden in bij de variabele “game_path” in config.ini. Start daarna OpenRCT2 opnieuw op.
+STR_6400    :Ik heb offline GOG-installer voor RollerCoaster Tycoon 2 gedownload, maar nog niet geïnstalleerd
+STR_6401    :Ik heb RollerCoaster Tycoon 2 al geïnstalleerd
+STR_6402    :OpenRCT2-data instellen
+STR_6403    :Selecteer de optie die op je situatie van toepassing is:
+STR_6404    :Selecteer de GOG-installer voor RollerCoaster Tycoon 2.
+STR_6405    :GOG-installer selecteren
+STR_6406    :GOG-installer voor RollerCoaster Tycoon 2
+STR_6407    :Dit kan een paar minuten duren.
+STR_6408    :Installeer “innoextract” zodat de bestanden kunnen worden uitgepakt. Start daarna OpenRCT2 opnieuw op.
+STR_6409    :Het geselecteerde bestand is niet de offline GOG-installer voor RollerCoaster Tycoon 2. Je hebt mogelijk de GOG Galaxy-downloader gepakt of het verkeerde bestand geselecteerd.
 
 #############
 # Scenarios #
