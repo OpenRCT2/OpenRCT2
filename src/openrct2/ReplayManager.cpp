@@ -450,8 +450,9 @@ namespace OpenRCT2
 
         virtual bool IsPlaybackStateMismatching() const override
         {
-            if (_mode != ReplayMode::PLAYING)
+            if (_mode != ReplayMode::NONE)
             {
+                // This state is only valid after the playback.
                 return false;
             }
             return _faultyChecksumIndex != -1;
