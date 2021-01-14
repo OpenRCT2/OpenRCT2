@@ -15,6 +15,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/DataSerialiser.h>
 #include <openrct2/core/FileSystem.hpp>
+#include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Language.h>
@@ -606,6 +607,29 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
 
 void ShortcutManager::LoadUserBindings(const fs::path& path)
 {
+    auto root = Json::ReadFromFile(path);
+    if (root.is_object())
+    {
+        for (auto it = root.begin(); it != root.end(); ++it)
+        {
+            const auto& key = it.key();
+            const auto& value = it.value();
+
+            const auto& shortcut = GetShortcut(key);
+            shortcut->Current.clear();
+            if (value.is_string())
+            {
+                shortcut->Current.emplace_back(value.get<std::string>());
+            }
+            else if (value.is_array())
+            {
+                for (auto& subValue : value)
+                {
+                    shortcut->Current.emplace_back(subValue.get<std::string>());
+                }
+            }
+        }
+    }
 }
 
 void ShortcutManager::SaveUserBindings()
@@ -623,6 +647,30 @@ void ShortcutManager::SaveUserBindings()
 
 void ShortcutManager::SaveUserBindings(const fs::path& path)
 {
+    json_t root;
+    if (fs::exists(path))
+    {
+        root = Json::ReadFromFile(path);
+    }
+
+    for (const auto& shortcut : Shortcuts)
+    {
+        auto& jShortcut = root[shortcut.Id];
+        if (shortcut.Current.size() == 1)
+        {
+            jShortcut = shortcut.Current[0].ToString();
+        }
+        else
+        {
+            jShortcut = nlohmann::json::array();
+            for (const auto& binding : shortcut.Current)
+            {
+                jShortcut.push_back(binding.ToString());
+            }
+        }
+    }
+
+    Json::WriteToFile(path, root);
 }
 
 std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
