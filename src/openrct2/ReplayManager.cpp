@@ -177,7 +177,11 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 // If the network is disabled we will only get a dummy hash which will cause
                 // false positives during replay.
-                CheckState();
+                if (!CheckState())
+                {
+                    StopPlayback();
+                    return;
+                }
 #endif
                 ReplayCommands();
 
@@ -790,12 +794,12 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_NETWORK
-        void CheckState()
+        bool CheckState()
         {
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
-                return;
+                return true;
 
             const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
             if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
@@ -811,6 +815,8 @@ namespace OpenRCT2
                         replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
+
+                    return false;
                 }
                 else
                 {
@@ -821,6 +827,8 @@ namespace OpenRCT2
                 }
                 _currentReplay->checksumIndex++;
             }
+
+            return true;
         }
 #endif // DISABLE_NETWORK
 
