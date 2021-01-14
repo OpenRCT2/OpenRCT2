@@ -169,29 +169,7 @@ void TileElement::ClearAs(uint8_t newType)
 
 void TileElementBase::Remove()
 {
-    auto tileElement = this;
-
-    // Replace Nth element by (N+1)th element.
-    // This loop will make tileElement point to the old last element position,
-    // after copy it to it's new position
-    if (!tileElement->IsLastForTile())
-    {
-        do
-        {
-            *tileElement = *(tileElement + 1);
-        } while (!(++tileElement)->IsLastForTile());
-    }
-
-    // Mark the latest element with the last element flag.
-    (tileElement - 1)->SetLastForTile(true);
-    tileElement->base_height = MAX_ELEMENT_HEIGHT;
-
-    if ((tileElement + 1) == gNextFreeTileElement)
-    {
-        gNextFreeTileElement--;
-    }
-
-    mapScheduleCalcHighestTileHeight();
+    tile_element_remove(static_cast<TileElement*>(this));
 }
 
 // Rotate both of the values amount
