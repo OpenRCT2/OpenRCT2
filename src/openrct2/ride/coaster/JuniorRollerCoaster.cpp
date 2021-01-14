@@ -1869,7 +1869,7 @@ void junior_rc_paint_station(
 {
     uint32_t imageId;
 
-    bool isBraked = trackElement.BlockBrakeClosed();
+    bool isBraked = tileElement->AsTrack()->GetBrakeClosed();
 
     if (direction == 0 || direction == 2)
     {

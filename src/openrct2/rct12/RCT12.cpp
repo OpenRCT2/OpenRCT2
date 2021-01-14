@@ -229,7 +229,12 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
     if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
-        return (sequence >> 4) << 1;
+        uint8_t speed = (sequence >> 4) << 1;
+        if (trackType == TrackElemType::BlockBrakes && speed == 0)
+        {
+            return 1 << 1;
+        }
+        return speed;
     }
     return 0;
 }
@@ -459,9 +464,25 @@ bool RCT12PathElement::IsBlockedByVehicle() const
     return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE) != 0;
 }
 
-bool RCT12TrackElement::BlockBrakeClosed() const
+bool RCT12TrackElement::GetBrakeClosed() const
 {
+    if (trackType == TrackElemType::Brakes)
+    {
+        return true;
+    }
     return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
+}
+
+void RCT12TrackElement::SetBrakeClosed(bool isClosed)
+{
+    if (isClosed)
+    {
+        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
+    else
+    {
+        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    }
 }
 
 bool RCT12ResearchItem::IsInventedEndMarker() const

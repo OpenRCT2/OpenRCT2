@@ -658,7 +658,7 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
     // but this does not cause problems.
-    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
+    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster || trackType == TrackElemType::BlockBrakes;
 }
 
 uint8_t TrackElement::GetSeatRotation() const
@@ -833,20 +833,20 @@ void TrackElement::SetInverted(bool inverted)
     }
 }
 
-bool TrackElement::BlockBrakeClosed() const
+bool TrackElement::GetBrakeClosed() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED) != 0;
+    return (Flags2 & TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED) != 0;
 }
 
-void TrackElement::SetBlockBrakeClosed(bool isClosed)
+void TrackElement::SetBrakeClosed(bool isClosed)
 {
     if (isClosed)
     {
-        Flags2 |= TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 |= TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
     else
     {
-        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BLOCK_BRAKE_CLOSED;
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_BRAKE_CLOSED;
     }
 }
 

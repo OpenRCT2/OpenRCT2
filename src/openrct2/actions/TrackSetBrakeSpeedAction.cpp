@@ -10,6 +10,7 @@
 #include "TrackSetBrakeSpeedAction.h"
 
 #include "../management/Finance.h"
+#include "../ride/Track.h"
 
 TrackSetBrakeSpeedAction::TrackSetBrakeSpeedAction(const CoordsXYZ& loc, track_type_t trackType, uint8_t brakeSpeed)
     : _loc(loc)
@@ -70,6 +71,14 @@ GameActions::Result TrackSetBrakeSpeedAction::QueryExecute(bool isExecuting) con
     if (isExecuting)
     {
         tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+        {
+            brakes_link_to_block_brake(_loc, tileElement);
+        }
+        else if (tileElement->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
+        {
+            block_brakes_set_linked_brakes_closed(_loc, tileElement, tileElement->AsTrack()->GetBrakeClosed());
+        }
     }
     return res;
 }

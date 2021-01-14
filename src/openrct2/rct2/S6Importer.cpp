@@ -1204,7 +1204,6 @@ namespace RCT2
                     auto src2 = src->AsSurface();
 
                     dst2->SetSlope(src2->GetSlope());
-
                     dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
                     dst2->SetEdgeStyle(src2->GetEdgeStyle());
 
@@ -1272,7 +1271,7 @@ namespace RCT2
                     dst2->SetInverted(src2->IsInverted());
                     dst2->SetStationIndex(src2->GetStationIndex());
                     dst2->SetHasGreenLight(src2->HasGreenLight());
-                    dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
+                    dst2->SetBrakeClosed(src2->GetBrakeClosed());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     // Skipping IsHighlighted()
 

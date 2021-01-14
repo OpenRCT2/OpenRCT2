@@ -1386,6 +1386,9 @@ static void WindowRideConstructionDropdown(rct_window* w, rct_widgetindex widget
             _currentTrackBankEnd = TRACK_BANK_NONE;
             _currentTrackLiftHill &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
             break;
+        case TrackElemType::BlockBrakes:
+            _currentBrakeSpeed2 = 2;
+            break;
     }
     _currentTrackCurve = trackPiece | RideConstructionSpecialPieceSelected;
     window_ride_construction_update_active_elements();
@@ -2786,8 +2789,9 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     window_ride_construction_widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
 
-    bool brakesSelected = _selectedTrackType == TrackElemType::Brakes
-        || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes);
+    bool brakesSelected = _selectedTrackType == TrackElemType::Brakes || _selectedTrackType == TrackElemType::BlockBrakes
+        || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes)
+        || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes);
     bool boosterTrackSelected = _selectedTrackType == TrackElemType::Booster
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster);
 
@@ -2831,7 +2835,15 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     }
     else
     {
-        if (brakesSelected)
+        if (brakesSelected && _selectedTrackType == TrackElemType::BlockBrakes
+            ||  _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes))
+        {
+            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED;
+            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
+        }
+        else if (brakesSelected)
         {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
             window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
@@ -2874,21 +2886,22 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
-    if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
-        && _selectedTrackType != TrackElemType::Brakes
-        && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
+    if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
     {
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
-        if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Spinner)
+        if (!brakesSelected && !boosterTrackSelected)
         {
-            for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
+            window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
+            window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
+            window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Button;
+            window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Button;
+            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
+            if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Spinner)
             {
-                window_ride_construction_widgets[i].left -= 36;
-                window_ride_construction_widgets[i].right -= 36;
+                for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
+                {
+                    window_ride_construction_widgets[i].left -= 36;
+                    window_ride_construction_widgets[i].right -= 36;
+                }
             }
         }
     }

@@ -207,6 +207,8 @@
 - Improved: [#14193] [Plugin] Add exact type field to each TileElement, add type field to WidgetBase.
 - Improved: [#14193] [Plugin] Change single quotes to double quotes in openrct2.d.ts.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
+- Change: [#13838] Block brakes now have speed control.
+- Change: [#13838] Brakes adjacent to block brakes with slower speed than block brakes disable when block brake is open.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 - Removed: [#14186] Network traffic window (replaced by plug-in).
