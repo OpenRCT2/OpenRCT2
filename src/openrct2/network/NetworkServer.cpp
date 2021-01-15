@@ -102,6 +102,13 @@ bool NetworkServer::BeginServer(uint16_t port, const std::string& address)
     return true;
 }
 
+void NetworkServer::Close()
+{
+    NetworkBase::Close();
+
+    client_connection_list.clear();
+}
+
 void NetworkServer::Update()
 {
     NetworkBase::Update();
@@ -138,6 +145,21 @@ void NetworkServer::Update()
     if (tcpSocket != nullptr)
     {
         AddClient(std::move(tcpSocket));
+    }
+}
+
+void NetworkServer::DecayCooldown(NetworkPlayer* player)
+{
+    if (player == nullptr)
+        return; // No valid connection yet.
+
+    for (auto it = std::begin(player->CooldownTime); it != std::end(player->CooldownTime);)
+    {
+        it->second -= _currentDeltaTime;
+        if (it->second <= 0)
+            it = player->CooldownTime.erase(it);
+        else
+            it++;
     }
 }
 

@@ -11,7 +11,7 @@ public:
 
     bool BeginServer(uint16_t port, const std::string& address);
 
-public:
+    void Close() override;
     void Update() override;
     void PostUpdate() override;
     void Flush() override;
@@ -46,6 +46,7 @@ public:
     void SendScripts(NetworkConnection& connection) const;
 
 private:
+    void DecayCooldown(NetworkPlayer* player);
     void ProcessPlayerList();
     void ProcessDisconnectedClients();
 

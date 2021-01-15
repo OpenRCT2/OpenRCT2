@@ -26,17 +26,12 @@ public:
 public: // Common
     bool Init();
 
+    virtual void Close();
     virtual void Update();
     virtual void PostUpdate();
-    virtual void Close();
-    virtual void SendGameAction(const GameAction* action)
-    {
-    }
+    virtual void SendGameAction(const GameAction* action);
     virtual void Flush();
-    virtual int32_t GetMode() const
-    {
-        return NETWORK_MODE_NONE;
-    }
+    virtual int32_t GetMode() const;
 
     uint32_t GetServerTick();
 
@@ -74,7 +69,6 @@ public: // Server
     void BeginServerLog();
     void AppendServerLog(const std::string& s);
     void CloseServerLog();
-    void DecayCooldown(NetworkPlayer* player);
     void AddClient(std::unique_ptr<ITcpSocket>&& socket);
     std::string GetMasterServerUrl();
     std::string GenerateAdvertiseKey();

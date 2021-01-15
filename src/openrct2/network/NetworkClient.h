@@ -11,6 +11,13 @@ public:
 
     bool BeginClient(const std::string& host, uint16_t port);
     void Reconnect();
+    void Close() override;
+    void Update() override;
+    void PostUpdate() override;
+    void Flush() override;
+    int32_t GetMode() const override;
+    NetworkStats_t GetStats() const override;
+    NetworkAuth GetAuthStatus() override;
 
 public:
     // Packet dispatchers.
@@ -27,15 +34,6 @@ public:
     void SendGameInfoRequest();
     void SendMapRequest(const std::vector<std::string>& objects);
     void SendHeartbeat(NetworkConnection& connection) const;
-
-public:
-    void Update() override;
-    void PostUpdate() override;
-    void Flush() override;
-    int32_t GetMode() const override;
-    NetworkStats_t GetStats() const override;
-    NetworkAuth GetAuthStatus() override;
-
     void SendChat(const char* text);
     void SendGameAction(const GameAction* action) override;
 

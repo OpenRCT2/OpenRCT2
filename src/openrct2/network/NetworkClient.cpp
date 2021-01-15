@@ -143,6 +143,17 @@ bool NetworkClient::BeginClient(const std::string& host, uint16_t port)
     return true;
 }
 
+void NetworkClient::Close()
+{
+    NetworkBase::Close();
+
+    _serverTickData.clear();
+    _pendingPlayerLists.clear();
+    _pendingPlayerInfo.clear();
+
+    _serverConnection = nullptr;
+}
+
 void NetworkClient::Reconnect()
 {
     if (status != NETWORK_STATUS_NONE)

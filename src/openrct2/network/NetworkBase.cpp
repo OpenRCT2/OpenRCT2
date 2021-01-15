@@ -115,66 +115,20 @@ bool NetworkBase::Init()
 
 void NetworkBase::Close()
 {
-    if (status != NETWORK_STATUS_NONE)
-    {
-        // HACK Because Close() is closed all over the place, it sometimes gets called inside an Update
-        //      call. This then causes disposed data to be accessed. Therefore, save closing until the
-        //      end of the update loop.
-        if (_closeLock)
-        {
-            _requireClose = true;
-            return;
-        }
+    if (status == NETWORK_STATUS_NONE)
+        return;
 
-        CloseChatLog();
-        CloseServerLog();
-        CloseConnection();
+    CloseChatLog();
+    CloseServerLog();
 
-        client_connection_list.clear();
-        GameActions::ClearQueue();
-        GameActions::ResumeQueue();
-        player_list.clear();
-        group_list.clear();
-        _serverTickData.clear();
-        _pendingPlayerLists.clear();
-        _pendingPlayerInfo.clear();
+    GameActions::ClearQueue();
+    GameActions::ResumeQueue();
 
-        gfx_invalidate_screen();
+    player_list.clear();
+    group_list.clear();
 
-        _requireClose = false;
-    }
-}
+    gfx_invalidate_screen();
 
-void NetworkBase::DecayCooldown(NetworkPlayer* player)
-{
-    if (player == nullptr)
-        return; // No valid connection yet.
-
-    for (auto it = std::begin(player->CooldownTime); it != std::end(player->CooldownTime);)
-    {
-        it->second -= _currentDeltaTime;
-        if (it->second <= 0)
-            it = player->CooldownTime.erase(it);
-        else
-            it++;
-    }
-}
-
-void NetworkBase::CloseConnection()
-{
-    /*
-    if (mode == NETWORK_MODE_CLIENT)
-    {
-        _serverConnection.reset();
-    }
-    else if (mode == NETWORK_MODE_SERVER)
-    {
-        _listenSocket.reset();
-        _advertiser.reset();
-    }
-
-    mode = NETWORK_MODE_NONE;
-    */
     status = NETWORK_STATUS_NONE;
     _lastConnectStatus = SocketStatus::Closed;
 }
@@ -242,6 +196,11 @@ void NetworkBase::PostUpdate()
 
 void NetworkBase::Flush()
 {
+}
+
+int32_t NetworkBase::GetMode() const
+{
+    return NETWORK_MODE_NONE;
 }
 
 std::vector<std::unique_ptr<NetworkPlayer>>::iterator NetworkBase::GetPlayerIteratorByID(uint8_t id)
