@@ -1031,27 +1031,58 @@ public:
 
     void ImportTileElements()
     {
-        for (uint32_t index = 0; index < RCT2_MAX_TILE_ELEMENTS; index++)
+        // Build tile pointer cache (needed to get the first element at a certain location)
+        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
+
+        TileElement* dstElement = gTileElements;
+        for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
-            auto src = &_s6.tile_elements[index];
-            auto dst = &gTileElements[index];
-            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+            for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
-                std::memcpy(dst, src, sizeof(*src));
-            }
-            else
-            {
-                auto tileElementType = static_cast<RCT12TileElementType>(src->GetType());
-                // Todo: replace with setting invisibility bit
-                if (tileElementType == RCT12TileElementType::Corrupt
-                    || tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                    || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                    std::memcpy(dst, src, sizeof(*src));
-                else
-                    ImportTileElement(dst, src);
+                if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
+                // This might happen with damaged parks. Make sure there is *something* to avoid crashes.
+                if (srcElement == nullptr)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                do
+                {
+                    if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                    {
+                        std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                    }
+                    else
+                    {
+                        auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                        // Todo: replace with setting invisibility bit
+                        if (tileElementType == RCT12TileElementType::Corrupt
+                            || tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                            || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                            std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                        else
+                            ImportTileElement(dstElement, srcElement);
+                    }
+
+                    dstElement++;
+                } while (!(srcElement++)->IsLastForTile());
             }
         }
+
         gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
+
+        map_update_tile_pointers();
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
