@@ -954,8 +954,6 @@ static void research_update_first_of_type(ResearchItem* researchItem)
 
     if (!_seenRideType[rideType])
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
-
-    _seenRideType[rideType] = true;
 }
 
 static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
@@ -989,7 +987,7 @@ void research_determine_first_of_type()
         if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem.Equals(&gResearchLastItem.value()))
             continue;
 
-        // The next research item is also present in gResearchItemsInvented, even though it isn't invented yet(!)
+        // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented yet(!)
         if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
             continue;
 
@@ -1009,6 +1007,15 @@ void research_determine_first_of_type()
 
     for (auto& researchItem : gResearchItemsUninvented)
     {
+        // The next research item is (sometimes?) also present in gResearchItemsUninvented
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+        {
+            // Copy the "first of type" flag.
+            researchItem.flags = gResearchNextItem->flags;
+            continue;
+        }
+
         research_update_first_of_type(&researchItem);
+        research_mark_ride_type_as_seen(researchItem);
     }
 }
