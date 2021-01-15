@@ -354,6 +354,11 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         pathElement->SetIsBroken(false);
         pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            MapInvalidateHeightCache();
+        }
+
         footpath_queue_chain_reset();
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))

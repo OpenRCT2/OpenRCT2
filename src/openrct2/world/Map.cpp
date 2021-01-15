@@ -99,10 +99,10 @@ int16_t gMapSizeMinus2;
 int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
-int32_t gMapHighestTileHeightLoopPosition;
-int32_t gMapHighestTileHeightPending;
-int32_t gMapHighestTileHeight;
-bool gCalcHighestTileHeightScheduled;
+
+static int32_t gMapHighestTileHeightLoopPosition;
+static int32_t gMapHighestTileHeightPending;
+static int32_t gMapHighestTileHeight;
 
 TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
@@ -936,7 +936,10 @@ void tile_element_remove(TileElement* tileElement)
         gNextFreeTileElement--;
     }
 
-    mapScheduleCalcHighestTileHeight();
+    if (!tileElement->IsGhost())
+    {
+        MapInvalidateHeightCache();
+    }
 }
 
 /**
@@ -1516,19 +1519,18 @@ void map_update_tiles()
     }
 }
 
-void mapScheduleCalcHighestTileHeight()
+void MapInvalidateHeightCache()
 {
-    gCalcHighestTileHeightScheduled = true;
+    gMapHighestTileHeightLoopPosition = 0;
 }
 
-void mapTryCalcHighestTileHeight(bool fullCheck)
+void MapUpdateHeightCache(bool fullCheck)
 {
-    if (!fullCheck && !gCalcHighestTileHeightScheduled)
-    {
-        return;
-    }
+    constexpr int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    if (gMapHighestTileHeightLoopPosition == maxTileIndex)
+        return;
+
     int32_t tilesToCheck = maxTileIndex;
 
     // If we're doing a full check of the map then zero out the loop
@@ -1536,32 +1538,17 @@ void mapTryCalcHighestTileHeight(bool fullCheck)
     // Otherwise check a limited number of tiles per each time the
     // function is called.
     if (fullCheck)
-    {
         gMapHighestTileHeightLoopPosition = 0;
-    }
     else
-    {
         tilesToCheck /= 64;
-    }
 
-    for (int32_t i = 0; i < tilesToCheck; i++)
+    for (int32_t i = 0; i <= tilesToCheck; i++)
     {
-        gMapHighestTileHeightLoopPosition++;
-        gMapHighestTileHeightLoopPosition %= maxTileIndex;
-
-        if (gMapHighestTileHeightLoopPosition == 0)
-        {
-            gMapHighestTileHeight = gMapHighestTileHeightPending;
-            gMapHighestTileHeightPending = 0;
-            gCalcHighestTileHeightScheduled = false;
-        }
-
         int32_t x = (gMapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
         int32_t y = (gMapHighestTileHeightLoopPosition / MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
         auto tileCoords = CoordsXY(x, y);
         auto tileElement = map_get_first_element_at(tileCoords);
 
-        // Loop through elements on the current tile and find the tallest
         do
         {
             if (tileElement == nullptr)
@@ -1570,16 +1557,35 @@ void mapTryCalcHighestTileHeight(bool fullCheck)
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_CORRUPT)
                 continue;
 
+            // Here we are handling Water height, which requires a bit of different approach.
+            if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+            {
+                int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
+                if (waterHeight > gMapHighestTileHeightPending)
+                {
+                    gMapHighestTileHeightPending = waterHeight;
+                    continue;
+                }
+            }
+
             int32_t height = tileElement->GetClearanceZ();
             if (height > gMapHighestTileHeightPending)
-            {
                 gMapHighestTileHeightPending = height;
-            }
+
         } while (!(tileElement++)->IsLastForTile());
+
+        if (gMapHighestTileHeightLoopPosition == maxTileIndex)
+        {
+            gMapHighestTileHeight = gMapHighestTileHeightPending;
+            gMapHighestTileHeightPending = 0;
+            break;
+        }
+        else
+            gMapHighestTileHeightLoopPosition++;
     }
 }
 
-MapRange mapGetEdgeLimits()
+MapRange MapGetEdgeLimits()
 {
     uint8_t rotation = get_current_rotation();
 

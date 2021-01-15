@@ -186,6 +186,11 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     entranceElement->SetRideIndex(_rideIndex);
     entranceElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        MapInvalidateHeightCache();
+    }
+
     if (_isExit)
     {
         ride_set_exit_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));

@@ -421,6 +421,11 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
 
     wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        MapInvalidateHeightCache();
+    }
+
     res->tileElement = wallElement->as<TileElement>();
 
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);

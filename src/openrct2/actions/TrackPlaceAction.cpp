@@ -603,6 +603,11 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         trackElement->SetTrackType(_trackType);
         trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            MapInvalidateHeightCache();
+        }
+
         switch (_trackType)
         {
             case TrackElemType::Waterfall:

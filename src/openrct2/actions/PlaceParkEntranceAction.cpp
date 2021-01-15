@@ -141,6 +141,11 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
         Guard::Assert(entranceElement != nullptr);
 
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            MapInvalidateHeightCache();
+        }
+
         entranceElement->SetClearanceZ(zHigh);
         entranceElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
         entranceElement->SetDirection(_loc.direction);

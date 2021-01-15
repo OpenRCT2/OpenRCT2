@@ -119,6 +119,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     if (_height > surfaceElement->base_height)
     {
         surfaceElement->SetWaterHeight(_height * COORDS_Z_STEP);
+        MapInvalidateHeightCache();
     }
     else
     {

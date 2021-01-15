@@ -243,12 +243,7 @@ int32_t TileElementBase::GetClearanceZ() const
 
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
-    uint8_t new_clearance_height = (newZ / COORDS_Z_STEP);
-    if (clearance_height != new_clearance_height)
-    {
-        mapScheduleCalcHighestTileHeight();
-        clearance_height = new_clearance_height;
-    }
+    clearance_height = (newZ / COORDS_Z_STEP);
 }
 
 uint8_t TileElementBase::GetOwner() const

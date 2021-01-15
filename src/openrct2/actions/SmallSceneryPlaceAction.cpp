@@ -449,6 +449,11 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
 
     res->tileElement = sceneryElement->as<TileElement>();
 
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        MapInvalidateHeightCache();
+    }
+
     map_invalidate_tile_full(_loc);
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
     {

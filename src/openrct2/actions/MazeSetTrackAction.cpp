@@ -192,6 +192,11 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
 
         tileElement = trackElement->as<TileElement>();
 
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            MapInvalidateHeightCache();
+        }
+
         map_invalidate_tile_full(startLoc);
 
         ride->maze_tiles++;

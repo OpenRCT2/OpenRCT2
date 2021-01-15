@@ -156,6 +156,11 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     bannerElement->SetIndex(_bannerIndex);
     bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+    if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+    {
+        MapInvalidateHeightCache();
+    }
+
     map_invalidate_tile_full(_loc);
     map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 

@@ -561,7 +561,7 @@ void viewport_update_position(rct_window* window)
                                             window->savedViewPos.y + viewport->view_height / 2 };
 
     auto mapCoord = viewport_coord_to_map_coord(viewportMidPoint, 0);
-    auto mapEdgeLimits = mapGetEdgeLimits();
+    auto mapEdgeLimits = MapGetEdgeLimits();
 
     // Clamp to the map minimum value
     int32_t at_map_edge = 0;

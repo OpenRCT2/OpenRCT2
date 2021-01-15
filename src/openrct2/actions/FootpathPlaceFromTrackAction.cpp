@@ -246,6 +246,11 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         pathElement->SetCorners(0);
         pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
+        if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
+        {
+            MapInvalidateHeightCache();
+        }
+
         map_invalidate_tile_full(_loc);
     }
 

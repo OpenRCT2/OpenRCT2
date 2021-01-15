@@ -275,6 +275,7 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
             {
                 wall_remove_at({ curTile, zLow, zHigh });
             }
+            MapInvalidateHeightCache();
         }
 
         auto* newSceneryElement = TileElementInsert<LargeSceneryElement>(

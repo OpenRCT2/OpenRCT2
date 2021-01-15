@@ -1184,6 +1184,8 @@ GameActionResultPtr tile_inspector_corrupt_clamp(const CoordsXY& loc, int32_t el
         {
             window_invalidate_by_class(WC_TILE_INSPECTOR);
         }
+
+        MapInvalidateHeightCache();
     }
 
     return std::make_unique<GameActions::Result>();

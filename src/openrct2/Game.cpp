@@ -550,7 +550,7 @@ void game_load_init()
 
     // Since this is the first load of the map we force a full check
     // of the tile heights now, hence the "true" value.
-    mapTryCalcHighestTileHeight(true);
+    MapUpdateHeightCache(true);
 
     auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
     context_broadcast_intent(&intent);

@@ -383,6 +383,7 @@ void LandSetHeightAction::SetSurfaceHeight(TileElement* surfaceElement) const
     }
 
     map_invalidate_tile_full(_coords);
+    MapInvalidateHeightCache();
 }
 
 int32_t LandSetHeightAction::map_set_land_height_clear_func(

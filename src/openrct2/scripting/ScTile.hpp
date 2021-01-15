@@ -132,6 +132,7 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             _element->clearance_height = newClearanceHeight;
+            MapInvalidateHeightCache();
             Invalidate();
         }
 
@@ -875,6 +876,7 @@ namespace OpenRCT2::Scripting
             }
 
             Invalidate();
+            MapInvalidateHeightCache();
         }
 
         DukValue age_get() const
