@@ -22,6 +22,7 @@
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13102] Underflow on height chart (Ride measurements).
+- Fix: [#13236] New ride type appears as new vehicle type in research.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
 - Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
