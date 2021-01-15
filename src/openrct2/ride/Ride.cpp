@@ -3107,11 +3107,11 @@ vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
     return result;
 }
 
-static bool ride_does_vehicle_colour_exist(uint8_t ride_sub_type, vehicle_colour* vehicleColour)
+static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, vehicle_colour* vehicleColour)
 {
     for (auto& ride : GetRideManager())
     {
-        if (ride.subtype != ride_sub_type)
+        if (ride.subtype != subType)
             continue;
         if (ride.vehicle_colours[0].Body != vehicleColour->main)
             continue;
@@ -3120,13 +3120,13 @@ static bool ride_does_vehicle_colour_exist(uint8_t ride_sub_type, vehicle_colour
     return true;
 }
 
-int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type)
+int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType)
 {
-    if (ride_sub_type >= MAX_RIDE_OBJECTS)
+    if (subType >= MAX_RIDE_OBJECTS)
     {
         return 0;
     }
-    rct_ride_entry* rideEntry = get_ride_entry(ride_sub_type);
+    rct_ride_entry* rideEntry = get_ride_entry(subType);
     if (rideEntry == nullptr)
     {
         return 0;
@@ -3143,7 +3143,7 @@ int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type)
         int32_t randomConfigIndex = util_rand() % numColourConfigurations;
         vehicle_colour* preset = &presetList->list[randomConfigIndex];
 
-        if (ride_does_vehicle_colour_exist(ride_sub_type, preset))
+        if (ride_does_vehicle_colour_exist(subType, preset))
         {
             return randomConfigIndex;
         }
