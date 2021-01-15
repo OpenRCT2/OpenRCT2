@@ -954,8 +954,6 @@ static void research_update_first_of_type(ResearchItem* researchItem)
 
     if (!_seenRideType[rideType])
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
-
-    _seenRideType[rideType] = true;
 }
 
 static void research_mark_ride_type_as_seen(const ResearchItem& researchItem)
@@ -1018,5 +1016,6 @@ void research_determine_first_of_type()
         }
 
         research_update_first_of_type(&researchItem);
+        research_mark_ride_type_as_seen(researchItem);
     }
 }
