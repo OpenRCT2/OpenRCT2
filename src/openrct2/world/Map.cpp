@@ -100,10 +100,6 @@ int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
-static int32_t gMapHighestTileHeightLoopPosition;
-static int32_t gMapHighestTileHeightPending;
-static int32_t gMapHighestTileHeight;
-
 TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
 TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 std::vector<CoordsXY> gMapSelectionTiles;
@@ -122,6 +118,10 @@ uint16_t gLandRemainingOwnershipSales;
 uint16_t gLandRemainingConstructionSales;
 
 bool gMapLandRightsUpdateSuccess;
+
+static int32_t _mapHighestTileHeightLoopPosition;
+static int32_t _mapHighestTileHeightPending;
+static int32_t _mapHighestTileHeight;
 
 static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
@@ -1521,14 +1521,14 @@ void map_update_tiles()
 
 void MapInvalidateHeightCache()
 {
-    gMapHighestTileHeightLoopPosition = 0;
+    _mapHighestTileHeightLoopPosition = 0;
 }
 
 void MapUpdateHeightCache(bool fullCheck)
 {
     constexpr int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    if (gMapHighestTileHeightLoopPosition == maxTileIndex)
+    if (_mapHighestTileHeightLoopPosition == maxTileIndex)
         return;
 
     int32_t tilesToCheck = maxTileIndex;
@@ -1538,14 +1538,14 @@ void MapUpdateHeightCache(bool fullCheck)
     // Otherwise check a limited number of tiles per each time the
     // function is called.
     if (fullCheck)
-        gMapHighestTileHeightLoopPosition = 0;
+        _mapHighestTileHeightLoopPosition = 0;
     else
         tilesToCheck /= 64;
 
     for (int32_t i = 0; i <= tilesToCheck; i++)
     {
-        int32_t x = (gMapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
-        int32_t y = (gMapHighestTileHeightLoopPosition / MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
+        int32_t x = (_mapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
+        int32_t y = (_mapHighestTileHeightLoopPosition / MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
         auto tileCoords = CoordsXY(x, y);
         auto tileElement = map_get_first_element_at(tileCoords);
 
@@ -1561,27 +1561,27 @@ void MapUpdateHeightCache(bool fullCheck)
             if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
             {
                 int32_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
-                if (waterHeight > gMapHighestTileHeightPending)
+                if (waterHeight > _mapHighestTileHeightPending)
                 {
-                    gMapHighestTileHeightPending = waterHeight;
+                    _mapHighestTileHeightPending = waterHeight;
                     continue;
                 }
             }
 
             int32_t height = tileElement->GetClearanceZ();
-            if (height > gMapHighestTileHeightPending)
-                gMapHighestTileHeightPending = height;
+            if (height > _mapHighestTileHeightPending)
+                _mapHighestTileHeightPending = height;
 
         } while (!(tileElement++)->IsLastForTile());
 
-        if (gMapHighestTileHeightLoopPosition == maxTileIndex)
+        if (_mapHighestTileHeightLoopPosition == maxTileIndex)
         {
-            gMapHighestTileHeight = gMapHighestTileHeightPending;
-            gMapHighestTileHeightPending = 0;
+            _mapHighestTileHeight = _mapHighestTileHeightPending;
+            _mapHighestTileHeightPending = 0;
             break;
         }
         else
-            gMapHighestTileHeightLoopPosition++;
+            _mapHighestTileHeightLoopPosition++;
     }
 }
 
@@ -1597,20 +1597,20 @@ MapRange MapGetEdgeLimits()
     switch (rotation)
     {
         case 0:
-            x1 -= gMapHighestTileHeight;
-            y1 -= gMapHighestTileHeight;
+            x1 -= _mapHighestTileHeight;
+            y1 -= _mapHighestTileHeight;
             break;
         case 3:
-            x1 -= gMapHighestTileHeight;
-            y2 += gMapHighestTileHeight;
+            x1 -= _mapHighestTileHeight;
+            y2 += _mapHighestTileHeight;
             break;
         case 2:
-            x2 += gMapHighestTileHeight;
-            y2 += gMapHighestTileHeight;
+            x2 += _mapHighestTileHeight;
+            y2 += _mapHighestTileHeight;
             break;
         case 1:
-            x2 += gMapHighestTileHeight;
-            y1 -= gMapHighestTileHeight;
+            x2 += _mapHighestTileHeight;
+            y1 -= _mapHighestTileHeight;
             break;
         default:
             log_error("Invalid rotation");
