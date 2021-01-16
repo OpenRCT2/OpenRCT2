@@ -797,10 +797,8 @@ void sprite_remove(SpriteBase* sprite)
     EntityTweener::Get().RemoveEntity(sprite);
 
     move_sprite_to_list(sprite, EntityListId::Free);
-    sprite->sprite_identifier = SpriteIdentifier::Null;
-    _spriteFlashingList[sprite->sprite_index] = false;
-
     SpriteSpatialRemove(sprite);
+    sprite_reset(sprite);
 }
 
 static bool litter_can_be_at(const CoordsXYZ& mapPos)
