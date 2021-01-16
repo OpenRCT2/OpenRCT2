@@ -433,7 +433,7 @@ public:
                 dst->Ticks = src->Ticks;
                 dst->MonthYear = src->MonthYear;
                 dst->Day = src->Day;
-                std::memcpy(dst->Text, src->Text, sizeof(src->Text));
+                dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
             }
             else
             {

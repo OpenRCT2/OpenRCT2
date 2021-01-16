@@ -380,22 +380,6 @@ void game_convert_strings_to_utf8()
     gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
     gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
     gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
-
-    // News items
-    game_convert_news_items_to_utf8();
-}
-
-void game_convert_news_items_to_utf8()
-{
-    for (int32_t i = 0; i < News::MaxItems; i++)
-    {
-        News::Item* newsItem = News::GetItem(i);
-
-        if (!str_is_null_or_empty(newsItem->Text))
-        {
-            rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
-        }
-    }
 }
 
 /**
@@ -414,15 +398,6 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
         if (!str_is_null_or_empty(userString))
         {
             utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
-        }
-    }
-
-    // News items
-    for (auto& newsItem : s6->news_items)
-    {
-        if (!str_is_null_or_empty(newsItem.Text))
-        {
-            utf8_to_rct2_self(newsItem.Text, sizeof(newsItem.Text));
         }
     }
 }

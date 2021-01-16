@@ -10,6 +10,7 @@
 #include "RCT12.h"
 
 #include "../core/String.hpp"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
@@ -19,6 +20,8 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 uint8_t RCT12TileElementBase::GetType() const
 {
@@ -1100,4 +1103,189 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s)
 
     result.shrink_to_fit();
     return result;
+}
+
+namespace RCT12FormatCode
+{
+    constexpr codepoint_t Newline = 5;
+    constexpr codepoint_t NewlineSmall = 6;
+    constexpr codepoint_t ColourBlack = 142;
+    constexpr codepoint_t ColourGrey = 143;
+    constexpr codepoint_t ColourWhite = 144;
+    constexpr codepoint_t ColourRed = 145;
+    constexpr codepoint_t ColourGreen = 146;
+    constexpr codepoint_t ColourYellow = 147;
+    constexpr codepoint_t ColourTopaz = 148;
+    constexpr codepoint_t ColourCeladon = 149;
+    constexpr codepoint_t ColourBabyBlue = 150;
+    constexpr codepoint_t ColourPaleLavender = 151;
+    constexpr codepoint_t ColourPaleGold = 152;
+    constexpr codepoint_t ColourLightPink = 153;
+    constexpr codepoint_t ColourPearlAqua = 154;
+    constexpr codepoint_t ColourPaleSilver = 155;
+} // namespace RCT12FormatCode
+
+static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
+{
+    switch (codepoint)
+    {
+        case RCT12FormatCode::Newline:
+            return FormatToken::Newline;
+        case RCT12FormatCode::NewlineSmall:
+            return FormatToken::NewlineSmall;
+        case RCT12FormatCode::ColourBlack:
+            return FormatToken::ColourBlack;
+        case RCT12FormatCode::ColourGrey:
+            return FormatToken::ColourGrey;
+        case RCT12FormatCode::ColourWhite:
+            return FormatToken::ColourWhite;
+        case RCT12FormatCode::ColourRed:
+            return FormatToken::ColourRed;
+        case RCT12FormatCode::ColourGreen:
+            return FormatToken::ColourGreen;
+        case RCT12FormatCode::ColourYellow:
+            return FormatToken::ColourYellow;
+        case RCT12FormatCode::ColourTopaz:
+            return FormatToken::ColourTopaz;
+        case RCT12FormatCode::ColourCeladon:
+            return FormatToken::ColourCeladon;
+        case RCT12FormatCode::ColourBabyBlue:
+            return FormatToken::ColourBabyBlue;
+        case RCT12FormatCode::ColourPaleLavender:
+            return FormatToken::ColourPaleLavender;
+        case RCT12FormatCode::ColourPaleGold:
+            return FormatToken::ColourPaleGold;
+        case RCT12FormatCode::ColourLightPink:
+            return FormatToken::ColourLightPink;
+        case RCT12FormatCode::ColourPearlAqua:
+            return FormatToken::ColourPearlAqua;
+        case RCT12FormatCode::ColourPaleSilver:
+            return FormatToken::ColourPaleSilver;
+        default:
+            return FormatToken::Unknown;
+    }
+}
+
+static codepoint_t GetRCT12CodeFromFormatToken(FormatToken token)
+{
+    switch (token)
+    {
+        case FormatToken::Newline:
+            return RCT12FormatCode::Newline;
+        case FormatToken::NewlineSmall:
+            return RCT12FormatCode::NewlineSmall;
+        case FormatToken::ColourBlack:
+            return RCT12FormatCode::ColourBlack;
+        case FormatToken::ColourGrey:
+            return RCT12FormatCode::ColourGrey;
+        case FormatToken::ColourWhite:
+            return RCT12FormatCode::ColourWhite;
+        case FormatToken::ColourRed:
+            return RCT12FormatCode::ColourRed;
+        case FormatToken::ColourGreen:
+            return RCT12FormatCode::ColourGreen;
+        case FormatToken::ColourYellow:
+            return RCT12FormatCode::ColourYellow;
+        case FormatToken::ColourTopaz:
+            return RCT12FormatCode::ColourTopaz;
+        case FormatToken::ColourCeladon:
+            return RCT12FormatCode::ColourCeladon;
+        case FormatToken::ColourBabyBlue:
+            return RCT12FormatCode::ColourBabyBlue;
+        case FormatToken::ColourPaleLavender:
+            return RCT12FormatCode::ColourPaleLavender;
+        case FormatToken::ColourPaleGold:
+            return RCT12FormatCode::ColourPaleGold;
+        case FormatToken::ColourLightPink:
+            return RCT12FormatCode::ColourLightPink;
+        case FormatToken::ColourPearlAqua:
+            return RCT12FormatCode::ColourPearlAqua;
+        case FormatToken::ColourPaleSilver:
+            return RCT12FormatCode::ColourPaleSilver;
+        default:
+            return 0;
+    }
+}
+
+std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
+{
+    auto nullTerminator = buffer.find('\0');
+    if (nullTerminator != std::string::npos)
+    {
+        buffer = buffer.substr(0, nullTerminator);
+    }
+    auto asUtf8 = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
+
+    std::string result;
+    CodepointView codepoints(asUtf8);
+    for (auto codepoint : codepoints)
+    {
+        auto token = GetFormatTokenFromRCT12Code(codepoint);
+        if (token != FormatToken::Unknown)
+        {
+            result += GetFormatTokenStringWithBraces(token);
+        }
+        else
+        {
+            String::AppendCodepoint(result, codepoint);
+        }
+    }
+    return result;
+}
+
+std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength)
+{
+    std::string result;
+    FmtString fmt(buffer);
+    for (const auto& token : fmt)
+    {
+        if (token.IsLiteral())
+        {
+            result += token.text;
+        }
+        else
+        {
+            auto codepoint = GetRCT12CodeFromFormatToken(token.kind);
+            if (codepoint == 0)
+            {
+                result += token.text;
+            }
+            else
+            {
+                String::AppendCodepoint(result, codepoint);
+            }
+        }
+    }
+    return GetTruncatedRCT2String(result, maxLength);
+}
+
+std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
+{
+    auto rct2encoded = utf8_to_rct2(src);
+    if (rct2encoded.size() > maxLength - 1)
+    {
+        log_warning(
+            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
+            std::string(src).c_str());
+
+        rct2encoded.resize(maxLength - 1);
+        for (size_t i = 0; i < rct2encoded.size(); i++)
+        {
+            if (rct2encoded[i] == static_cast<char>(static_cast<uint8_t>(0xFF)))
+            {
+                if (i > maxLength - 4)
+                {
+                    // This codepoint was truncated, remove codepoint altogether
+                    rct2encoded.resize(i);
+                    break;
+                }
+                else
+                {
+                    // Skip the next two bytes which represent the unicode character
+                    i += 2;
+                }
+            }
+        }
+    }
+    return rct2encoded;
 }

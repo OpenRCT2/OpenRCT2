@@ -412,7 +412,9 @@ void S6Exporter::Export()
         dst->Ticks = src->Ticks;
         dst->MonthYear = src->MonthYear;
         dst->Day = src->Day;
-        std::memcpy(dst->Text, src->Text, sizeof(dst->Text));
+
+        auto rct2text = ConvertFormattedStringToRCT2(src->Text, sizeof(dst->Text));
+        std::memcpy(dst->Text, rct2text.c_str(), std::min(sizeof(dst->Text), rct2text.size()));
     }
 
     // pad_13CE730
@@ -1646,37 +1648,6 @@ std::optional<uint16_t> S6Exporter::AllocateUserString(std::string_view value)
     return std::nullopt;
 }
 
-static std::string GetTruncatedRCT2String(std::string_view src)
-{
-    auto rct2encoded = utf8_to_rct2(src);
-    if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)
-    {
-        log_warning(
-            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
-            std::string(src).c_str());
-
-        rct2encoded.resize(RCT12_USER_STRING_MAX_LENGTH - 1);
-        for (size_t i = 0; i < rct2encoded.size(); i++)
-        {
-            if (rct2encoded[i] == static_cast<char>(static_cast<uint8_t>(0xFF)))
-            {
-                if (i > RCT12_USER_STRING_MAX_LENGTH - 4)
-                {
-                    // This codepoint was truncated, remove codepoint altogether
-                    rct2encoded.resize(i);
-                    break;
-                }
-                else
-                {
-                    // Skip the next two bytes which represent the unicode character
-                    i += 2;
-                }
-            }
-        }
-    }
-    return rct2encoded;
-}
-
 void S6Exporter::ExportUserStrings()
 {
     auto numUserStrings = std::min<size_t>(_userStrings.size(), RCT12_MAX_USER_STRINGS);
@@ -1684,7 +1655,7 @@ void S6Exporter::ExportUserStrings()
     {
         auto dst = _s6.custom_strings[i];
         const auto& src = _userStrings[i];
-        auto encodedSrc = GetTruncatedRCT2String(src);
+        auto encodedSrc = GetTruncatedRCT2String(src, RCT12_USER_STRING_MAX_LENGTH);
         auto stringLen = std::min<size_t>(encodedSrc.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
         std::memcpy(dst, encodedSrc.data(), stringLen);
     }
