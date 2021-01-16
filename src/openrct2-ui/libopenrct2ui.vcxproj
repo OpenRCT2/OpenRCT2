@@ -41,7 +41,6 @@
     <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
     <ClInclude Include="drawing\engines\opengl\TransparencyDepth.h" />
     <ClInclude Include="input\InputManager.h" />
-    <ClInclude Include="input\KeyboardShortcuts.h" />
     <ClInclude Include="input\ShortcutIds.h" />
     <ClInclude Include="input\ShortcutManager.h" />
     <ClInclude Include="interface\Dropdown.h" />
@@ -93,8 +92,7 @@
     <ClCompile Include="drawing\engines\opengl\TransparencyDepth.cpp" />
     <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
     <ClCompile Include="input\InputManager.cpp" />
-    <ClCompile Include="input\KeyboardShortcut.cpp" />
-    <ClCompile Include="input\KeyboardShortcuts.cpp" />
+    <ClCompile Include="input\Shortcuts.cpp" />
     <ClCompile Include="input\MouseInput.cpp" />
     <ClCompile Include="input\ShortcutInput.cpp" />
     <ClCompile Include="input\ShortcutManager.cpp" />

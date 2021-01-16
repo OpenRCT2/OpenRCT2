@@ -11,6 +11,7 @@
 
 #include <openrct2/world/Location.hpp>
 #include <queue>
+#include <string_view>
 
 typedef struct _SDL_Joystick SDL_Joystick;
 typedef union SDL_Event SDL_Event;

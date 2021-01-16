@@ -98,6 +98,7 @@ namespace OpenRCT2::Ui
         std::string_view GetGroup() const;
         bool Matches(const InputEvent& e) const;
         bool IsSuitableInputEvent(const InputEvent& e) const;
+        std::string GetDisplayString() const;
 
     private:
     };

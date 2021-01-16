@@ -10,6 +10,7 @@
 #include "ShortcutManager.h"
 
 #include <SDL.h>
+#include <cstring>
 #include <openrct2/core/String.hpp>
 
 using namespace OpenRCT2::Ui;

@@ -91,6 +91,23 @@ bool RegisteredShortcut::IsSuitableInputEvent(const InputEvent& e) const
     return true;
 }
 
+std::string RegisteredShortcut::GetDisplayString() const
+{
+    std::string result;
+    auto numChords = Current.size();
+    for (size_t i = 0; i < numChords; i++)
+    {
+        const auto& kc = Current[i];
+        result += kc.ToString();
+        if (i < numChords - 1)
+        {
+            // TODO localise...
+            result += " or ";
+        }
+    }
+    return result;
+}
+
 ShortcutManager::ShortcutManager(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
@@ -147,6 +164,7 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
             }
             _pendingShortcutChange.clear();
             window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+            SaveUserBindings();
         }
     }
 }
@@ -274,16 +292,19 @@ void ShortcutManager::LoadUserBindings(const fs::path& path)
             const auto& value = it.value();
 
             const auto& shortcut = GetShortcut(key);
-            shortcut->Current.clear();
-            if (value.is_string())
+            if (shortcut != nullptr)
             {
-                shortcut->Current.emplace_back(value.get<std::string>());
-            }
-            else if (value.is_array())
-            {
-                for (auto& subValue : value)
+                shortcut->Current.clear();
+                if (value.is_string())
                 {
-                    shortcut->Current.emplace_back(subValue.get<std::string>());
+                    shortcut->Current.emplace_back(value.get<std::string>());
+                }
+                else if (value.is_array())
+                {
+                    for (auto& subValue : value)
+                    {
+                        shortcut->Current.emplace_back(subValue.get<std::string>());
+                    }
                 }
             }
         }

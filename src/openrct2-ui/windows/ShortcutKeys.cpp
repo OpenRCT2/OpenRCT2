@@ -358,11 +358,12 @@ private:
             ssp.ShortcutId = shortcut->Id;
             ssp.StringId = shortcut->LocalisedName;
             ssp.CustomString = shortcut->CustomName;
-            ssp.Binding = FormatKeyChordsString(*shortcut);
+            ssp.Binding = shortcut->GetDisplayString();
             _list.push_back(std::move(ssp));
             index++;
         }
 
+        WindowInitScrollWidgets(this);
         Invalidate();
     }
 
@@ -504,22 +505,6 @@ private:
             ft.Add<const char*>(shortcut.Binding.c_str());
             DrawTextEllipsised(&dpi, { bindingOffset, y - 1 }, 150, format, ft, COLOUR_BLACK);
         }
-    }
-
-    static std::string FormatKeyChordsString(const RegisteredShortcut& shortcut)
-    {
-        std::string result;
-        auto numChords = shortcut.Current.size();
-        for (size_t i = 0; i < numChords; i++)
-        {
-            const auto& kc = shortcut.Current[i];
-            result += kc.ToString();
-            if (i < numChords - 1)
-            {
-                result += " or ";
-            }
-        }
-        return result;
     }
 };
 

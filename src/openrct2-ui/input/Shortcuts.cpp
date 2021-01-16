@@ -7,16 +7,15 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "KeyboardShortcuts.h"
 #include "ShortcutIds.h"
 #include "ShortcutManager.h"
 
-#include <iterator>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/interface/InGameConsole.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
@@ -40,8 +39,6 @@
 #include <openrct2/windows/tile_inspector.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-
-extern bool gWindowSceneryEyedropperEnabled;
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

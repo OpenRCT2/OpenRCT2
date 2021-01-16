@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
