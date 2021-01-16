@@ -18,6 +18,9 @@ typedef union SDL_Event SDL_Event;
 
 namespace OpenRCT2::Ui
 {
+    class RegisteredShortcut;
+    struct ShortcutInput;
+
     enum class InputDeviceKind
     {
         Mouse,
@@ -47,6 +50,8 @@ namespace OpenRCT2::Ui
         std::vector<SDL_Joystick*> _joysticks;
         std::queue<InputEvent> _events;
         ScreenCoordsXY _viewScroll;
+        uint32_t _mouseState;
+        std::vector<uint8_t> _keyboardState;
 
         void CheckJoysticks();
 
@@ -56,6 +61,11 @@ namespace OpenRCT2::Ui
         void Process(const InputEvent& e);
         void ProcessInGameConsole(const InputEvent& e);
         void ProcessChat(const InputEvent& e);
+        void ProcessHoldEvents();
+        void ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta);
+
+        bool GetState(const RegisteredShortcut& shortcut) const;
+        bool GetState(const ShortcutInput& shortcut) const;
 
     public:
         void QueueInputEvent(const SDL_Event& e);
