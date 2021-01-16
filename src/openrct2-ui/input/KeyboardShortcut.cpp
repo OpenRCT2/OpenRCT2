@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "KeyboardShortcuts.h"
+#include "ShortcutIds.h"
 #include "ShortcutManager.h"
 
 #include <iterator>

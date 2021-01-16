@@ -9,6 +9,8 @@
 
 #include "InputManager.h"
 
+#include "ShortcutIds.h"
+
 #include <SDL.h>
 #include <openrct2-ui/UiContext.h>
 #include <openrct2-ui/input/ShortcutManager.h>
