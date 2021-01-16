@@ -70,7 +70,7 @@ namespace OpenRCT2
         constexpr uint32_t EDITOR           = 0x21;
 
         constexpr uint32_t TILES            = 0x30;
-        constexpr uint32_t SPRITES          = 0x31;
+        constexpr uint32_t ENTITIES          = 0x31;
         constexpr uint32_t RIDES            = 0x32;
         constexpr uint32_t BANNERS          = 0x33;
         constexpr uint32_t ANIMATIONS       = 0x34;
@@ -103,7 +103,7 @@ namespace OpenRCT2
             ReadWriteTilesChunk(os);
             ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
-            ReadWriteSpritesChunk(os);
+            ReadWriteEntitiesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -135,7 +135,7 @@ namespace OpenRCT2
             ReadWriteTilesChunk(os);
             ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
-            ReadWriteSpritesChunk(os);
+            ReadWriteEntitiesChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -747,9 +747,9 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteSpritesChunk(OrcaStream& os)
+        void ReadWriteEntitiesChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::SPRITES, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     reset_sprite_list();
@@ -801,7 +801,7 @@ namespace OpenRCT2
                     ReadWriteEntityPeep(cs, *entity.As<Peep>());
                     break;
                 case SpriteIdentifier::Misc:
-                    ReadWriteEntityMisc(cs, entity);
+                    ReadWriteEntityMisc(cs, *entity.As<MiscEntity>());
                     break;
                 case SpriteIdentifier::Litter:
                     ReadWriteEntityLitter(cs, *entity.As<Litter>());
@@ -814,7 +814,6 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
         {
             cs.ReadWrite(entity.sprite_identifier);
-            cs.ReadWrite(entity.type);
             cs.ReadWrite(entity.next_in_quadrant);
             cs.ReadWrite(entity.next);
             cs.ReadWrite(entity.previous);
@@ -836,7 +835,7 @@ namespace OpenRCT2
         static void ReadWriteEntityVehicle(OrcaStream::ChunkStream& cs, Vehicle& entity)
         {
             auto ride = entity.GetRide();
-
+            cs.ReadWrite(entity.SubType);
             cs.ReadWrite(entity.vehicle_sprite_type);
             cs.ReadWrite(entity.bank_rotation);
             cs.ReadWrite(entity.remaining_distance);
@@ -1025,18 +1024,18 @@ namespace OpenRCT2
             cs.ReadWrite(entity.FavouriteRideRating);
         }
 
-        static void ReadWriteEntityMisc(OrcaStream::ChunkStream& cs, SpriteBase& entity)
+        static void ReadWriteEntityMisc(OrcaStream::ChunkStream& cs, MiscEntity& entity)
         {
-            switch (entity.type)
+            switch (entity.SubType)
             {
-                case SPRITE_MISC_STEAM_PARTICLE:
+                case MiscEntityType::SteamParticle:
                 {
                     auto steamParticle = entity.As<SteamParticle>();
                     cs.ReadWrite(steamParticle->time_to_move);
                     cs.ReadWrite(steamParticle->frame);
                     break;
                 }
-                case SPRITE_MISC_MONEY_EFFECT:
+                case MiscEntityType::MoneyEffect:
                 {
                     auto moneyEffect = entity.As<MoneyEffect>();
                     cs.ReadWrite(moneyEffect->MoveDelay);
@@ -1047,7 +1046,7 @@ namespace OpenRCT2
                     cs.ReadWrite(moneyEffect->Wiggle);
                     break;
                 }
-                case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                case MiscEntityType::CrashedVehicleParticle:
                 {
                     auto vehicleCrashParticle = entity.As<VehicleCrashParticle>();
                     cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->frame);
@@ -1064,16 +1063,15 @@ namespace OpenRCT2
                     cs.ReadWrite(vehicleCrashParticle, vehicleCrashParticle->acceleration_z);
                     break;
                 }
-                case SPRITE_MISC_EXPLOSION_CLOUD:
-                case SPRITE_MISC_CRASH_SPLASH:
-                case SPRITE_MISC_EXPLOSION_FLARE:
+                case MiscEntityType::ExplosionCloud:
+                case MiscEntityType::CrashSplash:
+                case MiscEntityType::ExplosionFlare:
                 {
-                    auto generic = static_cast<SpriteGeneric&>(entity);
-                    cs.ReadWrite(generic.frame);
+                    cs.ReadWrite(entity.frame);
                     break;
                 }
-                case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                case MiscEntityType::JumpingFountainWater:
+                case MiscEntityType::JumpingFountainSnow:
                 {
                     auto fountain = entity.As<JumpingFountain>();
                     cs.ReadWrite(fountain->NumTicksAlive);
@@ -1085,7 +1083,7 @@ namespace OpenRCT2
                     cs.ReadWrite(fountain->Iteration);
                     break;
                 }
-                case SPRITE_MISC_BALLOON:
+                case MiscEntityType::Balloon:
                 {
                     auto balloon = entity.As<Balloon>();
                     cs.ReadWrite(balloon->popped);
@@ -1094,7 +1092,7 @@ namespace OpenRCT2
                     cs.ReadWrite(balloon->colour);
                     break;
                 }
-                case SPRITE_MISC_DUCK:
+                case MiscEntityType::Duck:
                 {
                     auto duck = entity.As<Duck>();
                     cs.ReadWrite(duck->frame);
@@ -1108,6 +1106,7 @@ namespace OpenRCT2
 
         static void ReadWriteEntityLitter(OrcaStream::ChunkStream& cs, Litter& entity)
         {
+            cs.ReadWrite(entity.SubType);
             cs.ReadWrite(entity.creationTick);
         }
 
