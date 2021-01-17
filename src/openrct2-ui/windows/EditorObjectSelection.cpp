@@ -21,6 +21,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
+#include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
@@ -1327,6 +1328,11 @@ static void editor_load_selected_objects()
                 }
             }
         }
+    }
+    if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
+    {
+        // Reloads the default cyan water palette if no palette was selected.
+        load_palette();
     }
 }
 
