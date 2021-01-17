@@ -8206,8 +8206,8 @@ loc_6DAEB9:
             && curRide->breakdown_reason_pending == BREAKDOWN_BRAKES_FAILURE;
         if (!hasBrakesFailure || curRide->mechanic_status == RIDE_MECHANIC_STATUS_HAS_FIXED_STATION_BRAKES)
         {
-            regs.eax = brake_speed << 16;
-            if (regs.eax < _vehicleVelocityF64E08)
+            auto brakeSpeed = brake_speed << 16;
+            if (brakeSpeed < _vehicleVelocityF64E08)
             {
                 acceleration = -_vehicleVelocityF64E08 * 16;
             }
@@ -8223,9 +8223,8 @@ loc_6DAEB9:
     }
     else if (TrackTypeIsBooster(curRide->type, trackType))
     {
-        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
-
-        if (regs.eax > _vehicleVelocityF64E08)
+        auto boosterSpeed = get_booster_speed(curRide->type, (brake_speed << 16));
+        if (boosterSpeed > _vehicleVelocityF64E08)
         {
             acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration
                 << 16; //_vehicleVelocityF64E08 * 1.2;
