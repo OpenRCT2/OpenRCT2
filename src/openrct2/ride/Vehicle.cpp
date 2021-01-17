@@ -8182,7 +8182,6 @@ bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ri
     registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
-    regs.cx = GetTrackType();
     int32_t trackType = GetTrackType();
     if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
     {
