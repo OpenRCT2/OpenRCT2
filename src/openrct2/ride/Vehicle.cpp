@@ -8591,22 +8591,18 @@ loc_6DBA33:;
 
     if (trackType == TrackElemType::Brakes)
     {
-        regs.eax = -(brake_speed << 16);
-        if (regs.eax > _vehicleVelocityF64E08)
+        if (-(brake_speed << 16) > _vehicleVelocityF64E08)
         {
-            regs.eax = _vehicleVelocityF64E08 * -16;
-            acceleration = regs.eax;
+            acceleration = _vehicleVelocityF64E08 * -16;
         }
     }
 
     if (TrackTypeIsBooster(curRide->type, trackType))
     {
-        regs.eax = get_booster_speed(curRide->type, (brake_speed << 16));
-
-        if (regs.eax < _vehicleVelocityF64E08)
+        auto boosterSpeed = get_booster_speed(curRide->type, (brake_speed << 16));
+        if (boosterSpeed < _vehicleVelocityF64E08)
         {
-            regs.eax = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration << 16;
-            acceleration = regs.eax;
+            acceleration = RideTypeDescriptors[curRide->type].OperatingSettings.BoosterAcceleration << 16;
         }
     }
 
