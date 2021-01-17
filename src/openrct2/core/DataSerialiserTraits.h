@@ -73,14 +73,6 @@ template<typename T> struct DataSerializerTraitsIntegral
         stream->Read(&temp);
         val = ByteSwapBE(temp);
     }
-    static void encode(std::ostream& stream, const T& val)
-    {
-        stream.write(reinterpret_cast<const char*>(&val), sizeof(val));
-    }
-    static void decode(std::istream& stream, T& val)
-    {
-        stream.read(reinterpret_cast<char*>(&val), sizeof(val));
-    }
     static void log(OpenRCT2::IStream* stream, const T& val)
     {
         std::stringstream ss;

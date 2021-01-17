@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "FileSystem.hpp"
 #include "IStream.hpp"
 
 namespace OpenRCT2
@@ -35,6 +36,7 @@ namespace OpenRCT2
         uint64_t _fileSize = 0;
 
     public:
+        FileStream(const fs::path& path, int32_t fileMode);
         FileStream(const std::string& path, int32_t fileMode);
         FileStream(const utf8* path, int32_t fileMode);
         ~FileStream() override;

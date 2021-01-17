@@ -30,6 +30,11 @@
 
 namespace OpenRCT2
 {
+    FileStream::FileStream(const fs::path& path, int32_t fileMode)
+        : FileStream(path.u8string(), fileMode)
+    {
+    }
+
     FileStream::FileStream(const std::string& path, int32_t fileMode)
         : FileStream(path.c_str(), fileMode)
     {

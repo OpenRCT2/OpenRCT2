@@ -12,10 +12,10 @@
 #include "ShortcutIds.h"
 
 #include <SDL.h>
-#include <fstream>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/core/DataSerialiser.h>
+#include <openrct2/core/FileStream.h>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
@@ -246,34 +246,26 @@ std::optional<ShortcutInput> ShortcutManager::ConvertLegacyBinding(uint16_t bind
 void ShortcutManager::LoadLegacyBindings(const fs::path& path)
 {
     constexpr int32_t SUPPORTED_FILE_VERSION = 1;
+    constexpr int32_t MAX_LEGACY_SHORTCUTS = 85;
 
-    auto fs = std::ifstream(path);
-    if (fs)
+    auto fs = FileStream(path, FILE_MODE_OPEN);
+    auto version = fs.ReadValue<uint16_t>();
+    if (version == SUPPORTED_FILE_VERSION)
     {
-        auto br = BinaryReader(&fs);
-
-        uint16_t version{};
-        br << version;
-
-        if (version == SUPPORTED_FILE_VERSION)
+        for (size_t i = 0; i < MAX_LEGACY_SHORTCUTS; i++)
         {
-            for (size_t i = 0; i < 85; i++)
+            auto value = fs.ReadValue<uint16_t>();
+            auto shortcutId = GetLegacyShortcutId(i);
+            if (!shortcutId.empty())
             {
-                uint16_t value{};
-                br << value;
-
-                auto shortcutId = GetLegacyShortcutId(i);
-                if (!shortcutId.empty())
+                auto shortcut = GetShortcut(shortcutId);
+                if (shortcut != nullptr)
                 {
-                    auto shortcut = GetShortcut(shortcutId);
-                    if (shortcut != nullptr)
+                    shortcut->Current.clear();
+                    auto input = ConvertLegacyBinding(value);
+                    if (input)
                     {
-                        shortcut->Current.clear();
-                        auto input = ConvertLegacyBinding(value);
-                        if (input)
-                        {
-                            shortcut->Current.push_back(std::move(*input));
-                        }
+                        shortcut->Current.push_back(std::move(*input));
                     }
                 }
             }
