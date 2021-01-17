@@ -8633,29 +8633,29 @@ loc_6DBA33:;
         auto loc = TrackLocation
             + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
-        regs.ebx = 0;
+        uint8_t remainingDistanceFlags = 0;
         if (loc.x != unk_F64E20.x)
         {
-            regs.ebx |= 1;
+            remainingDistanceFlags |= 1;
         }
         if (loc.y != unk_F64E20.y)
         {
-            regs.ebx |= 2;
+            remainingDistanceFlags |= 2;
         }
         if (loc.z != unk_F64E20.z)
         {
-            regs.ebx |= 4;
+            remainingDistanceFlags |= 4;
         }
-        remaining_distance += dword_9A2930[regs.ebx];
+        remaining_distance += dword_9A2930[remainingDistanceFlags];
 
         unk_F64E20 = loc;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         regs.ebx = moveInfo->vehicle_sprite_type;
-        vehicle_sprite_type = regs.bl;
+        vehicle_sprite_type = moveInfo->vehicle_sprite_type;
         moveInfoVehicleSpriteType = moveInfo->vehicle_sprite_type;
 
-        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
+        if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && vehicle_sprite_type != 0)
         {
             SwingSprite = 0;
             SwingPosition = 0;
