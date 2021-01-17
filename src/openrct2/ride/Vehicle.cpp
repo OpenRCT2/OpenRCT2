@@ -8621,7 +8621,10 @@ loc_6DBA33:;
 
         if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, reinterpret_cast<uint16_t*>(&regs.ax)))
         {
-            goto loc_6DBE5E;
+            _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
+            _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+            remaining_distance = 0x368A;
+            return false;
         }
     }
 
@@ -8684,12 +8687,6 @@ loc_6DBA33:;
     acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DBA33;
-
-loc_6DBE5E:
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-    return false;
 
 loc_6DBE7F:
     _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
