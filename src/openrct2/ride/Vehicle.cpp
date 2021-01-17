@@ -8627,6 +8627,7 @@ loc_6DBA33:;
 
     // loc_6DBD42
     track_progress = regs.ax;
+    uint8_t moveInfoVehicleSpriteType;
     {
         const rct_vehicle_info* moveInfo = GetMoveInfo();
         auto loc = TrackLocation
@@ -8652,6 +8653,7 @@ loc_6DBA33:;
         bank_rotation = moveInfo->bank_rotation;
         regs.ebx = moveInfo->vehicle_sprite_type;
         vehicle_sprite_type = regs.bl;
+        moveInfoVehicleSpriteType = moveInfo->vehicle_sprite_type;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
         {
@@ -8678,7 +8680,7 @@ loc_6DBA33:;
     {
         return true;
     }
-    regs.ebx = dword_9A2970[regs.ebx];
+    regs.ebx = dword_9A2970[moveInfoVehicleSpriteType];
     acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DBA33;
