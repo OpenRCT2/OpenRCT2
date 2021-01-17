@@ -8179,7 +8179,6 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
  */
 bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
     int32_t trackType = GetTrackType();
@@ -8573,7 +8572,6 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
  */
 bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    registers regs = {};
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
 loc_6DBA33:;
@@ -8645,7 +8643,6 @@ loc_6DBA33:;
         unk_F64E20 = loc;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
-        regs.ebx = moveInfo->vehicle_sprite_type;
         vehicle_sprite_type = moveInfo->vehicle_sprite_type;
         moveInfoVehicleSpriteType = moveInfo->vehicle_sprite_type;
 
@@ -8708,8 +8705,7 @@ loc_6DBA33:;
     {
         return true;
     }
-    regs.ebx = dword_9A2970[moveInfoVehicleSpriteType];
-    acceleration += regs.ebx;
+    acceleration += dword_9A2970[moveInfoVehicleSpriteType];
     _vehicleUnkF64E10++;
     goto loc_6DBA33;
 }
@@ -9484,8 +9480,6 @@ int32_t Vehicle::UpdateTrackMotionPoweredRideAcceleration(
  */
 int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 {
-    registers regs = {};
-
     auto curRide = GetRide();
     if (curRide == nullptr)
         return 0;
@@ -9580,8 +9574,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                     {
                         break;
                     }
-                    regs.ebx = dword_9A2970[car->vehicle_sprite_type];
-                    car->acceleration += regs.ebx;
+                    car->acceleration += dword_9A2970[car->vehicle_sprite_type];
                     _vehicleUnkF64E10++;
                     continue;
                 }
@@ -9601,8 +9594,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 {
                     break;
                 }
-                regs.ebx = dword_9A2970[car->vehicle_sprite_type];
-                car->acceleration = regs.ebx;
+                car->acceleration = dword_9A2970[car->vehicle_sprite_type];
                 _vehicleUnkF64E10++;
                 continue;
             }
