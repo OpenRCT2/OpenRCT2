@@ -8293,6 +8293,7 @@ loc_6DAEB9:
     // loc_6DB706
     const auto moveInfo = GetMoveInfo();
     trackType = GetTrackType();
+    uint8_t moveInfovehicleSpriteType;
     {
         auto loc = TrackLocation
             + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
@@ -8335,7 +8336,7 @@ loc_6DAEB9:
         bank_rotation = moveInfo->bank_rotation;
         vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-        regs.ebx = moveInfo->vehicle_sprite_type;
+        moveInfovehicleSpriteType = moveInfo->vehicle_sprite_type;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
         {
@@ -8400,8 +8401,7 @@ loc_6DAEB9:
         return true;
     }
 
-    regs.ebx = dword_9A2970[regs.ebx];
-    acceleration += regs.ebx;
+    acceleration += dword_9A2970[moveInfovehicleSpriteType];
     _vehicleUnkF64E10++;
     goto loc_6DAEB9;
 }
