@@ -28,6 +28,7 @@
 uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
 uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
 static rct_sprite _spriteList[MAX_SPRITES];
+std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
@@ -85,7 +86,7 @@ template<> bool SpriteBase::Is<ExplosionCloud>() const
 
 uint16_t GetEntityListCount(EntityListId list)
 {
-    return gSpriteListCount[static_cast<uint8_t>(list)];
+    return static_cast<uint16_t>(gEntityLists[static_cast<uint8_t>(list)].size());
 }
 
 std::string rct_sprite_checksum::ToString() const
@@ -174,6 +175,42 @@ void SpriteBase::Invalidate()
 
     viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
 }
+constexpr EntityListId EntityIdentifierToListId(const SpriteIdentifier type)
+{
+    EntityListId linkedListIndex = EntityListId::Free;
+    switch (type)
+    {
+        case SpriteIdentifier::Vehicle:
+            linkedListIndex = EntityListId::Vehicle;
+            break;
+        case SpriteIdentifier::Peep:
+            linkedListIndex = EntityListId::Peep;
+            break;
+        case SpriteIdentifier::Misc:
+            linkedListIndex = EntityListId::Misc;
+            break;
+        case SpriteIdentifier::Litter:
+            linkedListIndex = EntityListId::Litter;
+            break;
+        default:
+            break;
+    }
+    return linkedListIndex;
+}
+
+void RebuildEntityLists()
+{
+    for (auto& ent : _spriteList)
+    {
+        // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
+        gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
+    }
+}
+
+const std::list<uint16_t>& GetEntityList(const EntityListId id)
+{
+    return gEntityLists[EnumValue(id)];
+}
 
 /**
  *
@@ -189,6 +226,11 @@ void reset_sprite_list()
         gSpriteListHead[i] = SPRITE_INDEX_NULL;
         gSpriteListCount[i] = 0;
         _spriteFlashingList[i] = false;
+    }
+
+    for (auto& list : gEntityLists)
+    {
+        list.clear();
     }
 
     SpriteBase* previous_spr = nullptr;
@@ -389,6 +431,21 @@ void sprite_clear_all_unused()
 static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
+void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
+{
+    auto& list = gEntityLists[EnumValue(linkedListIndex)];
+    list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
+}
+
+void RemoveFromEntityList(SpriteBase* entity)
+{
+    auto& list = gEntityLists[EnumValue(entity->linked_list_index)];
+    auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
+    if (ptr != std::end(list) && *ptr == entity->sprite_index)
+    {
+        list.erase(ptr);
+    }
+}
 
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
 {
@@ -410,13 +467,15 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
         }
     }
 
-    auto* sprite = GetEntity(gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]);
+    auto* sprite = GetEntity(gEntityLists[static_cast<uint8_t>(EntityListId::Free)].front());
     if (sprite == nullptr)
     {
         return nullptr;
     }
+    gEntityLists[static_cast<uint8_t>(EntityListId::Free)].pop_front();
+    RemoveFromEntityList(sprite); // remove from Free list
+    AddToEntityList(linkedListIndex, sprite);
     move_sprite_to_list(sprite, linkedListIndex);
-
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
@@ -766,7 +825,8 @@ void sprite_remove(SpriteBase* sprite)
     }
 
     EntityTweener::Get().RemoveEntity(sprite);
-
+    RemoveFromEntityList(sprite); // remove from Free list
+    AddToEntityList(EntityListId::Free, sprite);
     move_sprite_to_list(sprite, EntityListId::Free);
     SpriteSpatialRemove(sprite);
     sprite_reset(sprite);
@@ -1008,99 +1068,99 @@ bool sprite_get_flashing(SpriteBase* sprite)
     return _spriteFlashingList[sprite->sprite_index];
 }
 
-static SpriteBase* find_sprite_list_cycle(uint16_t sprite_idx)
-{
-    if (sprite_idx == SPRITE_INDEX_NULL)
-    {
-        return nullptr;
-    }
-    const SpriteBase* fast = GetEntity(sprite_idx);
-    const SpriteBase* slow = fast;
-    bool increment_slow = false;
-    SpriteBase* cycle_start = nullptr;
-    while (fast->sprite_index != SPRITE_INDEX_NULL)
-    {
-        // increment fast every time, unless reached the end
-        if (fast->next == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        else
-        {
-            fast = GetEntity(fast->next);
-        }
-        // increment slow only every second iteration
-        if (increment_slow)
-        {
-            slow = GetEntity(slow->next);
-        }
-        increment_slow = !increment_slow;
-        if (fast == slow)
-        {
-            cycle_start = GetEntity(slow->sprite_index);
-            break;
-        }
-    }
-    return cycle_start;
-}
+//static SpriteBase* find_sprite_list_cycle(uint16_t sprite_idx)
+//{
+//    if (sprite_idx == SPRITE_INDEX_NULL)
+//    {
+//        return nullptr;
+//    }
+//    const SpriteBase* fast = GetEntity(sprite_idx);
+//    const SpriteBase* slow = fast;
+//    bool increment_slow = false;
+//    SpriteBase* cycle_start = nullptr;
+//    while (fast->sprite_index != SPRITE_INDEX_NULL)
+//    {
+//        // increment fast every time, unless reached the end
+//        if (fast->next == SPRITE_INDEX_NULL)
+//        {
+//            break;
+//        }
+//        else
+//        {
+//            fast = GetEntity(fast->next);
+//        }
+//        // increment slow only every second iteration
+//        if (increment_slow)
+//        {
+//            slow = GetEntity(slow->next);
+//        }
+//        increment_slow = !increment_slow;
+//        if (fast == slow)
+//        {
+//            cycle_start = GetEntity(slow->sprite_index);
+//            break;
+//        }
+//    }
+//    return cycle_start;
+//}
 
-static bool index_is_in_list(uint16_t index, EntityListId sl)
-{
-    for (auto entity : EntityList(sl))
-    {
-        if (entity->sprite_index == index)
-        {
-            return true;
-        }
-    }
-    return false;
-}
+//static bool index_is_in_list(uint16_t index, EntityListId sl)
+//{
+//    for (auto entity : EntityList(sl))
+//    {
+//        if (entity->sprite_index == index)
+//        {
+//            return true;
+//        }
+//    }
+//    return false;
+//}
 
 int32_t check_for_sprite_list_cycles(bool fix)
 {
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-    {
-        auto* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
-        if (cycle_start != nullptr)
-        {
-            if (fix)
-            {
-                // Fix head list, but only in reverse order
-                // This is likely not needed, but just in case
-                auto head = GetEntity(gSpriteListHead[i]);
-                if (head == nullptr)
-                {
-                    log_error("SpriteListHead is corrupted!");
-                    return -1;
-                }
-                head->previous = SPRITE_INDEX_NULL;
+    // for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
+    //{
+    //    auto* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
+    //    if (cycle_start != nullptr)
+    //    {
+    //        if (fix)
+    //        {
+    //            // Fix head list, but only in reverse order
+    //            // This is likely not needed, but just in case
+    //            auto head = GetEntity(gSpriteListHead[i]);
+    //            if (head == nullptr)
+    //            {
+    //                log_error("SpriteListHead is corrupted!");
+    //                return -1;
+    //            }
+    //            head->previous = SPRITE_INDEX_NULL;
 
-                // Store the leftover part of cycle to be fixed
-                uint16_t cycle_next = cycle_start->next;
+    //            // Store the leftover part of cycle to be fixed
+    //            uint16_t cycle_next = cycle_start->next;
 
-                // Break the cycle
-                cycle_start->next = SPRITE_INDEX_NULL;
+    //            // Break the cycle
+    //            cycle_start->next = SPRITE_INDEX_NULL;
 
-                // Now re-add remainder of the cycle back to list, safely.
-                // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, static_cast<EntityListId>(i)))
-                {
-                    auto* spr = GetEntity(cycle_next);
-                    if (spr == nullptr)
-                    {
-                        log_error("EntityList is corrupted!");
-                        return -1;
-                    }
-                    cycle_start->next = cycle_next;
-                    spr->previous = cycle_start->sprite_index;
-                    cycle_next = spr->next;
-                    spr->next = SPRITE_INDEX_NULL;
-                    cycle_start = spr;
-                }
-            }
-            return i;
-        }
-    }
+    //            // Now re-add remainder of the cycle back to list, safely.
+    //            // Add each sprite to the list until we encounter one that is already part of the list.
+    //            while (!index_is_in_list(cycle_next, static_cast<EntityListId>(i)))
+    //            {
+    //                auto* spr = GetEntity(cycle_next);
+    //                if (spr == nullptr)
+    //                {
+    //                    log_error("EntityList is corrupted!");
+    //                    return -1;
+    //                }
+    //                cycle_start->next = cycle_next;
+    //                spr->previous = cycle_start->sprite_index;
+    //                cycle_next = spr->next;
+    //                spr->next = SPRITE_INDEX_NULL;
+    //                cycle_start = spr;
+    //            }
+    //        }
+    //        return i;
+    //    }
+    //}
     return -1;
 }
 
@@ -1112,52 +1172,52 @@ int32_t check_for_sprite_list_cycles(bool fix)
 int32_t fix_disjoint_sprites()
 {
     // Find reachable sprites
-    bool reachable[MAX_SPRITES] = { false };
+    // bool reachable[MAX_SPRITES] = { false };
 
-    SpriteBase* null_list_tail = nullptr;
-    for (uint16_t sprite_idx = gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]; sprite_idx != SPRITE_INDEX_NULL;)
-    {
-        reachable[sprite_idx] = true;
-        // cache the tail, so we don't have to walk the list twice
-        null_list_tail = GetEntity(sprite_idx);
-        if (null_list_tail == nullptr)
-        {
-            log_error("Broken Entity list");
-            sprite_idx = SPRITE_INDEX_NULL;
-            return 0;
-        }
-        sprite_idx = null_list_tail->next;
-    }
+    // SpriteBase* null_list_tail = nullptr;
+    // for (uint16_t sprite_idx = gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]; sprite_idx != SPRITE_INDEX_NULL;)
+    //{
+    //    reachable[sprite_idx] = true;
+    //    // cache the tail, so we don't have to walk the list twice
+    //    null_list_tail = GetEntity(sprite_idx);
+    //    if (null_list_tail == nullptr)
+    //    {
+    //        log_error("Broken Entity list");
+    //        sprite_idx = SPRITE_INDEX_NULL;
+    //        return 0;
+    //    }
+    //    sprite_idx = null_list_tail->next;
+    //}
 
     int32_t count = 0;
 
     // Find all null sprites
-    for (uint16_t sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
-    {
-        auto* spr = GetEntity(sprite_idx);
-        if (spr != nullptr && spr->sprite_identifier == SpriteIdentifier::Null)
-        {
-            openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
-            spr->sprite_index = sprite_idx;
-            if (!reachable[sprite_idx])
-            {
-                // Add the sprite directly to the list
-                if (null_list_tail == nullptr)
-                {
-                    gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = sprite_idx;
-                    spr->previous = SPRITE_INDEX_NULL;
-                }
-                else
-                {
-                    null_list_tail->next = sprite_idx;
-                    spr->previous = null_list_tail->sprite_index;
-                }
-                spr->next = SPRITE_INDEX_NULL;
-                null_list_tail = spr;
-                count++;
-                reachable[sprite_idx] = true;
-            }
-        }
-    }
+    // for (uint16_t sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
+    //{
+    //    auto* spr = GetEntity(sprite_idx);
+    //    if (spr != nullptr && spr->sprite_identifier == SpriteIdentifier::Null)
+    //    {
+    //        openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
+    //        spr->sprite_index = sprite_idx;
+    //        if (!reachable[sprite_idx])
+    //        {
+    //            // Add the sprite directly to the list
+    //            if (null_list_tail == nullptr)
+    //            {
+    //                gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = sprite_idx;
+    //                spr->previous = SPRITE_INDEX_NULL;
+    //            }
+    //            else
+    //            {
+    //                null_list_tail->next = sprite_idx;
+    //                spr->previous = null_list_tail->sprite_index;
+    //            }
+    //            spr->next = SPRITE_INDEX_NULL;
+    //            null_list_tail = spr;
+    //            count++;
+    //            reachable[sprite_idx] = true;
+    //        }
+    //    }
+    //}
     return count;
 }

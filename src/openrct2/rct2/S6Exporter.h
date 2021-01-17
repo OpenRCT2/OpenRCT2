@@ -53,7 +53,6 @@ public:
     void ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src);
     void ExportSpriteMisc(RCT12SpriteBase* dst, const MiscEntity* src);
     void ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src);
-
 private:
     rct_s6_data _s6{};
     std::vector<std::string> _userStrings;
@@ -78,4 +77,5 @@ private:
 
     std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();
+    void RebuildEntityLinks();
 };

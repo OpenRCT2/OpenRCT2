@@ -1332,7 +1332,7 @@ public:
             auto dst = GetEntity(i);
             ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
         }
-
+        RebuildEntityLists();
         for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
         {
             gSpriteListHead[i] = _s6.sprite_lists_head[i];
@@ -1675,7 +1675,7 @@ public:
         dst->next_in_quadrant = src->next_in_quadrant;
         dst->next = src->next;
         dst->previous = src->previous;
-        dst->linked_list_index = static_cast<EntityListId>(src->linked_list_type_offset >> 1);
+        dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;
