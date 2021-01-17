@@ -51,7 +51,6 @@ enum class TileElementType : uint8_t
     Wall = (5 << 2),
     LargeScenery = (6 << 2),
     Banner = (7 << 2),
-    Corrupt = (8 << 2),
 };
 
 struct TileElement;
@@ -63,7 +62,6 @@ struct LargeSceneryElement;
 struct WallElement;
 struct EntranceElement;
 struct BannerElement;
-struct CorruptElement;
 
 struct TileElementBase
 {
@@ -617,14 +615,6 @@ public:
 };
 assert_struct_size(BannerElement, 16);
 
-struct CorruptElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Corrupt;
-
-    uint8_t pad[3];
-    uint8_t pad_08[8];
-};
-assert_struct_size(CorruptElement, 16);
 #pragma pack(pop)
 
 class QuarterTile

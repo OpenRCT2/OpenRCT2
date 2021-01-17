@@ -90,9 +90,7 @@ namespace OpenRCT2::Scripting
                 type = TILE_ELEMENT_TYPE_BANNER;
             else
             {
-                if (value == "openrct2_corrupt_deprecated")
-                    std::puts(
-                        "Creation of new corrupt elements is deprecated. To hide elements, use the 'hidden' property instead.");
+                std::puts("Element type not recognised!");
                 return;
             }
 

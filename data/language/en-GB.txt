@@ -3575,7 +3575,6 @@ STR_6331    :Create ducks
 STR_6332    :Remove ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
-STR_6335    :Tile Inspector: Insert corrupt element
 STR_6336    :Tile Inspector: Copy element
 STR_6337    :Tile Inspector: Paste element
 STR_6338    :Tile Inspector: Delete element
