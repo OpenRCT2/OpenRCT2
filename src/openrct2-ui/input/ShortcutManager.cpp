@@ -134,6 +134,11 @@ void ShortcutManager::RemoveShortcut(std::string_view id)
         Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& shortcut) { return shortcut.Id == id; }));
 }
 
+bool ShortcutManager::IsPendingShortcutChange() const
+{
+    return !_pendingShortcutChange.empty();
+}
+
 void ShortcutManager::SetPendingShortcutChange(std::string_view id)
 {
     _pendingShortcutChange = id;
@@ -141,7 +146,7 @@ void ShortcutManager::SetPendingShortcutChange(std::string_view id)
 
 void ShortcutManager::ProcessEvent(const InputEvent& e)
 {
-    if (_pendingShortcutChange.empty())
+    if (!IsPendingShortcutChange())
     {
         for (const auto& shortcut : Shortcuts)
         {

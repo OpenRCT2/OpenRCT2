@@ -11,8 +11,10 @@
 
 #include "../common.h"
 
+#include <charconv>
 #include <cstdarg>
 #include <cstddef>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -51,8 +53,7 @@ namespace String
     bool Equals(std::string_view a, std::string_view b, bool ignoreCase = false);
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase = false);
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
-    bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase = false);
-    bool StartsWith(const std::string& str, const std::string& match, bool ignoreCase = false);
+    bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex = 0);
     ptrdiff_t LastIndexOf(const utf8* str, utf8 match);
@@ -118,6 +119,17 @@ namespace String
      * Returns an uppercased version of a UTF-8 string.
      */
     std::string ToUpper(std::string_view src);
+
+    template<typename T> std::optional<T> Parse(std::string_view input)
+    {
+        T out;
+        const std::from_chars_result result = std::from_chars(input.data(), input.data() + input.size(), out);
+        if (result.ec == std::errc::invalid_argument || result.ec == std::errc::result_out_of_range)
+        {
+            return std::nullopt;
+        }
+        return out;
+    }
 } // namespace String
 
 class CodepointView

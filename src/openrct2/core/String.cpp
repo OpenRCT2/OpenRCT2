@@ -254,35 +254,14 @@ namespace String
         }
     }
 
-    bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase)
+    bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase)
     {
-        if (ignoreCase)
+        if (str.size() >= match.size())
         {
-            while (*match != '\0')
-            {
-                if (*str == '\0' || tolower(*str++) != tolower(*match++))
-                {
-                    return false;
-                }
-            }
-            return true;
+            auto view = str.substr(0, match.size());
+            return Equals(view, match, ignoreCase);
         }
-        else
-        {
-            while (*match != '\0')
-            {
-                if (*str == '\0' || *str++ != *match++)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
-    bool StartsWith(const std::string& str, const std::string& match, bool ignoreCase)
-    {
-        return StartsWith(str.c_str(), match.c_str(), ignoreCase);
+        return false;
     }
 
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase)

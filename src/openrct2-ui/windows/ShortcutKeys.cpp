@@ -231,7 +231,14 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        return { 0, static_cast<int32_t>(_list.size() * SCROLLABLE_ROW_HEIGHT) };
+        auto h = static_cast<int32_t>(_list.size() * SCROLLABLE_ROW_HEIGHT);
+        auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
+        if (bottom < scrolls[0].v_top)
+        {
+            scrolls[0].v_top = bottom;
+            Invalidate();
+        }
+        return { 0, h };
     }
 
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -363,7 +370,6 @@ private:
             index++;
         }
 
-        WindowInitScrollWidgets(this);
         Invalidate();
     }
 

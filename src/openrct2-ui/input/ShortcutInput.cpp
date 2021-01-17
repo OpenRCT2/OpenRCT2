@@ -116,28 +116,75 @@ ShortcutInput::ShortcutInput(const std::string_view& value)
         index = sepIndex + 1;
         sepIndex = FindPlus(value, index);
     }
+    auto rem = value.substr(index);
 
-    auto kind = InputDeviceKind::Keyboard;
-    auto button = 0u;
-    auto colonIndex = value.find(':', index);
-    if (colonIndex != std::string::npos)
+    if (String::StartsWith(rem, "JOY ", true))
     {
-        auto device = value.substr(index, colonIndex - index);
-        if (device == "MOUSE")
+        rem = rem.substr(4);
+        if (String::Equals(rem, "LEFT"))
         {
-            auto rem = std::string(value.substr(colonIndex + 1));
-            kind = InputDeviceKind::Mouse;
-            button = atoi(rem.c_str());
+            Kind = InputDeviceKind::JoyHat;
+            Modifiers = modifiers;
+            Button = SDL_HAT_LEFT;
         }
+        else if (String::Equals(rem, "RIGHT"))
+        {
+            Kind = InputDeviceKind::JoyHat;
+            Modifiers = modifiers;
+            Button = SDL_HAT_RIGHT;
+        }
+        else if (String::Equals(rem, "UP"))
+        {
+            Kind = InputDeviceKind::JoyHat;
+            Modifiers = modifiers;
+            Button = SDL_HAT_UP;
+        }
+        else if (String::Equals(rem, "DOWN"))
+        {
+            Kind = InputDeviceKind::JoyHat;
+            Modifiers = modifiers;
+            Button = SDL_HAT_DOWN;
+        }
+        else
+        {
+            auto number = String::Parse<int32_t>(rem);
+            if (number)
+            {
+                Kind = InputDeviceKind::JoyButton;
+                Modifiers = modifiers;
+                Button = *number - 1;
+            }
+        }
+    }
+    else if (String::StartsWith(rem, "MOUSE ", true))
+    {
+        rem = rem.substr(6);
+        auto number = String::Parse<int32_t>(rem);
+        if (number)
+        {
+            Kind = InputDeviceKind::Mouse;
+            Modifiers = modifiers;
+            Button = *number - 1;
+        }
+    }
+    else if (String::Equals(rem, "LMB", true))
+    {
+        Kind = InputDeviceKind::Mouse;
+        Modifiers = modifiers;
+        Button = 0;
+    }
+    else if (String::Equals(rem, "RMB", true))
+    {
+        Kind = InputDeviceKind::Mouse;
+        Modifiers = modifiers;
+        Button = 1;
     }
     else
     {
-        button = ParseKey(value.substr(index));
+        Kind = InputDeviceKind::Keyboard;
+        Modifiers = modifiers;
+        Button = ParseKey(rem);
     }
-
-    Kind = kind;
-    Modifiers = modifiers;
-    Button = button;
 }
 
 std::string ShortcutInput::ToString() const

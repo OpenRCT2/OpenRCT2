@@ -131,6 +131,7 @@ namespace OpenRCT2::Ui
         void RegisterDefaultShortcuts();
         RegisteredShortcut* GetShortcut(std::string_view id);
         void RemoveShortcut(std::string_view id);
+        bool IsPendingShortcutChange() const;
         void SetPendingShortcutChange(std::string_view id);
         void ProcessEvent(const InputEvent& e);
         bool ProcessEventForSpecificShortcut(const InputEvent& e, std::string_view id);

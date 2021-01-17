@@ -674,8 +674,8 @@ void ShortcutManager::RegisterDefaultShortcuts()
     // Interface 3
     RegisterShortcut(ShortcutId::InterfaceZoomOut, STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", []() { main_window_zoom(false, false); });
     RegisterShortcut(ShortcutId::InterfaceZoomIn, STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", []() { main_window_zoom(true, false); });
-    RegisterShortcut(ShortcutId::InterfaceRotateClockwise, STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE:5", []() { RotateCamera(1); });
-    RegisterShortcut(ShortcutId::InterfaceRotateAnticlockwise, STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE:4", []() { RotateCamera(-1); });
+    RegisterShortcut(ShortcutId::InterfaceRotateClockwise, STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE 6", []() { RotateCamera(1); });
+    RegisterShortcut(ShortcutId::InterfaceRotateAnticlockwise, STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE 5", []() { RotateCamera(-1); });
     RegisterShortcut(ShortcutId::InterfaceOpenMap, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, "TAB", []() { ShortcutShowMap(); });
 
     // Interface 4
@@ -746,18 +746,18 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::InterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, []() { ShortcutScaleDown(); });
 
     // Ride construction
-    RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT, "KEYPAD 4", []() { window_ride_construction_keyboard_shortcut_turn_left(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT, "KEYPAD 6", []() { window_ride_construction_keyboard_shortcut_turn_right(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT, "KEYPAD 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeDown, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN, "KEYPAD 2", []() { window_ride_construction_keyboard_shortcut_slope_down(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeUp, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP, "KEYPAD 8", []() { window_ride_construction_keyboard_shortcut_slope_up(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionChainLift, STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "KEYPAD +", []() { window_ride_construction_keyboard_shortcut_chain_lift_toggle(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBankLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT, "KEYPAD 1", []() { window_ride_construction_keyboard_shortcut_bank_left(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBankRight, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT, "KEYPAD 3", []() { window_ride_construction_keyboard_shortcut_bank_right(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionPrevious, STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK, "KEYPAD 7", []() { window_ride_construction_keyboard_shortcut_previous_track(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK, "KEYPAD 9", []() { window_ride_construction_keyboard_shortcut_next_track(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT, "KEYPAD 0", []() { window_ride_construction_keyboard_shortcut_build_current(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT, "KEYPAD -", []() { window_ride_construction_keyboard_shortcut_demolish_current(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", []() { window_ride_construction_keyboard_shortcut_turn_left(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", []() { window_ride_construction_keyboard_shortcut_turn_right(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeDown, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN, "NUMPAD 2", []() { window_ride_construction_keyboard_shortcut_slope_down(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeUp, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP, "NUMPAD 8", []() { window_ride_construction_keyboard_shortcut_slope_up(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionChainLift, STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "NUMPAD +", []() { window_ride_construction_keyboard_shortcut_chain_lift_toggle(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBankLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT, "NUMPAD 1", []() { window_ride_construction_keyboard_shortcut_bank_left(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBankRight, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT, "NUMPAD 3", []() { window_ride_construction_keyboard_shortcut_bank_right(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionPrevious, STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK, "NUMPAD 7", []() { window_ride_construction_keyboard_shortcut_previous_track(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", []() { window_ride_construction_keyboard_shortcut_next_track(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { window_ride_construction_keyboard_shortcut_build_current(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { window_ride_construction_keyboard_shortcut_demolish_current(); });
 
     // Tile inspector
     RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {

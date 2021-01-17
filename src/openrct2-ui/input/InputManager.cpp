@@ -287,10 +287,15 @@ void InputManager::ProcessHoldEvents()
     // Check view scroll shortcuts
     _viewScroll.x = 0;
     _viewScroll.y = 0;
-    ProcessViewScrollEvent(ShortcutId::ScrollUp, { 0, -1 });
-    ProcessViewScrollEvent(ShortcutId::ScrollDown, { 0, 1 });
-    ProcessViewScrollEvent(ShortcutId::ScrollLeft, { -1, 0 });
-    ProcessViewScrollEvent(ShortcutId::ScrollRight, { 1, 0 });
+
+    auto& shortcutManager = GetShortcutManager();
+    if (!shortcutManager.IsPendingShortcutChange())
+    {
+        ProcessViewScrollEvent(ShortcutId::ScrollUp, { 0, -1 });
+        ProcessViewScrollEvent(ShortcutId::ScrollDown, { 0, 1 });
+        ProcessViewScrollEvent(ShortcutId::ScrollLeft, { -1, 0 });
+        ProcessViewScrollEvent(ShortcutId::ScrollRight, { 1, 0 });
+    }
 }
 
 void InputManager::ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
