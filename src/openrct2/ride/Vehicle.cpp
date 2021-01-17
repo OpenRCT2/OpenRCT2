@@ -8270,11 +8270,11 @@ loc_6DAEB9:
         }
     }
 
-    regs.ax = track_progress + 1;
+    uint16_t newTrackProgress = track_progress + 1;
 
     // Track Total Progress is in the two bytes before the move info list
     uint16_t trackTotalProgress = GetTrackProgress();
-    if (regs.ax >= trackTotalProgress)
+    if (newTrackProgress >= trackTotalProgress)
     {
         UpdateCrossings();
 
@@ -8285,10 +8285,10 @@ loc_6DAEB9:
             remaining_distance = -1;
             return false;
         }
-        regs.ax = 0;
+        newTrackProgress = 0;
     }
 
-    track_progress = regs.ax;
+    track_progress = newTrackProgress;
     UpdateHandleWaterSplash();
 
     // loc_6DB706
