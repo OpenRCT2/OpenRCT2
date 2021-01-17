@@ -9646,16 +9646,12 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     int32_t totalAcceleration = 0;
     // ebp
     int32_t totalMass = 0;
-    // Not used
-    regs.dx = 0;
     // ebx
     int32_t numVehicles = 0;
 
     for (; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
     {
         numVehicles++;
-        // Not used?
-        regs.dx |= vehicle->update_flags;
         totalMass += vehicle->mass;
         totalAcceleration += vehicle->acceleration;
     }
