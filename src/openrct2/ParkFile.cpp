@@ -814,7 +814,7 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
         {
             cs.ReadWrite(entity.sprite_identifier);
-            //cs.ReadWrite(entity.next_in_quadrant);
+            // cs.ReadWrite(entity.next_in_quadrant);
             cs.ReadWrite(entity.next);
             cs.ReadWrite(entity.previous);
             cs.ReadWrite(entity.sprite_height_negative);
@@ -825,10 +825,10 @@ namespace OpenRCT2
             cs.ReadWrite(entity.z);
             cs.ReadWrite(entity.sprite_width);
             cs.ReadWrite(entity.sprite_height_positive);
-            //cs.ReadWrite(entity.sprite_left);
-            //cs.ReadWrite(entity.sprite_top);
-            //cs.ReadWrite(entity.sprite_right);
-            //cs.ReadWrite(entity.sprite_bottom);
+            // cs.ReadWrite(entity.sprite_left);
+            // cs.ReadWrite(entity.sprite_top);
+            // cs.ReadWrite(entity.sprite_right);
+            // cs.ReadWrite(entity.sprite_bottom);
             cs.ReadWrite(entity.sprite_direction);
         }
 
