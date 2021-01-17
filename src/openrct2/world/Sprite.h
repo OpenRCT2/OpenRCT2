@@ -228,8 +228,6 @@ template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
 }
 
 uint16_t GetEntityListCount(EntityListId list);
-extern uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
-extern uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
@@ -276,8 +274,6 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-int32_t check_for_sprite_list_cycles(bool fix);
-int32_t fix_disjoint_sprites();
 
 const std::list<uint16_t>& GetEntityList(const EntityListId id);
 

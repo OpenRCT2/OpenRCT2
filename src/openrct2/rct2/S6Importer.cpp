@@ -461,15 +461,6 @@ public:
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         park.Name = GetUserString(_s6.park_name);
 
-        // We try to fix the cycles on import, hence the 'true' parameter
-        check_for_sprite_list_cycles(true);
-        int32_t disjoint_sprites_count = fix_disjoint_sprites();
-        // This one is less harmful, no need to assert for it ~janisozaur
-        if (disjoint_sprites_count > 0)
-        {
-            log_error("Found %d disjoint null sprites", disjoint_sprites_count);
-        }
-
         if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
         {
             // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring tiles.)
@@ -1333,13 +1324,6 @@ public:
             ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
         }
         RebuildEntityLists();
-        for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-        {
-            gSpriteListHead[i] = _s6.sprite_lists_head[i];
-            gSpriteListCount[i] = _s6.sprite_lists_count[i];
-        }
-        // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] += (MAX_SPRITES - RCT2_MAX_SPRITES);
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
@@ -1673,8 +1657,6 @@ public:
     {
         dst->sprite_identifier = src->sprite_identifier;
         dst->next_in_quadrant = src->next_in_quadrant;
-        dst->next = src->next;
-        dst->previous = src->previous;
         dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;

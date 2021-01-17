@@ -201,8 +201,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         COMPARE_FIELD(SpriteBase, sprite_identifier);
         COMPARE_FIELD(SpriteBase, next_in_quadrant);
-        COMPARE_FIELD(SpriteBase, next);
-        COMPARE_FIELD(SpriteBase, previous);
         COMPARE_FIELD(SpriteBase, linked_list_index);
         COMPARE_FIELD(SpriteBase, sprite_index);
         COMPARE_FIELD(SpriteBase, flags);

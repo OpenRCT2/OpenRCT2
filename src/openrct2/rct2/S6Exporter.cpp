@@ -151,14 +151,6 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    int32_t regular_cycle = check_for_sprite_list_cycles(false);
-    int32_t disjoint_sprites_count = fix_disjoint_sprites();
-    openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
-    // This one is less harmful, no need to assert for it ~janisozaur
-    if (disjoint_sprites_count > 0)
-    {
-        log_error("Found %d disjoint null sprites", disjoint_sprites_count);
-    }
     _s6.info = gS6Info;
     {
         auto temp = utf8_to_rct2(gS6Info.name);
@@ -1054,8 +1046,6 @@ void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const Sprite
 {
     dst->sprite_identifier = src->sprite_identifier;
     dst->next_in_quadrant = src->next_in_quadrant;
-    // dst->next = src->next;
-    // dst->previous = src->previous;
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
