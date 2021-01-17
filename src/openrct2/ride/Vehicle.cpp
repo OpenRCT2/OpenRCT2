@@ -8606,12 +8606,12 @@ loc_6DBA33:;
         }
     }
 
-    regs.ax = track_progress - 1;
-    if (regs.ax == -1)
+    uint16_t newTrackProgress = track_progress - 1;
+    if (newTrackProgress == 0xFFFF)
     {
         UpdateCrossings();
 
-        if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, reinterpret_cast<uint16_t*>(&regs.ax)))
+        if (!UpdateTrackMotionBackwardsGetNewTrack(trackType, curRide, &newTrackProgress))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
             _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
@@ -8621,7 +8621,7 @@ loc_6DBA33:;
     }
 
     // loc_6DBD42
-    track_progress = regs.ax;
+    track_progress = newTrackProgress;
     uint8_t moveInfoVehicleSpriteType;
     {
         const rct_vehicle_info* moveInfo = GetMoveInfo();
