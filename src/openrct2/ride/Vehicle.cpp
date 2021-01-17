@@ -8354,7 +8354,43 @@ loc_6DAEB9:
                 otherVehicleIndex = prev_vehicle_on_ride;
                 if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
                 {
-                    goto loc_6DB967;
+                    _vehicleVelocityF64E0C -= remaining_distance + 1;
+                    remaining_distance = -1;
+
+                    // Might need to be bp rather than this, but hopefully not
+                    auto otherVeh = GetEntity<Vehicle>(otherVehicleIndex);
+                    if (otherVeh == nullptr)
+                    {
+                        // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
+                        log_error("Failed to get next vehicle during update!");
+                        return true;
+                    }
+                    auto head = otherVeh->TrainHead();
+
+                    auto velocityDelta = abs(velocity - head->velocity);
+                    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                    {
+                        if (velocityDelta > 0xE0000)
+                        {
+                            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                            {
+                                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+                            }
+                        }
+                    }
+
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
+                    {
+                        velocity -= velocity >> 2;
+                    }
+                    else
+                    {
+                        int32_t newHeadVelocity = velocity >> 1;
+                        velocity = head->velocity >> 1;
+                        head->velocity = newHeadVelocity;
+                    }
+                    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
+                    return false;
                 }
             }
         }
@@ -8370,45 +8406,6 @@ loc_6DAEB9:
     acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DAEB9;
-
-loc_6DB967:
-    _vehicleVelocityF64E0C -= remaining_distance + 1;
-    remaining_distance = -1;
-
-    // Might need to be bp rather than this, but hopefully not
-    auto otherVeh = GetEntity<Vehicle>(otherVehicleIndex);
-    if (otherVeh == nullptr)
-    {
-        // This can never happen as prev_vehicle_on_ride will always be set to a vehicle
-        log_error("Failed to get next vehicle during update!");
-        return true;
-    }
-    auto head = otherVeh->TrainHead();
-
-    auto velocityDelta = abs(velocity - head->velocity);
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
-    {
-        if (velocityDelta > 0xE0000)
-        {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-            }
-        }
-    }
-
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-    {
-        velocity -= velocity >> 2;
-    }
-    else
-    {
-        int32_t newHeadVelocity = velocity >> 1;
-        velocity = head->velocity >> 1;
-        head->velocity = newHeadVelocity;
-    }
-    _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
-    return false;
 }
 
 static PitchAndRoll PitchAndRollEnd(Ride* curRide, bool useInvertedSprites, uint16_t trackType, TileElement* tileElement)
