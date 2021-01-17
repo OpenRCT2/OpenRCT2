@@ -490,7 +490,7 @@ private:
             gfx_filter_rect(&dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), FilterPaletteID::PaletteDarken1);
         }
 
-        auto bindingOffset = scrollWidth - 150;
+        auto bindingOffset = (scrollWidth * 2) / 3;
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
         if (shortcut.CustomString.empty())
