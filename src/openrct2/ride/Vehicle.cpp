@@ -8672,7 +8672,41 @@ loc_6DBA33:;
                 otherVehicleIndex = next_vehicle_on_ride;
                 if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
                 {
-                    goto loc_6DBE7F;
+                    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
+                    remaining_distance = 0x368A;
+
+                    Vehicle* v3 = GetEntity<Vehicle>(otherVehicleIndex);
+                    Vehicle* v4 = gCurrentVehicle;
+                    if (v3 == nullptr)
+                    {
+                        return false;
+                    }
+
+                    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
+                    {
+                        if (abs(v4->velocity - v3->velocity) > 0xE0000)
+                        {
+                            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
+                            {
+                                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
+                            }
+                        }
+                    }
+
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
+                    {
+                        velocity -= velocity >> 2;
+                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+                    }
+                    else
+                    {
+                        int32_t v3Velocity = v3->velocity;
+                        v3->velocity = v4->velocity >> 1;
+                        v4->velocity = v3Velocity >> 1;
+                        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
+                    }
+
+                    return false;
                 }
             }
         }
@@ -8687,43 +8721,6 @@ loc_6DBA33:;
     acceleration += regs.ebx;
     _vehicleUnkF64E10++;
     goto loc_6DBA33;
-
-loc_6DBE7F:
-    _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
-    remaining_distance = 0x368A;
-
-    Vehicle* v3 = GetEntity<Vehicle>(otherVehicleIndex);
-    Vehicle* v4 = gCurrentVehicle;
-    if (v3 == nullptr)
-    {
-        return false;
-    }
-
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLLISION_CRASHES))
-    {
-        if (abs(v4->velocity - v3->velocity) > 0xE0000)
-        {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
-            {
-                _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
-            }
-        }
-    }
-
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
-    {
-        velocity -= velocity >> 2;
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-    }
-    else
-    {
-        int32_t v3Velocity = v3->velocity;
-        v3->velocity = v4->velocity >> 1;
-        v4->velocity = v3Velocity >> 1;
-        _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_2;
-    }
-
-    return false;
 }
 
 /**
