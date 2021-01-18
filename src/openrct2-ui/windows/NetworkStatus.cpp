@@ -16,6 +16,8 @@
 #include <openrct2/network/network.h>
 #include <openrct2/util/Util.h>
 
+using namespace OpenRCT2;
+
 // clang-format off
 static char _password[33];
 
@@ -136,7 +138,7 @@ static void window_network_status_textinput(rct_window* w, rct_widgetindex widge
             break;
     }
 
-    auto* client = OpenRCT2::GetContext()->GetNetwork()->As<NetworkClient>();
+    auto* client = GetContext()->GetNetwork()->As<NetworkClient>();
     if (!client)
         return;
 

@@ -35,12 +35,12 @@ enum class ModifyGroupType : uint8_t;
 enum class PermissionState : uint8_t;
 enum class NetworkPermission : uint32_t;
 
-class NetworkBase;
-class NetworkServer;
-class NetworkClient;
-
 namespace OpenRCT2
 {
+    class NetworkBase;
+    class NetworkServer;
+    class NetworkClient;
+
     struct IPlatformEnvironment;
 
     struct INetwork
