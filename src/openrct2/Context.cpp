@@ -661,7 +661,7 @@ namespace OpenRCT2
                 }
 
 #ifdef USE_BREAKPAD
-                if (NetworkGetMode() == NETWORK_MODE_NONE)
+                if (!OpenRCT2::IsMultiplayerGame())
                 {
                     start_silent_record();
                 }
