@@ -409,7 +409,7 @@ public:
 template<typename T = SpriteBase> class EntityList
 {
 private:
-    using EntityListIterator = EntityListIterator<T>;
+    using EntityListIterator_t = EntityListIterator<T>;
     const std::list<uint16_t>& vec;
 
 public:
@@ -418,13 +418,13 @@ public:
     {
     }
 
-    EntityListIterator begin()
+    EntityListIterator_t begin()
     {
-        return EntityListIterator(std::cbegin(vec), std::cend(vec));
+        return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
     }
-    EntityListIterator end()
+    EntityListIterator_t end()
     {
-        return EntityListIterator(std::cend(vec), std::cend(vec));
+        return EntityListIterator_t(std::cend(vec), std::cend(vec));
     }
 };
 

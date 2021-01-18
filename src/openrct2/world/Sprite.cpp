@@ -26,7 +26,7 @@
 #include <iterator>
 
 static rct_sprite _spriteList[MAX_SPRITES];
-std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
+static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
