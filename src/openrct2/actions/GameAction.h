@@ -12,8 +12,10 @@
 #include "../Game.h"
 #include "../common.h"
 #include "../core/DataSerialiser.h"
+#include "../core/DataSerialiserTag.h"
 #include "../core/IStream.hpp"
 #include "../localisation/StringIds.h"
+#include "../network/NetworkTypeTraits.h"
 #include "../world/Map.h"
 
 #include <array>

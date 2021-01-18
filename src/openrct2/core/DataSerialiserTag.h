@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "DataSerialiserTraits.h"
+
 template<typename T> class DataSerialiserTag
 {
 public:
@@ -40,3 +42,28 @@ template<typename T> inline DataSerialiserTag<T> CreateDataSerialiserTag(const c
 }
 
 #define DS_TAG(var) CreateDataSerialiserTag(#var, var)
+
+template<typename T> struct DataSerializerTraits_t<DataSerialiserTag<T>>
+{
+    static void encode(OpenRCT2::IStream* stream, const DataSerialiserTag<T>& tag)
+    {
+        DataSerializerTraits<T> s;
+        s.encode(stream, tag.Data());
+    }
+    static void decode(OpenRCT2::IStream* stream, DataSerialiserTag<T>& tag)
+    {
+        DataSerializerTraits<T> s;
+        s.decode(stream, tag.Data());
+    }
+    static void log(OpenRCT2::IStream* stream, const DataSerialiserTag<T>& tag)
+    {
+        const char* name = tag.Name();
+        stream->Write(name, strlen(name));
+        stream->Write(" = ", 3);
+
+        DataSerializerTraits<T> s;
+        s.log(stream, tag.Data());
+
+        stream->Write("; ", 2);
+    }
+};

@@ -245,6 +245,7 @@
     <ClInclude Include="network\NetworkServer.h" />
     <ClInclude Include="network\NetworkServerAdvertiser.h" />
     <ClInclude Include="network\NetworkTypes.h" />
+    <ClInclude Include="network\NetworkTypeTraits.h" />
     <ClInclude Include="network\NetworkUser.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="network\Socket.h" />

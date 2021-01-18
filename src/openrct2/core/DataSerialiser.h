@@ -73,21 +73,4 @@ public:
 
         return *this;
     }
-
-    template<typename T> DataSerialiser& operator<<(DataSerialiserTag<T> data)
-    {
-        if (!_isLogging)
-        {
-            if (_isSaving)
-                DataSerializerTraits<DataSerialiserTag<T>>::encode(&_activeStream, data);
-            else
-                DataSerializerTraits<DataSerialiserTag<T>>::decode(&_activeStream, data);
-        }
-        else
-        {
-            DataSerializerTraits<DataSerialiserTag<T>>::log(&_activeStream, data);
-        }
-
-        return *this;
-    }
 };
