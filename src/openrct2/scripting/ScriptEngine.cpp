@@ -445,7 +445,7 @@ void ScriptEngine::LoadPlugins()
             }
         }
 
-        if (gConfigPlugin.enable_hot_reloading && OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
+        if (gConfigPlugin.enable_hot_reloading && OpenRCT2::IsMultiplayerGame())
         {
             SetupHotReloading();
         }
@@ -1365,7 +1365,7 @@ std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 bool OpenRCT2::Scripting::IsGameStateMutable()
 {
     // Allow single player to alter game state anywhere
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
+    if (!OpenRCT2::IsMultiplayerGame())
     {
         return true;
     }
@@ -1380,7 +1380,7 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
 void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 {
     // Allow single player to alter game state anywhere
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::IsMultiplayerGame())
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto& execInfo = scriptEngine.GetExecInfo();

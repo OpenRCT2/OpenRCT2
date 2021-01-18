@@ -697,7 +697,14 @@ namespace OpenRCT2
 
         void SendGameAction(const GameAction* action) override
         {
-            _network->SendGameAction(action);
+            if (auto* client = As<NetworkClient>())
+            {
+                client->SendGameAction(action);
+            }
+            else if (auto* server = As<NetworkServer>())
+            {
+                server->SendGameAction(action);
+            }
         }
 
         void SetPassword(const char* password) override
@@ -1101,6 +1108,11 @@ namespace OpenRCT2
     std::unique_ptr<INetwork> CreateNetwork(const std::shared_ptr<IPlatformEnvironment>& env)
     {
         return std::make_unique<Network>(env);
+    }
+
+    bool IsMultiplayerGame()
+    {
+        return GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE;
     }
 
 } // namespace OpenRCT2

@@ -46,8 +46,9 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
         return a.Local ? -1 : 1;
     }
 
-    bool serverACompatible = a.Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
-    bool serverBCompatible = b.Version == OpenRCT2::GetContext()->GetNetwork()->GetVersion();
+    const auto networkVersion = OpenRCT2::GetContext()->GetNetwork()->GetVersion();
+    bool serverACompatible = a.Version == networkVersion;
+    bool serverBCompatible = b.Version == networkVersion;
     if (serverACompatible != serverBCompatible)
     {
         return serverACompatible ? -1 : 1;

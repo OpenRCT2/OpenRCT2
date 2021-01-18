@@ -1380,9 +1380,7 @@ static int32_t cc_save_park([[maybe_unused]] InteractiveConsole& console, [[mayb
 
 static int32_t cc_say(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE
-        || OpenRCT2::GetContext()->GetNetwork()->GetStatus() != NETWORK_STATUS_CONNECTED
-        || OpenRCT2::GetContext()->GetNetwork()->GetAuthStatus() != NetworkAuth::Ok)
+    if (!chat_available())
     {
         console.WriteFormatLine("This command only works in multiplayer mode.");
         return 0;
@@ -1451,13 +1449,14 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
 static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+    auto* context = OpenRCT2::GetContext();
+    if (context->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
     }
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = context->GetReplayManager();
     if (!replayManager->IsRecording() && !replayManager->IsNormalising())
     {
         console.WriteFormatLine("Replay currently not recording");
@@ -1486,7 +1485,8 @@ static int32_t cc_replay_stoprecord(InteractiveConsole& console, const arguments
 
 static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+    auto* context = OpenRCT2::GetContext();
+    if (context->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1500,7 +1500,7 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
 
     std::string name = argv[0];
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = context->GetReplayManager();
     if (replayManager->StartPlayback(name))
     {
         OpenRCT2::ReplayRecordInfo info;
@@ -1528,13 +1528,14 @@ static int32_t cc_replay_start(InteractiveConsole& console, const arguments_t& a
 
 static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+    auto* context = OpenRCT2::GetContext();
+    if (context->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
     }
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = context->GetReplayManager();
     if (replayManager->StopPlayback())
     {
         console.WriteFormatLine("Stopped replay");
@@ -1546,7 +1547,8 @@ static int32_t cc_replay_stop(InteractiveConsole& console, const arguments_t& ar
 
 static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_t& argv)
 {
-    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+    auto* context = OpenRCT2::GetContext();
+    if (context->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         console.WriteFormatLine("This command is currently not supported in multiplayer mode.");
         return 0;
@@ -1565,11 +1567,10 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     {
         outputFile += ".sv6r";
     }
-    std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
-        OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
+    std::string outPath = context->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
     outputFile = Path::Combine(outPath, outputFile);
 
-    auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
+    auto* replayManager = context->GetReplayManager();
     if (replayManager->NormaliseReplay(inputFile, outputFile))
     {
         console.WriteFormatLine("Stopped replay");

@@ -66,11 +66,8 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
-        {
-            if (tileElement->IsGhost())
-                continue;
-        }
+        if (tileElement->IsGhost() && OpenRCT2::IsMultiplayerGame())
+            continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
         {

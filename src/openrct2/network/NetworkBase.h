@@ -29,7 +29,6 @@ public: // Common
     virtual void Close();
     virtual void Update();
     virtual void PostUpdate();
-    virtual void SendGameAction(const GameAction* action);
     virtual void Flush();
     virtual int32_t GetMode() const;
 

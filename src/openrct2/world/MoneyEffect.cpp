@@ -73,7 +73,7 @@ void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
     {
         // If game actions return no valid location of the action we can not use the screen
         // coordinates as every client will have different ones.
-        if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
+        if (OpenRCT2::IsMultiplayerGame())
         {
             log_warning("Attempted to create money effect without a valid location in multiplayer");
             return;

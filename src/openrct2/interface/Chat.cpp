@@ -46,9 +46,9 @@ static int32_t chat_history_draw_string(
 
 bool chat_available()
 {
-    return OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE
-        && OpenRCT2::GetContext()->GetNetwork()->GetStatus() == NETWORK_STATUS_CONNECTED
-        && OpenRCT2::GetContext()->GetNetwork()->GetAuthStatus() == NetworkAuth::Ok;
+    auto* network = OpenRCT2::GetContext()->GetNetwork();
+    return network->GetMode() != NETWORK_MODE_NONE && network->GetStatus() == NETWORK_STATUS_CONNECTED
+        && network->GetAuthStatus() == NetworkAuth::Ok;
 }
 
 void chat_open()

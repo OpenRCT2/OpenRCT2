@@ -23,7 +23,7 @@ public:
     void KickPlayer(int32_t playerId);
 
 public:
-    void SendGameAction(const GameAction* action) override;
+    void SendGameAction(const GameAction* action);
     void SendTick();
 
     // Packet dispatchers.

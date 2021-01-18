@@ -35,7 +35,7 @@ public:
     void SendMapRequest(const std::vector<std::string>& objects);
     void SendHeartbeat(NetworkConnection& connection) const;
     void SendChat(const char* text);
-    void SendGameAction(const GameAction* action) override;
+    void SendGameAction(const GameAction* action);
 
 private:
     void ProcessPlayerInfo();

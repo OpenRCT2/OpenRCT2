@@ -143,4 +143,7 @@ namespace OpenRCT2
 
     std::unique_ptr<INetwork> CreateNetwork(const std::shared_ptr<IPlatformEnvironment>& env);
 
+    // Small helper function until everything lives in the Context.
+    bool IsMultiplayerGame();
+
 } // namespace OpenRCT2
