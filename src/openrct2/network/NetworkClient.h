@@ -9,6 +9,9 @@ namespace OpenRCT2
     class NetworkClient final : public NetworkBase
     {
     public:
+        static constexpr int32_t NetworkMode = NETWORK_MODE_CLIENT;
+
+    public:
         NetworkClient(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
         bool BeginClient(const std::string& host, uint16_t port);

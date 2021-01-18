@@ -9,6 +9,9 @@ namespace OpenRCT2
     class NetworkServer final : public NetworkBase
     {
     public:
+        static constexpr int32_t NetworkMode = NETWORK_MODE_SERVER;
+
+    public:
         NetworkServer(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
         bool BeginServer(uint16_t port, const std::string& address);

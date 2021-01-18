@@ -38,8 +38,6 @@ enum class NetworkPermission : uint32_t;
 namespace OpenRCT2
 {
     class NetworkBase;
-    class NetworkServer;
-    class NetworkClient;
 
     struct IPlatformEnvironment;
 
@@ -49,19 +47,10 @@ namespace OpenRCT2
 
         virtual NetworkBase* GetBase() = 0;
 
-        template<typename T> T* As();
-
-        template<> NetworkServer* As<NetworkServer>()
+        template<typename T> T* As()
         {
-            if (GetMode() == NETWORK_MODE_SERVER)
-                return reinterpret_cast<NetworkServer*>(GetBase());
-            return nullptr;
-        }
-
-        template<> NetworkClient* As<NetworkClient>()
-        {
-            if (GetMode() == NETWORK_MODE_CLIENT)
-                return reinterpret_cast<NetworkClient*>(GetBase());
+            if (T::NetworkMode == GetMode())
+                return static_cast<T*>(GetBase());
             return nullptr;
         }
 
