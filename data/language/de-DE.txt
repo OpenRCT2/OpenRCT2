@@ -95,6 +95,7 @@ STR_0090    :Minenbahn
 STR_0091    :Unbekannte Bahn (59)
 STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
+STR_0094    :Einschienenachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -175,6 +176,7 @@ STR_0599    :Eine kompakte Achterbahn mit unabhängigen Wagen und gemäßigten, 
 STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwundenen Strecke
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
 STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
+STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -4100,6 +4102,71 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
+
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+
+[TTPIRF02]
+STR_NAME    :Dach
+
+[TTPIRF03]
+STR_NAME    :Dach
+
+[TTPIRF04]
+STR_NAME    :Dach
+
+[TTPIRF05]
+STR_NAME    :Dach
+
+[TTPIRF07]
+STR_NAME    :Dach
+
+[TTPIRF08]
+STR_NAME    :Dach
+
+[TTRFWD01]
+STR_NAME    :Dach
+
+[TTRFWD02]
+STR_NAME    :Dach
+
+[TTRFWD03]
+STR_NAME    :Dach
+
+[TTRFWD04]
+STR_NAME    :Dach
+
+[TTRFWD05]
+STR_NAME    :Dach
+
+[TTRFWD06]
+STR_NAME    :Dach
+
+[TTRFWD07]
+STR_NAME    :Dach
+
+[TTRFWD08]
+STR_NAME    :Dach
+
+[TTRFGL01]
+STR_NAME    :Glasdach
+
+[TTRFGL02]
+STR_NAME    :Glasdach
+
+[TTRFGL03]
+STR_NAME    :Glasdach
+
+[ACWW33]
+STR_NAME    :Holzpfostenwand
+
+[ACWWF32]
+STR_NAME    :Holzpfostenwand
+
+## End of OpenRCT2 Official
 
 ###############################################################################
 ## RCT2 Scenarios
