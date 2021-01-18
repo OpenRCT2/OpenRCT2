@@ -1462,8 +1462,7 @@ static void window_park_objective_bars_paint(
     }
 }
 
-static void window_park_objective_paint_scenario_desciption(
-    rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
+static void window_park_objective_paint_scenario_desciption(rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
 {
     *screenCoords += ScreenCoordsXY{ window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                                      window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
@@ -1474,8 +1473,7 @@ static void window_park_objective_paint_scenario_desciption(
     screenCoords->y += 5;
 }
 
-static void window_park_objective_paint_scenario_objective(
-    rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
+static void window_park_objective_paint_scenario_objective(rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
 {
     gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, *screenCoords);
     screenCoords->y += LIST_ROW_HEIGHT;
