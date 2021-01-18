@@ -1013,6 +1013,29 @@ ObjectiveStatus Objective::Check() const
     return ObjectiveStatus::Undecided;
 }
 
+/**
+ * Returns the current objective status for external access.
+ * This code is the original check from Park.cpp.
+ */
+ObjectiveStatus Objective::GetCurrentObjectiveStatus() const
+{
+    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    {
+        if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        {
+            // Objective failed
+            return ObjectiveStatus::Failure;
+        }
+        else
+        {
+            // Objective completed
+            return ObjectiveStatus::Success;
+        }
+    }
+
+    return ObjectiveStatus::Undecided;
+}
+
 bool ObjectiveNeedsMoney(const uint8_t objective)
 {
     switch (objective)

@@ -1508,8 +1508,7 @@ static void window_park_objective_paint_scenario_objective(rct_drawpixelinfo* dp
 static void window_park_objective_paint_scenario_progress(
     rct_window* w, rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
 {
-    // if (gScenarioObjective.Check() == ObjectiveStatus::Undecided)
-    if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED)
+    if (gScenarioObjective.GetCurrentObjectiveStatus() == ObjectiveStatus::Undecided)
     {
         gfx_draw_string_left(dpi, STR_OBJECTIVE_PROGRESS_LABEL, nullptr, COLOUR_BLACK, *screenCoords);
         screenCoords->y += LIST_ROW_HEIGHT;
@@ -1704,20 +1703,25 @@ static void window_park_objective_paint_scenario_progress(
 static void window_park_objective_paint_scenario_objective_outcome(
     rct_drawpixelinfo* dpi, Formatter* ft, ScreenCoordsXY* screenCoords)
 {
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    switch (gScenarioObjective.GetCurrentObjectiveStatus())
     {
-        if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        case ObjectiveStatus::Failure:
         {
             // Objective failed
             gfx_draw_string_left_wrapped(dpi, nullptr, *screenCoords, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
+            break;
         }
-        else
+        case ObjectiveStatus::Success:
         {
             // Objective completed
             *ft = Formatter();
             ft->Add<money32>(gScenarioCompletedCompanyValue);
             gfx_draw_string_left_wrapped(dpi, ft->Data(), *screenCoords, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            break;
         }
+        default:
+            // Objective undecided
+            break;
     }
 }
 

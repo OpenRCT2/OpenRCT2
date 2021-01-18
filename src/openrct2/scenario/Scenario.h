@@ -410,6 +410,7 @@ public:
     int32_t GetFinish5RollerCoastersProgress() const;
     money32 GetMonthlyRideIncomeProgress() const;
     int32_t GetMonthlyShopIncomeProgress() const;
+    ObjectiveStatus GetCurrentObjectiveStatus() const;
 };
 
 enum
