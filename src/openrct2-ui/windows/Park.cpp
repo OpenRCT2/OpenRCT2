@@ -1547,12 +1547,12 @@ static void window_park_objective_paint_scenario_progress(
 
                 if (gScenarioObjective.Type == OBJECTIVE_GUESTS_BY)
                 {
-                    ft->Add<uint32_t>(static_cast<uint32_t>(600));
+                    ft->Add<uint32_t>(static_cast<uint32_t>(OBJECTIVE_GUESTS_BY_PARK_RATING));
                     parkRatingPercentage = (static_cast<float>(gParkRating) / static_cast<float>(600));
                 }
                 else
                 {
-                    ft->Add<uint32_t>(static_cast<uint32_t>(700));
+                    ft->Add<uint32_t>(static_cast<uint32_t>(OBJECTIVE_GUESTS_AND_RATING_PARK_RATING));
                     parkRatingPercentage = (static_cast<float>(gParkRating) / static_cast<float>(700));
                 }
 

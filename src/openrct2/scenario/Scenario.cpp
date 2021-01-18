@@ -715,7 +715,7 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 
     if (currentMonthYear == MONTH_COUNT * Year || gConfigGeneral.allow_early_completion)
     {
-        if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
+        if (parkRating >= OBJECTIVE_GUESTS_BY_PARK_RATING && gNumGuestsInPark >= NumGuests)
         {
             return ObjectiveStatus::Success;
         }
@@ -815,7 +815,7 @@ ObjectiveStatus Objective::Check10RollerCoasters() const
  */
 ObjectiveStatus Objective::CheckGuestsAndRating() const
 {
-    if (gParkRating < 700 && gDateMonthsElapsed >= 1)
+    if (gParkRating < OBJECTIVE_GUESTS_AND_RATING_PARK_RATING && gDateMonthsElapsed >= 1)
     {
         gScenarioParkRatingWarningDays++;
         if (gScenarioParkRatingWarningDays == 1)
@@ -859,7 +859,7 @@ ObjectiveStatus Objective::CheckGuestsAndRating() const
         gScenarioParkRatingWarningDays = 0;
     }
 
-    if (gParkRating >= 700)
+    if (gParkRating >= OBJECTIVE_GUESTS_AND_RATING_PARK_RATING)
         if (gNumGuestsInPark >= NumGuests)
             return ObjectiveStatus::Success;
 

@@ -433,6 +433,8 @@ enum
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
 static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr uint32_t OBJECTIVE_GUESTS_BY_PARK_RATING = 600;
+static constexpr uint32_t OBJECTIVE_GUESTS_AND_RATING_PARK_RATING = 700;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
