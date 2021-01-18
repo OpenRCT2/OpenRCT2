@@ -8297,25 +8297,25 @@ loc_6DAEB9:
         auto loc = TrackLocation
             + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + RideTypeDescriptors[curRide->type].Heights.VehicleZOffset };
 
-        uint8_t flagsForSomething = 0;
+        uint8_t remainingDistanceFlags = 0;
         if (loc.x != unk_F64E20.x)
         {
-            flagsForSomething |= 1;
+            remainingDistanceFlags |= 1;
         }
         if (loc.y != unk_F64E20.y)
         {
-            flagsForSomething |= 2;
+            remainingDistanceFlags |= 2;
         }
         if (loc.z != unk_F64E20.z)
         {
-            flagsForSomething |= 4;
+            remainingDistanceFlags |= 4;
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCFrontBogie
             && (trackType == TrackElemType::LeftReverser || trackType == TrackElemType::RightReverser) && track_progress >= 30
             && track_progress <= 66)
         {
-            flagsForSomething |= 8;
+            remainingDistanceFlags |= 8;
         }
 
         if (TrackSubposition == VehicleTrackSubposition::ReverserRCRearBogie
@@ -8329,7 +8329,7 @@ loc_6DAEB9:
         }
 
         // loc_6DB8A5
-        remaining_distance -= dword_9A2930[flagsForSomething];
+        remaining_distance -= dword_9A2930[remainingDistanceFlags];
         unk_F64E20 = loc;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
