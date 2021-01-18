@@ -958,8 +958,9 @@ void S6Exporter::ExportSprites()
 void S6Exporter::RebuildEntityLinks()
 {
     // Rebuild next/previous linked list entity indexs
-    for (auto list : { RCT2EntityLinkListOffset::Free, RCT2EntityLinkListOffset::Litter, RCT2EntityLinkListOffset::Misc,
-                       RCT2EntityLinkListOffset::Peep, RCT2EntityLinkListOffset::TrainHead, RCT2EntityLinkListOffset::Vehicle })
+    for (auto list :
+         { RCT12EntityLinkListOffset::Free, RCT12EntityLinkListOffset::Litter, RCT12EntityLinkListOffset::Misc,
+           RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
     {
         uint16_t previous = SPRITE_INDEX_NULL;
         for (auto& entity : _s6.sprites)
@@ -1009,9 +1010,9 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
     }
 }
 
-constexpr RCT2EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
+constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
 {
-    RCT2EntityLinkListOffset output = RCT2EntityLinkListOffset::Free;
+    RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
     switch (src->sprite_identifier)
     {
         case SpriteIdentifier::Vehicle:
@@ -1019,22 +1020,22 @@ constexpr RCT2EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
             auto veh = src->As<Vehicle>();
             if (veh && veh->IsHead())
             {
-                output = RCT2EntityLinkListOffset::TrainHead;
+                output = RCT12EntityLinkListOffset::TrainHead;
             }
             else
             {
-                output = RCT2EntityLinkListOffset::Vehicle;
+                output = RCT12EntityLinkListOffset::Vehicle;
             }
         }
         break;
         case SpriteIdentifier::Peep:
-            output = RCT2EntityLinkListOffset::Peep;
+            output = RCT12EntityLinkListOffset::Peep;
             break;
         case SpriteIdentifier::Misc:
-            output = RCT2EntityLinkListOffset::Misc;
+            output = RCT12EntityLinkListOffset::Misc;
             break;
         case SpriteIdentifier::Litter:
-            output = RCT2EntityLinkListOffset::Litter;
+            output = RCT12EntityLinkListOffset::Litter;
             break;
         default:
             break;

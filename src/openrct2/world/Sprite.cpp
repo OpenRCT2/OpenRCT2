@@ -411,6 +411,7 @@ static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* enti
 {
     auto& list = gEntityLists[EnumValue(linkedListIndex)];
     entity->linked_list_index = linkedListIndex;
+    // Entity list must be in sprite_index order to prevent desync issues
     list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
 }
 
