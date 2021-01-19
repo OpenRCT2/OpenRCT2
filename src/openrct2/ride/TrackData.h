@@ -30,8 +30,8 @@ extern const uint8_t TrackPieceLengths[TrackElemType::Count];
 
 struct track_curve_chain
 {
-    uint16_t next;
-    uint16_t previous;
+    int32_t next;
+    int32_t previous;
 };
 
 extern const track_curve_chain gTrackCurveChain[TrackElemType::Count];
@@ -50,7 +50,7 @@ struct track_descriptor
 
 extern const track_descriptor gTrackDescriptors[142];
 
-extern const int16_t AlternativeTrackTypes[TrackElemType::Count];
+extern const track_type_t AlternativeTrackTypes[TrackElemType::Count];
 
 extern const money32 TrackPricing[TrackElemType::Count];
 extern const money32 FlatRideTrackPricing[TrackElemType::Count];
@@ -65,7 +65,7 @@ struct dodgems_track_size
 
 extern const dodgems_track_size DodgemsTrackSize[TrackElemType::Count];
 
-extern const uint8_t TrackElementMirrorMap[TrackElemType::Count];
+extern const track_type_t TrackElementMirrorMap[TrackElemType::Count];
 
 extern const uint32_t TrackHeightMarkerPositions[TrackElemType::Count];
 

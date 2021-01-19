@@ -169,7 +169,18 @@ public:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t6TrackElement.type;
+
+                track_type_t trackType = t6TrackElement.type;
+                if (trackType == TrackElemType::RotationControlToggleAlias && !TrackTypeIsBooster(td->type, trackType))
+                {
+                    trackType = TrackElemType::RotationControlToggle;
+                }
+                else if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                {
+                    trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                }
+
+                trackElement.type = trackType;
                 trackElement.flags = t6TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }

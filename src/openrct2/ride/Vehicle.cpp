@@ -746,7 +746,7 @@ static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, in
     switch (trackSubposition)
     {
         case VehicleTrackSubposition::Default:
-            size = 1024;
+            size = TrackElemType::Count * 4;
             break;
         case VehicleTrackSubposition::ChairliftGoingOut:
             size = 692;
@@ -8154,17 +8154,9 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     {
         trigger_on_ride_photo(TrackLocation, tileElement);
     }
+    if (trackType == TrackElemType::RotationControlToggle)
     {
-        curRide = get_ride(tileElement->AsTrack()->GetRideIndex());
-        if (curRide != nullptr)
-        {
-            uint16_t rideType = curRide->type;
-            if (trackType == TrackElemType::RotationControlToggle
-                && (rideType == RIDE_TYPE_SPINNING_WILD_MOUSE || rideType == RIDE_TYPE_STEEL_WILD_MOUSE))
-            {
-                update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
-            }
-        }
+        update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
     }
     // Change from original: this used to check if the vehicle allowed doors.
     UpdateSceneryDoorBackwards();
@@ -8219,7 +8211,7 @@ loc_6DAEB9:
             }
         }
     }
-    else if (TrackTypeIsBooster(curRide->type, trackType))
+    else if (trackType == TrackElemType::Booster)
     {
         auto boosterSpeed = get_booster_speed(curRide->type, (brake_speed << 16));
         if (boosterSpeed > _vehicleVelocityF64E08)
@@ -8594,7 +8586,7 @@ loc_6DBA33:;
         }
     }
 
-    if (TrackTypeIsBooster(curRide->type, trackType))
+    if (trackType == TrackElemType::Booster)
     {
         auto boosterSpeed = get_booster_speed(curRide->type, (brake_speed << 16));
         if (boosterSpeed < _vehicleVelocityF64E08)

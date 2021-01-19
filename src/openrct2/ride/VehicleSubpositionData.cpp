@@ -24060,7 +24060,8 @@ static constexpr const rct_vehicle_info_list *TrackVehicleInfoListDefault[] = {
     &TrackVehicleInfo_96C062, &TrackVehicleInfo_96C3C4, &TrackVehicleInfo_96AC16, &TrackVehicleInfo_96AF78, &TrackVehicleInfo_96B2DA, &TrackVehicleInfo_96B63C,
     &TrackVehicleInfo_96C726, &TrackVehicleInfo_96CA88, &TrackVehicleInfo_96CDEA, &TrackVehicleInfo_96D14C, &TrackVehicleInfo_9761F2, &TrackVehicleInfo_9766C5,
     &TrackVehicleInfo_976B98, &TrackVehicleInfo_97706B, &TrackVehicleInfo_97753E, &TrackVehicleInfo_977A11, &TrackVehicleInfo_977EE4, &TrackVehicleInfo_9783B7,
-    &TrackVehicleInfo_97888A, &TrackVehicleInfo_978D5D, &TrackVehicleInfo_979230, &TrackVehicleInfo_979703,
+    &TrackVehicleInfo_97888A, &TrackVehicleInfo_978D5D, &TrackVehicleInfo_979230, &TrackVehicleInfo_979703, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
+    &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0
 };
 
 static constexpr const rct_vehicle_info_list *TrackVehicleInfoListChairliftGoingOut[] = {

@@ -1113,9 +1113,12 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
+        // export SpinningControlToggle (256) as SpinningControlToggleAlias (100) for backwards compatability with OpenRCT2
+        auto trackType = src->GetTrackType();
+        if (trackType == TrackElemType::RotationControlToggle)
+            trackType = TrackElemType::RotationControlToggleAlias;
         // Track direction and type are in the same field
-        dst->track_direction = src->track_direction;
-        // dst->track_type = src->track_type;
+        dst->track_type = (trackType << 2) | (src->track_direction & 3);
     }
     dst->track_x = src->TrackLocation.x;
     dst->track_y = src->TrackLocation.y;
@@ -1573,7 +1576,11 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto dst2 = dst->AsTrack();
             auto src2 = src->AsTrack();
 
-            dst2->SetTrackType(src2->GetTrackType());
+            auto trackType = src2->GetTrackType();
+            if (trackType == TrackElemType::RotationControlToggle)
+                trackType = TrackElemType::RotationControlToggleAlias;
+            // SV6 track type is uint8_t; we have aliased Rotation Control (256) to Booster (100) to allow this
+            dst2->SetTrackType(static_cast<uint8_t>(trackType));
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
             dst2->SetRideIndex(src2->GetRideIndex());
             dst2->SetColourScheme(src2->GetColourScheme());
