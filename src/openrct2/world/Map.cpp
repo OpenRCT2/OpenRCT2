@@ -1538,9 +1538,7 @@ void MapUpdateHeightCache(bool fullCheck)
     // position to start at tile zero, checking all tiles before returning.
     // Otherwise check a limited number of tiles per each time the
     // function is called.
-    int32_t tilesToCheck = fullCheck
-        ? mapTileCount
-        : mapTileCount / 64;
+    int32_t tilesToCheck = fullCheck ? mapTileCount : mapTileCount / 64;
 
     for (int32_t i = 0; i < tilesToCheck; i++)
     {
