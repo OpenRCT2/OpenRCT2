@@ -118,7 +118,8 @@ namespace OpenRCT2
         bool _initialised = false;
         bool _isWindowMinimised = false;
         uint32_t _lastTick = 0;
-        uint32_t _accumulator = 0;
+        float _accumulator = 0.0f;
+        float _timeScale = 1.0f;
         uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
@@ -978,9 +979,9 @@ namespace OpenRCT2
                 _lastTick = currentTick;
             }
 
-            uint32_t elapsed = currentTick - _lastTick;
+            float elapsed = (currentTick - _lastTick) * _timeScale;
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
+            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -1021,10 +1022,10 @@ namespace OpenRCT2
                 _lastTick = currentTick;
             }
 
-            uint32_t elapsed = currentTick - _lastTick;
+            float elapsed = (currentTick - _lastTick) * _timeScale;
 
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
+            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -1048,7 +1049,7 @@ namespace OpenRCT2
 
             if (draw)
             {
-                const float alpha = std::min(static_cast<float>(_accumulator) / GAME_UPDATE_TIME_MS, 1.0f);
+                const float alpha = std::min(_accumulator / static_cast<float>(GAME_UPDATE_TIME_MS), 1.0f);
                 tweener.Tween(alpha);
 
                 _drawingEngine->BeginDraw();
@@ -1220,6 +1221,16 @@ namespace OpenRCT2
         {
             return &_newVersionInfo;
         }
+
+        void SetTimeScale(float newScale) override
+        {
+            _timeScale = std::clamp(newScale, GAME_MIN_TIME_SCALE, GAME_MAX_TIME_SCALE);
+        }
+
+        float GetTimeScale() const override
+        {
+            return _timeScale;
+        }
     };
 
     Context* Context::Instance = nullptr;
@@ -1240,6 +1251,7 @@ namespace OpenRCT2
     {
         return Context::Instance;
     }
+
 } // namespace OpenRCT2
 
 void context_init()
