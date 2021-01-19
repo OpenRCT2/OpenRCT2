@@ -263,23 +263,12 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
         return false;
 
-    auto peepCount = 0;
-    auto staffCount = 0;
-    auto staffTypeFlags = 0;
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
-    {
-        if (peep->AssignedPeepType == PeepType::Staff)
-        {
-            staffCount++;
-            staffTypeFlags |= (1 << static_cast<uint8_t>(peep->AssignedStaffType));
-        }
-        else
-        {
-            peepCount++;
-        }
-    }
+    auto staff = EntityList<Staff>(EntityListId::Peep);
+    auto staffCount = std::distance(staff.begin(), staff.end());
+    auto guests = EntityList<Guest>(EntityListId::Peep);
+    auto peepCount = std::distance(guests.begin(), guests.end());
 
-    return ((staffTypeFlags & 0xF) && staffCount >= 20 && staffCount >= peepCount / 32);
+    return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */

@@ -1120,8 +1120,8 @@ void ride_remove_peeps(Ride* ride)
         }
     }
 
-    // Place all the peeps at exit
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    // Place all the guests at exit
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
             || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
@@ -1155,7 +1155,34 @@ void ride_remove_peeps(Ride* ride)
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
+    // Place all the staff at exit
+    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    {
+        if (peep->State == PeepState::Fixing || peep->State == PeepState::Inspecting)
+        {
+            if (peep->CurrentRide != ride->id)
+                continue;
 
+            if (exitPosition.direction == INVALID_DIRECTION)
+            {
+                CoordsXYZ newLoc = { peep->NextLoc.ToTileCentre(), peep->NextLoc.z };
+                if (peep->GetNextIsSloped())
+                    newLoc.z += COORDS_Z_STEP;
+                newLoc.z++;
+                peep->MoveTo(newLoc);
+            }
+            else
+            {
+                peep->MoveTo(exitPosition);
+                peep->sprite_direction = exitPosition.direction;
+            }
+
+            peep->State = PeepState::Falling;
+            peep->SwitchToSpecialSprite(0);
+
+            peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
+        }
+    }
     ride->num_riders = 0;
     ride->slide_in_use = 0;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
