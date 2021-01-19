@@ -1526,23 +1526,23 @@ void MapInvalidateHeightCache()
 
 void MapUpdateHeightCache(bool fullCheck)
 {
-    constexpr int32_t maxTileIndex = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+    constexpr int32_t mapTileCount = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    if (_mapHighestTileHeightLoopPosition == maxTileIndex)
+    if (fullCheck)
+        _mapHighestTileHeightLoopPosition = 0;
+
+    if (_mapHighestTileHeightLoopPosition == mapTileCount - 1)
         return;
-
-    int32_t tilesToCheck = maxTileIndex;
 
     // If we're doing a full check of the map then zero out the loop
     // position to start at tile zero, checking all tiles before returning.
     // Otherwise check a limited number of tiles per each time the
     // function is called.
-    if (fullCheck)
-        _mapHighestTileHeightLoopPosition = 0;
-    else
-        tilesToCheck /= 64;
+    int32_t tilesToCheck = fullCheck
+        ? mapTileCount
+        : mapTileCount / 64;
 
-    for (int32_t i = 0; i <= tilesToCheck; i++)
+    for (int32_t i = 0; i < tilesToCheck; i++)
     {
         int32_t x = (_mapHighestTileHeightLoopPosition % MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
         int32_t y = (_mapHighestTileHeightLoopPosition / MAXIMUM_MAP_SIZE_TECHNICAL) * COORDS_XY_STEP;
@@ -1574,7 +1574,7 @@ void MapUpdateHeightCache(bool fullCheck)
 
         } while (!(tileElement++)->IsLastForTile());
 
-        if (_mapHighestTileHeightLoopPosition == maxTileIndex)
+        if (_mapHighestTileHeightLoopPosition == mapTileCount - 1)
         {
             _mapHighestTileHeight = _mapHighestTileHeightPending;
             _mapHighestTileHeightPending = 0;
