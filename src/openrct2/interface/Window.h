@@ -661,6 +661,14 @@ using close_callback = void (*)();
 extern rct_window* gWindowAudioExclusive;
 
 extern uint16_t gWindowUpdateTicks;
+namespace MapFlashingFlags
+{
+    constexpr uint16_t GuestListOpen = (1 << 0);
+    constexpr uint16_t FlashGuests = (1 << 1);
+    constexpr uint16_t StaffListOpen = (1 << 2);
+    constexpr uint16_t FlashStaff = (1 << 3);
+    constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
+} // namespace MapFlashingFlags
 extern uint16_t gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];

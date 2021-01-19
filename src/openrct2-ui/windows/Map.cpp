@@ -43,6 +43,12 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
 
+constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
+
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
 using MapCoordsXY = TileCoordsXY;
@@ -1031,47 +1037,67 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
     return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
 }
 
+static void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixelinfo* dpi)
+{
+    if (peep->x == LOCATION_NULL)
+        return;
+
+    MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
+    auto leftTop = ScreenCoordsXY{ c.x, c.y };
+    auto rightBottom = leftTop;
+    uint8_t colour = DefaultPeepMapColour;
+    if (sprite_get_flashing(peep))
+    {
+        colour = flashColour;
+        // If flashing then map peep pixel size is increased (by moving left top downwards)
+        if (flashColour != DefaultPeepMapColour)
+        {
+            leftTop.x--;
+        }
+    }
+
+    gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+}
+
+static uint8_t MapGetGuestFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashGuests) != 0)
+    {
+        colour = GuestMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = GuestMapColourAlternate;
+    }
+    return colour;
+}
+
+static uint8_t MapGetStaffFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashStaff) != 0)
+    {
+        colour = StaffMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = StaffMapColourAlternate;
+    }
+    return colour;
+}
+
 /**
  *
  *  rct2: 0x0068DADA
  */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    auto flashColour = MapGetGuestFlashColour();
+    for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
-        if (peep->x == LOCATION_NULL)
-            continue;
-
-        MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
-        auto leftTop = ScreenCoordsXY{ c.x, c.y };
-        auto rightBottom = leftTop;
-
-        int16_t colour = PALETTE_INDEX_20;
-
-        if (sprite_get_flashing(peep))
-        {
-            if (peep->AssignedPeepType == PeepType::Staff)
-            {
-                if ((gWindowMapFlashingFlags & (1 << 3)) != 0)
-                {
-                    colour = PALETTE_INDEX_138;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_10;
-                }
-            }
-            else
-            {
-                if ((gWindowMapFlashingFlags & (1 << 1)) != 0)
-                {
-                    colour = PALETTE_INDEX_172;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_21;
-                }
-            }
-        }
-        gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+        DrawMapPeepPixel(guest, flashColour, dpi);
+    }
+    flashColour = MapGetStaffFlashColour();
+    for (auto staff : EntityList<Staff>(EntityListId::Peep))
+    {
+        DrawMapPeepPixel(staff, flashColour, dpi);
     }
 }
 

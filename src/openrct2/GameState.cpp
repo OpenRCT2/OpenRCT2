@@ -190,19 +190,19 @@ void GameState::Update()
         // it was done due to inability to reproduce original frequency
         // and decision that the original one looks too fast
         if (gCurrentRealTimeTicks % 4 == 0)
-            gWindowMapFlashingFlags ^= (1 << 15);
+            gWindowMapFlashingFlags ^= MapFlashingFlags::SwitchColour;
 
         // Handle guest map flashing
-        gWindowMapFlashingFlags &= ~(1 << 1);
-        if (gWindowMapFlashingFlags & (1 << 0))
-            gWindowMapFlashingFlags |= (1 << 1);
-        gWindowMapFlashingFlags &= ~(1 << 0);
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashGuests;
+        if (gWindowMapFlashingFlags & MapFlashingFlags::GuestListOpen)
+            gWindowMapFlashingFlags |= MapFlashingFlags::FlashGuests;
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::GuestListOpen;
 
         // Handle staff map flashing
-        gWindowMapFlashingFlags &= ~(1 << 3);
-        if (gWindowMapFlashingFlags & (1 << 2))
-            gWindowMapFlashingFlags |= (1 << 3);
-        gWindowMapFlashingFlags &= ~(1 << 2);
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashStaff;
+        if (gWindowMapFlashingFlags & MapFlashingFlags::StaffListOpen)
+            gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
         context_update_map_tooltip();
 

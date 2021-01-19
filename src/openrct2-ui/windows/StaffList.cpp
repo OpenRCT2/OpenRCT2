@@ -325,7 +325,7 @@ void window_staff_list_update(rct_window* w)
         // Enable highlighting of these staff members in map window
         if (window_find_by_class(WC_MAP) != nullptr)
         {
-            gWindowMapFlashingFlags |= (1 << 2);
+            gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
             for (auto peep : EntityList<Staff>(EntityListId::Peep))
             {
                 sprite_set_flashing(peep, false);
