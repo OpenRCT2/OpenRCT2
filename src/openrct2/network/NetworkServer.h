@@ -14,6 +14,9 @@ namespace OpenRCT2
     public:
         NetworkServer(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env);
 
+        void BeginServerLog();
+        void AppendServerLog(const std::string& s);
+        void CloseServerLog();
         bool BeginServer(uint16_t port, const std::string& address);
 
         void Close() override;
@@ -23,11 +26,10 @@ namespace OpenRCT2
         int32_t GetMode() const override;
         NetworkStats_t GetStats() const override;
         NetworkAuth GetAuthStatus() override;
+        NetworkConnection* GetPlayerConnection(NetworkPlayerId_t id);
 
     public:
         void KickPlayer(int32_t playerId);
-
-    public:
         void SendGameAction(const GameAction* action);
         void SendTick();
 
@@ -51,6 +53,10 @@ namespace OpenRCT2
         void SendScripts(NetworkConnection& connection) const;
 
     private:
+        void AddClient(std::unique_ptr<ITcpSocket>&& socket);
+        void RemovePlayer(std::unique_ptr<NetworkConnection>& connection);
+
+        void SendPacketToClients(const NetworkPacket& packet, bool front, bool gameCmd);
         void DecayCooldown(NetworkPlayer* player);
         void ProcessPlayerList();
         void ProcessDisconnectedClients();
@@ -71,6 +77,16 @@ namespace OpenRCT2
 
     private:
         void OnClientAuthenticated(NetworkConnection& connection, const char* name);
+
+    private:
+        uint32_t _lastPingTime = 0;
+        std::unique_ptr<ITcpSocket> _listenSocket;
+        std::unique_ptr<INetworkServerAdvertiser> _advertiser;
+        std::list<std::unique_ptr<NetworkConnection>> _clients;
+        std::string _serverLogPath;
+        std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
+        std::ofstream _server_log_fs;
+        uint16_t listening_port = 0;
     };
 
 } // namespace OpenRCT2

@@ -4,11 +4,13 @@
 
 #    include "../Context.h"
 #    include "../GameStateSnapshots.h"
+#    include "../PlatformEnvironment.h"
 #    include "../actions/GameAction.h"
 #    include "../actions/PeepPickupAction.h"
 #    include "../core/Console.hpp"
 #    include "../core/FileStream.h"
 #    include "../core/Json.hpp"
+#    include "../core/String.hpp"
 #    include "../interface/Chat.h"
 #    include "../object/ObjectManager.h"
 #    include "../object/ObjectRepository.h"
@@ -36,6 +38,67 @@ namespace OpenRCT2
         SetupCommandHandler(NetworkCommand::MapRequest, &NetworkServer::OnPacketMapRequest);
         SetupCommandHandler(NetworkCommand::RequestGameState, &NetworkServer::OnPacketRequestGameState);
         SetupCommandHandler(NetworkCommand::Heartbeat, &NetworkServer::OnPacketHeartbeat);
+
+        _server_log_fs << std::unitbuf;
+    }
+
+    void NetworkServer::BeginServerLog()
+    {
+        auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
+        _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
+
+#    if defined(_WIN32) && !defined(__MINGW32__)
+        auto pathW = String::ToWideChar(_serverLogPath.c_str());
+        _server_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app | std::ios::binary);
+#    else
+        _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);
+#    endif
+
+        // Log server start event
+        utf8 logMessage[256];
+        if (GetMode() == NETWORK_MODE_CLIENT)
+        {
+            format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
+        }
+        else if (GetMode() == NETWORK_MODE_SERVER)
+        {
+            format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
+        }
+        else
+        {
+            logMessage[0] = '\0';
+            Guard::Assert(false, "Unknown network mode!");
+        }
+        AppendServerLog(logMessage);
+    }
+
+    void NetworkServer::AppendServerLog(const std::string& s)
+    {
+        if (gConfigNetwork.log_server_actions && _server_log_fs.is_open())
+        {
+            AppendLog(_server_log_fs, s);
+        }
+    }
+
+    void NetworkServer::CloseServerLog()
+    {
+        // Log server stopped event
+        char logMessage[256];
+        if (GetMode() == NETWORK_MODE_CLIENT)
+        {
+            format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
+        }
+        else if (GetMode() == NETWORK_MODE_SERVER)
+        {
+            format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
+        }
+        else
+        {
+            logMessage[0] = '\0';
+            Guard::Assert(false, "Unknown network mode!");
+        }
+        AppendServerLog(logMessage);
+        _server_log_fs.close();
     }
 
     bool NetworkServer::BeginServer(uint16_t port, const std::string& address)
@@ -44,6 +107,9 @@ namespace OpenRCT2
 
         if (!Init())
             return false;
+
+        BeginChatLog();
+        BeginServerLog();
 
         _userManager.Load();
 
@@ -70,13 +136,11 @@ namespace OpenRCT2
 
         CheatsReset();
         LoadGroups();
-        BeginChatLog();
-        BeginServerLog();
 
         NetworkPlayer* player = AddPlayer(gConfigNetwork.player_name, "");
         player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
         player->Group = 0;
-        player_id = player->Id;
+        _playerId = player->Id;
 
         if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER)
         {
@@ -94,7 +158,6 @@ namespace OpenRCT2
 
         status = NETWORK_STATUS_CONNECTED;
         listening_port = port;
-        _serverState.gamestateSnapshotsEnabled = gConfigNetwork.desync_debugging;
         _advertiser = CreateServerAdvertiser(listening_port);
 
         game_load_scripts();
@@ -106,14 +169,16 @@ namespace OpenRCT2
     {
         NetworkBase::Close();
 
-        client_connection_list.clear();
+        _clients.clear();
+
+        CloseServerLog();
     }
 
     void NetworkServer::Update()
     {
         NetworkBase::Update();
 
-        for (auto& connection : client_connection_list)
+        for (auto& connection : _clients)
         {
             // This can be called multiple times before the connection is removed.
             if (connection->IsDisconnected)
@@ -130,7 +195,7 @@ namespace OpenRCT2
         }
 
         uint32_t ticks = Platform::GetTicks();
-        if (ticks > last_ping_sent_time + 3000)
+        if (ticks > _lastPingTime + 3000)
         {
             SendPing();
             SendPingList();
@@ -175,7 +240,7 @@ namespace OpenRCT2
     {
         NetworkBase::Flush();
 
-        for (auto& it : client_connection_list)
+        for (auto& it : _clients)
         {
             it->SendQueuedPackets();
         }
@@ -189,7 +254,7 @@ namespace OpenRCT2
     NetworkStats_t NetworkServer::GetStats() const
     {
         NetworkStats_t stats = {};
-        for (auto& connection : client_connection_list)
+        for (auto& connection : _clients)
         {
             for (size_t n = 0; n < EnumValue(NetworkStatisticsGroup::Max); n++)
             {
@@ -205,9 +270,23 @@ namespace OpenRCT2
         return NetworkAuth::Ok;
     }
 
+    NetworkConnection* NetworkServer::GetPlayerConnection(NetworkPlayerId_t id)
+    {
+        auto player = GetPlayerByID(id);
+        if (player != nullptr)
+        {
+            auto it = std::find_if(
+                _clients.begin(), _clients.end(), [player](const auto& conn) -> bool { return conn->Player == player; });
+            if (it == _clients.end())
+                return nullptr;
+            return it->get();
+        }
+        return nullptr;
+    }
+
     void NetworkServer::KickPlayer(int32_t playerId)
     {
-        for (auto& client_connection : client_connection_list)
+        for (auto& client_connection : _clients)
         {
             if (client_connection->Player->Id == playerId)
             {
@@ -222,6 +301,47 @@ namespace OpenRCT2
         }
     }
 
+    void NetworkServer::AddClient(std::unique_ptr<ITcpSocket>&& socket)
+    {
+        // Log connection info.
+        char addr[128];
+        snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
+
+        AppendServerLog(addr);
+
+        // Store connection
+        auto connection = std::make_unique<NetworkConnection>();
+        connection->Socket = std::move(socket);
+
+        _clients.push_back(std::move(connection));
+    }
+
+    void NetworkServer::SendPacketToClients(const NetworkPacket& packet, bool front, bool gameCmd)
+    {
+        for (auto& client : _clients)
+        {
+            if (client->IsDisconnected)
+            {
+                // Client will be removed at the end of the tick, don't bother.
+                continue;
+            }
+
+            if (gameCmd)
+            {
+                // If marked as game command we can not send the packet to connections that are not fully connected.
+                // Sending the packet would cause the client to store a command that is behind the tick where he starts,
+                // which would be essentially never executed. The clients do not require commands before the server has not sent
+                // the map data.
+                if (client->Player == nullptr)
+                {
+                    continue;
+                }
+            }
+            auto packetCopy = packet;
+            client->QueuePacket(std::move(packetCopy), front);
+        }
+    }
+
     void NetworkServer::SendGameAction(const GameAction* action)
     {
         NetworkPacket packet(NetworkCommand::GameAction);
@@ -231,7 +351,7 @@ namespace OpenRCT2
 
         packet << gCurrentTicks << action->GetType() << stream;
 
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, true);
     }
 
     void NetworkServer::SendTick()
@@ -258,7 +378,7 @@ namespace OpenRCT2
             packet.WriteString(checksum.ToString().c_str());
         }
 
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::Server_Send_GAMEINFO(NetworkConnection& connection)
@@ -277,7 +397,7 @@ namespace OpenRCT2
         jsonObj["provider"] = jsonProvider;
 
         packet.WriteString(jsonObj.dump().c_str());
-        packet << _serverState.gamestateSnapshotsEnabled;
+        packet << gConfigNetwork.desync_debugging;
 
 #    endif
         connection.QueuePacket(std::move(packet));
@@ -306,7 +426,7 @@ namespace OpenRCT2
         NetworkPacket packet(NetworkCommand::Event);
         packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_JOINED);
         packet.WriteString(playerName);
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendEventPlayerDisconnected(const char* playerName, const char* reason)
@@ -315,7 +435,7 @@ namespace OpenRCT2
         packet << static_cast<uint16_t>(SERVER_EVENT_PLAYER_DISCONNECTED);
         packet.WriteString(playerName);
         packet.WriteString(reason);
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendChat(const char* text, const std::vector<uint8_t>& playerIds)
@@ -326,7 +446,7 @@ namespace OpenRCT2
         if (playerIds.empty())
         {
             // Empty players / default value means send to all players
-            SendPacketToClients(packet);
+            SendPacketToClients(packet, false, false);
         }
         else
         {
@@ -351,40 +471,40 @@ namespace OpenRCT2
             return;
 
         player->Write(packet);
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendPlayerList()
     {
         NetworkPacket packet(NetworkCommand::PlayerList);
-        packet << gCurrentTicks << static_cast<uint8_t>(player_list.size());
-        for (auto& player : player_list)
+        packet << gCurrentTicks << static_cast<uint8_t>(_playerList.size());
+        for (auto& player : _playerList)
         {
             player->Write(packet);
         }
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendPing()
     {
-        last_ping_sent_time = platform_get_ticks();
+        _lastPingTime = platform_get_ticks();
         NetworkPacket packet(NetworkCommand::Ping);
-        for (auto& client_connection : client_connection_list)
+        for (auto& client_connection : _clients)
         {
             client_connection->PingTime = platform_get_ticks();
         }
-        SendPacketToClients(packet, true);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendPingList()
     {
         NetworkPacket packet(NetworkCommand::PingList);
-        packet << static_cast<uint8_t>(player_list.size());
-        for (auto& player : player_list)
+        packet << static_cast<uint8_t>(_playerList.size());
+        for (auto& player : _playerList)
         {
             packet << player->Id << player->Ping;
         }
-        SendPacketToClients(packet);
+        SendPacketToClients(packet, false, false);
     }
 
     void NetworkServer::SendDisconnectMsg(NetworkConnection& connection, const char* msg)
@@ -591,7 +711,7 @@ namespace OpenRCT2
             }
             else
             {
-                SendPacketToClients(packet);
+                SendPacketToClients(packet, false, false);
             }
         }
     }
@@ -648,9 +768,25 @@ namespace OpenRCT2
         return true;
     }
 
+    void NetworkServer::RemovePlayer(std::unique_ptr<NetworkConnection>& connection)
+    {
+        NetworkPlayer* connection_player = connection->Player;
+        if (connection_player == nullptr)
+            return;
+
+        _playerList.erase(
+            std::remove_if(
+                _playerList.begin(), _playerList.end(),
+                [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
+            _playerList.end());
+
+        // Send new player list.
+        _playerListInvalidated = true;
+    }
+
     void NetworkServer::ProcessDisconnectedClients()
     {
-        for (auto it = client_connection_list.begin(); it != client_connection_list.end();)
+        for (auto it = _clients.begin(); it != _clients.end();)
         {
             auto& connection = *it;
             if (connection->IsDisconnected)
@@ -658,7 +794,7 @@ namespace OpenRCT2
                 OnClientDisconnected(connection);
                 RemovePlayer(connection);
 
-                it = client_connection_list.erase(it);
+                it = _clients.erase(it);
             }
             else
             {
@@ -807,7 +943,7 @@ namespace OpenRCT2
                 }
             }
 
-            if (static_cast<size_t>(gConfigNetwork.maxplayers) <= player_list.size())
+            if (static_cast<size_t>(gConfigNetwork.maxplayers) <= _playerList.size())
             {
                 connection.AuthStatus = NetworkAuth::Full;
             }
@@ -1048,7 +1184,7 @@ namespace OpenRCT2
         uint32_t tick;
         packet >> tick;
 
-        if (_serverState.gamestateSnapshotsEnabled == false)
+        if (gConfigNetwork.desync_debugging == false)
         {
             // Ignore this if this is off.
             return;

@@ -963,13 +963,13 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             screenPos.y++;
 
         // Draw (de)sync icon.
-        imgId
-            = (OpenRCT2::GetContext()->GetNetwork()->IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        auto* network = OpenRCT2::GetContext()->GetNetwork();
+        imgId = (network->IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
         gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
 
         // Draw number of players.
         auto ft = Formatter();
-        ft.Add<int32_t>(OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers());
+        ft.Add<int32_t>(network->GetNumPlayers());
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, COLOUR_WHITE | COLOUR_FLAG_OUTLINE,

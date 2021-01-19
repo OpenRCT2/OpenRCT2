@@ -5,6 +5,7 @@
 #    include "../Context.h"
 #    include "../GameStateSnapshots.h"
 #    include "../OpenRCT2.h"
+#    include "../ParkImporter.h"
 #    include "../PlatformEnvironment.h"
 #    include "../actions/GameAction.h"
 #    include "../actions/LoadOrQuitAction.h"
@@ -20,6 +21,7 @@
 #    include "../scenario/Scenario.h"
 #    include "../scripting/ScriptEngine.h"
 #    include "../windows/Intent.h"
+#    include "../world/Park.h"
 
 namespace OpenRCT2
 {
@@ -68,7 +70,6 @@ namespace OpenRCT2
         _serverTickData.clear();
 
         BeginChatLog();
-        BeginServerLog();
 
         // We need to wait for the map load before we execute any actions.
         // If the client has the title screen running then theres a potential
@@ -397,7 +398,7 @@ namespace OpenRCT2
             }
 
             // Remove any players that are not in newly received list
-            for (const auto& player : player_list)
+            for (const auto& player : _playerList)
             {
                 if (std::find(activePlayerIds.begin(), activePlayerIds.end(), player->Id) == activePlayerIds.end())
                 {
@@ -418,17 +419,82 @@ namespace OpenRCT2
             }
 
             // Now actually remove removed players from player list
-            player_list.erase(
+            _playerList.erase(
                 std::remove_if(
-                    player_list.begin(), player_list.end(),
+                    _playerList.begin(), _playerList.end(),
                     [&removedPlayers](const std::unique_ptr<NetworkPlayer>& player) {
                         return std::find(removedPlayers.begin(), removedPlayers.end(), player->Id) != removedPlayers.end();
                     }),
-                player_list.end());
+                _playerList.end());
 
             _pendingPlayerLists.erase(itPending);
             itPending = _pendingPlayerLists.begin();
         }
+    }
+
+    bool NetworkClient::IsDesynchronised()
+    {
+        return _serverState.state == NetworkServerState::Desynced;
+    }
+
+    bool NetworkClient::CheckSRAND(uint32_t tick, uint32_t srand0)
+    {
+        // We have to wait for the map to be loaded first, ticks may match current loaded map.
+        if (!_clientMapLoaded)
+            return true;
+
+        auto itTickData = _serverTickData.find(tick);
+        if (itTickData == std::end(_serverTickData))
+            return true;
+
+        const ServerTickData_t storedTick = itTickData->second;
+        _serverTickData.erase(itTickData);
+
+        if (storedTick.srand0 != srand0)
+        {
+            log_info("Srand0 mismatch, client = %08X, server = %08X", srand0, storedTick.srand0);
+            return false;
+        }
+
+        if (!storedTick.spriteHash.empty())
+        {
+            rct_sprite_checksum checksum = sprite_checksum();
+            std::string clientSpriteHash = checksum.ToString();
+            if (clientSpriteHash != storedTick.spriteHash)
+            {
+                log_info(
+                    "Sprite hash mismatch, client = %s, server = %s", clientSpriteHash.c_str(), storedTick.spriteHash.c_str());
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool NetworkClient::CheckDesynchronisation()
+    {
+        // Check synchronisation
+        if (_serverState.state != NetworkServerState::Desynced && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
+        {
+            _serverState.state = NetworkServerState::Desynced;
+            _serverState.desyncTick = gCurrentTicks;
+
+            char str_desync[256];
+            format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
+
+            auto intent = Intent(WC_NETWORK_STATUS);
+            intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
+            context_open_intent(&intent);
+
+            if (!gConfigNetwork.stay_connected)
+            {
+                Close();
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     void NetworkClient::Flush()
@@ -551,6 +617,11 @@ namespace OpenRCT2
         _serverConnection->QueuePacket(std::move(packet));
     }
 
+    const NetworkServerState_t& NetworkClient::GetServerState() const
+    {
+        return _serverState;
+    }
+
     void NetworkClient::SendPing()
     {
         NetworkPacket packet(NetworkCommand::Ping);
@@ -571,7 +642,7 @@ namespace OpenRCT2
     void NetworkClient::OnPacketAuth(NetworkConnection& connection, NetworkPacket& packet)
     {
         uint32_t auth_status;
-        packet >> auth_status >> const_cast<uint8_t&>(player_id);
+        packet >> auth_status >> _playerId;
         connection.AuthStatus = static_cast<NetworkAuth>(auth_status);
         switch (connection.AuthStatus)
         {
@@ -613,6 +684,61 @@ namespace OpenRCT2
                 connection.Socket->Disconnect();
                 break;
         }
+    }
+
+    static bool LoadMap(OpenRCT2::IStream* stream)
+    {
+        bool result = false;
+        try
+        {
+            auto context = GetContext();
+            auto& objManager = context->GetObjectManager();
+            auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+            auto loadResult = importer->LoadFromStream(stream, false);
+            objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+            importer->Import();
+
+            EntityTweener::Get().Reset();
+            AutoCreateMapAnimations();
+
+            // Read checksum
+            [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
+
+            // Read other data not in normal save files
+            gGamePaused = stream->ReadValue<uint32_t>();
+            _guestGenerationProbability = stream->ReadValue<uint32_t>();
+            _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
+            gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
+            gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
+            gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableSupportLimits = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8_t>() != 0;
+            gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8_t>() != 0;
+            gCheatsShowAllOperatingModes = stream->ReadValue<uint8_t>() != 0;
+            gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8_t>() != 0;
+            gCheatsFastLiftHill = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableBrakesFailure = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableAllBreakdowns = stream->ReadValue<uint8_t>() != 0;
+            gCheatsBuildInPauseMode = stream->ReadValue<uint8_t>() != 0;
+            gCheatsIgnoreRideIntensity = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableVandalism = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableLittering = stream->ReadValue<uint8_t>() != 0;
+            gCheatsNeverendingMarketing = stream->ReadValue<uint8_t>() != 0;
+            gCheatsFreezeWeather = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
+            gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
+            gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
+            gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
+            gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
+
+            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+            result = true;
+        }
+        catch (const std::exception&)
+        {
+        }
+        return result;
     }
 
     void NetworkClient::OnPacketMap([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
@@ -1023,7 +1149,7 @@ namespace OpenRCT2
         }
         action->Serialise(ds);
 
-        if (player_id == action->GetPlayer().id)
+        if (_playerId == action->GetPlayer().id)
         {
             // Only execute callbacks that belong to us,
             // clients can have identical network ids assigned.

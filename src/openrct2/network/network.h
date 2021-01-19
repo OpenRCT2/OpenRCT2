@@ -61,14 +61,12 @@ namespace OpenRCT2
         virtual int32_t GetMode() = 0;
         virtual int32_t GetStatus() = 0;
         virtual bool IsDesynchronised() = 0;
-        virtual bool CheckDesynchronisation() = 0;
         virtual bool GamestateSnapshotsEnabled() = 0;
         virtual void Update() = 0;
         virtual void ProcessPending() = 0;
         virtual void Flush() = 0;
 
         virtual NetworkAuth GetAuthStatus() = 0;
-        virtual uint32_t GetServerTick() = 0;
         virtual uint8_t GetCurrentPlayerId() = 0;
         virtual int32_t GetNumPlayers() = 0;
         virtual const char* GetPlayerName(uint32_t index) = 0;
@@ -115,7 +113,7 @@ namespace OpenRCT2
         virtual void SetPassword(const char* password) = 0;
 
         virtual void AppendChatLog(const utf8* text) = 0;
-        virtual void AppendServerLog(const utf8* text) = 0;
+
         virtual const utf8* GetServerName() = 0;
         virtual const utf8* GetServerDescription() = 0;
         virtual const utf8* GetServerGreeting() = 0;
@@ -126,7 +124,6 @@ namespace OpenRCT2
         virtual std::string GetVersion() = 0;
 
         virtual NetworkStats_t GetStats() = 0;
-        virtual NetworkServerState_t GetServerState() = 0;
         virtual json_t GetServerInfoAsJson() = 0;
     };
 

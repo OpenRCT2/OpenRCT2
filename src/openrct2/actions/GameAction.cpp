@@ -386,7 +386,8 @@ namespace GameActions
         const char* text = static_cast<const char*>(output.GetData());
         log_verbose("%s", text);
 
-        OpenRCT2::GetContext()->GetNetwork()->AppendServerLog(text);
+        // FIXME: Logging game actions into the server log seems wrong, we can be also a client.
+        // OpenRCT2::GetContext()->GetNetwork()->AppendServerLog(text);
     }
 
     static GameActions::Result::Ptr ExecuteInternal(const GameAction* action, bool topLevel)

@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -43,7 +43,6 @@ static int32_t _pickup_peep_old_x = LOCATION_NULL;
 #ifndef DISABLE_NETWORK
 
 #    include "../Cheats.h"
-#    include "../ParkImporter.h"
 #    include "../Version.h"
 #    include "../actions/GameAction.h"
 #    include "../config/Config.h"
@@ -91,13 +90,7 @@ using namespace OpenRCT2;
 NetworkBase::NetworkBase(const std::shared_ptr<OpenRCT2::IPlatformEnvironment>& env)
     : _env(env)
 {
-    wsa_initialized = false;
-    status = NETWORK_STATUS_NONE;
-    last_ping_sent_time = 0;
-    _actionId = 0;
-
     _chat_log_fs << std::unitbuf;
-    _server_log_fs << std::unitbuf;
 }
 
 bool NetworkBase::Init()
@@ -119,18 +112,16 @@ void NetworkBase::Close()
         return;
 
     CloseChatLog();
-    CloseServerLog();
 
     GameActions::ClearQueue();
     GameActions::ResumeQueue();
 
-    player_list.clear();
+    _playerList.clear();
     group_list.clear();
 
     gfx_invalidate_screen();
 
     status = NETWORK_STATUS_NONE;
-    _lastConnectStatus = SocketStatus::Closed;
 }
 
 void NetworkBase::GetKeysDirectory(utf8* buffer, size_t bufferSize)
@@ -159,27 +150,9 @@ int32_t NetworkBase::GetStatus()
     return status;
 }
 
-uint32_t NetworkBase::GetServerTick()
-{
-    return _serverState.tick;
-}
-
 uint8_t NetworkBase::GetPlayerID()
 {
-    return player_id;
-}
-
-NetworkConnection* NetworkBase::GetPlayerConnection(uint8_t id)
-{
-    auto player = GetPlayerByID(id);
-    if (player != nullptr)
-    {
-        auto clientIt = std::find_if(
-            client_connection_list.begin(), client_connection_list.end(),
-            [player](const auto& conn) -> bool { return conn->Player == player; });
-        return clientIt != client_connection_list.end() ? clientIt->get() : nullptr;
-    }
-    return nullptr;
+    return _playerId;
 }
 
 void NetworkBase::Update()
@@ -205,20 +178,20 @@ int32_t NetworkBase::GetMode() const
 
 std::vector<std::unique_ptr<NetworkPlayer>>::iterator NetworkBase::GetPlayerIteratorByID(uint8_t id)
 {
-    auto it = std::find_if(player_list.begin(), player_list.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) {
+    auto it = std::find_if(_playerList.begin(), _playerList.end(), [&id](std::unique_ptr<NetworkPlayer> const& player) {
         return player->Id == id;
     });
-    if (it != player_list.end())
+    if (it != _playerList.end())
     {
         return it;
     }
-    return player_list.end();
+    return _playerList.end();
 }
 
 NetworkPlayer* NetworkBase::GetPlayerByID(uint8_t id)
 {
     auto it = GetPlayerIteratorByID(id);
-    if (it != player_list.end())
+    if (it != _playerList.end())
     {
         return it->get();
     }
@@ -260,102 +233,6 @@ const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
     formatted += "{WHITE}";
     formatted += text;
     return formatted.c_str();
-}
-
-void NetworkBase::SendPacketToClients(const NetworkPacket& packet, bool front, bool gameCmd)
-{
-    for (auto& client_connection : client_connection_list)
-    {
-        if (client_connection->IsDisconnected)
-        {
-            // Client will be removed at the end of the tick, don't bother.
-            continue;
-        }
-
-        if (gameCmd)
-        {
-            // If marked as game command we can not send the packet to connections that are not fully connected.
-            // Sending the packet would cause the client to store a command that is behind the tick where he starts,
-            // which would be essentially never executed. The clients do not require commands before the server has not sent the
-            // map data.
-            if (client_connection->Player == nullptr)
-            {
-                continue;
-            }
-        }
-        auto packetCopy = packet;
-        client_connection->QueuePacket(std::move(packetCopy), front);
-    }
-}
-
-bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
-{
-    // We have to wait for the map to be loaded first, ticks may match current loaded map.
-    if (!_clientMapLoaded)
-        return true;
-
-    auto itTickData = _serverTickData.find(tick);
-    if (itTickData == std::end(_serverTickData))
-        return true;
-
-    const ServerTickData_t storedTick = itTickData->second;
-    _serverTickData.erase(itTickData);
-
-    if (storedTick.srand0 != srand0)
-    {
-        log_info("Srand0 mismatch, client = %08X, server = %08X", srand0, storedTick.srand0);
-        return false;
-    }
-
-    if (!storedTick.spriteHash.empty())
-    {
-        rct_sprite_checksum checksum = sprite_checksum();
-        std::string clientSpriteHash = checksum.ToString();
-        if (clientSpriteHash != storedTick.spriteHash)
-        {
-            log_info("Sprite hash mismatch, client = %s, server = %s", clientSpriteHash.c_str(), storedTick.spriteHash.c_str());
-            return false;
-        }
-    }
-
-    return true;
-}
-
-bool NetworkBase::IsDesynchronised()
-{
-    return _serverState.state == NetworkServerState::Desynced;
-}
-
-bool NetworkBase::CheckDesynchronizaton()
-{
-    // Check synchronisation
-    if (GetMode() == NETWORK_MODE_CLIENT && _serverState.state != NetworkServerState::Desynced
-        && !CheckSRAND(gCurrentTicks, scenario_rand_state().s0))
-    {
-        _serverState.state = NetworkServerState::Desynced;
-        _serverState.desyncTick = gCurrentTicks;
-
-        char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
-
-        auto intent = Intent(WC_NETWORK_STATUS);
-        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string{ str_desync });
-        context_open_intent(&intent);
-
-        if (!gConfigNetwork.stay_connected)
-        {
-            Close();
-        }
-
-        return true;
-    }
-
-    return false;
-}
-
-NetworkServerState_t NetworkBase::GetServerState() const
-{
-    return _serverState;
 }
 
 void NetworkBase::SetPassword(const char* password)
@@ -645,65 +522,6 @@ void NetworkBase::CloseChatLog()
     _chat_log_fs.close();
 }
 
-void NetworkBase::BeginServerLog()
-{
-    auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
-    _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
-
-#    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToWideChar(_serverLogPath.c_str());
-    _server_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app | std::ios::binary);
-#    else
-    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);
-#    endif
-
-    // Log server start event
-    utf8 logMessage[256];
-    if (GetMode() == NETWORK_MODE_CLIENT)
-    {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STARTED, nullptr);
-    }
-    else if (GetMode() == NETWORK_MODE_SERVER)
-    {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STARTED, nullptr);
-    }
-    else
-    {
-        logMessage[0] = '\0';
-        Guard::Assert(false, "Unknown network mode!");
-    }
-    AppendServerLog(logMessage);
-}
-
-void NetworkBase::AppendServerLog(const std::string& s)
-{
-    if (gConfigNetwork.log_server_actions && _server_log_fs.is_open())
-    {
-        AppendLog(_server_log_fs, s);
-    }
-}
-
-void NetworkBase::CloseServerLog()
-{
-    // Log server stopped event
-    char logMessage[256];
-    if (GetMode() == NETWORK_MODE_CLIENT)
-    {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_CLIENT_STOPPED, nullptr);
-    }
-    else if (GetMode() == NETWORK_MODE_SERVER)
-    {
-        format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
-    }
-    else
-    {
-        logMessage[0] = '\0';
-        Guard::Assert(false, "Unknown network mode!");
-    }
-    AppendServerLog(logMessage);
-    _server_log_fs.close();
-}
-
 void NetworkBase::ChatShowConnectedMessage()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
@@ -741,7 +559,7 @@ json_t NetworkBase::GetServerInfoAsJson() const
         { "name", gConfigNetwork.server_name },
         { "requiresPassword", _password.size() > 0 },
         { "version", OpenRCT2::GetContext()->GetNetwork()->GetVersion() },
-        { "players", player_list.size() },
+        { "players", _playerList.size() },
         { "maxPlayers", gConfigNetwork.maxplayers },
         { "description", gConfigNetwork.server_description },
         { "greeting", gConfigNetwork.server_greeting },
@@ -810,36 +628,6 @@ void NetworkBase::ProcessPacket(NetworkConnection& connection, NetworkPacket& pa
     packet.Clear();
 }
 
-void NetworkBase::AddClient(std::unique_ptr<ITcpSocket>&& socket)
-{
-    // Log connection info.
-    char addr[128];
-    snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
-    AppendServerLog(addr);
-
-    // Store connection
-    auto connection = std::make_unique<NetworkConnection>();
-    connection->Socket = std::move(socket);
-
-    client_connection_list.push_back(std::move(connection));
-}
-
-void NetworkBase::RemovePlayer(std::unique_ptr<NetworkConnection>& connection)
-{
-    NetworkPlayer* connection_player = connection->Player;
-    if (connection_player == nullptr)
-        return;
-
-    player_list.erase(
-        std::remove_if(
-            player_list.begin(), player_list.end(),
-            [connection_player](std::unique_ptr<NetworkPlayer>& player) { return player.get() == connection_player; }),
-        player_list.end());
-
-    // Send new player list.
-    _playerListInvalidated = true;
-}
-
 NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string& keyhash)
 {
     NetworkPlayer* addedplayer = nullptr;
@@ -850,9 +638,9 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
         for (int32_t id = 0; id < 255; id++)
         {
             if (std::find_if(
-                player_list.begin(), player_list.end(),
-                [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
-                == player_list.end())
+                    _playerList.begin(), _playerList.end(),
+                    [&id](std::unique_ptr<NetworkPlayer> const& player) { return player->Id == id; })
+                == _playerList.end())
             {
                 newid = id;
                 break;
@@ -903,7 +691,7 @@ NetworkPlayer* NetworkBase::AddPlayer(const std::string& name, const std::string
         }
 
         addedplayer = player.get();
-        player_list.push_back(std::move(player));
+        _playerList.push_back(std::move(player));
     }
     return addedplayer;
 }
@@ -920,7 +708,7 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         unique = true;
 
         // Check if there is already a player with this name in the server
-        for (const auto& player : player_list)
+        for (const auto& player : _playerList)
         {
             if (String::Equals(player->Name.c_str(), new_name.c_str(), true))
             {
@@ -946,61 +734,6 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
         }
     } while (!unique);
     return new_name;
-}
-
-bool NetworkBase::LoadMap(IStream* stream)
-{
-    bool result = false;
-    try
-    {
-        auto context = GetContext();
-        auto& objManager = context->GetObjectManager();
-        auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
-        auto loadResult = importer->LoadFromStream(stream, false);
-        objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
-        importer->Import();
-
-        EntityTweener::Get().Reset();
-        AutoCreateMapAnimations();
-
-        // Read checksum
-        [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
-
-        // Read other data not in normal save files
-        gGamePaused = stream->ReadValue<uint32_t>();
-        _guestGenerationProbability = stream->ReadValue<uint32_t>();
-        _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
-        gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
-        gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableSupportLimits = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowAllOperatingModes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFastLiftHill = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableBrakesFailure = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableAllBreakdowns = stream->ReadValue<uint8_t>() != 0;
-        gCheatsBuildInPauseMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreRideIntensity = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableVandalism = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableLittering = stream->ReadValue<uint8_t>() != 0;
-        gCheatsNeverendingMarketing = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFreezeWeather = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
-        gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
-        gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
-
-        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-        result = true;
-    }
-    catch (const std::exception&)
-    {
-    }
-    return result;
 }
 
 void NetworkBase::ProcessPlayerJoinedPluginHooks(uint8_t playerId)

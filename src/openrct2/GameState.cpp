@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -118,9 +118,10 @@ void GameState::Update()
 
     if (auto* client = network->As<NetworkClient>())
     {
+        auto& serverState = client->GetServerState();
         if (client->GetStatus() == NETWORK_STATUS_CONNECTED && client->GetAuthStatus() == NetworkAuth::Ok)
         {
-            numUpdates = std::clamp<uint32_t>(client->GetServerTick() - gCurrentTicks, 0, 10);
+            numUpdates = std::clamp<uint32_t>(serverState.tick - gCurrentTicks, 0, 10);
         }
     }
     else
@@ -267,17 +268,18 @@ void GameState::UpdateLogic(LogicTimings* timings)
     else if (auto* client = network->As<NetworkClient>())
     {
         // Don't run past the server, this condition can happen during map changes.
-        if (client->GetServerTick() == gCurrentTicks)
+        auto& serverState = client->GetServerState();
+        if (serverState.tick == gCurrentTicks)
         {
             return;
         }
 
         // Check desync.
-        bool desynced = client->CheckDesynchronizaton();
+        bool desynced = client->CheckDesynchronisation();
         if (desynced)
         {
             // If desync debugging is enabled and we are still connected request the specific game state from server.
-            if (network->GamestateSnapshotsEnabled() && client->GetStatus() == NETWORK_STATUS_CONNECTED)
+            if (serverState.gamestateSnapshotsEnabled && client->GetStatus() == NETWORK_STATUS_CONNECTED)
             {
                 // Create snapshot from this tick so we can compare it later
                 // as we won't pause the game on this event.

@@ -37,13 +37,12 @@ using namespace OpenRCT2;
 namespace OpenRCT2
 {
 #ifndef DISABLE_NETWORK
-    class Network : public INetwork
+    class Network final : public INetwork
     {
         std::unique_ptr<NetworkBase> _network;
         std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
         Peep* _pickup_peep = nullptr;
         int32_t _pickup_peep_old_x = LOCATION_NULL;
-        int32_t _mode = NETWORK_MODE_NONE;
 
     public:
         Network(std::shared_ptr<IPlatformEnvironment> env)
@@ -60,6 +59,7 @@ namespace OpenRCT2
         void Close() override
         {
             _network->Close();
+            _network = std::make_unique<NetworkBase>(_env);
         }
 
         bool BeginClient(const std::string& host, int32_t port) override
@@ -68,7 +68,6 @@ namespace OpenRCT2
             if (!client->BeginClient(host, port))
                 return false;
 
-            _mode = NETWORK_MODE_CLIENT;
             _network = std::move(client);
 
             return true;
@@ -80,7 +79,6 @@ namespace OpenRCT2
             if (!server->BeginServer(port, address))
                 return false;
 
-            _mode = NETWORK_MODE_SERVER;
             _network = std::move(server);
 
             return true;
@@ -103,7 +101,7 @@ namespace OpenRCT2
 
         int32_t GetMode() override
         {
-            return _mode;
+            return _network->GetMode();
         }
 
         int32_t GetStatus() override
@@ -113,22 +111,16 @@ namespace OpenRCT2
 
         bool IsDesynchronised() override
         {
-            return _network->IsDesynchronised();
-        }
-
-        bool CheckDesynchronisation() override
-        {
-            return _network->CheckDesynchronizaton();
+            if (auto* client = As<NetworkClient>())
+            {
+                return client->IsDesynchronised();
+            }
+            return false;
         }
 
         NetworkAuth GetAuthStatus() override
         {
             return _network->GetAuthStatus();
-        }
-
-        uint32_t GetServerTick() override
-        {
-            return _network->GetServerTick();
         }
 
         uint8_t GetCurrentPlayerId() override
@@ -138,50 +130,53 @@ namespace OpenRCT2
 
         int32_t GetNumPlayers() override
         {
-            return static_cast<int32_t>(_network->player_list.size());
+            return static_cast<int32_t>(_network->_playerList.size());
         }
 
         const char* GetPlayerName(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return static_cast<const char*>(_network->player_list[index]->Name.c_str());
+            return static_cast<const char*>(_network->_playerList[index]->Name.c_str());
         }
 
         uint32_t GetPlayerFlags(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->Flags;
+            return _network->_playerList[index]->Flags;
         }
 
         int32_t GetPlayerPing(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->Ping;
+            return _network->_playerList[index]->Ping;
         }
 
         int32_t GetPlayerId(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->Id;
+            return _network->_playerList[index]->Id;
         }
 
         money32 GetPlayerMoneySpent(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->MoneySpent;
+            return _network->_playerList[index]->MoneySpent;
         }
 
         std::string GetPlayerIPAddress(uint32_t id) override
         {
-            auto conn = _network->GetPlayerConnection(id);
-            if (conn != nullptr && conn->Socket != nullptr)
+            if (auto* server = As<NetworkServer>())
             {
-                return conn->Socket->GetIpAddress();
+                auto conn = server->GetPlayerConnection(id);
+                if (conn != nullptr && conn->Socket != nullptr)
+                {
+                    return conn->Socket->GetIpAddress();
+                }
             }
             return {};
         }
@@ -198,77 +193,77 @@ namespace OpenRCT2
 
         void AddPlayerMoneySpent(uint32_t index, money32 cost) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            _network->player_list[index]->AddMoneySpent(cost);
+            _network->_playerList[index]->AddMoneySpent(cost);
         }
 
         int32_t GetPlayerLastAction(uint32_t index, int32_t time) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            if (time && platform_get_ticks() > _network->player_list[index]->LastActionTime + time)
+            if (time && platform_get_ticks() > _network->_playerList[index]->LastActionTime + time)
             {
                 return -999;
             }
-            return _network->player_list[index]->LastAction;
+            return _network->_playerList[index]->LastAction;
         }
 
         void SetPlayerLastAction(uint32_t index, GameCommand command) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            _network->player_list[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
-            _network->player_list[index]->LastActionTime = platform_get_ticks();
+            _network->_playerList[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
+            _network->_playerList[index]->LastActionTime = platform_get_ticks();
         }
 
         CoordsXYZ GetPlayerLastActionCoord(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->LastActionCoord;
+            return _network->_playerList[index]->LastActionCoord;
         }
 
         void SetPlayerLastActionCoord(uint32_t index, const CoordsXYZ& coord) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            if (index < _network->player_list.size())
+            if (index < _network->_playerList.size())
             {
-                _network->player_list[index]->LastActionCoord = coord;
+                _network->_playerList[index]->LastActionCoord = coord;
             }
         }
 
         uint32_t GetPlayerCommandsRan(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->CommandsRan;
+            return _network->_playerList[index]->CommandsRan;
         }
 
         int32_t GetPlayerIndex(uint32_t id) override
         {
             auto it = _network->GetPlayerIteratorByID(id);
-            if (it == _network->player_list.end())
+            if (it == _network->_playerList.end())
             {
                 return -1;
             }
-            return static_cast<int32_t>(_network->GetPlayerIteratorByID(id) - _network->player_list.begin());
+            return static_cast<int32_t>(_network->GetPlayerIteratorByID(id) - _network->_playerList.begin());
         }
 
         uint8_t GetPlayerGroup(uint32_t index) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
 
-            return _network->player_list[index]->Group;
+            return _network->_playerList[index]->Group;
         }
 
         void SetPlayerGroup(uint32_t index, uint32_t groupindex) override
         {
-            Guard::IndexInRange(index, _network->player_list);
+            Guard::IndexInRange(index, _network->_playerList);
             Guard::IndexInRange(groupindex, _network->group_list);
 
-            _network->player_list[index]->Group = _network->group_list[groupindex]->Id;
+            _network->_playerList[index]->Group = _network->group_list[groupindex]->Id;
         }
 
         int32_t GetGroupIndex(uint8_t id) override
@@ -352,7 +347,9 @@ namespace OpenRCT2
                     game_command_player->Name.c_str(),
                 };
                 format_string(log_msg, 256, STR_LOG_SET_PLAYER_GROUP, args);
-                AppendServerLog(log_msg);
+
+                // FIXME: This should be actually covered by the game action being logged.
+                // AppendServerLog(log_msg);
             }
             return std::make_unique<GameActions::Result>();
         }
@@ -382,7 +379,7 @@ namespace OpenRCT2
                         return std::make_unique<GameActions::Result>(
                             GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
                     }
-                    for (const auto& it : _network->player_list)
+                    for (const auto& it : _network->_playerList)
                     {
                         if ((it.get())->Group == groupId)
                         {
@@ -717,11 +714,6 @@ namespace OpenRCT2
             _network->AppendChatLog(text);
         }
 
-        void AppendServerLog(const utf8* text) override
-        {
-            _network->AppendServerLog(text);
-        }
-
         const utf8* GetServerName() override
         {
             return _network->ServerName.c_str();
@@ -757,14 +749,13 @@ namespace OpenRCT2
             return _network->GetStats();
         }
 
-        NetworkServerState_t GetServerState() override
-        {
-            return _network->GetServerState();
-        }
-
         bool GamestateSnapshotsEnabled() override
         {
-            return GetServerState().gamestateSnapshotsEnabled;
+            if (auto* client = As<NetworkClient>())
+            {
+                return client->GetServerState().gamestateSnapshotsEnabled;
+            }
+            return gConfigNetwork.desync_debugging;
         }
 
         json_t GetServerInfoAsJson() override
@@ -774,7 +765,7 @@ namespace OpenRCT2
     };
 
 #else
-    class NetworkDummy : public INetwork
+    class NetworkDummy final : public INetwork
     {
     public:
         Network(std::shared_ptr<IPlatformEnvironment>)
@@ -821,16 +812,6 @@ namespace OpenRCT2
         int32_t GetStatus() override
         {
             return NETWORK_STATUS_NONE;
-        }
-
-        bool IsDesynchronised() override
-        {
-            return false;
-        }
-
-        bool CheckDesynchronisation() override
-        {
-            return false;
         }
 
         void RequestGamestateSnapshot() override
