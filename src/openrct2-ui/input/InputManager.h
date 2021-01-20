@@ -77,7 +77,4 @@ namespace OpenRCT2::Ui
         void QueueInputEvent(InputEvent&& e);
         void Process();
     };
-
-    InputManager& GetInputManager();
-
 } // namespace OpenRCT2::Ui

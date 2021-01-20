@@ -380,10 +380,3 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
     }
     return false;
 }
-
-static InputManager _inputManager;
-
-InputManager& OpenRCT2::Ui::GetInputManager()
-{
-    return _inputManager;
-}

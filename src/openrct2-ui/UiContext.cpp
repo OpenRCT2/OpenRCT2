@@ -79,6 +79,7 @@ private:
     bool _steamOverlayActive = false;
 
     // Input
+    InputManager _inputManager;
     ShortcutManager _shortcutManager;
     TextComposition _textComposition;
     CursorState _cursorState = {};
@@ -95,6 +96,11 @@ public:
     InGameConsole& GetInGameConsole()
     {
         return _inGameConsole;
+    }
+
+    InputManager& GetInputManager()
+    {
+        return _inputManager;
     }
 
     ShortcutManager& GetShortcutManager()
@@ -426,8 +432,7 @@ public:
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Down;
-                        auto& inputManager = GetInputManager();
-                        inputManager.QueueInputEvent(std::move(ie));
+                        _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -463,8 +468,7 @@ public:
                         ie.Modifiers = SDL_GetModState();
                         ie.Button = e.button.button;
                         ie.State = InputEventState::Release;
-                        auto& inputManager = GetInputManager();
-                        inputManager.QueueInputEvent(std::move(ie));
+                        _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
                 }
@@ -528,8 +532,7 @@ public:
                         ie.Modifiers = e.key.keysym.mod;
                         ie.Button = e.key.keysym.sym;
                         ie.State = InputEventState::Down;
-                        auto& inputManager = GetInputManager();
-                        inputManager.QueueInputEvent(std::move(ie));
+                        _inputManager.QueueInputEvent(std::move(ie));
                     }
                     break;
                 case SDL_KEYUP:
@@ -539,8 +542,7 @@ public:
                     ie.Modifiers = e.key.keysym.mod;
                     ie.Button = e.key.keysym.sym;
                     ie.State = InputEventState::Release;
-                    auto& inputManager = GetInputManager();
-                    inputManager.QueueInputEvent(std::move(ie));
+                    _inputManager.QueueInputEvent(std::move(ie));
                 }
                 break;
                 case SDL_MULTIGESTURE:
@@ -571,8 +573,7 @@ public:
                     break;
                 default:
                 {
-                    auto& inputManager = GetInputManager();
-                    inputManager.QueueInputEvent(e);
+                    _inputManager.QueueInputEvent(e);
                     break;
                 }
             }
@@ -958,6 +959,12 @@ InGameConsole& OpenRCT2::Ui::GetInGameConsole()
 {
     auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
     return uiContext->GetInGameConsole();
+}
+
+InputManager& OpenRCT2::Ui::GetInputManager()
+{
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
+    return uiContext->GetInputManager();
 }
 
 ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
