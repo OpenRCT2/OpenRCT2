@@ -291,18 +291,22 @@ void InputManager::ProcessHoldEvents()
     auto& shortcutManager = GetShortcutManager();
     if (!shortcutManager.IsPendingShortcutChange())
     {
-        ProcessViewScrollEvent(ShortcutId::ScrollUp, { 0, -1 });
-        ProcessViewScrollEvent(ShortcutId::ScrollDown, { 0, 1 });
-        ProcessViewScrollEvent(ShortcutId::ScrollLeft, { -1, 0 });
-        ProcessViewScrollEvent(ShortcutId::ScrollRight, { 1, 0 });
+        ProcessViewScrollEvent(ShortcutId::ScrollUp, _scrollUpShortcut, { 0, -1 });
+        ProcessViewScrollEvent(ShortcutId::ScrollDown, _scrollDownShortcut, { 0, 1 });
+        ProcessViewScrollEvent(ShortcutId::ScrollLeft, _scrollLeftShortcut, { -1, 0 });
+        ProcessViewScrollEvent(ShortcutId::ScrollRight, _scrollRightShortcut, { 1, 0 });
     }
 }
 
-void InputManager::ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
+void InputManager::ProcessViewScrollEvent(
+    std::string_view shortcutId, RegisteredShortcut*& shortcut, const ScreenCoordsXY& delta)
 {
-    auto& shortcutManager = GetShortcutManager();
-    auto s = shortcutManager.GetShortcut(shortcutId);
-    if (s != nullptr && GetState(*s))
+    if (shortcut == nullptr)
+    {
+        auto& shortcutManager = GetShortcutManager();
+        shortcut = shortcutManager.GetShortcut(shortcutId);
+    }
+    if (shortcut != nullptr && GetState(*shortcut))
     {
         _viewScroll.x += delta.x;
         _viewScroll.y += delta.y;
