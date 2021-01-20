@@ -42,17 +42,13 @@ struct track_descriptor
 
 struct TrackTypeDescriptor
 {
-    track_type_t AlternateTrackType;
-    track_type_t MirroredTrackType;
-    uint8_t Length;
-    rct_trackdefinition TrackDefinition;
-    rct_track_coordinates TrackCoordinates;
+    rct_string_id TrackName;
     money32 TrackPrice;
+    int16_t AlternateTrackType;
+    int16_t MirroredTrackType;
+    uint8_t Length;
     uint32_t TrackHeightMarkerPositions;
-    dodgems_track_size DodgemsTrackSize;
     std::array<uint8_t, 16> AllowedWallEdges;
-    // std::array<rct_preview_track, 17> TrackBlocks;
-    rct_vehicle_info_list SubpositionData;
 };
 
 #ifdef _WIN32
@@ -98,16 +94,11 @@ extern const uint16_t TrackFlags[256];
 
 // clang-format off
 constexpr const TrackTypeDescriptor DummyTTD = {
+    SET_FIELD(TrackName, 0),
+    SET_FIELD(TrackPrice, 0),
     SET_FIELD(AlternateTrackType, -1),
     SET_FIELD(MirroredTrackType, -1),
     SET_FIELD(Length, 0),
-    SET_FIELD(TrackDefinition, {0, 0, 0, 0, 0, 0, 0}),
-    SET_FIELD(TrackCoordinates, {0, 0, 0, 0, 0, 0}),
-    SET_FIELD(TrackPrice, 0),
     SET_FIELD(TrackHeightMarkerPositions, 1),
-    SET_FIELD(DodgemsTrackSize, {0, 0, 0, 0}),
-    SET_FIELD(AllowedWallEdges, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    // SET_FIELD(TrackBlocks, TRACK_BLOCK_END),
-    SET_FIELD(SubpositionData, 0)
 };
 // clang-format on
