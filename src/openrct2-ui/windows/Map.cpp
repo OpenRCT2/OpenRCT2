@@ -33,9 +33,18 @@
 #include <openrct2/world/Surface.h>
 #include <vector>
 
-#define MAP_COLOUR_2(colourA, colourB) (((colourA) << 8) | (colourB))
-#define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
-#define MAP_COLOUR_UNOWNED(colour) (PALETTE_INDEX_10 | ((colour)&0xFF00))
+static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
+{
+    return (colourA << 8) | colourB;
+}
+static constexpr uint16_t MapColour(uint8_t colour)
+{
+    return MapColour2(colour, colour);
+}
+static constexpr uint16_t MapColourUnowned(uint16_t colour)
+{
+    return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
+}
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
@@ -119,14 +128,14 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
 
 /** rct2: 0x00981BCC */
 static constexpr const uint16_t RideKeyColours[] = {
-    MAP_COLOUR(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
-    MAP_COLOUR(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
-    MAP_COLOUR(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
-    MAP_COLOUR(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
-    MAP_COLOUR(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
-    MAP_COLOUR(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
-    MAP_COLOUR(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
-    MAP_COLOUR(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
+    MapColour(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
 };
 
 static void window_map_close(rct_window *w);
@@ -1393,22 +1402,22 @@ static void map_window_decrease_map_size()
     gfx_invalidate_screen();
 }
 
-static constexpr const uint16_t WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
+static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
 static constexpr const uint16_t TerrainColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_73),                      // TERRAIN_GRASS
-    MAP_COLOUR(PALETTE_INDEX_40),                      // TERRAIN_SAND
-    MAP_COLOUR(PALETTE_INDEX_108),                     // TERRAIN_DIRT
-    MAP_COLOUR(PALETTE_INDEX_12),                      // TERRAIN_ROCK
-    MAP_COLOUR(PALETTE_INDEX_62),                      // TERRAIN_MARTIAN
-    MAP_COLOUR_2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
-    MAP_COLOUR_2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
-    MAP_COLOUR(PALETTE_INDEX_141),                     // TERRAIN_ICE
-    MAP_COLOUR_2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
-    MAP_COLOUR_2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
-    MAP_COLOUR_2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
-    MAP_COLOUR_2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
-    MAP_COLOUR(PALETTE_INDEX_111),                     // TERRAIN_SAND_DARK
-    MAP_COLOUR(PALETTE_INDEX_222),                     // TERRAIN_SAND_LIGHT
+    MapColour(PALETTE_INDEX_73),                     // TERRAIN_GRASS
+    MapColour(PALETTE_INDEX_40),                     // TERRAIN_SAND
+    MapColour(PALETTE_INDEX_108),                    // TERRAIN_DIRT
+    MapColour(PALETTE_INDEX_12),                     // TERRAIN_ROCK
+    MapColour(PALETTE_INDEX_62),                     // TERRAIN_MARTIAN
+    MapColour2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
+    MapColour2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
+    MapColour(PALETTE_INDEX_141),                    // TERRAIN_ICE
+    MapColour2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
+    MapColour2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
+    MapColour2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
+    MapColour2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
+    MapColour(PALETTE_INDEX_111),                    // TERRAIN_SAND_DARK
+    MapColour(PALETTE_INDEX_222),                    // TERRAIN_SAND_LIGHT
 };
 
 static constexpr const uint16_t ElementTypeMaskColour[] = {
@@ -1424,15 +1433,15 @@ static constexpr const uint16_t ElementTypeMaskColour[] = {
 };
 
 static constexpr const uint16_t ElementTypeAddColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_SURFACE
-    MAP_COLOUR(PALETTE_INDEX_17),                     // TILE_ELEMENT_TYPE_PATH
-    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
-    MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_186),                    // TILE_ELEMENT_TYPE_ENTRANCE
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_WALL
-    MAP_COLOUR(PALETTE_INDEX_99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_BANNER
-    MAP_COLOUR(PALETTE_INDEX_68),                     // TILE_ELEMENT_TYPE_CORRUPT
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
+    MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
+    MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
+    MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
+    MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
+    MapColour(PALETTE_INDEX_68),                    // TILE_ELEMENT_TYPE_CORRUPT
 };
 
 static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
@@ -1445,7 +1454,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
         colour = WaterColour;
 
     if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
-        colour = MAP_COLOUR_UNOWNED(colour);
+        colour = MapColourUnowned(colour);
 
     const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(ElementTypeAddColour));
     auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -1453,7 +1462,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
     {
         if (tileElement->IsGhost())
         {
-            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            colour = MapColour(PALETTE_INDEX_21);
             break;
         }
 
@@ -1472,8 +1481,8 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
 static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 {
     Ride* ride;
-    uint16_t colourA = 0;                            // highlight colour
-    uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
+    uint16_t colourA = 0;                           // highlight colour
+    uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
     TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
@@ -1484,7 +1493,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 
         if (tileElement->IsGhost())
         {
-            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            colourA = MapColour(PALETTE_INDEX_21);
             break;
         }
 
@@ -1493,12 +1502,12 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
             case TILE_ELEMENT_TYPE_SURFACE:
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
-                    colourB = MAP_COLOUR(PALETTE_INDEX_194);
+                    colourB = MapColour(PALETTE_INDEX_194);
                 if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
-                    colourB = MAP_COLOUR_UNOWNED(colourB);
+                    colourB = MapColourUnowned(colourB);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                colourA = MAP_COLOUR(PALETTE_INDEX_14); // lighter grey
+                colourA = MapColour(PALETTE_INDEX_14); // lighter grey
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
