@@ -292,7 +292,7 @@ namespace OpenRCT2::Audio
     {
         StopTitleMusic();
         StopVehicleSounds();
-        RideAudioStopAllChannels();
+        RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
         StopWeatherSound();
     }
@@ -357,7 +357,7 @@ namespace OpenRCT2::Audio
     {
         peep_stop_crowd_noise();
         StopTitleMusic();
-        RideAudioStopAllChannels();
+        RideAudio::StopAllChannels();
         StopWeatherSound();
         _currentAudioDevice = -1;
     }
@@ -382,7 +382,7 @@ namespace OpenRCT2::Audio
     {
         gGameSoundsOff = true;
         StopVehicleSounds();
-        RideAudioStopAllChannels();
+        RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
         StopWeatherSound();
     }

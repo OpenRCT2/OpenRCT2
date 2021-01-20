@@ -1375,7 +1375,7 @@ static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIn
             gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
             if (!gConfigSound.ride_music_enabled)
             {
-                RideAudioStopAllChannels();
+                OpenRCT2::RideAudio::StopAllChannels();
             }
             config_save_default();
             w->Invalidate();

@@ -1785,7 +1785,7 @@ void window_close_construction_windows()
  */
 void window_update_viewport_ride_music()
 {
-    RideAudioClearAllViewportInstances();
+    OpenRCT2::RideAudio::ClearAllViewportInstances();
     g_music_tracking_viewport = nullptr;
 
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)

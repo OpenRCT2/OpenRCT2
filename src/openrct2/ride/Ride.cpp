@@ -2038,7 +2038,7 @@ void Ride::UpdateAll()
     for (auto& ride : GetRideManager())
         ride.Update();
 
-    RideUpdateMusicChannels();
+    OpenRCT2::RideAudio::UpdateMusicChannels();
 }
 
 std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
@@ -2923,7 +2923,7 @@ static void ride_music_update(Ride* ride)
         sampleRate += 22050;
     }
 
-    RideUpdateMusicInstance(*ride, rideCoords, sampleRate);
+    OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
 
 #pragma endregion

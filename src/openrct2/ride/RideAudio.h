@@ -14,9 +14,10 @@
 struct CoordsXYZ;
 struct Ride;
 
-constexpr uint8_t TUNE_ID_NULL = 0xFF;
-
-void RideAudioClearAllViewportInstances();
-void RideAudioStopAllChannels();
-void RideUpdateMusicChannels();
-void RideUpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate);
+namespace OpenRCT2::RideAudio
+{
+    void ClearAllViewportInstances();
+    void StopAllChannels();
+    void UpdateMusicChannels();
+    void UpdateMusicInstance(Ride& ride, const CoordsXYZ& rideCoords, uint16_t sampleRate);
+} // namespace OpenRCT2::RideAudio
