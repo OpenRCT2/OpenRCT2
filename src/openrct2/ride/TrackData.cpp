@@ -1050,6 +1050,8 @@ const uint8_t FlatRideTrackSequenceProperties[][MaxSequencesPerPiece] = {
     { 0 },
 };
 
+#define TRACK_BLOCK_END { 255, 255, 255, 255, 255, { 255, 255 }, 255 }
+
 static constexpr const rct_preview_track TrackBlocks000[] = {
     { 0, 0, 0, 0, 0, { 0b1111, 0 }, 0 },
     TRACK_BLOCK_END

@@ -16,12 +16,6 @@
 
 constexpr const uint8_t MaxSequencesPerPiece = 16;
 
-#define TRACK_BLOCK_END                                                                                                        \
-    {                                                                                                                          \
-        255, 255, 255, 255, 255, { 255, 255 }, 255                                                                             \
-    }
-
-
 struct track_curve_chain
 {
     uint16_t next;
@@ -57,7 +51,7 @@ struct TrackTypeDescriptor
     uint32_t TrackHeightMarkerPositions;
     dodgems_track_size DodgemsTrackSize;
     std::array<uint8_t, 16> AllowedWallEdges;
-    std::vector<rct_preview_track> TrackBlocks;
+    // std::array<rct_preview_track, 17> TrackBlocks;
     rct_vehicle_info_list SubpositionData;
 };
 
@@ -113,7 +107,7 @@ constexpr const TrackTypeDescriptor DummyTTD = {
     SET_FIELD(TrackHeightMarkerPositions, 1),
     SET_FIELD(DodgemsTrackSize, {0, 0, 0, 0}),
     SET_FIELD(AllowedWallEdges, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-    SET_FIELD(TrackBlocks, TRACK_BLOCK_END),
-    SET_FIELD(SubpositionData,0)
+    // SET_FIELD(TrackBlocks, TRACK_BLOCK_END),
+    SET_FIELD(SubpositionData, 0)
 };
 // clang-format on
