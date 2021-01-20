@@ -697,6 +697,34 @@ static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, cons
     }
 }
 
+struct PeepDistance
+{
+    Peep* peep = nullptr;
+    int32_t distance = std::numeric_limits<decltype(distance)>::max();
+};
+
+template<typename T>
+PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
+{
+    for (auto peep : EntityList<T>(EntityListId::Peep))
+    {
+        if (peep->sprite_left == LOCATION_NULL)
+            continue;
+
+        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
+            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
+        if (distance > maxDistance)
+            continue;
+
+        if (distance < goal.distance)
+        {
+            goal.peep = peep;
+            goal.distance = distance;
+        }
+    }
+    return goal;
+}
+
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
     rct_window* w;
@@ -712,26 +740,10 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
-    Peep* closestPeep = nullptr;
-    auto closestDistance = std::numeric_limits<int32_t>::max();
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
-    {
-        if (peep->sprite_left == LOCATION_NULL)
-            continue;
+    auto goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, {});
+    goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
 
-        auto distance = abs(((peep->sprite_left + peep->sprite_right) / 2) - viewportCoords.x)
-            + abs(((peep->sprite_top + peep->sprite_bottom) / 2) - viewportCoords.y);
-        if (distance > maxDistance)
-            continue;
-
-        if (distance < closestDistance)
-        {
-            closestPeep = peep;
-            closestDistance = distance;
-        }
-    }
-
-    return closestPeep;
+    return goal.peep;
 }
 
 /**
