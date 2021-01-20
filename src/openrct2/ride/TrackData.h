@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
 #include "VehicleSubpositionData.h"
@@ -94,7 +95,7 @@ extern const uint16_t TrackFlags[256];
 
 // clang-format off
 constexpr const TrackTypeDescriptor DummyTTD = {
-    SET_FIELD(TrackName, 0),
+    SET_FIELD(TrackName, STR_RIDE_COMPONENT_TRACK),
     SET_FIELD(TrackPrice, 0),
     SET_FIELD(AlternateTrackType, -1),
     SET_FIELD(MirroredTrackType, -1),

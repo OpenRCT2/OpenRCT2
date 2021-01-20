@@ -14,6 +14,9 @@
 
 #include <iterator>
 
+#include "tracktypes/FlatTrack.h"
+#include "tracktypes/FlatBankedTrack.h"
+
 // clang-format off
 const rct_track_coordinates FlatTrackCoordinates[TrackElemType::Count] = {
     {    0,    0,    0,    0,    0,    0 },
@@ -3557,10 +3560,10 @@ const rct_preview_track *FlatRideTrackBlocks[TrackElemType::Count] = {
 };
 
 const uint8_t TrackPieceLengths[TrackElemType::Count] = {
-    32,     // TrackElemType::Flat
-    32,     // TrackElemType::EndStation
-    32,     // TrackElemType::BeginStation
-    32,     // TrackElemType::MiddleStation
+    FlatTTD.Length,     // TrackElemType::Flat
+    EndStationTTD.Length,     // TrackElemType::EndStation
+    BeginStationTTD.Length,     // TrackElemType::BeginStation
+    MiddleStationTTD.Length,     // TrackElemType::MiddleStation
     33,     // TrackElemType::Up25
     40,     // TrackElemType::Up60
     32,     // TrackElemType::FlatToUp25
@@ -3573,14 +3576,14 @@ const uint8_t TrackPieceLengths[TrackElemType::Count] = {
     34,     // TrackElemType::Down25ToDown60
     34,     // TrackElemType::Down60ToDown25
     32,     // TrackElemType::Down25ToFlat
-    124,    // TrackElemType::LeftQuarterTurn5Tiles
-    124,    // TrackElemType::RightQuarterTurn5Tiles
-    32,     // TrackElemType::FlatToLeftBank
-    32,     // TrackElemType::FlatToRightBank
-    32,     // TrackElemType::LeftBankToFlat
-    32,     // TrackElemType::RightBankToFlat
-    124,    // TrackElemType::BankedLeftQuarterTurn5Tiles
-    124,    // TrackElemType::BankedRightQuarterTurn5Tiles
+    LeftQuarterTurn5TilesTTD.Length,    // TrackElemType::LeftQuarterTurn5Tiles
+    RightQuarterTurn5TilesTTD.Length,    // TrackElemType::RightQuarterTurn5Tiles
+    FlatToLeftBankTTD.Length,     // TrackElemType::FlatToLeftBank
+    FlatToRightBankTTD.Length,     // TrackElemType::FlatToRightBank
+    LeftBankToFlatTTD.Length,     // TrackElemType::LeftBankToFlat
+    RightBankToFlatTTD.Length,     // TrackElemType::RightBankToFlat
+    BankedLeftQuarterTurn5TilesTTD.Length,    // TrackElemType::BankedLeftQuarterTurn5Tiles
+    BankedRightQuarterTurn5TilesTTD.Length,    // TrackElemType::BankedRightQuarterTurn5Tiles
     32,     // TrackElemType::LeftBankToUp25
     32,     // TrackElemType::RightBankToUp25
     32,     // TrackElemType::Up25ToLeftBank
@@ -4482,10 +4485,10 @@ const track_descriptor gTrackDescriptors[142] = {
 
 /** rct2: 0x00993D1C */
 const int16_t AlternativeTrackTypes[TrackElemType::Count] = {
-    TrackElemType::FlatCovered,                        // TrackElemType::Flat
-    -1,
-    -1,
-    -1,
+    FlatTTD.AlternateTrackType,                        // TrackElemType::Flat
+    EndStationTTD.AlternateTrackType,
+    BeginStationTTD.AlternateTrackType,
+    MiddleStationTTD.AlternateTrackType,
     TrackElemType::Up25Covered,                   // TrackElemType::Up25
     TrackElemType::Up60Covered,                   // TrackElemType::Up60
     TrackElemType::FlatToUp25Covered,           // TrackElemType::FlatToUp25
@@ -4498,14 +4501,14 @@ const int16_t AlternativeTrackTypes[TrackElemType::Count] = {
     TrackElemType::Down25ToDown60Covered,  // TrackElemType::Down25ToDown60
     TrackElemType::Down60ToDown25Covered,  // TrackElemType::Down60ToDown25
     TrackElemType::Down25ToFlatCovered,         // TrackElemType::Down25ToFlat
-    TrackElemType::LeftQuarterTurn5TilesCovered,   // TrackElemType::LeftQuarterTurn5Tiles
-    TrackElemType::RightQuarterTurn5TilesCovered,  // TrackElemType::RightQuarterTurn5Tiles
-    -1,
-    -1,
-    -1,
-    -1,
-    -1,
-    -1,
+    LeftQuarterTurn5TilesTTD.AlternateTrackType,   // TrackElemType::LeftQuarterTurn5Tiles
+    RightQuarterTurn5TilesTTD.AlternateTrackType,  // TrackElemType::RightQuarterTurn5Tiles
+    FlatToLeftBankTTD.AlternateTrackType,
+    FlatToRightBankTTD.AlternateTrackType,
+    LeftBankToFlatTTD.AlternateTrackType,
+    RightBankToFlatTTD.AlternateTrackType,
+    BankedLeftQuarterTurn5TilesTTD.AlternateTrackType,
+    BankedRightQuarterTurn5TilesTTD.AlternateTrackType,
     -1,
     -1,
     -1,
@@ -4742,10 +4745,10 @@ const int16_t AlternativeTrackTypes[TrackElemType::Count] = {
 
 /** rct2: 0x0099DA34 */
 const money32 TrackPricing[] = {
-    65536,  // TrackElemType::Flat
-    98304,  // TrackElemType::EndStation
-    98304,  // TrackElemType::BeginStation
-    98304,  // TrackElemType::MiddleStation
+    FlatTTD.TrackPrice,  // TrackElemType::Flat
+    EndStationTTD.TrackPrice,  // TrackElemType::EndStation
+    BeginStationTTD.TrackPrice,  // TrackElemType::BeginStation
+    MiddleStationTTD.TrackPrice,  // TrackElemType::MiddleStation
     79872,  // TrackElemType::Up25
     114688, // TrackElemType::Up60
     73728,  // TrackElemType::FlatToUp25
@@ -4758,14 +4761,14 @@ const money32 TrackPricing[] = {
     96256,  // TrackElemType::Down25ToDown60
     96256,  // TrackElemType::Down60ToDown25
     73728,  // TrackElemType::Down25ToFlat
-    257359, // TrackElemType::LeftQuarterTurn5Tiles
-    257359, // TrackElemType::RightQuarterTurn5Tiles
-    69632,  // TrackElemType::FlatToLeftBank
-    69632,  // TrackElemType::FlatToRightBank
-    69632,  // TrackElemType::LeftBankToFlat
-    69632,  // TrackElemType::RightBankToFlat
-    273443, // TrackElemType::BankedLeftQuarterTurn5Tiles
-    273443, // TrackElemType::BankedRightQuarterTurn5Tiles
+    LeftQuarterTurn5TilesTTD.TrackPrice, // TrackElemType::LeftQuarterTurn5Tiles
+    LeftQuarterTurn5TilesTTD.TrackPrice, // TrackElemType::RightQuarterTurn5Tiles
+    FlatToLeftBankTTD.TrackPrice,  // TrackElemType::FlatToLeftBank
+    FlatToRightBankTTD.TrackPrice,  // TrackElemType::FlatToRightBank
+    LeftBankToFlatTTD.TrackPrice,  // TrackElemType::LeftBankToFlat
+    RightBankToFlatTTD.TrackPrice,  // TrackElemType::RightBankToFlat
+    BankedLeftQuarterTurn5TilesTTD.TrackPrice, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    BankedRightQuarterTurn5TilesTTD.TrackPrice, // TrackElemType::BankedRightQuarterTurn5Tiles
     78336,  // TrackElemType::LeftBankToUp25
     78336,  // TrackElemType::RightBankToUp25
     78336,  // TrackElemType::Up25ToLeftBank
@@ -5002,10 +5005,10 @@ const money32 TrackPricing[] = {
 
 /** rct2: 0x0099DE34 */
 const money32 FlatRideTrackPricing[] = {
-    65536,
-    98304,
-    98304,
-    98304,
+    FlatTTD.TrackPrice,
+    EndStationTTD.TrackPrice,
+    BeginStationTTD.TrackPrice,
+    MiddleStationTTD.TrackPrice,
     79872,
     114688,
     73728,
@@ -5516,10 +5519,10 @@ const dodgems_track_size DodgemsTrackSize[] = {
 
 /** rct2: 0x0099EA1C */
 const uint8_t TrackElementMirrorMap[] = {
-    TrackElemType::Flat,
-    TrackElemType::EndStation,
-    TrackElemType::BeginStation,
-    TrackElemType::MiddleStation,
+    FlatTTD.MirroredTrackType,
+    EndStationTTD.MirroredTrackType,
+    BeginStationTTD.MirroredTrackType,
+    MiddleStationTTD.MirroredTrackType,
     TrackElemType::Up25,
     TrackElemType::Up60,
     TrackElemType::FlatToUp25,
@@ -5532,14 +5535,14 @@ const uint8_t TrackElementMirrorMap[] = {
     TrackElemType::Down25ToDown60,
     TrackElemType::Down60ToDown25,
     TrackElemType::Down25ToFlat,
-    TrackElemType::RightQuarterTurn5Tiles, // TrackElemType::LeftQuarterTurn5Tiles
-    TrackElemType::LeftQuarterTurn5Tiles, // TrackElemType::RightQuarterTurn5Tiles
-    TrackElemType::FlatToRightBank, // TrackElemType::FlatToLeftBank
-    TrackElemType::FlatToLeftBank, // TrackElemType::FlatToRightBank
-    TrackElemType::RightBankToFlat, // TrackElemType::LeftBankToFlat
-    TrackElemType::LeftBankToFlat, // TrackElemType::RightBankToFlat
-    TrackElemType::BankedRightQuarterTurn5Tiles, // TrackElemType::BankedLeftQuarterTurn5Tiles
-    TrackElemType::BankedLeftQuarterTurn5Tiles, // TrackElemType::BankedRightQuarterTurn5Tiles
+    LeftQuarterTurn5TilesTTD.MirroredTrackType, // TrackElemType::LeftQuarterTurn5Tiles
+    RightQuarterTurn5TilesTTD.MirroredTrackType, // TrackElemType::RightQuarterTurn5Tiles
+    FlatToLeftBankTTD.MirroredTrackType, // TrackElemType::FlatToLeftBank
+    FlatToRightBankTTD.MirroredTrackType, // TrackElemType::FlatToRightBank
+    LeftBankToFlatTTD.MirroredTrackType, // TrackElemType::LeftBankToFlat
+    RightBankToFlatTTD.MirroredTrackType, // TrackElemType::RightBankToFlat
+    BankedLeftQuarterTurn5TilesTTD.MirroredTrackType, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    BankedRightQuarterTurn5TilesTTD.MirroredTrackType, // TrackElemType::BankedRightQuarterTurn5Tiles
     TrackElemType::RightBankToUp25, // TrackElemType::LeftBankToUp25
     TrackElemType::LeftBankToUp25, // TrackElemType::RightBankToUp25
     TrackElemType::Up25ToRightBank, // TrackElemType::Up25ToLeftBank
@@ -5776,10 +5779,10 @@ const uint8_t TrackElementMirrorMap[] = {
 
 /** rct2: 0x00999694 */
 const uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
-    (1 << 0), // TrackElemType::Flat
-    (1 << 0), // TrackElemType::EndStation
-    (1 << 0), // TrackElemType::BeginStation
-    (1 << 0), // TrackElemType::MiddleStation
+    FlatTTD.TrackHeightMarkerPositions, // TrackElemType::Flat
+    EndStationTTD.TrackHeightMarkerPositions, // TrackElemType::EndStation
+    BeginStationTTD.TrackHeightMarkerPositions, // TrackElemType::BeginStation
+    MiddleStationTTD.TrackHeightMarkerPositions, // TrackElemType::MiddleStation
     (1 << 0), // TrackElemType::Up25
     (1 << 0), // TrackElemType::Up60
     (1 << 0), // TrackElemType::FlatToUp25
@@ -5792,14 +5795,14 @@ const uint32_t TrackHeightMarkerPositions[TrackElemType::Count] = {
     (1 << 0), // TrackElemType::Down25ToDown60
     (1 << 0), // TrackElemType::Down60ToDown25
     (1 << 0), // TrackElemType::Down25ToFlat
-    (1 << 0) | (1 << 6), // TrackElemType::LeftQuarterTurn5Tiles
-    (1 << 0) | (1 << 6), // TrackElemType::RightQuarterTurn5Tiles
-    (1 << 0), // TrackElemType::FlatToLeftBank
-    (1 << 0), // TrackElemType::FlatToRightBank
-    (1 << 0), // TrackElemType::LeftBankToFlat
-    (1 << 0), // TrackElemType::RightBankToFlat
-    (1 << 0) | (1 << 6), // TrackElemType::BankedLeftQuarterTurn5Tiles
-    (1 << 0) | (1 << 6), // TrackElemType::BankedRightQuarterTurn5Tiles
+    LeftQuarterTurn5TilesTTD.TrackHeightMarkerPositions, // TrackElemType::LeftQuarterTurn5Tiles
+    RightQuarterTurn5TilesTTD.TrackHeightMarkerPositions, // TrackElemType::RightQuarterTurn5Tiles
+    FlatToLeftBankTTD.TrackHeightMarkerPositions, // TrackElemType::FlatToLeftBank
+    FlatToRightBankTTD.TrackHeightMarkerPositions, // TrackElemType::FlatToRightBank
+    LeftBankToFlatTTD.TrackHeightMarkerPositions, // TrackElemType::LeftBankToFlat
+    RightBankToFlatTTD.TrackHeightMarkerPositions, // TrackElemType::RightBankToFlat
+    BankedLeftQuarterTurn5TilesTTD.TrackHeightMarkerPositions, // TrackElemType::BankedLeftQuarterTurn5Tiles
+    BankedRightQuarterTurn5TilesTTD.TrackHeightMarkerPositions, // TrackElemType::BankedRightQuarterTurn5Tiles
     (1 << 0), // TrackElemType::LeftBankToUp25
     (1 << 0), // TrackElemType::RightBankToUp25
     (1 << 0), // TrackElemType::Up25ToLeftBank

@@ -381,7 +381,8 @@
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
     <ClInclude Include="ride\TrackPaint.h" />
-    <ClInclude Include="ride\tracktypes\Flat.h" />
+    <ClInclude Include="ride\tracktypes\FlatTrack.h" />
+    <ClInclude Include="ride\tracktypes\FlatBankedTrack.h" />
     <ClInclude Include="ride\transport\meta\Chairlift.h" />
     <ClInclude Include="ride\transport\meta\Lift.h" />
     <ClInclude Include="ride\transport\meta\MiniatureRailway.h" />
