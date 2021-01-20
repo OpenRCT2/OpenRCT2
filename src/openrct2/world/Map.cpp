@@ -1572,14 +1572,14 @@ void MapUpdateHeightCache(bool fullCheck)
 
         } while (!(tileElement++)->IsLastForTile());
 
-        if (_mapHighestTileHeightLoopPosition == mapTileCount - 1)
+        _mapHighestTileHeightLoopPosition++;
+
+        if (_mapHighestTileHeightLoopPosition == mapTileCount)
         {
             _mapHighestTileHeight = _mapHighestTileHeightPending;
             _mapHighestTileHeightPending = 0;
             break;
         }
-        else
-            _mapHighestTileHeightLoopPosition++;
     }
 }
 
