@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <istream>
 #include <memory>
 #include <openrct2/audio/AudioChannel.h>
 #include <openrct2/audio/AudioSource.h>
@@ -67,7 +66,7 @@ namespace OpenRCT2::Audio
         IAudioSource* CreateMemoryFromWAV(const std::string& path, const AudioFormat* targetFormat = nullptr);
         IAudioSource* CreateStreamFromWAV(const std::string& path);
         IAudioSource* CreateStreamFromWAV(SDL_RWops* rw);
-        IAudioSource* CreateStreamFromWAV(std::unique_ptr<std::istream> stream);
+        IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream);
     } // namespace AudioSource
 
     namespace AudioChannel

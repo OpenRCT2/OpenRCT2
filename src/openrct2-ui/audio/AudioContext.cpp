@@ -70,7 +70,7 @@ namespace OpenRCT2::Audio
             return AudioSource::CreateStreamFromWAV(path);
         }
 
-        IAudioSource* CreateStreamFromWAV(std::unique_ptr<std::istream> stream) override
+        IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
             return AudioSource::CreateStreamFromWAV(std::move(stream));
         }

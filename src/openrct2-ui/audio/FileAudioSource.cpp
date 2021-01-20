@@ -203,40 +203,27 @@ namespace OpenRCT2::Audio
         return source;
     }
 
-    IAudioSource* AudioSource::CreateStreamFromWAV(std::unique_ptr<std::istream> stream)
+    IAudioSource* AudioSource::CreateStreamFromWAV(std::unique_ptr<IStream> stream)
     {
-        using streamptr = std::unique_ptr<std::istream>*;
-        auto data = new std::unique_ptr<std::istream>(std::move(stream));
-
         auto rw = new SDL_RWops();
         *rw = {};
         rw->type = SDL_RWOPS_UNKNOWN;
-        rw->hidden.unknown.data1 = data;
+        rw->hidden.unknown.data1 = stream.release();
         rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
-            auto ptr = static_cast<streamptr>(ctx->hidden.unknown.data1);
-            auto dir = std::ios_base::beg;
-            if (whence == RW_SEEK_CUR)
-            {
-                dir = std::ios_base::cur;
-            }
-            else if (whence == RW_SEEK_END)
-            {
-                dir = std::ios_base::end;
-            }
-            (*ptr)->seekg(offset, dir);
-            return (*ptr)->fail() ? -1 : static_cast<Sint64>((*ptr)->tellg());
+            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            ptr->Seek(offset, whence);
+            return static_cast<Sint64>(ptr->GetPosition());
         };
         rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {
-            auto ptr = static_cast<streamptr>(ctx->hidden.unknown.data1);
-            (*ptr)->read(static_cast<char*>(buf), size * maxnum);
-            return static_cast<size_t>((*ptr)->gcount() / size);
+            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            return static_cast<size_t>(ptr->TryRead(buf, size * maxnum) / size);
         };
         rw->size = [](SDL_RWops* ctx) {
-            auto ptr = static_cast<streamptr>(ctx->hidden.unknown.data1);
-            return static_cast<Sint64>((*ptr)->tellg());
+            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+            return static_cast<Sint64>(ptr->GetLength());
         };
         rw->close = [](SDL_RWops* ctx) {
-            auto ptr = static_cast<streamptr>(ctx->hidden.unknown.data1);
+            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
             delete ptr;
             ctx->hidden.unknown.data1 = nullptr;
             delete ctx;

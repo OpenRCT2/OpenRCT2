@@ -13,6 +13,7 @@
 #include "IStream.hpp"
 
 #include <algorithm>
+#include <vector>
 
 namespace OpenRCT2
 {
@@ -42,6 +43,7 @@ namespace OpenRCT2
         explicit MemoryStream(size_t capacity);
         MemoryStream(void* data, size_t dataSize, uint8_t access = MEMORY_ACCESS::READ);
         MemoryStream(const void* data, size_t dataSize);
+        MemoryStream(std::vector<uint8_t>&& v);
         virtual ~MemoryStream();
 
         MemoryStream& operator=(MemoryStream&& mv) noexcept;

@@ -16,6 +16,8 @@
 #    include <zip.h>
 #endif
 
+using namespace OpenRCT2;
+
 static std::string NormalisePath(std::string_view path)
 {
     std::string result;
@@ -148,12 +150,12 @@ public:
         return result;
     }
 
-    std::unique_ptr<std::istream> GetFileStream(std::string_view path) const override
+    std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
     {
         auto index = GetIndexFromPath(path);
         if (index)
         {
-            return std::make_unique<ifilestream>(_zip, *index);
+            return std::make_unique<ZipItemStream>(_zip, *index);
         }
         return {};
     }
@@ -204,144 +206,164 @@ public:
     }
 
 private:
-    class ifilestream final : public std::istream
+    class ZipItemStream final : public IStream
     {
     private:
-        class ifilestreambuf final : public std::streambuf
-        {
-        private:
-            zip* _zip;
-            zip_int64_t _index;
-            zip_file_t* _zipFile{};
-            zip_int64_t _pos{};
-            zip_int64_t _maxLen{};
-
-        public:
-            ifilestreambuf(zip* zip, zip_int64_t index)
-                : _zip(zip)
-                , _index(index)
-            {
-            }
-
-            ifilestreambuf(const ifilestreambuf&) = delete;
-
-            ~ifilestreambuf() override
-            {
-                close();
-            }
-
-        private:
-            void close()
-            {
-                if (_zipFile != nullptr)
-                {
-                    zip_fclose(_zipFile);
-                    _zipFile = nullptr;
-                }
-            }
-
-            bool reset()
-            {
-                close();
-
-                _pos = 0;
-                _maxLen = 0;
-                _zipFile = zip_fopen_index(_zip, _index, 0);
-                if (_zipFile == nullptr)
-                {
-                    return false;
-                }
-
-                zip_stat_t zipFileStat{};
-                if (zip_stat_index(_zip, _index, 0, &zipFileStat) != ZIP_ER_OK)
-                {
-                    return false;
-                }
-
-                _maxLen = zipFileStat.size;
-                return true;
-            }
-
-            std::streamsize xsgetn(char_type* dst, std::streamsize len) override
-            {
-                if (_zipFile == nullptr && !reset())
-                {
-                    return 0;
-                }
-
-                auto read = zip_fread(_zipFile, dst, len);
-                if (read <= 0)
-                {
-                    return 0;
-                }
-                _pos += read;
-                return read;
-            }
-
-            void skip(zip_int64_t len)
-            {
-                if (_zipFile != nullptr || reset())
-                {
-                    char buffer[2048]{};
-                    while (len > 0)
-                    {
-                        auto readLen = std::min<zip_int64_t>(len, sizeof(buffer));
-                        auto read = zip_fread(_zipFile, buffer, readLen);
-                        if (read <= 0)
-                        {
-                            break;
-                        }
-                        _pos += read;
-                        len -= read;
-                    }
-                }
-            }
-
-            pos_type seekpos(pos_type pos, ios_base::openmode mode) override final
-            {
-                if (pos > _pos)
-                {
-                    // Read to seek fowards
-                    skip(pos - _pos);
-                }
-                else if (pos < _pos)
-                {
-                    // Can not seek backwards, start from the beginning
-                    reset();
-                    skip(pos);
-                }
-                return std::clamp<pos_type>(pos, 0, _maxLen);
-            }
-
-            pos_type seekoff(off_type off, ios_base::seekdir dir, ios_base::openmode mode) override
-            {
-                if (dir == std::ios::beg)
-                {
-                    return seekpos(off, std::ios::in);
-                }
-                else if (dir == std::ios::cur)
-                {
-                    return seekpos(_pos + off, std::ios::in);
-                }
-                else if (dir == std::ios::end)
-                {
-                    return seekpos(_maxLen - off, std::ios::in);
-                }
-                else
-                {
-                    return std::streampos(-1);
-                }
-            }
-        };
-
-    private:
-        ifilestreambuf _streambuf;
+        zip* _zip;
+        zip_int64_t _index;
+        zip_file_t* _zipFile{};
+        zip_uint64_t _len{};
+        zip_uint64_t _pos{};
 
     public:
-        ifilestream(zip* zip, zip_int64_t index)
-            : std::istream(&_streambuf)
-            , _streambuf(zip, index)
+        ZipItemStream(zip* zip, zip_int64_t index)
+            : _zip(zip)
+            , _index(index)
         {
+        }
+
+        ~ZipItemStream() override
+        {
+            Close();
+        }
+
+        bool CanRead() const override
+        {
+            return true;
+        }
+
+        bool CanWrite() const override
+        {
+            return false;
+        }
+
+        uint64_t GetLength() const override
+        {
+            return _len;
+        }
+
+        uint64_t GetPosition() const override
+        {
+            return _pos;
+        }
+
+        void SetPosition(uint64_t position) override
+        {
+            if (position > _pos)
+            {
+                // Read to seek forwards
+                Skip(position - _pos);
+            }
+            else if (position < _pos)
+            {
+                // Can not seek backwards, start from the beginning
+                Reset();
+                Skip(position);
+            }
+        }
+
+        void Seek(int64_t offset, int32_t origin) override
+        {
+            switch (origin)
+            {
+                case STREAM_SEEK_BEGIN:
+                    SetPosition(offset);
+                    break;
+                case STREAM_SEEK_CURRENT:
+                    SetPosition(_pos + offset);
+                    break;
+                case STREAM_SEEK_END:
+                    SetPosition(_len - offset);
+                    break;
+            }
+        }
+
+        void Read(void* buffer, uint64_t length) override
+        {
+            size_t readBytes = TryRead(buffer, length);
+            if (readBytes != length)
+            {
+                throw IOException("Attempted to read past end of file.");
+            }
+        }
+
+        void Write(const void* buffer, uint64_t length) override
+        {
+            throw IOException("Stream is read-only.");
+        }
+
+        uint64_t TryRead(void* buffer, uint64_t length) override
+        {
+            if (_zipFile == nullptr && !Reset())
+            {
+                return 0;
+            }
+
+            auto readBytes = zip_fread(_zipFile, buffer, length);
+            if (readBytes < 0)
+            {
+                return 0;
+            }
+            else
+            {
+                _pos += readBytes;
+                return static_cast<uint64_t>(readBytes);
+            }
+        }
+
+        const void* GetData() const override
+        {
+            return nullptr;
+        }
+
+    private:
+        void Close()
+        {
+            if (_zipFile != nullptr)
+            {
+                zip_fclose(_zipFile);
+                _zipFile = nullptr;
+            }
+        }
+
+        bool Reset()
+        {
+            Close();
+
+            _pos = 0;
+            _len = 0;
+            _zipFile = zip_fopen_index(_zip, _index, 0);
+            if (_zipFile == nullptr)
+            {
+                return false;
+            }
+
+            zip_stat_t zipFileStat{};
+            if (zip_stat_index(_zip, _index, 0, &zipFileStat) != ZIP_ER_OK)
+            {
+                return false;
+            }
+
+            _len = zipFileStat.size;
+            return true;
+        }
+
+        void Skip(zip_int64_t len)
+        {
+            // zip_fseek can not be used on compressed data, so skip bytes by
+            // reading into a temporary buffer
+            char buffer[2048]{};
+            while (len > 0)
+            {
+                auto readLen = std::min<zip_int64_t>(len, sizeof(buffer));
+                auto read = zip_fread(_zipFile, buffer, readLen);
+                if (read <= 0)
+                {
+                    break;
+                }
+                _pos += read;
+                len -= read;
+            }
         }
     };
 };

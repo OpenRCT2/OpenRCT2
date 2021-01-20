@@ -11,10 +11,13 @@
 
 #    include "../platform/platform.h"
 #    include "IStream.hpp"
+#    include "MemoryStream.h"
 #    include "Zip.h"
 
 #    include <SDL.h>
 #    include <jni.h>
+
+using namespace OpenRCT2;
 
 class ZipArchive final : public IZipArchive
 {
@@ -113,10 +116,10 @@ public:
         return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
     }
 
-    std::unique_ptr<std::istream> GetFileStream(std::string_view path) const override
+    std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
     {
         auto data = GetFileData(path);
-        return std::make_unique<memstream>(std::move(data));
+        return std::make_unique<MemoryStream>(std::move(data));
     }
 
     void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override
@@ -133,34 +136,6 @@ public:
     {
         STUB();
     }
-
-private:
-    class memstream final : public std::istream
-    {
-    private:
-        class vector_streambuf : public std::basic_streambuf<char, std::char_traits<char>>
-        {
-        public:
-            explicit vector_streambuf(const std::vector<uint8_t>& vec)
-            {
-                this->setg(
-                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
-                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data())),
-                    reinterpret_cast<char*>(const_cast<unsigned char*>(vec.data() + vec.size())));
-            }
-        };
-
-        std::vector<uint8_t> _data;
-        vector_streambuf _streambuf;
-
-    public:
-        memstream(std::vector<uint8_t>&& data)
-            : std::istream(&_streambuf)
-            , _data(data)
-            , _streambuf(_data)
-        {
-        }
-    };
 };
 
 namespace Zip

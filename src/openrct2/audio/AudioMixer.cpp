@@ -190,7 +190,7 @@ void* Mixer_Play_Music(const char* path, int32_t loop)
     return channel;
 }
 
-void* Mixer_Play_Music(std::unique_ptr<std::istream> stream, int32_t loop)
+void* Mixer_Play_Music(std::unique_ptr<IStream> stream, int32_t loop)
 {
     IAudioChannel* channel = nullptr;
     IAudioMixer* mixer = GetMixer();

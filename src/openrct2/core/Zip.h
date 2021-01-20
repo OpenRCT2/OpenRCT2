@@ -17,6 +17,11 @@
 #include <string_view>
 #include <vector>
 
+namespace OpenRCT2
+{
+    struct IStream;
+}
+
 /**
  * Represents a zip file.
  */
@@ -30,7 +35,7 @@ struct IZipArchive
     virtual std::string GetFileName(size_t index) const abstract;
     virtual uint64_t GetFileSize(size_t index) const abstract;
     virtual std::vector<uint8_t> GetFileData(std::string_view path) const abstract;
-    virtual std::unique_ptr<std::istream> GetFileStream(std::string_view path) const abstract;
+    virtual std::unique_ptr<OpenRCT2::IStream> GetFileStream(std::string_view path) const abstract;
 
     /**
      * Creates or overwrites a file within the zip archive to the given data buffer.

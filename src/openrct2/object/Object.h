@@ -15,8 +15,6 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
-#include <fstream>
-#include <istream>
 #include <memory>
 #include <optional>
 #include <string_view>
@@ -223,7 +221,7 @@ public:
 
     bool IsAvailable() const;
     size_t GetLength() const;
-    std::unique_ptr<std::istream> GetStream() const;
+    std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
 struct IReadObjectContext

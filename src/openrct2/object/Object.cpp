@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../core/File.h"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Zip.h"
@@ -23,6 +24,8 @@
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
+
+using namespace OpenRCT2;
 
 ObjectType& operator++(ObjectType& d, int)
 {
@@ -167,18 +170,71 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
     }
 }
 
-class zipstreamwrapper final : public std::istream
+/**
+ * Couples a zip archive and a zip item stream to ensure the lifetime of the zip archive is maintained
+ * for the lifetime of the stream.
+ */
+class ZipStreamWrapper final : public IStream
 {
 private:
     std::unique_ptr<IZipArchive> _zipArchive;
-    std::unique_ptr<std::istream> _base;
+    std::unique_ptr<IStream> _base;
 
 public:
-    zipstreamwrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<std::istream> base)
-        : std::istream(base->rdbuf())
-        , _zipArchive(std::move(zipArchive))
+    ZipStreamWrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<IStream> base)
+        : _zipArchive(std::move(zipArchive))
         , _base(std::move(base))
     {
+    }
+
+    bool CanRead() const override
+    {
+        return _base->CanRead();
+    }
+
+    bool CanWrite() const override
+    {
+        return _base->CanWrite();
+    }
+
+    uint64_t GetLength() const override
+    {
+        return _base->GetLength();
+    }
+
+    uint64_t GetPosition() const override
+    {
+        return _base->GetPosition();
+    }
+
+    void SetPosition(uint64_t position) override
+    {
+        _base->SetPosition(position);
+    }
+
+    void Seek(int64_t offset, int32_t origin) override
+    {
+        _base->Seek(offset, origin);
+    }
+
+    void Read(void* buffer, uint64_t length) override
+    {
+        _base->Read(buffer, length);
+    }
+
+    void Write(const void* buffer, uint64_t length) override
+    {
+        _base->Write(buffer, length);
+    }
+
+    uint64_t TryRead(void* buffer, uint64_t length) override
+    {
+        return _base->TryRead(buffer, length);
+    }
+
+    const void* GetData() const override
+    {
+        return _base->GetData();
     }
 };
 
@@ -224,11 +280,11 @@ size_t ObjectAsset::GetLength() const
     return 0;
 }
 
-std::unique_ptr<std::istream> ObjectAsset::GetStream() const
+std::unique_ptr<IStream> ObjectAsset::GetStream() const
 {
     if (_zipPath.empty())
     {
-        return std::make_unique<std::ifstream>(_path, std::ios::binary);
+        return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
     }
     else
     {
@@ -238,7 +294,7 @@ std::unique_ptr<std::istream> ObjectAsset::GetStream() const
             auto stream = zipArchive->GetFileStream(_path);
             if (stream != nullptr)
             {
-                return std::make_unique<zipstreamwrapper>(std::move(zipArchive), std::move(stream));
+                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
             }
         }
     }
