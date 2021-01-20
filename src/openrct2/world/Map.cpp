@@ -1531,7 +1531,7 @@ void MapUpdateHeightCache(bool fullCheck)
     if (fullCheck)
         _mapHighestTileHeightLoopPosition = 0;
 
-    if (_mapHighestTileHeightLoopPosition == mapTileCount - 1)
+    if (_mapHighestTileHeightLoopPosition == mapTileCount)
         return;
 
     // If we're doing a full check of the map then zero out the loop
