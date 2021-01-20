@@ -45,8 +45,8 @@ namespace Path
             return std::string(b);
         if (b.empty())
             return std::string(a);
-        auto aEnd = a[a.size() - 1];
-        auto bBegin = b[0];
+        auto aEnd = a.back();
+        auto bBegin = b.front();
         if (IsPathSeparator(aEnd))
         {
             if (IsPathSeparator(bBegin))

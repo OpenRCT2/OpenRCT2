@@ -33,7 +33,7 @@ void MusicObject::Load()
     for (auto& track : _tracks)
     {
         track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
-        track.Length = track.Asset.GetLength();
+        track.Size = track.Asset.GetSize();
     }
 }
 

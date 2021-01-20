@@ -28,7 +28,7 @@ public:
     /**
      * The length of the PCM track in bytes.
      */
-    size_t Length;
+    size_t Size;
 };
 
 class MusicObject final : public Object

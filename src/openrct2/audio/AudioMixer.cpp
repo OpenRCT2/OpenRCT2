@@ -129,6 +129,28 @@ void Mixer_Channel_SetGroup(void* channel, MixerGroup group)
     static_cast<IAudioChannel*>(channel)->SetGroup(group);
 }
 
+template<typename T> static void* PlayMusic(T&& src, int32_t loop)
+{
+    auto* mixer = GetMixer();
+    if (mixer == nullptr)
+        return nullptr;
+
+    auto audioContext = GetContext()->GetAudioContext();
+    auto stream = audioContext->CreateStreamFromWAV(std::forward<T&&>(src));
+    if (stream == nullptr)
+        return nullptr;
+
+    auto* channel = mixer->Play(stream, loop, false, true);
+    if (channel == nullptr)
+    {
+        delete stream;
+        return nullptr;
+    }
+
+    channel->SetGroup(MixerGroup::RideMusic);
+    return channel;
+}
+
 void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
 {
     IAudioChannel* channel = nullptr;
@@ -168,50 +190,12 @@ void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
 
 void* Mixer_Play_Music(const char* path, int32_t loop)
 {
-    IAudioChannel* channel = nullptr;
-    IAudioMixer* mixer = GetMixer();
-    if (mixer != nullptr)
-    {
-        auto audioContext = GetContext()->GetAudioContext();
-        auto source = audioContext->CreateStreamFromWAV(path);
-        if (source != nullptr)
-        {
-            channel = mixer->Play(source, loop, false, true);
-            if (channel == nullptr)
-            {
-                delete source;
-            }
-        }
-    }
-    if (channel != nullptr)
-    {
-        channel->SetGroup(MixerGroup::RideMusic);
-    }
-    return channel;
+    return PlayMusic(path, loop);
 }
 
 void* Mixer_Play_Music(std::unique_ptr<IStream> stream, int32_t loop)
 {
-    IAudioChannel* channel = nullptr;
-    IAudioMixer* mixer = GetMixer();
-    if (mixer != nullptr)
-    {
-        auto audioContext = GetContext()->GetAudioContext();
-        auto source = audioContext->CreateStreamFromWAV(std::move(stream));
-        if (source != nullptr)
-        {
-            channel = mixer->Play(source, loop, false, true);
-            if (channel == nullptr)
-            {
-                delete source;
-            }
-        }
-    }
-    if (channel != nullptr)
-    {
-        channel->SetGroup(MixerGroup::RideMusic);
-    }
-    return channel;
+    return PlayMusic(std::move(stream), loop);
 }
 
 void Mixer_SetVolume(float volume)

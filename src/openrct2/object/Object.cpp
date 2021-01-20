@@ -251,7 +251,7 @@ bool ObjectAsset::IsAvailable() const
     }
 }
 
-size_t ObjectAsset::GetLength() const
+size_t ObjectAsset::GetSize() const
 {
     if (_zipPath.empty())
     {

@@ -5009,7 +5009,7 @@ static void window_ride_music_resize(rct_window* w)
     window_set_resize(w, 316, 81, 316, 81);
 }
 
-static size_t GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
+static std::optional<size_t> GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
 {
     auto& objManager = GetContext()->GetObjectManager();
     auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
@@ -5025,7 +5025,7 @@ static size_t GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
         }
     }
 
-    return std::numeric_limits<size_t>::max();
+    return std::nullopt;
 }
 
 /**
@@ -5056,7 +5056,7 @@ static void window_ride_music_mousedown(rct_window* w, rct_widgetindex widgetInd
             if (originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_1 || originalStyleId == MUSIC_STYLE_CUSTOM_MUSIC_2)
             {
                 auto numTracks = musicObj->GetTrackCount();
-                if (numTracks > 0)
+                if (numTracks != 0)
                 {
                     auto track0 = musicObj->GetTrack(0);
                     if (!track0->Asset.IsAvailable())

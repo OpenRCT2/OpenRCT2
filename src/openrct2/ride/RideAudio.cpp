@@ -279,7 +279,7 @@ static std::pair<size_t, size_t> RideMusicGetTrackOffsetLength(const Ride& ride)
             if (ride.music_tune_id < numTracks)
             {
                 auto track = musicObj->GetTrack(ride.music_tune_id);
-                return { track->BytesPerTick, track->Length };
+                return { track->BytesPerTick, track->Size };
             }
         }
     }

@@ -23,13 +23,16 @@ static std::string NormalisePath(std::string_view path)
     std::string result;
     if (!path.empty())
     {
-        // Convert back slashes to forward slashes
-        result = std::string(path);
-        for (auto ch = result.data(); *ch != '\0'; ch++)
+        result.reserve(path.size());
+        for (auto ch : path)
         {
-            if (*ch == '\\')
+            if (ch == '\\')
             {
-                *ch = '/';
+                result += '/';
+            }
+            else
+            {
+                result += ch;
             }
         }
     }
@@ -54,7 +57,7 @@ std::optional<size_t> IZipArchive::GetIndexFromPath(std::string_view path) const
             }
         }
     }
-    return -1;
+    return std::nullopt;
 }
 
 bool IZipArchive::Exists(std::string_view path) const
@@ -140,8 +143,7 @@ public:
                     uint64_t readBytes = zip_fread(zipFile, result.data(), dataSize);
                     if (readBytes != dataSize)
                     {
-                        result.clear();
-                        result.shrink_to_fit();
+                        result = {};
                     }
                     zip_fclose(zipFile);
                 }

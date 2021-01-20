@@ -220,7 +220,7 @@ public:
     }
 
     bool IsAvailable() const;
-    size_t GetLength() const;
+    size_t GetSize() const;
     std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
