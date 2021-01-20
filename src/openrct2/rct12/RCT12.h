@@ -876,3 +876,6 @@ ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
+std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
+std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength);
+std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);

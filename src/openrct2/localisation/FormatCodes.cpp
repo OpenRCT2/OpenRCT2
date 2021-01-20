@@ -65,7 +65,7 @@ static const std::unordered_map<std::string_view, FormatToken> FormatTokenMap = 
 };
 // clang-format on
 
-static std::string_view GetFormatTokenStringWithBraces(FormatToken token)
+std::string_view GetFormatTokenStringWithBraces(FormatToken token)
 {
     // Ensure cache is thread safe
     static std::mutex mutex;

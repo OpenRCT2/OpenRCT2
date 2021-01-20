@@ -173,7 +173,6 @@ void save_game_cmd(const utf8* name = nullptr);
 void save_game_with_name(const utf8* name);
 void game_autosave();
 void game_convert_strings_to_utf8();
-void game_convert_news_items_to_utf8();
 void game_convert_strings_to_rct2(rct_s6_data* s6);
 void utf8_to_rct2_self(char* buffer, size_t length);
 void rct2_to_utf8_self(char* buffer, size_t length);

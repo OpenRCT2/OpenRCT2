@@ -63,9 +63,7 @@ namespace OpenRCT2::Scripting
         result.Ticks = value["tickCount"].as_int();
         result.MonthYear = value["month"].as_int();
         result.Day = value["day"].as_int();
-
-        auto text = value["text"].as_string();
-        String::Set(result.Text, sizeof(result.Text), text.c_str());
+        result.Text = value["text"].as_string();
         return result;
     }
 
@@ -219,7 +217,7 @@ namespace OpenRCT2::Scripting
             auto msg = GetMessage();
             if (msg != nullptr)
             {
-                String::Set(msg->Text, sizeof(msg->Text), value.c_str());
+                msg->Text = value;
             }
         }
 

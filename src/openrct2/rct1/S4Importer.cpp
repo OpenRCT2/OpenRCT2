@@ -208,7 +208,6 @@ public:
         SetDefaultNames();
         determine_ride_entrance_and_exit_locations();
 
-        game_convert_news_items_to_utf8();
         map_count_remaining_land_rights();
         research_determine_first_of_type();
     }
@@ -2613,7 +2612,7 @@ private:
             dst->Ticks = src->Ticks;
             dst->MonthYear = src->MonthYear;
             dst->Day = src->Day;
-            std::copy(std::begin(src->Text), std::end(src->Text), dst->Text);
+            dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
 
             if (dst->Type == News::ItemType::Research)
             {
