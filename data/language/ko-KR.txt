@@ -144,8 +144,8 @@ STR_0559    :무서운 복도와 으스스한 방이 있는 거대한 테마 건
 STR_0560    :어지러움을 느끼는 손님들이 빨리 회복할 수 있게 도와주는 장소
 STR_0561    :거대한 탑 텐트 안에서 동물 서커스를 관람하는 곳
 STR_0562    :무서운 풍경과 특수 효과를 통과하며 여러 높이의 트랙을 따라 이동하는 전동 차량입니다.
-STR_0563    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 '무중력 시간'뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다.
-STR_0564    :목재 트랙 위를 움직이는 이 롤러코스터는 빠르고, 거칠고, 시끄럽고, 많은 '무중력 시간'과 함께 '제어 불가능할 것 같은' 탑승감을 선사합니다.
+STR_0563    :탑승객들은 한 바퀴를 운행하는 편안한 좌석에 앉아 언덕을 오르면서 느낄 수 있는 ‘무중력 시간’뿐만이 아니라 크고 부드러운 낙하와 꼬인 트랙의 느낌을 즐길 수 있습니다.
+STR_0564    :목재 트랙 위를 움직이는 이 롤러코스터는 빠르고, 거칠고, 시끄럽고, 많은 ‘무중력 시간’과 함께 ‘제어 불가능할 것 같은’ 탑승감을 선사합니다.
 STR_0565    :완만한 경사와 커브만을 가진 간단한 나무 롤러코스터로, 이 롤러코스터의 차량은 트랙 위에 얹힌 상태에서 오직 측면 마찰용 바퀴와 중력에 의해 운행됩니다.
 STR_0566    :한 대의 롤러코스터 차량이 급커브와 짧고 급한 경사를 가진 지그재그 모양의 트랙을 어지럽게 돌아다닙니다.
 STR_0567    :트랙 반대편에 매달린 좌석에 앉아서, 탑승객들은 급강하와 여러 가지 반전 트랙을 통과하면서 거꾸러지는 동안 머리와 다리가 뒤집히게 됩니다.
@@ -243,7 +243,7 @@ STR_0834    :디스크 및 게임 설정
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0847    :'OpenRCT2'에 대해서
+STR_0847    :‘OpenRCT2’에 대해서
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}디자인 및 프로그래밍: Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}그래픽: Simon Foster
@@ -743,7 +743,7 @@ STR_1354    :{WINDOW_COLOUR_2}최고 낙하 높이: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}낙하 횟수: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}뒤집어진 횟수: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}홀 개수: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}총 '무중력' 시간: {BLACK}{COMMA2DP32}초
+STR_1358    :{WINDOW_COLOUR_2}총 ‘무중력’ 시간: {BLACK}{COMMA2DP32}초
 STR_1359    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1360    :{WINDOW_COLOUR_2}대기 시간: {BLACK}{COMMA16}분
 STR_1361    :속력을 바꿀 수 없습니다…
@@ -845,8 +845,8 @@ STR_1456    :{WINDOW_COLOUR_2}사용한 돈: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}보유한 돈: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}공원에 머무른 시간: {BLACK}{REALTIME}
 STR_1459    :트랙 스타일
-STR_1460    :'U' 모양의 천장이 없는 트랙
-STR_1461    :'O' 모양의 천장이 있는 트랙
+STR_1460    :‘U’ 모양의 천장이 없는 트랙
+STR_1461    :‘O’ 모양의 천장이 있는 트랙
 STR_1462    :리프트 힐을 쓰기엔 너무 경사가 급합니다
 STR_1463    :손님
 STR_1464    :나선 상승 (작음)
@@ -1828,8 +1828,8 @@ STR_2481    :시간에 따른 측면 가속도 그래프를 보여줍니다
 STR_2482    :수익: {CURRENCY}/주,  공원 가치: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}주간 수익: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}주간 수익: {RED}{CURRENCY2DP}
-STR_2487    :손님들의 '실제' 이름을 표시
-STR_2488    :손님들의 이름을 '실제' 이름으로 보여줄지 번호로 보여줄지를 선택합니다
+STR_2487    :손님들의 ‘실제’ 이름을 표시
+STR_2488    :손님들의 이름을 ‘실제’ 이름으로 보여줄지 번호로 보여줄지를 선택합니다
 STR_2489    :단축키 설정…
 STR_2490    :키보드 단축키
 STR_2491    :단축키 초기화
@@ -1959,7 +1959,7 @@ STR_2739    :없음
 STR_2740    :롤러코스터 타이쿤 1
 STR_2741    :롤러코스터 타이쿤 2
 STR_2742    :css50.dat 파일을 찾을 수 없습니다
-STR_2743    :'data/css17.dat' 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 'data/css50.dat' 이름으로 바꾸어 넣거나, 고급 탭에서 RCT1의 경로를 올바르게 지정하세요.
+STR_2743    :‘data/css17.dat’ 파일을 RCT1 설치 폴더에서 복사하여 RCT2가 설치된 폴더 안에 ‘data/css50.dat’ 이름으로 바꾸어 넣거나, 고급 탭에서 RCT1의 경로를 올바르게 지정하세요.
 STR_2749    :내 새 시나리오
 # New strings used in the cheats window previously these were ???
 STR_2750    :모든 항목을 위로
@@ -2034,23 +2034,23 @@ STR_2827    :{WINDOW_COLOUR_2}최고의 커스텀 디자인 놀이기구상
 STR_2828    :{WINDOW_COLOUR_2}최고의 눈부신 놀이기구 색상 조합상
 STR_2829    :{WINDOW_COLOUR_2}가장 복잡한 공원 구조상
 STR_2830    :{WINDOW_COLOUR_2}최고의 얌전한 놀이기구상
-STR_2831    :{TOPAZ}공원이 '우리나라에서 가장 지저분한 공원상'을 받았습니다…
-STR_2832    :{TOPAZ}공원이 '우리나라에서 가장 깔끔한 공원상'을 받았습니다!
-STR_2833    :{TOPAZ}공원이 '우리나라 최고의 롤러코스터가 있는 공원상'을 받았습니다!
-STR_2834    :{TOPAZ}공원이 '우리나라 최고의 공원 이용료상'을 받았습니다!
-STR_2835    :{TOPAZ}공원이 '우리나라에서 가장 아름다운 공원상'을 받았습니다!
-STR_2836    :{TOPAZ}공원이 '우리나라 최악의 공원 이용료상'을 받았습니다…
-STR_2837    :{TOPAZ}공원이 '우리나라에서 가장 안전한 공원상'을 받았습니다!
-STR_2838    :{TOPAZ}공원이 '우리나라 최고의 직원상'을 받았습니다!
-STR_2839    :{TOPAZ}공원이 '우리나라 최고의 공원 음식상'을 받았습니다!
-STR_2840    :{TOPAZ}공원이 '우리나라 최악의 공원 음식상'을 받았습니다…
-STR_2841    :{TOPAZ}공원이 '우리나라 최고의 공원 화장실상'을 받았습니다!
-STR_2842    :{TOPAZ}공원이 '우리나라에서 가장 실망스러운 공원상'을 받았습니다…
-STR_2843    :{TOPAZ}공원이 '우리나라 최고의 물 놀이기구상'을 받았습니다!
-STR_2844    :{TOPAZ}공원이 '우리나라 최고의 커스텀 디자인 놀이기구상'을 받았습니다!
-STR_2845    :{TOPAZ}공원이 '우리나라 최고의 눈부신 놀이기구 색상 조합상'을 받았습니다!
-STR_2846    :{TOPAZ}공원이 '우리나라에서 가장 복잡한 공원 구조상'을 받았습니다…
-STR_2847    :{TOPAZ}공원이 '우리나라 최고의 얌전한 놀이기구상'을 받았습니다!
+STR_2831    :{TOPAZ}공원이 ‘우리나라에서 가장 지저분한 공원상’을 받았습니다…
+STR_2832    :{TOPAZ}공원이 ‘우리나라에서 가장 깔끔한 공원상’을 받았습니다!
+STR_2833    :{TOPAZ}공원이 ‘우리나라 최고의 롤러코스터가 있는 공원상’을 받았습니다!
+STR_2834    :{TOPAZ}공원이 ‘우리나라 최고의 공원 이용료상’을 받았습니다!
+STR_2835    :{TOPAZ}공원이 ‘우리나라에서 가장 아름다운 공원상’을 받았습니다!
+STR_2836    :{TOPAZ}공원이 ‘우리나라 최악의 공원 이용료상’을 받았습니다…
+STR_2837    :{TOPAZ}공원이 ‘우리나라에서 가장 안전한 공원상’을 받았습니다!
+STR_2838    :{TOPAZ}공원이 ‘우리나라 최고의 직원상’을 받았습니다!
+STR_2839    :{TOPAZ}공원이 ‘우리나라 최고의 공원 음식상’을 받았습니다!
+STR_2840    :{TOPAZ}공원이 ‘우리나라 최악의 공원 음식상’을 받았습니다…
+STR_2841    :{TOPAZ}공원이 ‘우리나라 최고의 공원 화장실상’을 받았습니다!
+STR_2842    :{TOPAZ}공원이 ‘우리나라에서 가장 실망스러운 공원상’을 받았습니다…
+STR_2843    :{TOPAZ}공원이 ‘우리나라 최고의 물 놀이기구상’을 받았습니다!
+STR_2844    :{TOPAZ}공원이 ‘우리나라 최고의 커스텀 디자인 놀이기구상’을 받았습니다!
+STR_2845    :{TOPAZ}공원이 ‘우리나라 최고의 눈부신 놀이기구 색상 조합상’을 받았습니다!
+STR_2846    :{TOPAZ}공원이 ‘우리나라에서 가장 복잡한 공원 구조상’을 받았습니다…
+STR_2847    :{TOPAZ}공원이 ‘우리나라 최고의 얌전한 놀이기구상’을 받았습니다!
 STR_2848    :{WINDOW_COLOUR_2}최근에 받은 상 없음
 STR_2849    :새 시나리오 설치가 성공적으로 완료되었습니다
 STR_2850    :새 트랙 디자인 설치가 성공적으로 완료되었습니다
@@ -2064,7 +2064,7 @@ STR_2861    :{WINDOW_COLOUR_2}Licensed to Infogrames Interactive Inc.
 STR_2862    :음악 저작권…
 STR_2863    :음악 저작권
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (푸치크) 저작권 없음
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) 저작권 없음
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (민요)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (요한 슈트라우스) 저작권 없음
@@ -2077,19 +2077,19 @@ STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (민요)
 STR_2875    :{WINDOW_COLOUR_2}Original recordings (P) 1976 C.J.Mears Organization, used with consent
 STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 타이틀 음악:   (Allister Brimble) copyright © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) copyright © Chris Sawyer
 STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
 STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
 STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
 STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) copyright © Chris Sawyer
 STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) copyright © Chris Sawyer
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) copyright © Chris Sawyer
 STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
@@ -2122,7 +2122,7 @@ STR_2983    :이 전광판의 문구를 입력하세요:
 STR_2984    :전광판의 내용을 바꿀 수 없습니다…
 STR_2985    :전광판
 STR_2986    :전광판의 내용을 바꿉니다
-STR_2987    :이 전광판을 '손님 출입 금지'로 설정합니다
+STR_2987    :이 전광판을 ‘손님 출입 금지’로 설정합니다
 STR_2988    :이 전광판을 제거합니다
 STR_2989    :주 색상 선택
 STR_2990    :문구 색상 선택
@@ -2337,7 +2337,7 @@ STR_3235    :재정 관련 설정을 보여줍니다
 STR_3236    :손님 관련 설정을 보여줍니다
 STR_3237    :공원 관련 설정을 보여줍니다
 STR_3238    :재정 무제한
-STR_3239    :재정적 제한이 없도록 이 공원의 재정을 '무제한'으로 만듭니다
+STR_3239    :재정적 제한이 없도록 이 공원의 재정을 ‘무제한’으로 만듭니다
 STR_3240    :{WINDOW_COLOUR_2}초기 재정:
 STR_3241    :{WINDOW_COLOUR_2}초기 대출:
 STR_3242    :{WINDOW_COLOUR_2}최대 대출금:
@@ -2880,7 +2880,7 @@ STR_5556    :플레이어 추방
 STR_5557    :비동기화 이후에 계속 접속 (멀티플레이)
 STR_5558    :이 설정을 적용하기 위해서는 게임을 재시작해야 합니다
 STR_5559    :점검 시간 10분으로
-STR_5560    :모든 놀이기구의 점검 시간을 '매 10분마다'로 설정합니다
+STR_5560    :모든 놀이기구의 점검 시간을 ‘매 10분마다’로 설정합니다
 STR_5561    :언어 파일을 불러오는 데 실패하였습니다
 STR_5562    :경고!
 STR_5563    :이 기능은 현재 불안정하여 오류가 나올 수 있습니다
@@ -3064,7 +3064,7 @@ STR_5778    :건설: {COMMA16}년 전
 STR_5779    :수익: 시간당 {CURRENCY2DP}
 STR_5780    :유지비: 시간당 {CURRENCY2DP}
 STR_5781    :유지비: 알 수 없음
-STR_5782    :접속이 완료되었습니다. 대화를 시작하시려면 '{STRING}'를 누르세요.
+STR_5782    :접속이 완료되었습니다. 대화를 시작하시려면 ‘{STRING}’를 누르세요.
 STR_5783    :{WINDOW_COLOUR_2}시나리오 잠김
 STR_5784    :{BLACK}이 시나리오를 플레이하려면 이전 시나리오의 목표를 먼저 완료하세요.
 STR_5785    :그룹 이름을 바꿀 수 없습니다…
@@ -3073,7 +3073,7 @@ STR_5787    :{COMMA32}명의 플레이어 접속 중
 STR_5788    :기본 점검 간격:
 STR_5789    :번개 번쩍임 없애기
 STR_5790    :RCT1식으로 돈을 받습니다.{NEWLINE}(예: 놀이기구 탑승료와 공원 입장료를 같이 받기)
-STR_5791    :모든 놀이기구의 신뢰도를 100%로 설정하고{NEWLINE}건설 시점을 "올해"로 바꿉니다.
+STR_5791    :모든 놀이기구의 신뢰도를 100%로 설정하고{NEWLINE}건설 시점을 “올해”로 바꿉니다.
 STR_5792    :고장난 놀이기구를 모두 고칩니다.
 STR_5793    :놀이기구의 충돌 이력을 제거하여,{NEWLINE}손님들이 안전하지 않다고 불평하지 않게 만듭니다.
 STR_5794    :일부 시나리오에서 공원에 이미 존재하는 놀이기구를 수정할 수 없게 해놓은 것을 해제합니다.
@@ -3113,11 +3113,11 @@ STR_5828    :거리, 속력 등에서 사용할 거리 단위를 설정합니다
 STR_5829    :화폐 단위를 변경합니다. 단순히 표기 방식만 변경되고, 환율은 아직 적용되지 않습니다.
 STR_5830    :사용할 언어를 설정합니다.
 STR_5831    :사용할 온도 단위를 설정합니다.
-STR_5832    :높이를 "거리 및 속력"에 설정된 거리 단위 대신 칸 단위로 표시합니다.
+STR_5832    :높이를 “거리 및 속력”에 설정된 거리 단위 대신 칸 단위로 표시합니다.
 STR_5833    :사용할 날짜 형식을 설정합니다.
 STR_5834    :OpenRCT2가 사용할 오디오 장치를 선택합니다.
 STR_5835    :게임 밖으로 커서가 나가면 게임에서 소리가 나지 않도록 만듭니다.
-STR_5836    :첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 'data/css17.dat' 파일을 복사해서 RCT2 폴더에 'data/css50.dat'라는 이름으로 저장해두거나, 기타 탭에서 RCT1의 경로를 지정해야 합니다.
+STR_5836    :첫 화면에서 사용할 음악을 선택합니다.{NEWLINE}RCT1 테마를 선택할 경우, RCT1 게임 폴더의 ‘data/css17.dat’ 파일을 복사해서 RCT2 폴더에 ‘data/css50.dat’라는 이름으로 저장해두거나, 기타 탭에서 RCT1의 경로를 지정해야 합니다.
 STR_5837    :사용자 UI 테마를 생성하고 관리합니다.
 STR_5838    :메인 메뉴에 재정 창을 위한 별도의 버튼을 표시합니다.
 STR_5839    :메인 매뉴에 연구 및 개발 창을 위한 별도의 버튼을 표시합니다.
@@ -3348,35 +3348,35 @@ STR_6066    :모든 유저의 행동을 사용자 폴더에 파일로 기록합�
 STR_6067    :서버 시작됨
 STR_6068    :서버가 종료됨
 STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
-STR_6070    :{STRING}, 플레이어 그룹을 '{STRING}'(으)로 변경 (변경자: {STRING})
-STR_6071    :{STRING}, 새 플레이어 그룹 '{STRING}' 생성
-STR_6072    :{STRING}, 플레이어 그룹 '{String}' 삭제
-STR_6073    :{STRING}, 플레이어 그룹 '{String}'의 권한을 수정
-STR_6074    :{STRING}, 플레이어 그룹 '{String}'의 이름을 '{String}'(으)로 변경
-STR_6075    :{STRING}, 기본 플레이어 그룹을 '{String}'(으)로 변경
-STR_6076    :{STRING}, '{STRING}' 치트 사용/토글
+STR_6070    :{STRING}, 플레이어 그룹을 ‘{STRING}’(으)로 변경 (변경자: {STRING})
+STR_6071    :{STRING}, 새 플레이어 그룹 ‘{STRING}’ 생성
+STR_6072    :{STRING}, 플레이어 그룹 ‘{String}’ 삭제
+STR_6073    :{STRING}, 플레이어 그룹 ‘{String}’의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 ‘{String}’의 이름을 ‘{String}’(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{String}’(으)로 변경
+STR_6076    :{STRING}, ‘{STRING}’ 치트 사용/토글
 STR_6077    :돈 추가
-STR_6078    :{STRING}, '{STRING}' 놀이기구를 생성
-STR_6079    :{STRING}, '{STRING}' 놀이기구를 파괴
-STR_6080    :{STRING}, '{STRING}' 놀이기구의 외관을 변경.
-STR_6081    :{STRING}, '{STRING}' 놀이기구를 닫음
-STR_6082    :{STRING}, '{STRING}' 놀이기구를 엶
-STR_6083    :{STRING}, '{STRING}' 놀이기구를 테스트함
-STR_6084    :{STRING}, '{STRING}' 놀이기구의 차량 설정을 변경함.
-STR_6085    :{STRING}, '{STRING}' 놀이기구의 설정을 변경함.
-STR_6086    :{STRING}, '{STRING}' 놀이기구의 이름을 '{STRING}'(으)로 변경.
-STR_6087    :{STRING}, '{STRING}' 놀이기구의 가격을 {STRING}(으)로 변경
-STR_6088    :{STRING}, '{STRING}' 놀이기구의 두 번째 가격을 {STRING}(으)로 변경
-STR_6089    :{STRING}, 공원 이름을 '{STRING}'에서 '{STRING}'(으)로 변경
+STR_6078    :{STRING}, ‘{STRING}’ 놀이기구를 생성
+STR_6079    :{STRING}, ‘{STRING}’ 놀이기구를 파괴
+STR_6080    :{STRING}, ‘{STRING}’ 놀이기구의 외관을 변경
+STR_6081    :{STRING}, ‘{STRING}’ 놀이기구를 닫음
+STR_6082    :{STRING}, ‘{STRING}’ 놀이기구를 엶
+STR_6083    :{STRING}, ‘{STRING}’ 놀이기구를 테스트함
+STR_6084    :{STRING}, ‘{STRING}’ 놀이기구의 차량 설정을 변경
+STR_6085    :{STRING}, ‘{STRING}’ 놀이기구의 설정을 변경
+STR_6086    :{STRING}, ‘{STRING}’ 놀이기구의 이름을 ‘{STRING}’(으)로 변경
+STR_6087    :{STRING}, ‘{STRING}’ 놀이기구의 첫 번째 가격을 {STRING}(으)로 변경
+STR_6088    :{STRING}, ‘{STRING}’ 놀이기구의 두 번째 가격을 {STRING}(으)로 변경
+STR_6089    :{STRING}, 공원 이름을 ‘{STRING}’에서 ‘{STRING}’(으)로 변경
 STR_6090    :{STRING}, 공원 문을 엶
 STR_6091    :{STRING}, 공원 문을 닫음
 STR_6092    :{STRING}, 공원 입장료를 {STRING}(으)로 변경
-STR_6093    :{STRING}, 오브젝트를 설치함
-STR_6094    :{STRING}, 오브젝트를 제거함
-STR_6095    :{STRING}, 오브젝트를 수정함
-STR_6096    :{STRING}, 팻말 내용을 '{STRING}'(으)로 설정함
-STR_6097    :{STRING}, '{STRING}' 놀이기구의 트랙을 설치함
-STR_6098    :{STRING}, 놀이기구 트랙을 제거함
+STR_6093    :{STRING}, 오브젝트를 설치
+STR_6094    :{STRING}, 오브젝트를 제거
+STR_6095    :{STRING}, 오브젝트를 수정
+STR_6096    :{STRING}, 팻말 내용을 ‘{STRING}’(으)로 설정
+STR_6097    :{STRING}, ‘{STRING}’ 놀이기구의 트랙을 설치
+STR_6098    :{STRING}, 놀이기구 트랙을 제거
 STR_6099    :서버에 접속하였습니다
 STR_6100    :서버와의 접속이 종료되었습니다
 STR_6101    :놀이기구 가치가 떨어지지 않게 만들기
@@ -3627,7 +3627,7 @@ STR_6367    :{WINDOW_COLOUR_2}애니메이션 프레임:
 STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
 STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
 STR_6370    :어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다
-STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, "csg1i.dat" 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 "Data" 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
+STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, “csg1i.dat” 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 “Data” 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
 STR_6372    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, 버전이 알맞지 않습니다. RollerCoaster Tycoon 1의 에셋을 사용하려면 OpenRCT2는 루피 랜드스케이프나 RCT 디럭스가 필요합니다.
 STR_6373    :겹쳐짓기 켜기/끄기
 STR_6374    :겹
@@ -3708,7 +3708,7 @@ STR_PARK    :삼위일체 섬
 STR_DTLS    :몇 개의 섬이 이 새로운 공원의 기반입니다.
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
 STR_PARK    :케이티의 드림랜드
 STR_DTLS    :몇 개의 놀이기구와 확장할 공간이 있는 작은 놀이공원으로, 여러분의 목표는 공원 가치를 두 배로 늘리는 것입니다.
 
@@ -3733,7 +3733,7 @@ STR_PARK    :카트 & 코스터
 STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터가 숲속에 숨겨진 대형 놀이공원입니다.
 
 <Mel's World>
-STR_SCNR    :Mel's World
+STR_SCNR    :Mel’s World
 STR_PARK    :멜의 세계
 STR_DTLS    :이 놀이공원에는 잘 디자인된 현대식 놀이기구가 있지만, 아직도 확장해야 할 곳이 많습니다.
 
@@ -3971,7 +3971,7 @@ STR_PARK    :파라다이스 부두 2
 STR_DTLS    :파라다이스 부두는 바다 위의 산책로를 확장했습니다. 여러분의 임무는 이 새로운 공간을 이용하여 공원을 확장하는 것입니다.
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
 STR_PARK    :용의 동굴
 STR_DTLS    :이번 롤러코스터 건설 도전에서는 해안 동굴이 무대가 됩니다.
 
