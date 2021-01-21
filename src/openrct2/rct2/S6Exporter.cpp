@@ -151,14 +151,6 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    int32_t regular_cycle = check_for_sprite_list_cycles(false);
-    int32_t disjoint_sprites_count = fix_disjoint_sprites();
-    openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
-    // This one is less harmful, no need to assert for it ~janisozaur
-    if (disjoint_sprites_count > 0)
-    {
-        log_error("Found %d disjoint null sprites", disjoint_sprites_count);
-    }
     _s6.info = gS6Info;
     {
         auto temp = utf8_to_rct2(gS6Info.name);
@@ -957,8 +949,37 @@ void S6Exporter::ExportSprites()
 
     for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
-        _s6.sprite_lists_head[i] = gSpriteListHead[i];
-        _s6.sprite_lists_count[i] = gSpriteListCount[i];
+        //_s6.sprite_lists_head[i] = gSpriteListHead[i];
+        _s6.sprite_lists_count[i] = GetEntityListCount(EntityListId(i));
+    }
+    RebuildEntityLinks();
+}
+
+void S6Exporter::RebuildEntityLinks()
+{
+    // Rebuild next/previous linked list entity indexs
+    for (auto list :
+         { RCT12EntityLinkListOffset::Free, RCT12EntityLinkListOffset::Litter, RCT12EntityLinkListOffset::Misc,
+           RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
+    {
+        uint16_t previous = SPRITE_INDEX_NULL;
+        for (auto& entity : _s6.sprites)
+        {
+            if (entity.unknown.linked_list_type_offset == list)
+            {
+                _s6.sprites[entity.unknown.sprite_index].unknown.previous = previous;
+                if (previous != SPRITE_INDEX_NULL)
+                {
+                    _s6.sprites[previous].unknown.next = entity.unknown.sprite_index;
+                }
+                else
+                {
+                    _s6.sprite_lists_head[EnumValue(list)] = entity.unknown.sprite_index;
+                }
+                _s6.sprites[entity.unknown.sprite_index].unknown.next = SPRITE_INDEX_NULL;
+                previous = entity.unknown.sprite_index;
+            }
+        }
     }
 }
 
@@ -989,13 +1010,44 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
     }
 }
 
+constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
+{
+    RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
+    switch (src->sprite_identifier)
+    {
+        case SpriteIdentifier::Vehicle:
+        {
+            auto veh = src->As<Vehicle>();
+            if (veh && veh->IsHead())
+            {
+                output = RCT12EntityLinkListOffset::TrainHead;
+            }
+            else
+            {
+                output = RCT12EntityLinkListOffset::Vehicle;
+            }
+        }
+        break;
+        case SpriteIdentifier::Peep:
+            output = RCT12EntityLinkListOffset::Peep;
+            break;
+        case SpriteIdentifier::Misc:
+            output = RCT12EntityLinkListOffset::Misc;
+            break;
+        case SpriteIdentifier::Litter:
+            output = RCT12EntityLinkListOffset::Litter;
+            break;
+        default:
+            break;
+    }
+    return output;
+}
+
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
     dst->next_in_quadrant = src->next_in_quadrant;
-    dst->next = src->next;
-    dst->previous = src->previous;
-    dst->linked_list_type_offset = static_cast<uint8_t>(src->linked_list_index) * 2;
+    dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = src->flags;
