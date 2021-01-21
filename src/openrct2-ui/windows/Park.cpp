@@ -1447,18 +1447,21 @@ static void window_park_objective_invalidate(rct_window* w)
 }
 
 static void window_park_objective_bars_paint(
-    float percentage, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour)
+    float percentage, ScreenCoordsXY* screenCoords, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour)
 {
     if (percentage > 1)
     {
         percentage = 1;
     }
     int16_t barLength = static_cast<int16_t>((221 - 4) * percentage);
+    ScreenRect* rect = new ScreenRect(screenCoords->x + 1, screenCoords->y + 1, screenCoords->x + 221 - 3, screenCoords->y + 9);
 
-    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 221 - 3, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, *rect, w->colours[1], INSET_RECT_F_30);
+
+    rect = new ScreenRect(screenCoords->x + 3, screenCoords->y + 2, barLength, screenCoords->y + 8);
     if (barLength > 2)
     {
-        gfx_fill_rect_inset(dpi, x + 3, y + 2, x + barLength, y + 8, colour, 0);
+        gfx_fill_rect_inset(dpi, *rect, colour, 0);
     }
 }
 
@@ -1539,7 +1542,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_GUESTS, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(guestsInParkPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(guestsInParkPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 *ft = Formatter();
@@ -1560,7 +1563,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_RATING, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(parkRatingPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(parkRatingPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1589,7 +1592,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_PARK_VALUE, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(parkValuePercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(parkValuePercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1607,8 +1610,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(
-                    rollerCoasterCountPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1627,8 +1629,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_MONTHLY_RIDE_INCOME, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(
-                    monthlyRideIncomePercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(monthlyRideIncomePercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1647,8 +1648,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(
-                    rollerCoasterCountPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1667,8 +1667,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_ROLLER_COASTER_COUNT, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(
-                    rollerCoasterCountPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
@@ -1687,8 +1686,7 @@ static void window_park_objective_paint_scenario_progress(
                     dpi, ft->Data(), *screenCoords, 221, STR_OBJECTIVE_PROGRESS_SHOP_INCOME, COLOUR_BLACK);
                 screenCoords->y += 1;
 
-                window_park_objective_bars_paint(
-                    rollerCoasterCountPercentage, screenCoords->x, screenCoords->y, w, dpi, barColour);
+                window_park_objective_bars_paint(rollerCoasterCountPercentage, screenCoords, w, dpi, barColour);
                 screenCoords->y += LIST_ROW_HEIGHT;
 
                 break;
