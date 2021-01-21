@@ -223,11 +223,6 @@ void reset_sprite_list()
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
 
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-    {
-        _spriteFlashingList[i] = false;
-    }
-
     for (int32_t i = 0; i < MAX_SPRITES; ++i)
     {
         auto* spr = GetEntity(i);
