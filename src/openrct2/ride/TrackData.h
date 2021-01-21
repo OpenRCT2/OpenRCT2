@@ -10,8 +10,10 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "VehicleSubpositionData.h"
 
 constexpr const uint8_t MaxSequencesPerPiece = 16;
 
@@ -48,6 +50,23 @@ struct track_descriptor
     uint8_t track_element;
 };
 
+struct TrackTypeDescriptor
+{
+    rct_string_id TrackName;
+    money32 TrackPrice;
+    int16_t AlternateTrackType;
+    int16_t MirroredTrackType;
+    uint8_t Length;
+    uint32_t TrackHeightMarkerPositions;
+    std::array<uint8_t, 16> AllowedWallEdges;
+};
+
+#ifdef _WIN32
+#    define SET_FIELD(fieldname, ...) __VA_ARGS__
+#else
+#    define SET_FIELD(fieldname, ...) .fieldname = __VA_ARGS__
+#endif
+
 extern const track_descriptor gTrackDescriptors[142];
 
 extern const int16_t AlternativeTrackTypes[256];
@@ -74,3 +93,14 @@ extern const uint8_t FlatRideTrackSequenceElementAllowedWallEdges[256][16];
 
 extern const uint16_t FlatTrackFlags[256];
 extern const uint16_t TrackFlags[256];
+
+// clang-format off
+constexpr const TrackTypeDescriptor DummyTTD = {
+    SET_FIELD(TrackName, STR_RIDE_COMPONENT_TRACK),
+    SET_FIELD(TrackPrice, 0),
+    SET_FIELD(AlternateTrackType, -1),
+    SET_FIELD(MirroredTrackType, -1),
+    SET_FIELD(Length, 0),
+    SET_FIELD(TrackHeightMarkerPositions, 1),
+};
+// clang-format on
