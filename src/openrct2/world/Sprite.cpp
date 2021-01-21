@@ -623,45 +623,17 @@ void ExplosionFlare::Update()
     }
 }
 
-/**
- *
- *  rct2: 0x006731CD
- */
-static void sprite_misc_update(MiscEntity* sprite)
+template<typename T> void MiscUpdateAllType()
 {
-    switch (sprite->SubType)
+    for (auto misc : EntityList<T>(EntityListId::Misc))
     {
-        case MiscEntityType::SteamParticle:
-            sprite->As<SteamParticle>()->Update();
-            break;
-        case MiscEntityType::MoneyEffect:
-            sprite->As<MoneyEffect>()->Update();
-            break;
-        case MiscEntityType::CrashedVehicleParticle:
-            sprite->As<VehicleCrashParticle>()->Update();
-            break;
-        case MiscEntityType::ExplosionCloud:
-            sprite->As<ExplosionCloud>()->Update();
-            break;
-        case MiscEntityType::CrashSplash:
-            sprite->As<CrashSplashParticle>()->Update();
-            break;
-        case MiscEntityType::ExplosionFlare:
-            sprite->As<ExplosionFlare>()->Update();
-            break;
-        case MiscEntityType::JumpingFountainWater:
-        case MiscEntityType::JumpingFountainSnow:
-            sprite->As<JumpingFountain>()->Update();
-            break;
-        case MiscEntityType::Balloon:
-            sprite->As<Balloon>()->Update();
-            break;
-        case MiscEntityType::Duck:
-            sprite->As<Duck>()->Update();
-            break;
-        default:
-            break;
+        misc->Update();
     }
+}
+
+template<typename... T> void MiscUpdateAllTypes()
+{
+    (MiscUpdateAllType<T>(), ...);
 }
 
 /**
@@ -670,10 +642,9 @@ static void sprite_misc_update(MiscEntity* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList<MiscEntity>(EntityListId::Misc))
-    {
-        sprite_misc_update(entity);
-    }
+    MiscUpdateAllTypes<
+        SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
+        Balloon, Duck>();
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
