@@ -816,6 +816,7 @@ namespace OpenRCT2
 
                     _faultyChecksumIndex = checksumIndex;
 
+                    _currentReplay->checksumIndex++;
                     return false;
                 }
                 else
