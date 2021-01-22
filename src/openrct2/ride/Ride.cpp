@@ -1227,7 +1227,7 @@ void ride_clear_blocked_tiles(Ride* ride)
  * bp : flags
  */
 std::optional<CoordsXYZ> sub_6C683D(
-    const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags)
 {
     // Find the relevant track piece, prefer sequence 0 (this ensures correct behaviour for diagonal track pieces)
     auto trackElement = map_get_track_element_at_of_type_seq(location, type, 0);
@@ -1905,7 +1905,7 @@ bool ride_modify(CoordsXYE* input)
 
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
     auto direction = tileElement.element->GetDirection();
-    int32_t type = tileElement.element->AsTrack()->GetTrackType();
+    auto type = tileElement.element->AsTrack()->GetTrackType();
     auto newCoords = sub_6C683D({ tileCoords, direction }, type, 0, nullptr, 0);
     if (newCoords == std::nullopt)
         return false;
@@ -2953,7 +2953,7 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
         return;
     }
 
-    uint8_t trackType = (vehicle->GetTrackType()) & 0xFF;
+    auto trackType = vehicle->GetTrackType();
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
         || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
         || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
@@ -3995,7 +3995,7 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
     {
         if (it.current.element->AsTrack()->GetTrackType() == TrackElemType::BlockBrakes)
         {
-            int32_t type = it.last.element->AsTrack()->GetTrackType();
+            auto type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
             {
                 gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
@@ -4062,7 +4062,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
 
     while (track_circuit_iterator_next(&it))
     {
-        int32_t trackType = it.current.element->AsTrack()->GetTrackType();
+        auto trackType = it.current.element->AsTrack()->GetTrackType();
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_INVERSION_TO_NORMAL)
         {
             *output = it.current;
@@ -4120,7 +4120,7 @@ static bool ride_check_track_contains_banked(CoordsXYE* input, CoordsXYE* output
 
     while (track_circuit_iterator_next(&it))
     {
-        int32_t trackType = output->element->AsTrack()->GetTrackType();
+        auto trackType = output->element->AsTrack()->GetTrackType();
         if (TrackFlags[trackType] & TRACK_ELEM_FLAG_BANKED)
         {
             *output = it.current;
@@ -4216,7 +4216,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 
     // Check back of the track
     track_get_back(input, &trackBack);
-    int32_t trackType = trackBack.element->AsTrack()->GetTrackType();
+    auto trackType = trackBack.element->AsTrack()->GetTrackType();
     if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
@@ -4328,7 +4328,7 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
     CoordsXYE currentElement = *startElement;
     do
     {
-        int32_t trackType = currentElement.element->AsTrack()->GetTrackType();
+        auto trackType = currentElement.element->AsTrack()->GetTrackType();
         switch (trackType)
         {
             case TrackElemType::EndStation:
@@ -4707,7 +4707,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
             break;
         }
 
-        int32_t trackType = trackElement->GetTrackType();
+        auto trackType = trackElement->GetTrackType();
         switch (trackType)
         {
             case TrackElemType::Up25ToFlat:
@@ -4934,7 +4934,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     while (track_circuit_iterator_previous(&it))
     {
         tileElement = it.current.element;
-        int32_t trackType = tileElement->AsTrack()->GetTrackType();
+        auto trackType = tileElement->AsTrack()->GetTrackType();
 
         uint16_t flags = TRACK_ELEMENT_SET_HAS_CABLE_LIFT_FALSE;
         switch (state)
@@ -6617,7 +6617,7 @@ static std::optional<int32_t> ride_get_smallest_station_length(Ride* ride)
 static int32_t ride_get_track_length(Ride* ride)
 {
     TileElement* tileElement = nullptr;
-    int32_t trackType;
+    track_type_t trackType;
     CoordsXYZ trackStart;
     bool foundTrack = false;
 

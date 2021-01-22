@@ -14,13 +14,13 @@
 DEFINE_GAME_ACTION(TrackRemoveAction, GameCommand::RemoveTrack, GameActions::Result)
 {
 private:
-    int32_t _trackType{};
+    track_type_t _trackType{};
     int32_t _sequence{};
     CoordsXYZD _origin;
 
 public:
     TrackRemoveAction() = default;
-    TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin);
+    TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

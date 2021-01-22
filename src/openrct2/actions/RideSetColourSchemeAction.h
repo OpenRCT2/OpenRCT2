@@ -15,12 +15,12 @@ DEFINE_GAME_ACTION(RideSetColourSchemeAction, GameCommand::SetColourScheme, Game
 {
 private:
     CoordsXYZD _loc;
-    int32_t _trackType{};
+    track_type_t _trackType{};
     uint16_t _newColourScheme{};
 
 public:
     RideSetColourSchemeAction() = default;
-    RideSetColourSchemeAction(const CoordsXYZD& location, int32_t trackType, uint16_t newColourScheme);
+    RideSetColourSchemeAction(const CoordsXYZD& location, track_type_t trackType, uint16_t newColourScheme);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

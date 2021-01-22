@@ -1134,7 +1134,7 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(
-    const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);

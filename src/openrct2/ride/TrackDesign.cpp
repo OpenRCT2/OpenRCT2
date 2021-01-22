@@ -1530,7 +1530,7 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     auto newCoords = origin;
     for (const auto& track : td6->track_elements)
     {
-        uint8_t trackType = track.type;
+        auto trackType = track.type;
         if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
         {
             trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;

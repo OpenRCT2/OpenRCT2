@@ -2514,7 +2514,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
 
     if (vehicle->status != Vehicle::Status::Crashing && vehicle->status != Vehicle::Status::Crashed)
     {
-        int32_t trackType = vehicle->GetTrackType();
+        auto trackType = vehicle->GetTrackType();
         if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::CableLiftHill
             || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
             || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
