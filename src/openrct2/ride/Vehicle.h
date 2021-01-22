@@ -21,6 +21,8 @@
 #include <cstddef>
 #include <vector>
 
+using track_type_t = uint16_t;
+
 struct rct_vehicle_colour
 {
     uint8_t body_colour;
@@ -339,7 +341,7 @@ struct Vehicle : SpriteBase
      */
     void MoveRelativeDistance(int32_t distance);
 
-    uint16_t GetTrackType() const
+    track_type_t GetTrackType() const
     {
         return track_type >> 2;
     }

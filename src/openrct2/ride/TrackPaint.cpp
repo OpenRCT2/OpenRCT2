@@ -2148,7 +2148,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        int32_t trackType = tileElement->AsTrack()->GetTrackType();
+        auto trackType = tileElement->AsTrack()->GetTrackType();
         int32_t trackSequence = tileElement->AsTrack()->GetSequenceIndex();
         int32_t trackColourScheme = tileElement->AsTrack()->GetColourScheme();
 

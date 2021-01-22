@@ -1620,7 +1620,7 @@ void Vehicle::UpdateMeasurements()
         if (ride_get_entrance_location(curRide, curRide->current_test_station).isNull())
             return;
 
-        uint16_t trackElemType = GetTrackType();
+        auto trackElemType = GetTrackType();
         if (trackElemType == TrackElemType::PoweredLift || HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             if (!(curRide->testing_flags & RIDE_TESTING_POWERED_LIFT))
@@ -6486,7 +6486,7 @@ static bool wouldCollideWithDodgemsTrackEdge(
 
 bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collidedWith) const
 {
-    uint32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
 
     if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
@@ -6547,7 +6547,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     // No up stops (coaster types)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
-        int32_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         if (!track_element_is_covered(trackType))
         {
             auto gForces = GetGForces();
@@ -6576,7 +6576,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
     else if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH)
     {
         // No up stops bobsleigh type
-        int32_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         if (!track_element_is_covered(trackType))
         {
             auto gForces = GetGForces();
@@ -6672,7 +6672,7 @@ void Vehicle::CheckAndApplyBlockSectionStopSite()
         acceleration = 0;
     }
 
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
 
     TileElement* trackElement = map_get_track_element_at_of_type(TrackLocation, trackType);
 
@@ -6795,7 +6795,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
     trackElement->SetBlockBrakeClosed(false);
     map_invalidate_element(location, reinterpret_cast<TileElement*>(trackElement));
 
-    int32_t trackType = trackElement->GetTrackType();
+    auto trackType = trackElement->GetTrackType();
     if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
     {
         if (ride.IsBlockSectioned())
@@ -6807,7 +6807,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
 
 int32_t Vehicle::GetSwingAmount() const
 {
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     switch (trackType)
     {
         case TrackElemType::LeftQuarterTurn5Tiles:
@@ -6964,7 +6964,7 @@ void Vehicle::UpdateSwingingCar()
         dx = 5370;
         cx = -5370;
 
-        int32_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         switch (trackType)
         {
             case TrackElemType::BankedLeftQuarterTurn5Tiles:
@@ -7084,7 +7084,7 @@ enum
     R9_SPIN
 };
 
-static const uint8_t TrackTypeToSpinFunction[256] = {
+static const uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN,
@@ -7127,7 +7127,7 @@ void Vehicle::UpdateSpinningCar()
         return;
     }
     int32_t spinningInertia = vehicleEntry->spinning_inertia;
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     int32_t dword_F64E08 = _vehicleVelocityF64E08;
     int32_t spinSpeed{};
     // An L spin adds to the spin speed, R does the opposite
@@ -7469,7 +7469,7 @@ static void AnimateSceneryDoor(const CoordsXYZD& doorLocation, const CoordsXYZ& 
  */
 void Vehicle::UpdateSceneryDoor() const
 {
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 255)
     {
@@ -7566,7 +7566,7 @@ static void trigger_on_ride_photo(const CoordsXYZ& loc, TileElement* tileElement
  */
 void Vehicle::UpdateSceneryDoorBackwards() const
 {
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
@@ -7610,7 +7610,7 @@ static void vehicle_update_play_water_splash_sound()
 void Vehicle::UpdateHandleWaterSplash() const
 {
     rct_ride_entry* rideEntry = GetRideEntry();
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND))
     {
@@ -7905,7 +7905,7 @@ void Vehicle::Sub6DBF3E()
         return;
     }
 
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
@@ -8181,7 +8181,7 @@ bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ri
 {
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 loc_6DAEB9:
-    int32_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
     {
         if (track_progress == 80)
@@ -8575,7 +8575,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
 
 loc_6DBA33:;
-    uint16_t trackType = GetTrackType();
+    auto trackType = GetTrackType();
     if (trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
     {
         int32_t unkVelocity = _vehicleVelocityF64E08;
@@ -9183,7 +9183,7 @@ loc_6DCE02:
         return;
     }
     {
-        uint16_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         if (!(TrackSequenceProperties[trackType][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             return;

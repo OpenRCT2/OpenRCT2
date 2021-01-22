@@ -3932,7 +3932,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
-                uint16_t trackType = vehicle->GetTrackType();
+                auto trackType = vehicle->GetTrackType();
                 if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
                     continue;
 

@@ -520,7 +520,7 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
  */
 static void ride_ratings_score_close_proximity_loops(TileElement* inputTileElement)
 {
-    int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
+    auto trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper({ gRideRatingsCalcData.Proximity, inputTileElement });
@@ -616,7 +616,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                int32_t trackType = tileElement->AsTrack()->GetTrackType();
+                auto trackType = tileElement->AsTrack()->GetTrackType();
                 if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
                 {
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
