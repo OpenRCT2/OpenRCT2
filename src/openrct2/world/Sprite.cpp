@@ -827,28 +827,23 @@ void litter_remove_at(const CoordsXYZ& litterPos)
 uint16_t remove_floating_sprites()
 {
     uint16_t removed = 0;
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    for (auto* balloon : EntityList<Balloon>(EntityListId::Misc))
     {
-        auto* entity = GetEntity(i);
-        if (entity->Is<Balloon>())
+        sprite_remove(balloon);
+        removed++;
+    }
+    for (auto* duck : EntityList<Duck>(EntityListId::Misc))
+    {
+        if (duck->IsFlying())
         {
-            sprite_remove(entity);
+            sprite_remove(duck);
             removed++;
         }
-        else if (entity->Is<Duck>())
-        {
-            auto* duck = entity->As<Duck>();
-            if (duck->IsFlying())
-            {
-                duck->Remove();
-                removed++;
-            }
-        }
-        else if (entity->Is<MoneyEffect>())
-        {
-            sprite_remove(entity);
-            removed++;
-        }
+    }
+    for (auto* money : EntityList<MoneyEffect>(EntityListId::Misc))
+    {
+        sprite_remove(money);
+        removed++;
     }
     return removed;
 }
