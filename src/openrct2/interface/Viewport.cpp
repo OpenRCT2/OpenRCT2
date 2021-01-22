@@ -46,6 +46,7 @@ static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
+static std::vector<paint_session*> _paintColumns;
 
 ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
@@ -942,7 +943,8 @@ void viewport_paint(
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
-    rct_drawpixelinfo dpi1 = *dpi;
+    rct_drawpixelinfo dpi1;
+    dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
     dpi1.x = left;
     dpi1.y = top;
@@ -958,7 +960,7 @@ void viewport_paint(
     const int16_t rightBorder = dpi1.x + dpi1.width;
     const int16_t alignedX = floor2(dpi1.x, 32);
 
-    std::vector<paint_session*> columns;
+    _paintColumns.clear();
 
     bool useMultithreading = gConfigGeneral.multithreading;
     if (useMultithreading && _paintJobs == nullptr)
@@ -983,7 +985,7 @@ void viewport_paint(
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
-        columns.push_back(session);
+        _paintColumns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
@@ -1020,7 +1022,7 @@ void viewport_paint(
         _paintJobs->Join();
     }
 
-    for (auto column : columns)
+    for (auto column : _paintColumns)
     {
         viewport_paint_column(column);
     }
