@@ -974,7 +974,7 @@ void S6Exporter::RebuildEntityLinks()
                 }
                 else
                 {
-                    _s6.sprite_lists_head[EnumValue(list)] = entity.unknown.sprite_index;
+                    _s6.sprite_lists_head[EnumValue(list) >> 1] = entity.unknown.sprite_index;
                 }
                 _s6.sprites[entity.unknown.sprite_index].unknown.next = SPRITE_INDEX_NULL;
                 previous = entity.unknown.sprite_index;
