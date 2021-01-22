@@ -6987,7 +6987,7 @@ void sub_6CB945(Ride* ride)
     auto locationListIter = locations.cbegin();
     for (const TileCoordsXYZD& locationCoords : locations)
     {
-        auto locationList = std::next(locationListIter);
+        auto locationList = ++locationListIter;
 
         bool duplicateLocation = false;
         while (locationList != locations.cend())
