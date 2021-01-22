@@ -808,10 +808,10 @@ private:
         return true;
     }
 
-    GuestGroup& FindOrGetGroup(FilterArguments&& arguments)
+    GuestGroup& FindOrAddGroup(FilterArguments&& arguments)
     {
         auto foundGroup = std::find_if(
-            std::begin(_groups), std::end(_groups), [arguments](GuestGroup& group) { return group.Arguments == arguments; });
+            std::begin(_groups), std::end(_groups), [&arguments](GuestGroup& group) { return group.Arguments == arguments; });
         if (foundGroup != std::end(_groups))
         {
             return *foundGroup;
@@ -833,7 +833,7 @@ private:
             if (peep->OutsideOfPark)
                 continue;
 
-            auto& group = FindOrGetGroup(GetArgumentsFromPeep(*peep, _selectedView));
+            auto& group = FindOrAddGroup(GetArgumentsFromPeep(*peep, _selectedView));
             if (group.NumGuests < std::size(group.Faces))
             {
                 group.Faces[group.NumGuests] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
