@@ -24,6 +24,7 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
@@ -6965,7 +6966,7 @@ void sub_6CB945(Ride* ride)
         }
     }
 
-    std::vector<TileCoordsXYZD> locations;
+    FixedVector<TileCoordsXYZD, MAX_STATIONS> locations;
     for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(ride, stationId);
@@ -6986,7 +6987,7 @@ void sub_6CB945(Ride* ride)
     auto locationListIter = locations.cbegin();
     for (const TileCoordsXYZD& locationCoords : locations)
     {
-        auto locationList = ++locationListIter;
+        auto locationList = std::next(locationListIter);
 
         bool duplicateLocation = false;
         while (locationList != locations.cend())
