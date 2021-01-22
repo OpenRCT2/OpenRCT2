@@ -98,6 +98,8 @@ TEST_P(ReplayTests, RunReplay)
     while (replayManager->IsReplaying())
     {
         gs->UpdateLogic();
+        if (replayManager->IsPlaybackStateMismatching())
+            break;
     }
     ASSERT_FALSE(replayManager->IsReplaying());
     ASSERT_FALSE(replayManager->IsPlaybackStateMismatching());
