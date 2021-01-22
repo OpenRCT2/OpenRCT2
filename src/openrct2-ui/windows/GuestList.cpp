@@ -110,7 +110,6 @@ private:
     struct GuestGroup
     {
         size_t NumGuests{};
-        uint8_t Index{};
         FilterArguments Arguments;
         uint8_t Faces[58]{};
     };
@@ -819,7 +818,6 @@ private:
         }
         auto& newGroup = _groups.emplace_back();
         newGroup.Arguments = arguments;
-        newGroup.Index = static_cast<uint8_t>(_groups.size() - 1);
         return newGroup;
     }
 
