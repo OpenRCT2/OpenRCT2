@@ -110,7 +110,6 @@ private:
     struct GuestGroup
     {
         size_t NumGuests{};
-        uint8_t Index{};
         FilterArguments Arguments;
         uint8_t Faces[58]{};
     };
@@ -809,6 +808,19 @@ private:
         return true;
     }
 
+    GuestGroup& FindOrAddGroup(FilterArguments&& arguments)
+    {
+        auto foundGroup = std::find_if(
+            std::begin(_groups), std::end(_groups), [&arguments](GuestGroup& group) { return group.Arguments == arguments; });
+        if (foundGroup != std::end(_groups))
+        {
+            return *foundGroup;
+        }
+        auto& newGroup = _groups.emplace_back();
+        newGroup.Arguments = arguments;
+        return newGroup;
+    }
+
     void RefreshGroups()
     {
         _lastFindGroupsTick = floor2(gScenarioTicks, 256);
@@ -816,66 +828,34 @@ private:
         _lastFindGroupsWait = 320;
         _groups.clear();
 
-        // Reset all guests to unvisited
         for (auto peep : EntityList<Guest>(EntityListId::Peep))
         {
-            if (!peep->OutsideOfPark)
+            if (peep->OutsideOfPark)
+                continue;
+
+            auto& group = FindOrAddGroup(GetArgumentsFromPeep(*peep, _selectedView));
+            if (group.NumGuests < std::size(group.Faces))
             {
-                peep->flags |= SPRITE_FLAGS_PEEP_VISIBLE;
+                group.Faces[group.NumGuests] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
             }
+            group.NumGuests++;
         }
 
-        for (auto peep : EntityList<Guest>(EntityListId::Peep))
+        // Remove empty group (basically guests with no thoughts)
+        auto foundGroup = std::find_if(std::begin(_groups), std::end(_groups), [](GuestGroup& group) {
+            return group.Arguments.GetFirstStringId() == STR_EMPTY;
+        });
+        if (foundGroup != std::end(_groups))
         {
-            if (peep->OutsideOfPark || !(peep->flags & SPRITE_FLAGS_PEEP_VISIBLE))
-                continue;
-            if (_groups.size() >= MaxGroups)
-                break;
-
-            // Mark guest as visted
-            peep->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
-
-            // Create new group and push first guest
-            auto& group = _groups.emplace_back();
-            group.Arguments = GetArgumentsFromPeep(*peep, _selectedView);
-            group.Index = static_cast<uint8_t>(_groups.size() - 1);
-            group.Faces[group.NumGuests] = get_peep_face_sprite_small(peep) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
-            group.NumGuests++;
-
-            // Find more peeps that belong to same group
-            for (auto peep2 : EntityList<Guest>(EntityListId::Peep))
-            {
-                if (peep2->OutsideOfPark || !(peep2->flags & SPRITE_FLAGS_PEEP_VISIBLE))
-                    continue;
-
-                // Get and check if in same group
-                auto arguments = GetArgumentsFromPeep(*peep2, _selectedView);
-                if (arguments != group.Arguments)
-                    continue;
-
-                // Assign guest
-                peep2->flags &= ~(SPRITE_FLAGS_PEEP_VISIBLE);
-
-                // Add face sprite if there is room
-                if (group.NumGuests < std::size(group.Faces))
-                {
-                    group.Faces[group.NumGuests++] = get_peep_face_sprite_small(peep2) - SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY;
-                }
-
-                group.NumGuests++;
-            }
-
-            // Remove group if empty (basically guests with no thoughts)
-            if (group.Arguments.GetFirstStringId() == STR_EMPTY)
-            {
-                _groups.pop_back();
-                continue;
-            }
+            _groups.erase(foundGroup);
         }
 
         // Sort groups by number of guests
         std::sort(
             _groups.begin(), _groups.end(), [](const GuestGroup& a, const GuestGroup& b) { return a.NumGuests > b.NumGuests; });
+
+        // Remove up to MaxGroups
+        _groups.resize(MaxGroups);
     }
 
     /**
