@@ -755,12 +755,6 @@ namespace OpenRCT2
                     reset_sprite_list();
                 }
 
-                for (size_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-                {
-                    cs.ReadWrite(gSpriteListHead[i]);
-                    cs.ReadWrite(gSpriteListCount[i]);
-                }
-
                 std::vector<uint16_t> entityIndices;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -769,6 +763,7 @@ namespace OpenRCT2
                         auto& entity = *(get_sprite(index));
                         ReadWriteEntity(cs, entity);
                     });
+                    RebuildEntityLists();
                 }
                 else
                 {
@@ -814,9 +809,6 @@ namespace OpenRCT2
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
         {
             cs.ReadWrite(entity.sprite_identifier);
-            // cs.ReadWrite(entity.next_in_quadrant);
-            cs.ReadWrite(entity.next);
-            cs.ReadWrite(entity.previous);
             cs.ReadWrite(entity.sprite_height_negative);
             cs.ReadWrite(entity.sprite_index);
             cs.ReadWrite(entity.flags);
@@ -825,10 +817,6 @@ namespace OpenRCT2
             cs.ReadWrite(entity.z);
             cs.ReadWrite(entity.sprite_width);
             cs.ReadWrite(entity.sprite_height_positive);
-            // cs.ReadWrite(entity.sprite_left);
-            // cs.ReadWrite(entity.sprite_top);
-            // cs.ReadWrite(entity.sprite_right);
-            // cs.ReadWrite(entity.sprite_bottom);
             cs.ReadWrite(entity.sprite_direction);
         }
 
