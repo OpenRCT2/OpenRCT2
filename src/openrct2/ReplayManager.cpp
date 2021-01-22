@@ -177,11 +177,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 // If the network is disabled we will only get a dummy hash which will cause
                 // false positives during replay.
-                if (!CheckState())
-                {
-                    StopPlayback();
-                    return;
-                }
+                CheckState();
 #endif
                 ReplayCommands();
 
@@ -454,11 +450,6 @@ namespace OpenRCT2
 
         virtual bool IsPlaybackStateMismatching() const override
         {
-            if (_mode != ReplayMode::NONE)
-            {
-                // This state is only valid after the playback.
-                return false;
-            }
             return _faultyChecksumIndex != -1;
         }
 
@@ -794,16 +785,18 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_NETWORK
-        bool CheckState()
+        void CheckState()
         {
             uint32_t checksumIndex = _currentReplay->checksumIndex;
 
             if (checksumIndex >= _currentReplay->checksums.size())
-                return true;
+                return;
 
             const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
             if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
             {
+                _currentReplay->checksumIndex++;
+
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
@@ -815,8 +808,6 @@ namespace OpenRCT2
                         replayTick, savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
 
                     _faultyChecksumIndex = checksumIndex;
-
-                    return false;
                 }
                 else
                 {
@@ -825,10 +816,7 @@ namespace OpenRCT2
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }
-                _currentReplay->checksumIndex++;
             }
-
-            return true;
         }
 #endif // DISABLE_NETWORK
 

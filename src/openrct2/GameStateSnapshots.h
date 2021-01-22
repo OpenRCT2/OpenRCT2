@@ -48,7 +48,8 @@ struct GameStateSpriteChange_t
 
 struct GameStateCompareData_t
 {
-    uint32_t tick;
+    uint32_t tickLeft;
+    uint32_t tickRight;
     uint32_t srand0Left;
     uint32_t srand0Right;
     std::vector<GameStateSpriteChange_t> spriteChanges;

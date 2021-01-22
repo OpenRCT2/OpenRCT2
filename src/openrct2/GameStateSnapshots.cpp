@@ -533,7 +533,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
     {
         GameStateCompareData_t res;
-        res.tick = base.tick;
+        res.tickLeft = base.tick;
+        res.tickRight = cmp.tick;
         res.srand0Left = base.srand0;
         res.srand0Right = cmp.srand0;
 
@@ -643,7 +644,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::string outputBuffer;
         char tempBuffer[1024] = {};
 
-        snprintf(tempBuffer, sizeof(tempBuffer), "tick: %08X\n", cmpData.tick);
+        if (cmpData.tickLeft != cmpData.tickRight)
+        {
+            outputBuffer += "WARNING: Comparing two snapshots with different ticks, this will very likely result in false "
+                            "positives\n";
+        }
+
+        snprintf(tempBuffer, sizeof(tempBuffer), "tick left = %08X, tick right = %08X\n", cmpData.tickLeft, cmpData.tickRight);
         outputBuffer += tempBuffer;
 
         snprintf(
