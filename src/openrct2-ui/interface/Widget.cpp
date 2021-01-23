@@ -829,12 +829,19 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
 
 bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (!WidgetIsVisible(w, widgetIndex))
+        return false;
     return (w->enabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
 {
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
+}
+
+bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
+{
+    return w->widgets[widgetIndex].IsVisible();
 }
 
 bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
@@ -1023,6 +1030,18 @@ void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
     else
     {
         w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
+void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->widgets[widgetIndex].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+    }
+    else
+    {
+        w->widgets[widgetIndex].flags |= WIDGET_FLAGS::IS_HIDDEN;
     }
 }
 

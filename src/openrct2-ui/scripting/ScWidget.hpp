@@ -318,6 +318,38 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        bool isVisible_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return WidgetIsVisible(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isVisible_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                WidgetSetVisible(w, _widgetIndex, value);
+
+                auto widget = GetWidget();
+                if (widget != nullptr)
+                {
+                    if (widget->type == WindowWidgetType::DropdownMenu)
+                    {
+                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                    }
+                    else if (widget->type == WindowWidgetType::Spinner)
+                    {
+                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                        WidgetSetVisible(w, _widgetIndex + 2, value);
+                    }
+                }
+            }
+        }
+
         std::string text_get() const
         {
             if (IsCustomWindow())
@@ -364,6 +396,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWidget::width_get, &ScWidget::width_set, "width");
             dukglue_register_property(ctx, &ScWidget::height_get, &ScWidget::height_set, "height");
             dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
+            dukglue_register_property(ctx, &ScWidget::isVisible_get, &ScWidget::isVisible_set, "isVisible");
 
             // No so common
             dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");

@@ -628,11 +628,13 @@ void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi)
     widgetIndex = 0;
     for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
     {
-        // Check if widget is outside the draw region
-        if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
-            if (w->windowPos.y + widget->top < dpi->y + dpi->height && w->windowPos.y + widget->bottom >= dpi->y)
-                WidgetDraw(dpi, w, widgetIndex);
-
+        if (widget->IsVisible())
+        {
+            // Check if widget is outside the draw region
+            if (w->windowPos.x + widget->left < dpi->x + dpi->width && w->windowPos.x + widget->right >= dpi->x)
+                if (w->windowPos.y + widget->top < dpi->y + dpi->height && w->windowPos.y + widget->bottom >= dpi->y)
+                    WidgetDraw(dpi, w, widgetIndex);
+        }
         widgetIndex++;
     }
 

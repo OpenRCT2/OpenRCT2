@@ -101,6 +101,7 @@ namespace OpenRCT2::Ui::Windows
         std::optional<RowColumn> SelectedCell;
         bool IsChecked{};
         bool IsDisabled{};
+        bool IsVisible{};
         bool IsPressed{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
@@ -123,6 +124,7 @@ namespace OpenRCT2::Ui::Windows
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
             result.IsDisabled = AsOrDefault(desc["isDisabled"], false);
+            result.IsVisible = AsOrDefault(desc["isVisible"], true);
             result.Name = AsOrDefault(desc["name"], "");
             result.Tooltip = AsOrDefault(desc["tooltip"], "");
             if (result.Type == "button")
@@ -723,25 +725,6 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
-    {
-        WindowDrawWidgets(w, dpi);
-        window_custom_draw_tab_images(w, dpi);
-        if (w->viewport != nullptr)
-        {
-            window_draw_viewport(dpi, w);
-        }
-    }
-
-    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
-    {
-        const auto& info = GetInfo(w);
-        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
-        {
-            info.ListViews[scrollIndex].Paint(w, dpi, &w->scrolls[scrollIndex]);
-        }
-    }
-
     static std::optional<rct_widgetindex> GetViewportWidgetIndex(rct_window* w)
     {
         rct_widgetindex widgetIndex = 0;
@@ -754,6 +737,29 @@ namespace OpenRCT2::Ui::Windows
             widgetIndex++;
         }
         return std::nullopt;
+    }
+
+    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
+    {
+        WindowDrawWidgets(w, dpi);
+        window_custom_draw_tab_images(w, dpi);
+        if (w->viewport != nullptr)
+        {
+            auto widgetIndex = GetViewportWidgetIndex(w);
+            if (WidgetIsVisible(w, widgetIndex.value_or(false)))
+            {
+                window_draw_viewport(dpi, w);
+            }
+        }
+    }
+
+    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+    {
+        const auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].Paint(w, dpi, &w->scrolls[scrollIndex]);
+        }
     }
 
     static void window_custom_update_viewport(rct_window* w)
@@ -833,6 +839,8 @@ namespace OpenRCT2::Ui::Windows
         widget.flags |= WIDGET_FLAGS::IS_ENABLED;
         if (desc.IsDisabled)
             widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+        if (!desc.IsVisible)
+            widget.flags |= WIDGET_FLAGS::IS_HIDDEN;
 
         if (desc.Type == "button")
         {

@@ -1872,6 +1872,7 @@ declare global {
         name?: string;
         tooltip?: string;
         isDisabled?: boolean;
+        isVisible?: boolean;
     }
 
     interface ButtonWidget extends Widget {

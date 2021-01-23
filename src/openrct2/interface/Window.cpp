@@ -435,7 +435,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
         {
             break;
         }
-        else if (widget->type != WindowWidgetType::Empty)
+        else if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
