@@ -832,6 +832,41 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScTextBoxWidget : public ScWidget
+    {
+    public:
+        ScTextBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScTextBoxWidget>(ctx);
+            dukglue_register_property(ctx, &ScTextBoxWidget::maxLength_get, &ScTextBoxWidget::maxLength_set, "maxLength");
+        }
+
+    private:
+        int32_t maxLength_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetMaxLength(w, _widgetIndex);
+            }
+            return 0;
+        }
+
+        void maxLength_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
+            }
+        }
+    };
+
     inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
     {
         const auto& widget = w->widgets[widgetIndex];
@@ -851,6 +886,8 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
             case WindowWidgetType::Scroll:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+            case WindowWidgetType::TextBox:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
             default:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
         }

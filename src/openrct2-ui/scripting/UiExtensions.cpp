@@ -37,6 +37,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScCheckBoxWidget::Register(ctx);
     ScDropdownWidget::Register(ctx);
     ScListViewWidget::Register(ctx);
+    ScTextBoxWidget::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);

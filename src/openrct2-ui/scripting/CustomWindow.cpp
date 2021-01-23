@@ -54,6 +54,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
     static void window_custom_resize(rct_window* w);
     static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+    static void window_custom_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
     static void window_custom_update(rct_window* w);
     static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
     static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -70,6 +71,7 @@ namespace OpenRCT2::Ui::Windows
         events.resize = &window_custom_resize;
         events.mouse_down = &window_custom_mousedown;
         events.dropdown = &window_custom_dropdown;
+        events.text_input = &window_custom_textinput;
         events.update = &window_custom_update;
         events.get_scroll_size = &window_custom_scrollgetsize;
         events.scroll_mousedown = &window_custom_scrollmousedown;
@@ -98,6 +100,7 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ListViewColumn> ListViewColumns;
         ScrollbarType Scrollbars{};
         int32_t SelectedIndex{};
+        int32_t MaxLength{};
         std::optional<RowColumn> SelectedCell;
         bool IsChecked{};
         bool IsDisabled{};
@@ -193,6 +196,12 @@ namespace OpenRCT2::Ui::Windows
                 result.Text = ProcessString(desc["text"]);
                 result.OnIncrement = desc["onIncrement"];
                 result.OnDecrement = desc["onDecrement"];
+            }
+            else if (result.Type == "textbox")
+            {
+                result.Text = ProcessString(desc["text"]);
+                result.MaxLength = AsOrDefault(desc["maxLength"], 32);
+                result.OnChange = desc["onChange"];
             }
             result.HasBorder = AsOrDefault(desc["border"], result.HasBorder);
             return result;
@@ -554,6 +563,11 @@ namespace OpenRCT2::Ui::Windows
                     InvokeEventHandler(info.Owner, widgetDesc->OnIncrement);
                 }
             }
+            else if (widgetDesc->Type == "textbox")
+            {
+                auto* text = const_cast<char*>(widgetDesc->Text.c_str());
+                window_start_textbox(w, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
+            }
         }
     }
 
@@ -573,6 +587,28 @@ namespace OpenRCT2::Ui::Windows
             else if (widgetDesc->Type == "dropdown")
             {
                 UpdateWidgetSelectedIndex(w, widgetIndex - 1, dropdownIndex);
+            }
+        }
+    }
+
+    static void window_custom_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+    {
+        if (text == nullptr)
+            return;
+
+        auto& info = GetInfo(w);
+        auto widgetDesc = info.GetCustomWidgetDesc(w, widgetIndex);
+        if (widgetDesc != nullptr)
+        {
+            if (widgetDesc->Type == "textbox")
+            {
+                UpdateWidgetText(w, widgetIndex, text);
+
+                std::vector<DukValue> args;
+                auto ctx = widgetDesc->OnChange.context();
+                duk_push_string(ctx, text);
+                args.push_back(DukValue::take_from_stack(ctx));
+                InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
             }
         }
     }
@@ -961,6 +997,13 @@ namespace OpenRCT2::Ui::Windows
             widget.text = STR_NUMERIC_UP;
             widgetList.push_back(widget);
         }
+        else if (desc.Type == "textbox")
+        {
+            widget.type = WindowWidgetType::TextBox;
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            widgetList.push_back(widget);
+        }
         else if (desc.Type == "viewport")
         {
             widget.type = WindowWidgetType::Viewport;
@@ -1325,6 +1368,33 @@ namespace OpenRCT2::Ui::Windows
             }
         }
         return nullptr;
+    }
+
+    int32_t GetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->MaxLength;
+            }
+        }
+        return 0;
+    }
+
+    void SetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->MaxLength = value;
+            }
+        }
     }
 
 } // namespace OpenRCT2::Ui::Windows

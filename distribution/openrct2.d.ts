@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -1861,7 +1861,7 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
+        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "textbox" | "viewport";
 
     interface Widget {
         type: WidgetType;
@@ -1954,6 +1954,12 @@ declare global {
         text: string;
         onDecrement: () => void;
         onIncrement: () => void;
+    }
+
+    interface TextBoxWidget extends Widget {
+        text: string;
+        maxLength: number;
+        onChange: (text: string) => void;
     }
 
     interface ViewportWidget extends Widget {
