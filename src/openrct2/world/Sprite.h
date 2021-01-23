@@ -231,7 +231,6 @@ uint16_t GetEntityListCount(EntityListId list);
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
-extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
@@ -249,7 +248,7 @@ void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
-uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
+const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
 
 ///////////////////////////////////////////////////////////////
 // Balloon
@@ -333,25 +332,75 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
+template<typename T> class EntityTileIterator
+{
+private:
+    std::vector<uint16_t>::const_iterator iter;
+    std::vector<uint16_t>::const_iterator end;
+    T* Entity = nullptr;
+
+public:
+    EntityTileIterator(std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
+        : iter(_iter)
+        , end(_end)
+    {
+        ++(*this);
+    }
+    EntityTileIterator& operator++()
+    {
+        Entity = nullptr;
+
+        while (iter != end && Entity == nullptr)
+        {
+            Entity = GetEntity<T>(*iter++);
+        }
+        return *this;
+    }
+
+    EntityTileIterator operator++(int)
+    {
+        EntityTileIterator retval = *this;
+        ++(*this);
+        return *iter;
+    }
+    bool operator==(EntityTileIterator other) const
+    {
+        return Entity == other.Entity;
+    }
+    bool operator!=(EntityTileIterator other) const
+    {
+        return !(*this == other);
+    }
+    T* operator*()
+    {
+        return Entity;
+    }
+    // iterator traits
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = const T*;
+    using reference = const T&;
+    using iterator_category = std::forward_iterator_tag;
+};
+
 template<typename T = SpriteBase> class EntityTileList
 {
 private:
-    uint16_t FirstEntity = SPRITE_INDEX_NULL;
-    using EntityTileIterator = EntityIterator<T, &SpriteBase::next_in_quadrant>;
+    const std::vector<uint16_t>& vec;
 
 public:
     EntityTileList(const CoordsXY& loc)
-        : FirstEntity(sprite_get_first_in_quadrant(loc))
+        : vec(GetEntityTileList(loc))
     {
     }
 
-    EntityTileIterator begin()
+    EntityTileIterator<T> begin()
     {
-        return EntityTileIterator(FirstEntity);
+        return EntityTileIterator<T>(std::begin(vec), std::end(vec));
     }
-    EntityTileIterator end()
+    EntityTileIterator<T> end()
     {
-        return EntityTileIterator(SPRITE_INDEX_NULL);
+        return EntityTileIterator<T>(std::end(vec), std::end(vec));
     }
 };
 

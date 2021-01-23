@@ -981,6 +981,27 @@ void S6Exporter::RebuildEntityLinks()
             }
         }
     }
+
+    // Rebuild next_in_quadrant linked list entity indexs
+    for (auto x = 0; x < 255; ++x)
+    {
+        for (auto y = 0; y < 255; ++y)
+        {
+            uint16_t previous = SPRITE_INDEX_NULL;
+            for (auto* entity : EntityTileList(TileCoordsXY{ x, y }.ToCoordsXY()))
+            {
+                if (previous != SPRITE_INDEX_NULL)
+                {
+                    _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
+                }
+                previous = entity->sprite_index;
+            }
+            if (previous != SPRITE_INDEX_NULL)
+            {
+                _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+            }
+        }
+    }
 }
 
 void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
@@ -1046,8 +1067,8 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
-    dst->next_in_quadrant = src->next_in_quadrant;
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
+    dst->next_in_quadrant = SPRITE_INDEX_NULL;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = src->flags;

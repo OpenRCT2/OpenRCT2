@@ -24,13 +24,14 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <vector>
 
 static rct_sprite _spriteList[MAX_SPRITES];
 static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
-uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
+static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -45,7 +46,25 @@ const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
 
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
+constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
+{
+    size_t index = SPATIAL_INDEX_LOCATION_NULL;
+    if (x != LOCATION_NULL)
+    {
+        x = std::clamp(x, 0, 0xFFFF);
+        y = std::clamp(y, 0, 0xFFFF);
+
+        int16_t flooredX = floor2(x, 32);
+        uint8_t tileY = y >> 5;
+        index = (flooredX << 3) | tileY;
+    }
+
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
+    return index;
+}
 
 // Required for GetEntity to return a default
 template<> bool SpriteBase::Is<SpriteBase>() const
@@ -116,7 +135,7 @@ SpriteBase* get_sprite(size_t spriteIndex)
     return try_get_sprite(spriteIndex);
 }
 
-uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
+const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
@@ -242,6 +261,8 @@ void reset_sprite_list()
     reset_sprite_spatial_index();
 }
 
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
+
 /**
  *
  *  rct2: 0x0069EBE4
@@ -250,38 +271,18 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-    std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
+    for (auto& vec : gSpriteSpatialIndex)
+    {
+        vec.clear();
+    }
     for (size_t i = 0; i < MAX_SPRITES; i++)
     {
         auto* spr = GetEntity(i);
         if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
         {
-            size_t index = GetSpatialIndexOffset(spr->x, spr->y);
-            uint32_t nextSpriteId = gSpriteSpatialIndex[index];
-            gSpriteSpatialIndex[index] = spr->sprite_index;
-            spr->next_in_quadrant = nextSpriteId;
+            SpriteSpatialInsert(spr, { spr->x, spr->y });
         }
     }
-}
-
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
-{
-    size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != LOCATION_NULL)
-    {
-        x = std::clamp(x, 0, 0xFFFF);
-        y = std::clamp(y, 0, 0xFFFF);
-
-        int16_t flooredX = floor2(x, 32);
-        uint8_t tileY = y >> 5;
-        index = (flooredX << 3) | tileY;
-    }
-
-    if (index >= sizeof(gSpriteSpatialIndex))
-    {
-        return SPATIAL_INDEX_LOCATION_NULL;
-    }
-    return index;
 }
 
 #ifndef DISABLE_NETWORK
@@ -317,15 +318,6 @@ rct_sprite_checksum sprite_checksum()
                 // Only required for rendering/invalidation, has no meaning to the game state.
                 copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
                 copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
-
-                // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
-                while (auto* nextSprite = GetEntity(copy.misc.next_in_quadrant))
-                {
-                    if (nextSprite->sprite_identifier == SpriteIdentifier::Misc)
-                        copy.misc.next_in_quadrant = nextSprite->next_in_quadrant;
-                    else
-                        break;
-                }
 
                 if (copy.misc.Is<Peep>())
                 {
@@ -365,14 +357,12 @@ static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
     auto llto = sprite->linked_list_index;
-    uint16_t next_in_quadrant = sprite->next_in_quadrant;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
     sprite->linked_list_index = llto;
-    sprite->next_in_quadrant = next_in_quadrant;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SpriteIdentifier::Null;
 }
@@ -388,18 +378,9 @@ void sprite_clear_all_unused()
         sprite_reset(sprite);
         sprite->linked_list_index = EntityListId::Free;
 
-        // sprite->next_in_quadrant will only end up as zero owing to corruption
-        // most likely due to previous builds not preserving it when resetting sprites
-        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
-        if (sprite->next_in_quadrant == 0)
-        {
-            sprite->next_in_quadrant = SPRITE_INDEX_NULL;
-        }
         _spriteFlashingList[sprite->sprite_index] = false;
     }
 }
-
-static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
 static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
@@ -605,41 +586,25 @@ void sprite_misc_update_all()
 static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
-
-    auto* next = &gSpriteSpatialIndex[newIndex];
-    while (sprite->sprite_index < *next && *next != SPRITE_INDEX_NULL)
-    {
-        auto sprite2 = GetEntity(*next);
-        next = &sprite2->next_in_quadrant;
-    }
-
-    sprite->next_in_quadrant = *next;
-    *next = sprite->sprite_index;
+    auto& spatialVector = gSpriteSpatialIndex[newIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
+    spatialVector.insert(index, sprite->sprite_index);
 }
 
 static void SpriteSpatialRemove(SpriteBase* sprite)
 {
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    auto* index = &gSpriteSpatialIndex[currentIndex];
-
-    // This indicates that the spatial index data is incorrect.
-    if (*index == SPRITE_INDEX_NULL)
+    auto& spatialVector = gSpriteSpatialIndex[currentIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
+    if (index != std::end(spatialVector) && *index == sprite->sprite_index)
+    {
+        spatialVector.erase(index, index + 1);
+    }
+    else
     {
         log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
         reset_sprite_spatial_index();
     }
-
-    auto* sprite2 = GetEntity(*index);
-    while (sprite != sprite2)
-    {
-        index = &sprite2->next_in_quadrant;
-        if (*index == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        sprite2 = GetEntity(*index);
-    }
-    *index = sprite->next_in_quadrant;
 }
 
 static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
@@ -807,16 +772,21 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
  */
 void litter_remove_at(const CoordsXYZ& litterPos)
 {
+    std::vector<Litter*> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
     {
         if (abs(litter->z - litterPos.z) <= 16)
         {
             if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
-                litter->Invalidate();
-                sprite_remove(litter);
+                removals.push_back(litter);
             }
         }
+    }
+    for (auto* litter : removals)
+    {
+        litter->Invalidate();
+        sprite_remove(litter);
     }
 }
 

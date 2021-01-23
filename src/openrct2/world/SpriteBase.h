@@ -9,7 +9,6 @@ enum class SpriteIdentifier : uint8_t;
 struct SpriteBase
 {
     SpriteIdentifier sprite_identifier;
-    uint16_t next_in_quadrant;
     // Valid values are EntityListId::...
     EntityListId linked_list_index;
     // Height from centre of sprite to bottom
