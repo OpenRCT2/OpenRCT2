@@ -6966,7 +6966,7 @@ void sub_6CB945(Ride* ride)
         }
     }
 
-    FixedVector<TileCoordsXYZD, MAX_STATIONS> locations;
+    FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
     for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
     {
         auto entrance = ride_get_entrance_location(ride, stationId);
