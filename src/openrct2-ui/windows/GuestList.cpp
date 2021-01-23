@@ -270,7 +270,7 @@ public:
             _tabAnimationIndex = 0;
         InvalidateWidget(WIDX_TAB_1 + static_cast<int32_t>(_selectedTab));
 
-        gWindowMapFlashingFlags |= (1 << 0);
+        gWindowMapFlashingFlags |= MapFlashingFlags::GuestListOpen;
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
