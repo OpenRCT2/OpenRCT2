@@ -144,8 +144,8 @@ STR_0559    :Granda konstruaĵo, kiu enhavas timigajn koridorojn kaj timigajn ĉ
 STR_0560    :Ejo por malsanaj gastoj, por ke ili bonsanas pli rapide
 STR_0561    :Cirkospektaklo de bestoj en granda cirkotendo
 STR_0562    :Ŝaltitaj veturiloj veturas laŭ multnivela trako, preter timiga pejzaĝo kaj specialaj efikoj
-STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da 'en-aeraj periodoj' irante super la montetoj
-STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas 'nedirekteblan' sencon, kun sufiĉe da 'en-aeraj periodoj'
+STR_0563    :Rajdantoj, kiuj sidas en komfortaj seĝoj kun nur simplaj sinobridoj, ĝuas gigantajn glatajn malleviĝojn, kurboplenan trakon, kaj sufiĉe da ‘en-aeraj periodoj’ irante super la montetoj
+STR_0564    :Tiu onda fervojo, kiu veturas sur ligna trako, estas rapida, malglata, brua, kaj donas ‘nedirekteblan’ sencon, kun sufiĉe da ‘en-aeraj periodoj’
 STR_0565    :Simpla ligna onda fervojo, kapabla je nur mildaj deklivoj kaj kurbiĝoj. Nur la radoj ambaŭflanke, kiuj donas froton, kaj la gravito, fiksas la ĉarojn sur la trako.
 STR_0566    :Unuopaj ĉaroj de onda fervojo rapidas sur kompakta zigzaga trakdesegnaĵo, konsista el subitaj anguloj kaj mallongaj subitaj malleviĝoj
 STR_0567    :Rajdantoj, kiuj sidas en seĝoj penditaj ambaŭflanke de la trako, estas renversitaj malsuprenirante krutajn malleviĝojn, kaj veturante tra diversaj inversigoj
@@ -242,7 +242,7 @@ STR_0833    :Paŭzigi ludon
 STR_0834    :Agordoj de disko kaj ludo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0847    :Pri 'OpenRCT2'
+STR_0847    :Pri ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Aŭtorrajto © 2002 Chris Sawyer, tutaj rajtoj estas rezervitaj
 STR_0851    :{WINDOW_COLOUR_2}Desegnita kaj programita de Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafikoj de Simon Foster
@@ -276,7 +276,7 @@ STR_0887    :Forlasi Scenaroredaktilon
 STR_0888    :Forlasi Trakdesegnilon
 STR_0889    :Forlasi Administrilon de Trakdesegnaĵoj
 STR_0891    :Ekrankopii
-STR_0892    :Ekrankopio estis konservita al la disko kiel '{STRINGID}'
+STR_0892    :Ekrankopio estis konservita al la disko kiel ‘{STRINGID}’
 STR_0893    :Malsukcesis konservi ekrankopion!
 STR_0894    :Zono de pejzaĝodatumoj estas plena!
 STR_0895    :Ne eblas konstrui kaj parte supertere kaj parte subtere
@@ -313,8 +313,8 @@ STR_0925    :Kreska helico
 STR_0926    :Ne eblas forigi tion…
 STR_0927    :Ne eblas konstrui tion ĉi tie…
 STR_0928    :Ĉenlifto, por tiri ĉarojn sur kreskaj deklivoj
-STR_0929    :'S' Kurbo (maldekstre)
-STR_0930    :'S' Kurbo (dekstre)
+STR_0929    :‘S’ Kurbo (maldekstre)
+STR_0930    :‘S’ Kurbo (dekstre)
 STR_0931    :Vertikala Lopo (maldekstre)
 STR_0932    :Vertikala Lopo (dekstre)
 STR_0933    :Unue altigi aŭ malaltigi teron
@@ -600,7 +600,7 @@ STR_1212    :{WINDOW_COLOUR_2}Maksimuma daŭro por atendi:
 STR_1213    :Elekti minimuma longeco de tempo por atendi antaŭ ekveturado
 STR_1214    :Elekti maksimuma longeco de tempo por atendi antaŭ ekveturado
 STR_1215    :{WINDOW_COLOUR_2}Sinkronigi kun apudaj stacioj
-STR_1216    :Elekti ĉu elveturado estas sinkronigita kun ĉiuj apudaj stacioj (por 'vetkuri')
+STR_1216    :Elekti ĉu elveturado estas sinkronigita kun ĉiuj apudaj stacioj (por ‘vetkuri’)
 STR_1217    :{COMMA16} sekundoj
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -742,7 +742,7 @@ STR_1354    :{WINDOW_COLOUR_2}Alteco de plej alta malleviĝo: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Malleviĝoj: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversigoj: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Truoj: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Tuta 'en-aera' daŭro: {BLACK}{COMMA2DP32} sekundoj
+STR_1358    :{WINDOW_COLOUR_2}Tuta ‘en-aera’ daŭro: {BLACK}{COMMA2DP32} sekundoj
 STR_1359    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minuto
 STR_1360    :{WINDOW_COLOUR_2}Vicatenda daŭro: {BLACK}{COMMA16} minutoj
 STR_1361    :Ne eblas ŝanĝi rapidecon…
@@ -844,8 +844,8 @@ STR_1456    :{WINDOW_COLOUR_2}Kontanto elspezita: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Kontanto en poŝo: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Daŭro en parko: {BLACK}{REALTIME}
 STR_1459    :Trakstilo
-STR_1460    :'U'-trakformo
-STR_1461    :'O'-trakformo
+STR_1460    :‘U’-trakformo
+STR_1461    :‘O’-trakformo
 STR_1462    :Tro krute por liftparto
 STR_1463    :Gastoj
 STR_1464    :Kreska Helico (malgranda)
@@ -1824,8 +1824,8 @@ STR_2481    :Montri diagramon de flanka plirapidigo kontraŭ tempo
 STR_2482    :Profito: po {CURRENCY} por semajno,  Parkvaloro: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Profito semajna: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Profito semajna: {RED}{CURRENCY2DP}
-STR_2487    :Montri 'faktajn' nomojn de gastoj
-STR_2488    :Baskuligi inter montrado de 'faktaj' nomoj de gastoj, kaj gastnumeroj
+STR_2487    :Montri ‘faktajn’ nomojn de gastoj
+STR_2488    :Baskuligi inter montrado de ‘faktaj’ nomoj de gastoj, kaj gastnumeroj
 STR_2489    :Klavarokomandojn…
 STR_2490    :Klavarokomandojn
 STR_2491    :Restartigi klavojn
@@ -1955,7 +1955,7 @@ STR_2739    :Neniu
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat ne troviĝis
-STR_2743    :Kopiu 'data/css17.dat' de via RCT1 instalaĵo al 'data/css50.dat' en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
+STR_2743    :Kopiu ‘data/css17.dat’ de via RCT1 instalaĵo al ‘data/css50.dat’ en via RCT2 instalaĵo, aŭ kontrolu, ke la dosierindiko al RCT1 en la langeto Altnivela pravas.
 STR_2749    :Mia nova scenaro
 # New strings used in the cheats window previously these were ???
 STR_2750    :Movi ĉiujn aferojn supren
@@ -2030,23 +2030,23 @@ STR_2827    :{WINDOW_COLOUR_2}Premio por la plej bonaj propraj atrakcioj
 STR_2828    :{WINDOW_COLOUR_2}Premio por la plej blindigantaj atrakcio-kolorskemoj
 STR_2829    :{WINDOW_COLOUR_2}Premio por la plej konfuzanta parkaranĝo
 STR_2830    :{WINDOW_COLOUR_2}Premio por la plej bonaj mildaj atrakcioj
-STR_2831    :{TOPAZ}Via parko ricevis premion de 'La plej negliĝa parko en la lando'!
-STR_2832    :{TOPAZ}Via parko ricevis premion de 'La plej orda parko en la lando'!
-STR_2833    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj ondaj fervojoj'!
-STR_2834    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bona valoro en la lando'!
-STR_2835    :{TOPAZ}Via parko ricevis premion de 'La plej bela parko en la lando'!
-STR_2836    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej malbona valoro en la lando'!
-STR_2837    :{TOPAZ}Via parko ricevis premion de 'La plej sekura parko en la lando'!
-STR_2838    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bona dungitaro'!
-STR_2839    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj manĝaĵoj en la lando'!
-STR_2840    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej malbonaj manĝaĵoj en la lando'!
-STR_2841    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj necesejoj en la lando'!
-STR_2842    :{TOPAZ}Via parko ricevis premion de 'La plej seniluziiganta parko en la lando'!
-STR_2843    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj akvo-atrakcioj en la lando'!
-STR_2844    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj propraj atrakcioj'!
-STR_2845    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej blindiganta elekto de kolorskemoj'!
-STR_2846    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej konfuzanta aranĝo'!
-STR_2847    :{TOPAZ}Via parko ricevis premion de 'La parko kun la plej bonaj mildaj atrakcioj'!
+STR_2831    :{TOPAZ}Via parko ricevis premion de ‘La plej negliĝa parko en la lando’!
+STR_2832    :{TOPAZ}Via parko ricevis premion de ‘La plej orda parko en la lando’!
+STR_2833    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj ondaj fervojoj’!
+STR_2834    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bona valoro en la lando’!
+STR_2835    :{TOPAZ}Via parko ricevis premion de ‘La plej bela parko en la lando’!
+STR_2836    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej malbona valoro en la lando’!
+STR_2837    :{TOPAZ}Via parko ricevis premion de ‘La plej sekura parko en la lando’!
+STR_2838    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bona dungitaro’!
+STR_2839    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj manĝaĵoj en la lando’!
+STR_2840    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej malbonaj manĝaĵoj en la lando’!
+STR_2841    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj necesejoj en la lando’!
+STR_2842    :{TOPAZ}Via parko ricevis premion de ‘La plej seniluziiganta parko en la lando’!
+STR_2843    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj akvo-atrakcioj en la lando’!
+STR_2844    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj propraj atrakcioj’!
+STR_2845    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej blindiganta elekto de kolorskemoj’!
+STR_2846    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej konfuzanta aranĝo’!
+STR_2847    :{TOPAZ}Via parko ricevis premion de ‘La parko kun la plej bonaj mildaj atrakcioj’!
 STR_2848    :{WINDOW_COLOUR_2}Neniuj lastaj premioj
 STR_2849    :Instalado de nova scenaro sukcesis
 STR_2850    :Instalado de nova trakdesegnaĵo sukcesis
@@ -2060,7 +2060,7 @@ STR_2861    :{WINDOW_COLOUR_2}Rajtigita al Infogrames Interactive Inc.
 STR_2862    :Dankesprimoj de muziko…
 STR_2863    :Dankesprimoj de muziko
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sen aŭtorrajto
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sen aŭtorrajto
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Tradicia)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) sen aŭtorrajto
@@ -2071,21 +2071,21 @@ STR_2872    :{WINDOW_COLOUR_2}Overture - Poet and Peasant:   (Franz von Suppé) 
 STR_2873    :{WINDOW_COLOUR_2}Waltz Medley:   (Johann Strauss) sen aŭtorrajto
 STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicia)
 STR_2875    :{WINDOW_COLOUR_2}Originalaj sonregistraĵoj (P) 1976 C.J.Mears Organization, uzitaj kun konsento
-STR_2876    :{WINDOW_COLOUR_2}La Titola Muziko de "RollerCoaster Tycoon 2":   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2876    :{WINDOW_COLOUR_2}La Titola Muziko de “RollerCoaster Tycoon 2”:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) aŭtorrajto © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) aŭtorrajto © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) aŭtorrajto © Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) aŭtorrajto © Chris Sawyer
@@ -2118,7 +2118,7 @@ STR_2983    :Entajpu novan tekston de rubando:
 STR_2984    :Ne eblas agordi novan tekston de rubando…
 STR_2985    :Rubando
 STR_2986    :Ŝanĝi tekston de rubando
-STR_2987    :Agordi ĉi tiun rubandon kiel 'ne-eniru' surskribaĵo por gastoj
+STR_2987    :Agordi ĉi tiun rubandon kiel ‘ne-eniru’ surskribaĵo por gastoj
 STR_2988    :Malkonstrui ĉi tiun rubandon
 STR_2989    :Elekti ĉefan koloron
 STR_2990    :Elekti koloron de teksto
@@ -2333,7 +2333,7 @@ STR_3235    :Montri financiajn agordojn
 STR_3236    :Montri agordojn de gastoj
 STR_3237    :Montri agordojn de parko
 STR_3238    :Neniu Mono
-STR_3239    :Agordi ĉi tiun parkon kiel parko de 'neniu mono', kun neniuj limoj financaj
+STR_3239    :Agordi ĉi tiun parkon kiel parko de ‘neniu mono’, kun neniuj limoj financaj
 STR_3240    :{WINDOW_COLOUR_2}Komenca mono:
 STR_3241    :{WINDOW_COLOUR_2}Komenca prunto:
 STR_3242    :{WINDOW_COLOUR_2}Maksumima prunto:
@@ -2876,7 +2876,7 @@ STR_5556    :Forigi ludanton
 STR_5557    :Resti konektita post desinkronigo (Plurludanta)
 STR_5558    :Ĉi tiu agordo fariĝas valida nur post vi reŝargas OpenRCT2
 STR_5559    :Inspekti post ĉiuj 10 minutoj
-STR_5560    :Agordas la inspekton al 'Post ĉiuj 10 minutoj' por ĉiu atrakcio
+STR_5560    :Agordas la inspekton al ‘Post ĉiuj 10 minutoj’ por ĉiu atrakcio
 STR_5561    :Malsukcesis ŝargi lingvon
 STR_5562    :AVERTO!
 STR_5563    :Ĉi tiu funkcio estas nune nestabila. Estu singarda.
@@ -3060,7 +3060,7 @@ STR_5778    :Konstruita: Antaŭ {COMMA16} jaroj
 STR_5779    :Enspezo: po {CURRENCY2DP} por horo
 STR_5780    :Kosto de funkciado: po {CURRENCY2DP} por horo
 STR_5781    :Kosto de funkciado: Nekonata
-STR_5782    :Vi nun estas konektita. Premu je '{STRING}' por babili.
+STR_5782    :Vi nun estas konektita. Premu je ‘{STRING}’ por babili.
 STR_5783    :{WINDOW_COLOUR_2}Scenaro Ŝlosita
 STR_5784    :{BLACK}Finfaru antaŭajn scenarojn por malŝlosi ĉi tiun scenaron.
 STR_5785    :Ne eblas renomi grupon…
@@ -3069,7 +3069,7 @@ STR_5787    :{COMMA32} ludantoj enretaj
 STR_5788    :Defaŭlta intervalo de inspekto:
 STR_5789    :Malŝalti fulmo-efekton
 STR_5790    :Baskuligas RCT1-stilan prezon{NEWLINE}(ekz. kaj atrakcioprezo kaj eniroprezo)
-STR_5791    :Agordas la fidindon de ĉiuj atrakcioj al 100%{NEWLINE}kaj restarigas ilian konstruo-daton al "ĉi-jare"
+STR_5791    :Agordas la fidindon de ĉiuj atrakcioj al 100%{NEWLINE}kaj restarigas ilian konstruo-daton al “ĉi-jare”
 STR_5792    :Riparas ĉiujn paneintajn atrakciojn
 STR_5793    :Restarigas la kolizio-historion de atrakcio,{NEWLINE}do gastoj ne plendos, ke ĝi estas nesekura
 STR_5794    :Iuj scenaroj malŝaltas redaktadon de iuj{NEWLINE}atrakcioj jam en la parko.{NEWLINE}Ĉi tiu trompo levigas tiun limigon
@@ -3110,11 +3110,11 @@ STR_5828    :Ŝanĝas kiun mezurformaton estas uzata por distancoj, rapideco, kt
 STR_5829    :Ŝanĝas kiun valuto-formaton estas uzata. Nur vida aĵo, ne ekzistas ekzakta kurzo-efektivigo
 STR_5830    :Ŝanĝas kiun lingvon estas uzata
 STR_5831    :Ŝanĝas en kiu formato la{NEWLINE}temperaturo estas montrata
-STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita sub "Distanco kaj Rapideco"
+STR_5832    :Montri altecon per komunaj unuoj anstataŭ mezurformato agordita sub “Distanco kaj Rapideco”
 STR_5833    :Ŝanĝas kiun datoformaton estas uzata
 STR_5834    :Elekti kiun sonludilon OpenRCT2 uzos
 STR_5835    :Silentigi la ludon se la fenestro perdas fokuson
-STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu 'data/css17.dat' de via RCT1-ludodosierujo al 'data/css50.dat' en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
+STR_5836    :Elekti muzikon por uzi je la ĉefa menuo.{NEWLINE}Elekti RCT1-temon postulas, ke vi kopiu ‘data/css17.dat’ de via RCT1-ludodosierujo al ‘data/css50.dat’ en via RCT2-dosierujo, aŭ agordu la dosierindikon al RCT1 en la Diversaĵo-langeto.
 STR_5837    :Krei kaj administri proprajn fasado-temojn
 STR_5838    :Montri apartan butonon por la fenestro de financoj en la ilobreto
 STR_5839    :Montri apartan butonon por la fenestro de esplorado kaj disvolvado en la ilobreto
@@ -3345,34 +3345,34 @@ STR_6066    :Protokolas ĉiujn uzanto-agojn al dosieroj en via uzantdosierujo.
 STR_6067    :Servilo komenciĝis.
 STR_6068    :Servilo malŝaltis.
 STR_6069    :{STRING} estis forpelita de la servilo de {STRING}.
-STR_6070    :{STRING} estis aldonita al grupo '{STRING}' de {STRING}.
-STR_6071    :{STRING} kreis je nova ludantogrupo '{STRING}'.
-STR_6072    :{STRING} forigis je ludantogrupo '{String}'.
-STR_6073    :{STRING} redaktis permesojn por ludantogrupo '{String}'.
-STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de '{String}' al '{String}'.
-STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al '{String}'.
-STR_6076    :{STRING} uzis/baskuligis trompon de '{STRING}'.
+STR_6070    :{STRING} estis aldonita al grupo ‘{STRING}’ de {STRING}.
+STR_6071    :{STRING} kreis je nova ludantogrupo ‘{STRING}’.
+STR_6072    :{STRING} forigis je ludantogrupo ‘{String}’.
+STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{String}’.
+STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{String}’ al ‘{String}’.
+STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{String}’.
+STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
 STR_6077    :Aldoni Monon
-STR_6078    :{STRING} kreis je atrakcio '{STRING}'.
-STR_6079    :{STRING} malkonstruis je atrakcio '{STRING}'.
-STR_6080    :{STRING} ŝanĝis la aspekton de atrakcio '{STRING}'.
-STR_6081    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al fermita.
-STR_6082    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al malfermita.
-STR_6083    :{STRING} ŝanĝis la staton de atrakcio '{STRING}' al elprovata.
-STR_6084    :{STRING} ŝanĝis la veturilo-agordojn de atrakcio '{STRING}'.
-STR_6085    :{STRING} ŝanĝis la atrakcio-agordojn de atrakcio '{STRING}'.
-STR_6086    :{STRING} renomis je la atrakcio '{STRING}' al '{STRING}'.
-STR_6087    :{STRING} ŝanĝis la prezon de atrakcio '{STRING}' al {STRING}
-STR_6088    :{STRING} ŝanĝis la duarangan prezon de atrakcio '{STRING}' al {STRING}
-STR_6089    :{STRING} renomis la parkon de '{STRING}' al '{STRING}'.
+STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.
+STR_6079    :{STRING} malkonstruis je atrakcio ‘{STRING}’.
+STR_6080    :{STRING} ŝanĝis la aspekton de atrakcio ‘{STRING}’.
+STR_6081    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al fermita.
+STR_6082    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al malfermita.
+STR_6083    :{STRING} ŝanĝis la staton de atrakcio ‘{STRING}’ al elprovata.
+STR_6084    :{STRING} ŝanĝis la veturilo-agordojn de atrakcio ‘{STRING}’.
+STR_6085    :{STRING} ŝanĝis la atrakcio-agordojn de atrakcio ‘{STRING}’.
+STR_6086    :{STRING} renomis je la atrakcio ‘{STRING}’ al ‘{STRING}’.
+STR_6087    :{STRING} ŝanĝis la prezon de atrakcio ‘{STRING}’ al {STRING}
+STR_6088    :{STRING} ŝanĝis la duarangan prezon de atrakcio ‘{STRING}’ al {STRING}
+STR_6089    :{STRING} renomis la parkon de ‘{STRING}’ al ‘{STRING}’.
 STR_6090    :{STRING} malfermis la parkon.
 STR_6091    :{STRING} fermis la parkon.
 STR_6092    :{STRING} ŝanĝis la enirpagon al {STRING}
 STR_6093    :{STRING} metis novan pejzaĝon.
 STR_6094    :{STRING} forigis pejzaĝon.
 STR_6095    :{STRING} redaktis pejzaĝon.
-STR_6096    :{STRING} agordis nomon de surskribaĵo al '{STRING}'.
-STR_6097    :{STRING} metis trakon de atrakcio '{STRING}'.
+STR_6096    :{STRING} agordis nomon de surskribaĵo al ‘{STRING}’.
+STR_6097    :{STRING} metis trakon de atrakcio ‘{STRING}’.
 STR_6098    :{STRING} forigis trakon de atrakcio.
 STR_6099    :Vi aliĝis al la servilo.
 STR_6100    :Vi malaliĝis de la servilo.
@@ -3652,7 +3652,7 @@ STR_6395    :Prizorgado
 STR_6396    :Malŝalti ekrankurtenon kaj energiŝparon de ekrano
 STR_6397    :Se elektita, ekrankurteno kaj aliaj energiŝparaj funkcioj estos malebligitaj dum OpenRCT2 funkcias.
 STR_6398    :Dosiero enhavas nesubtenatajn atrakciotipojn. Bonvolu ĝisdatigi al pli nova versio de OpenRCT2.
-STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en "config.ini" al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
+STR_6399    :OpenRCT2 bezonas dosierojn de la originala RollerCoaster Tycoon 2 por funkcii. Bonvolu agordi la “game_path” variablon en “config.ini” al la dosierujon, kie vi instalis je RollerCoaster Tycoon 2, kaj tiam rekomencu je OpenRCT2.
 STR_6400    :Mi elŝutis la GOG eksterretan instalilon de RollerCoaster Tycoon 2, sed mi ne jam instalis la ludon
 STR_6401    :Mi jam instalis je RollerCoaster Tycoon 2
 STR_6402    :Agordo de Datumoj de OpenRCT2
