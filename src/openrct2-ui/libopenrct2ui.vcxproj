@@ -54,6 +54,7 @@
     <ClInclude Include="scripting\CustomMenu.h" />
     <ClInclude Include="scripting\CustomWindow.h" />
     <ClInclude Include="scripting\ScTileSelection.hpp" />
+    <ClInclude Include="scripting\ScTitleSequence.hpp" />
     <ClInclude Include="scripting\ScUi.hpp" />
     <ClInclude Include="scripting\ScViewport.hpp" />
     <ClInclude Include="scripting\ScWidget.hpp" />

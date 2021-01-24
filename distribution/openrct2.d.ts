@@ -38,6 +38,11 @@ declare global {
     /** APIs for the current scenario. */
     var scenario: Scenario;
     /**
+     * APIs for creating and editing title sequences.
+     * These will only be available to clients that are not running headless mode.
+    */
+    var titleSequenceManager: TitleSequenceManager;
+    /**
      * APIs for controlling the user interface.
      * These will only be available to servers and clients that are not running headless mode.
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
@@ -2167,5 +2172,83 @@ declare global {
         off(event: 'close', callback: (hadError: boolean) => void): Socket;
         off(event: 'error', callback: (hadError: boolean) => void): Socket;
         off(event: 'data', callback: (data: string) => void): Socket;
+    }
+
+    interface TitleSequence {
+        /**
+         * The name of the title sequence.
+         */
+        name: string;
+
+        /**
+         * The full path of the title sequence.
+         */
+        readonly path: string;
+
+        /**
+         * Whether the title sequence is a single file or directory.
+         */
+        readonly isDirectory: boolean;
+
+        /**
+         * Whether or not the title sequence is read-only (e.g. a pre-installed sequence).
+         */
+        readonly isReadOnly: boolean;
+
+        /**
+         * The parks stored within this title sequence.
+         */
+        parks: string[];
+
+        /**
+         * The commands that describe how to play the title sequence.
+         */
+        commands: TitleSequenceCommand[];
+
+        /**
+         * Creates a new title sequence identical to this one.
+         * @param name The name of the new title sequence.
+         */
+        clone(name: string): TitleSequence;
+
+        /**
+         * Deletes this title sequence from disc.
+         */
+        delete(): void;
+    }
+
+    type TitleSequenceCommandType =
+        'load' |
+        'loadsc' |
+        'location' |
+        'rotate' |
+        'zoom' |
+        'speed' |
+        'follow' |
+        'wait' |
+        'restart' |
+        'end';
+
+    interface TitleSequenceCommand {
+        type: TitleSequenceCommandType;
+    }
+
+    interface LocationTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'location';
+        x: number;
+        y: number;
+    }
+
+    interface TitleSequenceManager {
+        /**
+         * Gets all the available title sequences.
+         */
+        readonly titleSequences: TitleSequence[];
+
+        /**
+         * Creates a new blank title sequence.
+         * @param name The name of the title sequence.
+         */
+        create(name: string): TitleSequence;
     }
 }
