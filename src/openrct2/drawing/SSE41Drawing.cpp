@@ -59,7 +59,7 @@ void mask_sse4_1(
 #else
 
 #    ifdef OPENRCT2_X86
-#        error You have to compile this file with SSE4.1 enabled, when targetting x86!
+#        error You have to compile this file with SSE4.1 enabled, when targeting x86!
 #    endif
 
 void mask_sse4_1(

@@ -211,7 +211,7 @@ void colours_init_maps();
 
 namespace Colour
 {
-    colour_t FromString(const std::string_view& s, colour_t defaultValue = COLOUR_BLACK);
+    colour_t FromString(std::string_view s, colour_t defaultValue = COLOUR_BLACK);
 }
 
 #ifndef NO_TTF

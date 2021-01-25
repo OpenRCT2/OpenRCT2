@@ -206,7 +206,7 @@ public:
         return _items.data();
     }
 
-    const ObjectRepositoryItem* FindObjectLegacy(const std::string_view& legacyIdentifier) const override
+    const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const override
     {
         rct_object_entry entry = {};
         entry.SetName(legacyIdentifier);
@@ -310,7 +310,7 @@ public:
         }
     }
 
-    void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) override
+    void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) override
     {
         log_verbose("Adding object: [%s]", std::string(objectName).c_str());
         auto path = GetPathForNewObject(objectName);
@@ -399,7 +399,7 @@ private:
     void AddItems(const std::vector<ObjectRepositoryItem>& items)
     {
         size_t numConflicts = 0;
-        for (auto item : items)
+        for (const auto& item : items)
         {
             if (!AddItem(item))
             {
@@ -448,7 +448,7 @@ private:
     }
 
     static void SaveObject(
-        const std::string_view& path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+        std::string_view path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
@@ -554,7 +554,7 @@ private:
         return salt;
     }
 
-    std::string GetPathForNewObject(const std::string_view& name)
+    std::string GetPathForNewObject(std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
         auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
@@ -573,7 +573,7 @@ private:
         return fullPath;
     }
 
-    std::string GetFileNameForNewObject(const std::string_view& name)
+    std::string GetFileNameForNewObject(std::string_view name)
     {
         // Trim name
         char normalisedName[9] = { 0 };

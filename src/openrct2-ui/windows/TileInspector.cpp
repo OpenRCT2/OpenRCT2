@@ -1908,7 +1908,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                         screenCoords + ScreenCoordsXY{ 0, 22 });
                 }
                 // Track
-                int16_t trackType = trackElement->GetTrackType();
+                auto trackType = trackElement->GetTrackType();
                 int16_t sequenceNumber = trackElement->GetSequenceIndex();
                 gfx_draw_string_left(
                     dpi, STR_TILE_INSPECTOR_TRACK_PIECE_ID, &trackType, COLOUR_WHITE, screenCoords + ScreenCoordsXY{ 0, 33 });

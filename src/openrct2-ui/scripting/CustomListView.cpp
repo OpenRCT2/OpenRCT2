@@ -278,7 +278,7 @@ void CustomListView::SetItems(const std::vector<ListViewItem>& items, bool initi
 
 void CustomListView::SetItems(std::vector<ListViewItem>&& items, bool initialising)
 {
-    Items = items;
+    Items = std::move(items);
     SortItems(0, ColumnSortOrder::None);
     if (!initialising)
     {

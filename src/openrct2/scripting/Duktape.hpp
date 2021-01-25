@@ -29,7 +29,7 @@ namespace OpenRCT2::Scripting
 
     template<typename T> T AsOrDefault(const DukValue& value, const T& defaultValue = {}) = delete;
 
-    inline std::string AsOrDefault(const DukValue& value, const std::string_view& defaultValue)
+    inline std::string AsOrDefault(const DukValue& value, std::string_view defaultValue)
     {
         return value.type() == DukValue::STRING ? value.as_string() : std::string(defaultValue);
     }
@@ -101,7 +101,7 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
-        void Set(const char* name, const std::string_view& value)
+        void Set(const char* name, std::string_view value)
         {
             EnsureObjectPushed();
             duk_push_lstring(_ctx, value.data(), value.size());
@@ -214,7 +214,7 @@ namespace OpenRCT2::Scripting
             return it->second;
         }
 
-        T operator[](const std::string_view& k) const
+        T operator[](std::string_view k) const
         {
             auto it = _s2n.find(k);
             if (it == _s2n.end())
@@ -231,7 +231,7 @@ namespace OpenRCT2::Scripting
         return 1;
     }
 
-    inline std::optional<DukValue> DuktapeTryParseJson(duk_context* ctx, const std::string_view& json)
+    inline std::optional<DukValue> DuktapeTryParseJson(duk_context* ctx, std::string_view json)
     {
         duk_push_lstring(ctx, json.data(), json.size());
         if (duk_safe_call(ctx, duk_json_decode_wrapper, nullptr, 1, 1) == DUK_EXEC_SUCCESS)

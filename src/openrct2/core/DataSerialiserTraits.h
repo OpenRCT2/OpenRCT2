@@ -620,6 +620,7 @@ template<> struct DataSerializerTraits_t<rct_object_entry>
         val.flags = ByteSwapBE(temp);
         const char* str = stream->ReadArray<char>(12);
         memcpy(val.nameWOC, str, 12);
+        Memory::FreeArray(str, 12);
     }
     static void log(OpenRCT2::IStream* stream, const rct_object_entry& val)
     {

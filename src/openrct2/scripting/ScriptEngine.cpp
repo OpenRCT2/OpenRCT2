@@ -492,7 +492,7 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
         RemoveIntervals(plugin);
         RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
-        for (auto callback : _pluginStoppedSubscriptions)
+        for (const auto& callback : _pluginStoppedSubscriptions)
         {
             callback(plugin);
         }
@@ -716,13 +716,13 @@ DukValue ScriptEngine::ExecutePluginCall(
     return DukValue();
 }
 
-void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message)
+void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message)
 {
     const auto& pluginName = plugin->GetMetadata().Name;
     _console.WriteLine("[" + pluginName + "] " + std::string(message));
 }
 
-void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
+void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
     auto plugin = std::make_shared<Plugin>(_context, std::string());
     plugin->SetCode(code);
@@ -730,7 +730,7 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
 }
 
 std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameAction(
-    const std::string_view& id, const std::string_view& args, bool isExecute)
+    std::string_view id, std::string_view args, bool isExecute)
 {
     std::string actionz = std::string(id);
     auto kvp = _customActions.find(actionz);
@@ -818,7 +818,7 @@ std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditu
     return {};
 }
 
-ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view& expenditureType)
+ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditureType)
 {
     auto it = std::find(std::begin(ExpenditureTypes), std::end(ExpenditureTypes), expenditureType);
     if (it != std::end(ExpenditureTypes))
@@ -873,7 +873,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
 }
 
 bool ScriptEngine::RegisterCustomAction(
-    const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query, const DukValue& execute)
+    const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute)
 {
     std::string actionz = std::string(action);
     if (_customActions.find(actionz) != _customActions.end())
@@ -912,21 +912,21 @@ private:
 
 public:
     DukToGameActionParameterVisitor(DukValue&& dukValue)
-        : _dukValue(dukValue)
+        : _dukValue(std::move(dukValue))
     {
     }
 
-    void Visit(const std::string_view& name, bool& param) override
+    void Visit(std::string_view name, bool& param) override
     {
         param = _dukValue[name].as_bool();
     }
 
-    void Visit(const std::string_view& name, int32_t& param) override
+    void Visit(std::string_view name, int32_t& param) override
     {
         param = _dukValue[name].as_int();
     }
 
-    void Visit(const std::string_view& name, std::string& param) override
+    void Visit(std::string_view name, std::string& param) override
     {
         param = _dukValue[name].as_string();
     }
@@ -943,19 +943,19 @@ public:
     {
     }
 
-    void Visit(const std::string_view& name, bool& param) override
+    void Visit(std::string_view name, bool& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);
     }
 
-    void Visit(const std::string_view& name, int32_t& param) override
+    void Visit(std::string_view name, int32_t& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);
     }
 
-    void Visit(const std::string_view& name, std::string& param) override
+    void Visit(std::string_view name, std::string& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);

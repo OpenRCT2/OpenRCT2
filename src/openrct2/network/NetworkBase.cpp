@@ -34,7 +34,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "9"
+#define NETWORK_STREAM_VERSION "15"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -268,7 +268,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     BeginServerLog();
 
     // We need to wait for the map load before we execute any actions.
-    // If the client has the title screen running then theres a potential
+    // If the client has the title screen running then there's a potential
     // risk of tick collision with the server map and title screen map.
     GameActions::SuspendQueue();
 
@@ -1730,7 +1730,7 @@ void NetworkBase::ProcessPending()
 }
 
 static bool ProcessPlayerAuthenticatePluginHooks(
-    const NetworkConnection& connection, const std::string_view& name, const std::string_view& publicKeyHash)
+    const NetworkConnection& connection, std::string_view name, std::string_view publicKeyHash)
 {
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
@@ -1830,7 +1830,7 @@ void NetworkBase::ProcessPlayerList()
             std::vector<uint8_t> newPlayers;
             std::vector<uint8_t> removedPlayers;
 
-            for (auto&& pendingPlayer : itPending->second.players)
+            for (const auto& pendingPlayer : itPending->second.players)
             {
                 activePlayerIds.push_back(pendingPlayer.Id);
 
@@ -3571,7 +3571,7 @@ GameActions::Result::Ptr network_modify_groups(
         case ModifyGroupType::SetPermissions:
         {
             if (groupId == 0)
-            { // cant change admin group permissions
+            { // can't change admin group permissions
                 return std::make_unique<GameActions::Result>(
                     GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }

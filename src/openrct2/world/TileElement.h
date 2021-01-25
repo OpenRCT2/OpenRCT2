@@ -527,11 +527,6 @@ public:
     void SetAcrossTrack(bool acrossTrack);
     bool AnimationIsBackwards() const;
     void SetAnimationIsBackwards(bool isBackwards);
-
-    void SetRawRCT1Data(uint32_t rawData);
-    int32_t GetRCT1WallType(int32_t edge) const;
-    colour_t GetRCT1WallColour() const;
-    uint8_t GetRCT1Slope() const;
 };
 assert_struct_size(WallElement, 16);
 
@@ -682,5 +677,12 @@ enum
 #define TILE_ELEMENT_OCCUPIED_QUADRANTS_MASK 0b00001111
 
 #define TILE_ELEMENT_COLOUR_MASK 0b00011111
+
+enum
+{
+    LANDSCAPE_DOOR_CLOSED = 0,
+    LANDSCAPE_DOOR_HALF_OPEN = 2,
+    LANDSCAPE_DOOR_OPEN = 3,
+};
 
 bool tile_element_is_underground(TileElement* tileElement);

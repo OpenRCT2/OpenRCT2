@@ -101,7 +101,7 @@ struct rct_object_entry
         return std::string_view(name, std::size(name));
     }
 
-    void SetName(const std::string_view& value);
+    void SetName(std::string_view value);
 
     ObjectType GetType() const
     {
@@ -207,7 +207,7 @@ struct IReadObjectContext
     virtual std::string_view GetObjectIdentifier() abstract;
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
-    virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
 
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;
@@ -265,7 +265,7 @@ public:
     {
         return _identifier;
     }
-    void SetIdentifier(const std::string_view& identifier)
+    void SetIdentifier(std::string_view identifier)
     {
         _identifier = identifier;
     }
@@ -319,7 +319,7 @@ public:
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
-    void SetAuthors(const std::vector<std::string>&& authors);
+    void SetAuthors(std::vector<std::string>&& authors);
 
     const ImageTable& GetImageTable() const
     {

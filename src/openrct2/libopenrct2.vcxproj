@@ -177,6 +177,7 @@
     <ClInclude Include="core\Path.hpp" />
     <ClInclude Include="core\Random.hpp" />
     <ClInclude Include="core\RTL.h" />
+    <ClInclude Include="core\FixedVector.h" />
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
@@ -553,6 +554,7 @@
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
     <ClCompile Include="cmdline\BenchSpriteSort.cpp" />
+    <ClCompile Include="cmdline/BenchUpdate.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />

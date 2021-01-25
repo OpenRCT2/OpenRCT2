@@ -56,12 +56,12 @@ namespace OpenRCT2::Ui::Windows
         std::vector<std::string> Cells;
 
         ListViewItem() = default;
-        explicit ListViewItem(const std::string_view& text)
+        explicit ListViewItem(std::string_view text)
         {
             Cells.emplace_back(text);
         }
         explicit ListViewItem(std::vector<std::string>&& cells)
-            : Cells(cells)
+            : Cells(std::move(cells))
         {
         }
     };

@@ -49,7 +49,7 @@ static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
 
 #define NUM_COMMANDS std::size(_window_title_command_editor_orders)
 
-enum WINDOW_WATER_WIDGET_IDX {
+enum WINDOW_TITLE_COMMAND_EDITOR_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -657,10 +657,10 @@ static void window_title_command_editor_tool_down(
         }
         else if (litter != nullptr)
         {
-            if (litter->type < std::size(litterNames))
+            if (litter->SubType < std::size(litterNames))
             {
                 validSprite = true;
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);
+                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->SubType], nullptr);
             }
         }
         else if (balloon != nullptr)

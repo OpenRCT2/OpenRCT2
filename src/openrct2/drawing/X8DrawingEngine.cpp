@@ -220,11 +220,6 @@ void X8DrawingEngine::PaintWindows()
     DrawAllDirtyBlocks();
 }
 
-void X8DrawingEngine::UpdateWindows()
-{
-    window_update_all();
-}
-
 void X8DrawingEngine::PaintWeather()
 {
     DrawWeather(&_bitsDPI, &_weatherDrawer);

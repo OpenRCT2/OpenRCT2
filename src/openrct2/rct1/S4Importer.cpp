@@ -208,7 +208,6 @@ public:
         SetDefaultNames();
         determine_ride_entrance_and_exit_locations();
 
-        game_convert_news_items_to_utf8();
         map_count_remaining_land_rights();
         research_determine_first_of_type();
     }
@@ -334,7 +333,7 @@ private:
         // Avoid reusing the value used for last import
         _parkValueConversionFactor = 0;
 
-        uint16_t mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
+        uint16_t mapSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
 
         String::Set(gScenarioFileName, sizeof(gScenarioFileName), GetRCT1ScenarioName().c_str());
 
@@ -1170,7 +1169,7 @@ private:
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
-        dst->type = src->type;
+        dst->SubType = Vehicle::Type(src->type);
         dst->var_44 = src->var_44;
         dst->remaining_distance = src->remaining_distance;
 
@@ -1651,7 +1650,7 @@ private:
 
                 Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
                 litter->sprite_identifier = srcLitter->sprite_identifier;
-                litter->type = srcLitter->type;
+                litter->SubType = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
                 litter->y = srcLitter->y;
@@ -1673,14 +1672,14 @@ private:
             if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                SpriteGeneric* dst = reinterpret_cast<SpriteGeneric*>(create_sprite(SpriteIdentifier::Misc));
+                MiscEntity* dst = reinterpret_cast<MiscEntity*>(create_sprite(SpriteIdentifier::Misc));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
                     break;
                 }
                 dst->sprite_identifier = src->sprite_identifier;
-                dst->type = src->type;
+                dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;
@@ -1973,26 +1972,45 @@ private:
     {
         gMapBaseZ = 7;
 
-        for (uint32_t index = 0, dstOffset = 0; index < RCT1_MAX_TILE_ELEMENTS; index++)
+        // Build tile pointer cache (needed to get the first element at a certain location)
+        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT1_MAX_MAP_SIZE, _s4.tile_elements);
+
+        TileElement* dstElement = gTileElements;
+
+        for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
-            auto src = &_s4.tile_elements[index];
-            auto dst = &gTileElements[index + dstOffset];
-            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+            for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
-                std::memcpy(dst, src, sizeof(*src));
-            }
-            else
-            {
-                ImportTileElement(dst, src);
+                if (coords.x >= RCT1_MAX_MAP_SIZE || coords.y >= RCT1_MAX_MAP_SIZE)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                // This is the equivalent of map_get_first_element_at(x, y), but on S4 data.
+                RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
+                do
+                {
+                    if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                        continue;
+
+                    auto numAddedElements = ImportTileElement(dstElement, srcElement);
+                    dstElement += numAddedElements;
+                } while (!(srcElement++)->IsLastForTile());
+
+                // Set last element flag in case the original last element was never added
+                (dstElement - 1)->SetLastForTile(true);
             }
         }
 
-        ClearExtraTileEntries();
-        FixWalls();
+        map_update_tile_pointers();
+
         FixEntrancePositions();
     }
 
-    void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
+    size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
     {
         // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
         uint8_t tileElementType = src->GetType();
@@ -2002,7 +2020,8 @@ private:
         // All saved in "flags"
         dst->SetOccupiedQuadrants(src->GetOccupiedQuadrants());
         // Skipping IsGhost, which appears to use a different flag in RCT1.
-        dst->SetLastForTile(src->IsLastForTile());
+        // This flag will be set by the caller.
+        dst->SetLastForTile(false);
 
         dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
         dst->SetClearanceZ(src->clearance_height * RCT1_COORDS_Z_STEP);
@@ -2023,7 +2042,7 @@ private:
                 dst2->SetWaterHeight(src2->GetWaterHeight());
                 dst2->SetHasTrackThatNeedsWater(src2->HasTrackThatNeedsWater());
 
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_PATH:
             {
@@ -2094,12 +2113,13 @@ private:
                     }
                     dst2->SetAddition(entryIndex + 1);
                 }
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_TRACK:
             {
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
+                auto rideType = _s4.rides[src2->GetRideIndex()].type;
 
                 dst2->SetTrackType(src2->GetTrackType());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
@@ -2108,12 +2128,18 @@ private:
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
-                dst2->SetDoorAState(src2->GetDoorAState());
-                dst2->SetDoorBState(src2->GetDoorBState());
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
-                dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                if (rideType == RCT1_RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(DEFAULT_SEAT_ROTATION);
+                }
                 // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
@@ -2127,12 +2153,12 @@ private:
                 }
 
                 // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                if (_s4.rides[src2->GetRideIndex()].type == RIDE_TYPE_MAZE)
+                if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
 
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
@@ -2167,7 +2193,7 @@ private:
                         break;
                 }
 
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_ENTRANCE:
             {
@@ -2190,17 +2216,62 @@ private:
                     dst2->SetPathType(entryIndex & 0x7F);
                 }
 
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_WALL:
             {
-                auto dst2 = dst->AsWall();
                 auto src2 = src->AsWall();
+                auto slope = src2->GetRCT1Slope();
+                size_t numAddedElements = 0;
 
-                dst2->SetSlope(src2->GetSlope());
-                dst2->SetRawRCT1Data(src2->GetRawRCT1WallTypeData());
+                for (int32_t edge = 0; edge < 4; edge++)
+                {
+                    int32_t type = src2->GetRCT1WallType(edge);
+                    if (type == -1)
+                        continue;
 
-                break;
+                    colour_t colourA = RCT1::GetColour(src2->GetRCT1WallColour());
+                    colour_t colourB = COLOUR_BLACK;
+                    colour_t colourC = COLOUR_BLACK;
+                    ConvertWall(type, &colourA, &colourB);
+
+                    type = _wallTypeToEntryMap[type];
+                    auto baseZ = src->base_height * RCT1_COORDS_Z_STEP;
+                    auto clearanceZ = src->clearance_height * RCT1_COORDS_Z_STEP;
+                    auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
+                    if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
+                    {
+                        clearanceZ += LAND_HEIGHT_STEP;
+                    }
+                    if (edgeSlope & EDGE_SLOPE_ELEVATED)
+                    {
+                        edgeSlope &= ~EDGE_SLOPE_ELEVATED;
+                        baseZ += LAND_HEIGHT_STEP;
+                        clearanceZ += LAND_HEIGHT_STEP;
+                    }
+
+                    dst->SetType(TILE_ELEMENT_TYPE_WALL);
+                    dst->SetDirection(edge);
+                    dst->SetBaseZ(baseZ);
+                    dst->SetClearanceZ(clearanceZ);
+                    // Will be set later.
+                    dst->SetLastForTile(false);
+
+                    auto* wallElement = dst->AsWall();
+                    wallElement->SetEntryIndex(type);
+                    wallElement->SetPrimaryColour(colourA);
+                    wallElement->SetSecondaryColour(colourB);
+                    wallElement->SetTertiaryColour(colourC);
+                    wallElement->SetBannerIndex(BANNER_INDEX_NULL);
+                    wallElement->SetAcrossTrack(false);
+                    wallElement->SetAnimationIsBackwards(false);
+                    wallElement->SetSlope(edgeSlope);
+
+                    dst++;
+                    numAddedElements++;
+                }
+
+                return numAddedElements;
             }
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             {
@@ -2213,7 +2284,7 @@ private:
                 dst2->SetPrimaryColour(RCT1::GetColour(src2->GetPrimaryColour()));
                 dst2->SetSecondaryColour(RCT1::GetColour(src2->GetSecondaryColour()));
 
-                break;
+                return 1;
             }
             case TILE_ELEMENT_TYPE_BANNER:
             {
@@ -2234,11 +2305,13 @@ private:
                     auto dstBanner = GetBanner(index);
                     ImportBanner(dstBanner, srcBanner);
                 }
-                break;
+                return 1;
             }
             default:
                 assert(false);
         }
+
+        return 0;
     }
 
     void ImportResearch()
@@ -2539,7 +2612,7 @@ private:
             dst->Ticks = src->Ticks;
             dst->MonthYear = src->MonthYear;
             dst->Day = src->Day;
-            std::copy(std::begin(src->Text), std::end(src->Text), dst->Text);
+            dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
 
             if (dst->Type == News::ItemType::Research)
             {
@@ -2719,141 +2792,9 @@ private:
         gSavedViewRotation = _s4.view_rotation;
     }
 
-    void ClearExtraTileEntries()
+    void ConvertWall(const int32_t& type, colour_t* colourA, colour_t* colourB)
     {
-        // Reset the map tile pointers
-        std::fill(std::begin(gTileElementTilePointers), std::end(gTileElementTilePointers), nullptr);
-
-        // Get the first free map element
-        TileElement* nextFreeTileElement = gTileElements;
-        for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
-        {
-            while (!(nextFreeTileElement++)->IsLastForTile())
-                ;
-        }
-
-        TileElement* tileElement = gTileElements;
-        TileElement** tilePointer = gTileElementTilePointers;
-
-        // 128 rows of map data from RCT1 map
-        for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
-        {
-            // Assign the first half of this row
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                *tilePointer++ = tileElement;
-                while (!(tileElement++)->IsLastForTile())
-                    ;
-            }
-
-            // Fill the rest of the row with blank tiles
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                nextFreeTileElement->SetLastForTile(true);
-                nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-                nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-                nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
-                nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-                nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-                *tilePointer++ = nextFreeTileElement++;
-            }
-        }
-
-        // 128 extra rows left to fill with blank tiles
-        for (int32_t y = 0; y < 128 * 256; y++)
-        {
-            nextFreeTileElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-            nextFreeTileElement->SetLastForTile(true);
-            nextFreeTileElement->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-            nextFreeTileElement->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-            nextFreeTileElement->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
-            nextFreeTileElement->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-            nextFreeTileElement->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-            *tilePointer++ = nextFreeTileElement++;
-        }
-
-        gNextFreeTileElement = nextFreeTileElement;
-    }
-
-    void FixWalls()
-    {
-        std::vector<TileElement> wallsOnTile = {};
-
-        for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
-        {
-            for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
-            {
-                TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-                if (tileElement == nullptr)
-                    continue;
-                do
-                {
-                    if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
-                    {
-                        wallsOnTile.push_back(*tileElement);
-                        tile_element_remove(tileElement);
-                        tileElement--;
-                    }
-                } while (!(tileElement++)->IsLastForTile());
-
-                for (auto originalTileElement : wallsOnTile)
-                {
-                    auto location = TileCoordsXYZ(x, y, 0).ToCoordsXYZ();
-
-                    for (int32_t edge = 0; edge < 4; edge++)
-                    {
-                        int32_t type = originalTileElement.AsWall()->GetRCT1WallType(edge);
-                        auto slope = originalTileElement.AsWall()->GetRCT1Slope();
-
-                        if (type != -1)
-                        {
-                            colour_t colourA = RCT1::GetColour(originalTileElement.AsWall()->GetRCT1WallColour());
-                            colour_t colourB = COLOUR_BLACK;
-                            colour_t colourC = COLOUR_BLACK;
-                            ConvertWall(&type, &colourA, &colourB);
-
-                            type = _wallTypeToEntryMap[type];
-                            auto baseZ = originalTileElement.GetBaseZ();
-                            auto clearanceZ = originalTileElement.GetClearanceZ();
-                            auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
-                            if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
-                            {
-                                clearanceZ += LAND_HEIGHT_STEP;
-                            }
-                            if (edgeSlope & EDGE_SLOPE_ELEVATED)
-                            {
-                                edgeSlope &= ~EDGE_SLOPE_ELEVATED;
-                                baseZ += LAND_HEIGHT_STEP;
-                                clearanceZ += LAND_HEIGHT_STEP;
-                            }
-
-                            auto element = tile_element_insert(location, originalTileElement.GetOccupiedQuadrants());
-                            element->SetType(TILE_ELEMENT_TYPE_WALL);
-                            element->SetDirection(edge);
-                            element->SetBaseZ(baseZ);
-                            element->SetClearanceZ(clearanceZ);
-
-                            auto wallElement = element->AsWall();
-                            wallElement->SetEntryIndex(type);
-                            wallElement->SetPrimaryColour(colourA);
-                            wallElement->SetSecondaryColour(colourB);
-                            wallElement->SetTertiaryColour(colourC);
-                            wallElement->SetBannerIndex(BANNER_INDEX_NULL);
-                            wallElement->SetAcrossTrack(originalTileElement.AsWall()->IsAcrossTrack());
-                            wallElement->SetAnimationIsBackwards(originalTileElement.AsWall()->AnimationIsBackwards());
-                            wallElement->SetSlope(edgeSlope);
-                        }
-                    }
-                }
-                wallsOnTile.clear();
-            }
-        }
-    }
-
-    void ConvertWall(int32_t* type, colour_t* colourA, colour_t* colourB)
-    {
-        switch (*type)
+        switch (type)
         {
             case RCT1_WALL_TYPE_WOODEN_PANEL_FENCE:
                 *colourA = COLOUR_DARK_BROWN;
@@ -3158,27 +3099,4 @@ void load_from_sc4(const utf8* path)
     auto result = s4Importer->LoadScenario(path);
     objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
     s4Importer->Import();
-}
-
-int32_t WallElement::GetRCT1WallType(int32_t edge) const
-{
-    uint8_t var_05 = colour_3;
-    uint16_t var_06 = colour_1 | (animation << 8);
-
-    int32_t typeA = (var_05 >> (edge * 2)) & 3;
-    int32_t typeB = (var_06 >> (edge * 4)) & 0x0F;
-
-    if (typeB != 0x0F)
-    {
-        return typeA | (typeB << 2);
-    }
-    else
-    {
-        return -1;
-    }
-}
-
-colour_t WallElement::GetRCT1WallColour() const
-{
-    return (((type & 0xC0) >> 3) | ((entryIndex & 0xE0) >> 5)) & 31;
 }

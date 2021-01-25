@@ -57,7 +57,7 @@ namespace OpenRCT2::Localisation
         const char* GetString(rct_string_id id) const;
         std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
             const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const;
+        rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
         std::string GetLanguagePath(uint32_t languageId) const;
 
         void OpenLanguage(int32_t id);

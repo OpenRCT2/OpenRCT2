@@ -1387,97 +1387,132 @@ void tool_cancel()
 
 void window_event_close_call(rct_window* w)
 {
-    if (w->event_handlers->close != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnClose();
+    else if (w->event_handlers->close != nullptr)
         w->event_handlers->close(w);
 }
 
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->mouse_up != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnMouseUp(widgetIndex);
+    else if (w->event_handlers->mouse_up != nullptr)
         w->event_handlers->mouse_up(w, widgetIndex);
 }
 
 void window_event_resize_call(rct_window* w)
 {
-    if (w->event_handlers->resize != nullptr)
-        w->event_handlers->resize(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->resize != nullptr)
+            w->event_handlers->resize(w);
 }
 
 void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->mouse_down != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnMouseDown(widgetIndex);
+    else if (w->event_handlers->mouse_down != nullptr)
         w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
 void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (w->event_handlers->dropdown != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        if (dropdownIndex != -1)
+        {
+            w->OnDropdown(widgetIndex, dropdownIndex);
+        }
+    }
+    else if (w->event_handlers->dropdown != nullptr)
+    {
         w->event_handlers->dropdown(w, widgetIndex, dropdownIndex);
+    }
 }
 
 void window_event_unknown_05_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_05 != nullptr)
-        w->event_handlers->unknown_05(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_05 != nullptr)
+            w->event_handlers->unknown_05(w);
 }
 
 void window_event_update_call(rct_window* w)
 {
-    if (w->event_handlers->update != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnUpdate();
+    else if (w->event_handlers->update != nullptr)
         w->event_handlers->update(w);
 }
 
 void window_event_periodic_update_call(rct_window* w)
 {
-    if (w->event_handlers->periodic_update != nullptr)
-        w->event_handlers->periodic_update(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->periodic_update != nullptr)
+            w->event_handlers->periodic_update(w);
 }
 
 void window_event_unknown_08_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_08 != nullptr)
-        w->event_handlers->unknown_08(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_08 != nullptr)
+            w->event_handlers->unknown_08(w);
 }
 
 void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_update != nullptr)
-        w->event_handlers->tool_update(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_update != nullptr)
+            w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_down != nullptr)
-        w->event_handlers->tool_down(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_down != nullptr)
+            w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_drag != nullptr)
-        w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_drag != nullptr)
+            w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_up != nullptr)
-        w->event_handlers->tool_up(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_up != nullptr)
+            w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->tool_abort != nullptr)
-        w->event_handlers->tool_abort(w, widgetIndex);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_abort != nullptr)
+            w->event_handlers->tool_abort(w, widgetIndex);
 }
 
 void window_event_unknown_0E_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_0E != nullptr)
-        w->event_handlers->unknown_0E(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_0E != nullptr)
+            w->event_handlers->unknown_0E(w);
 }
 
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    if (w->event_handlers->get_scroll_size != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        auto size = w->OnScrollGetSize(scrollIndex);
+        if (width != nullptr)
+            *width = size.width;
+        if (height != nullptr)
+            *height = size.height;
+    }
+    else if (w->event_handlers->get_scroll_size != nullptr)
     {
         w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
     }
@@ -1485,43 +1520,63 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
 
 void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mousedown != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseDown(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mousedown != nullptr)
         w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords);
 }
 
 void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mousedrag != nullptr)
-        w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->scroll_mousedrag != nullptr)
+            w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mouseover != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseOver(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mouseover != nullptr)
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
 }
 
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (w->event_handlers->text_input != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        if (text != nullptr)
+        {
+            w->OnTextInput(widgetIndex, text);
+        }
+    }
+    else if (w->event_handlers->text_input != nullptr)
+    {
         w->event_handlers->text_input(w, widgetIndex, text);
+    }
 }
 
 void window_event_viewport_rotate_call(rct_window* w)
 {
-    if (w->event_handlers->viewport_rotate != nullptr)
-        w->event_handlers->viewport_rotate(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->viewport_rotate != nullptr)
+            w->event_handlers->viewport_rotate(w);
 }
 
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
-    if (w->event_handlers->unknown_15 != nullptr)
-        w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_15 != nullptr)
+            w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
 OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    if (w->event_handlers->tooltip != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        return w->OnTooltip(widgetIndex, fallback);
+    }
+    else if (w->event_handlers->tooltip != nullptr)
     {
         return w->event_handlers->tooltip(w, widgetIndex, fallback);
     }
@@ -1534,32 +1589,40 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     CursorID cursorId = CursorID::Arrow;
-    if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->cursor != nullptr)
+            w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
 }
 
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->moved != nullptr)
+            w->event_handlers->moved(w, screenCoords);
 }
 
 void window_event_invalidate_call(rct_window* w)
 {
-    if (w->event_handlers->invalidate != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnPrepareDraw();
+    else if (w->event_handlers->invalidate != nullptr)
         w->event_handlers->invalidate(w);
 }
 
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->event_handlers->paint != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnDraw(*dpi);
+    else if (w->event_handlers->paint != nullptr)
         w->event_handlers->paint(w, dpi);
 }
 
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    if (w->event_handlers->scroll_paint != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollDraw(scrollIndex, *dpi);
+    else if (w->event_handlers->scroll_paint != nullptr)
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
 }
 

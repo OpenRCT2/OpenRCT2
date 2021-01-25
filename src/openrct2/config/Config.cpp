@@ -398,7 +398,7 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = String::Duplicate(playerName);
+            model->player_name = playerName;
             model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetString("listen_address", "");
             model->default_password = reader->GetString("default_password", "");

@@ -16,7 +16,8 @@
 
 template<> bool SpriteBase::Is<Balloon>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc && static_cast<MiscEntityType>(type) == MiscEntityType::Balloon;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::Balloon;
 }
 
 void Balloon::Update()
@@ -84,9 +85,9 @@ void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
     if (sprite == nullptr)
         return;
-    sprite->generic.sprite_identifier = SpriteIdentifier::Misc;
-    sprite->generic.type = EnumValue(MiscEntityType::Balloon);
-    auto balloon = sprite->generic.As<Balloon>();
+    sprite->misc.sprite_identifier = SpriteIdentifier::Misc;
+    sprite->misc.SubType = MiscEntityType::Balloon;
+    auto balloon = sprite->misc.As<Balloon>();
     if (balloon == nullptr)
         return; // can never happen
 

@@ -377,7 +377,7 @@ void peep_update_all()
 
     int32_t i = 0;
     // Warning this loop can delete peeps
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>(EntityListId::Peep))
     {
         if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
         {
@@ -386,9 +386,29 @@ void peep_update_all()
         else
         {
             peep_128_tick_update(peep, i);
+            // 128 tick can delete so double check its not deleted
             if (peep->sprite_identifier == SpriteIdentifier::Peep)
             {
                 peep->Update();
+            }
+        }
+
+        i++;
+    }
+
+    for (auto staff : EntityList<Staff>(EntityListId::Peep))
+    {
+        if (static_cast<uint32_t>(i & 0x7F) != (gCurrentTicks & 0x7F))
+        {
+            staff->Update();
+        }
+        else
+        {
+            peep_128_tick_update(staff, i);
+            // 128 tick can delete so double check its not deleted
+            if (staff->sprite_identifier == SpriteIdentifier::Peep)
+            {
+                staff->Update();
             }
         }
 
@@ -1952,7 +1972,7 @@ std::string Peep::GetName() const
     return format_string(STR_STRINGID, ft.Data());
 }
 
-bool Peep::SetName(const std::string_view& value)
+bool Peep::SetName(std::string_view value)
 {
     if (value.empty())
     {
@@ -2640,7 +2660,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
                 continue;
 
             litter_count++;
-            if (litter->type != LITTER_TYPE_SICK && litter->type != LITTER_TYPE_SICK_ALT)
+            if (litter->SubType != LITTER_TYPE_SICK && litter->SubType != LITTER_TYPE_SICK_ALT)
                 continue;
 
             litter_count--;

@@ -246,7 +246,7 @@ bool window_ride_construction_update_state(
     CoordsXYZ* _trackPos, int32_t* _properties)
 {
     ride_id_t rideIndex;
-    uint8_t trackType, trackDirection;
+    uint8_t trackDirection;
     uint16_t x, y, liftHillAndInvertedState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
@@ -255,7 +255,7 @@ bool window_ride_construction_update_state(
         return true;
     }
 
-    trackType = std::get<1>(updated_element);
+    track_type_t trackType = std::get<1>(updated_element);
     liftHillAndInvertedState = 0;
     rideIndex = _currentRideIndex;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)

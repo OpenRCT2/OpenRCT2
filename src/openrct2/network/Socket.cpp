@@ -906,7 +906,7 @@ static std::vector<INTERFACE_INFO> GetNetworkInterfaces()
         return {};
     }
 
-    // Get all the network interfaces, requires a trial and error approch
+    // Get all the network interfaces, requires a trial and error approach
     // until we find the capacity required to store all of them.
     DWORD len = 0;
     size_t capacity = 16;

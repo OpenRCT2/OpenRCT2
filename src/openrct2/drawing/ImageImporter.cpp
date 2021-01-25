@@ -30,7 +30,7 @@ ImportResult ImageImporter::Import(
 
     if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
     {
-        throw std::invalid_argument("Image is not palletted, it has bit depth of " + std::to_string(image.Depth));
+        throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
     const auto width = image.Width;

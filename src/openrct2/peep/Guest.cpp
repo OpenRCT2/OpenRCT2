@@ -1196,7 +1196,7 @@ void Guest::CheckIfLost()
 /**
  *
  *  rct2: 0x69C26B
- * Check if cant find ride.
+ * Check if can't find ride.
  */
 void Guest::CheckCantFindRide()
 {
@@ -1228,7 +1228,7 @@ void Guest::CheckCantFindRide()
 /**
  *
  *  rct2: 0x69C2D0
- * Check if cant find exit.
+ * Check if can't find exit.
  */
 void Guest::CheckCantFindExit()
 {
@@ -3932,7 +3932,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
             {
-                uint16_t trackType = vehicle->GetTrackType();
+                auto trackType = vehicle->GetTrackType();
                 if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
                     continue;
 
@@ -5076,13 +5076,13 @@ void Guest::UpdateWalking()
         {
             if ((0xFFFF & scenario_rand()) <= 4096)
             {
-                static constexpr const uint8_t litter_types[] = {
+                static constexpr const LitterType litter_types[] = {
                     LITTER_TYPE_EMPTY_CAN,
                     LITTER_TYPE_RUBBISH,
                     LITTER_TYPE_EMPTY_BURGER_BOX,
                     LITTER_TYPE_EMPTY_CUP,
                 };
-                int32_t litterType = litter_types[scenario_rand() & 0x3];
+                auto litterType = litter_types[scenario_rand() & 0x3];
                 int32_t litterX = x + (scenario_rand() & 0x7) - 3;
                 int32_t litterY = y + (scenario_rand() & 0x7) - 3;
                 Direction litterDirection = (scenario_rand() & 0x3);
@@ -5097,13 +5097,13 @@ void Guest::UpdateWalking()
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
-            int32_t litterType = 0;
+            LitterType litterType = LITTER_TYPE_SICK;
 
             if (container != -1)
             {
                 auto item = static_cast<ShopItem>(container);
                 RemoveItem(item);
-                litterType = GetShopItemDescriptor(item).LitterType;
+                litterType = LitterType(GetShopItemDescriptor(item).LitterType);
             }
 
             WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_INVENTORY;
@@ -5672,7 +5672,8 @@ void Guest::UpdateUsingBin()
                     UpdateSpriteType();
                     continue;
                 }
-                uint8_t litterType = GetShopItemDescriptor(item).LitterType;
+
+                LitterType litterType = LitterType(GetShopItemDescriptor(item).LitterType);
 
                 int32_t litterX = x + (scenario_rand() & 7) - 3;
                 int32_t litterY = y + (scenario_rand() & 7) - 3;

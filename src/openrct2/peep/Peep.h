@@ -257,7 +257,7 @@ enum class PeepRideSubState : uint8_t
     AtEntrance = 0,
     InEntrance = 1,
     FreeVehicleCheck = 2, // Spend money on ride
-    LeaveEntrance = 3,    // Calculate what direction and where to go after commiting to entering vehicle
+    LeaveEntrance = 3,    // Calculate what direction and where to go after committing to entering vehicle
     ApproachVehicle = 4,
     EnterVehicle = 5,
     OnRide = 6,
@@ -752,7 +752,7 @@ public: // Peep
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;
-    bool SetName(const std::string_view& value);
+    bool SetName(std::string_view value);
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.

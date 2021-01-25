@@ -388,21 +388,21 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
                 std::vector<function_call> newCalls;
                 newCalls.insert(newCalls.begin(), callBuffer, callBuffer + callCount);
 
-                bool sucess = true;
+                bool success = true;
                 if (oldCalls.size() != newCalls.size())
                 {
                     *error += String::Format(
                         "Call counts don't match (was %d, expected %d). %s\n", newCalls.size(), oldCalls.size(),
                         caseName.c_str());
-                    sucess = false;
+                    success = false;
                 }
                 else if (!FunctionCall::AssertsEquals(oldCalls, newCalls))
                 {
                     *error += String::Format("Calls don't match. %s\n", caseName.c_str());
-                    sucess = false;
+                    success = false;
                 }
 
-                if (!sucess)
+                if (!success)
                 {
                     *error += " Expected:\n";
                     *error += Printer::PrintFunctionCalls(oldCalls, height);

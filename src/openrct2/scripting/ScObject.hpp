@@ -45,7 +45,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScObject::name_get, nullptr, "name");
         }
 
-        static std::optional<ObjectType> StringToObjectType(const std::string_view& type)
+        static std::optional<ObjectType> StringToObjectType(std::string_view type)
         {
             for (uint8_t i = 0; i < EnumValue(ObjectType::Count); i++)
             {

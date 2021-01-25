@@ -151,14 +151,6 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 
 void S6Exporter::Export()
 {
-    int32_t regular_cycle = check_for_sprite_list_cycles(false);
-    int32_t disjoint_sprites_count = fix_disjoint_sprites();
-    openrct2_assert(regular_cycle == -1, "Sprite cycle exists in regular list %d", regular_cycle);
-    // This one is less harmful, no need to assert for it ~janisozaur
-    if (disjoint_sprites_count > 0)
-    {
-        log_error("Found %d disjoint null sprites", disjoint_sprites_count);
-    }
     _s6.info = gS6Info;
     {
         auto temp = utf8_to_rct2(gS6Info.name);
@@ -412,7 +404,9 @@ void S6Exporter::Export()
         dst->Ticks = src->Ticks;
         dst->MonthYear = src->MonthYear;
         dst->Day = src->Day;
-        std::memcpy(dst->Text, src->Text, sizeof(dst->Text));
+
+        auto rct2text = ConvertFormattedStringToRCT2(src->Text, sizeof(dst->Text));
+        std::memcpy(dst->Text, rct2text.c_str(), std::min(sizeof(dst->Text), rct2text.size()));
     }
 
     // pad_13CE730
@@ -955,18 +949,68 @@ void S6Exporter::ExportSprites()
 
     for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
     {
-        _s6.sprite_lists_head[i] = gSpriteListHead[i];
-        _s6.sprite_lists_count[i] = gSpriteListCount[i];
+        //_s6.sprite_lists_head[i] = gSpriteListHead[i];
+        _s6.sprite_lists_count[i] = GetEntityListCount(EntityListId(i));
+    }
+    RebuildEntityLinks();
+}
+
+void S6Exporter::RebuildEntityLinks()
+{
+    // Rebuild next/previous linked list entity indexs
+    for (auto list :
+         { RCT12EntityLinkListOffset::Free, RCT12EntityLinkListOffset::Litter, RCT12EntityLinkListOffset::Misc,
+           RCT12EntityLinkListOffset::Peep, RCT12EntityLinkListOffset::TrainHead, RCT12EntityLinkListOffset::Vehicle })
+    {
+        uint16_t previous = SPRITE_INDEX_NULL;
+        for (auto& entity : _s6.sprites)
+        {
+            if (entity.unknown.linked_list_type_offset == list)
+            {
+                _s6.sprites[entity.unknown.sprite_index].unknown.previous = previous;
+                if (previous != SPRITE_INDEX_NULL)
+                {
+                    _s6.sprites[previous].unknown.next = entity.unknown.sprite_index;
+                }
+                else
+                {
+                    _s6.sprite_lists_head[EnumValue(list) >> 1] = entity.unknown.sprite_index;
+                }
+                _s6.sprites[entity.unknown.sprite_index].unknown.next = SPRITE_INDEX_NULL;
+                previous = entity.unknown.sprite_index;
+            }
+        }
+    }
+
+    // Rebuild next_in_quadrant linked list entity indexs
+    for (auto x = 0; x < 255; ++x)
+    {
+        for (auto y = 0; y < 255; ++y)
+        {
+            uint16_t previous = SPRITE_INDEX_NULL;
+            for (auto* entity : EntityTileList(TileCoordsXY{ x, y }.ToCoordsXY()))
+            {
+                if (previous != SPRITE_INDEX_NULL)
+                {
+                    _s6.sprites[previous].unknown.next_in_quadrant = entity->sprite_index;
+                }
+                previous = entity->sprite_index;
+            }
+            if (previous != SPRITE_INDEX_NULL)
+            {
+                _s6.sprites[previous].unknown.next_in_quadrant = SPRITE_INDEX_NULL;
+            }
+        }
     }
 }
 
 void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
 {
     std::memset(dst, 0, sizeof(rct_sprite));
-    switch (src->generic.sprite_identifier)
+    switch (src->misc.sprite_identifier)
     {
         case SpriteIdentifier::Null:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Vehicle:
             ExportSpriteVehicle(&dst->vehicle, &src->vehicle);
@@ -975,26 +1019,56 @@ void S6Exporter::ExportSprite(RCT2Sprite* dst, const rct_sprite* src)
             ExportSpritePeep(&dst->peep, &src->peep);
             break;
         case SpriteIdentifier::Misc:
-            ExportSpriteMisc(&dst->unknown, &src->generic);
+            ExportSpriteMisc(&dst->unknown, &src->misc);
             break;
         case SpriteIdentifier::Litter:
             ExportSpriteLitter(&dst->litter, &src->litter);
             break;
         default:
-            ExportSpriteCommonProperties(&dst->unknown, &src->generic);
-            log_warning("Sprite identifier %d can not be exported.", src->generic.sprite_identifier);
+            ExportSpriteCommonProperties(&dst->unknown, &src->misc);
+            log_warning("Sprite identifier %d can not be exported.", src->misc.sprite_identifier);
             break;
     }
+}
+
+constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
+{
+    RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
+    switch (src->sprite_identifier)
+    {
+        case SpriteIdentifier::Vehicle:
+        {
+            auto veh = src->As<Vehicle>();
+            if (veh && veh->IsHead())
+            {
+                output = RCT12EntityLinkListOffset::TrainHead;
+            }
+            else
+            {
+                output = RCT12EntityLinkListOffset::Vehicle;
+            }
+        }
+        break;
+        case SpriteIdentifier::Peep:
+            output = RCT12EntityLinkListOffset::Peep;
+            break;
+        case SpriteIdentifier::Misc:
+            output = RCT12EntityLinkListOffset::Misc;
+            break;
+        case SpriteIdentifier::Litter:
+            output = RCT12EntityLinkListOffset::Litter;
+            break;
+        default:
+            break;
+    }
+    return output;
 }
 
 void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
-    dst->type = src->type;
-    dst->next_in_quadrant = src->next_in_quadrant;
-    dst->next = src->next;
-    dst->previous = src->previous;
-    dst->linked_list_type_offset = static_cast<uint8_t>(src->linked_list_index) * 2;
+    dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
+    dst->next_in_quadrant = SPRITE_INDEX_NULL;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
     dst->flags = src->flags;
@@ -1015,6 +1089,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     const auto* ride = src->GetRide();
 
     ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    dst->type = EnumValue(src->SubType);
     dst->vehicle_sprite_type = src->vehicle_sprite_type;
     dst->bank_rotation = src->bank_rotation;
     dst->remaining_distance = src->remaining_distance;
@@ -1248,10 +1323,11 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
-void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
+void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const MiscEntity* csrc)
 {
     ExportSpriteCommonProperties(cdst, csrc);
-    switch (static_cast<MiscEntityType>(cdst->type))
+    cdst->type = EnumValue(csrc->SubType);
+    switch (csrc->SubType)
     {
         case MiscEntityType::SteamParticle:
         {
@@ -1295,7 +1371,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
         case MiscEntityType::ExplosionFlare:
         case MiscEntityType::CrashSplash:
         {
-            auto src = static_cast<const SpriteGeneric*>(csrc);
+            auto src = static_cast<const MiscEntity*>(csrc);
             auto dst = static_cast<RCT12SpriteParticle*>(cdst);
             dst->frame = src->frame;
             break;
@@ -1343,6 +1419,7 @@ void S6Exporter::ExportSpriteMisc(RCT12SpriteBase* cdst, const SpriteBase* csrc)
 void S6Exporter::ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src)
 {
     ExportSpriteCommonProperties(dst, src);
+    dst->type = EnumValue(src->SubType);
     dst->creationTick = src->creationTick;
 }
 
@@ -1437,7 +1514,7 @@ void S6Exporter::ExportTileElements()
 
 void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
 {
-    // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+    // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
     uint8_t tileElementType = src->GetType();
     dst->ClearAs(tileElementType);
     dst->SetDirection(src->GetDirection());
@@ -1509,7 +1586,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetPhotoTimeout(src2->GetPhotoTimeout());
             dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
             dst2->SetIsIndestructible(src2->IsIndestructible());
-            dst2->SetSeatRotation(src2->GetSeatRotation());
+
             // Skipping IsHighlighted()
 
             // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
@@ -1520,6 +1597,20 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
                 }
+                else if (ride->type == RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
+                }
+            }
+            // _Should_ not happen, but if it does, pick the most likely option.
+            else
+            {
+                dst2->SetSeatRotation(src2->GetSeatRotation());
             }
 
             break;
@@ -1619,7 +1710,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
     }
 }
 
-std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& value)
+std::optional<uint16_t> S6Exporter::AllocateUserString(std::string_view value)
 {
     auto nextId = _userStrings.size();
     if (nextId < RCT12_MAX_USER_STRINGS)
@@ -1630,37 +1721,6 @@ std::optional<uint16_t> S6Exporter::AllocateUserString(const std::string_view& v
     return std::nullopt;
 }
 
-static std::string GetTruncatedRCT2String(const std::string_view& src)
-{
-    auto rct2encoded = utf8_to_rct2(src);
-    if (rct2encoded.size() > RCT12_USER_STRING_MAX_LENGTH - 1)
-    {
-        log_warning(
-            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
-            std::string(src).c_str());
-
-        rct2encoded.resize(RCT12_USER_STRING_MAX_LENGTH - 1);
-        for (size_t i = 0; i < rct2encoded.size(); i++)
-        {
-            if (rct2encoded[i] == static_cast<char>(static_cast<uint8_t>(0xFF)))
-            {
-                if (i > RCT12_USER_STRING_MAX_LENGTH - 4)
-                {
-                    // This codepoint was truncated, remove codepoint altogether
-                    rct2encoded.resize(i);
-                    break;
-                }
-                else
-                {
-                    // Skip the next two bytes which represent the unicode character
-                    i += 2;
-                }
-            }
-        }
-    }
-    return rct2encoded;
-}
-
 void S6Exporter::ExportUserStrings()
 {
     auto numUserStrings = std::min<size_t>(_userStrings.size(), RCT12_MAX_USER_STRINGS);
@@ -1668,7 +1728,7 @@ void S6Exporter::ExportUserStrings()
     {
         auto dst = _s6.custom_strings[i];
         const auto& src = _userStrings[i];
-        auto encodedSrc = GetTruncatedRCT2String(src);
+        auto encodedSrc = GetTruncatedRCT2String(src, RCT12_USER_STRING_MAX_LENGTH);
         auto stringLen = std::min<size_t>(encodedSrc.size(), RCT12_USER_STRING_MAX_LENGTH - 1);
         std::memcpy(dst, encodedSrc.data(), stringLen);
     }

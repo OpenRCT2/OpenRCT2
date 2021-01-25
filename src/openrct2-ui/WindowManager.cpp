@@ -31,7 +31,6 @@ public:
     void Init() override
     {
         ThemeManagerInitialise();
-        window_guest_list_init_vars();
         window_new_ride_init_vars();
     }
 
@@ -211,7 +210,7 @@ public:
         return window_error_open(title, message, args);
     }
 
-    rct_window* ShowError(const std::string_view& title, const std::string_view& message) override
+    rct_window* ShowError(std::string_view title, std::string_view message) override
     {
         return window_error_open(title, message);
     }

@@ -16,6 +16,8 @@
 #include "Fountain.h"
 #include "SpriteBase.h"
 
+#include <list>
+
 #define SPRITE_INDEX_NULL 0xFFFF
 #define MAX_SPRITES 10000
 
@@ -39,12 +41,15 @@ enum class EntityListId : uint8_t
     Count,
 };
 
+enum LitterType : uint8_t;
+
 struct Litter : SpriteBase
 {
+    LitterType SubType;
     uint32_t creationTick;
 };
 
-struct Balloon : SpriteGeneric
+struct Balloon : MiscEntity
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -55,7 +60,7 @@ struct Balloon : SpriteGeneric
     void Press();
 };
 
-struct Duck : SpriteGeneric
+struct Duck : MiscEntity
 {
     enum class DuckState : uint8_t
     {
@@ -82,7 +87,7 @@ private:
     void UpdateFlyAway();
 };
 
-struct MoneyEffect : SpriteBase
+struct MoneyEffect : MiscEntity
 {
     uint16_t MoveDelay;
     uint8_t NumMovements;
@@ -97,7 +102,7 @@ struct MoneyEffect : SpriteBase
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct VehicleCrashParticle : SpriteGeneric
+struct VehicleCrashParticle : MiscEntity
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -112,22 +117,22 @@ struct VehicleCrashParticle : SpriteGeneric
     void Update();
 };
 
-struct ExplosionFlare : SpriteGeneric
+struct ExplosionFlare : MiscEntity
 {
     void Update();
 };
 
-struct ExplosionCloud : SpriteGeneric
+struct ExplosionCloud : MiscEntity
 {
     void Update();
 };
 
-struct CrashSplashParticle : SpriteGeneric
+struct CrashSplashParticle : MiscEntity
 {
     void Update();
 };
 
-struct SteamParticle : SpriteGeneric
+struct SteamParticle : MiscEntity
 {
     uint16_t time_to_move;
 
@@ -142,7 +147,7 @@ struct SteamParticle : SpriteGeneric
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    SpriteGeneric generic;
+    MiscEntity misc;
     Peep peep;
     Litter litter;
     Vehicle vehicle;
@@ -192,7 +197,7 @@ enum
     SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
 
-enum
+enum LitterType : uint8_t
 {
     LITTER_TYPE_SICK,
     LITTER_TYPE_SICK_ALT,
@@ -223,29 +228,27 @@ template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
 }
 
 uint16_t GetEntityListCount(EntityListId list);
-extern uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
-extern uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
-extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier);
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex);
+void RebuildEntityLists();
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
-void litter_create(const CoordsXYZD& litterPos, int32_t type);
+void litter_create(const CoordsXYZD& litterPos, LitterType type);
 void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
-uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
+const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
 
 ///////////////////////////////////////////////////////////////
 // Balloon
@@ -270,8 +273,8 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-int32_t check_for_sprite_list_cycles(bool fix);
-int32_t fix_disjoint_sprites();
+
+const std::list<uint16_t>& GetEntityList(const EntityListId id);
 
 template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
 {
@@ -329,47 +332,148 @@ public:
     using iterator_category = std::forward_iterator_tag;
 };
 
+template<typename T> class EntityTileIterator
+{
+private:
+    std::vector<uint16_t>::const_iterator iter;
+    std::vector<uint16_t>::const_iterator end;
+    T* Entity = nullptr;
+
+public:
+    EntityTileIterator(std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
+        : iter(_iter)
+        , end(_end)
+    {
+        ++(*this);
+    }
+    EntityTileIterator& operator++()
+    {
+        Entity = nullptr;
+
+        while (iter != end && Entity == nullptr)
+        {
+            Entity = GetEntity<T>(*iter++);
+        }
+        return *this;
+    }
+
+    EntityTileIterator operator++(int)
+    {
+        EntityTileIterator retval = *this;
+        ++(*this);
+        return *iter;
+    }
+    bool operator==(EntityTileIterator other) const
+    {
+        return Entity == other.Entity;
+    }
+    bool operator!=(EntityTileIterator other) const
+    {
+        return !(*this == other);
+    }
+    T* operator*()
+    {
+        return Entity;
+    }
+    // iterator traits
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = const T*;
+    using reference = const T&;
+    using iterator_category = std::forward_iterator_tag;
+};
+
 template<typename T = SpriteBase> class EntityTileList
 {
 private:
-    uint16_t FirstEntity = SPRITE_INDEX_NULL;
-    using EntityTileIterator = EntityIterator<T, &SpriteBase::next_in_quadrant>;
+    const std::vector<uint16_t>& vec;
 
 public:
     EntityTileList(const CoordsXY& loc)
-        : FirstEntity(sprite_get_first_in_quadrant(loc))
+        : vec(GetEntityTileList(loc))
     {
     }
 
-    EntityTileIterator begin()
+    EntityTileIterator<T> begin()
     {
-        return EntityTileIterator(FirstEntity);
+        return EntityTileIterator<T>(std::begin(vec), std::end(vec));
     }
-    EntityTileIterator end()
+    EntityTileIterator<T> end()
     {
-        return EntityTileIterator(SPRITE_INDEX_NULL);
+        return EntityTileIterator<T>(std::end(vec), std::end(vec));
     }
+};
+
+template<typename T> class EntityListIterator
+{
+private:
+    std::list<uint16_t>::const_iterator iter;
+    std::list<uint16_t>::const_iterator end;
+    T* Entity = nullptr;
+
+public:
+    EntityListIterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
+        : iter(_iter)
+        , end(_end)
+    {
+        ++(*this);
+    }
+    EntityListIterator& operator++()
+    {
+        Entity = nullptr;
+
+        while (iter != end && Entity == nullptr)
+        {
+            Entity = GetEntity<T>(*iter++);
+        }
+        return *this;
+    }
+
+    EntityListIterator operator++(int)
+    {
+        EntityListIterator retval = *this;
+        ++(*this);
+        return *iter;
+    }
+    bool operator==(EntityListIterator other) const
+    {
+        return Entity == other.Entity;
+    }
+    bool operator!=(EntityListIterator other) const
+    {
+        return !(*this == other);
+    }
+    T* operator*()
+    {
+        return Entity;
+    }
+    // iterator traits
+    using difference_type = std::ptrdiff_t;
+    using value_type = T;
+    using pointer = const T*;
+    using reference = const T&;
+    using iterator_category = std::forward_iterator_tag;
 };
 
 template<typename T = SpriteBase> class EntityList
 {
 private:
-    uint16_t FirstEntity = SPRITE_INDEX_NULL;
-    using EntityListIterator = EntityIterator<T, &SpriteBase::next>;
+    using EntityListIterator_t = EntityListIterator<T>;
+    const std::list<uint16_t>& vec;
 
 public:
     EntityList(EntityListId type)
-        : FirstEntity(gSpriteListHead[static_cast<uint8_t>(type)])
+        : vec(GetEntityList(type))
     {
     }
 
-    EntityListIterator begin()
+    EntityListIterator_t begin()
     {
-        return EntityListIterator(FirstEntity);
+        return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
     }
-    EntityListIterator end()
+    EntityListIterator_t end()
     {
-        return EntityListIterator(SPRITE_INDEX_NULL);
+        return EntityListIterator_t(std::cend(vec), std::cend(vec));
     }
 };
 

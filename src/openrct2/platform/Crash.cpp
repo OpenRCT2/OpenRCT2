@@ -55,11 +55,11 @@ const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 // Note: uploading gzipped crash dumps manually requires specifying
 // 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,
 // so just hope the file name with '.gz' suffix is enough.
-// For docs on uplading to backtrace.io check
+// For docs on uploading to backtrace.io check
 // https://documentation.backtrace.io/product_integration_minidump_breakpad/
 static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, int& error, std::wstring& response)
 {
-    for (auto file : files)
+    for (const auto& file : files)
     {
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
@@ -274,7 +274,7 @@ static bool OnCrash(
         }
         else
         {
-            MessageBoxW(nullptr, L"Dump uploaded succesfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
+            MessageBoxW(nullptr, L"Dump uploaded successfully.", WSZ(OPENRCT2_NAME), MB_OK | MB_ICONINFORMATION);
         }
     }
     HRESULT coInitializeResult = CoInitialize(nullptr);

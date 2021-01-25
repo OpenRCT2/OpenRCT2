@@ -119,7 +119,7 @@ std::tuple<rct_string_id, rct_string_id, rct_string_id> LocalisationService::Get
     return std::make_tuple(result0, result1, result2);
 }
 
-rct_string_id LocalisationService::GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) const
+rct_string_id LocalisationService::GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const
 {
     if (_languageCurrent == nullptr)
     {

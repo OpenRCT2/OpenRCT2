@@ -98,7 +98,6 @@ rct_window* window_player_open(uint8_t id);
 rct_window* window_new_campaign_open(int16_t campaignType);
 
 rct_window* window_install_track_open(const utf8* path);
-void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
 rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
@@ -108,7 +107,7 @@ void window_title_command_editor_open(struct TitleSequence* sequence, int32_t co
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
-rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
+rct_window* window_error_open(std::string_view title, std::string_view message);
 struct TrackDesign;
 rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
@@ -161,8 +160,8 @@ void window_text_input_raw_open(
     const_utf8string existing_text, int32_t maxLength);
 
 void window_text_input_open(
-    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
-    std::function<void(const std::string_view&)> okCallback, std::function<void()> cancelCallback);
+    std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
+    std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
 rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
 

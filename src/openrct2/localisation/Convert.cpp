@@ -17,9 +17,9 @@
 
 /**
  * Decodes an RCT2 string to a wide char string still in the original code page.
- * An RCT2 string is a multi-byte string where every two-byte code point is preceeded with a byte value of 255.
+ * An RCT2 string is a multi-byte string where every two-byte code point is preceded with a byte value of 255.
  */
-static std::wstring DecodeToWideChar(const std::string_view& src)
+static std::wstring DecodeToWideChar(std::string_view src)
 {
     std::wstring decoded;
     decoded.reserve(src.size());
@@ -62,7 +62,7 @@ static std::wstring DecodeToWideChar(const std::string_view& src)
     return decoded;
 }
 
-static std::string DecodeToMultiByte(const std::string_view& src)
+static std::string DecodeToMultiByte(std::string_view src)
 {
     auto wide = DecodeToWideChar(src);
     std::string result;
@@ -85,7 +85,7 @@ static std::string DecodeToMultiByte(const std::string_view& src)
 /**
  * Encodes a UTF-8 string as an RCT2 string.
  */
-static std::string Encode(const std::string_view& src)
+static std::string Encode(const std::string& src)
 {
     std::string dst;
     const utf8* ch = src.data();
@@ -129,7 +129,7 @@ static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
     }
 }
 
-template<typename TConvertFunc> static std::string DecodeConvertWithTable(const std::string_view& src, TConvertFunc func)
+template<typename TConvertFunc> static std::string DecodeConvertWithTable(std::string_view src, TConvertFunc func)
 {
     auto decoded = DecodeToWideChar(src);
     std::wstring u16;
@@ -141,7 +141,7 @@ template<typename TConvertFunc> static std::string DecodeConvertWithTable(const 
     return String::ToUtf8(u16);
 }
 
-std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
+std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
 {
     auto codePage = GetCodePageForRCT2Language(languageId);
     if (codePage == CODE_PAGE::CP_1252)
@@ -156,10 +156,10 @@ std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId)
     }
 }
 
-std::string utf8_to_rct2(const std::string_view& src)
+std::string utf8_to_rct2(std::string_view src)
 {
     // NOTE: This is only used for SC6 / SV6 files which don't store the language identifier
     //       because of this, we can only store in RCT2's CP_1252 format. We can preserve some
     //       unicode characters, but only those between 256 and 65535.
-    return Encode(src);
+    return Encode(std::string(src));
 }

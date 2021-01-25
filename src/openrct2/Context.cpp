@@ -122,7 +122,7 @@ namespace OpenRCT2
         uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
-        // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+        // If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to
         // false.
         bool _finished = false;
 
@@ -951,6 +951,12 @@ namespace OpenRCT2
             {
                 _lastTick = 0;
                 _variableFrame = useVariableFrame;
+
+                // Switching from variable to fixed frame requires reseting
+                // of entity positions back to end of tick positions
+                auto& tweener = EntityTweener::Get();
+                tweener.Restore();
+                tweener.Reset();
             }
 
             if (useVariableFrame)
@@ -987,6 +993,10 @@ namespace OpenRCT2
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 Update();
+
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
+
                 _accumulator -= GAME_UPDATE_TIME_MS;
             }
 
@@ -995,7 +1005,6 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-                _drawingEngine->UpdateWindows();
             }
         }
 
@@ -1027,6 +1036,9 @@ namespace OpenRCT2
 
                 Update();
 
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
+
                 _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
@@ -1042,12 +1054,6 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-
-                // Note: It's important to call UpdateWindows after restoring the sprite positions, not in between,
-                // otherwise the window updates to positions of sprites could be reverted.
-                // This can be observed when changing ride settings using the mouse wheel that removes all
-                // vehicles and peeps from the ride: it can freeze the game.
-                _drawingEngine->UpdateWindows();
             }
         }
 

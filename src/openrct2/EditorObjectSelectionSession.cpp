@@ -13,6 +13,7 @@
 #include "Editor.h"
 #include "Game.h"
 #include "OpenRCT2.h"
+#include "drawing/Drawing.h"
 #include "localisation/Localisation.h"
 #include "management/Research.h"
 #include "object/DefaultObjects.h"
@@ -38,6 +39,7 @@ static void setup_track_designer_objects();
 static void setup_track_manager_objects();
 static void window_editor_object_selection_select_default_objects();
 static void SelectDesignerObjects();
+static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item);
 
 /**
  *
@@ -371,6 +373,32 @@ static void SelectDesignerObjects()
 }
 
 /**
+ * Replaces the previously selected water palette with the palette in the specified item immediately.
+ */
+static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
+{
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
+
+    if (oldPalette != nullptr)
+    {
+        const std::vector<rct_object_entry> oldEntries = { *(oldPalette->GetObjectEntry()) };
+        objectManager.UnloadObjects(oldEntries);
+    }
+
+    const rct_object_entry* newPaletteEntry = &item->ObjectEntry;
+
+    if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
+    {
+        load_palette();
+    }
+    else
+    {
+        log_error("Failed to load selected palette %.8s", newPaletteEntry->name);
+    }
+}
+
+/**
  *
  *  rct2: 0x006AA770
  */
@@ -512,6 +540,11 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
                     _maxObjectsWasHit = true;
                 }
             }
+        }
+        else if (objectType == ObjectType::Water)
+        {
+            // Replace old palette with newly selected palette immediately.
+            ReplaceSelectedWaterPalette(item);
         }
 
         if (isMasterObject != 0 && !(flags & INPUT_FLAG_EDITOR_OBJECT_1))

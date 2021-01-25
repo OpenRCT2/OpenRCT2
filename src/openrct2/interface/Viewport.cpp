@@ -1020,7 +1020,7 @@ void viewport_paint(
         _paintJobs->Join();
     }
 
-    for (auto&& column : columns)
+    for (auto column : columns)
     {
         viewport_paint_column(column);
     }

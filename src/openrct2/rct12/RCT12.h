@@ -142,7 +142,7 @@ enum
     RCT12_FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-// Masks and flags for values stored in in RCT12TileElement.properties.path.additions
+// Masks and flags for values stored in RCT12TileElement.properties.path.additions
 enum
 {
     RCT12_FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
@@ -511,10 +511,11 @@ public:
     uint8_t GetSeatRotation() const;
     uint16_t GetMazeEntry() const;
     uint8_t GetPhotoTimeout() const;
-    // Used in RCT1, will be reintroduced at some point.
-    // (See https://github.com/OpenRCT2/OpenRCT2/issues/7059)
+    // RCT1 feature, reintroduced by OpenRCT2. See https://github.com/OpenRCT2/OpenRCT2/issues/7059
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
+    void SetDoorAState(uint8_t newState);
+    void SetDoorBState(uint8_t newState);
 
     void SetTrackType(uint8_t newEntryIndex);
     void SetSequenceIndex(uint8_t newSequenceIndex);
@@ -599,9 +600,9 @@ public:
     uint8_t GetBannerIndex() const;
     bool IsAcrossTrack() const;
     bool AnimationIsBackwards() const;
-    uint32_t GetRawRCT1WallTypeData() const;
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
+    uint8_t GetRCT1Slope() const;
 
     void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
     void SetSlope(uint8_t newslope);
@@ -674,27 +675,38 @@ struct RCT12EightCarsCorruptElement15 : RCT12TileElementBase
 };
 assert_struct_size(RCT12EightCarsCorruptElement15, 8);
 
+// Offset into sprite_lists_head and sprite_lists_count
+enum class RCT12EntityLinkListOffset : uint8_t
+{
+    Free = 0,
+    TrainHead = 1 * sizeof(uint16_t),
+    Peep = 2 * sizeof(uint16_t),
+    Misc = 3 * sizeof(uint16_t),
+    Litter = 4 * sizeof(uint16_t),
+    Vehicle = 5 * sizeof(uint16_t),
+};
+
 struct RCT12SpriteBase
 {
-    SpriteIdentifier sprite_identifier; // 0x00
-    uint8_t type;                       // 0x01
-    uint16_t next_in_quadrant;          // 0x02
-    uint16_t next;                      // 0x04
-    uint16_t previous;                  // 0x06
-    uint8_t linked_list_type_offset;    // 0x08
-    uint8_t sprite_height_negative;     // 0x09
-    uint16_t sprite_index;              // 0x0A
-    uint16_t flags;                     // 0x0C
-    int16_t x;                          // 0x0E
-    int16_t y;                          // 0x10
-    int16_t z;                          // 0x12
-    uint8_t sprite_width;               // 0x14
-    uint8_t sprite_height_positive;     // 0x15
-    int16_t sprite_left;                // 0x16
-    int16_t sprite_top;                 // 0x18
-    int16_t sprite_right;               // 0x1A
-    int16_t sprite_bottom;              // 0x1C
-    uint8_t sprite_direction;           // 0x1E
+    SpriteIdentifier sprite_identifier;                // 0x00
+    uint8_t type;                                      // 0x01
+    uint16_t next_in_quadrant;                         // 0x02
+    uint16_t next;                                     // 0x04
+    uint16_t previous;                                 // 0x06
+    RCT12EntityLinkListOffset linked_list_type_offset; // 0x08
+    uint8_t sprite_height_negative;                    // 0x09
+    uint16_t sprite_index;                             // 0x0A
+    uint16_t flags;                                    // 0x0C
+    int16_t x;                                         // 0x0E
+    int16_t y;                                         // 0x10
+    int16_t z;                                         // 0x12
+    uint8_t sprite_width;                              // 0x14
+    uint8_t sprite_height_positive;                    // 0x15
+    int16_t sprite_left;                               // 0x16
+    int16_t sprite_top;                                // 0x18
+    int16_t sprite_right;                              // 0x1A
+    int16_t sprite_bottom;                             // 0x1C
+    uint8_t sprite_direction;                          // 0x1E
 };
 assert_struct_size(RCT12SpriteBase, 0x1F);
 
@@ -875,3 +887,6 @@ ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
+std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
+std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength);
+std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);

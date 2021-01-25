@@ -233,7 +233,7 @@ static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, 
         tdAction.SetFlags(flags);
         res = GameActions::Query(&tdAction);
 
-        // If successful dont keep trying.
+        // If successful don't keep trying.
         // If failure due to no money then increasing height only makes problem worse
         if (res->Error == GameActions::Status::Ok || res->Error == GameActions::Status::InsufficientFunds)
         {

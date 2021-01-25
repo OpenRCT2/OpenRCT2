@@ -130,7 +130,7 @@ std::string Object::GetName(int32_t language) const
     return GetString(language, ObjectStringID::NAME);
 }
 
-void rct_object_entry::SetName(const std::string_view& value)
+void rct_object_entry::SetName(std::string_view value)
 {
     std::memset(name, ' ', sizeof(name));
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
@@ -141,9 +141,9 @@ const std::vector<std::string>& Object::GetAuthors() const
     return _authors;
 }
 
-void Object::SetAuthors(const std::vector<std::string>&& authors)
+void Object::SetAuthors(std::vector<std::string>&& authors)
 {
-    _authors = authors;
+    _authors = std::move(authors);
 }
 
 std::optional<uint8_t> rct_object_entry::GetSceneryType() const

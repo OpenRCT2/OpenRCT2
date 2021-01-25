@@ -1731,28 +1731,48 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                     break;
             }
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
-            GameActions::Execute(&parkEntranceRemoveAction);
+            auto result = GameActions::Execute(&parkEntranceRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         case TILE_ELEMENT_TYPE_WALL:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
-            GameActions::Execute(&wallRemoveAction);
+            auto result = GameActions::Execute(&wallRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
-            GameActions::Execute(&removeSceneryAction);
+            auto result = GameActions::Execute(&removeSceneryAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
         }
         break;
         case TILE_ELEMENT_TYPE_BANNER:
         {
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
-            GameActions::Execute(&bannerRemoveAction);
+            auto result = GameActions::Execute(&bannerRemoveAction);
+            // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
+            if (result->Error != GameActions::Status::Ok)
+            {
+                tile_element_remove(element);
+            }
             break;
         }
         default:
@@ -2191,7 +2211,7 @@ TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t trackType)
+TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_type_t trackType)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
@@ -2218,7 +2238,7 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int32_t trackType, int32_t sequence)
+TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     auto trackTilePos = TileCoordsXYZ{ trackPos };
@@ -2241,7 +2261,7 @@ TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32_t trackType)
+TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2264,7 +2284,7 @@ TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32
     return nullptr;
 }
 
-TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, int32_t trackType, int32_t sequence)
+TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence)
 {
     auto tileElement = map_get_first_element_at(location);
     if (tileElement != nullptr)
@@ -2295,7 +2315,7 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, i
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)

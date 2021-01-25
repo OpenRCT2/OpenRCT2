@@ -29,11 +29,11 @@ const uint32_t vehicle_particle_base_sprites[] = {
 /**
  * rct2: 0x00672AC9
  */
-void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDirection)
+void misc_paint(paint_session* session, const MiscEntity* misc, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    switch (static_cast<MiscEntityType>(misc->type))
+    switch (misc->SubType)
     {
         case MiscEntityType::SteamParticle: // 0
         {
@@ -134,9 +134,7 @@ void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDir
                 isAntiClockwise = !isAntiClockwise;
             }
 
-            uint32_t baseImageId = (static_cast<MiscEntityType>(jumpingFountain->type) == MiscEntityType::JumpingFountainSnow)
-                ? 23037
-                : 22973;
+            uint32_t baseImageId = (jumpingFountain->SubType == MiscEntityType::JumpingFountainSnow) ? 23037 : 22973;
             uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;
             constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 },
                                                                              CoordsXY{ 0, -3 } };

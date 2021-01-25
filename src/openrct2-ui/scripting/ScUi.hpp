@@ -160,7 +160,7 @@ namespace OpenRCT2::Scripting
             {
                 auto index = a.as_int();
                 auto i = 0;
-                for (auto w : g_window_list)
+                for (const auto& w : g_window_list)
                 {
                     if (i == index)
                     {
@@ -171,7 +171,7 @@ namespace OpenRCT2::Scripting
             }
             else if (a.type() == DukValue::Type::STRING)
             {
-                auto classification = a.as_string();
+                const auto& classification = a.as_string();
                 auto w = FindCustomWindowByClassification(classification);
                 if (w != nullptr)
                 {
@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
                 auto callback = desc["callback"];
                 window_text_input_open(
                     title, description, initialValue, std::max(0, maxLength),
-                    [this, plugin, callback](const std::string_view& value) {
+                    [this, plugin, callback](std::string_view value) {
                         auto dukValue = ToDuk(_scriptEngine.GetContext(), value);
                         _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
                     },

@@ -173,15 +173,15 @@ struct rct_viewport
  */
 struct rct_scroll
 {
-    uint16_t flags;          // 0x00
-    uint16_t h_left;         // 0x02
-    uint16_t h_right;        // 0x04
-    uint16_t h_thumb_left;   // 0x06
-    uint16_t h_thumb_right;  // 0x08
-    uint16_t v_top;          // 0x0A
-    uint16_t v_bottom;       // 0x0C
-    uint16_t v_thumb_top;    // 0x0E
-    uint16_t v_thumb_bottom; // 0x10
+    uint16_t flags{};          // 0x00
+    uint16_t h_left{};         // 0x02
+    uint16_t h_right{};        // 0x04
+    uint16_t h_thumb_left{};   // 0x06
+    uint16_t h_thumb_right{};  // 0x08
+    uint16_t v_top{};          // 0x0A
+    uint16_t v_bottom{};       // 0x0C
+    uint16_t v_thumb_top{};    // 0x0E
+    uint16_t v_thumb_bottom{}; // 0x10
 };
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
@@ -364,7 +364,11 @@ enum WINDOW_FLAGS
     WF_WHITE_BORDER_ONE = (1 << 12),
     WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 
-    WF_NO_SNAPPING = (1 << 15)
+    WF_NO_SNAPPING = (1 << 15),
+
+    // Create only flags
+    WF_AUTO_POSITION = (1 << 16),
+    WF_CENTRE_SCREEN = (1 << 17),
 };
 
 enum SCROLL_FLAGS
@@ -657,6 +661,14 @@ using close_callback = void (*)();
 extern rct_window* gWindowAudioExclusive;
 
 extern uint16_t gWindowUpdateTicks;
+namespace MapFlashingFlags
+{
+    constexpr uint16_t GuestListOpen = (1 << 0);
+    constexpr uint16_t FlashGuests = (1 << 1);
+    constexpr uint16_t StaffListOpen = (1 << 2);
+    constexpr uint16_t FlashStaff = (1 << 3);
+    constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
+} // namespace MapFlashingFlags
 extern uint16_t gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];
@@ -673,12 +685,26 @@ void window_update_all();
 void window_set_window_limit(int32_t value);
 
 rct_window* WindowCreate(
-    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
-    rct_windowclass cls, uint16_t flags);
+    std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
+}
+
+rct_window* WindowCreate(
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    uint32_t flags);
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
+
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);

@@ -32,7 +32,7 @@ Vehicle* cable_lift_segment_create(
     {
         ride.cable_lift = current->sprite_index;
     }
-    current->type = static_cast<uint8_t>(head ? Vehicle::Type::Head : Vehicle::Type::Tail);
+    current->SubType = head ? Vehicle::Type::Head : Vehicle::Type::Tail;
     current->var_44 = var_44;
     current->remaining_distance = remaining_distance;
     current->sprite_width = 10;
@@ -233,7 +233,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
     for (; remaining_distance >= 13962; _vehicleUnkF64E10++)
     {
-        uint8_t trackType = GetTrackType();
+        auto trackType = GetTrackType();
         if (trackType == TrackElemType::CableLiftHill && track_progress == 160)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_1;
@@ -306,7 +306,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         if (static_cast<int16_t>(trackProgress) == -1)
         {
-            uint8_t trackType = GetTrackType();
+            auto trackType = GetTrackType();
             TileElement* trackElement = map_get_track_element_at_of_type_seq(TrackLocation, trackType, 0);
 
             auto input = CoordsXYE{ TrackLocation, trackElement };

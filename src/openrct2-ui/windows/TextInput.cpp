@@ -73,7 +73,7 @@ static int32_t _maxInputLength;
 
 static std::string _title;
 static std::string _description;
-static std::function<void(const std::string_view&)> _callback;
+static std::function<void(std::string_view)> _callback;
 static std::function<void()> _cancelCallback;
 
 void window_text_input_open(
@@ -157,8 +157,8 @@ void window_text_input_raw_open(
 }
 
 void window_text_input_open(
-    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
-    std::function<void(const std::string_view&)> callback, std::function<void()> cancelCallback)
+    std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
+    std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
 {
     _title = title;
     _description = description;

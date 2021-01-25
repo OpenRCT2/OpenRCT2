@@ -467,7 +467,7 @@ static void loc_6C7502(int32_t al);
 static void ride_construction_set_brakes_speed(int32_t brakesSpeed);
 static void ride_construction_tooldown_entrance_exit(const ScreenCoordsXY& screenCoords);
 
-static uint8_t _currentPossibleRideConfigurations[32];
+static track_type_t _currentPossibleRideConfigurations[32];
 
 static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180, STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
@@ -1644,7 +1644,7 @@ static void window_ride_construction_dropdown(rct_window* w, rct_widgetindex wid
 
     ride_construction_invalidate_current_track();
     _currentTrackPrice = MONEY32_UNDEFINED;
-    int32_t trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
+    track_type_t trackPiece = _currentPossibleRideConfigurations[dropdownIndex];
     switch (trackPiece)
     {
         case TrackElemType::EndStation:
@@ -1852,7 +1852,7 @@ static void window_ride_construction_construct(rct_window* w)
  */
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
-    int32_t direction, type;
+    int32_t direction;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1884,7 +1884,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
 
     // Invalidate the selected track element or make sure it's at origin???
     direction = _currentTrackPieceDirection;
-    type = _currentTrackPieceType;
+    track_type_t type = _currentTrackPieceType;
     auto newCoords = sub_6C683D({ _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
     if (newCoords == std::nullopt)
     {
@@ -3343,7 +3343,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     int32_t defaultIndex = -1;
     for (int32_t i = 0; i < _numCurrentPossibleRideConfigurations; i++)
     {
-        uint8_t trackPiece = _currentPossibleRideConfigurations[i];
+        track_type_t trackPiece = _currentPossibleRideConfigurations[i];
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
         if (trackPieceStringId == STR_RAPIDS)
         {

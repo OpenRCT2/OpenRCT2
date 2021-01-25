@@ -35,7 +35,7 @@ JobPool::~JobPool()
         _condPending.notify_all();
     }
 
-    for (auto&& th : _threads)
+    for (auto& th : _threads)
     {
         assert(th.joinable() != false);
         th.join();
@@ -100,7 +100,7 @@ void JobPool::ProcessQueue()
     unique_lock lock(_mutex);
     do
     {
-        // Wait for work or cancelation.
+        // Wait for work or cancellation.
         _condPending.wait(lock, [this]() { return _shouldStop || !_pending.empty(); });
 
         if (!_pending.empty())

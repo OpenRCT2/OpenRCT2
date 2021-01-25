@@ -147,7 +147,7 @@ namespace OpenRCT2
 
         void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
         {
-            _currentRecording->checksums.emplace_back(std::make_pair(tick, checksum));
+            _currentRecording->checksums.emplace_back(std::make_pair(tick, std::move(checksum)));
         }
 
         // Function runs each Tick.
@@ -450,10 +450,6 @@ namespace OpenRCT2
 
         virtual bool IsPlaybackStateMismatching() const override
         {
-            if (_mode != ReplayMode::PLAYING)
-            {
-                return false;
-            }
             return _faultyChecksumIndex != -1;
         }
 
@@ -799,6 +795,8 @@ namespace OpenRCT2
             const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
             if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
             {
+                _currentReplay->checksumIndex++;
+
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
@@ -818,7 +816,6 @@ namespace OpenRCT2
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }
-                _currentReplay->checksumIndex++;
             }
         }
 #endif // DISABLE_NETWORK

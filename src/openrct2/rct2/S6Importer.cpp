@@ -433,7 +433,7 @@ public:
                 dst->Ticks = src->Ticks;
                 dst->MonthYear = src->MonthYear;
                 dst->Day = src->Day;
-                std::memcpy(dst->Text, src->Text, sizeof(src->Text));
+                dst->Text = ConvertFormattedStringToOpenRCT2(std::string_view(src->Text, sizeof(src->Text)));
             }
             else
             {
@@ -460,15 +460,6 @@ public:
 
         auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
         park.Name = GetUserString(_s6.park_name);
-
-        // We try to fix the cycles on import, hence the 'true' parameter
-        check_for_sprite_list_cycles(true);
-        int32_t disjoint_sprites_count = fix_disjoint_sprites();
-        // This one is less harmful, no need to assert for it ~janisozaur
-        if (disjoint_sprites_count > 0)
-        {
-            log_error("Found %d disjoint null sprites", disjoint_sprites_count);
-        }
 
         if (String::Equals(_s6.scenario_filename, "Europe - European Cultural Festival.SC6"))
         {
@@ -1031,32 +1022,63 @@ public:
 
     void ImportTileElements()
     {
-        for (uint32_t index = 0; index < RCT2_MAX_TILE_ELEMENTS; index++)
+        // Build tile pointer cache (needed to get the first element at a certain location)
+        auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
+
+        TileElement* dstElement = gTileElements;
+        for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
-            auto src = &_s6.tile_elements[index];
-            auto dst = &gTileElements[index];
-            if (src->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+            for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
-                std::memcpy(dst, src, sizeof(*src));
-            }
-            else
-            {
-                auto tileElementType = static_cast<RCT12TileElementType>(src->GetType());
-                // Todo: replace with setting invisibility bit
-                if (tileElementType == RCT12TileElementType::Corrupt
-                    || tileElementType == RCT12TileElementType::EightCarsCorrupt14
-                    || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                    std::memcpy(dst, src, sizeof(*src));
-                else
-                    ImportTileElement(dst, src);
+                if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
+                // This might happen with damaged parks. Make sure there is *something* to avoid crashes.
+                if (srcElement == nullptr)
+                {
+                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement->SetLastForTile(true);
+                    dstElement++;
+                    continue;
+                }
+
+                do
+                {
+                    if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                    {
+                        std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                    }
+                    else
+                    {
+                        auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                        // Todo: replace with setting invisibility bit
+                        if (tileElementType == RCT12TileElementType::Corrupt
+                            || tileElementType == RCT12TileElementType::EightCarsCorrupt14
+                            || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
+                            std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                        else
+                            ImportTileElement(dstElement, srcElement);
+                    }
+
+                    dstElement++;
+                } while (!(srcElement++)->IsLastForTile());
             }
         }
+
         gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
+
+        map_update_tile_pointers();
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)
     {
-        // Todo: allow for changing defition of OpenRCT2 tile element types - replace with a map
+        // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
         uint8_t tileElementType = src->GetType();
         dst->ClearAs(tileElementType);
         dst->SetDirection(src->GetDirection());
@@ -1126,7 +1148,6 @@ public:
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
-                dst2->SetSeatRotation(src2->GetSeatRotation());
                 // Skipping IsHighlighted()
 
                 auto trackType = dst2->GetTrackType();
@@ -1144,6 +1165,15 @@ public:
                 if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
+                }
+                else if (rideType == RIDE_TYPE_GHOST_TRAIN)
+                {
+                    dst2->SetDoorAState(src2->GetDoorAState());
+                    dst2->SetDoorBState(src2->GetDoorBState());
+                }
+                else
+                {
+                    dst2->SetSeatRotation(src2->GetSeatRotation());
                 }
 
                 break;
@@ -1293,14 +1323,7 @@ public:
             auto dst = GetEntity(i);
             ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
         }
-
-        for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-        {
-            gSpriteListHead[i] = _s6.sprite_lists_head[i];
-            gSpriteListCount[i] = _s6.sprite_lists_count[i];
-        }
-        // This list contains the number of free slots. Increase it according to our own sprite limit.
-        gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] += (MAX_SPRITES - RCT2_MAX_SPRITES);
+        RebuildEntityLists();
     }
 
     void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
@@ -1318,7 +1341,7 @@ public:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
             case SpriteIdentifier::Misc:
-                ImportSpriteMisc(&dst->generic, &src->unknown);
+                ImportSpriteMisc(&dst->misc, &src->unknown);
                 break;
             case SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);
@@ -1335,6 +1358,7 @@ public:
         const auto& ride = _s6.rides[src->ride];
 
         ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
+        dst->SubType = Vehicle::Type(src->type);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1530,10 +1554,11 @@ public:
         dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    void ImportSpriteMisc(SpriteBase* cdst, const RCT12SpriteBase* csrc)
+    void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        switch (static_cast<MiscEntityType>(cdst->type))
+        cdst->SubType = MiscEntityType(csrc->type);
+        switch (cdst->SubType)
         {
             case MiscEntityType::SteamParticle:
             {
@@ -1578,7 +1603,7 @@ public:
             case MiscEntityType::CrashSplash:
             {
                 auto src = static_cast<const RCT12SpriteParticle*>(csrc);
-                auto dst = static_cast<SpriteGeneric*>(cdst);
+                auto dst = static_cast<MiscEntity*>(cdst);
                 dst->frame = src->frame;
                 break;
             }
@@ -1616,7 +1641,7 @@ public:
                 break;
             }
             default:
-                log_warning("Misc. sprite type %d can not be imported.", cdst->type);
+                log_warning("Misc. sprite type %d can not be imported.", cdst->SubType);
                 break;
         }
     }
@@ -1624,17 +1649,14 @@ public:
     void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
     {
         ImportSpriteCommonProperties(dst, src);
+        dst->SubType = LitterType(src->type);
         dst->creationTick = src->creationTick;
     }
 
     void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
         dst->sprite_identifier = src->sprite_identifier;
-        dst->type = src->type;
-        dst->next_in_quadrant = src->next_in_quadrant;
-        dst->next = src->next;
-        dst->previous = src->previous;
-        dst->linked_list_index = static_cast<EntityListId>(src->linked_list_type_offset >> 1);
+        dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;

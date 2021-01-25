@@ -95,6 +95,7 @@ STR_0090    :Kolejka kopalniana
 STR_0091    :Nieznana atrakcja (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Kolejka hybrydowa
+STR_0094    :Kolejka jednotorowa
 STR_0512    :Kolejka górska ze spiralnym podjazdem i łagodnymi pokręconymi zjazdami
 STR_0513    :Kolejka górska z pętlą, klienci jadą w niej na stojąco
 STR_0514    :Wagony podczepione są pod tor kolejki górskiej i bujają się na zakrętach
@@ -175,6 +176,7 @@ STR_0599    :Kolejka górska z indywidualnymi pojazdami i łagodnymi zakręcanym
 STR_0600    :Zasilane kopalniane wagoniki jeżdżące przez łagodne i pokręcone tory
 STR_0602    :Kolejka górska, której wagoniki są rozpędzane na stacji liniowymi silnikami indukcyjnymi, aby pokonać zakręcone inwersje
 STR_0603    :Drewniana kolejka górska ze stalowymi torami pozwalającymi na strome zjazdy i inwersje
+STR_0604    :Goście jadą pojedynczymi wagonikami po wąskim torze, ścigając się po ostrych zakrętach i zmianach kieruków.
 STR_0767    :Gość {INT32}
 STR_0768    :Dozorca {INT32}
 STR_0769    :Mechanik {INT32}
@@ -3649,6 +3651,19 @@ STR_6394    :Cel
 STR_6395    :Utrzymanie
 STR_6396    :Wyłącz wygaszacz ekranu i oszczędzanie energii monitora
 STR_6397    :Jeśli zaznaczone, wygaszacz ekranu i inne funkcje oszczędzania ekranu zostaną wyłączone gdy OpenRCT2 jest uruchomione.
+STR_6398    :Plik zawiera niewspierane typy kolejek. Zaktualizuj do nowszej wersji OpenRCT2..
+STR_6399    :OpenRCT2 wmymaga do działania plików z orginalnego Roller Coaster Tycoon 2.  Ustaw wartość “game_path” w config.ini na folder w którym zostało zainstalowane RollerCoaster Tycoon 2, następnie zrestartuj OpenRCT2.
+STR_6400    :Mam pobrany GOG offline installer dla RollerCoaster Tycoon 2, ale nie jest zainstalowany
+STR_6401    :Mam już RollerCoaster Tycoon 2 zainstalowany
+STR_6402    :Ustawienia danych OpenRCT2
+STR_6403    :Wybierz co najbardziej pasuje
+STR_6404    :Wybierz instalator GOG RollerCoaster Tycoon 2.
+STR_6405    :Wybirz instalator GOG
+STR_6406    :Instalator GOG RollerCoaster Tycoon 2
+STR_6407    :To może potrwać kilka minut.
+STR_6408    :Wskaż proszę “innoextract” w celu wypakowania instalatora GOG, następnie zrestartuj OpenRCT2.
+STR_6409    :Wskazany plik nie jest offlinowym intalatorem GOG dla RollerCoaster Tycoon 2. Możliwe, że pobrany został GOG Galaxy downloader, albo wskazany błędny plik.
+
 
 #############
 # Scenarios #

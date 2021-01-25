@@ -52,8 +52,16 @@ namespace OpenRCT2
     }
 
     MemoryStream::MemoryStream(MemoryStream&& mv) noexcept
+        : _access(mv._access)
+        , _dataCapacity(mv._dataCapacity)
+        , _dataSize(mv._dataSize)
+        , _data(mv._data)
+        , _position(mv._position)
     {
-        *this = std::move(mv);
+        mv._data = nullptr;
+        mv._position = nullptr;
+        mv._dataCapacity = 0;
+        mv._dataSize = 0;
     }
 
     MemoryStream::~MemoryStream()
@@ -69,15 +77,19 @@ namespace OpenRCT2
 
     MemoryStream& MemoryStream::operator=(MemoryStream&& mv) noexcept
     {
-        _access = mv._access;
-        _dataCapacity = mv._dataCapacity;
-        _data = mv._data;
-        _position = mv._position;
+        if (this != &mv)
+        {
+            _access = mv._access;
+            _dataCapacity = mv._dataCapacity;
+            _data = mv._data;
+            _dataSize = mv._dataSize;
+            _position = mv._position;
 
-        mv._data = nullptr;
-        mv._position = nullptr;
-        mv._dataCapacity = 0;
-        mv._dataSize = 0;
+            mv._data = nullptr;
+            mv._position = nullptr;
+            mv._dataCapacity = 0;
+            mv._dataSize = 0;
+        }
 
         return *this;
     }

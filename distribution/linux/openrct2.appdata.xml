@@ -40,7 +40,9 @@
   </screenshots>
   <url type="homepage">https://openrct2.io/</url>
   <url type="bugtracker">https://github.com/OpenRCT2/OpenRCT2/issues</url>
-  <url type="help">https://github.com/OpenRCT2/OpenRCT2/wiki</url>
+  <url type="faq">https://github.com/OpenRCT2/OpenRCT2/wiki/FAQ-&amp;-Common-Issues</url>
+  <url type="help">docs.openrct2.io</url>
+  <url type="translate">https://github.com/OpenRCT2/Localisation</url>
   <content_rating type="oars-1.0">
     <content_attribute id="violence-cartoon">mild</content_attribute>
     <content_attribute id="violence-fantasy">none</content_attribute>

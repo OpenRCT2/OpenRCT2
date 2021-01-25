@@ -86,10 +86,126 @@ static bool WindowFitsOnScreen(const ScreenCoordsXY& loc, int32_t width, int32_t
     return WindowFitsBetweenOthers(loc, width, height);
 }
 
-rct_window* WindowCreate(
-    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
-    rct_windowclass cls, uint16_t flags)
+static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t width)
 {
+    auto screenPos = pos;
+    if (screenPos.x < 0)
+        screenPos.x = 0;
+    if (screenPos.x + width > screenWidth)
+        screenPos.x = screenWidth - width;
+
+    return screenPos;
+}
+
+static ScreenCoordsXY GetAutoPositionForNewWindow(int32_t width, int32_t height)
+{
+    auto uiContext = GetContext()->GetUiContext();
+    auto screenWidth = uiContext->GetWidth();
+    auto screenHeight = uiContext->GetHeight();
+
+    // Place window in an empty corner of the screen
+    const ScreenCoordsXY cornerPositions[] = {
+        { 0, 30 },                                          // topLeft
+        { screenWidth - width, 30 },                        // topRight
+        { 0, screenHeight - 34 - height },                  // bottomLeft
+        { screenWidth - width, screenHeight - 34 - height } // bottomRight
+    };
+
+    for (const auto& cornerPos : cornerPositions)
+    {
+        if (WindowFitsWithinSpace(cornerPos, width, height))
+        {
+            return ClampWindowToScreen(cornerPos, screenWidth, width);
+        }
+    }
+
+    // Place window next to another
+    for (auto& w : g_window_list)
+    {
+        if (w->flags & WF_STICK_TO_BACK)
+            continue;
+
+        const ScreenCoordsXY offsets[] = { { w->width + 2, 0 },
+                                           { -w->width - 2, 0 },
+                                           { 0, w->height + 2 },
+                                           { 0, -w->height - 2 },
+                                           { w->width + 2, -w->height - 2 },
+                                           { -w->width - 2, -w->height - 2 },
+                                           { w->width + 2, w->height + 2 },
+                                           { -w->width - 2, w->height + 2 } };
+
+        for (const auto& offset : offsets)
+        {
+            auto screenPos = w->windowPos + offset;
+            if (WindowFitsWithinSpace(screenPos, width, height))
+            {
+                return ClampWindowToScreen(screenPos, screenWidth, width);
+            }
+        }
+    }
+
+    // Overlap
+    for (auto& w : g_window_list)
+    {
+        if (w->flags & WF_STICK_TO_BACK)
+            continue;
+
+        // clang-format off
+        const ScreenCoordsXY offsets[] = {
+            { w->width + 2, 0 },
+            { -w->width - 2, 0 },
+            { 0, w->height + 2 },
+            { 0, -w->height - 2 }
+        };
+        // clang-format on
+
+        for (const auto& offset : offsets)
+        {
+            auto screenPos = w->windowPos + offset;
+            if (WindowFitsOnScreen(screenPos, width, height))
+            {
+                return ClampWindowToScreen(screenPos, screenWidth, width);
+            }
+        }
+    }
+
+    // Cascade
+    auto screenPos = ScreenCoordsXY{ 0, 30 };
+    for (auto& w : g_window_list)
+    {
+        if (screenPos == w->windowPos)
+        {
+            screenPos.x += 5;
+            screenPos.y += 5;
+        }
+    }
+
+    return ClampWindowToScreen(screenPos, screenWidth, width);
+}
+
+static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
+{
+    auto uiContext = GetContext()->GetUiContext();
+    auto screenWidth = uiContext->GetWidth();
+    auto screenHeight = uiContext->GetHeight();
+    return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
+}
+
+rct_window* WindowCreate(
+    std::unique_ptr<rct_window>&& wp, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags)
+{
+    if (flags & WF_AUTO_POSITION)
+    {
+        if (flags & WF_CENTRE_SCREEN)
+        {
+            pos = GetCentrePositionForNewWindow(width, height);
+        }
+        else
+        {
+            pos = GetAutoPositionForNewWindow(width, height);
+        }
+    }
+
     // Check if there are any window slots left
     // include WINDOW_LIMIT_RESERVED for items such as the main viewport and toolbars to not appear to be counted.
     if (g_window_list.size() >= static_cast<size_t>(gConfigGeneral.window_limit + WINDOW_LIMIT_RESERVED))
@@ -129,7 +245,7 @@ rct_window* WindowCreate(
         }
     }
 
-    auto itNew = g_window_list.insert(itDestPos, std::make_unique<rct_window>());
+    auto itNew = g_window_list.insert(itDestPos, std::move(wp));
     auto w = itNew->get();
 
     // Setup window
@@ -140,23 +256,17 @@ rct_window* WindowCreate(
     if (!(flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
         w->flags |= WF_WHITE_BORDER_MASK;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, screenCoords.x + (width / 2));
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::WindowOpen, 0, pos.x + (width / 2));
     }
 
-    w->number = 0;
-    w->windowPos = screenCoords;
+    w->windowPos = pos;
     w->width = width;
     w->height = height;
     w->min_width = width;
     w->max_width = width;
     w->min_height = height;
     w->max_height = height;
-    w->viewport = nullptr;
-    w->event_handlers = event_handlers;
-    w->enabled_widgets = 0;
-    w->disabled_widgets = 0;
-    w->pressed_widgets = 0;
-    w->hold_down_widgets = 0;
+
     w->viewport_focus_coordinates.var_480 = 0;
     w->viewport_focus_coordinates.x = 0;
     w->viewport_focus_coordinates.y = 0;
@@ -164,121 +274,35 @@ rct_window* WindowCreate(
     w->viewport_focus_coordinates.rotation = 0;
     w->page = 0;
     w->var_48C = 0;
-    w->frame_no = 0;
-    w->list_information_type = 0;
     w->var_492 = 0;
-    w->selected_tab = 0;
-    w->var_4AE = 0;
-    w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
 
     ColourSchemeUpdate(w);
     w->Invalidate();
+    w->OnOpen();
     return w;
 }
 
-static ScreenCoordsXY ClampWindowToScreen(const ScreenCoordsXY& pos, const int32_t screenWidth, const int32_t width)
+rct_window* WindowCreate(
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    uint32_t flags)
 {
-    auto screenPos = pos;
-    if (screenPos.x < 0)
-        screenPos.x = 0;
-    if (screenPos.x + width > screenWidth)
-        screenPos.x = screenWidth - width;
-
-    return screenPos;
+    auto w = std::make_unique<rct_window>();
+    w->event_handlers = event_handlers;
+    return WindowCreate(std::move(w), cls, pos, width, height, flags);
 }
 
 rct_window* WindowCreateAutoPos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
 {
-    auto uiContext = GetContext()->GetUiContext();
-    auto screenWidth = uiContext->GetWidth();
-    auto screenHeight = uiContext->GetHeight();
-
-    // Place window in an empty corner of the screen
-    const ScreenCoordsXY cornerPositions[] = {
-        { 0, 30 },                                          // topLeft
-        { screenWidth - width, 30 },                        // topRight
-        { 0, screenHeight - 34 - height },                  // bottomLeft
-        { screenWidth - width, screenHeight - 34 - height } // bottomRight
-    };
-
-    for (const auto& cornerPos : cornerPositions)
-    {
-        if (WindowFitsWithinSpace(cornerPos, width, height))
-            return WindowCreate(ClampWindowToScreen(cornerPos, screenWidth, width), width, height, event_handlers, cls, flags);
-    }
-
-    // Place window next to another
-    for (auto& w : g_window_list)
-    {
-        if (w->flags & WF_STICK_TO_BACK)
-            continue;
-
-        const ScreenCoordsXY offsets[] = { { w->width + 2, 0 },
-                                           { -w->width - 2, 0 },
-                                           { 0, w->height + 2 },
-                                           { 0, -w->height - 2 },
-                                           { w->width + 2, -w->height - 2 },
-                                           { -w->width - 2, -w->height - 2 },
-                                           { w->width + 2, w->height + 2 },
-                                           { -w->width - 2, w->height + 2 } };
-
-        for (const auto& offset : offsets)
-        {
-            auto screenPos = w->windowPos + offset;
-            if (WindowFitsWithinSpace(screenPos, width, height))
-                return WindowCreate(
-                    ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
-        }
-    }
-
-    // Overlap
-    for (auto& w : g_window_list)
-    {
-        if (w->flags & WF_STICK_TO_BACK)
-            continue;
-
-        // clang-format off
-        const ScreenCoordsXY offsets[] = {
-            { w->width + 2, 0 },
-            { -w->width - 2, 0 },
-            { 0, w->height + 2 },
-            { 0, -w->height - 2 }
-        };
-        // clang-format on
-
-        for (const auto& offset : offsets)
-        {
-            auto screenPos = w->windowPos + offset;
-            if (WindowFitsOnScreen(screenPos, width, height))
-                return WindowCreate(
-                    ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
-        }
-    }
-
-    // Cascade
-    auto screenPos = ScreenCoordsXY{ 0, 30 };
-    for (auto& w : g_window_list)
-    {
-        if (screenPos == w->windowPos)
-        {
-            screenPos.x += 5;
-            screenPos.y += 5;
-        }
-    }
-
-    return WindowCreate(ClampWindowToScreen(screenPos, screenWidth, width), width, height, event_handlers, cls, flags);
+    auto pos = GetAutoPositionForNewWindow(width, height);
+    return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
 rct_window* WindowCreateCentred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags)
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags)
 {
-    auto uiContext = GetContext()->GetUiContext();
-    auto screenWidth = uiContext->GetWidth();
-    auto screenHeight = uiContext->GetHeight();
-
-    auto screenPos = ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
-    return WindowCreate(screenPos, width, height, event_handlers, cls, flags);
+    auto pos = GetCentrePositionForNewWindow(width, height);
+    return WindowCreate(pos, width, height, event_handlers, cls, flags);
 }
 
 static int32_t WindowGetWidgetIndex(rct_window* w, rct_widget* widget)
@@ -653,4 +677,50 @@ void InvalidateAllWindowsAfterInput()
         WindowInvalidatePressedImageButton(w);
         window_event_resize_call(w);
     });
+}
+
+void Window::InvalidateWidget(rct_widgetindex widgetIndex)
+{
+    widget_invalidate(this, widgetIndex);
+}
+
+bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
+{
+    return (disabled_widgets & (1LL << widgetIndex)) != 0;
+}
+
+bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
+{
+    return (pressed_widgets & (1LL << widgetIndex)) != 0;
+}
+
+void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+        disabled_widgets |= (1ULL << widgetIndex);
+    else
+        disabled_widgets &= ~(1ULL << widgetIndex);
+}
+
+void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+        pressed_widgets |= (1ULL << widgetIndex);
+    else
+        pressed_widgets &= ~(1ULL << widgetIndex);
+}
+
+void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
+{
+    SetWidgetPressed(widgetIndex, value);
+}
+
+void Window::DrawWidgets(rct_drawpixelinfo& dpi)
+{
+    WindowDrawWidgets(this, &dpi);
+}
+
+void Window::Close()
+{
+    window_close(this);
 }

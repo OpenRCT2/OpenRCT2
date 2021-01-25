@@ -9,10 +9,6 @@ enum class SpriteIdentifier : uint8_t;
 struct SpriteBase
 {
     SpriteIdentifier sprite_identifier;
-    uint8_t type;
-    uint16_t next_in_quadrant;
-    uint16_t next;
-    uint16_t previous;
     // Valid values are EntityListId::...
     EntityListId linked_list_index;
     // Height from centre of sprite to bottom
@@ -47,7 +43,9 @@ struct SpriteBase
     }
 };
 
-struct SpriteGeneric : SpriteBase
+enum class MiscEntityType : uint8_t;
+struct MiscEntity : SpriteBase
 {
+    MiscEntityType SubType;
     uint16_t frame;
 };

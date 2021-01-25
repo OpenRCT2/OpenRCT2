@@ -135,7 +135,7 @@ GameActions::Result::Ptr RideSetStatusAction::Execute() const
     if (!ride->overall_view.isNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(res->Position) };
+        res->Position = { location, tile_element_height(location) };
     }
 
     switch (_status)

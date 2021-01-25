@@ -46,6 +46,7 @@ struct Staff;
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
+constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
 constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
 constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
 constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
@@ -439,7 +440,7 @@ public:
     void FormatStatusTo(Formatter&) const;
 
     static void UpdateAll();
-    static bool NameExists(const std::string_view& name, ride_id_t excludeRideId = RIDE_ID_NULL);
+    static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
     std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
 
@@ -1126,7 +1127,7 @@ int32_t ride_get_total_length(const Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
-int32_t ride_get_unused_preset_vehicle_colour(uint8_t ride_sub_type);
+int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 void ride_measurements_update();
 void ride_breakdown_add_news_item(Ride* ride);
@@ -1134,7 +1135,7 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(
-    const CoordsXYZD& location, int32_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 int32_t ride_music_params_update(
     const CoordsXYZ& rideCoords, Ride* ride, uint16_t sampleRate, uint32_t position, uint8_t* tuneId);

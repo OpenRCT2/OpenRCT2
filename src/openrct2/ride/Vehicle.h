@@ -21,6 +21,8 @@
 #include <cstddef>
 #include <vector>
 
+using track_type_t = uint16_t;
+
 struct rct_vehicle_colour
 {
     uint8_t body_colour;
@@ -198,6 +200,7 @@ struct Vehicle : SpriteBase
         StoppedByBlockBrakes
     };
 
+    Type SubType;
     uint8_t vehicle_sprite_type;
     uint8_t bank_rotation;
     int32_t remaining_distance;
@@ -312,7 +315,7 @@ struct Vehicle : SpriteBase
 
     constexpr bool IsHead() const
     {
-        return type == static_cast<uint8_t>(Vehicle::Type::Head);
+        return SubType == Vehicle::Type::Head;
     }
     void Update();
     Vehicle* GetHead();
@@ -338,7 +341,7 @@ struct Vehicle : SpriteBase
      */
     void MoveRelativeDistance(int32_t distance);
 
-    uint16_t GetTrackType() const
+    track_type_t GetTrackType() const
     {
         return track_type >> 2;
     }
@@ -449,6 +452,8 @@ private:
     void UpdateGoKartAttemptSwitchLanes();
     void UpdateSceneryDoor() const;
     void UpdateSceneryDoorBackwards() const;
+    void UpdateLandscapeDoor() const;
+    void UpdateLandscapeDoorBackwards() const;
 };
 
 struct train_ref

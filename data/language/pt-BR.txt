@@ -95,6 +95,7 @@ STR_0090    :Brinquedo de Mina
 STR_0091    :Brinquedo Desconhecido (59)
 STR_0092    :Montanha-Russa de Indução Linear
 STR_0093    :Montanha-Russa Híbrida
+STR_0094    :Montanha-Russa de Trilho Único
 STR_0512    :Uma montanha russa compacta com subida de elevação em espiral e quedas suaves e retorcidas
 STR_0513    :Uma montanha russa de looping onde passageiros andam em pé
 STR_0514    :Trens suspensos abaixo do trilho da montanha-russa balançam para fora nas curvas
@@ -175,6 +176,7 @@ STR_0599    :Uma montanha-russa compacta com carros individuais e suaves quedas 
 STR_0600    :Trens de mina motorizados viajam por uma pista suave e retorcida
 STR_0602    :Trens da montanha-russa são acelerados para fora da estação por motores de indução linear passando em alta velocidade por inversões retorcidas
 STR_0603    :Uma montanha-russa com estilo semelhante à de madeira, mas trilhos de aço, permitindo quedas íngremes e inversões.
+STR_0604    :Passageiros andam numa fila única em uma pista estreita de monotrilho, enquanto correm por inversões apertadas e mudanças de direções.
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}

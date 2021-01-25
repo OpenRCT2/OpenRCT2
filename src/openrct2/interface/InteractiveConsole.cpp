@@ -1231,7 +1231,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t spriteCount = 0;
     for (int32_t i = 1; i < static_cast<uint8_t>(EntityListId::Count); ++i)
     {
-        spriteCount += gSpriteListCount[i];
+        spriteCount += GetEntityListCount(EntityListId(i));
     }
 
     int32_t staffCount = 0;

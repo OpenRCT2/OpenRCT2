@@ -562,7 +562,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
         INSET_RECT_F_30);
 
     // Text
-    utf8* newsItemText = newsItem->Text;
+    const auto* newsItemText = newsItem->Text.c_str();
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
     gfx_draw_string_centred_wrapped_partial(

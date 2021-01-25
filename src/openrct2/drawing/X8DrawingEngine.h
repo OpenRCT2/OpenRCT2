@@ -106,7 +106,6 @@ namespace OpenRCT2
             void BeginDraw() override;
             void EndDraw() override;
             void PaintWindows() override;
-            void UpdateWindows() override;
             void PaintWeather() override;
             void CopyRect(int32_t x, int32_t y, int32_t width, int32_t height, int32_t dx, int32_t dy) override;
             std::string Screenshot() override;

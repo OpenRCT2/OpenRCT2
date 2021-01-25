@@ -19,7 +19,7 @@
 #include "../world/Surface.h"
 #include "RideSetSettingAction.h"
 
-TrackRemoveAction::TrackRemoveAction(int32_t trackType, int32_t sequence, const CoordsXYZD& origin)
+TrackRemoveAction::TrackRemoveAction(track_type_t trackType, int32_t sequence, const CoordsXYZD& origin)
     : _trackType(trackType)
     , _sequence(sequence)
     , _origin(origin)

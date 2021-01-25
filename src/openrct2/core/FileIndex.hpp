@@ -233,7 +233,7 @@ private:
 
             jobPool.Join(reportProgress);
 
-            for (auto&& itr : containers)
+            for (const auto& itr : containers)
             {
                 allItems.insert(allItems.end(), itr.begin(), itr.end());
             }

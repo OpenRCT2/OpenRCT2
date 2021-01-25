@@ -15,6 +15,7 @@
 #include <array>
 #include <iterator>
 #include <optional>
+#include <string>
 
 struct CoordsXYZ;
 class Formatter;
@@ -60,7 +61,7 @@ namespace News
         uint16_t Ticks;
         uint16_t MonthYear;
         uint8_t Day;
-        utf8 Text[256];
+        std::string Text;
 
         constexpr bool IsEmpty() const noexcept
         {

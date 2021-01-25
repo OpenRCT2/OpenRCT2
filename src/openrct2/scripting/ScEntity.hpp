@@ -57,7 +57,13 @@ namespace OpenRCT2::Scripting
                     case SpriteIdentifier::Peep:
                         return "peep";
                     case SpriteIdentifier::Misc:
-                        switch (static_cast<MiscEntityType>(entity->type))
+                    {
+                        auto misc = entity->As<MiscEntity>();
+                        if (misc == nullptr)
+                        {
+                            return "unknown";
+                        }
+                        switch (misc->SubType)
                         {
                             case MiscEntityType::SteamParticle:
                                 return "steam_particle";
@@ -82,7 +88,8 @@ namespace OpenRCT2::Scripting
                             default:
                                 break;
                         }
-                        break;
+                    }
+                    break;
                     case SpriteIdentifier::Litter:
                         return "litter";
                     case SpriteIdentifier::Null:

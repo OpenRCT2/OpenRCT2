@@ -36,7 +36,7 @@
 
 /**  rct2: 0x00997C9D */
 // clang-format off
-const rct_trackdefinition TrackDefinitions[256] =
+const rct_trackdefinition TrackDefinitions[TrackElemType::Count] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                  },  // ELEM_FLAT
@@ -298,7 +298,7 @@ const rct_trackdefinition TrackDefinitions[256] =
 };
 
 /**　rct2: 0x0099849D */
-const rct_trackdefinition FlatRideTrackDefinitions[256] =
+const rct_trackdefinition FlatRideTrackDefinitions[TrackElemType::Count] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
     { TRACK_FLAT,                   TRACK_SLOPE_NONE,           TRACK_SLOPE_NONE,           TRACK_BANK_NONE,        TRACK_BANK_NONE,        0                           },  // 0
@@ -589,18 +589,18 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
     return aBank == bBank && aAngle == bAngle;
 }
 
-const rct_preview_track* get_track_def_from_ride(Ride* ride, int32_t trackType)
+const rct_preview_track* get_track_def_from_ride(Ride* ride, track_type_t trackType)
 {
     return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ? FlatRideTrackBlocks[trackType] : TrackBlocks[trackType];
 }
 
-const rct_track_coordinates* get_track_coord_from_ride(Ride* ride, int32_t trackType)
+const rct_track_coordinates* get_track_coord_from_ride(Ride* ride, track_type_t trackType)
 {
     return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ? &FlatTrackCoordinates[trackType]
                                                                     : &TrackCoordinates[trackType];
 }
 
-const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, int32_t trackType)
+const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, track_type_t trackType)
 {
     return get_track_def_from_ride(get_ride(rideIndex), trackType);
 }
@@ -751,7 +751,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
             stationElement = find_station_element(loc, rideIndex);
             if (stationElement != nullptr)
             {
-                int32_t targetTrackType;
+                track_type_t targetTrackType;
                 if (stationFrontLoc == loc)
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
@@ -887,7 +887,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
             stationElement = find_station_element(currentLoc, rideIndex);
             if (stationElement != nullptr)
             {
-                int32_t targetTrackType;
+                track_type_t targetTrackType;
                 if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
@@ -1211,6 +1211,10 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
+    const auto* ride = get_ride(GetRideIndex());
+    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        return DEFAULT_SEAT_ROTATION;
+
     return ColourScheme >> 4;
 }
 
@@ -1265,7 +1269,7 @@ void TrackElement::MazeEntrySubtract(uint16_t subVal)
     MazeEntry &= ~subVal;
 }
 
-uint16_t TrackElement::GetTrackType() const
+track_type_t TrackElement::GetTrackType() const
 {
     return TrackType;
 }

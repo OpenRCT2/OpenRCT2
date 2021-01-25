@@ -40,7 +40,7 @@ struct GameStateSpriteChange_t
 
     uint8_t changeType;
     SpriteIdentifier spriteIdentifier;
-    uint8_t miscIdentifier;
+    MiscEntityType miscIdentifier;
     uint32_t spriteIndex;
 
     std::vector<Diff_t> diffs;
@@ -48,14 +48,15 @@ struct GameStateSpriteChange_t
 
 struct GameStateCompareData_t
 {
-    uint32_t tick;
+    uint32_t tickLeft;
+    uint32_t tickRight;
     uint32_t srand0Left;
     uint32_t srand0Right;
     std::vector<GameStateSpriteChange_t> spriteChanges;
 };
 
 /*
- * Interface to create and capture game states. It only allows to have 32 active snapshots
+ * Interface to create and capture game states. It only allows one to have 32 active snapshots
  * the oldest snapshot will be removed from the buffer. Never store the snapshot pointer
  * as it may become invalid at any time when a snapshot is created, rather Link the snapshot
  * to a specific tick which can be obtained by that later again assuming its still valid.
