@@ -113,7 +113,7 @@ void finance_pay_wages()
 
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        finance_payment(gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)] / 4, ExpenditureType::Wages);
+        finance_payment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
     }
 }
 
@@ -244,7 +244,7 @@ void finance_update_daily_profit()
         // Staff costs
         for (auto peep : EntityList<Staff>(EntityListId::Peep))
         {
-            current_profit -= gStaffWageTable[static_cast<uint8_t>(peep->AssignedStaffType)];
+            current_profit -= GetStaffWage(peep->AssignedStaffType);
         }
 
         // Research costs

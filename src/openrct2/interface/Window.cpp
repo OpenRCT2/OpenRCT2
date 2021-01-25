@@ -1469,9 +1469,10 @@ void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, c
 
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_down != nullptr)
-            w->event_handlers->tool_down(w, widgetIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnToolDown(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_down != nullptr)
+        w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
@@ -1490,9 +1491,10 @@ void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->tool_abort != nullptr)
-            w->event_handlers->tool_abort(w, widgetIndex);
+    if (w->event_handlers == nullptr)
+        w->OnToolAbort(widgetIndex);
+    else if (w->event_handlers->tool_abort != nullptr)
+        w->event_handlers->tool_abort(w, widgetIndex);
 }
 
 void window_event_unknown_0E_call(rct_window* w)
