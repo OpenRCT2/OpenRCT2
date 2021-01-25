@@ -193,7 +193,7 @@ namespace OpenRCT2::Scripting
                 auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
                 auto title = desc["title"].as_string();
                 auto description = desc["description"].as_string();
-                auto initialValue = AsOrDefault(desc["maxLength"], "");
+                auto initialValue = AsOrDefault(desc["initialValue"], "");
                 auto maxLength = AsOrDefault(desc["maxLength"], std::numeric_limits<int32_t>::max());
                 auto callback = desc["callback"];
                 window_text_input_open(
