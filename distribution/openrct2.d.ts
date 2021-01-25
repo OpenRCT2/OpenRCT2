@@ -2198,12 +2198,14 @@ declare global {
         /**
          * The parks stored within this title sequence.
          */
-        parks: string[];
+        readonly parks: TitleSequencePark[];
 
         /**
          * The commands that describe how to play the title sequence.
          */
         commands: TitleSequenceCommand[];
+
+        addPark(path: string, fileName: string): void;
 
         /**
          * Creates a new title sequence identical to this one.
@@ -2213,6 +2215,18 @@ declare global {
 
         /**
          * Deletes this title sequence from disc.
+         */
+        delete(): void;
+    }
+
+    interface TitleSequencePark {
+        /**
+         * The file name of the park.
+         */
+        fileName: string;
+
+        /**
+         * Deletes this park from the title sequence.
          */
         delete(): void;
     }

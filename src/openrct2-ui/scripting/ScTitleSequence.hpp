@@ -13,10 +13,87 @@
 
 #    include <memory>
 #    include <openrct2/scripting/ScriptEngine.h>
+#    include <openrct2/title/TitleSequence.h>
 #    include <openrct2/title/TitleSequenceManager.h>
 
 namespace OpenRCT2::Scripting
 {
+    class ScTitleSequencePark
+    {
+    private:
+        std::string _titleSequencePath;
+        std::string _fileName;
+
+    public:
+        ScTitleSequencePark(std::string_view path, std::string_view fileName)
+            : _titleSequencePath(path)
+            , _fileName(fileName)
+        {
+        }
+
+    private:
+        std::string fileName_get() const
+        {
+            return _fileName;
+        }
+
+        void fileName_set(const std::string& value)
+        {
+            if (value == _fileName)
+                return;
+
+            auto seq = LoadTitleSequence(_titleSequencePath);
+            if (seq != nullptr)
+            {
+                // Check if name already in use
+                auto index = GetIndex(*seq, value);
+                if (!index)
+                {
+                    index = GetIndex(*seq, _fileName);
+                    if (index)
+                    {
+                        TitleSequenceRenamePark(*seq, *index, value.c_str());
+                        TitleSequenceSave(*seq);
+                    }
+                }
+            }
+        }
+
+        void delete_()
+        {
+            auto seq = LoadTitleSequence(_titleSequencePath);
+            if (seq != nullptr)
+            {
+                auto index = GetIndex(*seq, _fileName);
+                if (index)
+                {
+                    TitleSequenceRemovePark(*seq, *index);
+                    TitleSequenceSave(*seq);
+                }
+            }
+        }
+
+    public:
+        static void Register(duk_context* ctx)
+        {
+            dukglue_register_property(ctx, &ScTitleSequencePark::fileName_get, &ScTitleSequencePark::fileName_set, "fileName");
+            dukglue_register_method(ctx, &ScTitleSequencePark::delete_, "delete");
+        }
+
+    private:
+        static std::optional<size_t> GetIndex(const TitleSequence& seq, const std::string_view needle)
+        {
+            for (size_t i = 0; i < seq.Saves.size(); i++)
+            {
+                if (seq.Saves[i] == needle)
+                {
+                    return i;
+                }
+            }
+            return {};
+        }
+    };
+
     class ScTitleSequence
     {
     private:
@@ -82,6 +159,20 @@ namespace OpenRCT2::Scripting
             return {};
         }
 
+        std::vector<std::shared_ptr<ScTitleSequencePark>> parks_get() const
+        {
+            std::vector<std::shared_ptr<ScTitleSequencePark>> result;
+            auto titleSeq = LoadTitleSequence(_path);
+            if (titleSeq != nullptr)
+            {
+                for (size_t i = 0; i < titleSeq->Saves.size(); i++)
+                {
+                    result.push_back(std::make_shared<ScTitleSequencePark>(_path, titleSeq->Saves[i]));
+                }
+            }
+            return result;
+        }
+
         std::shared_ptr<ScTitleSequence> clone(const std::string& name) const
         {
             auto copyIndex = GetManagerIndex();
@@ -114,6 +205,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTitleSequence::path_get, nullptr, "path");
             dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
             dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
+            dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
             dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
             dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
         }

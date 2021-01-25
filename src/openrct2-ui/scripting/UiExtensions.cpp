@@ -48,6 +48,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 
     ScTitleSequence::Register(ctx);
     ScTitleSequenceManager::Register(ctx);
+    ScTitleSequencePark::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
