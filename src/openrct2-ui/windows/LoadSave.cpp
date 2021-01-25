@@ -126,7 +126,7 @@ struct LoadSaveListItem
     bool loaded;
 };
 
-static loadsave_callback _loadSaveCallback;
+static std::function<void(int32_t result, std::string_view)> _loadSaveCallback;
 static TrackDesign* _trackDesign;
 
 static std::vector<LoadSaveListItem> _listItems;
@@ -134,7 +134,7 @@ static char _directory[MAX_PATH];
 static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
 static char _extension[256];
-static char _defaultName[MAX_PATH];
+static std::string _defaultPath;
 static int32_t _type;
 
 static int32_t maxDateWidth = 0;
@@ -234,17 +234,14 @@ static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pa
 
 static bool browse(bool isSave, char* path, size_t pathSize);
 
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* trackDesign)
+rct_window* window_loadsave_open(
+    int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
+    TrackDesign* trackDesign)
 {
     _loadSaveCallback = callback;
     _trackDesign = trackDesign;
     _type = type;
-    _defaultName[0] = '\0';
-
-    if (!str_is_null_or_empty(defaultName))
-    {
-        safe_strcpy(_defaultName, defaultName, sizeof(_defaultName));
-    }
+    _defaultPath = defaultPath;
 
     bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
     char path[MAX_PATH];
@@ -394,9 +391,9 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     if (isSave)
     {
         // The file browser requires a file path instead of just a directory
-        if (String::SizeOf(_defaultName) > 0)
+        if (!_defaultPath.empty())
         {
-            safe_strcat_path(path, _defaultName, pathSize);
+            safe_strcat_path(path, _defaultPath.c_str(), pathSize);
         }
         else
         {
@@ -454,7 +451,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_NEW_FILE:
             window_text_input_open(
                 w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, STR_STRING,
-                reinterpret_cast<uintptr_t>(&_defaultName), 64);
+                reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
             break;
 
         case WIDX_NEW_FOLDER:

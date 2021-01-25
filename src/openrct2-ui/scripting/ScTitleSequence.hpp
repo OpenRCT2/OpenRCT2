@@ -173,6 +173,13 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        void addPark(const std::string& path, const std::string& fileName)
+        {
+            auto titleSeq = LoadTitleSequence(_path);
+            TitleSequenceAddPark(*titleSeq, path.c_str(), fileName.c_str());
+            TitleSequenceSave(*titleSeq);
+        }
+
         std::shared_ptr<ScTitleSequence> clone(const std::string& name) const
         {
             auto copyIndex = GetManagerIndex();
@@ -206,6 +213,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
             dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
             dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
+            dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
             dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
             dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
         }

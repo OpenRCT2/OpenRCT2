@@ -236,8 +236,10 @@ public:
                 loadsave_callback callback = reinterpret_cast<loadsave_callback>(
                     intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
-                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
-
+                auto* w = window_loadsave_open(
+                    type, defaultName,
+                    [callback](int32_t result, std::string_view path) { callback(result, std::string(path).c_str()); },
+                    trackDesign);
                 return w;
             }
             case WC_MANAGE_TRACK_DESIGN:

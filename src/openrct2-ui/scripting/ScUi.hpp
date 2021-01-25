@@ -210,6 +210,46 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void showFileBrowse(const DukValue& desc)
+        {
+            try
+            {
+                auto plugin = _scriptEngine.GetExecInfo().GetCurrentPlugin();
+                auto type = desc["type"].as_string();
+                auto fileType = desc["fileType"].as_string();
+                auto defaultPath = AsOrDefault(desc["defaultPath"], "");
+                auto callback = desc["callback"];
+
+                int32_t loadSaveType{};
+                if (type == "load")
+                    loadSaveType = LOADSAVETYPE_LOAD;
+                else
+                    throw DukException();
+
+                if (fileType == "game")
+                    loadSaveType |= LOADSAVETYPE_GAME;
+                else if (fileType == "heightmap")
+                    loadSaveType |= LOADSAVETYPE_HEIGHTMAP;
+                else
+                    throw DukException();
+
+                window_loadsave_open(
+                    loadSaveType, defaultPath,
+                    [this, plugin, callback](int32_t result, std::string_view path) {
+                        if (result == MODAL_RESULT_OK)
+                        {
+                            auto dukValue = ToDuk(_scriptEngine.GetContext(), path);
+                            _scriptEngine.ExecutePluginCall(plugin, callback, { dukValue }, false);
+                        }
+                    },
+                    nullptr);
+            }
+            catch (const DukException&)
+            {
+                duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
+            }
+        }
+
         void activateTool(const DukValue& desc)
         {
             InitialiseCustomTool(_scriptEngine, desc);
@@ -237,6 +277,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::getWindow, "getWindow");
             dukglue_register_method(ctx, &ScUi::showError, "showError");
             dukglue_register_method(ctx, &ScUi::showTextInput, "showTextInput");
+            dukglue_register_method(ctx, &ScUi::showFileBrowse, "showFileBrowse");
             dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
         }

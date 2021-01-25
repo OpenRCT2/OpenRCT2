@@ -109,7 +109,9 @@ rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool ti
 rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
 rct_window* window_error_open(std::string_view title, std::string_view message);
 struct TrackDesign;
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
+rct_window* window_loadsave_open(
+    int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
+    TrackDesign* trackDesign);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
