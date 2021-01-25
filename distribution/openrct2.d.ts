@@ -1881,9 +1881,9 @@ declare global {
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image: number;
-        isPressed: boolean;
-        text: string;
+        image?: number;
+        isPressed?: boolean;
+        text?: string;
         onClick: () => void;
     }
 
@@ -1946,8 +1946,8 @@ declare global {
         readonly highlightedCell?: RowColumn;
         canSelect?: boolean;
 
-        onHighlight: (item: number, column: number) => void;
-        onClick: (item: number, column: number) => void;
+        onHighlight?: (item: number, column: number) => void;
+        onClick?: (item: number, column: number) => void;
     }
 
     interface SpinnerWidget extends Widget {

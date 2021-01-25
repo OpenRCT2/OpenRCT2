@@ -164,12 +164,15 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
-                auto dukItems = desc["items"].as_array();
-                for (const auto& dukItem : dukItems)
+                if (desc["items"].is_array())
                 {
-                    result.Items.push_back(ProcessString(dukItem));
+                    auto dukItems = desc["items"].as_array();
+                    for (const auto& dukItem : dukItems)
+                    {
+                        result.Items.push_back(ProcessString(dukItem));
+                    }
                 }
-                result.SelectedIndex = desc["selectedIndex"].as_int();
+                result.SelectedIndex = AsOrDefault(desc["selectedIndex"], 0);
                 result.OnChange = desc["onChange"];
             }
             else if (result.Type == "groupbox" || result.Type == "label")

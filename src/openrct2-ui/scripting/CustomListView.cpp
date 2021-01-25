@@ -497,7 +497,7 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
     auto hitResult = GetItemIndexAt(pos);
     if (hitResult)
     {
-        if (hitResult->Row != HEADER_ROW && OnClick.context() != nullptr && OnClick.is_function())
+        if (hitResult->Row != HEADER_ROW)
         {
             if (CanSelect)
             {
@@ -506,12 +506,15 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
             }
 
             auto ctx = OnClick.context();
-            duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
-            auto dukRow = DukValue::take_from_stack(ctx, -1);
-            duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
-            auto dukColumn = DukValue::take_from_stack(ctx, -1);
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+            if (ctx != nullptr && OnClick.is_function())
+            {
+                duk_push_int(ctx, static_cast<int32_t>(hitResult->Row));
+                auto dukRow = DukValue::take_from_stack(ctx, -1);
+                duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
+                auto dukColumn = DukValue::take_from_stack(ctx, -1);
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+            }
         }
     }
     if (hitResult && hitResult->Row == HEADER_ROW)
@@ -597,11 +600,14 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
                 // Columns
                 if (Columns.size() == 0)
                 {
-                    const auto& text = item.Cells[0];
-                    if (!text.empty())
+                    if (item.Cells.size() != 0)
                     {
-                        ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
-                        PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                        const auto& text = item.Cells[0];
+                        if (!text.empty())
+                        {
+                            ScreenSize cellSize = { std::numeric_limits<int32_t>::max(), LIST_ROW_HEIGHT };
+                            PaintCell(dpi, { 0, y }, cellSize, text.c_str(), isHighlighted);
+                        }
                     }
                 }
                 else
