@@ -2247,10 +2247,45 @@ declare global {
         type: TitleSequenceCommandType;
     }
 
+    interface LoadTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'load';
+        index: number;
+    }
+
     interface LocationTitleSequenceCommand extends TitleSequenceCommand {
         type: 'location';
         x: number;
         y: number;
+    }
+
+    interface RotateTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'rotate';
+        rotations: number;
+    }
+
+    interface ZoomTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'zoom';
+        zoom: number;
+    }
+
+    interface FollowTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'follow';
+        id: number | null;
+    }
+
+    interface SpeedTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'speed';
+        speed: number;
+    }
+
+    interface WaitTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'wait';
+        duration: number;
+    }
+
+    interface LoadScenarioTitleSequenceCommand extends TitleSequenceCommand {
+        type: 'loadsc';
+        scenario: string;
     }
 
     interface TitleSequenceManager {

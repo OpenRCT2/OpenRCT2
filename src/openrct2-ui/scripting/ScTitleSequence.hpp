@@ -12,12 +12,77 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include <memory>
+#    include <openrct2/core/String.hpp>
 #    include <openrct2/scripting/ScriptEngine.h>
 #    include <openrct2/title/TitleSequence.h>
 #    include <openrct2/title/TitleSequenceManager.h>
+#    include <openrct2/world/Sprite.h>
 
 namespace OpenRCT2::Scripting
 {
+    template<> DukValue ToDuk(duk_context* ctx, const TitleScript& value)
+    {
+        switch (value)
+        {
+            case TitleScript::Load:
+                return ToDuk(ctx, "load");
+            case TitleScript::Location:
+                return ToDuk(ctx, "location");
+            case TitleScript::Rotate:
+                return ToDuk(ctx, "rotate");
+            case TitleScript::Zoom:
+                return ToDuk(ctx, "zoom");
+            case TitleScript::Follow:
+                return ToDuk(ctx, "follow");
+            case TitleScript::Speed:
+                return ToDuk(ctx, "speed");
+            case TitleScript::Wait:
+                return ToDuk(ctx, "wait");
+            case TitleScript::LoadSc:
+                return ToDuk(ctx, "loadsc");
+            default:
+                return ToDuk(ctx, "");
+        }
+    }
+
+    template<> DukValue ToDuk(duk_context* ctx, const TitleCommand& value)
+    {
+        DukObject obj(ctx);
+        obj.Set("type", ToDuk(ctx, value.Type));
+        switch (value.Type)
+        {
+            case TitleScript::Load:
+                obj.Set("index", value.SaveIndex);
+                break;
+            case TitleScript::Location:
+                obj.Set("x", value.X);
+                obj.Set("y", value.Y);
+                break;
+            case TitleScript::Rotate:
+                obj.Set("rotations", value.Rotations);
+                break;
+            case TitleScript::Zoom:
+                obj.Set("zoom", value.Rotations);
+                break;
+            case TitleScript::Follow:
+                if (value.SpriteIndex == SPRITE_INDEX_NULL)
+                    obj.Set("id", nullptr);
+                else
+                    obj.Set("id", value.SpriteIndex);
+                break;
+            case TitleScript::Speed:
+                obj.Set("speed", value.Speed);
+                break;
+            case TitleScript::Wait:
+                obj.Set("duration", value.Milliseconds);
+                break;
+            case TitleScript::LoadSc:
+                obj.Set("scenario", String::ToStringView(value.Scenario, sizeof(value.Scenario)));
+                break;
+        }
+        return obj.Take();
+    }
+
     class ScTitleSequencePark
     {
     private:
@@ -173,6 +238,23 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        std::vector<DukValue> commands_get() const
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine.GetContext();
+
+            std::vector<DukValue> result;
+            auto titleSeq = LoadTitleSequence(_path);
+            if (titleSeq != nullptr)
+            {
+                for (const auto& command : titleSeq->Commands)
+                {
+                    result.push_back(ToDuk(ctx, command));
+                }
+            }
+            return result;
+        }
+
         void addPark(const std::string& path, const std::string& fileName)
         {
             auto titleSeq = LoadTitleSequence(_path);
@@ -213,6 +295,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
             dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
             dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
+            dukglue_register_property(ctx, &ScTitleSequence::commands_get, nullptr, "commands");
             dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
             dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
             dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
