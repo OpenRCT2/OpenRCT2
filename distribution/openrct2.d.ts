@@ -2243,50 +2243,60 @@ declare global {
         'restart' |
         'end';
 
-    interface TitleSequenceCommand {
+    interface TitleSequenceCommandBase {
         type: TitleSequenceCommandType;
     }
 
-    interface LoadTitleSequenceCommand extends TitleSequenceCommand {
+    interface LoadTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'load';
         index: number;
     }
 
-    interface LocationTitleSequenceCommand extends TitleSequenceCommand {
+    interface LocationTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'location';
         x: number;
         y: number;
     }
 
-    interface RotateTitleSequenceCommand extends TitleSequenceCommand {
+    interface RotateTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'rotate';
         rotations: number;
     }
 
-    interface ZoomTitleSequenceCommand extends TitleSequenceCommand {
+    interface ZoomTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'zoom';
         zoom: number;
     }
 
-    interface FollowTitleSequenceCommand extends TitleSequenceCommand {
+    interface FollowTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'follow';
         id: number | null;
     }
 
-    interface SpeedTitleSequenceCommand extends TitleSequenceCommand {
+    interface SpeedTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'speed';
         speed: number;
     }
 
-    interface WaitTitleSequenceCommand extends TitleSequenceCommand {
+    interface WaitTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'wait';
         duration: number;
     }
 
-    interface LoadScenarioTitleSequenceCommand extends TitleSequenceCommand {
+    interface LoadScenarioTitleSequenceCommand extends TitleSequenceCommandBase {
         type: 'loadsc';
         scenario: string;
     }
+
+    type TitleSequenceCommand =
+        LoadTitleSequenceCommand |
+        LocationTitleSequenceCommand |
+        RotateTitleSequenceCommand |
+        ZoomTitleSequenceCommand |
+        FollowTitleSequenceCommand |
+        SpeedTitleSequenceCommand |
+        WaitTitleSequenceCommand |
+        LoadScenarioTitleSequenceCommand;
 
     interface TitleSequenceManager {
         /**
