@@ -20,29 +20,20 @@
 
 namespace OpenRCT2::Scripting
 {
+    static const DukEnumMap<TitleScript> TitleScriptMap({
+        { "load", TitleScript::Load },
+        { "location", TitleScript::Location },
+        { "rotate", TitleScript::Rotate },
+        { "zoom", TitleScript::Zoom },
+        { "follow", TitleScript::Follow },
+        { "speed", TitleScript::Speed },
+        { "wait", TitleScript::Wait },
+        { "loadsc", TitleScript::LoadSc },
+    });
+
     template<> DukValue ToDuk(duk_context* ctx, const TitleScript& value)
     {
-        switch (value)
-        {
-            case TitleScript::Load:
-                return ToDuk(ctx, "load");
-            case TitleScript::Location:
-                return ToDuk(ctx, "location");
-            case TitleScript::Rotate:
-                return ToDuk(ctx, "rotate");
-            case TitleScript::Zoom:
-                return ToDuk(ctx, "zoom");
-            case TitleScript::Follow:
-                return ToDuk(ctx, "follow");
-            case TitleScript::Speed:
-                return ToDuk(ctx, "speed");
-            case TitleScript::Wait:
-                return ToDuk(ctx, "wait");
-            case TitleScript::LoadSc:
-                return ToDuk(ctx, "loadsc");
-            default:
-                return ToDuk(ctx, "");
-        }
+        return ToDuk(ctx, TitleScriptMap[value]);
     }
 
     template<> DukValue ToDuk(duk_context* ctx, const TitleCommand& value)
@@ -62,7 +53,7 @@ namespace OpenRCT2::Scripting
                 obj.Set("rotations", value.Rotations);
                 break;
             case TitleScript::Zoom:
-                obj.Set("zoom", value.Rotations);
+                obj.Set("zoom", value.Zoom);
                 break;
             case TitleScript::Follow:
                 if (value.SpriteIndex == SPRITE_INDEX_NULL)
@@ -81,6 +72,59 @@ namespace OpenRCT2::Scripting
                 break;
         }
         return obj.Take();
+    }
+
+    template<> TitleScript FromDuk(const DukValue& value)
+    {
+        if (value.type() == DukValue::Type::STRING)
+            return TitleScriptMap[value.as_string()];
+        throw DukException() << "Invalid title command id";
+    }
+
+    template<> TitleCommand FromDuk(const DukValue& value)
+    {
+        auto type = FromDuk<TitleScript>(value["type"]);
+        TitleCommand command{};
+        command.Type = type;
+        switch (type)
+        {
+            case TitleScript::Load:
+                command.SaveIndex = value["index"].as_int();
+                break;
+            case TitleScript::Location:
+                command.X = value["x"].as_int();
+                command.Y = value["y"].as_int();
+                break;
+            case TitleScript::Rotate:
+                command.Rotations = value["rotations"].as_int();
+                break;
+            case TitleScript::Zoom:
+                command.Zoom = value["zoom"].as_int();
+                break;
+            case TitleScript::Follow:
+            {
+                auto dukId = value["id"];
+                if (dukId.type() == DukValue::Type::NUMBER)
+                {
+                    command.SpriteIndex = dukId.as_int();
+                }
+                else
+                {
+                    command.SpriteIndex = SPRITE_INDEX_NULL;
+                }
+                break;
+            }
+            case TitleScript::Speed:
+                command.Speed = value["speed"].as_int();
+                break;
+            case TitleScript::Wait:
+                command.Milliseconds = value["duration"].as_int();
+                break;
+            case TitleScript::LoadSc:
+                String::Set(command.Scenario, sizeof(command.Scenario), value["scenario"].as_c_string());
+                break;
+        }
+        return command;
     }
 
     class ScTitleSequencePark
@@ -255,6 +299,20 @@ namespace OpenRCT2::Scripting
             return result;
         }
 
+        void commands_set(const std::vector<DukValue>& value)
+        {
+            std::vector<TitleCommand> commands;
+            for (const auto& v : value)
+            {
+                auto command = FromDuk<TitleCommand>(v);
+                commands.push_back(std::move(command));
+            }
+
+            auto titleSeq = LoadTitleSequence(_path);
+            titleSeq->Commands = commands;
+            TitleSequenceSave(*titleSeq);
+        }
+
         void addPark(const std::string& path, const std::string& fileName)
         {
             auto titleSeq = LoadTitleSequence(_path);
@@ -295,7 +353,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTitleSequence::isDirectory_get, nullptr, "isDirectory");
             dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
             dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
-            dukglue_register_property(ctx, &ScTitleSequence::commands_get, nullptr, "commands");
+            dukglue_register_property(ctx, &ScTitleSequence::commands_get, &ScTitleSequence::commands_set, "commands");
             dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
             dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
             dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
