@@ -673,7 +673,7 @@ rct_window* window_staff_list_open()
 void WindowStaffListRefresh()
 {
     auto* window = window_find_by_class(WC_STAFF_LIST);
-    if (window == nullptr)
+    if (window != nullptr)
     {
         static_cast<StaffListWindow*>(window)->RefreshList();
     }
