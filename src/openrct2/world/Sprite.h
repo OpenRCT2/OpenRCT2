@@ -228,6 +228,7 @@ template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
 }
 
 uint16_t GetEntityListCount(EntityListId list);
+uint16_t GetNumFreeEntities();
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;

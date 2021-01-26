@@ -28,6 +28,7 @@
 
 static rct_sprite _spriteList[MAX_SPRITES];
 static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
+static std::vector<uint16_t> _freeIdList;
 
 static bool _spriteFlashingList[MAX_SPRITES];
 
@@ -103,6 +104,11 @@ template<> bool SpriteBase::Is<ExplosionCloud>() const
 uint16_t GetEntityListCount(EntityListId list)
 {
     return static_cast<uint16_t>(gEntityLists[static_cast<uint8_t>(list)].size());
+}
+
+uint16_t GetNumFreeEntities()
+{
+    return static_cast<uint16_t>(_freeIdList.size());
 }
 
 std::string rct_sprite_checksum::ToString() const
@@ -221,11 +227,22 @@ void RebuildEntityLists()
         list.clear();
     }
 
+    _freeIdList.clear();
+
     for (auto& ent : _spriteList)
     {
-        // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
-        gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
+        if (ent.misc.sprite_identifier == SpriteIdentifier::Null)
+        {
+            _freeIdList.push_back(ent.misc.sprite_index);
+        }
+        else
+        {
+            // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
+            gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
+        }
     }
+    // List needs to be back to front to simplify removing
+    std::sort(std::begin(_freeIdList), std::end(_freeIdList), std::greater<uint16_t>());
 }
 
 const std::list<uint16_t>& GetEntityList(const EntityListId id)
@@ -241,7 +258,6 @@ void reset_sprite_list()
 {
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
-
     for (int32_t i = 0; i < MAX_SPRITES; ++i)
     {
         auto* spr = GetEntity(i);
@@ -256,7 +272,6 @@ void reset_sprite_list()
 
         _spriteFlashingList[i] = false;
     }
-
     RebuildEntityLists();
     reset_sprite_spatial_index();
 }
@@ -373,12 +388,17 @@ static void sprite_reset(SpriteBase* sprite)
  */
 void sprite_clear_all_unused()
 {
-    for (auto sprite : EntityList(EntityListId::Free))
+    for (auto index : _freeIdList)
     {
-        sprite_reset(sprite);
-        sprite->linked_list_index = EntityListId::Free;
+        auto* entity = GetEntity(index);
+        if (entity == nullptr)
+        {
+            continue;
+        }
+        sprite_reset(entity);
+        entity->linked_list_index = EntityListId::Free;
 
-        _spriteFlashingList[sprite->sprite_index] = false;
+        _spriteFlashingList[entity->sprite_index] = false;
     }
 }
 
@@ -389,6 +409,12 @@ static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* enti
     entity->linked_list_index = linkedListIndex;
     // Entity list must be in sprite_index order to prevent desync issues
     list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
+}
+
+static void AddToFreeList(uint16_t index)
+{
+    // Free list must be in reverse sprite_index order to prevent desync issues
+    _freeIdList.insert(std::upper_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index).base(), index);
 }
 
 static void RemoveFromEntityList(SpriteBase* entity)
@@ -403,7 +429,7 @@ static void RemoveFromEntityList(SpriteBase* entity)
 
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
 {
-    if (GetEntityListCount(EntityListId::Free) == 0)
+    if (_freeIdList.size() == 0)
     {
         // No free sprites.
         return nullptr;
@@ -415,19 +441,19 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
         // free it will fail to keep slots for more relevant sprites.
         // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
         uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetEntityListCount(EntityListId::Misc);
-        if (miscSlotsRemaining >= GetEntityListCount(EntityListId::Free))
+        if (miscSlotsRemaining >= _freeIdList.size())
         {
             return nullptr;
         }
     }
 
-    auto* sprite = GetEntity(gEntityLists[static_cast<uint8_t>(EntityListId::Free)].front());
+    auto* sprite = GetEntity(_freeIdList.back());
     if (sprite == nullptr)
     {
         return nullptr;
     }
-    gEntityLists[static_cast<uint8_t>(EntityListId::Free)].pop_front();
-    RemoveFromEntityList(sprite); // remove from Free list
+    _freeIdList.pop_back();
+
     AddToEntityList(linkedListIndex, sprite);
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
@@ -686,7 +712,7 @@ void sprite_remove(SpriteBase* sprite)
 
     EntityTweener::Get().RemoveEntity(sprite);
     RemoveFromEntityList(sprite); // remove from existing list
-    AddToEntityList(EntityListId::Free, sprite);
+    AddToFreeList(sprite->sprite_index);
 
     SpriteSpatialRemove(sprite);
     sprite_reset(sprite);

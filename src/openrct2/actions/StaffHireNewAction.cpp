@@ -89,7 +89,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
     }
 
-    if (GetEntityListCount(EntityListId::Free) < 400)
+    if (GetNumFreeEntities() < 400)
     {
         return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_PEOPLE_IN_GAME);
     }

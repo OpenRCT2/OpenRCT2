@@ -947,11 +947,6 @@ void S6Exporter::ExportSprites()
         ExportSprite(&_s6.sprites[i], reinterpret_cast<const rct_sprite*>(GetEntity(i)));
     }
 
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-    {
-        //_s6.sprite_lists_head[i] = gSpriteListHead[i];
-        _s6.sprite_lists_count[i] = GetEntityListCount(EntityListId(i));
-    }
     RebuildEntityLinks();
 }
 
@@ -967,6 +962,7 @@ void S6Exporter::RebuildEntityLinks()
         {
             if (entity.unknown.linked_list_type_offset == list)
             {
+                _s6.sprite_lists_count[EnumValue(list) >> 1]++;
                 _s6.sprites[entity.unknown.sprite_index].unknown.previous = previous;
                 if (previous != SPRITE_INDEX_NULL)
                 {
