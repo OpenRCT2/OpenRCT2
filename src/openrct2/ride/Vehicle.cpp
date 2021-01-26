@@ -40,6 +40,7 @@
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
+#include "TrainManager.h"
 #include "VehicleData.h"
 #include "VehicleSubpositionData.h"
 
@@ -1295,7 +1296,7 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto vehicle : TrainManager::TrainView())
     {
         vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
@@ -1378,7 +1379,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return;
 
-    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto vehicle : TrainManager::TrainView())
     {
         vehicle->Update();
     }
@@ -7243,7 +7244,6 @@ static void steam_particle_create(const CoordsXYZ& coords)
         steam->sprite_width = 20;
         steam->sprite_height_negative = 18;
         steam->sprite_height_positive = 16;
-        steam->sprite_identifier = SpriteIdentifier::Misc;
         steam->SubType = MiscEntityType::SteamParticle;
         steam->frame = 256;
         steam->time_to_move = 0;

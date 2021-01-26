@@ -138,7 +138,6 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_width = 33;
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
-        jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
         jumpingFountain->SubType = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? MiscEntityType::JumpingFountainSnow
                                                                          : MiscEntityType::JumpingFountainWater;

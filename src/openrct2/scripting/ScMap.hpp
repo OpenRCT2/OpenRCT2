@@ -13,6 +13,7 @@
 
 #    include "../common.h"
 #    include "../ride/Ride.h"
+#    include "../ride/TrainManager.h"
 #    include "../world/EntityList.h"
 #    include "../world/Map.h"
 #    include "Duktape.hpp"
@@ -108,7 +109,17 @@ namespace OpenRCT2::Scripting
             }
             if (type == "car")
             {
-                targetList = EntityListId::TrainHead;
+                std::vector<DukValue> result;
+                for (auto trainHead : TrainManager::TrainView())
+                {
+                    for (auto carId = trainHead->sprite_index; carId != SPRITE_INDEX_NULL;)
+                    {
+                        auto car = GetEntity<Vehicle>(carId);
+                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
+                        carId = car->next_vehicle_on_train;
+                    }
+                }
+                return result;
             }
             else if (type == "litter")
             {
@@ -137,15 +148,6 @@ namespace OpenRCT2::Scripting
                         result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
                     else
                         result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
-                }
-                else if (targetList == EntityListId::TrainHead)
-                {
-                    for (auto carId = sprite->sprite_index; carId != SPRITE_INDEX_NULL;)
-                    {
-                        auto car = GetEntity<Vehicle>(carId);
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
-                        carId = car->next_vehicle_on_train;
-                    }
                 }
                 else if (targetList == EntityListId::Misc)
                 {

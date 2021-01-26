@@ -1612,7 +1612,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
         return nullptr;
 
     Peep* peep = &create_sprite(SpriteIdentifier::Peep)->peep;
-    peep->sprite_identifier = SpriteIdentifier::Peep;
     peep->SpriteType = PeepSpriteType::Normal;
     peep->OutsideOfPark = true;
     peep->State = PeepState::Falling;

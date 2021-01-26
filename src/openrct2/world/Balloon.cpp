@@ -85,7 +85,6 @@ void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
     if (sprite == nullptr)
         return;
-    sprite->misc.sprite_identifier = SpriteIdentifier::Misc;
     sprite->misc.SubType = MiscEntityType::Balloon;
     auto balloon = sprite->misc.As<Balloon>();
     if (balloon == nullptr)

@@ -26,7 +26,11 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+<<<<<<< HEAD
 #include <openrct2/world/EntityList.h>
+=======
+#include <openrct2/ride/TrainManager.h>
+>>>>>>> 3d9159e1a... Make train manager view
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
@@ -1118,7 +1122,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto train : EntityList<Vehicle>(EntityListId::TrainHead))
+    for (auto train : TrainManager::TrainView())
     {
         for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {

@@ -383,6 +383,7 @@
     <ClInclude Include="ride\TrackDesign.h" />
     <ClInclude Include="ride\TrackDesignRepository.h" />
     <ClInclude Include="ride\TrackPaint.h" />
+    <ClInclude Include="ride\TrainManager.h" />
     <ClInclude Include="ride\transport\meta\Chairlift.h" />
     <ClInclude Include="ride\transport\meta\Lift.h" />
     <ClInclude Include="ride\transport\meta\MiniatureRailway.h" />
@@ -815,6 +816,7 @@
     <ClCompile Include="ride\TrackDesignRepository.cpp" />
     <ClCompile Include="ride\TrackDesignSave.cpp" />
     <ClCompile Include="ride\TrackPaint.cpp" />
+    <ClCompile Include="ride\TrainManager.cpp" />
     <ClCompile Include="ride\transport\Chairlift.cpp" />
     <ClCompile Include="ride\transport\Lift.cpp" />
     <ClCompile Include="ride\transport\MiniatureRailway.cpp" />

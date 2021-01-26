@@ -204,7 +204,6 @@ constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier);
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();

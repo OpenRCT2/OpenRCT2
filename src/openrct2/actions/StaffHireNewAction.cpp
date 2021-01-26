@@ -142,7 +142,6 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
     }
     else
     {
-        newPeep->sprite_identifier = SpriteIdentifier::Peep;
         newPeep->WindowInvalidateFlags = 0;
         newPeep->Action = PeepActionType::None2;
         newPeep->SpecialSprite = 0;
