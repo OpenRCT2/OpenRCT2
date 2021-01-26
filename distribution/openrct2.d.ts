@@ -2243,49 +2243,53 @@ declare global {
         'restart' |
         'end';
 
-    interface TitleSequenceCommandBase {
-        type: TitleSequenceCommandType;
-    }
-
-    interface LoadTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface LoadTitleSequenceCommand {
         type: 'load';
         index: number;
     }
 
-    interface LocationTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface LocationTitleSequenceCommand {
         type: 'location';
         x: number;
         y: number;
     }
 
-    interface RotateTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface RotateTitleSequenceCommand {
         type: 'rotate';
         rotations: number;
     }
 
-    interface ZoomTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface ZoomTitleSequenceCommand {
         type: 'zoom';
         zoom: number;
     }
 
-    interface FollowTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface FollowTitleSequenceCommand {
         type: 'follow';
         id: number | null;
     }
 
-    interface SpeedTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface SpeedTitleSequenceCommand {
         type: 'speed';
         speed: number;
     }
 
-    interface WaitTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface WaitTitleSequenceCommand {
         type: 'wait';
         duration: number;
     }
 
-    interface LoadScenarioTitleSequenceCommand extends TitleSequenceCommandBase {
+    interface LoadScenarioTitleSequenceCommand {
         type: 'loadsc';
         scenario: string;
+    }
+
+    interface RestartTitleSequenceCommand {
+        type: 'restart';
+    }
+
+    interface EndTitleSequenceCommand {
+        type: 'end';
     }
 
     type TitleSequenceCommand =
@@ -2296,7 +2300,9 @@ declare global {
         FollowTitleSequenceCommand |
         SpeedTitleSequenceCommand |
         WaitTitleSequenceCommand |
-        LoadScenarioTitleSequenceCommand;
+        LoadScenarioTitleSequenceCommand |
+        RestartTitleSequenceCommand |
+        EndTitleSequenceCommand;
 
     interface TitleSequenceManager {
         /**

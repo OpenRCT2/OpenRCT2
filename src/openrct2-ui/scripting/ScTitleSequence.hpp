@@ -29,6 +29,8 @@ namespace OpenRCT2::Scripting
         { "speed", TitleScript::Speed },
         { "wait", TitleScript::Wait },
         { "loadsc", TitleScript::LoadSc },
+        { "restart", TitleScript::Restart },
+        { "end", TitleScript::End },
     });
 
     template<> DukValue ToDuk(duk_context* ctx, const TitleScript& value)
