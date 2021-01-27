@@ -1118,7 +1118,8 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
         if (trackType == TrackElemType::RotationControlToggle)
             trackType = TrackElemType::RotationControlToggleAlias;
         // Track direction and type are in the same field
-        dst->track_type = (trackType << 2) | (src->track_direction & 3);
+        dst->SetTrackType(trackType);
+        dst->SetTrackDirection(src->GetTrackDirection());
     }
     dst->track_x = src->TrackLocation.x;
     dst->track_y = src->TrackLocation.y;

@@ -1376,7 +1376,8 @@ public:
             || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();
-            dst->track_type = src->track_type;
+            dst->SetTrackType(src->GetTrackType());
+            dst->SetTrackDirection(src->GetTrackDirection());
         }
         else
         {
@@ -1385,7 +1386,7 @@ public:
         }
 
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-        if (dst->track_type && (src->track_type >> 2) == TrackElemType::RotationControlToggleAlias)
+        if (dst->track_type && src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
         {
             // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the ride
             // is on. It's possible to create unwanted behavior if a user layers spinning control track on top of booster track
@@ -1394,7 +1395,7 @@ public:
                 dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
 
             if (tileElement2 != nullptr)
-                dst->track_type = (TrackElemType::RotationControlToggle << 2) | (src->track_direction & 3);
+                dst->SetTrackType(TrackElemType::RotationControlToggle);
         }
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;

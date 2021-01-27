@@ -221,7 +221,7 @@ struct Vehicle : SpriteBase
     union
     {
         int16_t track_direction; // (0000 0000 0000 0011)
-        int16_t track_type;      // (0000 0011 1111 1100)
+        int16_t track_type;      // (1111 1111 1111 1100)
     };
     CoordsXYZ TrackLocation;
     uint16_t next_vehicle_on_train;
@@ -340,12 +340,26 @@ struct Vehicle : SpriteBase
      * Instantly moves the specific car forward or backwards along the track.
      */
     void MoveRelativeDistance(int32_t distance);
-
     track_type_t GetTrackType() const
     {
         return track_type >> 2;
     }
-
+    uint8_t GetTrackDirection() const
+    {
+        return track_direction & 3;
+    }
+    void SetTrackType(track_type_t trackType)
+    {
+        // set the upper 14 bits to 0, then set track type
+        track_type &= 3;
+        track_type |= trackType << 2;
+    }
+    void SetTrackDirection(uint8_t trackDirection)
+    {
+        // set the lower 2 bits only
+        track_direction &= ~3;
+        track_direction |= trackDirection & 3;
+    }
     bool HasUpdateFlag(uint32_t flag) const
     {
         return (update_flags & flag) != 0;
