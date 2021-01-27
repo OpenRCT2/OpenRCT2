@@ -759,7 +759,6 @@ bool RCT12TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
         && trackType == TrackElemType::Booster;
 }
 
-
 void RCT12TrackElement::SetTrackType(uint8_t newType)
 {
     trackType = newType;
