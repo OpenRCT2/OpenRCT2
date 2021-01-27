@@ -2229,6 +2229,11 @@ declare global {
          * Deletes this park from the title sequence.
          */
         delete(): void;
+
+        /**
+         * Loads this park.
+         */
+        load(): void;
     }
 
     type TitleSequenceCommandType =

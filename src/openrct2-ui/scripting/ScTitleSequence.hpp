@@ -12,7 +12,11 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include <memory>
+#    include <openrct2/Game.h>
+#    include <openrct2/ParkImporter.h>
 #    include <openrct2/core/String.hpp>
+#    include <openrct2/object/ObjectManager.h>
+#    include <openrct2/scenario/Scenario.h>
 #    include <openrct2/scripting/ScriptEngine.h>
 #    include <openrct2/title/TitleSequence.h>
 #    include <openrct2/title/TitleSequenceManager.h>
@@ -184,11 +188,47 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        void load()
+        {
+            auto seq = LoadTitleSequence(_titleSequencePath);
+            if (seq != nullptr)
+            {
+                auto index = GetIndex(*seq, _fileName);
+                if (index)
+                {
+                    auto handle = TitleSequenceGetParkHandle(*seq, *index);
+                    auto isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
+                    try
+                    {
+                        auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+                        auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
+                        auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
+                        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                        parkImporter->Import();
+
+                        auto old = gLoadKeepWindowsOpen;
+                        gLoadKeepWindowsOpen = true;
+                        if (isScenario)
+                            scenario_begin();
+                        else
+                            game_load_init();
+                        gLoadKeepWindowsOpen = old;
+                    }
+                    catch (const std::exception&)
+                    {
+                        auto ctx = GetContext()->GetScriptEngine().GetContext();
+                        duk_error(ctx, DUK_ERR_ERROR, "Unable to load park.");
+                    }
+                }
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScTitleSequencePark::fileName_get, &ScTitleSequencePark::fileName_set, "fileName");
             dukglue_register_method(ctx, &ScTitleSequencePark::delete_, "delete");
+            dukglue_register_method(ctx, &ScTitleSequencePark::load, "load");
         }
 
     private:
