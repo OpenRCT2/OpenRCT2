@@ -306,7 +306,7 @@ bool window_ride_construction_update_state(
     {
         auto availablePieces = rtd.CoveredTrackPieces;
         auto alternativeType = AlternativeTrackTypes[trackType];
-        if (alternativeType != TrackElemType::None && availablePieces & (1ULL << trackType))
+        if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
         {
             trackType = alternativeType;
             liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
