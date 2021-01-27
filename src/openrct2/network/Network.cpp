@@ -31,7 +31,7 @@ using namespace OpenRCT2;
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "9"
+#define NETWORK_STREAM_VERSION "15"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 namespace OpenRCT2
@@ -41,8 +41,6 @@ namespace OpenRCT2
     {
         std::unique_ptr<NetworkBase> _network;
         std::shared_ptr<OpenRCT2::IPlatformEnvironment> _env;
-        Peep* _pickup_peep = nullptr;
-        int32_t _pickup_peep_old_x = LOCATION_NULL;
 
     public:
         Network(std::shared_ptr<IPlatformEnvironment> env)
@@ -555,68 +553,22 @@ namespace OpenRCT2
 
         void SetPickupPeep(uint8_t playerid, Peep* peep) override
         {
-            if (GetMode() == NETWORK_MODE_NONE)
-            {
-                _pickup_peep = peep;
-            }
-            else
-            {
-                NetworkPlayer* player = _network->GetPlayerByID(playerid);
-                if (player)
-                {
-                    player->PickupPeep = peep;
-                }
-            }
+            _network->SetPickupPeep(playerid, peep);
         }
 
         Peep* GetPickupPeep(uint8_t playerid) override
         {
-            if (GetMode() == NETWORK_MODE_NONE)
-            {
-                return _pickup_peep;
-            }
-            else
-            {
-                NetworkPlayer* player = _network->GetPlayerByID(playerid);
-                if (player)
-                {
-                    return player->PickupPeep;
-                }
-                return nullptr;
-            }
+            return _network->GetPickupPeep(playerid);
         }
 
         void SetPickupPeepOldX(uint8_t playerid, int32_t x) override
         {
-            if (GetMode() == NETWORK_MODE_NONE)
-            {
-                _pickup_peep_old_x = x;
-            }
-            else
-            {
-                NetworkPlayer* player = _network->GetPlayerByID(playerid);
-                if (player)
-                {
-                    player->PickupPeepOldX = x;
-                }
-            }
+            _network->SetPickupPeepOldX(playerid, x);
         }
 
         int32_t GetPickupPeepOldX(uint8_t playerid) override
         {
-            if (GetMode() == NETWORK_MODE_NONE)
-            {
-                return _pickup_peep_old_x;
-            }
-            else
-            {
-                NetworkPlayer* player = _network->GetPlayerByID(playerid);
-                if (player)
-                {
-                    return player->PickupPeepOldX;
-                }
-                return -1;
-            }
+            return _network->GetPickupPeepOldX(playerid);
         }
 
         int32_t GetCurrentPlayerGroupIndex() override

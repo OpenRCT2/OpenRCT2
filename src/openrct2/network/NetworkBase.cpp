@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -30,15 +30,6 @@
 #include <algorithm>
 #include <iterator>
 #include <stdexcept>
-
- // This string specifies which version of network stream current build uses.
- // It is used for making sure only compatible builds get connected, even within
- // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "15"
-#define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
-
-static Peep* _pickup_peep = nullptr;
-static int32_t _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
 
@@ -275,8 +266,8 @@ NetworkGroup* NetworkBase::AddGroup()
     for (int32_t id = 0; id < 255; id++)
     {
         if (std::find_if(
-            group_list.begin(), group_list.end(),
-            [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
+                group_list.begin(), group_list.end(),
+                [&id](std::unique_ptr<NetworkGroup> const& group) { return group->Id == id; })
             == group_list.end())
         {
             newid = id;
@@ -576,27 +567,27 @@ bool NetworkBase::ProcessConnection(NetworkConnection& connection)
         packetStatus = connection.ReadPacket();
         switch (packetStatus)
         {
-        case NetworkReadPacket::Disconnected:
-            // closed connection or network error
-            if (!connection.GetLastDisconnectReason())
-            {
-                connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
-            }
-            return false;
-        case NetworkReadPacket::Success:
-            // done reading in packet
-            ProcessPacket(connection, connection.InboundPacket);
-            if (connection.Socket == nullptr)
-            {
+            case NetworkReadPacket::Disconnected:
+                // closed connection or network error
+                if (!connection.GetLastDisconnectReason())
+                {
+                    connection.SetLastDisconnectReason(STR_MULTIPLAYER_CONNECTION_CLOSED);
+                }
                 return false;
-            }
-            break;
-        case NetworkReadPacket::MoreData:
-            // more data required to be read
-            break;
-        case NetworkReadPacket::NoData:
-            // could not read anything from socket
-            break;
+            case NetworkReadPacket::Success:
+                // done reading in packet
+                ProcessPacket(connection, connection.InboundPacket);
+                if (connection.Socket == nullptr)
+                {
+                    return false;
+                }
+                break;
+            case NetworkReadPacket::MoreData:
+                // more data required to be read
+                break;
+            case NetworkReadPacket::NoData:
+                // could not read anything from socket
+                break;
         }
     } while (packetStatus == NetworkReadPacket::Success);
 

@@ -139,6 +139,9 @@ namespace OpenRCT2
         bool _requireClose = false;
         bool wsa_initialized = false;
         bool _playerListInvalidated = false;
+
+        Peep* _pickup_peep = nullptr;
+        int32_t _pickup_peep_old_x = LOCATION_NULL;
     };
 
 } // namespace OpenRCT2
