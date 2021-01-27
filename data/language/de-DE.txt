@@ -3702,8 +3702,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :Mehrere Inseln bilden den Ausgangspunkt für diesen neuen Park.
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
-STR_PARK    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :Ein kleiner Freizeitpark mit wenigen Attraktionen, aber genug Gelände zur Erweiterung. Ihr Ziel ist es, den Verkehrswert des Parks zu verdoppeln.
 
 <Pokey Park>
@@ -3727,8 +3727,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :Ein großer Park, versteckt im Wald gelegen, der nur Gokartbahnen und Holzachterbahnen aufzuweisen hat.
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :Dieser Freizeitpark verfügt über ein paar ausgezeichnete moderne Attraktionen und jede Menge Platz für Erweiterungen.
 
 <Mystic Mountain>
@@ -3965,8 +3965,8 @@ STR_PARK    :Paradise Pier 2
 STR_DTLS    :Paradise Pier hat sein Netz von Spazierwegen über dem Meer erweitert. Sie sollen den Park erweitern, indem Sie den neu gewonnenen Platz nutzen.
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :Eine Meeresbucht ist der Rahmen für dieses anspruchsvolle Achterbahn-Bauvorhaben.
 
 <Good Knight Park>
@@ -4453,14 +4453,14 @@ STR_PARK    :Metropolis
 STR_DTLS    :Sie besitzen ein Gelände in der Nähe des flach gebauten Teils der Stadt. Um aus Ihrem Besitz das Beste zu machen, bauen Sie einen Wolkenkratzer-Freizeitpark im hochragenden Stil der Art Déco-Architektur der Zwanziger Jahre.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock´n´Roll - Flower Power
+STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :Auf Ihrem Land findet jährlich ein großes Musikfestival statt. Bauen Sie einen hippen Freizeitpark, um das freidenkende Publikum bei Laune zu halten.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock´n´Roll - Rock´n´Roll
-STR_PARK    :Rock´n´Roll-Revival
-STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie dem Besitzer, ihm einen Rock´n´Roll-Anstrich zu geben und ihn zu einem beliebten Ausflugsziel zu machen.
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Rock-’n’-Roll-Revival
+STR_DTLS    :Dieser Freizeitpark ist ein wenig in die Jahre gekommen. Helfen Sie dem Besitzer, ihm einen Rock-’n’-Roll-Anstrich zu geben und ihn zu einem beliebten Ausflugsziel zu machen.
 
 ###############################################################################
 ## Official Custom Content Scenarios
