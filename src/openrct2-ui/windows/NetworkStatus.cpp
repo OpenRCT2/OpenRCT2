@@ -9,10 +9,14 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/NetworkClient.h>
 #include <openrct2/network/network.h>
 #include <openrct2/util/Util.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 static char _password[33];
@@ -133,13 +137,18 @@ static void window_network_status_textinput(rct_window* w, rct_widgetindex widge
                 safe_strcpy(_password, text, sizeof(_password));
             break;
     }
+
+    auto* client = GetContext()->GetNetwork()->As<NetworkClient>();
+    if (!client)
+        return;
+
     if (text == nullptr)
     {
-        network_shutdown_client();
+        client->Close();
     }
     else
     {
-        network_send_password(_password);
+        client->SendPassword(_password);
     }
 }
 

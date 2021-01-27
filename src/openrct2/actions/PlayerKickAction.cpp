@@ -29,10 +29,10 @@ void PlayerKickAction::Serialise(DataSerialiser& stream)
 }
 GameActions::Result::Ptr PlayerKickAction::Query() const
 {
-    return network_kick_player(_playerId, false);
+    return OpenRCT2::GetContext()->GetNetwork()->KickPlayer(_playerId, false);
 }
 
 GameActions::Result::Ptr PlayerKickAction::Execute() const
 {
-    return network_kick_player(_playerId, true);
+    return OpenRCT2::GetContext()->GetNetwork()->KickPlayer(_playerId, true);
 }

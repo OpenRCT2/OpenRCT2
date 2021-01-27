@@ -124,7 +124,7 @@ void TitleScreen::Load()
     gScreenAge = 0;
     gCurrentLoadedPath = "";
 
-    network_close();
+    OpenRCT2::GetContext()->GetNetwork()->Close();
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(150);
     viewport_init_all();

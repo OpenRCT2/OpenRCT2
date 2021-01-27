@@ -1883,7 +1883,7 @@ static void window_options_misc_invalidate(rct_window* w)
 
     // The real name setting of clients is fixed to that of the server
     // and the server cannot change the setting during gameplay to prevent desyncs
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;

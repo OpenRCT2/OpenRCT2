@@ -586,7 +586,8 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
             nullLoc.setNull();
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc,
+                                           OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -1092,7 +1093,7 @@ void window_guest_overview_update(rct_window* w)
         w->highlighted_item++;
 
     // Disable peep watching thought for multiplayer as it's client specific
-    if (network_get_mode() == NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_NONE)
     {
         // Create the "I have the strangest feeling I am being watched thought"
         if ((w->highlighted_item & 0xFFFF) >= 3840)
@@ -1185,9 +1186,10 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     if (destCoords.isNull())
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Place,
+                                   w->number,
+                                   { destCoords, tileElement->GetBaseZ() },
+                                   OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId() };
     pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
@@ -1206,9 +1208,10 @@ void window_guest_overview_tool_abort(rct_window* w, rct_widgetindex widgetIndex
     if (widgetIndex != WIDX_PICKUP)
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                   w->number,
+                                   { w->picked_peep_old_x, 0, 0 },
+                                   OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerId() };
     GameActions::Execute(&pickupAction);
 }
 

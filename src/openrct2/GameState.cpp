@@ -23,6 +23,8 @@
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
+#include "network/NetworkClient.h"
+#include "network/NetworkServer.h"
 #include "network/network.h"
 #include "peep/Staff.h"
 #include "platform/Platform2.h"
@@ -111,12 +113,16 @@ void GameState::Update()
     // We use this variable to always advance ticks in normal speed.
     gCurrentRealTimeTicks += realtimeTicksElapsed;
 
-    network_update();
+    auto* network = OpenRCT2::GetContext()->GetNetwork();
+    network->Update();
 
-    if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED
-        && network_get_authstatus() == NetworkAuth::Ok)
+    if (auto* client = network->As<NetworkClient>())
     {
-        numUpdates = std::clamp<uint32_t>(network_get_server_tick() - gCurrentTicks, 0, 10);
+        auto& serverState = client->GetServerState();
+        if (client->GetStatus() == NETWORK_STATUS_CONNECTED && client->GetAuthStatus() == NetworkAuth::Ok)
+        {
+            numUpdates = std::clamp<uint32_t>(serverState.tick - gCurrentTicks, 0, 10);
+        }
     }
     else
     {
@@ -129,10 +135,10 @@ void GameState::Update()
     }
 
     bool isPaused = game_is_paused();
-    if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
-        if (gOpenRCT2Headless && network_get_num_players() == 1)
+        if (gOpenRCT2Headless && OpenRCT2::GetContext()->GetNetwork()->GetNumPlayers() == 1)
         {
             isPaused |= true;
         }
@@ -141,7 +147,7 @@ void GameState::Update()
     bool didRunSingleFrame = false;
     if (isPaused)
     {
-        if (gDoSingleUpdate && network_get_mode() == NETWORK_MODE_NONE)
+        if (gDoSingleUpdate && network->GetMode() == NETWORK_MODE_NONE)
         {
             didRunSingleFrame = true;
             pause_toggle();
@@ -155,7 +161,7 @@ void GameState::Update()
             map_animation_invalidate_all();
 
             // Special case because we set numUpdates to 0, otherwise in game_logic_update.
-            network_process_pending();
+            network->ProcessPending();
 
             GameActions::ProcessQueue();
         }
@@ -244,39 +250,42 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
     GetContext()->GetReplayManager()->Update();
 
-    network_update();
+    auto* network = OpenRCT2::GetContext()->GetNetwork();
+
+    network->Update();
     report_time(LogicTimePart::NetworkUpdate);
 
-    if (network_get_mode() == NETWORK_MODE_SERVER)
+    if (auto* server = network->As<NetworkServer>())
     {
-        if (network_gamestate_snapshots_enabled())
+        if (network->GamestateSnapshotsEnabled())
         {
             CreateStateSnapshot();
         }
 
         // Send current tick out.
-        network_send_tick();
+        server->SendTick();
     }
-    else if (network_get_mode() == NETWORK_MODE_CLIENT)
+    else if (auto* client = network->As<NetworkClient>())
     {
         // Don't run past the server, this condition can happen during map changes.
-        if (network_get_server_tick() == gCurrentTicks)
+        auto& serverState = client->GetServerState();
+        if (serverState.tick == gCurrentTicks)
         {
             return;
         }
 
         // Check desync.
-        bool desynced = network_check_desynchronisation();
+        bool desynced = client->CheckDesynchronisation();
         if (desynced)
         {
             // If desync debugging is enabled and we are still connected request the specific game state from server.
-            if (network_gamestate_snapshots_enabled() && network_get_status() == NETWORK_STATUS_CONNECTED)
+            if (serverState.gamestateSnapshotsEnabled && client->GetStatus() == NETWORK_STATUS_CONNECTED)
             {
                 // Create snapshot from this tick so we can compare it later
                 // as we won't pause the game on this event.
                 CreateStateSnapshot();
 
-                network_request_gamestate_snapshot();
+                client->SendGameStateRequest();
             }
         }
     }
@@ -348,8 +357,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
     GameActions::ProcessQueue();
     report_time(LogicTimePart::GameActions);
 
-    network_process_pending();
-    network_flush();
+    OpenRCT2::GetContext()->GetNetwork()->ProcessPending();
+    OpenRCT2::GetContext()->GetNetwork()->Flush();
     report_time(LogicTimePart::NetworkFlush);
 
     gCurrentTicks++;

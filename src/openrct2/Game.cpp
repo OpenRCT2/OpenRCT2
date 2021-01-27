@@ -541,7 +541,7 @@ void game_load_init()
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
 
-    if (network_get_mode() != NETWORK_MODE_CLIENT)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_CLIENT)
     {
         GameActions::ClearQueue();
     }

@@ -50,6 +50,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
+#include <openrct2/network/NetworkClient.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/peep/Staff.h>
@@ -342,7 +343,7 @@ static void window_top_toolbar_mouseup(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_PAUSE:
-            if (network_get_mode() != NETWORK_MODE_CLIENT)
+            if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_CLIENT)
             {
                 auto pauseToggleAction = PauseToggleAction();
                 GameActions::Execute(&pauseToggleAction);
@@ -723,7 +724,7 @@ static void window_top_toolbar_invalidate(rct_window* w)
         if (!gConfigInterface.toolbar_show_news)
             window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
-        switch (network_get_mode())
+        switch (OpenRCT2::GetContext()->GetNetwork()->GetMode())
         {
             case NETWORK_MODE_NONE:
                 window_top_toolbar_widgets[WIDX_NETWORK].type = WindowWidgetType::Empty;
@@ -962,12 +963,13 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             screenPos.y++;
 
         // Draw (de)sync icon.
-        imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
+        auto* network = OpenRCT2::GetContext()->GetNetwork();
+        imgId = (network->IsDesynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
         gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
 
         // Draw number of players.
         auto ft = Formatter();
-        ft.Add<int32_t>(network_get_num_players());
+        ft.Add<int32_t>(network->GetNumPlayers());
         gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, COLOUR_WHITE | COLOUR_FLAG_OUTLINE,
@@ -1724,8 +1726,9 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
 
             int32_t quantity = 1;
             bool isCluster = gWindowSceneryScatterEnabled
-                && (network_get_mode() != NETWORK_MODE_CLIENT
-                    || network_can_perform_command(network_get_current_player_group_index(), -2));
+                && (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_CLIENT
+                    || OpenRCT2::GetContext()->GetNetwork()->CanPerformCommand(
+                        OpenRCT2::GetContext()->GetNetwork()->GetCurrentPlayerGroupIndex(), -2));
 
             if (isCluster)
             {
@@ -3463,7 +3466,7 @@ static void top_toolbar_init_cheats_menu(rct_window* w, rct_widget* widget)
         TOP_TOOLBAR_CHEATS_COUNT);
 
     // Disable items that are not yet available in multiplayer
-    if (network_get_mode() != NETWORK_MODE_NONE)
+    if (OpenRCT2::GetContext()->GetNetwork()->GetMode() != NETWORK_MODE_NONE)
     {
         Dropdown::SetDisabled(DDIDX_OBJECT_SELECTION, true);
         Dropdown::SetDisabled(DDIDX_INVENTIONS_LIST, true);
@@ -3553,7 +3556,7 @@ static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
         TOP_TOOLBAR_NETWORK_COUNT);
 
-    Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !network_is_desynchronised());
+    Dropdown::SetDisabled(DDIDX_MULTIPLAYER_RECONNECT, !OpenRCT2::GetContext()->GetNetwork()->IsDesynchronised());
 
     gDropdownDefaultIndex = DDIDX_MULTIPLAYER;
 }
@@ -3587,6 +3590,8 @@ static void top_toolbar_debug_menu_dropdown(int16_t dropdownIndex)
 
 static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
 {
+    auto* client = OpenRCT2::GetContext()->GetNetwork()->As<NetworkClient>();
+
     rct_window* w = window_get_main();
     if (w)
     {
@@ -3599,7 +3604,10 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
                 context_open_window(WC_NETWORK);
                 break;
             case DDIDX_MULTIPLAYER_RECONNECT:
-                network_reconnect();
+                if (client != nullptr)
+                {
+                    client->Reconnect();
+                }
                 break;
         }
     }

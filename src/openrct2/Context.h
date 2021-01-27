@@ -76,6 +76,7 @@ namespace OpenRCT2
 
     struct IPlatformEnvironment;
     struct IReplayManager;
+    struct INetwork;
 
     namespace Audio
     {
@@ -131,6 +132,7 @@ namespace OpenRCT2
         virtual DrawingEngine GetDrawingEngineType() abstract;
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
+        virtual INetwork* GetNetwork() abstract;
 
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
