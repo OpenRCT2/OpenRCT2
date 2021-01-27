@@ -130,31 +130,39 @@ static void initialise_list_items(rct_window* w);
 static bool is_scenario_visible(rct_window* w, const scenario_index_entry* scenario);
 static bool is_locking_enabled(rct_window* w);
 
-static scenarioselect_callback _callback;
+static std::function<void(std::string_view)> _callback;
 static bool _showLockedInformation = false;
 static bool _titleEditor = false;
+static bool _disableLocking{};
 
-/**
- *
- *  rct2: 0x006781B5
- */
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor)
 {
-    rct_window* window;
-    int32_t windowWidth;
-    int32_t windowHeight = 334;
-
-    _callback = callback;
-
     if (_titleEditor != titleEditor)
     {
         _titleEditor = titleEditor;
         window_close_by_class(WC_SCENARIO_SELECT);
     }
 
-    window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
+    auto window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
     if (window != nullptr)
         return window;
+
+    return window_scenarioselect_open(
+        [callback](std::string_view scenario) { callback(std::string(scenario).c_str()); }, titleEditor, titleEditor);
+}
+
+/**
+ *
+ *  rct2: 0x006781B5
+ */
+rct_window* window_scenarioselect_open(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking)
+{
+    rct_window* window;
+    int32_t windowWidth;
+    int32_t windowHeight = 334;
+
+    _callback = callback;
+    _disableLocking = disableLocking;
 
     // Load scenario list
     scenario_repository_scan();
@@ -328,10 +336,7 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
-                    if (_titleEditor)
-                    {
-                        window_close(w);
-                    }
+                    window_close(w);
                 }
                 break;
         }
