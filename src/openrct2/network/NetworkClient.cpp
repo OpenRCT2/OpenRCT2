@@ -645,7 +645,9 @@ namespace OpenRCT2
     void NetworkClient::OnPacketAuth(NetworkConnection& connection, NetworkPacket& packet)
     {
         uint32_t auth_status;
-        packet >> auth_status >> _playerId;
+        int32_t playerId;
+        packet >> auth_status >> playerId;
+        _playerId = playerId;
         connection.AuthStatus = static_cast<NetworkAuth>(auth_status);
         switch (connection.AuthStatus)
         {
