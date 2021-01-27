@@ -509,6 +509,9 @@ namespace OpenRCT2
 
     int32_t NetworkClient::GetMode() const
     {
+        if (status == NETWORK_STATUS_NONE)
+            return NETWORK_MODE_NONE;
+
         return NETWORK_MODE_CLIENT;
     }
 
