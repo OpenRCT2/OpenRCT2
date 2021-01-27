@@ -402,6 +402,15 @@ private:
     ObjectiveStatus CheckFinish5RollerCoasters() const;
     ObjectiveStatus CheckRepayLoanAndParkValue() const;
     ObjectiveStatus CheckMonthlyFoodIncome() const;
+    int32_t Get10RollerCoastersLengthProgress(int rating, bool checklength) const;
+
+public:
+    int32_t Get10RollerCoastersProgress() const;
+    int32_t Get10RollerCoastersLengthProgress() const;
+    int32_t GetFinish5RollerCoastersProgress() const;
+    money32 GetMonthlyRideIncomeProgress() const;
+    int32_t GetMonthlyShopIncomeProgress() const;
+    ObjectiveStatus GetCurrentObjectiveStatus() const;
 };
 
 enum
@@ -424,6 +433,8 @@ enum
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
 static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
+static constexpr uint32_t OBJECTIVE_GUESTS_BY_PARK_RATING = 600;
+static constexpr uint32_t OBJECTIVE_GUESTS_AND_RATING_PARK_RATING = 700;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
