@@ -138,8 +138,13 @@ const rct_object_entry* get_loaded_object_entry(size_t index)
     ObjectType objectType;
     ObjectEntryIndex entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
+    auto obj = object_entry_get_object(objectType, entryIndex);
+    if (obj == nullptr)
+    {
+        return nullptr;
+    }
 
-    return object_entry_get_object(objectType, entryIndex)->GetObjectEntry();
+    return obj->GetObjectEntry();
 }
 
 void* get_loaded_object_chunk(size_t index)
