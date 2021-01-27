@@ -693,6 +693,10 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         {
             console.WriteFormatLine("current_rotation %d", get_current_rotation());
         }
+        else if (argv[0] == "host_timescale")
+        {
+            console.WriteFormatLine("host_timescale %.02f", OpenRCT2::GetContext()->GetTimeScale());
+        }
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
         {
@@ -1010,6 +1014,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
                 window_rotate_camera(mainWindow, newRotation - currentRotation);
             }
             console.Execute("get current_rotation");
+        }
+        else if (argv[0] == "host_timescale" && invalidArguments(&invalidArgs, double_valid[0]))
+        {
+            float newScale = static_cast<float>(double_val[0]);
+
+            OpenRCT2::GetContext()->SetTimeScale(newScale);
+
+            console.Execute("get host_timescale");
         }
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
