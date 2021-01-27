@@ -1197,13 +1197,6 @@ bool track_element_is_covered(track_type_t trackElementType)
     }
 }
 
-bool TrackTypeIsBooster(uint8_t rideType, track_type_t trackType)
-{
-    // Boosters share their ID with the Spinning Control track.
-    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
-        && trackType == TrackElemType::Booster;
-}
-
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
     // This does not check if the element is really a Spinning Control track instead of a booster,
