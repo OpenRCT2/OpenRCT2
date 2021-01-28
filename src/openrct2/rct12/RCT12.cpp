@@ -752,7 +752,7 @@ void RCT12PathElement::SetIsBlockedByVehicle(bool isBlocked)
     }
 }
 
-bool RCT12TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
+bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
 {
     // Boosters share their ID with the Spinning Control track.
     return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE

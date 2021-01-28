@@ -171,7 +171,7 @@ public:
                 TrackDesignTrackElement trackElement{};
 
                 track_type_t trackType = t6TrackElement.type;
-                if (trackType == TrackElemType::RotationControlToggleAlias && !RCT12TrackTypeIsBooster(td->type, trackType))
+                if (trackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(td->type, trackType))
                 {
                     trackType = TrackElemType::RotationControlToggle;
                 }
