@@ -571,6 +571,7 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint8_t colours_extended;     // 0xD7
     uint8_t seat_rotation;        // 0xD8
     uint8_t target_seat_rotation; // 0xD9
+
     uint16_t GetTrackType() const
     {
         return track_type >> 2;
