@@ -93,6 +93,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Name;
         ImageId Image;
         std::string Text;
+        TextAlignment TextAlign;
         colour_t Colour;
         std::string Tooltip;
         std::vector<std::string> Items;
@@ -175,9 +176,17 @@ namespace OpenRCT2::Ui::Windows
                 result.SelectedIndex = AsOrDefault(desc["selectedIndex"], 0);
                 result.OnChange = desc["onChange"];
             }
-            else if (result.Type == "groupbox" || result.Type == "label")
+            else if (result.Type == "groupbox")
             {
                 result.Text = ProcessString(desc["text"]);
+            }
+            else if (result.Type == "label")
+            {
+                result.Text = ProcessString(desc["text"]);
+                if (ProcessString(desc["textAlign"]) == "centred")
+                {
+                    result.TextAlign = TextAlignment::CENTRE;
+                }
             }
             else if (result.Type == "listview")
             {
@@ -976,6 +985,10 @@ namespace OpenRCT2::Ui::Windows
             widget.type = WindowWidgetType::Label;
             widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            if (desc.TextAlign == TextAlignment::CENTRE)
+            {
+                widget.type = WindowWidgetType::LabelCentred;
+            }
             widgetList.push_back(widget);
         }
         else if (desc.Type == "listview")

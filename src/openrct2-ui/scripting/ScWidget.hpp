@@ -652,6 +652,33 @@ namespace OpenRCT2::Scripting
         {
             dukglue_set_base_class<ScWidget, ScLabelWidget>(ctx);
             dukglue_register_property(ctx, &ScLabelWidget::text_get, &ScLabelWidget::text_set, "text");
+            dukglue_register_property(ctx, &ScLabelWidget::textAlign_get, &ScLabelWidget::textAlign_set, "textAlign");
+        }
+
+    private:
+        std::string textAlign_get() const
+        {
+            auto* widget = GetWidget();
+            if (widget != nullptr)
+            {
+                if (widget->type == WindowWidgetType::LabelCentred)
+                {
+                    return "centred";
+                }
+            }
+            return "left";
+        }
+
+        void textAlign_set(const std::string& value)
+        {
+            auto* widget = GetWidget();
+            if (widget != nullptr)
+            {
+                if (value == "centred")
+                    widget->type = WindowWidgetType::LabelCentred;
+                else
+                    widget->type = WindowWidgetType::Label;
+            }
         }
     };
 
@@ -946,6 +973,7 @@ namespace OpenRCT2::Scripting
             case WindowWidgetType::Groupbox:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
             case WindowWidgetType::Label:
+            case WindowWidgetType::LabelCentred:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
             case WindowWidgetType::Scroll:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));

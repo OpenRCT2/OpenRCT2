@@ -1997,8 +1997,11 @@ declare global {
     interface LabelWidget extends WidgetBase {
         type: 'label';
         text?: string;
+        textAlign?: TextAlignment;
         onChange?: (index: number) => void;
     }
+
+    type TextAlignment = "left" | "centred";
 
     type SortOrder = "none" | "ascending" | "descending";
 
