@@ -5298,7 +5298,8 @@ void Guest::UpdateQueuing()
         return;
     }
 
-    if (SubState != 10)
+    // If not in the queue then at front of queue
+    if (RideSubState != PeepRideSubState::InQueue)
     {
         bool is_front = true;
         // Fix #4819: Occasionally the peep->GuestNextInQueue is incorrectly set
