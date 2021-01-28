@@ -884,7 +884,6 @@ assert_struct_size(RCT12ResearchItem, 5);
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
 RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
 ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
-bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
 RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
