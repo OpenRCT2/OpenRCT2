@@ -321,7 +321,11 @@ namespace OpenRCT2::Ui::Windows
                     colour_t c = COLOUR_BLACK;
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        c = static_cast<colour_t>(std::clamp<int32_t>(w.as_int(), COLOUR_BLACK, COLOUR_COUNT - 1));
+                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, COLOUR_COUNT - 1);
+                        if (w.as_int() & COLOUR_FLAG_TRANSLUCENT)
+                        {
+                            c = TRANSLUCENT(c);
+                        }
                     }
                     return c;
                 });
@@ -402,7 +406,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
 
-        uint16_t windowFlags = WF_RESIZABLE;
+        uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
 
         rct_window* window{};
         if (desc.X && desc.Y)
@@ -709,14 +713,28 @@ namespace OpenRCT2::Ui::Windows
         w->widgets[WIDX_CLOSE].right = w->width - 3;
         w->widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
         w->widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
+        w->widgets[WIDX_CLOSE].text = (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+
+        // Having the content panel visible for transparent windows makes the borders darker than they should be
+        // For now just hide it if there are no tabs and the window is not resizable
+        auto& info = GetInfo(w);
+        auto canResize = (w->flags & WF_RESIZABLE) != 0 && (w->min_width != w->max_width || w->min_height != w->max_height);
+        auto numTabs = info.Desc.Tabs.size();
+        if (canResize || numTabs != 0)
+        {
+            w->widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+        }
+        else
+        {
+            w->widgets[WIDX_CONTENT_PANEL].flags |= WIDGET_FLAGS::IS_HIDDEN;
+        }
 
         window_custom_set_pressed_tab(w);
 
-        const auto& desc = GetInfo(w).Desc;
+        const auto& desc = info.Desc;
         auto ft = Formatter::Common();
         ft.Add<const char*>(desc.Title.c_str());
 
-        auto& info = GetInfo(w);
         size_t scrollIndex = 0;
         for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
         {
