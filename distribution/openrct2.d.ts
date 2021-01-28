@@ -2205,6 +2205,16 @@ declare global {
          */
         commands: TitleSequenceCommand[];
 
+        /**
+         * Whether the title sequence is currently playing.
+         */
+        readonly isPlaying: boolean;
+
+        /**
+         * The current command the title sequence is on if playing.
+         */
+        readonly position: number | null;
+
         addPark(path: string, fileName: string): void;
 
         /**
@@ -2217,6 +2227,22 @@ declare global {
          * Deletes this title sequence from disc.
          */
         delete(): void;
+
+        /**
+         * Play the title sequence.
+         */
+        play(): void;
+
+        /**
+         * Seek to a specific command in the sequence.
+         * @param position The index of the command to seek to.
+         */
+        seek(position: number): void;
+
+        /**
+         * Stops playing the title sequence.
+         */
+        stop(): void;
     }
 
     interface TitleSequencePark {

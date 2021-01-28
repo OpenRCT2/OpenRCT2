@@ -13,13 +13,16 @@
 
 #    include <memory>
 #    include <openrct2/Game.h>
+#    include <openrct2/OpenRCT2.h>
 #    include <openrct2/ParkImporter.h>
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/object/ObjectManager.h>
 #    include <openrct2/scenario/Scenario.h>
 #    include <openrct2/scripting/ScriptEngine.h>
+#    include <openrct2/title/TitleScreen.h>
 #    include <openrct2/title/TitleSequence.h>
 #    include <openrct2/title/TitleSequenceManager.h>
+#    include <openrct2/title/TitleSequencePlayer.h>
 #    include <openrct2/world/Sprite.h>
 
 namespace OpenRCT2::Scripting
@@ -387,6 +390,69 @@ namespace OpenRCT2::Scripting
             _path = {};
         }
 
+        bool isPlaying_get() const
+        {
+            auto index = GetManagerIndex();
+            return index && title_is_previewing_sequence() && *index == title_get_current_sequence();
+        }
+
+        DukValue position_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (isPlaying_get())
+            {
+                auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
+                if (player != nullptr)
+                {
+                    return ToDuk(ctx, player->GetCurrentPosition());
+                }
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void play()
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto index = GetManagerIndex();
+            if (index && !title_is_previewing_sequence() || *index != title_get_current_sequence())
+            {
+                if (!title_preview_sequence(*index))
+                {
+                    duk_error(ctx, DUK_ERR_ERROR, "Failed to load title sequence");
+                }
+                else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+                {
+                    gPreviewingTitleSequenceInGame = true;
+                }
+            }
+        }
+
+        void seek(int32_t position)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (isPlaying_get())
+            {
+                auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
+                try
+                {
+                    player->Seek(position);
+                    player->Update();
+                }
+                catch (...)
+                {
+                    duk_error(ctx, DUK_ERR_ERROR, "Failed to seek");
+                }
+            }
+        }
+
+        void stop()
+        {
+            if (isPlaying_get())
+            {
+                title_stop_previewing_sequence();
+            }
+        }
+
     public:
         static void Register(duk_context* ctx)
         {
@@ -396,9 +462,15 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScTitleSequence::isReadOnly_get, nullptr, "isReadOnly");
             dukglue_register_property(ctx, &ScTitleSequence::parks_get, nullptr, "parks");
             dukglue_register_property(ctx, &ScTitleSequence::commands_get, &ScTitleSequence::commands_set, "commands");
+            dukglue_register_property(ctx, &ScTitleSequence::isPlaying_get, nullptr, "isPlaying");
+            dukglue_register_property(ctx, &ScTitleSequence::position_get, nullptr, "position");
             dukglue_register_method(ctx, &ScTitleSequence::addPark, "addPark");
             dukglue_register_method(ctx, &ScTitleSequence::clone, "clone");
             dukglue_register_method(ctx, &ScTitleSequence::delete_, "delete");
+
+            dukglue_register_method(ctx, &ScTitleSequence::play, "play");
+            dukglue_register_method(ctx, &ScTitleSequence::seek, "seek");
+            dukglue_register_method(ctx, &ScTitleSequence::stop, "stop");
         }
 
     private:
