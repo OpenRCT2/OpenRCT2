@@ -102,36 +102,6 @@ public:
         return result;
     }
 
-    Object* RepositoryItemToObject(const ObjectRepositoryItem* ori)
-    {
-        Object* loadedObject = nullptr;
-        if (ori != nullptr)
-        {
-            loadedObject = ori->LoadedObject;
-            if (loadedObject == nullptr)
-            {
-                ObjectType objectType = ori->ObjectEntry.GetType();
-                int32_t slot = FindSpareSlot(objectType);
-                if (slot != -1)
-                {
-                    auto object = GetOrLoadObject(ori);
-                    if (object != nullptr)
-                    {
-                        if (_loadedObjects.size() <= static_cast<size_t>(slot))
-                        {
-                            _loadedObjects.resize(slot + 1);
-                        }
-                        loadedObject = object.get();
-                        _loadedObjects[slot] = std::move(object);
-                        UpdateSceneryGroupIndexes();
-                        ResetTypeToRideEntryIndexMap();
-                    }
-                }
-            }
-        }
-        return loadedObject;
-    }
-
     Object* LoadObject(std::string_view identifier) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
@@ -284,6 +254,41 @@ public:
         LoadObject("rct2.station.pagoda");
         LoadObject("rct2.station.space");
         LoadObject("openrct2.station.noentrance");
+
+        // Music
+        auto baseIndex = GetIndexFromTypeEntry(ObjectType::Music, 0);
+        LoadObject(baseIndex + MUSIC_STYLE_DODGEMS_BEAT, "rct2.music.dodgems");
+        LoadObject(baseIndex + MUSIC_STYLE_FAIRGROUND_ORGAN, "rct2.music.fairground");
+        LoadObject(baseIndex + MUSIC_STYLE_ROMAN_FANFARE, "rct2.music.roman");
+        LoadObject(baseIndex + MUSIC_STYLE_ORIENTAL, "rct2.music.oriental");
+        LoadObject(baseIndex + MUSIC_STYLE_MARTIAN, "rct2.music.martian");
+        LoadObject(baseIndex + MUSIC_STYLE_JUNGLE_DRUMS, "rct2.music.jungle");
+        LoadObject(baseIndex + MUSIC_STYLE_EGYPTIAN, "rct2.music.egyptian");
+        LoadObject(baseIndex + MUSIC_STYLE_TOYLAND, "rct2.music.toyland");
+        LoadObject(baseIndex + MUSIC_STYLE_SPACE, "rct2.music.space");
+        LoadObject(baseIndex + MUSIC_STYLE_HORROR, "rct2.music.horror");
+        LoadObject(baseIndex + MUSIC_STYLE_TECHNO, "rct2.music.techno");
+        LoadObject(baseIndex + MUSIC_STYLE_GENTLE, "rct2.music.gentle");
+        LoadObject(baseIndex + MUSIC_STYLE_SUMMER, "rct2.music.summer");
+        LoadObject(baseIndex + MUSIC_STYLE_WATER, "rct2.music.water");
+        LoadObject(baseIndex + MUSIC_STYLE_WILD_WEST, "rct2.music.wildwest");
+        LoadObject(baseIndex + MUSIC_STYLE_JURASSIC, "rct2.music.jurassic");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK, "rct2.music.rock1");
+        LoadObject(baseIndex + MUSIC_STYLE_RAGTIME, "rct2.music.ragtime");
+        LoadObject(baseIndex + MUSIC_STYLE_FANTASY, "rct2.music.fantasy");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_2, "rct2.music.rock2");
+        LoadObject(baseIndex + MUSIC_STYLE_ICE, "rct2.music.ice");
+        LoadObject(baseIndex + MUSIC_STYLE_SNOW, "rct2.music.snow");
+        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_1, "rct2.music.custom1");
+        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_2, "rct2.music.custom2");
+        LoadObject(baseIndex + MUSIC_STYLE_MEDIEVAL, "rct2.music.medieval");
+        LoadObject(baseIndex + MUSIC_STYLE_URBAN, "rct2.music.urban");
+        LoadObject(baseIndex + MUSIC_STYLE_ORGAN, "rct2.music.organ");
+        LoadObject(baseIndex + MUSIC_STYLE_MECHANICAL, "rct2.music.mechanical");
+        LoadObject(baseIndex + MUSIC_STYLE_MODERN, "rct2.music.modern");
+        LoadObject(baseIndex + MUSIC_STYLE_PIRATES, "rct2.music.pirate");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_3, "rct2.music.rock3");
+        LoadObject(baseIndex + MUSIC_STYLE_CANDY_STYLE, "rct2.music.candy");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
@@ -320,7 +325,54 @@ public:
     }
 
 private:
-    int32_t FindSpareSlot(ObjectType objectType)
+    Object* LoadObject(int32_t slot, std::string_view identifier)
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
+        return RepositoryItemToObject(ori, slot);
+    }
+
+    Object* RepositoryItemToObject(const ObjectRepositoryItem* ori, std::optional<int32_t> slot = {})
+    {
+        Object* loadedObject = nullptr;
+        if (ori != nullptr)
+        {
+            loadedObject = ori->LoadedObject;
+            if (loadedObject == nullptr)
+            {
+                ObjectType objectType = ori->ObjectEntry.GetType();
+                if (slot)
+                {
+                    if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
+                    {
+                        // Slot already taken
+                        return nullptr;
+                    }
+                }
+                else
+                {
+                    slot = FindSpareSlot(objectType);
+                }
+                if (slot)
+                {
+                    auto object = GetOrLoadObject(ori);
+                    if (object != nullptr)
+                    {
+                        if (_loadedObjects.size() <= static_cast<size_t>(*slot))
+                        {
+                            _loadedObjects.resize(*slot + 1);
+                        }
+                        loadedObject = object.get();
+                        _loadedObjects[*slot] = std::move(object);
+                        UpdateSceneryGroupIndexes();
+                        ResetTypeToRideEntryIndexMap();
+                    }
+                }
+            }
+        }
+        return loadedObject;
+    }
+
+    std::optional<int32_t> FindSpareSlot(ObjectType objectType)
     {
         size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
         size_t endIndex = firstIndex + object_entry_group_counts[EnumValue(objectType)];
@@ -336,7 +388,7 @@ private:
                 return static_cast<int32_t>(i);
             }
         }
-        return -1;
+        return {};
     }
 
     size_t GetLoadedObjectIndex(const Object* object)

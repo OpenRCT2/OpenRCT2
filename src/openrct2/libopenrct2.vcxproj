@@ -255,6 +255,7 @@
     <ClInclude Include="object\FootpathObject.h" />
     <ClInclude Include="object\ImageTable.h" />
     <ClInclude Include="object\LargeSceneryObject.h" />
+    <ClInclude Include="object\MusicObject.h" />
     <ClInclude Include="object\Object.h" />
     <ClInclude Include="object\ObjectFactory.h" />
     <ClInclude Include="object\ObjectLimits.h" />
@@ -352,8 +353,8 @@
     <ClInclude Include="ride\gentle\meta\ObservationTower.h" />
     <ClInclude Include="ride\gentle\meta\SpaceRings.h" />
     <ClInclude Include="ride\gentle\meta\SpiralSlide.h" />
-    <ClInclude Include="ride\MusicList.h" />
     <ClInclude Include="ride\Ride.h" />
+    <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideRatings.h" />
     <ClInclude Include="ride\RideTypes.h" />
@@ -671,6 +672,7 @@
     <ClCompile Include="object\FootpathObject.cpp" />
     <ClCompile Include="object\ImageTable.cpp" />
     <ClCompile Include="object\LargeSceneryObject.cpp" />
+    <ClCompile Include="object\MusicObject.cpp" />
     <ClCompile Include="object\Object.cpp" />
     <ClCompile Include="object\ObjectFactory.cpp" />
     <ClCompile Include="object\ObjectList.cpp" />
@@ -787,8 +789,8 @@
     <ClCompile Include="ride\gentle\ObservationTower.cpp" />
     <ClCompile Include="ride\gentle\SpaceRings.cpp" />
     <ClCompile Include="ride\gentle\SpiralSlide.cpp" />
-    <ClCompile Include="ride\MusicList.cpp" />
     <ClCompile Include="ride\Ride.cpp" />
+    <ClCompile Include="ride\RideAudio.cpp" />
     <ClCompile Include="ride\RideData.cpp" />
     <ClCompile Include="ride\RideRatings.cpp" />
     <ClCompile Include="ride\ShopItem.cpp" />

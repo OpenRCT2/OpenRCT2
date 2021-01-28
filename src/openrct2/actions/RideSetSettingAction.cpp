@@ -9,6 +9,8 @@
 
 #include "RideSetSettingAction.h"
 
+#include "../Context.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 
@@ -100,12 +102,16 @@ GameActions::Result::Ptr RideSetSettingAction::Query() const
         case RideSetSetting::Music:
             break;
         case RideSetSetting::MusicType:
-            if (_value >= MUSIC_STYLE_COUNT)
+        {
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto musicObj = objManager.GetLoadedObject(ObjectType::Music, _value);
+            if (musicObj == nullptr)
             {
                 log_warning("Invalid music style: %u", _value);
                 return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_OPERATING_MODE);
             }
             break;
+        }
         case RideSetSetting::LiftHillSpeed:
             if (!ride_is_valid_lift_hill_speed(ride))
             {

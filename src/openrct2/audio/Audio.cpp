@@ -22,6 +22,7 @@
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"
+#include "../ride/RideAudio.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "AudioContext.h"
@@ -48,9 +49,6 @@ namespace OpenRCT2::Audio
     void* gTitleMusicChannel = nullptr;
     void* gWeatherSoundChannel = nullptr;
 
-    RideMusic gRideMusicList[MaxRideMusic];
-    RideMusicParams gRideMusicParamsList[MaxRideMusic];
-    RideMusicParams* gRideMusicParamsListEnd;
     VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
     // clang-format off
@@ -290,26 +288,11 @@ namespace OpenRCT2::Audio
         }
     }
 
-    void StopRideMusic()
-    {
-        for (auto& rideMusic : gRideMusicList)
-        {
-            if (rideMusic.ride_id != RIDE_ID_NULL)
-            {
-                rideMusic.ride_id = RIDE_ID_NULL;
-                if (rideMusic.sound_channel != nullptr)
-                {
-                    Mixer_Stop_Channel(rideMusic.sound_channel);
-                }
-            }
-        }
-    }
-
     void StopAll()
     {
         StopTitleMusic();
         StopVehicleSounds();
-        StopRideMusic();
+        RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
         StopWeatherSound();
     }
@@ -355,33 +338,7 @@ namespace OpenRCT2::Audio
 
     void InitRideSoundsAndInfo()
     {
-        int32_t deviceNum = 0;
-        InitRideSounds(deviceNum);
-
-        for (auto& rideMusicInfo : gRideMusicInfoList)
-        {
-            const utf8* path = context_get_path_legacy(rideMusicInfo.path_id);
-            if (File::Exists(path))
-            {
-                try
-                {
-                    auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
-                    uint32_t head = fs.ReadValue<uint32_t>();
-                    if (head == 0x78787878)
-                    {
-                        rideMusicInfo.length = 0;
-                    }
-                    // The length used to be hardcoded, but we stopped doing that to allow replacement.
-                    if (rideMusicInfo.length == 0)
-                    {
-                        rideMusicInfo.length = fs.GetLength();
-                    }
-                }
-                catch (const std::exception&)
-                {
-                }
-            }
-        }
+        InitRideSounds(0);
     }
 
     void InitRideSounds(int32_t device)
@@ -394,17 +351,13 @@ namespace OpenRCT2::Audio
 
         _currentAudioDevice = device;
         config_save_default();
-        for (auto& rideMusic : gRideMusicList)
-        {
-            rideMusic.ride_id = RIDE_ID_NULL;
-        }
     }
 
     void Close()
     {
         peep_stop_crowd_noise();
         StopTitleMusic();
-        StopRideMusic();
+        RideAudio::StopAllChannels();
         StopWeatherSound();
         _currentAudioDevice = -1;
     }
@@ -429,7 +382,7 @@ namespace OpenRCT2::Audio
     {
         gGameSoundsOff = true;
         StopVehicleSounds();
-        StopRideMusic();
+        RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
         StopWeatherSound();
     }

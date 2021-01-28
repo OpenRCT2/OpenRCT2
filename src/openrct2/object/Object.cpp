@@ -10,8 +10,11 @@
 #include "Object.h"
 
 #include "../Context.h"
+#include "../core/File.h"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -21,6 +24,8 @@
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
+
+using namespace OpenRCT2;
 
 ObjectType& operator++(ObjectType& d, int)
 {
@@ -163,6 +168,137 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
         default:
             return std::nullopt;
     }
+}
+
+/**
+ * Couples a zip archive and a zip item stream to ensure the lifetime of the zip archive is maintained
+ * for the lifetime of the stream.
+ */
+class ZipStreamWrapper final : public IStream
+{
+private:
+    std::unique_ptr<IZipArchive> _zipArchive;
+    std::unique_ptr<IStream> _base;
+
+public:
+    ZipStreamWrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<IStream> base)
+        : _zipArchive(std::move(zipArchive))
+        , _base(std::move(base))
+    {
+    }
+
+    bool CanRead() const override
+    {
+        return _base->CanRead();
+    }
+
+    bool CanWrite() const override
+    {
+        return _base->CanWrite();
+    }
+
+    uint64_t GetLength() const override
+    {
+        return _base->GetLength();
+    }
+
+    uint64_t GetPosition() const override
+    {
+        return _base->GetPosition();
+    }
+
+    void SetPosition(uint64_t position) override
+    {
+        _base->SetPosition(position);
+    }
+
+    void Seek(int64_t offset, int32_t origin) override
+    {
+        _base->Seek(offset, origin);
+    }
+
+    void Read(void* buffer, uint64_t length) override
+    {
+        _base->Read(buffer, length);
+    }
+
+    void Write(const void* buffer, uint64_t length) override
+    {
+        _base->Write(buffer, length);
+    }
+
+    uint64_t TryRead(void* buffer, uint64_t length) override
+    {
+        return _base->TryRead(buffer, length);
+    }
+
+    const void* GetData() const override
+    {
+        return _base->GetData();
+    }
+};
+
+bool ObjectAsset::IsAvailable() const
+{
+    if (_zipPath.empty())
+    {
+        return File::Exists(_path);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        return zipArchive != nullptr && zipArchive->Exists(_path);
+    }
+}
+
+size_t ObjectAsset::GetSize() const
+{
+    if (_zipPath.empty())
+    {
+        try
+        {
+            return File::ReadAllBytes(_path).size();
+        }
+        catch (...)
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto index = zipArchive->GetIndexFromPath(_path);
+            if (index)
+            {
+                auto size = zipArchive->GetFileSize(*index);
+                return size;
+            }
+        }
+    }
+    return 0;
+}
+
+std::unique_ptr<IStream> ObjectAsset::GetStream() const
+{
+    if (_zipPath.empty())
+    {
+        return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto stream = zipArchive->GetFileStream(_path);
+            if (stream != nullptr)
+            {
+                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            }
+        }
+    }
+    return {};
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

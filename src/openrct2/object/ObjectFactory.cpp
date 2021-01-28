@@ -25,6 +25,7 @@
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
+#include "MusicObject.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
@@ -44,6 +45,7 @@ struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
     virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
+    virtual ObjectAsset GetAsset(std::string_view path) const abstract;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever
@@ -59,25 +61,38 @@ public:
 
     std::vector<uint8_t> GetData(std::string_view path) const override
     {
-        auto absolutePath = Path::Combine(_basePath, std::string(path).c_str());
+        auto absolutePath = Path::Combine(_basePath, path);
         return File::ReadAllBytes(absolutePath);
+    }
+
+    ObjectAsset GetAsset(std::string_view path) const override
+    {
+        auto absolutePath = Path::Combine(_basePath, path);
+        return ObjectAsset(absolutePath);
     }
 };
 
 class ZipDataRetriever : public IFileDataRetriever
 {
 private:
+    const std::string _path;
     const IZipArchive& _zipArchive;
 
 public:
-    ZipDataRetriever(const IZipArchive& zipArchive)
-        : _zipArchive(zipArchive)
+    ZipDataRetriever(std::string_view path, const IZipArchive& zipArchive)
+        : _path(path)
+        , _zipArchive(zipArchive)
     {
     }
 
     std::vector<uint8_t> GetData(std::string_view path) const override
     {
         return _zipArchive.GetFileData(path);
+    }
+
+    ObjectAsset GetAsset(std::string_view path) const override
+    {
+        return ObjectAsset(_path, path);
     }
 };
 
@@ -133,6 +148,15 @@ public:
         if (_fileDataRetriever != nullptr)
         {
             return _fileDataRetriever->GetData(path);
+        }
+        return {};
+    }
+
+    ObjectAsset GetAsset(std::string_view path) override
+    {
+        if (_fileDataRetriever != nullptr)
+        {
+            return _fileDataRetriever->GetAsset(path);
         }
         return {};
     }
@@ -314,6 +338,9 @@ namespace ObjectFactory
             case ObjectType::Station:
                 result = std::make_unique<StationObject>(entry);
                 break;
+            case ObjectType::Music:
+                result = std::make_unique<MusicObject>(entry);
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -348,6 +375,8 @@ namespace ObjectFactory
             return ObjectType::TerrainEdge;
         if (s == "station")
             return ObjectType::Station;
+        if (s == "music")
+            return ObjectType::Music;
         return ObjectType::None;
     }
 
@@ -366,7 +395,7 @@ namespace ObjectFactory
 
             if (jRoot.is_object())
             {
-                auto fileDataRetriever = ZipDataRetriever(*archive);
+                auto fileDataRetriever = ZipDataRetriever(path, *archive);
                 return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
             }
         }

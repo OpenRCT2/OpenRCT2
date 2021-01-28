@@ -57,6 +57,8 @@
 		4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67D25533D64005C8830 /* StringBuilder.cpp */; };
 		4C8BB68225533D65005C8830 /* StringReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67E25533D64005C8830 /* StringReader.cpp */; };
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
+		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
+		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
@@ -458,7 +460,6 @@
 		C688786F20289A6F0084B384 /* VehicleData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54052005735F00A52E21 /* VehicleData.cpp */; };
 		C688787020289A6F0084B384 /* VehiclePaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54072005736700A52E21 /* VehiclePaint.cpp */; };
 		C688787120289A780084B384 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BF1FF9322A00694CB6 /* Ride.cpp */; };
-		C688787220289A780084B384 /* MusicList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320F2011589F00C4D975 /* MusicList.cpp */; };
 		C688787320289A780084B384 /* RideRatings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320B2011589E00C4D975 /* RideRatings.cpp */; };
 		C688787420289A780084B384 /* TrackDesignSave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */; };
 		C688787520289A780084B384 /* RideData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541420060D8E00A52E21 /* RideData.cpp */; };
@@ -1033,6 +1034,10 @@
 		4C8BB68325533DB9005C8830 /* ZoomLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZoomLevel.h; sourceTree = "<group>"; };
 		4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ZoomLevel.cpp; sourceTree = "<group>"; };
 		4C9196ED204FF3E000869A24 /* Location.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Location.hpp; sourceTree = "<group>"; };
+		4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicObject.cpp; sourceTree = "<group>"; };
+		4C91FD5E25AE476700CA5DA4 /* MusicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicObject.h; sourceTree = "<group>"; };
+		4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideAudio.cpp; sourceTree = "<group>"; };
+		4C91FD6125AE483600CA5DA4 /* RideAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideAudio.h; sourceTree = "<group>"; };
 		4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AirPoweredVerticalCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BobsleighCoaster.cpp; sourceTree = "<group>"; };
 		4C93F11A1F8B744400A9330D /* BolligerMabillardTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BolligerMabillardTrack.h; sourceTree = "<group>"; };
@@ -1913,9 +1918,7 @@
 		F70839911FFC0AFF002DCEFA /* Scenario.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenario.cpp; sourceTree = "<group>"; };
 		F73E320B2011589E00C4D975 /* RideRatings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideRatings.cpp; sourceTree = "<group>"; };
 		F73E320C2011589F00C4D975 /* RideRatings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideRatings.h; sourceTree = "<group>"; };
-		F73E320D2011589F00C4D975 /* MusicList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MusicList.h; sourceTree = "<group>"; };
 		F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignSave.cpp; sourceTree = "<group>"; };
-		F73E320F2011589F00C4D975 /* MusicList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MusicList.cpp; sourceTree = "<group>"; };
 		F74789541EEDEA0D009E50E7 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F76C83571EC4E7CC00FA49E2 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
@@ -3384,6 +3387,8 @@
 				F76C841B1EC4E7CC00FA49E2 /* ImageTable.h */,
 				F76C841C1EC4E7CC00FA49E2 /* LargeSceneryObject.cpp */,
 				F76C841D1EC4E7CC00FA49E2 /* LargeSceneryObject.h */,
+				4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */,
+				4C91FD5E25AE476700CA5DA4 /* MusicObject.h */,
 				F76C841E1EC4E7CC00FA49E2 /* Object.cpp */,
 				F76C841F1EC4E7CC00FA49E2 /* Object.h */,
 				F76C84201EC4E7CC00FA49E2 /* ObjectFactory.cpp */,
@@ -3559,10 +3564,10 @@
 				F76C84EA1EC4E7CD00FA49E2 /* water */,
 				4C6AC2101F9E1CB3004324AA /* CableLift.cpp */,
 				4C6AC2111F9E1CB3004324AA /* CableLift.h */,
-				F73E320F2011589F00C4D975 /* MusicList.cpp */,
-				F73E320D2011589F00C4D975 /* MusicList.h */,
 				4C6A66BF1FF9322A00694CB6 /* Ride.cpp */,
 				4C6A66C01FF9322A00694CB6 /* Ride.h */,
+				4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */,
+				4C91FD6125AE483600CA5DA4 /* RideAudio.h */,
 				4C7B541420060D8E00A52E21 /* RideData.cpp */,
 				4C7B541520060D8E00A52E21 /* RideData.h */,
 				F73E320B2011589E00C4D975 /* RideRatings.cpp */,
@@ -4508,6 +4513,7 @@
 				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
+				4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */,
 				C68878C020289B710084B384 /* ApplyPaletteShader.cpp in Sources */,
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */,
@@ -4587,6 +4593,7 @@
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
 				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
+				4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */,
 				C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */,
 				4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */,
 				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
@@ -4936,7 +4943,6 @@
 				936F412A24CE030F00E07BCF /* NetworkClient.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				C688790A20289B9B0084B384 /* WoodenRollerCoaster.cpp in Sources */,
-				C688787220289A780084B384 /* MusicList.cpp in Sources */,
 				93F76F0220BFF77B00D4512C /* Paint.Surface.cpp in Sources */,
 				66A10ECF257F1DF800DD651A /* ClimateSetAction.cpp in Sources */,
 				93DFD02F24521BA0001FCBAF /* FileWatcher.cpp in Sources */,

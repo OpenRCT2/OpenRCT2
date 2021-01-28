@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/IStream.hpp"
 
 #include <memory>
 #include <string>
@@ -34,6 +35,7 @@ namespace OpenRCT2::Audio
         virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
         virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;
+        virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) abstract;
 
         virtual void StartTitleMusic() abstract;
 

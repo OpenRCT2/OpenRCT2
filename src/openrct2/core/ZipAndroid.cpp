@@ -11,10 +11,13 @@
 
 #    include "../platform/platform.h"
 #    include "IStream.hpp"
+#    include "MemoryStream.h"
 #    include "Zip.h"
 
 #    include <SDL.h>
 #    include <jni.h>
+
+using namespace OpenRCT2;
 
 class ZipArchive final : public IZipArchive
 {
@@ -111,6 +114,12 @@ public:
         auto dataSize = this->GetFileSize(index);
 
         return std::vector<uint8_t>(dataPtr, dataPtr + dataSize);
+    }
+
+    std::unique_ptr<IStream> GetFileStream(std::string_view path) const override
+    {
+        auto data = GetFileData(path);
+        return std::make_unique<MemoryStream>(std::move(data));
     }
 
     void SetFileData(std::string_view path, std::vector<uint8_t>&& data) override

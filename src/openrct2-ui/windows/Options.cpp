@@ -33,6 +33,7 @@
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/Platform2.h>
+#include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/title/TitleScreen.h>
@@ -1374,7 +1375,7 @@ static void window_options_audio_mouseup(rct_window* w, rct_widgetindex widgetIn
             gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
             if (!gConfigSound.ride_music_enabled)
             {
-                OpenRCT2::Audio::StopRideMusic();
+                OpenRCT2::RideAudio::StopAllChannels();
             }
             config_save_default();
             w->Invalidate();
