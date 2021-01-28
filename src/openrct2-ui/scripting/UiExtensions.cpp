@@ -31,13 +31,18 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScTool::Register(ctx);
     ScUi::Register(ctx);
     ScViewport::Register(ctx);
+
     ScWidget::Register(ctx);
     ScButtonWidget::Register(ctx);
     ScColourPickerWidget::Register(ctx);
     ScCheckBoxWidget::Register(ctx);
     ScDropdownWidget::Register(ctx);
+    ScGroupBoxWidget::Register(ctx);
+    ScLabelWidget::Register(ctx);
     ScListViewWidget::Register(ctx);
+    ScSpinnerWidget::Register(ctx);
     ScTextBoxWidget::Register(ctx);
+    ScViewportWidget::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
