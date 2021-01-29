@@ -873,3 +873,14 @@ const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
     return RideTypeDescriptors[type];
 }
+
+uint8_t TileElementBase::GetOwner() const
+{
+    return owner & OWNER_MASK;
+}
+
+void TileElementBase::SetOwner(uint8_t newOwner)
+{
+    owner &= ~OWNER_MASK;
+    owner |= (newOwner & OWNER_MASK);
+}

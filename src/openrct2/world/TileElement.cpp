@@ -162,7 +162,8 @@ void TileElement::ClearAs(uint8_t newType)
     Flags = 0;
     base_height = MINIMUM_LAND_HEIGHT;
     clearance_height = MINIMUM_LAND_HEIGHT;
-    std::fill_n(pad_04, sizeof(pad_04), 0x00);
+    owner = 0;
+    std::fill_n(pad_05, sizeof(pad_05), 0x00);
     std::fill_n(pad_08, sizeof(pad_08), 0x00);
 }
 
@@ -243,4 +244,15 @@ int32_t TileElementBase::GetClearanceZ() const
 void TileElementBase::SetClearanceZ(int32_t newZ)
 {
     clearance_height = (newZ / COORDS_Z_STEP);
+}
+
+uint8_t TileElementBase::GetOwner() const
+{
+    return owner & OWNER_MASK;
+}
+
+void TileElementBase::SetOwner(uint8_t newOwner)
+{
+    owner &= ~OWNER_MASK;
+    owner |= (newOwner & OWNER_MASK);
 }

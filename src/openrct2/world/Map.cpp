@@ -1190,7 +1190,8 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     newTileElement->SetLastForTile(isLastForTile);
     newTileElement->SetOccupiedQuadrants(occupiedQuadrants);
     newTileElement->SetClearanceZ(loc.z);
-    std::memset(&newTileElement->pad_04, 0, sizeof(newTileElement->pad_04));
+    newTileElement->owner = 0;
+    std::memset(&newTileElement->pad_05, 0, sizeof(newTileElement->pad_05));
     std::memset(&newTileElement->pad_08, 0, sizeof(newTileElement->pad_08));
     newTileElement++;
 
@@ -1706,6 +1707,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
         case TILE_ELEMENT_TYPE_SURFACE:
             element->base_height = MINIMUM_LAND_HEIGHT;
             element->clearance_height = MINIMUM_LAND_HEIGHT;
+            element->owner = 0;
             element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
             element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
             element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
