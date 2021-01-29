@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include <memory>
+#    include <openrct2/Context.h>
 #    include <openrct2/Game.h>
 #    include <openrct2/OpenRCT2.h>
 #    include <openrct2/ParkImporter.h>
@@ -79,6 +80,8 @@ namespace OpenRCT2::Scripting
             case TitleScript::LoadSc:
                 obj.Set("scenario", String::ToStringView(value.Scenario, sizeof(value.Scenario)));
                 break;
+            default:
+                break;
         }
         return obj.Take();
     }
@@ -131,6 +134,8 @@ namespace OpenRCT2::Scripting
                 break;
             case TitleScript::LoadSc:
                 String::Set(command.Scenario, sizeof(command.Scenario), value["scenario"].as_c_string());
+                break;
+            default:
                 break;
         }
         return command;
@@ -203,7 +208,7 @@ namespace OpenRCT2::Scripting
                     auto isScenario = ParkImporter::ExtensionIsScenario(handle->HintPath);
                     try
                     {
-                        auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+                        auto& objectMgr = GetContext()->GetObjectManager();
                         auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(handle->HintPath));
                         auto result = parkImporter->LoadFromStream(handle->Stream.get(), isScenario);
                         objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
@@ -414,7 +419,7 @@ namespace OpenRCT2::Scripting
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto index = GetManagerIndex();
-            if (index && !title_is_previewing_sequence() || *index != title_get_current_sequence())
+            if (index && (!title_is_previewing_sequence() || *index != title_get_current_sequence()))
             {
                 if (!title_preview_sequence(*index))
                 {
