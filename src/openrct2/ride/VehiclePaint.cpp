@@ -2339,7 +2339,7 @@ static void vehicle_sprite_17(
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
+        if (vehicle->GetTrackType() != TrackElemType::Down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
         {
             vehicleEntry--;
@@ -2364,7 +2364,7 @@ static void vehicle_sprite_18(
 {
     if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
     {
-        if ((vehicle->GetTrackType()) != TrackElemType::Down90 && (vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
+        if (vehicle->GetTrackType() != TrackElemType::Down90 && (vehicle->GetTrackType()) != TrackElemType::Down90ToDown60
             && (vehicle->GetTrackType()) != TrackElemType::Down60ToDown90)
         {
             vehicleEntry--;
@@ -2963,7 +2963,7 @@ static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
  */
 static void vehicle_visual_splash1_effect(paint_session* session, int32_t z, const Vehicle* vehicle)
 {
-    if ((vehicle->GetTrackType()) != TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() != TrackElemType::Watersplash)
     {
         return;
     }

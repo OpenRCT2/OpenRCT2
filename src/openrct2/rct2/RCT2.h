@@ -482,9 +482,8 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction; // 0x36
-        int16_t track_type;      // 0x36
-        RCT12xy8 boat_location;  // 0x36
+        int16_t TrackTypeAndDirection; // 0x36
+        RCT12xy8 boat_location;        // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -574,23 +573,23 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
 
     uint16_t GetTrackType() const
     {
-        return track_type >> 2;
+        return TrackTypeAndDirection >> 2;
     }
     uint8_t GetTrackDirection() const
     {
-        return track_direction & 3;
+        return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
     }
     void SetTrackType(uint16_t trackType)
     {
         // set the upper 14 bits to 0
-        track_type &= 3;
-        track_type |= trackType << 2;
+        TrackTypeAndDirection &= ~RCT12VehicleTrackTypeMask;
+        TrackTypeAndDirection |= trackType << 2;
     }
     void SetTrackDirection(uint8_t trackDirection)
     {
         // set the lower 2 bits only
-        track_direction &= ~3;
-        track_direction |= trackDirection & 3;
+        TrackTypeAndDirection &= ~RCT12VehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
     }
 };
 assert_struct_size(RCT2SpriteVehicle, 0xDA);

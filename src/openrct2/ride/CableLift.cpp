@@ -72,7 +72,8 @@ Vehicle* cable_lift_segment_create(
     z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
-    current->track_type = (TrackElemType::CableLiftHill << 2) | (current->sprite_direction >> 3);
+    current->SetTrackType(TrackElemType::CableLiftHill);
+    current->SetTrackDirection(current->sprite_direction >> 3);
     current->track_progress = 164;
     current->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
     current->SetState(Vehicle::Status::MovingToEndOfStation, 0);
@@ -259,8 +260,8 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
                 return false;
 
             TrackLocation = { output, outputZ };
-            track_direction = outputDirection;
-            track_type |= output.element->AsTrack()->GetTrackType() << 2;
+            SetTrackDirection(outputDirection);
+            SetTrackType(output.element->AsTrack()->GetTrackType());
             trackProgress = 0;
         }
 
@@ -319,8 +320,8 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
                 return false;
 
             TrackLocation = { output.begin_x, output.begin_y, output.begin_z };
-            track_direction = output.begin_direction;
-            track_type |= output.begin_element->AsTrack()->GetTrackType() << 2;
+            SetTrackDirection(output.begin_direction);
+            SetTrackType(output.begin_element->AsTrack()->GetTrackType());
 
             if (output.begin_element->AsTrack()->GetTrackType() == TrackElemType::EndStation)
             {

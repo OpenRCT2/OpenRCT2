@@ -1245,12 +1245,14 @@ private:
         if (src->boat_location.isNull() || ride->mode != RideMode::BoatHire || statusSrc != Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.setNull();
-            dst->track_type = src->track_type;
+            dst->SetTrackDirection(src->GetTrackDirection());
+            dst->SetTrackType(src->GetTrackType());
         }
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
-            dst->track_type = 0;
+            dst->SetTrackDirection(0);
+            dst->SetTrackType(0);
         }
         dst->track_progress = src->track_progress;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;

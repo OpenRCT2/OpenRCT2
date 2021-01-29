@@ -522,7 +522,7 @@ namespace OpenRCT2::Scripting
             auto vehicle = GetVehicle();
             if (vehicle != nullptr)
             {
-                auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->track_direction & 3);
+                auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->GetTrackDirection());
                 return ToDuk<CoordsXYZD>(ctx, coords);
             }
             return ToDuk(ctx, nullptr);
@@ -535,8 +535,7 @@ namespace OpenRCT2::Scripting
             {
                 auto coords = FromDuk<CoordsXYZD>(value);
                 vehicle->TrackLocation = CoordsXYZ(coords.x, coords.y, coords.z);
-                vehicle->track_direction &= ~3;
-                vehicle->track_direction |= coords.direction & 3;
+                vehicle->SetTrackDirection(coords.direction);
             }
         }
 

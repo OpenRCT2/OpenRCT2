@@ -242,9 +242,8 @@ struct rct1_vehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction; // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;      // 0x36 (0000 0011 1111 1100)
-        RCT12xy8 boat_location;  // 0x36
+        int16_t TrackTypeAndDirection; // 0x36
+        RCT12xy8 boat_location;        // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -321,6 +320,16 @@ struct rct1_vehicle : RCT12SpriteBase
     uint8_t mini_golf_flags;  // 0xD5
     uint8_t ride_subtype;     // 0xD6
     uint8_t colours_extended; // 0xD7
+
+    uint16_t GetTrackType() const
+    {
+        return TrackTypeAndDirection >> 2;
+    }
+
+    uint8_t GetTrackDirection() const
+    {
+        return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+    }
 };
 
 struct rct1_peep : RCT12SpriteBase
