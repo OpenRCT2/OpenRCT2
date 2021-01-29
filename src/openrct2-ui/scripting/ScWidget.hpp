@@ -318,6 +318,39 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        bool isVisible_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return WidgetIsVisible(w, _widgetIndex);
+            }
+            return false;
+        }
+        void isVisible_set(bool value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                WidgetSetVisible(w, _widgetIndex, value);
+
+                auto widget = GetWidget();
+                if (widget != nullptr)
+                {
+                    if (widget->type == WindowWidgetType::DropdownMenu)
+                    {
+                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                    }
+                    else if (widget->type == WindowWidgetType::Spinner)
+                    {
+                        WidgetSetVisible(w, _widgetIndex + 1, value);
+                        WidgetSetVisible(w, _widgetIndex + 2, value);
+                    }
+                }
+            }
+        }
+
+    protected:
         std::string text_get() const
         {
             if (IsCustomWindow())
@@ -330,6 +363,7 @@ namespace OpenRCT2::Scripting
             }
             return "";
         }
+
         void text_set(std::string value)
         {
             auto w = GetWindow();
@@ -337,20 +371,6 @@ namespace OpenRCT2::Scripting
             {
                 OpenRCT2::Ui::Windows::UpdateWidgetText(w, _widgetIndex, value);
             }
-        }
-
-        std::shared_ptr<ScViewport> viewport_get() const
-        {
-            auto w = GetWindow();
-            if (w != nullptr && IsCustomWindow())
-            {
-                auto widget = GetWidget();
-                if (widget != nullptr && widget->type == WindowWidgetType::Viewport)
-                {
-                    return std::make_shared<ScViewport>(w->classification, w->number);
-                }
-            }
-            return {};
         }
 
     public:
@@ -364,10 +384,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScWidget::width_get, &ScWidget::width_set, "width");
             dukglue_register_property(ctx, &ScWidget::height_get, &ScWidget::height_set, "height");
             dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
-
-            // No so common
-            dukglue_register_property(ctx, &ScWidget::text_get, &ScWidget::text_set, "text");
-            dukglue_register_property(ctx, &ScWidget::viewport_get, nullptr, "viewport");
+            dukglue_register_property(ctx, &ScWidget::isVisible_get, &ScWidget::isVisible_set, "isVisible");
         }
 
     protected:
@@ -608,6 +625,63 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScGroupBoxWidget : public ScWidget
+    {
+    public:
+        ScGroupBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScGroupBoxWidget>(ctx);
+            dukglue_register_property(ctx, &ScGroupBoxWidget::text_get, &ScGroupBoxWidget::text_set, "text");
+        }
+    };
+
+    class ScLabelWidget : public ScWidget
+    {
+    public:
+        ScLabelWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScLabelWidget>(ctx);
+            dukglue_register_property(ctx, &ScLabelWidget::text_get, &ScLabelWidget::text_set, "text");
+            dukglue_register_property(ctx, &ScLabelWidget::textAlign_get, &ScLabelWidget::textAlign_set, "textAlign");
+        }
+
+    private:
+        std::string textAlign_get() const
+        {
+            auto* widget = GetWidget();
+            if (widget != nullptr)
+            {
+                if (widget->type == WindowWidgetType::LabelCentred)
+                {
+                    return "centred";
+                }
+            }
+            return "left";
+        }
+
+        void textAlign_set(const std::string& value)
+        {
+            auto* widget = GetWidget();
+            if (widget != nullptr)
+            {
+                if (value == "centred")
+                    widget->type = WindowWidgetType::LabelCentred;
+                else
+                    widget->type = WindowWidgetType::Label;
+            }
+        }
+    };
+
     class ScListViewWidget : public ScWidget
     {
     public:
@@ -799,6 +873,86 @@ namespace OpenRCT2::Scripting
         }
     };
 
+    class ScSpinnerWidget : public ScWidget
+    {
+    public:
+        ScSpinnerWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScSpinnerWidget>(ctx);
+            dukglue_register_property(ctx, &ScSpinnerWidget::text_get, &ScSpinnerWidget::text_set, "text");
+        }
+    };
+
+    class ScTextBoxWidget : public ScWidget
+    {
+    public:
+        ScTextBoxWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScTextBoxWidget>(ctx);
+            dukglue_register_property(ctx, &ScTextBoxWidget::maxLength_get, &ScTextBoxWidget::maxLength_set, "maxLength");
+        }
+
+    private:
+        int32_t maxLength_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                return OpenRCT2::Ui::Windows::GetWidgetMaxLength(w, _widgetIndex);
+            }
+            return 0;
+        }
+
+        void maxLength_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                OpenRCT2::Ui::Windows::SetWidgetMaxLength(w, _widgetIndex, value);
+            }
+        }
+    };
+
+    class ScViewportWidget : public ScWidget
+    {
+    public:
+        ScViewportWidget(rct_windowclass c, rct_windownumber n, rct_widgetindex widgetIndex)
+            : ScWidget(c, n, widgetIndex)
+        {
+        }
+
+        static void Register(duk_context* ctx)
+        {
+            dukglue_set_base_class<ScWidget, ScViewportWidget>(ctx);
+            dukglue_register_property(ctx, &ScViewportWidget::viewport_get, nullptr, "viewport");
+        }
+
+    private:
+        std::shared_ptr<ScViewport> viewport_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr && IsCustomWindow())
+            {
+                auto widget = GetWidget();
+                if (widget != nullptr && widget->type == WindowWidgetType::Viewport)
+                {
+                    return std::make_shared<ScViewport>(w->classification, w->number);
+                }
+            }
+            return {};
+        }
+    };
+
     inline DukValue ScWidget::ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex)
     {
         const auto& widget = w->widgets[widgetIndex];
@@ -816,8 +970,19 @@ namespace OpenRCT2::Scripting
                 return GetObjectAsDukValue(ctx, std::make_shared<ScColourPickerWidget>(c, n, widgetIndex));
             case WindowWidgetType::DropdownMenu:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScDropdownWidget>(c, n, widgetIndex));
+            case WindowWidgetType::Groupbox:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScGroupBoxWidget>(c, n, widgetIndex));
+            case WindowWidgetType::Label:
+            case WindowWidgetType::LabelCentred:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScLabelWidget>(c, n, widgetIndex));
             case WindowWidgetType::Scroll:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScListViewWidget>(c, n, widgetIndex));
+            case WindowWidgetType::Spinner:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScSpinnerWidget>(c, n, widgetIndex));
+            case WindowWidgetType::TextBox:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScTextBoxWidget>(c, n, widgetIndex));
+            case WindowWidgetType::Viewport:
+                return GetObjectAsDukValue(ctx, std::make_shared<ScViewportWidget>(c, n, widgetIndex));
             default:
                 return GetObjectAsDukValue(ctx, std::make_shared<ScWidget>(c, n, widgetIndex));
         }

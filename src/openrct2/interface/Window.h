@@ -76,6 +76,7 @@ namespace WIDGET_FLAGS
     const WidgetFlags IS_PRESSED = 1 << 2;
     const WidgetFlags IS_DISABLED = 1 << 3;
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
+    const WidgetFlags IS_HIDDEN = 1 << 5;
 } // namespace WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;
@@ -131,6 +132,11 @@ struct rct_widget
             return std::max<int32_t>(top, top + (height() / 2) - 5);
         else
             return top - 1;
+    }
+
+    bool IsVisible() const
+    {
+        return !(flags & WIDGET_FLAGS::IS_HIDDEN);
     }
 };
 

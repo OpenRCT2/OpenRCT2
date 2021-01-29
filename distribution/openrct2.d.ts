@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -990,7 +990,19 @@ declare global {
     }
 
     type EntityType =
-        "car" | "duck" | "peep" | "steam_particle" | "money_effect" | "crashed_vehicle_particle" | "explosion_cloud" | "crash_splash" | "explosion_flare" | "jumping_fountain_water" | "balloon" | "jumping_fountain_snow";
+        "balloon" |
+        "car" |
+        "crash_splash" |
+        "crashed_vehicle_particle" |
+        "duck" |
+        "explosion_cloud" |
+        "explosion_flare" |
+        "jumping_fountain_snow" |
+        "jumping_fountain_water" |
+        "litter" |
+        "money_effect" |
+        "peep" |
+        "steam_particle";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
@@ -1733,7 +1745,7 @@ declare global {
         readonly windows: number;
         readonly mainViewport: Viewport;
         readonly tileSelection: TileSelection;
-        readonly tool: Tool;
+        readonly tool: Tool | null;
 
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
@@ -1753,6 +1765,19 @@ declare global {
          * @param desc The parameters for the text input window.
          */
         showTextInput(desc: TextInputDesc): void;
+
+        /**
+         * Shows the window for loading or saving a file and calls the given callback when a file
+         * is selected.
+         * @param desc The parameters for the file browse window.
+         */
+        showFileBrowse(desc: FileBrowseDesc): void;
+
+        /**
+         * Shows the scenario select window and calls the given callback when a scenario is
+         * selected.
+         */
+        showScenarioSelect(desc: ScenarioSelectDesc): void;
 
         /**
          * Begins a new tool session. The cursor will change to the style specified by the
@@ -1794,6 +1819,59 @@ declare global {
         callback: (value: string) => void;
     }
 
+    /**
+     * Parameters for the file browse window.
+     */
+    interface FileBrowseDesc {
+        /**
+         * Whether to browse a file for loading or saving. Saving will prompt the user
+         * before overwriting a file.
+         */
+        type: 'load';
+
+        /**
+         * The type of file to browse for.
+         */
+        fileType: 'game' | 'heightmap';
+
+        /**
+         * The pre-selected file to load by default if the user clicks OK.
+         */
+        defaultPath?: string;
+
+        /**
+         * The function to call when the user has selected a file.
+         */
+        callback: (path: string) => void;
+    }
+
+    /**
+     * Parameters for the scenario select window.
+     */
+    interface ScenarioSelectDesc {
+        /**
+         * The function to call when the user has selected a scenario.
+         */
+        callback: (scenario: ScenarioFile) => void;
+    }
+
+    /**
+     * Represents an installed scenario's path and metadata.
+     */
+    interface ScenarioFile {
+        id: number;
+        category: 'beginner' | 'challenging' | 'expert' | 'real' | 'other' | 'dlc' | 'build_your_own';
+        sourceGame: 'rct1' | 'rct1_aa' | 'rct1_ll' | 'rct2' | 'rct2_ww' | 'rct2_tt' | 'real' | 'other';
+        path: string;
+        internalName: string;
+        name: string;
+        details: string;
+        highscore: {
+            name: string;
+            companyValue: number;
+        }
+    }
+
     interface TileSelection {
         range: MapRange;
         tiles: CoordsXY[];
@@ -1821,11 +1899,11 @@ declare global {
         id: string;
         cursor?: CursorType;
 
-        onStart: () => void;
-        onDown: (e: ToolEventArgs) => void;
-        onMove: (e: ToolEventArgs) => void;
-        onUp: (e: ToolEventArgs) => void;
-        onFinish: () => void;
+        onStart?: () => void;
+        onDown?: (e: ToolEventArgs) => void;
+        onMove?: (e: ToolEventArgs) => void;
+        onUp?: (e: ToolEventArgs) => void;
+        onFinish?: () => void;
     }
 
     type CursorType =
@@ -1861,10 +1939,14 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
+        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" |
+        "label" | "listview" | "spinner" | "textbox" | "viewport";
 
-    interface Widget {
-        type: WidgetType;
+    type Widget =
+        ButtonWidget | CheckboxWidget | ColourPickerWidget | DropdownWidget | GroupBoxWidget |
+        LabelWidget | ListView | SpinnerWidget | TextBoxWidget | ViewportWidget;
+
+    interface WidgetBase {
         x: number;
         y: number;
         width: number;
@@ -1872,41 +1954,54 @@ declare global {
         name?: string;
         tooltip?: string;
         isDisabled?: boolean;
+        isVisible?: boolean;
     }
 
-    interface ButtonWidget extends Widget {
+    interface ButtonWidget extends WidgetBase {
+        type: 'button';
         /**
          * Whether the button has a 3D border.
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image: number;
-        isPressed: boolean;
-        text: string;
-        onClick: () => void;
+        image?: number;
+        isPressed?: boolean;
+        text?: string;
+        onClick?: () => void;
     }
 
-    interface CheckboxWidget extends Widget {
-        text: string;
-        isChecked: boolean;
-        onChange: (isChecked: boolean) => void;
+    interface CheckboxWidget extends WidgetBase {
+        type: 'checkbox';
+        text?: string;
+        isChecked?: boolean;
+        onChange?: (isChecked: boolean) => void;
     }
 
-    interface ColourPickerWidget extends Widget {
-        colour: number;
-        onChange: (colour: number) => void;
+    interface ColourPickerWidget extends WidgetBase {
+        type: 'colourpicker';
+        colour?: number;
+        onChange?: (colour: number) => void;
     }
 
-    interface DropdownWidget extends Widget {
-        items: string[];
-        selectedIndex: number;
-        onChange: (index: number) => void;
+    interface DropdownWidget extends WidgetBase {
+        type: 'dropdown';
+        items?: string[];
+        selectedIndex?: number;
+        onChange?: (index: number) => void;
     }
 
-    interface LabelWidget extends Widget {
-        text: string;
-        onChange: (index: number) => void;
+    interface GroupBoxWidget extends WidgetBase {
+        type: 'groupbox';
     }
+
+    interface LabelWidget extends WidgetBase {
+        type: 'label';
+        text?: string;
+        textAlign?: TextAlignment;
+        onChange?: (index: number) => void;
+    }
+
+    type TextAlignment = "left" | "centred";
 
     type SortOrder = "none" | "ascending" | "descending";
 
@@ -1935,7 +2030,8 @@ declare global {
         column: number;
     }
 
-    interface ListView extends Widget {
+    interface ListView extends WidgetBase {
+        type: 'listview';
         scrollbars?: ScrollbarType;
         isStriped?: boolean;
         showColumnHeaders?: boolean;
@@ -1945,18 +2041,27 @@ declare global {
         readonly highlightedCell?: RowColumn;
         canSelect?: boolean;
 
-        onHighlight: (item: number, column: number) => void;
-        onClick: (item: number, column: number) => void;
+        onHighlight?: (item: number, column: number) => void;
+        onClick?: (item: number, column: number) => void;
     }
 
-    interface SpinnerWidget extends Widget {
-        text: string;
-        onDecrement: () => void;
-        onIncrement: () => void;
+    interface SpinnerWidget extends WidgetBase {
+        type: 'spinner';
+        text?: string;
+        onDecrement?: () => void;
+        onIncrement?: () => void;
     }
 
-    interface ViewportWidget extends Widget {
-        viewport: Viewport
+    interface TextBoxWidget extends WidgetBase {
+        type: 'textbox';
+        text?: string;
+        maxLength?: number;
+        onChange?: (text: string) => void;
+    }
+
+    interface ViewportWidget extends WidgetBase {
+        type: 'viewport';
+        viewport?: Viewport
     }
 
     interface Window {

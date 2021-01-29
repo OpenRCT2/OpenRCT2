@@ -357,8 +357,16 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         stringId = STR_STRING;
         ft.Add<utf8*>(widget->string);
     }
-    DrawTextEllipsised(
-        dpi, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
+
+    ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
+    if (widget->type == WindowWidgetType::LabelCentred)
+    {
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, widget->width() - 2, stringId, colour);
+    }
+    else
+    {
+        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
+    }
 }
 
 /**
@@ -398,7 +406,16 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex wi
         stringId = STR_STRING;
         ft.Add<utf8*>(widget->string);
     }
-    DrawTextEllipsised(dpi, { l + 1, t }, r - l, stringId, ft, colour);
+
+    ScreenCoordsXY coords = { l + 1, t };
+    if (widget->type == WindowWidgetType::LabelCentred)
+    {
+        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, r - l, stringId, colour);
+    }
+    else
+    {
+        DrawTextEllipsised(dpi, coords, r - l, stringId, ft, colour);
+    }
 }
 
 /**
@@ -829,12 +846,19 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
 
 bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (!WidgetIsVisible(w, widgetIndex))
+        return false;
     return (w->enabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
 {
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
+}
+
+bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
+{
+    return w->widgets[widgetIndex].IsVisible();
 }
 
 bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
@@ -1023,6 +1047,18 @@ void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
     else
     {
         w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
+void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->widgets[widgetIndex].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+    }
+    else
+    {
+        w->widgets[widgetIndex].flags |= WIDGET_FLAGS::IS_HIDDEN;
     }
 }
 

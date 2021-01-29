@@ -436,7 +436,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
         {
             break;
         }
-        else if (widget->type != WindowWidgetType::Empty)
+        else if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
@@ -2004,12 +2004,18 @@ void window_cancel_textbox()
     if (gUsingWidgetTextBox)
     {
         rct_window* w = window_find_by_number(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
+        if (w != nullptr)
+        {
+            window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
+        }
         gCurrentTextBox.window.classification = WC_NULL;
         gCurrentTextBox.window.number = 0;
         context_stop_text_input();
         gUsingWidgetTextBox = false;
-        widget_invalidate(w, gCurrentTextBox.widget_index);
+        if (w != nullptr)
+        {
+            widget_invalidate(w, gCurrentTextBox.widget_index);
+        }
         gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
 }

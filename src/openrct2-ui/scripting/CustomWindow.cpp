@@ -54,6 +54,7 @@ namespace OpenRCT2::Ui::Windows
     static void window_custom_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
     static void window_custom_resize(rct_window* w);
     static void window_custom_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+    static void window_custom_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
     static void window_custom_update(rct_window* w);
     static void window_custom_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
     static void window_custom_scrollmousedrag(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
@@ -70,6 +71,7 @@ namespace OpenRCT2::Ui::Windows
         events.resize = &window_custom_resize;
         events.mouse_down = &window_custom_mousedown;
         events.dropdown = &window_custom_dropdown;
+        events.text_input = &window_custom_textinput;
         events.update = &window_custom_update;
         events.get_scroll_size = &window_custom_scrollgetsize;
         events.scroll_mousedown = &window_custom_scrollmousedown;
@@ -91,6 +93,7 @@ namespace OpenRCT2::Ui::Windows
         std::string Name;
         ImageId Image;
         std::string Text;
+        TextAlignment TextAlign;
         colour_t Colour;
         std::string Tooltip;
         std::vector<std::string> Items;
@@ -98,9 +101,11 @@ namespace OpenRCT2::Ui::Windows
         std::vector<ListViewColumn> ListViewColumns;
         ScrollbarType Scrollbars{};
         int32_t SelectedIndex{};
+        int32_t MaxLength{};
         std::optional<RowColumn> SelectedCell;
         bool IsChecked{};
         bool IsDisabled{};
+        bool IsVisible{};
         bool IsPressed{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
@@ -123,6 +128,7 @@ namespace OpenRCT2::Ui::Windows
             result.Width = desc["width"].as_int();
             result.Height = desc["height"].as_int();
             result.IsDisabled = AsOrDefault(desc["isDisabled"], false);
+            result.IsVisible = AsOrDefault(desc["isVisible"], true);
             result.Name = AsOrDefault(desc["name"], "");
             result.Tooltip = AsOrDefault(desc["tooltip"], "");
             if (result.Type == "button")
@@ -159,17 +165,28 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "dropdown")
             {
-                auto dukItems = desc["items"].as_array();
-                for (const auto& dukItem : dukItems)
+                if (desc["items"].is_array())
                 {
-                    result.Items.push_back(ProcessString(dukItem));
+                    auto dukItems = desc["items"].as_array();
+                    for (const auto& dukItem : dukItems)
+                    {
+                        result.Items.push_back(ProcessString(dukItem));
+                    }
                 }
-                result.SelectedIndex = desc["selectedIndex"].as_int();
+                result.SelectedIndex = AsOrDefault(desc["selectedIndex"], 0);
                 result.OnChange = desc["onChange"];
             }
-            else if (result.Type == "groupbox" || result.Type == "label")
+            else if (result.Type == "groupbox")
             {
                 result.Text = ProcessString(desc["text"]);
+            }
+            else if (result.Type == "label")
+            {
+                result.Text = ProcessString(desc["text"]);
+                if (ProcessString(desc["textAlign"]) == "centred")
+                {
+                    result.TextAlign = TextAlignment::CENTRE;
+                }
             }
             else if (result.Type == "listview")
             {
@@ -191,6 +208,12 @@ namespace OpenRCT2::Ui::Windows
                 result.Text = ProcessString(desc["text"]);
                 result.OnIncrement = desc["onIncrement"];
                 result.OnDecrement = desc["onDecrement"];
+            }
+            else if (result.Type == "textbox")
+            {
+                result.Text = ProcessString(desc["text"]);
+                result.MaxLength = AsOrDefault(desc["maxLength"], 32);
+                result.OnChange = desc["onChange"];
             }
             result.HasBorder = AsOrDefault(desc["border"], result.HasBorder);
             return result;
@@ -307,7 +330,11 @@ namespace OpenRCT2::Ui::Windows
                     colour_t c = COLOUR_BLACK;
                     if (w.type() == DukValue::Type::NUMBER)
                     {
-                        c = static_cast<colour_t>(std::clamp<int32_t>(w.as_int(), COLOUR_BLACK, COLOUR_COUNT - 1));
+                        c = std::clamp<int32_t>(BASE_COLOUR(w.as_int()), COLOUR_BLACK, COLOUR_COUNT - 1);
+                        if (w.as_int() & COLOUR_FLAG_TRANSLUCENT)
+                        {
+                            c = TRANSLUCENT(c);
+                        }
                     }
                     return c;
                 });
@@ -388,7 +415,7 @@ namespace OpenRCT2::Ui::Windows
     {
         auto desc = CustomWindowDesc::FromDukValue(dukDesc);
 
-        uint16_t windowFlags = WF_RESIZABLE;
+        uint16_t windowFlags = WF_RESIZABLE | WF_TRANSPARENT;
 
         rct_window* window{};
         if (desc.X && desc.Y)
@@ -552,6 +579,11 @@ namespace OpenRCT2::Ui::Windows
                     InvokeEventHandler(info.Owner, widgetDesc->OnIncrement);
                 }
             }
+            else if (widgetDesc->Type == "textbox")
+            {
+                auto* text = const_cast<char*>(widgetDesc->Text.c_str());
+                window_start_textbox(w, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
+            }
         }
     }
 
@@ -571,6 +603,28 @@ namespace OpenRCT2::Ui::Windows
             else if (widgetDesc->Type == "dropdown")
             {
                 UpdateWidgetSelectedIndex(w, widgetIndex - 1, dropdownIndex);
+            }
+        }
+    }
+
+    static void window_custom_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+    {
+        if (text == nullptr)
+            return;
+
+        auto& info = GetInfo(w);
+        auto widgetDesc = info.GetCustomWidgetDesc(w, widgetIndex);
+        if (widgetDesc != nullptr)
+        {
+            if (widgetDesc->Type == "textbox")
+            {
+                UpdateWidgetText(w, widgetIndex, text);
+
+                std::vector<DukValue> args;
+                auto ctx = widgetDesc->OnChange.context();
+                duk_push_string(ctx, text);
+                args.push_back(DukValue::take_from_stack(ctx));
+                InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
             }
         }
     }
@@ -668,14 +722,28 @@ namespace OpenRCT2::Ui::Windows
         w->widgets[WIDX_CLOSE].right = w->width - 3;
         w->widgets[WIDX_CONTENT_PANEL].right = w->width - 1;
         w->widgets[WIDX_CONTENT_PANEL].bottom = w->height - 1;
+        w->widgets[WIDX_CLOSE].text = (w->colours[0] & COLOUR_FLAG_TRANSLUCENT) ? STR_CLOSE_X_WHITE : STR_CLOSE_X;
+
+        // Having the content panel visible for transparent windows makes the borders darker than they should be
+        // For now just hide it if there are no tabs and the window is not resizable
+        auto& info = GetInfo(w);
+        auto canResize = (w->flags & WF_RESIZABLE) != 0 && (w->min_width != w->max_width || w->min_height != w->max_height);
+        auto numTabs = info.Desc.Tabs.size();
+        if (canResize || numTabs != 0)
+        {
+            w->widgets[WIDX_CONTENT_PANEL].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+        }
+        else
+        {
+            w->widgets[WIDX_CONTENT_PANEL].flags |= WIDGET_FLAGS::IS_HIDDEN;
+        }
 
         window_custom_set_pressed_tab(w);
 
-        const auto& desc = GetInfo(w).Desc;
+        const auto& desc = info.Desc;
         auto ft = Formatter::Common();
         ft.Add<const char*>(desc.Title.c_str());
 
-        auto& info = GetInfo(w);
         size_t scrollIndex = 0;
         for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
         {
@@ -723,25 +791,6 @@ namespace OpenRCT2::Ui::Windows
         }
     }
 
-    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
-    {
-        WindowDrawWidgets(w, dpi);
-        window_custom_draw_tab_images(w, dpi);
-        if (w->viewport != nullptr)
-        {
-            window_draw_viewport(dpi, w);
-        }
-    }
-
-    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
-    {
-        const auto& info = GetInfo(w);
-        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
-        {
-            info.ListViews[scrollIndex].Paint(w, dpi, &w->scrolls[scrollIndex]);
-        }
-    }
-
     static std::optional<rct_widgetindex> GetViewportWidgetIndex(rct_window* w)
     {
         rct_widgetindex widgetIndex = 0;
@@ -754,6 +803,29 @@ namespace OpenRCT2::Ui::Windows
             widgetIndex++;
         }
         return std::nullopt;
+    }
+
+    static void window_custom_paint(rct_window* w, rct_drawpixelinfo* dpi)
+    {
+        WindowDrawWidgets(w, dpi);
+        window_custom_draw_tab_images(w, dpi);
+        if (w->viewport != nullptr)
+        {
+            auto widgetIndex = GetViewportWidgetIndex(w);
+            if (WidgetIsVisible(w, widgetIndex.value_or(false)))
+            {
+                window_draw_viewport(dpi, w);
+            }
+        }
+    }
+
+    static void window_custom_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+    {
+        const auto& info = GetInfo(w);
+        if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
+        {
+            info.ListViews[scrollIndex].Paint(w, dpi, &w->scrolls[scrollIndex]);
+        }
     }
 
     static void window_custom_update_viewport(rct_window* w)
@@ -833,6 +905,8 @@ namespace OpenRCT2::Ui::Windows
         widget.flags |= WIDGET_FLAGS::IS_ENABLED;
         if (desc.IsDisabled)
             widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+        if (!desc.IsVisible)
+            widget.flags |= WIDGET_FLAGS::IS_HIDDEN;
 
         if (desc.Type == "button")
         {
@@ -911,6 +985,10 @@ namespace OpenRCT2::Ui::Windows
             widget.type = WindowWidgetType::Label;
             widget.string = const_cast<utf8*>(desc.Text.c_str());
             widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
+            if (desc.TextAlign == TextAlignment::CENTRE)
+            {
+                widget.type = WindowWidgetType::LabelCentred;
+            }
             widgetList.push_back(widget);
         }
         else if (desc.Type == "listview")
@@ -951,6 +1029,13 @@ namespace OpenRCT2::Ui::Windows
             widget.left = desc.X + desc.Width - 13;
             widget.right = widget.left + 11;
             widget.text = STR_NUMERIC_UP;
+            widgetList.push_back(widget);
+        }
+        else if (desc.Type == "textbox")
+        {
+            widget.type = WindowWidgetType::TextBox;
+            widget.string = const_cast<utf8*>(desc.Text.c_str());
+            widget.flags |= WIDGET_FLAGS::TEXT_IS_STRING;
             widgetList.push_back(widget);
         }
         else if (desc.Type == "viewport")
@@ -1317,6 +1402,33 @@ namespace OpenRCT2::Ui::Windows
             }
         }
         return nullptr;
+    }
+
+    int32_t GetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                return customWidgetInfo->MaxLength;
+            }
+        }
+        return 0;
+    }
+
+    void SetWidgetMaxLength(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
+    {
+        if (w->custom_info != nullptr)
+        {
+            auto& customInfo = GetInfo(w);
+            auto customWidgetInfo = customInfo.GetCustomWidgetDesc(w, widgetIndex);
+            if (customWidgetInfo != nullptr)
+            {
+                customWidgetInfo->MaxLength = value;
+            }
+        }
     }
 
 } // namespace OpenRCT2::Ui::Windows

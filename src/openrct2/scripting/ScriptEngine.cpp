@@ -44,7 +44,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 18;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 19;
 
 struct ExpressionStringifier final
 {
@@ -718,8 +718,15 @@ DukValue ScriptEngine::ExecutePluginCall(
 
 void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message)
 {
-    const auto& pluginName = plugin->GetMetadata().Name;
-    _console.WriteLine("[" + pluginName + "] " + std::string(message));
+    if (plugin == nullptr)
+    {
+        _console.WriteLine(std::string(message));
+    }
+    else
+    {
+        const auto& pluginName = plugin->GetMetadata().Name;
+        _console.WriteLine("[" + pluginName + "] " + std::string(message));
+    }
 }
 
 void ScriptEngine::AddNetworkPlugin(std::string_view code)

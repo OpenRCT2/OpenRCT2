@@ -1442,7 +1442,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50)
+            if (_tooltipNotShownTicks > 50 && WidgetIsVisible(w, widgetIndex))
             {
                 gTooltipTimeout = 0;
                 window_tooltip_open(w, widgetIndex, screenCoords);
@@ -1457,7 +1457,8 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         reset_tooltip_not_shown();
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
-            || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex)
+            || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
+            || !WidgetIsVisible(w, widgetIndex))
         {
             window_tooltip_close();
         }
