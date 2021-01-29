@@ -38,6 +38,7 @@
 - Fix: [#13510] [Plugin] list view scroll resets when items is set.
 - Fix: [#13574] Crash when a JSON object does not set `originalId`.
 - Fix: [#13832] Players last action position is invalid on opening/closing a ride in multiplayer.
+- Fix: [#13937] Pathfinding gets confused when two entrances/exits from the same ride are on top of each other.
 - Improved: [#6022] Allow up to 128 ride objects to be selected in track designer.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Improved: [#13386] A GUI error message is now displayed if the language files are missing.

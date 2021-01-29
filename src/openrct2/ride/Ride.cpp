@@ -6710,7 +6710,8 @@ void sub_6CB945(Ride* ride)
         while (locationList != locations.cend())
         {
             const TileCoordsXYZD& locationCoords2 = *locationList++;
-            if (locationCoords.x == locationCoords2.x && locationCoords.y == locationCoords2.y)
+            if (locationCoords.x == locationCoords2.x && locationCoords.y == locationCoords2.y
+                && locationCoords.z == locationCoords2.z)
             {
                 duplicateLocation = true;
                 break;
