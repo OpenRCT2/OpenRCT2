@@ -19,6 +19,7 @@
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
+- Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#11438] Freeze when shrinking map size.

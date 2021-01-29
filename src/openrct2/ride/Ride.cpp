@@ -94,7 +94,7 @@ money32 _currentTrackPrice;
 uint16_t _numCurrentPossibleRideConfigurations;
 uint16_t _numCurrentPossibleSpecialTrackPieces;
 
-uint16_t _currentTrackCurve;
+uint32_t _currentTrackCurve;
 uint8_t _rideConstructionState;
 ride_id_t _currentRideIndex;
 
@@ -1454,7 +1454,7 @@ static void ride_construction_reset_current_piece()
     }
     else
     {
-        _currentTrackCurve = 0xFFFF;
+        _currentTrackCurve = TrackElemType::None;
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_0;
     }
 }
@@ -1513,14 +1513,7 @@ void ride_construction_set_default_next_piece()
             }
             else
             {
-                if (TrackTypeIsBooster(ride->type, trackType))
-                {
-                    curve = RideConstructionSpecialPieceSelected | TrackElemType::Booster;
-                }
-                else
-                {
-                    curve = gTrackCurveChain[trackType].next;
-                }
+                curve = gTrackCurveChain[trackType].next;
                 bank = TrackDefinitions[trackType].bank_end;
                 slope = TrackDefinitions[trackType].vangle_end;
             }
@@ -1574,14 +1567,7 @@ void ride_construction_set_default_next_piece()
             }
             else
             {
-                if (TrackTypeIsBooster(ride->type, trackType))
-                {
-                    curve = RideConstructionSpecialPieceSelected | TrackElemType::Booster;
-                }
-                else
-                {
-                    curve = gTrackCurveChain[trackType].previous;
-                }
+                curve = gTrackCurveChain[trackType].previous;
                 bank = TrackDefinitions[trackType].bank_start;
                 slope = TrackDefinitions[trackType].vangle_start;
             }

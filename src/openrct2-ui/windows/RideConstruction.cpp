@@ -269,7 +269,7 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 97
     0,                                      // 98
     STR_BRAKES,                             // 99
-    STR_SPINNING_CONTROL_TOGGLE_TRACK,      // 100
+    STR_BOOSTER,                            // 100
     0,                                      // 101
     STR_HELIX_UP_LARGE,                     // 102
     STR_HELIX_UP_LARGE,                     // 103
@@ -424,7 +424,8 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 252
     STR_QUARTER_LOOP,                       // 253
     STR_QUARTER_LOOP,                       // 254
-    STR_QUARTER_LOOP                        // 255
+    STR_QUARTER_LOOP,                       // 255
+    STR_SPINNING_CONTROL_TOGGLE_TRACK,      // 256
 };
 // clang-format on
 
@@ -440,7 +441,6 @@ static money32 _trackPlaceCost;
 static bool _autoOpeningShop;
 static bool _autoRotatingShop;
 static uint8_t _currentlyShowingBrakeOrBoosterSpeed;
-static bool _boosterTrackSelected;
 
 static uint32_t _currentDisabledSpecialTrackPieces;
 
@@ -2249,12 +2249,6 @@ static void window_ride_construction_invalidate(rct_window* w)
         {
             stringId = STR_LOG_BUMPS;
         }
-        else if (
-            stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE
-            && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
-        {
-            stringId = STR_BOOSTER;
-        }
     }
     auto ft = Formatter::Common();
     ft.Add<uint16_t>(stringId);
@@ -2262,7 +2256,8 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentlyShowingBrakeOrBoosterSpeed)
     {
         uint16_t brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
-        if (_boosterTrackSelected)
+        if (_selectedTrackType == TrackElemType::Booster
+            || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster))
         {
             brakeSpeed2 = get_booster_speed(ride->type, brakeSpeed2);
         }
@@ -2492,7 +2487,7 @@ void window_ride_construction_update_active_elements_impl()
 
     window_ride_construction_update_map_selection();
 
-    _selectedTrackType = 255;
+    _selectedTrackType = TrackElemType::None;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED)
     {
         if (sub_6C683D(
@@ -3062,11 +3057,10 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     bool brakesSelected = _selectedTrackType == TrackElemType::Brakes
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes);
-    _boosterTrackSelected = TrackTypeIsBooster(ride->type, _selectedTrackType)
-        || (ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE
-            && _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster));
+    bool boosterTrackSelected = _selectedTrackType == TrackElemType::Booster
+        || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster);
 
-    if (!brakesSelected && !_boosterTrackSelected)
+    if (!brakesSelected && !boosterTrackSelected)
     {
         if (is_track_enabled(TRACK_FLAT_ROLL_BANKING))
         {
@@ -3350,12 +3344,6 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
             auto ride = get_ride(_currentRideIndex);
             if (ride != nullptr && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
                 trackPieceStringId = STR_LOG_BUMPS;
-        }
-        if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK)
-        {
-            auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && ride->type != RIDE_TYPE_SPINNING_WILD_MOUSE && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
-                trackPieceStringId = STR_BOOSTER;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
         if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
@@ -3842,7 +3830,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                 || z < 0)
             {
                 int32_t saveTrackDirection = _currentTrackPieceDirection;
-                int32_t saveCurrentTrackCurve = _currentTrackCurve;
+                auto saveCurrentTrackCurve = _currentTrackCurve;
                 int32_t savePreviousTrackSlopeEnd = _previousTrackSlopeEnd;
                 int32_t saveCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
                 int32_t savePreviousTrackBankEnd = _previousTrackBankEnd;

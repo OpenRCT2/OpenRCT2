@@ -13,7 +13,7 @@
 #include "../object/Object.h"
 #include "Ride.h"
 
-constexpr const uint16_t RideConstructionSpecialPieceSelected = 0x100;
+constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
 constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
 
@@ -21,19 +21,15 @@ using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
 using pitch_type_t = uint8_t;
 
-#pragma pack(push, 1)
 struct rct_trackdefinition
 {
-    uint8_t type;
+    track_type_t type;
     pitch_type_t vangle_end;
     pitch_type_t vangle_start;
     roll_type_t bank_end;
     roll_type_t bank_start;
     int8_t preview_z_offset;
-    uint8_t pad[2] = {};
 };
-assert_struct_size(rct_trackdefinition, 8);
-#pragma pack(pop)
 
 struct PitchAndRoll
 {
@@ -161,8 +157,7 @@ enum
     TRACK_LIFT_HILL_CURVED,
     TRACK_QUARTER_LOOP,
     TRACK_SPINNING_TUNNEL,
-    TRACK_ROTATION_CONTROL_TOGGLE,
-    TRACK_BOOSTER = TRACK_ROTATION_CONTROL_TOGGLE,
+    TRACK_BOOSTER,
     TRACK_INLINE_TWIST_UNINVERTED,
     TRACK_INLINE_TWIST_INVERTED,
     TRACK_QUARTER_LOOP_UNINVERTED,
@@ -178,6 +173,7 @@ enum
     TRACK_CORKSCREW_INVERTED,
     TRACK_HEARTLINE_TRANSFER,
     TRACK_MINI_GOLF_HOLE,
+    TRACK_ROTATION_CONTROL_TOGGLE,
 
     TRACK_GROUP_COUNT,
 };
@@ -341,7 +337,7 @@ namespace TrackElemType
     constexpr track_type_t LeftQuarterTurn1TileDown60 = 97;
     constexpr track_type_t RightQuarterTurn1TileDown60 = 98;
     constexpr track_type_t Brakes = 99;
-    constexpr track_type_t RotationControlToggle = 100;
+    constexpr track_type_t RotationControlToggleAlias = 100;
     constexpr track_type_t Booster = 100;
     constexpr track_type_t Maze = 101;
     // Used by the multi-dimension coaster, as TD6 cannot handle index 255.
@@ -500,8 +496,10 @@ namespace TrackElemType
     constexpr track_type_t MultiDimUp90ToInvertedFlatQuarterLoop = 253;
     constexpr track_type_t MultiDimFlatToDown90QuarterLoop = 254;
     constexpr track_type_t MultiDimInvertedUp90ToFlatQuarterLoop = 255;
+    constexpr track_type_t RotationControlToggle = 256;
 
-    constexpr uint16_t Count = 256;
+    constexpr track_type_t Count = 257;
+    constexpr track_type_t None = 65535;
 }; // namespace TrackElemType
 
 enum
@@ -580,5 +578,4 @@ money32 maze_set_track(
     uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
     uint8_t mode);
 
-bool TrackTypeIsBooster(uint8_t rideType, track_type_t trackType);
 bool TrackTypeHasSpeedSetting(track_type_t trackType);

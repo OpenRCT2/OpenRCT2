@@ -134,3 +134,10 @@ void rct2_ride::SetMaxCarsPerTrain(uint8_t newValue)
     min_max_cars_per_train &= ~0x0F;
     min_max_cars_per_train |= newValue & 0x0F;
 }
+
+bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
+{
+    // Boosters share their ID with the Spinning Control track.
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
+        && trackType == TrackElemType::Booster;
+}

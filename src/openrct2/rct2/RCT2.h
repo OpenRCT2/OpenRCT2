@@ -571,6 +571,27 @@ struct RCT2SpriteVehicle : RCT12SpriteBase
     uint8_t colours_extended;     // 0xD7
     uint8_t seat_rotation;        // 0xD8
     uint8_t target_seat_rotation; // 0xD9
+
+    uint16_t GetTrackType() const
+    {
+        return track_type >> 2;
+    }
+    uint8_t GetTrackDirection() const
+    {
+        return track_direction & 3;
+    }
+    void SetTrackType(uint16_t trackType)
+    {
+        // set the upper 14 bits to 0
+        track_type &= 3;
+        track_type |= trackType << 2;
+    }
+    void SetTrackDirection(uint8_t trackDirection)
+    {
+        // set the lower 2 bits only
+        track_direction &= ~3;
+        track_direction |= trackDirection & 3;
+    }
 };
 assert_struct_size(RCT2SpriteVehicle, 0xDA);
 
@@ -779,6 +800,7 @@ assert_struct_size(RCT2RideRatingCalculationData, 76);
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
 ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
 bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
 

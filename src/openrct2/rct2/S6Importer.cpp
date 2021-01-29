@@ -1137,7 +1137,12 @@ public:
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
 
-                dst2->SetTrackType(src2->GetTrackType());
+                auto rideType = _s6.rides[src2->GetRideIndex()].type;
+                track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
+
+                if (trackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, trackType))
+                    trackType = TrackElemType::RotationControlToggle;
+                dst2->SetTrackType(trackType);
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());
@@ -1150,7 +1155,6 @@ public:
                 dst2->SetIsIndestructible(src2->IsIndestructible());
                 // Skipping IsHighlighted()
 
-                auto trackType = dst2->GetTrackType();
                 if (TrackTypeHasSpeedSetting(trackType))
                 {
                     dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
@@ -1161,7 +1165,6 @@ public:
                 }
 
                 // This has to be done last, since the maze entry shares fields with the colour and sequence fields.
-                auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 if (rideType == RIDE_TYPE_MAZE)
                 {
                     dst2->SetMazeEntry(src2->GetMazeEntry());
@@ -1368,12 +1371,27 @@ public:
         dst->vehicle_type = src->vehicle_type;
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;
-        dst->track_direction = src->track_direction;
+        dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         if (src->boat_location.isNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
             || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.setNull();
-            dst->track_type = src->track_type;
+            dst->SetTrackDirection(src->GetTrackDirection());
+            dst->SetTrackType(src->GetTrackType());
+            // RotationControlToggle and Booster are saved as the same track piece ID
+            // Which one the vehicle is using must be determined
+            if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
+            {
+                // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
+                // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of
+                // booster track but this is unlikely since only two rides have spinning control track - by default they load as
+                // booster
+                TileElement* tileElement2 = map_get_track_element_at_of_type_seq(
+                    dst->TrackLocation, TrackElemType::RotationControlToggle, 0);
+
+                if (tileElement2 != nullptr)
+                    dst->SetTrackType(TrackElemType::RotationControlToggle);
+            }
         }
         else
         {
@@ -1381,7 +1399,6 @@ public:
             dst->track_type = 0;
         }
 
-        dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         dst->next_vehicle_on_train = src->next_vehicle_on_train;
         dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
         dst->next_vehicle_on_ride = src->next_vehicle_on_ride;

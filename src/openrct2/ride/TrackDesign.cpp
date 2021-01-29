@@ -212,11 +212,6 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
     {
         TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
-        // TODO move to RCT2 limit
-        if (track.type == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
-        {
-            track.type = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
-        }
 
         uint8_t trackFlags;
         if (TrackTypeHasSpeedSetting(track.type))
@@ -1531,10 +1526,6 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
     for (const auto& track : td6->track_elements)
     {
         auto trackType = track.type;
-        if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
-        {
-            trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
-        }
 
         track_design_update_max_min_coordinates(newCoords);
 
