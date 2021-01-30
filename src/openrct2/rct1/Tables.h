@@ -14,7 +14,7 @@
 
 #include <vector>
 
-namespace RCT1
+namespace OpenRCT2::RCT1
 {
     struct RCT1VehicleColourSchemeCopyDescriptor
     {
@@ -44,4 +44,4 @@ namespace RCT1
     const char* GetWaterObject(uint8_t waterType);
 
     const std::vector<const char*> GetSceneryObjects(uint8_t sceneryType);
-} // namespace RCT1
+} // namespace OpenRCT2::RCT1
