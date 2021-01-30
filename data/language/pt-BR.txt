@@ -144,8 +144,8 @@ STR_0559    :Grande prédio temático que contém corredores fantasmagóricos e 
 STR_0560    :Um lugar para visitantes doentes se recuperarem rapidamente
 STR_0561    :Show de circo com animais dentro de uma tenda grande
 STR_0562    :Carros motorizados percorrem uma pista de vários níveis passando por cenários assustadores e efeitos especiais
-STR_0563    :Sentados em trens confortáveis apenas com uma trava simples, passageiros divertem-se em grandes quedas suaves e trilhos retorcidos como também muitos 'tempo no ar' pelas colinas
-STR_0564    :Correndo em trilho de madeira, esta montanha-russa é rápida, selvagem, barulhenta, e dá a sensação de 'fora de controle' com muitos 'tempo no ar'
+STR_0563    :Sentados em trens confortáveis apenas com uma trava simples, passageiros divertem-se em grandes quedas suaves e trilhos retorcidos como também muitos ‘tempo no ar’ pelas colinas
+STR_0564    :Correndo em trilho de madeira, esta montanha-russa é rápida, selvagem, barulhenta, e dá a sensação de ‘fora de controle’ com muitos ‘tempo no ar’
 STR_0565    :Uma montanha-russa de madeira simples capaz de fazer só ladeiras e curvas suaves, onde os carros são mantidos no trilho pela fricção lateral e gravidade
 STR_0566    :Carros individuais de montanha-russa percorrem em alta velocidade pistas em zigue-zague com curvas fechadas e pequenas quedas
 STR_0567    :Sentados em cadeiras suspensas de cada lado do trilho, passageiros são lançados para cima enquanto são puxados para baixo em quedas íngremes e viajam por várias inversões
@@ -156,7 +156,7 @@ STR_0573    :Carros motorizados em formato de helicópteros correm por um trilho
 STR_0574    :Passageiros são segurados por uma trava especial na posição deitada, viajando por trilhos retorcidos e inversões tanto de costas quanto olhando para o chão
 STR_0575    :Trens motorizados pendurados em um trilho único transportam pessoas pelo parque
 STR_0577    :Carros correm em trilhos de madeira, virando em seções reversoras especiais
-STR_0578    :Carros correm em trilhos envolvidos por anéis, passando por quedas íngremes e giros na 'linha do coração'
+STR_0578    :Carros correm em trilhos envolvidos por anéis, passando por quedas íngremes e giros na ‘linha do coração’
 STR_0579    :Um jogo suave de golfe em miniatura
 STR_0580    :Uma montanha-russa de aço gigante capaz de quedas suaves e colinas maiores que 90m
 STR_0581    :Um anel de assentos é puxado para o topo de uma alta torre enquanto gira lentamente, então desce em queda livre, parando suavemente na parte inferior usando freios magnéticos
@@ -242,7 +242,7 @@ STR_0833    :Pausar Jogo
 STR_0834    :Opções de disco e jogo
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0847    :Sobre 'OpenRCT2'
+STR_0847    :Sobre ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, Todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Gráficos de Simon Foster
@@ -276,7 +276,7 @@ STR_0887    :Sair do Editor de Cenário
 STR_0888    :Sair do Construtor de Pista
 STR_0889    :Sair do Gerenciador de Projetos de Pista
 STR_0891    :Captura de tela
-STR_0892    :Captura de tela salva no disco como '{STRINGID}'
+STR_0892    :Captura de tela salva no disco como ‘{STRINGID}’
 STR_0893    :Captura de tela falhou!
 STR_0894    :Dados da área da paisagem cheios!
 STR_0895    :Impossível construir parcialmente acima e abaixo do chão
@@ -294,8 +294,8 @@ STR_0906    :Linha Reta
 STR_0907    :Inclinação
 STR_0908    :Giro/Inclinação
 STR_0909    :Rot. Banco
-STR_0910    :Curva em 'S' à Esquerda
-STR_0911    :Curva em 'S' à Direita
+STR_0910    :Curva em ‘S’ à Esquerda
+STR_0911    :Curva em ‘S’ à Direita
 STR_0912    :Sem volta
 STR_0913    :Mover para a seção anterior
 STR_0914    :Mover para a próxima seção
@@ -313,8 +313,8 @@ STR_0925    :Espiral para cima
 STR_0926    :Impossível remover isto…
 STR_0927    :Impossível construir isto aqui…
 STR_0928    :Corrente de elevação, para puxar os carros para cima
-STR_0929    :Curva em 'S' (esquerda)
-STR_0930    :Curva em 'S' (direita)
+STR_0929    :Curva em ‘S’ (esquerda)
+STR_0930    :Curva em ‘S’ (direita)
 STR_0931    :Loop Vertical (esquerda)
 STR_0932    :Loop Vertical (direita)
 STR_0933    :Aumente ou rebaixe o terreno primeiro
@@ -742,7 +742,7 @@ STR_1354    :{WINDOW_COLOUR_2}Altura da queda mais alta: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Quedas: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversões: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Túneis: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}'Tempo no Ar' Total: {BLACK}{COMMA2DP32}s
+STR_1358    :{WINDOW_COLOUR_2}‘Tempo no Ar’ Total: {BLACK}{COMMA2DP32}s
 STR_1359    :{WINDOW_COLOUR_2}Tempo de espera: {BLACK}{COMMA16} minuto
 STR_1360    :{WINDOW_COLOUR_2}Tempo de espera: {BLACK}{COMMA16} minutos
 STR_1361    :Impossível mudar velocidade…
@@ -844,8 +844,8 @@ STR_1456    :{WINDOW_COLOUR_2}Dinheiro gasto: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Dinheiro no bolso: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Tempo no parque: {BLACK}{REALTIME}
 STR_1459    :Estilo da pista
-STR_1460    :Pista aberta em forma de 'U'
-STR_1461    :Pista fechada em forma de 'O'
+STR_1460    :Pista aberta em forma de ‘U’
+STR_1461    :Pista fechada em forma de ‘O’
 STR_1462    :Muito íngreme para uma subida de elevação
 STR_1463    :Visitantes
 STR_1464    :Espiral para cima (pequeno)
@@ -1824,8 +1824,8 @@ STR_2481    :Mostrar gráfico de Aceleração Lateral X Tempo
 STR_2482    :Lucro: {CURRENCY} por semana,  Valor do Parque: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Lucro semanal: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Lucro semanal: {RED}{CURRENCY2DP}
-STR_2487    :Exibir nomes 'reais' para os visitantes
-STR_2488    :Alternar entre exibir nomes 'reais' para os visitantes e números de visitantes
+STR_2487    :Exibir nomes ‘reais’ para os visitantes
+STR_2488    :Alternar entre exibir nomes ‘reais’ para os visitantes e números de visitantes
 STR_2489    :Teclas de atalho…
 STR_2490    :Atalhos do teclado
 STR_2491    :Redefinir teclas
@@ -2045,8 +2045,8 @@ STR_2842    :{TOPAZ}Seu parque foi premiado por ser o mais decepcionante do paí
 STR_2843    :{TOPAZ}Seu parque foi premiado por ter as melhores atrações aquáticas do país!
 STR_2844    :{TOPAZ}Seu parque foi premiado por ter as melhores atrações personalizadas!
 STR_2845    :{TOPAZ}Seu parque foi premiado por ter a escolha de esquemas de cores mais deslumbrante!
-STR_2846    :{TOPAZ}Seu parque foi premiado por ter o traçado mais confuso'!
-STR_2847    :{TOPAZ}Seu parque recebeu um prêmio por ser 'O parque com as melhores atrações tranquilas'!
+STR_2846    :{TOPAZ}Seu parque foi premiado por ter o traçado mais confuso!
+STR_2847    :{TOPAZ}Seu parque recebeu um prêmio por ser ‘O parque com as melhores atrações tranquilas’!
 STR_2848    :{WINDOW_COLOUR_2}Nenhum prêmio recente
 STR_2849    :Novo cenário instalado com sucesso
 STR_2850    :Novo projeto de pista instalado com sucesso
@@ -2095,7 +2095,7 @@ STR_2896    :{WINDOW_COLOUR_2}Hypothermia:   (Allister Brimble) direitos autorai
 STR_2897    :{WINDOW_COLOUR_2}Last Sleigh Ride:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2898    :{WINDOW_COLOUR_2}Pipes of Glencairn:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2899    :{WINDOW_COLOUR_2}Traffic Jam:   (Allister Brimble) direitos autorais © Chris Sawyer
-STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics "Liquid Grooves")
+STR_2901    :{WINDOW_COLOUR_2}(Amostras Grátis de Spectrasonics “Liquid Grooves”)
 STR_2902    :{WINDOW_COLOUR_2}Toccata:   (C.M.Widor, executada por Peter James Adcock) gravada por © Chris Sawyer
 STR_2903    :{WINDOW_COLOUR_2}Space Rock:   (Allister Brimble) direitos autorais © Chris Sawyer
 STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) direitos autorais © Chris Sawyer
@@ -2118,7 +2118,7 @@ STR_2983    :Insira um novo texto para este banner:
 STR_2984    :Impossível definir novo texto para banner…
 STR_2985    :Banner
 STR_2986    :Mudar o texto no banner
-STR_2987    :Define este banner como "Entrada Proibida" para visitantes
+STR_2987    :Define este banner como “Entrada Proibida” para visitantes
 STR_2988    :Demole este banner
 STR_2989    :Selecione a cor principal
 STR_2990    :Selecione a cor do texto
@@ -2876,7 +2876,7 @@ STR_5556    :Remover Jogador
 STR_5557    :Ficar conectado após dessincronização (Multijogador)
 STR_5558    :Reinicie o jogo para esta configuração ter efeito
 STR_5559    :Inspeções de 10 min
-STR_5560    :Define o tempo de inspeção para 'A cada 10 minutos' em todas as atrações
+STR_5560    :Define o tempo de inspeção para ‘A cada 10 minutos’ em todas as atrações
 STR_5561    :Falhou ao carregar idioma
 STR_5562    :AVISO!
 STR_5563    :Esta característica está atualmente instável, tome um cuidado maior.
@@ -3060,7 +3060,7 @@ STR_5778    :Construído: {COMMA16} Anos Atrás
 STR_5779    :Receita: {CURRENCY2DP} por hora
 STR_5780    :Custo de operação: {CURRENCY2DP} por hora
 STR_5781    :Custo de operação: Desconhecido
-STR_5782    :Você está conectado. Pressione '{STRING}' para conversar.
+STR_5782    :Você está conectado. Pressione ‘{STRING}’ para conversar.
 STR_5783    :{WINDOW_COLOUR_2}Cenário Trancado
 STR_5784    :{BLACK}Complete os cenários anteriores para destravar este cenário.
 STR_5785    :Impossível renomear grupo…
@@ -3069,7 +3069,7 @@ STR_5787    :{COMMA32} jogadores online
 STR_5788    :Intervalo de inspeção:
 STR_5789    :Desabilitar efeitos de relâmpago
 STR_5790    :Ativa preço estilo RCT1{NEWLINE}(atrações e entradas ambos pagos)
-STR_5791    :Define a confiança de todas as atrações em 100%{NEWLINE}e reinicia a data de construção para "este ano"
+STR_5791    :Define a confiança de todas as atrações em 100%{NEWLINE}e reinicia a data de construção para “este ano”
 STR_5792    :Conserta todos as atrações quebradas
 STR_5793    :Reinicia o histórico de acidentes de uma atração,{NEWLINE}então visitantes não irão reclamar que não é seguro
 STR_5794    :Alguns cenários desabilitam a edição de algumas{NEWLINE}das atrações que já estão no parque.{NEWLINE}Esta trapaça desliga a restrição
@@ -3110,11 +3110,11 @@ STR_5828    :Muda qual formato de medida é usado para distância, velocidade, e
 STR_5829    :Muda qual formato de moeda é usado. Puramente visual, não há implementação exata de taxa de câmbio
 STR_5830    :Muda qual língua é usada
 STR_5831    :Muda qual formato de{NEWLINE}temperatura é mostrado no jogo
-STR_5832    :Mostra altura como unidade genérica ao invés de formato de medida definido em "Distância e Velocidade"
+STR_5832    :Mostra altura como unidade genérica ao invés de formato de medida definido em “Distância e Velocidade”
 STR_5833    :Muda qual formato de data é usado
 STR_5834    :Seleciona qual dispositivo de áudio o OpenRCT2 irá usar
 STR_5835    :Deixa o jogo mudo se a janela perder foco
-STR_5836    :Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você copie 'data/css17.dat' da pasta do seu RCT1 para 'data/css50.dat' da pasta do seu RCT2, ou definir o caminho para o RCT1 na aba Variados.
+STR_5836    :Seleciona música que será usada no menu principal.{NEWLINE}Selecionar o tema do RCT1 requer que você copie ‘data/css17.dat’ da pasta do seu RCT1 para ‘data/css50.dat’ da pasta do seu RCT2, ou definir o caminho para o RCT1 na aba Variados.
 STR_5837    :Cria e gerencia temas de interface de usuário personalizadas
 STR_5838    :Mostra um botão separado para janela de finanças na barra de ferramentas
 STR_5839    :Mostra um botão separado para janela de pesquisa e desenvolvimento na barra de ferramentas
@@ -3345,34 +3345,34 @@ STR_6066    :Registra todas as ações do usuário em arquivos no diretório do 
 STR_6067    :Servidor iniciado.
 STR_6068    :Servidor desligado.
 STR_6069    :{STRING} foi chutado do servidor por {STRING}.
-STR_6070    :{STRING} foi definido para grupo'{STRING}' por {STRING}.
-STR_6071    :{STRING} criou novo grupo de jogadores '{STRING}'.
-STR_6072    :{STRING} deletou grupo de jogadores '{String}'.
-STR_6073    :{STRING} editou permissões para grupo de jogadores '{String}'.
-STR_6074    :{STRING} mudou nome do grupo de jogadores de '{String}' para '{String}'.
-STR_6075    :{STRING} mudou grupo de jogadores padrão para '{String}'.
-STR_6076    :{STRING} usou/alternou trapaça '{STRING}'.
+STR_6070    :{STRING} foi definido para grupo ‘{STRING}’ por {STRING}.
+STR_6071    :{STRING} criou novo grupo de jogadores ‘{STRING}’.
+STR_6072    :{STRING} deletou grupo de jogadores ‘{STRING}’.
+STR_6073    :{STRING} editou permissões para grupo de jogadores ‘{STRING}’.
+STR_6074    :{STRING} mudou nome do grupo de jogadores de ‘{STRING}’ para ‘{STRING}’.
+STR_6075    :{STRING} mudou grupo de jogadores padrão para ‘{STRING}’.
+STR_6076    :{STRING} usou/alternou trapaça ‘{STRING}’.
 STR_6077    :Adicionar Dinheiro
-STR_6078    :{STRING} criou atração '{STRING}'.
-STR_6079    :{STRING} demoliu atração '{STRING}'.
-STR_6080    :{STRING} mudou aparência da atração '{STRING}'.
-STR_6081    :{STRING} mudou o status da atração '{STRING}' para fechado.
-STR_6082    :{STRING} mudou o status da atração '{STRING}' para aberto.
-STR_6083    :{STRING} mudou o status da atração '{STRING}' para testando.
-STR_6084    :{STRING} mudou configurações de veículo da atração '{STRING}'.
-STR_6085    :{STRING} mudou configurações de atração da atração '{STRING}'.
-STR_6086    :{STRING} renomeou atração de '{STRING}' para '{STRING}'.
-STR_6087    :{STRING} mudou preço da atração '{STRING}' para {STRING}
-STR_6088    :{STRING} mudou preço secundário da atração '{STRING}' para {STRING}
-STR_6089    :{STRING} renomeou o parque de '{STRING}' para '{STRING}'.
+STR_6078    :{STRING} criou atração ‘{STRING}’.
+STR_6079    :{STRING} demoliu atração ‘{STRING}’.
+STR_6080    :{STRING} mudou aparência da atração ‘{STRING}’.
+STR_6081    :{STRING} mudou o status da atração ‘{STRING}’ para fechado.
+STR_6082    :{STRING} mudou o status da atração ‘{STRING}’ para aberto.
+STR_6083    :{STRING} mudou o status da atração ‘{STRING}’ para testando.
+STR_6084    :{STRING} mudou configurações de veículo da atração ‘{STRING}’.
+STR_6085    :{STRING} mudou configurações de atração da atração ‘{STRING}’.
+STR_6086    :{STRING} renomeou atração de ‘{STRING}’ para ‘{STRING}’.
+STR_6087    :{STRING} mudou preço da atração ‘{STRING}’ para {STRING}
+STR_6088    :{STRING} mudou preço secundário da atração ‘{STRING}’ para {STRING}
+STR_6089    :{STRING} renomeou o parque de ‘{STRING}’ para ‘{STRING}’.
 STR_6090    :{STRING} abriu o parque.
 STR_6091    :{STRING} fechou o parque.
 STR_6092    :{STRING} mudou taxa de entrada do parque para {STRING}
 STR_6093    :{STRING} colocou novo cenário.
 STR_6094    :{STRING} removeu cenário.
 STR_6095    :{STRING} editou cenário.
-STR_6096    :{STRING} definiu nome da placa para '{STRING}'.
-STR_6097    :{STRING} adicionou uma pista da atração '{STRING}'.
+STR_6096    :{STRING} definiu nome da placa para ‘{STRING}’.
+STR_6097    :{STRING} adicionou uma pista da atração ‘{STRING}’.
 STR_6098    :{STRING} removeu uma pista da atração.
 STR_6099    :Você conectou ao servidor.
 STR_6100    :Você desconectou do servidor.
@@ -4455,14 +4455,14 @@ STR_PARK    :Metrópole
 STR_DTLS    :Você é dono de um lote vazio perto da parte baixa da cidade. Para espremer o máximo de sua propriedade urbana, construa um parque temático arranha-céu inspirado pela arquitetura Art Déco crescente dos anos vinte.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Paz e Amor
+STR_SCNR    :Rock ’n’ Roll - Paz e Amor
 STR_PARK    :Woodstock
 STR_DTLS    :Um grande festival anual de música acontece em seu terreno. Construa um parque temático moderno para manter a audiência de espírito livre entretida.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Renascimento do Rock 'n' Roll
-STR_DTLS    :Este parque temático envelhecido já viu dias melhores. Ajude o dono dar uma aparência rock 'n' roll retrô e transforme o lugar em um local bem-sucedido.
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Renascimento do Rock ’n’ Roll
+STR_DTLS    :Este parque temático envelhecido já viu dias melhores. Ajude o dono dar uma aparência rock ’n’ roll retrô e transforme o lugar em um local bem-sucedido.
 
 ###############################################################################
 ## Official Custom Content Scenarios
