@@ -264,7 +264,8 @@ enum class PeepRideSubState : uint8_t
     LeaveVehicle = 7,
     ApproachExit = 8,
     InExit = 9,
-    // 10, 11 not used
+    InQueue = 10,
+    AtQueueFront = 11,
     ApproachVehicleWaypoints = 12,
     ApproachExitWaypoints = 13,
     ApproachSpiralSlide = 14,

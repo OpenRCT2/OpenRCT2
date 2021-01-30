@@ -2300,11 +2300,21 @@ static void peep_return_to_centre_of_tile(Peep* peep)
  *
  *  rct2: 0x00693f2C
  */
-static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uint8_t& pathing_result)
+static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uint8_t& pathing_result)
 {
     auto tile_element = coords.element;
     uint8_t entranceType = tile_element->AsEntrance()->GetEntranceType();
+    auto rideIndex = tile_element->AsEntrance()->GetRideIndex();
 
+    if ((entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE) || (entranceType == ENTRANCE_TYPE_RIDE_EXIT))
+    {
+        // If an entrance or exit that doesn't belong to the ride we are queuing for ignore the entrance/exit
+        // This can happen when paths clip through entrance/exits
+        if (peep->State == PeepState::Queuing && peep->CurrentRide != rideIndex)
+        {
+            return false;
+        }
+    }
     // Store some details to determine when to override the default
     // behaviour (defined below) for when staff attempt to enter a ride
     // to fix/inspect it.
@@ -2325,15 +2335,14 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         // ride exit is to turn around.
         peep->InteractionRideIndex = RIDE_ID_NULL;
         peep_return_to_centre_of_tile(peep);
-        return;
+        return true;
     }
 
     if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
     {
-        auto rideIndex = tile_element->AsEntrance()->GetRideIndex();
         auto ride = get_ride(rideIndex);
         if (ride == nullptr)
-            return;
+            return false;
 
         auto guest = peep->AsGuest();
         if (guest == nullptr)
@@ -2342,15 +2351,15 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             // ride entrance is to turn around.
             peep->InteractionRideIndex = RIDE_ID_NULL;
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         if (peep->State == PeepState::Queuing)
         {
             // Guest is in the ride queue.
-            peep->SubState = 11;
+            peep->RideSubState = PeepRideSubState::AtQueueFront;
             peep->ActionSpriteImageOffset = _unk_F1AEF0;
-            return;
+            return true;
         }
 
         // Guest is on a normal path, i.e. ride has no queue.
@@ -2361,7 +2370,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             // attached to this path tile. i.e. stick with the
             // peeps previous decision not to go on the ride.
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         peep->TimeLost = 0;
@@ -2375,7 +2384,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             // considered while on this path tile.
             peep->InteractionRideIndex = rideIndex;
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         // Guest has decided to go on the ride.
@@ -2391,7 +2400,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         peep->CurrentRideStation = stationNum;
         peep->DaysInQueue = 0;
         peep->SetState(PeepState::Queuing);
-        peep->SubState = 11;
+        peep->RideSubState = PeepRideSubState::AtQueueFront;
         peep->TimeInQueue = 0;
         if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
         {
@@ -2413,14 +2422,14 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         {
             // Staff cannot leave the park, so go back.
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         // If not the centre of the entrance arch
         if (tile_element->AsEntrance()->GetSequenceIndex() != 0)
         {
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         uint8_t entranceDirection = tile_element->GetDirection();
@@ -2429,14 +2438,14 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             if (direction_reverse(entranceDirection) != peep->PeepDirection)
             {
                 peep_return_to_centre_of_tile(peep);
-                return;
+                return true;
             }
 
             // Peep is leaving the park.
             if (peep->State != PeepState::Walking)
             {
                 peep_return_to_centre_of_tile(peep);
-                return;
+                return true;
             }
 
             if (!(peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK))
@@ -2445,7 +2454,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 if (gParkFlags & PARK_FLAGS_PARK_OPEN)
                 {
                     peep_return_to_centre_of_tile(peep);
-                    return;
+                    return true;
                 }
             }
 
@@ -2465,7 +2474,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                     News::AddItemToQueue(News::ItemType::PeepOnRide, STR_PEEP_TRACKING_LEFT_PARK, peep->sprite_index, ft);
                 }
             }
-            return;
+            return true;
         }
 
         // Peep is entering the park.
@@ -2473,7 +2482,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         if (peep->State != PeepState::EnteringPark)
         {
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         if (!(gParkFlags & PARK_FLAGS_PARK_OPEN))
@@ -2483,7 +2492,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         bool found = false;
@@ -2547,7 +2556,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             decrement_guests_heading_for_park();
             peep_window_state_update(peep);
             peep_return_to_centre_of_tile(peep);
-            return;
+            return true;
         }
 
         money16 entranceFee = park_get_entrance_fee();
@@ -2575,7 +2584,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 decrement_guests_heading_for_park();
                 peep_window_state_update(peep);
                 peep_return_to_centre_of_tile(peep);
-                return;
+                return true;
             }
 
             gTotalIncomeFromAdmissions += entranceFee;
@@ -2592,6 +2601,7 @@ static void peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         peep->DestinationTolerance = 7;
         peep->MoveTo({ coords, peep->z });
     }
+    return true;
 }
 
 /**
@@ -2819,7 +2829,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                     peep->DaysInQueue = 0;
                     peep_window_state_update(peep);
 
-                    peep->SubState = 10;
+                    peep->RideSubState = PeepRideSubState::InQueue;
                     peep->DestinationTolerance = 2;
                     peep->TimeInQueue = 0;
                     if (peep->PeepFlags & PEEP_FLAGS_TRACKING)
@@ -2878,6 +2888,13 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     {
         peep_return_to_centre_of_tile(peep);
         return true;
+    }
+
+    // If we are queuing ignore the 'shop'
+    // This can happen when paths clip through track
+    if (peep->State == PeepState::Queuing)
+    {
+        return false;
     }
 
     peep->TimeLost = 0;
@@ -3055,9 +3072,11 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
         else if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            peep_interact_with_entrance(this, { newLoc, tileElement }, pathing_result);
-            tile_result = tileElement;
-            return;
+            if (peep_interact_with_entrance(this, { newLoc, tileElement }, pathing_result))
+            {
+                tile_result = tileElement;
+                return;
+            }
         }
     } while (!(tileElement++)->IsLastForTile());
 
