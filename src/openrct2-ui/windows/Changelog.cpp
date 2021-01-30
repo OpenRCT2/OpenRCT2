@@ -213,7 +213,6 @@ static void window_changelog_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t scrollIndex)
 {
-    gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);

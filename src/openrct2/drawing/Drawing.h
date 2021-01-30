@@ -645,7 +645,6 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 #define MAX_SCROLLING_TEXT_MODES 38
 
 extern thread_local int16_t gCurrentFontSpriteBase;
-extern thread_local uint16_t gCurrentFontFlags;
 
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
