@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FixedVector.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
@@ -137,24 +138,25 @@ struct tunnel_entry
 struct paint_session
 {
     rct_drawpixelinfo DPI;
-    paint_entry PaintStructs[4000];
+    FixedVector<paint_entry, 4000> PaintStructs;
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    paint_struct* LastPS;
+    paint_string_struct* PSStringHead;
+    paint_string_struct* LastPSString;
+    attached_paint_struct* LastAttachedPS;
+    const TileElement* SurfaceElement;
+    const void* CurrentlyDrawnItem;
+    TileElement* PathElementOnSameHeight;
+    TileElement* TrackElementOnSameHeight;
     paint_struct PaintHead;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    const void* CurrentlyDrawnItem;
-    paint_entry* EndOfPaintStructArray;
-    paint_entry* NextFreePaintStruct;
     CoordsXY SpritePosition;
-    paint_struct* LastPS;
-    attached_paint_struct* LastAttachedPS;
     ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
     support_height SupportSegments[9];
     support_height Support;
-    paint_string_struct* PSStringHead;
-    paint_string_struct* LastPSString;
     paint_struct* WoodenSupportsPrependTo;
     CoordsXY MapPosition;
     tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
@@ -162,9 +164,6 @@ struct paint_session
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
-    const TileElement* SurfaceElement;
-    TileElement* PathElementOnSameHeight;
-    TileElement* TrackElementOnSameHeight;
     bool DidPassSurface;
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
@@ -172,35 +171,33 @@ struct paint_session
 
     constexpr bool NoPaintStructsAvailable() noexcept
     {
-        return NextFreePaintStruct >= EndOfPaintStructArray;
+        return PaintStructs.size() >= PaintStructs.capacity();
     }
 
     constexpr paint_struct* AllocateNormalPaintEntry() noexcept
     {
-        LastPS = &NextFreePaintStruct->basic;
-        NextFreePaintStruct++;
+        LastPS = &PaintStructs.emplace_back().basic;
         return LastPS;
     }
 
     constexpr attached_paint_struct* AllocateAttachedPaintEntry() noexcept
     {
-        LastAttachedPS = &NextFreePaintStruct->attached;
-        NextFreePaintStruct++;
+        LastAttachedPS = &PaintStructs.emplace_back().attached;
         return LastAttachedPS;
     }
 
     constexpr paint_string_struct* AllocateStringPaintEntry() noexcept
     {
+        auto* string = &PaintStructs.emplace_back().string;
         if (LastPSString == nullptr)
         {
-            PSStringHead = &NextFreePaintStruct->string;
+            PSStringHead = string;
         }
         else
         {
-            LastPSString->next = &NextFreePaintStruct->string;
+            LastPSString->next = string;
         }
-        LastPSString = &NextFreePaintStruct->string;
-        NextFreePaintStruct++;
+        LastPSString = string;
         return LastPSString;
     }
 };

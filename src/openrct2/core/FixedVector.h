@@ -27,7 +27,7 @@ public:
     using reference_type = value_type&;
     using const_reference_type = const value_type&;
 
-    iterator begin()
+    constexpr iterator begin()
     {
         if (_count == 0)
             return _data.end();
@@ -35,14 +35,14 @@ public:
         return _data.begin();
     }
 
-    iterator end()
+    constexpr iterator end()
     {
         if (_count == 0)
             return _data.end();
         return begin() + _count;
     }
 
-    const_iterator cbegin() const
+    constexpr const_iterator cbegin() const
     {
         if (_count == 0)
             return _data.cend();
@@ -50,58 +50,58 @@ public:
         return _data.cbegin();
     }
 
-    const_iterator cend() const
+    constexpr const_iterator cend() const
     {
         if (_count == 0)
             return _data.cend();
         return cbegin() + _count;
     }
 
-    reverse_iterator rbegin()
+    constexpr reverse_iterator rbegin()
     {
         if (_count == 0)
             return _data.rend();
         return _data.rbegin() + (MAX - _count);
     }
 
-    reverse_iterator rend()
+    constexpr reverse_iterator rend()
     {
         return _data.rend();
     }
 
-    const_reverse_iterator rbegin() const
+    constexpr const_reverse_iterator rbegin() const
     {
         return _data.rbegin() + (MAX - _count);
     }
 
-    const_reverse_iterator rend() const
+    constexpr const_reverse_iterator rend() const
     {
         return _data.rend();
     }
 
-    reference_type back()
+    constexpr reference_type back()
     {
         return _data[_count - 1];
     }
 
-    const_reference_type back() const
+    constexpr const_reference_type back() const
     {
         return _data[_count - 1];
     }
 
-    void push_back(const T& val)
+    constexpr void push_back(const T& val)
     {
         Guard::Assert(_count < MAX);
         _data[_count++] = val;
     }
 
-    void push_back(T&& val)
+    constexpr void push_back(T&& val)
     {
         Guard::Assert(_count < MAX);
         _data[_count++] = std::move(val);
     }
 
-    iterator insert(iterator pos, const T& val)
+    constexpr iterator insert(iterator pos, const T& val)
     {
         // Make sure the end iterator is correct.
         auto itCurEnd = end();
@@ -114,7 +114,7 @@ public:
         return _data.begin() + offset;
     }
 
-    iterator insert(iterator pos, T&& val)
+    constexpr iterator insert(iterator pos, T&& val)
     {
         // Make sure the end iterator is correct.
         auto itCurEnd = end();
@@ -127,7 +127,7 @@ public:
         return _data.begin() + offset;
     }
 
-    template<typename... Args> reference_type emplace_back(Args&&... args)
+    template<typename... Args> constexpr reference_type emplace_back(Args&&... args)
     {
         Guard::Assert(_count < MAX);
         reference_type res = _data[_count++];
@@ -135,37 +135,37 @@ public:
         return res;
     }
 
-    reference_type operator[](const size_t n)
+    constexpr reference_type operator[](const size_t n)
     {
         return _data[n];
     }
 
-    const_reference_type operator[](const size_t n) const
+    constexpr const_reference_type operator[](const size_t n) const
     {
         return _data[n];
     }
 
-    void pop_back()
+    constexpr void pop_back()
     {
         _count--;
     }
 
-    void clear()
+    constexpr void clear()
     {
         _count = 0;
     }
 
-    size_t size() const
+    constexpr size_t size() const
     {
         return _count;
     }
 
-    size_t capacity() const
+    constexpr size_t capacity() const
     {
         return _data.size();
     }
 
-    bool empty() const
+    constexpr bool empty() const
     {
         return _count == 0;
     }
