@@ -563,7 +563,7 @@ static void viewport_surface_draw_tile_side_bottom(
     LocationXY16 tunnelBounds = { 1, 1 };
     LocationXY16 tunnelTopBoundBoxOffset = { 0, 0 };
 
-    tunnel_entry* tunnelArray;
+    const tunnel_entry* tunnelArray;
     switch (edge)
     {
         case EDGE_BOTTOMLEFT:
@@ -1285,21 +1285,12 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             log_verbose("edgeStyle: %d", edgeStyle);
         }
 
-        tunnel_entry backupLeftTunnels[TUNNEL_MAX_COUNT];
-        tunnel_entry backupRightTunnels[TUNNEL_MAX_COUNT];
-
-        std::memcpy(backupLeftTunnels, session->LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        std::memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-
         viewport_surface_draw_land_side_top(session, EDGE_TOPLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_draw_land_side_top(session, EDGE_TOPRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_draw_land_side_bottom(
             session, EDGE_BOTTOMLEFT, height, edgeStyle, tileDescriptors[0], tileDescriptors[1]);
         viewport_surface_draw_land_side_bottom(
             session, EDGE_BOTTOMRIGHT, height, edgeStyle, tileDescriptors[0], tileDescriptors[2]);
-
-        std::memcpy(session->LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-        std::memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
     }
 
     const uint16_t waterHeight = tileElement->AsSurface()->GetWaterHeight();
