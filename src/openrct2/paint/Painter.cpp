@@ -135,8 +135,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     if (_freePaintSessions.empty() == false)
     {
         // Re-use.
-        const size_t idx = _freePaintSessions.size() - 1;
-        session = _freePaintSessions[idx];
+        session = _freePaintSessions.back();
 
         // Shrink by one.
         _freePaintSessions.pop_back();
@@ -149,17 +148,14 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     }
 
     session->DPI = *dpi;
-    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
-    session->NextFreePaintStruct = session->PaintStructs;
-    session->LastPS = nullptr;
-    session->LastAttachedPS = nullptr;
     session->ViewFlags = viewFlags;
-    for (auto& quadrant : session->Quadrants)
-    {
-        quadrant = nullptr;
-    }
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
+    session->PaintStructs.clear();
+
+    std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
+    session->LastPS = nullptr;
+    session->LastAttachedPS = nullptr;
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;
     session->WoodenSupportsPrependTo = nullptr;
