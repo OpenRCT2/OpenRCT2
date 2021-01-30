@@ -79,6 +79,9 @@ constexpr const uint8_t RCT12_MAX_ELEMENT_HEIGHT = 255;
 
 constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 
+constexpr const uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
+
 enum class SpriteIdentifier : uint8_t;
 
 enum class RCT12TrackDesignVersion : uint8_t

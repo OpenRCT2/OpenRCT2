@@ -4188,7 +4188,8 @@ static Vehicle* vehicle_create_car(
 
         dodgemPos.z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
 
-        vehicle->track_type = trackElement->GetTrackType() << 2;
+        vehicle->SetTrackDirection(0);
+        vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->track_progress = 0;
         vehicle->SetState(Vehicle::Status::MovingToEndOfStation);
         vehicle->update_flags = 0;
@@ -4277,7 +4278,8 @@ static Vehicle* vehicle_create_car(
         vehicle->current_station = trackElement->GetStationIndex();
 
         vehicle->MoveTo(chosenLoc);
-        vehicle->track_type = (trackElement->GetTrackType() << 2) | (vehicle->sprite_direction >> 3);
+        vehicle->SetTrackType(trackElement->GetTrackType());
+        vehicle->SetTrackDirection(vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
         {

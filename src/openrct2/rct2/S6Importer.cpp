@@ -1396,7 +1396,8 @@ public:
         else
         {
             dst->BoatLocation = TileCoordsXY{ src->boat_location.x, src->boat_location.y }.ToCoordsXY();
-            dst->track_type = 0;
+            dst->SetTrackDirection(0);
+            dst->SetTrackType(0);
         }
 
         dst->next_vehicle_on_train = src->next_vehicle_on_train;

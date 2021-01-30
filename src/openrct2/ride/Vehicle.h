@@ -157,6 +157,9 @@ struct rct_vehicle_info
 
 struct SoundIdVolume;
 
+constexpr const uint16_t VehicleTrackDirectionMask = 0b0000000000000011;
+constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
+
 struct Vehicle : SpriteBase
 {
     enum class Type : uint8_t
@@ -218,11 +221,7 @@ struct Vehicle : SpriteBase
             uint8_t var_35;
         };
     };
-    union
-    {
-        int16_t track_direction; // (0000 0000 0000 0011)
-        int16_t track_type;      // (1111 1111 1111 1100)
-    };
+    uint16_t TrackTypeAndDirection;
     CoordsXYZ TrackLocation;
     uint16_t next_vehicle_on_train;
 
@@ -342,23 +341,23 @@ struct Vehicle : SpriteBase
     void MoveRelativeDistance(int32_t distance);
     track_type_t GetTrackType() const
     {
-        return track_type >> 2;
+        return TrackTypeAndDirection >> 2;
     }
     uint8_t GetTrackDirection() const
     {
-        return track_direction & 3;
+        return TrackTypeAndDirection & VehicleTrackDirectionMask;
     }
     void SetTrackType(track_type_t trackType)
     {
         // set the upper 14 bits to 0, then set track type
-        track_type &= 3;
-        track_type |= trackType << 2;
+        TrackTypeAndDirection &= ~VehicleTrackTypeMask;
+        TrackTypeAndDirection |= trackType << 2;
     }
     void SetTrackDirection(uint8_t trackDirection)
     {
         // set the lower 2 bits only
-        track_direction &= ~3;
-        track_direction |= trackDirection & 3;
+        TrackTypeAndDirection &= ~VehicleTrackDirectionMask;
+        TrackTypeAndDirection |= trackDirection & VehicleTrackDirectionMask;
     }
     bool HasUpdateFlag(uint32_t flag) const
     {

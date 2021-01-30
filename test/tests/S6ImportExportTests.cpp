@@ -278,7 +278,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(colours.body_colour);
     COMPARE_FIELD(colours.trim_colour);
     COMPARE_FIELD(track_progress);
-    COMPARE_FIELD(track_direction);
+    COMPARE_FIELD(TrackTypeAndDirection);
     COMPARE_FIELD(TrackLocation.x);
     COMPARE_FIELD(TrackLocation.y);
     COMPARE_FIELD(TrackLocation.z);

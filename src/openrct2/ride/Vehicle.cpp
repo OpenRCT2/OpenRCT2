@@ -736,8 +736,11 @@ template<> bool SpriteBase::Is<Vehicle>() const
     return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
-static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
+static bool vehicle_move_info_valid(
+    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
 {
+    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+
     if (trackSubposition >= VehicleTrackSubposition{ std::size(gTrackVehicleInfo) })
     {
         return false;
@@ -789,9 +792,11 @@ static bool vehicle_move_info_valid(VehicleTrackSubposition trackSubposition, in
 }
 
 static const rct_vehicle_info* vehicle_get_move_info(
-    VehicleTrackSubposition trackSubposition, int32_t typeAndDirection, int32_t offset)
+    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
 {
-    if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, offset))
+    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+
+    if (!vehicle_move_info_valid(trackSubposition, type, direction, offset))
     {
         static constexpr const rct_vehicle_info zero = {};
         return &zero;
@@ -801,12 +806,14 @@ static const rct_vehicle_info* vehicle_get_move_info(
 
 const rct_vehicle_info* Vehicle::GetMoveInfo() const
 {
-    return vehicle_get_move_info(TrackSubposition, track_type, track_progress);
+    return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
 }
 
-static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, int32_t typeAndDirection)
+static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
 {
-    if (!vehicle_move_info_valid(trackSubposition, typeAndDirection, 0))
+    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+
+    if (!vehicle_move_info_valid(trackSubposition, type, direction, 0))
     {
         return 0;
     }
@@ -815,7 +822,7 @@ static uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposit
 
 uint16_t Vehicle::GetTrackProgress() const
 {
-    return vehicle_get_move_info_size(TrackSubposition, track_type);
+    return vehicle_get_move_info_size(TrackSubposition, GetTrackType(), GetTrackDirection());
 }
 
 void Vehicle::MoveRelativeDistance(int32_t distance)
@@ -2572,7 +2579,7 @@ void Vehicle::UpdateWaitingToDepart()
         int32_t zUnused;
         int32_t direction;
 
-        uint8_t trackDirection = (track_direction & 0x3);
+        uint8_t trackDirection = GetTrackDirection();
         if (track_block_get_next_from_zero(TrackLocation, curRide, trackDirection, &track, &zUnused, &direction, false))
         {
             if (track.element->AsTrack()->HasCableLift())
@@ -3161,7 +3168,8 @@ void Vehicle::UpdateTravellingBoatHireSetup()
     BoatLocation = location;
     var_35 = 0;
     // No longer on a track so reset to 0 for import/export
-    track_type = 0;
+    SetTrackDirection(0);
+    SetTrackType(0);
     SetState(Vehicle::Status::TravellingBoat);
     remaining_distance += 27924;
 
@@ -4328,7 +4336,8 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         auto curRide = GetRide();
         if (curRide != nullptr)
         {
-            track_type = (trackElement->GetTrackType() << 2) | (curRide->boat_hire_return_direction & 3);
+            SetTrackType(trackElement->GetTrackType());
+            SetTrackDirection(curRide->boat_hire_return_direction);
             BoatLocation.setNull();
         }
 
@@ -7477,7 +7486,7 @@ void Vehicle::UpdateSceneryDoor() const
     }
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
     auto wallCoords = CoordsXYZ{ x, y, TrackLocation.z - trackBlock->z + trackCoordinates->z_end }.ToTileStart();
-    int32_t direction = (track_direction + trackCoordinates->rotation_end) & 3;
+    int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
     AnimateSceneryDoor<false>(
         { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
@@ -7570,7 +7579,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     const rct_preview_track* trackBlock = TrackBlocks[trackType];
     const rct_track_coordinates* trackCoordinates = &TrackCoordinates[trackType];
     auto wallCoords = CoordsXYZ{ TrackLocation, TrackLocation.z - trackBlock->z + trackCoordinates->z_begin };
-    int32_t direction = (track_direction + trackCoordinates->rotation_begin) & 3;
+    int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
     AnimateSceneryDoor<true>(
@@ -8147,8 +8156,8 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     {
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
-    track_direction = location.direction % NumOrthogonalDirections;
-    track_type |= trackType << 2;
+    SetTrackDirection(location.direction);
+    SetTrackType(trackType);
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     if (trackType == TrackElemType::OnRidePhoto)
     {
@@ -8548,8 +8557,8 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
         target_seat_rotation = tileElement->AsTrack()->GetSeatRotation();
     }
     direction &= 3;
-    track_type = trackType << 2;
-    track_direction |= direction;
+    SetTrackType(trackType);
+    SetTrackDirection(direction);
     brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
     // There are two bytes before the move info list
@@ -8875,7 +8884,8 @@ loc_6DC476:
     }
 
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
-    track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
+    SetTrackType(tileElement->AsTrack()->GetTrackType());
+    SetTrackDirection(direction);
     var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     track_progress = 0;
 
@@ -9083,7 +9093,8 @@ loc_6DCA9A:
         }
     }
 
-    track_type = (tileElement->AsTrack()->GetTrackType() << 2) | (direction & 3);
+    SetTrackType(tileElement->AsTrack()->GetTrackType());
+    SetTrackDirection(direction);
     var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
 
     // There are two bytes before the move info list
@@ -9677,7 +9688,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
     }
 
-    if ((vehicle->GetTrackType()) == TrackElemType::Watersplash)
+    if (vehicle->GetTrackType() == TrackElemType::Watersplash)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {
