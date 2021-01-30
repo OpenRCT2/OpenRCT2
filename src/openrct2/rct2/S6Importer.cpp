@@ -1150,8 +1150,8 @@ public:
                 dst2->SetHasCableLift(src2->HasCableLift());
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetBrakeClosed(src2->IsBrakeClosed());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
-                dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
                 // Skipping IsHighlighted()
 

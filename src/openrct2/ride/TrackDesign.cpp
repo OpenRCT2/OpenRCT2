@@ -1561,7 +1561,15 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                 // di
                 int16_t tempZ = newCoords.z - trackCoordinates->z_begin;
                 uint32_t trackColour = (track.flags >> 4) & 0x3;
-                uint32_t brakeSpeed = (track.flags & 0x0F) * 2;
+                uint32_t brakeSpeed;
+                if (trackType == TrackElemType::BlockBrakes)
+                {
+                    brakeSpeed = 2;
+                }
+                else
+                {
+                    brakeSpeed = (track.flags & 0x0F) * 2;
+                }
                 uint32_t seatRotation = track.flags & 0x0F;
 
                 int32_t liftHillAndAlternativeState = 0;

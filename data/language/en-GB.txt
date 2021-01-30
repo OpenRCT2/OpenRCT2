@@ -3572,9 +3572,9 @@ STR_6315    :{WINDOW_COLOUR_2}Pathfind Goal: {BLACK}{INT32}, {INT32}, {INT32} di
 STR_6316    :{WINDOW_COLOUR_2}Pathfind history:
 STR_6317    :{BLACK}{INT32}, {INT32}, {INT32} dir {INT32}
 STR_6318    :Network desync detected.{NEWLINE}Log file: {STRING}
-STR_6319    :{WINDOW_COLOUR_2}Block Brake Closed
-STR_6320    :{WINDOW_COLOUR_2}Indestructible
-STR_6321    :{WINDOW_COLOUR_2}Addition is broken
+STR_6319    :Block Brake Closed
+STR_6320    :Indestructible
+STR_6321    :Addition is broken
 STR_6322    :{WINDOW_COLOUR_2}Sprite Id: {BLACK}{INT32}
 STR_6323    :Simulating
 STR_6324    :Simulate
@@ -3663,6 +3663,9 @@ STR_6406    :GOG RollerCoaster Tycoon 2 Installer
 STR_6407    :This may take a few minutes.
 STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2.
 STR_6409    :The selected file is not the offline GOG Installer for RollerCoaster Tycoon 2. You may have downloaded the GOG Galaxy downloader stub or selected the wrong file.
+STR_6410    :Brake Closed
+STR_6411    :Block brake speed
+STR_6412    :Set speed limit for block brakes. In block section mode, linked brakes with a speed lower than the block brake open fully when the block brake does
 
 #############
 # Scenarios #

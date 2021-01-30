@@ -103,6 +103,7 @@ enum
     RCT12_TILE_ELEMENT_FLAG_GHOST = (1 << 4),
     RCT12_TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
     RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
+    RCT12_TILE_ELEMENT_FLAG_BRAKE_OPEN = (1 << 5),
     RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
@@ -484,7 +485,7 @@ private:
         struct
         {
             // The lower 4 bits are the track sequence.
-            // The upper 4 bits are either station bits or on-ride photo bits.
+            // The upper 4 bits are either station bits, brake speed bits, or on-ride photo bits.
             //
             // Station bits:
             // - Bit 8 marks green light
@@ -528,8 +529,8 @@ public:
     void SetHasChain(bool on);
     void SetHasCableLift(bool on);
     void SetInverted(bool inverted);
-    bool BlockBrakeClosed() const;
-    void SetBlockBrakeClosed(bool isClosed);
+    bool IsBrakeClosed() const;
+    void SetBrakeClosed(bool isClosed);
     void SetBrakeBoosterSpeed(uint8_t speed);
     void SetHasGreenLight(uint8_t greenLight);
     void SetSeatRotation(uint8_t newSeatRotation);

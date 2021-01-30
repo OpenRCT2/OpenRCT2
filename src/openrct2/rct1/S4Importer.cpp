@@ -2131,6 +2131,7 @@ private:
                 dst2->SetHasCableLift(false);
                 dst2->SetInverted(src2->IsInverted());
                 dst2->SetStationIndex(src2->GetStationIndex());
+                dst2->SetBrakeClosed(src2->GetTrackType() == TrackElemType::Brakes);
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
                 if (rideType == RCT1_RIDE_TYPE_GHOST_TRAIN)

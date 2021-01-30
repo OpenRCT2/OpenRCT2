@@ -40,8 +40,7 @@ GameActionResultPtr tile_inspector_wall_animation_frame_offset(
     const CoordsXY& loc, int16_t elementIndex, int8_t animationFrameOffset, bool isExecuting);
 GameActionResultPtr tile_inspector_track_base_height_offset(
     const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting);
-GameActionResultPtr tile_inspector_track_set_block_brake(
-    const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
+GameActionResultPtr tile_inspector_track_set_brake(const CoordsXY& loc, int32_t elementIndex, bool isClosed, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_indestructible(
     const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
 GameActionResultPtr tile_inspector_track_set_chain(

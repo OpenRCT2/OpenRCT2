@@ -383,7 +383,7 @@ private:
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
     bool CreateVehicles(const CoordsXYE& element, bool isApplying);
-    void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
+    void MoveTrainsToBlockBrakes(CoordsXYE* element);
     money32 CalculateIncomePerHour() const;
     void ChainQueues() const;
     void ConstructMissingEntranceOrExit() const;
@@ -1196,7 +1196,8 @@ bool ride_select_forwards_from_back();
 
 bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
 void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
-
+void brakes_link_to_block_brake(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement);
+void block_brakes_set_linked_brakes_closed(const CoordsXYZ& vehicleTrackLocation, TileElement* tileElement, bool isOpen);
 void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(Ride* ride);

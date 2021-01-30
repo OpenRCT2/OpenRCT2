@@ -176,8 +176,8 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
         case TileModifyType::TrackSetBlockBrake:
         {
             const auto elementIndex = _value1;
-            const bool blockBrake = _value2;
-            res = tile_inspector_track_set_block_brake(_loc, elementIndex, blockBrake, isExecuting);
+            const bool isClosed = _value2;
+            res = tile_inspector_track_set_brake(_loc, elementIndex, isClosed, isExecuting);
             break;
         }
         case TileModifyType::TrackSetIndestructible:
