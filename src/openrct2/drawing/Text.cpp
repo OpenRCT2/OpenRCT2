@@ -33,12 +33,10 @@ StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t wi
 
 void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
 {
-    gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = Paint.SpriteBase;
 
     TextPaint tempPaint = Paint;
 
-    gCurrentFontFlags = 0;
     auto lineCoords = coords;
     switch (Paint.Alignment)
     {

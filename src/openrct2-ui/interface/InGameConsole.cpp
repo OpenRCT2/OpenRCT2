@@ -267,7 +267,6 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Set font
     gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
-    gCurrentFontFlags = 0;
     uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WC_CONSOLE, 1));
     const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
     const int32_t maxLines = GetNumVisibleLines();

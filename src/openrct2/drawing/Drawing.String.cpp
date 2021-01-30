@@ -337,7 +337,6 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
     screenCoords = coords;
-    gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
@@ -446,7 +445,6 @@ void gfx_draw_string_centred_wrapped_partial(
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
 
-    gCurrentFontFlags = 0;
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
@@ -942,7 +940,7 @@ void ttf_draw_string(
 
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
@@ -964,7 +962,6 @@ void ttf_draw_string(
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
     gCurrentFontSpriteBase = info.font_sprite_base;
-    gCurrentFontFlags = info.flags;
 
     gLastDrawStringX = info.x;
     gLastDrawStringY = info.y;
@@ -974,7 +971,7 @@ static int32_t ttf_get_string_width(std::string_view text, bool noFormatting)
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.flags = 0;
     info.startX = 0;
     info.startY = 0;
     info.x = 0;
@@ -1008,7 +1005,7 @@ void gfx_draw_string_with_y_offsets(
 {
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
@@ -1028,7 +1025,6 @@ void gfx_draw_string_with_y_offsets(
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
     gCurrentFontSpriteBase = info.font_sprite_base;
-    gCurrentFontFlags = info.flags;
 
     gLastDrawStringX = info.x;
     gLastDrawStringY = info.y;

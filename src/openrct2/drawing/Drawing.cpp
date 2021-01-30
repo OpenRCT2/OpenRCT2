@@ -86,7 +86,6 @@ thread_local int32_t gLastDrawStringX;
 thread_local int32_t gLastDrawStringY;
 
 thread_local int16_t gCurrentFontSpriteBase;
-thread_local uint16_t gCurrentFontFlags;
 
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;

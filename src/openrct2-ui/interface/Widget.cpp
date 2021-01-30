@@ -1093,7 +1093,6 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gCurrentFontFlags = 0;
 
     // Figure out where the text should be positioned vertically.
     topLeft.y = w->windowPos.y + widget->textTop();

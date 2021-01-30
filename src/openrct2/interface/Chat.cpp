@@ -279,8 +279,6 @@ static int32_t chat_history_draw_string(
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     auto lineHeight = font_get_line_height(fontSpriteBase);
 
-    gCurrentFontFlags = 0;
-
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
     {
@@ -311,8 +309,6 @@ int32_t chat_string_wrapped_get_height(void* args, int32_t width)
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     lineHeight = font_get_line_height(fontSpriteBase);
-
-    gCurrentFontFlags = 0;
 
     lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)

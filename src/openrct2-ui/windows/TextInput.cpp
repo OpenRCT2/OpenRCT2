@@ -241,7 +241,6 @@ static void window_text_input_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 25;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gCurrentFontFlags = 0;
 
     char wrapped_string[TEXT_INPUT_SIZE];
     safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
