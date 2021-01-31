@@ -17,7 +17,7 @@ using namespace OpenRCT2::Ui;
 
 constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
 
-static uint32_t ParseModifier(const std::string_view& text)
+static uint32_t ParseModifier(std::string_view text)
 {
     if (String::Equals(text, "CTRL", true))
     {
@@ -73,7 +73,7 @@ static uint32_t ParseModifier(const std::string_view& text)
     }
 }
 
-static uint32_t ParseKey(const std::string_view& text)
+static uint32_t ParseKey(std::string_view text)
 {
     char buffer[128]{};
     std::strncpy(buffer, text.data(), sizeof(buffer) - 1);
@@ -103,7 +103,7 @@ static size_t FindPlus(std::string_view s, size_t index)
     return index;
 }
 
-ShortcutInput::ShortcutInput(const std::string_view& value)
+ShortcutInput::ShortcutInput(std::string_view value)
 {
     uint32_t modifiers = 0;
     size_t index = 0;
@@ -322,7 +322,7 @@ std::string ShortcutInput::ToString() const
     return result;
 }
 
-bool ShortcutInput::AppendModifier(std::string& s, const std::string_view& text, uint32_t left, uint32_t right) const
+bool ShortcutInput::AppendModifier(std::string& s, std::string_view text, uint32_t left, uint32_t right) const
 {
     if ((Modifiers & (left | right)) == (left | right))
     {

@@ -351,7 +351,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
 
 std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
 {
-    static constexpr const char* LegacyMap[] = {
+    static constexpr std::string_view LegacyMap[] = {
         ShortcutId::InterfaceCloseTop,
         ShortcutId::InterfaceCloseAll,
         ShortcutId::InterfaceCancelConstruction,
@@ -399,7 +399,7 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::InterfaceMute,
         ShortcutId::ScaleToggleWindowMode,
         ShortcutId::MultiplayerShow,
-        nullptr,
+        std::string_view(),
         ShortcutId::DebugTogglePaintDebugWindow,
         ShortcutId::ViewToggleFootpaths,
         ShortcutId::WindowRideConstructionTurnLeft,
@@ -438,6 +438,5 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::WindowTileInspectorDecreaseHeight,
         ShortcutId::InterfaceDisableClearance,
     };
-    auto sz = index < std::size(LegacyMap) ? LegacyMap[index] : nullptr;
-    return sz == nullptr ? std::string_view() : std::string_view(sz);
+    return index < std::size(LegacyMap) ? LegacyMap[index] : std::string_view();
 }

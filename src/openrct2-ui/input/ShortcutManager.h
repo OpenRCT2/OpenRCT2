@@ -36,7 +36,7 @@ namespace OpenRCT2::Ui
         uint32_t Button{};
 
         ShortcutInput() = default;
-        ShortcutInput(const std::string_view& value);
+        ShortcutInput(std::string_view value);
         std::string ToString() const;
 
         bool Matches(const InputEvent& e) const;
@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui
         static std::optional<ShortcutInput> FromInputEvent(const InputEvent& e);
 
     private:
-        bool AppendModifier(std::string& s, const std::string_view& text, uint32_t left, uint32_t right) const;
+        bool AppendModifier(std::string& s, std::string_view text, uint32_t left, uint32_t right) const;
     };
 
     class RegisteredShortcut
@@ -58,14 +58,14 @@ namespace OpenRCT2::Ui
         std::function<void()> Action;
 
         RegisteredShortcut() = default;
-        RegisteredShortcut(const std::string_view& id, std::string_view name, const std::function<void()>& action)
+        RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
             : Id(id)
             , CustomName(name)
             , Action(action)
         {
         }
 
-        RegisteredShortcut(const std::string_view& id, rct_string_id localisedName, const std::function<void()>& action)
+        RegisteredShortcut(std::string_view id, rct_string_id localisedName, const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Action(action)
@@ -73,7 +73,7 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            const std::string_view& id, rct_string_id localisedName, const std::string_view& defaultChord,
+            std::string_view id, rct_string_id localisedName, std::string_view defaultChord,
             const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
@@ -84,8 +84,8 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
-            const std::string_view& id, rct_string_id localisedName, const std::string_view& defaultChordA,
-            const std::string_view& defaultChordB, const std::function<void()>& action)
+            std::string_view id, rct_string_id localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
+            const std::function<void()>& action)
             : Id(id)
             , LocalisedName(localisedName)
             , Default({ defaultChordA, defaultChordB })
