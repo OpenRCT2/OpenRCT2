@@ -110,79 +110,79 @@ struct TileElement : public TileElementBase
     uint8_t pad_05[3];
     uint8_t pad_08[8];
 
-    template<typename TType, TileElementType TClass> const TType* as() const
+    template<typename TType> const TType* as() const
     {
-        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<const TType*>(this) : nullptr;
+        return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<const TType*>(this) : nullptr;
     }
-    template<typename TType, TileElementType TClass> TType* as()
+    template<typename TType> TType* as()
     {
-        return static_cast<TileElementType>(GetType()) == TClass ? reinterpret_cast<TType*>(this) : nullptr;
+        return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
 public:
     const SurfaceElement* AsSurface() const
     {
-        return as<SurfaceElement, TileElementType::Surface>();
+        return as<SurfaceElement>();
     }
     SurfaceElement* AsSurface()
     {
-        return as<SurfaceElement, TileElementType::Surface>();
+        return as<SurfaceElement>();
     }
     const PathElement* AsPath() const
     {
-        return as<PathElement, TileElementType::Path>();
+        return as<PathElement>();
     }
     PathElement* AsPath()
     {
-        return as<PathElement, TileElementType::Path>();
+        return as<PathElement>();
     }
     const TrackElement* AsTrack() const
     {
-        return as<TrackElement, TileElementType::Track>();
+        return as<TrackElement>();
     }
     TrackElement* AsTrack()
     {
-        return as<TrackElement, TileElementType::Track>();
+        return as<TrackElement>();
     }
     const SmallSceneryElement* AsSmallScenery() const
     {
-        return as<SmallSceneryElement, TileElementType::SmallScenery>();
+        return as<SmallSceneryElement>();
     }
     SmallSceneryElement* AsSmallScenery()
     {
-        return as<SmallSceneryElement, TileElementType::SmallScenery>();
+        return as<SmallSceneryElement>();
     }
     const LargeSceneryElement* AsLargeScenery() const
     {
-        return as<LargeSceneryElement, TileElementType::LargeScenery>();
+        return as<LargeSceneryElement>();
     }
     LargeSceneryElement* AsLargeScenery()
     {
-        return as<LargeSceneryElement, TileElementType::LargeScenery>();
+        return as<LargeSceneryElement>();
     }
     const WallElement* AsWall() const
     {
-        return as<WallElement, TileElementType::Wall>();
+        return as<WallElement>();
     }
     WallElement* AsWall()
     {
-        return as<WallElement, TileElementType::Wall>();
+        return as<WallElement>();
     }
     const EntranceElement* AsEntrance() const
     {
-        return as<EntranceElement, TileElementType::Entrance>();
+        return as<EntranceElement>();
     }
     EntranceElement* AsEntrance()
     {
-        return as<EntranceElement, TileElementType::Entrance>();
+        return as<EntranceElement>();
     }
     const BannerElement* AsBanner() const
     {
-        return as<BannerElement, TileElementType::Banner>();
+        return as<BannerElement>();
     }
     BannerElement* AsBanner()
     {
-        return as<BannerElement, TileElementType::Banner>();
+        return as<BannerElement>();
     }
 
     void ClearAs(uint8_t newType);
@@ -197,6 +197,8 @@ assert_struct_size(TileElement, 16);
 
 struct SurfaceElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Surface;
+
 private:
     uint8_t Slope;
     uint8_t WaterHeight;
@@ -242,6 +244,8 @@ assert_struct_size(SurfaceElement, 16);
 
 struct PathElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Path;
+
 private:
     PathSurfaceIndex SurfaceIndex; // 5
 #pragma clang diagnostic push
@@ -329,6 +333,8 @@ assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Track;
+
 private:
     track_type_t TrackType;
     union
@@ -428,6 +434,8 @@ assert_struct_size(TrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::SmallScenery;
+
 private:
     ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
@@ -459,6 +467,8 @@ assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::LargeScenery;
+
 private:
     ObjectEntryIndex EntryIndex;
     ::BannerIndex BannerIndex;
@@ -494,6 +504,8 @@ assert_struct_size(LargeSceneryElement, 16);
 
 struct WallElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Wall;
+
 private:
     ObjectEntryIndex entryIndex; // 05
     colour_t colour_1;           // 07
@@ -537,6 +549,8 @@ assert_struct_size(WallElement, 16);
 
 struct EntranceElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Entrance;
+
 private:
     uint8_t entranceType;      // 5
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
@@ -568,6 +582,8 @@ assert_struct_size(EntranceElement, 16);
 
 struct BannerElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Banner;
+
 private:
     BannerIndex index;    // 5
     uint8_t position;     // 7
@@ -594,6 +610,8 @@ assert_struct_size(BannerElement, 16);
 
 struct CorruptElement : TileElementBase
 {
+    static constexpr TileElementType ElementType = TileElementType::Corrupt;
+
     uint8_t pad[3];
     uint8_t pad_08[8];
 };
