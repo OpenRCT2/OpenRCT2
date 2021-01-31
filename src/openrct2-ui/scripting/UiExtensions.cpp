@@ -12,6 +12,7 @@
 #    include "UiExtensions.h"
 
 #    include "CustomMenu.h"
+#    include "ScGraphicsContext.hpp"
 #    include "ScTileSelection.hpp"
 #    include "ScTitleSequence.hpp"
 #    include "ScUi.hpp"
@@ -29,6 +30,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     dukglue_register_global(ctx, std::make_shared<ScTitleSequenceManager>(), "titleSequenceManager");
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
+    ScGraphicsContext::Register(ctx);
     ScTileSelection::Register(ctx);
     ScTool::Register(ctx);
     ScUi::Register(ctx);
@@ -52,6 +54,11 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
+}
+
+std::shared_ptr<ScWindow> ScWidget::window_get() const
+{
+    return std::make_shared<ScWindow>(_class, _number);
 }
 
 #endif

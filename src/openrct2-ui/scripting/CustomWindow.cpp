@@ -10,6 +10,8 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../interface/Dropdown.h"
+#    include "../scripting/ScGraphicsContext.hpp"
+#    include "../scripting/ScWidget.hpp"
 #    include "CustomListView.h"
 #    include "ScUi.hpp"
 #    include "ScWindow.hpp"
@@ -83,6 +85,7 @@ namespace OpenRCT2::Ui::Windows
         // Event handlers
         DukValue OnClick;
         DukValue OnChange;
+        DukValue OnDraw;
         DukValue OnIncrement;
         DukValue OnDecrement;
         DukValue OnHighlight;
@@ -130,6 +133,10 @@ namespace OpenRCT2::Ui::Windows
                     result.Colour = colour;
                 }
                 result.OnChange = desc["onChange"];
+            }
+            else if (result.Type == "custom")
+            {
+                result.OnDraw = desc["onDraw"];
             }
             else if (result.Type == "dropdown")
             {
@@ -375,7 +382,7 @@ namespace OpenRCT2::Ui::Windows
     static void InvokeEventHandler(
         const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
 
-    class CustomWindow : public rct_window
+    class CustomWindow : public Window
     {
     private:
         static rct_windownumber _nextWindowNumber;
@@ -533,6 +540,37 @@ namespace OpenRCT2::Ui::Windows
                 {
                     window_draw_viewport(&dpi, this);
                 }
+            }
+        }
+
+        void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi) override
+        {
+            const auto& widget = widgets[widgetIndex];
+            const auto& info = GetInfo(this);
+            const auto widgetDesc = info.GetCustomWidgetDesc(this, widgetIndex);
+            if (widgetDesc != nullptr && widgetDesc->Type == "custom")
+            {
+                auto& onDraw = widgetDesc->OnDraw;
+                if (onDraw.is_function())
+                {
+                    rct_drawpixelinfo widgetDpi;
+                    if (clip_drawpixelinfo(
+                            &widgetDpi, &dpi, { windowPos.x + widget.left, windowPos.y + widget.top }, widget.width(),
+                            widget.height()))
+                    {
+                        auto ctx = onDraw.context();
+                        auto dukWidget = ScWidget::ToDukValue(ctx, this, widgetIndex);
+                        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, widgetDpi));
+                        auto& scriptEngine = GetContext()->GetScriptEngine();
+                        scriptEngine.ExecutePluginCall(info.Owner, widgetDesc->OnDraw, dukWidget, { dukG }, false);
+                    }
+                    // auto widgetDpi = dpi.Crop(
+                    //     { windowPos.x + widget.left, windowPos.y + widget.top }, { widget.width(), widget.height() });
+                }
+            }
+            else
+            {
+                Window::OnDrawWidget(widgetIndex, dpi);
             }
         }
 
@@ -988,6 +1026,11 @@ namespace OpenRCT2::Ui::Windows
                 widget.image = GetColourButtonImage(desc.Colour);
                 widgetList.push_back(widget);
             }
+            else if (desc.Type == "custom")
+            {
+                widget.type = WindowWidgetType::Custom;
+                widgetList.push_back(widget);
+            }
             else if (desc.Type == "dropdown")
             {
                 widget.type = WindowWidgetType::DropdownMenu;
@@ -1100,6 +1143,8 @@ namespace OpenRCT2::Ui::Windows
             return result;
         }
     };
+
+    rct_windownumber CustomWindow::_nextWindowNumber;
 
     rct_window* window_custom_open(std::shared_ptr<Plugin> owner, DukValue dukDesc)
     {

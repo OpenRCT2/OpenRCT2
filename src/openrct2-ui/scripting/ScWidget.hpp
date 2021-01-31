@@ -25,6 +25,7 @@
 
 namespace OpenRCT2::Scripting
 {
+    class ScWindow;
     class ScWidget
     {
     protected:
@@ -43,6 +44,8 @@ namespace OpenRCT2::Scripting
         static DukValue ToDukValue(duk_context* ctx, rct_window* w, rct_widgetindex widgetIndex);
 
     private:
+        std::shared_ptr<ScWindow> window_get() const;
+
         std::string name_get() const
         {
             auto w = GetWindow();
@@ -376,7 +379,7 @@ namespace OpenRCT2::Scripting
     public:
         static void Register(duk_context* ctx)
         {
-            // Common
+            dukglue_register_property(ctx, &ScWidget::window_get, nullptr, "window");
             dukglue_register_property(ctx, &ScWidget::name_get, &ScWidget::name_set, "name");
             dukglue_register_property(ctx, &ScWidget::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScWidget::x_get, &ScWidget::x_set, "x");

@@ -692,16 +692,26 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
 DukValue ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
 {
+    duk_push_undefined(_context);
+    auto dukUndefined = DukValue::take_from_stack(_context);
+    return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
+}
+
+DukValue ScriptEngine::ExecutePluginCall(
+    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+    bool isGameStateMutable)
+{
     DukStackFrame frame(_context);
     if (func.is_function())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
         func.push();
+        thisValue.push();
         for (const auto& arg : args)
         {
             arg.push();
         }
-        auto result = duk_pcall(_context, static_cast<duk_idx_t>(args.size()));
+        auto result = duk_pcall_method(_context, static_cast<duk_idx_t>(args.size()));
         if (result == DUK_EXEC_SUCCESS)
         {
             return DukValue::take_from_stack(_context);

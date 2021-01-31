@@ -369,6 +369,39 @@ namespace OpenRCT2::Scripting
             return nullptr;
         }
 
+        DukValue stats_get() const
+        {
+#    ifndef DISABLE_NETWORK
+            auto obj = OpenRCT2::Scripting::DukObject(_context);
+            auto networkStats = network_get_stats();
+            {
+                duk_push_array(_context);
+                duk_uarridx_t index = 0;
+                for (auto v : networkStats.bytesReceived)
+                {
+                    duk_push_number(_context, v);
+                    duk_put_prop_index(_context, -2, index);
+                    index++;
+                }
+                obj.Set("bytesReceived", DukValue::take_from_stack(_context));
+            }
+            {
+                duk_push_array(_context);
+                duk_uarridx_t index = 0;
+                for (auto v : networkStats.bytesSent)
+                {
+                    duk_push_number(_context, v);
+                    duk_put_prop_index(_context, -2, index);
+                    index++;
+                }
+                obj.Set("bytesSent", DukValue::take_from_stack(_context));
+            }
+            return obj.Take();
+#    else
+            return ToDuk(_context, nullptr);
+#    endif
+        }
+
         std::shared_ptr<ScPlayerGroup> getGroup(int32_t index) const
         {
 #    ifndef DISABLE_NETWORK
@@ -490,6 +523,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScNetwork::players_get, nullptr, "players");
             dukglue_register_property(ctx, &ScNetwork::currentPlayer_get, nullptr, "currentPlayer");
             dukglue_register_property(ctx, &ScNetwork::defaultGroup_get, &ScNetwork::defaultGroup_set, "defaultGroup");
+            dukglue_register_property(ctx, &ScNetwork::stats_get, nullptr, "stats");
             dukglue_register_method(ctx, &ScNetwork::addGroup, "addGroup");
             dukglue_register_method(ctx, &ScNetwork::getGroup, "getGroup");
             dukglue_register_method(ctx, &ScNetwork::removeGroup, "removeGroup");

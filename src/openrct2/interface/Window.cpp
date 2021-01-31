@@ -1532,7 +1532,7 @@ void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, cons
 {
     if (w->event_handlers == nullptr)
         w->OnScrollMouseDrag(scrollIndex, screenCoords);
-    else if (w->event_handlers->scroll_mouseover != nullptr)
+    else if (w->event_handlers->scroll_mousedrag != nullptr)
         w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
 }
 

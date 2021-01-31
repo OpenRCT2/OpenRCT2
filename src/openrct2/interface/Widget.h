@@ -36,6 +36,7 @@ enum class WindowWidgetType : uint8_t
     Scroll = 22,
     Checkbox = 23,
     Placeholder = 25,
+    Custom = 28,
     TextBox = 27,
     Last = 26,
 };

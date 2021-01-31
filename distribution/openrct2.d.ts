@@ -1397,6 +1397,7 @@ declare global {
         readonly players: Player[];
         readonly currentPlayer: Player;
         defaultGroup: number;
+        readonly stats: NetworkStats;
 
         getServerInfo(): ServerInfo;
         addGroup(): void;
@@ -1440,6 +1441,11 @@ declare global {
         readonly providerName: string;
         readonly providerEmail: string;
         readonly providerWebsite: string;
+    }
+
+    interface NetworkStats {
+        bytesReceived: number[];
+        bytesSent: number[];
     }
 
     type PermissionType =
@@ -1996,14 +2002,15 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" |
+        "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
         "label" | "listview" | "spinner" | "textbox" | "viewport";
 
     type Widget =
-        ButtonWidget | CheckboxWidget | ColourPickerWidget | DropdownWidget | GroupBoxWidget |
+        ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListView | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     interface WidgetBase {
+        readonly window?: Window;
         x: number;
         y: number;
         width: number;
@@ -2038,6 +2045,11 @@ declare global {
         type: 'colourpicker';
         colour?: number;
         onChange?: (colour: number) => void;
+    }
+
+    interface CustomWidget extends WidgetBase {
+        type: 'custom';
+        onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
     }
 
     interface DropdownWidget extends WidgetBase {
@@ -2189,6 +2201,21 @@ declare global {
         getCentrePosition(): CoordsXY;
         moveTo(position: CoordsXY | CoordsXYZ): void;
         scrollTo(position: CoordsXY | CoordsXYZ): void;
+    }
+
+    /**
+     * API for drawing graphics.
+     */
+    interface GraphicsContext {
+        stroke: number;
+        fill: number;
+
+        clear(): void;
+        clip(x: number, y: number, width: number, height: number): void;
+        line(x1: number, y1: number, x2: number, y2: number): void;
+        rect(x: number, y: number, width: number, height: number): void;
+        fillRect(x: number, y: number, width: number, height: number): void;
+        image(image: number, x: number, y: number): void;
     }
 
     /**
