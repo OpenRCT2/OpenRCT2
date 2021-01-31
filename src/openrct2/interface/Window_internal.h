@@ -154,6 +154,9 @@ struct rct_window
     {
         return {};
     }
+    virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
+    }
     virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {
     }
