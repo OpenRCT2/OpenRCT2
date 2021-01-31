@@ -3663,6 +3663,9 @@ STR_6406    :GOG RollerCoaster Tycoon 2 Installer
 STR_6407    :This may take a few minutes.
 STR_6408    :Please install “innoextract” to extract GOG Installer, then restart OpenRCT2.
 STR_6409    :The selected file is not the offline GOG Installer for RollerCoaster Tycoon 2. You may have downloaded the GOG Galaxy downloader stub or selected the wrong file.
+STR_6410    :Speed Controller
+STR_6411    :Control speed
+STR_6412    :Set target speed of powered cars
 
 #############
 # Scenarios #

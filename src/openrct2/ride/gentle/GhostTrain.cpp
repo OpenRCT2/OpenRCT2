@@ -535,6 +535,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(int32_t trackType)
 {
     switch (trackType)
     {
+        case TrackElemType::Booster:
         case TrackElemType::Flat:
             return paint_ghost_train_track_flat;
 

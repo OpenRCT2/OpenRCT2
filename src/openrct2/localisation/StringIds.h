@@ -3917,6 +3917,9 @@ enum
     STR_THIS_WILL_TAKE_A_FEW_MINUTES = 6407,
     STR_INSTALL_INNOEXTRACT = 6408,
     STR_NOT_THE_GOG_INSTALLER = 6409,
+    STR_SPEED_CONTROL = 6410,
+    STR_RIDE_CONSTRUCTION_SPEED_CONTROL = 6411,
+    STR_RIDE_CONSTRUCTION_SPEED_CONTROL_TIP = 6412,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

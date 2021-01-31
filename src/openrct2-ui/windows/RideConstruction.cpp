@@ -2245,9 +2245,33 @@ static void window_ride_construction_invalidate(rct_window* w)
     if (_currentTrackCurve & RideConstructionSpecialPieceSelected)
     {
         stringId = RideConfigurationStringIds[_currentTrackCurve & ~RideConstructionSpecialPieceSelected];
-        if (stringId == STR_RAPIDS && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
+        if (stringId == STR_RAPIDS)
         {
-            stringId = STR_LOG_BUMPS;
+            switch (RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour)
+            {
+                case RideRapidsBehaviour::Rapids:
+                    stringId = STR_RAPIDS;
+                    break;
+                case RideRapidsBehaviour::LogBumps:
+                    stringId = STR_LOG_BUMPS;
+                    break;
+            }
+        }
+        else if (stringId == STR_BOOSTER)
+        {
+            switch (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour)
+            {
+                case RideBoosterBehaviour::Booster:
+                    stringId = STR_BOOSTER;
+                    break;
+                case RideBoosterBehaviour::SpeedController:
+                    stringId = STR_SPEED_CONTROL;
+                    break;
+                default:
+                {
+                    // to make the build systems happy
+                }
+            }
         }
     }
     auto ft = Formatter::Common();
@@ -3102,13 +3126,23 @@ static void window_ride_construction_update_widgets(rct_window* w)
     {
         if (brakesSelected)
         {
+            // Brake speed control
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
             window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
         }
+        else if (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour == RideBoosterBehaviour::SpeedController)
+        {
+            // Speed controller speed control
+            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_SPEED_CONTROL;
+            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_SPEED_CONTROL_TIP;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_SPEED_CONTROL_TIP;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_SPEED_CONTROL_TIP;
+        }
         else
         {
+            // Booster speed control
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
             window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
@@ -3339,11 +3373,34 @@ static void window_ride_construction_show_special_track_dropdown(rct_window* w, 
     {
         track_type_t trackPiece = _currentPossibleRideConfigurations[i];
         rct_string_id trackPieceStringId = RideConfigurationStringIds[trackPiece];
-        if (trackPieceStringId == STR_RAPIDS)
+        auto ride = get_ride(_currentRideIndex);
+        if (trackPieceStringId == STR_RAPIDS && ride != nullptr)
         {
-            auto ride = get_ride(_currentRideIndex);
-            if (ride != nullptr && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
-                trackPieceStringId = STR_LOG_BUMPS;
+            switch (RideTypeDescriptors[ride->type].TrackBehaviours.RapidsBehaviour)
+            {
+                case RideRapidsBehaviour::Rapids:
+                    trackPieceStringId = STR_RAPIDS;
+                    break;
+                case RideRapidsBehaviour::LogBumps:
+                    trackPieceStringId = STR_LOG_BUMPS;
+                    break;
+            }
+        }
+        if (trackPieceStringId == STR_BOOSTER && ride != nullptr)
+        {
+            switch (RideTypeDescriptors[ride->type].TrackBehaviours.BoosterBehaviour)
+            {
+                case RideBoosterBehaviour::Booster:
+                    trackPieceStringId = STR_BOOSTER;
+                    break;
+                case RideBoosterBehaviour::SpeedController:
+                    trackPieceStringId = STR_SPEED_CONTROL;
+                    break;
+                default:
+                {
+                    // to make build systems happy
+                }
+            }
         }
         gDropdownItemsFormat[i] = trackPieceStringId;
         if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)

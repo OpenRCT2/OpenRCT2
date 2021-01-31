@@ -222,6 +222,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(int32_t trackType)
         case TrackElemType::EndStation:
             return submarine_ride_paint_track_station;
 
+        case TrackElemType::Booster:
         case TrackElemType::Flat:
             return submarine_ride_paint_track_flat;
 

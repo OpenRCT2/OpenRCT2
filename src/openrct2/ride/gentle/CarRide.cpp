@@ -708,6 +708,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int32_t trackType)
 {
     switch (trackType)
     {
+        case TrackElemType::Booster:
         case TrackElemType::Flat:
             return paint_car_ride_track_flat;
 

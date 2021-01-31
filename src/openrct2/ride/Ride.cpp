@@ -1517,6 +1517,10 @@ void ride_construction_set_default_next_piece()
                 bank = TrackDefinitions[trackType].bank_end;
                 slope = TrackDefinitions[trackType].vangle_end;
             }
+            // prevents unwanted chains of speed controllers on powered rides
+            if (curve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster)
+                && rtd.TrackBehaviours.BoosterBehaviour == RideBoosterBehaviour::SpeedController)
+                curve = TRACK_CURVE_NONE;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -1571,6 +1575,10 @@ void ride_construction_set_default_next_piece()
                 bank = TrackDefinitions[trackType].bank_start;
                 slope = TrackDefinitions[trackType].vangle_start;
             }
+            // prevents unwanted chains of speed controllers on powered rides
+            if (curve == (RideConstructionSpecialPieceSelected | TrackElemType::Booster)
+                && rtd.TrackBehaviours.BoosterBehaviour == RideBoosterBehaviour::SpeedController)
+                curve = TRACK_CURVE_NONE;
 
             // Set track curve
             _currentTrackCurve = curve;

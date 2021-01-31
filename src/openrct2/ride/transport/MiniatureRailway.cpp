@@ -2161,6 +2161,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(int32_t trackTyp
 {
     switch (trackType)
     {
+        case TrackElemType::Booster:
         case TrackElemType::Flat:
             return paint_miniature_railway_track_flat;
 
