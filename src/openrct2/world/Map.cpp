@@ -215,66 +215,38 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
-    TileElement* tileElement = map_get_first_element_at(coords);
-
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the first surface element
-    while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
+    for (auto* tileElement : TileElementsView<SurfaceElement>(coords))
     {
-        if (tileElement->IsLastForTile())
-            return nullptr;
-
-        tileElement++;
+        return tileElement;
     }
-
-    return tileElement->AsSurface();
+    return nullptr;
 }
 
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 {
-    TileElement* tileElement = map_get_first_element_at(loc.ToCoordsXY());
-
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the path element at known z
-    do
+    for (auto* tileElement : TileElementsView<PathElement>(loc.ToCoordsXY()))
     {
         if (tileElement->IsGhost())
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            continue;
         if (tileElement->base_height != loc.z)
             continue;
-
-        return tileElement->AsPath();
-    } while (!(tileElement++)->IsLastForTile());
-
+        return tileElement;
+    }
     return nullptr;
 }
 
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
     auto bannerTilePos = TileCoordsXYZ{ bannerPos };
-    TileElement* tileElement = map_get_first_element_at(bannerPos);
 
-    if (tileElement == nullptr)
-        return nullptr;
-
-    // Find the banner element at known z and position
-    do
+    for (auto* tileElement : TileElementsView<BannerElement>(bannerPos))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
-            continue;
         if (tileElement->base_height != bannerTilePos.z)
             continue;
-        if (tileElement->AsBanner()->GetPosition() != position)
+        if (tileElement->GetPosition() != position)
             continue;
-
-        return tileElement->AsBanner();
-    } while (!(tileElement++)->IsLastForTile());
+        return tileElement;
+    }
 
     return nullptr;
 }
