@@ -2939,7 +2939,7 @@ static constexpr const rct_preview_track TrackBlocks255[] = {
 };
 
 static constexpr const rct_preview_track TrackBlocksRotationControlToggle[] = {
-    { 0, 0, 0, 0, 16, { 0b1111, 0b1100 }, 0 },
+    { 0, 0, 0, 0, 0, { 0b1111, 0b1100 }, 0 },
     TRACK_BLOCK_END
 };
 
