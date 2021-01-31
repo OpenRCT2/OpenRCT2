@@ -44,7 +44,7 @@ struct RideRatingCalculationData
     CoordsXYZ ProximityStart;
     ride_id_t CurrentRide;
     uint8_t State;
-    uint8_t ProximityTrackType;
+    uint16_t ProximityTrackType;
     uint8_t ProximityBaseHeight;
     uint16_t ProximityTotal;
     uint16_t ProximityScores[26];
