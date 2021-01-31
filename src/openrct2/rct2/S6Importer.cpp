@@ -803,6 +803,9 @@ public:
         dst.CurrentRide = src.current_ride;
         dst.State = src.state;
         dst.ProximityTrackType = src.proximity_track_type;
+        if (src.proximity_track_type == TrackElemType::RotationControlToggleAlias
+            && !RCT2TrackTypeIsBooster(_s6.rides[src.current_ride].type, src.proximity_track_type))
+            dst.ProximityTrackType = TrackElemType::RotationControlToggle;
         dst.ProximityBaseHeight = src.proximity_base_height;
         dst.ProximityTotal = src.proximity_total;
         for (size_t i = 0; i < std::size(src.proximity_scores); i++)
