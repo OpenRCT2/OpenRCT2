@@ -638,7 +638,7 @@ public:
      */
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        DrawWidgets(dpi);
 
         uint16_t tabIndex = gWindowSceneryActiveTabIndex;
         uint16_t selectedWidgetId = tabIndex + 4;
