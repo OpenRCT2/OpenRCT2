@@ -154,6 +154,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TOOLBAR_SHOW_NEWS,
     WIDX_TOOLBAR_SHOW_MUTE,
     WIDX_TOOLBAR_SHOW_CHAT,
+    WIDX_TOOLBAR_SHOW_ZOOM,
 
     // Misc
     WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
@@ -302,13 +303,14 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 200
-    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 76}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
     MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
     MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
     MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
     MakeWidget({155, TOOLBAR_GROUP_START + 46}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR, STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP), // Recent messages
     MakeWidget({ 24, TOOLBAR_GROUP_START + 61}, {162, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_MUTE_BUTTON_ON_TOOLBAR,          STR_MUTE_BUTTON_ON_TOOLBAR_TIP         ), // Mute
     MakeWidget({155, TOOLBAR_GROUP_START + 61}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHAT_BUTTON_ON_TOOLBAR,          STR_CHAT_BUTTON_ON_TOOLBAR_TIP         ), // Chat
+    MakeWidget({ 24, TOOLBAR_GROUP_START + 76}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ZOOM_BUTTON_ON_TOOLBAR,          STR_ZOOM_BUTTON_ON_TOOLBAR_TIP         ), // Zoom
     { WIDGETS_END },
 #undef TOOLBAR_GROUP_START
 };
@@ -511,7 +513,8 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1 << WIDX_THEMES_DROPDOWN) |
     (1 << WIDX_THEMES_BUTTON) |
     (1 << WIDX_TOOLBAR_SHOW_MUTE) |
-    (1 << WIDX_TOOLBAR_SHOW_CHAT),
+    (1 << WIDX_TOOLBAR_SHOW_CHAT) |
+    (1 << WIDX_TOOLBAR_SHOW_ZOOM),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_REAL_NAME_CHECKBOX) |
@@ -1652,6 +1655,12 @@ static void window_options_controls_mouseup(rct_window* w, rct_widgetindex widge
             w->Invalidate();
             window_invalidate_by_class(WC_TOP_TOOLBAR);
             break;
+        case WIDX_TOOLBAR_SHOW_ZOOM:
+            gConfigInterface.toolbar_show_zoom ^= 1;
+            config_save_default();
+            w->Invalidate();
+            window_invalidate_by_class(WC_TOP_TOOLBAR);
+            break;
         case WIDX_INVERT_DRAG:
             gConfigGeneral.invert_viewport_drag ^= 1;
             config_save_default();
@@ -1720,6 +1729,7 @@ static void window_options_controls_invalidate(rct_window* w)
     WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
     WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
     WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+    WidgetSetCheckboxValue(w, WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.toolbar_show_zoom);
 
     size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
     const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);

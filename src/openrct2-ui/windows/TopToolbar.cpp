@@ -723,6 +723,12 @@ static void window_top_toolbar_invalidate(rct_window* w)
         if (!gConfigInterface.toolbar_show_news)
             window_top_toolbar_widgets[WIDX_NEWS].type = WindowWidgetType::Empty;
 
+        if (!gConfigInterface.toolbar_show_zoom)
+        {
+            window_top_toolbar_widgets[WIDX_ZOOM_IN].type = WindowWidgetType::Empty;
+            window_top_toolbar_widgets[WIDX_ZOOM_OUT].type = WindowWidgetType::Empty;
+        }
+
         switch (network_get_mode())
         {
             case NETWORK_MODE_NONE:
