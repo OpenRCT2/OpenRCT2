@@ -548,8 +548,8 @@ STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Klik rechts om te bewerken)
 STR_1164    :{STRINGID}{NEWLINE}(Klik rechts om te verwijderen)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Kan het waterniveau hier niet verlagen…
-STR_1167    :Kan het waterniveau hier niet verhogen…
+STR_1166    :Kan het waterpeil hier niet verlagen…
+STR_1167    :Kan het waterpeil hier niet verhogen…
 STR_1168    :Opties
 STR_1169    :(Geen)
 STR_1170    :{STRING}
@@ -2534,7 +2534,7 @@ STR_5182    :{INT32}
 STR_5183    :Basishoogte
 STR_5184    :Voer een basishoogte tussen {COMMA16} en {COMMA16} in
 STR_5185    :Waterniveau
-STR_5186    :Voer een waterniveau tussen {COMMA16} en {COMMA16} in
+STR_5186    :Voer een waterpeil tussen {COMMA16} en {COMMA16} in
 STR_5187    :Financiën
 STR_5188    :Nieuwe advertentiecampagne
 STR_5189    :Onderzoek
