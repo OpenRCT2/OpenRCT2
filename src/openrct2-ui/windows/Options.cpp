@@ -303,7 +303,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     MakeWidget({155, THEMES_GROUP_START + 30}, {145, 13}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EDIT_THEMES_BUTTON, STR_EDIT_THEMES_BUTTON_TIP), // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 200
-    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 76}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
+    MakeWidget({  5,  TOOLBAR_GROUP_START + 0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_TOOLBAR_BUTTONS_GROUP                                                   ), // Toolbar buttons group
     MakeWidget({ 24, TOOLBAR_GROUP_START + 31}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_FINANCES_BUTTON_ON_TOOLBAR,      STR_FINANCES_BUTTON_ON_TOOLBAR_TIP     ), // Finances
     MakeWidget({ 24, TOOLBAR_GROUP_START + 46}, {122, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_BUTTON_ON_TOOLBAR,      STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP     ), // Research
     MakeWidget({155, TOOLBAR_GROUP_START + 31}, {145, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_CHEATS_BUTTON_ON_TOOLBAR,        STR_CHEATS_BUTTON_ON_TOOLBAR_TIP       ), // Cheats
