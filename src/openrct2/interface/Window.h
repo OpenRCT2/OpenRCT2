@@ -708,6 +708,16 @@ T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t fla
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
 }
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowFocusOrCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    auto* w = window_bring_to_front_by_class(cls);
+    if (w == nullptr)
+    {
+        w = WindowCreate<T>(cls, pos, width, height, flags);
+    }
+    return static_cast<T*>(w);
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
 T* WindowFocusOrCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
 {
     auto* w = window_bring_to_front_by_class(cls);
