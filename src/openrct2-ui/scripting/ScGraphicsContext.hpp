@@ -22,6 +22,7 @@ namespace OpenRCT2::Scripting
         duk_context* _ctx{};
         rct_drawpixelinfo _dpi{};
 
+        colour_t _colour{};
         uint8_t _stroke{};
         uint8_t _fill{};
 
@@ -34,15 +35,28 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScGraphicsContext::colour_get, &ScGraphicsContext::colour_set, "colour");
             dukglue_register_property(ctx, &ScGraphicsContext::fill_get, &ScGraphicsContext::fill_set, "fill");
             dukglue_register_property(ctx, &ScGraphicsContext::stroke_get, &ScGraphicsContext::stroke_set, "stroke");
+            dukglue_register_method(ctx, &ScGraphicsContext::box, "box");
             dukglue_register_method(ctx, &ScGraphicsContext::clear, "clear");
             dukglue_register_method(ctx, &ScGraphicsContext::clip, "clip");
             dukglue_register_method(ctx, &ScGraphicsContext::line, "line");
-            dukglue_register_method(ctx, &ScGraphicsContext::fillRect, "fillRect");
+            dukglue_register_method(ctx, &ScGraphicsContext::rect, "rect");
+            dukglue_register_method(ctx, &ScGraphicsContext::well, "well");
         }
 
     private:
+        colour_t colour_get() const
+        {
+            return _colour;
+        }
+
+        void colour_set(colour_t value)
+        {
+            _colour = value;
+        }
+
         uint8_t fill_get() const
         {
             return _fill;
@@ -63,6 +77,16 @@ namespace OpenRCT2::Scripting
             _stroke = value;
         }
 
+        void box(int32_t x, int32_t y, int32_t width, int32_t height)
+        {
+            gfx_fill_rect_inset(&_dpi, { x, y, x + width - 1, y + height - 1 }, _colour, 0);
+        }
+
+        void well(int32_t x, int32_t y, int32_t width, int32_t height)
+        {
+            gfx_fill_rect_inset(&_dpi, { x, y, x + width - 1, y + height - 1 }, _colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_DONT_LIGHTEN);
+        }
+
         void clear()
         {
             gfx_clear(&_dpi, _fill);
@@ -80,7 +104,7 @@ namespace OpenRCT2::Scripting
             gfx_draw_line(&_dpi, { { x1, y1 }, { x2, y2 } }, _stroke);
         }
 
-        void fillRect(int32_t x, int32_t y, int32_t width, int32_t height)
+        void rect(int32_t x, int32_t y, int32_t width, int32_t height)
         {
             gfx_fill_rect(&_dpi, { x, y, x + width - 1, y + height - 1 }, _fill);
         }

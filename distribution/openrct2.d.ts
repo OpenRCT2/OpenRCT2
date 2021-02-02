@@ -2207,15 +2207,17 @@ declare global {
      * API for drawing graphics.
      */
     interface GraphicsContext {
+        colour: number;
         stroke: number;
         fill: number;
 
         clear(): void;
         clip(x: number, y: number, width: number, height: number): void;
+        box(x: number, y: number, width: number, height: number): void;
+        image(image: number, x: number, y: number): void;
         line(x1: number, y1: number, x2: number, y2: number): void;
         rect(x: number, y: number, width: number, height: number): void;
-        fillRect(x: number, y: number, width: number, height: number): void;
-        image(image: number, x: number, y: number): void;
+        well(x: number, y: number, width: number, height: number): void;
     }
 
     /**
