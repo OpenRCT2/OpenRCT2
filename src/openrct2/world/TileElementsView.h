@@ -11,7 +11,7 @@
 #include "Map.h"
 #include "TileElement.h"
 
-#include <xutility>
+#include <iterator>
 
 namespace OpenRCT2
 {
