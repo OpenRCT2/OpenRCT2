@@ -71,6 +71,14 @@ declare global {
     }
 
     /**
+     * Represents the width and height in pixels.
+     */
+    interface ScreenSize {
+        width: number;
+        height: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
@@ -2207,17 +2215,38 @@ declare global {
      * API for drawing graphics.
      */
     interface GraphicsContext {
-        colour: number;
+        colour: number | undefined;
+        secondaryColour: number | undefined;
+        ternaryColour: number | undefined;
         stroke: number;
         fill: number;
+        paletteId: number | undefined;
+        readonly width: number;
+        readonly height: number;
+
+        getImage(id: number): ImageInfo | undefined;
+        measureText(text: string): ScreenSize;
 
         clear(): void;
         clip(x: number, y: number, width: number, height: number): void;
         box(x: number, y: number, width: number, height: number): void;
-        image(image: number, x: number, y: number): void;
+        image(id: number, x: number, y: number): void;
         line(x1: number, y1: number, x2: number, y2: number): void;
         rect(x: number, y: number, width: number, height: number): void;
+        text(text: string, x: number, y: number): void;
         well(x: number, y: number, width: number, height: number): void;
+    }
+
+    interface ImageInfo {
+        readonly id: number;
+        readonly offset: ScreenCoordsXY;
+        readonly width: number;
+        readonly height: number;
+        readonly isBMP: boolean;
+        readonly isRLE: boolean;
+        readonly isPalette: boolean;
+        readonly noZoom: boolean;
+        readonly nextZoomId: number | undefined;
     }
 
     /**

@@ -356,7 +356,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
     }
 }
 
-int32_t string_get_height_raw(char* buffer)
+int32_t string_get_height_raw(std::string_view text)
 {
     uint16_t fontBase = gCurrentFontSpriteBase;
 
@@ -366,7 +366,7 @@ int32_t string_get_height_raw(char* buffer)
     else if (fontBase == FONT_SPRITE_BASE_TINY)
         height += 6;
 
-    FmtString fmt(buffer);
+    FmtString fmt(text);
     for (const auto& token : fmt)
     {
         switch (token.kind)
