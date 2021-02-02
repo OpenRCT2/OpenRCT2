@@ -647,7 +647,7 @@ void SetCheatAction::RemoveAllGuests() const
                         if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
                             || (peep->State == PeepState::LeavingRide && peep->RideSubState == PeepRideSubState::LeaveVehicle))
                         {
-                            vehicle->mass -= peep->Mass;
+                            vehicle->ApplyMass(-peep->Mass);
                         }
                     }
                     peepInTrainIndex = SPRITE_INDEX_NULL;

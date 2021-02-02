@@ -372,6 +372,7 @@ struct Vehicle : SpriteBase
     {
         update_flags |= flag;
     }
+    void ApplyMass(int16_t appliedMass);
 
 private:
     bool SoundCanPlay() const;
