@@ -453,6 +453,7 @@
     <ClInclude Include="world\SpriteBase.h" />
     <ClInclude Include="world\Surface.h" />
     <ClInclude Include="world\TileElement.h" />
+    <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />

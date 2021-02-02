@@ -52,6 +52,7 @@
 #include "Scenery.h"
 #include "SmallScenery.h"
 #include "Surface.h"
+#include "TileElementsView.h"
 #include "TileInspector.h"
 #include "Wall.h"
 
