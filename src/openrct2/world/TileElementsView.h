@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -81,7 +81,23 @@ namespace OpenRCT2
                 return !(*this == other);
             }
 
-            T* operator*()
+            T& operator*()
+            {
+                if constexpr (std::is_same_v<T, TileElement>)
+                    return *element;
+                else
+                    return *element->as<T>();
+            }
+
+            const T& operator*() const
+            {
+                if constexpr (std::is_same_v<T, TileElement>)
+                    return *element;
+                else
+                    return *element->as<T>();
+            }
+
+            T* operator->()
             {
                 if constexpr (std::is_same_v<T, TileElement>)
                     return element;
@@ -89,7 +105,7 @@ namespace OpenRCT2
                     return element->as<T>();
             }
 
-            T* operator->()
+            const T* operator->() const
             {
                 if constexpr (std::is_same_v<T, TileElement>)
                     return element;
