@@ -62,7 +62,7 @@ The following people are not part of the development team, but have been contrib
 * Robert Jordan (trigger-death) - UI theming, title sequence editor, misc.
 * Aaron van Geffen (AaronVanGeffen) - scenario select screen, font detection, misc.
 * Michał Janiszewski (janisozaur) - Linux port, crash handling, security, misc.
-* Kelson Blakewood (spacek531) - title sequences for release versions 0.0.4 through 0.1.2, title sequences using milliseconds
+* Kelson Blakewood (spacek531) - title sequences for many release versions, misc.
 * Hugo Wallenburg (Goddesen) - Misc.
 * Edward Calver (X7123M3-256) - New Hybrid Coaster track, extended sprite toolchain, more vehicle cheats, misc.
 * Matte Andersson (Nubbie) - Misc, UX

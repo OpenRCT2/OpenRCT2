@@ -449,6 +449,12 @@ void RideObject::ReadLegacyVehicle(
     vehicle->effect_visual = stream->ReadValue<uint8_t>();
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
+
+    vehicle->animation_speed.multiplier = VehicleDefaultAnimationSpeeds[vehicle->animation].multiplier;
+    vehicle->animation_speed.exponent = VehicleDefaultAnimationSpeeds[vehicle->animation].exponent;
+
+    vehicle->steam_effect_translation.x = STEAM_EFFECT_TRANSLATION_COEFFICIENT;
+    vehicle->steam_effect_translation.y = STEAM_EFFECT_TRANSLATION_COEFFICIENT;
     stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
@@ -741,6 +747,26 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
     car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
     car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);
+
+    auto jAnimationSpeed = jCar["animationSpeed"];
+    if (jAnimationSpeed.is_object())
+    {
+        auto animationMultiplier = Json::GetNumber<uint8_t>(
+            jAnimationSpeed["multiplier"], VehicleDefaultAnimationSpeeds[car.animation].multiplier);
+        auto animationExponent = Json::GetNumber<uint8_t>(
+            jAnimationSpeed["exponent"],
+            ANIMATION_SPEED_MAX_EXPONENT - (VehicleDefaultAnimationSpeeds[car.animation].exponent));
+        car.animation_speed.multiplier = animationMultiplier;
+        car.animation_speed.exponent = ANIMATION_SPEED_MAX_EXPONENT - animationExponent;
+    }
+    auto jSteamTranslation = jCar["steamPositionModifier"];
+    if (jSteamTranslation.is_object())
+    {
+        car.steam_effect_translation.x = Json::GetNumber<int8_t>(
+            jSteamTranslation["longitudinal"], STEAM_EFFECT_TRANSLATION_COEFFICIENT);
+        car.steam_effect_translation.y = Json::GetNumber<int8_t>(
+            jSteamTranslation["vertical"], STEAM_EFFECT_TRANSLATION_COEFFICIENT);
+    }
 
     auto jLoadingPositions = jCar["loadingPositions"];
     if (jLoadingPositions.is_array())

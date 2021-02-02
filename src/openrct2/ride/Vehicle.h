@@ -23,6 +23,18 @@
 
 using track_type_t = uint16_t;
 
+struct rctAnimationSpeed
+{
+    uint8_t exponent;
+    uint8_t multiplier;
+};
+
+struct steamEffectTranslation
+{
+    int8_t x;
+    int8_t y;
+};
+
 struct rct_vehicle_colour
 {
     uint8_t body_colour;
@@ -91,12 +103,15 @@ struct rct_ride_entry_vehicle
     uint8_t powered_acceleration; // 0x5B , 0x75
     uint8_t powered_max_speed;    // 0x5C , 0x76
     uint8_t car_visual;           // 0x5D , 0x77
-    uint8_t effect_visual;
-    uint8_t draw_order;
+    uint8_t effect_visual;        // 0x5E , 0x78
+    uint8_t draw_order;           // 0x5F , 0x79
     uint8_t num_vertical_frames_override;   // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine
                                             // it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments; // 0x61 new
-    uint8_t pad_62[6] = {};                 // 0x62 , 0x7B
+    rctAnimationSpeed animation_speed;      // 0x62
+    steamEffectTranslation
+        steam_effect_translation; // 0x64 , 0x65, multiplier for steam effect position. x is longitudinal, y is vertical
+    uint8_t pad_65[2] = {};       // 0x66-0x67
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {}; // previously 0x61 , 0x7B
 };
@@ -519,6 +534,27 @@ enum : uint32_t
     VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29, // Set on rides where water would provide continuous propulsion
     VEHICLE_ENTRY_FLAG_GO_KART = 1 << 30,
     VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT = 1u << 31,
+};
+
+constexpr const uint8_t ANIMATION_SPEED_MAX_EXPONENT = 32;
+constexpr const uint8_t STEAM_EFFECT_TRANSLATION_COEFFICIENT = 32;
+
+/*
+    First value is bitshift value where 31 is slowest and 0 is fastest
+    Second value is multiplier 0-7 (be warned a multiplier of 0 means animations will not play)
+    Exponent value in JSON objects is 32 - bitshift, such that "Exponent":12 translates to bitshift value of 20
+*/
+constexpr const rctAnimationSpeed VehicleDefaultAnimationSpeeds[] = {
+    { 0, 0 },  // VEHICLE_ENTRY_ANIMATION_NONE
+    { 20, 1 }, // VEHICLE_ENTRY_ANIMATION_MINIATURE_RAILWAY_LOCOMOTIVE     { "exponent":12, "multiplier":1}
+    { 19, 1 }, // VEHICLE_ENTRY_ANIMATION_SWAN                             { "exponent":14, "multiplier":1}
+    { 21, 6 }, // VEHICLE_ENTRY_ANIMATION_CANOES                           { "exponent":11, "multiplier":6}
+    { 21, 7 }, // VEHICLE_ENTRY_ANIMATION_ROW_BOATS                        { "exponent":11, "multiplier":7}
+    { 19, 1 }, // VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES                  { "exponent":13, "multiplier":1}
+    { 0, 0 },  // VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER
+    { 18, 1 }, // VEHICLE_ENTRY_ANIMATION_HELICARS                         { "exponent":14, "multiplier":1}
+    { 19, 1 }, // VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES                  { "exponent":13, "multiplier":1}
+    { 0, 0 }   // VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER
 };
 
 enum

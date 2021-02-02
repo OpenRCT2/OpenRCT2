@@ -7261,9 +7261,7 @@ static void steam_particle_create(const CoordsXYZ& coords)
  */
 void Vehicle::UpdateAdditionalAnimation()
 {
-    uint8_t al{};
-    uint8_t ah{};
-    uint32_t eax{};
+    uint8_t currentFrame;
 
     uint32_t* curVar_C8 = reinterpret_cast<uint32_t*>(&var_C8);
     auto vehicleEntry = Entry();
@@ -7274,16 +7272,14 @@ void Vehicle::UpdateAdditionalAnimation()
     switch (vehicleEntry->animation)
     {
         case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
+
             *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 20) & 3;
-            if (animation_frame != al)
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier) >> vehicleEntry->animation_speed.exponent)
+                & 3;
+            if (animation_frame != currentFrame)
             {
-                ah = al;
-                al = animation_frame;
-                animation_frame = ah;
-                al &= 0x02;
-                ah &= 0x02;
-                if (al != ah)
+                animation_frame = currentFrame;
+                if ((currentFrame & 0x01) == 0) // every even frame create a steam particle
                 {
                     auto curRide = GetRide();
                     if (curRide != nullptr)
@@ -7306,7 +7302,12 @@ void Vehicle::UpdateAdditionalAnimation()
                             }();
                             int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            steam_particle_create({ x + offset.x, y + offset.y, z + offset.z });
+                            steam_particle_create(CoordsXYZ(
+                                x + offset.x * vehicleEntry->steam_effect_translation.x / STEAM_EFFECT_TRANSLATION_COEFFICIENT,
+                                y + offset.y * vehicleEntry->steam_effect_translation.x / STEAM_EFFECT_TRANSLATION_COEFFICIENT,
+                                z
+                                    + offset.z * vehicleEntry->steam_effect_translation.y
+                                        / STEAM_EFFECT_TRANSLATION_COEFFICIENT));
                         }
                     }
                 }
@@ -7314,40 +7315,47 @@ void Vehicle::UpdateAdditionalAnimation()
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
-            *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 18) & 2;
-            if (animation_frame != al)
+            /*
+                The animation of swan boats places frames at 0 and 2 instead of 0 and 1 like Water Tricycles due to the second
+                pair of peeps. The animation technically uses 4 frames, but by bitwise-and with 2, it only animates frames 0
+                and 2, and requires an exponent 1 less than normal to achieve the desired animation speed.
+            */
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier)
+                            >> (vehicleEntry->animation_speed.exponent - 1))
+                & 2;
+            if (animation_frame != currentFrame)
             {
-                animation_frame = al;
+                animation_frame = currentFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
             *curVar_C8 += _vehicleVelocityF64E08;
-            eax = ((*curVar_C8 >> 13) & 0xFF) * 6;
-            ah = (eax >> 8) & 0xFF;
-            if (animation_frame != ah)
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier) >> vehicleEntry->animation_speed.exponent)
+                % 6;
+            if (animation_frame != currentFrame)
             {
-                animation_frame = ah;
+                animation_frame = currentFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
             *curVar_C8 += _vehicleVelocityF64E08;
-            eax = ((*curVar_C8 >> 13) & 0xFF) * 7;
-            ah = (eax >> 8) & 0xFF;
-            if (animation_frame != ah)
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier) >> vehicleEntry->animation_speed.exponent)
+                % 7;
+            if (animation_frame != currentFrame)
             {
-                animation_frame = ah;
+                animation_frame = currentFrame;
                 Invalidate();
             }
             break;
         case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
             *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 19) & 1;
-            if (animation_frame != al)
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier) >> vehicleEntry->animation_speed.exponent)
+                & 1;
+            if (animation_frame != currentFrame)
             {
-                animation_frame = al;
+                animation_frame = currentFrame;
                 Invalidate();
             }
             break;
@@ -7366,10 +7374,11 @@ void Vehicle::UpdateAdditionalAnimation()
             break;
         case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
             *curVar_C8 += _vehicleVelocityF64E08;
-            al = (*curVar_C8 >> 18) & 3;
-            if (animation_frame != al)
+            currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier) >> vehicleEntry->animation_speed.exponent)
+                & 3;
+            if (animation_frame != currentFrame)
             {
-                animation_frame = al;
+                animation_frame = currentFrame;
                 Invalidate();
             }
             break;
@@ -7377,11 +7386,12 @@ void Vehicle::UpdateAdditionalAnimation()
             if (num_peeps != 0)
             {
                 *curVar_C8 += _vehicleVelocityF64E08;
-                eax = ((*curVar_C8 >> 13) & 0xFF) << 2;
-                ah = (eax >> 8) & 0xFF;
-                if (animation_frame != ah)
+                currentFrame = ((*curVar_C8 * vehicleEntry->animation_speed.multiplier)
+                                >> vehicleEntry->animation_speed.exponent)
+                    & 3;
+                if (animation_frame != currentFrame)
                 {
-                    animation_frame = ah;
+                    animation_frame = currentFrame;
                     Invalidate();
                 }
             }
