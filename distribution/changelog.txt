@@ -26,6 +26,7 @@
 - Fix: [#11438] Freeze when shrinking map size.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13102] Underflow on height chart (Ride measurements).
+- Fix: [#13234] Incorrect vehicle mass after using Remove All Guests cheat.
 - Fix: [#13236] New ride type appears as new vehicle type in research.
 - Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
 - Fix: [#13334] Uninitialised variables in CustomTabDesc.
