@@ -4073,6 +4073,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     vehicle->num_peeps--;
     vehicle->ApplyMass(-Mass);
+    vehicle->peep[CurrentSeat] = SPRITE_INDEX_NULL;
     vehicle->Invalidate();
 
     if (ride_station >= MAX_STATIONS)
