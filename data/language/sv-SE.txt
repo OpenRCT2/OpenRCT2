@@ -119,10 +119,10 @@ STR_0530    :Vagnar hänger från en stålkabel som kör kontinuerligt från ena
 STR_0531    :En kompakt berg- och dalbana av stål där tågen åker genom korkskruvar och loopar
 STR_0532    :Labyrinten består av två meter höga häckar eller murar och besökarna får leta sig fram genom den för att hitta utgången
 STR_0533    :Träbyggnad med en trappa på insidan och en spiralvriden rutschkana på utsidan som åks på med glidmattor
-STR_0534    :Kör bensindrivna gokarter
-STR_0535    :Stockliknande båtar som åker längs en lång vattenkanal och plaskar nerför branta sluttningar för att blöta ner passagerarna
+STR_0534    :Gäster tävlar mot varandra i gokart på en asfaltbana
+STR_0535    :Båtar åker längs en lång vattenkanal och plaskar nerför branta sluttningar för att blöta ner passagerarna
 STR_0536    :Runda båtar snirklar sig fram längs en lång bred vattenkanal, plaskar genom vattenfall och för passagerarna genom skummande forsar
-STR_0537    :Kör elektriska radiobilar
+STR_0537    :Gäster styr elektriska radiobilar för att krocka emot varann
 STR_0538    :Stort krängande piratskepp
 STR_0539    :Ett skepp, fäst vid en arm med motvikt på motsatt sida, som svänger hela varvet runt
 STR_0540    :Ett stånd där besökare kan köpa mat
@@ -161,7 +161,7 @@ STR_0578    :Vagnar åker runt en bana omgiven av ringar utför branta nedförsb
 STR_0579    :En stillsam runda minigolf
 STR_0580    :En gigantisk berg- och dalbana i stål som kan ge mjuka fall och höjder på över 100 meter
 STR_0581    :En ring med säten dras upp till toppen av ett högt torn medan det sakta roterar, för att sedan falla fritt och stoppas mjukt vid botten med hjälp av magnetbromsar
-STR_0582    :Kör svävare
+STR_0582    :Gäster styr svävarfarkoster
 STR_0583    :Byggnad med förvrängda rum och vinklade korridorer för att förvilla människorna som går igenom den
 STR_0584    :Speciella cyklar som passagerarna själva trampar fram längs en stålskensbana
 STR_0585    :Passagerarna sitter i par med ansiktena antingen bakåt eller framåt då de åker genom loopar och skruvar med snabba omkastningar
@@ -1956,7 +1956,7 @@ STR_2739    :Ingen
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat hittades inte
-STR_2743    :Kopiera ’data/css17.dat’ från din RCT1-installation till ’data/css50.dat’ i din RCT2-installation eller kolla så att sökvägen till RCT1 under fliken ’Diverse’ är korrekt.
+STR_2743    :Kopiera ’data/css17.dat’ från din RCT1-installation till ’data/css50.dat’ i din RCT2-installation eller kolla så att sökvägen till RCT1 under fliken ’Avancerat’ är korrekt.
 STR_2749    :Mitt nya scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Flytta alla föremål till toppen
@@ -1970,7 +1970,7 @@ STR_2756    :Städa nedskräpning
 STR_2763    :???
 STR_2765    :Stor spårvagn
 STR_2766    :Vinn scenario
-STR_2767    :Frys väder
+STR_2767    :Avaktivera väderförändringar
 STR_2769    :Öppna park
 STR_2770    :Stäng park
 STR_2773    :Fönster
@@ -2426,8 +2426,8 @@ STR_3329    :Parkentrén är inte byggd än
 STR_3330    :Parken måste äga någon mark
 STR_3331    :Vägen från parkentrén till kartkanten är antingen inte komplett eller för komplex – Vägen måste ha en konstant bredd med så få korsningar och hörn som möjligt
 STR_3332    :Parkentrén är åt fel håll eller har ingen väg som leder till kartkanten
-STR_3333    :Exportera plug-in-objekt med sparade spel
-STR_3334    :Välj om plug-in objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera dessa data
+STR_3333    :Exportera egendefinierade objekt med sparade spel
+STR_3334    :Välj om egendefinierade objekt objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera dessa data
 STR_3335    :Åktursdesigner – Välj åkturstyp och fordon
 STR_3336    :Bandesign-hanterare – Välj åkturstyp
 STR_3338    :{BLACK}Egendesignad layout
@@ -2878,7 +2878,7 @@ STR_5554    :Tillåt bergverktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :Sparka ut spelare
 STR_5557    :Behåll anslutning efter synkproblem (multiplayer)
-STR_5558    :En omstart krävs för att denna inställning ska gälla
+STR_5558    :Denna inställningen börjar först att gälla efter att du startat om OpenRCT2
 STR_5559    :10 min. inspektioner
 STR_5560    :Sätter inspektionstiden till ’Var 10:e minut’ på alla åkturer
 STR_5561    :Misslyckades att ladda språk
@@ -3011,7 +3011,7 @@ STR_5721    :Molnigt
 STR_5722    :Regn
 STR_5723    :Regnoväder
 STR_5724    :Åska
-STR_5725    :{BLACK}Tvinga väder:
+STR_5725    :{BLACK}Ändra väder till:
 STR_5726    :Sätter vädret i parken
 STR_5727    :Skalningskvalité:
 STR_5731    :Linjär
@@ -3315,7 +3315,7 @@ STR_6033    :Sökvägen till RCT1-mappen:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
 STR_6035    :Vänligen välj installationsmappen för RCT1
 STR_6036    :Rensa
-STR_6037    :Vänligen välj en giltig sökväg till RCT1-mappen
+STR_6037    :Den valda mappen innehåller inte en giltig RollerCoaster Tycoon 1-installation.
 STR_6038    :Om du har RCT1 installerat, navigera till den mappen för att ladda scenarion, musik m.m.
 STR_6039    :Riv attraktioner snabbt
 STR_6040    :Redigera scenarioinställningar
@@ -3399,8 +3399,8 @@ STR_6125    :Objekttyp
 STR_6126    :Okänd typ
 STR_6127    :Fil: {STRING}
 STR_6128    :Filen kunde inte laddas eftersom objekt som filen hänvisar till saknas eller är skadade. En lista med dessa objekt visas nedanför.
-STR_6129    :Kopiera valda föremål till urklipp
-STR_6130    :Kopiera hela listan till urklipp
+STR_6129    :Kopiera 
+STR_6130    :Kopiera allt
 STR_6131    :Källa för objektet
 STR_6132    :Ignorera forskning
 STR_6133    :Ger tillgång till åkturer och dekorationer som inte har blivit uppfunna än
@@ -3666,6 +3666,8 @@ STR_6406    :GOG RollerCoaster Tycoon 2-installationsfil
 STR_6407    :Detta kan ta några minuter.
 STR_6408    :Installera först ”innoextract” för att kunna packa ut GOG-installationsfilen, starta sedan om OpenRCT2.
 STR_6409    :Den valda filen är inte GOG offline-installationsfilen för RollerCoaster Tycoon 2. Du kan ha valt GOG Galaxy-nedladdningsfilen eller en felaktig fil.
+STR_6410    :Zooma in/ut
+STR_6411    :Visa knappar för att zooma in och ut i verktygsfältet
 
 #############
 # Scenarion #
