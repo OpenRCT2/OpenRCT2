@@ -825,6 +825,11 @@ uint16_t Vehicle::GetTrackProgress() const
     return vehicle_get_move_info_size(TrackSubposition, GetTrackType(), GetTrackDirection());
 }
 
+void Vehicle::ApplyMass(int16_t appliedMass)
+{
+    mass = std::clamp<int32_t>(mass + appliedMass, 1, std::numeric_limits<decltype(mass)>::max());
+}
+
 void Vehicle::MoveRelativeDistance(int32_t distance)
 {
     remaining_distance += distance;

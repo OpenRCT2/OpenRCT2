@@ -644,7 +644,11 @@ void SetCheatAction::RemoveAllGuests() const
                     auto peep = TryGetEntity<Guest>(peepInTrainIndex);
                     if (peep != nullptr)
                     {
-                        vehicle->mass -= peep->Mass;
+                        if ((peep->State == PeepState::OnRide && peep->RideSubState == PeepRideSubState::OnRide)
+                            || (peep->State == PeepState::LeavingRide && peep->RideSubState == PeepRideSubState::LeaveVehicle))
+                        {
+                            vehicle->ApplyMass(-peep->Mass);
+                        }
                     }
                     peepInTrainIndex = SPRITE_INDEX_NULL;
                 }
