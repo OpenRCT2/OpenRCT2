@@ -240,10 +240,9 @@ static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
     }
 
     int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
-    TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111);
+    TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111, TileElementType::SmallScenery);
     assert(tileElement != nullptr);
     tileElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
-    tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
     tileElement->SetDirection(util_rand() & 3);
     SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
     sceneryElement->SetEntryIndex(type);

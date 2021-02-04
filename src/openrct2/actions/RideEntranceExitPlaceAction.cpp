@@ -176,9 +176,9 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     res->Position = { _loc.ToTileCentre(), z };
     res->Expenditure = ExpenditureType::RideConstruction;
 
-    TileElement* tileElement = tile_element_insert(CoordsXYZ{ _loc, z }, 0b1111);
+    TileElement* tileElement = tile_element_insert(CoordsXYZ{ _loc, z }, 0b1111, TileElementType::Entrance);
     assert(tileElement != nullptr);
-    tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
+
     tileElement->SetDirection(_direction);
     tileElement->SetClearanceZ(clear_z);
     tileElement->AsEntrance()->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);

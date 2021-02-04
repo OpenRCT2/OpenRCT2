@@ -397,7 +397,7 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         }
     }
 
-    TileElement* tileElement = tile_element_insert(targetLoc, 0b0000);
+    TileElement* tileElement = tile_element_insert(targetLoc, 0b0000, TileElementType::Wall);
     assert(tileElement != nullptr);
 
     map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);

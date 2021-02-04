@@ -592,10 +592,9 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             ride->overall_view = mapLoc;
         }
 
-        auto tileElement = tile_element_insert(mapLoc, quarterTile.GetBaseQuarterOccupied());
+        auto tileElement = tile_element_insert(mapLoc, quarterTile.GetBaseQuarterOccupied(), TileElementType::Track);
         assert(tileElement != nullptr);
         tileElement->SetClearanceZ(clearanceZ);
-        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
         tileElement->SetDirection(_origin.direction);
         if (_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
         {

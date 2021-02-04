@@ -230,9 +230,8 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     }
     else
     {
-        auto tileElement = tile_element_insert(_loc, 0b1111);
+        auto tileElement = tile_element_insert(_loc, 0b1111, TileElementType::Path);
         assert(tileElement != nullptr);
-        tileElement->SetType(TILE_ELEMENT_TYPE_PATH);
         PathElement* pathElement = tileElement->AsPath();
         pathElement->SetClearanceZ(zHigh);
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);

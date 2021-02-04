@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -181,11 +181,10 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
 
         auto startLoc = _loc.ToTileStart();
 
-        tileElement = tile_element_insert(_loc, 0b1111);
+        tileElement = tile_element_insert(_loc, 0b1111, TileElementType::Track);
         assert(tileElement != nullptr);
 
         tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
-        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
         tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
         tileElement->AsTrack()->SetRideIndex(_rideIndex);

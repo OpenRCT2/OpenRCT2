@@ -278,10 +278,9 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
         }
 
         TileElement* newTileElement = tile_element_insert(
-            CoordsXYZ{ curTile.x, curTile.y, zLow }, quarterTile.GetBaseQuarterOccupied());
+            CoordsXYZ{ curTile.x, curTile.y, zLow }, quarterTile.GetBaseQuarterOccupied(), TileElementType::LargeScenery);
         Guard::Assert(newTileElement != nullptr);
         map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
-        newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
         newTileElement->SetClearanceZ(zHigh);
         auto newSceneryElement = newTileElement->AsLargeScenery();
 

@@ -168,11 +168,10 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
 
     auto startLoc = _loc.ToTileStart();
 
-    auto tileElement = tile_element_insert(_loc, 0b1111);
+    auto tileElement = tile_element_insert(_loc, 0b1111, TileElementType::Track);
     assert(tileElement != nullptr);
 
     tileElement->SetClearanceZ(clearanceHeight);
-    tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
 
     tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
     tileElement->AsTrack()->SetRideIndex(_rideIndex);

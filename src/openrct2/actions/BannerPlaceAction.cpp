@@ -141,7 +141,7 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
 
-    TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
+    TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000, TileElementType::Banner);
     assert(newTileElement != nullptr);
 
     banner->flags = 0;
@@ -150,7 +150,6 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
     banner->type = _bannerType; // Banner must be deleted after this point in an early return
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);
-    newTileElement->SetType(TILE_ELEMENT_TYPE_BANNER);
     BannerElement* bannerElement = newTileElement->AsBanner();
     bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
     bannerElement->SetPosition(_loc.direction);

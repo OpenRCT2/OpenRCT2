@@ -430,10 +430,11 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-    TileElement* newElement = tile_element_insert(CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
+    TileElement* newElement = tile_element_insert(
+        CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied(), TileElementType::SmallScenery);
     assert(newElement != nullptr);
     res->tileElement = newElement;
-    newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
+
     newElement->SetDirection(_loc.direction);
     SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
     sceneryElement->SetSceneryQuadrant(quadrant);

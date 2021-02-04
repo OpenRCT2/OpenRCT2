@@ -835,13 +835,13 @@ namespace OpenRCT2::Scripting
 
                 // Insert corrupt element at the end of the list for this tile
                 // Note: Z = MAX_ELEMENT_HEIGHT to guarantee this
-                TileElement* insertedElement = tile_element_insert({ _coords, MAX_ELEMENT_HEIGHT }, 0);
+                TileElement* insertedElement = tile_element_insert(
+                    { _coords, MAX_ELEMENT_HEIGHT }, 0, TileElementType::Corrupt);
                 if (insertedElement == nullptr)
                 {
                     // TODO: Show error
                     return;
                 }
-                insertedElement->SetType(TILE_ELEMENT_TYPE_CORRUPT);
 
                 // Since inserting a new element may move the tile elements in memory, we have to update the local pointer
                 _element = map_get_first_element_at(_coords) + elementIndex;
@@ -1661,7 +1661,7 @@ namespace OpenRCT2::Scripting
                         auto numToInsert = numElements - currentNumElements;
                         for (size_t i = 0; i < numToInsert; i++)
                         {
-                            tile_element_insert(pos, 0);
+                            tile_element_insert(pos, 0, TileElementType::Corrupt);
                         }
 
                         // Copy data to element span
@@ -1706,7 +1706,7 @@ namespace OpenRCT2::Scripting
                 std::vector<TileElement> data(first, first + origNumElements);
 
                 auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
-                auto newElement = tile_element_insert(pos, 0);
+                auto newElement = tile_element_insert(pos, 0, TileElementType::Corrupt);
                 if (newElement == nullptr)
                 {
                     auto ctx = GetDukContext();
