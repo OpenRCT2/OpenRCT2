@@ -17,8 +17,11 @@ namespace OpenRCT2
 {
     namespace Detail
     {
-        template<typename T> TileElement* NextMatchingTile(TileElement* element)
+        template<typename T, typename T2> T* NextMatchingTile(T2* element)
         {
+            if (element == nullptr)
+                return nullptr;
+
             for (;;)
             {
                 if (static_cast<TileElementType>(element->GetType()) == T::ElementType)
@@ -30,7 +33,8 @@ namespace OpenRCT2
                 }
                 element++;
             }
-            return element;
+
+            return reinterpret_cast<T*>(element);
         }
     } // namespace Detail
 
@@ -41,7 +45,7 @@ namespace OpenRCT2
     public:
         struct Iterator
         {
-            TileElement* element = nullptr;
+            T* element = nullptr;
 
             Iterator& operator++()
             {
@@ -83,34 +87,22 @@ namespace OpenRCT2
 
             T& operator*()
             {
-                if constexpr (std::is_same_v<T, TileElement>)
-                    return *element;
-                else
-                    return *element->as<T>();
+                return *element;
             }
 
             const T& operator*() const
             {
-                if constexpr (std::is_same_v<T, TileElement>)
-                    return *element;
-                else
-                    return *element->as<T>();
+                return *element;
             }
 
             T* operator->()
             {
-                if constexpr (std::is_same_v<T, TileElement>)
-                    return element;
-                else
-                    return element->as<T>();
+                return element;
             }
 
             const T* operator->() const
             {
-                if constexpr (std::is_same_v<T, TileElement>)
-                    return element;
-                else
-                    return element->as<T>();
+                return element;
             }
 
             // iterator traits
@@ -129,15 +121,14 @@ namespace OpenRCT2
         Iterator begin()
         {
             auto* element = map_get_first_element_at(_loc);
-            if (element == nullptr)
-                return end();
-
             if constexpr (!std::is_same_v<T, TileElement>)
             {
-                element = Detail::NextMatchingTile<T>(element);
+                return Iterator{ Detail::NextMatchingTile<T>(element) };
             }
-
-            return Iterator{ element };
+            else
+            {
+                return Iterator{ reinterpret_cast<T*>(element) };
+            }
         }
 
         Iterator end()
