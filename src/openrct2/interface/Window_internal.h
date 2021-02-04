@@ -125,6 +125,9 @@ struct rct_window
     virtual void OnUpdate()
     {
     }
+    virtual void OnPeriodicUpdate()
+    {
+    }
     virtual void OnPrepareDraw()
     {
     }
