@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -1153,6 +1153,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
 
     // Insert new map element
     insertedElement = newTileElement;
+    newTileElement->type = 0;
     newTileElement->SetType(static_cast<uint8_t>(type));
     newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;

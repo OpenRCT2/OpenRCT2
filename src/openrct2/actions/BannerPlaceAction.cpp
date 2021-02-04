@@ -140,25 +140,22 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
         log_error("Banner index in use, bannerIndex = %u", _bannerIndex);
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE);
     }
-
-    TileElement* newTileElement = tile_element_insert({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000, TileElementType::Banner);
-    assert(newTileElement != nullptr);
-
     banner->flags = 0;
     banner->text = {};
     banner->text_colour = 2;
     banner->type = _bannerType; // Banner must be deleted after this point in an early return
     banner->colour = _primaryColour;
     banner->position = TileCoordsXY(_loc);
-    BannerElement* bannerElement = newTileElement->AsBanner();
+
+    auto* bannerElement = TileElementInsert<BannerElement>({ _loc, _loc.z + (2 * COORDS_Z_STEP) }, 0b0000);
+    Guard::Assert(bannerElement != nullptr);
+
     bannerElement->SetClearanceZ(_loc.z + PATH_CLEARANCE);
     bannerElement->SetPosition(_loc.direction);
     bannerElement->ResetAllowedEdges();
     bannerElement->SetIndex(_bannerIndex);
-    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-    {
-        bannerElement->SetGhost(true);
-    }
+    bannerElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+
     map_invalidate_tile_full(_loc);
     map_animation_create(MAP_ANIMATION_TYPE_BANNER, CoordsXYZ{ _loc, bannerElement->GetBaseZ() });
 

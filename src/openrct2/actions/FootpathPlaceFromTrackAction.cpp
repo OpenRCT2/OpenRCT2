@@ -230,30 +230,22 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     }
     else
     {
-        auto tileElement = tile_element_insert(_loc, 0b1111, TileElementType::Path);
-        assert(tileElement != nullptr);
-        PathElement* pathElement = tileElement->AsPath();
+        auto* pathElement = TileElementInsert<PathElement>(_loc, 0b1111);
+        Guard::Assert(pathElement != nullptr);
+
         pathElement->SetClearanceZ(zHigh);
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
-        if (_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED)
-        {
-            pathElement->SetSloped(true);
-        }
-        if (_type & FOOTPATH_ELEMENT_INSERT_QUEUE)
-        {
-            pathElement->SetIsQueue(true);
-        }
+        pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
+        pathElement->SetIsQueue(_type & FOOTPATH_ELEMENT_INSERT_QUEUE);
         pathElement->SetAddition(0);
         pathElement->SetRideIndex(RIDE_ID_NULL);
         pathElement->SetAdditionStatus(255);
         pathElement->SetIsBroken(false);
         pathElement->SetEdges(_edges);
         pathElement->SetCorners(0);
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            pathElement->SetGhost(true);
-        }
+        pathElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
+
         map_invalidate_tile_full(_loc);
     }
 

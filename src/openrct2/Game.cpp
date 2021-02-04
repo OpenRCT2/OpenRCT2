@@ -481,14 +481,12 @@ void game_fix_save_vars()
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert(
-                    TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000, TileElementType::Surface);
-                if (tileElement == nullptr)
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
+                if (surfaceElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
-                surfaceElement = tileElement->AsSurface();
             }
 
             // Fix the invisible border tiles.

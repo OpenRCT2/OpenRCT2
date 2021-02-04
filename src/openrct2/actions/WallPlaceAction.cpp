@@ -397,24 +397,16 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         }
     }
 
-    TileElement* tileElement = tile_element_insert(targetLoc, 0b0000, TileElementType::Wall);
-    assert(tileElement != nullptr);
+    auto* wallElement = TileElementInsert<WallElement>(targetLoc, 0b0000);
+    Guard::Assert(wallElement != nullptr);
 
-    map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
-
-    tileElement->SetType(TILE_ELEMENT_TYPE_WALL);
-    WallElement* wallElement = tileElement->AsWall();
     wallElement->clearance_height = clearanceHeight;
     wallElement->SetDirection(_edge);
     wallElement->SetSlope(edgeSlope);
 
     wallElement->SetPrimaryColour(_primaryColour);
     wallElement->SetSecondaryColour(_secondaryColour);
-
-    if (wallAcrossTrack)
-    {
-        wallElement->SetAcrossTrack(true);
-    }
+    wallElement->SetAcrossTrack(wallAcrossTrack);
 
     wallElement->SetEntryIndex(_wallType);
     if (_bannerId != BANNER_INDEX_NULL)
@@ -427,12 +419,11 @@ GameActions::Result::Ptr WallPlaceAction::Execute() const
         wallElement->SetTertiaryColour(_tertiaryColour);
     }
 
-    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-    {
-        wallElement->SetGhost(true);
-    }
+    wallElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
-    res->tileElement = tileElement;
+    res->tileElement = wallElement->as<TileElement>();
+
+    map_animation_create(MAP_ANIMATION_TYPE_WALL, targetLoc);
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
 
     res->Cost = wallEntry->wall.price;

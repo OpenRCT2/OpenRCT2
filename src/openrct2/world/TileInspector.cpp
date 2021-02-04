@@ -382,7 +382,7 @@ GameActionResultPtr tile_inspector_paste_element_at(const CoordsXY& loc, TileEle
 
         // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them
         // correctly _here_.
-        TileElement* const pastedElement = tile_element_insert({ loc, element.GetBaseZ() }, 0b0000, TileElementType::Corrupt);
+        TileElement* const pastedElement = tile_element_insert({ loc, element.GetBaseZ() }, 0b0000, TileElementType::Surface);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;
