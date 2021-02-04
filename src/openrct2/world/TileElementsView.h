@@ -17,24 +17,25 @@ namespace OpenRCT2
 {
     namespace Detail
     {
-        template<typename T, typename T2> T* NextMatchingTile(T2* element)
+        template<typename T> T* NextMatchingTile(TileElementBase* element)
         {
             if (element == nullptr)
                 return nullptr;
 
             for (;;)
             {
-                if (static_cast<TileElementType>(element->GetType()) == T::ElementType)
-                    break;
+                auto* res = element->as<T>();
+                if (res != nullptr)
+                    return res;
+
                 if (element->IsLastForTile())
                 {
-                    element = nullptr;
                     break;
                 }
                 element++;
             }
 
-            return reinterpret_cast<T*>(element);
+            return nullptr;
         }
     } // namespace Detail
 
@@ -127,7 +128,7 @@ namespace OpenRCT2
             }
             else
             {
-                return Iterator{ reinterpret_cast<T*>(element) };
+                return Iterator{ element };
             }
         }
 
