@@ -2125,8 +2125,16 @@ declare global {
     interface SpinnerWidget extends WidgetBase {
         type: 'spinner';
         text?: string;
+
+        /**
+         * If true, the user can click and hold the decrement and increment
+         * button for repeated calls.
+         */
+        isHoldable?: boolean;
+
         onDecrement?: () => void;
         onIncrement?: () => void;
+        onClick?: () => void;
     }
 
     interface TextBoxWidget extends WidgetBase {

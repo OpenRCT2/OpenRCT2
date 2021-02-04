@@ -887,7 +887,28 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_set_base_class<ScWidget, ScSpinnerWidget>(ctx);
+            dukglue_register_property(ctx, &ScSpinnerWidget::isHoldable_get, &ScSpinnerWidget::isHoldable_set, "isHoldable");
             dukglue_register_property(ctx, &ScSpinnerWidget::text_get, &ScSpinnerWidget::text_set, "text");
+        }
+
+    private:
+        int32_t isHoldable_get() const
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return WidgetIsHoldable(w, _widgetIndex);
+            }
+            return false;
+        }
+
+        void isHoldable_set(int32_t value)
+        {
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                WidgetSetHoldable(w, _widgetIndex, value);
+            }
         }
     };
 

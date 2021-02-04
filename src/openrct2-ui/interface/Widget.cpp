@@ -856,6 +856,11 @@ bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
+bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex)
+{
+    return (w->hold_down_widgets & (1LL << widgetIndex)) != 0;
+}
+
 bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
 {
     return w->widgets[widgetIndex].IsVisible();
@@ -1047,6 +1052,18 @@ void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
     else
     {
         w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
+void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->hold_down_widgets |= (1ULL << widgetIndex);
+    }
+    else
+    {
+        w->hold_down_widgets &= ~(1ULL << widgetIndex);
     }
 }
 

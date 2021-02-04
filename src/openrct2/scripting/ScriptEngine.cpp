@@ -73,8 +73,14 @@ private:
         _ss << "\n" << std::string(_indent, ' ');
     }
 
-    void Stringify(const DukValue& val, bool canStartWithNewLine)
+    void Stringify(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
+        if (nestLevel >= 8)
+        {
+            _ss << "[...]";
+            return;
+        }
+
         switch (val.type())
         {
             case DukValue::Type::UNDEFINED:
@@ -99,11 +105,11 @@ private:
                 }
                 else if (val.is_array())
                 {
-                    StringifyArray(val, canStartWithNewLine);
+                    StringifyArray(val, canStartWithNewLine, nestLevel);
                 }
                 else
                 {
-                    StringifyObject(val, canStartWithNewLine);
+                    StringifyObject(val, canStartWithNewLine, nestLevel);
                 }
                 break;
             case DukValue::Type::BUFFER:
@@ -118,7 +124,7 @@ private:
         }
     }
 
-    void StringifyArray(const DukValue& val, bool canStartWithNewLine)
+    void StringifyArray(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
         constexpr auto maxItemsToShow = 4;
 
@@ -139,7 +145,7 @@ private:
                     {
                         _ss << ", ";
                     }
-                    Stringify(DukValue::take_from_stack(_context), false);
+                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                 }
             }
             _ss << " ]";
@@ -177,7 +183,7 @@ private:
                 {
                     if (duk_get_prop_index(_context, -1, i))
                     {
-                        Stringify(DukValue::take_from_stack(_context), false);
+                        Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                     }
                 }
             }
@@ -191,7 +197,7 @@ private:
         duk_pop(_context);
     }
 
-    void StringifyObject(const DukValue& val, bool canStartWithNewLine)
+    void StringifyObject(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
         auto numEnumerables = GetNumEnumerablesOnObject(val);
         if (numEnumerables == 0)
@@ -222,7 +228,7 @@ private:
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true);
+                Stringify(value, true, nestLevel + 1);
                 index++;
             }
             duk_pop_2(_context);
@@ -261,7 +267,7 @@ private:
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true);
+                Stringify(value, true, nestLevel + 1);
                 index++;
             }
             duk_pop_2(_context);
@@ -343,7 +349,7 @@ public:
     static std::string StringifyExpression(const DukValue& val)
     {
         ExpressionStringifier instance(val.context());
-        instance.Stringify(val, false);
+        instance.Stringify(val, false, 0);
         return instance._ss.str();
     }
 };

@@ -77,6 +77,7 @@ namespace OpenRCT2::Ui::Windows
         bool IsDisabled{};
         bool IsVisible{};
         bool IsPressed{};
+        bool IsHoldable{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
@@ -180,9 +181,11 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "spinner")
             {
+                result.IsHoldable = AsOrDefault(desc["isHoldable"], false);
                 result.Text = ProcessString(desc["text"]);
                 result.OnIncrement = desc["onIncrement"];
                 result.OnDecrement = desc["onDecrement"];
+                result.OnClick = desc["onClick"];
             }
             else if (result.Type == "textbox")
             {
@@ -564,8 +567,6 @@ namespace OpenRCT2::Ui::Windows
                         auto& scriptEngine = GetContext()->GetScriptEngine();
                         scriptEngine.ExecutePluginCall(info.Owner, widgetDesc->OnDraw, dukWidget, { dukG }, false);
                     }
-                    // auto widgetDpi = dpi.Crop(
-                    //     { windowPos.x + widget.left, windowPos.y + widget.top }, { widget.width(), widget.height() });
                 }
             }
             else
@@ -611,6 +612,14 @@ namespace OpenRCT2::Ui::Windows
                             duk_push_boolean(ctx, isChecked);
                             args.push_back(DukValue::take_from_stack(ctx));
                             InvokeEventHandler(info.Owner, widgetDesc->OnChange, args);
+                        }
+                        else if (widgetDesc->Type == "spinner")
+                        {
+                            auto& widget = widgets[widgetIndex];
+                            if (widget.text != STR_NUMERIC_DOWN && widget.text != STR_NUMERIC_UP)
+                            {
+                                InvokeEventHandler(info.Owner, widgetDesc->OnClick);
+                            }
                         }
                     }
                     break;
@@ -960,6 +969,10 @@ namespace OpenRCT2::Ui::Windows
                 {
                     disabled_widgets |= mask;
                 }
+                if (widgetFlags & WIDGET_FLAGS::IS_HOLDABLE)
+                {
+                    hold_down_widgets |= mask;
+                }
             }
 
             widgetList.push_back({ WIDGETS_END });
@@ -1110,6 +1123,8 @@ namespace OpenRCT2::Ui::Windows
                 widget.flags |= WIDGET_FLAGS::IS_ENABLED;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
+                if (desc.IsHoldable)
+                    widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
                 widgetList.push_back(widget);
 
                 // Add the increment button
