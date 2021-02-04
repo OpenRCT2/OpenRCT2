@@ -78,6 +78,7 @@
     <ClCompile Include="tests.cpp" />
     <ClCompile Include="StringTest.cpp" />
     <ClCompile Include="TileElements.cpp" />
+    <ClCompile Include="TileElementsView.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="testdata\sprites\badManifest.json" />
