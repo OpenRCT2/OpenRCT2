@@ -1,4 +1,4 @@
-/*****************************************************************************
+﻿/*****************************************************************************
  * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -86,22 +86,12 @@ namespace OpenRCT2
                 return !(*this == other);
             }
 
-            T& operator*()
-            {
-                return *element;
-            }
-
-            const T& operator*() const
-            {
-                return *element;
-            }
-
-            T* operator->()
+            T* operator*()
             {
                 return element;
             }
 
-            const T* operator->() const
+            const T* operator*() const
             {
                 return element;
             }
@@ -119,22 +109,21 @@ namespace OpenRCT2
         {
         }
 
-        Iterator begin()
+        Iterator begin() noexcept
         {
-            auto* element = map_get_first_element_at(_loc);
+            T* element = reinterpret_cast<T*>(map_get_first_element_at(_loc));
+
             if constexpr (!std::is_same_v<T, TileElement>)
             {
-                return Iterator{ Detail::NextMatchingTile<T>(element) };
+                element = Detail::NextMatchingTile<T>(element);
             }
-            else
-            {
-                return Iterator{ element };
-            }
+
+            return Iterator{ element };
         }
 
-        Iterator end()
+        Iterator end() noexcept
         {
-            return Iterator{};
+            return Iterator{ nullptr };
         }
     };
 
