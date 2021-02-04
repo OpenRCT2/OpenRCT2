@@ -216,39 +216,35 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
 {
-    for (auto& tileElement : TileElementsView<SurfaceElement>(coords))
-    {
-        return &tileElement;
-    }
-    return nullptr;
+    auto view = TileElementsView<SurfaceElement>(coords);
+
+    return *view.begin();
 }
 
 PathElement* map_get_path_element_at(const TileCoordsXYZ& loc)
 {
-    for (auto& tileElement : TileElementsView<PathElement>(loc.ToCoordsXY()))
+    for (auto* element : TileElementsView<PathElement>(loc.ToCoordsXY()))
     {
-        if (tileElement.IsGhost())
+        if (element->IsGhost())
             continue;
-        if (tileElement.base_height != loc.z)
+        if (element->base_height != loc.z)
             continue;
-        return &tileElement;
+        return element;
     }
     return nullptr;
 }
 
 BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t position)
 {
-    auto bannerTilePos = TileCoordsXYZ{ bannerPos };
-
-    for (auto& tileElement : TileElementsView<BannerElement>(bannerPos))
+    const auto bannerTilePos = TileCoordsXYZ{ bannerPos };
+    for (auto* element : TileElementsView<BannerElement>(bannerPos))
     {
-        if (tileElement.base_height != bannerTilePos.z)
+        if (element->base_height != bannerTilePos.z)
             continue;
-        if (tileElement.GetPosition() != position)
+        if (element->GetPosition() != position)
             continue;
-        return &tileElement;
+        return element;
     }
-
     return nullptr;
 }
 

@@ -17,14 +17,14 @@ namespace OpenRCT2
 {
     namespace Detail
     {
-        template<typename T> T* NextMatchingTile(TileElementBase* element)
+        template<typename T, typename T2> T* NextMatchingTile(T2* element)
         {
             if (element == nullptr)
                 return nullptr;
 
             for (;;)
             {
-                auto* res = element->as<T>();
+                auto* res = element->template as<T>();
                 if (res != nullptr)
                     return res;
 
