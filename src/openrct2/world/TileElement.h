@@ -99,16 +99,6 @@ struct TileElementBase
 
     uint8_t GetOwner() const;
     void SetOwner(uint8_t newOwner);
-};
-
-/**
- * Map element structure
- * size: 0x10
- */
-struct TileElement : public TileElementBase
-{
-    uint8_t pad_05[3];
-    uint8_t pad_08[8];
 
     template<typename TType> const TType* as() const
     {
@@ -119,7 +109,6 @@ struct TileElement : public TileElementBase
         return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
-public:
     const SurfaceElement* AsSurface() const
     {
         return as<SurfaceElement>();
@@ -184,6 +173,16 @@ public:
     {
         return as<BannerElement>();
     }
+};
+
+/**
+ * Map element structure
+ * size: 0x10
+ */
+struct TileElement : public TileElementBase
+{
+    uint8_t pad_05[3];
+    uint8_t pad_08[8];
 
     void ClearAs(uint8_t newType);
 
