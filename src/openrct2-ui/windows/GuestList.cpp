@@ -855,7 +855,10 @@ private:
             _groups.begin(), _groups.end(), [](const GuestGroup& a, const GuestGroup& b) { return a.NumGuests > b.NumGuests; });
 
         // Remove up to MaxGroups
-        _groups.resize(MaxGroups);
+        if (_groups.size() > MaxGroups)
+        {
+            _groups.resize(MaxGroups);
+        }
     }
 
     /**
