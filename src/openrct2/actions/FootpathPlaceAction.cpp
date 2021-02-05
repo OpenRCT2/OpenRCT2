@@ -445,7 +445,7 @@ PathElement* FootpathPlaceAction::map_get_footpath_element_slope(const CoordsXYZ
     {
         if (pathElement->GetBaseZ() != footpathPos.z)
             continue;
-        if (pathElement->IsSloped() == isSloped)
+        if (pathElement->IsSloped() != isSloped)
             continue;
         if (pathElement->GetSlopeDirection() != slopeDirection)
             continue;
