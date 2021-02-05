@@ -88,13 +88,13 @@ GameActionResultPtr tile_inspector_insert_corrupt_at(const CoordsXY& loc, int16_
     {
         // Create new corrupt element
         TileElement* corruptElement = tile_element_insert(
-            { loc, (-1 * COORDS_Z_STEP) }, 0b0000); // Ugly hack: -1 guarantees this to be placed first
+            { loc, (-1 * COORDS_Z_STEP) }, 0b0000,
+            TileElementType::Corrupt); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == nullptr)
         {
             log_warning("Failed to insert corrupt element.");
             return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
         }
-        corruptElement->SetType(TILE_ELEMENT_TYPE_CORRUPT);
 
         // Set the base height to be the same as the selected element
         TileElement* const selectedElement = map_get_nth_element_at(loc, elementIndex + 1);
@@ -382,7 +382,7 @@ GameActionResultPtr tile_inspector_paste_element_at(const CoordsXY& loc, TileEle
 
         // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set them
         // correctly _here_.
-        TileElement* const pastedElement = tile_element_insert({ loc, element.GetBaseZ() }, 0b0000);
+        TileElement* const pastedElement = tile_element_insert({ loc, element.GetBaseZ() }, 0b0000, TileElementType::Surface);
 
         bool lastForTile = pastedElement->IsLastForTile();
         *pastedElement = element;

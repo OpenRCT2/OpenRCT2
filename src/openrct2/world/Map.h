@@ -213,7 +213,13 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants);
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+
+template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
+{
+    auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
+    return element->template as<T>();
+}
 
 namespace GameActions
 {

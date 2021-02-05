@@ -56,6 +56,7 @@ enum class TileElementType : uint8_t
     Corrupt = (8 << 2),
 };
 
+struct TileElement;
 struct SurfaceElement;
 struct PathElement;
 struct TrackElement;
@@ -102,11 +103,19 @@ struct TileElementBase
 
     template<typename TType> const TType* as() const
     {
-        return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<const TType*>(this) : nullptr;
+        if constexpr (std::is_same_v<TType, TileElement>)
+            return reinterpret_cast<const TileElement*>(this);
+        else
+            return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<const TType*>(this)
+                                                                                 : nullptr;
     }
+
     template<typename TType> TType* as()
     {
-        return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
+        if constexpr (std::is_same_v<TType, TileElement>)
+            return reinterpret_cast<TileElement*>(this);
+        else
+            return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
     const SurfaceElement* AsSurface() const

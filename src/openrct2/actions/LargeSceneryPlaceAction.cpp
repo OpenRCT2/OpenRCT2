@@ -277,19 +277,17 @@ GameActions::Result::Ptr LargeSceneryPlaceAction::Execute() const
             }
         }
 
-        TileElement* newTileElement = tile_element_insert(
+        auto* newSceneryElement = TileElementInsert<LargeSceneryElement>(
             CoordsXYZ{ curTile.x, curTile.y, zLow }, quarterTile.GetBaseQuarterOccupied());
-        Guard::Assert(newTileElement != nullptr);
-        map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
-        newTileElement->SetType(TILE_ELEMENT_TYPE_LARGE_SCENERY);
-        newTileElement->SetClearanceZ(zHigh);
-        auto newSceneryElement = newTileElement->AsLargeScenery();
+        Guard::Assert(newSceneryElement != nullptr);
+        newSceneryElement->SetClearanceZ(zHigh);
 
         SetNewLargeSceneryElement(*newSceneryElement, tileNum);
+        map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, { curTile, zLow });
 
         if (tileNum == 0)
         {
-            res->tileElement = newTileElement;
+            res->tileElement = newSceneryElement->as<TileElement>();
         }
         map_invalidate_tile_full(curTile);
     }

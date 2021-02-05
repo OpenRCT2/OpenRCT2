@@ -430,28 +430,24 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     res->Expenditure = ExpenditureType::Landscaping;
     res->Cost = (sceneryEntry->small_scenery.price * 10) + clearCost;
 
-    TileElement* newElement = tile_element_insert(CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
-    assert(newElement != nullptr);
-    res->tileElement = newElement;
-    newElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
-    newElement->SetDirection(_loc.direction);
-    SmallSceneryElement* sceneryElement = newElement->AsSmallScenery();
+    auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
+        CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
+    Guard::Assert(sceneryElement != nullptr);
+
+    sceneryElement->SetDirection(_loc.direction);
     sceneryElement->SetSceneryQuadrant(quadrant);
     sceneryElement->SetEntryIndex(_sceneryType);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(_primaryColour);
     sceneryElement->SetSecondaryColour(_secondaryColour);
     sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->small_scenery.height + 7);
-
+    sceneryElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
     if (supportsRequired)
     {
         sceneryElement->SetNeedsSupports();
     }
 
-    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-    {
-        sceneryElement->SetGhost(true);
-    }
+    res->tileElement = sceneryElement->as<TileElement>();
 
     map_invalidate_tile_full(_loc);
     if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))

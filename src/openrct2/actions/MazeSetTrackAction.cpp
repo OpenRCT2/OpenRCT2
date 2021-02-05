@@ -181,20 +181,16 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
 
         auto startLoc = _loc.ToTileStart();
 
-        tileElement = tile_element_insert(_loc, 0b1111);
-        assert(tileElement != nullptr);
+        auto* trackElement = TileElementInsert<TrackElement>(_loc, 0b1111);
+        Guard::Assert(trackElement != nullptr);
 
-        tileElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
-        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
+        trackElement->SetClearanceZ(_loc.z + MAZE_CLEARANCE_HEIGHT);
+        trackElement->SetTrackType(TrackElemType::Maze);
+        trackElement->SetRideIndex(_rideIndex);
+        trackElement->SetMazeEntry(0xFFFF);
+        trackElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
 
-        tileElement->AsTrack()->SetTrackType(TrackElemType::Maze);
-        tileElement->AsTrack()->SetRideIndex(_rideIndex);
-        tileElement->AsTrack()->SetMazeEntry(0xFFFF);
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            tileElement->SetGhost(true);
-        }
+        tileElement = trackElement->as<TileElement>();
 
         map_invalidate_tile_full(startLoc);
 

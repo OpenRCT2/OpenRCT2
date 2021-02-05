@@ -176,27 +176,23 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
     res->Position = { _loc.ToTileCentre(), z };
     res->Expenditure = ExpenditureType::RideConstruction;
 
-    TileElement* tileElement = tile_element_insert(CoordsXYZ{ _loc, z }, 0b1111);
-    assert(tileElement != nullptr);
-    tileElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
-    tileElement->SetDirection(_direction);
-    tileElement->SetClearanceZ(clear_z);
-    tileElement->AsEntrance()->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
-    tileElement->AsEntrance()->SetStationIndex(_stationNum);
-    tileElement->AsEntrance()->SetRideIndex(_rideIndex);
+    auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ _loc, z }, 0b1111);
+    Guard::Assert(entranceElement != nullptr);
 
-    if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-    {
-        tileElement->SetGhost(true);
-    }
+    entranceElement->SetDirection(_direction);
+    entranceElement->SetClearanceZ(clear_z);
+    entranceElement->SetEntranceType(_isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE);
+    entranceElement->SetStationIndex(_stationNum);
+    entranceElement->SetRideIndex(_rideIndex);
+    entranceElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
     if (_isExit)
     {
-        ride_set_exit_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, tileElement->GetDirection() }));
+        ride_set_exit_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
     }
     else
     {
-        ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, tileElement->GetDirection() }));
+        ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
         ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
         ride->stations[_stationNum].QueueLength = 0;
 
@@ -207,10 +203,10 @@ GameActions::Result::Ptr RideEntranceExitPlaceAction::Execute() const
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
-        maze_entrance_hedge_removal({ _loc, tileElement });
+        maze_entrance_hedge_removal({ _loc, entranceElement->as<TileElement>() });
     }
 
-    footpath_connect_edges(_loc, tileElement, GetFlags());
+    footpath_connect_edges(_loc, entranceElement->as<TileElement>(), GetFlags());
     footpath_update_queue_chains();
 
     map_invalidate_tile_full(_loc);

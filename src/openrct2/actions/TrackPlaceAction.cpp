@@ -592,58 +592,51 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             ride->overall_view = mapLoc;
         }
 
-        auto tileElement = tile_element_insert(mapLoc, quarterTile.GetBaseQuarterOccupied());
-        assert(tileElement != nullptr);
-        tileElement->SetClearanceZ(clearanceZ);
-        tileElement->SetType(TILE_ELEMENT_TYPE_TRACK);
-        tileElement->SetDirection(_origin.direction);
-        if (_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
-        {
-            tileElement->AsTrack()->SetHasChain(true);
-        }
+        auto* trackElement = TileElementInsert<TrackElement>(mapLoc, quarterTile.GetBaseQuarterOccupied());
+        Guard::Assert(trackElement != nullptr);
 
-        tileElement->AsTrack()->SetSequenceIndex(trackBlock->index);
-        tileElement->AsTrack()->SetRideIndex(_rideIndex);
-        tileElement->AsTrack()->SetTrackType(_trackType);
-        if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
-        {
-            tileElement->SetGhost(true);
-        }
+        trackElement->SetClearanceZ(clearanceZ);
+        trackElement->SetDirection(_origin.direction);
+        trackElement->SetHasChain(_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED);
+        trackElement->SetSequenceIndex(trackBlock->index);
+        trackElement->SetRideIndex(_rideIndex);
+        trackElement->SetTrackType(_trackType);
+        trackElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
 
         switch (_trackType)
         {
             case TrackElemType::Waterfall:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
+                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WATERFALL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::Rapids:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
+                map_animation_create(MAP_ANIMATION_TYPE_TRACK_RAPIDS, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::Whirlpool:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
+                map_animation_create(MAP_ANIMATION_TYPE_TRACK_WHIRLPOOL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
             case TrackElemType::SpinningTunnel:
-                map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, tileElement->GetBaseZ() });
+                map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, CoordsXYZ{ mapLoc, trackElement->GetBaseZ() });
                 break;
         }
         if (TrackTypeHasSpeedSetting(_trackType))
         {
-            tileElement->AsTrack()->SetBrakeBoosterSpeed(_brakeSpeed);
+            trackElement->SetBrakeBoosterSpeed(_brakeSpeed);
         }
         else if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
-            tileElement->AsTrack()->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
-            tileElement->AsTrack()->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
+            trackElement->SetDoorAState(LANDSCAPE_DOOR_CLOSED);
+            trackElement->SetDoorBState(LANDSCAPE_DOOR_CLOSED);
         }
         else
         {
-            tileElement->AsTrack()->SetSeatRotation(_seatRotation);
+            trackElement->SetSeatRotation(_seatRotation);
         }
 
         if (_trackPlaceFlags & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
         {
-            tileElement->AsTrack()->SetInverted(true);
+            trackElement->SetInverted(true);
         }
-        tileElement->AsTrack()->SetColourScheme(_colour);
+        trackElement->SetColourScheme(_colour);
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
         {
@@ -689,13 +682,15 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             ride->UpdateMaxVehicles();
         }
 
+        auto* tileElement = trackElement->as<TileElement>();
+
         if (rideTypeFlags & RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER)
         {
             auto* waterSurfaceElement = map_get_surface_element_at(mapLoc);
             if (waterSurfaceElement != nullptr)
             {
                 waterSurfaceElement->SetHasTrackThatNeedsWater(true);
-                tileElement = reinterpret_cast<TileElement*>(waterSurfaceElement);
+                tileElement = waterSurfaceElement->as<TileElement>();
             }
         }
 

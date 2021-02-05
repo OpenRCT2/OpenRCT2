@@ -138,30 +138,19 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
             }
         }
 
-        TileElement* newElement = tile_element_insert(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
-        Guard::Assert(newElement != nullptr);
-        newElement->SetType(TILE_ELEMENT_TYPE_ENTRANCE);
-        auto entranceElement = newElement->AsEntrance();
-        if (entranceElement == nullptr)
-        {
-            Guard::Assert(false);
-            return nullptr;
-        }
+        auto* entranceElement = TileElementInsert<EntranceElement>(CoordsXYZ{ entranceLoc, zLow }, 0b1111);
+        Guard::Assert(entranceElement != nullptr);
+
         entranceElement->SetClearanceZ(zHigh);
-
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-        {
-            newElement->SetGhost(true);
-        }
-
+        entranceElement->SetGhost(flags & GAME_COMMAND_FLAG_GHOST);
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
         entranceElement->SetPathType(gFootpathSelectedId);
 
-        if (!(flags & GAME_COMMAND_FLAG_GHOST))
+        if (!entranceElement->IsGhost())
         {
-            footpath_connect_edges(entranceLoc, newElement, GAME_COMMAND_FLAG_APPLY);
+            footpath_connect_edges(entranceLoc, entranceElement->as<TileElement>(), GAME_COMMAND_FLAG_APPLY);
         }
 
         update_park_fences(entranceLoc);
@@ -170,7 +159,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         update_park_fences({ entranceLoc.x, entranceLoc.y - COORDS_XY_STEP });
         update_park_fences({ entranceLoc.x, entranceLoc.y + COORDS_XY_STEP });
 
-        map_invalidate_tile({ entranceLoc, newElement->GetBaseZ(), newElement->GetClearanceZ() });
+        map_invalidate_tile({ entranceLoc, entranceElement->GetBaseZ(), entranceElement->GetClearanceZ() });
 
         if (index == 0)
         {
