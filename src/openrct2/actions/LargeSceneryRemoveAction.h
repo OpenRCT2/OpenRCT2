@@ -30,5 +30,5 @@ public:
     GameActions::Result::Ptr Execute() const override;
 
 private:
-    TileElement* FindLargeSceneryElement() const;
+    TileElement* FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const;
 };
