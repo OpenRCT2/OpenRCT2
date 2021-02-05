@@ -126,8 +126,6 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
 {
     GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
 
-    const uint32_t flags = GetFlags();
-
     int32_t z = tile_element_height(_loc);
     res->Position.x = _loc.x + 16;
     res->Position.y = _loc.y + 16;
