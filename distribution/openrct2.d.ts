@@ -2141,7 +2141,7 @@ declare global {
     interface Listener {
         readonly listening: boolean;
 
-        listen(port: number): Listener;
+        listen(port: number, host?: string): Listener;
         close(): Listener;
 
         on(event: 'connection', callback: (socket: Socket) => void): Listener;
