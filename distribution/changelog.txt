@@ -19,6 +19,7 @@
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
 - Feature: [#13927] [Plugin] Add isVisible and text box widget.
+- Feature: [#14002] [Plugin] Feature: Use allowed_hosts when checking the binding IP for listening
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
