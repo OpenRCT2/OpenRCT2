@@ -1623,7 +1623,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
                 }
 
                 auto trackPlaceAction = TrackPlaceAction(
-                    _currentRideIndex, trackType, ride->type, { newCoords, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed,
+                    ride->id, trackType, ride->type, { newCoords, tempZ, static_cast<uint8_t>(rotation) }, brakeSpeed,
                     trackColour, seatRotation, liftHillAndAlternativeState, true);
                 trackPlaceAction.SetFlags(flags);
 
@@ -1843,6 +1843,8 @@ static GameActions::Result TrackDesignPlaceVirtual(
         tds.PlaceScenery = false;
     }
 
+    // NOTE: We need to save this, in networked games this would affect all clients otherwise.
+    auto savedRideId = _currentRideIndex;
     _currentRideIndex = ride->id;
 
     GameActions::Result trackPlaceRes;
@@ -1854,6 +1856,7 @@ static GameActions::Result TrackDesignPlaceVirtual(
     {
         trackPlaceRes = TrackDesignPlaceRide(tds, td6, coords, ride);
     }
+    _currentRideIndex = savedRideId;
 
     if (trackPlaceRes.Error != GameActions::Status::Ok)
     {
