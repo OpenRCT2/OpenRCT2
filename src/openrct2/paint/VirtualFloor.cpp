@@ -17,12 +17,15 @@
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
+#include "../world/TileElementsView.h"
 #include "Paint.h"
 #include "VirtualFloor.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
 #include <limits>
+
+using namespace OpenRCT2;
 
 static uint16_t _virtualFloorBaseSize = 5 * 32;
 static uint16_t _virtualFloorHeight = 0;
@@ -241,10 +244,7 @@ static void virtual_floor_get_tile_properties(
     //  * Surfaces, which may put us underground
     //  * Walls / banners, which are displayed as occupied edges
     //  * Ghost objects, which are displayed as lit squares
-    TileElement* tileElement = map_get_first_element_at(loc);
-    if (tileElement == nullptr)
-        return;
-    do
+    for (auto* tileElement : TileElementsView(loc))
     {
         int32_t elementType = tileElement->GetType();
 
@@ -285,7 +285,7 @@ static void virtual_floor_get_tile_properties(
         }
 
         *outOccupied = true;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 }
 
 void virtual_floor_paint(paint_session* session)
