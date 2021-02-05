@@ -51,6 +51,7 @@ bool NetworkPacket::CommandRequiresAuth()
         case NetworkCommand::Token:
         case NetworkCommand::GameInfo:
         case NetworkCommand::ObjectsList:
+        case NetworkCommand::Scripts:
         case NetworkCommand::MapRequest:
         case NetworkCommand::Heartbeat:
             return false;
