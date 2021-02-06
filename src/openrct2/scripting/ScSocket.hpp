@@ -439,7 +439,7 @@ namespace OpenRCT2::Scripting
                     if (dukHost.type() == DukValue::Type::STRING)
                     {
                         auto host = dukHost.as_string();
-                        if (IsLocalhostAddress(host))
+                        if (IsLocalhostAddress(host) || IsOnWhiteList(host))
                         {
                             try
                             {
