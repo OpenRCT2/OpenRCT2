@@ -1449,9 +1449,10 @@ void window_event_update_call(rct_window* w)
 
 void window_event_periodic_update_call(rct_window* w)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->periodic_update != nullptr)
-            w->event_handlers->periodic_update(w);
+    if (w->event_handlers == nullptr)
+        w->OnPeriodicUpdate();
+    else if (w->event_handlers->periodic_update != nullptr)
+        w->event_handlers->periodic_update(w);
 }
 
 void window_event_unknown_08_call(rct_window* w)
