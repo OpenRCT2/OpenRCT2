@@ -203,7 +203,7 @@ static void ride_ratings_update_state_2()
     }
 
     auto loc = gRideRatingsCalcData.Proximity;
-    int32_t trackType = gRideRatingsCalcData.ProximityTrackType;
+    track_type_t trackType = gRideRatingsCalcData.ProximityTrackType;
 
     TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -226,7 +226,7 @@ static void ride_ratings_update_state_2()
                 continue;
         }
 
-        if (trackType == 255
+        if (trackType == TrackElemType::None
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TrackElemType::EndStation)
@@ -309,7 +309,7 @@ static void ride_ratings_update_state_5()
     }
 
     auto loc = gRideRatingsCalcData.Proximity;
-    int32_t trackType = gRideRatingsCalcData.ProximityTrackType;
+    track_type_t trackType = gRideRatingsCalcData.ProximityTrackType;
 
     TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -332,7 +332,7 @@ static void ride_ratings_update_state_5()
                 continue;
         }
 
-        if (trackType == 255 || trackType == tileElement->AsTrack()->GetTrackType())
+        if (trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(tileElement);
 
@@ -390,9 +390,8 @@ static void ride_ratings_begin_proximity_loop()
             }
 
             auto location = ride->stations[i].GetStart();
-
             gRideRatingsCalcData.Proximity = location;
-            gRideRatingsCalcData.ProximityTrackType = 255;
+            gRideRatingsCalcData.ProximityTrackType = TrackElemType::None;
             gRideRatingsCalcData.ProximityStart = location;
             return;
         }

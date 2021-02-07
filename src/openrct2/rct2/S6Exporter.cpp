@@ -781,7 +781,9 @@ void S6Exporter::ExportRideRatingsCalcData()
     dst.proximity_start_z = src.ProximityStart.z;
     dst.current_ride = src.CurrentRide;
     dst.state = src.State;
-    dst.proximity_track_type = src.ProximityTrackType;
+    dst.proximity_track_type = static_cast<uint8_t>(src.ProximityTrackType);
+    if (src.ProximityTrackType == TrackElemType::RotationControlToggle)
+        dst.proximity_track_type = static_cast<uint8_t>(TrackElemType::RotationControlToggleAlias);
     dst.proximity_base_height = src.ProximityBaseHeight;
     dst.proximity_total = src.ProximityTotal;
     for (size_t i = 0; i < std::size(dst.proximity_scores); i++)

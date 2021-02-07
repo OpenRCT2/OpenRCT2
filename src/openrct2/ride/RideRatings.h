@@ -14,6 +14,7 @@
 #include "RideTypes.h"
 
 using ride_rating = fixed16_2dp;
+using track_type_t = uint16_t;
 
 // Convenience function for writing ride ratings. The result is a 16 bit signed
 // integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
@@ -44,7 +45,7 @@ struct RideRatingCalculationData
     CoordsXYZ ProximityStart;
     ride_id_t CurrentRide;
     uint8_t State;
-    uint8_t ProximityTrackType;
+    track_type_t ProximityTrackType;
     uint8_t ProximityBaseHeight;
     uint16_t ProximityTotal;
     uint16_t ProximityScores[26];
