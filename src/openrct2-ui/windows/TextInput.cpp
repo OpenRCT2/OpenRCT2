@@ -193,7 +193,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        Window::OnDraw(dpi);
+        DrawWidgets(dpi);
 
         ScreenCoordsXY screenCoords;
         screenCoords.y = windowPos.y + 25;
