@@ -60,7 +60,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
         case PeepPickupType::Pickup:
         {
             res->Position = { peep->x, peep->y, peep->z };
-            if (!peep_can_be_picked_up(peep))
+            if (!peep->CanBePickedUp())
             {
                 return MakeResult(GameActions::Status::Disallowed, STR_ERR_CANT_PLACE_PERSON_HERE);
             }

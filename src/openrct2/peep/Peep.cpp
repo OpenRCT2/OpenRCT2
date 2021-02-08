@@ -353,6 +353,40 @@ void Peep::SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface)
     NextFlags |= is_surface ? PEEP_NEXT_FLAG_IS_SURFACE : 0;
 }
 
+bool Peep::CanBePickedUp() const
+{
+    switch (State)
+    {
+        case PeepState::One:
+        case PeepState::QueuingFront:
+        case PeepState::OnRide:
+        case PeepState::EnteringRide:
+        case PeepState::LeavingRide:
+        case PeepState::EnteringPark:
+        case PeepState::LeavingPark:
+        case PeepState::Fixing:
+        case PeepState::Buying:
+        case PeepState::Inspecting:
+            return false;
+        case PeepState::Falling:
+        case PeepState::Walking:
+        case PeepState::Queuing:
+        case PeepState::Sitting:
+        case PeepState::Picked:
+        case PeepState::Patrolling:
+        case PeepState::Mowing:
+        case PeepState::Sweeping:
+        case PeepState::Answering:
+        case PeepState::Watching:
+        case PeepState::EmptyingBin:
+        case PeepState::UsingBin:
+        case PeepState::Watering:
+        case PeepState::HeadingToInspection:
+            return true;
+    }
+    return false;
+}
+
 Peep* try_get_guest(uint16_t spriteIndex)
 {
     return TryGetEntity<Guest>(spriteIndex);
@@ -2027,44 +2061,6 @@ void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft
     {
         ft.Add<rct_string_id>(GetShopItemDescriptor(ShopItem(thought->item)).Naming.Indefinite);
     }
-}
-
-/** rct2: 0x00982004 */
-static const std::map<PeepState, bool> peep_allow_pick_up{
-    { PeepState::Falling, true },
-    { PeepState::One, false },
-    { PeepState::QueuingFront, false },
-    { PeepState::OnRide, false },
-    { PeepState::LeavingRide, false },
-    { PeepState::Walking, true },
-    { PeepState::Queuing, true },
-    { PeepState::EnteringRide, false },
-    { PeepState::Sitting, true },
-    { PeepState::Picked, true },
-    { PeepState::Patrolling, true },
-    { PeepState::Mowing, true },
-    { PeepState::Sweeping, true },
-    { PeepState::EnteringPark, false },
-    { PeepState::LeavingPark, false },
-    { PeepState::Answering, true },
-    { PeepState::Fixing, false },
-    { PeepState::Buying, false },
-    { PeepState::Watching, true },
-    { PeepState::EmptyingBin, true },
-    { PeepState::UsingBin, true },
-    { PeepState::Watering, true },
-    { PeepState::HeadingToInspection, true },
-    { PeepState::Inspecting, false },
-};
-
-/**
- *
- *  rct2: 0x00698827
- * returns 1 on pickup (CF not set)
- */
-bool peep_can_be_picked_up(Peep* peep)
-{
-    return peep_allow_pick_up.find(peep->State)->second;
 }
 
 enum

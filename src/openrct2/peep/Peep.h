@@ -743,6 +743,7 @@ public: // Peep
     bool GetNextIsSloped() const;
     bool GetNextIsSurface() const;
     void SetNextFlags(uint8_t next_direction, bool is_sloped, bool is_surface);
+    bool CanBePickedUp() const;
     void Pickup();
     void PickupAbort(int32_t old_x);
     std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
@@ -1010,7 +1011,6 @@ extern uint8_t gPeepWarningThrottle[16];
 
 Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
-bool peep_can_be_picked_up(Peep* peep);
 void peep_update_all();
 void peep_problem_warnings_update();
 void peep_stop_crowd_noise();

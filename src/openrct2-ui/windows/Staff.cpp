@@ -314,7 +314,7 @@ void window_staff_disable_widgets(rct_window* w)
 
     if (w->page == WINDOW_STAFF_OVERVIEW)
     {
-        if (peep_can_be_picked_up(peep))
+        if (peep->CanBePickedUp())
         {
             if (w->disabled_widgets & (1 << WIDX_PICKUP))
                 w->Invalidate();
