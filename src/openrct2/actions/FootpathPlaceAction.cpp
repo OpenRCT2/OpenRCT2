@@ -20,7 +20,10 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/TileElementsView.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 FootpathPlaceAction::FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction)
     : _loc(loc)
@@ -435,20 +438,19 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
 
 PathElement* FootpathPlaceAction::map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const
 {
-    TileElement* tileElement;
-    bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+    const bool isSloped = slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED;
+    const auto slopeDirection = slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
 
-    tileElement = map_get_first_element_at(footpathPos);
-    do
+    for (auto* pathElement : TileElementsView<PathElement>(footpathPos))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement->GetBaseZ() == footpathPos.z
-            && (tileElement->AsPath()->IsSloped() == isSloped)
-            && (tileElement->AsPath()->GetSlopeDirection() == (slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)))
-        {
-            return tileElement->AsPath();
-        }
-    } while (!(tileElement++)->IsLastForTile());
+        if (pathElement->GetBaseZ() != footpathPos.z)
+            continue;
+        if (pathElement->IsSloped() != isSloped)
+            continue;
+        if (pathElement->GetSlopeDirection() != slopeDirection)
+            continue;
+        return pathElement;
+    }
+
     return nullptr;
 }

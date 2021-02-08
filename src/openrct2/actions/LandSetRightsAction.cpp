@@ -24,6 +24,9 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "../world/TileElementsView.h"
+
+using namespace OpenRCT2;
 
 LandSetRightsAction::LandSetRightsAction(const MapRange& range, LandSetRightSetting setting, uint8_t ownership)
     : _range(range)
@@ -160,16 +163,9 @@ GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const
                 return res;
             }
 
-            TileElement* tileElement = map_get_first_element_at(loc);
-            do
+            for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
             {
-                if (tileElement == nullptr)
-                    break;
-
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
-                    continue;
-
-                if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (entranceElement->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
 
                 // Do not allow ownership of park entrance.
@@ -180,11 +176,13 @@ GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const
                 // There is no need to check the height if _ownership is 0 (unowned and no rights available).
                 if (_ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED || _ownership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
                 {
-                    if (tileElement->base_height - 3 > surfaceElement->base_height
-                        || tileElement->base_height < surfaceElement->base_height)
+                    if (entranceElement->base_height - 3 > surfaceElement->base_height
+                        || entranceElement->base_height < surfaceElement->base_height)
+                    {
                         return res;
+                    }
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            }
 
             res->Cost = gLandPrice;
             if (isExecuting)

@@ -36,12 +36,15 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "../world/TileElementsView.h"
 #include "GuestPathfinding.h"
 #include "Peep.h"
 #include "Staff.h"
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
 
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 waypoints for each 4 sides that an ride entrance can be located
@@ -944,29 +947,24 @@ void Guest::Tick128UpdateGuest(int32_t index)
                 {
                     /* Peep happiness is affected once the peep has been waiting
                      * too long in a queue. */
-                    TileElement* tileElement = map_get_first_element_at(NextLoc);
                     bool found = false;
-                    do
+                    for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
                     {
-                        if (tileElement == nullptr)
-                            break;
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-                            continue;
-                        if (tileElement->GetBaseZ() != NextLoc.z)
+                        if (pathElement->GetBaseZ() != NextLoc.z)
                             continue;
 
                         // Check if the footpath has a queue line TV monitor on it
-                        if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
+                        if (pathElement->HasAddition() && !pathElement->AdditionIsGhost())
                         {
-                            auto pathSceneryIndex = tileElement->AsPath()->GetAdditionEntryIndex();
+                            auto pathSceneryIndex = pathElement->GetAdditionEntryIndex();
                             rct_scenery_entry* sceneryEntry = get_footpath_item_entry(pathSceneryIndex);
-                            if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
+                            if (sceneryEntry != nullptr && (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN))
                             {
                                 found = true;
                             }
                         }
                         break;
-                    } while (!(tileElement++)->IsLastForTile());
+                    }
 
                     if (found)
                     {
@@ -1678,20 +1676,14 @@ std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
         {
             for (int32_t tileY = cy - radius; tileY <= cy + radius; tileY += COORDS_XY_STEP)
             {
-                if (map_is_location_valid({ tileX, tileY }))
+                auto location = CoordsXY{ tileX, tileY };
+                if (!map_is_location_valid(location))
+                    continue;
+
+                for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
-                    auto tileElement = map_get_first_element_at({ tileX, tileY });
-                    if (tileElement != nullptr)
-                    {
-                        do
-                        {
-                            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
-                            {
-                                auto rideIndex = tileElement->AsTrack()->GetRideIndex();
-                                rideConsideration[rideIndex] = true;
-                            }
-                        } while (!(tileElement++)->IsLastForTile());
-                    }
+                    auto rideIndex = trackElement->GetRideIndex();
+                    rideConsideration[rideIndex] = true;
                 }
             }
         }
@@ -2705,10 +2697,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
     {
         for (int16_t y = initial_y; y < final_y; y += COORDS_XY_STEP)
         {
-            TileElement* tileElement = map_get_first_element_at({ x, y });
-            if (tileElement == nullptr)
-                continue;
-            do
+            for (auto* tileElement : TileElementsView({ x, y }))
             {
                 Ride* ride;
                 rct_scenery_entry* scenery;
@@ -2770,7 +2759,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         }
                         break;
                 }
-            } while (!(tileElement++)->IsLastForTile());
+            }
         }
     }
 
@@ -2939,24 +2928,21 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         {
             for (auto y = cy - searchRadius; y <= cy + searchRadius; y += COORDS_XY_STEP)
             {
-                if (map_is_location_valid({ x, y }))
+                auto location = CoordsXY{ x, y };
+                if (!map_is_location_valid(location))
+                    continue;
+
+                for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
-                    auto tileElement = map_get_first_element_at({ x, y });
-                    if (tileElement != nullptr)
-                    {
-                        do
-                        {
-                            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
-                            {
-                                auto rideIndex = tileElement->AsTrack()->GetRideIndex();
-                                auto ride = get_ride(rideIndex);
-                                if (ride != nullptr && predicate(*ride))
-                                {
-                                    rideConsideration[rideIndex] = true;
-                                }
-                            }
-                        } while (!(tileElement++)->IsLastForTile());
-                    }
+                    auto rideIndex = trackElement->GetRideIndex();
+                    auto ride = get_ride(rideIndex);
+                    if (ride == nullptr)
+                        continue;
+
+                    if (!predicate(*ride))
+                        continue;
+
+                    rideConsideration[rideIndex] = true;
                 }
             }
         }
@@ -3936,19 +3922,20 @@ void Guest::UpdateRideLeaveVehicle()
                 if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
                     continue;
 
-                TileElement* inner_map = map_get_first_element_at(vehicle->TrackLocation);
-                if (inner_map == nullptr)
-                    continue;
-                for (;; inner_map++)
+                bool foundStation = false;
+                for (auto* trackElement : TileElementsView<TrackElement>(vehicle->TrackLocation))
                 {
-                    if (inner_map->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    if (trackElement->GetBaseZ() != vehicle->TrackLocation.z)
                         continue;
-                    if (inner_map->GetBaseZ() == vehicle->TrackLocation.z)
-                        break;
+
+                    if (trackElement->GetStationIndex() != CurrentRideStation)
+                        continue;
+
+                    foundStation = true;
+                    break;
                 }
 
-                auto stationIndex = inner_map->AsTrack()->GetStationIndex();
-                if (stationIndex == CurrentRideStation)
+                if (foundStation)
                     break;
             }
 
@@ -4773,17 +4760,10 @@ void Guest::UpdateRideLeaveExit()
     CoordsXY targetLoc = { x, y };
 
     // Find the station track element
-    TileElement* tileElement = map_get_first_element_at(targetLoc);
-    if (tileElement == nullptr)
-        return;
-    do
+    for (auto* pathElement : TileElementsView<PathElement>(targetLoc))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            continue;
-
-        int16_t height = map_height_from_slope(
-            targetLoc, tileElement->AsPath()->GetSlopeDirection(), tileElement->AsPath()->IsSloped());
-        height += tileElement->GetBaseZ();
+        int16_t height = map_height_from_slope(targetLoc, pathElement->GetSlopeDirection(), pathElement->IsSloped());
+        height += pathElement->GetBaseZ();
 
         int16_t z_diff = z - height;
         if (z_diff > 0 || z_diff < -16)
@@ -4791,7 +4771,7 @@ void Guest::UpdateRideLeaveExit()
 
         MoveTo({ x, y, height });
         return;
-    } while (!(tileElement++)->IsLastForTile());
+    }
 }
 
 /**
@@ -5598,51 +5578,30 @@ void Guest::UpdateUsingBin()
                 return;
             }
 
-            TileElement* tileElement = map_get_first_element_at(NextLoc);
-            if (tileElement == nullptr)
-                return;
-
-            bool found = false;
-            do
+            PathElement* foundElement = nullptr;
+            for (auto* pathElement : TileElementsView<PathElement>(NextLoc))
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-                {
+                if (pathElement->GetBaseZ() != NextLoc.z)
                     continue;
-                }
 
-                if (tileElement->GetBaseZ() == NextLoc.z)
-                {
-                    found = true;
+                if (!pathElement->HasAddition())
                     break;
-                }
-            } while (!(tileElement++)->IsLastForTile());
 
-            if (!found)
-            {
-                StateReset();
-                return;
+                rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
+                if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+                    break;
+
+                if (pathElement->IsBroken())
+                    break;
+
+                if (pathElement->AdditionIsGhost())
+                    break;
+
+                foundElement = pathElement;
+                break;
             }
 
-            if (!tileElement->AsPath()->HasAddition())
-            {
-                StateReset();
-                return;
-            }
-
-            rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-            if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
-            {
-                StateReset();
-                return;
-            }
-
-            if (tileElement->AsPath()->IsBroken())
-            {
-                StateReset();
-                return;
-            }
-
-            if (tileElement->AsPath()->AdditionIsGhost())
+            if (foundElement == nullptr)
             {
                 StateReset();
                 return;
@@ -5652,7 +5611,7 @@ void Guest::UpdateUsingBin()
             uint8_t selectedBin = Var37 * 2;
 
             // This counts down 2 = No rubbish, 0 = full
-            uint8_t spaceLeftInBin = 0x3 & (tileElement->AsPath()->GetAdditionStatus() >> selectedBin);
+            uint8_t spaceLeftInBin = 0x3 & (foundElement->GetAdditionStatus() >> selectedBin);
             uint64_t emptyContainers = GetEmptyContainerFlags();
 
             for (uint8_t curContainer = 0; curContainer < 64; curContainer++)
@@ -5686,14 +5645,14 @@ void Guest::UpdateUsingBin()
                 UpdateSpriteType();
             }
 
-            uint8_t additionStatus = tileElement->AsPath()->GetAdditionStatus();
+            uint8_t additionStatus = foundElement->GetAdditionStatus();
             // Place new amount in bin by first clearing the value
             additionStatus &= ~(3 << selectedBin);
             // Then placing the new value.
             additionStatus |= spaceLeftInBin << selectedBin;
-            tileElement->AsPath()->SetAdditionStatus(additionStatus);
+            foundElement->SetAdditionStatus(additionStatus);
 
-            map_invalidate_tile_zoom0({ NextLoc, tileElement->GetBaseZ(), tileElement->GetClearanceZ() });
+            map_invalidate_tile_zoom0({ NextLoc, foundElement->GetBaseZ(), foundElement->GetClearanceZ() });
             StateReset();
             break;
         }
@@ -5730,6 +5689,32 @@ bool Guest::ShouldFindBench()
     return !GetNextIsSurface() && !GetNextIsSloped();
 }
 
+static PathElement* FindBench(const CoordsXYZ& loc)
+{
+    for (auto* pathElement : TileElementsView<PathElement>(loc))
+    {
+        if (pathElement->GetBaseZ() != loc.z)
+            continue;
+
+        if (!pathElement->HasAddition())
+            continue;
+
+        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
+        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+            continue;
+
+        if (pathElement->IsBroken())
+            continue;
+
+        if (pathElement->AdditionIsGhost())
+            continue;
+
+        return pathElement;
+    }
+
+    return nullptr;
+}
+
 /**
  *
  *  rct2: 0x00690582
@@ -5740,40 +5725,13 @@ bool Guest::UpdateWalkingFindBench()
     if (!ShouldFindBench())
         return false;
 
-    TileElement* tileElement = map_get_first_element_at(NextLoc);
-    if (tileElement == nullptr)
+    auto* pathElement = FindBench(NextLoc);
+    if (pathElement == nullptr)
         return false;
 
-    for (;; tileElement++)
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-        {
-            if (NextLoc.z == tileElement->GetBaseZ())
-                break;
-        }
-        if (tileElement->IsLastForTile())
-        {
-            return false;
-        }
-    }
-
-    if (!tileElement->AsPath()->HasAddition())
-        return false;
-    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-
-    if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
-        return false;
-
-    if (tileElement->AsPath()->IsBroken())
-        return false;
-
-    if (tileElement->AsPath()->AdditionIsGhost())
-        return false;
-
-    int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
+    int32_t edges = pathElement->GetEdges() ^ 0xF;
     if (edges == 0)
         return false;
-
     uint8_t chosen_edge = scenario_rand() & 0x3;
 
     for (; !(edges & (1 << chosen_edge));)
@@ -5822,6 +5780,32 @@ bool Guest::UpdateWalkingFindBench()
     return true;
 }
 
+static PathElement* FindBin(const CoordsXYZ& loc)
+{
+    for (auto* pathElement : TileElementsView<PathElement>(loc))
+    {
+        if (pathElement->GetBaseZ() != loc.z)
+            continue;
+
+        if (!pathElement->HasAddition())
+            continue;
+
+        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
+        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
+            continue;
+
+        if (pathElement->IsBroken())
+            continue;
+
+        if (pathElement->AdditionIsGhost())
+            continue;
+
+        return pathElement;
+    }
+
+    return nullptr;
+}
+
 bool Guest::UpdateWalkingFindBin()
 {
     auto peep = this;
@@ -5831,48 +5815,18 @@ bool Guest::UpdateWalkingFindBin()
     if (peep->GetNextIsSurface())
         return false;
 
-    TileElement* tileElement = map_get_first_element_at(peep->NextLoc);
-    if (tileElement == nullptr)
+    auto* pathElement = FindBin(peep->NextLoc);
+    if (pathElement == nullptr)
         return false;
 
-    for (;; tileElement++)
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-        {
-            if (peep->NextLoc.z == tileElement->GetBaseZ())
-                break;
-        }
-        if (tileElement->IsLastForTile())
-        {
-            return false;
-        }
-    }
-
-    if (!tileElement->AsPath()->HasAddition())
-        return false;
-    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-    if (sceneryEntry == nullptr)
-    {
-        return false;
-    }
-
-    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
-        return false;
-
-    if (tileElement->AsPath()->IsBroken())
-        return false;
-
-    if (tileElement->AsPath()->AdditionIsGhost())
-        return false;
-
-    int32_t edges = (tileElement->AsPath()->GetEdges()) ^ 0xF;
+    int32_t edges = (pathElement->GetEdges()) ^ 0xF;
     if (edges == 0)
         return false;
 
     uint8_t chosen_edge = scenario_rand() & 0x3;
 
     // Note: Bin quantity is inverted 0 = full, 3 = empty
-    uint8_t bin_quantities = tileElement->AsPath()->GetAdditionStatus();
+    uint8_t bin_quantities = pathElement->GetAdditionStatus();
 
     // Rotate the bin to the correct edge. Makes it easier for next calc.
     bin_quantities = ror8(ror8(bin_quantities, chosen_edge), chosen_edge);
@@ -5906,6 +5860,32 @@ bool Guest::UpdateWalkingFindBin()
     return true;
 }
 
+static PathElement* FindBreakableElement(const CoordsXYZ& loc)
+{
+    for (auto* pathElement : TileElementsView<PathElement>(loc))
+    {
+        if (pathElement->GetBaseZ() != loc.z)
+            continue;
+
+        if (!pathElement->HasAddition())
+            continue;
+
+        rct_scenery_entry* sceneryEntry = pathElement->GetAdditionEntry();
+        if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
+            continue;
+
+        if (pathElement->IsBroken())
+            continue;
+
+        if (pathElement->AdditionIsGhost())
+            continue;
+
+        return pathElement;
+    }
+
+    return nullptr;
+}
+
 /**
  *
  *  rct2: 0x00690848
@@ -5934,37 +5914,11 @@ static void peep_update_walking_break_scenery(Peep* peep)
     if (peep->GetNextIsSurface())
         return;
 
-    TileElement* tileElement = map_get_first_element_at(peep->NextLoc);
+    auto* tileElement = FindBreakableElement(peep->NextLoc);
     if (tileElement == nullptr)
         return;
 
-    for (;; tileElement++)
-    {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
-        {
-            if (peep->NextLoc.z == tileElement->GetBaseZ())
-                break;
-        }
-        if (tileElement->IsLastForTile())
-        {
-            return;
-        }
-    }
-
-    if (!tileElement->AsPath()->HasAddition())
-        return;
-    rct_scenery_entry* sceneryEntry = tileElement->AsPath()->GetAdditionEntry();
-
-    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_BREAKABLE))
-        return;
-
-    if (tileElement->AsPath()->IsBroken())
-        return;
-
-    if (tileElement->AsPath()->AdditionIsGhost())
-        return;
-
-    int32_t edges = tileElement->AsPath()->GetEdges();
+    int32_t edges = tileElement->GetEdges();
     if (edges == 0xF)
         return;
 
@@ -5994,7 +5948,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
             return;
     }
 
-    tileElement->AsPath()->SetIsBroken(true);
+    tileElement->SetIsBroken(true);
 
     map_invalidate_tile_zoom1({ peep->NextLoc, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 32 });
 

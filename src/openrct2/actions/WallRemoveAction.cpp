@@ -16,7 +16,10 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../world/Location.hpp"
+#include "../world/TileElementsView.h"
 #include "../world/Wall.h"
+
+using namespace OpenRCT2;
 
 WallRemoveAction::WallRemoveAction(const CoordsXYZD& loc)
     : _loc(loc)
@@ -93,22 +96,16 @@ GameActions::Result::Ptr WallRemoveAction::Execute() const
 
 TileElement* WallRemoveAction::GetFirstWallElementAt(const CoordsXYZD& location, bool isGhost) const
 {
-    TileElement* tileElement = map_get_first_element_at(location);
-    if (!tileElement)
-        return nullptr;
-
-    do
+    for (auto* wallElement : TileElementsView<WallElement>(location))
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (wallElement->GetBaseZ() != location.z)
             continue;
-        if (tileElement->GetBaseZ() != location.z)
+        if (wallElement->GetDirection() != location.direction)
             continue;
-        if (tileElement->GetDirection() != location.direction)
-            continue;
-        if (tileElement->IsGhost() != isGhost)
+        if (wallElement->IsGhost() != isGhost)
             continue;
 
-        return tileElement;
-    } while (!(tileElement++)->IsLastForTile());
+        return wallElement->as<TileElement>();
+    }
     return nullptr;
 }

@@ -13,7 +13,10 @@
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "GameAction.h"
+
+using namespace OpenRCT2;
 
 BannerRemoveAction::BannerRemoveAction(const CoordsXYZD& loc)
     : _loc(loc)
@@ -124,24 +127,18 @@ GameActions::Result::Ptr BannerRemoveAction::Execute() const
 
 BannerElement* BannerRemoveAction::GetBannerElementAt() const
 {
-    TileElement* tileElement = map_get_first_element_at(_loc);
-
     // Find the banner element at known z and position
-    do
+    for (auto* bannerElement : TileElementsView<BannerElement>(_loc))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+        if (bannerElement->GetBaseZ() != _loc.z)
             continue;
-        if (tileElement->GetBaseZ() != _loc.z)
+        if (bannerElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
             continue;
-        if (tileElement->IsGhost() && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
-            continue;
-        if (tileElement->AsBanner()->GetPosition() != _loc.direction)
+        if (bannerElement->GetPosition() != _loc.direction)
             continue;
 
-        return tileElement->AsBanner();
-    } while (!(tileElement++)->IsLastForTile());
+        return bannerElement;
+    }
 
     return nullptr;
 }

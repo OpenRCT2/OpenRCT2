@@ -22,6 +22,9 @@
 #include "../world/SmallScenery.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
+#include "../world/TileElementsView.h"
+
+using namespace OpenRCT2;
 
 LandSetHeightAction::LandSetHeightAction(const CoordsXY& coords, uint8_t height, uint8_t style)
     : _coords(coords)
@@ -211,43 +214,40 @@ rct_string_id LandSetHeightAction::CheckParameters() const
 
 TileElement* LandSetHeightAction::CheckTreeObstructions() const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
-    do
+    for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (_height > sceneryElement->clearance_height)
             continue;
-        if (_height > tileElement->clearance_height)
+        if (_height + 4 < sceneryElement->base_height)
             continue;
-        if (_height + 4 < tileElement->base_height)
+
+        rct_scenery_entry* sceneryEntry = sceneryElement->GetEntry();
+        if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
             continue;
-        rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
-        if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_TREE))
-        {
-            return tileElement;
-        }
-    } while (!(tileElement++)->IsLastForTile());
+
+        return sceneryElement->as<TileElement>();
+    }
     return nullptr;
 }
 
 money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
 {
     money32 cost{ 0 };
-    TileElement* tileElement = map_get_first_element_at(_coords);
-    do
+
+    for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_coords))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (_height > sceneryElement->clearance_height)
             continue;
-        if (_height > tileElement->clearance_height)
+        if (_height + 4 < sceneryElement->base_height)
             continue;
-        if (_height + 4 < tileElement->base_height)
+
+        rct_scenery_entry* sceneryEntry = sceneryElement->GetEntry();
+        if (sceneryEntry == nullptr)
             continue;
-        rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+
         cost += MONEY(sceneryEntry->small_scenery.removal_price, 0);
-    } while (!(tileElement++)->IsLastForTile());
+    }
+
     return cost;
 }
 
@@ -270,34 +270,30 @@ void LandSetHeightAction::SmallSceneryRemoval() const
 
 rct_string_id LandSetHeightAction::CheckRideSupports() const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
-    do
+    for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {
-        if (tileElement == nullptr)
-            break;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        ride_id_t rideIndex = trackElement->GetRideIndex();
+
+        auto ride = get_ride(rideIndex);
+        if (ride == nullptr)
+            continue;
+
+        rct_ride_entry* rideEntry = ride->GetRideEntry();
+        if (rideEntry == nullptr)
+            continue;
+
+        int32_t maxHeight = rideEntry->max_height;
+        if (maxHeight == 0)
         {
-            ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
-            auto ride = get_ride(rideIndex);
-            if (ride != nullptr)
-            {
-                rct_ride_entry* rideEntry = ride->GetRideEntry();
-                if (rideEntry != nullptr)
-                {
-                    int32_t maxHeight = rideEntry->max_height;
-                    if (maxHeight == 0)
-                    {
-                        maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
-                    }
-                    int32_t zDelta = tileElement->clearance_height - _height;
-                    if (zDelta >= 0 && zDelta / 2 > maxHeight)
-                    {
-                        return STR_SUPPORTS_CANT_BE_EXTENDED;
-                    }
-                }
-            }
+            maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
         }
-    } while (!(tileElement++)->IsLastForTile());
+
+        int32_t zDelta = trackElement->clearance_height - _height;
+        if (zDelta >= 0 && zDelta / 2 > maxHeight)
+        {
+            return STR_SUPPORTS_CANT_BE_EXTENDED;
+        }
+    }
     return STR_NONE;
 }
 
@@ -327,11 +323,8 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
 
 TileElement* LandSetHeightAction::CheckUnremovableObstructions(TileElement* surfaceElement, uint8_t zCorner) const
 {
-    TileElement* tileElement = map_get_first_element_at(_coords);
-    do
+    for (auto* tileElement : TileElementsView(_coords))
     {
-        if (tileElement == nullptr)
-            break;
         int32_t elementType = tileElement->GetType();
 
         // Wall's and Small Scenery are removed and therefore do not need checked
@@ -355,7 +348,7 @@ TileElement* LandSetHeightAction::CheckUnremovableObstructions(TileElement* surf
         {
             return tileElement;
         }
-    } while (!(tileElement++)->IsLastForTile());
+    }
     return nullptr;
 }
 

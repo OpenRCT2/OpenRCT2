@@ -13,7 +13,10 @@
 #include "../world/Banner.h"
 #include "../world/MapAnimation.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "GameAction.h"
+
+using namespace OpenRCT2;
 
 BannerPlaceAction::BannerPlaceAction(const CoordsXYZD& loc, uint8_t bannerType, BannerIndex bannerIndex, uint8_t primaryColour)
     : _loc(loc)
@@ -165,17 +168,8 @@ GameActions::Result::Ptr BannerPlaceAction::Execute() const
 
 PathElement* BannerPlaceAction::GetValidPathElement() const
 {
-    TileElement* tileElement = map_get_first_element_at(_loc);
-    do
+    for (auto* pathElement : TileElementsView<PathElement>(_loc))
     {
-        if (tileElement == nullptr)
-            break;
-
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
-            continue;
-
-        auto pathElement = tileElement->AsPath();
-
         if (pathElement->GetBaseZ() != _loc.z && pathElement->GetBaseZ() != _loc.z - PATH_HEIGHT_STEP)
             continue;
 
@@ -186,6 +180,7 @@ PathElement* BannerPlaceAction::GetValidPathElement() const
             continue;
 
         return pathElement;
-    } while (!(tileElement++)->IsLastForTile());
+    }
+
     return nullptr;
 }
