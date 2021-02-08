@@ -487,7 +487,7 @@ void window_guest_disable_widgets(rct_window* w)
     }
     uint64_t disabled_widgets = 0;
 
-    if (peep_can_be_picked_up(peep))
+    if (peep->CanBePickedUp())
     {
         if (w->disabled_widgets & (1 << WIDX_PICKUP))
             w->Invalidate();
@@ -579,7 +579,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_PICKUP:
         {
-            if (!peep_can_be_picked_up(peep))
+            if (!peep->CanBePickedUp())
             {
                 return;
             }
