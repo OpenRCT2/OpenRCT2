@@ -9,6 +9,7 @@
 
 #include "../object/Object.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 
 #include <cstdint>
@@ -140,4 +141,23 @@ bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
     // Boosters share their ID with the Spinning Control track.
     return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
         && trackType == TrackElemType::Booster;
+}
+
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+{
+    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+    if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
+        return TrackElemType::RotationControlToggle;
+
+    return origTrackType;
+}
+
+RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
+{
+    if (origTrackType == TrackElemType::RotationControlToggle)
+        return TrackElemType::RotationControlToggleAlias;
+
+    // This function is safe to run this way round.
+    return OpenRCT2FlatTrackTypeToRCT12(origTrackType);
 }

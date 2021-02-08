@@ -205,7 +205,7 @@ static void paint_ferris_wheel(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
+    if (trackType != TrackElemType::FlatTrack1x4C)
     {
         return nullptr;
     }

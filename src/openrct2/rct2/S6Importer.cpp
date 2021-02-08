@@ -38,6 +38,7 @@
 #include "../rct12/SawyerEncoding.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/RideRatings.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
@@ -802,10 +803,7 @@ public:
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
         dst.CurrentRide = src.current_ride;
         dst.State = src.state;
-        dst.ProximityTrackType = src.proximity_track_type;
-        if (src.proximity_track_type == TrackElemType::RotationControlToggleAlias
-            && !RCT2TrackTypeIsBooster(_s6.rides[src.current_ride].type, src.proximity_track_type))
-            dst.ProximityTrackType = TrackElemType::RotationControlToggle;
+        dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
         dst.ProximityBaseHeight = src.proximity_base_height;
         dst.ProximityTotal = src.proximity_total;
         for (size_t i = 0; i < std::size(src.proximity_scores); i++)
@@ -1143,9 +1141,7 @@ public:
                 auto rideType = _s6.rides[src2->GetRideIndex()].type;
                 track_type_t trackType = static_cast<track_type_t>(src2->GetTrackType());
 
-                if (trackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, trackType))
-                    trackType = TrackElemType::RotationControlToggle;
-                dst2->SetTrackType(trackType);
+                dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());
@@ -1383,7 +1379,11 @@ public:
             dst->SetTrackType(src->GetTrackType());
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
+            if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_FLAT_RIDE))
+            {
+                dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
+            }
+            else if (src->GetTrackType() == TrackElemType::RotationControlToggleAlias)
             {
                 // Merging hacks mean the track type that's appropriate for the ride type is not necessarily the track type the
                 // ride is on. It's possible to create unwanted behavior if a user layers spinning control track on top of

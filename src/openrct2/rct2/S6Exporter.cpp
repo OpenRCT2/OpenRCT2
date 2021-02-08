@@ -780,9 +780,7 @@ void S6Exporter::ExportRideRatingsCalcData()
     dst.proximity_start_z = src.ProximityStart.z;
     dst.current_ride = src.CurrentRide;
     dst.state = src.State;
-    dst.proximity_track_type = static_cast<uint8_t>(src.ProximityTrackType);
-    if (src.ProximityTrackType == TrackElemType::RotationControlToggle)
-        dst.proximity_track_type = static_cast<uint8_t>(TrackElemType::RotationControlToggleAlias);
+    dst.proximity_track_type = OpenRCT2TrackTypeToRCT2(src.ProximityTrackType);
     dst.proximity_base_height = src.ProximityBaseHeight;
     dst.proximity_total = src.ProximityTotal;
     for (size_t i = 0; i < std::size(dst.proximity_scores); i++)
@@ -1110,10 +1108,7 @@ void S6Exporter::ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src)
     }
     else
     {
-        // export SpinningControlToggle (256) as SpinningControlToggleAlias (100) for backwards compatability with OpenRCT2
-        auto trackType = src->GetTrackType();
-        if (trackType == TrackElemType::RotationControlToggle)
-            trackType = TrackElemType::RotationControlToggleAlias;
+        auto trackType = OpenRCT2TrackTypeToRCT2(src->GetTrackType());
         // Track direction and type are in the same field
         dst->SetTrackType(trackType);
         dst->SetTrackDirection(src->GetTrackDirection());
@@ -1574,10 +1569,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto dst2 = dst->AsTrack();
             auto src2 = src->AsTrack();
 
-            auto trackType = src2->GetTrackType();
-            if (trackType == TrackElemType::RotationControlToggle)
-                trackType = TrackElemType::RotationControlToggleAlias;
-            // SV6 track type is uint8_t; we have aliased Rotation Control (256) to Booster (100) to allow this
+            auto trackType = OpenRCT2TrackTypeToRCT2(src2->GetTrackType());
             dst2->SetTrackType(static_cast<uint8_t>(trackType));
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
             dst2->SetRideIndex(src2->GetRideIndex());

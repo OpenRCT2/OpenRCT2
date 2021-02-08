@@ -99,12 +99,8 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
         for (const auto& trackElement : _trackDesign->track_elements)
         {
-            auto trackType = trackElement.type;
-            if (trackElement.type == TrackElemType::RotationControlToggle)
-            {
-                trackType = TrackElemType::RotationControlToggleAlias;
-            }
-            else if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+            auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+            if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
             {
                 trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
             }

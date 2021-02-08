@@ -320,7 +320,7 @@ static void paint_swinging_ship(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_ship(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_5)
+    if (trackType != TrackElemType::FlatTrack1x5)
     {
         return nullptr;
     }

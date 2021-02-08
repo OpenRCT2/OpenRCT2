@@ -498,22 +498,31 @@ namespace TrackElemType
     constexpr track_type_t MultiDimInvertedUp90ToFlatQuarterLoop = 255;
     constexpr track_type_t RotationControlToggle = 256;
 
-    constexpr track_type_t Count = 257;
-    constexpr track_type_t None = 65535;
-}; // namespace TrackElemType
+    constexpr track_type_t FlatTrack1x4A = 257;
+    constexpr track_type_t FlatTrack2x2 = 258;
+    constexpr track_type_t FlatTrack4x4 = 259;
+    constexpr track_type_t FlatTrack2x4 = 260;
+    constexpr track_type_t FlatTrack1x5 = 261;
+    constexpr track_type_t FlatTrack1x1A = 262;
+    constexpr track_type_t FlatTrack1x4B = 263;
+    constexpr track_type_t FlatTrack1x1B = 264;
+    constexpr track_type_t FlatTrack1x4C = 265;
+    constexpr track_type_t FlatTrack3x3 = 266;
 
-enum
-{
-    FLAT_TRACK_ELEM_1_X_4_A = 95,
-    FLAT_TRACK_ELEM_2_X_2 = 110,
-    FLAT_TRACK_ELEM_4_X_4 = 111,
-    FLAT_TRACK_ELEM_1_X_5 = 116,
-    FLAT_TRACK_ELEM_1_X_1_A = 118,
-    FLAT_TRACK_ELEM_1_X_4_B = 119,
-    FLAT_TRACK_ELEM_1_X_1_B = 121,
-    FLAT_TRACK_ELEM_1_X_4_C = 122,
-    FLAT_TRACK_ELEM_3_X_3 = 123,
-};
+    constexpr track_type_t Count = 267;
+    constexpr track_type_t None = 65535;
+
+    constexpr track_type_t FlatTrack1x4A_Alias = 95;
+    constexpr track_type_t FlatTrack2x2_Alias = 110;
+    constexpr track_type_t FlatTrack4x4_Alias = 111;
+    constexpr track_type_t FlatTrack2x4_Alias = 115;
+    constexpr track_type_t FlatTrack1x5_Alias = 116;
+    constexpr track_type_t FlatTrack1x1A_Alias = 118;
+    constexpr track_type_t FlatTrack1x4B_Alias = 119;
+    constexpr track_type_t FlatTrack1x1B_Alias = 121;
+    constexpr track_type_t FlatTrack1x4C_Alias = 122;
+    constexpr track_type_t FlatTrack3x3_Alias = 123;
+}; // namespace TrackElemType
 
 enum
 {
@@ -544,17 +553,12 @@ struct track_circuit_iterator
     bool looped;
 };
 
-extern const rct_trackdefinition FlatRideTrackDefinitions[TrackElemType::Count];
 extern const rct_trackdefinition TrackDefinitions[TrackElemType::Count];
 
 PitchAndRoll TrackPitchAndRollStart(track_type_t trackType);
 PitchAndRoll TrackPitchAndRollEnd(track_type_t trackType);
 
 int32_t track_is_connected_by_shape(TileElement* a, TileElement* b);
-
-const rct_preview_track* get_track_def_from_ride(Ride* ride, track_type_t trackType);
-const rct_preview_track* get_track_def_from_ride_index(ride_id_t rideIndex, track_type_t trackType);
-const rct_track_coordinates* get_track_coord_from_ride(Ride* ride, track_type_t trackType);
 
 void track_circuit_iterator_begin(track_circuit_iterator* it, CoordsXYE first);
 bool track_circuit_iterator_previous(track_circuit_iterator* it);

@@ -174,7 +174,7 @@ static void paint_merry_go_round(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

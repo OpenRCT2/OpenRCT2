@@ -18,6 +18,9 @@
 #include <string>
 #include <string_view>
 
+using track_type_t = uint16_t;
+using RCT12TrackType = uint8_t;
+
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_START = 123;
 constexpr uint8_t RCT2_STRING_FORMAT_ARG_END = 141;
 constexpr uint8_t RCT2_STRING_FORMAT_COLOUR_START = 142;
@@ -893,3 +896,5 @@ std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
 std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength);
 std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);
+track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
+RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);

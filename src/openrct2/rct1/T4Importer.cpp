@@ -278,7 +278,7 @@ private:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t4TrackElement.type;
+                trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
                 trackElement.flags = t4TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }

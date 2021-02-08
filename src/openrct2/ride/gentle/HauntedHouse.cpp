@@ -157,7 +157,7 @@ static void paint_haunted_house(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

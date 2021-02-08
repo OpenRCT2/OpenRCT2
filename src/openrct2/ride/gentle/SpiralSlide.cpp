@@ -235,7 +235,7 @@ static void paint_spiral_slide(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_2_X_2)
+    if (trackType != TrackElemType::FlatTrack2x2)
     {
         return nullptr;
     }
