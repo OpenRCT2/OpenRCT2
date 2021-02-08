@@ -514,7 +514,10 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<int16_t>(scenario->objective_arg_3);
         ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
-        ft.Add<int32_t>(scenario->objective_arg_2);
+        if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+            ft.Add<uint16_t>(scenario->objective_arg_2);
+        else
+            ft.Add<money32>(scenario->objective_arg_2);
     }
     screenPos.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
 
