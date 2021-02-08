@@ -98,7 +98,7 @@ std::string RegisteredShortcut::GetDisplayString() const
     for (size_t i = 0; i < numChords; i++)
     {
         const auto& kc = Current[i];
-        result += kc.ToString();
+        result += kc.ToLocalisedString();
         if (i < numChords - 1)
         {
             // TODO localise...

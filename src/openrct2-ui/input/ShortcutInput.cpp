@@ -12,7 +12,11 @@
 #include <SDL.h>
 #include <cstring>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/Formatting.h>
+#include <openrct2/localisation/Localisation.h>
+#include <unordered_map>
 
+using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
 constexpr uint32_t UsefulModifiers = KMOD_SHIFT | KMOD_CTRL | KMOD_ALT | KMOD_GUI;
@@ -187,102 +191,128 @@ ShortcutInput::ShortcutInput(std::string_view value)
     }
 }
 
+std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
+{
+    static std::unordered_map<uint32_t, std::pair<const char*, rct_string_id>> keys{
+        { KMOD_SHIFT, { "SHIFT", STR_SHORTCUT_MOD_SHIFT } },    { KMOD_LSHIFT, { "LSHIFT", STR_SHORTCUT_MOD_LSHIFT } },
+        { KMOD_RSHIFT, { "RSHIFT", STR_SHORTCUT_MOD_RSHIFT } }, { KMOD_CTRL, { "CTRL", STR_SHORTCUT_MOD_CTRL } },
+        { KMOD_LCTRL, { "LCTRL", STR_SHORTCUT_MOD_LCTRL } },    { KMOD_RCTRL, { "RCTRL", STR_SHORTCUT_MOD_RCTRL } },
+        { KMOD_ALT, { "ALT", STR_SHORTCUT_MOD_ALT } },          { KMOD_LALT, { "LALT", STR_SHORTCUT_MOD_LALT } },
+        { KMOD_RALT, { "RALT", STR_SHORTCUT_MOD_RALT } },       { KMOD_GUI, { "GUI", STR_SHORTCUT_MOD_GUI } },
+        { KMOD_LGUI, { "LGUI", STR_SHORTCUT_MOD_LGUI } },       { KMOD_RGUI, { "RGUI", STR_SHORTCUT_MOD_RGUI } },
+    };
+
+    auto r = keys.find(key);
+    if (r != keys.end())
+    {
+        if (localised && r->second.second != STR_NONE)
+        {
+            return language_get_string(r->second.second);
+        }
+        else
+        {
+            return r->second.first;
+        }
+    }
+    else
+    {
+        return {};
+    }
+}
+
+std::string_view ShortcutInput::GetKeyName(uint32_t key, bool localised)
+{
+    static std::unordered_map<uint32_t, std::pair<const char*, rct_string_id>> keys{
+        { SDLK_LEFT, { "LEFT", STR_SHORTCUT_LEFT } },
+        { SDLK_RIGHT, { "RIGHT", STR_SHORTCUT_RIGHT } },
+        { SDLK_UP, { "UP", STR_SHORTCUT_UP } },
+        { SDLK_DOWN, { "DOWN", STR_SHORTCUT_DOWN } },
+        { SDLK_BACKSPACE, { "BACKSPACE", STR_SHORTCUT_BACKSPACE } },
+        { SDLK_ESCAPE, { "ESCAPE", STR_SHORTCUT_ESCAPE } },
+        { SDLK_SPACE, { "SPACE", STR_SHORTCUT_SPACEBAR } },
+        { SDLK_TAB, { "TAB", STR_SHORTCUT_TAB } },
+        { SDLK_RETURN, { "RETURN", STR_SHORTCUT_RETURN } },
+        { SDLK_PAGEUP, { "PAGE UP", STR_SHORTCUT_PGUP } },
+        { SDLK_PAGEDOWN, { "PAGE DOWN", STR_SHORTCUT_PGDN } },
+        { SDLK_INSERT, { "INSERT", STR_SHORTCUT_INSERT } },
+        { SDLK_DELETE, { "DELETE", STR_SHORTCUT_DELETE } },
+        { SDLK_KP_DIVIDE, { "NUMPAD /", STR_SHORTCUT_NUMPAD_DIVIDE } },
+        { SDLK_KP_MULTIPLY, { "NUMPAD *", STR_SHORTCUT_NUMPAD_MULTIPLY } },
+        { SDLK_KP_MINUS, { "NUMPAD -", STR_SHORTCUT_NUMPAD_MINUS } },
+        { SDLK_KP_PLUS, { "NUMPAD +", STR_SHORTCUT_NUMPAD_PLUS } },
+        { SDLK_KP_ENTER, { "NUMPAD RETURN", STR_SHORTCUT_NUMPAD_RETURN } },
+        { SDLK_KP_1, { "NUMPAD 1", STR_SHORTCUT_NUMPAD_1 } },
+        { SDLK_KP_2, { "NUMPAD 2", STR_SHORTCUT_NUMPAD_2 } },
+        { SDLK_KP_3, { "NUMPAD 3", STR_SHORTCUT_NUMPAD_3 } },
+        { SDLK_KP_4, { "NUMPAD 4", STR_SHORTCUT_NUMPAD_4 } },
+        { SDLK_KP_5, { "NUMPAD 5", STR_SHORTCUT_NUMPAD_5 } },
+        { SDLK_KP_6, { "NUMPAD 6", STR_SHORTCUT_NUMPAD_6 } },
+        { SDLK_KP_7, { "NUMPAD 7", STR_SHORTCUT_NUMPAD_7 } },
+        { SDLK_KP_8, { "NUMPAD 8", STR_SHORTCUT_NUMPAD_8 } },
+        { SDLK_KP_9, { "NUMPAD 9", STR_SHORTCUT_NUMPAD_9 } },
+        { SDLK_KP_0, { "NUMPAD 0", STR_SHORTCUT_NUMPAD_0 } },
+        { SDLK_KP_PERIOD, { "NUMPAD .", STR_SHORTCUT_NUMPAD_PERIOD } },
+        { SDLK_CAPSLOCK, { "CAPSLOCK", STR_SHORTCUT_NUMPAD_PERIOD } },
+    };
+
+    auto r = keys.find(key);
+    if (r != keys.end())
+    {
+        if (localised && r->second.second != STR_NONE)
+        {
+            return language_get_string(r->second.second);
+        }
+        else
+        {
+            return r->second.first;
+        }
+    }
+    else
+    {
+        return {};
+    }
+}
+
 std::string ShortcutInput::ToString() const
 {
+    return ToString(false);
+}
+
+std::string ShortcutInput::ToLocalisedString() const
+{
+    return ToString(true);
+}
+
+std::string ShortcutInput::ToString(bool localised) const
+{
     std::string result;
-    AppendModifier(result, "SHIFT", KMOD_LSHIFT, KMOD_RSHIFT);
-    AppendModifier(result, "CTRL", KMOD_LCTRL, KMOD_RCTRL);
-    AppendModifier(result, "ALT", KMOD_LALT, KMOD_RALT);
-    AppendModifier(result, "GUI", KMOD_LGUI, KMOD_RGUI);
+    AppendModifier(result, KMOD_LSHIFT, KMOD_RSHIFT, localised);
+    AppendModifier(result, KMOD_LCTRL, KMOD_RCTRL, localised);
+    AppendModifier(result, KMOD_LALT, KMOD_RALT, localised);
+    AppendModifier(result, KMOD_LGUI, KMOD_RGUI, localised);
 
     if (Kind == InputDeviceKind::Keyboard)
     {
-        switch (Button)
+        if (Button != 0)
         {
-            case 0:
-                break;
-            case SDLK_BACKSPACE:
-                result += "BACKSPACE";
-                break;
-            case SDLK_ESCAPE:
-                result += "ESCAPE";
-                break;
-            case SDLK_SPACE:
-                result += "SPACE";
-                break;
-            case SDLK_TAB:
-                result += "TAB";
-                break;
-            case SDLK_RETURN:
-                result += "RETURN";
-                break;
-            case SDLK_PAGEUP:
-                result += "PAGE UP";
-                break;
-            case SDLK_PAGEDOWN:
-                result += "PAGE DOWN";
-                break;
-
-            case SDLK_KP_DIVIDE:
-                result += "NUMPAD /";
-                break;
-            case SDLK_KP_MULTIPLY:
-                result += "NUMPAD *";
-                break;
-            case SDLK_KP_MINUS:
-                result += "NUMPAD -";
-                break;
-            case SDLK_KP_PLUS:
-                result += "NUMPAD +";
-                break;
-            case SDLK_KP_ENTER:
-                result += "NUMPAD RETURN";
-                break;
-            case SDLK_KP_1:
-                result += "NUMPAD 1";
-                break;
-            case SDLK_KP_2:
-                result += "NUMPAD 2";
-                break;
-            case SDLK_KP_3:
-                result += "NUMPAD 3";
-                break;
-            case SDLK_KP_4:
-                result += "NUMPAD 4";
-                break;
-            case SDLK_KP_5:
-                result += "NUMPAD 5";
-                break;
-            case SDLK_KP_6:
-                result += "NUMPAD 6";
-                break;
-            case SDLK_KP_7:
-                result += "NUMPAD 7";
-                break;
-            case SDLK_KP_8:
-                result += "NUMPAD 8";
-                break;
-            case SDLK_KP_9:
-                result += "NUMPAD 9";
-                break;
-            case SDLK_KP_0:
-                result += "NUMPAD 0";
-                break;
-            case SDLK_KP_PERIOD:
-                result += "NUMPAD .";
-                break;
-
-            default:
+            auto text = GetKeyName(Button, localised);
+            if (text.empty())
+            {
                 if (Button & SDLK_SCANCODE_MASK)
                 {
-                    auto name = SDL_GetScancodeName(static_cast<SDL_Scancode>(Button & ~SDLK_SCANCODE_MASK));
+                    auto name = SDL_GetKeyName(Button);
+                    // auto name = SDL_GetScancodeName(static_cast<SDL_Scancode>(Button & ~SDLK_SCANCODE_MASK));
                     result += name;
                 }
                 else
                 {
                     String::AppendCodepoint(result, std::toupper(Button));
                 }
-                break;
+            }
+            else
+            {
+                result += text;
+            }
         }
     }
     else if (Kind == InputDeviceKind::Mouse)
@@ -290,57 +320,54 @@ std::string ShortcutInput::ToString() const
         switch (Button)
         {
             case 0:
-                result += "LMB";
+                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_LEFT, Button + 1) : "LMB";
                 break;
             case 1:
-                result += "RMB";
+                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_RIGHT, Button + 1) : "RMB";
                 break;
             default:
-                result += "MOUSE ";
-                result += std::to_string(Button + 1);
+                result += localised ? FormatStringId(STR_SHORTCUT_MOUSE_NUMBER, Button + 1)
+                                    : "MOUSE " + std::to_string(Button + 1);
                 break;
         }
     }
     else if (Kind == InputDeviceKind::JoyButton)
     {
-        result += "JOY ";
-        result += std::to_string(Button + 1);
+        result += localised ? FormatStringId(STR_SHORTCUT_JOY_NUMBER, Button + 1) : "JOY " + std::to_string(Button + 1);
     }
     else if (Kind == InputDeviceKind::JoyHat)
     {
         if (Button & SDL_HAT_LEFT)
-            result += "JOY LEFT";
+            result += localised ? language_get_string(STR_SHORTCUT_JOY_LEFT) : "JOY LEFT";
         else if (Button & SDL_HAT_RIGHT)
-            result += "JOY RIGHT";
+            result += localised ? language_get_string(STR_SHORTCUT_JOY_RIGHT) : "JOY RIGHT";
         else if (Button & SDL_HAT_UP)
-            result += "JOY UP";
+            result += localised ? language_get_string(STR_SHORTCUT_JOY_UP) : "JOY UP";
         else if (Button & SDL_HAT_DOWN)
-            result += "JOY DOWN";
+            result += localised ? language_get_string(STR_SHORTCUT_JOY_DOWN) : "JOY DOWN";
         else
             result += "JOY ?";
     }
     return result;
 }
 
-bool ShortcutInput::AppendModifier(std::string& s, std::string_view text, uint32_t left, uint32_t right) const
+bool ShortcutInput::AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const
 {
     if ((Modifiers & (left | right)) == (left | right))
     {
-        s += text;
+        s += GetModifierName(left | right, localised);
         s += "+";
         return true;
     }
     else if (Modifiers & left)
     {
-        s += "L";
-        s += text;
+        s += GetModifierName(left, localised);
         s += "+";
         return true;
     }
     else if (Modifiers & right)
     {
-        s += "R";
-        s += text;
+        s += GetModifierName(right, localised);
         s += "+";
         return true;
     }

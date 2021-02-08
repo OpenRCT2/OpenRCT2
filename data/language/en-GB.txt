@@ -3665,6 +3665,27 @@ STR_6408    :Please install “innoextract” to extract GOG Installer, then res
 STR_6409    :The selected file is not the offline GOG Installer for RollerCoaster Tycoon 2. You may have downloaded the GOG Galaxy downloader stub or selected the wrong file.
 STR_6410    :Zoom in/out
 STR_6411    :Show buttons for zooming in and out in the toolbar
+STR_6412    :NumPad Return
+STR_6413    :SHIFT
+STR_6414    :LSHIFT
+STR_6415    :RSHIFT
+STR_6416    :CTRL
+STR_6417    :LCTRL
+STR_6418    :RCTRL
+STR_6419    :ALT
+STR_6420    :LALT
+STR_6421    :RALT
+STR_6422    :GUI
+STR_6423    :LGUI
+STR_6424    :RGUI
+STR_6425    :JOY LEFT
+STR_6426    :JOY RIGHT
+STR_6427    :JOY UP
+STR_6428    :JOY DOWN
+STR_6429    :JOY {INT32}
+STR_6430    :LMB
+STR_6431    :RMB
+STR_6432    :MOUSE {INT32}
 
 #############
 # Scenarios #

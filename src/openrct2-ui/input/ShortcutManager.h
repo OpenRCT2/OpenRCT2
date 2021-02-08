@@ -38,13 +38,17 @@ namespace OpenRCT2::Ui
         ShortcutInput() = default;
         ShortcutInput(std::string_view value);
         std::string ToString() const;
+        std::string ToLocalisedString() const;
 
         bool Matches(const InputEvent& e) const;
 
         static std::optional<ShortcutInput> FromInputEvent(const InputEvent& e);
 
     private:
-        bool AppendModifier(std::string& s, std::string_view text, uint32_t left, uint32_t right) const;
+        bool AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
+        static std::string_view GetModifierName(uint32_t key, bool localised);
+        static std::string_view GetKeyName(uint32_t key, bool localised);
+        std::string ToString(bool localised) const;
     };
 
     class RegisteredShortcut

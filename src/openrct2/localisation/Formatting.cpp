@@ -615,6 +615,7 @@ namespace OpenRCT2
     template void FormatArgument(FormatBuffer&, FormatToken, int16_t);
     template void FormatArgument(FormatBuffer&, FormatToken, int32_t);
     template void FormatArgument(FormatBuffer&, FormatToken, int64_t);
+    template void FormatArgument(FormatBuffer&, FormatToken, uint32_t);
     template void FormatArgument(FormatBuffer&, FormatToken, uint64_t);
     template void FormatArgument(FormatBuffer&, FormatToken, const char*);
 
