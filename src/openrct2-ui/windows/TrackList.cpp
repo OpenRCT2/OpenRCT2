@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
 #include <openrct2/OpenRCT2.h>
@@ -500,13 +501,25 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track preview
     int32_t colour;
     rct_widget* widget = &window_track_list_widgets[WIDX_TRACK_PREVIEW];
-    auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     colour = ColourMapA[w->colours[0]].darkest;
+    auto screenPos = w->windowPos;
+    utf8* path = _trackDesigns[trackIndex].path;
+    
+    // Show Track file path (in debug mode)
+    if (gConfigGeneral.debugging_tools)
+    {
+        utf8 pathBuffer[MAX_PATH];
+        const utf8* pathPtr = pathBuffer;
+        shorten_path(pathBuffer, sizeof(pathBuffer), path, WW );
+        gfx_fill_rect(dpi, { screenPos + ScreenCoordsXY{ 1, WH }, screenPos + ScreenCoordsXY{ WW + 1, WH + 12 } }, colour);
+        gfx_draw_string_left(dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1], screenPos + ScreenCoordsXY{ 0, WH });
+    }
+
+    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     gfx_fill_rect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);
 
     if (_loadedTrackDesignIndex != trackIndex)
-    {
-        utf8* path = _trackDesigns[trackIndex].path;
+    { 
         if (track_list_load_design_for_preview(path))
         {
             _loadedTrackDesignIndex = trackIndex;
