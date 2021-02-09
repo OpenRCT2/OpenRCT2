@@ -20,9 +20,9 @@ STR_0014    :Fritt fall med uppskjut
 STR_0015    :Bobslädesbana
 STR_0016    :Observationstorn
 STR_0017    :Loopande berg- och dalbana
-STR_0018    :Jollebana
+STR_0018    :Stuprörsbana
 STR_0019    :Gruvtåg
-STR_0020    :Stolslift
+STR_0020    :Linbana
 STR_0021    :Korkskruvsberg- och dalbana
 STR_0022    :Labyrint
 STR_0023    :Spiralrutschkana
@@ -113,16 +113,16 @@ STR_0524    :Fordonet skjuts uppför ett högt ståltorn med lufttryck för att 
 STR_0525    :Passagerarna dundrar utför ett slingrande spår som styrs enbart av den halvcirkelformade banans krökning och lutning
 STR_0526    :Passagerarna åker i en roterande utsiktskabin som hissas uppför ett högt torn
 STR_0527    :En mjukgående berg- och dalbana med stålräls som kan göra vertikala loopar
-STR_0528    :Passagerarna åker i uppblåsbara jollar nerför ett slingrande halvöppet eller helt slutet rör
+STR_0528    :Passagerarna åker i uppblåsbara gummibåtar som halkar fram genom slingrande slutna rör och öppna rännor
 STR_0529    :Berg- och dalbanetåg med gruvtema rusar fram längs stålskenor som ser ut som äkta gammeldags järnvägsspår
-STR_0530    :Vagnar hänger från en stålkabel som kör kontinuerligt från ena änden till den andra och tillbaks igen
+STR_0530    :Vagnar hänger från en stålkabel som kör kontinuerligt från ena änden till den andra och tillbaka igen
 STR_0531    :En kompakt berg- och dalbana av stål där tågen åker genom korkskruvar och loopar
 STR_0532    :Labyrinten består av två meter höga häckar eller murar och besökarna får leta sig fram genom den för att hitta utgången
 STR_0533    :Träbyggnad med en trappa på insidan och en spiralvriden rutschkana på utsidan som åks på med glidmattor
 STR_0534    :Gäster tävlar mot varandra i gokart på en asfaltbana
 STR_0535    :Båtar åker längs en lång vattenkanal och plaskar nerför branta sluttningar för att blöta ner passagerarna
 STR_0536    :Runda båtar snirklar sig fram längs en lång bred vattenkanal, plaskar genom vattenfall och för passagerarna genom skummande forsar
-STR_0537    :Gäster styr elektriska radiobilar för att krocka emot varann
+STR_0537    :Gäster styr elektriska radiobilar för att krocka emot varandra
 STR_0538    :Stort krängande piratskepp
 STR_0539    :Ett skepp, fäst vid en arm med motvikt på motsatt sida, som svänger hela varvet runt
 STR_0540    :Ett stånd där besökare kan köpa mat
@@ -435,7 +435,7 @@ STR_1046    :OpenRCT2 Sparad bandesign
 STR_1047    :Misslyckades med att spara spelet!
 STR_1048    :Misslyckades med att spara scenario!
 STR_1049    :Misslyckades med att spara landskap!
-STR_1050    :Misslyckades att ladda…{NEWLINE}Filen innehåller ogiltig data!
+STR_1050    :Misslyckades att ladda…{NEWLINE}Filen innehåller ogiltiga data!
 STR_1051    :Dölj stödpelare
 STR_1052    :Dölj besökare
 STR_1053    :Åkturer eller attraktioner i parken
@@ -743,7 +743,7 @@ STR_1354    :{WINDOW_COLOUR_2}Högsta fallhöjd: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Fall: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inversioner: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Hål: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Total flygtid: {BLACK}{COMMA2DP32}secs
+STR_1358    :{WINDOW_COLOUR_2}Total flygtid: {BLACK}{COMMA2DP32}sek
 STR_1359    :{WINDOW_COLOUR_2}Kötid: {BLACK}{COMMA16} minut
 STR_1360    :{WINDOW_COLOUR_2}Kötid: {BLACK}{COMMA16} minuter
 STR_1361    :Kan inte ändra hastighet…
@@ -923,7 +923,7 @@ STR_1534    :{SMALLFONT}”Varmkorven från {STRINGID} var verkligen värd penga
 STR_1535    :{SMALLFONT}”Tentakeln från {STRINGID} var verkligen värd pengarna”
 STR_1536    :{SMALLFONT}”Hatten från {STRINGID} var verkligen värd pengarna”
 STR_1537    :{SMALLFONT}”Det kanderade äpplet från {STRINGID} var verkligen värt pengarna”
-STR_1538    :{SMALLFONT}”T-shirten från {STRINGID} var verkligen värd pengarna”
+STR_1538    :{SMALLFONT}”T-tröjan från {STRINGID} var verkligen värd pengarna”
 STR_1539    :{SMALLFONT}”Munken från {STRINGID} var verkligen värd pengarna”
 STR_1540    :{SMALLFONT}”Kaffet från {STRINGID} var verkligen värt pengarna”
 STR_1541    :
@@ -957,7 +957,7 @@ STR_1568    :{SMALLFONT}”Jag tänker inte betala så mycket för en varmkorv f
 STR_1569    :{SMALLFONT}”Jag tänker inte betala så mycket för tentakel från {STRINGID}”
 STR_1570    :{SMALLFONT}”Jag tänker inte betala så mycket för en hatt från {STRINGID}”
 STR_1571    :{SMALLFONT}”Jag tänker inte betala så mycket för ett kanderat äpple från {STRINGID}”
-STR_1572    :{SMALLFONT}”Jag tänker inte betala så mycket för en T-shirt från {STRINGID}”
+STR_1572    :{SMALLFONT}”Jag tänker inte betala så mycket för en t-tröja från {STRINGID}”
 STR_1573    :{SMALLFONT}”Jag tänker inte betala så mycket för en munk från {STRINGID}”
 STR_1574    :{SMALLFONT}”Jag tänker inte betala så mycket för en kaffe från {STRINGID}”
 STR_1575    :
@@ -1006,7 +1006,7 @@ STR_1617    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto frå
 STR_1618    :{SMALLFONT}”Jag tänker inte betala så mycket för ett foto från åkturen {STRINGID}”
 STR_1619    :{SMALLFONT}”Jag tänker inte betala så mycket för en kringla från {STRINGID}”
 STR_1620    :{SMALLFONT}”Jag tänker inte betala så mycket för varm choklad från {STRINGID}”
-STR_1621    :{SMALLFONT}”Jag tänker inte betala så mycket för isté från {STRINGID}”
+STR_1621    :{SMALLFONT}”Jag tänker inte betala så mycket för iste från {STRINGID}”
 STR_1622    :{SMALLFONT}”Jag tänker inte betala så mycket för en struva från {STRINGID}”
 STR_1623    :{SMALLFONT}”Jag tänker inte betala så mycket för solglasögon från {STRINGID}”
 STR_1624    :{SMALLFONT}”Jag tänker inte betala så mycket för biffnudlar från {STRINGID}”
@@ -1352,7 +1352,7 @@ STR_1976    :{WINDOW_COLOUR_2}Pris på varmkorv:
 STR_1977    :{WINDOW_COLOUR_2}Pris på tentakel:
 STR_1978    :{WINDOW_COLOUR_2}Pris på hatt:
 STR_1979    :{WINDOW_COLOUR_2}Pris på kanderat äpple:
-STR_1980    :{WINDOW_COLOUR_2}Pris på T-shirt:
+STR_1980    :{WINDOW_COLOUR_2}Pris på t-tröja:
 STR_1981    :{WINDOW_COLOUR_2}Pris på munk:
 STR_1982    :{WINDOW_COLOUR_2}Pris på kaffe:
 STR_1983    :{WINDOW_COLOUR_2}
@@ -1380,7 +1380,7 @@ STR_2004    :Varmkorv
 STR_2005    :Tentakel
 STR_2006    :Hatt
 STR_2007    :Kanderat äpple
-STR_2008    :T-shirt
+STR_2008    :T-tröja
 STR_2009    :Munk
 STR_2010    :Kaffe
 STR_2011    :Tom mugg
@@ -1408,7 +1408,7 @@ STR_2032    :Varmkorvar
 STR_2033    :Tentakler
 STR_2034    :Hattar
 STR_2035    :Kanderade äpplen
-STR_2036    :T-shirtar
+STR_2036    :T-tröjor
 STR_2037    :Munkar
 STR_2038    :Kaffekoppar
 STR_2039    :Tomma muggar
@@ -1436,10 +1436,10 @@ STR_2060    :en varmkorv
 STR_2061    :en tentakel
 STR_2062    :en hatt
 STR_2063    :ett kanderat äpple
-STR_2064    :en T-Shirt
-STR_2065    :en Munk
+STR_2064    :en t-tröja
+STR_2065    :en munk
 STR_2066    :en Kaffe
-STR_2067    :en Tom Mugg
+STR_2067    :en tom mugg
 STR_2068    :lite friterad kyckling
 STR_2069    :lite saft
 STR_2070    :en tomlåda
@@ -1464,7 +1464,7 @@ STR_2088    :Varmkorv
 STR_2089    :Tentakel
 STR_2090    :Hatt från ”{STRINGID}”
 STR_2091    :Kanderat äpple
-STR_2092    :T-shirt från ”{STRINGID}”
+STR_2092    :T-tröja från ”{STRINGID}”
 STR_2093    :Munk
 STR_2094    :Kaffe
 STR_2095    :Tom mugg
@@ -1477,7 +1477,7 @@ STR_2104    :{WINDOW_COLOUR_2}Pris på varm choklad:
 STR_2105    :{WINDOW_COLOUR_2}Pris på iste:
 STR_2106    :{WINDOW_COLOUR_2}Pris på struva:
 STR_2107    :{WINDOW_COLOUR_2}Pris på solglasögon:
-STR_2108    :{WINDOW_COLOUR_2}Pris på nudlar med biff:
+STR_2108    :{WINDOW_COLOUR_2}Pris på biffnudlar:
 STR_2109    :{WINDOW_COLOUR_2}Pris på stekta nudlar:
 STR_2110    :{WINDOW_COLOUR_2}Pris på wontonsoppa:
 STR_2111    :{WINDOW_COLOUR_2}Pris på köttbullssoppa:
@@ -1496,7 +1496,7 @@ STR_2126    :Varm choklad
 STR_2127    :Iste
 STR_2128    :Struva
 STR_2129    :Solglasögon
-STR_2130    :Nudlar med biff
+STR_2130    :Biffnudlar
 STR_2131    :Stekta nudlar
 STR_2132    :Wontonsoppa
 STR_2133    :Köttbullssoppa
@@ -1515,7 +1515,7 @@ STR_2148    :Muggar med varm choklad
 STR_2149    :Isteer
 STR_2150    :Struvor
 STR_2151    :Solglasögon
-STR_2152    :Nudlar med biff
+STR_2152    :Biffnudlar
 STR_2153    :Friterade nudlar
 STR_2154    :Wontonsoppor
 STR_2155    :Köttbullssoppor
@@ -1534,7 +1534,7 @@ STR_2170    :en varm choklad
 STR_2171    :en iste
 STR_2172    :en struva
 STR_2173    :ett par solglasögon
-STR_2174    :lite nudlar med biff
+STR_2174    :lite biffnudlar
 STR_2175    :lite stekta nudlar
 STR_2176    :lite wontonsoppa
 STR_2177    :lite köttbullssoppa
@@ -1553,7 +1553,7 @@ STR_2192    :Varm choklad
 STR_2193    :Iste
 STR_2194    :Struva
 STR_2195    :Solglasögon
-STR_2196    :Nudlar med biff
+STR_2196    :Biffnudlar
 STR_2197    :Stekta nudlar
 STR_2198    :Wontonsoppa
 STR_2199    :Köttbullssoppa
@@ -2144,7 +2144,7 @@ STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Kan inte ladda fil…
-STR_3011    :Filen innehåller ogiltig data
+STR_3011    :Filen innehåller ogiltiga data
 STR_3012    :Radiobilstema
 STR_3013    :Tivolitema
 STR_3014    :Romerskt tema
@@ -2427,7 +2427,7 @@ STR_3330    :Parken måste äga någon mark
 STR_3331    :Vägen från parkentrén till kartkanten är antingen inte komplett eller för komplex – Vägen måste ha en konstant bredd med så få korsningar och hörn som möjligt
 STR_3332    :Parkentrén är åt fel håll eller har ingen väg som leder till kartkanten
 STR_3333    :Exportera egendefinierade objekt med sparade spel
-STR_3334    :Välj om egendefinierade objekt objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera dessa data
+STR_3334    :Välj om egendefinierade objekt (extra objekt som inte följer med basspelet) ska sparas i sparade spel och scenarion, vilket låter spelare importera dessa data
 STR_3335    :Åktursdesigner – Välj åkturstyp och fordon
 STR_3336    :Bandesign-hanterare – Välj åkturstyp
 STR_3338    :{BLACK}Egendesignad layout
@@ -2458,7 +2458,7 @@ STR_3364    :Avancerat
 STR_3365    :Tillåt urval av individuella dekorationer utöver dekorationsgrupper
 STR_3366    :{BLACK}= Åktur
 STR_3367    :{BLACK}= Matstånd
-STR_3368    :{BLACK}= Dryckstånd
+STR_3368    :{BLACK}= Dryckesstånd
 STR_3369    :{BLACK}= Souvenirstånd
 STR_3370    :{BLACK}= Infokiosk
 STR_3371    :{BLACK}= Första hjälpen
@@ -2471,7 +2471,7 @@ STR_3377    :Installera en ny bandesignfil
 STR_3378    :Installera
 STR_3379    :Avbryt
 STR_3380    :Kan inte installera denna bandesign…
-STR_3381    :Filen är inte kompatibel eller innehåller ogiltig data
+STR_3381    :Filen är inte kompatibel eller innehåller ogiltiga data
 STR_3382    :Filkopiering misslyckades
 STR_3383    :Välj nytt namn på denna bandesign
 STR_3384    :En existerande bandesign har redan detta namn – Var god välj ett nytt namn för denna design:
@@ -2506,7 +2506,7 @@ STR_5137    :Lås upp körlägesgränser
 STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Avaktivera bromsfel
-STR_5141    :Avaktivera alla haverin
+STR_5141    :Avaktivera alla haverier
 STR_5142    :Normal hastighet
 STR_5143    :Kvick hastighet
 STR_5144    :Snabb hastighet
@@ -2547,7 +2547,7 @@ STR_5192    :Senaste nyheter
 STR_5193    :Land
 STR_5194    :Vatten
 STR_5195    :Rensa land
-STR_5196    :Landsrättigheter
+STR_5196    :Landrättigheter
 STR_5197    :Dekorationer
 STR_5198    :Gångväg
 STR_5199    :Åkturkonstruktion
@@ -2579,7 +2579,7 @@ STR_5224    :Riv åktur-fönster
 STR_5225    :Avskeda personal-fönster
 STR_5226    :Radera spår-fönster
 STR_5227    :Sparfilöverskrivningsfönster
-STR_5228    :Huvudgränsnitt
+STR_5228    :Huvudgränssnitt
 STR_5229    :Park
 STR_5230    :Verktyg
 STR_5231    :Åkturer och besökare
@@ -2599,9 +2599,9 @@ STR_5244    :Teman
 STR_5245    :Toppens verktygsfält
 STR_5246    :Bottens verktygsfält
 STR_5247    :Spårredigerarens verktygsfält
-STR_5248    :Dekorationredigerarens verktygsfält
+STR_5248    :Dekorationsredigerarens verktygsfält
 STR_5249    :Titelmenyns knappar
-STR_5250    :Titelnradens avsluta-knapp
+STR_5250    :Titelradens avsluta-knapp
 STR_5251    :Titelradens inställningsknapp
 STR_5252    :Scenarioväljaren
 STR_5253    :Parkinformation
@@ -2878,7 +2878,7 @@ STR_5554    :Tillåt bergverktyget
 STR_5555    :Visa fordon från andra karuseller
 STR_5556    :Sparka ut spelare
 STR_5557    :Behåll anslutning efter synkproblem (multiplayer)
-STR_5558    :Denna inställningen börjar först att gälla efter att du startat om OpenRCT2
+STR_5558    :Denna inställning börjar först att gälla efter att du startat om OpenRCT2
 STR_5559    :10 min. inspektioner
 STR_5560    :Sätter inspektionstiden till ’Var 10:e minut’ på alla åkturer
 STR_5561    :Misslyckades att ladda språk
@@ -3091,7 +3091,7 @@ STR_5805    :Om ikryssad kommer din server att läggas till i{NEWLINE}den offent
 STR_5806    :Växla mellan fönster och helskärm
 STR_5807    :{WINDOW_COLOUR_2}Antal åkturer: {BLACK}{COMMA16}
 STR_5808    :{WINDOW_COLOUR_2}Antal affärer och stånd: {BLACK}{COMMA16}
-STR_5809    :{WINDOW_COLOUR_2}Antal informationskioskar och toaletter: {BLACK}{COMMA16}
+STR_5809    :{WINDOW_COLOUR_2}Antal informationskiosker och toaletter: {BLACK}{COMMA16}
 STR_5810    :Avaktivera gränsen för vagnar per tåg
 STR_5811    :Om ikryssad kan du ha upp till{NEWLINE}255 vagnar per tåg och 31{NEWLINE}tåg per attraktion
 STR_5812    :Visa flerspelarfönstret
@@ -3100,7 +3100,7 @@ STR_5814    :{WINDOW_COLOUR_1}”{STRING}”
 #tooltips
 STR_5815    :Visa bildhastighetsmätare i spelet
 STR_5816    :Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
-STR_5817    :Väljer UI-skalningstyp, kräver att hårdvaruhantering används.{NEWLINE}’Linjär’-skalning är mjuk men suddig.’Avrunda till närmsta granne’-skalning är skarp även vid decimaler men kan ta mer prestanda.
+STR_5817    :Väljer UI-skalningstyp, kräver att hårdvaruhantering används.{NEWLINE}’Linjär’-skalning är mjuk men suddig. ’Avrunda till närmsta granne’-skalning är skarp även vid decimaler men kan ta mer prestanda.
 STR_5819    :[Kräver Hårdvaruhantering]{NEWLINE}Pausa spelet om Steam{NEWLINE}in-game overlay är öppet
 STR_5820    :Minimera spelet om fokusen{NEWLINE}tappas medan du är i fullskärmsläge
 STR_5822    :Växla mellan natt och dag.{NEWLINE}En full växling tar 1 månad i spelet.
@@ -3108,7 +3108,7 @@ STR_5823    :Visa banderoller med versaler{NEWLINE}(Som i RCT1)
 STR_5824    :Avaktivera blixtarna som kommer när det åskar{NEWLINE}Blixtarna visar en ljusare bild i ungefär 1 sekund varje gång det åskar till
 STR_5825    :Behåll musen i fönstret om du spelar i ett fönster
 STR_5826    :Växla ’upp och ner’ med varandra när du drar spelets kamera vid högerklick
-STR_5827    :Välj färgschema för spelets grafiska användargränsnitt
+STR_5827    :Välj färgschema för spelets grafiska användargränssnitt
 STR_5828    :Ändra vilket måttsystem du vill använda för längd, hastighet och annat
 STR_5829    :Ändra vilken valuta du vill använda.{NEWLINE}Endast visuellt, det finns ingen valutaomvandlare i spelet
 STR_5830    :Välj vilket språk du ska använda
@@ -3139,7 +3139,7 @@ STR_5856    :Sätter spelets upplösning när du spelar i fullskärm
 STR_5857    :Spelinställningar
 STR_5858    :Använd GPU för grafiken istället för CPU. Ökar kompatibiliteten med skärminspelningsprogram som till exempel Fraps{NEWLINE}Kan försämra prestandan lite grand
 STR_5859    :Aktiverar ’frame tweening’ för en visuellt mjukare spelupplevelse.{NEWLINE}Om avaktiverad kommer spelet köras i 40 bilder per sekund.
-STR_5860    :Växla mellan originalkoden eller omskrivna koden för spårelement
+STR_5860    :Växla mellan originalkoden och omskrivna koden för spårelement
 STR_5861    :Nyckelverifiering misslyckades.
 STR_5862    :Blockera okända spelare.
 STR_5863    :Tillåt endast spelare med kända nycklar att ansluta.
@@ -3178,8 +3178,8 @@ STR_5895    :Spara bandesign
 STR_5896    :Misslyckades med att spara bandesignen!
 STR_5898    :{BLACK}Kan inte ladda bandesignen, filen kan vara {NEWLINE}skadad eller saknas!
 STR_5899    :Växla ’grafikfelsökning’-fönstret
-STR_5900    :Använd orginalkoden till grafik
-STR_5901    :Visa segmenternas höjder
+STR_5900    :Använd originalkoden till grafik
+STR_5901    :Visa segmentens höjder
 STR_5902    :Visa ritlådorna
 STR_5903    :Visa ’grafikfelsökning’-fönstret
 STR_5904    :Återställ datum
@@ -3261,7 +3261,7 @@ STR_5979    :{WINDOW_COLOUR_2}Stängsel typ: {BLACK}{COMMA16}
 STR_5980    :{WINDOW_COLOUR_2}Banderoll text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Inte en banderoll
 STR_5982    :{WINDOW_COLOUR_2}Stor dekoration typ: {BLACK}{COMMA16}
-STR_5983    :{WINDOW_COLOUR_2}Stor dekortaionsdels-id: {BLACK}{COMMA16}
+STR_5983    :{WINDOW_COLOUR_2}Stor dekorationsdels-id: {BLACK}{COMMA16}
 STR_5984    :Blockerade gångar:
 STR_5985    :Ny mapp
 STR_5986    :Skriv in namnet på den nya mappen.
@@ -3301,7 +3301,7 @@ STR_6019    :Åkturkonstruktion – Sväng höger
 STR_6020    :Åkturkonstruktion – Rakt spår
 STR_6021    :Åkturkonstruktion – Lutning nedåt
 STR_6022    :Åkturkonstruktion – Lutning uppåt
-STR_6023    :Åkturkonstruktion – Växla lyftkjedjor
+STR_6023    :Åkturkonstruktion – Växla lyftkedjor
 STR_6024    :Åkturkonstruktion – Dosering vänster
 STR_6025    :Åkturkonstruktion – Dosering höger
 STR_6026    :Åkturkonstruktion – Föregående spår
@@ -3447,8 +3447,8 @@ STR_6173    :Vänligen skriv in ett namn att söka:
 STR_6174    :Ladda sparfil
 STR_6175    :Ladda scenario
 STR_6176    :Scenario att ladda:
-STR_6177    :Load{MOVE_X}{87}Inget scenario valt
-STR_6178    :Load{MOVE_X}{87}{RED}Saknar scenario
+STR_6177    :Ladda{MOVE_X}{87}Inget scenario valt
+STR_6178    :Ladda{MOVE_X}{87}{RED}Saknar scenario
 STR_6179    :Välj
 STR_6180    :Inget scenario valt
 STR_6181    :{RED}Saknar scenario
@@ -3648,14 +3648,14 @@ STR_6388    :Kan inte höja element här…
 STR_6389    :Ogiltig fri höjd
 STR_6390    :OpenRCT2 behöver filer från det originala RollerCoaster Tycoon 2 för att fungera. Välj mappen där du installerat RollerCoaster Tycoon 2.
 STR_6391    :Välj din RCT2-mapp
-STR_6392    :Kunde inte hitta {STRING} på denna sökvägen.
+STR_6392    :Kunde inte hitta {STRING} på denna sökväg.
 STR_6393    :Val av uppdrag
 STR_6394    :Uppdrag
 STR_6395    :Underhåll
 STR_6396    :Avaktivera skärmsläckare och strömspar
 STR_6397    :Om markerad, stängs skärmsläckare och andra strömsparfunktioner av medan OpenRCT2 körs.
 STR_6398    :Filen innehåller attraktioner som det saknas stöd för. Uppdatera till en senare version av OpenRCT2.
-STR_6399    :OpenRCT2 behöver filer från det originala RollerCoaster Tycoon 2 för att fungera. Sätt ”game_path”-variabeln i config.ini till att peka på mappen där du intallerat RollerCoaster Tycoon 2, och starta sedan om OpenRCT2.
+STR_6399    :OpenRCT2 behöver filer från det originala RollerCoaster Tycoon 2 för att fungera. Sätt ”game_path”-variabeln i config.ini till att peka på mappen där du installerat RollerCoaster Tycoon 2, och starta sedan om OpenRCT2.
 STR_6400    :Jag har GOG offline-installationsfilen för RollerCoaster Tycoon 2, men har inte installerat den
 STR_6401    :Jag har redan installerat RollerCoaster Tycoon 2
 STR_6402    :OpenRCT2 datakonfiguration
@@ -3918,7 +3918,7 @@ STR_DTLS    :En hästbana för hinderlöpning är i centrum för denna växande 
 <Mineral Park>
 STR_SCNR    :Mineral Park
 STR_PARK    :Mineral Park
-STR_DTLS    :Förvandla detta övergivna stenbrott till en plats som lockar spänningsökande turister
+STR_DTLS    :Förvandla detta övergivna stenbrott till en plats som lockar spänningssökande turister
 
 <Coaster Crazy>
 STR_SCNR    :Coaster Crazy
@@ -4075,7 +4075,7 @@ STR_DTLS    :Detta stadsområde är ditt för att göras till en nöjespark
 <Megaworld Park>
 STR_SCNR    :Megaworld Park
 STR_PARK    :Megaworld Park
-STR_DTLS    :En gigantiskt park fylld av attraktioner behöver upprustas
+STR_DTLS    :En gigantisk park fylld av attraktioner behöver upprustas
 
 <Venus Ponds>
 STR_SCNR    :Venus Ponds
@@ -4170,10 +4170,10 @@ STR_NAME    :Glastak
 STR_NAME    :Glastak
 
 [ACWW33]
-STR_NAME    :Träpalisad
+STR_NAME    :Träpalissad
 
 [ACWWF32]
-STR_NAME    :Träpalisadvägg
+STR_NAME    :Träpalissadvägg
 
 ## End OpenRCT2 Official
 
@@ -4317,7 +4317,7 @@ STR_DTLS    :Bygg de Six Flags-attraktionerna som saknas eller skapa dina egna f
 <Africa - African Diamond Mine>
 STR_SCNR    :Afrika – Afrikansk diamantgruva
 STR_PARK    :Afrikas gruvor
-STR_DTLS    :Du har hittat en diamant efter att ha ärvt en övergiven diamantgruva. Du beslutar dig för att satsa pengarna på en storslaget nöjesfält.
+STR_DTLS    :Du har hittat en diamant efter att ha ärvt en övergiven diamantgruva. Du beslutar dig för att satsa pengarna på ett storslaget nöjesfält.
 
 <Africa - Oasis>
 STR_SCNR    :Afrika – Oas
