@@ -85,6 +85,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Build OpenRCT2
         run: |
           sudo su
@@ -100,6 +102,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Build OpenRCT2
         run: |
           sudo su
@@ -149,6 +153,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv && get-discord-rpc
@@ -184,6 +190,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv && get-discord-rpc
@@ -224,6 +232,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv -q && get-discord-rpc
@@ -282,6 +292,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Build OpenRCT2
         shell: bash
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
