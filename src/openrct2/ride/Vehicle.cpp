@@ -9332,7 +9332,8 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         }
         poweredAcceleration -= velocity;
         poweredAcceleration *= powered_acceleration << 1;
-        poweredAcceleration = poweredAcceleration / quarterForce;
+        if (quarterForce != 0)
+            poweredAcceleration /= quarterForce;
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
         {
