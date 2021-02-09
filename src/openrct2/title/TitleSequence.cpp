@@ -498,14 +498,14 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
         switch (command.Type)
         {
             case TitleScript::Load:
-                if (command.SaveIndex == 0xFF)
-                {
-                    sb.Append("LOAD <No save file>");
-                }
-                else
+                if (command.SaveIndex < seq.Saves.size())
                 {
                     sb.Append("LOAD ");
                     sb.Append(seq.Saves[command.SaveIndex].c_str());
+                }
+                else
+                {
+                    sb.Append("LOAD <No save file>");
                 }
                 break;
             case TitleScript::LoadSc:

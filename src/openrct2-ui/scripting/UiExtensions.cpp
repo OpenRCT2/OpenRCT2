@@ -13,6 +13,7 @@
 
 #    include "CustomMenu.h"
 #    include "ScTileSelection.hpp"
+#    include "ScTitleSequence.hpp"
 #    include "ScUi.hpp"
 #    include "ScWidget.hpp"
 #    include "ScWindow.hpp"
@@ -25,6 +26,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
 {
     auto ctx = scriptEngine.GetContext();
 
+    dukglue_register_global(ctx, std::make_shared<ScTitleSequenceManager>(), "titleSequenceManager");
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
     ScTileSelection::Register(ctx);
@@ -43,6 +45,10 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScSpinnerWidget::Register(ctx);
     ScTextBoxWidget::Register(ctx);
     ScViewportWidget::Register(ctx);
+
+    ScTitleSequence::Register(ctx);
+    ScTitleSequenceManager::Register(ctx);
+    ScTitleSequencePark::Register(ctx);
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);

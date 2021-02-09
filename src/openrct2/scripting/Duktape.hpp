@@ -80,6 +80,13 @@ namespace OpenRCT2::Scripting
             PopObjectIfExists();
         }
 
+        void Set(const char* name, std::nullptr_t)
+        {
+            EnsureObjectPushed();
+            duk_push_null(_ctx);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, bool value)
         {
             EnsureObjectPushed();
@@ -101,11 +108,23 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
+        void Set(const char* name, uint64_t value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, std::string_view value)
         {
             EnsureObjectPushed();
             duk_push_lstring(_ctx, value.data(), value.size());
             duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, const char* value)
+        {
+            Set(name, std::string_view(value));
         }
 
         void Set(const char* name, const DukValue& value)

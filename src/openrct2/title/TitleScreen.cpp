@@ -298,6 +298,11 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
 {
     if (_loadedTitleSequenceId != _currentSequence || loadPreview)
     {
+        if (_sequencePlayer == nullptr)
+        {
+            _sequencePlayer = GetContext()->GetUiContext()->GetTitleSequencePlayer();
+        }
+
         size_t numSequences = TitleSequenceManager::GetCount();
         if (numSequences > 0)
         {

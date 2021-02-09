@@ -105,11 +105,14 @@ rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
+rct_window* window_scenarioselect_open(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
 rct_window* window_error_open(std::string_view title, std::string_view message);
 struct TrackDesign;
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
+rct_window* window_loadsave_open(
+    int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
+    TrackDesign* trackDesign);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
