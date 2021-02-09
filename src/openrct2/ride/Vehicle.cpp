@@ -6476,7 +6476,8 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
     _eax -= velocity;
     _eax *= powered_acceleration * 2;
-    _eax /= ebx;
+    if (ebx != 0)
+        _eax /= ebx;
 
     acceleration = _eax - eax;
     return _vehicleMotionTrackFlags;
