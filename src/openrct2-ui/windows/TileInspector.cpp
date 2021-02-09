@@ -2282,20 +2282,26 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 typeName = language_get_string(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
                 break;
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            {
+                const auto* entry = tileElement->AsSmallScenery()->GetEntry();
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
-                    language_get_string(get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex())->name));
+                    entry != nullptr ? language_get_string(entry->name) : "");
                 typeName = buffer;
                 break;
+            }
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 typeName = language_get_string(STR_RIDE_CONSTRUCTION_ENTRANCE);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
+            {
+                const auto* entry = tileElement->AsWall()->GetEntry();
                 snprintf(
                     buffer, sizeof(buffer), "%s (%s)", language_get_string(STR_TILE_INSPECTOR_WALL),
-                    language_get_string(tileElement->AsWall()->GetEntry()->name));
+                    entry != nullptr ? language_get_string(entry->name) : "");
                 typeName = buffer;
                 break;
+            }
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 typeName = language_get_string(STR_OBJECT_SELECTION_LARGE_SCENERY);
                 break;
