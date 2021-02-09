@@ -171,6 +171,8 @@ struct rct_viewport
     }
 
     [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
+
+    void Invalidate() const;
 };
 
 /**
