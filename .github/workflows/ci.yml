@@ -239,7 +239,7 @@ jobs:
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=off
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
@@ -306,6 +306,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
       - name: Build OpenRCT2
         shell: bash
         run: |

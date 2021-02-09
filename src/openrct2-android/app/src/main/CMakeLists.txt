@@ -146,6 +146,19 @@ set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,--no-undefined")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++1z ${COMMON_COMPILE_OPTIONS} -Wnon-virtual-dtor")
 get_filename_component(ORCT2_ROOT "${CMAKE_SOURCE_DIR}/../../../../../" REALPATH)
 
+list(APPEND CMAKE_MODULE_PATH "${ORCT2_ROOT}/cmake")
+
+find_package(CCache)
+
+if (CCache_FOUND)
+    option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
+    if (OPENRCT2_USE_CCACHE)
+        # Use e.g. "ccache clang++" instead of "clang++"
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
+        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
+    endif (OPENRCT2_USE_CCACHE)
+endif (CCache_FOUND)
+
 file(GLOB_RECURSE LIBOPENRCT2_SOURCES
     "${ORCT2_ROOT}/src/openrct2/*.cpp"
     "${ORCT2_ROOT}/src/openrct2/*.h"
