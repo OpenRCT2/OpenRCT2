@@ -6468,7 +6468,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         return _vehicleMotionTrackFlags;
     }
 
-    int32_t ebx = (speed * mass) >> 2;
+    int32_t momentum = (speed * mass) >> 2;
     int32_t _eax = speed << 14;
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
     {
@@ -6476,7 +6476,8 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
     _eax -= velocity;
     _eax *= powered_acceleration * 2;
-    _eax /= ebx;
+    if (momentum != 0)
+        _eax /= momentum;
 
     acceleration = _eax - eax;
     return _vehicleMotionTrackFlags;
