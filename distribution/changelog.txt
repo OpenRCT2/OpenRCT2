@@ -21,6 +21,7 @@
 - Feature: [#13927] [Plugin] Add isVisible and text box widget.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
+- Fix: [#2876] High roller coasters at the map edge are cut off from view (original bug).
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#11438] Freeze when shrinking map size.
