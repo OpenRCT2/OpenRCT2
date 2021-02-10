@@ -288,7 +288,10 @@ void fix_duplicated_banners()
                     // occupy multiple tiles that should both refer to the same banner index.
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
+                        auto bannerIndex = tileElement->AsBanner()->GetIndex();
+                        if (bannerIndex == BANNER_INDEX_NULL)
+                            continue;
+
                         if (activeBanners[bannerIndex])
                         {
                             log_info(
