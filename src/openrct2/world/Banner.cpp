@@ -305,9 +305,13 @@ void fix_duplicated_banners()
                             Guard::Assert(!activeBanners[newBannerIndex]);
 
                             // Copy over the original banner, but update the location
-                            auto& newBanner = *GetBanner(newBannerIndex);
-                            newBanner = *GetBanner(bannerIndex);
-                            newBanner.position = { x, y };
+                            auto newBanner = GetBanner(newBannerIndex);
+                            auto oldBanner = GetBanner(bannerIndex);
+                            if (oldBanner != nullptr && newBanner != nullptr)
+                            {
+                                *newBanner = *oldBanner;
+                                newBanner->position = { x, y };
+                            }
 
                             tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }
