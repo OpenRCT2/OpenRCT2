@@ -1296,23 +1296,16 @@ void viewport_set_visibility(uint8_t mode)
  */
 static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 {
-    if (ps->sprite_type == ViewportInteractionItem::None || ps->sprite_type == ViewportInteractionItem::Label
-        || ps->sprite_type > ViewportInteractionItem::Banner)
-        return false;
-
-    uint16_t mask;
-    if (ps->sprite_type == ViewportInteractionItem::Banner)
-        // I think CS made a typo here. Let's replicate the original behaviour.
-        mask = 1 << (EnumValue(ps->sprite_type) - 3);
-    else
-        mask = 1 << (EnumValue(ps->sprite_type) - 1);
-
-    if (filter & mask)
+    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
+        && ps->sprite_type <= ViewportInteractionItem::Banner)
     {
-        return false;
+        auto mask = EnumToFlag(ps->sprite_type);
+        if (filter & mask)
+        {
+            return true;
+        }
     }
-
-    return true;
+    return false;
 }
 
 /**
@@ -1791,7 +1784,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
         return std::nullopt;
     }
     auto myViewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain));
     if (info.SpriteType == ViewportInteractionItem::None)
     {
         return std::nullopt;

@@ -710,7 +710,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     auto info = get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
+        screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
     if (info.SpriteType == ViewportInteractionItem::None || info.Element == nullptr)
     {
@@ -834,7 +834,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
     footpath_provisional_update();
 
     const auto info = get_map_coordinates_from_pos(
-        screenCoords, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN);
+        screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Footpath));
 
     if (info.SpriteType == ViewportInteractionItem::None)
     {

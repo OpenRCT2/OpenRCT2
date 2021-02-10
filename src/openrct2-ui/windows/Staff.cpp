@@ -1170,7 +1170,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gPickupPeepImage = UINT32_MAX;
 
-    auto info = get_map_coordinates_from_pos(screenCoords, VIEWPORT_INTERACTION_MASK_NONE);
+    auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
     if (info.SpriteType == ViewportInteractionItem::None)
         return;
 

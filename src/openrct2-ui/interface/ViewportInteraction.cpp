@@ -65,7 +65,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
 
     info = get_map_coordinates_from_pos(
         screenCoords,
-        VIEWPORT_INTERACTION_MASK_ENTITY & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE);
+        EnumsToFlags(ViewportInteractionItem::Entity, ViewportInteractionItem::Ride, ViewportInteractionItem::ParkEntrance));
     auto tileElement = info.SpriteType != ViewportInteractionItem::Entity ? info.Element : nullptr;
     // Only valid when info.SpriteType == ViewportInteractionItem::Entity, but can't assign nullptr without compiler
     // complaining
@@ -261,7 +261,8 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return info;
 
-    info = get_map_coordinates_from_pos(screenCoords, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER));
+    auto flags = static_cast<int32_t>(~EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
+    info = get_map_coordinates_from_pos(screenCoords, flags);
     auto tileElement = info.Element;
 
     switch (info.SpriteType)
@@ -761,7 +762,7 @@ CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoo
     }
     auto viewport = window->viewport;
     auto info = get_map_coordinates_from_pos_window(
-        window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER);
+        window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain, ViewportInteractionItem::Water));
     auto initialPos = info.Loc;
 
     if (info.SpriteType == ViewportInteractionItem::None)

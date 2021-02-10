@@ -27,6 +27,21 @@ namespace OpenRCT2::Scripting
         "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
     };
 
+    static const DukEnumMap<ViewportInteractionItem> ToolFilterMap({
+        { "terrain", ViewportInteractionItem::Terrain },
+        { "entity", ViewportInteractionItem::Entity },
+        { "ride", ViewportInteractionItem::Ride },
+        { "water", ViewportInteractionItem::Water },
+        { "scenery", ViewportInteractionItem::Scenery },
+        { "footpath", ViewportInteractionItem::Footpath },
+        { "footpath_item", ViewportInteractionItem::FootpathItem },
+        { "park_entrance", ViewportInteractionItem::ParkEntrance },
+        { "wall", ViewportInteractionItem::Wall },
+        { "large_scenery", ViewportInteractionItem::LargeScenery },
+        { "label", ViewportInteractionItem::Label },
+        { "banner", ViewportInteractionItem::Banner },
+    });
+
     template<> DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
     {
         auto value = EnumValue(cursorId);
@@ -120,9 +135,7 @@ namespace OpenRCT2::Scripting
         if (dukHandler.is_function())
         {
             auto ctx = dukHandler.context();
-
-            auto flags = 0;
-            auto info = get_map_coordinates_from_pos(screenCoords, flags);
+            auto info = get_map_coordinates_from_pos(screenCoords, Filter);
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);
@@ -172,6 +185,26 @@ namespace OpenRCT2::Scripting
                 {
                     customTool.Cursor = CursorID::Arrow;
                 }
+
+                auto dukFilter = dukValue["filter"];
+                if (dukFilter.is_array())
+                {
+                    customTool.Filter = 0;
+                    auto dukItems = dukFilter.as_array();
+                    for (const auto& dukItem : dukItems)
+                    {
+                        if (dukItem.type() == DukValue::Type::STRING)
+                        {
+                            auto value = ToolFilterMap[dukItem.as_string()];
+                            customTool.Filter |= static_cast<uint32_t>(EnumToFlag(value));
+                        }
+                    }
+                }
+                else
+                {
+                    customTool.Filter = ViewportInteractionItemAll;
+                }
+
                 customTool.onStart = dukValue["onStart"];
                 customTool.onDown = dukValue["onDown"];
                 customTool.onMove = dukValue["onMove"];
