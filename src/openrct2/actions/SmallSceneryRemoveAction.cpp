@@ -138,14 +138,19 @@ TileElement* SmallSceneryRemoveAction::FindSceneryElement() const
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     for (auto* sceneryElement : TileElementsView<SmallSceneryElement>(_loc))
     {
-        if (sceneryElement->IsGhost() != isGhost)
+        // If we are removing ghost elements
+        if (isGhost && sceneryElement->IsGhost() == false)
             continue;
+
         if (sceneryElement->GetSceneryQuadrant() != _quadrant)
             continue;
+
         if (sceneryElement->GetBaseZ() != _loc.z)
             continue;
+
         if (sceneryElement->GetEntryIndex() != _sceneryType)
             continue;
+
         return sceneryElement->as<TileElement>();
     }
     return nullptr;
