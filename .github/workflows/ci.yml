@@ -155,6 +155,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: macos
       - name: Build OpenRCT2
         run: |
           brew install ninja
