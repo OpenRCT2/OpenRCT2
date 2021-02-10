@@ -766,6 +766,9 @@ public: // Peep
     void GiveItem(ShopItem item);
     bool HasItem(ShopItem peepItem) const;
 
+    void SetDestination(const CoordsXY& coords);
+    CoordsXY GetDestination() const;
+
     // TODO: Make these private again when done refactoring
 public: // Peep
     bool CheckForPath();

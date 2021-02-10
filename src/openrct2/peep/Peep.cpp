@@ -3381,3 +3381,14 @@ bool Peep::HasItem(ShopItem peepItem) const
 {
     return GetItemFlags() & EnumToFlag(peepItem);
 }
+
+void Peep::SetDestination(const CoordsXY& coords)
+{
+    DestinationX = static_cast<uint16_t>(coords.x);
+    DestinationY = static_cast<uint16_t>(coords.y);
+}
+
+CoordsXY Peep::GetDestination() const
+{
+    return CoordsXY{ static_cast<int16_t>(DestinationX), static_cast<int16_t>(DestinationY) };
+}
