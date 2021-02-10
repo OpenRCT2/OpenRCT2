@@ -3666,26 +3666,26 @@ STR_6409    :The selected file is not the offline GOG Installer for RollerCoaste
 STR_6410    :Zoom in/out
 STR_6411    :Show buttons for zooming in and out in the toolbar
 STR_6412    :NumPad Return
-STR_6413    :SHIFT
-STR_6414    :LSHIFT
-STR_6415    :RSHIFT
-STR_6416    :CTRL
-STR_6417    :LCTRL
-STR_6418    :RCTRL
-STR_6419    :ALT
-STR_6420    :LALT
-STR_6421    :RALT
-STR_6422    :GUI
-STR_6423    :LGUI
-STR_6424    :RGUI
-STR_6425    :JOY LEFT
-STR_6426    :JOY RIGHT
-STR_6427    :JOY UP
-STR_6428    :JOY DOWN
-STR_6429    :JOY {INT32}
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :R Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :Joy Left
+STR_6426    :Joy Right
+STR_6427    :Joy Up
+STR_6428    :Joy Down
+STR_6429    :Joy {INT32}
 STR_6430    :LMB
 STR_6431    :RMB
-STR_6432    :MOUSE {INT32}
+STR_6432    :Mouse {INT32}
 
 #############
 # Scenarios #
