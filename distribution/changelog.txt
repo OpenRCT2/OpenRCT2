@@ -24,6 +24,7 @@
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
+- Fix: [#7772] Hacked vehicles may incorrectly not mark a vehicle object as in use causing accidental removal when remove_unused_objects is used.
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#11438] Freeze when shrinking map size.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
