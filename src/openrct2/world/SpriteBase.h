@@ -30,7 +30,24 @@ struct SpriteBase
 
     uint8_t sprite_direction;
 
+    /**
+     * Moves a sprite to a new location, invalidates the current position if valid
+     * and also the new position.
+     *
+     *  rct2: 0x0069E9D3
+     */
     void MoveTo(const CoordsXYZ& newLocation);
+
+    /**
+     * Sets the entity location without screen invalidation.
+     */
+    void SetLocation(const CoordsXYZ& newLocation);
+
+    /**
+     * Gets the entity current location.
+     */
+    CoordsXYZ GetLocation() const;
+
     void Invalidate();
     template<typename T> bool Is() const;
     template<typename T> T* As()

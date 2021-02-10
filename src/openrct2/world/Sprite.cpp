@@ -644,17 +644,6 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
     SpriteSpatialInsert(sprite, newLoc);
 }
 
-/**
- * Moves a sprite to a new location, invalidates the current position if valid
- * and also the new position.
- *
- *  rct2: 0x0069E9D3
- *
- * @param x (ax)
- * @param y (cx)
- * @param z (dx)
- * @param sprite (esi)
- */
 void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
 {
     if (x != LOCATION_NULL)
@@ -683,6 +672,18 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
         sprite_set_coordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
+}
+
+CoordsXYZ SpriteBase::GetLocation() const
+{
+    return { x, y, z };
+}
+
+void SpriteBase::SetLocation(const CoordsXYZ& newLocation)
+{
+    x = static_cast<int16_t>(newLocation.x);
+    y = static_cast<int16_t>(newLocation.y);
+    z = static_cast<int16_t>(newLocation.z);
 }
 
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
