@@ -2210,7 +2210,9 @@ void Ride::UpdateSpiralSlide()
         auto* peep = GetEntity<Guest>(slide_peep);
         if (peep != nullptr)
         {
-            peep->DestinationX++;
+            auto destination = peep->GetDestination();
+            destination.x++;
+            peep->SetDestination(destination);
         }
     }
 

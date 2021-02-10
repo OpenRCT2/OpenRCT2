@@ -132,9 +132,6 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     }
 
     peep->PeepDirection = direction;
-    peep->DestinationX = newTile.x;
-    peep->DestinationY = newTile.y;
-    peep->DestinationTolerance = 2;
     if (peep->State != PeepState::Queuing)
     {
         // When peeps are walking along a path, we would like them to be spread out across the width of the path,
@@ -154,24 +151,25 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
         // coordinate constant, but instead clamp it to an acceptable range. This brings in 'outlier' guests from
         // the edges of the path, while allowing guests who are already in an acceptable position to stay there.
 
-        int8_t offset = (scenario_rand() & 7) - 3;
+        const int8_t offset = (scenario_rand() & 7) - 3;
         if (direction == 0 || direction == 2)
         {
             // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
-            peep->DestinationX += offset;
-            const uint16_t centerLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
-            peep->DestinationY = std::clamp(
-                peep->y, static_cast<int16_t>(centerLine - 3), static_cast<int16_t>(centerLine + 3));
+            const int32_t centerLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
+            newTile.x += offset;
+            newTile.y = std::clamp<int32_t>(peep->y, centerLine - 3, centerLine + 3);
         }
         else
         {
             // Peep is moving along Y, so apply the offset to the Y position of the destination and clamp their current X
-            const uint16_t centerLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
-            peep->DestinationX = std::clamp(
-                peep->x, static_cast<int16_t>(centerLine - 3), static_cast<int16_t>(centerLine + 3));
-            peep->DestinationY += offset;
+            const int32_t centerLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
+            newTile.x = std::clamp<int32_t>(peep->x, centerLine - 3, centerLine + 3);
+            newTile.y += offset;
         }
     }
+    peep->SetDestination(newTile);
+    peep->DestinationTolerance = 2;
+
     return 0;
 }
 

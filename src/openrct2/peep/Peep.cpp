@@ -606,7 +606,8 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         Action = PeepActionType::None2;
     }
 
-    CoordsXY diffrenceLoc = { x - DestinationX, y - DestinationY };
+    CoordsXY diffrenceLoc = GetLocation();
+    diffrenceLoc -= GetDestination();
 
     int32_t x_delta = abs(diffrenceLoc.x);
     int32_t y_delta = abs(diffrenceLoc.y);
@@ -1028,8 +1029,7 @@ void Peep::Update1()
         SetState(PeepState::Patrolling);
     }
 
-    DestinationX = x;
-    DestinationY = y;
+    SetDestination(GetLocation());
     DestinationTolerance = 10;
     PeepDirection = sprite_direction >> 3;
 }
@@ -2287,8 +2287,8 @@ static bool peep_update_queue_position(Peep* peep, PeepActionType previous_actio
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
-    peep->DestinationX = (peep->x & 0xFFE0) + 16;
-    peep->DestinationY = (peep->y & 0xFFE0) + 16;
+    auto destination = peep->GetLocation().ToTileCentre();
+    peep->SetDestination(destination);
     peep->DestinationTolerance = 5;
 }
 
@@ -2454,8 +2454,8 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 }
             }
 
-            peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
-            peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
+            auto destination = peep->GetDestination() + CoordsDirectionDelta[peep->PeepDirection];
+            peep->SetDestination(destination);
             peep->DestinationTolerance = 9;
             peep->MoveTo({ coords, peep->z });
             peep->SetState(PeepState::LeavingPark);
@@ -2592,8 +2592,9 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
         peep->Var37 = 1;
-        peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
-        peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
+        auto destination = peep->GetDestination();
+        destination += CoordsDirectionDelta[peep->PeepDirection];
+        peep->SetDestination(destination);
         peep->DestinationTolerance = 7;
         peep->MoveTo({ coords, peep->z });
     }
@@ -2934,8 +2935,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto coordsCentre = coords.ToTileCentre();
-        peep->DestinationX = coordsCentre.x;
-        peep->DestinationY = coordsCentre.y;
+        peep->SetDestination(coordsCentre);
         peep->DestinationTolerance = 3;
 
         peep->CurrentRide = rideIndex;

@@ -424,11 +424,12 @@ void footpath_interrupt_peeps(const CoordsXYZ& footpathPos)
     {
         if (peep->State == PeepState::Sitting || peep->State == PeepState::Watching)
         {
-            if (peep->z == footpathPos.z)
+            auto location = peep->GetLocation();
+            if (location.z == footpathPos.z)
             {
+                auto destination = location.ToTileCentre();
                 peep->SetState(PeepState::Walking);
-                peep->DestinationX = (peep->x & 0xFFE0) + 16;
-                peep->DestinationY = (peep->y & 0xFFE0) + 16;
+                peep->SetDestination(destination);
                 peep->DestinationTolerance = 5;
                 peep->UpdateCurrentActionSpriteType();
             }
