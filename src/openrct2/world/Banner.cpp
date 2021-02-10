@@ -288,7 +288,10 @@ void fix_duplicated_banners()
                     // occupy multiple tiles that should both refer to the same banner index.
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
+                        auto bannerIndex = tileElement->AsBanner()->GetIndex();
+                        if (bannerIndex == BANNER_INDEX_NULL)
+                            continue;
+
                         if (activeBanners[bannerIndex])
                         {
                             log_info(
@@ -305,9 +308,13 @@ void fix_duplicated_banners()
                             Guard::Assert(!activeBanners[newBannerIndex]);
 
                             // Copy over the original banner, but update the location
-                            auto& newBanner = *GetBanner(newBannerIndex);
-                            newBanner = *GetBanner(bannerIndex);
-                            newBanner.position = { x, y };
+                            auto newBanner = GetBanner(newBannerIndex);
+                            auto oldBanner = GetBanner(bannerIndex);
+                            if (oldBanner != nullptr && newBanner != nullptr)
+                            {
+                                *newBanner = *oldBanner;
+                                newBanner->position = { x, y };
+                            }
 
                             tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }
