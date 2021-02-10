@@ -200,6 +200,24 @@ void setup_in_use_selection_flags()
         }
     }
 
+    // Apply selected object status for hacked vehicles that may not have an associated ride
+    for (auto vehicle : EntityList<Vehicle>(EntityListId::TrainHead))
+    {
+        ObjectEntryIndex type = vehicle->ride_subtype;
+        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        {
+            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+        }
+    }
+    for (auto vehicle : EntityList<Vehicle>(EntityListId::Vehicle))
+    {
+        ObjectEntryIndex type = vehicle->ride_subtype;
+        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        {
+            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+        }
+    }
+
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
