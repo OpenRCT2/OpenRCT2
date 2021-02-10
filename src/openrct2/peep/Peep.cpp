@@ -1029,8 +1029,7 @@ void Peep::Update1()
         SetState(PeepState::Patrolling);
     }
 
-    SetDestination(GetLocation());
-    DestinationTolerance = 10;
+    SetDestination(GetLocation(), 10);
     PeepDirection = sprite_direction >> 3;
 }
 
@@ -2288,8 +2287,7 @@ static void peep_return_to_centre_of_tile(Peep* peep)
 {
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
     auto destination = peep->GetLocation().ToTileCentre();
-    peep->SetDestination(destination);
-    peep->DestinationTolerance = 5;
+    peep->SetDestination(destination, 5);
 }
 
 /**
@@ -2455,8 +2453,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             }
 
             auto destination = peep->GetDestination() + CoordsDirectionDelta[peep->PeepDirection];
-            peep->SetDestination(destination);
-            peep->DestinationTolerance = 9;
+            peep->SetDestination(destination, 9);
             peep->MoveTo({ coords, peep->z });
             peep->SetState(PeepState::LeavingPark);
 
@@ -2594,8 +2591,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         peep->Var37 = 1;
         auto destination = peep->GetDestination();
         destination += CoordsDirectionDelta[peep->PeepDirection];
-        peep->SetDestination(destination);
-        peep->DestinationTolerance = 7;
+        peep->SetDestination(destination, 7);
         peep->MoveTo({ coords, peep->z });
     }
     return true;
@@ -2935,9 +2931,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto coordsCentre = coords.ToTileCentre();
-        peep->SetDestination(coordsCentre);
-        peep->DestinationTolerance = 3;
-
+        peep->SetDestination(coordsCentre, 3);
         peep->CurrentRide = rideIndex;
         peep->SetState(PeepState::EnteringRide);
         peep->RideSubState = PeepRideSubState::ApproachShop;
@@ -3386,6 +3380,12 @@ void Peep::SetDestination(const CoordsXY& coords)
 {
     DestinationX = static_cast<uint16_t>(coords.x);
     DestinationY = static_cast<uint16_t>(coords.y);
+}
+
+void Peep::SetDestination(const CoordsXY& coords, int32_t tolerance)
+{
+    SetDestination(coords);
+    DestinationTolerance = tolerance;
 }
 
 CoordsXY Peep::GetDestination() const

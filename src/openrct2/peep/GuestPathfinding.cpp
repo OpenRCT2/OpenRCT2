@@ -167,8 +167,7 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
             newTile.y += offset;
         }
     }
-    peep->SetDestination(newTile);
-    peep->DestinationTolerance = 2;
+    peep->SetDestination(newTile, 2);
 
     return 0;
 }

@@ -653,8 +653,7 @@ bool Staff::DoHandymanPathFinding()
     }
 
     PeepDirection = newDirection;
-    SetDestination(chosenTile + CoordsXY{ 16, 16 });
-    DestinationTolerance = 3;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, 3);
     if (State == PeepState::Queuing)
     {
         DestinationTolerance = (scenario_rand() & 7) + 2;
@@ -871,8 +870,8 @@ bool Staff::DoMechanicPathFinding()
     }
 
     PeepDirection = newDirection;
-    SetDestination(chosenTile + CoordsXY{ 16, 16 });
-    DestinationTolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (scenario_rand() & 7) + 2;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
 }
@@ -949,8 +948,8 @@ bool Staff::DoMiscPathFinding()
     }
 
     PeepDirection = newDirection;
-    SetDestination(chosenTile + CoordsXY{ 16, 16 });
-    DestinationTolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (scenario_rand() & 7) + 2;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
 }
@@ -1446,8 +1445,7 @@ void Staff::UpdateHeadingToInspect()
         int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
-        SetDestination({ destX, destY });
-        DestinationTolerance = 2;
+        SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1556,8 +1554,7 @@ void Staff::UpdateAnswering()
         int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
-        SetDestination({ destX, destY });
-        DestinationTolerance = 2;
+        SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1651,8 +1648,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
             SubState = 0;
             auto destination = _WateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
-            SetDestination(destination);
-            DestinationTolerance = 3;
+            SetDestination(destination, 3);
 
             return true;
         } while (!(tile_element++)->IsLastForTile());
@@ -1720,8 +1716,7 @@ bool Staff::UpdatePatrollingFindBin()
 
     SubState = 0;
     auto destination = BinUseOffsets[chosen_position] + GetLocation().ToTileStart();
-    SetDestination(destination);
-    DestinationTolerance = 3;
+    SetDestination(destination, 3);
     return true;
 }
 
@@ -1750,8 +1745,7 @@ bool Staff::UpdatePatrollingFindGrass()
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
 
             auto destination = _MowingWaypoints[0] + NextLoc;
-            SetDestination(destination);
-            DestinationTolerance = 3;
+            SetDestination(destination, 3);
             return true;
         }
     }
@@ -1777,8 +1771,7 @@ bool Staff::UpdatePatrollingFindSweeping()
         SetState(PeepState::Sweeping);
 
         Var37 = 0;
-        SetDestination(litter->GetLocation());
-        DestinationTolerance = 5;
+        SetDestination(litter->GetLocation(), 5);
         return true;
     }
 
@@ -2162,8 +2155,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
 
         CoordsXY offset = DirectionOffsets[PeepDirection];
         auto destination = (offset * -12) + vehicle->GetLocation();
-        SetDestination(destination);
-        DestinationTolerance = 2;
+        SetDestination(destination, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2313,8 +2305,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             stationPos.y = GetDestination().y;
         }
 
-        SetDestination(stationPos);
-        DestinationTolerance = 2;
+        SetDestination(stationPos, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2420,8 +2411,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
             destination.y = GetDestination().y;
         }
 
-        SetDestination(destination);
-        DestinationTolerance = 2;
+        SetDestination(destination, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2534,8 +2524,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
-        SetDestination(stationPosition);
-        DestinationTolerance = 2;
+        SetDestination(stationPosition, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2618,8 +2607,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 
-        SetDestination(exitPosition);
-        DestinationTolerance = 2;
+        SetDestination(exitPosition, 2);
     }
 
     int16_t xy_distance;

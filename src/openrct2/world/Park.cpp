@@ -723,8 +723,7 @@ Peep* Park::GenerateGuest()
 
             // Get the centre point of the tile the peep is on
             auto destination = peep->GetLocation().ToTileCentre();
-            peep->SetDestination(destination);
-            peep->DestinationTolerance = 5;
+            peep->SetDestination(destination, 5);
             peep->PeepDirection = direction;
             peep->Var37 = 0;
             peep->State = PeepState::EnteringPark;
