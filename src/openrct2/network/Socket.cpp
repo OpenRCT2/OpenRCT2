@@ -316,16 +316,14 @@ public:
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        int32_t value = 0;
-        if (setsockopt(_socket, IPPROTO_IPV6, IPV6_V6ONLY, reinterpret_cast<const char*>(&value), sizeof(value)) != 0)
+        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
-            log_error("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
+            log_verbose("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
         }
 
-        value = 1;
-        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, reinterpret_cast<const char*>(&value), sizeof(value)) != 0)
+        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
         {
-            log_error("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+            log_verbose("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
         }
 
         try
@@ -333,7 +331,8 @@ public:
             // Bind to address:port and listen
             if (bind(_socket, reinterpret_cast<sockaddr*>(&ss), ss_len) != 0)
             {
-                throw SocketException("Unable to bind to socket.");
+                std::string addressOrStar = address.empty() ? "*" : address.c_str();
+                throw SocketException("Unable to bind to address " + addressOrStar + ":" + std::to_string(port));
             }
             if (listen(_socket, SOMAXCONN) != 0)
             {
@@ -850,18 +849,18 @@ private:
         // Enable send and receiving of broadcast messages
         if (!SetOption(sock, SOL_SOCKET, SO_BROADCAST, true))
         {
-            log_warning("SO_BROADCAST failed. %d", LAST_SOCKET_ERROR());
+            log_verbose("setsockopt(socket, SO_BROADCAST) failed: %d", LAST_SOCKET_ERROR());
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        if (!SetOption(sock, IPPROTO_IPV6, IPV6_V6ONLY, false))
+        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
-            log_warning("IPV6_V6ONLY failed. %d", LAST_SOCKET_ERROR());
+            log_verbose("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
         }
 
-        if (!SetOption(sock, SOL_SOCKET, SO_REUSEADDR, true))
+        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
         {
-            log_warning("SO_REUSEADDR failed. %d", LAST_SOCKET_ERROR());
+            log_verbose("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
         }
 
         if (!SetNonBlocking(sock, true))
