@@ -1886,6 +1886,9 @@ void Vehicle::UpdateMeasurements()
                 continue;
 
             rct_scenery_entry* scenery = tileElement->AsSmallScenery()->GetEntry();
+            if (scenery == nullptr)
+                continue;
+
             if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 coverFound = true;
