@@ -5903,7 +5903,11 @@ static void peep_update_walking_break_scenery(Peep* peep)
         int32_t y_diff = abs(inner_peep->y - peep->y);
 
         if (std::max(x_diff, y_diff) < 224)
+        {
+            inner_peep->StaffVandalsStopped++;
+
             return;
+        }
     }
 
     tileElement->SetIsBroken(true);
