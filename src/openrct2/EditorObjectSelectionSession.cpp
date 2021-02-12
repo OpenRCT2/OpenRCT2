@@ -611,10 +611,10 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
 {
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
+    auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
     const ObjectRepositoryItem* items = object_repository_get_items();
 
-    for (int32_t i = 0; i < numObjects; i++)
+    for (size_t i = 0; i < numObjects; i++)
     {
         ObjectType objectType = items[i].ObjectEntry.GetType();
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
