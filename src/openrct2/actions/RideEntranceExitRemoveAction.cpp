@@ -46,11 +46,13 @@ void RideEntranceExitRemoveAction::Serialise(DataSerialiser& stream)
 }
 
 static TileElement* FindEntranceElement(
-    const CoordsXY& loc, ride_id_t rideIndex, int32_t stationNum, int32_t entranceType, bool ghost)
+    const CoordsXY& loc, ride_id_t rideIndex, int32_t stationNum, int32_t entranceType, uint32_t flags)
 {
+    const bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
     for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
     {
-        if (entranceElement->IsGhost() != ghost)
+        // If we are removing ghost elements
+        if (isGhost && entranceElement->IsGhost() == false)
             continue;
 
         if (entranceElement->GetRideIndex() != rideIndex)
@@ -91,10 +93,8 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
-    const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
-
     auto* entranceElement = FindEntranceElement(
-        _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, isGhost);
+        _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
 
     if (entranceElement == nullptr)
     {
@@ -125,7 +125,7 @@ GameActions::Result::Ptr RideEntranceExitRemoveAction::Execute() const
     }
 
     auto* entranceElement = FindEntranceElement(
-        _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, isGhost);
+        _loc, _rideIndex, _stationNum, _isExit ? ENTRANCE_TYPE_RIDE_EXIT : ENTRANCE_TYPE_RIDE_ENTRANCE, GetFlags());
 
     if (entranceElement == nullptr)
     {

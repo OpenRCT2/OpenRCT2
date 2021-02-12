@@ -191,10 +191,11 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
 
 TileElement* LargeSceneryRemoveAction::FindLargeSceneryElement(const CoordsXYZ& pos, int32_t sequenceIndex) const
 {
+    const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     for (auto* sceneryElement : TileElementsView<LargeSceneryElement>(pos))
     {
         // If we are removing ghost elements
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && sceneryElement->IsGhost() == false)
+        if (isGhost && sceneryElement->IsGhost() == false)
             continue;
 
         if (sceneryElement->GetDirection() != _loc.direction)
