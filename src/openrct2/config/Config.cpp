@@ -998,7 +998,7 @@ bool RCT1DataPresentAtLocation(const utf8* path)
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
 
-bool CsgIsUsable(rct_gx csg)
+bool CsgIsUsable(const rct_gx& csg)
 {
     return csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
 }

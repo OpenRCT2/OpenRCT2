@@ -301,10 +301,8 @@ private:
     {
         auto s4 = std::make_unique<rct1_s4>();
         size_t dataSize = stream->GetLength() - stream->GetPosition();
-        auto deleter_lambda = [dataSize](uint8_t* ptr) { Memory::FreeArray(ptr, dataSize); };
-        auto data = std::unique_ptr<uint8_t, decltype(deleter_lambda)>(stream->ReadArray<uint8_t>(dataSize), deleter_lambda);
-        auto decodedData = std::unique_ptr<uint8_t, decltype(&Memory::Free<uint8_t>)>(
-            Memory::Allocate<uint8_t>(sizeof(rct1_s4)), &Memory::Free<uint8_t>);
+        auto data = stream->ReadArray<uint8_t>(dataSize);
+        auto decodedData = std::make_unique<uint8_t[]>(sizeof(rct1_s4));
 
         size_t decodedSize;
         int32_t fileType = sawyercoding_detect_file_type(data.get(), dataSize);

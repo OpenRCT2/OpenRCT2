@@ -16,6 +16,7 @@
 #include "../world/Location.hpp"
 #include "Text.h"
 
+#include <memory>
 #include <optional>
 #include <vector>
 
@@ -97,7 +98,7 @@ struct rct_gx
 {
     rct_g1_header header;
     std::vector<rct_g1_element> elements;
-    void* data;
+    std::unique_ptr<uint8_t[]> data;
 };
 
 struct rct_drawpixelinfo

@@ -97,8 +97,7 @@ static bool TryClassifyAsS4(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     try
     {
         size_t dataLength = static_cast<size_t>(stream->GetLength());
-        auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
+        auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
         int32_t fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
@@ -134,8 +133,8 @@ static bool TryClassifyAsTD4_TD6(OpenRCT2::IStream* stream, ClassifiedFileInfo* 
     try
     {
         size_t dataLength = static_cast<size_t>(stream->GetLength());
-        auto deleter_lambda = [dataLength](uint8_t* ptr) { Memory::FreeArray(ptr, dataLength); };
-        std::unique_ptr<uint8_t, decltype(deleter_lambda)> data(stream->ReadArray<uint8_t>(dataLength), deleter_lambda);
+
+        auto data = stream->ReadArray<uint8_t>(dataLength);
         stream->SetPosition(originalPosition);
 
         if (sawyercoding_validate_track_checksum(data.get(), dataLength))

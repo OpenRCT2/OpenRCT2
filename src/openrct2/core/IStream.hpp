@@ -14,6 +14,7 @@
 #include "Memory.hpp"
 
 #include <istream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -191,10 +192,10 @@ namespace OpenRCT2
             Write(&value);
         }
 
-        template<typename T> T* ReadArray(size_t count)
+        template<typename T> std::unique_ptr<T[]> ReadArray(size_t count)
         {
-            T* buffer = Memory::AllocateArray<T>(count);
-            Read(buffer, sizeof(T) * count);
+            auto buffer = std::make_unique<T[]>(count);
+            Read(buffer.get(), sizeof(T) * count);
             return buffer;
         }
 

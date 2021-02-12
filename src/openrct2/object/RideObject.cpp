@@ -160,8 +160,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
             _legacyType.vehicles[i].peep_loading_waypoint_segments = 0;
 
             auto data = stream->ReadArray<int8_t>(numPeepLoadingPositions);
-            _peepLoadingPositions[i] = std::vector<int8_t>(data, data + numPeepLoadingPositions);
-            Memory::Free(data);
+            _peepLoadingPositions[i] = std::vector<int8_t>(data.get(), data.get() + numPeepLoadingPositions);
         }
     }
 
