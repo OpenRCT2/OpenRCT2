@@ -3663,6 +3663,8 @@ STR_6406    :Instalador do GOG para o RollerCoaster Tycoon 2
 STR_6407    :Isso pode levar alguns minutos.
 STR_6408    :Por favor instale “innoextract” para descompactar o instalador do GOG e depois reinicie o OpenRCT2.
 STR_6409    :O arquivo selecionado não é o instalador offline do GOG para o RollerCoaster Tycoon 2. Você pode ter baixado a base do descarregador GOG Galaxy ou escolhido o arquivo errado.
+STR_6410    :Aproximar/Afastar
+STR_6411    :Mostrar botões para aproximar e afastar vista na barra de ferramentas
 
 #############
 # Scenarios #

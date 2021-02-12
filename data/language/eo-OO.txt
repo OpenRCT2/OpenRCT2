@@ -2740,8 +2740,8 @@ STR_5417    :Loko
 STR_5418    :Loko{MOVE_X}{87}{COMMA16}   {COMMA16}
 STR_5419    :Turni
 STR_5420    :Turni{MOVE_X}{87}{COMMA16}
-STR_5421    :Zomigi
-STR_5422    :Zomigi{MOVE_X}{87}{COMMA16}
+STR_5421    :Zomi
+STR_5422    :Zomi{MOVE_X}{87}{COMMA16}
 STR_5423    :Atendi
 STR_5424    :Atendi{MOVE_X}{87}{UINT16}
 STR_5425    :Rekomenci
@@ -3663,6 +3663,8 @@ STR_6406    :GOG Instalilo de RollerCoaster Tycoon 2
 STR_6407    :Ĉi tiu funkciado povas daŭri kelkajn minutojn.
 STR_6408    :Bonvolu instali “innoextract” por eltiri la Instalilon GOG, tiam restartigi OpenRCT2.
 STR_6409    :La elektita doserio ne estas la eksterreta GOG Instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
+STR_6410    :Zomi/malzomi
+STR_6411    :Montri butonojn por zomigi kaj malzomigi en la ilobreto
 
 #############
 # Scenarios #

@@ -3666,6 +3666,8 @@ STR_6406    :GOG RollerCoaster Tycoon 2 설치 프로그램
 STR_6407    :몇 분 걸릴 것입니다.
 STR_6408    :“innoextract”를 설치하여 GOG 설치 프로그램에서 파일을 추출한 다음, OpenRCT2를 다시 시작하세요.
 STR_6409    :선택된 파일은 RollerCoaster Tycoon 2를 위한 GOG 설치 프로그램이 아닙니다. GOG Galaxy 다운로더를 다운로드했거나 잘못된 파일을 선택했을 수 있습니다.
+STR_6410    :화면 확대/축소
+STR_6411    :메인 메뉴에 화면 확대/축소 버튼을 표시합니다.
 
 #############
 # Scenarios #
