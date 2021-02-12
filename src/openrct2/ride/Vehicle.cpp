@@ -4230,12 +4230,13 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
         TrackLocation.x = trackCoords.x;
         TrackLocation.y = trackCoords.y;
 
-        auto trackElement = MapGetTrackElementAt(TrackLocation);
-
         auto curRide = GetRide();
         if (curRide != nullptr)
         {
-            SetTrackType(trackElement->GetTrackType());
+            auto trackElement = MapGetTrackElementAt(TrackLocation);
+            if (trackElement != nullptr)
+                SetTrackType(trackElement->GetTrackType());
+
             SetTrackDirection(curRide->boat_hire_return_direction);
             BoatLocation.SetNull();
         }
