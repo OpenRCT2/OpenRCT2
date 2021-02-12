@@ -824,11 +824,18 @@ static void window_top_toolbar_invalidate(rct_window* w)
     }
 
     // Zoomed out/in disable. Not sure where this code is in the original.
-    if (window_get_main()->viewport->zoom == ZoomLevel::min())
+    const auto* mainWindow = window_get_main();
+    if (mainWindow == nullptr || mainWindow->viewport == nullptr)
+    {
+        log_error("mainWindow or mainWindow->viewport is null!");
+        return;
+    }
+
+    if (mainWindow->viewport->zoom == ZoomLevel::min())
     {
         w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
     }
-    else if (window_get_main()->viewport->zoom >= ZoomLevel::max())
+    else if (mainWindow->viewport->zoom >= ZoomLevel::max())
     {
         w->disabled_widgets |= (1 << WIDX_ZOOM_OUT);
     }
