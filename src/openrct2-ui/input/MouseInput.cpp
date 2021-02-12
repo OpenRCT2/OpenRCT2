@@ -1442,7 +1442,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50 && WidgetIsVisible(w, widgetIndex))
+            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
             {
                 gTooltipTimeout = 0;
                 window_tooltip_open(w, widgetIndex, screenCoords);
