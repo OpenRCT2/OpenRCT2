@@ -36,9 +36,10 @@
 
 static struct
 {
-    uint32_t width, height;
-    uint8_t* mono_bitmap;
-} _heightMapData = { 0, 0, nullptr };
+    uint32_t width = 0;
+    uint32_t height = 0;
+    std::vector<uint8_t> mono_bitmap;
+} _heightMapData;
 
 #pragma endregion Height map struct
 
@@ -671,8 +672,7 @@ bool mapgen_load_heightmap(const utf8* path)
         }
 
         // Allocate memory for the height map values, one byte pixel
-        delete[] _heightMapData.mono_bitmap;
-        _heightMapData.mono_bitmap = new uint8_t[size * size];
+        _heightMapData.mono_bitmap.resize(size * size);
         _heightMapData.width = size;
         _heightMapData.height = size;
 
@@ -715,7 +715,7 @@ bool mapgen_load_heightmap(const utf8* path)
  */
 void mapgen_unload_heightmap()
 {
-    SafeDeleteArray(_heightMapData.mono_bitmap);
+    _heightMapData.mono_bitmap.clear();
     _heightMapData.width = 0;
     _heightMapData.height = 0;
 }
@@ -723,10 +723,10 @@ void mapgen_unload_heightmap()
 /**
  * Applies box blur to the surface N times
  */
-static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
+static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
 {
     // Create buffer to store one channel
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
+    std::vector<uint8_t> dest(src.size());
 
     for (int32_t i = 0; i < strength; i++)
     {
@@ -764,19 +764,16 @@ static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
             }
         }
     }
-
-    delete[] dest;
 }
 
 void mapgen_generate_from_heightmap(mapgen_settings* settings)
 {
     openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
-    openrct2_assert(_heightMapData.mono_bitmap != nullptr, "No height map loaded");
+    openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
-    std::memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
+    auto dest = _heightMapData.mono_bitmap;
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
 
@@ -806,7 +803,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         if (minValue == maxValue)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
-            delete[] dest;
             return;
         }
     }
@@ -864,9 +860,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
                 break;
         }
     }
-
-    // Clean up
-    delete[] dest;
 }
 
 #pragma endregion
