@@ -266,3 +266,55 @@ SET_CHECK_CXX_FLAGS(test_s6importexporttests)
 target_link_libraries(test_s6importexporttests ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_s6importexporttests)
 add_test(NAME s6importexporttests COMMAND test_s6importexporttests)
+
+# Vehicle test
+set(VEHICLE_TEST_SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/VehicleTest.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/Vehicle.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/VehicleSubpositionData.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/VehicleData.cpp"
+        "${ROOT_DIR}/src/openrct2/world/Sprite.cpp"
+        "${ROOT_DIR}/src/openrct2/world/TileElementBase.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/CableLift.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/RideData.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/TrackData.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/Track.cpp"
+        "${ROOT_DIR}/src/openrct2/ride/Station.cpp"
+        "${ROOT_DIR}/src/openrct2/windows/Intent.cpp"
+        "${ROOT_DIR}/src/openrct2/core/Crypt.OpenSSL.cpp"
+        #"${ROOT_DIR}/src/openrct2/audio/Audio.cpp"
+        #"${ROOT_DIR}/src/openrct2/interface/Viewport.cpp"
+        #"${ROOT_DIR}/src/openrct2/ride/Ride.cpp"
+        #"${ROOT_DIR}/src/openrct2/ride/RideData.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Balloon.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Banner.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Climate.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Duck.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Entrance.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Footpath.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Fountain.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/LargeScenery.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Map.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/MapAnimation.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/MapGen.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/MapHelpers.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/MoneyEffect.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Park.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Particle.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Scenery.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/SmallScenery.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Surface.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/TileElement.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/TileInspector.cpp"
+        #"${ROOT_DIR}/src/openrct2/world/Wall.cpp"
+        #"${ROOT_DIR}/src/openrct2/Game.cpp"
+        #"${ROOT_DIR}/src/openrct2/paint/Paint.cpp"
+        #"${ROOT_DIR}/src/openrct2/paint/sprite/Paint.Sprite.cpp"
+        #"${ROOT_DIR}/src/openrct2/drawing/Drawing.Sprite.cpp"
+        )
+add_executable(test_vehicle ${VEHICLE_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_vehicle)
+target_compile_definitions(test_vehicle PUBLIC OPENRCT2_MOCK_VEHICLE)
+target_link_libraries(test_vehicle ${GTEST_LIBRARIES} test-common ${LDL} z crypto)
+target_link_platform_libraries(test_vehicle)
+add_test(NAME vehicle COMMAND test_vehicle)
