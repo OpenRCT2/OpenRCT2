@@ -510,7 +510,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "%s", e.what());
+        Console::Error::WriteLine("%s", e.what());
     }
 
     for (auto& dpi : dpis)

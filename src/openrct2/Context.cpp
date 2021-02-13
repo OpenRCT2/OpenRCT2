@@ -273,6 +273,11 @@ namespace OpenRCT2
             _stdInOutConsole.WriteLine(s);
         }
 
+        void WriteErrorLine(const std::string& s) override
+        {
+            _stdInOutConsole.WriteLineError(s);
+        }
+
         /**
          * Causes the OpenRCT2 game loop to finish.
          */

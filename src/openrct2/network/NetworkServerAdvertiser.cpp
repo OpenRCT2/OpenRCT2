@@ -148,7 +148,7 @@ private:
                 {
                     if (_lastAdvertiseTime == 0)
                     {
-                        std::printf("Registering server on master server\n");
+                        Console::WriteLine("Registering server on master server");
                     }
                     SendRegistration(_forceIPv4);
                 }
@@ -237,6 +237,7 @@ private:
 
         if (status == MasterServerStatus::Ok)
         {
+            Console::WriteLine("Server successfully registered on master server");
             json_t jsonToken = jsonRoot["token"];
             if (jsonToken.is_string())
             {

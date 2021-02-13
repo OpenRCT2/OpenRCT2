@@ -528,7 +528,7 @@ void ScriptEngine::SetupHotReloading()
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "Unable to enable hot reloading of plugins: %s\n", e.what());
+        Console::Error::WriteLine("Unable to enable hot reloading of plugins: %s", e.what());
     }
 }
 
@@ -1199,7 +1199,7 @@ void ScriptEngine::LoadSharedStorage()
     }
     catch (const std::exception&)
     {
-        fprintf(stderr, "Unable to read '%s'\n", path.c_str());
+        Console::Error::WriteLine("Unable to read '%s'", path.c_str());
     }
 }
 
@@ -1216,7 +1216,7 @@ void ScriptEngine::SaveSharedStorage()
     }
     catch (const std::exception&)
     {
-        fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
+        Console::Error::WriteLine("Unable to write to '%s'", path.c_str());
     }
 }
 

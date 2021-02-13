@@ -12,6 +12,7 @@
 #    include "Http.h"
 
 #    include "../Version.h"
+#    include "../core/Console.hpp"
 #    include "String.hpp"
 
 #    include <cstdio>
@@ -226,7 +227,7 @@ namespace Http
         catch ([[maybe_unused]] const std::exception& e)
         {
 #    ifdef DEBUG
-            std::fprintf(stderr, "HTTP request failed: %s\n", e.what());
+            Console::Error::WriteLine("HTTP request failed: %s", e.what());
 #    endif
             WinHttpCloseHandle(hSession);
             WinHttpCloseHandle(hConnect);

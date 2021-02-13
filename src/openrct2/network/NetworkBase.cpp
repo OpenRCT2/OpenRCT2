@@ -391,7 +391,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     }
 
     auto* szAddress = address.empty() ? "*" : address.c_str();
-    std::printf("Listening for clients on %s:%hu\n", szAddress, port);
+    Console::WriteLine("Listening for clients on %s:%hu", szAddress, port);
     network_chat_show_connected_message();
     network_chat_show_server_greeting();
 
