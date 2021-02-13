@@ -22,6 +22,7 @@
 #include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
+#include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
 #include "interface/Colour.h"

@@ -10,6 +10,7 @@
 #ifndef _WIN32
 #    include "RTL.h"
 
+#    include <algorithm>
 #    include <string>
 #    include <unicode/ubidi.h>
 #    include <unicode/unistr.h>
@@ -42,6 +43,10 @@ std::string FixRTL(std::string& input)
 
     std::string cppstring;
     shaped.toUTF8String(cppstring);
+
+    // libicu seems to leave a null terminator on the end
+    cppstring.erase(std::find(cppstring.begin(), cppstring.end(), '\0'), cppstring.end());
+
     return cppstring;
 }
 #endif

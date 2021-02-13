@@ -14,13 +14,6 @@
 
 #include <gtest/gtest.h>
 
-#ifndef _WIN32
-#    include "openrct2/core/File.h"
-#    include "openrct2/platform/platform.h"
-
-const language_descriptor LanguagesDescriptors[] = {};
-#endif
-
 class LanguagePackTest : public testing::Test
 {
 protected:
@@ -127,20 +120,3 @@ const unsigned char LanguagePackTest::LanguageZhTW[] = {
     0x59, 0x20, 0x20, 0x20, 0x20, 0x3a, 0xe6, 0xaf, 0x8f, 0xe8, 0xbb, 0x8a, 0xe5, 0x8d, 0xa1, 0x34, 0xe4, 0xbd, 0x8d, 0xe4,
     0xb9, 0x98, 0xe5, 0xae, 0xa2, 0x0a, 0x00,
 };
-
-#ifndef _WIN32
-bool platform_ensure_directory_exists(const utf8* path)
-{
-    return true;
-}
-
-bool platform_directory_exists(const utf8* path)
-{
-    return true;
-}
-
-bool File::Exists(const std::string& path)
-{
-    return true;
-}
-#endif
