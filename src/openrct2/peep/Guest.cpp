@@ -5905,7 +5905,6 @@ static void peep_update_walking_break_scenery(Peep* peep)
         if (std::max(x_diff, y_diff) < 224)
         {
             inner_peep->StaffVandalsStopped++;
-
             return;
         }
     }
