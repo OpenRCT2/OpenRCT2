@@ -140,8 +140,7 @@ void S6Exporter::Save(OpenRCT2::IStream* stream, bool isScenario)
 
     // Read all written bytes back into a single buffer
     stream->SetPosition(0);
-    auto data = std::unique_ptr<uint8_t, std::function<void(uint8_t*)>>(
-        stream->ReadArray<uint8_t>(fileSize), Memory::Free<uint8_t>);
+    auto data = stream->ReadArray<uint8_t>(fileSize);
     uint32_t checksum = sawyercoding_calculate_checksum(data.get(), fileSize);
 
     // Write the checksum on the end

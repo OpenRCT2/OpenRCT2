@@ -258,5 +258,5 @@ std::string FindCsg1datAtLocation(const utf8* path);
 bool Csg1datPresentAtLocation(const utf8* path);
 std::string FindCsg1idatAtLocation(const utf8* path);
 bool Csg1idatPresentAtLocation(const utf8* path);
-bool CsgIsUsable(rct_gx csg);
+bool CsgIsUsable(const rct_gx& csg);
 bool CsgAtLocationIsUsable(const utf8* path);

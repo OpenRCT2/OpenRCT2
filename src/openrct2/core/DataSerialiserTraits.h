@@ -161,10 +161,8 @@ template<> struct DataSerializerTraits_t<std::string>
             res = "";
             return;
         }
-        const char* str = stream->ReadArray<char>(len);
-        res.assign(str, len);
-
-        Memory::FreeArray(str, len);
+        auto str = stream->ReadArray<char>(len);
+        res.assign(str.get(), len);
     }
     static void log(OpenRCT2::IStream* stream, const std::string& str)
     {
@@ -620,9 +618,8 @@ template<> struct DataSerializerTraits_t<rct_object_entry>
         uint32_t temp;
         stream->Read(&temp);
         val.flags = ByteSwapBE(temp);
-        const char* str = stream->ReadArray<char>(12);
-        memcpy(val.nameWOC, str, 12);
-        Memory::FreeArray(str, 12);
+        auto str = stream->ReadArray<char>(12);
+        memcpy(val.nameWOC, str.get(), 12);
     }
     static void log(OpenRCT2::IStream* stream, const rct_object_entry& val)
     {
