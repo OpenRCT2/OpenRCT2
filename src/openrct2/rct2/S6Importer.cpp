@@ -803,7 +803,12 @@ public:
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
         dst.CurrentRide = src.current_ride;
         dst.State = src.state;
-        dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
+        if (src.proximity_track_type == 0xFF)
+            dst.ProximityTrackType = TrackElemType::None;
+        else if (src.current_ride < RCT12_MAX_RIDES_IN_PARK)
+            dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
+        else
+            dst.ProximityTrackType = src.proximity_track_type;
         dst.ProximityBaseHeight = src.proximity_base_height;
         dst.ProximityTotal = src.proximity_total;
         for (size_t i = 0; i < std::size(src.proximity_scores); i++)

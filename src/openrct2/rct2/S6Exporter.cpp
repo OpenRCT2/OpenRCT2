@@ -780,7 +780,10 @@ void S6Exporter::ExportRideRatingsCalcData()
     dst.proximity_start_z = src.ProximityStart.z;
     dst.current_ride = src.CurrentRide;
     dst.state = src.State;
-    dst.proximity_track_type = OpenRCT2TrackTypeToRCT2(src.ProximityTrackType);
+    if (src.ProximityTrackType == TrackElemType::None)
+        dst.proximity_track_type = 0xFF;
+    else
+        dst.proximity_track_type = OpenRCT2TrackTypeToRCT2(src.ProximityTrackType);
     dst.proximity_base_height = src.ProximityBaseHeight;
     dst.proximity_total = src.ProximityTotal;
     for (size_t i = 0; i < std::size(dst.proximity_scores); i++)
