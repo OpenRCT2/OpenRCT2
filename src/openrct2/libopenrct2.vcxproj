@@ -868,6 +868,7 @@
     <ClCompile Include="world\Sprite.cpp" />
     <ClCompile Include="world\Surface.cpp" />
     <ClCompile Include="world\TileElement.cpp" />
+    <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
   </ItemGroup>
