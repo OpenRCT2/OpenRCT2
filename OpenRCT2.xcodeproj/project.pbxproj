@@ -26,6 +26,7 @@
 		01C6F0C822FD51FC0057E2F7 /* T6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */; };
 		01C6F0C922FD51FC0057E2F7 /* T6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01C6F0C622FD51FC0057E2F7 /* T6Importer.cpp */; };
 		01DDFE6522FD608500221318 /* Window_internal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 01DDFE6422FD608500221318 /* Window_internal.cpp */; };
+		20DE495F25DA8C6B00F2DF6D /* TileElementBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20DE495E25DA8C6B00F2DF6D /* TileElementBase.cpp */; };
 		2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
 		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
@@ -838,6 +839,7 @@
 		01C6F0C622FD51FC0057E2F7 /* T6Importer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = T6Importer.cpp; sourceTree = "<group>"; };
 		01C6F0C722FD51FC0057E2F7 /* T6Exporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = T6Exporter.h; sourceTree = "<group>"; };
 		01DDFE6422FD608500221318 /* Window_internal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window_internal.cpp; sourceTree = "<group>"; };
+		20DE495E25DA8C6B00F2DF6D /* TileElementBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElementBase.cpp; sourceTree = "<group>"; };
 		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2ADE2F21224418B1002598AF /* Random.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Random.hpp; sourceTree = "<group>"; };
@@ -1332,8 +1334,6 @@
 		9308D9FD209908090079EE96 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
 		930EEA6924FC00940070314E /* ScenarioSelect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioSelect.cpp; sourceTree = "<group>"; };
 		9329D51F240C17C60054301C /* BenchUpdate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchUpdate.cpp; sourceTree = "<group>"; };
-		932A20CD22D73CEE00C57EDB /* GuestSetNameAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = GuestSetNameAction.hpp; sourceTree = "<group>"; };
-		932A20CE22D73CEE00C57EDB /* RideSetVehiclesAction.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RideSetVehiclesAction.hpp; sourceTree = "<group>"; };
 		932A20CF22D73CEE00C57EDB /* GameActionCompat.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionCompat.cpp; sourceTree = "<group>"; };
 		932A20D322D73CEF00C57EDB /* GameActionRegistration.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameActionRegistration.cpp; sourceTree = "<group>"; };
 		932A20F522D73CF300C57EDB /* GameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAction.h; sourceTree = "<group>"; };
@@ -3818,6 +3818,7 @@
 				2ADE2F372244198A002598AF /* SpriteBase.h */,
 				9308D9FB209908080079EE96 /* Surface.cpp */,
 				9308D9FD209908090079EE96 /* Surface.h */,
+				20DE495E25DA8C6B00F2DF6D /* TileElementBase.cpp */,
 				9308D9FA209908080079EE96 /* TileElement.cpp */,
 				9308D9FC209908080079EE96 /* TileElement.h */,
 				4C7B543E2007646A00A52E21 /* TileInspector.cpp */,
@@ -4707,6 +4708,7 @@
 				F76C85C41EC4E88300FA49E2 /* Config.cpp in Sources */,
 				66A10EC4257F1DF800DD651A /* FootpathAdditionPlaceAction.cpp in Sources */,
 				C688792920289B9B0084B384 /* Chairlift.cpp in Sources */,
+				20DE495F25DA8C6B00F2DF6D /* TileElementBase.cpp in Sources */,
 				C68878A020289B200084B384 /* LanguagePack.cpp in Sources */,
 				F76C85C71EC4E88300FA49E2 /* IniReader.cpp in Sources */,
 				93F76F0020BFF77B00D4512C /* Paint.Path.cpp in Sources */,
