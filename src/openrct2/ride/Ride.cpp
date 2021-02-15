@@ -2314,7 +2314,7 @@ static void ride_inspection_update(Ride* ride)
     ride->lifecycle_flags |= RIDE_LIFECYCLE_DUE_INSPECTION;
     ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
 
-    auto stationIndex = ride_get_first_valid_station_exit(ride);
+    auto stationIndex = ride_get_random_valid_station_exit(ride);
     ride->inspection_station = (stationIndex != STATION_INDEX_NULL) ? stationIndex : 0;
 }
 

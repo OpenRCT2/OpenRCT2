@@ -4108,6 +4108,14 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     gfx_draw_string_left(dpi, stringId, &lastInspection, COLOUR_BLACK, screenCoords);
     screenCoords.y += 12;
 
+    if (ride->num_stations > 1)
+    {
+        uint16_t inspection_station = ride->inspection_station + 1;
+
+        gfx_draw_string_left(dpi, STR_RIDE_INSPECTION_STATION, &inspection_station, COLOUR_BLACK, screenCoords);
+        screenCoords.y += 12;
+    }
+
     // Last / current breakdown
     if (ride->breakdown_reason == BREAKDOWN_NONE)
         return;

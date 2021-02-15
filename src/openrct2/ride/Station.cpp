@@ -376,6 +376,28 @@ StationIndex ride_get_first_valid_station_exit(Ride* ride)
     return STATION_INDEX_NULL;
 }
 
+StationIndex ride_get_random_valid_station_exit(Ride* ride)
+{
+    uint8_t valid_stations_count = 0;
+    StationIndex valid_stations[MAX_STATIONS];
+
+    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    {
+        if (!ride->stations[i].Exit.isNull())
+        {
+            valid_stations[valid_stations_count] = i;
+            valid_stations_count++;
+        }
+    }
+
+    if (valid_stations_count > 0)
+    {
+        return valid_stations[scenario_rand() % valid_stations_count];
+    }
+
+    return STATION_INDEX_NULL;
+}
+
 StationIndex ride_get_first_valid_station_start(const Ride* ride)
 {
     for (StationIndex i = 0; i < MAX_STATIONS; i++)

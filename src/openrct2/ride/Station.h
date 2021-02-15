@@ -20,6 +20,7 @@ constexpr const StationIndex STATION_INDEX_NULL = 0xFF;
 
 void ride_update_station(Ride* ride, StationIndex stationIndex);
 StationIndex ride_get_first_valid_station_exit(Ride* ride);
+StationIndex ride_get_random_valid_station_exit(Ride* ride);
 StationIndex ride_get_first_valid_station_start(const Ride* ride);
 StationIndex ride_get_first_empty_station_start(const Ride* ride);
 
