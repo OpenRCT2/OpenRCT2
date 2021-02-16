@@ -503,7 +503,9 @@ static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
         (1ULL << WIDX_MINIMUM_LENGTH_INCREASE) |
         (1ULL << WIDX_MINIMUM_LENGTH_DECREASE) |
         (1ULL << WIDX_MAXIMUM_LENGTH_INCREASE) |
-        (1ULL << WIDX_MAXIMUM_LENGTH_DECREASE),
+        (1ULL << WIDX_MAXIMUM_LENGTH_DECREASE) |
+        (1ULL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE) |
+        (1ULL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE),
     0,
     0,
     0,
