@@ -43,7 +43,11 @@ enum class MouseState : uint32_t
     LeftPress,
     LeftRelease,
     RightPress,
-    RightRelease
+    RightRelease,
+    FourPress,
+    FourRelease,
+    FivePress,
+    FiveRelease
 };
 
 enum class InputState

@@ -413,6 +413,12 @@ public:
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
+                        case SDL_BUTTON_X1:
+                            StoreMouseInput(MouseState::FourPress, mousePos);
+                            break;
+                        case SDL_BUTTON_X2:
+                            StoreMouseInput(MouseState::FivePress, mousePos);
+                            break;
                     }
                     _cursorState.touch = false;
                     break;
@@ -439,6 +445,12 @@ public:
                             StoreMouseInput(MouseState::RightRelease, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
+                            break;
+                        case SDL_BUTTON_X1:
+                            StoreMouseInput(MouseState::FourRelease, mousePos);
+                            break;
+                        case SDL_BUTTON_X2:
+                            StoreMouseInput(MouseState::FiveRelease, mousePos);
                             break;
                     }
                     _cursorState.touch = false;

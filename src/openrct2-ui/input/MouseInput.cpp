@@ -262,6 +262,10 @@ static void InputScrollRight(const ScreenCoordsXY& screenCoords, MouseState stat
         case MouseState::LeftPress:
         case MouseState::LeftRelease:
         case MouseState::RightPress:
+        case MouseState::FourPress:
+        case MouseState::FourRelease:
+        case MouseState::FivePress:
+        case MouseState::FiveRelease:
             // Function only handles right button, so it's the only one relevant
             break;
     }
@@ -322,8 +326,23 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                         }
                     }
                     break;
+                case MouseState::FourPress:
+                    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+                    {
+                        window_rotate_camera(window_get_main(), 1);
+                    }
+                    break;
+                case MouseState::FivePress:
+                    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+                    {
+                        window_rotate_camera(window_get_main(), -1);
+                    }
+                    break;
+
                 case MouseState::LeftRelease:
                 case MouseState::RightRelease:
+                case MouseState::FourRelease:
+                case MouseState::FiveRelease:
                     // In this switch only button presses are relevant
                     break;
             }
@@ -359,6 +378,14 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                     // If the user pressed the right mouse button for less than 500 ticks, interpret as right click
                     ViewportInteractionRightClick(screenCoords);
                 }
+            }
+            else if (state == MouseState::FourPress)
+            {
+                window_rotate_camera(window_get_main(), 1);
+            }
+            else if (state == MouseState::FivePress)
+            {
+                window_rotate_camera(window_get_main(), -1);
             }
             break;
         case InputState::DropdownActive:
@@ -417,6 +444,10 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 case MouseState::LeftPress:
                 case MouseState::RightPress:
                 case MouseState::RightRelease:
+                case MouseState::FourPress:
+                case MouseState::FourRelease:
+                case MouseState::FivePress:
+                case MouseState::FiveRelease:
                     // In this switch only left button release is relevant
                     break;
             }
@@ -433,6 +464,10 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
                 case MouseState::LeftPress:
                 case MouseState::RightPress:
                 case MouseState::RightRelease:
+                case MouseState::FourPress:
+                case MouseState::FourRelease:
+                case MouseState::FivePress:
+                case MouseState::FiveRelease:
                     // In this switch only left button release is relevant
                     break;
             }
