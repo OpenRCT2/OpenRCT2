@@ -617,7 +617,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
 {
     // clang-format off
 
-    // Interface 0
+    // Interface
     RegisterShortcut(ShortcutId::InterfaceCloseTop, STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW, "BACKSPACE", []() { window_close_top(); });
     RegisterShortcut(ShortcutId::InterfaceCloseAll, STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS, "SHIFT+BACKSPACE", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
@@ -643,11 +643,6 @@ void ShortcutManager::RegisterDefaultShortcuts()
             }
         }
     });
-    RegisterShortcut(ShortcutId::InterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, "T", []() {
-        ShortcutRemoveTopBottomToolbarToggle();
-    });
-
-    // Interface 1
     RegisterShortcut(ShortcutId::InterfacePause, STR_SHORTCUT_PAUSE_GAME, "PAUSE", []() {
         if (!(gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_MANAGER)))
         {
@@ -659,49 +654,26 @@ void ShortcutManager::RegisterDefaultShortcuts()
             }
         }
     });
-    RegisterShortcut(ShortcutId::InterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED , "-", []() { ShortcutReduceGameSpeed(); });
-    RegisterShortcut(ShortcutId::InterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED , "=", []() { ShortcutIncreaseGameSpeed(); });
-    RegisterShortcut(ShortcutId::InterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", []() { ShortcutLoadGame(); });
-    RegisterShortcut(ShortcutId::InterfaceSaveGame, STR_LOAD_GAME, "CTRL+F10", []() { ShortcutQuickSaveGame(); });
-    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WC_OPTIONS); });
-    RegisterShortcut(ShortcutId::InterfaceScreenshot, STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
-    RegisterShortcut(ShortcutId::InterfaceMute, STR_SHORTCUT_MUTE_SOUND, []() { OpenRCT2::Audio::ToggleAllSounds(); });
-
-    // Interface 2
-    RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { ShortcutOpenCheatWindow(); });
-    RegisterShortcut(ShortcutId::InterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, []() { ShortcutToggleClearanceChecks(); });
-
-    // Interface 3
     RegisterShortcut(ShortcutId::InterfaceZoomOut, STR_SHORTCUT_ZOOM_VIEW_OUT, "PAGEUP", []() { main_window_zoom(false, false); });
     RegisterShortcut(ShortcutId::InterfaceZoomIn, STR_SHORTCUT_ZOOM_VIEW_IN, "PAGEDOWN", []() { main_window_zoom(true, false); });
     RegisterShortcut(ShortcutId::InterfaceRotateClockwise, STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE, "RETURN", "MOUSE 6", []() { RotateCamera(1); });
     RegisterShortcut(ShortcutId::InterfaceRotateAnticlockwise, STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE, "SHIFT+RETURN", "MOUSE 5", []() { RotateCamera(-1); });
-    RegisterShortcut(ShortcutId::InterfaceOpenMap, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, "TAB", []() { ShortcutShowMap(); });
+    RegisterShortcut(ShortcutId::InterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", []() { ShortcutRotateConstructionObject(); });
 
-    // Interface 4
-    RegisterShortcut(ShortcutId::InterfaceClearScenery, STR_SHORTCUT_CLEAR_SCENERY, "B", []() { ShortcutClearScenery(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", []() { ShortcutAdjustLand(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenWater, STR_SHORTCUT_ADJUST_WATER, "F2", []() { ShortcutAdjustWater(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenScenery, STR_SHORTCUT_BUILD_SCENERY, "F3", []() { ShortcutBuildScenery(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenFootpaths, STR_SHORTCUT_BUILD_PATHS, "F4", []() { ShortcutBuildPaths(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenNewRide, STR_SHORTCUT_BUILD_NEW_RIDE, "F5", []() { ShortcutBuildNewRide(); });
+    RegisterShortcut(ShortcutId::ScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", []() { platform_toggle_windowed_mode(); });
+    RegisterShortcut(ShortcutId::InterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, []() { ShortcutScaleUp(); });
+    RegisterShortcut(ShortcutId::InterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, []() { ShortcutScaleDown(); });
 
-    // Interface 5
-    RegisterShortcut(ShortcutId::InterfaceOpenFinances, STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", []() { ShortcutShowFinancialInformation(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenResearch, STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", []() { ShortcutShowResearchInformation(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenRides, STR_SHORTCUT_SHOW_RIDES_LIST, "R", []() { ShortcutShowRidesList(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenPark, STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", []() { ShortcutShowParkInformation(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenGuests, STR_SHORTCUT_SHOW_GUEST_LIST, "G", []() { ShortcutShowGuestList(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", []() { ShortcutShowStaffList(); });
-    RegisterShortcut(ShortcutId::InterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", []() { ShortcutShowRecentMessages(); });
-
-    // Multiplayer
-    RegisterShortcut(ShortcutId::MultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
-        if (network_get_mode() != NETWORK_MODE_NONE)
-        {
-            OpenWindow(WC_MULTIPLAYER);
-        }
+    RegisterShortcut(ShortcutId::InterfaceToggleToolbars, STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS, "T", []() {
+        ShortcutRemoveTopBottomToolbarToggle();
     });
+    RegisterShortcut(ShortcutId::InterfaceDecreaseSpeed, STR_SHORTCUT_REDUCE_GAME_SPEED , "-", []() { ShortcutReduceGameSpeed(); });
+    RegisterShortcut(ShortcutId::InterfaceIncreaseSpeed, STR_SHORTCUT_INCREASE_GAME_SPEED , "=", []() { ShortcutIncreaseGameSpeed(); });
+    RegisterShortcut(ShortcutId::InterfaceLoadGame, STR_LOAD_GAME, "CTRL+L", []() { ShortcutLoadGame(); });
+    RegisterShortcut(ShortcutId::InterfaceSaveGame, STR_SAVE_GAME, "CTRL+F10", []() { ShortcutQuickSaveGame(); });
+    RegisterShortcut(ShortcutId::InterfaceScreenshot, STR_SHORTCUT_SCREENSHOT, "CTRL+S", []() { gScreenshotCountdown = 2; });
+    RegisterShortcut(ShortcutId::InterfaceMute, STR_SHORTCUT_MUTE_SOUND, []() { OpenRCT2::Audio::ToggleAllSounds(); });
+    RegisterShortcut(ShortcutId::InterfaceDisableClearance, STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS, []() { ShortcutToggleClearanceChecks(); });
     RegisterShortcut(ShortcutId::MultiplayerChat, STR_SEND_MESSAGE, "C", []() {
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
@@ -709,6 +681,36 @@ void ShortcutManager::RegisterDefaultShortcuts()
             {
                 chat_toggle();
             }
+        }
+    });
+    RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutOpenSceneryPicker(); });
+
+    RegisterShortcut(ShortcutId::InterfaceShowOptions, STR_SHORTCUT_SHOW_OPTIONS, []() { context_open_window(WC_OPTIONS); });
+    RegisterShortcut(ShortcutId::InterfaceOpenCheats, STR_SHORTCUT_OPEN_CHEATS_WINDOW, "CTRL+ALT+C", []() { ShortcutOpenCheatWindow(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenMap, STR_SHORTCUT_SHOW_MAP, "TAB", []() { ShortcutShowMap(); });
+    RegisterShortcut(ShortcutId::InterfaceClearScenery, STR_SHORTCUT_CLEAR_SCENERY, "B", []() { ShortcutClearScenery(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenLand, STR_SHORTCUT_ADJUST_LAND, "F1", []() { ShortcutAdjustLand(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenWater, STR_SHORTCUT_ADJUST_WATER, "F2", []() { ShortcutAdjustWater(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenScenery, STR_SHORTCUT_BUILD_SCENERY, "F3", []() { ShortcutBuildScenery(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenFootpaths, STR_SHORTCUT_BUILD_PATHS, "F4", []() { ShortcutBuildPaths(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenNewRide, STR_SHORTCUT_BUILD_NEW_RIDE, "F5", []() { ShortcutBuildNewRide(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenFinances, STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION, "F", []() { ShortcutShowFinancialInformation(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenResearch, STR_SHORTCUT_SHOW_RESEARCH_INFORMATION, "D", []() { ShortcutShowResearchInformation(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenRides, STR_SHORTCUT_SHOW_RIDES_LIST, "R", []() { ShortcutShowRidesList(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenPark, STR_SHORTCUT_SHOW_PARK_INFORMATION, "P", []() { ShortcutShowParkInformation(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenGuests, STR_SHORTCUT_SHOW_GUEST_LIST, "G", []() { ShortcutShowGuestList(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenStaff, STR_SHORTCUT_SHOW_STAFF_LIST, "S", []() { ShortcutShowStaffList(); });
+    RegisterShortcut(ShortcutId::InterfaceOpenMessages, STR_SHORTCUT_SHOW_RECENT_MESSAGES, "M", []() { ShortcutShowRecentMessages(); });
+    RegisterShortcut(ShortcutId::MultiplayerShow, STR_SHORTCUT_SHOW_MULTIPLAYER, []() {
+        if (network_get_mode() != NETWORK_MODE_NONE)
+        {
+            OpenWindow(WC_MULTIPLAYER);
+        }
+    });
+    RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
+        if (gConfigInterface.toolbar_show_cheats)
+        {
+            OpenWindow(WC_TILE_INSPECTOR);
         }
     });
 
@@ -728,24 +730,12 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::ViewToogleFootpathIssues, STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE, "I", []() { ToggleViewFlag(VIEWPORT_FLAG_PATH_HEIGHTS); });
     RegisterShortcut(ShortcutId::ViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", []() { ToggleViewFlag(VIEWPORT_FLAG_GRIDLINES); });
 
-    // Interface 6
-    RegisterShortcut(ShortcutId::InterfaceSceneryPicker, STR_SHORTCUT_OPEN_SCENERY_PICKER, []() { ShortcutOpenSceneryPicker(); });
-    RegisterShortcut(ShortcutId::InterfaceRotateConstruction, STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT, "Z", []() { ShortcutRotateConstructionObject(); });
-
-    // Ride construction
-
-    // Map scrolling
     RegisterShortcut(ShortcutId::ScrollUp, STR_SHORTCUT_SCROLL_MAP_UP, "UP", []() { });
     RegisterShortcut(ShortcutId::ScrollLeft, STR_SHORTCUT_SCROLL_MAP_LEFT, "LEFT", []() { });
     RegisterShortcut(ShortcutId::ScrollRight, STR_SHORTCUT_SCROLL_MAP_RIGHT, "RIGHT", []() { });
     RegisterShortcut(ShortcutId::ScrollDown, STR_SHORTCUT_SCROLL_MAP_DOWN, "DOWN", []() { });
 
-    // Window scale
-    RegisterShortcut(ShortcutId::ScaleToggleWindowMode, STR_SHORTCUT_WINDOWED_MODE_TOGGLE, "ALT+RETURN", []() { platform_toggle_windowed_mode(); });
-    RegisterShortcut(ShortcutId::InterfaceScaleIncrease, STR_SHORTCUT_SCALE_UP, []() { ShortcutScaleUp(); });
-    RegisterShortcut(ShortcutId::InterfaceScaleDecrease, STR_SHORTCUT_SCALE_DOWN, []() { ShortcutScaleDown(); });
-
-    // Ride construction
+    // Window
     RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", []() { window_ride_construction_keyboard_shortcut_turn_left(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", []() { window_ride_construction_keyboard_shortcut_turn_right(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
@@ -758,14 +748,6 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", []() { window_ride_construction_keyboard_shortcut_next_track(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { window_ride_construction_keyboard_shortcut_build_current(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { window_ride_construction_keyboard_shortcut_demolish_current(); });
-
-    // Tile inspector
-    RegisterShortcut(ShortcutId::InterfaceOpenTileInspector, STR_SHORTCUT_OPEN_TILE_INSPECTOR, []() {
-        if (gConfigInterface.toolbar_show_cheats)
-        {
-            OpenWindow(WC_TILE_INSPECTOR);
-        }
-    });
 
     RegisterShortcut(ShortcutId::WindowTileInspectorInsertCorrupt, STR_SHORTCUT_INSERT_CORRPUT_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT); });
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_COPY); });

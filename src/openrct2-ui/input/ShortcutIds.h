@@ -35,10 +35,10 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view MultiplayerChat = "interface.misc.multiplayer_chat";
 
     // Interface / scroll
-    constexpr std::string_view ScrollUp = "interface.scroll.up";
-    constexpr std::string_view ScrollLeft = "interface.scroll.left";
-    constexpr std::string_view ScrollRight = "interface.scroll.right";
-    constexpr std::string_view ScrollDown = "interface.scroll.down";
+    constexpr std::string_view ScrollUp = "view.scroll.up";
+    constexpr std::string_view ScrollLeft = "view.scroll.left";
+    constexpr std::string_view ScrollRight = "view.scroll.right";
+    constexpr std::string_view ScrollDown = "view.scroll.down";
 
     // Interface / graphics
     constexpr std::string_view ScaleToggleWindowMode = "interface.graphics.toggle_window_mode";

@@ -240,7 +240,7 @@ std::string_view ShortcutInput::GetKeyName(uint32_t key, bool localised)
         { SDLK_KP_MULTIPLY, { "NUMPAD *", STR_SHORTCUT_NUMPAD_MULTIPLY } },
         { SDLK_KP_MINUS, { "NUMPAD -", STR_SHORTCUT_NUMPAD_MINUS } },
         { SDLK_KP_PLUS, { "NUMPAD +", STR_SHORTCUT_NUMPAD_PLUS } },
-        { SDLK_KP_ENTER, { "NUMPAD RETURN", STR_SHORTCUT_NUMPAD_RETURN } },
+        { SDLK_KP_ENTER, { "NUMPAD ENTER", STR_SHORTCUT_NUMPAD_RETURN } },
         { SDLK_KP_1, { "NUMPAD 1", STR_SHORTCUT_NUMPAD_1 } },
         { SDLK_KP_2, { "NUMPAD 2", STR_SHORTCUT_NUMPAD_2 } },
         { SDLK_KP_3, { "NUMPAD 3", STR_SHORTCUT_NUMPAD_3 } },
