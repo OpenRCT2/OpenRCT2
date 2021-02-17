@@ -531,6 +531,21 @@ public:
                         ie.DeviceKind = InputDeviceKind::Keyboard;
                         ie.Modifiers = e.key.keysym.mod;
                         ie.Button = e.key.keysym.sym;
+                        // Handle dead keys
+                        if (ie.Button == SDLK_SCANCODE_MASK)
+                        {
+                            switch (e.key.keysym.scancode)
+                            {
+                                case SDL_SCANCODE_APOSTROPHE:
+                                    ie.Button = '\'';
+                                    break;
+                                case SDL_SCANCODE_GRAVE:
+                                    ie.Button = '`';
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                         ie.State = InputEventState::Down;
                         _inputManager.QueueInputEvent(std::move(ie));
                     }
