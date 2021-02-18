@@ -336,7 +336,10 @@ static void window_scenarioselect_scrollmousedown(rct_window* w, int32_t scrollI
                     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
                     gFirstTimeSaving = true;
                     _callback(listItem.scenario.scenario->path);
-                    window_close(w);
+                    if (_titleEditor)
+                    {
+                        window_close(w);
+                    }
                 }
                 break;
         }
