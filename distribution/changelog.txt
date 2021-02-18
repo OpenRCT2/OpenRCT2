@@ -18,6 +18,7 @@
 - Feature: [#13613] Add single-rail roller coaster (Rocky Mountain Construction Raptor).
 - Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
 - Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
+- Feature: [#13848] Replace shortcut engine allowing multiple bindings from different input devices.
 - Feature: [#13927] [Plugin] Add isVisible and text box widget.
 - Feature: [#13969] [Plugin] Add APIs for editing title sequences.
 - Feature: [#14002] [Plugin] Use allowed_hosts when checking the binding IP for listening.
