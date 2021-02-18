@@ -665,13 +665,9 @@ extern int32_t gPickupPeepY;
 
 extern bool gTinyFontAntiAliased;
 
-extern rct_drawpixelinfo gScreenDPI;
-extern rct_drawpixelinfo gWindowDPI;
-
 bool clip_drawpixelinfo(
     rct_drawpixelinfo* dst, rct_drawpixelinfo* src, const ScreenCoordsXY& coords, int32_t width, int32_t height);
 void gfx_set_dirty_blocks(const ScreenRect& rect);
-void gfx_draw_all_dirty_blocks();
 void gfx_invalidate_screen();
 
 // palette
@@ -680,7 +676,6 @@ void load_palette();
 
 // other
 void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex);
-void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour);
 void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette);
 void gfx_invalidate_pickedup_peep();
 void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi);
