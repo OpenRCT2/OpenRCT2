@@ -802,6 +802,8 @@ ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_
 bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
 bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
 uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
 
 /**
  * Iterates an RCT2 string buffer and returns the length of the string in bytes.

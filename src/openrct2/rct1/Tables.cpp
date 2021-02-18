@@ -13,6 +13,7 @@
 #include "../core/Guard.hpp"
 #include "../interface/Colour.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../world/Surface.h"
 #include "RCT1.h"
 
@@ -1386,4 +1387,12 @@ namespace RCT1
         return map[sceneryType];
     }
 } // namespace RCT1
+
+track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+{
+    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+
+    return origTrackType;
+}
 // clang-format on

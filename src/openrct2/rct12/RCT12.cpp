@@ -1289,3 +1289,61 @@ std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
     }
     return rct2encoded;
 }
+
+track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType)
+{
+    switch (origTrackType)
+    {
+        case TrackElemType::FlatTrack1x4A_Alias:
+            return TrackElemType::FlatTrack1x4A;
+        case TrackElemType::FlatTrack2x2_Alias:
+            return TrackElemType::FlatTrack2x2;
+        case TrackElemType::FlatTrack4x4_Alias:
+            return TrackElemType::FlatTrack4x4;
+        case TrackElemType::FlatTrack2x4_Alias:
+            return TrackElemType::FlatTrack2x4;
+        case TrackElemType::FlatTrack1x5_Alias:
+            return TrackElemType::FlatTrack1x5;
+        case TrackElemType::FlatTrack1x1A_Alias:
+            return TrackElemType::FlatTrack1x1A;
+        case TrackElemType::FlatTrack1x4B_Alias:
+            return TrackElemType::FlatTrack1x4B;
+        case TrackElemType::FlatTrack1x1B_Alias:
+            return TrackElemType::FlatTrack1x1B;
+        case TrackElemType::FlatTrack1x4C_Alias:
+            return TrackElemType::FlatTrack1x4C;
+        case TrackElemType::FlatTrack3x3_Alias:
+            return TrackElemType::FlatTrack3x3;
+    }
+
+    return origTrackType;
+}
+
+RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
+{
+    switch (origTrackType)
+    {
+        case TrackElemType::FlatTrack1x4A:
+            return TrackElemType::FlatTrack1x4A_Alias;
+        case TrackElemType::FlatTrack2x2:
+            return TrackElemType::FlatTrack2x2_Alias;
+        case TrackElemType::FlatTrack4x4:
+            return TrackElemType::FlatTrack4x4_Alias;
+        case TrackElemType::FlatTrack2x4:
+            return TrackElemType::FlatTrack2x4_Alias;
+        case TrackElemType::FlatTrack1x5:
+            return TrackElemType::FlatTrack1x5_Alias;
+        case TrackElemType::FlatTrack1x1A:
+            return TrackElemType::FlatTrack1x1A_Alias;
+        case TrackElemType::FlatTrack1x4B:
+            return TrackElemType::FlatTrack1x4B_Alias;
+        case TrackElemType::FlatTrack1x1B:
+            return TrackElemType::FlatTrack1x1B_Alias;
+        case TrackElemType::FlatTrack1x4C:
+            return TrackElemType::FlatTrack1x4C_Alias;
+        case TrackElemType::FlatTrack3x3:
+            return TrackElemType::FlatTrack3x3_Alias;
+    }
+
+    return origTrackType;
+}

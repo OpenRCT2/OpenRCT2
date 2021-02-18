@@ -170,12 +170,8 @@ public:
                 _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
 
-                track_type_t trackType = t6TrackElement.type;
-                if (trackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(td->type, trackType))
-                {
-                    trackType = TrackElemType::RotationControlToggle;
-                }
-                else if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, td->type);
+                if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
                 {
                     trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
                 }

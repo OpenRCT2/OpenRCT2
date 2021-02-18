@@ -1923,8 +1923,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
             return;
         }
 
-        const rct_preview_track* trackBlock = get_track_def_from_ride_index(
-            _currentRideIndex, tileElement->AsTrack()->GetTrackType());
+        const rct_preview_track* trackBlock = TrackBlocks[tileElement->AsTrack()->GetTrackType()];
         newCoords->z = (tileElement->GetBaseZ()) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
@@ -2341,7 +2340,7 @@ static void window_ride_construction_draw_track_piece(
     if (ride == nullptr)
         return;
 
-    auto trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = TrackBlocks[trackType];
     while ((trackBlock + 1)->index != 0xFF)
         trackBlock++;
 
@@ -2358,9 +2357,7 @@ static void window_ride_construction_draw_track_piece(
     mapCoords.y = 4112 + (rotatedMapCoords.y / 2);
     mapCoords.z = 1024 + mapCoords.z;
 
-    int16_t previewZOffset = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
-        ? FlatRideTrackDefinitions[trackType].preview_z_offset
-        : TrackDefinitions[trackType].preview_z_offset;
+    int16_t previewZOffset = TrackDefinitions[trackType].preview_z_offset;
     mapCoords.z -= previewZOffset;
 
     const ScreenCoordsXY rotatedScreenCoords = translate_3d_to_2d_with_z(get_current_rotation(), mapCoords);
@@ -2403,7 +2400,7 @@ static void sub_6CBCE2(
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
     gMapSizeMaxXY = MAXIMUM_MAP_SIZE_BIG - 1;
 
-    auto trackBlock = get_track_def_from_ride(ride, trackType);
+    auto trackBlock = TrackBlocks[trackType];
     while (trackBlock->index != 255)
     {
         auto quarterTile = trackBlock->var_08.Rotate(trackDirection);
@@ -2704,9 +2701,7 @@ static void window_ride_construction_update_possible_ride_configurations()
     _numCurrentPossibleSpecialTrackPieces = 0;
     for (trackType = 0; trackType < TrackElemType::Count; trackType++)
     {
-        int32_t trackTypeCategory = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)
-            ? FlatRideTrackDefinitions[trackType].type
-            : TrackDefinitions[trackType].type;
+        int32_t trackTypeCategory = TrackDefinitions[trackType].type;
 
         if (trackTypeCategory == TRACK_NONE)
             continue;
@@ -2719,29 +2714,13 @@ static void window_ride_construction_update_possible_ride_configurations()
         int32_t slope, bank;
         if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_FRONT || _rideConstructionState == RIDE_CONSTRUCTION_STATE_PLACE)
         {
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                slope = FlatRideTrackDefinitions[trackType].vangle_start;
-                bank = FlatRideTrackDefinitions[trackType].bank_start;
-            }
-            else
-            {
-                slope = TrackDefinitions[trackType].vangle_start;
-                bank = TrackDefinitions[trackType].bank_start;
-            }
+            slope = TrackDefinitions[trackType].vangle_start;
+            bank = TrackDefinitions[trackType].bank_start;
         }
         else if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
         {
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                slope = FlatRideTrackDefinitions[trackType].vangle_end;
-                bank = FlatRideTrackDefinitions[trackType].bank_end;
-            }
-            else
-            {
-                slope = TrackDefinitions[trackType].vangle_end;
-                bank = TrackDefinitions[trackType].bank_end;
-            }
+            slope = TrackDefinitions[trackType].vangle_end;
+            bank = TrackDefinitions[trackType].bank_end;
         }
         else
         {
@@ -3315,7 +3294,7 @@ static void window_ride_construction_select_map_tiles(
 
     const rct_preview_track* trackBlock;
 
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     trackDirection &= 3;
     gMapSelectionTiles.clear();
     while (trackBlock->index != 255)
@@ -3492,7 +3471,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         // z = map_get_highest_z(x >> 5, y >> 5);
     }
     // loc_6CC91B:
-    trackBlock = get_track_def_from_ride(ride, trackType);
+    trackBlock = TrackBlocks[trackType];
     int32_t bx = 0;
     do
     {
@@ -3722,7 +3701,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     if (_trackPlaceZ == 0)
     {
-        const rct_preview_track* trackBlock = get_track_def_from_ride(ride, _currentTrackPieceType);
+        const rct_preview_track* trackBlock = TrackBlocks[_currentTrackPieceType];
         int32_t bx = 0;
         do
         {

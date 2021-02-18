@@ -91,15 +91,15 @@ money32 place_provisional_track_piece(
             return result;
 
         int16_t z_begin, z_end;
-        const rct_track_coordinates* coords = get_track_coord_from_ride(ride, trackType);
+        const rct_track_coordinates& coords = TrackCoordinates[trackType];
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
-            z_begin = coords->z_begin;
-            z_end = coords->z_end;
+            z_begin = coords.z_begin;
+            z_end = coords.z_end;
         }
         else
         {
-            z_end = z_begin = coords->z_begin;
+            z_end = z_begin = coords.z_begin;
         }
 
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
@@ -313,25 +313,25 @@ bool window_ride_construction_update_state(
         }
     }
 
-    const rct_track_coordinates* trackCoordinates = get_track_coord_from_ride(ride, trackType);
+    const rct_track_coordinates& trackCoordinates = TrackCoordinates[trackType];
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
     auto z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
-        z -= trackCoordinates->z_end;
+        z -= trackCoordinates.z_end;
         trackDirection = _currentTrackPieceDirection ^ 0x02;
-        trackDirection -= trackCoordinates->rotation_end;
-        trackDirection += trackCoordinates->rotation_begin;
+        trackDirection -= trackCoordinates.rotation_end;
+        trackDirection += trackCoordinates.rotation_begin;
         trackDirection &= 0x03;
 
-        if (trackCoordinates->rotation_begin & (1 << 2))
+        if (trackCoordinates.rotation_begin & (1 << 2))
         {
             trackDirection |= 0x04;
         }
 
-        CoordsXY offsets = { trackCoordinates->x, trackCoordinates->y };
+        CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
         CoordsXY coords = { x, y };
         coords += offsets.Rotate(direction_reverse(trackDirection));
         x = static_cast<uint16_t>(coords.x);
@@ -339,7 +339,7 @@ bool window_ride_construction_update_state(
     }
     else
     {
-        z -= trackCoordinates->z_begin;
+        z -= trackCoordinates.z_begin;
         trackDirection = _currentTrackPieceDirection;
     }
 

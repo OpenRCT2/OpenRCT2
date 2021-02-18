@@ -1244,7 +1244,7 @@ private:
         {
             dst->BoatLocation.setNull();
             dst->SetTrackDirection(src->GetTrackDirection());
-            dst->SetTrackType(src->GetTrackType());
+            dst->SetTrackType(RCT1TrackTypeToOpenRCT2(src->GetTrackType(), ride->type));
         }
         else
         {
@@ -2121,7 +2121,7 @@ private:
                 auto src2 = src->AsTrack();
                 auto rideType = _s4.rides[src2->GetRideIndex()].type;
 
-                dst2->SetTrackType(src2->GetTrackType());
+                dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetRideIndex(src2->GetRideIndex());
                 dst2->SetColourScheme(src2->GetColourScheme());

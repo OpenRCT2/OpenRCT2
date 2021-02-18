@@ -6493,10 +6493,10 @@ int32_t Vehicle::UpdateMotionDodgems()
 static bool wouldCollideWithDodgemsTrackEdge(
     const CoordsXY& coords, const CoordsXY& trackLocation, uint32_t trackType, uint16_t dodgemsCarRadius)
 {
-    int16_t rideLeft = trackLocation.x + DodgemsTrackSize[trackType].left;
-    int16_t rideRight = trackLocation.x + DodgemsTrackSize[trackType].right;
-    int16_t rideTop = trackLocation.y + DodgemsTrackSize[trackType].top;
-    int16_t rideBottom = trackLocation.y + DodgemsTrackSize[trackType].bottom;
+    int16_t rideLeft = trackLocation.x + DodgemsTrackSize(trackType).left;
+    int16_t rideRight = trackLocation.x + DodgemsTrackSize(trackType).right;
+    int16_t rideTop = trackLocation.y + DodgemsTrackSize(trackType).top;
+    int16_t rideBottom = trackLocation.y + DodgemsTrackSize(trackType).bottom;
 
     return coords.x - dodgemsCarRadius < rideLeft || coords.y - dodgemsCarRadius < rideTop
         || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;

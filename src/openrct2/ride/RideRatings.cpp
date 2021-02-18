@@ -226,7 +226,8 @@ static void ride_ratings_update_state_2()
                 continue;
         }
 
-        if (trackType == TrackElemType::None
+        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
+        if (trackType == 0xFF || trackType == TrackElemType::None
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TrackElemType::EndStation)
@@ -332,7 +333,8 @@ static void ride_ratings_update_state_5()
                 continue;
         }
 
-        if (trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
+        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
+        if (trackType == 0xFF || trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(tileElement);
 

@@ -19,6 +19,7 @@
 #include "../localisation/Localisation.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/TrackData.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
 #include "Banner.h"
@@ -861,7 +862,7 @@ GameActionResultPtr tile_inspector_track_base_height_offset(
         if (ride == nullptr)
             return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-        auto trackBlock = get_track_def_from_ride(ride, type);
+        auto trackBlock = TrackBlocks[type];
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
@@ -873,7 +874,7 @@ GameActionResultPtr tile_inspector_track_base_height_offset(
         originY = static_cast<int16_t>(coords.y);
         originZ -= trackBlock->z;
 
-        trackBlock = get_track_def_from_ride(ride, type);
+        trackBlock = TrackBlocks[type];
         for (; trackBlock->index != 255; trackBlock++)
         {
             CoordsXY elem = { originX, originY };
@@ -968,7 +969,7 @@ GameActionResultPtr tile_inspector_track_set_chain(
         if (ride == nullptr)
             return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
 
-        auto trackBlock = get_track_def_from_ride(ride, type);
+        auto trackBlock = TrackBlocks[type];
         trackBlock += trackElement->AsTrack()->GetSequenceIndex();
 
         uint8_t originDirection = trackElement->GetDirection();
@@ -980,7 +981,7 @@ GameActionResultPtr tile_inspector_track_set_chain(
         originY = static_cast<int16_t>(coords.y);
         originZ -= trackBlock->z;
 
-        trackBlock = get_track_def_from_ride(ride, type);
+        trackBlock = TrackBlocks[type];
         for (; trackBlock->index != 255; trackBlock++)
         {
             CoordsXY elem = { originX, originY };

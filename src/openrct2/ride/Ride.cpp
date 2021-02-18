@@ -521,21 +521,18 @@ bool track_block_get_next_from_zero(
         if (tileElement->IsGhost() != isGhost)
             continue;
 
-        auto nextTrackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        auto nextTrackBlock = TrackBlocks[trackElement->GetTrackType()];
         if (nextTrackBlock == nullptr)
             continue;
 
-        auto nextTrackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
-        if (nextTrackCoordinate == nullptr)
-            continue;
-
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
-            | (nextTrackCoordinate->rotation_begin & TRACK_BLOCK_2);
+        auto nextTrackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
+        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
+            | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
         if (nextRotation != direction_start)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate->z_begin - nextTrackBlock->z + tileElement->GetBaseZ();
+        int16_t nextZ = nextTrackCoordinate.z_begin - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != trackPos.z)
             continue;
 
@@ -573,15 +570,13 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     if (ride == nullptr)
         return false;
 
-    auto trackBlock = get_track_def_from_ride(ride, inputElement->GetTrackType());
+    auto trackBlock = TrackBlocks[inputElement->GetTrackType()];
     if (trackBlock == nullptr)
         return false;
 
     trackBlock += inputElement->GetSequenceIndex();
 
-    auto trackCoordinate = get_track_coord_from_ride(ride, inputElement->GetTrackType());
-    if (trackCoordinate == nullptr)
-        return false;
+    auto trackCoordinate = TrackCoordinates[inputElement->GetTrackType()];
 
     int32_t x = input->x;
     int32_t y = input->y;
@@ -590,16 +585,16 @@ bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32
     uint8_t rotation = inputElement->GetDirection();
 
     CoordsXY coords = { x, y };
-    CoordsXY trackCoordOffset = { trackCoordinate->x, trackCoordinate->y };
+    CoordsXY trackCoordOffset = { trackCoordinate.x, trackCoordinate.y };
     CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
     coords += trackCoordOffset.Rotate(rotation);
     coords += trackBlockOffset.Rotate(direction_reverse(rotation));
 
     OriginZ -= trackBlock->z;
-    OriginZ += trackCoordinate->z_end;
+    OriginZ += trackCoordinate.z_end;
 
-    uint8_t directionStart = ((trackCoordinate->rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
-        | (trackCoordinate->rotation_end & TRACK_BLOCK_2);
+    uint8_t directionStart = ((trackCoordinate.rotation_end + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+        | (trackCoordinate.rotation_end & TRACK_BLOCK_2);
 
     return track_block_get_next_from_zero({ coords, OriginZ }, ride, directionStart, output, z, direction, false);
 }
@@ -643,30 +638,28 @@ bool track_block_get_previous_from_zero(
         if (trackElement->GetRideIndex() != ride->id)
             continue;
 
-        auto nextTrackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        auto nextTrackBlock = TrackBlocks[trackElement->GetTrackType()];
         if (nextTrackBlock == nullptr)
             continue;
 
-        auto nextTrackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
-        if (nextTrackCoordinate == nullptr)
-            continue;
+        auto nextTrackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
 
         nextTrackBlock += trackElement->GetSequenceIndex();
         if ((nextTrackBlock + 1)->index != 255)
             continue;
 
-        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_end)
-            | (nextTrackCoordinate->rotation_end & TRACK_BLOCK_2);
+        uint8_t nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_end)
+            | (nextTrackCoordinate.rotation_end & TRACK_BLOCK_2);
 
         if (nextRotation != directionStart)
             continue;
 
-        int16_t nextZ = nextTrackCoordinate->z_end - nextTrackBlock->z + tileElement->GetBaseZ();
+        int16_t nextZ = nextTrackCoordinate.z_end - nextTrackBlock->z + tileElement->GetBaseZ();
         if (nextZ != trackPos.z)
             continue;
 
-        nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate->rotation_begin)
-            | (nextTrackCoordinate->rotation_begin & TRACK_BLOCK_2);
+        nextRotation = tileElement->GetDirectionWithOffset(nextTrackCoordinate.rotation_begin)
+            | (nextTrackCoordinate.rotation_begin & TRACK_BLOCK_2);
         outTrackBeginEnd->begin_element = tileElement;
         outTrackBeginEnd->begin_x = trackPos.x;
         outTrackBeginEnd->begin_y = trackPos.y;
@@ -674,14 +667,14 @@ bool track_block_get_previous_from_zero(
         outTrackBeginEnd->end_y = trackPos.y;
 
         CoordsXY coords = { outTrackBeginEnd->begin_x, outTrackBeginEnd->begin_y };
-        CoordsXY offsets = { nextTrackCoordinate->x, nextTrackCoordinate->y };
+        CoordsXY offsets = { nextTrackCoordinate.x, nextTrackCoordinate.y };
         coords += offsets.Rotate(direction_reverse(nextRotation));
         outTrackBeginEnd->begin_x = coords.x;
         outTrackBeginEnd->begin_y = coords.y;
 
         outTrackBeginEnd->begin_z = tileElement->GetBaseZ();
 
-        auto nextTrackBlock2 = get_track_def_from_ride(ride, trackElement->GetTrackType());
+        auto nextTrackBlock2 = TrackBlocks[trackElement->GetTrackType()];
         if (nextTrackBlock2 == nullptr)
             continue;
 
@@ -721,15 +714,13 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     if (ride == nullptr)
         return false;
 
-    auto trackBlock = get_track_def_from_ride(ride, trackElement->GetTrackType());
+    auto trackBlock = TrackBlocks[trackElement->GetTrackType()];
     if (trackBlock == nullptr)
         return false;
 
     trackBlock += trackElement->GetSequenceIndex();
 
-    auto trackCoordinate = get_track_coord_from_ride(ride, trackElement->GetTrackType());
-    if (trackCoordinate == nullptr)
-        return false;
+    auto trackCoordinate = TrackCoordinates[trackElement->GetTrackType()];
 
     int32_t z = trackElement->GetBaseZ();
 
@@ -739,10 +730,10 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
     coords += offsets.Rotate(direction_reverse(rotation));
 
     z -= trackBlock->z;
-    z += trackCoordinate->z_begin;
+    z += trackCoordinate.z_begin;
 
-    rotation = ((trackCoordinate->rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
-        | (trackCoordinate->rotation_begin & TRACK_BLOCK_2);
+    rotation = ((trackCoordinate.rotation_begin + rotation) & TILE_ELEMENT_DIRECTION_MASK)
+        | (trackCoordinate.rotation_begin & TRACK_BLOCK_2);
 
     return track_block_get_previous_from_zero({ coords, z }, ride, rotation, outTrackBeginEnd);
 }
@@ -1243,7 +1234,7 @@ std::optional<CoordsXYZ> sub_6C683D(
     }
 
     // Possibly z should be & 0xF8
-    auto trackBlock = get_track_def_from_ride_index(trackElement->GetRideIndex(), type);
+    auto trackBlock = TrackBlocks[type];
     if (trackBlock == nullptr)
         return std::nullopt;
 
@@ -1505,18 +1496,9 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                curve = gFlatRideTrackCurveChain[trackType].next;
-                bank = FlatRideTrackDefinitions[trackType].bank_end;
-                slope = FlatRideTrackDefinitions[trackType].vangle_end;
-            }
-            else
-            {
-                curve = gTrackCurveChain[trackType].next;
-                bank = TrackDefinitions[trackType].bank_end;
-                slope = TrackDefinitions[trackType].vangle_end;
-            }
+            curve = gTrackCurveChain[trackType].next;
+            bank = TrackDefinitions[trackType].bank_end;
+            slope = TrackDefinitions[trackType].vangle_end;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -1559,18 +1541,9 @@ void ride_construction_set_default_next_piece()
                 }
             }
 
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                curve = gFlatRideTrackCurveChain[trackType].previous;
-                bank = FlatRideTrackDefinitions[trackType].bank_start;
-                slope = FlatRideTrackDefinitions[trackType].vangle_start;
-            }
-            else
-            {
-                curve = gTrackCurveChain[trackType].previous;
-                bank = TrackDefinitions[trackType].bank_start;
-                slope = TrackDefinitions[trackType].vangle_start;
-            }
+            curve = gTrackCurveChain[trackType].previous;
+            bank = TrackDefinitions[trackType].bank_start;
+            slope = TrackDefinitions[trackType].vangle_start;
 
             // Set track curve
             _currentTrackCurve = curve;
@@ -3301,22 +3274,14 @@ static void ride_shop_connected(Ride* ride)
     if (trackElement == nullptr)
         return;
 
-    uint8_t entrance_directions = 0;
     auto track_type = trackElement->GetTrackType();
     ride = get_ride(trackElement->GetRideIndex());
     if (ride == nullptr)
     {
         return;
     }
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
-    {
-        entrance_directions = FlatRideTrackSequenceProperties[track_type][0] & 0xF;
-    }
-    else
-    {
-        entrance_directions = TrackSequenceProperties[track_type][0] & 0xF;
-    }
 
+    uint8_t entrance_directions = TrackSequenceProperties[track_type][0] & 0xF;
     uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions = rol4(entrance_directions, tile_direction);
 
@@ -4256,9 +4221,9 @@ static Vehicle* vehicle_create_car(
         {
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
             {
-                if (RideTypeDescriptors[ride->type].StartTrackPiece != FLAT_TRACK_ELEM_1_X_4_B)
+                if (RideTypeDescriptors[ride->type].StartTrackPiece != TrackElemType::FlatTrack1x4B)
                 {
-                    if (RideTypeDescriptors[ride->type].StartTrackPiece != FLAT_TRACK_ELEM_1_X_4_A)
+                    if (RideTypeDescriptors[ride->type].StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
                         if (ride->type == RIDE_TYPE_ENTERPRISE)
                         {
@@ -4849,16 +4814,8 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
         auto* trackElement = tileElement->AsTrack();
 
-        if (RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_FLAT_RIDE)
-        {
-            if (!(FlatRideTrackSequenceProperties[trackElement->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
-                continue;
-        }
-        else
-        {
-            if (!(TrackSequenceProperties[trackElement->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
-                continue;
-        }
+        if (!(TrackSequenceProperties[trackElement->GetTrackType()][0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            continue;
 
         if (trackElement->GetRideIndex() == id)
             return trackElement;
@@ -5908,8 +5865,8 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
 
                     int32_t eax = (entranceExitCoords.direction + 2 - tileElement->GetDirection())
                         & TILE_ELEMENT_DIRECTION_MASK;
-                    if (FlatRideTrackSequenceProperties[tileElement->AsTrack()->GetTrackType()]
-                                                       [tileElement->AsTrack()->GetSequenceIndex()]
+                    if (TrackSequenceProperties[tileElement->AsTrack()->GetTrackType()]
+                                               [tileElement->AsTrack()->GetSequenceIndex()]
                         & (1 << eax))
                     {
                         entranceExitCoords.direction = direction_reverse(entranceExitCoords.direction);
@@ -6639,7 +6596,7 @@ void sub_6CB945(Ride* ride)
                 continue;
             }
 
-            const rct_preview_track* trackBlock = get_track_def_from_ride(ride, tileElement->AsTrack()->GetTrackType());
+            const rct_preview_track* trackBlock = TrackBlocks[tileElement->AsTrack()->GetTrackType()];
             while ((++trackBlock)->index != 0xFF)
             {
                 CoordsXYZ blockLocation = location + CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(direction), 0 };

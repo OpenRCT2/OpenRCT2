@@ -21,20 +21,10 @@ namespace Utils
     int getTrackSequenceCount(uint8_t rideType, uint8_t trackType)
     {
         int sequenceCount = 0;
-        const rct_preview_track** trackBlocks;
-
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            trackBlocks = FlatRideTrackBlocks;
-        }
-        else
-        {
-            trackBlocks = TrackBlocks;
-        }
 
         for (int i = 0; i < 256; i++)
         {
-            if (trackBlocks[trackType][i].index == 0xFF)
+            if (TrackBlocks[trackType][i].index == 0xFF)
             {
                 break;
             }

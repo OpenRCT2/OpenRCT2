@@ -944,14 +944,7 @@ static void window_new_ride_paint_ride_information(
         // Get price of ride
         int32_t unk2 = RideTypeDescriptors[item.Type].StartTrackPiece;
         money32 price = RideTypeDescriptors[item.Type].BuildCosts.TrackPrice;
-        if (ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            price *= FlatRideTrackPricing[unk2];
-        }
-        else
-        {
-            price *= TrackPricing[unk2];
-        }
+        price *= TrackPricing[unk2];
         price = (price >> 17) * 10 * RideTypeDescriptors[item.Type].BuildCosts.PriceEstimateMultiplier;
 
         //

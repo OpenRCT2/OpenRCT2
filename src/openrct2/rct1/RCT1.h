@@ -1284,4 +1284,6 @@ enum
 void load_from_sv4(const char* path);
 void load_from_sc4(const char* path);
 
+track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
+
 #endif

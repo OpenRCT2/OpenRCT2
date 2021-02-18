@@ -620,19 +620,9 @@ bool WallPlaceAction::TrackIsAllowedWallEdges(
 {
     if (!ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_NO_WALLS))
     {
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (TrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
         {
-            if (FlatRideTrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
-            {
-                return true;
-            }
-        }
-        else
-        {
-            if (TrackSequenceElementAllowedWallEdges[trackType][trackSequence] & (1 << direction))
-            {
-                return true;
-            }
+            return true;
         }
     }
     return false;
