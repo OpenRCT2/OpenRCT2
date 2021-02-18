@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../core/Console.hpp"
 #    include "../world/Map.h"
 
 #    include <cstdio>
@@ -195,7 +196,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_set_top(_ctx, _top);
                 _ctx = {};
-                std::fprintf(stderr, "duktape stack was not returned to original state!");
+                Console::Error::WriteLine("duktape stack was not returned to original state!");
             }
             _ctx = {};
         }

@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
@@ -153,7 +154,7 @@ private:
     {
         try
         {
-            std::printf("Downloading %s\n", url.c_str());
+            Console::WriteLine("Downloading %s", url.c_str());
             Http::Request req;
             req.method = Http::Method::GET;
             req.url = url;
@@ -175,14 +176,14 @@ private:
                 }
                 else
                 {
-                    std::printf("  Failed to download %s\n", name.c_str());
+                    Console::Error::WriteLine("  Failed to download %s", name.c_str());
                 }
                 QueueNextDownload();
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to download %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to download %s", name.c_str());
             QueueNextDownload();
         }
     }
@@ -226,19 +227,20 @@ private:
                 }
                 else if (response.status == Http::Status::NotFound)
                 {
-                    std::printf("  %s not found\n", name.c_str());
+                    Console::Error::WriteLine("  %s not found", name.c_str());
                     QueueNextDownload();
                 }
                 else
                 {
-                    std::printf("  %s query failed (status %d)\n", name.c_str(), static_cast<int32_t>(response.status));
+                    Console::Error::WriteLine(
+                        "  %s query failed (status %d)", name.c_str(), static_cast<int32_t>(response.status));
                     QueueNextDownload();
                 }
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to query %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to query %s", name.c_str());
         }
     }
 };

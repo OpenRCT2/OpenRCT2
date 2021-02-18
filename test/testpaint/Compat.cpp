@@ -9,6 +9,7 @@
 
 #include "Addresses.h"
 
+#include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
@@ -884,3 +885,11 @@ void TileElementBase::SetOwner(uint8_t newOwner)
     owner &= ~OWNER_MASK;
     owner |= (newOwner & OWNER_MASK);
 }
+
+namespace OpenRCT2
+{
+    IContext* GetContext()
+    {
+        return nullptr;
+    }
+} // namespace OpenRCT2

@@ -141,6 +141,7 @@ namespace OpenRCT2
         virtual bool LoadParkFromStream(
             IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false) abstract;
         virtual void WriteLine(const std::string& s) abstract;
+        virtual void WriteErrorLine(const std::string& s) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 

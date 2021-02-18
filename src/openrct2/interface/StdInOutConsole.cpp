@@ -24,8 +24,8 @@ using namespace OpenRCT2;
 
 void StdInOutConsole::Start()
 {
-    // Only start if stdin is a TTY
-    if (!isatty(fileno(stdin)))
+    // Only start if stdin/stdout is a TTY
+    if (!isatty(fileno(stdin)) || !isatty(fileno(stdout)))
     {
         return;
     }
@@ -40,7 +40,9 @@ void StdInOutConsole::Start()
         {
             std::string line;
             std::string left = prompt;
+            _isPromptShowing = true;
             auto quit = linenoise::Readline(left.c_str(), line);
+            _isPromptShowing = false;
             if (quit)
             {
                 if (lastPromptQuit)
@@ -51,7 +53,7 @@ void StdInOutConsole::Start()
                 else
                 {
                     lastPromptQuit = true;
-                    std::puts("(To exit, press ^C again or type exit)");
+                    std::puts("(To exit, press ^C again)");
                 }
             }
             else
@@ -123,12 +125,23 @@ void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
             break;
     }
 
-    if (formatBegin.empty() || !Platform::IsColourTerminalSupported())
+    if (!Platform::IsColourTerminalSupported())
     {
         std::printf("%s\n", s.c_str());
+        std::fflush(stdout);
     }
     else
     {
-        std::printf("%s%s%s\n", formatBegin.c_str(), s.c_str(), "\x1b[0m");
+        if (_isPromptShowing)
+        {
+            std::printf("\r%s%s\x1b[0m\x1b[0K\r\n", formatBegin.c_str(), s.c_str());
+            std::fflush(stdout);
+            linenoise::linenoiseEditRefreshLine();
+        }
+        else
+        {
+            std::printf("%s%s\x1b[0m\n", formatBegin.c_str(), s.c_str());
+            std::fflush(stdout);
+        }
     }
 }

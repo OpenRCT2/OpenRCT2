@@ -1094,6 +1094,8 @@ struct linenoiseState {
     int history_index;  /* The history index we are currently editing. */
 };
 
+static struct linenoiseState lnstate;
+
 enum KEY_ACTION {
     KEY_NULL = 0,       /* NULL */
     CTRL_A = 1,         /* Ctrl+a */
@@ -2088,6 +2090,11 @@ inline void linenoiseEditDeletePrevWord(struct linenoiseState *l) {
     refreshLine(l);
 }
 
+inline void linenoiseEditRefreshLine()
+{
+    refreshLine(&lnstate);
+}
+
 /* This function is the core of the line editing capability of linenoise.
  * It expects 'fd' to be already in "raw mode" so that every key pressed
  * will be returned ASAP to read().
@@ -2098,7 +2105,7 @@ inline void linenoiseEditDeletePrevWord(struct linenoiseState *l) {
  * The function returns the length of the current buffer. */
 inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, const char *prompt)
 {
-    struct linenoiseState l;
+    auto& l = lnstate;
 
     /* Populate the linenoise state that we pass to functions implementing
      * specific editing functionalities. */

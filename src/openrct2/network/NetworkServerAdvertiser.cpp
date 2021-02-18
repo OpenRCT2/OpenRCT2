@@ -146,6 +146,10 @@ private:
             case ADVERTISE_STATUS::UNREGISTERED:
                 if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
                 {
+                    if (_lastAdvertiseTime == 0)
+                    {
+                        Console::WriteLine("Registering server on master server");
+                    }
                     SendRegistration(_forceIPv4);
                 }
                 break;
@@ -187,7 +191,7 @@ private:
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::Ok)
             {
-                Console::WriteLine("Unable to connect to master server");
+                Console::Error::WriteLine("Unable to connect to master server");
                 return;
             }
 
@@ -211,7 +215,7 @@ private:
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::Ok)
             {
-                Console::WriteLine("Unable to connect to master server");
+                Console::Error::WriteLine("Unable to connect to master server");
                 return;
             }
 
@@ -233,6 +237,7 @@ private:
 
         if (status == MasterServerStatus::Ok)
         {
+            Console::WriteLine("Server successfully registered on master server");
             json_t jsonToken = jsonRoot["token"];
             if (jsonToken.is_string())
             {
@@ -247,7 +252,11 @@ private:
             {
                 message = "Invalid response from server";
             }
-            Console::Error::WriteLine("Unable to advertise (%d): %s", status, message.c_str());
+            Console::Error::WriteLine(
+                "Unable to advertise (%d): %s\n  * Check that you have port forwarded %uh\n  * Try setting "
+                "advertise_address in config.ini",
+                status, message.c_str(), _port);
+
             // Hack for https://github.com/OpenRCT2/OpenRCT2/issues/6277
             // Master server may not reply correctly if using IPv6, retry forcing IPv4,
             // don't wait the full timeout.
@@ -255,7 +264,7 @@ private:
             {
                 _forceIPv4 = true;
                 _lastAdvertiseTime = 0;
-                log_info("Retry with ipv4 only");
+                log_info("Forcing HTTP(S) over IPv4");
             }
         }
     }
@@ -276,7 +285,7 @@ private:
         else if (status == MasterServerStatus::InvalidToken)
         {
             _status = ADVERTISE_STATUS::UNREGISTERED;
-            Console::WriteLine("Master server heartbeat failed: Invalid Token");
+            Console::Error::WriteLine("Master server heartbeat failed: Invalid Token");
         }
     }
 
