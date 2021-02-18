@@ -21,7 +21,6 @@
 #endif // __ANDROID__
 
 struct TTFFontDescriptor;
-struct rct2_install_info;
 
 #ifndef MAX_PATH
 #    define MAX_PATH 260

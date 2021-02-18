@@ -167,10 +167,6 @@ void gfx_set_dirty_blocks(const ScreenRect& rect)
     }
 }
 
-void gfx_draw_all_dirty_blocks()
-{
-}
-
 void gfx_clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
     auto drawingEngine = dpi->DrawingEngine;
