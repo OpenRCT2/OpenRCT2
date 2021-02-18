@@ -14,6 +14,7 @@
 #include <SDL.h>
 #include <openrct2/Context.h>
 #include <openrct2/PlatformEnvironment.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/core/DataSerialiser.h>
 #include <openrct2/core/FileStream.h>
 #include <openrct2/core/FileSystem.hpp>
@@ -198,24 +199,24 @@ void ShortcutManager::LoadUserBindings()
         {
             try
             {
-                std::printf("Importing legacy shortcuts...\n");
+                Console::WriteLine("Importing legacy shortcuts...");
                 auto legacyPath = fs::u8path(_env->GetFilePath(PATHID::CONFIG_SHORTCUTS_LEGACY));
                 if (fs::exists(legacyPath))
                 {
                     LoadLegacyBindings(legacyPath);
                     SaveUserBindings();
-                    std::printf("Legacy shortcuts imported\n");
+                    Console::WriteLine("Legacy shortcuts imported");
                 }
             }
             catch (const std::exception& e)
             {
-                std::fprintf(stderr, "Unable to import legacy shortcut bindings: %s\n", e.what());
+                Console::Error::WriteLine("Unable to import legacy shortcut bindings: %s", e.what());
             }
         }
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "Unable to load shortcut bindings: %s\n", e.what());
+        Console::Error::WriteLine("Unable to load shortcut bindings: %s", e.what());
     }
 }
 
@@ -317,7 +318,7 @@ void ShortcutManager::SaveUserBindings()
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "Unable to save shortcut bindings: %s\n", e.what());
+        Console::Error::WriteLine("Unable to save shortcut bindings: %s", e.what());
     }
 }
 
