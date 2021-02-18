@@ -1260,7 +1260,7 @@ void window_guest_stats_update(rct_window* w)
 static void window_guest_stats_bars_paint(
     int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
 {
-    if (font_get_line_height(gCurrentFontSpriteBase) > 10)
+    if (font_get_line_height(FONT_SPRITE_BASE_MEDIUM) > 10)
     {
         y += 1;
     }

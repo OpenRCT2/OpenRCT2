@@ -338,7 +338,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
 
     // Reset font sprite base and compute line height
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Base dimensions.
     const int32_t width = 450;

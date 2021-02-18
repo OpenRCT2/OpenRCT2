@@ -92,7 +92,7 @@ rct_window* window_error_open(std::string_view title, std::string_view message)
 
     _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * font_get_line_height(gCurrentFontSpriteBase) + 4;
+    height = (numLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM) + 4;
 
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;

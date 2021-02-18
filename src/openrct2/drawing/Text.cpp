@@ -181,7 +181,7 @@ int32_t gfx_draw_string_left_wrapped(
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
+    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, false, TextAlignment::LEFT };
     StaticLayout layout(buffer, textPaint, width);
     layout.Draw(dpi, coords);
 

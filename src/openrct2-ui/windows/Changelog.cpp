@@ -187,7 +187,7 @@ static void window_changelog_scrollgetsize(
 {
     *width = _changelogLongestLineWidth + 4;
 
-    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
     *height = static_cast<int32_t>(_changelogLines.size() * lineHeight);
 }
 
@@ -215,7 +215,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     ScreenCoordsXY screenCoords(3, 3 - lineHeight);
     for (const auto& line : _changelogLines)

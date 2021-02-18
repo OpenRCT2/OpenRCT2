@@ -26,6 +26,12 @@ using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
+static int32_t InGameConsoleGetLineHeight()
+{
+    auto fontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
+    return font_get_line_height(fontSpriteBase);
+}
+
 InGameConsole::InGameConsole()
 {
     InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
@@ -268,7 +274,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Set font
     gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FONT_SPRITE_BASE_SMALL : FONT_SPRITE_BASE_MEDIUM);
     uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WC_CONSOLE, 1));
-    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();
 
     // This is something of a hack to ensure the text is actually black
@@ -350,7 +356,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 int32_t InGameConsole::GetNumVisibleLines() const
 {
-    const int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t consoleHeight = _consoleBottom - _consoleTop;
     if (consoleHeight == 0)
         return 0;
