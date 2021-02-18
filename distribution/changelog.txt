@@ -27,6 +27,7 @@
 - Fix: [#7772] Hacked vehicles may incorrectly not mark a vehicle object as in use causing accidental removal when remove_unused_objects is used.
 - Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
 - Fix: [#11438] Freeze when shrinking map size.
+- Fix: [#11484] Console output does not properly return to column 0 after line ending.
 - Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
 - Fix: [#13102] Underflow on height chart (Ride measurements).
 - Fix: [#13234] Incorrect vehicle mass after using Remove All Guests cheat.
