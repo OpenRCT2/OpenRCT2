@@ -943,7 +943,7 @@ private:
         }
     }
 
-    InputEvent GetInputEventFromSDLEvent(SDL_Event& e)
+    InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)
     {
         InputEvent ie;
         ie.DeviceKind = InputDeviceKind::Keyboard;
@@ -951,7 +951,7 @@ private:
         ie.Button = e.key.keysym.sym;
 
         // Handle dead keys
-        if (ie.Button == SDLK_SCANCODE_MASK)
+        if (ie.Button == (SDLK_SCANCODE_MASK | 0))
         {
             switch (e.key.keysym.scancode)
             {
