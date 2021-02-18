@@ -239,7 +239,7 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            GfxDrawStringNoFormatting(&dpi, screenCoords, wrapPointer, { colours[1], FontStyle::Medium });
+            DrawText(&dpi, screenCoords, { colours[1], FontStyle::Medium, TextAlignment::LEFT }, wrapPointer, true);
 
             size_t string_length = GetStringSize(wrapPointer) - 1;
 

@@ -326,7 +326,7 @@ void InGameConsole::Draw(DrawPixelInfo* dpi) const
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
-    GfxDrawStringNoFormatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontStyle() });
+    DrawText(dpi, screenCoords, { TEXT_COLOUR_255, InGameConsoleGetFontStyle() }, lineBuffer.c_str(), true);
 
     // Draw caret
     if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)

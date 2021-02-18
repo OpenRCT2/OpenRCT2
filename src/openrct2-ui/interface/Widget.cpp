@@ -1148,8 +1148,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
         {
             u8string wrappedString;
             GfxWrapString(widget.string, bottomRight.x - topLeft.x - 5, FontStyle::Medium, &wrappedString, nullptr);
-            GfxDrawStringNoFormatting(
-                dpi, { topLeft.x + 2, topLeft.y }, wrappedString.c_str(), { w.colours[1], FontStyle::Medium });
+            DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
         }
         return;
     }
@@ -1159,7 +1158,7 @@ static void WidgetTextBoxDraw(DrawPixelInfo* dpi, WindowBase& w, WidgetIndex wid
     u8string wrappedString;
     GfxWrapString(gTextBoxInput, bottomRight.x - topLeft.x - 5 - 6, FontStyle::Medium, &wrappedString, nullptr);
 
-    GfxDrawStringNoFormatting(dpi, { topLeft.x + 2, topLeft.y }, wrappedString.c_str(), { w.colours[1], FontStyle::Medium });
+    DrawText(dpi, { topLeft.x + 2, topLeft.y }, { w.colours[1] }, wrappedString.c_str(), true);
 
     // Make a trimmed view of the string for measuring the width.
     int32_t curX = topLeft.x

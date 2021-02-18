@@ -521,7 +521,6 @@ void FASTCALL GfxDrawSpriteRawMaskedSoftware(
 
 // string
 void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
-void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 
 void GfxDrawStringLeftCentred(DrawPixelInfo* dpi, StringId format, void* args, colour_t colour, const ScreenCoordsXY& coords);
 void DrawStringCentredRaw(

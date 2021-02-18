@@ -15,8 +15,6 @@
 #include "Drawing.h"
 
 static void DrawText(
-    DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting = false);
-static void DrawText(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, StringId format, const void* args);
 
 class StaticLayout
@@ -79,7 +77,7 @@ public:
     }
 };
 
-static void DrawText(
+void DrawText(
     DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
     int32_t width = noFormatting ? GfxGetStringWidthNoFormatting(text, paint.FontStyle)
@@ -154,11 +152,6 @@ void DrawTextEllipsised(
 void GfxDrawString(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer);
-}
-
-void GfxDrawStringNoFormatting(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
-{
-    DrawText(dpi, coords, textPaint, buffer, true);
 }
 
 int32_t DrawTextWrapped(DrawPixelInfo* dpi, const ScreenCoordsXY& coords, int32_t width, StringId format)
