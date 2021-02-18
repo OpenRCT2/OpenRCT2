@@ -16,13 +16,9 @@ namespace OpenRCT2::Ui::ShortcutId
     // Interface / general
     constexpr std::string_view InterfaceCloseTop = "interface.general.close_top";
     constexpr std::string_view InterfaceCloseAll = "interface.general.close_all";
+    constexpr std::string_view InterfaceRotateConstruction = "interface.general.rotate_construction";
     constexpr std::string_view InterfaceCancelConstruction = "interface.general.cancel_construction";
     constexpr std::string_view InterfacePause = "interface.general.pause";
-    constexpr std::string_view InterfaceZoomOut = "interface.general.zoom_out";
-    constexpr std::string_view InterfaceZoomIn = "interface.general.zoom_in";
-    constexpr std::string_view InterfaceRotateClockwise = "interface.general.rotate_clockwise";
-    constexpr std::string_view InterfaceRotateAnticlockwise = "interface.general.rotate_anticlockwise";
-    constexpr std::string_view InterfaceRotateConstruction = "interface.general.rotate_construction";
     constexpr std::string_view InterfaceDecreaseSpeed = "interface.misc.decrease_speed";
     constexpr std::string_view InterfaceIncreaseSpeed = "interface.misc.increase_speed";
     constexpr std::string_view InterfaceToggleToolbars = "interface.misc.toggle_toolbars";
@@ -33,12 +29,6 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view InterfaceSceneryPicker = "interface.misc.scenery_picker";
     constexpr std::string_view InterfaceDisableClearance = "interface.misc.disable_clearance";
     constexpr std::string_view MultiplayerChat = "interface.misc.multiplayer_chat";
-
-    // Interface / scroll
-    constexpr std::string_view ScrollUp = "view.scroll.up";
-    constexpr std::string_view ScrollLeft = "view.scroll.left";
-    constexpr std::string_view ScrollRight = "view.scroll.right";
-    constexpr std::string_view ScrollDown = "view.scroll.down";
 
     // Interface / graphics
     constexpr std::string_view ScaleToggleWindowMode = "interface.graphics.toggle_window_mode";
@@ -65,21 +55,33 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view InterfaceOpenTileInspector = "interface.open.tileinspector";
     constexpr std::string_view MultiplayerShow = "interface.open.multiplayer";
 
-    // View
-    constexpr std::string_view ViewToggleUnderground = "view.show_underground";
-    constexpr std::string_view ViewToggleBaseLand = "view.hide_base_land";
-    constexpr std::string_view ViewToggleVerticalLand = "view.hide_vertical_land";
-    constexpr std::string_view ViewToggleRides = "view.transparent_rides";
-    constexpr std::string_view ViewToggleScenery = "view.transparent_scenery";
-    constexpr std::string_view ViewToggleSupports = "view.hide_supports";
-    constexpr std::string_view ViewTogglePeeps = "view.hide_peeps";
-    constexpr std::string_view ViewToggleLandHeightMarkers = "view.show_land_height";
-    constexpr std::string_view ViewToggleTrackHeightMarkers = "view.show_track_height";
-    constexpr std::string_view ViewToggleFootpathHeightMarkers = "view.show_footpath_height";
-    constexpr std::string_view ViewToggleFootpaths = "view.transparent_footpaths";
-    constexpr std::string_view ViewToggleGridlines = "view.show_gridlines";
-    constexpr std::string_view ViewToggleCutAway = "view.toggle_cut_away";
-    constexpr std::string_view ViewToogleFootpathIssues = "view.highlight_path_issues";
+    // View / general
+    constexpr std::string_view ViewGeneralZoomOut = "view.general.zoom_out";
+    constexpr std::string_view ViewGeneralZoomIn = "view.general.zoom_in";
+    constexpr std::string_view ViewGeneralRotateClockwise = "view.general.rotate_clockwise";
+    constexpr std::string_view ViewGeneralRotateAnticlockwise = "view.general.rotate_anticlockwise";
+
+    // View / scroll
+    constexpr std::string_view ViewScrollUp = "view.scroll.up";
+    constexpr std::string_view ViewScrollLeft = "view.scroll.left";
+    constexpr std::string_view ViewScrollRight = "view.scroll.right";
+    constexpr std::string_view ViewScrollDown = "view.scroll.down";
+
+    // View / toggle
+    constexpr std::string_view ViewToggleUnderground = "view.toggle.show_underground";
+    constexpr std::string_view ViewToggleBaseLand = "view.toggle.hide_base_land";
+    constexpr std::string_view ViewToggleVerticalLand = "view.toggle.hide_vertical_land";
+    constexpr std::string_view ViewToggleRides = "view.toggle.transparent_rides";
+    constexpr std::string_view ViewToggleScenery = "view.toggle.transparent_scenery";
+    constexpr std::string_view ViewToggleSupports = "view.toggle.hide_supports";
+    constexpr std::string_view ViewTogglePeeps = "view.toggle.hide_peeps";
+    constexpr std::string_view ViewToggleLandHeightMarkers = "view.toggle.show_land_height";
+    constexpr std::string_view ViewToggleTrackHeightMarkers = "view.toggle.show_track_height";
+    constexpr std::string_view ViewToggleFootpathHeightMarkers = "view.toggle.show_footpath_height";
+    constexpr std::string_view ViewToggleFootpaths = "view.toggle.transparent_footpaths";
+    constexpr std::string_view ViewToggleGridlines = "view.toggle.show_gridlines";
+    constexpr std::string_view ViewToggleCutAway = "view.toggle.toggle_cut_away";
+    constexpr std::string_view ViewToogleFootpathIssues = "view.toggle.highlight_path_issues";
 
     // Window / ride construction
     constexpr std::string_view WindowRideConstructionTurnLeft = "window.rideconstruction.turn_left";

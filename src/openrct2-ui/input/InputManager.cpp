@@ -291,10 +291,10 @@ void InputManager::ProcessHoldEvents()
     auto& shortcutManager = GetShortcutManager();
     if (!shortcutManager.IsPendingShortcutChange())
     {
-        ProcessViewScrollEvent(ShortcutId::ScrollUp, _scrollUpShortcut, { 0, -1 });
-        ProcessViewScrollEvent(ShortcutId::ScrollDown, _scrollDownShortcut, { 0, 1 });
-        ProcessViewScrollEvent(ShortcutId::ScrollLeft, _scrollLeftShortcut, { -1, 0 });
-        ProcessViewScrollEvent(ShortcutId::ScrollRight, _scrollRightShortcut, { 1, 0 });
+        ProcessViewScrollEvent(ShortcutId::ViewScrollUp, _scrollUpShortcut, { 0, -1 });
+        ProcessViewScrollEvent(ShortcutId::ViewScrollDown, _scrollDownShortcut, { 0, 1 });
+        ProcessViewScrollEvent(ShortcutId::ViewScrollLeft, _scrollLeftShortcut, { -1, 0 });
+        ProcessViewScrollEvent(ShortcutId::ViewScrollRight, _scrollRightShortcut, { 1, 0 });
     }
 }
 
