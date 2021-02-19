@@ -406,10 +406,11 @@ static struct {
 };
 
 // clang-format on
-static constexpr int32_t ViewportInteractionFlags = VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_ENTITY
-    & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_SCENERY & VIEWPORT_INTERACTION_MASK_FOOTPATH
-    & VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM & VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE & VIEWPORT_INTERACTION_MASK_WALL
-    & VIEWPORT_INTERACTION_MASK_LARGE_SCENERY & VIEWPORT_INTERACTION_MASK_BANNER;
+static constexpr int32_t ViewportInteractionFlags = EnumsToFlags(
+    ViewportInteractionItem::Terrain, ViewportInteractionItem::Entity, ViewportInteractionItem::Ride,
+    ViewportInteractionItem::Scenery, ViewportInteractionItem::Footpath, ViewportInteractionItem::FootpathItem,
+    ViewportInteractionItem::ParkEntrance, ViewportInteractionItem::Wall, ViewportInteractionItem::LargeScenery,
+    ViewportInteractionItem::Banner);
 
 static int16_t windowTileInspectorHighlightedIndex = -1;
 static bool windowTileInspectorTileSelected = false;

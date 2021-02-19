@@ -315,7 +315,7 @@ void lightfx_prepare_light_list()
                     paint_session* session = PaintSessionAlloc(&dpi, w->viewport->flags);
                     PaintSessionGenerate(session);
                     PaintSessionArrange(session);
-                    auto info = set_interaction_info_from_paint_session(session, VIEWPORT_INTERACTION_MASK_NONE);
+                    auto info = set_interaction_info_from_paint_session(session, ViewportInteractionItemAll);
                     PaintSessionFree(session);
 
                     //  log_warning("[%i, %i]", dpi->x, dpi->y);

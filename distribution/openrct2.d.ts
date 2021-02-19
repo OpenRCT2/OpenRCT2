@@ -1904,6 +1904,12 @@ declare global {
         id: string;
         cursor?: CursorType;
 
+        /**
+         * What types of object in the game can be selected with the tool.
+         * E.g. only specify terrain if you only want a tile selection.
+         */
+        filter?: ToolFilter[];
+
         onStart?: () => void;
         onDown?: (e: ToolEventArgs) => void;
         onMove?: (e: ToolEventArgs) => void;
@@ -1939,6 +1945,20 @@ declare global {
         "walk_down" |
         "water_down" |
         "zzz";
+
+    type ToolFilter =
+        "terrain" |
+        "entity" |
+        "ride" |
+        "water" |
+        "scenery" |
+        "footpath" |
+        "footpath_item" |
+        "park_entrance" |
+        "wall" |
+        "large_scenery" |
+        "label" |
+        "banner";
 
     /**
      * Represents the type of a widget, e.g. button or label.

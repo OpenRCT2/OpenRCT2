@@ -13,6 +13,7 @@
 #include "../world/Location.hpp"
 #include "Window.h"
 
+#include <limits>
 #include <optional>
 #include <vector>
 
@@ -66,21 +67,7 @@ enum class ViewportInteractionItem : uint8_t
     Banner
 };
 
-enum
-{
-    VIEWPORT_INTERACTION_MASK_NONE = 0,
-    VIEWPORT_INTERACTION_MASK_TERRAIN = ~(1 << (EnumValue(ViewportInteractionItem::Terrain) - 1)),
-    VIEWPORT_INTERACTION_MASK_ENTITY = ~(1 << (EnumValue(ViewportInteractionItem::Entity) - 1)),
-    VIEWPORT_INTERACTION_MASK_RIDE = ~(1 << (EnumValue(ViewportInteractionItem::Ride) - 1)),
-    VIEWPORT_INTERACTION_MASK_WATER = ~(1 << (EnumValue(ViewportInteractionItem::Water) - 1)),
-    VIEWPORT_INTERACTION_MASK_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::Scenery) - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH = ~(1 << (EnumValue(ViewportInteractionItem::Footpath) - 1)),
-    VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM = ~(1 << (EnumValue(ViewportInteractionItem::FootpathItem) - 1)),
-    VIEWPORT_INTERACTION_MASK_PARK_ENTRANCE = ~(1 << (EnumValue(ViewportInteractionItem::ParkEntrance) - 1)),
-    VIEWPORT_INTERACTION_MASK_WALL = ~(1 << (EnumValue(ViewportInteractionItem::Wall) - 1)),
-    VIEWPORT_INTERACTION_MASK_LARGE_SCENERY = ~(1 << (EnumValue(ViewportInteractionItem::LargeScenery) - 1)),
-    VIEWPORT_INTERACTION_MASK_BANNER = ~(1 << (EnumValue(ViewportInteractionItem::Banner) - 2)), // Note the -2 for BANNER
-};
+constexpr uint16_t ViewportInteractionItemAll = std::numeric_limits<uint16_t>::max();
 
 struct InteractionInfo
 {
@@ -161,7 +148,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords);
 CoordsXY ViewportInteractionGetTileStartAtCursor(const ScreenCoordsXY& screenCoords);
 void sub_68B2B7(paint_session* session, const CoordsXY& mapCoords);
 
-void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
+void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rct_viewport** viewport);
 std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z);

@@ -1101,6 +1101,11 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     return ret;
 }
 
+void rct_viewport::Invalidate() const
+{
+    viewport_invalidate(this, viewPos.x, viewPos.y, viewPos.x + view_width, viewPos.y + view_height);
+}
+
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
 {
     constexpr uint8_t inverseRotationMapping[NumOrthogonalDirections] = { 0, 3, 2, 1 };
@@ -1291,23 +1296,16 @@ void viewport_set_visibility(uint8_t mode)
  */
 static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 {
-    if (ps->sprite_type == ViewportInteractionItem::None || ps->sprite_type == ViewportInteractionItem::Label
-        || ps->sprite_type > ViewportInteractionItem::Banner)
-        return false;
-
-    uint16_t mask;
-    if (ps->sprite_type == ViewportInteractionItem::Banner)
-        // I think CS made a typo here. Let's replicate the original behaviour.
-        mask = 1 << (EnumValue(ps->sprite_type) - 3);
-    else
-        mask = 1 << (EnumValue(ps->sprite_type) - 1);
-
-    if (filter & mask)
+    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
+        && ps->sprite_type <= ViewportInteractionItem::Banner)
     {
-        return false;
+        auto mask = EnumToFlag(ps->sprite_type);
+        if (filter & mask)
+        {
+            return true;
+        }
     }
-
-    return true;
+    return false;
 }
 
 /**
@@ -1701,7 +1699,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 /**
  * Left, top, right and bottom represent 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
@@ -1786,7 +1784,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
         return std::nullopt;
     }
     auto myViewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain));
     if (info.SpriteType == ViewportInteractionItem::None)
     {
         return std::nullopt;
