@@ -30,13 +30,15 @@
 #include "Scenery.h"
 #include "Surface.h"
 
+#include <algorithm>
+
 TileCoordsXY windowTileInspectorTile;
 int32_t windowTileInspectorElementCount = 0;
 int32_t windowTileInspectorSelectedIndex;
 
 namespace OpenRCT2::TileInspector
 {
-    static bool map_swap_elements_at(const CoordsXY& loc, int16_t first, int16_t second)
+    static bool SwapTileElements(const CoordsXY& loc, int16_t first, int16_t second)
     {
         TileElement* const firstElement = map_get_nth_element_at(loc, first);
         TileElement* const secondElement = map_get_nth_element_at(loc, second);
@@ -58,9 +60,7 @@ namespace OpenRCT2::TileInspector
         }
 
         // Swap their memory
-        TileElement temp = *firstElement;
-        *firstElement = *secondElement;
-        *secondElement = temp;
+        std::swap(*firstElement, *secondElement);
 
         // Swap the 'last map element for tile' flag if either one of them was last
         if ((firstElement)->IsLastForTile() || (secondElement)->IsLastForTile())
@@ -109,7 +109,7 @@ namespace OpenRCT2::TileInspector
             // this way it's placed under the selected element, even when there are multiple elements with the same base height
             for (int16_t i = 0; i < elementIndex; i++)
             {
-                if (!map_swap_elements_at(loc, i, i + 1))
+                if (!SwapTileElements(loc, i, i + 1))
                 {
                     // don't return error here, we've already inserted an element
                     // and moved it as far as we could, the only sensible thing left
@@ -246,7 +246,7 @@ namespace OpenRCT2::TileInspector
     {
         if (isExecuting)
         {
-            if (!map_swap_elements_at(loc, first, second))
+            if (!SwapTileElements(loc, first, second))
             {
                 return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
             }
@@ -441,7 +441,7 @@ namespace OpenRCT2::TileInspector
                            || (otherElement->base_height == currentElement->base_height
                                && otherElement->clearance_height > currentElement->clearance_height)))
                 {
-                    if (!map_swap_elements_at(loc, currentId - 1, currentId))
+                    if (!SwapTileElements(loc, currentId - 1, currentId))
                     {
                         // don't return error here, we've already ran some actions
                         // and moved things as far as we could, the only sensible
