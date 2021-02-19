@@ -820,42 +820,13 @@ namespace OpenRCT2::TileInspector
             trackBlock = TrackBlocks[type];
             for (; trackBlock->index != 255; trackBlock++)
             {
-                CoordsXY elem = { originX, originY };
-                int16_t elemZ = originZ;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
                 offsets.x = trackBlock->x;
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
-                elemZ += trackBlock->z;
 
-                map_invalidate_tile_full(elem);
-
-                bool found = false;
-                TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
-                do
-                {
-                    if (tileElement == nullptr)
-                        break;
-
-                    if (tileElement->GetBaseZ() != elemZ)
-                        continue;
-
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                        continue;
-
-                    if (tileElement->GetDirection() != rotation)
-                        continue;
-
-                    if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
-                        continue;
-
-                    if (tileElement->AsTrack()->GetTrackType() != type)
-                        continue;
-
-                    found = true;
-                    break;
-                } while (!(tileElement++)->IsLastForTile());
-
-                if (!found)
+                TrackElement* tileElement = map_get_track_element_at_of_type_seq(elem, type, trackBlock->index);
+                if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
                     return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
@@ -864,6 +835,8 @@ namespace OpenRCT2::TileInspector
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
                 // for when you decrease the map size.
                 openrct2_assert(map_get_surface_element_at(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
+
+                map_invalidate_tile_full(elem);
 
                 // Keep?
                 // invalidate_test_results(ride);
@@ -927,42 +900,13 @@ namespace OpenRCT2::TileInspector
             trackBlock = TrackBlocks[type];
             for (; trackBlock->index != 255; trackBlock++)
             {
-                CoordsXY elem = { originX, originY };
-                int16_t elemZ = originZ;
+                CoordsXYZD elem = { originX, originY, originZ + trackBlock->z, rotation };
                 offsets.x = trackBlock->x;
                 offsets.y = trackBlock->y;
                 elem += offsets.Rotate(originDirection);
-                elemZ += trackBlock->z;
 
-                map_invalidate_tile_full(elem);
-
-                bool found = false;
-                TileElement* tileElement = map_get_first_element_at({ elem.x, elem.y });
-                do
-                {
-                    if (tileElement == nullptr)
-                        break;
-
-                    if (tileElement->GetBaseZ() != elemZ)
-                        continue;
-
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
-                        continue;
-
-                    if (tileElement->GetDirection() != rotation)
-                        continue;
-
-                    if (tileElement->AsTrack()->GetSequenceIndex() != trackBlock->index)
-                        continue;
-
-                    if (tileElement->AsTrack()->GetTrackType() != type)
-                        continue;
-
-                    found = true;
-                    break;
-                } while (!(tileElement++)->IsLastForTile());
-
-                if (!found)
+                TrackElement* tileElement = map_get_track_element_at_of_type_seq(elem, type, trackBlock->index);
+                if (tileElement == nullptr)
                 {
                     log_error("Track map element part not found!");
                     return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE);
@@ -971,6 +915,8 @@ namespace OpenRCT2::TileInspector
                 // track_remove returns here on failure, not sure when this would ever be hit. Only thing I can think of is
                 // for when you decrease the map size.
                 openrct2_assert(map_get_surface_element_at(elem) != nullptr, "No surface at %d,%d", elem.x >> 5, elem.y >> 5);
+
+                map_invalidate_tile_full(elem);
 
                 // Keep?
                 // invalidate_test_results(ride);
