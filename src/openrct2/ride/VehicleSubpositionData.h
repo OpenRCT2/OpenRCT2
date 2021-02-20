@@ -9,9 +9,13 @@
 
 #pragma once
 
+#include "../world/Location.hpp"
+#include "Track.h"
 #include "Vehicle.h"
 
 #include <cstdint>
+
+constexpr const size_t VehicleTrackSubpositionSizeDefault = TrackElemType::Count * NumOrthogonalDirections;
 
 struct rct_vehicle_info_list
 {
@@ -19,4 +23,4 @@ struct rct_vehicle_info_list
     const rct_vehicle_info* info;
 };
 
-extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[17];
+extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
