@@ -9654,20 +9654,9 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         newAcceleration += 511;
     }
     newAcceleration >>= 9;
-    int32_t curAcceleration = newAcceleration;
-    int32_t accelerationDecrease1 = vehicle->velocity;
-    if (accelerationDecrease1 < 0)
-    {
-        accelerationDecrease1 = -accelerationDecrease1;
-        accelerationDecrease1 >>= 12;
-        accelerationDecrease1 = -accelerationDecrease1;
-    }
-    else
-    {
-        accelerationDecrease1 >>= 12;
-    }
 
-    curAcceleration -= accelerationDecrease1;
+    int32_t curAcceleration = newAcceleration;
+    curAcceleration -= vehicle->velocity / 4096;
     curAcceleration -= GetAccelerationDecrease2(vehicle->velocity, totalMass);
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
