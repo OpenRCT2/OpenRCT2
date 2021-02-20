@@ -268,7 +268,6 @@ void reset_sprite_list()
 
         spr->sprite_identifier = SpriteIdentifier::Null;
         spr->sprite_index = i;
-        spr->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[i] = false;
     }
@@ -371,13 +370,11 @@ rct_sprite_checksum sprite_checksum()
 static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
-    auto llto = sprite->linked_list_index;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
-    sprite->linked_list_index = llto;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SpriteIdentifier::Null;
 }
@@ -396,7 +393,6 @@ void sprite_clear_all_unused()
             continue;
         }
         sprite_reset(entity);
-        entity->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[entity->sprite_index] = false;
     }
@@ -407,7 +403,6 @@ static void AddToEntityList(SpriteBase* entity)
 {
     auto listId = EntityIdentifierToListId(entity->sprite_identifier);
     auto& list = gEntityLists[EnumValue(listId)];
-    entity->linked_list_index = listId;
     // Entity list must be in sprite_index order to prevent desync issues
     list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
 }

@@ -1681,7 +1681,6 @@ public:
     void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
         dst->sprite_identifier = src->sprite_identifier;
-        dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;
