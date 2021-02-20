@@ -1442,10 +1442,8 @@ void Staff::UpdateHeadingToInspect()
 
         PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
-
-        SetDestination({ destX, destY }, 2);
+        auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
+        SetDestination(newDestination, 2);
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1453,7 +1451,7 @@ void Staff::UpdateHeadingToInspect()
         // Falls through into SubState 4
     }
 
-    int16_t delta_y = abs(y - GetDestination().y);
+    int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();

@@ -155,15 +155,15 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
         if (direction == 0 || direction == 2)
         {
             // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
-            const int32_t centerLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
+            const int32_t centreLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
             newTile.x += offset;
-            newTile.y = std::clamp<int32_t>(peep->y, centerLine - 3, centerLine + 3);
+            newTile.y = std::clamp<int32_t>(peep->y, centreLine - 3, centreLine + 3);
         }
         else
         {
             // Peep is moving along Y, so apply the offset to the Y position of the destination and clamp their current X
-            const int32_t centerLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
-            newTile.x = std::clamp<int32_t>(peep->x, centerLine - 3, centerLine + 3);
+            const int32_t centreLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
+            newTile.x = std::clamp<int32_t>(peep->x, centreLine - 3, centreLine + 3);
             newTile.y += offset;
         }
     }

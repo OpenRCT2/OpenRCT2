@@ -606,11 +606,11 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         Action = PeepActionType::None2;
     }
 
-    CoordsXY diffrenceLoc = GetLocation();
-    diffrenceLoc -= GetDestination();
+    CoordsXY differenceLoc = GetLocation();
+    differenceLoc -= GetDestination();
 
-    int32_t x_delta = abs(diffrenceLoc.x);
-    int32_t y_delta = abs(diffrenceLoc.y);
+    int32_t x_delta = abs(differenceLoc.x);
+    int32_t y_delta = abs(differenceLoc.y);
 
     xy_distance = x_delta + y_delta;
 
@@ -624,7 +624,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         if (x_delta < y_delta)
         {
             nextDirection = 8;
-            if (diffrenceLoc.y >= 0)
+            if (differenceLoc.y >= 0)
             {
                 nextDirection = 24;
             }
@@ -632,7 +632,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         else
         {
             nextDirection = 16;
-            if (diffrenceLoc.x >= 0)
+            if (differenceLoc.x >= 0)
             {
                 nextDirection = 0;
             }
@@ -3390,5 +3390,5 @@ void Peep::SetDestination(const CoordsXY& coords, int32_t tolerance)
 
 CoordsXY Peep::GetDestination() const
 {
-    return CoordsXY{ static_cast<int16_t>(DestinationX), static_cast<int16_t>(DestinationY) };
+    return CoordsXY{ DestinationX, DestinationY };
 }
