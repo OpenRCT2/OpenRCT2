@@ -40,7 +40,7 @@ static rct_widget window_text_input_widgets[] = {
 class TextInputWindow final : public Window
 {
 private:
-    widget_identifier _parentWidget;
+    widget_identifier _parentWidget{};
 
     std::string _title;
     rct_string_id _titleStringId = STR_NONE;
@@ -52,7 +52,7 @@ private:
     std::function<void()> _cancelCallback;
 
     int32_t _cursorBlink{};
-    size_t _maxInputLength;
+    size_t _maxInputLength{};
     std::string _buffer;
 
 public:
