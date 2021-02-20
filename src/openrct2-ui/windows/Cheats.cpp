@@ -449,7 +449,7 @@ private:
     char _moneySpinnerText[MONEY_STRING_MAXLENGTH];
     money32 _moneySpinnerValue = CHEATS_MONEY_DEFAULT;
     int32_t _selectedStaffSpeed = 1;
-    int32_t _parkRatingSpinnerValue;
+    int32_t _parkRatingSpinnerValue{};
     int32_t _yearSpinnerValue = 1;
     int32_t _monthSpinnerValue = 1;
     int32_t _daySpinnerValue = 1;

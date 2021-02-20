@@ -128,7 +128,7 @@ private:
     static constexpr size_t MaxGroups = 240;
 
     TabId _selectedTab{};
-    GuestViewType _selectedView;
+    GuestViewType _selectedView{};
     bool _trackingOnly{};
     std::optional<GuestFilterType> _selectedFilter;
     FilterArguments _filterArguments;
@@ -137,7 +137,7 @@ private:
     size_t _numPages{};
     size_t _selectedPage{};
 
-    GuestViewType _lastFindGroupsSelectedView;
+    GuestViewType _lastFindGroupsSelectedView{};
     uint32_t _lastFindGroupsTick{};
     uint32_t _lastFindGroupsWait{};
     std::vector<GuestGroup> _groups;
