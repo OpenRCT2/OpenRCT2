@@ -571,7 +571,7 @@ private:
                 {
                     continue;
                 }
-                if (!peep->AsStaff()->IsLocationInPatrol(footpathCoords))
+                if (!peep->IsLocationInPatrol(footpathCoords))
                 {
                     continue;
                 }

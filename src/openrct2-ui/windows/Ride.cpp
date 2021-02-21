@@ -4130,7 +4130,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 for (auto peep : EntityList<Staff>(EntityListId::Peep))
                 {
-                    if (peep->AssignedStaffType == StaffType::Mechanic)
+                    if (peep->IsMechanic())
                     {
                         stringId = STR_CALLING_MECHANIC;
                         break;

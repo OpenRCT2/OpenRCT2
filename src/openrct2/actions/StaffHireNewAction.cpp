@@ -211,7 +211,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         }
 
         // Staff uses this
-        newPeep->AsStaff()->SetHireDate(gDateMonthsElapsed);
+        newPeep->As<Staff>()->SetHireDate(gDateMonthsElapsed);
         newPeep->PathfindGoal.x = 0xFF;
         newPeep->PathfindGoal.y = 0xFF;
         newPeep->PathfindGoal.z = 0xFF;

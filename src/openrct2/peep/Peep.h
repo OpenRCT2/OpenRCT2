@@ -728,9 +728,6 @@ struct Peep : SpriteBase
     uint64_t ItemFlags;
 
 public: // Peep
-    Guest* AsGuest();
-    Staff* AsStaff();
-
     void Update();
     std::optional<CoordsXY> UpdateAction(int16_t& xy_distance);
     std::optional<CoordsXY> UpdateAction();

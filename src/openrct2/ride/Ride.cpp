@@ -2730,7 +2730,7 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
 
     for (auto peep : EntityList<Staff>(EntityListId::Peep))
     {
-        if (peep->AssignedStaffType != StaffType::Mechanic)
+        if (!peep->IsMechanic())
             continue;
 
         if (!forInspection)
@@ -2754,7 +2754,7 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
 
         auto location = entrancePosition.ToTileStart();
         if (map_is_location_in_park(location))
-            if (!peep->AsStaff()->IsLocationInPatrol(location))
+            if (!peep->IsLocationInPatrol(location))
                 continue;
 
         if (peep->x == LOCATION_NULL)
