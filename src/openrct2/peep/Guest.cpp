@@ -254,16 +254,12 @@ void Guest::ApplyEasterEggToNearbyGuests(easter_egg_function easter_egg)
     if (!GuestHasValidXY())
         return;
 
-    for (auto otherPeep : EntityTileList<Peep>({ x, y }))
+    for (auto* otherGuest : EntityTileList<Guest>({ x, y }))
     {
-        auto otherGuest = otherPeep->AsGuest();
-        if (otherGuest)
+        auto zDiff = std::abs(otherGuest->z - z);
+        if (zDiff <= 32)
         {
-            auto zDiff = std::abs(otherPeep->z - z);
-            if (zDiff <= 32)
-            {
-                (*this.*easter_egg)(otherGuest);
-            }
+            (*this.*easter_egg)(otherGuest);
         }
     }
 }

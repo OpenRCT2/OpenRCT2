@@ -834,7 +834,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return peep->AsGuest();
+                return peep->As<Guest>();
             }
             return nullptr;
         }
@@ -1123,7 +1123,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return peep->AsStaff();
+                return peep->As<Staff>();
             }
             return nullptr;
         }

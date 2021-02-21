@@ -712,9 +712,10 @@ static void peep_pathfind_heuristic_search(
     }
 
     bool nextInPatrolArea = inPatrolArea;
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
+    auto* staff = peep->As<Staff>();
+    if (staff != nullptr && staff->IsMechanic())
     {
-        nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
+        nextInPatrolArea = staff->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
         {
 /* The mechanic will leave his patrol area by taking
@@ -823,7 +824,6 @@ static void peep_pathfind_heuristic_search(
                 if (tileElement->AsPath()->IsWide())
                 {
                     /* Check if staff can ignore this wide flag. */
-                    const Staff* staff = peep->As<Staff>();
                     if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
                     {
                         searchResult = PATH_SEARCH_WIDE;
@@ -1497,12 +1497,13 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             uint8_t endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
-            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
+            auto* staff = peep->As<Staff>();
+            if (staff != nullptr && staff->IsMechanic())
             {
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
                  * mechanic is in their patrol area. */
-                inPatrolArea = peep->AsStaff()->IsLocationInPatrol(peep->NextLoc);
+                inPatrolArea = staff->IsLocationInPatrol(peep->NextLoc);
             }
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
