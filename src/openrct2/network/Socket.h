@@ -33,12 +33,12 @@ enum class NetworkReadPacket : int32_t
     Disconnected
 };
 
-typedef struct SRVRecord {
-    u_int16_t priority;
-    u_int16_t weight;
-    u_int16_t port;
+struct SRVRecord {
+    uint16_t priority;
+    uint16_t weight;
+    uint16_t port;
     char dname[255];
-} SRVRecord;
+};
 
 /**
  * Represents an address and port.

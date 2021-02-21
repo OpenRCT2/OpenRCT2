@@ -260,7 +260,7 @@ private:
      * https://oliver-kaestner.de/english-c-query-srv-dns-record-with-example/
      */
     static bool ResolveSRV(const char* host, SRVRecord* resolved) {
-        struct __res_state res;
+        __res_state res;
         if (res_ninit(&res) != 0)
             return false;
      
