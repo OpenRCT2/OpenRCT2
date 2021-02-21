@@ -853,12 +853,12 @@ private:
         }
 
         // Turn off IPV6_V6ONLY so we can accept both v4 and v6 connections
-        if (!SetOption(_socket, IPPROTO_IPV6, IPV6_V6ONLY, false))
+        if (!SetOption(sock, IPPROTO_IPV6, IPV6_V6ONLY, false))
         {
             log_verbose("setsockopt(socket, IPV6_V6ONLY) failed: %d", LAST_SOCKET_ERROR());
         }
 
-        if (!SetOption(_socket, SOL_SOCKET, SO_REUSEADDR, true))
+        if (!SetOption(sock, SOL_SOCKET, SO_REUSEADDR, true))
         {
             log_verbose("setsockopt(socket, SO_REUSEADDR) failed: %d", LAST_SOCKET_ERROR());
         }
