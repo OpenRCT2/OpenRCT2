@@ -6943,6 +6943,41 @@ int32_t Vehicle::GetSwingAmount() const
     return 0;
 }
 
+static uint8_t GetSwingSprite(int16_t swingPosition)
+{
+    if (swingPosition < -10012)
+        return 11;
+    else if (swingPosition > 10012)
+        return 12;
+
+    if (swingPosition < -8191)
+        return 9;
+    else if (swingPosition > 8191)
+        return 10;
+
+    if (swingPosition < -6371)
+        return 7;
+    else if (swingPosition > 6371)
+        return 8;
+
+    if (swingPosition < -4550)
+        return 5;
+    else if (swingPosition > 4550)
+        return 6;
+
+    if (swingPosition < -2730)
+        return 3;
+    else if (swingPosition > 2730)
+        return 4;
+
+    if (swingPosition < -910)
+        return 1;
+    else if (swingPosition > 910)
+        return 2;
+
+    return 0;
+}
+
 /**
  *
  *  rct2: 0x006D6776
@@ -7014,68 +7049,20 @@ void Vehicle::UpdateSwingingCar()
 
     SwingPosition += SwingSpeed;
     SwingSpeed -= SwingSpeed >> 5;
-    int16_t ax = SwingPosition;
-    if (ax > dx)
+
+    if (SwingPosition > dx)
     {
-        ax = dx;
+        SwingPosition = dx;
         SwingSpeed = 0;
     }
-    if (ax < cx)
+    if (SwingPosition < cx)
     {
-        ax = cx;
+        SwingPosition = cx;
         SwingSpeed = 0;
     }
 
-    SwingPosition = ax;
-    uint8_t swingSprite = 11;
-    if (ax >= -10012)
-    {
-        swingSprite = 12;
-        if (ax <= 10012)
-        {
-            swingSprite = 9;
-            if (ax >= -8191)
-            {
-                swingSprite = 10;
-                if (ax <= 8191)
-                {
-                    swingSprite = 7;
-                    if (ax >= -6371)
-                    {
-                        swingSprite = 8;
-                        if (ax <= 6371)
-                        {
-                            swingSprite = 5;
-                            if (ax >= -4550)
-                            {
-                                swingSprite = 6;
-                                if (ax <= 4550)
-                                {
-                                    swingSprite = 3;
-                                    if (ax >= -2730)
-                                    {
-                                        swingSprite = 4;
-                                        if (ax <= 2730)
-                                        {
-                                            swingSprite = 1;
-                                            if (ax >= -910)
-                                            {
-                                                swingSprite = 2;
-                                                if (ax <= 910)
-                                                {
-                                                    swingSprite = 0;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+    uint8_t swingSprite = GetSwingSprite(SwingPosition);
+
     if (swingSprite != SwingSprite)
     {
         SwingSprite = swingSprite;
