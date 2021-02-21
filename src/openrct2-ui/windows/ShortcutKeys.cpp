@@ -177,6 +177,7 @@ public:
     void OnUpdate() override
     {
         _tabAnimationIndex++;
+        InvalidateWidget(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex));
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override

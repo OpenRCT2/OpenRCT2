@@ -343,7 +343,8 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
             case InputDeviceKind::Keyboard:
             {
-                if (_keyboardState[shortcut.Button & 0xFF])
+                auto scanCode = static_cast<size_t>(SDL_GetScancodeFromKey(shortcut.Button));
+                if (scanCode < _keyboardState.size() && _keyboardState[scanCode])
                 {
                     return true;
                 }
