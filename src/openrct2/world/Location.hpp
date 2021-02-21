@@ -139,6 +139,20 @@ struct CoordsXY
         return *this;
     }
 
+    constexpr CoordsXY& operator*=(const int32_t rhs)
+    {
+        x *= rhs;
+        y *= rhs;
+        return *this;
+    }
+
+    constexpr CoordsXY& operator/=(const int32_t rhs)
+    {
+        x /= rhs;
+        y /= rhs;
+        return *this;
+    }
+
     constexpr bool operator>=(const CoordsXY& rhs) const
     {
         return x >= rhs.x && y >= rhs.y;
@@ -157,6 +171,16 @@ struct CoordsXY
     constexpr const CoordsXY operator-(const CoordsXY& rhs) const
     {
         return { x - rhs.x, y - rhs.y };
+    }
+
+    constexpr const CoordsXY operator*(const int32_t rhs) const
+    {
+        return { x * rhs, y * rhs };
+    }
+
+    constexpr const CoordsXY operator/(const int32_t rhs) const
+    {
+        return { x / rhs, y / rhs };
     }
 
     constexpr CoordsXY Rotate(int32_t direction) const

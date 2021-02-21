@@ -596,10 +596,11 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         Action = PeepActionType::None2;
     }
 
-    CoordsXY diffrenceLoc = { x - DestinationX, y - DestinationY };
+    CoordsXY differenceLoc = GetLocation();
+    differenceLoc -= GetDestination();
 
-    int32_t x_delta = abs(diffrenceLoc.x);
-    int32_t y_delta = abs(diffrenceLoc.y);
+    int32_t x_delta = abs(differenceLoc.x);
+    int32_t y_delta = abs(differenceLoc.y);
 
     xy_distance = x_delta + y_delta;
 
@@ -613,7 +614,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         if (x_delta < y_delta)
         {
             nextDirection = 8;
-            if (diffrenceLoc.y >= 0)
+            if (differenceLoc.y >= 0)
             {
                 nextDirection = 24;
             }
@@ -621,7 +622,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
         else
         {
             nextDirection = 16;
-            if (diffrenceLoc.x >= 0)
+            if (differenceLoc.x >= 0)
             {
                 nextDirection = 0;
             }
@@ -1018,9 +1019,7 @@ void Peep::Update1()
         SetState(PeepState::Patrolling);
     }
 
-    DestinationX = x;
-    DestinationY = y;
-    DestinationTolerance = 10;
+    SetDestination(GetLocation(), 10);
     PeepDirection = sprite_direction >> 3;
 }
 
@@ -2277,9 +2276,8 @@ static bool peep_update_queue_position(Peep* peep, PeepActionType previous_actio
 static void peep_return_to_centre_of_tile(Peep* peep)
 {
     peep->PeepDirection = direction_reverse(peep->PeepDirection);
-    peep->DestinationX = (peep->x & 0xFFE0) + 16;
-    peep->DestinationY = (peep->y & 0xFFE0) + 16;
-    peep->DestinationTolerance = 5;
+    auto destination = peep->GetLocation().ToTileCentre();
+    peep->SetDestination(destination, 5);
 }
 
 /**
@@ -2444,9 +2442,8 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
                 }
             }
 
-            peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
-            peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
-            peep->DestinationTolerance = 9;
+            auto destination = peep->GetDestination() + CoordsDirectionDelta[peep->PeepDirection];
+            peep->SetDestination(destination, 9);
             peep->MoveTo({ coords, peep->z });
             peep->SetState(PeepState::LeavingPark);
 
@@ -2582,9 +2579,9 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         window_invalidate_by_number(WC_PARK_INFORMATION, 0);
 
         peep->Var37 = 1;
-        peep->DestinationX += CoordsDirectionDelta[peep->PeepDirection].x;
-        peep->DestinationY += CoordsDirectionDelta[peep->PeepDirection].y;
-        peep->DestinationTolerance = 7;
+        auto destination = peep->GetDestination();
+        destination += CoordsDirectionDelta[peep->PeepDirection];
+        peep->SetDestination(destination, 7);
         peep->MoveTo({ coords, peep->z });
     }
     return true;
@@ -2924,10 +2921,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         }
 
         auto coordsCentre = coords.ToTileCentre();
-        peep->DestinationX = coordsCentre.x;
-        peep->DestinationY = coordsCentre.y;
-        peep->DestinationTolerance = 3;
-
+        peep->SetDestination(coordsCentre, 3);
         peep->CurrentRide = rideIndex;
         peep->SetState(PeepState::EnteringRide);
         peep->RideSubState = PeepRideSubState::ApproachShop;
@@ -3370,4 +3364,21 @@ void Peep::GiveItem(ShopItem item)
 bool Peep::HasItem(ShopItem peepItem) const
 {
     return GetItemFlags() & EnumToFlag(peepItem);
+}
+
+void Peep::SetDestination(const CoordsXY& coords)
+{
+    DestinationX = static_cast<uint16_t>(coords.x);
+    DestinationY = static_cast<uint16_t>(coords.y);
+}
+
+void Peep::SetDestination(const CoordsXY& coords, int32_t tolerance)
+{
+    SetDestination(coords);
+    DestinationTolerance = tolerance;
+}
+
+CoordsXY Peep::GetDestination() const
+{
+    return CoordsXY{ DestinationX, DestinationY };
 }

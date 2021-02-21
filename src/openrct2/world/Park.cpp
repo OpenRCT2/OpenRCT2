@@ -721,11 +721,8 @@ Peep* Park::GenerateGuest()
         {
             peep->sprite_direction = direction << 3;
 
-            // Get the centre point of the tile the peep is on
-            peep->DestinationX = (peep->x & 0xFFE0) + 16;
-            peep->DestinationY = (peep->y & 0xFFE0) + 16;
-
-            peep->DestinationTolerance = 5;
+            auto destination = peep->GetLocation().ToTileCentre();
+            peep->SetDestination(destination, 5);
             peep->PeepDirection = direction;
             peep->Var37 = 0;
             peep->State = PeepState::EnteringPark;
