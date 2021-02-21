@@ -73,14 +73,15 @@ namespace OpenRCT2::TileInspector
         return true;
     }
 
-    static void InvalidateTileInspector(const CoordsXY& loc)
+    static rct_window* GetTileInspectorWithPos(const CoordsXY& loc)
     {
         // Update the tile inspector's list for everyone who has the tile selected
-        rct_window* const tileInspectorWindow = window_find_by_class(WC_TILE_INSPECTOR);
-        if (tileInspectorWindow != nullptr && loc == windowTileInspectorTile.ToCoordsXY())
+        auto* window = window_find_by_class(WC_TILE_INSPECTOR);
+        if (window != nullptr && loc == windowTileInspectorTile.ToCoordsXY())
         {
-            tileInspectorWindow->Invalidate();
+            return window;
         }
+        return nullptr;
     }
 
     /**
@@ -131,13 +132,15 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            windowTileInspectorElementCount++;
-            if (windowTileInspectorSelectedIndex > elementIndex)
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
-                windowTileInspectorSelectedIndex++;
+                windowTileInspectorElementCount++;
+                if (windowTileInspectorSelectedIndex > elementIndex)
+                {
+                    windowTileInspectorSelectedIndex++;
+                }
+                inspector->Invalidate();
             }
-
-            InvalidateTileInspector(loc);
         }
 
         // Nothing went wrong
@@ -224,19 +227,22 @@ namespace OpenRCT2::TileInspector
             tile_element_remove(tileElement);
             map_invalidate_tile_full(loc);
 
-            // Update the window
-            windowTileInspectorElementCount--;
-
-            if (windowTileInspectorSelectedIndex > elementIndex)
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
             {
-                windowTileInspectorSelectedIndex--;
-            }
-            else if (windowTileInspectorSelectedIndex == elementIndex)
-            {
-                windowTileInspectorSelectedIndex = -1;
-            }
+                // Update the window
+                windowTileInspectorElementCount--;
 
-            InvalidateTileInspector(loc);
+                if (windowTileInspectorSelectedIndex > elementIndex)
+                {
+                    windowTileInspectorSelectedIndex--;
+                }
+                else if (windowTileInspectorSelectedIndex == elementIndex)
+                {
+                    windowTileInspectorSelectedIndex = -1;
+                }
+
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -252,13 +258,16 @@ namespace OpenRCT2::TileInspector
             }
             map_invalidate_tile_full(loc);
 
-            // If one of them was selected, update selected list item
-            if (windowTileInspectorSelectedIndex == first)
-                windowTileInspectorSelectedIndex = second;
-            else if (windowTileInspectorSelectedIndex == second)
-                windowTileInspectorSelectedIndex = first;
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                // If one of them was selected, update selected list item
+                if (windowTileInspectorSelectedIndex == first)
+                    windowTileInspectorSelectedIndex = second;
+                else if (windowTileInspectorSelectedIndex == second)
+                    windowTileInspectorSelectedIndex = first;
 
-            InvalidateTileInspector(loc);
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -337,7 +346,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -384,16 +396,19 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            windowTileInspectorElementCount++;
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                windowTileInspectorElementCount++;
 
-            // Select new element if there was none selected already
-            int16_t newIndex = static_cast<int16_t>((pastedElement - map_get_first_element_at(loc)));
-            if (windowTileInspectorSelectedIndex == -1)
-                windowTileInspectorSelectedIndex = newIndex;
-            else if (windowTileInspectorSelectedIndex >= newIndex)
-                windowTileInspectorSelectedIndex++;
+                // Select new element if there was none selected already
+                int16_t newIndex = static_cast<int16_t>((pastedElement - map_get_first_element_at(loc)));
+                if (windowTileInspectorSelectedIndex == -1)
+                    windowTileInspectorSelectedIndex = newIndex;
+                else if (windowTileInspectorSelectedIndex >= newIndex)
+                    windowTileInspectorSelectedIndex++;
 
-            InvalidateTileInspector(loc);
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -445,10 +460,13 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            // Deselect tile for clients who had it selected
-            windowTileInspectorSelectedIndex = -1;
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                // Deselect tile for clients who had it selected
+                windowTileInspectorSelectedIndex = -1;
 
-            InvalidateTileInspector(loc);
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -521,7 +539,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -544,7 +565,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -606,7 +630,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -639,7 +666,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -658,7 +688,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -677,7 +710,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -697,7 +733,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -734,7 +773,10 @@ namespace OpenRCT2::TileInspector
                     break;
             }
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -754,7 +796,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -775,7 +820,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -845,7 +893,10 @@ namespace OpenRCT2::TileInspector
                 tileElement->clearance_height += offset;
             }
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -927,7 +978,10 @@ namespace OpenRCT2::TileInspector
                 }
             }
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -946,7 +1000,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -966,7 +1023,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -990,7 +1050,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -1012,7 +1075,10 @@ namespace OpenRCT2::TileInspector
 
             map_invalidate_tile_full(loc);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -1031,7 +1097,10 @@ namespace OpenRCT2::TileInspector
             edges ^= (1 << edgeIndex);
             bannerElement->AsBanner()->SetAllowedEdges(edges);
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
@@ -1052,7 +1121,10 @@ namespace OpenRCT2::TileInspector
             TileElement* const nextElement = corruptElement + 1;
             corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
 
-            InvalidateTileInspector(loc);
+            if (auto* inspector = GetTileInspectorWithPos(loc); inspector != nullptr)
+            {
+                inspector->Invalidate();
+            }
         }
 
         return std::make_unique<GameActions::Result>();
