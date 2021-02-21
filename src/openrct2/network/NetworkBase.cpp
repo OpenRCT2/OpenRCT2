@@ -3447,7 +3447,7 @@ const char* network_get_group_name(uint32_t index)
 void network_chat_show_connected_message()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    std::string s = windowManager->GetKeyboardShortcutString(41 /* SHORTCUT_OPEN_CHAT_WINDOW */);
+    std::string s = windowManager->GetKeyboardShortcutString("interface.misc.multiplayer_chat");
     const char* sptr = s.c_str();
 
     utf8 buffer[256];

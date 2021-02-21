@@ -9,11 +9,11 @@
 
 #include "WindowManager.h"
 
-#include "input/Input.h"
-#include "input/KeyboardShortcuts.h"
 #include "interface/Theme.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
@@ -516,14 +516,15 @@ public:
 
     void HandleKeyboard(bool isTitle) override
     {
-        InputHandleKeyboard(isTitle);
+        auto& inputManager = GetInputManager();
+        inputManager.Process();
     }
 
-    std::string GetKeyboardShortcutString(int32_t shortcut) override
+    std::string GetKeyboardShortcutString(std::string_view shortcutId) override
     {
-        utf8 buffer[256];
-        KeyboardShortcutsFormatString(buffer, sizeof(buffer), shortcut);
-        return std::string(buffer);
+        auto& shortcutManager = GetShortcutManager();
+        auto* shortcut = shortcutManager.GetShortcut(shortcutId);
+        return shortcut != nullptr ? shortcut->GetDisplayString() : std::string();
     }
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override

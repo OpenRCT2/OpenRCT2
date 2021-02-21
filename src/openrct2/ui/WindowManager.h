@@ -14,6 +14,7 @@
 #include "../windows/Intent.h"
 
 #include <string>
+#include <string_view>
 
 class Formatter;
 
@@ -37,7 +38,7 @@ namespace OpenRCT2::Ui
         virtual void UpdateMapTooltip() abstract;
         virtual void HandleInput() abstract;
         virtual void HandleKeyboard(bool isTitle) abstract;
-        virtual std::string GetKeyboardShortcutString(int32_t shortcut) abstract;
+        virtual std::string GetKeyboardShortcutString(std::string_view shortcutId) abstract;
         virtual void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) abstract;
         virtual void UpdateMouseWheel() abstract;
         virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;

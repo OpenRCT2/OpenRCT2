@@ -11,14 +11,51 @@
 
 #    include "CustomMenu.h"
 
+#    include <openrct2-ui/input/ShortcutManager.h>
 #    include <openrct2/Input.h>
 #    include <openrct2/world/Map.h>
 #    include <openrct2/world/Sprite.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2::Scripting
 {
     std::optional<CustomTool> ActiveCustomTool;
     std::vector<CustomToolbarMenuItem> CustomMenuItems;
+    std::vector<CustomShortcut> CustomShortcuts;
+
+    CustomShortcut::CustomShortcut(
+        std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
+        DukValue callback)
+        : Owner(owner)
+        , Id(id)
+        , Text(text)
+        , Bindings(bindings)
+        , Callback(callback)
+    {
+        auto& shortcutManager = GetShortcutManager();
+
+        RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
+        for (const auto& binding : bindings)
+        {
+            registeredShortcut.Default.emplace_back(binding);
+        }
+        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
+        shortcutManager.LoadUserBindings();
+    }
+
+    CustomShortcut::~CustomShortcut()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        shortcutManager.RemoveShortcut(Id);
+    }
+
+    void CustomShortcut::Invoke() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+    }
 
     static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
@@ -83,6 +120,19 @@ namespace OpenRCT2::Scripting
             if (it->Owner == owner)
             {
                 it = menuItems.erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+
+        auto& shortcuts = CustomShortcuts;
+        for (auto it = shortcuts.begin(); it != shortcuts.end();)
+        {
+            if (it->Owner == owner)
+            {
+                it = shortcuts.erase(it);
             }
             else
             {

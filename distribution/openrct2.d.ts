@@ -1792,6 +1792,8 @@ declare global {
         activateTool(tool: ToolDesc): void;
 
         registerMenuItem(text: string, callback: () => void): void;
+
+        registerShortcut(desc: ShortcutDesc): void;
     }
 
     /**
@@ -1959,6 +1961,31 @@ declare global {
         "large_scenery" |
         "label" |
         "banner";
+
+    interface ShortcutDesc {
+        /**
+         * The unique identifier for the shortcut.
+         * If the identifier already exists, the shortcut will not be registered.
+         * Use full stops to group shortcuts together, e.g. `yourplugin.somewindow.apply`.
+         */
+        id: string;
+
+        /**
+         * The display text for the shortcut.
+         */
+        text: string;
+
+        /**
+         * Default bindings for the shortcut.
+         * E.g. `["CTRL+SHIFT+L", "MOUSE 3"]`
+         */
+        bindings?: string[];
+
+        /**
+         * Function to call when the shortcut is invoked.
+         */
+        callback: () => void;
+    }
 
     /**
      * Represents the type of a widget, e.g. button or label.

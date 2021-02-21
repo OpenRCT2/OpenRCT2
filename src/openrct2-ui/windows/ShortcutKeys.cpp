@@ -7,13 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../input/ShortcutManager.h"
 #include "Window.h"
 
-#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Widget.h>
-#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/sprites.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
@@ -22,350 +25,510 @@ static constexpr const int32_t WH = 280;
 static constexpr const int32_t WW_SC_MAX = 1200;
 static constexpr const int32_t WH_SC_MAX = 800;
 
-using namespace OpenRCT2;
-
-// clang-format off
-enum WINDOW_SHORTCUT_WIDGET_IDX {
+enum WINDOW_SHORTCUT_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_TAB_CONTENT_PANEL,
     WIDX_SCROLL,
-    WIDX_RESET
+    WIDX_RESET,
+    WIDX_TAB_0,
 };
 
-// 0x9DE48C
+// clang-format off
 static rct_widget window_shortcut_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4,    18}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
+    MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
+    MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
     MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
     { WIDGETS_END }
 };
+// clang-format on
 
-static void window_shortcut_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_shortcut_resize(rct_window *w);
-static void window_shortcut_invalidate(rct_window *w);
-static void window_shortcut_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_shortcut_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_shortcut_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_shortcut_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static constexpr const rct_string_id CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
+static constexpr const int32_t CHANGE_WW = 250;
+static constexpr const int32_t CHANGE_WH = 60;
 
-static rct_window_event_list window_shortcut_events([](auto& events)
-{
-    events.mouse_up = &window_shortcut_mouseup;
-    events.resize = &window_shortcut_resize;
-    events.get_scroll_size = &window_shortcut_scrollgetsize;
-    events.scroll_mousedown = &window_shortcut_scrollmousedown;
-    events.scroll_mouseover = &window_shortcut_scrollmouseover;
-    events.invalidate = &window_shortcut_invalidate;
-    events.paint = &window_shortcut_paint;
-    events.scroll_paint = &window_shortcut_scrollpaint;
-});
-
-struct ShortcutStringPair
-{
-    Input::Shortcut ShortcutId;
-    rct_string_id StringId;
-};
-
-static const ShortcutStringPair ShortcutList[] =
-{
-    { Input::Shortcut::CloseTopMostWindow,                  STR_SHORTCUT_CLOSE_TOP_MOST_WINDOW },
-    { Input::Shortcut::CloseAllFloatingWindows,             STR_SHORTCUT_CLOSE_ALL_FLOATING_WINDOWS },
-    { Input::Shortcut::CancelConstructionMode,              STR_SHORTCUT_CANCEL_CONSTRUCTION_MODE },
-    { Input::Shortcut::RemoveTopBottomToolbarToggle,        STR_SHORTCUT_TOGGLE_VISIBILITY_OF_TOOLBARS },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::PauseGame,                           STR_SHORTCUT_PAUSE_GAME },
-    { Input::Shortcut::ReduceGameSpeed,                     STR_SHORTCUT_REDUCE_GAME_SPEED },
-    { Input::Shortcut::IncreaseGameSpeed,                   STR_SHORTCUT_INCREASE_GAME_SPEED },
-    { Input::Shortcut::LoadGame,                            STR_LOAD_GAME },
-    { Input::Shortcut::QuickSaveGame,                       STR_SHORTCUT_QUICK_SAVE_GAME },
-    { Input::Shortcut::ShowOptions,                         STR_SHORTCUT_SHOW_OPTIONS },
-    { Input::Shortcut::Screenshot,                          STR_SHORTCUT_SCREENSHOT },
-    { Input::Shortcut::MuteSound,                           STR_SHORTCUT_MUTE_SOUND },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::OpenCheatWindow,                     STR_SHORTCUT_OPEN_CHEATS_WINDOW },
-    { Input::Shortcut::ToggleClearanceChecks,               STR_SHORTCUT_TOGGLE_CLEARANCE_CHECKS },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ZoomViewOut,                         STR_SHORTCUT_ZOOM_VIEW_OUT },
-    { Input::Shortcut::ZoomViewIn,                          STR_SHORTCUT_ZOOM_VIEW_IN },
-    { Input::Shortcut::RotateViewClockwise,                 STR_SHORTCUT_ROTATE_VIEW_CLOCKWISE },
-    { Input::Shortcut::RotateViewAnticlockwise,             STR_SHORTCUT_ROTATE_VIEW_ANTICLOCKWISE },
-    { Input::Shortcut::ShowMap,                             STR_SHORTCUT_SHOW_MAP },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ClearScenery,                        STR_SHORTCUT_CLEAR_SCENERY },
-    { Input::Shortcut::AdjustLand,                          STR_SHORTCUT_ADJUST_LAND },
-    { Input::Shortcut::AdjustWater,                         STR_SHORTCUT_ADJUST_WATER },
-    { Input::Shortcut::BuildScenery,                        STR_SHORTCUT_BUILD_SCENERY },
-    { Input::Shortcut::BuildPaths,                          STR_SHORTCUT_BUILD_PATHS },
-    { Input::Shortcut::BuildNewRide,                        STR_SHORTCUT_BUILD_NEW_RIDE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ShowFinancialInformation,            STR_SHORTCUT_SHOW_FINANCIAL_INFORMATION },
-    { Input::Shortcut::ShowResearchInformation,             STR_SHORTCUT_SHOW_RESEARCH_INFORMATION },
-    { Input::Shortcut::ShowRidesList,                       STR_SHORTCUT_SHOW_RIDES_LIST },
-    { Input::Shortcut::ShowParkInformation,                 STR_SHORTCUT_SHOW_PARK_INFORMATION },
-    { Input::Shortcut::ShowGuestList,                       STR_SHORTCUT_SHOW_GUEST_LIST },
-    { Input::Shortcut::ShowStaffList,                       STR_SHORTCUT_SHOW_STAFF_LIST },
-    { Input::Shortcut::ShowRecentMessages,                  STR_SHORTCUT_SHOW_RECENT_MESSAGES },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ShowMultiplayer,                     STR_SHORTCUT_SHOW_MULTIPLAYER },
-    { Input::Shortcut::OpenChatWindow,                      STR_SEND_MESSAGE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::UndergroundViewToggle,               STR_SHORTCUT_UNDERGROUND_VIEW_TOGGLE },
-    { Input::Shortcut::RemoveBaseLandToggle,                STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE },
-    { Input::Shortcut::RemoveVerticalLandToggle,            STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE },
-    { Input::Shortcut::SeeThroughRidesToggle,               STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE },
-    { Input::Shortcut::SeeThroughSceneryToggle,             STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE },
-    { Input::Shortcut::SeeThroughPathsToggle,               STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE },
-    { Input::Shortcut::InvisibleSupportsToggle,             STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE },
-    { Input::Shortcut::InvisiblePeopleToggle,               STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE },
-    { Input::Shortcut::HeightMarksOnLandToggle,             STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE },
-    { Input::Shortcut::HeightMarksOnRideTracksToggle,       STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE },
-    { Input::Shortcut::HeightMarksOnPathsToggle,            STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE },
-    { Input::Shortcut::ViewClipping,                        STR_SHORTCUT_VIEW_CLIPPING },
-    { Input::Shortcut::HighlightPathIssuesToggle,           STR_SHORTCUT_HIGHLIGHT_PATH_ISSUES_TOGGLE },
-    { Input::Shortcut::GridlinesDisplayToggle,              STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::SceneryPicker,                       STR_SHORTCUT_OPEN_SCENERY_PICKER },
-    { Input::Shortcut::RotateConstructionObject,            STR_SHORTCUT_ROTATE_CONSTRUCTION_OBJECT },
-    { Input::Shortcut::RideConstructionTurnLeft,            STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT },
-    { Input::Shortcut::RideConstructionTurnRight,           STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT },
-    { Input::Shortcut::RideConstructionUseTrackDefault,     STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT },
-    { Input::Shortcut::RideConstructionSlopeDown,           STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN },
-    { Input::Shortcut::RideConstructionSlopeUp,             STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP },
-    { Input::Shortcut::RideConstructionChainLiftToggle,     STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE },
-    { Input::Shortcut::RideConstructionBankLeft,            STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT },
-    { Input::Shortcut::RideConstructionBankRight,           STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT },
-    { Input::Shortcut::RideConstructionPreviousTrack,       STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK },
-    { Input::Shortcut::RideConstructionNextTrack,           STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK },
-    { Input::Shortcut::RideConstructionBuildCurrent,        STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT },
-    { Input::Shortcut::RideConstructionDemolishCurrent,     STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::ScrollMapUp,                         STR_SHORTCUT_SCROLL_MAP_UP },
-    { Input::Shortcut::ScrollMapLeft,                       STR_SHORTCUT_SCROLL_MAP_LEFT },
-    { Input::Shortcut::ScrollMapDown,                       STR_SHORTCUT_SCROLL_MAP_DOWN },
-    { Input::Shortcut::ScrollMapRight,                      STR_SHORTCUT_SCROLL_MAP_RIGHT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::WindowedModeToggle,                  STR_SHORTCUT_WINDOWED_MODE_TOGGLE },
-    { Input::Shortcut::ScaleUp,                             STR_SHORTCUT_SCALE_UP },
-    { Input::Shortcut::ScaleDown,                           STR_SHORTCUT_SCALE_DOWN },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::TileInspector,                       STR_SHORTCUT_OPEN_TILE_INSPECTOR },
-    { Input::Shortcut::InsertCorruptElement,                STR_SHORTCUT_INSERT_CORRPUT_ELEMENT },
-    { Input::Shortcut::CopyElement,                         STR_SHORTCUT_COPY_ELEMENT },
-    { Input::Shortcut::PasteElement,                        STR_SHORTCUT_PASTE_ELEMENT },
-    { Input::Shortcut::RemoveElement,                       STR_SHORTCUT_REMOVE_ELEMENT },
-    { Input::Shortcut::MoveElementUp,                       STR_SHORTCUT_MOVE_ELEMENT_UP },
-    { Input::Shortcut::MoveElementDown,                     STR_SHORTCUT_MOVE_ELEMENT_DOWN },
-    { Input::Shortcut::IncreaseXCoord,                      STR_SHORTCUT_INCREASE_X_COORD },
-    { Input::Shortcut::DecreaseXCoord,                      STR_SHORTCUT_DECREASE_X_COORD },
-    { Input::Shortcut::IncreaseYCoord,                      STR_SHORTCUT_INCREASE_Y_COORD },
-    { Input::Shortcut::DecreaseYCoord,                      STR_SHORTCUT_DECREASE_Y_COORD },
-    { Input::Shortcut::IncreaseElementHeight,               STR_SHORTCUT_INCREASE_ELEM_HEIGHT },
-    { Input::Shortcut::DecreaseElementHeight,               STR_SHORTCUT_DECREASE_ELEM_HEIGHT },
-
-    { Input::Shortcut::Undefined,                           STR_NONE },
-
-    { Input::Shortcut::AdvanceToNextTick,                   STR_ADVANCE_TO_NEXT_TICK },
-    { Input::Shortcut::PaintOriginalToggle,                 STR_SHORTCUT_PAINT_ORIGINAL },
-    { Input::Shortcut::DebugPaintToggle,                    STR_SHORTCUT_DEBUG_PAINT_TOGGLE },
+// clang-format off
+static rct_widget window_shortcut_change_widgets[] = {
+    WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
+    { WIDGETS_END }
 };
 // clang-format on
 
-/**
- *
- *  rct2: 0x006E3884
- */
-rct_window* window_shortcut_keys_open()
+class ChangeShortcutWindow final : public Window
 {
-    rct_window* w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
-    if (w == nullptr)
+private:
+    rct_string_id _shortcutLocalisedName{};
+    std::string _shortcutCustomName;
+
+public:
+    static ChangeShortcutWindow* Open(std::string_view shortcutId)
     {
-        w = WindowCreateAutoPos(WW, WH, &window_shortcut_events, WC_KEYBOARD_SHORTCUT_LIST, WF_RESIZABLE);
-
-        w->widgets = window_shortcut_widgets;
-        w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
-        WindowInitScrollWidgets(w);
-
-        w->no_list_items = static_cast<uint16_t>(std::size(ShortcutList));
-        w->selected_list_item = -1;
-        w->min_width = WW;
-        w->min_height = WH;
-        w->max_width = WW_SC_MAX;
-        w->max_height = WH_SC_MAX;
+        auto& shortcutManager = GetShortcutManager();
+        auto registeredShortcut = shortcutManager.GetShortcut(shortcutId);
+        if (registeredShortcut != nullptr)
+        {
+            window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
+            auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
+            if (w != nullptr)
+            {
+                w->_shortcutLocalisedName = registeredShortcut->LocalisedName;
+                w->_shortcutCustomName = registeredShortcut->CustomName;
+                shortcutManager.SetPendingShortcutChange(registeredShortcut->Id);
+                return w;
+            }
+        }
+        return nullptr;
     }
-    return w;
-}
 
-/**
- *
- *  rct2: 0x006E39E4
- */
-static void window_shortcut_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
+    void OnOpen() override
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_RESET:
-            KeyboardShortcutsReset();
-            KeyboardShortcutsSave();
-            w->Invalidate();
-            break;
+        widgets = window_shortcut_change_widgets;
+        enabled_widgets = (1ULL << WIDX_CLOSE);
+        WindowInitScrollWidgets(this);
     }
-}
 
-static void window_shortcut_resize(rct_window* w)
-{
-    window_set_resize(w, w->min_width, w->min_height, w->max_width, w->max_height);
-}
-
-static void window_shortcut_invalidate(rct_window* w)
-{
-    window_shortcut_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_shortcut_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_shortcut_widgets[WIDX_TITLE].right = w->width - 2;
-    window_shortcut_widgets[WIDX_CLOSE].right = w->width - 3;
-    window_shortcut_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_shortcut_widgets[WIDX_SCROLL].right = w->width - 5;
-    window_shortcut_widgets[WIDX_SCROLL].bottom = w->height - 18;
-    window_shortcut_widgets[WIDX_RESET].top = w->height - 15;
-    window_shortcut_widgets[WIDX_RESET].bottom = w->height - 4;
-}
-
-/**
- *
- *  rct2: 0x006E38E0
- */
-static void window_shortcut_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-}
-
-/**
- *
- *  rct2: 0x006E3A07
- */
-static void window_shortcut_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
-}
-
-/**
- *
- *  rct2: 0x006E3A3E
- */
-static void window_shortcut_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    int32_t selected_item = (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT;
-    if (selected_item >= w->no_list_items)
-        return;
-
-    // Is this a separator?
-    if (ShortcutList[selected_item].ShortcutId == Input::Shortcut::Undefined)
-        return;
-
-    auto& shortcut = ShortcutList[selected_item];
-    window_shortcut_change_open(shortcut.ShortcutId, shortcut.StringId);
-}
-
-/**
- *
- *  rct2: 0x006E3A16
- */
-static void window_shortcut_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    int32_t selected_item = (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT;
-    if (selected_item >= w->no_list_items)
-        return;
-
-    w->selected_list_item = selected_item;
-
-    w->Invalidate();
-}
-
-/**
- *
- *  rct2: 0x006E38E6
- */
-static void window_shortcut_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
-{
-    auto dpiCoords = ScreenCoordsXY{ dpi->x, dpi->y };
-    gfx_fill_rect(
-        dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi->width - 1, dpi->height - 1 } }, ColourMapA[w->colours[1]].mid_light);
-
-    // TODO: the line below is a workaround for what is presumably a bug with dpi->width
-    //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
-    const auto scrollWidth = w->width - SCROLLBAR_WIDTH - 10;
-
-    for (int32_t i = 0; i < w->no_list_items; ++i)
+    void OnClose() override
     {
-        int32_t y = 1 + i * SCROLLABLE_ROW_HEIGHT;
-        if (y > dpi->y + dpi->height)
+        auto& shortcutManager = GetShortcutManager();
+        shortcutManager.SetPendingShortcutChange({});
+        NotifyShortcutKeysWindow();
+    }
+
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
         {
-            break;
+            case WIDX_CLOSE:
+                Close();
+                break;
+        }
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+
+        ScreenCoordsXY stringCoords(windowPos.x + 125, windowPos.y + 30);
+
+        auto ft = Formatter();
+        if (_shortcutCustomName.empty())
+        {
+            ft.Add<rct_string_id>(_shortcutLocalisedName);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(_shortcutCustomName.c_str());
+        }
+        gfx_draw_string_centred_wrapped(&dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+    }
+
+private:
+    void NotifyShortcutKeysWindow();
+};
+
+class ShortcutKeysWindow final : public Window
+{
+private:
+    struct ShortcutStringPair
+    {
+        std::string ShortcutId;
+        rct_string_id StringId = STR_NONE;
+        std::string CustomString;
+        std::string Binding;
+    };
+
+    struct ShortcutTabDesc
+    {
+        std::string_view IdGroup;
+        uint32_t ImageId;
+        uint32_t ImageDivisor;
+        uint32_t ImageNumFrames;
+    };
+
+    std::vector<ShortcutTabDesc> _tabs;
+    std::vector<rct_widget> _widgets;
+    std::vector<ShortcutStringPair> _list;
+    std::optional<size_t> _highlightedItem;
+    size_t _currentTabIndex{};
+    uint32_t _tabAnimationIndex{};
+
+public:
+    void OnOpen() override
+    {
+        InitialiseTabs();
+        InitialiseWidgets();
+        InitialiseList();
+
+        min_width = WW;
+        min_height = WH;
+        max_width = WW_SC_MAX;
+        max_height = WH_SC_MAX;
+    }
+
+    void OnResize() override
+    {
+        window_set_resize(this, min_width, min_height, max_width, max_height);
+    }
+
+    void OnUpdate() override
+    {
+        _tabAnimationIndex++;
+    }
+
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_RESET:
+                ResetAll();
+                break;
+            default:
+            {
+                auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_TAB_0);
+                if (tabIndex < _tabs.size())
+                {
+                    SetTab(tabIndex);
+                }
+            }
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        widgets[WIDX_BACKGROUND].right = width - 1;
+        widgets[WIDX_BACKGROUND].bottom = height - 1;
+        widgets[WIDX_TITLE].right = width - 2;
+        widgets[WIDX_CLOSE].right = width - 3;
+        widgets[WIDX_CLOSE].left = width - 13;
+        widgets[WIDX_TAB_CONTENT_PANEL].right = width - 1;
+        widgets[WIDX_TAB_CONTENT_PANEL].bottom = height - 1;
+        widgets[WIDX_SCROLL].right = width - 5;
+        widgets[WIDX_SCROLL].bottom = height - 19;
+        widgets[WIDX_RESET].top = height - 16;
+        widgets[WIDX_RESET].bottom = height - 5;
+        window_align_tabs(this, WIDX_TAB_0, static_cast<rct_widgetindex>(WIDX_TAB_0 + _tabs.size()));
+
+        // Set selected tab
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + i), false);
+        }
+        SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex), true);
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
+    }
+
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+        auto h = static_cast<int32_t>(_list.size() * SCROLLABLE_ROW_HEIGHT);
+        auto bottom = std::max(0, h - widgets[WIDX_SCROLL].bottom + widgets[WIDX_SCROLL].top + 21);
+        if (bottom < scrolls[0].v_top)
+        {
+            scrolls[0].v_top = bottom;
+            Invalidate();
+        }
+        return { 0, h };
+    }
+
+    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        auto index = static_cast<size_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
+        if (index < _list.size())
+        {
+            _highlightedItem = index;
+            Invalidate();
+        }
+    }
+
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        auto selectedItem = static_cast<size_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
+        if (selectedItem < _list.size())
+        {
+            // Is this a separator?
+            if (!_list[selectedItem].ShortcutId.empty())
+            {
+                auto& shortcut = _list[selectedItem];
+                ChangeShortcutWindow::Open(shortcut.ShortcutId);
+            }
+        }
+    }
+
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    {
+        auto dpiCoords = ScreenCoordsXY{ dpi.x, dpi.y };
+        gfx_fill_rect(
+            &dpi, { dpiCoords, dpiCoords + ScreenCoordsXY{ dpi.width - 1, dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
+
+        // TODO: the line below is a workaround for what is presumably a bug with dpi->width
+        //       see https://github.com/OpenRCT2/OpenRCT2/issues/11238 for details
+        const auto scrollWidth = width - SCROLLBAR_WIDTH - 10;
+
+        for (size_t i = 0; i < _list.size(); ++i)
+        {
+            auto y = static_cast<int32_t>(1 + i * SCROLLABLE_ROW_HEIGHT);
+            if (y > dpi.y + dpi.height)
+            {
+                break;
+            }
+
+            if (y + SCROLLABLE_ROW_HEIGHT < dpi.y)
+            {
+                continue;
+            }
+
+            // Is this a separator?
+            if (_list[i].ShortcutId.empty())
+            {
+                DrawSeparator(dpi, y, scrollWidth);
+            }
+            else
+            {
+                auto isHighlighted = _highlightedItem == i;
+                DrawItem(dpi, y, scrollWidth, _list[i], isHighlighted);
+            }
+        }
+    }
+
+    void RefreshBindings()
+    {
+        InitialiseList();
+    }
+
+private:
+    bool IsInCurrentTab(const RegisteredShortcut& shortcut)
+    {
+        auto groupFilter = _tabs[_currentTabIndex].IdGroup;
+        auto group = shortcut.GetTopLevelGroup();
+        if (groupFilter.empty())
+        {
+            // Check it doesn't belong in any other tab
+            for (const auto& tab : _tabs)
+            {
+                if (!tab.IdGroup.empty())
+                {
+                    if (tab.IdGroup == group)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        else
+        {
+            return group == groupFilter;
+        }
+    }
+
+    void InitialiseList()
+    {
+        // Get shortcuts and sort by group
+        auto shortcuts = GetShortcutsForCurrentTab();
+        std::stable_sort(shortcuts.begin(), shortcuts.end(), [](const RegisteredShortcut* a, const RegisteredShortcut* b) {
+            return a->GetGroup().compare(b->GetGroup()) < 0;
+        });
+
+        // Create list items with a separator between each group
+        _list.clear();
+        size_t index = 0;
+        std::string group;
+        for (const auto* shortcut : shortcuts)
+        {
+            if (group.empty())
+            {
+                group = shortcut->GetGroup();
+            }
+            else
+            {
+                auto groupName = shortcut->GetGroup();
+                if (group != groupName)
+                {
+                    // Add separator
+                    group = groupName;
+                    _list.emplace_back();
+                }
+            }
+
+            ShortcutStringPair ssp;
+            ssp.ShortcutId = shortcut->Id;
+            ssp.StringId = shortcut->LocalisedName;
+            ssp.CustomString = shortcut->CustomName;
+            ssp.Binding = shortcut->GetDisplayString();
+            _list.push_back(std::move(ssp));
+            index++;
         }
 
-        if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
+        Invalidate();
+    }
+
+    std::vector<const RegisteredShortcut*> GetShortcutsForCurrentTab()
+    {
+        std::vector<const RegisteredShortcut*> result;
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& shortcut : shortcutManager.Shortcuts)
         {
-            continue;
+            if (IsInCurrentTab(shortcut))
+            {
+                result.push_back(&shortcut);
+            }
+        }
+        return result;
+    }
+
+    void InitialiseTabs()
+    {
+        _tabs.clear();
+        _tabs.push_back({ "interface", SPR_TAB_GEARS_0, 2, 4 });
+        _tabs.push_back({ "view", SPR_G2_VIEW, 0, 0 });
+        _tabs.push_back({ "window", SPR_TAB_PARK_ENTRANCE, 0, 0 });
+        _tabs.push_back({ {}, SPR_TAB_WRENCH_0, 2, 16 });
+    }
+
+    void InitialiseWidgets()
+    {
+        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_RESET);
+
+        _widgets.clear();
+        _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
+
+        int32_t x = 3;
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            auto tab = MakeTab({ x, 17 }, STR_NONE);
+            _widgets.push_back(tab);
+            x += 31;
+
+            enabled_widgets |= (1ULL << (WIDX_TAB_0 + i));
         }
 
-        // Is this a separator?
-        if (ShortcutList[i].ShortcutId == Input::Shortcut::Undefined)
-        {
-            const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
-            gfx_fill_rect(dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[w->colours[0]].mid_dark);
-            gfx_fill_rect(dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[w->colours[0]].lightest);
-            continue;
-        }
+        _widgets.push_back({ WIDGETS_END });
+        widgets = _widgets.data();
 
-        int32_t format = STR_BLACK_STRING;
-        if (i == w->selected_list_item)
+        WindowInitScrollWidgets(this);
+    }
+
+    void SetTab(size_t index)
+    {
+        if (_currentTabIndex != index)
+        {
+            _currentTabIndex = index;
+            _tabAnimationIndex = 0;
+            InitialiseList();
+        }
+    }
+
+    void ResetAll()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        for (const auto& item : _list)
+        {
+            auto shortcut = shortcutManager.GetShortcut(item.ShortcutId);
+            if (shortcut != nullptr)
+            {
+                shortcut->Current = shortcut->Default;
+            }
+        }
+        shortcutManager.SaveUserBindings();
+        RefreshBindings();
+    }
+
+    void DrawTabImages(rct_drawpixelinfo& dpi) const
+    {
+        for (size_t i = 0; i < _tabs.size(); i++)
+        {
+            DrawTabImage(dpi, i);
+        }
+    }
+
+    void DrawTabImage(rct_drawpixelinfo& dpi, size_t tabIndex) const
+    {
+        const auto& tabDesc = _tabs[tabIndex];
+        auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
+        if (!IsWidgetDisabled(widgetIndex))
+        {
+            auto imageId = tabDesc.ImageId;
+            if (imageId != 0)
+            {
+                if (tabIndex == _currentTabIndex && tabDesc.ImageDivisor != 0 && tabDesc.ImageNumFrames != 0)
+                {
+                    auto frame = _tabAnimationIndex / tabDesc.ImageDivisor;
+                    imageId += frame % tabDesc.ImageNumFrames;
+                }
+
+                const auto& widget = widgets[widgetIndex];
+                gfx_draw_sprite(&dpi, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top }, 0);
+            }
+        }
+    }
+
+    void DrawSeparator(rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth)
+    {
+        const int32_t top = y + (SCROLLABLE_ROW_HEIGHT / 2) - 1;
+        gfx_fill_rect(&dpi, { { 0, top }, { scrollWidth, top } }, ColourMapA[colours[0]].mid_dark);
+        gfx_fill_rect(&dpi, { { 0, top + 1 }, { scrollWidth, top + 1 } }, ColourMapA[colours[0]].lightest);
+    }
+
+    void DrawItem(
+        rct_drawpixelinfo& dpi, int32_t y, int32_t scrollWidth, const ShortcutStringPair& shortcut, bool isHighlighted)
+    {
+        auto format = STR_BLACK_STRING;
+        if (isHighlighted)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), FilterPaletteID::PaletteDarken1);
+            gfx_filter_rect(&dpi, 0, y - 1, scrollWidth, y + (SCROLLABLE_ROW_HEIGHT - 2), FilterPaletteID::PaletteDarken1);
         }
 
-        const int32_t bindingOffset = scrollWidth - 150;
+        auto bindingOffset = (scrollWidth * 2) / 3;
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_SHORTCUT_ENTRY_FORMAT);
-        ft.Add<rct_string_id>(ShortcutList[i].StringId);
-        DrawTextEllipsised(dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
-
-        char keybinding[128];
-        KeyboardShortcutsFormatString(keybinding, 128, static_cast<int32_t>(ShortcutList[i].ShortcutId));
-
-        if (strlen(keybinding) > 0)
+        if (shortcut.CustomString.empty())
         {
-            const int32_t maxWidth = 150;
+            ft.Add<rct_string_id>(shortcut.StringId);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(shortcut.CustomString.c_str());
+        }
+        DrawTextEllipsised(&dpi, { 0, y - 1 }, bindingOffset, format, ft, COLOUR_BLACK);
+
+        if (!shortcut.Binding.empty())
+        {
             ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
-            ft.Add<char*>(keybinding);
-            DrawTextEllipsised(dpi, { bindingOffset, y - 1 }, maxWidth, format, ft, COLOUR_BLACK);
+            ft.Add<const char*>(shortcut.Binding.c_str());
+            DrawTextEllipsised(&dpi, { bindingOffset, y - 1 }, 150, format, ft, COLOUR_BLACK);
         }
     }
+};
+
+void ChangeShortcutWindow::NotifyShortcutKeysWindow()
+{
+    auto w = window_find_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    if (w != nullptr)
+    {
+        static_cast<ShortcutKeysWindow*>(w)->RefreshBindings();
+    }
+}
+
+rct_window* window_shortcut_keys_open()
+{
+    auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
+    if (w == nullptr)
+    {
+        w = WindowCreate<ShortcutKeysWindow>(WC_KEYBOARD_SHORTCUT_LIST, WW, WH, WF_RESIZABLE);
+    }
+    return w;
 }

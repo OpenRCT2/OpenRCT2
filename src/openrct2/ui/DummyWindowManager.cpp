@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui
         void HandleKeyboard(bool /*isTitle*/) override
         {
         }
-        std::string GetKeyboardShortcutString(int32_t /*shortcut*/) override
+        std::string GetKeyboardShortcutString(std::string_view /*shortcutId*/) override
         {
             return std::string();
         }

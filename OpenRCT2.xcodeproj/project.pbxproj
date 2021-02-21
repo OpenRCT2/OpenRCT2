@@ -60,13 +60,15 @@
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
-		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
-		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
 		4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
 		4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB2716824195B45000CF9EE /* VehicleSubpositionData.cpp */; };
 		4CB30179249E382B0034A7F6 /* RCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB30178249E382B0034A7F6 /* RCT2.cpp */; };
+		4CB991C525CEE53B00C692B4 /* InputManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB991C425CEE53A00C692B4 /* InputManager.cpp */; };
+		4CB991CB25CEE54500C692B4 /* ShortcutManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB991C625CEE54400C692B4 /* ShortcutManager.cpp */; };
+		4CB991CC25CEE54500C692B4 /* Shortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB991C725CEE54500C692B4 /* Shortcuts.cpp */; };
+		4CB991CD25CEE54500C692B4 /* ShortcutInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB991C925CEE54500C692B4 /* ShortcutInput.cpp */; };
 		4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC5258123A19C2800D4366D /* TrackDesignAction.cpp */; };
 		4CF67197206B7E720034ADDD /* object in Resources */ = {isa = PBXBuildFile; fileRef = 4CF67196206B7E720034ADDD /* object */; };
 		6341F4E12400AA0F0052902B /* Drawing.Sprite.RLE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6341F4DF2400AA0E0052902B /* Drawing.Sprite.RLE.cpp */; };
@@ -380,7 +382,6 @@
 		C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */; };
 		C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */; };
 		C6607F481FE2B97E00D3FC0D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E81FE00C5D00660D62 /* Input.cpp */; };
-		C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */; };
 		C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */; };
 		C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE551F37ACB10061AA04 /* About.cpp */; };
 		C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE561F37ACB10061AA04 /* Changelog.cpp */; };
@@ -726,7 +727,6 @@
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
 		F7C44AF82030E8D3007E099F /* AVX2Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7C44AF62030E74B007E099F /* AVX2Drawing.cpp */; settings = {COMPILER_FLAGS = "-mavx2"; }; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
-		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
 		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
@@ -1115,8 +1115,6 @@
 		4C93F1A21F8B748900A9330D /* SplashBoats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashBoats.cpp; sourceTree = "<group>"; };
 		4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubmarineRide.cpp; sourceTree = "<group>"; };
 		4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterCoaster.cpp; sourceTree = "<group>"; };
-		4C93F1AC1F8CD9F000A9330D /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
-		4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcut.cpp; sourceTree = "<group>"; };
 		4C93F1B01F8E185600A9330D /* Award.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Award.cpp; sourceTree = "<group>"; };
 		4C93F1B11F8E185600A9330D /* Award.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Award.h; sourceTree = "<group>"; };
 		4C93F1B21F8E185600A9330D /* Finance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Finance.cpp; sourceTree = "<group>"; };
@@ -1135,6 +1133,13 @@
 		4CB2716924195B45000CF9EE /* VehicleSubpositionData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VehicleSubpositionData.h; sourceTree = "<group>"; };
 		4CB30178249E382B0034A7F6 /* RCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RCT2.cpp; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
+		4CB991C325CEE53A00C692B4 /* InputManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InputManager.h; sourceTree = "<group>"; };
+		4CB991C425CEE53A00C692B4 /* InputManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputManager.cpp; sourceTree = "<group>"; };
+		4CB991C625CEE54400C692B4 /* ShortcutManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutManager.cpp; sourceTree = "<group>"; };
+		4CB991C725CEE54500C692B4 /* Shortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shortcuts.cpp; sourceTree = "<group>"; };
+		4CB991C825CEE54500C692B4 /* ShortcutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShortcutManager.h; sourceTree = "<group>"; };
+		4CB991C925CEE54500C692B4 /* ShortcutInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutInput.cpp; sourceTree = "<group>"; };
+		4CB991CA25CEE54500C692B4 /* ShortcutIds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShortcutIds.h; sourceTree = "<group>"; };
 		4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CmdlineSprite.cpp; sourceTree = "<group>"; };
 		4CC4B8E31FE00C4200660D62 /* CmdlineSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CmdlineSprite.h; sourceTree = "<group>"; };
 		4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Diagnostic.cpp; sourceTree = "<group>"; };
@@ -1694,7 +1699,6 @@
 		C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignPlace.cpp; sourceTree = "<group>"; };
 		C654DF3E1F69C18C0040F43D /* Intent.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Intent.cpp; sourceTree = "<group>"; };
 		C654DF3F1F69C18C0040F43D /* Intent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Intent.h; sourceTree = "<group>"; };
-		C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutKeyChange.cpp; sourceTree = "<group>"; };
 		C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ShortcutKeys.cpp; sourceTree = "<group>"; };
 		C666EE551F37ACB10061AA04 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = About.cpp; sourceTree = "<group>"; };
 		C666EE561F37ACB10061AA04 /* Changelog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Changelog.cpp; sourceTree = "<group>"; };
@@ -1919,7 +1923,6 @@
 		F73E320B2011589E00C4D975 /* RideRatings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideRatings.cpp; sourceTree = "<group>"; };
 		F73E320C2011589F00C4D975 /* RideRatings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideRatings.h; sourceTree = "<group>"; };
 		F73E320E2011589F00C4D975 /* TrackDesignSave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignSave.cpp; sourceTree = "<group>"; };
-		F74789541EEDEA0D009E50E7 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F76C83571EC4E7CC00FA49E2 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		F76C83581EC4E7CC00FA49E2 /* audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
@@ -2134,8 +2137,6 @@
 		F7C44AF62030E74B007E099F /* AVX2Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AVX2Drawing.cpp; sourceTree = "<group>"; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
-		F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardShortcuts.h; sourceTree = "<group>"; };
 		F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyWindowManager.cpp; sourceTree = "<group>"; };
 		F7CB864C1EEDA1A80030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UiContext.macOS.mm; sourceTree = "<group>"; usesTabs = 0; };
@@ -3990,7 +3991,6 @@
 				304FE94F23A2996600470197 /* SceneryScatter.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
 				C666EE631F37ACB10061AA04 /* ServerStart.cpp */,
-				C666ED741F33DBB20061AA04 /* ShortcutKeyChange.cpp */,
 				C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */,
 				C654DF261F69C0430040F43D /* Sign.cpp */,
 				C685E5151F8907840090598F /* Staff.cpp */,
@@ -4021,12 +4021,14 @@
 		F7CB86451EEDA1200030C877 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				4C93F1AC1F8CD9F000A9330D /* Input.cpp */,
-				F74789541EEDEA0D009E50E7 /* Input.h */,
-				4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */,
-				F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */,
-				F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */,
+				4CB991C425CEE53A00C692B4 /* InputManager.cpp */,
+				4CB991C325CEE53A00C692B4 /* InputManager.h */,
 				C68313C71FDB4ED4006DB3D8 /* MouseInput.cpp */,
+				4CB991CA25CEE54500C692B4 /* ShortcutIds.h */,
+				4CB991C925CEE54500C692B4 /* ShortcutInput.cpp */,
+				4CB991C625CEE54400C692B4 /* ShortcutManager.cpp */,
+				4CB991C825CEE54500C692B4 /* ShortcutManager.h */,
+				4CB991C725CEE54500C692B4 /* Shortcuts.cpp */,
 			);
 			path = input;
 			sourceTree = "<group>";
@@ -4536,7 +4538,6 @@
 				C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */,
 				C64644FC1F3FA4120026AC2D /* Footpath.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
-				4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */,
 				C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				01C6F0C822FD51FC0057E2F7 /* T6Exporter.cpp in Sources */,
@@ -4557,6 +4558,7 @@
 				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
+				4CB991CB25CEE54500C692B4 /* ShortcutManager.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
 				93F6004D213DD7DD00EEB83E /* TerrainEdgeObject.cpp in Sources */,
 				4C724B2221F0AD790012ADD0 /* BenchSpriteSort.cpp in Sources */,
@@ -4571,11 +4573,10 @@
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
 				C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */,
 				C68878C120289B710084B384 /* ApplyTransparencyShader.cpp in Sources */,
-				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
+				4CB991C525CEE53B00C692B4 /* InputManager.cpp in Sources */,
 				304FE95023A2996600470197 /* SceneryScatter.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				4C255959244A328B00CE7E45 /* UiExtensions.cpp in Sources */,
-				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
 				01C6F0C922FD51FC0057E2F7 /* T6Importer.cpp in Sources */,
 				4CC5258223A19C2900D4366D /* TrackDesignAction.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
@@ -4597,6 +4598,7 @@
 				4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */,
 				C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */,
 				4C3B4236205914F7000C5BB7 /* InGameConsole.cpp in Sources */,
+				4CB991CD25CEE54500C692B4 /* ShortcutInput.cpp in Sources */,
 				C68878C820289B710084B384 /* SwapFramebuffer.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
@@ -4615,10 +4617,10 @@
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
 				4C8BB67C25533D59005C8830 /* JobPool.cpp in Sources */,
 				01C6F0C222FD519E0057E2F7 /* TrackImporter.cpp in Sources */,
-				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
 				4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				2A5354E922099C4F00A5440F /* Network.cpp in Sources */,
+				4CB991CC25CEE54500C692B4 /* Shortcuts.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
