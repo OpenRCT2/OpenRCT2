@@ -9,17 +9,16 @@
 
 #ifndef DISABLE_NETWORK
 
+#    include <arpa/nameser.h>
+#    include <arpa/nameser_compat.h>
 #    include <atomic>
 #    include <chrono>
 #    include <cmath>
 #    include <cstring>
 #    include <future>
+#    include <resolv.h>
 #    include <string>
 #    include <thread>
-
-#    include <arpa/nameser.h>
-#    include <arpa/nameser_compat.h>
-#    include <resolv.h>
 
 // clang-format off
 // MSVC: include <math.h> here otherwise PI gets defined twice
@@ -227,9 +226,12 @@ private:
         if (address.empty())
         {
             hints.ai_flags = AI_PASSIVE;
-        } else {
+        }
+        else
+        {
             SRVRecord srvrr;
-            if (ResolveSRV(address.c_str(), &srvrr)) {
+            if (ResolveSRV(address.c_str(), &srvrr))
+            {
                 log_info("Resolved SRV dns `%s` to `%s:%u`", address.c_str(), srvrr.dname, srvrr.port);
                 return ResolveAddress(family, srvrr.dname, srvrr.port, ss, ss_len);
             }
@@ -255,43 +257,53 @@ private:
             return true;
         }
     }
-    
+
     /*
      * https://oliver-kaestner.de/english-c-query-srv-dns-record-with-example/
      */
-    static bool ResolveSRV(const char* host, SRVRecord* resolved) {
+    static bool ResolveSRV(const char* host, SRVRecord* resolved)
+    {
         __res_state res;
         if (res_ninit(&res) != 0)
+        {
             return false;
-     
+        }
+
         unsigned char answer[10240];
         int len = res_nsearch(&res, host, C_IN, T_SRV, answer, sizeof(answer));
-     
-        if (len < 0) {
+
+        if (len < 0)
+        {
             return false;
         }
-     
+
         ns_msg handle;
         ns_rr rr;
-     
+
         ns_initparse(answer, len, &handle);
-             
-        for (int i = 0; i < ns_msg_count(handle, ns_s_an); i++) {
-            if (ns_parserr(&handle, ns_s_an, i, &rr) < 0 || ns_rr_type(rr) != T_SRV) {
+
+        for (int i = 0; i < ns_msg_count(handle, ns_s_an); i++)
+        {
+            if (ns_parserr(&handle, ns_s_an, i, &rr) < 0 || ns_rr_type(rr) != T_SRV)
+            {
                 continue;
             }
-     
+
             resolved->priority = ns_get16(ns_rr_rdata(rr));
-            resolved->weight   = ns_get16(ns_rr_rdata(rr) + NS_INT16SZ);
-            resolved->port     = ns_get16(ns_rr_rdata(rr) + 2 * NS_INT16SZ);
+            resolved->weight = ns_get16(ns_rr_rdata(rr) + NS_INT16SZ);
+            resolved->port = ns_get16(ns_rr_rdata(rr) + 2 * NS_INT16SZ);
             // decompress domain name
-            if (dn_expand(ns_msg_base(handle), ns_msg_end(handle), ns_rr_rdata(rr) + 3 * NS_INT16SZ, resolved->dname, sizeof(resolved->dname)) < 0) {
+            if (dn_expand(
+                    ns_msg_base(handle), ns_msg_end(handle), ns_rr_rdata(rr) + 3 * NS_INT16SZ, resolved->dname,
+                    sizeof(resolved->dname))
+                < 0)
+            {
                 continue;
             }
-                
+
             return true;
         }
-     
+
         return false;
     }
 };
