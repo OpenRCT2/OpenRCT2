@@ -75,7 +75,7 @@ namespace OpenRCT2::TileInspector
 
     static rct_window* GetTileInspectorWithPos(const CoordsXY& loc)
     {
-        // Update the tile inspector's list for everyone who has the tile selected
+        // Return the tile inspector window for everyone who has the tile selected
         auto* window = window_find_by_class(WC_TILE_INSPECTOR);
         if (window != nullptr && loc == windowTileInspectorTile.ToCoordsXY())
         {
@@ -150,13 +150,14 @@ namespace OpenRCT2::TileInspector
     static int32_t numLargeScenerySequences(const CoordsXY& loc, const LargeSceneryElement* const largeScenery)
     {
         const rct_scenery_entry* const largeEntry = largeScenery->GetEntry();
-        const auto* const tiles = largeEntry->large_scenery.tiles;
         const auto direction = largeScenery->GetDirection();
-
-        const auto rotatedFirstTile = CoordsXYZ{ CoordsXY{ tiles[largeScenery->GetSequenceIndex()].x_offset,
-                                                           tiles[largeScenery->GetSequenceIndex()].y_offset }
-                                                     .Rotate(direction),
-                                                 tiles[largeScenery->GetSequenceIndex()].z_offset };
+        const auto sequenceIndex = largeScenery->GetSequenceIndex();
+        const auto* tiles = largeEntry->large_scenery.tiles;
+        const auto& tile = tiles[sequenceIndex];
+        const auto rotatedFirstTile = CoordsXYZ{
+            CoordsXY{ tile.x_offset, tile.y_offset }.Rotate(direction),
+            tile.z_offset,
+        };
 
         const auto firstTile = CoordsXYZ{ loc, largeScenery->GetBaseZ() } - rotatedFirstTile;
         auto numFoundElements = 0;
