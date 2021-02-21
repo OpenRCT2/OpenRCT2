@@ -46,10 +46,10 @@ public:
     void ExportParkName();
     void ExportRides();
     void ExportRide(rct2_ride* dst, const Ride* src);
-    void ExportEntitys();
+    void ExportEntities();
     template<typename T> void ExportEntity(RCT12SpriteBase* dst, const T* src);
-    void ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
-    void ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src);
+    void ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
+    void ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src);
 
 private:
     rct_s6_data _s6{};

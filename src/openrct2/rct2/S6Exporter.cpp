@@ -188,7 +188,7 @@ void S6Exporter::Export()
     // Map elements must be reorganised prior to saving otherwise save may be invalid
     map_reorganise_elements();
     ExportTileElements();
-    ExportEntitys();
+    ExportEntities();
     ExportParkName();
 
     _s6.initial_cash = gInitialCash;
@@ -1020,7 +1020,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
     return output;
 }
 
-void S6Exporter::ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
+void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
     dst->sprite_identifier = src->sprite_identifier;
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
@@ -1045,7 +1045,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Vehicle* sr
     auto* cdst = static_cast<RCT2SpriteVehicle*>(dst);
     const auto* ride = src->GetRide();
 
-    ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    ExportEntityCommonProperties(dst, static_cast<const SpriteBase*>(src));
     cdst->type = EnumValue(src->SubType);
     cdst->vehicle_sprite_type = src->vehicle_sprite_type;
     cdst->bank_rotation = src->bank_rotation;
@@ -1131,16 +1131,16 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Vehicle* sr
 
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Guest* src)
 {
-    ExportSpritePeep(static_cast<RCT2SpritePeep*>(dst), src);
+    ExportEntityPeep(static_cast<RCT2SpritePeep*>(dst), src);
 }
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Staff* src)
 {
-    ExportSpritePeep(static_cast<RCT2SpritePeep*>(dst), src);
+    ExportEntityPeep(static_cast<RCT2SpritePeep*>(dst), src);
 }
 
-void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
+void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
 {
-    ExportSpriteCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    ExportEntityCommonProperties(dst, static_cast<const SpriteBase*>(src));
 
     auto generateName = true;
     if (src->Name != nullptr)
@@ -1293,7 +1293,7 @@ void S6Exporter::ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src)
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const SteamParticle* src)
 {
     auto* cdst = static_cast<RCT12SpriteSteamParticle*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->time_to_move = src->time_to_move;
     cdst->frame = src->frame;
@@ -1301,7 +1301,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const SteamPartic
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const MoneyEffect* src)
 {
     auto* cdst = static_cast<RCT12SpriteMoneyEffect*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->move_delay = src->MoveDelay;
     cdst->num_movements = src->NumMovements;
@@ -1313,7 +1313,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const MoneyEffect
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const VehicleCrashParticle* src)
 {
     auto* cdst = static_cast<RCT12SpriteCrashedVehicleParticle*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->frame = src->frame;
     cdst->time_to_live = src->time_to_live;
@@ -1331,7 +1331,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const VehicleCras
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const JumpingFountain* src)
 {
     auto* cdst = static_cast<RCT12SpriteJumpingFountain*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->num_ticks_alive = src->NumTicksAlive;
     cdst->frame = src->frame;
@@ -1344,7 +1344,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const JumpingFoun
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Balloon* src)
 {
     auto* cdst = static_cast<RCT12SpriteBalloon*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->popped = src->popped;
     cdst->time_to_move = src->time_to_move;
@@ -1354,7 +1354,7 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Balloon* sr
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Duck* src)
 {
     auto* cdst = static_cast<RCT12SpriteDuck*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->frame = src->frame;
     cdst->target_x = src->target_x;
@@ -1364,21 +1364,21 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Duck* src)
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const ExplosionCloud* src)
 {
     auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->frame = src->frame;
 }
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const ExplosionFlare* src)
 {
     auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->frame = src->frame;
 }
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const CrashSplashParticle* src)
 {
     auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->frame = src->frame;
 }
@@ -1386,12 +1386,12 @@ template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const CrashSplash
 template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Litter* src)
 {
     auto* cdst = static_cast<RCT12SpriteLitter*>(dst);
-    ExportSpriteCommonProperties(dst, src);
+    ExportEntityCommonProperties(dst, src);
     cdst->type = EnumValue(src->SubType);
     cdst->creationTick = src->creationTick;
 }
 
-void S6Exporter::ExportEntitys()
+void S6Exporter::ExportEntities()
 {
     // Clear everything to free
     for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
