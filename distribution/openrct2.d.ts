@@ -314,6 +314,11 @@ declare global {
          * Rotation of the camera from 0 to 3.
          */
         rotation: number;
+
+        /**
+         * Whether to enable transparency in the screenshot
+         */
+        transparent?: boolean;
     }
 
     type ObjectType =
