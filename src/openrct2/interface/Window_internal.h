@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
+#include "../rct12/RCT12.h"
 #include "Window.h"
 
 #include <list>

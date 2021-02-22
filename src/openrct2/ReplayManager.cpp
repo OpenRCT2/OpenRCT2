@@ -30,6 +30,7 @@
 #include "object/ObjectRepository.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
+#include "world/Sprite.h"
 #include "zlib.h"
 
 #include <chrono>

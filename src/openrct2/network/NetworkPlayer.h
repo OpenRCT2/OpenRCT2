@@ -13,7 +13,6 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../world/Map.h"
-#include "../world/Sprite.h"
 
 #include <string>
 #include <unordered_map>
