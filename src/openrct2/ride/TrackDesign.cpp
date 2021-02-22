@@ -57,6 +57,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesignRepository.h"
+#include "Vehicle.h"
 
 #include <algorithm>
 #include <iterator>

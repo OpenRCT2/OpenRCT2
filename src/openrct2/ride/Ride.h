@@ -18,7 +18,7 @@
 #include "RideRatings.h"
 #include "RideTypes.h"
 #include "ShopItem.h"
-#include "Vehicle.h"
+#include "VehicleEntry.h"
 
 #include <limits>
 #include <string_view>
@@ -30,6 +30,7 @@ struct Peep;
 struct Ride;
 struct RideTypeDescriptor;
 struct Staff;
+struct Vehicle;
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
 // The max number of different types of vehicle.

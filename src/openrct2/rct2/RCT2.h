@@ -14,7 +14,7 @@
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
-#include "../ride/Vehicle.h"
+#include "../ride/VehicleColour.h"
 
 #include <vector>
 
@@ -89,6 +89,8 @@ constexpr const int32_t rct2_object_entry_group_counts[] = {
 // clang-format on
 
 #pragma pack(push, 1)
+
+struct rct_ride_entry;
 
 /**
  * Ride structure.
