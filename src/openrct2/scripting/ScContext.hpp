@@ -62,6 +62,7 @@ namespace OpenRCT2::Scripting
                 captureOptions.Filename = fs::u8path(AsOrDefault(options["filename"], ""));
                 captureOptions.Rotation = options["rotation"].as_int() & 3;
                 captureOptions.Zoom = ZoomLevel(options["zoom"].as_int());
+                captureOptions.Transparent = AsOrDefault(options["transparent"], false);
 
                 auto dukPosition = options["position"];
                 if (dukPosition.type() == DukValue::Type::OBJECT)
