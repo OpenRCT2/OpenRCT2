@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef VEHICLECOLOUR_H_
-#define VEHICLECOLOUR_H_
+#pragma once
 
 #include "../common.h"
 
@@ -24,5 +23,3 @@ struct VehicleColour
     uint8_t Trim;
     uint8_t Ternary;
 };
-
-#endif // VEHICLECOLOUR_H_

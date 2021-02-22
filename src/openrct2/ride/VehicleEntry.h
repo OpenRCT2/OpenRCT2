@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef VEHICLEENTRY_H_
-#define VEHICLEENTRY_H_
+#pragma once
 
 #include "../audio/AudioMixer.h"
 #include "../common.h"
@@ -88,5 +87,3 @@ static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
 #else
 static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
 #endif
-
-#endif // VEHICLEENTRY_H_

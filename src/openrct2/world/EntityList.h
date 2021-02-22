@@ -7,8 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifndef ENTITYLIST_H_
-#define ENTITYLIST_H_
+#pragma once
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
@@ -237,5 +236,3 @@ public:
         return EntityListIterator_t(std::cend(vec), std::cend(vec));
     }
 };
-
-#endif // ENTITYLIST_H_
