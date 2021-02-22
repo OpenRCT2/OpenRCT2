@@ -34,6 +34,7 @@
 #    include "platform.h"
 
 #    include <algorithm>
+#    include <array>
 #    include <iterator>
 #    include <lmcons.h>
 #    include <memory>
