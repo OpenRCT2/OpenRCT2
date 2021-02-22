@@ -49,7 +49,7 @@ struct CaptureOptions
     std::optional<CaptureView> View;
     ZoomLevel Zoom;
     uint8_t Rotation{};
-    bool Transparent;
+    bool Transparent{};
 };
 
 void screenshot_check();

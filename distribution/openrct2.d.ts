@@ -316,7 +316,7 @@ declare global {
         rotation: number;
 
         /**
-         * Whether to enable transparency in the screenshot
+         * Whether to enable transparency in the screenshot.
          */
         transparent?: boolean;
     }
