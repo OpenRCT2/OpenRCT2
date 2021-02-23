@@ -2119,7 +2119,8 @@ private:
             {
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
-                auto rideType = _s4.rides[src2->GetRideIndex()].type;
+                const auto* ride = get_ride(src2->GetRideIndex());
+                auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                 dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
@@ -2131,7 +2132,7 @@ private:
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetHasGreenLight(src2->HasGreenLight());
                 dst2->SetIsIndestructible(src2->IsIndestructible());
-                if (rideType == RCT1_RIDE_TYPE_GHOST_TRAIN)
+                if (rideType == RIDE_TYPE_GHOST_TRAIN)
                 {
                     dst2->SetDoorAState(src2->GetDoorAState());
                     dst2->SetDoorBState(src2->GetDoorBState());
