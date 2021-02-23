@@ -23,7 +23,7 @@ namespace OpenRCT2::Scripting
 {
     std::optional<CustomTool> ActiveCustomTool;
     std::vector<CustomToolbarMenuItem> CustomMenuItems;
-    std::vector<CustomShortcut> CustomShortcuts;
+    std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     CustomShortcut::CustomShortcut(
         std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
@@ -130,7 +130,7 @@ namespace OpenRCT2::Scripting
         auto& shortcuts = CustomShortcuts;
         for (auto it = shortcuts.begin(); it != shortcuts.end();)
         {
-            if (it->Owner == owner)
+            if ((*it)->Owner == owner)
             {
                 it = shortcuts.erase(it);
             }
