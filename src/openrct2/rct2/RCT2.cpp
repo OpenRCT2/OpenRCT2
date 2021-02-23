@@ -145,7 +145,7 @@ bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
 
 track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
 {
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+    if (rideType < std::size(RideTypeDescriptors) && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
         return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
     if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
         return TrackElemType::RotationControlToggle;
