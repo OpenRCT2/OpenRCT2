@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../rct12/RCT12.h"
 #include "Window.h"
 
 #include <list>

@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
+#include "../world/Sprite.h"
 
 ShopItem& operator++(ShopItem& d, int)
 {

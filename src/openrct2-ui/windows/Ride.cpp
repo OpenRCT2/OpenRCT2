@@ -53,6 +53,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
+#include <openrct2/world/Sprite.h>
 #include <vector>
 
 using namespace OpenRCT2;

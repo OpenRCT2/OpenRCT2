@@ -38,6 +38,7 @@
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <array>

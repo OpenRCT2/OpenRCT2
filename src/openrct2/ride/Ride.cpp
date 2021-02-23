@@ -63,6 +63,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+#include "Vehicle.h"
 
 #include <algorithm>
 #include <cassert>
