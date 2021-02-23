@@ -13,6 +13,7 @@
 
 #    include "../common.h"
 #    include "../ride/Ride.h"
+#    include "../world/EntityList.h"
 #    include "../world/Map.h"
 #    include "Duktape.hpp"
 #    include "ScEntity.hpp"

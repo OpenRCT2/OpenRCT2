@@ -16,6 +16,7 @@
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/VehiclePaint.h"
+#include "../../world/EntityList.h"
 #include "../../world/Sprite.h"
 #include "../Paint.h"
 

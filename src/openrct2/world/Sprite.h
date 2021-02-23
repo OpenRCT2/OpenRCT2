@@ -13,7 +13,7 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
-#include "EntityList.h"
+#include "Entity.h"
 #include "Fountain.h"
 #include "SpriteBase.h"
 
@@ -197,20 +197,6 @@ enum LitterType : uint8_t
     LITTER_TYPE_EMPTY_JUICE_CUP,
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
-
-SpriteBase* try_get_sprite(size_t spriteIndex);
-SpriteBase* get_sprite(size_t sprite_idx);
-template<typename T> T* GetEntity(size_t sprite_idx)
-{
-    auto spr = get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
-
-template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
-{
-    auto spr = try_get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;

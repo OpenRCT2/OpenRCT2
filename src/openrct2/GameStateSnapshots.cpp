@@ -11,6 +11,7 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "world/EntityList.h"
 #include "world/Sprite.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;

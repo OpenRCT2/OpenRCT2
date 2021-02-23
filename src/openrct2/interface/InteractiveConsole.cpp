@@ -46,6 +46,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"

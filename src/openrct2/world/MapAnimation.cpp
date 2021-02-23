@@ -18,6 +18,7 @@
 #include "../ride/Track.h"
 #include "../world/Wall.h"
 #include "Banner.h"
+#include "EntityList.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"

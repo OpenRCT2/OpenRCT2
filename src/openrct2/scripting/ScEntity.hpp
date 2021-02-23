@@ -16,6 +16,7 @@
 #    include "../peep/Peep.h"
 #    include "../peep/Staff.h"
 #    include "../util/Util.h"
+#    include "../world/EntityList.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScRide.hpp"

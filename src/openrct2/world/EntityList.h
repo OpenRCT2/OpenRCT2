@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../rct12/RCT12.h"
+#include "Entity.h"
 #include "Location.hpp"
 #include "SpriteBase.h"
 
@@ -34,7 +35,6 @@ uint16_t GetEntityListCount(EntityListId list);
 uint16_t GetNumFreeEntities();
 void RebuildEntityLists();
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
-template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx);
 
 template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
 {

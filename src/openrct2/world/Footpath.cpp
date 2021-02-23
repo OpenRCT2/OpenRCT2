@@ -28,6 +28,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
+#include "EntityList.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
