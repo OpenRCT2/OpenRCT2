@@ -47,7 +47,7 @@ namespace OpenRCT2::Ui
     private:
         bool AppendModifier(std::string& s, uint32_t left, uint32_t right, bool localised) const;
         static std::string_view GetModifierName(uint32_t key, bool localised);
-        static std::string_view GetKeyName(uint32_t key, bool localised);
+        static std::string_view GetLocalisedKeyName(uint32_t key);
         std::string ToString(bool localised) const;
     };
 
