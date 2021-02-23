@@ -3686,6 +3686,8 @@ STR_6429    :Joy {INT32}
 STR_6430    :LMB
 STR_6431    :RMB
 STR_6432    :Mouse {INT32}
+STR_6433    :Remove
+STR_6434    :Remove all bindings for this shortcut.
 
 #############
 # Scenarios #

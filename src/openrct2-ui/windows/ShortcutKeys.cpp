@@ -48,11 +48,17 @@ static rct_widget window_shortcut_widgets[] = {
 
 static constexpr const rct_string_id CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
 static constexpr const int32_t CHANGE_WW = 250;
-static constexpr const int32_t CHANGE_WH = 60;
+static constexpr const int32_t CHANGE_WH = 80;
+
+enum
+{
+    WIDX_REMOVE = 3
+};
 
 // clang-format off
 static rct_widget window_shortcut_change_widgets[] = {
     WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
+    MakeWidget({ 75, 56 }, { 100, 12 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
     { WIDGETS_END }
 };
 // clang-format on
@@ -60,6 +66,7 @@ static rct_widget window_shortcut_change_widgets[] = {
 class ChangeShortcutWindow final : public Window
 {
 private:
+    std::string _shortcutId;
     rct_string_id _shortcutLocalisedName{};
     std::string _shortcutCustomName;
 
@@ -74,6 +81,7 @@ public:
             auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
             if (w != nullptr)
             {
+                w->_shortcutId = shortcutId;
                 w->_shortcutLocalisedName = registeredShortcut->LocalisedName;
                 w->_shortcutCustomName = registeredShortcut->CustomName;
                 shortcutManager.SetPendingShortcutChange(registeredShortcut->Id);
@@ -86,7 +94,7 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE);
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE);
         WindowInitScrollWidgets(this);
     }
 
@@ -103,6 +111,9 @@ public:
         {
             case WIDX_CLOSE:
                 Close();
+                break;
+            case WIDX_REMOVE:
+                Remove();
                 break;
         }
     }
@@ -128,6 +139,17 @@ public:
 
 private:
     void NotifyShortcutKeysWindow();
+
+    void Remove()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        auto* shortcut = shortcutManager.GetShortcut(_shortcutId);
+        if (shortcut != nullptr)
+        {
+            shortcut->Current.clear();
+        }
+        Close();
+    }
 };
 
 class ShortcutKeysWindow final : public Window
