@@ -7332,6 +7332,9 @@ uint64_t Ride::GetAvailableModes() const
 
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
+    if (type >= std::size(RideTypeDescriptors))
+        return DummyRTD;
+    
     return RideTypeDescriptors[type];
 }
 
