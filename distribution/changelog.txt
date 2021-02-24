@@ -24,6 +24,10 @@
 - Feature: [#14002] [Plugin] Use allowed_hosts when checking the binding IP for listening.
 - Feature: [#14059] [Plugin] Add optional filter to custom tools.
 - Feature: [#14142] [Plugin] Add option for taking transparent screenshots.
+- Feature: [#14171] [Plugin] Add API for getting network traffic statistics.
+- Feature: [#14171] [Plugin] Add API for creating custom widgets.
+- Feature: [#14171] [Plugin] Add API for drawing graphics for custom widgets.
+- Feature: [#14171] [Plugin] Add click event to spinners and allow them to be held down.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
