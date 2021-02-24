@@ -1215,7 +1215,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                     hunger_counter++;
                 break;
 
@@ -1226,7 +1226,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SELLS_DRINKS))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
                     thirst_counter++;
                 break;
 
@@ -1237,7 +1237,7 @@ void peep_problem_warnings_update()
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
-                if (ride != nullptr && !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_TOILET))
+                if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
                     toilet_counter++;
                 break;
 
@@ -1794,7 +1794,8 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto ride = get_ride(CurrentRide);
             if (ride != nullptr)
             {
-                ft.Add<rct_string_id>(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
+                ft.Add<rct_string_id>(
+                    ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE) ? STR_IN_RIDE : STR_ON_RIDE);
                 ride->FormatNameTo(ft);
             }
             else
@@ -2863,7 +2864,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 {
     ride_id_t rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
-    if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         return false;
 
     auto* guest = peep->As<Guest>();
@@ -2900,7 +2901,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
         return true;
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_SHOULD_GO_INSIDE_FACILITY))
     {
         peep->TimeLost = 0;
         if (!guest->ShouldGoOnRide(ride, 0, false, false))
@@ -2933,8 +2934,9 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
             auto ft = Formatter();
             peep->FormatNameTo(ft);
             ride->FormatNameTo(ft);
-            rct_string_id string_id = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE) ? STR_PEEP_TRACKING_PEEP_IS_IN_X
-                                                                                             : STR_PEEP_TRACKING_PEEP_IS_ON_X;
+            rct_string_id string_id = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IN_RIDE)
+                ? STR_PEEP_TRACKING_PEEP_IS_IN_X
+                : STR_PEEP_TRACKING_PEEP_IS_ON_X;
             if (gConfigNotifications.guest_used_facility)
             {
                 News::AddItemToQueue(News::ItemType::PeepOnRide, string_id, peep->sprite_index, ft);

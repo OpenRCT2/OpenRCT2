@@ -404,10 +404,9 @@ void WindowCampaignRefreshRides()
     {
         if (ride.status == RIDE_STATUS_OPEN)
         {
-            if (!ride_type_has_flag(
-                    ride.type,
+            if (!ride.GetRideTypeDescriptor().HasFlag(
                     RIDE_TYPE_FLAG_IS_SHOP | RIDE_TYPE_FLAG_SELLS_FOOD | RIDE_TYPE_FLAG_SELLS_DRINKS
-                        | RIDE_TYPE_FLAG_IS_TOILET))
+                    | RIDE_TYPE_FLAG_IS_TOILET))
             {
                 window_new_campaign_rides.push_back(ride.id);
             }

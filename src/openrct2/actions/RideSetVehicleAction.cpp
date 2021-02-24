@@ -213,7 +213,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
 
     if (gCheatsShowVehiclesFromOtherTrackTypes
         && !(
-            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
             || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;

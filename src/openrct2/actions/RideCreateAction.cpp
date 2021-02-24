@@ -245,7 +245,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)

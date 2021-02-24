@@ -284,7 +284,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
     {
         if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
 
         shops++;
@@ -328,7 +328,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
     {
         if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
 
         shops++;
@@ -453,7 +453,7 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
     auto customDesignedRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
@@ -481,7 +481,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
     auto colourfulRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
 
         countedRides++;

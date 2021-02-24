@@ -98,7 +98,7 @@ static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
-        if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
@@ -242,7 +242,7 @@ uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
-        if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         auto rideCoords = ride.overall_view;

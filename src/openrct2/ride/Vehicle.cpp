@@ -1597,7 +1597,7 @@ void Vehicle::UpdateMeasurements()
                 curRide->stations[test_segment].SegmentLength, distance);
         }
 
-        if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             auto gForces = GetGForces();
             gForces.VerticalG += curRide->previous_vertical_g;
@@ -2358,7 +2358,7 @@ void Vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
         {
             if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
             {
@@ -2403,7 +2403,7 @@ void Vehicle::UpdateWaitingForPassengers()
             }
         }
 
-        if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
+        if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
             && curRide->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD)
         {
             if (num_peeps_on_train == num_seats_on_train)
@@ -2565,7 +2565,7 @@ void Vehicle::UpdateWaitingToDepart()
             return;
     }
 
-    if (ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+    if (curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
         if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
         {
@@ -3507,7 +3507,7 @@ void Vehicle::CheckIfMissing()
     if (curRide->IsBlockSectioned())
         return;
 
-    if (!ride_type_has_flag(curRide->type, RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
+    if (!curRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CHECK_FOR_STALLING))
         return;
 
     lost_time_out++;

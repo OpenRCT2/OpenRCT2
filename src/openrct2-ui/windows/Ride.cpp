@@ -1142,16 +1142,15 @@ static void window_ride_disable_tabs(rct_window* w)
     if (ride == nullptr)
         return;
 
-    uint8_t ride_type = ride->type; // ecx
     const auto& rtd = ride->GetRideTypeDescriptor();
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
         disabled_tabs |= (1 << WIDX_TAB_8); // 0x800
 
-    if (ride_type == RIDE_TYPE_MINI_GOLF)
+    if (ride->type == RIDE_TYPE_MINI_GOLF)
         disabled_tabs |= (1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4); // 0xE0
 
-    if (ride_type_has_flag(ride_type, RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         disabled_tabs |= (1 << WIDX_TAB_2); // 0x20
 
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN) && !rtd.HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL)
@@ -1169,7 +1168,7 @@ static void window_ride_disable_tabs(rct_window* w)
         disabled_tabs |= (1 << WIDX_TAB_6); // 0x200
     }
 
-    if (ride_type == RIDE_TYPE_CASH_MACHINE || ride_type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
+    if (ride->type == RIDE_TYPE_CASH_MACHINE || ride->type == RIDE_TYPE_FIRST_AID || (gParkFlags & PARK_FLAGS_NO_MONEY) != 0)
         disabled_tabs |= (1 << WIDX_TAB_9); // 0x1000
 
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
@@ -1333,7 +1332,7 @@ static rct_window* window_ride_open_station(Ride* ride, StationIndex stationInde
     if (ride->type >= RIDE_TYPE_COUNT)
         return nullptr;
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         return window_ride_main_open(ride);
 
     auto w = window_bring_to_front_by_number(WC_RIDE, ride->id);
@@ -1863,7 +1862,7 @@ static void window_ride_show_view_dropdown(rct_window* w, rct_widget* widget)
         return;
 
     int32_t numItems = 1;
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         numItems += ride->num_stations;
         numItems += ride->num_vehicles;
@@ -2084,7 +2083,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
     int32_t rideTypeIterator, rideTypeIteratorMax;
     if (gCheatsShowVehiclesFromOtherTrackTypes
         && !(
-            ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
+            ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE) || ride->type == RIDE_TYPE_MAZE
             || ride->type == RIDE_TYPE_MINI_GOLF))
     {
         selectionShouldBeExpanded = true;
@@ -3482,7 +3481,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     }
 
     // Leave if another vehicle arrives at station
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION)
         && ride->num_vehicles > 1 && !ride->IsBlockSectioned())
     {
         window_ride_operating_widgets[WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX].type = WindowWidgetType::Checkbox;
@@ -3500,7 +3499,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     }
 
     // Synchronise with adjacent stations
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS))
     {
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].type = WindowWidgetType::Checkbox;
         window_ride_operating_widgets[WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX].image
@@ -3518,7 +3517,7 @@ static void window_ride_operating_invalidate(rct_window* w)
 
     // Waiting
     window_ride_operating_widgets[WIDX_LOAD].text = VehicleLoadNames[(ride->depart_flags & RIDE_DEPART_WAIT_FOR_LOAD_MASK)];
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS))
     {
         window_ride_operating_widgets[WIDX_LOAD_CHECKBOX].type = WindowWidgetType::Checkbox;
         window_ride_operating_widgets[WIDX_LOAD].type = WindowWidgetType::DropdownMenu;
@@ -3624,7 +3623,7 @@ static void window_ride_operating_invalidate(rct_window* w)
             format = STR_MAX_PEOPLE_ON_RIDE_VALUE;
             caption = STR_MAX_PEOPLE_ON_RIDE;
             tooltip = STR_MAX_PEOPLE_ON_RIDE_TIP;
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
                 format = 0;
             break;
     }
@@ -4184,7 +4183,7 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
 {
     // Get station flags (shops don't have them)
     auto stationObjFlags = 0;
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
         auto stationObj = ride_get_station_object(ride);
         if (stationObj != nullptr)
@@ -4197,12 +4196,12 @@ static int32_t window_ride_has_track_colour(Ride* ride, int32_t trackColour)
     {
         case 0:
             return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_PRIMARY_COLOUR)
-                || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
+                || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN);
         case 1:
             return (stationObjFlags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
-                || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
+                || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL);
         case 2:
-            return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS);
+            return ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS);
         default:
             return 0;
     }
@@ -4600,7 +4599,7 @@ static void window_ride_colour_invalidate(rct_window* w)
     }
 
     // Track, multiple colour schemes
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR))
     {
         window_ride_colour_widgets[WIDX_TRACK_COLOUR_SCHEME].type = WindowWidgetType::DropdownMenu;
         window_ride_colour_widgets[WIDX_TRACK_COLOUR_SCHEME_DROPDOWN].type = WindowWidgetType::Button;
@@ -4648,10 +4647,9 @@ static void window_ride_colour_invalidate(rct_window* w)
     }
 
     // Track preview
-    if (ride_type_has_flag(
-            ride->type,
+    if (ride->GetRideTypeDescriptor().HasFlag(
             RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL
-                | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS))
+            | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS))
         window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WindowWidgetType::Spinner;
     else
         window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WindowWidgetType::Empty;
@@ -4679,8 +4677,8 @@ static void window_ride_colour_invalidate(rct_window* w)
     }
 
     // Vehicle colours
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_NO_VEHICLES)
-        && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES)
+        && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS))
     {
         int32_t vehicleColourSchemeType = ride->colour_scheme_type & 3;
         if (vehicleColourSchemeType == 0)
@@ -4733,7 +4731,7 @@ static void window_ride_colour_invalidate(rct_window* w)
         }
 
         // Vehicle colour scheme type
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL)
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL)
             && (ride->num_cars_per_train | ride->num_vehicles) > 1)
         {
             window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME].type = WindowWidgetType::DropdownMenu;
@@ -5406,7 +5404,7 @@ static void window_ride_measurements_mousedown(rct_window* w, rct_widgetindex wi
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],
         Dropdown::Flag::StayOpen, 2);
     gDropdownDefaultIndex = 0;
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         // Disable saving without scenery if we're a flat ride
         Dropdown::SetDisabled(0, true);
@@ -5732,7 +5730,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
 
                 screenCoords.y += LIST_ROW_HEIGHT;
 
-                if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                 {
                     // Max. positive vertical G's
                     maxPositiveVerticalGs = ride->max_positive_vertical_g;
@@ -5760,7 +5758,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
-                if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DROPS))
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
                 {
                     // Drops
                     drops = ride->drops & 0x3F;
@@ -6008,7 +6006,7 @@ static void window_ride_graphs_invalidate(rct_window* w)
     w->pressed_widgets |= (1LL << (WIDX_GRAPH_VELOCITY + (w->list_information_type & 0xFF)));
 
     // Hide graph buttons that are not applicable
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
     {
         window_ride_graphs_widgets[WIDX_GRAPH_VERTICAL].type = WindowWidgetType::Button;
         window_ride_graphs_widgets[WIDX_GRAPH_LATERAL].type = WindowWidgetType::Button;
@@ -6839,7 +6837,7 @@ static void window_ride_customer_invalidate(rct_window* w)
         ride->FormatNameTo(ft);
 
         window_ride_customer_widgets[WIDX_SHOW_GUESTS_THOUGHTS].type = WindowWidgetType::FlatBtn;
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         {
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_ON_RIDE].type = WindowWidgetType::Empty;
             window_ride_customer_widgets[WIDX_SHOW_GUESTS_QUEUING].type = WindowWidgetType::Empty;

@@ -390,7 +390,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
     CoordsXY stationFrontLoc = loc;
     int32_t stationLength = 1;
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
         if (ride->num_stations >= MAX_STATIONS)
         {
@@ -543,7 +543,7 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
     int32_t stationLength = 0;
     int32_t byte_F441D1 = -1;
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
         TileElement* tileElement = map_get_track_element_at_with_direction_from_ride(loc, rideIndex);
         if (tileElement != nullptr)
