@@ -49,9 +49,6 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetInd
 {
     switch (w->widgets[widgetIndex].type)
     {
-        case WindowWidgetType::Empty:
-        case WindowWidgetType::Last:
-            break;
         case WindowWidgetType::Frame:
             WidgetFrameDraw(dpi, w, widgetIndex);
             break;
@@ -99,10 +96,10 @@ void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetInd
         case WindowWidgetType::Checkbox:
             WidgetCheckboxDraw(dpi, w, widgetIndex);
             break;
-        case WindowWidgetType::Placeholder:
-            break;
         case WindowWidgetType::TextBox:
             WidgetTextBoxDraw(dpi, w, widgetIndex);
+            break;
+        default:
             break;
     }
 }

@@ -385,7 +385,7 @@ namespace OpenRCT2::Ui::Windows
     static void InvokeEventHandler(
         const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler, const std::vector<DukValue>& args);
 
-    class CustomWindow : public Window
+    class CustomWindow final : public Window
     {
     private:
         static rct_windownumber _nextWindowNumber;
@@ -694,7 +694,7 @@ namespace OpenRCT2::Ui::Windows
             }
         }
 
-        void OnTextInput(rct_widgetindex widgetIndex, std::string_view text)
+        void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
         {
             auto& info = GetInfo(this);
             auto widgetDesc = info.GetCustomWidgetDesc(this, widgetIndex);
