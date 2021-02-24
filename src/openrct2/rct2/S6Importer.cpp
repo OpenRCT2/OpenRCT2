@@ -218,7 +218,7 @@ public:
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
         ImportTileElements();
-        ImportSprites();
+        ImportEntities();
 
         gInitialCash = _s6.initial_cash;
         gBankLoan = _s6.current_loan;
@@ -1321,49 +1321,25 @@ public:
         }
     }
 
-    void ImportSprites()
+    void ImportEntities()
     {
         for (int32_t i = 0; i < RCT2_MAX_SPRITES; i++)
         {
-            auto src = &_s6.sprites[i];
-            auto dst = GetEntity(i);
-            ImportSprite(reinterpret_cast<rct_sprite*>(dst), src);
+            ImportEntity(_s6.sprites[i].unknown);
         }
         RebuildEntityLists();
     }
 
-    void ImportSprite(rct_sprite* dst, const RCT2Sprite* src)
-    {
-        std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
-        switch (src->unknown.sprite_identifier)
-        {
-            case RCT12SpriteIdentifier::Null:
-                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
-                break;
-            case RCT12SpriteIdentifier::Vehicle:
-                ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
-                break;
-            case RCT12SpriteIdentifier::Peep:
-                ImportSpritePeep(&dst->peep, &src->peep);
-                break;
-            case RCT12SpriteIdentifier::Misc:
-                ImportSpriteMisc(&dst->misc, &src->unknown);
-                break;
-            case RCT12SpriteIdentifier::Litter:
-                ImportSpriteLitter(&dst->litter, &src->litter);
-                break;
-            default:
-                ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), reinterpret_cast<const RCT12SpriteBase*>(src));
-                log_warning("Sprite identifier %d can not be imported.", src->unknown.sprite_identifier);
-                break;
-        }
-    }
+    template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
 
-    void ImportSpriteVehicle(Vehicle* dst, const RCT2SpriteVehicle* src)
+    template<> void ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
     {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Vehicle*>(baseDst);
+        auto src = static_cast<const RCT2SpriteVehicle*>(&baseSrc);
         const auto& ride = _s6.rides[src->ride];
 
-        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
+        ImportEntityCommonProperties(dst, src);
         dst->SubType = Vehicle::Type(src->type);
         dst->vehicle_sprite_type = src->vehicle_sprite_type;
         dst->bank_rotation = src->bank_rotation;
@@ -1465,9 +1441,25 @@ public:
         dst->target_seat_rotation = src->target_seat_rotation;
     }
 
+    template<> void ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Guest*>(baseDst);
+        auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+        ImportSpritePeep(dst, src);
+    }
+
+    template<> void ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Staff*>(baseDst);
+        auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+        ImportSpritePeep(dst, src);
+    }
+
     void ImportSpritePeep(Peep* dst, const RCT2SpritePeep* src)
     {
-        ImportSpriteCommonProperties(static_cast<SpriteBase*>(dst), src);
+        ImportEntityCommonProperties(static_cast<SpriteBase*>(dst), src);
         if (is_user_string_id(src->name_string_idx))
         {
             dst->SetName(GetUserString(src->name_string_idx));
@@ -1578,103 +1570,124 @@ public:
         dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
+    template<> void ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)
     {
-        ImportSpriteCommonProperties(cdst, csrc);
-        switch (RCT12MiscEntityType(csrc->type))
-        {
-            case RCT12MiscEntityType::SteamParticle:
-            {
-                auto src = static_cast<const RCT12SpriteSteamParticle*>(csrc);
-                auto dst = static_cast<SteamParticle*>(cdst);
-                dst->time_to_move = src->time_to_move;
-                dst->frame = src->frame;
-                break;
-            }
-            case RCT12MiscEntityType::MoneyEffect:
-            {
-                auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
-                auto dst = static_cast<MoneyEffect*>(cdst);
-                dst->MoveDelay = src->move_delay;
-                dst->NumMovements = src->num_movements;
-                dst->Vertical = src->vertical;
-                dst->Value = src->value;
-                dst->OffsetX = src->offset_x;
-                dst->Wiggle = src->wiggle;
-                break;
-            }
-            case RCT12MiscEntityType::CrashedVehicleParticle:
-            {
-                auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(csrc);
-                auto dst = static_cast<VehicleCrashParticle*>(cdst);
-                dst->frame = src->frame;
-                dst->time_to_live = src->time_to_live;
-                dst->frame = src->frame;
-                dst->colour[0] = src->colour[0];
-                dst->colour[1] = src->colour[1];
-                dst->crashed_sprite_base = src->crashed_sprite_base;
-                dst->velocity_x = src->velocity_x;
-                dst->velocity_y = src->velocity_y;
-                dst->velocity_z = src->velocity_z;
-                dst->acceleration_x = src->acceleration_x;
-                dst->acceleration_y = src->acceleration_y;
-                dst->acceleration_z = src->acceleration_z;
-                break;
-            }
-            case RCT12MiscEntityType::ExplosionCloud:
-            case RCT12MiscEntityType::ExplosionFlare:
-            case RCT12MiscEntityType::CrashSplash:
-            {
-                auto src = static_cast<const RCT12SpriteParticle*>(csrc);
-                auto dst = static_cast<MiscEntity*>(cdst);
-                dst->frame = src->frame;
-                break;
-            }
-            case RCT12MiscEntityType::JumpingFountainWater:
-            case RCT12MiscEntityType::JumpingFountainSnow:
-            {
-                auto* src = static_cast<const RCT12SpriteJumpingFountain*>(csrc);
-                auto* dst = static_cast<JumpingFountain*>(cdst);
-                dst->NumTicksAlive = src->num_ticks_alive;
-                dst->frame = src->frame;
-                dst->FountainFlags = src->fountain_flags;
-                dst->TargetX = src->target_x;
-                dst->TargetY = src->target_y;
-                dst->Iteration = src->iteration;
-                dst->FountainType = RCT12MiscEntityType(src->type) == RCT12MiscEntityType::JumpingFountainSnow
-                    ? JumpingFountainType::Snow
-                    : JumpingFountainType::Water;
-                break;
-            }
-            case RCT12MiscEntityType::Balloon:
-            {
-                auto src = static_cast<const RCT12SpriteBalloon*>(csrc);
-                auto dst = static_cast<Balloon*>(cdst);
-                dst->popped = src->popped;
-                dst->time_to_move = src->time_to_move;
-                dst->frame = src->frame;
-                dst->colour = src->colour;
-                break;
-            }
-            case RCT12MiscEntityType::Duck:
-            {
-                auto src = static_cast<const RCT12SpriteDuck*>(csrc);
-                auto dst = static_cast<Duck*>(cdst);
-                dst->frame = src->frame;
-                dst->target_x = src->target_x;
-                dst->target_y = src->target_y;
-                dst->state = static_cast<Duck::DuckState>(src->state);
-                break;
-            }
-            default:
-                log_warning("Misc. sprite type %d can not be imported.", csrc->type);
-                break;
-        }
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<SteamParticle*>(baseDst);
+        auto src = static_cast<const RCT12SpriteSteamParticle*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->time_to_move = src->time_to_move;
+        dst->frame = src->frame;
     }
 
-    void ImportSpriteLitter(Litter* dst, const RCT12SpriteLitter* src)
+    template<> void ImportEntity<MoneyEffect>(const RCT12SpriteBase& baseSrc)
     {
-        ImportSpriteCommonProperties(dst, src);
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<MoneyEffect*>(baseDst);
+        auto src = static_cast<const RCT12SpriteMoneyEffect*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->MoveDelay = src->move_delay;
+        dst->NumMovements = src->num_movements;
+        dst->Vertical = src->vertical;
+        dst->Value = src->value;
+        dst->OffsetX = src->offset_x;
+        dst->Wiggle = src->wiggle;
+    }
+
+    template<> void ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<VehicleCrashParticle*>(baseDst);
+        auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->frame = src->frame;
+        dst->time_to_live = src->time_to_live;
+        dst->frame = src->frame;
+        dst->colour[0] = src->colour[0];
+        dst->colour[1] = src->colour[1];
+        dst->crashed_sprite_base = src->crashed_sprite_base;
+        dst->velocity_x = src->velocity_x;
+        dst->velocity_y = src->velocity_y;
+        dst->velocity_z = src->velocity_z;
+        dst->acceleration_x = src->acceleration_x;
+        dst->acceleration_y = src->acceleration_y;
+        dst->acceleration_z = src->acceleration_z;
+    }
+
+    template<> void ImportEntity<ExplosionCloud>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<ExplosionCloud*>(baseDst);
+        auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->frame = src->frame;
+    }
+
+    template<> void ImportEntity<ExplosionFlare>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<ExplosionFlare*>(baseDst);
+        auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->frame = src->frame;
+    }
+
+    template<> void ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<CrashSplashParticle*>(baseDst);
+        auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->frame = src->frame;
+    }
+
+    template<> void ImportEntity<JumpingFountain>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<JumpingFountain*>(baseDst);
+        auto src = static_cast<const RCT12SpriteJumpingFountain*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->NumTicksAlive = src->num_ticks_alive;
+        dst->frame = src->frame;
+        dst->FountainFlags = src->fountain_flags;
+        dst->TargetX = src->target_x;
+        dst->TargetY = src->target_y;
+        dst->Iteration = src->iteration;
+        dst->FountainType = RCT12MiscEntityType(src->type) == RCT12MiscEntityType::JumpingFountainSnow
+            ? JumpingFountainType::Snow
+            : JumpingFountainType::Water;
+    }
+
+    template<> void ImportEntity<Balloon>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Balloon*>(baseDst);
+        auto src = static_cast<const RCT12SpriteBalloon*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->popped = src->popped;
+        dst->time_to_move = src->time_to_move;
+        dst->frame = src->frame;
+        dst->colour = src->colour;
+    }
+
+    template<> void ImportEntity<Duck>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Duck*>(baseDst);
+        auto src = static_cast<const RCT12SpriteDuck*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
+        dst->frame = src->frame;
+        dst->target_x = src->target_x;
+        dst->target_y = src->target_y;
+        dst->state = static_cast<Duck::DuckState>(src->state);
+    }
+
+    template<> void ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
+    {
+        auto baseDst = GetEntity(baseSrc.sprite_index);
+        auto dst = static_cast<Litter*>(baseDst);
+        auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
+        ImportEntityCommonProperties(dst, src);
         dst->SubType = LitterType(src->type);
         dst->creationTick = src->creationTick;
     }
@@ -1742,7 +1755,7 @@ public:
         return output;
     }
 
-    void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
+    void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
         dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
@@ -1758,6 +1771,55 @@ public:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
         dst->sprite_direction = src->sprite_direction;
+    }
+
+    void ImportEntity(const RCT12SpriteBase& src)
+    {
+        switch (GetEntityTypeFromRCT2Sprite(&src))
+        {
+            case EntityType::Vehicle:
+                ImportEntity<Vehicle>(src);
+                break;
+            case EntityType::Guest:
+                ImportEntity<Guest>(src);
+                break;
+            case EntityType::Staff:
+                ImportEntity<Staff>(src);
+                break;
+            case EntityType::SteamParticle:
+                ImportEntity<SteamParticle>(src);
+                break;
+            case EntityType::MoneyEffect:
+                ImportEntity<MoneyEffect>(src);
+                break;
+            case EntityType::CrashedVehicleParticle:
+                ImportEntity<VehicleCrashParticle>(src);
+                break;
+            case EntityType::ExplosionCloud:
+                ImportEntity<ExplosionCloud>(src);
+                break;
+            case EntityType::ExplosionFlare:
+                ImportEntity<ExplosionFlare>(src);
+                break;
+            case EntityType::CrashSplash:
+                ImportEntity<CrashSplashParticle>(src);
+                break;
+            case EntityType::JumpingFountain:
+                ImportEntity<JumpingFountain>(src);
+                break;
+            case EntityType::Balloon:
+                ImportEntity<Balloon>(src);
+                break;
+            case EntityType::Duck:
+                ImportEntity<Duck>(src);
+                break;
+            case EntityType::Litter:
+                ImportEntity<Litter>(src);
+                break;
+            default:
+                // Null elements do not need imported
+                break;
+        }
     }
 
     std::string GetUserString(rct_string_id stringId)
