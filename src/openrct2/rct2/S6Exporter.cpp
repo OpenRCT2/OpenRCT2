@@ -1040,107 +1040,107 @@ void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->sprite_direction = src->sprite_direction;
 }
 
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Vehicle* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Vehicle* src)
 {
-    auto* cdst = static_cast<RCT2SpriteVehicle*>(dst);
+    auto* dst = static_cast<RCT2SpriteVehicle*>(baseDst);
     const auto* ride = src->GetRide();
 
-    ExportEntityCommonProperties(dst, static_cast<const SpriteBase*>(src));
-    cdst->type = EnumValue(src->SubType);
-    cdst->vehicle_sprite_type = src->vehicle_sprite_type;
-    cdst->bank_rotation = src->bank_rotation;
-    cdst->remaining_distance = src->remaining_distance;
-    cdst->velocity = src->velocity;
-    cdst->acceleration = src->acceleration;
-    cdst->ride = src->ride;
-    cdst->vehicle_type = src->vehicle_type;
-    cdst->colours = src->colours;
-    cdst->track_progress = src->track_progress;
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->vehicle_sprite_type = src->vehicle_sprite_type;
+    dst->bank_rotation = src->bank_rotation;
+    dst->remaining_distance = src->remaining_distance;
+    dst->velocity = src->velocity;
+    dst->acceleration = src->acceleration;
+    dst->ride = src->ride;
+    dst->vehicle_type = src->vehicle_type;
+    dst->colours = src->colours;
+    dst->track_progress = src->track_progress;
     if (ride != nullptr && ride->mode == RideMode::BoatHire && src->status == Vehicle::Status::TravellingBoat)
     {
         if (src->BoatLocation.isNull())
         {
-            cdst->boat_location.setNull();
+            dst->boat_location.setNull();
         }
         else
         {
-            cdst->boat_location = { static_cast<uint8_t>(src->BoatLocation.x / COORDS_XY_STEP),
-                                    static_cast<uint8_t>(src->BoatLocation.y / COORDS_XY_STEP) };
+            dst->boat_location = { static_cast<uint8_t>(src->BoatLocation.x / COORDS_XY_STEP),
+                                   static_cast<uint8_t>(src->BoatLocation.y / COORDS_XY_STEP) };
         }
     }
     else
     {
         auto trackType = OpenRCT2TrackTypeToRCT2(src->GetTrackType());
         // Track direction and type are in the same field
-        cdst->SetTrackType(trackType);
-        cdst->SetTrackDirection(src->GetTrackDirection());
+        dst->SetTrackType(trackType);
+        dst->SetTrackDirection(src->GetTrackDirection());
     }
-    cdst->track_x = src->TrackLocation.x;
-    cdst->track_y = src->TrackLocation.y;
-    cdst->track_z = src->TrackLocation.z;
-    cdst->next_vehicle_on_train = src->next_vehicle_on_train;
-    cdst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
-    cdst->next_vehicle_on_ride = src->next_vehicle_on_ride;
-    cdst->var_44 = src->var_44;
-    cdst->mass = src->mass;
-    cdst->update_flags = src->update_flags;
-    cdst->SwingSprite = src->SwingSprite;
-    cdst->current_station = src->current_station;
-    cdst->current_time = src->current_time;
-    cdst->crash_z = src->crash_z;
-    cdst->status = static_cast<uint8_t>(src->status);
-    cdst->sub_state = src->sub_state;
+    dst->track_x = src->TrackLocation.x;
+    dst->track_y = src->TrackLocation.y;
+    dst->track_z = src->TrackLocation.z;
+    dst->next_vehicle_on_train = src->next_vehicle_on_train;
+    dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
+    dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
+    dst->var_44 = src->var_44;
+    dst->mass = src->mass;
+    dst->update_flags = src->update_flags;
+    dst->SwingSprite = src->SwingSprite;
+    dst->current_station = src->current_station;
+    dst->current_time = src->current_time;
+    dst->crash_z = src->crash_z;
+    dst->status = static_cast<uint8_t>(src->status);
+    dst->sub_state = src->sub_state;
     for (size_t i = 0; i < std::size(src->peep); i++)
     {
-        cdst->peep[i] = src->peep[i];
-        cdst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
+        dst->peep[i] = src->peep[i];
+        dst->peep_tshirt_colours[i] = src->peep_tshirt_colours[i];
     }
-    cdst->num_seats = src->num_seats;
-    cdst->num_peeps = src->num_peeps;
-    cdst->next_free_seat = src->next_free_seat;
-    cdst->restraints_position = src->restraints_position;
-    cdst->crash_x = src->crash_x;
-    cdst->sound2_flags = src->sound2_flags;
-    cdst->spin_sprite = src->spin_sprite;
-    cdst->sound1_id = static_cast<uint8_t>(src->sound1_id);
-    cdst->sound1_volume = src->sound1_volume;
-    cdst->sound2_id = static_cast<uint8_t>(src->sound2_id);
-    cdst->sound2_volume = src->sound2_volume;
-    cdst->sound_vector_factor = src->sound_vector_factor;
-    cdst->time_waiting = src->time_waiting;
-    cdst->speed = src->speed;
-    cdst->powered_acceleration = src->powered_acceleration;
-    cdst->dodgems_collision_direction = src->dodgems_collision_direction;
-    cdst->animation_frame = src->animation_frame;
-    cdst->var_C8 = src->var_C8;
-    cdst->var_CA = src->var_CA;
-    cdst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
-    cdst->TrackSubposition = static_cast<uint8_t>(src->TrackSubposition);
-    cdst->var_CE = src->var_CE;
-    cdst->var_CF = src->var_CF;
-    cdst->lost_time_out = src->lost_time_out;
-    cdst->vertical_drop_countdown = src->vertical_drop_countdown;
-    cdst->var_D3 = src->var_D3;
-    cdst->mini_golf_current_animation = src->mini_golf_current_animation;
-    cdst->mini_golf_flags = src->mini_golf_flags;
-    cdst->ride_subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->ride_subtype);
-    cdst->colours_extended = src->colours_extended;
-    cdst->seat_rotation = src->seat_rotation;
-    cdst->target_seat_rotation = src->target_seat_rotation;
+    dst->num_seats = src->num_seats;
+    dst->num_peeps = src->num_peeps;
+    dst->next_free_seat = src->next_free_seat;
+    dst->restraints_position = src->restraints_position;
+    dst->crash_x = src->crash_x;
+    dst->sound2_flags = src->sound2_flags;
+    dst->spin_sprite = src->spin_sprite;
+    dst->sound1_id = static_cast<uint8_t>(src->sound1_id);
+    dst->sound1_volume = src->sound1_volume;
+    dst->sound2_id = static_cast<uint8_t>(src->sound2_id);
+    dst->sound2_volume = src->sound2_volume;
+    dst->sound_vector_factor = src->sound_vector_factor;
+    dst->time_waiting = src->time_waiting;
+    dst->speed = src->speed;
+    dst->powered_acceleration = src->powered_acceleration;
+    dst->dodgems_collision_direction = src->dodgems_collision_direction;
+    dst->animation_frame = src->animation_frame;
+    dst->var_C8 = src->var_C8;
+    dst->var_CA = src->var_CA;
+    dst->scream_sound_id = static_cast<uint8_t>(src->scream_sound_id);
+    dst->TrackSubposition = static_cast<uint8_t>(src->TrackSubposition);
+    dst->var_CE = src->var_CE;
+    dst->var_CF = src->var_CF;
+    dst->lost_time_out = src->lost_time_out;
+    dst->vertical_drop_countdown = src->vertical_drop_countdown;
+    dst->var_D3 = src->var_D3;
+    dst->mini_golf_current_animation = src->mini_golf_current_animation;
+    dst->mini_golf_flags = src->mini_golf_flags;
+    dst->ride_subtype = OpenRCT2EntryIndexToRCTEntryIndex(src->ride_subtype);
+    dst->colours_extended = src->colours_extended;
+    dst->seat_rotation = src->seat_rotation;
+    dst->target_seat_rotation = src->target_seat_rotation;
 }
 
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Guest* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Guest* src)
 {
-    ExportEntityPeep(static_cast<RCT2SpritePeep*>(dst), src);
+    ExportEntityPeep(static_cast<RCT2SpritePeep*>(baseDst), src);
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Staff* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Staff* src)
 {
-    ExportEntityPeep(static_cast<RCT2SpritePeep*>(dst), src);
+    ExportEntityPeep(static_cast<RCT2SpritePeep*>(baseDst), src);
 }
 
 void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
 {
-    ExportEntityCommonProperties(dst, static_cast<const SpriteBase*>(src));
+    ExportEntityCommonProperties(dst, src);
 
     auto generateName = true;
     if (src->Name != nullptr)
@@ -1290,105 +1290,105 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->item_standard_flags = static_cast<uint32_t>(src->GetItemFlags());
 }
 
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const SteamParticle* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const SteamParticle* src)
 {
-    auto* cdst = static_cast<RCT12SpriteSteamParticle*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->time_to_move = src->time_to_move;
-    cdst->frame = src->frame;
+    auto* dst = static_cast<RCT12SpriteSteamParticle*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->time_to_move = src->time_to_move;
+    dst->frame = src->frame;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const MoneyEffect* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const MoneyEffect* src)
 {
-    auto* cdst = static_cast<RCT12SpriteMoneyEffect*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->move_delay = src->MoveDelay;
-    cdst->num_movements = src->NumMovements;
-    cdst->vertical = src->Vertical;
-    cdst->value = src->Value;
-    cdst->offset_x = src->OffsetX;
-    cdst->wiggle = src->Wiggle;
+    auto* dst = static_cast<RCT12SpriteMoneyEffect*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->move_delay = src->MoveDelay;
+    dst->num_movements = src->NumMovements;
+    dst->vertical = src->Vertical;
+    dst->value = src->Value;
+    dst->offset_x = src->OffsetX;
+    dst->wiggle = src->Wiggle;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const VehicleCrashParticle* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const VehicleCrashParticle* src)
 {
-    auto* cdst = static_cast<RCT12SpriteCrashedVehicleParticle*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->frame = src->frame;
-    cdst->time_to_live = src->time_to_live;
-    cdst->frame = src->frame;
-    cdst->colour[0] = src->colour[0];
-    cdst->colour[1] = src->colour[1];
-    cdst->crashed_sprite_base = src->crashed_sprite_base;
-    cdst->velocity_x = src->velocity_x;
-    cdst->velocity_y = src->velocity_y;
-    cdst->velocity_z = src->velocity_z;
-    cdst->acceleration_x = src->acceleration_x;
-    cdst->acceleration_y = src->acceleration_y;
-    cdst->acceleration_z = src->acceleration_z;
+    auto* dst = static_cast<RCT12SpriteCrashedVehicleParticle*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->frame = src->frame;
+    dst->time_to_live = src->time_to_live;
+    dst->frame = src->frame;
+    dst->colour[0] = src->colour[0];
+    dst->colour[1] = src->colour[1];
+    dst->crashed_sprite_base = src->crashed_sprite_base;
+    dst->velocity_x = src->velocity_x;
+    dst->velocity_y = src->velocity_y;
+    dst->velocity_z = src->velocity_z;
+    dst->acceleration_x = src->acceleration_x;
+    dst->acceleration_y = src->acceleration_y;
+    dst->acceleration_z = src->acceleration_z;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const JumpingFountain* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const JumpingFountain* src)
 {
-    auto* cdst = static_cast<RCT12SpriteJumpingFountain*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->num_ticks_alive = src->NumTicksAlive;
-    cdst->frame = src->frame;
-    cdst->fountain_flags = src->FountainFlags;
-    cdst->target_x = src->TargetX;
-    cdst->target_y = src->TargetY;
-    cdst->target_y = src->TargetY;
-    cdst->iteration = src->Iteration;
+    auto* dst = static_cast<RCT12SpriteJumpingFountain*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->num_ticks_alive = src->NumTicksAlive;
+    dst->frame = src->frame;
+    dst->fountain_flags = src->FountainFlags;
+    dst->target_x = src->TargetX;
+    dst->target_y = src->TargetY;
+    dst->target_y = src->TargetY;
+    dst->iteration = src->Iteration;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Balloon* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Balloon* src)
 {
-    auto* cdst = static_cast<RCT12SpriteBalloon*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->popped = src->popped;
-    cdst->time_to_move = src->time_to_move;
-    cdst->frame = src->frame;
-    cdst->colour = src->colour;
+    auto* dst = static_cast<RCT12SpriteBalloon*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->popped = src->popped;
+    dst->time_to_move = src->time_to_move;
+    dst->frame = src->frame;
+    dst->colour = src->colour;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Duck* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Duck* src)
 {
-    auto* cdst = static_cast<RCT12SpriteDuck*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->frame = src->frame;
-    cdst->target_x = src->target_x;
-    cdst->target_y = src->target_y;
-    cdst->state = EnumValue(src->state);
+    auto* dst = static_cast<RCT12SpriteDuck*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->frame = src->frame;
+    dst->target_x = src->target_x;
+    dst->target_y = src->target_y;
+    dst->state = EnumValue(src->state);
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const ExplosionCloud* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const ExplosionCloud* src)
 {
-    auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->frame = src->frame;
+    auto* dst = static_cast<RCT12SpriteParticle*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->frame = src->frame;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const ExplosionFlare* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const ExplosionFlare* src)
 {
-    auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->frame = src->frame;
+    auto* dst = static_cast<RCT12SpriteParticle*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->frame = src->frame;
 }
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const CrashSplashParticle* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const CrashSplashParticle* src)
 {
-    auto* cdst = static_cast<RCT12SpriteParticle*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->frame = src->frame;
+    auto* dst = static_cast<RCT12SpriteParticle*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->frame = src->frame;
 }
 
-template<> void S6Exporter::ExportEntity(RCT12SpriteBase* dst, const Litter* src)
+template<> void S6Exporter::ExportEntity(RCT12SpriteBase* baseDst, const Litter* src)
 {
-    auto* cdst = static_cast<RCT12SpriteLitter*>(dst);
-    ExportEntityCommonProperties(dst, src);
-    cdst->type = EnumValue(src->SubType);
-    cdst->creationTick = src->creationTick;
+    auto* dst = static_cast<RCT12SpriteLitter*>(baseDst);
+    ExportEntityCommonProperties(baseDst, src);
+    dst->type = EnumValue(src->SubType);
+    dst->creationTick = src->creationTick;
 }
 
 void S6Exporter::ExportEntities()
