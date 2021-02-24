@@ -761,6 +761,7 @@ public:
     RCT12SpriteCrashedVehicleParticle crashed_vehicle_particle;
     RCT12SpriteCrashSplash crash_splash;
     RCT12SpriteSteamParticle steam_particle;
+    RCT12SpriteParticle misc_particle;
 };
 assert_struct_size(RCT2Sprite, 0x100);
 

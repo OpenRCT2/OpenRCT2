@@ -1394,59 +1394,59 @@ void S6Exporter::ExportEntities()
 
     for (auto* entity : EntityList<Guest>(EntityListId::Peep))
     {
-        ExportEntity(static_cast<RCT2SpritePeep*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].peep, entity);
     }
     for (auto* entity : EntityList<Staff>(EntityListId::Peep))
     {
-        ExportEntity(static_cast<RCT2SpritePeep*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].peep, entity);
     }
     for (auto* entity : EntityList<Vehicle>(EntityListId::Vehicle))
     {
-        ExportEntity(static_cast<RCT2SpriteVehicle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].vehicle, entity);
     }
     for (auto* entity : EntityList<Vehicle>(EntityListId::TrainHead))
     {
-        ExportEntity(static_cast<RCT2SpriteVehicle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].vehicle, entity);
     }
     for (auto* entity : EntityList<Litter>(EntityListId::Litter))
     {
-        ExportEntity(static_cast<RCT12SpriteLitter*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].litter, entity);
     }
     for (auto* entity : EntityList<Duck>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteDuck*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].duck, entity);
     }
     for (auto* entity : EntityList<SteamParticle>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteSteamParticle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].steam_particle, entity);
     }
     for (auto* entity : EntityList<MoneyEffect>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteMoneyEffect*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].money_effect, entity);
     }
     for (auto* entity : EntityList<VehicleCrashParticle>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteCrashedVehicleParticle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].crashed_vehicle_particle, entity);
     }
     for (auto* entity : EntityList<JumpingFountain>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteJumpingFountain*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].jumping_fountain, entity);
     }
     for (auto* entity : EntityList<Balloon>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteBalloon*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].balloon, entity);
     }
     for (auto* entity : EntityList<ExplosionCloud>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteParticle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }
     for (auto* entity : EntityList<ExplosionFlare>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteParticle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }
     for (auto* entity : EntityList<CrashSplashParticle>(EntityListId::Misc))
     {
-        ExportEntity(static_cast<RCT12SpriteParticle*>(&_s6.sprites[entity->sprite_index].unknown), entity);
+        ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }
 
     RebuildEntityLinks();
