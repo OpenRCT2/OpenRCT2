@@ -47,7 +47,7 @@ public:
     void ExportRides();
     void ExportRide(rct2_ride* dst, const Ride* src);
     void ExportEntities();
-    template<typename T> void ExportEntity(RCT12SpriteBase* dst, const T* src);
+    template<typename RCT12_T, typename OpenRCT2_T> void ExportEntity(RCT12_T* dst, const OpenRCT2_T* src);
     void ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
     void ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src);
 
