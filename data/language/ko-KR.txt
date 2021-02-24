@@ -1985,8 +1985,8 @@ STR_2779    :외부화면 #{COMMA16}
 STR_2780    :추가 외부화면
 # End of new strings
 STR_2781    :{STRINGID}:
-STR_2782    :SHIFT + 
-STR_2783    :CTRL + 
+STR_2782    :Shift + 
+STR_2783    :Ctrl + 
 STR_2784    :키보드 단축키 변경
 STR_2785    :{WINDOW_COLOUR_2}새 단축키를 누르세요:{NEWLINE}“{STRINGID}”
 STR_2786    :새 단축키를 설정하려면 단축키 설명을 클릭하세요
@@ -3668,6 +3668,27 @@ STR_6408    :“innoextract”를 설치하여 GOG 설치 프로그램에서 파
 STR_6409    :선택된 파일은 RollerCoaster Tycoon 2를 위한 GOG 설치 프로그램이 아닙니다. GOG Galaxy 다운로더를 다운로드했거나 잘못된 파일을 선택했을 수 있습니다.
 STR_6410    :화면 확대/축소
 STR_6411    :메인 메뉴에 화면 확대/축소 버튼을 표시합니다.
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :R Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :조이스틱 좌
+STR_6426    :조이스틱 우
+STR_6427    :조이스틱 상
+STR_6428    :조이스틱 하
+STR_6429    :조이스틱 {INT32}
+STR_6430    :왼쪽 마우스 버튼
+STR_6431    :오른쪽 마우스 버튼
+STR_6432    :마우스 {INT32}
 
 #############
 # Scenarios #

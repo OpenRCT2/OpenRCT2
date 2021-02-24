@@ -3665,6 +3665,27 @@ STR_6408    :Por favor instale “innoextract” para descompactar o instalador 
 STR_6409    :O arquivo selecionado não é o instalador offline do GOG para o RollerCoaster Tycoon 2. Você pode ter baixado a base do descarregador GOG Galaxy ou escolhido o arquivo errado.
 STR_6410    :Aproximar/Afastar
 STR_6411    :Mostrar botões para aproximar e afastar vista na barra de ferramentas
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :Shift Esq.
+STR_6415    :Shift Dir.
+STR_6416    :Ctrl
+STR_6417    :Ctrl Esq.
+STR_6418    :Ctrl Dir.
+STR_6419    :Alt
+STR_6420    :Alt Esq.
+STR_6421    :Alt Dir.
+STR_6422    :Cmd
+STR_6423    :Cmd Esq.
+STR_6424    :Cmd Dir.
+STR_6425    :Controle Esquerda
+STR_6426    :Controle Direita
+STR_6427    :Controle Cima
+STR_6428    :Controle Baixo
+STR_6429    :Controle {INT32}
+STR_6430    :Botão Esquerdo Mouse
+STR_6431    :Botão Direito Mouse
+STR_6432    :Mouse {INT32}
 
 #############
 # Scenarios #
