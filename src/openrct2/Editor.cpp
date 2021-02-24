@@ -310,7 +310,7 @@ namespace Editor
         ride_init_all();
 
         //
-        for (int32_t i = 0; i < MAX_SPRITES; i++)
+        for (int32_t i = 0; i < MAX_ENTITIES; i++)
         {
             auto peep = GetEntity<Peep>(i);
             if (peep != nullptr)

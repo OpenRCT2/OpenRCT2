@@ -56,7 +56,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr GuestSetNameAction::Query() const
 {
-    if (_spriteIndex >= MAX_SPRITES)
+    if (_spriteIndex >= MAX_ENTITIES)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }

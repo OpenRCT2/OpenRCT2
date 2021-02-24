@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 enum class PeepPickupType : uint8_t

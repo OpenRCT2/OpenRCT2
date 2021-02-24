@@ -37,7 +37,7 @@ using namespace OpenRCT2;
 
 struct GameState_t
 {
-    rct_sprite sprites[MAX_SPRITES];
+    rct_sprite sprites[MAX_ENTITIES];
 };
 
 static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
@@ -106,7 +106,7 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
 static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& context)
 {
     std::unique_ptr<GameState_t> res = std::make_unique<GameState_t>();
-    for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; spriteIdx++)
+    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; spriteIdx++)
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
@@ -461,7 +461,7 @@ static void CompareStates(
             static_cast<unsigned long long>(exportBuffer.GetLength()));
     }
 
-    for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; ++spriteIdx)
+    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; ++spriteIdx)
     {
         if (importedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null
             && exportedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null)

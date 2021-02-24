@@ -12,6 +12,7 @@
 #include "../Input.h"
 #include "../network/network.h"
 #include "../util/Util.h"
+#include "../world/Sprite.h"
 
 PeepPickupAction::PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)
     : _type(type)
@@ -35,7 +36,7 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr PeepPickupAction::Query() const
 {
-    if (_spriteId >= MAX_SPRITES || _spriteId == SPRITE_INDEX_NULL)
+    if (_spriteId >= MAX_ENTITIES || _spriteId == SPRITE_INDEX_NULL)
     {
         log_error("Failed to pick up peep for sprite %d", _spriteId);
         return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);

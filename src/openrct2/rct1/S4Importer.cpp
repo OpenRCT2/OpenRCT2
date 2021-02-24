@@ -1356,7 +1356,7 @@ private:
                 ImportPeep(peep, srcPeep);
             }
         }
-        for (size_t i = 0; i < MAX_SPRITES; i++)
+        for (size_t i = 0; i < MAX_ENTITIES; i++)
         {
             auto vehicle = GetEntity<Vehicle>(i);
             if (vehicle != nullptr)

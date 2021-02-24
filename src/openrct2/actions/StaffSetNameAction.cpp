@@ -18,6 +18,7 @@
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../windows/Intent.h"
+#include "../world/Entity.h"
 #include "../world/Park.h"
 
 StaffSetNameAction::StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
@@ -40,7 +41,7 @@ void StaffSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr StaffSetNameAction::Query() const
 {
-    if (_spriteIndex >= MAX_SPRITES)
+    if (_spriteIndex >= MAX_ENTITIES)
     {
         return std::make_unique<GameActions::Result>(
             GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
