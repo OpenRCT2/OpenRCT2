@@ -327,7 +327,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 auto callback = desc["callback"];
-                CustomShortcuts.emplace_back(owner, id, text, bindings, callback);
+                CustomShortcuts.emplace_back(std::make_unique<CustomShortcut>(owner, id, text, bindings, callback));
             }
             catch (const DukException&)
             {

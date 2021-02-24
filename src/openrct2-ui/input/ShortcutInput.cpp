@@ -220,52 +220,45 @@ std::string_view ShortcutInput::GetModifierName(uint32_t key, bool localised)
     }
 }
 
-std::string_view ShortcutInput::GetKeyName(uint32_t key, bool localised)
+std::string_view ShortcutInput::GetLocalisedKeyName(uint32_t key)
 {
-    static std::unordered_map<uint32_t, std::pair<const char*, rct_string_id>> keys{
-        { SDLK_LEFT, { "LEFT", STR_SHORTCUT_LEFT } },
-        { SDLK_RIGHT, { "RIGHT", STR_SHORTCUT_RIGHT } },
-        { SDLK_UP, { "UP", STR_SHORTCUT_UP } },
-        { SDLK_DOWN, { "DOWN", STR_SHORTCUT_DOWN } },
-        { SDLK_BACKSPACE, { "BACKSPACE", STR_SHORTCUT_BACKSPACE } },
-        { SDLK_ESCAPE, { "ESCAPE", STR_SHORTCUT_ESCAPE } },
-        { SDLK_SPACE, { "SPACE", STR_SHORTCUT_SPACEBAR } },
-        { SDLK_TAB, { "TAB", STR_SHORTCUT_TAB } },
-        { SDLK_RETURN, { "RETURN", STR_SHORTCUT_RETURN } },
-        { SDLK_PAGEUP, { "PAGE UP", STR_SHORTCUT_PGUP } },
-        { SDLK_PAGEDOWN, { "PAGE DOWN", STR_SHORTCUT_PGDN } },
-        { SDLK_INSERT, { "INSERT", STR_SHORTCUT_INSERT } },
-        { SDLK_DELETE, { "DELETE", STR_SHORTCUT_DELETE } },
-        { SDLK_KP_DIVIDE, { "NUMPAD /", STR_SHORTCUT_NUMPAD_DIVIDE } },
-        { SDLK_KP_MULTIPLY, { "NUMPAD *", STR_SHORTCUT_NUMPAD_MULTIPLY } },
-        { SDLK_KP_MINUS, { "NUMPAD -", STR_SHORTCUT_NUMPAD_MINUS } },
-        { SDLK_KP_PLUS, { "NUMPAD +", STR_SHORTCUT_NUMPAD_PLUS } },
-        { SDLK_KP_ENTER, { "NUMPAD ENTER", STR_SHORTCUT_NUMPAD_RETURN } },
-        { SDLK_KP_1, { "NUMPAD 1", STR_SHORTCUT_NUMPAD_1 } },
-        { SDLK_KP_2, { "NUMPAD 2", STR_SHORTCUT_NUMPAD_2 } },
-        { SDLK_KP_3, { "NUMPAD 3", STR_SHORTCUT_NUMPAD_3 } },
-        { SDLK_KP_4, { "NUMPAD 4", STR_SHORTCUT_NUMPAD_4 } },
-        { SDLK_KP_5, { "NUMPAD 5", STR_SHORTCUT_NUMPAD_5 } },
-        { SDLK_KP_6, { "NUMPAD 6", STR_SHORTCUT_NUMPAD_6 } },
-        { SDLK_KP_7, { "NUMPAD 7", STR_SHORTCUT_NUMPAD_7 } },
-        { SDLK_KP_8, { "NUMPAD 8", STR_SHORTCUT_NUMPAD_8 } },
-        { SDLK_KP_9, { "NUMPAD 9", STR_SHORTCUT_NUMPAD_9 } },
-        { SDLK_KP_0, { "NUMPAD 0", STR_SHORTCUT_NUMPAD_0 } },
-        { SDLK_KP_PERIOD, { "NUMPAD .", STR_SHORTCUT_NUMPAD_PERIOD } },
-        { SDLK_CAPSLOCK, { "CAPSLOCK", STR_SHORTCUT_NUMPAD_PERIOD } },
+    static std::unordered_map<uint32_t, rct_string_id> keys{
+        { SDLK_LEFT, STR_SHORTCUT_LEFT },
+        { SDLK_RIGHT, STR_SHORTCUT_RIGHT },
+        { SDLK_UP, STR_SHORTCUT_UP },
+        { SDLK_DOWN, STR_SHORTCUT_DOWN },
+        { SDLK_BACKSPACE, STR_SHORTCUT_BACKSPACE },
+        { SDLK_ESCAPE, STR_SHORTCUT_ESCAPE },
+        { SDLK_SPACE, STR_SHORTCUT_SPACEBAR },
+        { SDLK_TAB, STR_SHORTCUT_TAB },
+        { SDLK_RETURN, STR_SHORTCUT_RETURN },
+        { SDLK_PAGEUP, STR_SHORTCUT_PGUP },
+        { SDLK_PAGEDOWN, STR_SHORTCUT_PGDN },
+        { SDLK_INSERT, STR_SHORTCUT_INSERT },
+        { SDLK_DELETE, STR_SHORTCUT_DELETE },
+        { SDLK_KP_DIVIDE, STR_SHORTCUT_NUMPAD_DIVIDE },
+        { SDLK_KP_MULTIPLY, STR_SHORTCUT_NUMPAD_MULTIPLY },
+        { SDLK_KP_MINUS, STR_SHORTCUT_NUMPAD_MINUS },
+        { SDLK_KP_PLUS, STR_SHORTCUT_NUMPAD_PLUS },
+        { SDLK_KP_ENTER, STR_SHORTCUT_NUMPAD_RETURN },
+        { SDLK_KP_1, STR_SHORTCUT_NUMPAD_1 },
+        { SDLK_KP_2, STR_SHORTCUT_NUMPAD_2 },
+        { SDLK_KP_3, STR_SHORTCUT_NUMPAD_3 },
+        { SDLK_KP_4, STR_SHORTCUT_NUMPAD_4 },
+        { SDLK_KP_5, STR_SHORTCUT_NUMPAD_5 },
+        { SDLK_KP_6, STR_SHORTCUT_NUMPAD_6 },
+        { SDLK_KP_7, STR_SHORTCUT_NUMPAD_7 },
+        { SDLK_KP_8, STR_SHORTCUT_NUMPAD_8 },
+        { SDLK_KP_9, STR_SHORTCUT_NUMPAD_9 },
+        { SDLK_KP_0, STR_SHORTCUT_NUMPAD_0 },
+        { SDLK_KP_PERIOD, STR_SHORTCUT_NUMPAD_PERIOD },
+        { SDLK_CAPSLOCK, STR_SHORTCUT_NUMPAD_PERIOD },
     };
 
     auto r = keys.find(key);
     if (r != keys.end())
     {
-        if (localised && r->second.second != STR_NONE)
-        {
-            return language_get_string(r->second.second);
-        }
-        else
-        {
-            return r->second.first;
-        }
+        return language_get_string(r->second);
     }
     else
     {
@@ -295,23 +288,21 @@ std::string ShortcutInput::ToString(bool localised) const
     {
         if (Button != 0)
         {
-            auto text = GetKeyName(Button, localised);
-            if (text.empty())
+            if (localised)
             {
-                if (Button & SDLK_SCANCODE_MASK)
+                auto name = GetLocalisedKeyName(Button);
+                if (!name.empty())
                 {
-                    auto name = SDL_GetKeyName(Button);
-                    // auto name = SDL_GetScancodeName(static_cast<SDL_Scancode>(Button & ~SDLK_SCANCODE_MASK));
                     result += name;
                 }
                 else
                 {
-                    String::AppendCodepoint(result, std::toupper(Button));
+                    result += SDL_GetKeyName(Button);
                 }
             }
             else
             {
-                result += text;
+                result += SDL_GetKeyName(Button);
             }
         }
     }

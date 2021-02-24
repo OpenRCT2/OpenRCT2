@@ -131,8 +131,10 @@ RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
 
 void ShortcutManager::RemoveShortcut(std::string_view id)
 {
-    Shortcuts.erase(std::remove_if(
-        Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& shortcut) { return shortcut.Id == id; }));
+    Shortcuts.erase(
+        std::remove_if(
+            Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& shortcut) { return shortcut.Id == id; }),
+        Shortcuts.end());
 }
 
 bool ShortcutManager::IsPendingShortcutChange() const
