@@ -69,7 +69,7 @@ Vehicle* cable_lift_segment_create(
 
     z = z * COORDS_Z_STEP;
     current->TrackLocation = { x, y, z };
-    z += RideTypeDescriptors[ride.type].Heights.VehicleZOffset;
+    z += ride.GetRideTypeDescriptor().Heights.VehicleZOffset;
 
     current->MoveTo({ 16, 16, z });
     current->SetTrackType(TrackElemType::CableLiftHill);

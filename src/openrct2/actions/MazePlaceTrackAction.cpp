@@ -115,7 +115,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Query() const
         return res;
     }
 
-    money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
     res->Cost = clearCost + price / 2 * 10;
 
     return res;
@@ -163,7 +163,7 @@ GameActions::Result::Ptr MazePlaceTrackAction::Execute() const
             GameActions::Status::NoClearance, res->ErrorTitle.GetStringId(), gGameCommandErrorText, gCommonFormatArgs);
     }
 
-    money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
     res->Cost = clearCost + price / 2 * 10;
 
     auto startLoc = _loc.ToTileStart();

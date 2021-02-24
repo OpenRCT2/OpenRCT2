@@ -1939,13 +1939,13 @@ int32_t ride_initialise_construction_window(Ride* ride)
     if (ride == nullptr)
         return 0;
 
-    _currentTrackCurve = RideTypeDescriptors[ride->type].StartTrackPiece | RideConstructionSpecialPieceSelected;
+    _currentTrackCurve = ride->GetRideTypeDescriptor().StartTrackPiece | RideConstructionSpecialPieceSelected;
     _currentTrackSlopeEnd = 0;
     _currentTrackBankEnd = 0;
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
+    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackBankEnd = 0;
@@ -2274,7 +2274,7 @@ static void ride_inspection_update(Ride* ride)
         return;
     }
 
-    if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
+    if (ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
         return;
 
     if (inspectionIntervalMinutes > ride->last_inspection)
@@ -2396,7 +2396,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
     if (!ride->CanBreakDown())
         return -1;
 
-    availableBreakdownProblems = RideTypeDescriptors[ride->type].AvailableBreakdowns;
+    availableBreakdownProblems = ride->GetRideTypeDescriptor().AvailableBreakdowns;
 
     // Calculate the total probability range for all possible breakdown problems
     totalProbability = 0;
@@ -2623,7 +2623,7 @@ static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus)
             }
             break;
         case RIDE_MECHANIC_STATUS_CALLING:
-            if (RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
+            if (ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
             {
                 ride->lifecycle_flags &= ~(
                     RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_DUE_INSPECTION);
@@ -2808,8 +2808,8 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
-    if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
-        && !(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
+        && !(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
         return;
     }
@@ -3372,7 +3372,7 @@ static void ride_station_set_map_tooltip(TileElement* tileElement)
         ft.Add<rct_string_id>(STR_RIDE_MAP_TIP);
         ft.Add<rct_string_id>(ride->num_stations <= 1 ? STR_RIDE_STATION : STR_RIDE_STATION_X);
         ride->FormatNameTo(ft);
-        ft.Add<rct_string_id>(GetRideComponentName(RideTypeDescriptors[ride->type].NameConvention.station).capitalised);
+        ft.Add<rct_string_id>(GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station).capitalised);
         ft.Add<uint16_t>(stationIndex + 1);
         ride->FormatStatusTo(ft);
         auto intent = Intent(INTENT_ACTION_SET_MAP_TOOLTIP);
@@ -4153,7 +4153,7 @@ static Vehicle* vehicle_create_car(
         vehicle->TrackLocation = dodgemPos;
         vehicle->current_station = trackElement->GetStationIndex();
 
-        dodgemPos.z += RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
+        dodgemPos.z += ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
 
         vehicle->SetTrackDirection(0);
         vehicle->SetTrackType(trackElement->GetTrackType());
@@ -4223,9 +4223,9 @@ static Vehicle* vehicle_create_car(
         {
             if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
             {
-                if (RideTypeDescriptors[ride->type].StartTrackPiece != TrackElemType::FlatTrack1x4B)
+                if (ride->GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4B)
                 {
-                    if (RideTypeDescriptors[ride->type].StartTrackPiece != TrackElemType::FlatTrack1x4A)
+                    if (ride->GetRideTypeDescriptor().StartTrackPiece != TrackElemType::FlatTrack1x4A)
                     {
                         if (ride->type == RIDE_TYPE_ENTERPRISE)
                         {
@@ -4240,7 +4240,7 @@ static Vehicle* vehicle_create_car(
             }
         }
 
-        chosenLoc += CoordsXYZ{ word_9A2A60[direction], RideTypeDescriptors[ride->type].Heights.VehicleZOffset };
+        chosenLoc += CoordsXYZ{ word_9A2A60[direction], ride->GetRideTypeDescriptor().Heights.VehicleZOffset };
 
         vehicle->current_station = trackElement->GetStationIndex();
 

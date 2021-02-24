@@ -563,7 +563,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue;
+        suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
     }
 
     // If difficult guest generation, extra guests are available for good rides
@@ -588,7 +588,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue * 2;
+            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue * 2;
         }
     }
 

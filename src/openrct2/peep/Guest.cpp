@@ -1710,7 +1710,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
     {
         // Peeps that are leaving the park will refuse to go on any rides, with the exception of free transport rides.
         assert(ride->type < std::size(RideTypeDescriptors));
-        if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
+        if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ride_get_price(ride) != 0)
         {
             if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -1776,7 +1776,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
         // Assuming the queue conditions are met, peeps will always go on free transport rides.
         // Ride ratings, recent crashes and weather will all be ignored.
         money16 ridePrice = ride_get_price(ride);
-        if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
+        if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_TRANSPORT_RIDE) || ride->value == RIDE_VALUE_UNDEFINED
             || ridePrice != 0)
         {
             if (PreviousRide == ride->id)
@@ -1908,7 +1908,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
 
             // If the ride has not yet been rated and is capable of having g-forces,
             // there's a 90% chance that the peep will ignore it.
-            if (!ride_has_ratings(ride) && (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
+            if (!ride_has_ratings(ride) && (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES))
             {
                 if ((scenario_rand() & 0xFFFF) > 0x1999U)
                 {
@@ -3421,7 +3421,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         distanceThreshold += 4;
         if (xy_distance < distanceThreshold)
         {
-            actionZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            actionZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, actionZ });
@@ -3534,7 +3534,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
  */
 static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, int16_t z, uint8_t exit_direction)
 {
-    z += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+    z += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
 
     peep->MoveTo({ x, y, z });
 
@@ -4003,7 +4003,7 @@ void Guest::UpdateRideLeaveVehicle()
     Guard::Assert(!exitLocation.isNull());
 
     auto waypointLoc = CoordsXYZ{ ride->stations[CurrentRideStation].Start.ToTileCentre(),
-                                  exitLocation.z + RideTypeDescriptors[ride->type].Heights.PlatformHeight };
+                                  exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, CurrentRideStation);
 
@@ -4123,7 +4123,7 @@ void Guest::UpdateRideInExit()
         {
             int16_t actionZ = ride->stations[CurrentRideStation].GetBaseZ();
 
-            actionZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            actionZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
             MoveTo({ *loc, actionZ });
             return;
         }
@@ -4134,7 +4134,7 @@ void Guest::UpdateRideInExit()
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
     {
-        ShopItem secondaryItem = RideTypeDescriptors[ride->type].PhotoItem;
+        ShopItem secondaryItem = ride->GetRideTypeDescriptor().PhotoItem;
         if (DecideAndBuyItem(ride, secondaryItem, ride->price[1]))
         {
             ride->no_secondary_items_sold++;
@@ -5948,14 +5948,14 @@ static bool peep_should_watch_ride(TileElement* tileElement)
         return true;
     }
 
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT)
+    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_INTERESTING_TO_LOOK_AT)
     {
         if ((scenario_rand() & 0xFFFF) > 0x3333)
         {
             return false;
         }
     }
-    else if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT)
+    else if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_SLIGHTLY_INTERESTING_TO_LOOK_AT)
     {
         if ((scenario_rand() & 0xFFFF) > 0x1000)
         {

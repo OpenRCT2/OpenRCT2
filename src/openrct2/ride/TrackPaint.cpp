@@ -2157,7 +2157,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
             session->InteractionType = ViewportInteractionItem::None;
             if (TrackHeightMarkerPositions[trackType] & (1 << trackSequence))
             {
-                uint16_t ax = RideTypeDescriptors[ride->type].Heights.VehicleZOffset;
+                uint16_t ax = ride->GetRideTypeDescriptor().Heights.VehicleZOffset;
                 // 0x1689 represents 0 height there are -127 to 128 heights above and below it
                 // There are 3 arrays of 256 heights (units, m, ft) chosen with the get_height_marker_offset()
                 uint32_t imageId = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_LIGHT_BLUE) | (0x1689 + get_height_marker_offset());
@@ -2194,7 +2194,7 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
         {
             return;
         }
-        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeDescriptors[ride->type].TrackPaintFunction;
+        TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = ride->GetRideTypeDescriptor().TrackPaintFunction;
         if (paintFunctionGetter != nullptr)
         {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);

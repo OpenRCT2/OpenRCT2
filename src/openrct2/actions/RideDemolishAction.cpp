@@ -87,7 +87,7 @@ GameActions::Result::Ptr RideDemolishAction::Query() const
         }
 
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-            || RideTypeDescriptors[ride->type].AvailableBreakdowns == 0)
+            || ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
         {
             return std::make_unique<GameActions::Result>(
                 GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);

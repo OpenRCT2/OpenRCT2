@@ -226,7 +226,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         if (trackElement.element->AsTrack()->HasChain())
             trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
-        if (RideTypeDescriptors[ride.type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE
+        if (ride.GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE
             && trackElement.element->AsTrack()->IsInverted())
         {
             trackFlags |= TD6_TRACK_ELEMENT_FLAG_INVERTED;

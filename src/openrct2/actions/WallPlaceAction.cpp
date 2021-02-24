@@ -456,7 +456,7 @@ bool WallPlaceAction::WallCheckObstructionWithTrack(
         return false;
     }
 
-    if (!(RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
+    if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_ALLOW_DOORS_ON_TRACK))
     {
         return false;
     }

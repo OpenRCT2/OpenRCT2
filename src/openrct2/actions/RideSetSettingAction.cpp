@@ -239,13 +239,13 @@ GameActions::Result::Ptr RideSetSettingAction::Execute() const
 
 bool RideSetSettingAction::ride_is_mode_valid(Ride* ride) const
 {
-    return RideTypeDescriptors[ride->type].RideModes & (1ULL << _value);
+    return ride->GetRideTypeDescriptor().RideModes & (1ULL << _value);
 }
 
 bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const
 {
-    int32_t minSpeed = gCheatsFastLiftHill ? 0 : RideTypeDescriptors[ride->type].LiftData.minimum_speed;
-    int32_t maxSpeed = gCheatsFastLiftHill ? 255 : RideTypeDescriptors[ride->type].LiftData.maximum_speed;
+    int32_t minSpeed = gCheatsFastLiftHill ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
+    int32_t maxSpeed = gCheatsFastLiftHill ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
     return _value >= minSpeed && _value <= maxSpeed;
 }
 
@@ -258,7 +258,7 @@ bool RideSetSettingAction::ride_is_valid_num_circuits() const
 
 bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
 {
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     uint8_t minValue = operatingSettings.MinValue;
     uint8_t maxValue = operatingSettings.MaxValue;
     if (gCheatsFastLiftHill)
