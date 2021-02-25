@@ -3665,6 +3665,27 @@ STR_6408    :Bonvolu instali “innoextract” por eltiri la Instalilon GOG, tia
 STR_6409    :La elektita doserio ne estas la eksterreta GOG Instalilo de RollerCoaster Tycoon 2. Eble vi elŝutis la elŝutilon de GOG Galaxy, aŭ vi elektis malpravan doserion.
 STR_6410    :Zomi/malzomi
 STR_6411    :Montri butonojn por zomigi kaj malzomigi en la ilobreto
+STR_6412    :Enen-klavo de Nombra Klavaro
+STR_6413    :Majuskliga Klavo
+STR_6414    :Maldeks. Majuskliga Klavo
+STR_6415    :Deks. Majuskliga Klavo
+STR_6416    :Stirklavo
+STR_6417    :Maldeks. Stirklavo
+STR_6418    :Deks. Stirklavo
+STR_6419    :Alt-klavo
+STR_6420    :Maldeks. Alt-klavo
+STR_6421    :Deks. Alt-klavo
+STR_6422    :Komanda Klavo
+STR_6423    :Maldeks. Komanda Klavo
+STR_6424    :Deks. Komanda Klavo
+STR_6425    :Stirstango Maldekstren
+STR_6426    :Stirstango Dekstren
+STR_6427    :Stirstango Supren
+STR_6428    :Stirstango Malsupren
+STR_6429    :Stirstango {INT32}
+STR_6430    :Maldeks. Musbutono
+STR_6431    :Deks. Musbutono
+STR_6432    :Muso {INT32}
 
 #############
 # Scenarios #
