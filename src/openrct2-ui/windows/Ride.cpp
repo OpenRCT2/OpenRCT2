@@ -2535,7 +2535,7 @@ static rct_string_id window_ride_get_status_vehicle(rct_window* w, Formatter& ft
         return STR_EMPTY;
 
     auto stringId = VehicleStatusNames[static_cast<size_t>(vehicle->status)];
-    if ((ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SINGLE_SESSION)
         && vehicle->status <= Vehicle::Status::UnloadingPassengers)
     {
         stringId = SingleSessionVehicleStatusNames[static_cast<size_t>(vehicle->status)];
@@ -4655,7 +4655,7 @@ static void window_ride_colour_invalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_TRACK_PREVIEW].type = WindowWidgetType::Empty;
 
     // Entrance style
-    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
         window_ride_colour_widgets[WIDX_ENTRANCE_PREVIEW].type = WindowWidgetType::Spinner;
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE].type = WindowWidgetType::DropdownMenu;

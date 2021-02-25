@@ -988,7 +988,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         }
     }
 #else
-    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
     {
         int32_t excitementModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)

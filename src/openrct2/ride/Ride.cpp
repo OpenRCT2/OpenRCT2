@@ -1945,7 +1945,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
     _currentTrackLiftHill = 0;
     _currentTrackAlternative = RIDE_TYPE_NO_ALTERNATIVES;
 
-    if (ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_START_CONSTRUCTION_INVERTED))
         _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
 
     _previousTrackBankEnd = 0;
@@ -2808,8 +2808,8 @@ Staff* ride_get_assigned_mechanic(Ride* ride)
  */
 static void ride_music_update(Ride* ride)
 {
-    if (!(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
-        && !(ride->GetRideTypeDescriptor().Flags & RIDE_TYPE_FLAG_ALLOW_MUSIC))
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
         return;
     }
