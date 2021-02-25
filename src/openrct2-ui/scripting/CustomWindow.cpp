@@ -77,7 +77,6 @@ namespace OpenRCT2::Ui::Windows
         bool IsDisabled{};
         bool IsVisible{};
         bool IsPressed{};
-        bool IsHoldable{};
         bool HasBorder{};
         bool ShowColumnHeaders{};
         bool IsStriped{};
@@ -181,7 +180,6 @@ namespace OpenRCT2::Ui::Windows
             }
             else if (result.Type == "spinner")
             {
-                result.IsHoldable = AsOrDefault(desc["isHoldable"], false);
                 result.Text = ProcessString(desc["text"]);
                 result.OnIncrement = desc["onIncrement"];
                 result.OnDecrement = desc["onDecrement"];
@@ -1123,8 +1121,7 @@ namespace OpenRCT2::Ui::Windows
                 widget.flags |= WIDGET_FLAGS::IS_ENABLED;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
-                if (desc.IsHoldable)
-                    widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
+                widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;
                 widgetList.push_back(widget);
 
                 // Add the increment button
