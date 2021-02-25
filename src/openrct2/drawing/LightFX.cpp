@@ -827,30 +827,23 @@ void lightfx_add_shop_lights(CoordsXY mapPosition, uint8_t direction, int32_t he
 {
     if (direction == (4 - get_current_rotation()) % 4) // Back Right Facing Stall
     {
-        CoordsXY spot_offset_1 = CoordsXY(-32, 8);
-        CoordsXY spot_offset_2 = CoordsXY(-32, 4);
-        spot_offset_1 = spot_offset_1.Rotate(direction);
-        spot_offset_2 = spot_offset_2.Rotate(direction);
+        CoordsXY spot_offset_1 = CoordsXY(-32, 8).Rotate(direction);
+        CoordsXY spot_offset_2 = CoordsXY(-32, 4).Rotate(direction);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_2.x, spot_offset_2.y, height, LightType::Spot2);
     }
     else if (direction == (7 - get_current_rotation()) % 4) // Back left Facing Stall
     {
-        CoordsXY spot_offset_1 = CoordsXY(-32, -8);
-        CoordsXY spot_offset_2 = CoordsXY(-32, -4);
-        spot_offset_1 = spot_offset_1.Rotate(direction);
-        spot_offset_2 = spot_offset_2.Rotate(direction);
+        CoordsXY spot_offset_1 = CoordsXY(-32, -8).Rotate(direction);
+        CoordsXY spot_offset_2 = CoordsXY(-32, -4).Rotate(direction);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_2.x, spot_offset_2.y, height, LightType::Spot2);
     }
     else // Forward Facing Stall
     {
-        CoordsXY spot_offset_1 = CoordsXY(-32, 8);
-        CoordsXY spot_offset_2 = CoordsXY(-32, -8);
-        CoordsXY lantern_offset = CoordsXY(-16, 0);
-        lantern_offset = lantern_offset.Rotate(direction);
-        spot_offset_1 = spot_offset_1.Rotate(direction);
-        spot_offset_2 = spot_offset_2.Rotate(direction);
+        CoordsXY spot_offset_1 = CoordsXY(-32, 8).Rotate(direction);
+        CoordsXY spot_offset_2 = CoordsXY(-32, -8).Rotate(direction);
+        CoordsXY lantern_offset = CoordsXY(-16, 0).Rotate(direction);
         lightfx_add_3d_light_magic_from_drawing_tile(
             mapPosition, lantern_offset.x, lantern_offset.y, height + zOffset, LightType::Lantern3);
         lightfx_add_3d_light_magic_from_drawing_tile(mapPosition, spot_offset_1.x, spot_offset_1.y, height, LightType::Spot1);
