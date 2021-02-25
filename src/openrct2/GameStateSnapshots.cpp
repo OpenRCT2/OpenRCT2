@@ -11,6 +11,7 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "world/EntityList.h"
 #include "world/Sprite.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;
@@ -145,7 +146,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_SPRITES, true);
+            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -171,7 +172,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<rct_sprite> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<rct_sprite> spriteList;
-        spriteList.resize(MAX_SPRITES);
+        spriteList.resize(MAX_ENTITIES);
 
         for (auto& sprite : spriteList)
         {
@@ -179,7 +180,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             sprite.misc.sprite_identifier = SpriteIdentifier::Null;
         }
 
-        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_SPRITES, false);
+        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_ENTITIES, false);
 
         return spriteList;
     }

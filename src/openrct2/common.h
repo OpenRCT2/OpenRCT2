@@ -145,6 +145,8 @@ using money64 = fixed64_1dp;
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;
 
+constexpr uint16_t SPRITE_INDEX_NULL = 0xFFFF;
+
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \
     {                                                                                                                          \

@@ -170,7 +170,7 @@ template<> bool SpriteBase::Is<Vehicle>() const
 
 SpriteBase* get_sprite(size_t sprite_idx)
 {
-    assert(sprite_idx < MAX_SPRITES);
+    assert(sprite_idx < MAX_ENTITIES);
     return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
 }
 

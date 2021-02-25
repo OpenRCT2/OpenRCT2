@@ -25,6 +25,7 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "Colour.h"

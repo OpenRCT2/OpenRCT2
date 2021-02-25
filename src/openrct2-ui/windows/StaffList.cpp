@@ -25,6 +25,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Sprite.h>

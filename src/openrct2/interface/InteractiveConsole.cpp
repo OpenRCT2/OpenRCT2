@@ -46,6 +46,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
@@ -1265,7 +1266,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
         }
     }
 
-    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_SPRITES);
+    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
@@ -1588,7 +1589,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
 
     std::vector<Peep*> peeps;
 
-    for (int i = 0; i < MAX_SPRITES; i++)
+    for (int i = 0; i < MAX_ENTITIES; i++)
     {
         auto* sprite = GetEntity(i);
         if (sprite == nullptr || sprite->sprite_identifier == SpriteIdentifier::Null)

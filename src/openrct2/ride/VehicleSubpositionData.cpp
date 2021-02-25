@@ -9,6 +9,8 @@
 
 #include "VehicleSubpositionData.h"
 
+#include "Vehicle.h"
+
 #define CREATE_VEHICLE_INFO(VAR, ...)                                                                                          \
     static constexpr const rct_vehicle_info VAR##_data[] = __VA_ARGS__;                                                        \
     static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16_t>(std::size(VAR##_data)), VAR##_data };

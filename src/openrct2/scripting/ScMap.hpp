@@ -13,6 +13,7 @@
 
 #    include "../common.h"
 #    include "../ride/Ride.h"
+#    include "../world/EntityList.h"
 #    include "../world/Map.h"
 #    include "Duktape.hpp"
 #    include "ScEntity.hpp"
@@ -50,7 +51,7 @@ namespace OpenRCT2::Scripting
 
         int32_t numEntities_get() const
         {
-            return MAX_SPRITES;
+            return MAX_ENTITIES;
         }
 
         std::vector<std::shared_ptr<ScRide>> rides_get() const
@@ -83,7 +84,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getEntity(int32_t id) const
         {
-            if (id >= 0 && id < MAX_SPRITES)
+            if (id >= 0 && id < MAX_ENTITIES)
             {
                 auto spriteId = static_cast<uint16_t>(id);
                 auto sprite = GetEntity(spriteId);

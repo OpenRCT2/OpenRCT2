@@ -26,6 +26,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>

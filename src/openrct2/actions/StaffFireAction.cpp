@@ -11,6 +11,7 @@
 
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
+#include "../world/Entity.h"
 
 StaffFireAction::StaffFireAction(uint16_t spriteId)
     : _spriteId(spriteId)
@@ -30,7 +31,7 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr StaffFireAction::Query() const
 {
-    if (_spriteId >= MAX_SPRITES)
+    if (_spriteId >= MAX_ENTITIES)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);

@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../world/Entity.h"
 
 GuestSetFlagsAction::GuestSetFlagsAction(uint16_t peepId, uint32_t flags)
     : _peepId(peepId)

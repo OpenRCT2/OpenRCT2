@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../peep/Staff.h"
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(StaffSetCostumeAction, GameCommand::SetStaffCostume, GameActions::Result)

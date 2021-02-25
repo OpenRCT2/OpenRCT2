@@ -13,13 +13,9 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
+#include "Entity.h"
 #include "Fountain.h"
 #include "SpriteBase.h"
-
-#include <list>
-
-#define SPRITE_INDEX_NULL 0xFFFF
-#define MAX_SPRITES 10000
 
 enum class SpriteIdentifier : uint8_t
 {
@@ -28,17 +24,6 @@ enum class SpriteIdentifier : uint8_t
     Misc = 2,
     Litter = 3,
     Null = 255
-};
-
-enum class EntityListId : uint8_t
-{
-    Free,
-    TrainHead,
-    Peep,
-    Misc,
-    Litter,
-    Vehicle,
-    Count,
 };
 
 enum LitterType : uint8_t;
@@ -213,23 +198,6 @@ enum LitterType : uint8_t
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
-SpriteBase* try_get_sprite(size_t spriteIndex);
-SpriteBase* get_sprite(size_t sprite_idx);
-template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx)
-{
-    auto spr = get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
-
-template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
-{
-    auto spr = try_get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
-
-uint16_t GetEntityListCount(EntityListId list);
-uint16_t GetNumFreeEntities();
-
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
@@ -237,7 +205,6 @@ extern const rct_string_id litterNames[12];
 
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier);
 rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex);
-void RebuildEntityLists();
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
@@ -249,7 +216,6 @@ void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
-const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
 
 ///////////////////////////////////////////////////////////////
 // Balloon
@@ -274,209 +240,6 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-
-const std::list<uint16_t>& GetEntityList(const EntityListId id);
-
-template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
-{
-private:
-    T* Entity = nullptr;
-    uint16_t NextEntityId = SPRITE_INDEX_NULL;
-
-public:
-    EntityIterator(const uint16_t _EntityId)
-        : NextEntityId(_EntityId)
-    {
-        ++(*this);
-    }
-    EntityIterator& operator++()
-    {
-        Entity = nullptr;
-
-        while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
-        {
-            auto baseEntity = GetEntity(NextEntityId);
-            if (!baseEntity)
-            {
-                NextEntityId = SPRITE_INDEX_NULL;
-                continue;
-            }
-            NextEntityId = baseEntity->*NextList;
-            Entity = baseEntity->template As<T>();
-        }
-        return *this;
-    }
-
-    EntityIterator operator++(int)
-    {
-        EntityIterator retval = *this;
-        ++(*this);
-        return retval;
-    }
-    bool operator==(EntityIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
-
-template<typename T> class EntityTileIterator
-{
-private:
-    std::vector<uint16_t>::const_iterator iter;
-    std::vector<uint16_t>::const_iterator end;
-    T* Entity = nullptr;
-
-public:
-    EntityTileIterator(std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
-        : iter(_iter)
-        , end(_end)
-    {
-        ++(*this);
-    }
-    EntityTileIterator& operator++()
-    {
-        Entity = nullptr;
-
-        while (iter != end && Entity == nullptr)
-        {
-            Entity = GetEntity<T>(*iter++);
-        }
-        return *this;
-    }
-
-    EntityTileIterator operator++(int)
-    {
-        EntityTileIterator retval = *this;
-        ++(*this);
-        return *iter;
-    }
-    bool operator==(EntityTileIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityTileIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
-
-template<typename T = SpriteBase> class EntityTileList
-{
-private:
-    const std::vector<uint16_t>& vec;
-
-public:
-    EntityTileList(const CoordsXY& loc)
-        : vec(GetEntityTileList(loc))
-    {
-    }
-
-    EntityTileIterator<T> begin()
-    {
-        return EntityTileIterator<T>(std::begin(vec), std::end(vec));
-    }
-    EntityTileIterator<T> end()
-    {
-        return EntityTileIterator<T>(std::end(vec), std::end(vec));
-    }
-};
-
-template<typename T> class EntityListIterator
-{
-private:
-    std::list<uint16_t>::const_iterator iter;
-    std::list<uint16_t>::const_iterator end;
-    T* Entity = nullptr;
-
-public:
-    EntityListIterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
-        : iter(_iter)
-        , end(_end)
-    {
-        ++(*this);
-    }
-    EntityListIterator& operator++()
-    {
-        Entity = nullptr;
-
-        while (iter != end && Entity == nullptr)
-        {
-            Entity = GetEntity<T>(*iter++);
-        }
-        return *this;
-    }
-
-    EntityListIterator operator++(int)
-    {
-        EntityListIterator retval = *this;
-        ++(*this);
-        return *iter;
-    }
-    bool operator==(EntityListIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityListIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
-
-template<typename T = SpriteBase> class EntityList
-{
-private:
-    using EntityListIterator_t = EntityListIterator<T>;
-    const std::list<uint16_t>& vec;
-
-public:
-    EntityList(EntityListId type)
-        : vec(GetEntityList(type))
-    {
-    }
-
-    EntityListIterator_t begin()
-    {
-        return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
-    }
-    EntityListIterator_t end()
-    {
-        return EntityListIterator_t(std::cend(vec), std::cend(vec));
-    }
-};
 
 class EntityTweener
 {

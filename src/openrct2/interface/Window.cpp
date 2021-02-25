@@ -2141,7 +2141,7 @@ void window_init_all()
 
 void window_follow_sprite(rct_window* w, size_t spriteIndex)
 {
-    if (spriteIndex < MAX_SPRITES || spriteIndex == SPRITE_INDEX_NULL)
+    if (spriteIndex < MAX_ENTITIES || spriteIndex == SPRITE_INDEX_NULL)
     {
         w->viewport_smart_follow_sprite = static_cast<uint16_t>(spriteIndex);
     }

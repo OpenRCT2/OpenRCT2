@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(StaffSetPatrolAreaAction, GameCommand::SetStaffPatrol, GameActions::Result)

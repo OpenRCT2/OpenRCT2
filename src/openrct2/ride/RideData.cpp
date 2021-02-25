@@ -28,6 +28,7 @@
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
+#include "Vehicle.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"

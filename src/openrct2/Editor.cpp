@@ -38,6 +38,7 @@
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <array>
@@ -309,7 +310,7 @@ namespace Editor
         ride_init_all();
 
         //
-        for (int32_t i = 0; i < MAX_SPRITES; i++)
+        for (int32_t i = 0; i < MAX_ENTITIES; i++)
         {
             auto peep = GetEntity<Peep>(i);
             if (peep != nullptr)

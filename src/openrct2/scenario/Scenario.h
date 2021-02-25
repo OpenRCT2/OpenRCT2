@@ -21,9 +21,9 @@
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
-#include "../world/Sprite.h"
 
 using random_engine_t = Random::Rct2::Engine;
 

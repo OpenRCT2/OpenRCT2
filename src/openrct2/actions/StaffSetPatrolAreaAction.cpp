@@ -12,6 +12,7 @@
 #include "../interface/Window.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
+#include "../world/Entity.h"
 
 StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc)
     : _spriteId(spriteId)
@@ -32,7 +33,7 @@ void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
 {
-    if (_spriteId >= MAX_SPRITES)
+    if (_spriteId >= MAX_ENTITIES)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);

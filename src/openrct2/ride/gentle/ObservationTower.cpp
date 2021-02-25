@@ -14,6 +14,7 @@
 #include "../../world/Map.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
+#include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
 enum

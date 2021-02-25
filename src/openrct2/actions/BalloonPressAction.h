@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 DEFINE_GAME_ACTION(BalloonPressAction, GameCommand::BalloonPress, GameActions::Result)

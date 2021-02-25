@@ -50,6 +50,7 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
+#include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "RCT1.h"
@@ -1355,7 +1356,7 @@ private:
                 ImportPeep(peep, srcPeep);
             }
         }
-        for (size_t i = 0; i < MAX_SPRITES; i++)
+        for (size_t i = 0; i < MAX_ENTITIES; i++)
         {
             auto vehicle = GetEntity<Vehicle>(i);
             if (vehicle != nullptr)

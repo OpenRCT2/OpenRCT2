@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../peep/Staff.h"
-#include "../world/Sprite.h"
 #include "GameAction.h"
 
 /* rct2: 0x009929FC */

@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include "../world/Sprite.h"
 #include "Window.h"
 
 #include <list>

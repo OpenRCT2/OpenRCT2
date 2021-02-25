@@ -23,8 +23,10 @@ namespace OpenRCT2
     struct IStream;
 }
 
+struct Litter;
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
+union rct_sprite;
 struct SpriteBase;
 
 /**

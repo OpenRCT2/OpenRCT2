@@ -64,6 +64,7 @@
 #include "ui/WindowManager.h"
 #include "util/Util.h"
 #include "world/Park.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <cmath>

@@ -36,6 +36,7 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <chrono>
