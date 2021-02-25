@@ -2176,9 +2176,9 @@ void track_paint(paint_session* session, Direction direction, int32_t height, co
                 zOffset = 23;
 
             if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
-                lightfx_add_kiosk_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+                LightFxAddKioskLights(session->MapPosition, height, zOffset);
             else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
-                lightfx_add_shop_lights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
+                LightFxAddShopLights(session->MapPosition, tileElement->GetDirection(), height, zOffset);
         }
 #endif
 
