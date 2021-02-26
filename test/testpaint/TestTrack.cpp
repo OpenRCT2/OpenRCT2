@@ -86,7 +86,7 @@ class ChainLiftFilter : public ITestTrackFilter
 public:
     bool AppliesTo(uint8_t rideType, uint8_t trackType) override
     {
-        return !ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE);
+        return !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
     }
 
     int Variations(uint8_t rideType, uint8_t trackType) override

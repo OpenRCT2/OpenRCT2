@@ -949,7 +949,7 @@ static void window_new_ride_paint_ride_information(
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
-        if (!ride_type_has_flag(item.Type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
         ft = Formatter();

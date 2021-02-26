@@ -231,7 +231,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
     {
         if (selectionShouldBeExpanded)
         {
-            if (ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
                 continue;
             if (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF)
                 continue;

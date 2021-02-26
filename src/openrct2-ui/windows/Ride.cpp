@@ -2107,7 +2107,7 @@ static void populate_vehicle_type_dropdown(Ride* ride)
 
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
-        if (selectionShouldBeExpanded && ride_type_has_flag(rideTypeIterator, RIDE_TYPE_FLAG_FLAT_RIDE))
+        if (selectionShouldBeExpanded && GetRideTypeDescriptor(rideTypeIterator).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             continue;
         if (selectionShouldBeExpanded && (rideTypeIterator == RIDE_TYPE_MAZE || rideTypeIterator == RIDE_TYPE_MINI_GOLF))
             continue;

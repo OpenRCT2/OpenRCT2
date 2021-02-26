@@ -60,7 +60,7 @@ static void setup_track_manager_objects()
 
             for (auto rideType : item->RideInfo.RideType)
             {
-                if (rideType != RIDE_TYPE_NULL && ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_TRACK))
+                if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 {
                     *selectionFlags &= ~OBJECT_SELECTION_FLAG_6;
                     break;

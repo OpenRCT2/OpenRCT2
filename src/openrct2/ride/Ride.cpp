@@ -5351,19 +5351,6 @@ RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry)
     }
 }
 
-bool ride_type_has_flag(int32_t rideType, uint64_t flag)
-{
-    if (rideType < static_cast<int32_t>(std::size(RideTypeDescriptors)))
-    {
-        return (RideTypeDescriptors[rideType].Flags & flag) != 0;
-    }
-    else
-    {
-        Guard::Assert(false);
-        return false;
-    }
-}
-
 /*
  * The next eight functions are helpers to access ride data at the offset 10E &
  * 110. Known as the turn counts. There are 3 different types (default, banked, sloped)
@@ -7333,10 +7320,7 @@ uint64_t Ride::GetAvailableModes() const
 
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
-    if (type >= std::size(RideTypeDescriptors))
-        return DummyRTD;
-
-    return RideTypeDescriptors[type];
+    return ::GetRideTypeDescriptor(type);
 }
 
 uint8_t Ride::GetMinCarsPerTrain() const

@@ -1188,7 +1188,7 @@ static void window_ride_construction_resize(rct_window* w)
             disabledWidgets |= (1ULL << WIDX_CONSTRUCT);
         }
     }
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
     {
         disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
     }
@@ -2772,7 +2772,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     int32_t rideType = ride_get_alternative_type(ride);
 
     w->hold_down_widgets = 0;
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
     {
         window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
         window_ride_construction_widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
@@ -2803,7 +2803,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
         window_ride_construction_widgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
     }
 
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
     {
         window_ride_construction_widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
         window_ride_construction_widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
@@ -3047,7 +3047,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
         }
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
             if (rideType == RIDE_TYPE_WATER_COASTER)
             {
@@ -3150,7 +3150,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
     window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
     window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
     window_ride_construction_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
         window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
         window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
@@ -3249,7 +3249,7 @@ static void window_ride_construction_update_widgets(rct_window* w)
 
     if (!_currentlyShowingBrakeOrBoosterSpeed)
     {
-        if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
             if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
             {
