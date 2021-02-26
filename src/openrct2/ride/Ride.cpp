@@ -397,7 +397,7 @@ money32 Ride::CalculateIncomePerHour() const
         priceMinusCost -= GetShopItemDescriptor(currentShopItem).Cost;
     }
 
-    currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? ::GetRideTypeDescriptor(type).PhotoItem
+    currentShopItem = (lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) ? GetRideTypeDescriptor().PhotoItem
                                                                        : entry->shop_item[1];
 
     if (currentShopItem != ShopItem::None)
@@ -877,7 +877,7 @@ int32_t ride_get_total_time(Ride* ride)
 
 bool Ride::CanHaveMultipleCircuits() const
 {
-    if (!(::GetRideTypeDescriptor(type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
+    if (!(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
         return false;
 
     // Only allow circuit or launch modes
@@ -2445,7 +2445,7 @@ static int32_t ride_get_new_breakdown_problem(Ride* ride)
 
 bool Ride::CanBreakDown() const
 {
-    if (::GetRideTypeDescriptor(type).AvailableBreakdowns == 0)
+    if (GetRideTypeDescriptor().AvailableBreakdowns == 0)
     {
         return false;
     }
@@ -3069,8 +3069,8 @@ std::pair<RideMeasurement*, OpenRCT2String> Ride::GetMeasurement()
     else
     {
         auto ft = Formatter();
-        ft.Add<rct_string_id>(GetRideComponentName(::GetRideTypeDescriptor(type).NameConvention.vehicle).singular);
-        ft.Add<rct_string_id>(GetRideComponentName(::GetRideTypeDescriptor(type).NameConvention.station).singular);
+        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.vehicle).singular);
+        ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor().NameConvention.station).singular);
         return { nullptr, { STR_DATA_LOGGING_WILL_START_WHEN_NEXT_LEAVES, ft } };
     }
 }
@@ -5076,7 +5076,7 @@ bool Ride::Open(bool isApplying)
         }
     }
 
-    if ((::GetRideTypeDescriptor(type).HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
+    if ((GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
         && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         if (!ride_create_cable_lift(id, isApplying))
@@ -5282,7 +5282,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type)
  */
 void Ride::SetColourPreset(uint8_t index)
 {
-    const track_colour_preset_list* colourPresets = &::GetRideTypeDescriptor(type).ColourPresets;
+    const track_colour_preset_list* colourPresets = &GetRideTypeDescriptor().ColourPresets;
     TrackColour colours = { COLOUR_BLACK, COLOUR_BLACK, COLOUR_BLACK };
     // Stalls save their default colour in the vehicle settings (since they share a common ride type)
     if (!IsRide())
@@ -6366,7 +6366,7 @@ void Ride::UpdateMaxVehicles()
             return;
 
         auto stationLength = (*stationNumTiles * 0x44180) - 0x16B2A;
-        int32_t maxMass = ::GetRideTypeDescriptor(type).MaxMass << 8;
+        int32_t maxMass = GetRideTypeDescriptor().MaxMass << 8;
         int32_t maxCarsPerTrain = 1;
         for (int32_t numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--)
         {
@@ -6428,7 +6428,7 @@ void Ride::UpdateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
-                    || !(::GetRideTypeDescriptor(type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
+                    || !(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
                     maxNumTrains = std::min(maxNumTrains, 31);
                 }
@@ -7297,8 +7297,8 @@ void Ride::FormatNameTo(Formatter& ft) const
     }
     else
     {
-        auto rideTypeName = ::GetRideTypeDescriptor(type).Naming.Name;
-        if (::GetRideTypeDescriptor(type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        auto rideTypeName = GetRideTypeDescriptor().Naming.Name;
+        if (GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             auto rideEntry = GetRideEntry();
             if (rideEntry != nullptr)
