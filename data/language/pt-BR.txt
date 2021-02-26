@@ -3686,6 +3686,8 @@ STR_6429    :Controle {INT32}
 STR_6430    :Botão Esquerdo Mouse
 STR_6431    :Botão Direito Mouse
 STR_6432    :Mouse {INT32}
+STR_6433    :Remover
+STR_6434    :Remover todos os vínculos desse atalho.
 
 #############
 # Scenarios #

@@ -3662,6 +3662,31 @@ STR_6406    :GOG-installer voor RollerCoaster Tycoon 2
 STR_6407    :Dit kan een paar minuten duren.
 STR_6408    :Installeer “innoextract” zodat de bestanden kunnen worden uitgepakt. Start daarna OpenRCT2 opnieuw op.
 STR_6409    :Het geselecteerde bestand is niet de offline GOG-installer voor RollerCoaster Tycoon 2. Je hebt mogelijk de GOG Galaxy-downloader gepakt of het verkeerde bestand geselecteerd.
+STR_6410    :In- en uitzoomen
+STR_6411    :Toon knoppen voor inzoomen en uitzoomen in de werkbalk
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :Shift (L)
+STR_6415    :Shift (R)
+STR_6416    :Ctrl
+STR_6417    :Ctrl (L)
+STR_6418    :Ctrl (R)
+STR_6419    :Alt
+STR_6420    :Alt (L)
+STR_6421    :Alt Gr
+STR_6422    :Cmd
+STR_6423    :Cmd (L)
+STR_6424    :Cmd (R)
+STR_6425    :Joyst. L
+STR_6426    :Joyst. R
+STR_6427    :Joyst. omh.
+STR_6428    :Joyst. oml.
+STR_6429    :Joyst. {INT32}
+STR_6430    :L-muiskn.
+STR_6431    :R-muiskn.
+STR_6432    :Muiskn. {INT32}
+STR_6433    :Verwijderen
+STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
 
 #############
 # Scenarios #

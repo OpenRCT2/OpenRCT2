@@ -3686,6 +3686,8 @@ STR_6429    :Stirstango {INT32}
 STR_6430    :Maldeks. Musbutono
 STR_6431    :Deks. Musbutono
 STR_6432    :Muso {INT32}
+STR_6433    :Forigi
+STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
 
 #############
 # Scenarios #
