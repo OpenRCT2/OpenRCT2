@@ -1170,7 +1170,6 @@ int32_t get_turn_count_4_plus_elements(Ride* ride, uint8_t type);
 
 uint8_t ride_get_helix_sections(Ride* ride);
 
-bool ride_type_has_flag(int32_t rideType, uint64_t flag);
 bool ride_has_any_track_elements(const Ride* ride);
 
 void ride_construction_set_default_next_piece();

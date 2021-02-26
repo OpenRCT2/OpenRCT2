@@ -1382,7 +1382,7 @@ public:
             dst->SetTrackType(src->GetTrackType());
             // RotationControlToggle and Booster are saved as the same track piece ID
             // Which one the vehicle is using must be determined
-            if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_FLAT_RIDE))
+            if (GetRideTypeDescriptor(ride.type).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
             {
                 dst->SetTrackType(RCT12FlatTrackTypeToOpenRCT2(src->GetTrackType()));
             }

@@ -208,8 +208,8 @@ void S6Exporter::Export()
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
     for (uint8_t i = 0; i < std::size(RideTypeDescriptors); i++)
     {
-        researchedTrackPiecesA[i] = (RideTypeDescriptors[i].EnabledTrackPieces) & 0xFFFFFFFFULL;
-        researchedTrackPiecesB[i] = (RideTypeDescriptors[i].EnabledTrackPieces >> 32ULL) & 0xFFFFFFFFULL;
+        researchedTrackPiecesA[i] = (GetRideTypeDescriptor(i).EnabledTrackPieces) & 0xFFFFFFFFULL;
+        researchedTrackPiecesB[i] = (GetRideTypeDescriptor(i).EnabledTrackPieces >> 32ULL) & 0xFFFFFFFFULL;
     }
     std::memcpy(_s6.researched_track_types_a, researchedTrackPiecesA, sizeof(_s6.researched_track_types_a));
     std::memcpy(_s6.researched_track_types_b, researchedTrackPiecesB, sizeof(_s6.researched_track_types_b));
@@ -534,7 +534,7 @@ void S6Exporter::ExportRide(rct2_ride* dst, const Ride* src)
     if (useDefaultName)
     {
         // Default name with number
-        dst->name = RideTypeDescriptors[src->type].Naming.Name;
+        dst->name = GetRideTypeDescriptor(src->type).Naming.Name;
         dst->name_arguments_number = src->default_name_number;
     }
 

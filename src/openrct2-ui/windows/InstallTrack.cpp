@@ -252,7 +252,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
         {
             // Fall back on the technical track name if the vehicle object cannot be loaded
-            ft.Add<rct_string_id>(RideTypeDescriptors[td6->type].Naming.Name);
+            ft.Add<rct_string_id>(GetRideTypeDescriptor(td6->type).Naming.Name);
         }
 
         gfx_draw_string_left(dpi, STR_TRACK_DESIGN_TYPE, ft.Data(), COLOUR_BLACK, screenPos);
@@ -321,7 +321,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
-    if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+    if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
     {
         // Maximum positive vertical Gs
         {
@@ -358,7 +358,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
     }
 
-    if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_DROPS))
+    if (GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
     {
         // Drops
         uint16_t drops = td6->drops & 0x3F;

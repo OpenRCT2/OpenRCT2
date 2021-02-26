@@ -86,7 +86,7 @@ class ChainLiftFilter : public ITestTrackFilter
 public:
     bool AppliesTo(uint8_t rideType, uint8_t trackType) override
     {
-        return !ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE);
+        return !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
     }
 
     int Variations(uint8_t rideType, uint8_t trackType) override
@@ -193,7 +193,7 @@ static void CallOriginal(
 static void CallNew(
     uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
 {
-    TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeDescriptors[rideType].TrackPaintFunction;
+    TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = GetRideTypeDescriptor(rideType).TrackPaintFunction;
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType);
 
     newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);

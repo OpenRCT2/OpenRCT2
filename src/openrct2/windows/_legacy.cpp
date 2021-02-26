@@ -92,7 +92,7 @@ money32 place_provisional_track_piece(
 
         int16_t z_begin, z_end;
         const rct_track_coordinates& coords = TrackCoordinates[trackType];
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             z_begin = coords.z_begin;
             z_end = coords.z_end;

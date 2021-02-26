@@ -87,7 +87,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > RideTypeDescriptors[RIDE_TYPE_MAZE].Heights.MaxHeight)
+        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
         {
             res->Error = GameActions::Status::TooHigh;
             res->ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -134,7 +134,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Query() const
             return res;
         }
 
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = price / 2 * 10;
 
         return res;
@@ -176,7 +176,7 @@ GameActions::Result::Ptr MazeSetTrackAction::Execute() const
     auto tileElement = map_get_track_element_at_of_type_from_ride(_loc, TrackElemType::Maze, _rideIndex);
     if (tileElement == nullptr)
     {
-        money32 price = (((RideTypeDescriptors[ride->type].BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
+        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * TrackPricing[TrackElemType::Maze]) >> 16));
         res->Cost = price / 2 * 10;
 
         auto startLoc = _loc.ToTileStart();

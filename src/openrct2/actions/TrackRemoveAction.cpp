@@ -222,10 +222,10 @@ GameActions::Result::Ptr TrackRemoveAction::Query() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
+        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= TrackPricing[trackType];
     price >>= 16;
     price = (price + cost) / 2;
@@ -396,7 +396,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice;
+        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
@@ -410,7 +410,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
             }
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER))
         {
             surfaceElement->SetHasTrackThatNeedsWater(false);
         }
@@ -472,7 +472,7 @@ GameActions::Result::Ptr TrackRemoveAction::Execute() const
         }
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= TrackPricing[trackType];
     price >>= 16;
     price = (price + cost) / 2;

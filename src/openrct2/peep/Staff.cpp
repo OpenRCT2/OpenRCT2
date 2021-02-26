@@ -1458,7 +1458,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (delta_y < 20)
         {
-            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -1567,7 +1567,7 @@ void Staff::UpdateAnswering()
 
         if (delta_y < 20)
         {
-            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -2268,7 +2268,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2354,7 +2354,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2430,7 +2430,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2613,7 +2613,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 
         if (xy_distance >= 16)
         {
-            stationHeight += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, stationHeight });

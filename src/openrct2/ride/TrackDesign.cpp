@@ -227,7 +227,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(const Ride& ride)
         if (trackElement.element->AsTrack()->HasChain())
             trackFlags |= RCT12_TRACK_ELEMENT_TYPE_FLAG_CHAIN_LIFT;
         trackFlags |= trackElement.element->AsTrack()->GetColourScheme() << 4;
-        if (RideTypeDescriptors[ride.type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
             && trackElement.element->AsTrack()->IsInverted())
         {
             trackFlags |= TD6_TRACK_ELEMENT_FLAG_INVERTED;
@@ -1913,7 +1913,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     // Flat rides need their vehicle colours loaded for display
     // in the preview window
-    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         for (int32_t i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
         {
@@ -2018,7 +2018,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 
     // Special case for flat rides - Z-axis info is irrelevant
     // and must be zeroed out lest the preview be off-centre
-    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         centre.z = 0;
         size_z = 0;

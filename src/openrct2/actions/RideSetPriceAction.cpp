@@ -121,7 +121,7 @@ GameActions::Result::Ptr RideSetPriceAction::Execute() const
         shopItem = rideEntry->shop_item[1];
         if (shopItem == ShopItem::None)
         {
-            shopItem = RideTypeDescriptors[ride->type].PhotoItem;
+            shopItem = ride->GetRideTypeDescriptor().PhotoItem;
             if ((ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO) == 0)
             {
                 ride->price[1] = _price;

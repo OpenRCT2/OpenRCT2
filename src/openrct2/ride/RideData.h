@@ -352,4 +352,12 @@ constexpr const RideTypeDescriptor DummyRTD =
 };
 // clang-format on
 
+constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideType)
+{
+    if (rideType >= std::size(RideTypeDescriptors))
+        return DummyRTD;
+
+    return RideTypeDescriptors[rideType];
+}
+
 #endif

@@ -108,7 +108,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
     res->GroundFlags = 0;
 
-    uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
+    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
     if ((ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && _trackType == TrackElemType::EndStation)
     {
@@ -144,7 +144,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
         }
         // Backwards steep lift hills are allowed, even on roller coasters that do not support forwards steep lift hills.
         if ((_trackPlaceFlags & CONSTRUCTION_LIFT_HILL_SELECTED)
-            && !RideTypeDescriptors[ride->type].SupportsTrackPiece(TRACK_LIFT_HILL_STEEP) && !gCheatsEnableChainLiftOnAllTrack)
+            && !ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL_STEEP) && !gCheatsEnableChainLiftOnAllTrack)
         {
             if (TrackFlags[_trackType] & TRACK_ELEM_FLAG_IS_STEEP_UP)
             {
@@ -212,13 +212,13 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
 
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
-            && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
+            && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
         {
             clearanceZ += 24;
         }
         else
         {
-            clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
+            clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
         clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
@@ -228,7 +228,7 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             return std::make_unique<TrackPlaceActionResult>(GameActions::Status::InvalidParameters, STR_TOO_HIGH);
         }
 
-        uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
@@ -334,14 +334,14 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             {
                 uint16_t maxHeight;
 
-                if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+                if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                     && rideEntry->max_height != 0)
                 {
                     maxHeight = rideEntry->max_height;
                 }
                 else
                 {
-                    maxHeight = RideTypeDescriptors[ride->type].Heights.MaxHeight;
+                    maxHeight = ride->GetRideTypeDescriptor().Heights.MaxHeight;
                 }
 
                 ride_height /= COORDS_Z_PER_TINY_Z;
@@ -358,10 +358,10 @@ GameActions::Result::Ptr TrackPlaceAction::Query() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
+        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice) * 5;
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= TrackPricing[_trackType];
 
     price >>= 16;
@@ -393,7 +393,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
 
     res->GroundFlags = 0;
 
-    uint32_t rideTypeFlags = RideTypeDescriptors[ride->type].Flags;
+    uint32_t rideTypeFlags = ride->GetRideTypeDescriptor().Flags;
 
     const uint8_t(*wallEdges)[16];
     wallEdges = &TrackSequenceElementAllowedWallEdges[_trackType];
@@ -412,19 +412,19 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         int32_t baseZ = floor2(mapLoc.z, COORDS_Z_STEP);
         int32_t clearanceZ = trackBlock->var_07;
         if (trackBlock->flags & RCT_PREVIEW_TRACK_FLAG_IS_VERTICAL
-            && RideTypeDescriptors[ride->type].Heights.ClearanceHeight > 24)
+            && ride->GetRideTypeDescriptor().Heights.ClearanceHeight > 24)
         {
             clearanceZ += 24;
         }
         else
         {
-            clearanceZ += RideTypeDescriptors[ride->type].Heights.ClearanceHeight;
+            clearanceZ += ride->GetRideTypeDescriptor().Heights.ClearanceHeight;
         }
 
         clearanceZ = floor2(clearanceZ, COORDS_Z_STEP) + baseZ;
         const auto mapLocWithClearance = CoordsXYRangedZ(mapLoc, baseZ, clearanceZ);
 
-        uint8_t crossingMode = (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
+        uint8_t crossingMode = (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS)
                                 && _trackType == TrackElemType::Flat)
             ? CREATE_CROSSING_MODE_TRACK_OVER_PATH
             : CREATE_CROSSING_MODE_NONE;
@@ -479,7 +479,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * RideTypeDescriptors[ride->type].BuildCosts.SupportPrice) * 5;
+        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice) * 5;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
@@ -643,7 +643,7 @@ GameActions::Result::Ptr TrackPlaceAction::Execute() const
         map_invalidate_tile_full(mapLoc);
     }
 
-    money32 price = RideTypeDescriptors[ride->type].BuildCosts.TrackPrice;
+    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= TrackPricing[_trackType];
 
     price >>= 16;

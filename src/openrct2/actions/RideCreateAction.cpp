@@ -93,7 +93,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    const auto& colourPresets = RideTypeDescriptors[_rideType].ColourPresets;
+    const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
@@ -167,16 +167,16 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->min_waiting_time = 10;
     ride->max_waiting_time = 60;
     ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))
     {
         ride->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
     }
-    ride->music = RideTypeDescriptors[ride->type].DefaultMusic;
+    ride->music = ride->GetRideTypeDescriptor().DefaultMusic;
 
-    const auto& operatingSettings = RideTypeDescriptors[ride->type].OperatingSettings;
+    const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
     ride->operation_option = (operatingSettings.MinValue * 3 + operatingSettings.MaxValue) / 4;
 
-    ride->lift_hill_speed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+    ride->lift_hill_speed = ride->GetRideTypeDescriptor().LiftData.minimum_speed;
 
     ride->measurement = {};
     ride->excitement = RIDE_RATING_UNDEFINED;
@@ -193,7 +193,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     {
         for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
         {
-            ride->price[i] = RideTypeDescriptors[ride->type].DefaultPrices[i];
+            ride->price[i] = ride->GetRideTypeDescriptor().DefaultPrices[i];
         }
 
         if (rideEntry->shop_item[0] == ShopItem::None)
@@ -245,7 +245,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
         }
 
         // Set the on-ride photo price, whether the ride has one or not (except shops).
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP) && shop_item_has_common_price(ShopItem::Photo))
         {
             money32 price = shop_item_get_common_price(ride, ShopItem::Photo);
             if (price != MONEY32_UNDEFINED)

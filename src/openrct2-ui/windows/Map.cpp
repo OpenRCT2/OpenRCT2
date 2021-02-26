@@ -1516,7 +1516,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
                 break;
@@ -1524,7 +1524,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
 

@@ -578,7 +578,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenPos.y += LIST_ROW_HEIGHT + 4;
 
     // Information for tracked rides.
-    if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
         if (_loadedTrackDesign->type != RIDE_TYPE_MAZE)
         {
@@ -610,7 +610,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             screenPos.y += LIST_ROW_HEIGHT;
         }
 
-        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_G_FORCES))
+        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
         {
             // Maximum positive vertical Gs
             int32_t gForces = _loadedTrackDesign->max_positive_vertical_g * 32;
@@ -636,7 +636,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        if (ride_type_has_flag(_loadedTrackDesign->type, RIDE_TYPE_FLAG_HAS_DROPS))
+        if (GetRideTypeDescriptor(_loadedTrackDesign->type).HasFlag(RIDE_TYPE_FLAG_HAS_DROPS))
         {
             // Drops
             uint16_t drops = _loadedTrackDesign->drops & 0x3F;
@@ -760,7 +760,7 @@ static void track_list_load_designs(RideSelection item)
     std::string entryName;
     if (item.Type < 0x80)
     {
-        if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.EntryIndex);
         }

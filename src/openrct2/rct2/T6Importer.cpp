@@ -141,7 +141,7 @@ public:
             return nullptr;
         }
 
-        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {

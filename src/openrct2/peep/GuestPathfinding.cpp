@@ -345,7 +345,7 @@ static uint8_t footpath_element_dest_in_dir(
                     continue;
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 {
                     *outRideIndex = rideIndex;
                     return PATH_SEARCH_SHOP_ENTRANCE;
@@ -754,7 +754,7 @@ static void peep_pathfind_heuristic_search(
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                     continue;
 
                 found = true;

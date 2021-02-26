@@ -213,11 +213,6 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-bool ride_type_has_flag(int rideType, uint64_t flag)
-{
-    return (RideTypeDescriptors[rideType].Flags & flag) != 0;
-}
-
 int16_t get_height_marker_offset()
 {
     return 0;
@@ -872,7 +867,7 @@ void ride_ratings_calculate_single_rail_roller_coaster([[maybe_unused]] Ride* ri
 
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
-    return RideTypeDescriptors[type];
+    return ::GetRideTypeDescriptor(type);
 }
 
 uint8_t TileElementBase::GetOwner() const
