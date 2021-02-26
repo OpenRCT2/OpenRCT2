@@ -22,11 +22,17 @@ enum class TextAlignment
     RIGHT
 };
 
+enum class TextUnderline
+{
+    Off,
+    On,
+};
+
 struct TextPaint
 {
     uint8_t Colour = 0;
     int16_t SpriteBase = 0;
-    bool UnderlineText = false;
+    TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
 };
 
