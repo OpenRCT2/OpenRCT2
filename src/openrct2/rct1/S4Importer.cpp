@@ -847,7 +847,7 @@ private:
         if (_gameVersion == FILE_VERSION_RCT1)
         {
             // Original RCT had no music settings, take default style
-            dst->music = RideTypeDescriptors[dst->type].DefaultMusic;
+            dst->music = GetRideTypeDescriptor(dst->type).DefaultMusic;
 
             // Only merry-go-round and dodgems had music and used
             // the same flag as synchronise stations for the option to enable it
@@ -2682,7 +2682,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = RideTypeDescriptors[rideType].GetResearchCategory();
+                    dst->category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 }
             }
         }
@@ -2701,7 +2701,7 @@ private:
                     dst->baseRideType = rideType;
                     dst->type = Research::EntryType::Ride;
                     dst->flags = 0;
-                    dst->category = RideTypeDescriptors[rideType].GetResearchCategory();
+                    dst->category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 }
             }
         }

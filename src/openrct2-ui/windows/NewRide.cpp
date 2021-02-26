@@ -305,7 +305,7 @@ static void window_new_ride_populate_list()
         if (rideType == RIDE_TYPE_NULL)
             continue;
 
-        if (RideTypeDescriptors[rideType].Category != currentCategory)
+        if (GetRideTypeDescriptor(rideType).Category != currentCategory)
             continue;
 
         nextListItem = window_new_ride_iterate_over_ride_type(rideType, nextListItem);
@@ -335,7 +335,7 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (!RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+        if (!GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
             && highestVehiclePriority > rideEntry->BuildMenuPriority)
         {
             continue;
@@ -343,7 +343,7 @@ static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, R
         highestVehiclePriority = rideEntry->BuildMenuPriority;
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
@@ -481,7 +481,7 @@ void window_new_ride_focus(RideSelection rideItem)
     rideEntry = get_ride_entry(rideItem.EntryIndex);
     uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    window_new_ride_set_page(w, RideTypeDescriptors[rideTypeIndex].Category);
+    window_new_ride_set_page(w, GetRideTypeDescriptor(rideTypeIndex).Category);
 
     for (RideSelection* listItem = _windowNewRideListItems; listItem->Type != RIDE_TYPE_NULL; listItem++)
     {
@@ -876,7 +876,7 @@ static int32_t get_num_track_designs(RideSelection item)
 
     if (item.Type < 0x80)
     {
-        if (RideTypeDescriptors[item.Type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+        if (GetRideTypeDescriptor(item.Type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             entryName = get_ride_entry_name(item.EntryIndex);
         }
@@ -942,10 +942,10 @@ static void window_new_ride_paint_ride_information(
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Get price of ride
-        int32_t unk2 = RideTypeDescriptors[item.Type].StartTrackPiece;
-        money32 price = RideTypeDescriptors[item.Type].BuildCosts.TrackPrice;
+        int32_t unk2 = GetRideTypeDescriptor(item.Type).StartTrackPiece;
+        money32 price = GetRideTypeDescriptor(item.Type).BuildCosts.TrackPrice;
         price *= TrackPricing[unk2];
-        price = (price >> 17) * 10 * RideTypeDescriptors[item.Type].BuildCosts.PriceEstimateMultiplier;
+        price = (price >> 17) * 10 * GetRideTypeDescriptor(item.Type).BuildCosts.PriceEstimateMultiplier;
 
         //
         rct_string_id stringId = STR_NEW_RIDE_COST;
@@ -986,7 +986,7 @@ static void window_new_ride_select(rct_window* w)
 static void window_new_ride_list_vehicles_for(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
 {
     std::fill_n(buffer, bufferLen, 0);
-    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         return;
     }

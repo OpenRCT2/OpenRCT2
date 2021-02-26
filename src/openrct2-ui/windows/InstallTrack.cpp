@@ -252,7 +252,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
         {
             // Fall back on the technical track name if the vehicle object cannot be loaded
-            ft.Add<rct_string_id>(RideTypeDescriptors[td6->type].Naming.Name);
+            ft.Add<rct_string_id>(GetRideTypeDescriptor(td6->type).Naming.Name);
         }
 
         gfx_draw_string_left(dpi, STR_TRACK_DESIGN_TYPE, ft.Data(), COLOUR_BLACK, screenPos);

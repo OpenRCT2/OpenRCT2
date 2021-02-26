@@ -1099,7 +1099,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
+                    ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     research_insert_ride_entry(rideType, groupIndex, category, true);
                 }
             }

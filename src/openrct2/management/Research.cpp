@@ -244,7 +244,7 @@ void research_finish_item(ResearchItem* researchItem)
 
             // If a vehicle is the first to be invented for its ride type, show the ride type/group name.
             // Independently listed vehicles (like all flat rides and shops) should always be announced as such.
-            if (RideTypeDescriptors[base_ride_type].HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+            if (GetRideTypeDescriptor(base_ride_type).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
                 || researchItem->flags & RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE)
             {
                 RideNaming naming = get_ride_naming(base_ride_type, rideEntry);
@@ -469,7 +469,7 @@ void research_populate_list_random()
         {
             if (rideType != RIDE_TYPE_NULL)
             {
-                ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
+                ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                 research_insert_ride_entry(rideType, i, category, researched);
             }
         }
@@ -508,7 +508,7 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
     {
         if (rideType != RIDE_TYPE_NULL)
         {
-            ResearchCategory category = RideTypeDescriptors[rideType].GetResearchCategory();
+            ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
             research_insert_ride_entry(rideType, entryIndex, category, researched);
         }
     }
@@ -945,7 +945,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
         return;
     }
 
-    const auto& rtd = RideTypeDescriptors[rideType];
+    const auto& rtd = GetRideTypeDescriptor(rideType);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
         researchItem->flags |= RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
@@ -978,7 +978,7 @@ void research_determine_first_of_type()
         if (rideType >= RIDE_TYPE_COUNT)
             continue;
 
-        const auto& rtd = RideTypeDescriptors[rideType];
+        const auto& rtd = GetRideTypeDescriptor(rideType);
         if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
             continue;
 

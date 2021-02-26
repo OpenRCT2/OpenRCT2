@@ -4440,7 +4440,7 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
 
 ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
 {
-    return RideTypeDescriptors[rideType].RatingsCalculationFunction;
+    return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }
 
 #pragma endregion

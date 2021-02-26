@@ -867,7 +867,7 @@ void ride_ratings_calculate_single_rail_roller_coaster([[maybe_unused]] Ride* ri
 
 const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
 {
-    return RideTypeDescriptors[type];
+    return GetRideTypeDescriptor(type);
 }
 
 uint8_t TileElementBase::GetOwner() const

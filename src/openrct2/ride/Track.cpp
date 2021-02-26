@@ -853,7 +853,7 @@ roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank)
 
 roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank)
 {
-    if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
     {
         if (isInverted)
         {

@@ -270,7 +270,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)
@@ -336,7 +336,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
         uint8_t bx = 0;
-        unk.z += RideTypeDescriptors[curRide->type].Heights.VehicleZOffset;
+        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
         if (unk.y != unk_F64E20.y)

@@ -93,7 +93,7 @@ GameActions::Result::Ptr RideCreateAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters, STR_INVALID_RIDE_TYPE);
     }
 
-    const auto& colourPresets = RideTypeDescriptors[_rideType].ColourPresets;
+    const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
         return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);

@@ -2014,7 +2014,7 @@ static rct_string_id get_ride_type_name_for_dropdown(uint8_t rideType)
         case RIDE_TYPE_59:
             return STR_RIDE_NAME_59;
         default:
-            return RideTypeDescriptors[rideType].Naming.Name;
+            return GetRideTypeDescriptor(rideType).Naming.Name;
     }
 }
 
@@ -3443,7 +3443,7 @@ static void window_ride_operating_invalidate(rct_window* w)
     bool hasAlternativeType = ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE);
     if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_LIFT_HILL)
         || (hasAlternativeType
-            && RideTypeDescriptors[ride->GetRideTypeDescriptor().AlternateType].SupportsTrackPiece(TRACK_LIFT_HILL)))
+            && GetRideTypeDescriptor(ride->GetRideTypeDescriptor().AlternateType).SupportsTrackPiece(TRACK_LIFT_HILL)))
     {
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WindowWidgetType::Label;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WindowWidgetType::Spinner;
@@ -3828,7 +3828,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
             for (int32_t i = 0; i < 8; i++)
             {
                 assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
-                if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
+                if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                 {
                     if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                     {
@@ -3856,7 +3856,7 @@ static void window_ride_maintenance_mousedown(rct_window* w, rct_widgetindex wid
                 {
                     for (int32_t i = 0; i < 8; i++)
                     {
-                        if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
+                        if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                         {
                             if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                             {
@@ -3971,7 +3971,7 @@ static void window_ride_maintenance_dropdown(rct_window* w, rct_widgetindex widg
                 for (i = 0; i < BREAKDOWN_COUNT; i++)
                 {
                     assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
-                    if (RideTypeDescriptors[rideEntry->ride_type[j]].AvailableBreakdowns & static_cast<uint8_t>(1 << i))
+                    if (GetRideTypeDescriptor(rideEntry->ride_type[j]).AvailableBreakdowns & static_cast<uint8_t>(1 << i))
                     {
                         if (i == BREAKDOWN_BRAKES_FAILURE && ride->IsBlockSectioned())
                         {

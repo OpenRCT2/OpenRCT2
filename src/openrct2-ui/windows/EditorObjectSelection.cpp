@@ -1318,7 +1318,7 @@ static void editor_load_selected_objects()
                     {
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
                         uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                        ResearchCategory category = static_cast<ResearchCategory>(RideTypeDescriptors[rideType].Category);
+                        ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
                         research_insert_ride_entry(rideType, entryIndex, category, true);
                     }
                     else if (objectType == ObjectType::SceneryGroup)
@@ -1485,7 +1485,7 @@ static bool filter_chunks(const ObjectRepositoryItem* item)
                 break;
             }
         }
-        return (_filter_flags & (1 << (RideTypeDescriptors[rideType].Category + _numSourceGameItems))) != 0;
+        return (_filter_flags & (1 << (GetRideTypeDescriptor(rideType).Category + _numSourceGameItems))) != 0;
     }
     return true;
 }
@@ -1519,7 +1519,7 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem* item)
         uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)
         {
-            result = RideTypeDescriptors[rideType].Naming.Name;
+            result = GetRideTypeDescriptor(rideType).Naming.Name;
             break;
         }
     }
