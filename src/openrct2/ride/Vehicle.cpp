@@ -4019,7 +4019,7 @@ void Vehicle::UpdateArriving()
             goto loc_6D8E36;
         }
 
-        if (RideTypeDescriptors[curRide->type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS
+        if (RideTypeDescriptors[curRide->type].HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)
             && curRide->mode != RideMode::Shuttle && curRide->mode != RideMode::PoweredLaunch)
         {
             SetUpdateFlag(VEHICLE_UPDATE_FLAG_12);
@@ -8095,7 +8095,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
         {
             int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
-            if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+            if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
             {
                 if (tileElement->AsTrack()->IsInverted())
                 {
@@ -8470,7 +8470,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
 
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (RideTypeDescriptors[curRide->type].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[curRide->type].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -8855,7 +8855,7 @@ loc_6DC476:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {
@@ -9066,7 +9066,7 @@ loc_6DCA9A:
     {
         int32_t rideType = get_ride(tileElement->AsTrack()->GetRideIndex())->type;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES);
-        if (RideTypeDescriptors[rideType].Flags & RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE)
+        if (RideTypeDescriptors[rideType].HasFlag(RIDE_TYPE_FLAG_HAS_ALTERNATIVE_TRACK_TYPE))
         {
             if (tileElement->AsTrack()->IsInverted())
             {

@@ -877,7 +877,7 @@ int32_t ride_get_total_time(Ride* ride)
 
 bool Ride::CanHaveMultipleCircuits() const
 {
-    if (!(RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS))
+    if (!(RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
         return false;
 
     // Only allow circuit or launch modes
@@ -5076,7 +5076,7 @@ bool Ride::Open(bool isApplying)
         }
     }
 
-    if ((RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL)
+    if ((RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
         && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
         if (!ride_create_cable_lift(id, isApplying))
@@ -6428,7 +6428,7 @@ void Ride::UpdateMaxVehicles()
                 } while (totalLength <= stationLength);
 
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
-                    || !(RideTypeDescriptors[type].Flags & RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS))
+                    || !(RideTypeDescriptors[type].HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
                     maxNumTrains = std::min(maxNumTrains, 31);
                 }
