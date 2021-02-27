@@ -224,7 +224,7 @@ static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         if (screenCoords.y + lineHeight < dpi->y || screenCoords.y >= dpi->y + dpi->height)
             continue;
 
-        gfx_draw_string(dpi, line.c_str(), w->colours[0], screenCoords);
+        gfx_draw_string(dpi, screenCoords, line.c_str(), { w->colours[0] });
     }
 }
 

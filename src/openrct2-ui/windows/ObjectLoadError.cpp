@@ -578,7 +578,7 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
+        gfx_draw_string(dpi, screenCoords, strndup(_invalid_entries[i].name, 8), { COLOUR_DARK_GREEN });
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());

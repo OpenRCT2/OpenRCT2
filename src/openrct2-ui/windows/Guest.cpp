@@ -2064,7 +2064,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
             format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
             safe_strcat(buffer, buffer2, sizeof(buffer));
         }
-        gfx_draw_string(dpi, buffer, 0, screenCoords);
+        gfx_draw_string(dpi, screenCoords, buffer, {});
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {

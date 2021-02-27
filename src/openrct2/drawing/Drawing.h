@@ -735,15 +735,15 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
 void gfx_draw_string_no_formatting(
     rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
 
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords);
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords);
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text);
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,

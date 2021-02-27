@@ -506,7 +506,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         // Draw number of players
         screenCoords.x = right - numPlayersStringWidth;
-        gfx_draw_string(dpi, players, w->colours[1], screenCoords + ScreenCoordsXY{ 0, 3 });
+        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
 
         screenCoords.y += ITEM_HEIGHT;
     }

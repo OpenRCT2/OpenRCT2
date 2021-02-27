@@ -581,7 +581,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             buffer.clear();
 
             // Draw player name
-            int32_t colour = COLOUR_BLACK;
+            colour_t colour = COLOUR_BLACK;
             if (i == w->selected_list_item)
             {
                 gfx_filter_rect(
@@ -603,7 +603,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             }
             screenCoords.x = 0;
             gfx_clip_string(buffer.data(), 230);
-            gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
 
             // Draw group name
             buffer.resize(0);
@@ -614,7 +614,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 screenCoords.x = 173;
                 buffer += network_get_group_name(group);
                 gfx_clip_string(buffer.data(), 80);
-                gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+                gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -651,7 +651,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             buffer += pingBuffer;
 
             screenCoords.x = 356;
-            gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
@@ -901,7 +901,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                 if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
-                    gfx_draw_string(dpi, u8"{WINDOW_COLOUR_2}✓", COLOUR_BLACK, screenCoords);
+                    gfx_draw_string(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
                 }
             }
 

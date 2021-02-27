@@ -233,7 +233,7 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                           window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-    gfx_draw_string(dpi, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, w->colours[1], screenCoords);
+    gfx_draw_string(dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { w->colours[1] });
 
     auto drawPos = w->windowPos
         + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,

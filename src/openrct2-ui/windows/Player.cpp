@@ -349,7 +349,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
-    gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
+    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(30, 0), ping, { w->colours[2] });
 
     // Draw last action
     screenCoords = w->windowPos + ScreenCoordsXY{ w->width / 2, w->height - 13 };

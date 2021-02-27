@@ -325,7 +325,7 @@ private:
             &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
         gfx_fill_rect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        gfx_draw_string(&dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, screenCoords);
+        gfx_draw_string(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 
     void ExecuteCallback(bool hasValue)

@@ -1101,7 +1101,9 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
             {
                 gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
                                                                                   : FontSpriteBase::MEDIUM_DARK;
-                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, { 2, y });
+                gfx_draw_string(
+                    dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
+                    { static_cast<colour_t>(w->colours[1] & 0x7F) });
             }
 
             // Ride name

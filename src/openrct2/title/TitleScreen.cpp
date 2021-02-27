@@ -440,7 +440,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 
     // Write name and version information
     buffer += gVersionInfoFull;
-    gfx_draw_string(dpi, buffer.c_str(), COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5 - 13));
+    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(5, 5 - 13), buffer.c_str(), { COLOUR_BLACK });
 
     // Invalidate screen area
     int16_t width = static_cast<int16_t>(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM));
@@ -453,5 +453,5 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);
     buffer.append(")");
-    gfx_draw_string(dpi, buffer.c_str(), COLOUR_BLACK, screenCoords + ScreenCoordsXY(5, 5));
+    gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(5, 5), buffer.c_str(), { COLOUR_BLACK });
 }

@@ -266,13 +266,13 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer, FontSpriteBase::MEDIUM);
-    gfx_draw_string(dpi, buffer, colour, coords - ScreenCoordsXY{ 0, (height / 2) });
+    gfx_draw_string(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, buffer, { colour });
 }
 
 /**
@@ -334,13 +334,13 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
+    gfx_draw_string(dpi, screenCoords, "", { COLOUR_BLACK });
     screenCoords = coords;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
-        int32_t width = gfx_get_string_width(text, gCurrentFontSpriteBase);
-        gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords - ScreenCoordsXY{ width / 2, 0 });
+        int32_t width = gfx_get_string_width(text, FontSpriteBase::MEDIUM);
+        gfx_draw_string(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, text, { TEXT_COLOUR_254 });
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -424,7 +424,7 @@ int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
  * ticks    : ebp >> 16
  */
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
@@ -432,7 +432,7 @@ void gfx_draw_string_centred_wrapped_partial(
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    gfx_draw_string(dpi, "", colour, screenCoords);
+    gfx_draw_string(dpi, screenCoords, "", { colour });
     format_string(buffer, 256, format, args);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
@@ -445,7 +445,7 @@ void gfx_draw_string_centred_wrapped_partial(
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
-        int32_t halfWidth = gfx_get_string_width(buffer, gCurrentFontSpriteBase) / 2;
+        int32_t halfWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2;
 
         FmtString fmt(buffer);
         for (const auto& token : fmt)
@@ -471,7 +471,7 @@ void gfx_draw_string_centred_wrapped_partial(
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
+        gfx_draw_string(dpi, screenCoords, buffer, { TEXT_COLOUR_254 });
 
         if (numCharactersDrawn > numCharactersToDraw)
         {

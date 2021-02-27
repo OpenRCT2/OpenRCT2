@@ -142,9 +142,8 @@ void DrawTextEllipsised(
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, TextUnderline::Off, TextAlignment::LEFT };
     DrawText(dpi, coords, textPaint, buffer);
 }
 

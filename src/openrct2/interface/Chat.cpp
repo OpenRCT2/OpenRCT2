@@ -288,7 +288,7 @@ static int32_t chat_history_draw_string(
     auto lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, { screenCoords.x, lineY - (numLines * lineHeight) });
+        gfx_draw_string(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, buffer, { TEXT_COLOUR_254 });
         buffer = get_string_end(buffer) + 1;
         lineY += lineHeight;
     }
