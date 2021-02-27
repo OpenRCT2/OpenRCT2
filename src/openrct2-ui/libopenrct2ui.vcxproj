@@ -148,7 +148,6 @@
     <ClCompile Include="windows\MazeConstruction.cpp" />
     <ClCompile Include="windows\Multiplayer.cpp" />
     <ClCompile Include="windows\MusicCredits.cpp" />
-    <ClCompile Include="windows\Network.cpp" />
     <ClCompile Include="windows\NetworkStatus.cpp" />
     <ClCompile Include="windows\NewCampaign.cpp" />
     <ClCompile Include="windows\NewRide.cpp" />

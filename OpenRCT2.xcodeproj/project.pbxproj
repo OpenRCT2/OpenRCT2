@@ -29,7 +29,6 @@
 		20DE495F25DA8C6B00F2DF6D /* TileElementBase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 20DE495E25DA8C6B00F2DF6D /* TileElementBase.cpp */; };
 		2A1F4FE1221FF4B0003CA045 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		2A1F4FE2221FF4B0003CA045 /* macos.mm in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.mm */; };
-		2A5354E922099C4F00A5440F /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2A5354E822099C4F00A5440F /* Network.cpp */; };
 		2ADE2F27224418B2002598AF /* Random.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F21224418B1002598AF /* Random.hpp */; };
 		2ADE2F28224418B2002598AF /* DataSerialiserTag.h in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F22224418B1002598AF /* DataSerialiserTag.h */; };
 		2ADE2F29224418B2002598AF /* Numerics.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 2ADE2F23224418B1002598AF /* Numerics.hpp */; };
@@ -834,7 +833,6 @@
 		01C6F0C722FD51FC0057E2F7 /* T6Exporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = T6Exporter.h; sourceTree = "<group>"; };
 		01DDFE6422FD608500221318 /* Window_internal.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window_internal.cpp; sourceTree = "<group>"; };
 		20DE495E25DA8C6B00F2DF6D /* TileElementBase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElementBase.cpp; sourceTree = "<group>"; };
-		2A5354E822099C4F00A5440F /* Network.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
 		2A5354EA22099C7200A5440F /* CircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularBuffer.h; sourceTree = "<group>"; };
 		2ADE2F21224418B1002598AF /* Random.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Random.hpp; sourceTree = "<group>"; };
 		2ADE2F22224418B1002598AF /* DataSerialiserTag.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiserTag.h; sourceTree = "<group>"; };
@@ -4033,7 +4031,6 @@
 				C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
 				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
-				2A5354E822099C4F00A5440F /* Network.cpp */,
 				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
 				C654DF231F69C0430040F43D /* NewCampaign.cpp */,
 				C685E5141F8907840090598F /* NewRide.cpp */,
@@ -4662,7 +4659,6 @@
 				01C6F0C222FD519E0057E2F7 /* TrackImporter.cpp in Sources */,
 				4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
-				2A5354E922099C4F00A5440F /* Network.cpp in Sources */,
 				4CB991CC25CEE54500C692B4 /* Shortcuts.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
