@@ -147,6 +147,7 @@ private:
         if (shortcut != nullptr)
         {
             shortcut->Current.clear();
+            shortcutManager.SaveUserBindings();
         }
         Close();
     }
