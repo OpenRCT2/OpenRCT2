@@ -117,19 +117,31 @@ static void DrawText(
 }
 
 void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint)
+{
+    gCurrentFontSpriteBase = textPaint.SpriteBase;
+    DrawText(dpi, coords, textPaint, format, args);
+}
+
+void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint)
+{
+    DrawTextBasic(dpi, coords, format, ft.Data(), textPaint);
+}
+
+void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, colour_t colour,
     TextAlignment alignment, bool underline)
 {
     TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    DrawText(dpi, coords, textPaint, format, args);
+    DrawTextBasic(dpi, coords, format, args, textPaint);
 }
 
 void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, colour_t colour,
     TextAlignment alignment, bool underline)
 {
-    return DrawTextBasic(dpi, coords, format, ft.Data(), colour, alignment, underline);
+    DrawTextBasic(dpi, coords, format, ft.Data(), colour, alignment, underline);
 }
 
 void DrawTextEllipsised(

@@ -139,6 +139,10 @@ public:
 };
 
 void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint);
+void DrawTextBasic(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint);
+void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, colour_t colour,
     TextAlignment alignment = TextAlignment::LEFT, bool underline = false);
 void DrawTextBasic(
