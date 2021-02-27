@@ -36,6 +36,86 @@ struct TextPaint
     FontSpriteBase SpriteBase = FontSpriteBase::SMALL;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
+
+    explicit TextPaint()
+    {
+    }
+    TextPaint(colour_t colour)
+        : Colour(colour)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase)
+        : SpriteBase(spriteBase)
+    {
+    }
+    TextPaint(TextUnderline underlineText)
+        : UnderlineText(underlineText)
+    {
+    }
+    TextPaint(TextAlignment alignment)
+        : Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+    {
+    }
+    TextPaint(colour_t colour, TextUnderline underlineText)
+        : Colour(colour)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(colour_t colour, TextAlignment alignment)
+        : Colour(colour)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText)
+        : SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase, TextAlignment alignment)
+        : SpriteBase(spriteBase)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+    {
+    }
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextAlignment alignment)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(colour_t colour, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(colour)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+    TextPaint(FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
+        : SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
+
+    TextPaint(colour_t colour, FontSpriteBase spriteBase, TextUnderline underlineText, TextAlignment alignment)
+        : Colour(colour)
+        , SpriteBase(spriteBase)
+        , UnderlineText(underlineText)
+        , Alignment(alignment)
+    {
+    }
 };
 
 class StaticLayout
