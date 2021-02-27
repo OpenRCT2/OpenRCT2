@@ -1713,7 +1713,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     // Set medium font size
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     // Draw column headers
     rct_widget* widget;
@@ -2245,7 +2245,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
     const TileElement* tileElement = map_get_first_element_at(windowTileInspectorToolMap);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     do
     {
         if (tileElement == nullptr)

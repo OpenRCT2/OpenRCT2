@@ -1156,7 +1156,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
             {
                 screenCoords.x = 2;
-                gCurrentFontSpriteBase = highlighted ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
+                gCurrentFontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK : FontSpriteBase::MEDIUM_DARK;
                 colour2 = NOT_TRANSLUCENT(w->colours[1]);
                 if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
@@ -1172,12 +1172,12 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
             {
                 colour = w->colours[1] & 0x7F;
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
             }
             else
             {
                 colour = COLOUR_BLACK;
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
             }
 
             int32_t width_limit = w->widgets[WIDX_LIST].width() - screenCoords.x;

@@ -285,10 +285,10 @@ static int32_t get_scenario_list_item_size()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FONT_SPRITE_BASE_SMALL);
+    lineHeight += font_get_line_height(FontSpriteBase::SMALL);
 
     return lineHeight;
 }
@@ -479,7 +479,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
         shorten_path(path, sizeof(path), scenario->path, w->width - 6);
 
         const utf8* pathPtr = path;
@@ -569,7 +569,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t scenarioTitleHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
@@ -613,7 +613,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
                 if (isDisabled)
                 {
-                    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+                    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
                 }
                 gfx_draw_string_centred(dpi, format, { wide ? 270 : 210, y + 1 }, colour, ft.Data());
 

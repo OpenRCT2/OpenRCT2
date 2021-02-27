@@ -56,7 +56,8 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message, const 
 
 rct_window* window_error_open(std::string_view title, std::string_view message)
 {
-    int32_t numLines, fontHeight, width, height, maxY;
+    int32_t numLines, width, height, maxY;
+    FontSpriteBase fontHeight;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
@@ -83,16 +84,16 @@ rct_window* window_error_open(std::string_view title, std::string_view message)
     if (buffer.size() <= 1)
         return nullptr;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     width = gfx_get_string_width_new_lined(buffer.data());
     width = std::clamp(width, 64, 196);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_wrap_string(buffer.data(), width + 1, &numLines, &fontHeight);
 
     _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM) + 4;
+    height = (numLines + 1) * font_get_line_height(FontSpriteBase::MEDIUM) + 4;
 
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;

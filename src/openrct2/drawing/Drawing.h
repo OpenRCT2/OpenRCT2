@@ -14,6 +14,7 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
+#include "Font.h"
 #include "Text.h"
 
 #include <memory>
@@ -652,7 +653,7 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
-extern thread_local int16_t gCurrentFontSpriteBase;
+extern thread_local FontSpriteBase gCurrentFontSpriteBase;
 
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
@@ -760,7 +761,7 @@ void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
     bool forceSpriteFont);
 
-int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
+int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, FontSpriteBase* font_height);
 int32_t gfx_get_string_width(std::string_view text);
 int32_t gfx_get_string_width_new_lined(std::string_view text);
 int32_t gfx_get_string_width_no_formatting(std::string_view text);

@@ -155,7 +155,7 @@ static void window_network_status_invalidate(rct_window* w)
 static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     thread_local std::string buffer;
     buffer.assign("{BLACK}");

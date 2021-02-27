@@ -56,14 +56,15 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
     OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
     formattedMessage.args.Add<const char*>(tempBuffer);
     format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     auto textWidth = gfx_get_string_width_new_lined(_tooltipText);
     textWidth = std::min(textWidth, 196);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
-    int32_t numLines, fontSpriteBase;
+    int32_t numLines;
+    FontSpriteBase fontSpriteBase;
     textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, &numLines, &fontSpriteBase);
     _tooltipNumLines = numLines;
     return textWidth;
@@ -77,7 +78,7 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
 
     int32_t textWidth = FormatTextForTooltip(message);
     int32_t width = textWidth + 3;
-    int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM)) + 4;
+    int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FontSpriteBase::MEDIUM)) + 4;
     window_tooltip_widgets[WIDX_BACKGROUND].right = width;
     window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 

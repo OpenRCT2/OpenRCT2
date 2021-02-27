@@ -188,7 +188,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY aboutCoords(
         w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
@@ -270,7 +270,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 200, yPage + 5 };
 
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Credits
     gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, screenCoords, COLOUR_BLACK, nullptr);

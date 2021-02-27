@@ -617,9 +617,9 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (researchItem.IsAlwaysResearched())
         {
             if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsNull())
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
             else
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
             colour = w->colours[1] | COLOUR_FLAG_INSET;
         }
         else
@@ -627,7 +627,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             // TODO: this parameter by itself produces very light text.
             // It needs a {BLACK} token in the string to work properly.
             colour = COLOUR_BLACK;
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+            gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
         }
 
         const rct_string_id itemNameId = researchItem.GetName();

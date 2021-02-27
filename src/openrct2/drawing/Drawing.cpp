@@ -85,7 +85,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
 thread_local int32_t gLastDrawStringX;
 thread_local int32_t gLastDrawStringY;
 
-thread_local int16_t gCurrentFontSpriteBase;
+thread_local FontSpriteBase gCurrentFontSpriteBase;
 
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;

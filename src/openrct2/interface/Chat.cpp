@@ -274,8 +274,9 @@ static int32_t chat_history_draw_string(
     auto buffer = gCommonStringFormatBuffer;
     FormatStringToBuffer(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), "{OUTLINE}{WHITE}{STRING}", text);
 
-    int32_t fontSpriteBase, numLines;
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    int32_t numLines;
+    FontSpriteBase fontSpriteBase;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     auto lineHeight = font_get_line_height(fontSpriteBase);
 
@@ -299,14 +300,15 @@ static int32_t chat_history_draw_string(
 // Almost the same as gfx_draw_string_left_wrapped
 int32_t chat_string_wrapped_get_height(void* args, int32_t width)
 {
-    int32_t fontSpriteBase, lineHeight, lineY, numLines;
+    int32_t lineHeight, lineY, numLines;
+    FontSpriteBase fontSpriteBase;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, STR_STRING, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     lineHeight = font_get_line_height(fontSpriteBase);
 

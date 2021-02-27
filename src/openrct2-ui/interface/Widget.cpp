@@ -631,7 +631,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
         gfx_draw_string(
             dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { midLeft - ScreenCoordsXY{ 0, 5 } });
     }
@@ -671,7 +671,7 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
     bottomRight.x--;
     bottomRight.y--;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -1087,7 +1087,7 @@ void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t 
 static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     int32_t no_lines = 0;
-    int32_t font_height = 0;
+    FontSpriteBase font_height = FontSpriteBase::SMALL;
     char wrapped_string[TEXT_INPUT_SIZE];
 
     // Get the widget
@@ -1106,7 +1106,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     // Figure out where the text should be positioned vertically.
     topLeft.y = w->windowPos.y + widget->textTop();

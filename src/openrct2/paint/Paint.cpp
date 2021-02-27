@@ -952,7 +952,7 @@ void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
     {
         char buffer[256]{};
         format_string(buffer, sizeof(buffer), ps->string_id, &ps->args);
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
         // Use sprite font unless the currency contains characters unsupported by the sprite font
         auto forceSpriteFont = false;

@@ -199,7 +199,7 @@ public:
         screenCoords.y = windowPos.y + 25;
 
         int32_t no_lines = 0;
-        int32_t font_height = 0;
+        FontSpriteBase font_height = FontSpriteBase::SMALL;
 
         if (_descriptionStringId == STR_NONE)
         {
@@ -215,7 +215,7 @@ public:
 
         screenCoords.y += 25;
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
         char wrapped_string[TEXT_INPUT_SIZE];
         safe_strcpy(wrapped_string, _buffer.data(), TEXT_INPUT_SIZE);
@@ -309,7 +309,7 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        int32_t fontHeight{};
+        FontSpriteBase fontHeight = FontSpriteBase::SMALL;
         gfx_wrap_string(wrappedString.data(), WW - (24 + 13), &numLines, &fontHeight);
         return numLines * 10 + WH;
     }

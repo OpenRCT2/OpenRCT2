@@ -113,7 +113,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
         format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_BANNER_TEXT_FORMAT, ft.Data());
     }
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+    gCurrentFontSpriteBase = FontSpriteBase::TINY;
 
     uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;

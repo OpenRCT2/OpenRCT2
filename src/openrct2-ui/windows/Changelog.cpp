@@ -187,7 +187,7 @@ static void window_changelog_scrollgetsize(
 {
     *width = _changelogLongestLineWidth + 4;
 
-    const int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    const int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
     *height = static_cast<int32_t>(_changelogLines.size() * lineHeight);
 }
 
@@ -213,9 +213,9 @@ static void window_changelog_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_changelog_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t scrollIndex)
 {
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
-    const int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    const int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY screenCoords(3, 3 - lineHeight);
     for (const auto& line : _changelogLines)
@@ -241,7 +241,7 @@ static void window_changelog_process_changelog_text(const std::string& text)
     // To get the last substring (or only, if delimiter is not found)
     _changelogLines.push_back(text.substr(prev));
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     _changelogLongestLineWidth = 0;
     for (const auto& line : _changelogLines)
     {

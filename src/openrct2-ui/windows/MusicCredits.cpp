@@ -139,7 +139,7 @@ static void window_music_credits_mouseup(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
     *height = static_cast<int32_t>(std::size(music_credits) + std::size(music_credits_rct2)) * lineHeight + 12;
 }
 
@@ -158,7 +158,7 @@ static void window_music_credits_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     auto screenCoords = ScreenCoordsXY{ 245, 2 };
 

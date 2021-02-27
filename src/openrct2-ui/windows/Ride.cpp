@@ -2971,7 +2971,7 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     factor = rideEntry->intensity_multiplier;
     if (factor > 0)
     {
-        int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+        int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
         if (lineHeight != 10)
             screenCoords.x += 150;
         else

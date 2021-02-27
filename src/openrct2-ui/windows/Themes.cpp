@@ -911,7 +911,7 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_E0);
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+                    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
                     gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, topLeft);
                 }
             }

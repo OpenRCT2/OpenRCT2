@@ -109,7 +109,7 @@ rct_window* window_game_bottom_toolbar_open()
     int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = WindowCreate(
@@ -222,7 +222,7 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
 static void window_game_bottom_toolbar_invalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -397,7 +397,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -508,7 +508,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
         ft.Data());
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -663,7 +663,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
         INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);

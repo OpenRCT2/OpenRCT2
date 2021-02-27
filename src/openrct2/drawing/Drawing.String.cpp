@@ -170,7 +170,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t* outFontHeight)
+int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, FontSpriteBase* outFontHeight)
 {
     constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
     thread_local std::string buffer;
@@ -269,7 +269,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t
 void gfx_draw_string_left_centred(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords)
 {
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
     int32_t height = string_get_height_raw(buffer);
@@ -334,7 +334,7 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
 void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
     screenCoords = coords;
 
@@ -358,12 +358,12 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
 
 int32_t string_get_height_raw(std::string_view text)
 {
-    uint16_t fontBase = gCurrentFontSpriteBase;
+    auto fontBase = gCurrentFontSpriteBase;
 
     int32_t height = 0;
-    if (fontBase <= FONT_SPRITE_BASE_MEDIUM)
+    if (fontBase <= FontSpriteBase::MEDIUM)
         height += 10;
-    else if (fontBase == FONT_SPRITE_BASE_TINY)
+    else if (fontBase == FontSpriteBase::TINY)
         height += 6;
 
     FmtString fmt(text);
@@ -372,12 +372,12 @@ int32_t string_get_height_raw(std::string_view text)
         switch (token.kind)
         {
             case FormatToken::Newline:
-                if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
+                if (fontBase == FontSpriteBase::SMALL || fontBase == FontSpriteBase::MEDIUM)
                 {
                     height += 10;
                     break;
                 }
-                else if (fontBase == FONT_SPRITE_BASE_TINY)
+                else if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 6;
                     break;
@@ -385,12 +385,12 @@ int32_t string_get_height_raw(std::string_view text)
                 height += 18;
                 break;
             case FormatToken::NewlineSmall:
-                if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
+                if (fontBase == FontSpriteBase::SMALL || fontBase == FontSpriteBase::MEDIUM)
                 {
                     height += 5;
                     break;
                 }
-                else if (fontBase == FONT_SPRITE_BASE_TINY)
+                else if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 3;
                     break;
@@ -398,13 +398,13 @@ int32_t string_get_height_raw(std::string_view text)
                 height += 9;
                 break;
             case FormatToken::FontTiny:
-                fontBase = FONT_SPRITE_BASE_TINY;
+                fontBase = FontSpriteBase::TINY;
                 break;
             case FormatToken::FontMedium:
-                fontBase = FONT_SPRITE_BASE_MEDIUM;
+                fontBase = FontSpriteBase::MEDIUM;
                 break;
             case FormatToken::FontSmall:
-                fontBase = FONT_SPRITE_BASE_SMALL;
+                fontBase = FontSpriteBase::SMALL;
                 break;
             default:
                 break;
@@ -430,15 +430,16 @@ void gfx_draw_string_centred_wrapped_partial(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
-    int32_t numLines, fontSpriteBase, lineHeight, lineY;
+    int32_t numLines, lineHeight, lineY;
+    FontSpriteBase fontSpriteBase;
     utf8* buffer = gCommonStringFormatBuffer;
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_draw_string(dpi, "", colour, screenCoords);
     format_string(buffer, 256, format, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
     lineHeight = font_get_line_height(fontSpriteBase);
 
@@ -496,7 +497,7 @@ struct text_draw_info
     int32_t maxY;
     int32_t flags;
     uint8_t palette[8];
-    uint16_t font_sprite_base;
+    FontSpriteBase font_sprite_base;
     const int8_t* y_offset;
 };
 
@@ -695,13 +696,13 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
             info->y += font_get_line_height_small(info->font_sprite_base);
             break;
         case FormatToken::FontTiny:
-            info->font_sprite_base = FONT_SPRITE_BASE_TINY;
+            info->font_sprite_base = FontSpriteBase::TINY;
             break;
         case FormatToken::FontSmall:
-            info->font_sprite_base = FONT_SPRITE_BASE_SMALL;
+            info->font_sprite_base = FontSpriteBase::SMALL;
             break;
         case FormatToken::FontMedium:
-            info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+            info->font_sprite_base = FontSpriteBase::MEDIUM;
             break;
         case FormatToken::OutlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
@@ -872,14 +873,15 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
-        if (static_cast<int16_t>(info->font_sprite_base) < 0)
+        if (info->font_sprite_base == FontSpriteBase::MEDIUM_DARK
+            || info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
         {
             info->flags |= TEXT_DRAW_FLAG_DARK;
-            if (static_cast<int16_t>(info->font_sprite_base) == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
+            if (info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
             {
                 info->flags |= TEXT_DRAW_FLAG_EXTRA_DARK;
             }
-            info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+            info->font_sprite_base = FontSpriteBase::MEDIUM;
         }
         if (colour & COLOUR_FLAG_OUTLINE)
         {

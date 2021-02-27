@@ -23,7 +23,7 @@ StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t wi
     Buffer = source;
     Paint = paint;
 
-    int32_t fontSpriteBase;
+    FontSpriteBase fontSpriteBase;
 
     gCurrentFontSpriteBase = paint.SpriteBase;
     MaxWidth = gfx_wrap_string(Buffer, width, &LineCount, &fontSpriteBase);
@@ -120,8 +120,8 @@ void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, colour_t colour,
     TextAlignment alignment, bool underline)
 {
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     DrawText(dpi, coords, textPaint, format, args);
 }
 
@@ -136,8 +136,8 @@ void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     colour_t colour, TextAlignment alignment, bool underline)
 {
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, ft.Data());
@@ -179,9 +179,9 @@ int32_t gfx_draw_string_left_wrapped(
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, TextUnderline::Off, TextAlignment::LEFT };
+    TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, TextUnderline::Off, TextAlignment::LEFT };
     StaticLayout layout(buffer, textPaint, width);
     layout.Draw(dpi, coords);
 
@@ -194,7 +194,7 @@ int32_t gfx_draw_string_centred_wrapped(
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     TextPaint textPaint = { colour, gCurrentFontSpriteBase, TextUnderline::Off, TextAlignment::CENTRE };
     StaticLayout layout(buffer, textPaint, width);
