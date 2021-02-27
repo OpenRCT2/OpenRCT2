@@ -111,6 +111,11 @@ struct rct_window
     rct_window() = default;
     virtual ~rct_window() = default;
 
+    virtual bool IsLegacy()
+    {
+        return true;
+    }
+
     // Events
     virtual void OnOpen()
     {
@@ -133,6 +138,9 @@ struct rct_window
     virtual void OnDraw(rct_drawpixelinfo& dpi)
     {
     }
+    virtual void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
+    {
+    }
     virtual OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback)
     {
         return { fallback, {} };
@@ -152,6 +160,9 @@ struct rct_window
     virtual ScreenSize OnScrollGetSize(int32_t scrollIndex)
     {
         return {};
+    }
+    virtual void OnScrollMouseDrag(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+    {
     }
     virtual void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
     {

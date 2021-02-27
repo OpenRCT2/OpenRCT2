@@ -12,6 +12,7 @@
 #    include "UiExtensions.h"
 
 #    include "CustomMenu.h"
+#    include "ScGraphicsContext.hpp"
 #    include "ScTileSelection.hpp"
 #    include "ScTitleSequence.hpp"
 #    include "ScUi.hpp"
@@ -29,6 +30,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     dukglue_register_global(ctx, std::make_shared<ScTitleSequenceManager>(), "titleSequenceManager");
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
+    ScGraphicsContext::Register(ctx);
     ScTileSelection::Register(ctx);
     ScTool::Register(ctx);
     ScUi::Register(ctx);
@@ -52,6 +54,24 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
+}
+
+std::shared_ptr<ScWindow> ScWidget::window_get() const
+{
+    return std::make_shared<ScWindow>(_class, _number);
+}
+
+void ScWidget::Register(duk_context* ctx)
+{
+    dukglue_register_property(ctx, &ScWidget::window_get, nullptr, "window");
+    dukglue_register_property(ctx, &ScWidget::name_get, &ScWidget::name_set, "name");
+    dukglue_register_property(ctx, &ScWidget::type_get, nullptr, "type");
+    dukglue_register_property(ctx, &ScWidget::x_get, &ScWidget::x_set, "x");
+    dukglue_register_property(ctx, &ScWidget::y_get, &ScWidget::y_set, "y");
+    dukglue_register_property(ctx, &ScWidget::width_get, &ScWidget::width_set, "width");
+    dukglue_register_property(ctx, &ScWidget::height_get, &ScWidget::height_set, "height");
+    dukglue_register_property(ctx, &ScWidget::isDisabled_get, &ScWidget::isDisabled_set, "isDisabled");
+    dukglue_register_property(ctx, &ScWidget::isVisible_get, &ScWidget::isVisible_set, "isVisible");
 }
 
 #endif

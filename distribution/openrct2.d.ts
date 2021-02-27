@@ -71,6 +71,14 @@ declare global {
     }
 
     /**
+     * Represents the width and height in pixels.
+     */
+    interface ScreenSize {
+        width: number;
+        height: number;
+    }
+
+    /**
      * A coordinate within the game.
      * Each in-game tile is a size of 32x32.
      */
@@ -1397,6 +1405,7 @@ declare global {
         readonly players: Player[];
         readonly currentPlayer: Player;
         defaultGroup: number;
+        readonly stats: NetworkStats;
 
         getServerInfo(): ServerInfo;
         addGroup(): void;
@@ -1440,6 +1449,11 @@ declare global {
         readonly providerName: string;
         readonly providerEmail: string;
         readonly providerWebsite: string;
+    }
+
+    interface NetworkStats {
+        bytesReceived: number[];
+        bytesSent: number[];
     }
 
     type PermissionType =
@@ -1996,14 +2010,15 @@ declare global {
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "colourpicker" | "dropdown" | "groupbox" |
+        "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
         "label" | "listview" | "spinner" | "textbox" | "viewport";
 
     type Widget =
-        ButtonWidget | CheckboxWidget | ColourPickerWidget | DropdownWidget | GroupBoxWidget |
+        ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
         LabelWidget | ListView | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     interface WidgetBase {
+        readonly window?: Window;
         x: number;
         y: number;
         width: number;
@@ -2038,6 +2053,11 @@ declare global {
         type: 'colourpicker';
         colour?: number;
         onChange?: (colour: number) => void;
+    }
+
+    interface CustomWidget extends WidgetBase {
+        type: 'custom';
+        onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
     }
 
     interface DropdownWidget extends WidgetBase {
@@ -2105,8 +2125,10 @@ declare global {
     interface SpinnerWidget extends WidgetBase {
         type: 'spinner';
         text?: string;
+
         onDecrement?: () => void;
         onIncrement?: () => void;
+        onClick?: () => void;
     }
 
     interface TextBoxWidget extends WidgetBase {
@@ -2189,6 +2211,44 @@ declare global {
         getCentrePosition(): CoordsXY;
         moveTo(position: CoordsXY | CoordsXYZ): void;
         scrollTo(position: CoordsXY | CoordsXYZ): void;
+    }
+
+    /**
+     * API for drawing graphics.
+     */
+    interface GraphicsContext {
+        colour: number | undefined;
+        secondaryColour: number | undefined;
+        ternaryColour: number | undefined;
+        stroke: number;
+        fill: number;
+        paletteId: number | undefined;
+        readonly width: number;
+        readonly height: number;
+
+        getImage(id: number): ImageInfo | undefined;
+        measureText(text: string): ScreenSize;
+
+        clear(): void;
+        clip(x: number, y: number, width: number, height: number): void;
+        box(x: number, y: number, width: number, height: number): void;
+        image(id: number, x: number, y: number): void;
+        line(x1: number, y1: number, x2: number, y2: number): void;
+        rect(x: number, y: number, width: number, height: number): void;
+        text(text: string, x: number, y: number): void;
+        well(x: number, y: number, width: number, height: number): void;
+    }
+
+    interface ImageInfo {
+        readonly id: number;
+        readonly offset: ScreenCoordsXY;
+        readonly width: number;
+        readonly height: number;
+        readonly isBMP: boolean;
+        readonly isRLE: boolean;
+        readonly isPalette: boolean;
+        readonly noZoom: boolean;
+        readonly nextZoomId: number | undefined;
     }
 
     /**

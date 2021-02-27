@@ -50,6 +50,11 @@ namespace OpenRCT2::Scripting
         return value.type() == DukValue::BOOLEAN ? value.as_bool() : defaultValue;
     }
 
+    enum class DukUndefined
+    {
+    };
+    constexpr DukUndefined undefined{};
+
     /**
      * Allows creation of an object on the duktape stack and setting properties on it before
      * retrieving the DukValue instance of it.
@@ -85,6 +90,13 @@ namespace OpenRCT2::Scripting
         {
             EnsureObjectPushed();
             duk_push_null(_ctx);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
+        void Set(const char* name, DukUndefined)
+        {
+            EnsureObjectPushed();
+            duk_push_undefined(_ctx);
             duk_put_prop_string(_ctx, _idx, name);
         }
 
@@ -277,9 +289,21 @@ namespace OpenRCT2::Scripting
         return DukValue::take_from_stack(ctx);
     }
 
+    template<> inline DukValue ToDuk(duk_context* ctx, const DukUndefined&)
+    {
+        duk_push_undefined(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+
     template<> inline DukValue ToDuk(duk_context* ctx, const bool& value)
     {
         duk_push_boolean(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const uint8_t& value)
+    {
+        duk_push_int(ctx, value);
         return DukValue::take_from_stack(ctx);
     }
 
@@ -399,6 +423,14 @@ namespace OpenRCT2::Scripting
             result.setNull();
         }
         return result;
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const ScreenSize& value)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("width", value.width);
+        dukCoords.Set("height", value.height);
+        return dukCoords.Take();
     }
 
 } // namespace OpenRCT2::Scripting

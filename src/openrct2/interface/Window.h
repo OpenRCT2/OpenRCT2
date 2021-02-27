@@ -77,6 +77,7 @@ namespace WIDGET_FLAGS
     const WidgetFlags IS_DISABLED = 1 << 3;
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
     const WidgetFlags IS_HIDDEN = 1 << 5;
+    const WidgetFlags IS_HOLDABLE = 1 << 6;
 } // namespace WIDGET_FLAGS
 
 enum class WindowWidgetType : uint8_t;

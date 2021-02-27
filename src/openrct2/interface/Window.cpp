@@ -1530,9 +1530,10 @@ void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, cons
 
 void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->scroll_mousedrag != nullptr)
-            w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseDrag(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mousedrag != nullptr)
+        w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
