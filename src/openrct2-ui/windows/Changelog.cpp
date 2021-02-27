@@ -245,7 +245,7 @@ static void window_changelog_process_changelog_text(const std::string& text)
     _changelogLongestLineWidth = 0;
     for (const auto& line : _changelogLines)
     {
-        auto width = gfx_get_string_width(line.c_str());
+        auto width = gfx_get_string_width(line.c_str(), FontSpriteBase::MEDIUM);
         _changelogLongestLineWidth = std::max(width, _changelogLongestLineWidth);
     }
 }

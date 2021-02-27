@@ -433,9 +433,9 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                 // Draw text.
                 gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(10, 0));
 
-                gfx_get_string_width(textBuffer);
+                gfx_get_string_width(textBuffer, FontSpriteBase::MEDIUM);
 
-                screenCoords.x += gfx_get_string_width(textBuffer) + 20;
+                screenCoords.x += gfx_get_string_width(textBuffer, FontSpriteBase::MEDIUM) + 20;
             }
         }
     }

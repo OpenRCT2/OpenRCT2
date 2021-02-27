@@ -36,13 +36,13 @@ enum : uint32_t
     TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
-static int32_t ttf_get_string_width(std::string_view text, bool noFormatting);
+static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase, bool noFormatting);
 
 /**
  *
  *  rct2: 0x006C23B1
  */
-int32_t gfx_get_string_width_new_lined(std::string_view text)
+int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fontSpriteBase)
 {
     thread_local std::string buffer;
     buffer.clear();
@@ -53,7 +53,7 @@ int32_t gfx_get_string_width_new_lined(std::string_view text)
     {
         if (token.kind == FormatToken::Newline || token.kind == FormatToken::NewlineSmall)
         {
-            auto width = gfx_get_string_width(buffer);
+            auto width = gfx_get_string_width(buffer, fontSpriteBase);
             if (!maxWidth || maxWidth > width)
             {
                 maxWidth = width;
@@ -67,7 +67,7 @@ int32_t gfx_get_string_width_new_lined(std::string_view text)
     }
     if (!maxWidth)
     {
-        maxWidth = gfx_get_string_width(buffer);
+        maxWidth = gfx_get_string_width(buffer, fontSpriteBase);
     }
     return *maxWidth;
 }
@@ -78,14 +78,14 @@ int32_t gfx_get_string_width_new_lined(std::string_view text)
  *  rct2: 0x006C2321
  * buffer (esi)
  */
-int32_t gfx_get_string_width(std::string_view text)
+int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase)
 {
-    return ttf_get_string_width(text, false);
+    return ttf_get_string_width(text, fontSpriteBase, false);
 }
 
-int32_t gfx_get_string_width_no_formatting(std::string_view text)
+int32_t gfx_get_string_width_no_formatting(std::string_view text, FontSpriteBase fontSpriteBase)
 {
-    return ttf_get_string_width(text, true);
+    return ttf_get_string_width(text, fontSpriteBase, true);
 }
 
 /**
@@ -104,7 +104,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
     }
 
     // If width of the full string is less than allowed width then we don't need to clip
-    auto clippedWidth = gfx_get_string_width(text);
+    auto clippedWidth = gfx_get_string_width(text, gCurrentFontSpriteBase);
     if (clippedWidth <= width)
     {
         return clippedWidth;
@@ -126,7 +126,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
             // Add the ellipsis before checking the width
             buffer.append("...");
 
-            auto currentWidth = gfx_get_string_width(buffer);
+            auto currentWidth = gfx_get_string_width(buffer, gCurrentFontSpriteBase);
             if (currentWidth < width)
             {
                 bestLength = buffer.size();
@@ -154,7 +154,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
             buffer.append(cb);
         }
     }
-    return gfx_get_string_width(text);
+    return gfx_get_string_width(text, gCurrentFontSpriteBase);
 }
 
 /**
@@ -194,7 +194,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
                 utf8_write_codepoint(cb, codepoint);
                 buffer.append(cb);
 
-                auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
+                auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], gCurrentFontSpriteBase);
                 if (lineWidth <= width || (splitIndex == NULL_INDEX && bestSplitIndex == NULL_INDEX))
                 {
                     if (codepoint == ' ')
@@ -218,7 +218,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
                     buffer.insert(buffer.begin() + splitIndex, '\0');
 
                     // Recalculate the line length after splitting
-                    lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
+                    lineWidth = gfx_get_string_width(&buffer[currentLineIndex], gCurrentFontSpriteBase);
                     maxWidth = std::max(maxWidth, lineWidth);
                     numLines++;
 
@@ -238,7 +238,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
         {
             buffer.push_back('\0');
 
-            auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
+            auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], gCurrentFontSpriteBase);
             maxWidth = std::max(maxWidth, lineWidth);
             numLines++;
 
@@ -253,7 +253,7 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
     }
     {
         // Final line width calculation
-        auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex]);
+        auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], gCurrentFontSpriteBase);
         maxWidth = std::max(maxWidth, lineWidth);
     }
 
@@ -339,7 +339,7 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
 
     for (int32_t i = 0; i <= numLines; i++)
     {
-        int32_t width = gfx_get_string_width(text);
+        int32_t width = gfx_get_string_width(text, gCurrentFontSpriteBase);
         gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords - ScreenCoordsXY{ width / 2, 0 });
 
         const utf8* ch = text;
@@ -445,7 +445,7 @@ void gfx_draw_string_centred_wrapped_partial(
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
-        int32_t halfWidth = gfx_get_string_width(buffer) / 2;
+        int32_t halfWidth = gfx_get_string_width(buffer, gCurrentFontSpriteBase) / 2;
 
         FmtString fmt(buffer);
         for (const auto& token : fmt)
@@ -965,10 +965,10 @@ void ttf_draw_string(
     gLastDrawStringY = info.y;
 }
 
-static int32_t ttf_get_string_width(std::string_view text, bool noFormatting)
+static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase, bool noFormatting)
 {
     text_draw_info info;
-    info.font_sprite_base = gCurrentFontSpriteBase;
+    info.font_sprite_base = fontSpriteBase;
     info.flags = 0;
     info.startX = 0;
     info.startY = 0;
@@ -1033,7 +1033,7 @@ void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t ava
     size_t length = strlen(path);
 
     // Return full string if it fits
-    if (gfx_get_string_width(const_cast<char*>(path)) <= availableWidth)
+    if (gfx_get_string_width(const_cast<char*>(path), gCurrentFontSpriteBase) <= availableWidth)
     {
         safe_strcpy(buffer, path, bufferSize);
         return;
@@ -1062,7 +1062,7 @@ void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t ava
         } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');
 
         safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
-        if (gfx_get_string_width(buffer) <= availableWidth)
+        if (gfx_get_string_width(buffer, gCurrentFontSpriteBase) <= availableWidth)
         {
             return;
         }

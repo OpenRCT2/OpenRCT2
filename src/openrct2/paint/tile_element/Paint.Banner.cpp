@@ -115,7 +115,7 @@ void banner_paint(paint_session* session, uint8_t direction, int32_t height, con
 
     gCurrentFontSpriteBase = FontSpriteBase::TINY;
 
-    uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer);
+    uint16_t string_width = gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::TINY);
     uint16_t scroll = (gCurrentTicks / 2) % string_width;
     auto scrollIndex = scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK);
     PaintAddImageAsChild(

@@ -689,7 +689,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
         format_string(ptr, 256, stringId, nullptr);
     }
 
-    auto stringWidth = gfx_get_string_width(buffer);
+    auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     auto* w = WindowCreate(

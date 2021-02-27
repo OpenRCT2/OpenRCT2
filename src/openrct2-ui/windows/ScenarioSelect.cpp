@@ -110,6 +110,11 @@ static void window_scenarioselect_invalidate(rct_window *w);
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
+static bool ScenarioSelectUseSmallFont()
+{
+    return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
+}
+
 static rct_window_event_list window_scenarioselect_events([](auto& events)
 {
     events.close = &window_scenarioselect_close;
@@ -432,8 +437,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     WindowDrawWidgets(w, dpi);
 
-    format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
-                                                                                   : STR_WINDOW_COLOUR_2_STRINGID;
+    format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -550,12 +554,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    rct_string_id highlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
-        ? STR_WHITE_STRING
-        : STR_WINDOW_COLOUR_2_STRINGID;
-    rct_string_id unhighlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
-        ? STR_WHITE_STRING
-        : STR_BLACK_STRING;
+    rct_string_id highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+    rct_string_id unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
 
     bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor;
 
@@ -655,7 +655,7 @@ static void draw_category_heading(
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

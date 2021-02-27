@@ -26,10 +26,14 @@ using namespace OpenRCT2::Ui;
 
 static InGameConsole _inGameConsole;
 
+static FontSpriteBase InGameconsoleGetFontSpriteBase()
+{
+    return (gConfigInterface.console_small_font ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM);
+}
+
 static int32_t InGameConsoleGetLineHeight()
 {
-    auto fontSpriteBase = (gConfigInterface.console_small_font ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM);
-    return font_get_line_height(fontSpriteBase);
+    return font_get_line_height(InGameconsoleGetFontSpriteBase());
 }
 
 InGameConsole::InGameConsole()
@@ -146,7 +150,7 @@ void InGameConsole::RefreshCaret(size_t position)
     _selectionStart = position;
     char tempString[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(tempString, &_consoleCurrentLine, _selectionStart);
-    _caretScreenPosX = gfx_get_string_width_no_formatting(tempString);
+    _caretScreenPosX = gfx_get_string_width_no_formatting(tempString, InGameconsoleGetFontSpriteBase());
 }
 
 void InGameConsole::Scroll(int32_t linesToScroll)
@@ -272,7 +276,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         return;
 
     // Set font
-    gCurrentFontSpriteBase = (gConfigInterface.console_small_font ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM);
+    gCurrentFontSpriteBase = InGameconsoleGetFontSpriteBase();
     uint8_t textColour = NOT_TRANSLUCENT(ThemeGetColour(WC_CONSOLE, 1));
     const int32_t lineHeight = InGameConsoleGetLineHeight();
     const int32_t maxLines = GetNumVisibleLines();

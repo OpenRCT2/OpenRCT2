@@ -84,7 +84,7 @@ rct_window* window_error_open(std::string_view title, std::string_view message)
         return nullptr;
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    width = gfx_get_string_width_new_lined(buffer.data());
+    width = gfx_get_string_width_new_lined(buffer.data(), FontSpriteBase::MEDIUM);
     width = std::clamp(width, 64, 196);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;

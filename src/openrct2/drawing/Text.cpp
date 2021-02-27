@@ -75,7 +75,8 @@ int32_t StaticLayout::GetLineCount()
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
-    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text) : gfx_get_string_width(text);
+    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text, paint.SpriteBase)
+                                 : gfx_get_string_width(text, paint.SpriteBase);
 
     auto alignedCoords = coords;
     switch (paint.Alignment)

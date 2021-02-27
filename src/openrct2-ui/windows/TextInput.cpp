@@ -248,7 +248,7 @@ public:
                 // Make a copy of the string for measuring the width.
                 char temp_string[TEXT_INPUT_SIZE] = { 0 };
                 std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string);
+                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -259,7 +259,7 @@ public:
                     utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
                     uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
                     utf8_write_codepoint(tmp, codepoint);
-                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp) - 2, 4);
+                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontSpriteBase::MEDIUM) - 2, 4);
                 }
 
                 if (_cursorBlink > 15)
@@ -316,7 +316,7 @@ public:
 private:
     static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer);
+        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontSpriteBase::MEDIUM);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
         int width = compositionWidth;
         int height = 10;

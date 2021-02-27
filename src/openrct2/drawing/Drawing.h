@@ -750,9 +750,9 @@ void gfx_draw_string_with_y_offsets(
     bool forceSpriteFont);
 
 int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines);
-int32_t gfx_get_string_width(std::string_view text);
-int32_t gfx_get_string_width_new_lined(std::string_view text);
-int32_t gfx_get_string_width_no_formatting(std::string_view text);
+int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase);
+int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fontSpriteBase);
+int32_t gfx_get_string_width_no_formatting(std::string_view text, FontSpriteBase fontSpriteBase);
 int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase);
 int32_t gfx_clip_string(char* buffer, int32_t width);
 void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth);

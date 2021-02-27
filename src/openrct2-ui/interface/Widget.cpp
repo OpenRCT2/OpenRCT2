@@ -484,7 +484,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
         DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
-        textRight = l + gfx_get_string_width(buffer) + 1;
+        textRight = l + gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) + 1;
     }
 
     // Border
@@ -1134,7 +1134,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1143,7 +1143,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width_no_formatting(temp_string) - 2, 4);
+        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)

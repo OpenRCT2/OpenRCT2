@@ -58,7 +58,7 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
     format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
-    auto textWidth = gfx_get_string_width_new_lined(_tooltipText);
+    auto textWidth = gfx_get_string_width_new_lined(_tooltipText, FontSpriteBase::MEDIUM);
     textWidth = std::min(textWidth, 196);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
