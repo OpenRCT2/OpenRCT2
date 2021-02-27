@@ -742,9 +742,6 @@ void gfx_draw_string_no_formatting(
 /** @deprecated */
 void gfx_draw_string_left(
     rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-/** @deprecated */
-void gfx_draw_string_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, const ScreenCoordsXY& coords, uint8_t colour, const void* args);
 
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour);

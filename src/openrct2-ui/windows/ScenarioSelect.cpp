@@ -549,8 +549,6 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t colour;
-
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
@@ -610,12 +608,12 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_STRING);
                 ft.Add<char*>(buffer);
-                colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+                colour_t colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
                 if (isDisabled)
                 {
                     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
                 }
-                gfx_draw_string_centred(dpi, format, { wide ? 270 : 210, y + 1 }, colour, ft.Data());
+                DrawTextBasic(dpi, { wide ? 270 : 210, y + 1 }, format, ft, { colour, TextAlignment::CENTRE });
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -634,8 +632,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                     ft.Add<rct_string_id>(STR_COMPLETED_BY);
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
-                    gfx_draw_string_centred(
-                        dpi, format, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, COLOUR_BLACK, ft.Data());
+                    DrawTextBasic(
+                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft, { TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;
@@ -648,13 +646,13 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 static void draw_category_heading(
     rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, rct_string_id stringId)
 {
-    uint8_t baseColour = w->colours[1];
-    uint8_t lightColour = ColourMapA[baseColour].lighter;
-    uint8_t darkColour = ColourMapA[baseColour].mid_dark;
+    colour_t baseColour = w->colours[1];
+    colour_t lightColour = ColourMapA[baseColour].lighter;
+    colour_t darkColour = ColourMapA[baseColour].mid_dark;
 
     // Draw string
     int32_t centreX = (left + right) / 2;
-    gfx_draw_string_centred(dpi, stringId, { centreX, y }, baseColour, nullptr);
+    DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;

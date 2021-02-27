@@ -146,8 +146,9 @@ public:
         // Draw number for tool sizes bigger than 7
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
-            gfx_draw_string_centred(
-                &dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+            DrawTextBasic(
+                &dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize,
+                { TextAlignment::CENTRE });
         }
 
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -157,14 +158,14 @@ public:
                              window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
             if (gWaterToolRaiseCost != MONEY32_UNDEFINED && gWaterToolRaiseCost != 0)
             {
-                gfx_draw_string_centred(&dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gWaterToolRaiseCost);
+                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gWaterToolRaiseCost, { TextAlignment::CENTRE });
             }
             screenCoords.y += 10;
 
             // Draw lower cost amount
             if (gWaterToolLowerCost != MONEY32_UNDEFINED && gWaterToolLowerCost != 0)
             {
-                gfx_draw_string_centred(&dpi, STR_LOWER_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gWaterToolLowerCost);
+                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gWaterToolLowerCost, { TextAlignment::CENTRE });
             }
         }
     }

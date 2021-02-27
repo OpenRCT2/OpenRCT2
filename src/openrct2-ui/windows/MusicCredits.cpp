@@ -164,13 +164,13 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
 
     for (size_t i = 0; i < std::size(music_credits); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits[i], screenCoords, COLOUR_BLACK, nullptr);
+        DrawTextBasic(dpi, screenCoords, music_credits[i], nullptr, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
     }
 
     // Add 4 more space before "Original recordings ...".
     screenCoords.y += 4;
-    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, nullptr, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
 
     // Draw the separator
@@ -180,7 +180,7 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
 
     for (size_t i = 0; i < std::size(music_credits_rct2); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits_rct2[i], screenCoords, COLOUR_BLACK, nullptr);
+        DrawTextBasic(dpi, screenCoords, music_credits_rct2[i], nullptr, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
     }
 }

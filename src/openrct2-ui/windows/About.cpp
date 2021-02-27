@@ -273,23 +273,23 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Credits
-    gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 74;
-    gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 3;
-    gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
 
     // Images
     gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, { w->windowPos.x + 92, yPage + 24 }, 0);

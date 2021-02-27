@@ -406,14 +406,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
         ft.Add<money32>(gCash);
-        gfx_draw_string_centred(
-            dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            ft.Data());
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     static constexpr const rct_string_id guestCountFormats[] = {
@@ -433,14 +433,15 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        gfx_draw_string_centred(
-            dpi,
-            gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier] : guestCountFormats[gGuestChangeModifier],
-            screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            &gNumGuestsInPark);
+        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : guestCountFormats[gGuestChangeModifier];
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        auto ft = Formatter();
+        ft.Add<uint32_t>(gNumGuestsInPark);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     // Draw park rating
@@ -495,17 +496,16 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t month = date_get_month(gDateMonthsElapsed);
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
+    colour_t colour
+        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+               ? COLOUR_WHITE
+               : NOT_TRANSLUCENT(w->colours[0]));
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     auto ft = Formatter();
     ft.Add<rct_string_id>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
-    gfx_draw_string_centred(
-        dpi, stringId, screenCoords,
-        (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
-             ? COLOUR_WHITE
-             : NOT_TRANSLUCENT(w->colours[0])),
-        ft.Data());
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
     uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
