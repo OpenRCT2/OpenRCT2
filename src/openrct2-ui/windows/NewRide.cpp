@@ -954,7 +954,7 @@ static void window_new_ride_paint_ride_information(
 
         ft = Formatter();
         ft.Add<money32>(price);
-        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, { TextAlignment::RIGHT });
     }
 }
 

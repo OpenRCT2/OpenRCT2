@@ -757,7 +757,7 @@ static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixe
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 0, 2 };
 
     auto [drawString, ft] = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
-    DrawTextBasic(dpi, screenCoords, drawString, ft, COLOUR_BLACK | COLOUR_FLAG_OUTLINE);
+    DrawTextBasic(dpi, screenCoords, drawString, ft, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
 }
 
 static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare_name(

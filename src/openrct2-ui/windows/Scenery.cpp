@@ -1172,8 +1172,8 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // -14
         DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 }, STR_COST_LABEL, ft, COLOUR_BLACK,
-            TextAlignment::RIGHT);
+            dpi, w->windowPos + ScreenCoordsXY{ w->width - 0x1A, w->height - 13 }, STR_COST_LABEL, ft,
+            { TextAlignment::RIGHT });
     }
 
     auto ft = Formatter();

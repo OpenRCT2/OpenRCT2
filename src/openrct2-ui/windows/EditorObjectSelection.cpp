@@ -1080,14 +1080,14 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (get_selected_object_type(w) == ObjectType::Ride)
     {
         auto stringId = get_ride_type_string_id(listItem->repositoryItem);
-        DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
     }
 
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object source
     auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
+    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
@@ -1097,8 +1097,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(path);
         DrawTextBasic(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK,
-            TextAlignment::RIGHT);
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+            { COLOUR_BLACK, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
     }
 

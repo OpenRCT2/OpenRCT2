@@ -629,15 +629,15 @@ public:
             ft = Formatter();
             ft.Add<int32_t>(_yearSpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 198 }, STR_FORMAT_INTEGER, ft, colours[1], TextAlignment::RIGHT);
+                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(actual_month);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 219 }, STR_FORMAT_MONTH, ft, colours[1], TextAlignment::RIGHT);
+                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(_daySpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 240 }, STR_FORMAT_INTEGER, ft, colours[1], TextAlignment::RIGHT);
+                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
         }
         else if (page == WINDOW_CHEATS_PAGE_MISC)
         {
@@ -653,7 +653,8 @@ public:
 
                 auto& widget = widgets[WIDX_PARK_RATING_SPINNER];
                 DrawTextBasic(
-                    &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft, colours[1]);
+                    &dpi, windowPos + ScreenCoordsXY{ widget.left + 1, widget.top + 2 }, STR_FORMAT_INTEGER, ft,
+                    { colours[1] });
             }
 
             {

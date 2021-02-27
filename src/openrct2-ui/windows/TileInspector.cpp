@@ -1758,11 +1758,12 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto tileCoords = TileCoordsXY{ windowTileInspectorToolMap };
         auto ft = Formatter();
         ft.Add<int32_t>(tileCoords.x);
-        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 43, 24 }, STR_FORMAT_INTEGER, ft, COLOUR_WHITE, TextAlignment::RIGHT);
+        DrawTextBasic(
+            dpi, screenCoords + ScreenCoordsXY{ 43, 24 }, STR_FORMAT_INTEGER, ft, { COLOUR_WHITE, TextAlignment::RIGHT });
         ft = Formatter();
         ft.Add<int32_t>(tileCoords.y);
         DrawTextBasic(
-            dpi, screenCoords + ScreenCoordsXY{ 113, 24 }, STR_FORMAT_INTEGER, ft, COLOUR_WHITE, TextAlignment::RIGHT);
+            dpi, screenCoords + ScreenCoordsXY{ 113, 24 }, STR_FORMAT_INTEGER, ft, { COLOUR_WHITE, TextAlignment::RIGHT });
     }
     else
     {

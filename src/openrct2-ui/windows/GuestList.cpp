@@ -755,7 +755,7 @@ private:
                 ft = Formatter();
                 ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                 ft.Add<uint32_t>(group.NumGuests);
-                DrawTextBasic(&dpi, { 326, y }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+                DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
             y += SUMMARISED_GUEST_ROW_HEIGHT;
             index++;

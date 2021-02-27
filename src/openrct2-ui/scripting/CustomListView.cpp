@@ -681,13 +681,13 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_UP);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_DOWN);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
 
