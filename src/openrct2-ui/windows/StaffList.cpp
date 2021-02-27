@@ -287,15 +287,14 @@ public:
         {
             auto ft = Formatter();
             ft.Add<money32>(GetStaffWage(GetSelectedStaffType()));
-            gfx_draw_string_left(
-                &dpi, STR_COST_PER_MONTH, ft.Data(), COLOUR_BLACK, windowPos + ScreenCoordsXY{ width - 155, 32 });
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
         }
 
         if (GetSelectedStaffType() != StaffType::Entertainer)
         {
-            gfx_draw_string_left(
-                &dpi, STR_UNIFORM_COLOUR, nullptr, COLOUR_BLACK,
-                windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 });
+            DrawTextBasic(
+                &dpi, windowPos + ScreenCoordsXY{ 6, widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].top + 1 },
+                STR_UNIFORM_COLOUR);
         }
 
         auto namingConvention = GetStaffNamingConvention(GetSelectedStaffType());
@@ -305,9 +304,8 @@ public:
         ft.Add<uint16_t>(_staffList.size());
         ft.Add<rct_string_id>(staffTypeStringId);
 
-        gfx_draw_string_left(
-            &dpi, STR_STAFF_LIST_COUNTER, ft.Data(), COLOUR_BLACK,
-            windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 });
+        DrawTextBasic(
+            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_STAFF_LIST_LIST].bottom + 2 }, STR_STAFF_LIST_COUNTER, ft);
     }
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override

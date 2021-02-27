@@ -156,13 +156,6 @@ void gfx_draw_string_no_formatting(
     DrawText(dpi, coords, textPaint, buffer, true);
 }
 
-// Basic
-void gfx_draw_string_left(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
-{
-    DrawTextBasic(dpi, coords, format, args, { colour, TextAlignment::LEFT });
-}
-
 // Wrapping
 int32_t gfx_draw_string_left_wrapped(
     rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)

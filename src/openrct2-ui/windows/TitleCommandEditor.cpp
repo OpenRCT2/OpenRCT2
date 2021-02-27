@@ -763,8 +763,8 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     TITLE_COMMAND_ORDER command_info = get_command_info(_command.Type);
 
     // "Command:" label
-    gfx_draw_string_left(
-        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY - 14 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ WS, BY - 14 }, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, {}, { w->colours[1] });
 
     // Command dropdown name
     DrawTextEllipsised(
@@ -773,7 +773,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
         w->colours[1]);
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 }, command_info.descStringId, {}, { w->colours[1] });
 
     if (_command.Type == TitleScript::Speed)
     {

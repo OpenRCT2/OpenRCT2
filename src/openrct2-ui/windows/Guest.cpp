@@ -1318,7 +1318,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
                           window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     // Happiness
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
     int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
     int32_t barColour = COLOUR_BRIGHT_GREEN;
@@ -1327,7 +1327,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
 
     int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
     barColour = COLOUR_BRIGHT_GREEN;
@@ -1336,7 +1336,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
 
     int32_t hunger = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
     hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
@@ -1346,7 +1346,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
 
     int32_t thirst = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
     thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
@@ -1356,7 +1356,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
 
     int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
     barColour = COLOUR_BRIGHT_RED;
@@ -1365,7 +1365,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
 
     int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
     barColour = COLOUR_BRIGHT_RED;
@@ -1380,7 +1380,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
         ft.Add<uint16_t>(timeInPark & 0xFFFF);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
     }
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
@@ -1389,7 +1389,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Intensity
@@ -1410,7 +1410,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<uint16_t>(maxIntensity);
         }
 
-        gfx_draw_string_left(dpi, string_id, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, string_id, ft);
     }
 
     // Nausea tolerance
@@ -1425,7 +1425,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
         auto ft = Formatter();
         ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
     }
 }
 
@@ -1570,7 +1570,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2,
                           window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
-    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
 
     screenCoords.y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1612,7 +1612,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         {
             auto ft = Formatter();
             ride->FormatNameTo(ft);
-            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 0, y - 1 });
+            DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
         }
     }
 }
@@ -1659,7 +1659,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->CashInPocket);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -1667,7 +1667,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->CashSpent);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
         screenCoords.y += LIST_ROW_HEIGHT * 2;
     }
 
@@ -1679,7 +1679,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->PaidToEnter);
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     // Paid on rides
@@ -1689,11 +1689,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->GuestNumRides);
         if (peep->GuestNumRides != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1704,11 +1704,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfFood);
         if (peep->AmountOfFood != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1720,11 +1720,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfDrinks);
         if (peep->AmountOfDrinks != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1735,11 +1735,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfSouvenirs);
         if (peep->AmountOfSouvenirs != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR, ft);
         }
     }
 }
@@ -1793,7 +1793,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                           window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
     screenCoords.y += 10;
     for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
@@ -1979,7 +1979,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t maxY = w->windowPos.y + w->height - 22;
     int32_t numItems = 0;
 
-    gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_CARRYING);
     screenCoords.y += 10;
 
     for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
@@ -1996,7 +1996,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (numItems == 0)
     {
-        gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_NOTHING);
     }
 }
 
@@ -2035,7 +2035,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<uint32_t>(peep->sprite_index);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2043,7 +2043,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->x);
         ft.Add<int32_t>(peep->y);
         ft.Add<int32_t>(peep->z);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_POSITION, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2072,7 +2072,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->DestinationX);
         ft.Add<int32_t>(peep->DestinationY);
         ft.Add<int32_t>(peep->DestinationTolerance);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2081,10 +2081,10 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->PathfindGoal.y);
         ft.Add<int32_t>(peep->PathfindGoal.z);
         ft.Add<int32_t>(peep->PathfindGoal.direction);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     screenCoords.x += 10;
@@ -2095,7 +2095,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(point.y);
         ft.Add<int32_t>(point.z);
         ft.Add<int32_t>(point.direction);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.x -= 10;

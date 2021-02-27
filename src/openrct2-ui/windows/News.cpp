@@ -243,7 +243,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             auto ft = Formatter();
             ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
             ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-            gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, ft.Data(), COLOUR_WHITE, { 2, y });
+            DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE });
         }
         // Item text
         {

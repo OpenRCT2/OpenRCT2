@@ -481,9 +481,9 @@ public:
             screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_GUEST_LIST].bottom + 2 };
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(_guestList.size()));
-            gfx_draw_string_left(
-                &dpi, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), ft.Data(),
-                COLOUR_BLACK, screenCoords);
+            DrawTextBasic(
+                &dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
+                ft);
         }
     }
 

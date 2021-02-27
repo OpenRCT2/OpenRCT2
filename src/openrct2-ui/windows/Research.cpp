@@ -309,7 +309,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
-            gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
         }
     }
     else
@@ -362,7 +362,7 @@ void window_research_development_page_paint(rct_window* w, rct_drawpixelinfo* dp
         {
             ft.Add<rct_string_id>(STR_RESEARCH_STAGE_UNKNOWN);
         }
-        gfx_draw_string_left(dpi, STR_RESEARCH_EXPECTED_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_RESEARCH_EXPECTED_LABEL, ft);
     }
 
     // Last development
@@ -562,8 +562,7 @@ void window_research_funding_page_paint(rct_window* w, rct_drawpixelinfo* dpi, r
 
     int32_t currentResearchLevel = gResearchFundingLevel;
     money32 currentResearchCostPerWeek = research_cost_table[currentResearchLevel];
-    gfx_draw_string_left(
-        dpi, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek, COLOUR_BLACK, w->windowPos + ScreenCoordsXY{ 10, 77 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 10, 77 }, STR_RESEARCH_COST_PER_MONTH, &currentResearchCostPerWeek);
 }
 
 #pragma endregion

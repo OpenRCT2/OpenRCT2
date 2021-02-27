@@ -434,21 +434,21 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
         const utf8* providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_NAME, static_cast<void*>(&providerName));
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail));
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerWebsite = network_get_server_provider_website();
         if (!str_is_null_or_empty(providerWebsite))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite));
         }
     }
 }
@@ -561,7 +561,7 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
     // Number of players
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 };
-    gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], screenCoords);
+    DrawTextBasic(dpi, screenCoords, stringId, &w->no_list_items, { w->colours[2] });
 }
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -853,7 +853,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
                           window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
 
-    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], screenPos);
+    DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { w->colours[2] });
 
     screenPos.y += 20;
 
@@ -909,7 +909,7 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
             // Draw action name
             auto ft = Formatter();
             ft.Add<uint16_t>(network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), COLOUR_BLACK, { 10, screenCoords.y });
+            DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

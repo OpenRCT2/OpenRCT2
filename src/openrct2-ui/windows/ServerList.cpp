@@ -400,20 +400,20 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    gfx_draw_string_left(
-        dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, nullptr,
+        { COLOUR_WHITE });
 
     // Draw version number
     std::string version = network_get_version();
     const char* versionCStr = version.c_str();
-    gfx_draw_string_left(
-        dpi, STR_NETWORK_VERSION, static_cast<void*>(&versionCStr), COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION,
+        static_cast<void*>(&versionCStr), { COLOUR_WHITE });
 
-    gfx_draw_string_left(
-        dpi, _statusText, static_cast<void*>(&_numPlayersOnline), COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 8, w->height - 15 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, static_cast<void*>(&_numPlayersOnline),
+        { COLOUR_WHITE });
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)

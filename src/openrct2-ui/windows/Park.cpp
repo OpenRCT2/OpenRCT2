@@ -898,9 +898,7 @@ static void window_park_rating_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    gfx_draw_string_left(
-        dpi, STR_PARK_RATING_LABEL, &gParkRating, COLOUR_BLACK,
-        screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 });
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, &gParkRating);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1033,9 +1031,8 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
 
     // Current value
-    gfx_draw_string_left(
-        dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK,
-        screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 });
+    DrawTextBasic(
+        dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark);
 
     // Graph border
     gfx_fill_rect_inset(
@@ -1180,12 +1177,12 @@ static void window_park_price_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
-    gfx_draw_string_left(dpi, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, &gTotalIncomeFromAdmissions);
 
     money32 parkEntranceFee = park_get_entrance_fee();
     auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
-    gfx_draw_string_left(dpi, stringId, &parkEntranceFee, w->colours[1], screenCoords);
+    DrawTextBasic(dpi, screenCoords, stringId, &parkEntranceFee, { w->colours[1] });
 }
 
 #pragma endregion
@@ -1288,7 +1285,7 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     auto ft = Formatter();
     ft.Add<uint32_t>(parkSize);
-    gfx_draw_string_left(dpi, stringIndex, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, stringIndex, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
@@ -1296,7 +1293,7 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft = Formatter();
         ft.Add<uint32_t>(w->list_information_type);
-        gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -1305,18 +1302,18 @@ static void window_park_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft = Formatter();
         ft.Add<uint32_t>(w->numberOfStaff);
-        gfx_draw_string_left(dpi, STR_STAFF_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Draw number of guests in park
     ft = Formatter();
     ft.Add<uint32_t>(gNumGuestsInPark);
-    gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
     ft = Formatter();
     ft.Add<uint32_t>(gTotalAdmissions);
-    gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
 }
 
 #pragma endregion
@@ -1466,7 +1463,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 5;
 
     // Your objective:
-    gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Objective
@@ -1631,7 +1628,7 @@ static void window_park_awards_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     if (count == 0)
-        gfx_draw_string_left(dpi, STR_NO_RECENT_AWARDS, nullptr, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 6, 6 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
 }
 
 #pragma endregion

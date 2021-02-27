@@ -936,7 +936,7 @@ static void window_new_ride_paint_ride_information(
             break;
     }
 
-    gfx_draw_string_left(dpi, designCountStringId, ft.Data(), COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 51 });
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

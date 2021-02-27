@@ -509,12 +509,12 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Pre-researched items label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left, w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
+    DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
     // Research order label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left, w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
+    DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
@@ -567,7 +567,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
     stringId = researchItem->GetCategoryInventionString();
-    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos);
+    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, &stringId);
 }
 
 /**

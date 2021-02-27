@@ -346,7 +346,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_PING);
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), 0, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
     char ping[64];
     snprintf(ping, 64, "%d ms", network_get_player_ping(player));
     gfx_draw_string(dpi, ping, w->colours[2], screenCoords + ScreenCoordsXY(30, 0));
@@ -513,13 +513,13 @@ void window_player_statistics_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto ft = Formatter();
     ft.Add<uint32_t>(network_get_player_commands_ran(player));
-    gfx_draw_string_left(dpi, STR_COMMANDS_RAN, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_COMMANDS_RAN, ft);
 
     screenCoords.y += LIST_ROW_HEIGHT;
 
     ft = Formatter();
     ft.Add<uint32_t>(network_get_player_money_spent(player));
-    gfx_draw_string_left(dpi, STR_MONEY_SPENT, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_MONEY_SPENT, ft);
 }
 
 static void window_player_set_page(rct_window* w, int32_t page)

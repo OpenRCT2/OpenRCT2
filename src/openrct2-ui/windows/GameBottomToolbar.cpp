@@ -523,7 +523,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     }
     ft = Formatter();
     ft.Add<int16_t>(temperature);
-    gfx_draw_string_left(dpi, format, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
     screenCoords.x += 30;
 
     // Current weather

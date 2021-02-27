@@ -483,7 +483,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         format_string(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), colour, { l, t });
+        DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
         textRight = l + gfx_get_string_width(buffer) + 1;
     }
 

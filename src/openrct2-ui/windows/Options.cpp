@@ -893,31 +893,31 @@ static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    gfx_draw_string_left(
-        dpi, STR_FULLSCREEN_MODE, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE,
+        w, { w->colours[1] });
 
     // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
-    int32_t colour = w->colours[1];
+    colour_t colour = w->colours[1];
     if (gConfigGeneral.fullscreen_mode != static_cast<int32_t>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
     {
         colour |= COLOUR_FLAG_INSET;
     }
-    gfx_draw_string_left(
-        dpi, STR_DISPLAY_RESOLUTION, w, colour,
-        w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10 + 15, window_options_display_widgets[WIDX_RESOLUTION].top + 1 },
+        STR_DISPLAY_RESOLUTION, w, { colour });
 
-    gfx_draw_string_left(
-        dpi, STR_UI_SCALING_DESC, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_DRAWING_ENGINE, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_SCALE].top + 1 }, STR_UI_SCALING_DESC, w,
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1 },
+        STR_DRAWING_ENGINE, w, { w->colours[1] });
 
     int32_t scale = static_cast<int32_t>(gConfigGeneral.window_scale * 100);
-    gfx_draw_string_left(
-        dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SCALE].left + 1, w->widgets[WIDX_SCALE].top + 1 },
+        STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, { w->colours[1] });
 
     colour = w->colours[1];
     if (gConfigGeneral.drawing_engine == DrawingEngine::Software
@@ -925,9 +925,9 @@ static void window_options_display_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         colour |= COLOUR_FLAG_INSET;
     }
-    gfx_draw_string_left(
-        dpi, STR_SCALING_QUALITY, w, colour,
-        w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 25, window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1 },
+        STR_SCALING_QUALITY, w, { colour });
 }
 
 #pragma region Rendering Tab
@@ -1328,24 +1328,24 @@ static void window_options_culture_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    gfx_draw_string_left(
-        dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_CURRENCY, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_DISTANCE_AND_SPEED, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_TEMPERATURE, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_HEIGHT_LABELS, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_DATE_FORMAT, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_LANGUAGE].top + 1 }, STR_OPTIONS_LANGUAGE,
+        w, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY, w,
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DISTANCE].top + 1 }, STR_DISTANCE_AND_SPEED,
+        w, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_TEMPERATURE].top + 1 }, STR_TEMPERATURE, w,
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_HEIGHT_LABELS].top + 1 }, STR_HEIGHT_LABELS,
+        w, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_culture_widgets[WIDX_DATE_FORMAT].top + 1 }, STR_DATE_FORMAT, w,
+        { w->colours[1] });
 }
 
 #pragma region Audio Tab
@@ -1744,13 +1744,13 @@ static void window_options_controls_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    gfx_draw_string_left(
-        dpi, STR_SHOW_TOOLBAR_BUTTONS_FOR, w, w->colours[1],
-        w->windowPos
-            + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 });
-    gfx_draw_string_left(
-        dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 });
+    DrawTextBasic(
+        dpi,
+        w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 },
+        STR_SHOW_TOOLBAR_BUTTONS_FOR, w, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_controls_and_interface_widgets[WIDX_THEMES].top + 1 },
+        STR_THEMES_LABEL_CURRENT_THEME, {}, { w->colours[1] });
 }
 
 #pragma region Miscellaneous Tab
@@ -1945,15 +1945,15 @@ static void window_options_misc_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    gfx_draw_string_left(
-        dpi, STR_TITLE_SEQUENCE, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 });
-    gfx_draw_string_left(
-        dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE,
+        w, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1 },
+        STR_OPTIONS_SCENARIO_GROUPING, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 10, window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1 },
+        STR_DEFAULT_INSPECTION_INTERVAL, w, { w->colours[1] });
 }
 
 #pragma region Advanced Tab
@@ -2111,21 +2111,23 @@ static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     window_options_draw_tab_images(dpi, w);
 
-    gfx_draw_string_left(
-        dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 });
-    gfx_draw_string_left(
-        dpi, window_options_autosave_names[gConfigGeneral.autosave_frequency], nullptr, w->colours[1],
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1 },
+        STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, { w->colours[1] });
+    DrawTextBasic(
+        dpi,
         w->windowPos
             + ScreenCoordsXY{ window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
-                              window_options_advanced_widgets[WIDX_AUTOSAVE].top });
-    gfx_draw_string_left(
-        dpi, STR_AUTOSAVE_AMOUNT, w, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+                              window_options_advanced_widgets[WIDX_AUTOSAVE].top },
+        window_options_autosave_names[gConfigGeneral.autosave_frequency], {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 24, window_options_advanced_widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+        STR_AUTOSAVE_AMOUNT, w, { w->colours[1] });
     int32_t autosavesToKeep = static_cast<int32_t>(gConfigGeneral.autosave_amount);
-    gfx_draw_string_left(
-        dpi, STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 });
+    DrawTextBasic(
+        dpi,
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, w->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
+        STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, &autosavesToKeep, { w->colours[1] });
 
     auto ft = Formatter();
     ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));

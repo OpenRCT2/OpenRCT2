@@ -1097,13 +1097,13 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(GetStaffWage(peep->AssignedStaffType));
-        gfx_draw_string_left(dpi, STR_STAFF_STAT_WAGES, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_WAGES, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
     auto ft = Formatter();
     ft.Add<int32_t>(peep->GetHireDate());
-    gfx_draw_string_left(dpi, STR_STAFF_STAT_EMPLOYED_FOR, ft.Data(), COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_EMPLOYED_FOR, ft);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     switch (peep->AssignedStaffType)
@@ -1111,32 +1111,32 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         case StaffType::Handyman:
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffLawnsMown);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_LAWNS_MOWN, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffGardensWatered);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_GARDENS_WATERED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffLitterSwept);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_LITTER_SWEPT, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffBinsEmptied);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_BINS_EMPTIED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
             break;
         case StaffType::Mechanic:
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffRidesInspected);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_INSPECTED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
             ft.Add<uint16_t>(peep->StaffRidesFixed);
-            gfx_draw_string_left(dpi, STR_STAFF_STAT_RIDES_FIXED, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
         case StaffType::Entertainer:
