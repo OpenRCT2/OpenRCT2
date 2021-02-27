@@ -199,7 +199,6 @@ public:
         screenCoords.y = windowPos.y + 25;
 
         int32_t no_lines = 0;
-        FontSpriteBase font_height = FontSpriteBase::SMALL;
 
         if (_descriptionStringId == STR_NONE)
         {
@@ -223,7 +222,7 @@ public:
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+        gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines);
 
         gfx_fill_rect_inset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
@@ -310,8 +309,7 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        FontSpriteBase fontHeight = FontSpriteBase::SMALL;
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), &numLines, &fontHeight);
+        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), &numLines);
         return numLines * 10 + WH;
     }
 

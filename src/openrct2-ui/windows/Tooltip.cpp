@@ -64,8 +64,7 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     int32_t numLines;
-    FontSpriteBase fontSpriteBase;
-    textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, &numLines, &fontSpriteBase);
+    textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, &numLines);
     _tooltipNumLines = numLines;
     return textWidth;
 }

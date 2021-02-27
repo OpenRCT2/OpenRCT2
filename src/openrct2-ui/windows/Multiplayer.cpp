@@ -344,12 +344,11 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     const int32_t width = 450;
     int32_t height = 55;
     int32_t numLines;
-    FontSpriteBase fontSpriteBase;
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         utf8* buffer = _strdup(network_get_server_name());
-        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        gfx_wrap_string(buffer, width, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
@@ -359,7 +358,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     if (!str_is_null_or_empty(descString))
     {
         utf8* buffer = _strdup(descString);
-        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        gfx_wrap_string(buffer, width, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }

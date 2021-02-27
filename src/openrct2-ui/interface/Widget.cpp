@@ -1087,7 +1087,6 @@ void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t 
 static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     int32_t no_lines = 0;
-    FontSpriteBase font_height = FontSpriteBase::SMALL;
     char wrapped_string[TEXT_INPUT_SIZE];
 
     // Get the widget
@@ -1116,7 +1115,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         if (w->widgets[widgetIndex].text != 0)
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines, &font_height);
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines);
             gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
         }
         return;
@@ -1126,7 +1125,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines, &font_height);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines);
 
     gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
 

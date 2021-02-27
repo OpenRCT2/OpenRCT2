@@ -170,7 +170,7 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, FontSpriteBase* outFontHeight)
+int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines)
 {
     constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
     thread_local std::string buffer;
@@ -259,7 +259,6 @@ int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, FontSpr
 
     std::memcpy(text, buffer.data(), buffer.size() + 1);
     *outNumLines = static_cast<int32_t>(numLines);
-    *outFontHeight = gCurrentFontSpriteBase;
     return maxWidth;
 }
 
@@ -272,7 +271,7 @@ void gfx_draw_string_left_centred(
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
-    int32_t height = string_get_height_raw(buffer);
+    int32_t height = string_get_height_raw(buffer, FontSpriteBase::MEDIUM);
     gfx_draw_string(dpi, buffer, colour, coords - ScreenCoordsXY{ 0, (height / 2) });
 }
 
@@ -352,14 +351,12 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
         }
         text = const_cast<char*>(ch + 1);
 
-        screenCoords.y += font_get_line_height(gCurrentFontSpriteBase);
+        screenCoords.y += font_get_line_height(FontSpriteBase::MEDIUM);
     }
 }
 
-int32_t string_get_height_raw(std::string_view text)
+int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
 {
-    auto fontBase = gCurrentFontSpriteBase;
-
     int32_t height = 0;
     if (fontBase <= FontSpriteBase::MEDIUM)
         height += 10;
@@ -431,7 +428,6 @@ void gfx_draw_string_centred_wrapped_partial(
     int32_t ticks)
 {
     int32_t numLines, lineHeight, lineY;
-    FontSpriteBase fontSpriteBase;
     utf8* buffer = gCommonStringFormatBuffer;
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
@@ -440,8 +436,8 @@ void gfx_draw_string_centred_wrapped_partial(
     format_string(buffer, 256, format, args);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    gfx_wrap_string(buffer, width, &numLines);
+    lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;

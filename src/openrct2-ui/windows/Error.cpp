@@ -57,7 +57,6 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message, const 
 rct_window* window_error_open(std::string_view title, std::string_view message)
 {
     int32_t numLines, width, height, maxY;
-    FontSpriteBase fontHeight;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
@@ -89,7 +88,7 @@ rct_window* window_error_open(std::string_view title, std::string_view message)
     width = std::clamp(width, 64, 196);
 
     gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-    gfx_wrap_string(buffer.data(), width + 1, &numLines, &fontHeight);
+    gfx_wrap_string(buffer.data(), width + 1, &numLines);
 
     _window_error_num_lines = numLines;
     width = width + 3;

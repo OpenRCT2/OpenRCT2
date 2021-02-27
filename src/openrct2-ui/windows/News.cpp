@@ -92,7 +92,7 @@ rct_window* window_news_open()
 
 static int32_t window_news_get_item_height()
 {
-    return 4 * font_get_line_height(gCurrentFontSpriteBase) + 2;
+    return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
 }
 
 /**
@@ -218,7 +218,7 @@ static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
     int32_t itemHeight = window_news_get_item_height();
 
     int32_t y = 0;

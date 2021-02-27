@@ -23,12 +23,10 @@ StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t wi
     Buffer = source;
     Paint = paint;
 
-    FontSpriteBase fontSpriteBase;
-
     gCurrentFontSpriteBase = paint.SpriteBase;
-    MaxWidth = gfx_wrap_string(Buffer, width, &LineCount, &fontSpriteBase);
+    MaxWidth = gfx_wrap_string(Buffer, width, &LineCount);
     LineCount += 1;
-    LineHeight = font_get_line_height(fontSpriteBase);
+    LineHeight = font_get_line_height(gCurrentFontSpriteBase);
 }
 
 void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
