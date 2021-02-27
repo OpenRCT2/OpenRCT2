@@ -40,13 +40,13 @@ declare global {
     /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
-    */
+     */
     var titleSequenceManager: TitleSequenceManager;
     /**
      * APIs for controlling the user interface.
      * These will only be available to servers and clients that are not running headless mode.
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
-    */
+     */
     var ui: Ui;
 
     /**
@@ -268,7 +268,7 @@ declare global {
         /**
          * Removes the registered interval specified by the numeric handle. The handles
          * are shared with `setTimeout`.
-         * @param handle 
+         * @param handle
          */
         clearInterval(handle: number): void;
 
@@ -1161,11 +1161,11 @@ declare global {
         /**
          * List of peep IDs ordered by seat.
          */
-        peeps: (number | null)[];
+        peeps: Array<number | null>;
 
         /**
-         * Moves the vehicle forward or backwards along the track, relative to its current 
-         * position. A single visible step is about 8.000 to 14.000 in distance depending 
+         * Moves the vehicle forward or backwards along the track, relative to its current
+         * position. A single visible step is about 8.000 to 14.000 in distance depending
          * on the direction its moving in.
          */
         travelBy(distance: number): void;
@@ -1895,7 +1895,7 @@ declare global {
         highscore: {
             name: string;
             companyValue: number;
-        }
+        };
     }
 
     interface TileSelection {
@@ -2140,7 +2140,7 @@ declare global {
 
     interface ViewportWidget extends WidgetBase {
         type: 'viewport';
-        viewport?: Viewport
+        viewport?: Viewport;
     }
 
     interface Window {
