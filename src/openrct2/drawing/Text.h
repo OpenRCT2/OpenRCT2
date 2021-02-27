@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../interface/Colour.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;
@@ -31,7 +32,7 @@ enum class TextUnderline
 
 struct TextPaint
 {
-    uint8_t Colour = 0;
+    colour_t Colour = COLOUR_BLACK;
     FontSpriteBase SpriteBase = FontSpriteBase::SMALL;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;

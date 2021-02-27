@@ -17,7 +17,7 @@
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
-enum
+enum : colour_t
 {
     COLOUR_BLACK,
     COLOUR_GREY,
