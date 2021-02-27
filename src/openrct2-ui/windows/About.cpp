@@ -174,13 +174,14 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
-        gfx_draw_string_centred_wrapped(
-            dpi, ft.Data(), aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
 }
 
@@ -194,8 +195,8 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
         w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
     int32_t width = w->width - 20;
 
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[2], TextAlignment::CENTRE })
         + lineHeight;
 
     rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
@@ -203,24 +204,28 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     aboutCoords.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, {},
+                         { w->colours[2], TextAlignment::CENTRE })
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
     if (!LocalisationService_UseTrueTypeFont())
     {
-        gfx_draw_string_centred_wrapped(dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+        DrawTextWrapped(
+            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[2], TextAlignment::CENTRE });
     }
 
     // Version info
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    auto ft = Formatter();
+    ft.Add<const char*>(buffer);
 
     aboutCoords.y = w->windowPos.y + WH - 25;
-    gfx_draw_string_centred_wrapped(dpi, &ch, aboutCoords, width, STR_STRING, w->colours[2]);
+    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[2], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)

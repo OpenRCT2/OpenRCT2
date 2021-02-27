@@ -2952,8 +2952,8 @@ static void window_ride_vehicle_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, 64 };
 
     // Description
-    screenCoords.y += gfx_draw_string_centred_wrapped(
-        dpi, &rideEntry->naming.Description, screenCoords, 300, STR_BLACK_STRING, COLOUR_BLACK);
+    screenCoords.y += DrawTextWrapped(
+        dpi, screenCoords, 300, STR_BLACK_STRING, &rideEntry->naming.Description, { TextAlignment::CENTRE });
     screenCoords.y += 2;
 
     // Capacity
@@ -4155,8 +4155,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                gfx_draw_string_centred_wrapped(
-                    dpi, nullptr, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
+                DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, {}, { TextAlignment::CENTRE });
             }
             else
             {
@@ -4165,8 +4164,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     auto ft = Formatter();
                     staff->FormatNameTo(ft);
-                    gfx_draw_string_centred_wrapped(
-                        dpi, ft.Data(), screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, COLOUR_BLACK);
+                    DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, ft, { TextAlignment::CENTRE });
                 }
             }
         }
@@ -5578,8 +5576,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
         rct_widget* widget = &window_ride_measurements_widgets[WIDX_PAGE_BACKGROUND];
 
         ScreenCoordsXY widgetCoords(w->windowPos.x + widget->width() / 2, w->windowPos.y + widget->top + 40);
-        gfx_draw_string_centred_wrapped(
-            dpi, nullptr, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, COLOUR_BLACK);
+        DrawTextWrapped(dpi, widgetCoords, w->width - 8, STR_CLICK_ITEMS_OF_SCENERY_TO_SELECT, {}, { TextAlignment::CENTRE });
 
         widgetCoords.x = w->windowPos.x + 4;
         widgetCoords.y = w->windowPos.y + window_ride_measurements_widgets[WIDX_SELECT_NEARBY_SCENERY].bottom + 17;
@@ -6073,7 +6070,7 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // No measurement message
         ScreenCoordsXY stringCoords(widget->width() / 2, widget->height() / 2 - 5);
         int32_t width = widget->width() - 2;
-        gfx_draw_string_centred_wrapped(dpi, message.args.Data(), stringCoords, width, message.str, COLOUR_BLACK);
+        DrawTextWrapped(dpi, stringCoords, width, message.str, message.args, { TextAlignment::CENTRE });
         return;
     }
 
@@ -6924,7 +6921,7 @@ static void window_ride_customer_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         queueTime = ride->GetMaxQueueTime();
         stringId = queueTime == 1 ? STR_QUEUE_TIME_MINUTE : STR_QUEUE_TIME_MINUTES;
-        screenCoords.y += gfx_draw_string_centred_wrapped(dpi, &queueTime, screenCoords, 308, stringId, COLOUR_BLACK);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 308, stringId, &queueTime, { TextAlignment::CENTRE });
         screenCoords.y += 5;
     }
 

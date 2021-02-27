@@ -249,8 +249,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
         {
             auto ft = Formatter();
             ft.Add<const char*>(newsItem.Text.c_str());
-            gfx_draw_string_left_wrapped(
-                dpi, ft.Data(), { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+            DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft);
         }
         // Subject button
         if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))

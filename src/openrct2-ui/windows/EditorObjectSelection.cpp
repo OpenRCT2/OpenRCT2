@@ -1070,8 +1070,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 18 };
         width = w->windowPos.x + w->width - screenPos.x - 4;
 
-        gfx_draw_string_left_wrapped(
-            dpi, ft.Data(), screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
+        DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };

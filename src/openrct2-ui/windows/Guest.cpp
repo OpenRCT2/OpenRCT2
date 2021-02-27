@@ -1808,7 +1808,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         auto ft = Formatter();
         peep_thought_set_format_args(thought, ft);
-        screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -1990,7 +1990,7 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         auto [stringId, ft] = window_guest_inventory_format_item(guest, item);
-        screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, itemNameWidth, stringId, COLOUR_BLACK);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
         numItems++;
     }
 

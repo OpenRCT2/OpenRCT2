@@ -134,7 +134,7 @@ public:
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<const char*>(_shortcutCustomName.c_str());
         }
-        gfx_draw_string_centred_wrapped(&dpi, ft.Data(), stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, COLOUR_BLACK);
+        DrawTextWrapped(&dpi, stringCoords, 242, STR_SHORTCUT_CHANGE_PROMPT, ft, { TextAlignment::CENTRE });
     }
 
 private:

@@ -156,39 +156,37 @@ void gfx_draw_string_no_formatting(
     DrawText(dpi, coords, textPaint, buffer, true);
 }
 
-// Wrapping
-int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    TextPaint textPaint)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
+    gCurrentFontSpriteBase = textPaint.SpriteBase;
 
-    TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, TextUnderline::Off, TextAlignment::LEFT };
     StaticLayout layout(buffer, textPaint, width);
-    layout.Draw(dpi, coords);
+
+    if (textPaint.Alignment == TextAlignment::CENTRE)
+    {
+        // The original tried to vertically centre the text, but used line count - 1
+        int32_t lineCount = layout.GetLineCount();
+        int32_t lineHeight = layout.GetHeight() / lineCount;
+        int32_t yOffset = (lineCount - 1) * lineHeight / 2;
+
+        layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
+    }
+    else
+    {
+        layout.Draw(dpi, coords);
+    }
 
     return layout.GetHeight();
 }
 
-int32_t gfx_draw_string_centred_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
+    TextPaint textPaint)
 {
-    utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
-
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, TextUnderline::Off, TextAlignment::CENTRE };
-    StaticLayout layout(buffer, textPaint, width);
-
-    // The original tried to vertically centre the text, but used line count - 1
-    int32_t lineCount = layout.GetLineCount();
-    int32_t lineHeight = layout.GetHeight() / lineCount;
-    int32_t yOffset = (lineCount - 1) * lineHeight / 2;
-
-    layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
-
-    return layout.GetHeight();
+    return DrawTextWrapped(dpi, coords, width, format, ft.Data(), textPaint);
 }

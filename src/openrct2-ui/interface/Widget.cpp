@@ -358,7 +358,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
     if (widget->type == WindowWidgetType::LabelCentred)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, widget->width() - 2, stringId, colour);
+        DrawTextWrapped(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {
@@ -407,7 +407,7 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex wi
     ScreenCoordsXY coords = { l + 1, t };
     if (widget->type == WindowWidgetType::LabelCentred)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, r - l, stringId, colour);
+        DrawTextWrapped(dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {

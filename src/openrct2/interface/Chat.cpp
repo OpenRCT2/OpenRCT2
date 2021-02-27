@@ -189,9 +189,9 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
         auto lineCh = lineBuffer.c_str();
-        inputLineHeight = gfx_draw_string_left_wrapped(
-            dpi, static_cast<void*>(&lineCh), screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING,
-            TEXT_COLOUR_255);
+        inputLineHeight = DrawTextWrapped(
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, static_cast<void*>(&lineCh),
+            { TEXT_COLOUR_255 });
         gfx_set_dirty_blocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines

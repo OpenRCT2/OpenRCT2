@@ -1459,7 +1459,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gScenarioDetails.c_str());
-    screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 222, STR_BLACK_STRING, COLOUR_BLACK);
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
     screenCoords.y += 5;
 
     // Your objective:
@@ -1488,8 +1488,7 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<money32>(gScenarioObjective.Currency);
     }
 
-    screenCoords.y += gfx_draw_string_left_wrapped(
-        dpi, ft.Data(), screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], COLOUR_BLACK);
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
     screenCoords.y += 5;
 
     // Objective outcome
@@ -1498,14 +1497,14 @@ static void window_park_objective_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
             // Objective failed
-            gfx_draw_string_left_wrapped(dpi, nullptr, screenCoords, 222, STR_OBJECTIVE_FAILED, COLOUR_BLACK);
+            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
         }
         else
         {
             // Objective completed
             ft = Formatter();
             ft.Add<money32>(gScenarioCompletedCompanyValue);
-            gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, 222, STR_OBJECTIVE_ACHIEVED, COLOUR_BLACK);
+            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
         }
     }
 }
@@ -1620,8 +1619,7 @@ static void window_park_awards_paint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         gfx_draw_sprite(dpi, ParkAwards[award->Type].sprite, screenCoords, 0);
-        gfx_draw_string_left_wrapped(
-            dpi, nullptr, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[award->Type].text, COLOUR_BLACK);
+        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[award->Type].text);
 
         screenCoords.y += 32;
         count++;

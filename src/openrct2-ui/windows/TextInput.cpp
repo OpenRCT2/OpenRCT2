@@ -204,13 +204,14 @@ public:
         if (_descriptionStringId == STR_NONE)
         {
             auto* text = _description.c_str();
-            gfx_draw_string_centred_wrapped(&dpi, &text, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, colours[1]);
+            DrawTextWrapped(
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, &text, { colours[1], TextAlignment::CENTRE });
         }
         else
         {
-            gfx_draw_string_centred_wrapped(
-                &dpi, &TextInputDescriptionArgs, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId,
-                colours[1]);
+            DrawTextWrapped(
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, &TextInputDescriptionArgs,
+                { colours[1], TextAlignment::CENTRE });
         }
 
         screenCoords.y += 25;

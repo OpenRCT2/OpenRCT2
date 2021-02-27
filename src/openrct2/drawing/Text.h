@@ -152,3 +152,9 @@ void DrawTextBasic(
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     colour_t colour, TextAlignment alignment = TextAlignment::LEFT, bool underline = false);
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft = {},
+    TextPaint textPaint = {});
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    TextPaint textPaint = {});
