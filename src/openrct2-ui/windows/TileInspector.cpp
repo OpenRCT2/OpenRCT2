@@ -1712,40 +1712,37 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    // Set medium font size
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-
     // Draw column headers
     rct_widget* widget;
     if ((widget = &w->widgets[WIDX_COLUMN_TYPE])->type != WindowWidgetType::Empty)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_ELEMENT_TYPE, {}, w->colours[1]);
+            STR_TILE_INSPECTOR_ELEMENT_TYPE, {}, { w->colours[1] });
     }
     if ((widget = &w->widgets[WIDX_COLUMN_BASEHEIGHT])->type != WindowWidgetType::Empty)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, {}, w->colours[1]);
+            STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT, {}, { w->colours[1] });
     }
     if ((widget = &w->widgets[WIDX_COLUMN_CLEARANCEHEIGHT])->type != WindowWidgetType::Empty)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, {}, w->colours[1]);
+            STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, {}, { w->colours[1] });
     }
     if ((widget = &w->widgets[WIDX_COLUMN_GHOSTFLAG])->type != WindowWidgetType::Empty)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, {}, w->colours[1]);
+            STR_TILE_INSPECTOR_FLAG_GHOST_SHORT, {}, { w->colours[1] });
     }
     if ((widget = &w->widgets[WIDX_COLUMN_LASTFLAG])->type != WindowWidgetType::Empty)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + widget->left + 1, w->windowPos.y + widget->top + 1 }, widget->width(),
-            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, {}, w->colours[1]);
+            STR_TILE_INSPECTOR_FLAG_LAST_SHORT, {}, { w->colours[1] });
     }
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
@@ -2247,7 +2244,6 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 
     const TileElement* tileElement = map_get_first_element_at(windowTileInspectorToolMap);
 
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     do
     {
         if (tileElement == nullptr)
@@ -2333,8 +2329,7 @@ static void window_tile_inspector_scrollpaint(rct_window* w, rct_drawpixelinfo* 
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(typeName);
-        DrawTextEllipsised(
-            dpi, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 }, COL_X_BH, stringFormat, ft, COLOUR_BLACK); // 3px padding
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ COL_X_TYPE + 3, 0 }, COL_X_BH, stringFormat, ft); // 3px padding
 
         // Base height
         ft = Formatter();

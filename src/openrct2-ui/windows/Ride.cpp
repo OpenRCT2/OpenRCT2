@@ -2678,7 +2678,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_string_id rideStatus = window_ride_get_status(w, ft);
     DrawTextEllipsised(
         dpi, w->windowPos + ScreenCoordsXY{ (widget->left + widget->right) / 2, widget->top }, widget->width(), rideStatus, ft,
-        COLOUR_BLACK, TextAlignment::CENTRE);
+        { TextAlignment::CENTRE });
 }
 
 #pragma endregion
@@ -4891,7 +4891,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
 
-        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {}, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + 103 }, 97, STR_STATION_STYLE, {});
     }
 }
 
@@ -5688,7 +5688,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
                     ft.Add<uint16_t>(0);
-                    DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft, COLOUR_BLACK);
+                    DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_TIME, ft);
                     screenCoords.y += LIST_ROW_HEIGHT;
                 }
 
@@ -5726,7 +5726,7 @@ static void window_ride_measurements_paint(rct_window* w, rct_drawpixelinfo* dpi
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
                 ft.Add<uint16_t>(0);
-                DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft, COLOUR_BLACK);
+                DrawTextEllipsised(dpi, screenCoords, 308, STR_RIDE_LENGTH, ft);
 
                 screenCoords.y += LIST_ROW_HEIGHT;
 

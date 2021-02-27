@@ -54,7 +54,6 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
         auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
         format_string(buffer, 128, stringId, &newValue);
-        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
         offsetX = -(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2);
     }
     moneyEffect->OffsetX = offsetX;

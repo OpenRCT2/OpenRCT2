@@ -1178,8 +1178,7 @@ void window_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE));
-    DrawTextEllipsised(
-        dpi, { w->windowPos.x + 3, w->windowPos.y + w->height - 13 }, w->width - 19, STR_BLACK_STRING, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 3, w->windowPos.y + w->height - 13 }, w->width - 19, STR_BLACK_STRING, ft);
 }
 
 /**

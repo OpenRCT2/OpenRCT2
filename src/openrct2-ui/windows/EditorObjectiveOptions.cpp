@@ -890,7 +890,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(parkName);
-        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_PARK_NAME, ft);
     }
 
     // Scenario name
@@ -900,7 +900,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(gS6Info.name);
-    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, screenCoords, width, STR_WINDOW_SCENARIO_NAME, ft);
 
     // Scenario details label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_DETAILS].top };
@@ -1099,11 +1099,11 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
             {
-                gCurrentFontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
-                                                                                  : FontSpriteBase::MEDIUM_DARK;
+                FontSpriteBase fontSpriteBase = stringId == STR_WINDOW_COLOUR_2_STRINGID ? FontSpriteBase::MEDIUM_EXTRA_DARK
+                                                                                         : FontSpriteBase::MEDIUM_DARK;
                 gfx_draw_string(
                     dpi, { 2, y }, static_cast<const char*>(CheckBoxMarkString),
-                    { static_cast<colour_t>(w->colours[1] & 0x7F) });
+                    { static_cast<colour_t>(w->colours[1] & 0x7F), fontSpriteBase });
             }
 
             // Ride name

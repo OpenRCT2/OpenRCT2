@@ -446,8 +446,6 @@ void fence_paint(paint_session* session, uint8_t direction, int32_t height, cons
             format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
         }
 
-        gCurrentFontSpriteBase = FontSpriteBase::TINY;
-
         uint16_t stringWidth = gfx_get_string_width(signString, FontSpriteBase::TINY);
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 

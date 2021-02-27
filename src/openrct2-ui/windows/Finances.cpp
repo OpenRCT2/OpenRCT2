@@ -1099,7 +1099,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         }
 
         // Advertisement
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
 
         // Duration
         uint16_t weeksRemaining = campaign->WeeksLeft;

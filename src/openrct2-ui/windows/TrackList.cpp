@@ -541,7 +541,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         // Vehicle design not available
-        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, 368, STR_VEHICLE_DESIGN_UNAVAILABLE, {}, { TextAlignment::CENTRE });
         screenPos.y -= SCROLLABLE_ROW_HEIGHT;
     }
 
@@ -551,7 +551,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos, 368, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
             screenPos.y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
@@ -559,7 +559,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Track design name
     auto ft = Formatter();
     ft.Add<utf8*>(_trackDesigns[trackIndex].name);
-    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
 
     // Information
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->bottom + 2 };
@@ -606,7 +606,7 @@ static void window_track_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft = Formatter();
             ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
             ft.Add<uint16_t>(_loadedTrackDesign->ride_length);
-            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
 

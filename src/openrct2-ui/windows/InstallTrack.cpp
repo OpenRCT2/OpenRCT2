@@ -220,7 +220,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }
@@ -317,7 +317,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
         ft.Add<uint16_t>(td6->ride_length);
-        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 

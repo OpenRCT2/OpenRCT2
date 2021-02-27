@@ -183,8 +183,6 @@ static void ride_entrance_exit_paint(paint_session* session, uint8_t direction, 
             format_string(entrance_string, sizeof(entrance_string), STR_BANNER_TEXT_FORMAT, ft.Data());
         }
 
-        gCurrentFontSpriteBase = FontSpriteBase::TINY;
-
         uint16_t stringWidth = gfx_get_string_width(entrance_string, FontSpriteBase::TINY);
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
@@ -290,8 +288,6 @@ static void park_entrance_paint(paint_session* session, uint8_t direction, int32
                 {
                     format_string(park_name, sizeof(park_name), STR_BANNER_TEXT_FORMAT, ft.Data());
                 }
-
-                gCurrentFontSpriteBase = FontSpriteBase::TINY;
 
                 uint16_t stringWidth = gfx_get_string_width(park_name, FontSpriteBase::TINY);
                 uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;

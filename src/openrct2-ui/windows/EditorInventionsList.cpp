@@ -561,7 +561,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
     auto [drawString, ft] = window_editor_inventions_list_prepare_name(researchItem, false);
-    DrawTextEllipsised(dpi, screenPos, width, drawString, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, width, drawString, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
 
     // Item category
@@ -613,21 +613,18 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (researchItem.Equals(&_editorInventionsListDraggedItem))
             continue;
 
-        uint8_t colour;
+        // TODO: this parameter by itself produces very light text.
+        // It needs a {BLACK} token in the string to work properly.
+        colour_t colour = COLOUR_BLACK;
+        FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+
         if (researchItem.IsAlwaysResearched())
         {
             if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsNull())
-                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
+                fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
             else
-                gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
             colour = w->colours[1] | COLOUR_FLAG_INSET;
-        }
-        else
-        {
-            // TODO: this parameter by itself produces very light text.
-            // It needs a {BLACK} token in the string to work properly.
-            colour = COLOUR_BLACK;
-            gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
         }
 
         const rct_string_id itemNameId = researchItem.GetName();
@@ -642,19 +639,22 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             auto ft = Formatter();
             ft.Add<rct_string_id>(rideTypeName);
             DrawTextEllipsised(
-                dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft, colour);
+                dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
+                { colour, fontSpriteBase });
 
             // Draw vehicle name
             ft = Formatter();
             ft.Add<rct_string_id>(itemNameId);
-            DrawTextEllipsised(dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft, colour);
+            DrawTextEllipsised(
+                dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
+                { colour, fontSpriteBase });
         }
         else
         {
             // Scenery group, flat ride or shop
             auto ft = Formatter();
             ft.Add<rct_string_id>(itemNameId);
-            DrawTextEllipsised(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, colour);
+            DrawTextEllipsised(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
         }
     }
 }

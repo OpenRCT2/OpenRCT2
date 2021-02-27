@@ -472,7 +472,7 @@ public:
 
         {
             Formatter ft(_filterArguments.args);
-            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft, COLOUR_BLACK);
+            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft);
         }
 
         // Number of guests (list items)
@@ -677,7 +677,7 @@ private:
                 }
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft);
 
                 switch (_selectedView)
                 {
@@ -692,7 +692,7 @@ private:
                         // Action
                         ft = Formatter();
                         peep->FormatActionTo(ft);
-                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft, COLOUR_BLACK);
+                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft);
                         break;
                     case GuestViewType::Thoughts:
                         // For each thought
@@ -707,7 +707,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft);
                             break;
                         }
                         break;
@@ -749,7 +749,7 @@ private:
 
                 // Draw action
                 Formatter ft(group.Arguments.args);
-                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
 
                 // Draw guest count
                 ft = Formatter();

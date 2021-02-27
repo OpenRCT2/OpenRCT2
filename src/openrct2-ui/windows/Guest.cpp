@@ -978,7 +978,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter();
         peep->FormatActionTo(ft);
         int32_t width = widget->width();
-        DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
     // Draw the marquee thought
@@ -1585,7 +1585,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     }
 
-    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft);
 }
 
 /**

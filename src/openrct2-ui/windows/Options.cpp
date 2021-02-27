@@ -2140,7 +2140,7 @@ static void window_options_advanced_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint32_t padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
     ScreenCoordsXY screenCoords = { w->windowPos.x + pathWidget.left + 1,
                                     w->windowPos.y + pathWidget.top + static_cast<int32_t>(padding) };
-    DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, w->colours[1]);
+    DrawTextEllipsised(dpi, screenCoords, 277, STR_STRING, ft, { w->colours[1] });
 }
 
 static OpenRCT2String window_options_advanced_tooltip(

@@ -911,7 +911,7 @@ static void window_new_ride_paint_ride_information(
         const char* drawString = availabilityString;
         ft = Formatter();
         ft.Add<const char*>(drawString);
-        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
     }
 
     ft = Formatter();

@@ -338,7 +338,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-            COLOUR_BLACK, TextAlignment::CENTRE);
+            { TextAlignment::CENTRE });
     }
 
     // Draw ping
@@ -364,7 +364,7 @@ void window_player_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         ft.Add<rct_string_id>(STR_ACTION_NA);
     }
-    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenCoords, width, STR_LAST_ACTION_RAN, ft, { TextAlignment::CENTRE });
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {

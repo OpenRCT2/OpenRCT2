@@ -943,7 +943,7 @@ void window_staff_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     rct_widget* widget = &w->widgets[WIDX_BTM_LABEL];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->top };
     int32_t width = widget->width();
-    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
 }
 
 /**

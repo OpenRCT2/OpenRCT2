@@ -215,14 +215,12 @@ public:
 
         screenCoords.y += 25;
 
-        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-
         char wrapped_string[TEXT_INPUT_SIZE];
         safe_strcpy(wrapped_string, _buffer.data(), TEXT_INPUT_SIZE);
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines);
+        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontSpriteBase::MEDIUM, &no_lines);
 
         gfx_fill_rect_inset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
@@ -239,7 +237,7 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            gfx_draw_string_no_formatting(&dpi, wrap_pointer, colours[1], screenCoords);
+            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontSpriteBase::MEDIUM });
 
             size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -309,7 +307,7 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), &numLines);
+        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontSpriteBase::MEDIUM, &numLines);
         return numLines * 10 + WH;
     }
 

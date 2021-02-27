@@ -23,16 +23,13 @@ StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t wi
     Buffer = source;
     Paint = paint;
 
-    gCurrentFontSpriteBase = paint.SpriteBase;
-    MaxWidth = gfx_wrap_string(Buffer, width, &LineCount);
+    MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
     LineCount += 1;
-    LineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    LineHeight = font_get_line_height(paint.SpriteBase);
 }
 
 void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
 {
-    gCurrentFontSpriteBase = Paint.SpriteBase;
-
     TextPaint tempPaint = Paint;
 
     auto lineCoords = coords;
@@ -91,7 +88,7 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase);
 
     if (paint.UnderlineText == TextUnderline::On)
     {
@@ -118,7 +115,6 @@ static void DrawText(
 void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint)
 {
-    gCurrentFontSpriteBase = textPaint.SpriteBase;
     DrawText(dpi, coords, textPaint, format, args);
 }
 
@@ -130,14 +126,11 @@ void DrawTextBasic(
 
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
-    colour_t colour, TextAlignment alignment, bool underline)
+    TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, FontSpriteBase::MEDIUM, underline ? TextUnderline::On : TextUnderline::Off, alignment };
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, ft.Data());
-    gfx_clip_string(buffer, width);
+    gfx_clip_string(buffer, width, textPaint.SpriteBase);
 
     DrawText(dpi, coords, textPaint, buffer);
 }
@@ -148,9 +141,8 @@ void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const
 }
 
 void gfx_draw_string_no_formatting(
-    rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, TextUnderline::Off, TextAlignment::LEFT };
     DrawText(dpi, coords, textPaint, buffer, true);
 }
 
@@ -160,8 +152,6 @@ int32_t DrawTextWrapped(
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
-
-    gCurrentFontSpriteBase = textPaint.SpriteBase;
 
     StaticLayout layout(buffer, textPaint, width);
 

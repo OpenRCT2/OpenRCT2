@@ -407,11 +407,11 @@ public:
 
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, nameColumnSize, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { 0, y }, nameColumnSize, format, ft);
 
                 ft = Formatter();
                 peep->FormatActionTo(ft);
-                DrawTextEllipsised(&dpi, { actionOffset, y }, actionColumnSize, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { actionOffset, y }, actionColumnSize, format, ft);
 
                 // True if a patrol path is set for the worker
                 if (gStaffModes[peep->StaffId] == StaffMode::Patrol)

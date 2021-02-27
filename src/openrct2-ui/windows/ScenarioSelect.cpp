@@ -438,6 +438,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
+    FontSpriteBase fontSpriteBase = ScenarioSelectUseSmallFont() ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -457,7 +458,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
+        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontSpriteBase, TextAlignment::CENTRE });
     }
 
     // Return if no scenario highlighted
@@ -471,7 +472,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
             DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
         }
         return;
@@ -482,8 +483,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6);
+        shorten_path(path, sizeof(path), scenario->path, w->width - 6, FontSpriteBase::MEDIUM);
 
         const utf8* pathPtr = path;
         DrawTextBasic(
@@ -499,7 +499,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
     DrawTextEllipsised(
-        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
 
     // Scenario details
@@ -607,11 +607,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 ft.Add<rct_string_id>(STR_STRING);
                 ft.Add<char*>(buffer);
                 colour_t colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
-                if (isDisabled)
-                {
-                    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
-                }
-                DrawTextBasic(dpi, { wide ? 270 : 210, y + 1 }, format, ft, { colour, TextAlignment::CENTRE });
+                FontSpriteBase fontSpriteBase = isDisabled ? FontSpriteBase::MEDIUM_DARK : FontSpriteBase::MEDIUM;
+                DrawTextBasic(dpi, { wide ? 270 : 210, y + 1 }, format, ft, { colour, fontSpriteBase, TextAlignment::CENTRE });
 
                 // Check if scenario is completed
                 if (isCompleted)

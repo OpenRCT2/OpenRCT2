@@ -729,7 +729,7 @@ static void window_park_entrance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
     DrawTextEllipsised(
         dpi, w->windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING, ft,
-        COLOUR_BLACK, TextAlignment::CENTRE);
+        { TextAlignment::CENTRE });
 }
 
 /**

@@ -336,8 +336,6 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
         return _windowInformationSize;
     }
 
-    // Reset font sprite base and compute line height
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
     int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Base dimensions.
@@ -348,7 +346,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         utf8* buffer = _strdup(network_get_server_name());
-        gfx_wrap_string(buffer, width, &numLines);
+        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
@@ -358,7 +356,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     if (!str_is_null_or_empty(descString))
     {
         utf8* buffer = _strdup(descString);
-        gfx_wrap_string(buffer, width, &numLines);
+        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
@@ -602,7 +600,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 buffer += network_get_player_name(i);
             }
             screenCoords.x = 0;
-            gfx_clip_string(buffer.data(), 230);
+            gfx_clip_string(buffer.data(), 230, FontSpriteBase::MEDIUM);
             gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
 
             // Draw group name
@@ -613,7 +611,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 buffer += "{BLACK}";
                 screenCoords.x = 173;
                 buffer += network_get_group_name(group);
-                gfx_clip_string(buffer.data(), 80);
+                gfx_clip_string(buffer.data(), 80, FontSpriteBase::MEDIUM);
                 gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
             }
 
@@ -628,7 +626,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 ft.Add<rct_string_id>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
 
             // Draw ping
             buffer.resize(0);
@@ -845,7 +843,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-            COLOUR_BLACK, TextAlignment::CENTRE);
+            { TextAlignment::CENTRE });
     }
 
     auto screenPos = w->windowPos
@@ -869,7 +867,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-            COLOUR_BLACK, TextAlignment::CENTRE);
+            { TextAlignment::CENTRE });
     }
 }
 

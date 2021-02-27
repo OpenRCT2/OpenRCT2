@@ -442,7 +442,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
         }
 
-        int32_t colour = w->colours[1];
+        colour_t colour = w->colours[1];
         if (serverDetails.Favourite)
         {
             colour = COLOUR_YELLOW;
@@ -475,7 +475,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // Finally, draw the server information.
         auto ft = Formatter();
         ft.Add<const char*>(serverInfoToShow);
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, colour);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 

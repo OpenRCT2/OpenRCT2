@@ -333,7 +333,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Get the colour
-    uint8_t colour = w->colours[widget->colour];
+    colour_t colour = w->colours[widget->colour];
     colour &= ~(COLOUR_FLAG_TRANSLUCENT);
     if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -362,7 +362,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     }
     else
     {
-        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 }
 
@@ -563,7 +563,7 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, Formatter::Common(), COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE);
+        dpi, topLeft, width, widget->text, Formatter::Common(), { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE });
 }
 
 /**
@@ -600,7 +600,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), colour, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), { colour, TextAlignment::CENTRE });
 }
 
 /**
@@ -670,8 +670,6 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
     topLeft.y++;
     bottomRight.x--;
     bottomRight.y--;
-
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -1105,8 +1103,6 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
-    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM;
-
     // Figure out where the text should be positioned vertically.
     topLeft.y = w->windowPos.y + widget->textTop();
 
@@ -1115,8 +1111,9 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         if (w->widgets[widgetIndex].text != 0)
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines);
-            gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontSpriteBase::MEDIUM, &no_lines);
+            gfx_draw_string_no_formatting(
+                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
         }
         return;
     }
@@ -1125,9 +1122,9 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontSpriteBase::MEDIUM, &no_lines);
 
-    gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 

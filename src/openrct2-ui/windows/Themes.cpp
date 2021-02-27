@@ -833,7 +833,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto width = w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
             - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4;
 
-        DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
+        DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, { w->colours[1] });
     }
 }
 
@@ -911,7 +911,6 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_E0);
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    gCurrentFontSpriteBase = FontSpriteBase::MEDIUM_DARK;
                     gfx_draw_string(
                         dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
                         { static_cast<colour_t>(w->colours[1] & 0x7F), FontSpriteBase::MEDIUM_DARK });
