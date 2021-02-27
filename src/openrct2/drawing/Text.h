@@ -33,7 +33,7 @@ enum class TextUnderline
 struct TextPaint
 {
     colour_t Colour = COLOUR_BLACK;
-    FontSpriteBase SpriteBase = FontSpriteBase::SMALL;
+    FontSpriteBase SpriteBase = FontSpriteBase::MEDIUM;
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
 
