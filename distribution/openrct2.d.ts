@@ -1149,6 +1149,11 @@ declare global {
         status: VehicleStatus;
 
         /**
+         * The location and direction of where the car is on the track.
+         */
+        trackLocation: CoordsXYZD;
+
+        /**
          * The progress on the current track piece, in steps.
          */
         readonly trackProgress: number;
