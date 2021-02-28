@@ -67,6 +67,8 @@ namespace OpenRCT2::Ui
         bool GetState(const RegisteredShortcut& shortcut) const;
         bool GetState(const ShortcutInput& shortcut) const;
 
+        bool HasTextInputFocus() const;
+
     public:
         void QueueInputEvent(const SDL_Event& e);
         void QueueInputEvent(InputEvent&& e);
