@@ -18,6 +18,7 @@
 #include <optional>
 #include <string>
 #include <string_view>
+#include <unordered_map>
 #include <utility>
 #include <vector>
 
@@ -118,8 +119,11 @@ namespace OpenRCT2::Ui
         void LoadUserBindings(const fs::path& path);
         void SaveUserBindings(const fs::path& path);
 
+        // We store the IDs separately so that we can safely use them for string_view in the map
+        std::vector<std::unique_ptr<std::string>> _ids;
+
     public:
-        std::vector<RegisteredShortcut> Shortcuts;
+        std::unordered_map<std::string_view, RegisteredShortcut> Shortcuts;
 
         ShortcutManager(const std::shared_ptr<IPlatformEnvironment>& env);
         ShortcutManager(const ShortcutManager&) = delete;
