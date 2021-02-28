@@ -103,13 +103,10 @@ endif ()
 if (APPLE AND MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     # update dylibs
-    set(MACOS_DYLIBS_VERSION "27")
+    set(MACOS_DYLIBS_VERSION "28")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
-
-    # change back before releasing!
-    #set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
-    set(MACOS_DYLIBS_URL "https://github.com/adam-bloom/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
+    set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
     if (NOT EXISTS ${MACOS_DYLIBS_DIR})
         set(DOWNLOAD_DYLIBS 1)
