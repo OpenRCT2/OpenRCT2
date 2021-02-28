@@ -3421,7 +3421,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(*mapCoords, true);
+        z = map_get_highest_z_above_water_height(*mapCoords);
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3461,7 +3461,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             {
                 if (map_is_location_valid(selectedTile))
                 {
-                    z = map_get_highest_z(selectedTile, true);
+                    z = map_get_highest_z_above_water_height(selectedTile);
                     if (z > highestZ)
                         highestZ = z;
                 }
@@ -3674,7 +3674,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             if (!map_is_location_valid(selectedTile))
                 continue;
 
-            z = map_get_highest_z(selectedTile, true);
+            z = map_get_highest_z_above_water_height(selectedTile);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3691,7 +3691,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(mapCoords, true);
+        z = map_get_highest_z_above_water_height(mapCoords);
 
     tool_cancel();
 

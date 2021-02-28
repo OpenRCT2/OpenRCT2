@@ -355,8 +355,8 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* til
             continue;
         }
 
-        auto baseZ = map_get_highest_z(curTile, false);
-        if (baseZ < 0)
+        auto baseZ = map_get_highest_z(curTile);
+        if (baseZ == -1)
         {
             continue;
         }

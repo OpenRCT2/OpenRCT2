@@ -1466,8 +1466,8 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                 continue;
             }
 
-            auto surfaceZ = map_get_highest_z(mapCoord, true);
-            if (surfaceZ < 0)
+            auto surfaceZ = map_get_highest_z_above_water_height(mapCoord);
+            if (surfaceZ == -1)
             {
                 continue;
             }
@@ -1608,8 +1608,8 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                         continue;
                     }
 
-                    auto surfaceZ = map_get_highest_z(tile, true);
-                    if (surfaceZ < 0)
+                    auto surfaceZ = map_get_highest_z_above_water_height(tile);
+                    if (surfaceZ == -1)
                     {
                         return false;
                     }

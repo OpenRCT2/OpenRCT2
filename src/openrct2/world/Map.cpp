@@ -1778,7 +1778,7 @@ static void clear_elements_at(const CoordsXY& loc)
     clear_element_at(loc, &tileElement);
 }
 
-int32_t map_get_highest_z(const CoordsXY& loc, bool strictlyAboveWater)
+int32_t map_get_highest_z(const CoordsXY& loc)
 {
     auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
@@ -1786,17 +1786,25 @@ int32_t map_get_highest_z(const CoordsXY& loc, bool strictlyAboveWater)
 
     auto z = surfaceElement->GetBaseZ();
 
-    // Raise z so that is above highest point of land and water on tile
+    // Raise z so that is above highest point of land
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
         z += LAND_HEIGHT_STEP;
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += LAND_HEIGHT_STEP;
 
-    if (strictlyAboveWater)
-    {
-        z = std::max(z, surfaceElement->GetWaterHeight());
-    }
     return z;
+}
+
+int32_t map_get_highest_z_above_water_height(const CoordsXY& loc)
+{
+    auto highest_z = map_get_highest_z(loc);
+    if (highest_z != -1)
+    {
+        auto surfaceElement = map_get_surface_element_at(loc);
+        assert(surfaceElement != nullptr);
+        highest_z = std::max(highest_z, surfaceElement->GetWaterHeight());
+    }
+    return highest_z;
 }
 
 LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos, int32_t sequence)

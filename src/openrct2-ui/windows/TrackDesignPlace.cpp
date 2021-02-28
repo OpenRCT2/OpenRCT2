@@ -448,8 +448,8 @@ void TrackPlaceRestoreProvisional()
  */
 static int32_t window_track_place_get_base_z(const CoordsXY& loc)
 {
-    auto z = map_get_highest_z(loc, true);
-    if (z < 0)
+    auto z = map_get_highest_z_above_water_height(loc);
+    if (z == -1)
     {
         z = 0;
     }
