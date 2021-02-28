@@ -253,7 +253,7 @@ void InputManager::ProcessInGameConsole(const InputEvent& e)
 
 void InputManager::ProcessChat(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Release)
+    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Down)
     {
         auto input = ChatInput::None;
         switch (e.Button)
