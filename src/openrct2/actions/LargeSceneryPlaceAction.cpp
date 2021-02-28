@@ -355,20 +355,10 @@ int16_t LargeSceneryPlaceAction::GetMaxSurfaceHeight(rct_large_scenery_tile* til
             continue;
         }
 
-        auto* surfaceElement = map_get_surface_element_at(curTile);
-        if (surfaceElement == nullptr)
-            continue;
-
-        int32_t baseZ = surfaceElement->GetBaseZ();
-        int32_t slope = surfaceElement->GetSlope();
-
-        if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
+        auto baseZ = map_get_highest_z(curTile, false);
+        if (baseZ < 0)
         {
-            baseZ += LAND_HEIGHT_STEP;
-            if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            {
-                baseZ += LAND_HEIGHT_STEP;
-            }
+            continue;
         }
 
         if (baseZ > maxHeight)

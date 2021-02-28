@@ -3421,7 +3421,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(*mapCoords);
+        z = map_get_highest_z(*mapCoords, true);
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -3461,14 +3461,14 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
             {
                 if (map_is_location_valid(selectedTile))
                 {
-                    z = map_get_highest_z(selectedTile);
+                    z = map_get_highest_z(selectedTile, true);
                     if (z > highestZ)
                         highestZ = z;
                 }
             }
         }
         // loc_6CC8BF:
-        // z = map_get_highest_z(x >> 5, y >> 5);
+        // z = map_get_highest_z(x >> 5, y >> 5, true);
     }
     // loc_6CC91B:
     trackBlock = TrackBlocks[trackType];
@@ -3674,7 +3674,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             if (!map_is_location_valid(selectedTile))
                 continue;
 
-            z = map_get_highest_z(selectedTile);
+            z = map_get_highest_z(selectedTile, true);
             if (z > highestZ)
                 highestZ = z;
         }
@@ -3691,7 +3691,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
     z = _trackPlaceZ;
     if (z == 0)
-        z = map_get_highest_z(mapCoords);
+        z = map_get_highest_z(mapCoords, true);
 
     tool_cancel();
 

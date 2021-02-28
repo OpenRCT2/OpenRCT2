@@ -1466,23 +1466,10 @@ static int32_t track_design_place_maze(TrackDesign* td6, const CoordsXYZ& coords
                 continue;
             }
 
-            auto surfaceElement = map_get_surface_element_at(mapCoord);
-            if (surfaceElement == nullptr)
+            auto surfaceZ = map_get_highest_z(mapCoord, true);
+            if (surfaceZ < 0)
+            {
                 continue;
-            int16_t surfaceZ = surfaceElement->GetBaseZ();
-            if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-            {
-                surfaceZ += LAND_HEIGHT_STEP;
-                if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-                {
-                    surfaceZ += LAND_HEIGHT_STEP;
-                }
-            }
-
-            int16_t waterZ = surfaceElement->GetWaterHeight();
-            if (waterZ > 0 && waterZ > surfaceZ)
-            {
-                surfaceZ = waterZ;
             }
 
             int16_t temp_z = coords.z + _trackDesignPlaceZ - surfaceZ;
@@ -1621,27 +1608,12 @@ static bool track_design_place_ride(TrackDesign* td6, const CoordsXYZ& origin, R
                         continue;
                     }
 
-                    auto surfaceElement = map_get_surface_element_at(tile);
-                    if (surfaceElement == nullptr)
+                    auto surfaceZ = map_get_highest_z(tile, true);
+                    if (surfaceZ < 0)
                     {
                         return false;
                     }
 
-                    int32_t surfaceZ = surfaceElement->GetBaseZ();
-                    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
-                    {
-                        surfaceZ += LAND_HEIGHT_STEP;
-                        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-                        {
-                            surfaceZ += LAND_HEIGHT_STEP;
-                        }
-                    }
-
-                    auto waterZ = surfaceElement->GetWaterHeight();
-                    if (waterZ > 0 && waterZ > surfaceZ)
-                    {
-                        surfaceZ = waterZ;
-                    }
                     int32_t heightDifference = tempZ + _trackDesignPlaceZ + trackBlock->z - surfaceZ;
                     if (heightDifference < 0)
                     {

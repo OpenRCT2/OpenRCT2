@@ -1778,7 +1778,7 @@ static void clear_elements_at(const CoordsXY& loc)
     clear_element_at(loc, &tileElement);
 }
 
-int32_t map_get_highest_z(const CoordsXY& loc)
+int32_t map_get_highest_z(const CoordsXY& loc, bool strictlyAboveWater)
 {
     auto surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
@@ -1792,7 +1792,10 @@ int32_t map_get_highest_z(const CoordsXY& loc)
     if ((surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += LAND_HEIGHT_STEP;
 
-    z = std::max(z, surfaceElement->GetWaterHeight());
+    if (strictlyAboveWater)
+    {
+        z = std::max(z, surfaceElement->GetWaterHeight());
+    }
     return z;
 }
 

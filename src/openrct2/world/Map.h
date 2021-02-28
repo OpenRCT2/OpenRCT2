@@ -254,7 +254,15 @@ int32_t tile_element_iterator_next(tile_element_iterator* it);
 void tile_element_iterator_restart_for_tile(tile_element_iterator* it);
 
 void map_update_tiles();
-int32_t map_get_highest_z(const CoordsXY& loc);
+
+/**
+ * Determine z height which is just above the highest point of land for a given tile, taking slopes and (optionally) water level
+ * into account.
+ * @param loc A XY map location.
+ * @param strictlyAboveWater If true, the resulting z height cannot be lower than the water level at this location.
+ * @return The z height, or -1 if no surface element is found at this location.
+ */
+int32_t map_get_highest_z(const CoordsXY& loc, bool strictlyAboveWater);
 
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
 

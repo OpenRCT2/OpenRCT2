@@ -448,26 +448,11 @@ void TrackPlaceRestoreProvisional()
  */
 static int32_t window_track_place_get_base_z(const CoordsXY& loc)
 {
-    auto surfaceElement = map_get_surface_element_at(loc);
-    if (surfaceElement == nullptr)
-        return 0;
-
-    auto z = surfaceElement->GetBaseZ();
-
-    // Increase Z above slope
-    if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+    auto z = map_get_highest_z(loc, true);
+    if (z < 0)
     {
-        z += 16;
-
-        // Increase Z above double slope
-        if (surfaceElement->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
-            z += 16;
+        z = 0;
     }
-
-    // Increase Z above water
-    if (surfaceElement->GetWaterHeight() > 0)
-        z = std::max(z, surfaceElement->GetWaterHeight());
-
     return z + place_virtual_track(_trackDesign.get(), PTD_OPERATION_GET_PLACE_Z, true, GetOrAllocateRide(0), { loc, z });
 }
 
