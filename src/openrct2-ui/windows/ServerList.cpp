@@ -400,20 +400,20 @@ static void window_server_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    gfx_draw_string_left(
-        dpi, STR_PLAYER_NAME, nullptr, COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, nullptr,
+        { COLOUR_WHITE });
 
     // Draw version number
     std::string version = network_get_version();
     const char* versionCStr = version.c_str();
-    gfx_draw_string_left(
-        dpi, STR_NETWORK_VERSION, static_cast<void*>(&versionCStr), COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 324, w->widgets[WIDX_START_SERVER].top + 1 }, STR_NETWORK_VERSION,
+        static_cast<void*>(&versionCStr), { COLOUR_WHITE });
 
-    gfx_draw_string_left(
-        dpi, _statusText, static_cast<void*>(&_numPlayersOnline), COLOUR_WHITE,
-        w->windowPos + ScreenCoordsXY{ 8, w->height - 15 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 8, w->height - 15 }, _statusText, static_cast<void*>(&_numPlayersOnline),
+        { COLOUR_WHITE });
 }
 
 static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -442,7 +442,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
             w->widgets[WIDX_LIST].tooltip = STR_NETWORK_VERSION_TIP;
         }
 
-        int32_t colour = w->colours[1];
+        colour_t colour = w->colours[1];
         if (serverDetails.Favourite)
         {
             colour = COLOUR_YELLOW;
@@ -460,7 +460,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         {
             snprintf(players, sizeof(players), "%d/%d", serverDetails.Players, serverDetails.MaxPlayers);
         }
-        const int16_t numPlayersStringWidth = gfx_get_string_width(players);
+        const int16_t numPlayersStringWidth = gfx_get_string_width(players, FontSpriteBase::MEDIUM);
 
         // How much space we have for the server info depends on the size of everything rendered after.
         const int16_t spaceAvailableForInfo = width - numPlayersStringWidth - SCROLLBAR_WIDTH - 35;
@@ -475,7 +475,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         // Finally, draw the server information.
         auto ft = Formatter();
         ft.Add<const char*>(serverInfoToShow);
-        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, colour);
+        DrawTextEllipsised(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, spaceAvailableForInfo, STR_STRING, ft, { colour });
 
         int32_t right = width - 7 - SCROLLBAR_WIDTH;
 
@@ -506,7 +506,7 @@ static void window_server_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
 
         // Draw number of players
         screenCoords.x = right - numPlayersStringWidth;
-        gfx_draw_string(dpi, players, w->colours[1], screenCoords + ScreenCoordsXY{ 0, 3 });
+        gfx_draw_string(dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, players, { w->colours[1] });
 
         screenCoords.y += ITEM_HEIGHT;
     }

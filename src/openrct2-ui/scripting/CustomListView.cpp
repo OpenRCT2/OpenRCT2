@@ -681,13 +681,13 @@ void CustomListView::PaintHeading(
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_UP);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
     else if (sortOrder == ColumnSortOrder::Descending)
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_DOWN);
-        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, pos + ScreenCoordsXY{ size.width - 1, 0 }, STR_BLACK_STRING, ft, { TextAlignment::RIGHT });
     }
 }
 
@@ -710,11 +710,11 @@ void CustomListView::PaintSeperator(
         // Draw string
         Formatter ft;
         ft.Add<const char*>(text);
-        gfx_draw_string_centred(dpi, STR_STRING, { centreX, pos.y }, baseColour, ft.Data());
+        DrawTextBasic(dpi, { centreX, pos.y }, STR_STRING, ft.Data(), { baseColour, TextAlignment::CENTRE });
 
         // Get string dimensions
         format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), STR_STRING, ft.Data());
-        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer) / 2) + 4;
+        int32_t categoryStringHalfWidth = (gfx_get_string_width(gCommonStringFormatBuffer, FontSpriteBase::MEDIUM) / 2) + 4;
         int32_t strLeft = centreX - categoryStringHalfWidth;
         int32_t strRight = centreX + categoryStringHalfWidth;
 
@@ -758,7 +758,7 @@ void CustomListView::PaintCell(
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(text);
-    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, pos, size.width, stringId, ft, {});
 }
 
 std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& pos)

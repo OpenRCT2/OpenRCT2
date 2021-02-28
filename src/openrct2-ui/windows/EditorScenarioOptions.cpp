@@ -686,43 +686,43 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
     if (w->widgets[WIDX_INITIAL_CASH].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_CASH].top };
-        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_CASH].left + 1, w->widgets[WIDX_INITIAL_CASH].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gInitialCash);
     }
 
     if (w->widgets[WIDX_INITIAL_LOAN].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_LOAN].top };
-        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_LOAN].left + 1, w->widgets[WIDX_INITIAL_LOAN].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gBankLoan);
     }
 
     if (w->widgets[WIDX_MAXIMUM_LOAN].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan);
     }
 
     if (w->widgets[WIDX_INTEREST_RATE].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INTEREST_RATE].top };
-        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INTEREST_RATE].left + 1, w->widgets[WIDX_INTEREST_RATE].top };
 
         int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
-        gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &interestRate);
     }
 }
 
@@ -965,44 +965,44 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     {
         // Cash per guest label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CASH_PER_GUEST].top };
-        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
 
         // Cash per guest value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
         arg = gGuestInitialCash;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     // Guest initial happiness label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
 
     // Guest initial happiness value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
     arg = (gGuestInitialHappiness * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 
     // Guest initial hunger label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
 
     // Guest initial hunger value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
     arg = ((255 - gGuestInitialHunger) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 
     // Guest initial thirst label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
 
     // Guest initial thirst value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
     arg = ((255 - gGuestInitialThirst) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 }
 
 #pragma endregion
@@ -1327,26 +1327,26 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
     {
         // Cost to buy land label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_LAND_COST].top };
-        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
 
         // Cost to buy land value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
         arg = gLandPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WindowWidgetType::Empty)
     {
         // Cost to buy construction rights label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
-        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
 
         // Cost to buy construction rights value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
                               w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
         arg = gConstructionRightsPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WindowWidgetType::Empty)
@@ -1363,7 +1363,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         else
             stringId = STR_PAY_PARK_ENTER;
 
-        gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
     }
 
     if (w->widgets[WIDX_ENTRY_PRICE].type != WindowWidgetType::Empty)
@@ -1371,22 +1371,22 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         // Entry price label
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8, w->widgets[WIDX_ENTRY_PRICE].top };
-        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
         // Entry price value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
         arg = gParkEntranceFee;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     // Climate label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIMATE].top };
-    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
 
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
     stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
 }
 
 #pragma endregion

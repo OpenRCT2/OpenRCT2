@@ -110,6 +110,11 @@ static void window_scenarioselect_invalidate(rct_window *w);
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
+static bool ScenarioSelectUseSmallFont()
+{
+    return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
+}
+
 static rct_window_event_list window_scenarioselect_events([](auto& events)
 {
     events.close = &window_scenarioselect_close;
@@ -285,10 +290,10 @@ static int32_t get_scenario_list_item_size()
         return 24;
 
     // Scenario title
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // 'Completed by' line
-    lineHeight += font_get_line_height(FONT_SPRITE_BASE_SMALL);
+    lineHeight += font_get_line_height(FontSpriteBase::SMALL);
 
     return lineHeight;
 }
@@ -432,8 +437,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     WindowDrawWidgets(w, dpi);
 
-    format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_SMALL_WINDOW_COLOUR_2_STRINGID
-                                                                                   : STR_WINDOW_COLOUR_2_STRINGID;
+    format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
+    FontSpriteBase fontSpriteBase = ScenarioSelectUseSmallFont() ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM;
 
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
@@ -453,7 +458,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         }
 
         ScreenCoordsXY stringCoords(widget->midX() + w->windowPos.x, widget->midY() + w->windowPos.y - 3);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, 87, format, COLOUR_AQUAMARINE);
+        DrawTextWrapped(dpi, stringCoords, 87, format, ft, { COLOUR_AQUAMARINE, fontSpriteBase, TextAlignment::CENTRE });
     }
 
     // Return if no scenario highlighted
@@ -467,9 +472,8 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
                                   window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
-                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, COLOUR_BLACK, TextAlignment::CENTRE);
-            gfx_draw_string_left_wrapped(
-                dpi, nullptr, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC, COLOUR_BLACK);
+                dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
+            DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
         }
         return;
     }
@@ -479,13 +483,12 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         utf8 path[MAX_PATH];
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        shorten_path(path, sizeof(path), scenario->path, w->width - 6);
+        shorten_path(path, sizeof(path), scenario->path, w->width - 6, FontSpriteBase::MEDIUM);
 
         const utf8* pathPtr = path;
-        gfx_draw_string_left(
-            dpi, STR_STRING, static_cast<void*>(&pathPtr), w->colours[1],
-            w->windowPos + ScreenCoordsXY{ 3, w->height - 3 - 11 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 3, w->height - 3 - 11 }, STR_STRING, static_cast<void*>(&pathPtr),
+            { w->colours[1] });
     }
 
     // Scenario name
@@ -496,14 +499,14 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
     DrawTextEllipsised(
-        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+        dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
 
     // Scenario details
     ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->details);
-    screenPos.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, 170, STR_BLACK_STRING, COLOUR_BLACK) + 5;
+    screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_BLACK_STRING, ft) + 5;
 
     // Scenario objective
     ft = Formatter();
@@ -527,7 +530,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         else
             ft.Add<money32>(scenario->objective_arg_2);
     }
-    screenPos.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, 170, STR_OBJECTIVE, COLOUR_BLACK) + 5;
+    screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
     // Scenario score
     if (scenario->highscore != nullptr)
@@ -542,24 +545,17 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(completedByName);
         ft.Add<money32>(scenario->highscore->company_value);
-        screenPos.y += gfx_draw_string_left_wrapped(
-            dpi, ft.Data(), screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, COLOUR_BLACK);
+        screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
 }
 
 static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t colour;
-
     uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_clear(dpi, paletteIndex);
 
-    rct_string_id highlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
-        ? STR_WHITE_STRING
-        : STR_WINDOW_COLOUR_2_STRINGID;
-    rct_string_id unhighlighted_format = (ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT)
-        ? STR_WHITE_STRING
-        : STR_BLACK_STRING;
+    rct_string_id highlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+    rct_string_id unhighlighted_format = ScenarioSelectUseSmallFont() ? STR_WHITE_STRING : STR_BLACK_STRING;
 
     bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor;
 
@@ -569,7 +565,7 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
     const int32_t scenarioItemHeight = get_scenario_list_item_size();
 
     // Scenario title
-    int32_t scenarioTitleHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t scenarioTitleHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     int32_t y = 0;
     for (const auto& listItem : _listItems)
@@ -610,12 +606,9 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                 auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_STRING);
                 ft.Add<char*>(buffer);
-                colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
-                if (isDisabled)
-                {
-                    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-                }
-                gfx_draw_string_centred(dpi, format, { wide ? 270 : 210, y + 1 }, colour, ft.Data());
+                colour_t colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
+                FontSpriteBase fontSpriteBase = isDisabled ? FontSpriteBase::MEDIUM_DARK : FontSpriteBase::MEDIUM;
+                DrawTextBasic(dpi, { wide ? 270 : 210, y + 1 }, format, ft, { colour, fontSpriteBase, TextAlignment::CENTRE });
 
                 // Check if scenario is completed
                 if (isCompleted)
@@ -634,8 +627,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                     ft.Add<rct_string_id>(STR_COMPLETED_BY);
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
-                    gfx_draw_string_centred(
-                        dpi, format, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, COLOUR_BLACK, ft.Data());
+                    DrawTextBasic(
+                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft, { TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;
@@ -648,18 +641,18 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
 static void draw_category_heading(
     rct_window* w, rct_drawpixelinfo* dpi, int32_t left, int32_t right, int32_t y, rct_string_id stringId)
 {
-    uint8_t baseColour = w->colours[1];
-    uint8_t lightColour = ColourMapA[baseColour].lighter;
-    uint8_t darkColour = ColourMapA[baseColour].mid_dark;
+    colour_t baseColour = w->colours[1];
+    colour_t lightColour = ColourMapA[baseColour].lighter;
+    colour_t darkColour = ColourMapA[baseColour].mid_dark;
 
     // Draw string
     int32_t centreX = (left + right) / 2;
-    gfx_draw_string_centred(dpi, stringId, { centreX, y }, baseColour, nullptr);
+    DrawTextBasic(dpi, { centreX, y }, stringId, {}, { baseColour, TextAlignment::CENTRE });
 
     // Get string dimensions
     utf8* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, stringId, nullptr);
-    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer) / 2) + 4;
+    int32_t categoryStringHalfWidth = (gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2) + 4;
     int32_t strLeft = centreX - categoryStringHalfWidth;
     int32_t strRight = centreX + categoryStringHalfWidth;
 

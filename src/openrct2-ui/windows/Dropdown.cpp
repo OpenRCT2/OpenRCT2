@@ -118,8 +118,7 @@ void WindowDropdownShowText(const ScreenCoordsXY& screenPos, int32_t extray, uin
     for (size_t i = 0; i < num_items; i++)
     {
         format_string(buffer, 256, gDropdownItemsFormat[i], static_cast<void*>(&gDropdownItemsArgs[i]));
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        string_width = gfx_get_string_width(buffer);
+        string_width = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
         max_string_width = std::max(string_width, max_string_width);
     }
 
@@ -287,7 +286,7 @@ void WindowDropdownClose()
 
 static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t cell_x, cell_y, l, t, r, b, item, image, colour;
+    int32_t cell_x, cell_y, l, t, r, b, item, image;
 
     WindowDrawWidgets(w, dpi);
 
@@ -362,7 +361,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 }
 
                 // Calculate colour
-                colour = NOT_TRANSLUCENT(w->colours[0]);
+                colour_t colour = NOT_TRANSLUCENT(w->colours[0]);
                 if (i == highlightedIndex)
                     colour = COLOUR_WHITE;
                 if (Dropdown::IsDisabled(i))
@@ -373,7 +372,7 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 ScreenCoordsXY screenCoords = { w->windowPos.x + 2 + (cell_x * _dropdown_item_width),
                                                 w->windowPos.y + 2 + (cell_y * _dropdown_item_height) };
                 Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[i]));
-                DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, ft, colour);
+                DrawTextEllipsised(dpi, screenCoords, w->width - 5, item, ft, { colour });
             }
         }
     }

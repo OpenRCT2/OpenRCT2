@@ -199,30 +199,28 @@ public:
         screenCoords.y = windowPos.y + 25;
 
         int32_t no_lines = 0;
-        int32_t font_height = 0;
 
         if (_descriptionStringId == STR_NONE)
         {
             auto* text = _description.c_str();
-            gfx_draw_string_centred_wrapped(&dpi, &text, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, colours[1]);
+            DrawTextWrapped(
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, STR_STRING, &text, { colours[1], TextAlignment::CENTRE });
         }
         else
         {
-            gfx_draw_string_centred_wrapped(
-                &dpi, &TextInputDescriptionArgs, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId,
-                colours[1]);
+            DrawTextWrapped(
+                &dpi, { windowPos.x + WW / 2, screenCoords.y }, WW, _descriptionStringId, &TextInputDescriptionArgs,
+                { colours[1], TextAlignment::CENTRE });
         }
 
         screenCoords.y += 25;
-
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
         char wrapped_string[TEXT_INPUT_SIZE];
         safe_strcpy(wrapped_string, _buffer.data(), TEXT_INPUT_SIZE);
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
-        gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
+        gfx_wrap_string(wrapped_string, WW - (24 + 13), FontSpriteBase::MEDIUM, &no_lines);
 
         gfx_fill_rect_inset(
             &dpi, { { windowPos.x + 10, screenCoords.y }, { windowPos.x + WW - 10, screenCoords.y + 10 * (no_lines + 1) + 3 } },
@@ -239,7 +237,7 @@ public:
         for (int32_t line = 0; line <= no_lines; line++)
         {
             screenCoords.x = windowPos.x + 12;
-            gfx_draw_string_no_formatting(&dpi, wrap_pointer, colours[1], screenCoords);
+            gfx_draw_string_no_formatting(&dpi, screenCoords, wrap_pointer, { colours[1], FontSpriteBase::MEDIUM });
 
             size_t string_length = get_string_size(wrap_pointer) - 1;
 
@@ -248,7 +246,7 @@ public:
                 // Make a copy of the string for measuring the width.
                 char temp_string[TEXT_INPUT_SIZE] = { 0 };
                 std::memcpy(temp_string, wrap_pointer, gTextInput->SelectionStart - char_count);
-                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string);
+                cursorX = windowPos.x + 13 + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM);
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
@@ -259,7 +257,7 @@ public:
                     utf8 tmp[5] = { 0 }; // This is easier than setting temp_string[0..5]
                     uint32_t codepoint = utf8_get_next(_buffer.data() + gTextInput->SelectionStart, nullptr);
                     utf8_write_codepoint(tmp, codepoint);
-                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp) - 2, 4);
+                    textWidth = std::max(gfx_get_string_width_no_formatting(tmp, FontSpriteBase::MEDIUM) - 2, 4);
                 }
 
                 if (_cursorBlink > 15)
@@ -309,15 +307,14 @@ public:
 
         // String length needs to add 12 either side of box +13 for cursor when max length.
         int32_t numLines{};
-        int32_t fontHeight{};
-        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), &numLines, &fontHeight);
+        gfx_wrap_string(wrappedString.data(), WW - (24 + 13), FontSpriteBase::MEDIUM, &numLines);
         return numLines * 10 + WH;
     }
 
 private:
     static void DrawIMEComposition(rct_drawpixelinfo& dpi, int32_t cursorX, int32_t cursorY)
     {
-        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer);
+        int compositionWidth = gfx_get_string_width(gTextInput->ImeBuffer, FontSpriteBase::MEDIUM);
         ScreenCoordsXY screenCoords(cursorX - (compositionWidth / 2), cursorY + 13);
         int width = compositionWidth;
         int height = 10;
@@ -326,7 +323,7 @@ private:
             &dpi, { screenCoords - ScreenCoordsXY{ 1, 1 }, screenCoords + ScreenCoordsXY{ width + 1, height + 1 } },
             PALETTE_INDEX_12);
         gfx_fill_rect(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ width, height } }, PALETTE_INDEX_0);
-        gfx_draw_string(&dpi, static_cast<const char*>(gTextInput->ImeBuffer), COLOUR_DARK_GREEN, screenCoords);
+        gfx_draw_string(&dpi, screenCoords, static_cast<const char*>(gTextInput->ImeBuffer), { COLOUR_DARK_GREEN });
     }
 
     void ExecuteCallback(bool hasValue)

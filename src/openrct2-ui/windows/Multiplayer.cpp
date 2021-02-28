@@ -336,19 +336,17 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
         return _windowInformationSize;
     }
 
-    // Reset font sprite base and compute line height
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Base dimensions.
     const int32_t width = 450;
     int32_t height = 55;
-    int32_t numLines, fontSpriteBase;
+    int32_t numLines;
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
         utf8* buffer = _strdup(network_get_server_name());
-        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
@@ -358,7 +356,7 @@ static ScreenCoordsXY window_multiplayer_information_get_size()
     if (!str_is_null_or_empty(descString))
     {
         utf8* buffer = _strdup(descString);
-        gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
+        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
         free(buffer);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
@@ -417,37 +415,37 @@ static void window_multiplayer_information_paint(rct_window* w, rct_drawpixelinf
 
         const utf8* name = network_get_server_name();
         {
-            screenCoords.y += gfx_draw_string_left_wrapped(
-                dpi, static_cast<void*>(&name), screenCoords, width, STR_STRING, w->colours[1]);
+            screenCoords.y += DrawTextWrapped(
+                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&name), { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* description = network_get_server_description();
         if (!str_is_null_or_empty(description))
         {
-            screenCoords.y += gfx_draw_string_left_wrapped(
-                dpi, static_cast<void*>(&description), screenCoords, width, STR_STRING, w->colours[1]);
+            screenCoords.y += DrawTextWrapped(
+                dpi, screenCoords, width, STR_STRING, static_cast<void*>(&description), { w->colours[1] });
             screenCoords.y += LIST_ROW_HEIGHT / 2;
         }
 
         const utf8* providerName = network_get_server_provider_name();
         if (!str_is_null_or_empty(providerName))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_NAME, static_cast<void*>(&providerName), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_NAME, static_cast<void*>(&providerName));
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerEmail = network_get_server_provider_email();
         if (!str_is_null_or_empty(providerEmail))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_EMAIL, static_cast<void*>(&providerEmail));
             screenCoords.y += LIST_ROW_HEIGHT;
         }
 
         const utf8* providerWebsite = network_get_server_provider_website();
         if (!str_is_null_or_empty(providerWebsite))
         {
-            gfx_draw_string_left(dpi, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_PROVIDER_WEBSITE, static_cast<void*>(&providerWebsite));
         }
     }
 }
@@ -560,7 +558,7 @@ static void window_multiplayer_players_paint(rct_window* w, rct_drawpixelinfo* d
     // Number of players
     stringId = w->no_list_items == 1 ? STR_MULTIPLAYER_PLAYER_COUNT : STR_MULTIPLAYER_PLAYER_COUNT_PLURAL;
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 };
-    gfx_draw_string_left(dpi, stringId, &w->no_list_items, w->colours[2], screenCoords);
+    DrawTextBasic(dpi, screenCoords, stringId, &w->no_list_items, { w->colours[2] });
 }
 
 static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -581,7 +579,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             buffer.clear();
 
             // Draw player name
-            int32_t colour = COLOUR_BLACK;
+            colour_t colour = COLOUR_BLACK;
             if (i == w->selected_list_item)
             {
                 gfx_filter_rect(
@@ -602,8 +600,8 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 buffer += network_get_player_name(i);
             }
             screenCoords.x = 0;
-            gfx_clip_string(buffer.data(), 230);
-            gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+            gfx_clip_string(buffer.data(), 230, FontSpriteBase::MEDIUM);
+            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
 
             // Draw group name
             buffer.resize(0);
@@ -613,8 +611,8 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
                 buffer += "{BLACK}";
                 screenCoords.x = 173;
                 buffer += network_get_group_name(group);
-                gfx_clip_string(buffer.data(), 80);
-                gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+                gfx_clip_string(buffer.data(), 80, FontSpriteBase::MEDIUM);
+                gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -628,7 +626,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             {
                 ft.Add<rct_string_id>(STR_ACTION_NA);
             }
-            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
 
             // Draw ping
             buffer.resize(0);
@@ -651,7 +649,7 @@ static void window_multiplayer_players_scrollpaint(rct_window* w, rct_drawpixeli
             buffer += pingBuffer;
 
             screenCoords.x = 356;
-            gfx_draw_string(dpi, buffer.c_str(), colour, screenCoords);
+            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
@@ -845,14 +843,14 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-            COLOUR_BLACK, TextAlignment::CENTRE);
+            { TextAlignment::CENTRE });
     }
 
     auto screenPos = w->windowPos
         + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
                           window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
 
-    gfx_draw_string_left(dpi, STR_DEFAULT_GROUP, nullptr, w->colours[2], screenPos);
+    DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { w->colours[2] });
 
     screenPos.y += 20;
 
@@ -869,7 +867,7 @@ static void window_multiplayer_groups_paint(rct_window* w, rct_drawpixelinfo* dp
         ft.Add<const char*>(buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
-            COLOUR_BLACK, TextAlignment::CENTRE);
+            { TextAlignment::CENTRE });
     }
 }
 
@@ -901,14 +899,14 @@ static void window_multiplayer_groups_scrollpaint(rct_window* w, rct_drawpixelin
                 if (network_can_perform_action(groupindex, static_cast<NetworkPermission>(i)))
                 {
                     screenCoords.x = 0;
-                    gfx_draw_string(dpi, u8"{WINDOW_COLOUR_2}✓", COLOUR_BLACK, screenCoords);
+                    gfx_draw_string(dpi, screenCoords, u8"{WINDOW_COLOUR_2}✓", {});
                 }
             }
 
             // Draw action name
             auto ft = Formatter();
             ft.Add<uint16_t>(network_get_action_name_string_id(i));
-            gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, ft.Data(), COLOUR_BLACK, { 10, screenCoords.y });
+            DrawTextBasic(dpi, { 10, screenCoords.y }, STR_WINDOW_COLOUR_2_STRINGID, ft);
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

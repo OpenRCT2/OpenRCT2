@@ -179,9 +179,8 @@ namespace OpenRCT2::Scripting
 
         DukValue measureText(const std::string& text)
         {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-            auto width = gfx_get_string_width(text);
-            auto height = string_get_height_raw(text.c_str());
+            auto width = gfx_get_string_width(text, FontSpriteBase::MEDIUM);
+            auto height = string_get_height_raw(text.c_str(), FontSpriteBase::MEDIUM);
             return ToDuk<ScreenSize>(_ctx, { width, height });
         }
 
@@ -258,8 +257,7 @@ namespace OpenRCT2::Scripting
 
         void text(const std::string& text, int32_t x, int32_t y)
         {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-            gfx_draw_string(&_dpi, text.c_str(), _colour.value_or(0), { x, y });
+            gfx_draw_string(&_dpi, { x, y }, text.c_str(), { _colour.value_or(0) });
         }
     };
 } // namespace OpenRCT2::Scripting

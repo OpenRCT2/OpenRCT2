@@ -383,17 +383,16 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Received stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_RECEIVE, nullptr, PALETTE_INDEX_10, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_NETWORK_RECEIVE, {}, { PALETTE_INDEX_10 });
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesInSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
+            gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(70, 0), textBuffer, { PALETTE_INDEX_10 });
 
-            gfx_draw_string_left(
-                dpi, STR_NETWORK_TOTAL_RECEIVED, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_NETWORK_TOTAL_RECEIVED, {}, { PALETTE_INDEX_10 });
 
             format_readable_size(
                 textBuffer, sizeof(textBuffer), _networkStats.bytesReceived[EnumValue(NetworkStatisticsGroup::Total)]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(300, 0), textBuffer, { PALETTE_INDEX_10 });
             screenCoords.y += textHeight + padding;
 
             window_network_draw_graph(
@@ -403,17 +402,16 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
 
         // Sent stats.
         {
-            gfx_draw_string_left(dpi, STR_NETWORK_SEND, nullptr, PALETTE_INDEX_10, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_NETWORK_SEND, {}, { PALETTE_INDEX_10 });
 
             format_readable_speed(textBuffer, sizeof(textBuffer), _bytesOutSec);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(70, 0));
+            gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(70, 0), textBuffer, { PALETTE_INDEX_10 });
 
-            gfx_draw_string_left(
-                dpi, STR_NETWORK_TOTAL_SENT, nullptr, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY{ 200, 0 });
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_NETWORK_TOTAL_SENT, {}, { PALETTE_INDEX_10 });
 
             format_readable_size(
                 textBuffer, sizeof(textBuffer), _networkStats.bytesSent[EnumValue(NetworkStatisticsGroup::Total)]);
-            gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(300, 0));
+            gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(300, 0), textBuffer, { PALETTE_INDEX_10 });
             screenCoords.y += textHeight + padding;
 
             window_network_draw_graph(
@@ -433,11 +431,11 @@ static void window_network_information_paint(rct_window* w, rct_drawpixelinfo* d
                     NetworkTrafficGroupColors[i]);
 
                 // Draw text.
-                gfx_draw_string(dpi, textBuffer, PALETTE_INDEX_10, screenCoords + ScreenCoordsXY(10, 0));
+                gfx_draw_string(dpi, screenCoords + ScreenCoordsXY(10, 0), textBuffer, { PALETTE_INDEX_10 });
 
-                gfx_get_string_width(textBuffer);
+                gfx_get_string_width(textBuffer, FontSpriteBase::MEDIUM);
 
-                screenCoords.x += gfx_get_string_width(textBuffer) + 20;
+                screenCoords.x += gfx_get_string_width(textBuffer, FontSpriteBase::MEDIUM) + 20;
             }
         }
     }

@@ -155,13 +155,12 @@ static void window_network_status_invalidate(rct_window* w)
 static void window_network_status_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     thread_local std::string buffer;
     buffer.assign("{BLACK}");
     buffer += window_network_status_text;
-    gfx_clip_string(buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50);
+    gfx_clip_string(buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50, FontSpriteBase::MEDIUM);
     ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    screenCoords.x -= gfx_get_string_width(buffer) / 2;
-    gfx_draw_string(dpi, buffer.c_str(), COLOUR_BLACK, screenCoords);
+    screenCoords.x -= gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2;
+    gfx_draw_string(dpi, screenCoords, buffer.c_str());
 }

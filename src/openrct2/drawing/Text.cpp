@@ -23,18 +23,13 @@ StaticLayout::StaticLayout(utf8string source, const TextPaint& paint, int32_t wi
     Buffer = source;
     Paint = paint;
 
-    int32_t fontSpriteBase;
-
-    gCurrentFontSpriteBase = paint.SpriteBase;
-    MaxWidth = gfx_wrap_string(Buffer, width, &LineCount, &fontSpriteBase);
+    MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
     LineCount += 1;
-    LineHeight = font_get_line_height(fontSpriteBase);
+    LineHeight = font_get_line_height(paint.SpriteBase);
 }
 
 void StaticLayout::Draw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords)
 {
-    gCurrentFontSpriteBase = Paint.SpriteBase;
-
     TextPaint tempPaint = Paint;
 
     auto lineCoords = coords;
@@ -77,7 +72,8 @@ int32_t StaticLayout::GetLineCount()
 static void DrawText(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const TextPaint& paint, const_utf8string text, bool noFormatting)
 {
-    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text) : gfx_get_string_width(text);
+    int32_t width = noFormatting ? gfx_get_string_width_no_formatting(text, paint.SpriteBase)
+                                 : gfx_get_string_width(text, paint.SpriteBase);
 
     auto alignedCoords = coords;
     switch (paint.Alignment)
@@ -92,9 +88,9 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase);
 
-    if (paint.UnderlineText)
+    if (paint.UnderlineText == TextUnderline::On)
     {
         gfx_fill_rect(
             dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
@@ -117,94 +113,68 @@ static void DrawText(
 }
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, colour_t colour,
-    TextAlignment alignment, bool underline)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const void* args, TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     DrawText(dpi, coords, textPaint, format, args);
 }
 
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, colour_t colour,
-    TextAlignment alignment, bool underline)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint)
 {
-    return DrawTextBasic(dpi, coords, format, ft.Data(), colour, alignment, underline);
+    DrawTextBasic(dpi, coords, format, ft.Data(), textPaint);
 }
 
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
-    colour_t colour, TextAlignment alignment, bool underline)
+    TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, underline, alignment };
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, ft.Data());
-    gfx_clip_string(buffer, width);
+    gfx_clip_string(buffer, width, textPaint.SpriteBase);
 
     DrawText(dpi, coords, textPaint, buffer);
 }
 
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
     DrawText(dpi, coords, textPaint, buffer);
 }
 
 void gfx_draw_string_no_formatting(
-    rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::LEFT };
     DrawText(dpi, coords, textPaint, buffer, true);
 }
 
-// Basic
-void gfx_draw_string_left(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords)
-{
-    DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::LEFT);
-}
-
-void gfx_draw_string_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, const ScreenCoordsXY& coords, uint8_t colour, const void* args)
-{
-    DrawTextBasic(dpi, coords, format, args, colour, TextAlignment::CENTRE);
-}
-
-// Wrapping
-int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const void* args,
+    TextPaint textPaint)
 {
     utf8 buffer[512];
     format_string(buffer, sizeof(buffer), format, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    TextPaint textPaint = { colour, FONT_SPRITE_BASE_MEDIUM, false, TextAlignment::LEFT };
     StaticLayout layout(buffer, textPaint, width);
-    layout.Draw(dpi, coords);
+
+    if (textPaint.Alignment == TextAlignment::CENTRE)
+    {
+        // The original tried to vertically centre the text, but used line count - 1
+        int32_t lineCount = layout.GetLineCount();
+        int32_t lineHeight = layout.GetHeight() / lineCount;
+        int32_t yOffset = (lineCount - 1) * lineHeight / 2;
+
+        layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
+    }
+    else
+    {
+        layout.Draw(dpi, coords);
+    }
 
     return layout.GetHeight();
 }
 
-int32_t gfx_draw_string_centred_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour)
+int32_t DrawTextWrapped(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
+    TextPaint textPaint)
 {
-    utf8 buffer[512];
-    format_string(buffer, sizeof(buffer), format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    TextPaint textPaint = { colour, gCurrentFontSpriteBase, false, TextAlignment::CENTRE };
-    StaticLayout layout(buffer, textPaint, width);
-
-    // The original tried to vertically centre the text, but used line count - 1
-    int32_t lineCount = layout.GetLineCount();
-    int32_t lineHeight = layout.GetHeight() / lineCount;
-    int32_t yOffset = (lineCount - 1) * lineHeight / 2;
-
-    layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
-
-    return layout.GetHeight();
+    return DrawTextWrapped(dpi, coords, width, format, ft.Data(), textPaint);
 }

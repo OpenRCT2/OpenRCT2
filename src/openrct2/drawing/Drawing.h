@@ -14,6 +14,7 @@
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
+#include "Font.h"
 #include "Text.h"
 
 #include <memory>
@@ -652,8 +653,6 @@ void FASTCALL BlitPixels(const uint8_t* src, uint8_t* dst, const PaletteMap& pal
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
-extern thread_local int16_t gCurrentFontSpriteBase;
-
 extern GamePalette gPalette;
 extern uint8_t gGamePalette[256 * 4];
 extern uint32_t gPaletteEffectFrame;
@@ -734,41 +733,31 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& scrCoords, int32_t maskImage, int32_t colourImage);
 
 // string
-void gfx_draw_string(rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
+void gfx_draw_string(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint = {});
 void gfx_draw_string_no_formatting(
-    rct_drawpixelinfo* dpi, const_utf8string buffer, uint8_t colour, const ScreenCoordsXY& coords);
-
-/** @deprecated */
-void gfx_draw_string_left(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, uint8_t colour, const ScreenCoordsXY& coords);
-/** @deprecated */
-void gfx_draw_string_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, const ScreenCoordsXY& coords, uint8_t colour, const void* args);
-
-int32_t gfx_draw_string_left_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour);
-int32_t gfx_draw_string_centred_wrapped(
-    rct_drawpixelinfo* dpi, void* args, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, uint8_t colour);
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint);
 
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords);
-void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text);
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords);
+void draw_string_centred_raw(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontSpriteBase fontSpriteBase);
 void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
-    bool forceSpriteFont);
+    bool forceSpriteFont, FontSpriteBase fontSpriteBase);
 
-int32_t gfx_wrap_string(char* buffer, int32_t width, int32_t* num_lines, int32_t* font_height);
-int32_t gfx_get_string_width(std::string_view text);
-int32_t gfx_get_string_width_new_lined(std::string_view text);
-int32_t gfx_get_string_width_no_formatting(std::string_view text);
-int32_t string_get_height_raw(std::string_view text);
-int32_t gfx_clip_string(char* buffer, int32_t width);
-void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth);
+int32_t gfx_wrap_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBase, int32_t* num_lines);
+int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase);
+int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fontSpriteBase);
+int32_t gfx_get_string_width_no_formatting(std::string_view text, FontSpriteBase fontSpriteBase);
+int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase);
+int32_t gfx_clip_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBase);
+void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontSpriteBase fontSpriteBase);
 void ttf_draw_string(
-    rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting);
+    rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    FontSpriteBase fontSpriteBase);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();

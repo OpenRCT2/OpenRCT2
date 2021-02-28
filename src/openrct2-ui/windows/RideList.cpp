@@ -560,9 +560,9 @@ static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
     window_ride_list_draw_tab_images(dpi, w);
 
     // Draw number of attractions on bottom
-    gfx_draw_string_left(
-        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[w->page],
+        &w->no_list_items);
 }
 
 /**
@@ -594,7 +594,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         // Ride name
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
 
         // Ride information
         ft = Formatter();
@@ -746,7 +746,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             ft.Rewind();
             ft.Add<rct_string_id>(formatSecondary);
         }
-        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
         y += SCROLLABLE_ROW_HEIGHT;
     }
 }

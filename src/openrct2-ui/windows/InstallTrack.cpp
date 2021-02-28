@@ -220,7 +220,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Scenery not available
             DrawTextEllipsised(
-                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, COLOUR_BLACK, TextAlignment::CENTRE);
+                dpi, screenPos, 308, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, {}, { TextAlignment::CENTRE });
             screenPos.y -= LIST_ROW_HEIGHT;
         }
     }
@@ -234,7 +234,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto trackName = _trackName.c_str();
         auto ft = Formatter();
         ft.Add<const char*>(trackName);
-        gfx_draw_string_left(dpi, STR_TRACK_DESIGN_NAME, ft.Data(), COLOUR_BLACK, screenPos - ScreenCoordsXY{ 1, 0 });
+        DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 1, 0 }, STR_TRACK_DESIGN_NAME, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -255,7 +255,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<rct_string_id>(GetRideTypeDescriptor(td6->type).Naming.Name);
         }
 
-        gfx_draw_string_left(dpi, STR_TRACK_DESIGN_TYPE, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_DESIGN_TYPE, ft);
         screenPos.y += LIST_ROW_HEIGHT + 4;
     }
 
@@ -264,21 +264,21 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         fixed32_2dp rating = td6->excitement * 10;
         auto ft = Formatter();
         ft.Add<int32_t>(rating);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_EXCITEMENT_RATING, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
     {
         fixed32_2dp rating = td6->intensity * 10;
         auto ft = Formatter();
         ft.Add<int32_t>(rating);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_INTENSITY_RATING, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
     {
         fixed32_2dp rating = td6->nausea * 10;
         auto ft = Formatter();
         ft.Add<int32_t>(rating);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_NAUSEA_RATING, ft);
         screenPos.y += LIST_ROW_HEIGHT + 4;
     }
 
@@ -290,7 +290,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             uint16_t holes = td6->holes & 0x1F;
             auto ft = Formatter();
             ft.Add<uint16_t>(holes);
-            gfx_draw_string_left(dpi, STR_HOLES, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_HOLES, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         else
@@ -300,7 +300,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 uint16_t speed = ((td6->max_speed << 16) * 9) >> 18;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(speed);
-                gfx_draw_string_left(dpi, STR_MAX_SPEED, ft.Data(), COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_MAX_SPEED, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
             // Average speed
@@ -308,7 +308,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 uint16_t speed = ((td6->average_speed << 16) * 9) >> 18;
                 auto ft = Formatter();
                 ft.Add<uint16_t>(speed);
-                gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, ft.Data(), COLOUR_BLACK, screenPos);
+                DrawTextBasic(dpi, screenPos, STR_AVERAGE_SPEED, ft);
                 screenPos.y += LIST_ROW_HEIGHT;
             }
         }
@@ -317,7 +317,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
         ft.Add<uint16_t>(td6->ride_length);
-        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenPos, 214, STR_TRACK_LIST_RIDE_LENGTH, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -328,7 +328,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t gForces = td6->max_positive_vertical_g * 32;
             auto ft = Formatter();
             ft.Add<int32_t>(gForces);
-            gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_POSITIVE_VERTICAL_G, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         // Maximum negative vertical Gs
@@ -336,7 +336,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t gForces = td6->max_negative_vertical_g * 32;
             auto ft = Formatter();
             ft.Add<int32_t>(gForces);
-            gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_NEGATIVE_VERTICAL_G, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         // Maximum lateral Gs
@@ -344,7 +344,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t gForces = td6->max_lateral_g * 32;
             auto ft = Formatter();
             ft.Add<int32_t>(gForces);
-            gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_MAX_LATERAL_G, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
         if (td6->total_air_time != 0)
@@ -353,7 +353,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t airTime = td6->total_air_time * 25;
             auto ft = Formatter();
             ft.Add<int32_t>(airTime);
-            gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_TOTAL_AIR_TIME, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
     }
@@ -364,11 +364,11 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         uint16_t drops = td6->drops & 0x3F;
         auto ft = Formatter();
         ft.Add<uint16_t>(drops);
-        gfx_draw_string_left(dpi, STR_DROPS, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_DROPS, ft);
         screenPos.y += LIST_ROW_HEIGHT;
 
         // Drop height is multiplied by 0.75
-        gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_HIGHEST_DROP_HEIGHT, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -380,7 +380,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
             // Inversions
             auto ft = Formatter();
             ft.Add<uint16_t>(inversions);
-            gfx_draw_string_left(dpi, STR_INVERSIONS, ft.Data(), COLOUR_BLACK, screenPos);
+            DrawTextBasic(dpi, screenPos, STR_INVERSIONS, ft);
             screenPos.y += LIST_ROW_HEIGHT;
         }
     }
@@ -392,7 +392,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter();
         ft.Add<uint16_t>(td6->space_required_x);
         ft.Add<uint16_t>(td6->space_required_y);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_SPACE_REQUIRED, ft);
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -400,7 +400,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<uint32_t>(td6->cost);
-        gfx_draw_string_left(dpi, STR_TRACK_LIST_COST_AROUND, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_TRACK_LIST_COST_AROUND, ft);
     }
 }
 

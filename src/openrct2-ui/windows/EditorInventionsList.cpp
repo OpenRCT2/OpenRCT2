@@ -509,12 +509,12 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     // Pre-researched items label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_PRE_RESEARCHED_SCROLL].left, w->widgets[WIDX_PRE_RESEARCHED_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_PREINVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
+    DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_PREINVENTED_ITEMS);
 
     // Research order label
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left, w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
-    gfx_draw_string_left(dpi, STR_INVENTION_TO_BE_INVENTED_ITEMS, nullptr, COLOUR_BLACK, screenPos - ScreenCoordsXY{ 0, 1 });
+    DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
@@ -561,13 +561,13 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
     auto [drawString, ft] = window_editor_inventions_list_prepare_name(researchItem, false);
-    DrawTextEllipsised(dpi, screenPos, width, drawString, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, screenPos, width, drawString, ft, { TextAlignment::CENTRE });
     screenPos.y += 15;
 
     // Item category
     screenPos.x = w->windowPos.x + w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right + 4;
     stringId = researchItem->GetCategoryInventionString();
-    gfx_draw_string_left(dpi, STR_INVENTION_RESEARCH_GROUP, &stringId, COLOUR_BLACK, screenPos);
+    DrawTextBasic(dpi, screenPos, STR_INVENTION_RESEARCH_GROUP, &stringId);
 }
 
 /**
@@ -613,21 +613,18 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
         if (researchItem.Equals(&_editorInventionsListDraggedItem))
             continue;
 
-        uint8_t colour;
+        // TODO: this parameter by itself produces very light text.
+        // It needs a {BLACK} token in the string to work properly.
+        colour_t colour = COLOUR_BLACK;
+        FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+
         if (researchItem.IsAlwaysResearched())
         {
             if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsNull())
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK;
+                fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
             else
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
+                fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
             colour = w->colours[1] | COLOUR_FLAG_INSET;
-        }
-        else
-        {
-            // TODO: this parameter by itself produces very light text.
-            // It needs a {BLACK} token in the string to work properly.
-            colour = COLOUR_BLACK;
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         }
 
         const rct_string_id itemNameId = researchItem.GetName();
@@ -642,19 +639,22 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             auto ft = Formatter();
             ft.Add<rct_string_id>(rideTypeName);
             DrawTextEllipsised(
-                dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft, colour);
+                dpi, { 1, itemY }, columnSplitOffset - 11, STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME, ft,
+                { colour, fontSpriteBase });
 
             // Draw vehicle name
             ft = Formatter();
             ft.Add<rct_string_id>(itemNameId);
-            DrawTextEllipsised(dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft, colour);
+            DrawTextEllipsised(
+                dpi, { columnSplitOffset + 1, itemY }, columnSplitOffset - 11, STR_BLACK_STRING, ft,
+                { colour, fontSpriteBase });
         }
         else
         {
             // Scenery group, flat ride or shop
             auto ft = Formatter();
             ft.Add<rct_string_id>(itemNameId);
-            DrawTextEllipsised(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, colour);
+            DrawTextEllipsised(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
         }
     }
 }
@@ -689,7 +689,7 @@ static void window_editor_inventions_list_drag_open(ResearchItem* researchItem)
         format_string(ptr, 256, stringId, nullptr);
     }
 
-    auto stringWidth = gfx_get_string_width(buffer);
+    auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     auto* w = WindowCreate(
@@ -757,7 +757,7 @@ static void window_editor_inventions_list_drag_paint(rct_window* w, rct_drawpixe
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 0, 2 };
 
     auto [drawString, ft] = window_editor_inventions_list_prepare_name(&_editorInventionsListDraggedItem, true);
-    DrawTextBasic(dpi, screenCoords, drawString, ft, COLOUR_BLACK | COLOUR_FLAG_OUTLINE);
+    DrawTextBasic(dpi, screenCoords, drawString, ft, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
 }
 
 static std::pair<rct_string_id, Formatter> window_editor_inventions_list_prepare_name(

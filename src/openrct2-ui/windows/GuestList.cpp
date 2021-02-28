@@ -472,7 +472,7 @@ public:
 
         {
             Formatter ft(_filterArguments.args);
-            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft, COLOUR_BLACK);
+            DrawTextEllipsised(&dpi, screenCoords, 310, format, ft);
         }
 
         // Number of guests (list items)
@@ -481,9 +481,9 @@ public:
             screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_GUEST_LIST].bottom + 2 };
             auto ft = Formatter();
             ft.Add<int32_t>(static_cast<int32_t>(_guestList.size()));
-            gfx_draw_string_left(
-                &dpi, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL), ft.Data(),
-                COLOUR_BLACK, screenCoords);
+            DrawTextBasic(
+                &dpi, screenCoords, (_guestList.size() == 1 ? STR_FORMAT_NUM_GUESTS_SINGULAR : STR_FORMAT_NUM_GUESTS_PLURAL),
+                ft);
         }
     }
 
@@ -677,7 +677,7 @@ private:
                 }
                 auto ft = Formatter();
                 peep->FormatNameTo(ft);
-                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { 0, y }, 113, format, ft);
 
                 switch (_selectedView)
                 {
@@ -692,7 +692,7 @@ private:
                         // Action
                         ft = Formatter();
                         peep->FormatActionTo(ft);
-                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft, COLOUR_BLACK);
+                        DrawTextEllipsised(&dpi, { 133, y }, 314, format, ft);
                         break;
                     case GuestViewType::Thoughts:
                         // For each thought
@@ -707,7 +707,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, COLOUR_BLACK);
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft);
                             break;
                         }
                         break;
@@ -749,13 +749,13 @@ private:
 
                 // Draw action
                 Formatter ft(group.Arguments.args);
-                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, COLOUR_BLACK);
+                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
 
                 // Draw guest count
                 ft = Formatter();
                 ft.Add<rct_string_id>(STR_GUESTS_COUNT_COMMA_SEP);
                 ft.Add<uint32_t>(group.NumGuests);
-                DrawTextBasic(&dpi, { 326, y }, format, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+                DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
             y += SUMMARISED_GUEST_ROW_HEIGHT;
             index++;

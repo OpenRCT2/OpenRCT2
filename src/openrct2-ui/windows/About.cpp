@@ -174,13 +174,14 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
-        gfx_draw_string_centred_wrapped(
-            dpi, ft.Data(), aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
 }
 
@@ -188,14 +189,14 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY aboutCoords(
         w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
     int32_t width = w->width - 20;
 
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[2], TextAlignment::CENTRE })
         + lineHeight;
 
     rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
@@ -203,24 +204,28 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     aboutCoords.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, {},
+                         { w->colours[2], TextAlignment::CENTRE })
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
     if (!LocalisationService_UseTrueTypeFont())
     {
-        gfx_draw_string_centred_wrapped(dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+        DrawTextWrapped(
+            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[2], TextAlignment::CENTRE });
     }
 
     // Version info
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    auto ft = Formatter();
+    ft.Add<const char*>(buffer);
 
     aboutCoords.y = w->windowPos.y + WH - 25;
-    gfx_draw_string_centred_wrapped(dpi, &ch, aboutCoords, width, STR_STRING, w->colours[2]);
+    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[2], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)
@@ -270,26 +275,26 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 200, yPage + 5 };
 
-    int32_t lineHeight = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Credits
-    gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 74;
-    gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 3;
-    gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
 
     // Images
     gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, { w->windowPos.x + 92, yPage + 24 }, 0);

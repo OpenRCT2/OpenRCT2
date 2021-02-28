@@ -218,38 +218,28 @@ static void custom_currency_window_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 10, 30 };
 
-    gfx_draw_string_left(dpi, STR_RATE, nullptr, w->colours[1], screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_RATE, {}, { w->colours[1] });
 
     int32_t baseExchange = CurrencyDescriptors[EnumValue(CurrencyType::Pounds)].rate;
     ft = Formatter();
     ft.Add<int32_t>(baseExchange);
-    gfx_draw_string_left(
-        dpi, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 200, 0 });
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 200, 0 }, STR_CUSTOM_CURRENCY_EQUIVALENCY, ft, { w->colours[1] });
 
     screenCoords.y += 20;
 
-    gfx_draw_string_left(dpi, STR_CURRENCY_SYMBOL_TEXT, nullptr, w->colours[1], screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { w->colours[1] });
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
                           window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
 
-    gfx_draw_string(dpi, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, w->colours[1], screenCoords);
+    gfx_draw_string(dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { w->colours[1] });
 
-    if (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
-    {
-        gfx_draw_string_left(
-            dpi, STR_PREFIX, w, w->colours[1],
-            w->windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
-    }
-    else
-    {
-        gfx_draw_string_left(
-            dpi, STR_SUFFIX, w, w->colours[1],
-            w->windowPos
-                + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                                  window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top });
-    }
+    auto drawPos = w->windowPos
+        + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
+                          window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
+    rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
+        ? STR_PREFIX
+        : STR_SUFFIX;
+    DrawTextBasic(dpi, drawPos, stringId, w, { w->colours[1] });
 }

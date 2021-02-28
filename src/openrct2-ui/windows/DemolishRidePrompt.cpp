@@ -170,7 +170,7 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<money32>(_demolishRideCost);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, WW - 4, stringId, COLOUR_BLACK);
+        DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
     }
 }
 
@@ -187,6 +187,6 @@ static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<money32>(_demolishRideCost / 2);
 
         ScreenCoordsXY stringCoords(w->windowPos.x + WW / 2, w->windowPos.y + (WH / 2) - 3);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, WW - 4, stringId, COLOUR_BLACK);
+        DrawTextWrapped(dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
     }
 }

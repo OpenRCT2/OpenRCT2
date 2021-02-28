@@ -1006,7 +1006,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter();
         ft.Add<uint16_t>(numSelected);
         ft.Add<uint16_t>(totalSelectable);
-        gfx_draw_string_left(dpi, STR_OBJECT_SELECTION_SELECTION_SIZE, ft.Data(), COLOUR_BLACK, screenPos);
+        DrawTextBasic(dpi, screenPos, STR_OBJECT_SELECTION_SELECTION_SIZE, ft);
     }
 
     // Draw sort button text
@@ -1018,7 +1018,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, ft, w->colours[1]);
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_TYPE, ft, { w->colours[1] });
     }
     widget = &w->widgets[WIDX_LIST_SORT_RIDE];
     if (widget->type != WindowWidgetType::Empty)
@@ -1028,7 +1028,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
                                                         : STR_NONE;
         ft.Add<rct_string_id>(stringId);
         auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
-        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_RIDE, ft, w->colours[1]);
+        DrawTextEllipsised(dpi, screenPos, widget->width(), STR_OBJECTS_SORT_RIDE, ft, { w->colours[1] });
     }
 
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
@@ -1056,7 +1056,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(listItem->repositoryItem->Name.c_str());
-        DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
     }
 
     // Draw description of object
@@ -1070,8 +1070,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LIST].right + 4, widget->bottom + 18 };
         width = w->windowPos.x + w->width - screenPos.x - 4;
 
-        gfx_draw_string_left_wrapped(
-            dpi, ft.Data(), screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_BLACK);
+        DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 5 }, width, STR_WINDOW_COLOUR_2_STRINGID, ft);
     }
 
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
@@ -1080,14 +1079,14 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
     if (get_selected_object_type(w) == ObjectType::Ride)
     {
         auto stringId = get_ride_type_string_id(listItem->repositoryItem);
-        DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
     }
 
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object source
     auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-    DrawTextBasic(dpi, screenPos, stringId, {}, COLOUR_WHITE, TextAlignment::RIGHT);
+    DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
     screenPos.y += LIST_ROW_HEIGHT;
 
     // Draw object dat name
@@ -1097,8 +1096,8 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(path);
         DrawTextBasic(
-            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK,
-            TextAlignment::RIGHT);
+            dpi, { w->windowPos.x + w->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+            { COLOUR_BLACK, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
     }
 
@@ -1118,7 +1117,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         ft.Add<const char*>(authorsString.c_str());
         DrawTextEllipsised(
             dpi, { w->windowPos.x + w->width - 5, screenPos.y }, w->width - w->widgets[WIDX_LIST].right - 4,
-            STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+            STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
     }
 }
 /**
@@ -1127,7 +1126,6 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
  */
 static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t colour, colour2;
     ScreenCoordsXY screenCoords;
 
     bool ridePage = (get_selected_object_type(w) == ObjectType::Ride);
@@ -1156,12 +1154,14 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
             {
                 screenCoords.x = 2;
-                gCurrentFontSpriteBase = highlighted ? FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK : FONT_SPRITE_BASE_MEDIUM_DARK;
-                colour2 = NOT_TRANSLUCENT(w->colours[1]);
+                FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK : FontSpriteBase::MEDIUM_DARK;
+                colour_t colour2 = NOT_TRANSLUCENT(w->colours[1]);
                 if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
                     colour2 |= COLOUR_FLAG_INSET;
 
-                gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), colour2, screenCoords);
+                gfx_draw_string(
+                    dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
+                    { static_cast<colour_t>(colour2), fontSpriteBase });
             }
 
             screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -1169,15 +1169,12 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
             auto buffer = strchr(bufferWithColour, '\0');
 
+            colour_t colour = COLOUR_BLACK;
+            FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
             if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
             {
                 colour = w->colours[1] & 0x7F;
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-            }
-            else
-            {
-                colour = COLOUR_BLACK;
-                gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+                fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
             }
 
             int32_t width_limit = w->widgets[WIDX_LIST].width() - screenCoords.x;
@@ -1190,7 +1187,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                 safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
                 auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
-                DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, ft, colour);
+                DrawTextEllipsised(dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, fontSpriteBase });
                 screenCoords.x = w->widgets[WIDX_LIST_SORT_RIDE].left - w->widgets[WIDX_LIST].left;
             }
 
@@ -1205,7 +1202,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
             }
             auto ft = Formatter();
             ft.Add<const char*>(gCommonStringFormatBuffer);
-            DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, colour);
+            DrawTextEllipsised(dpi, screenCoords, width_limit, STR_STRING, ft, { colour, fontSpriteBase });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }

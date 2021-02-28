@@ -643,7 +643,7 @@ static void window_loadsave_compute_max_date_width()
 
     // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
-    maxDateWidth = gfx_get_string_width(date.c_str()) + DATE_TIME_GAP;
+    maxDateWidth = gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
 
     // Some locales do not use leading zeros for months and days, so let's try October, too.
     tm.tm_mon = 10;
@@ -652,11 +652,11 @@ static void window_loadsave_compute_max_date_width()
 
     // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
     date = Platform::FormatShortDate(long_time);
-    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str()) + DATE_TIME_GAP);
+    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP);
 
     // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
     std::string time = Platform::FormatTime(long_time);
-    maxTimeWidth = gfx_get_string_width(time.c_str()) + DATE_TIME_GAP;
+    maxTimeWidth = gfx_get_string_width(time.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
 }
 
 static void window_loadsave_invalidate(rct_window* w)
@@ -692,7 +692,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (_shortenedDirectory[0] == '\0')
     {
-        shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8);
+        shorten_path(_shortenedDirectory, sizeof(_shortenedDirectory), _directory, w->width - 8, FontSpriteBase::MEDIUM);
     }
 
     // Format text
@@ -703,7 +703,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw path text
     auto ft = Formatter();
     ft.Add<const char*>(Platform::StrDecompToPrecomp(buffer.data()));
-    DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft);
 
     // Name button text
     rct_string_id id = STR_NONE;
@@ -714,8 +714,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Draw name button indicator.
     rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
-    gfx_draw_string_left(
-        dpi, STR_NAME, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ sort_name_widget.left + 11, sort_name_widget.top + 1 }, STR_NAME, &id,
+        { COLOUR_GREY });
 
     // Date button text
     if (gConfigGeneral.load_save_sort == Sort::DateAscending)
@@ -726,8 +727,9 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         id = STR_NONE;
 
     rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
-    gfx_draw_string_left(
-        dpi, STR_DATE, &id, COLOUR_GREY, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ sort_date_widget.left + 5, sort_date_widget.top + 1 }, STR_DATE, &id,
+        { COLOUR_GREY });
 }
 
 static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -760,7 +762,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         {
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_RIGHTGUILLEMET);
-            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 0, y });
+            DrawTextBasic(dpi, { 0, y }, stringId, ft);
         }
 
         // Print filename
@@ -768,7 +770,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<char*>(_listItems[i].name.c_str());
         int32_t max_file_width = w->widgets[WIDX_SORT_NAME].width() - 10;
-        DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { 10, y }, max_file_width, stringId, ft);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
@@ -776,13 +778,12 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
-            DrawTextEllipsised(
-                dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+            DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
             ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
-            DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft, COLOUR_BLACK);
+            DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft);
         }
     }
 }
@@ -1204,7 +1205,7 @@ static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<char*>(_window_overwrite_prompt_name);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
-    gfx_draw_string_centred_wrapped(dpi, ft.Data(), stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, COLOUR_BLACK);
+    DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });
 }
 
 #pragma endregion

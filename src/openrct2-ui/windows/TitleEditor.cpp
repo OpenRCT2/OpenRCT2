@@ -807,9 +807,9 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         {
-            gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
+            DrawTextBasic(
+                dpi, w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 },
+                STR_TITLE_SEQUENCE, {}, { w->colours[1] });
 
             auto ft = Formatter();
             ft.Add<const char*>(_sequenceName);
@@ -819,7 +819,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto width = w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
                 - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
 
-            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
+            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, { w->colours[1] });
             break;
         }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -886,7 +886,7 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
             ft.Add<rct_string_id>(STR_STRING);
         }
         ft.Add<const char*>(saveName);
-        gfx_draw_string_left(dpi, STR_STRINGID, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 5, 0 }, STR_STRINGID, ft, { w->colours[1] });
     }
 }
 
@@ -1045,7 +1045,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 log_warning("Unknown command %d", command.Type);
             }
         }
-        gfx_draw_string_left(dpi, STR_STRINGID, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 5, 0 }, STR_STRINGID, ft, { w->colours[1] });
     }
 }
 

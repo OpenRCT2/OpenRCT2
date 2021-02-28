@@ -901,7 +901,7 @@ static void window_new_ride_paint_ride_information(
     auto ft = Formatter();
     ft.Add<rct_string_id>(rideNaming.Name);
     ft.Add<rct_string_id>(rideNaming.Description);
-    gfx_draw_string_left_wrapped(dpi, ft.Data(), screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
+    DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
     char availabilityString[AVAILABILITY_STRING_SIZE];
     window_new_ride_list_vehicles_for(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
@@ -911,7 +911,7 @@ static void window_new_ride_paint_ride_information(
         const char* drawString = availabilityString;
         ft = Formatter();
         ft.Add<const char*>(drawString);
-        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
     }
 
     ft = Formatter();
@@ -936,7 +936,7 @@ static void window_new_ride_paint_ride_information(
             break;
     }
 
-    gfx_draw_string_left(dpi, designCountStringId, ft.Data(), COLOUR_BLACK, screenPos + ScreenCoordsXY{ 0, 51 });
+    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ 0, 51 }, designCountStringId, ft);
 
     // Price
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -954,7 +954,7 @@ static void window_new_ride_paint_ride_information(
 
         ft = Formatter();
         ft.Add<money32>(price);
-        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, COLOUR_BLACK, TextAlignment::RIGHT);
+        DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ width, 51 }, stringId, ft, { TextAlignment::RIGHT });
     }
 }
 

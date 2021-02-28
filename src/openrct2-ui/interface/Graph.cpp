@@ -29,7 +29,7 @@ namespace Graph
                 // Draw month text
                 auto ft = Formatter();
                 ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
-                gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, ft.Data());
+                DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft, { TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
@@ -170,8 +170,8 @@ namespace Graph
             {
                 // Draw month text
                 int32_t monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
-                gfx_draw_string_centred(
-                    dpi, STR_GRAPH_LABEL, screenCoords - ScreenCoordsXY{ 0, 10 }, COLOUR_BLACK, &monthFormat);
+                DrawTextBasic(
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, &monthFormat, { TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
@@ -273,8 +273,9 @@ namespace Graph
             gfx_draw_dashed_line(dpi, { info.coords, { info.coords.x, cursorPosition.y } }, DefaultDashedLength, 0);
         }
 
-        gfx_draw_string_centred(
-            dpi, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, info.coords - ScreenCoordsXY{ 0, 16 }, COLOUR_BLACK, &info.money);
+        DrawTextBasic(
+            dpi, info.coords - ScreenCoordsXY{ 0, 16 }, STR_FINANCES_SUMMARY_EXPENDITURE_VALUE, &info.money,
+            { TextAlignment::CENTRE });
 
         gfx_fill_rect(
             dpi, { { info.coords - ScreenCoordsXY{ 2, 2 } }, info.coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);

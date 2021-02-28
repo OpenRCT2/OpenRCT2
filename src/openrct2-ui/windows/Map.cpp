@@ -819,8 +819,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw land tool size
     if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &_landRightsToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &_landRightsToolSize,
+            { TextAlignment::CENTRE });
     }
     screenCoords.y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
@@ -851,7 +852,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 gfx_fill_rect(
                     dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } }, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 });
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, mapLabels[i], w);
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
@@ -862,9 +863,9 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
     else if (!WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
-        gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 }, STR_MAP_SIZE, {},
+            { w->colours[1] });
     }
 }
 

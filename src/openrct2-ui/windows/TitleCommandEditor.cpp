@@ -763,24 +763,24 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
     TITLE_COMMAND_ORDER command_info = get_command_info(_command.Type);
 
     // "Command:" label
-    gfx_draw_string_left(
-        dpi, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY - 14 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ WS, BY - 14 }, STR_TITLE_COMMAND_EDITOR_COMMAND_LABEL, {}, { w->colours[1] });
 
     // Command dropdown name
     DrawTextEllipsised(
         dpi, { w->windowPos.x + w->widgets[WIDX_COMMAND].left + 1, w->windowPos.y + w->widgets[WIDX_COMMAND].top },
         w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4, command_info.nameStringId, {},
-        w->colours[1]);
+        { w->colours[1] });
 
     // Label (e.g. "Location:")
-    gfx_draw_string_left(dpi, command_info.descStringId, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ WS, BY2 - 14 }, command_info.descStringId, {}, { w->colours[1] });
 
     if (_command.Type == TitleScript::Speed)
     {
         DrawTextEllipsised(
             dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
             w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, SpeedNames[_command.Speed - 1], {},
-            w->colours[1]);
+            { w->colours[1] });
     }
     if (_command.Type == TitleScript::Follow)
     {
@@ -803,7 +803,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
               { w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_VIEWPORT].right, w->widgets[WIDX_VIEWPORT].bottom } } });
         DrawTextEllipsised(
             dpi, { w->windowPos.x + w->widgets[WIDX_VIEWPORT].left + 2, w->windowPos.y + w->widgets[WIDX_VIEWPORT].top + 1 },
-            w->widgets[WIDX_VIEWPORT].width() - 2, spriteString, ft, colour);
+            w->widgets[WIDX_VIEWPORT].width() - 2, spriteString, ft, { colour });
     }
     else if (_command.Type == TitleScript::Load)
     {
@@ -812,7 +812,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
-                STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, {}, w->colours[1]);
+                STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED, {}, { w->colours[1] });
         }
         else
         {
@@ -820,7 +820,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             ft.Add<utf8*>(_sequence->Saves[_command.SaveIndex].c_str());
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, STR_STRING, ft, w->colours[1]);
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, STR_STRING, ft, { w->colours[1] });
         }
     }
     else if (_command.Type == TitleScript::LoadSc)
@@ -830,7 +830,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4,
-                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, {}, w->colours[1]);
+                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED, {}, { w->colours[1] });
         }
         else
         {
@@ -849,7 +849,7 @@ static void window_title_command_editor_paint(rct_window* w, rct_drawpixelinfo* 
             ft.Add<const char*>(name);
             DrawTextEllipsised(
                 dpi, { w->windowPos.x + w->widgets[WIDX_INPUT].left + 1, w->windowPos.y + w->widgets[WIDX_INPUT].top },
-                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, nameString, ft, w->colours[1]);
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4, nameString, ft, { w->colours[1] });
         }
     }
 }

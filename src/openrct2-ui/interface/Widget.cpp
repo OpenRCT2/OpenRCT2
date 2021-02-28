@@ -333,7 +333,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         return;
 
     // Get the colour
-    uint8_t colour = w->colours[widget->colour];
+    colour_t colour = w->colours[widget->colour];
     colour &= ~(COLOUR_FLAG_TRANSLUCENT);
     if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -358,11 +358,11 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
     if (widget->type == WindowWidgetType::LabelCentred)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, widget->width() - 2, stringId, colour);
+        DrawTextWrapped(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {
-        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 }
 
@@ -407,7 +407,7 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex wi
     ScreenCoordsXY coords = { l + 1, t };
     if (widget->type == WindowWidgetType::LabelCentred)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), coords, r - l, stringId, colour);
+        DrawTextWrapped(dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
     }
     else
     {
@@ -483,8 +483,8 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         format_string(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), colour, { l, t });
-        textRight = l + gfx_get_string_width(buffer) + 1;
+        DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
+        textRight = l + gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) + 1;
     }
 
     // Border
@@ -563,7 +563,7 @@ static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, Formatter::Common(), COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE);
+        dpi, topLeft, width, widget->text, Formatter::Common(), { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE });
 }
 
 /**
@@ -600,7 +600,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), colour, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), { colour, TextAlignment::CENTRE });
 }
 
 /**
@@ -618,7 +618,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
 
     // Get the colour
-    uint8_t colour = w->colours[widget->colour];
+    colour_t colour = w->colours[widget->colour];
 
     // checkbox
     gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
@@ -631,9 +631,9 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // fill it when checkbox is pressed
     if (WidgetIsPressed(w, widgetIndex))
     {
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         gfx_draw_string(
-            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { midLeft - ScreenCoordsXY{ 0, 5 } });
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
+            { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
 
     // draw the text
@@ -670,8 +670,6 @@ static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
     topLeft.y++;
     bottomRight.x--;
     bottomRight.y--;
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
@@ -735,7 +733,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, { l + 1, t });
+        gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -752,7 +750,7 @@ static void WidgetHScrollbarDraw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, { r - 6, t });
+        gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
@@ -772,7 +770,7 @@ static void WidgetVScrollbarDraw(
     gfx_fill_rect_inset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, { l + 1, t - 1 });
+    gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     gfx_fill_rect_inset(
@@ -785,7 +783,7 @@ static void WidgetVScrollbarDraw(
     gfx_fill_rect_inset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, { l + 1, b - (SCROLLBAR_WIDTH - 1) });
+    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
@@ -1087,7 +1085,6 @@ void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t 
 static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     int32_t no_lines = 0;
-    int32_t font_height = 0;
     char wrapped_string[TEXT_INPUT_SIZE];
 
     // Get the widget
@@ -1106,8 +1103,6 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
     // Figure out where the text should be positioned vertically.
     topLeft.y = w->windowPos.y + widget->textTop();
 
@@ -1116,8 +1111,9 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         if (w->widgets[widgetIndex].text != 0)
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines, &font_height);
-            gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontSpriteBase::MEDIUM, &no_lines);
+            gfx_draw_string_no_formatting(
+                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
         }
         return;
     }
@@ -1126,16 +1122,16 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines, &font_height);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontSpriteBase::MEDIUM, &no_lines);
 
-    gfx_draw_string_no_formatting(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1144,7 +1140,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width_no_formatting(temp_string) - 2, 4);
+        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)

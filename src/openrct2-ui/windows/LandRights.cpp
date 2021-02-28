@@ -262,8 +262,8 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
@@ -271,7 +271,7 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &_landRightsCost);
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &_landRightsCost, { TextAlignment::CENTRE });
     }
 }
 

@@ -109,7 +109,7 @@ rct_window* window_game_bottom_toolbar_open()
     int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
     rct_window* window = WindowCreate(
@@ -222,7 +222,7 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
 static void window_game_bottom_toolbar_invalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -397,7 +397,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -406,14 +406,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
         ft.Add<money32>(gCash);
-        gfx_draw_string_centred(
-            dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            ft.Data());
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     static constexpr const rct_string_id guestCountFormats[] = {
@@ -433,14 +433,15 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        gfx_draw_string_centred(
-            dpi,
-            gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier] : guestCountFormats[gGuestChangeModifier],
-            screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            &gNumGuestsInPark);
+        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : guestCountFormats[gGuestChangeModifier];
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        auto ft = Formatter();
+        ft.Add<uint32_t>(gNumGuestsInPark);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     // Draw park rating
@@ -495,20 +496,19 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t month = date_get_month(gDateMonthsElapsed);
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
+    colour_t colour
+        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+               ? COLOUR_WHITE
+               : NOT_TRANSLUCENT(w->colours[0]));
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     auto ft = Formatter();
     ft.Add<rct_string_id>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
-    gfx_draw_string_centred(
-        dpi, stringId, screenCoords,
-        (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
-             ? COLOUR_WHITE
-             : NOT_TRANSLUCENT(w->colours[0])),
-        ft.Data());
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -523,7 +523,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     }
     ft = Formatter();
     ft.Add<int16_t>(temperature);
-    gfx_draw_string_left(dpi, format, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
     screenCoords.x += 30;
 
     // Current weather
@@ -663,7 +663,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
         INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);
@@ -675,12 +675,13 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     std::memcpy(&stringId, ft.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+        DrawTextWrapped(
+            dpi, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, ft, { w->colours[0], TextAlignment::CENTRE });
     }
     else
     {
         // Show tooltip in bottom toolbar
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
+        DrawTextWrapped(dpi, middleWidgetCoords, width, STR_STRINGID, ft, { w->colours[0], TextAlignment::CENTRE });
     }
 }
 

@@ -904,7 +904,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             DrawTextBasic(
                 dpi, screenPos + ScreenCoordsXY{ 26, 2 }, STR_OVERLAY_CLEARANCE_CHECKS_DISABLED, {},
-                COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT);
+                { COLOUR_DARK_ORANGE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
         }
     }
 
@@ -981,10 +981,9 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Draw number of players.
         auto ft = Formatter();
         ft.Add<int32_t>(network_get_num_players());
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         DrawTextBasic(
-            dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft, COLOUR_WHITE | COLOUR_FLAG_OUTLINE,
-            TextAlignment::RIGHT);
+            dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
+            { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });
     }
 }
 

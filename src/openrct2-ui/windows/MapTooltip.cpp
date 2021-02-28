@@ -145,6 +145,5 @@ static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     ScreenCoordsXY stringCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    gfx_draw_string_centred_wrapped(
-        dpi, _mapTooltipArgs.Data(), stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, COLOUR_BLACK);
+    DrawTextWrapped(dpi, stringCoords, w->width, STR_MAP_TOOLTIP_STRINGID, _mapTooltipArgs, { TextAlignment::CENTRE });
 }

@@ -328,8 +328,8 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
         screenCoords = { w->windowPos.x + previewWidget->midX(), w->windowPos.y + previewWidget->midY() };
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
     else if (gLandMountainMode)
     {
@@ -346,12 +346,12 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         // Draw raise cost amount
         if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-            gfx_draw_string_centred(dpi, STR_RAISE_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolRaiseCost);
+            DrawTextBasic(dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gLandToolRaiseCost, { TextAlignment::CENTRE });
         screenCoords.y += 10;
 
         // Draw lower cost amount
         if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-            gfx_draw_string_centred(dpi, STR_LOWER_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gLandToolLowerCost);
+            DrawTextBasic(dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gLandToolLowerCost, { TextAlignment::CENTRE });
         screenCoords.y += 50;
 
         // Draw paint price
@@ -375,7 +375,7 @@ static void window_land_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto ft = Formatter();
             ft.Add<money32>(price);
-            gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, ft.Data());
+            DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft.Data(), { TextAlignment::CENTRE });
         }
     }
 }

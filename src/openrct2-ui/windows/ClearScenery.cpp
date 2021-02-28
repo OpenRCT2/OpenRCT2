@@ -222,8 +222,8 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
                                     w->windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
@@ -231,6 +231,6 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gClearSceneryCost);
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &gClearSceneryCost, { TextAlignment::CENTRE });
     }
 }

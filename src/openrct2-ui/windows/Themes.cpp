@@ -818,9 +818,9 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)
     {
-        gfx_draw_string_left(
-            dpi, STR_THEMES_LABEL_CURRENT_THEME, nullptr, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 10, window_themes_widgets[WIDX_THEMES_PRESETS].top + 1 },
+            STR_THEMES_LABEL_CURRENT_THEME, {}, { w->colours[1] });
 
         size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
         const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -833,7 +833,7 @@ void window_themes_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto width = w->windowPos.x + window_themes_widgets[WIDX_THEMES_PRESETS_DROPDOWN].left
             - window_themes_widgets[WIDX_THEMES_PRESETS].left - 4;
 
-        DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
+        DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, { w->colours[1] });
     }
 }
 
@@ -896,7 +896,7 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
             int32_t numColours = ThemeDescGetNumColours(wc);
             for (uint8_t j = 0; j < numColours; j++)
             {
-                gfx_draw_string_left(dpi, ThemeDescGetName(wc), nullptr, w->colours[1], { 2, screenCoords.y + 4 });
+                DrawTextBasic(dpi, { 2, screenCoords.y + 4 }, ThemeDescGetName(wc), {}, { w->colours[1] });
 
                 uint8_t colour = ThemeGetColour(wc, j);
                 uint32_t image = SPRITE_ID_PALETTE_COLOUR_1(colour & ~COLOUR_FLAG_TRANSLUCENT) | SPR_PALETTE_BTN;
@@ -911,8 +911,9 @@ void window_themes_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t sc
                 gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_E0);
                 if (colour & COLOUR_FLAG_TRANSLUCENT)
                 {
-                    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM_DARK;
-                    gfx_draw_string(dpi, static_cast<const char*>(CheckBoxMarkString), w->colours[1] & 0x7F, topLeft);
+                    gfx_draw_string(
+                        dpi, topLeft, static_cast<const char*>(CheckBoxMarkString),
+                        { static_cast<colour_t>(w->colours[1] & 0x7F), FontSpriteBase::MEDIUM_DARK });
                 }
             }
         }

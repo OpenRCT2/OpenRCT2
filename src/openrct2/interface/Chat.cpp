@@ -189,16 +189,16 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
         screenCoords.y = _chatBottom - inputLineHeight - 5;
 
         auto lineCh = lineBuffer.c_str();
-        inputLineHeight = gfx_draw_string_left_wrapped(
-            dpi, static_cast<void*>(&lineCh), screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING,
-            TEXT_COLOUR_255);
+        inputLineHeight = DrawTextWrapped(
+            dpi, screenCoords + ScreenCoordsXY{ 0, 3 }, _chatWidth - 10, STR_STRING, static_cast<void*>(&lineCh),
+            { TEXT_COLOUR_255 });
         gfx_set_dirty_blocks({ screenCoords, { screenCoords + ScreenCoordsXY{ _chatWidth, inputLineHeight + 15 } } });
 
         // TODO: Show caret if the input text has multiple lines
-        if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer) < (_chatWidth - 10))
+        if (_chatCaretTicks < 15 && gfx_get_string_width(lineBuffer, FontSpriteBase::MEDIUM) < (_chatWidth - 10))
         {
             lineBuffer.assign(_chatCurrentLine, _chatTextInputSession->SelectionStart);
-            int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer);
+            int32_t caretX = screenCoords.x + gfx_get_string_width(lineBuffer, FontSpriteBase::MEDIUM);
             int32_t caretY = screenCoords.y + 14;
 
             gfx_fill_rect(dpi, { { caretX, caretY }, { caretX + 6, caretY + 1 } }, PALETTE_INDEX_56);
@@ -274,10 +274,9 @@ static int32_t chat_history_draw_string(
     auto buffer = gCommonStringFormatBuffer;
     FormatStringToBuffer(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), "{OUTLINE}{WHITE}{STRING}", text);
 
-    int32_t fontSpriteBase, numLines;
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    auto lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t numLines;
+    gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
+    auto lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     int32_t expectedY = screenCoords.y - (numLines * lineHeight);
     if (expectedY < 50)
@@ -288,7 +287,7 @@ static int32_t chat_history_draw_string(
     auto lineY = screenCoords.y;
     for (int32_t line = 0; line <= numLines; ++line)
     {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, { screenCoords.x, lineY - (numLines * lineHeight) });
+        gfx_draw_string(dpi, { screenCoords.x, lineY - (numLines * lineHeight) }, buffer, { TEXT_COLOUR_254 });
         buffer = get_string_end(buffer) + 1;
         lineY += lineHeight;
     }
@@ -299,18 +298,14 @@ static int32_t chat_history_draw_string(
 // Almost the same as gfx_draw_string_left_wrapped
 int32_t chat_string_wrapped_get_height(void* args, int32_t width)
 {
-    int32_t fontSpriteBase, lineHeight, lineY, numLines;
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, STR_STRING, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    int32_t numLines;
+    gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
-    lineY = 0;
+    int32_t lineY = 0;
     for (int32_t line = 0; line <= numLines; ++line)
     {
         buffer = get_string_end(buffer) + 1;

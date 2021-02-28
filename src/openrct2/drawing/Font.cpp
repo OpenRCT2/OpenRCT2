@@ -283,12 +283,11 @@ int32_t font_sprite_get_codepoint_offset(int32_t codepoint)
     return codepoint - 32;
 }
 
-int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoint)
+int32_t font_sprite_get_codepoint_width(FontSpriteBase fontSpriteBase, int32_t codepoint)
 {
-    if (fontSpriteBase == static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM_DARK)
-        || fontSpriteBase == static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK))
+    if (fontSpriteBase == FontSpriteBase::MEDIUM_DARK || fontSpriteBase == FontSpriteBase::MEDIUM_EXTRA_DARK)
     {
-        fontSpriteBase = static_cast<uint16_t>(FONT_SPRITE_BASE_MEDIUM);
+        fontSpriteBase = FontSpriteBase::MEDIUM;
     }
 
     int32_t glyphIndex = font_sprite_get_codepoint_offset(codepoint);
@@ -312,46 +311,47 @@ int32_t font_sprite_get_codepoint_width(uint16_t fontSpriteBase, int32_t codepoi
     return _spriteFontCharacterWidths[baseFontIndex][glyphIndex];
 }
 
-int32_t font_sprite_get_codepoint_sprite(int32_t fontSpriteBase, int32_t codepoint)
+int32_t font_sprite_get_codepoint_sprite(FontSpriteBase fontSpriteBase, int32_t codepoint)
 {
+    int32_t offset = static_cast<int32_t>(fontSpriteBase);
     auto codePointOffset = font_sprite_get_codepoint_offset(codepoint);
     if (codePointOffset > FONT_SPRITE_GLYPH_COUNT)
     {
-        fontSpriteBase = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
+        offset = font_get_font_index_from_sprite_base(fontSpriteBase) * SPR_G2_GLYPH_COUNT;
     }
 
-    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (fontSpriteBase + codePointOffset));
+    return SPR_CHAR_START + (IMAGE_TYPE_REMAP | (offset + codePointOffset));
 }
 
-int32_t font_get_font_index_from_sprite_base(uint16_t spriteBase)
+int32_t font_get_font_index_from_sprite_base(FontSpriteBase spriteBase)
 {
     switch (spriteBase)
     {
-        case FONT_SPRITE_BASE_TINY:
+        case FontSpriteBase::TINY:
             return FONT_SIZE_TINY;
-        case FONT_SPRITE_BASE_SMALL:
+        case FontSpriteBase::SMALL:
             return FONT_SIZE_SMALL;
         default:
-        case FONT_SPRITE_BASE_MEDIUM:
+        case FontSpriteBase::MEDIUM:
             return FONT_SIZE_MEDIUM;
     }
 }
 
-int32_t font_get_size_from_sprite_base(uint16_t spriteBase)
+int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase)
 {
     switch (spriteBase)
     {
-        case FONT_SPRITE_BASE_TINY:
+        case FontSpriteBase::TINY:
             return 0;
-        case FONT_SPRITE_BASE_SMALL:
+        case FontSpriteBase::SMALL:
             return 1;
         default:
-        case FONT_SPRITE_BASE_MEDIUM:
+        case FontSpriteBase::MEDIUM:
             return 2;
     }
 }
 
-int32_t font_get_line_height(int32_t fontSpriteBase)
+int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
 {
     int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
@@ -368,7 +368,7 @@ int32_t font_get_line_height(int32_t fontSpriteBase)
 #endif // NO_TTF
 }
 
-int32_t font_get_line_height_small(int32_t fontSpriteBase)
+int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase)
 {
     return font_get_line_height(fontSpriteBase) / 2;
 }
