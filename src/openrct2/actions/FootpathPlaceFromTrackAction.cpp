@@ -105,7 +105,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
         return MakeResult(GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
     }
 
-    res->Cost = MONEY(12, 00);
+    res->Cost = 12.00__GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -125,7 +125,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
         if (entranceElement->GetPathType() == (_type & 0xF))
             entranceIsSamePath = true;
         else
-            res->Cost -= MONEY(6, 00);
+            res->Cost -= 6.00__GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
@@ -154,7 +154,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res->Cost += supportHeight < 0 ? 20.00__GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00__GBP;
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
@@ -172,7 +172,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         footpath_remove_litter(_loc);
     }
 
-    res->Cost = MONEY(12, 00);
+    res->Cost = 12.00__GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -192,7 +192,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         if (entranceElement->GetPathType() == (_type & 0xF))
             entranceIsSamePath = true;
         else
-            res->Cost -= MONEY(6, 00);
+            res->Cost -= 6.00__GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
@@ -217,7 +217,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res->Cost += supportHeight < 0 ? 20.00__GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00__GBP;
 
     if (entrancePath)
     {

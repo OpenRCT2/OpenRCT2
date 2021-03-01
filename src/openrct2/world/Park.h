@@ -16,7 +16,7 @@
 #define DECRYPT_MONEY(money) (static_cast<money32>(rol32((money) ^ 0xF4EC9621, 13)))
 #define ENCRYPT_MONEY(money) (static_cast<money32>(ror32((money), 13) ^ 0xF4EC9621))
 
-#define MAX_ENTRANCE_FEE MONEY(200, 00)
+#define MAX_ENTRANCE_FEE 200.00__GBP
 
 struct Peep;
 

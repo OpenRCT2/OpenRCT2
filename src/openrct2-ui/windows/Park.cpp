@@ -1100,11 +1100,11 @@ static void window_park_price_mousedown(rct_window* w, rct_widgetindex widgetInd
             window_close(w);
             break;
         case WIDX_INCREASE_PRICE:
-            newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + MONEY(1, 00));
+            newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00__GBP);
             park_set_entrance_fee(newFee);
             break;
         case WIDX_DECREASE_PRICE:
-            newFee = std::max(MONEY(0, 00), gParkEntranceFee - MONEY(1, 00));
+            newFee = std::max(0.00__GBP, gParkEntranceFee - 1.00__GBP);
             park_set_entrance_fee(newFee);
             break;
     }

@@ -451,7 +451,7 @@ static void window_finances_summary_mousedown(rct_window* w, rct_widgetindex wid
     {
         case WIDX_LOAN_INCREASE:
         {
-            auto newLoan = gBankLoan + MONEY(1000, 00);
+            auto newLoan = gBankLoan + 1000.00__GBP;
             auto gameAction = ParkSetLoanAction(newLoan);
             GameActions::Execute(&gameAction);
             break;
@@ -459,7 +459,7 @@ static void window_finances_summary_mousedown(rct_window* w, rct_widgetindex wid
         case WIDX_LOAN_DECREASE:
             if (gBankLoan > 0)
             {
-                auto newLoan = gBankLoan - MONEY(1000, 00);
+                auto newLoan = gBankLoan - 1000.00__GBP;
                 auto gameAction = ParkSetLoanAction(newLoan);
                 GameActions::Execute(&gameAction);
             }
@@ -749,7 +749,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     x = graphLeft + 18;
     y = graphTop + 14;
     money32 axisBase;
-    for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
+    for (axisBase = 12.00__GBP; axisBase >= -12, 00); axisBase -= 6.00__GBP)
     {
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
@@ -854,7 +854,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     x = graphLeft + 18;
     y = graphTop + 14;
     money32 axisBase;
-    for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
+    for (axisBase = 24.00__GBP; axisBase >= 0.00__GBP; axisBase -= 6.00__GBP)
     {
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
@@ -959,7 +959,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     // Y axis labels
     auto screenPos = ScreenCoordsXY{ graphLeft + 18, graphTop + 14 };
     money32 axisBase;
-    for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
+    for (axisBase = 12.00__GBP; axisBase >= -12, 00); axisBase -= 6.00__GBP)
     {
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();

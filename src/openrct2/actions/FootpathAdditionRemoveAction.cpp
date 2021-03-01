@@ -85,7 +85,7 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
     }
     auto res = MakeResult();
     res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    res->Cost = 0.0__GBP;
     return res;
 }
 
@@ -110,6 +110,6 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
 
     auto res = MakeResult();
     res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    res->Cost = 0.0__GBP;
     return res;
 }
