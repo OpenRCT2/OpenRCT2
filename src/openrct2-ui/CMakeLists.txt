@@ -12,8 +12,8 @@ if (MSVC)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
 else ()
-    PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
-    PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
+    PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
+    PKG_CHECK_MODULES(SPEEX REQUIRED IMPORTED_TARGET speexdsp)
 endif ()
 
 if (NOT DISABLE_OPENGL)
@@ -43,9 +43,16 @@ add_executable(${PROJECT_NAME} ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 ipo_set_target_properties(${PROJECT_NAME})
 
-target_link_libraries(${PROJECT_NAME} "libopenrct2"
-                                 ${SDL2_LDFLAGS}
-                                 ${SPEEX_LDFLAGS})
+# mingw builds cannot use the PkgConfig imported targets
+if (NOT MSVC AND NOT WIN32)
+    target_link_libraries(${PROJECT_NAME} "libopenrct2"
+                                    PkgConfig::SDL2
+                                    PkgConfig::SPEEX)
+else ()
+    target_link_libraries(${PROJECT_NAME} "libopenrct2"
+                                    ${SDL2_LDFLAGS}
+                                    ${SPEEX_LDFLAGS})
+endif ()
 target_link_platform_libraries(${PROJECT_NAME})
 
 if (NOT DISABLE_OPENGL)

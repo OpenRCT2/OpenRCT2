@@ -19,6 +19,9 @@ if (APPLE)
 endif ()
 
 add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES})
+if (APPLE)
+    target_link_platform_libraries(${PROJECT_NAME})
+endif ()
 set_target_properties(${PROJECT_NAME} PROPERTIES PREFIX "")
 SET_CHECK_CXX_FLAGS(${PROJECT_NAME})
 
@@ -34,10 +37,11 @@ if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
         target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
         if (APPLE)
-            # Needed for linking with non-broken OpenSSL on Apple platforms
-            set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
+            if (NOT MACOS_USE_DEPENDENCIES)
+                # Needed for linking with non-broken OpenSSL on Apple platforms
+                set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
+            endif ()
         endif ()
-
         find_package(OpenSSL 1.0.0 REQUIRED)
 
         target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC ${OPENSSL_INCLUDE_DIR})
@@ -78,7 +82,7 @@ if (NOT DISABLE_TTF)
     if (MSVC)
         find_package(freetype REQUIRED)
     else ()
-        PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
+        PKG_CHECK_MODULES(FREETYPE REQUIRED IMPORTED_TARGET freetype2)
     endif ()
         
     target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${FREETYPE_INCLUDE_DIRS})
@@ -118,16 +122,16 @@ if (MSVC)
     find_path(LIBZIP_INCLUDE_DIRS zip.h)
     find_library(LIBZIP_LIBRARIES zip)
 else ()
-    PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
-    PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
+    PKG_CHECK_MODULES(LIBZIP REQUIRED IMPORTED_TARGET libzip>=1.0)
+    PKG_CHECK_MODULES(ZLIB REQUIRED IMPORTED_TARGET zlib)
 
-    PKG_CHECK_MODULES(PNG libpng>=1.6)
+    PKG_CHECK_MODULES(PNG IMPORTED_TARGET libpng>=1.6)
     if (NOT PNG_FOUND)
-        PKG_CHECK_MODULES(PNG libpng16)
+        PKG_CHECK_MODULES(PNG IMPORTED_TARGET libpng16)
         if (NOT PNG_FOUND)
-            PKG_CHECK_MODULES(PNG libpng>=1.2)
+            PKG_CHECK_MODULES(PNG IMPORTED_TARGET libpng>=1.2)
             if (NOT PNG_FOUND)
-                PKG_CHECK_MODULES(PNG REQUIRED libpng12)
+                PKG_CHECK_MODULES(PNG REQUIRED IMPORTED_TARGET libpng12)
             endif ()
         endif ()
     endif ()
@@ -139,10 +143,17 @@ if (STATIC)
                                      ${ZLIB_STATIC_LIBRARIES}
                                      ${LIBZIP_STATIC_LIBRARIES})
 else ()
-    target_link_libraries(${PROJECT_NAME}
+    if (NOT MSVC)
+        target_link_libraries(${PROJECT_NAME}
+                                     PkgConfig::PNG
+                                     PkgConfig::ZLIB
+                                     PkgConfig::LIBZIP)
+    else ()
+        target_link_libraries(${PROJECT_NAME}
                                      ${PNG_LIBRARIES}
                                      ${ZLIB_LIBRARIES}
                                      ${LIBZIP_LIBRARIES})
+    endif ()
 endif ()
 
 if (MINGW)
@@ -182,7 +193,11 @@ if (NOT DISABLE_TTF)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_STATIC_LIBRARIES})
         endif ()
     else ()
-        target_link_libraries(${PROJECT_NAME} ${FREETYPE_LIBRARIES})
+        if (NOT MSVC)
+            target_link_libraries(${PROJECT_NAME} PkgConfig::FREETYPE)
+        else ()
+            target_link_libraries(${PROJECT_NAME} ${FREETYPE_LIBRARIES})
+        endif ()
             
         if (UNIX AND NOT APPLE)
             target_link_libraries(${PROJECT_NAME} ${FONTCONFIG_LIBRARIES})

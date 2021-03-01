@@ -119,8 +119,8 @@ jobs:
         with:
           name: "OpenRCT2-NT5.1"
           path: bin/openrct2.exe
-  macos:
-    name: macOS
+  macos-xcode:
+    name: macOS (x64) using Xcode
     runs-on: macos-latest
     needs: [check-code-formatting]
     steps:
@@ -148,6 +148,29 @@ jobs:
           else
               echo 'Not going to push build'
           fi
+  macos-cmake:
+    name: macOS (x64) using CMake
+    runs-on: macos-latest
+    needs: [check-code-formatting]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Build OpenRCT2
+        run: |
+          brew install ninja
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
+      - name: Build artifacts
+        shell: bash
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz bin/install/usr
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: "OpenRCT2-macOS-cmake"
+          path: artifacts
+
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
