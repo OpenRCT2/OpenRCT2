@@ -740,7 +740,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = static_cast<int32_t>(double_val[0]), MONEY((static_cast<int32_t>(double_val[0] * 100)) % 100);
+            money32 money = MONEY(static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);

@@ -749,7 +749,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     x = graphLeft + 18;
     y = graphTop + 14;
     money32 axisBase;
-    for (axisBase = 12.00_GBP; axisBase >= -12, 00); axisBase -= 6.00_GBP)
+    for (axisBase = 12.00_GBP; axisBase >= -12.00_GBP; axisBase -= 6.00_GBP)
     {
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
@@ -959,7 +959,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     // Y axis labels
     auto screenPos = ScreenCoordsXY{ graphLeft + 18, graphTop + 14 };
     money32 axisBase;
-    for (axisBase = 12.00_GBP; axisBase >= -12, 00); axisBase -= 6.00_GBP)
+    for (axisBase = 12.00_GBP; axisBase >= -12.00_GBP; axisBase -= 6.00_GBP)
     {
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
