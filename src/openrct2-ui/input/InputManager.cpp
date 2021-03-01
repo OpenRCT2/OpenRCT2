@@ -253,7 +253,7 @@ void InputManager::ProcessInGameConsole(const InputEvent& e)
 
 void InputManager::ProcessChat(const InputEvent& e)
 {
-    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Release)
+    if (e.DeviceKind == InputDeviceKind::Keyboard && e.State == InputEventState::Down)
     {
         auto input = ChatInput::None;
         switch (e.Button)
@@ -288,24 +288,23 @@ void InputManager::ProcessHoldEvents()
     _viewScroll.x = 0;
     _viewScroll.y = 0;
 
-    auto& shortcutManager = GetShortcutManager();
-    if (!shortcutManager.IsPendingShortcutChange())
+    if (!HasTextInputFocus())
     {
-        ProcessViewScrollEvent(ShortcutId::ViewScrollUp, _scrollUpShortcut, { 0, -1 });
-        ProcessViewScrollEvent(ShortcutId::ViewScrollDown, _scrollDownShortcut, { 0, 1 });
-        ProcessViewScrollEvent(ShortcutId::ViewScrollLeft, _scrollLeftShortcut, { -1, 0 });
-        ProcessViewScrollEvent(ShortcutId::ViewScrollRight, _scrollRightShortcut, { 1, 0 });
+        auto& shortcutManager = GetShortcutManager();
+        if (!shortcutManager.IsPendingShortcutChange())
+        {
+            ProcessViewScrollEvent(ShortcutId::ViewScrollUp, { 0, -1 });
+            ProcessViewScrollEvent(ShortcutId::ViewScrollDown, { 0, 1 });
+            ProcessViewScrollEvent(ShortcutId::ViewScrollLeft, { -1, 0 });
+            ProcessViewScrollEvent(ShortcutId::ViewScrollRight, { 1, 0 });
+        }
     }
 }
 
-void InputManager::ProcessViewScrollEvent(
-    std::string_view shortcutId, RegisteredShortcut*& shortcut, const ScreenCoordsXY& delta)
+void InputManager::ProcessViewScrollEvent(std::string_view shortcutId, const ScreenCoordsXY& delta)
 {
-    if (shortcut == nullptr)
-    {
-        auto& shortcutManager = GetShortcutManager();
-        shortcut = shortcutManager.GetShortcut(shortcutId);
-    }
+    auto& shortcutManager = GetShortcutManager();
+    auto shortcut = shortcutManager.GetShortcut(shortcutId);
     if (shortcut != nullptr && GetState(*shortcut))
     {
         _viewScroll.x += delta.x;
@@ -379,5 +378,21 @@ bool InputManager::GetState(const ShortcutInput& shortcut) const
             }
         }
     }
+    return false;
+}
+
+bool InputManager::HasTextInputFocus() const
+{
+    if (gUsingWidgetTextBox || gChatOpen)
+        return true;
+
+    auto w = window_find_by_class(WC_TEXTINPUT);
+    if (w != nullptr)
+        return true;
+
+    auto& console = GetInGameConsole();
+    if (console.IsOpen())
+        return true;
+
     return false;
 }

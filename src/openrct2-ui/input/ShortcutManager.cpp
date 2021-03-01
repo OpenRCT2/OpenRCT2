@@ -119,22 +119,24 @@ void ShortcutManager::RegisterShortcut(RegisteredShortcut&& shortcut)
 {
     if (!shortcut.Id.empty() && GetShortcut(shortcut.Id) == nullptr)
     {
-        Shortcuts.push_back(shortcut);
+        auto id = std::make_unique<std::string>(shortcut.Id);
+        auto idView = std::string_view(*id);
+        _ids.push_back(std::move(id));
+        Shortcuts[idView] = shortcut;
     }
 }
 
 RegisteredShortcut* ShortcutManager::GetShortcut(std::string_view id)
 {
-    auto result = std::find_if(Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& s) { return s.Id == id; });
-    return result == Shortcuts.end() ? nullptr : &(*result);
+    auto result = Shortcuts.find(id);
+    return result == Shortcuts.end() ? nullptr : &result->second;
 }
 
 void ShortcutManager::RemoveShortcut(std::string_view id)
 {
-    Shortcuts.erase(
-        std::remove_if(
-            Shortcuts.begin(), Shortcuts.end(), [id](const RegisteredShortcut& shortcut) { return shortcut.Id == id; }),
-        Shortcuts.end());
+    Shortcuts.erase(id);
+    _ids.erase(
+        std::remove_if(_ids.begin(), _ids.end(), [id](const std::unique_ptr<std::string>& x) { return *x == id; }), _ids.end());
 }
 
 bool ShortcutManager::IsPendingShortcutChange() const
@@ -153,9 +155,9 @@ void ShortcutManager::ProcessEvent(const InputEvent& e)
     {
         for (const auto& shortcut : Shortcuts)
         {
-            if (shortcut.Matches(e))
+            if (shortcut.second.Matches(e))
             {
-                shortcut.Action();
+                shortcut.second.Action();
             }
         }
     }
@@ -334,15 +336,15 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
 
     for (const auto& shortcut : Shortcuts)
     {
-        auto& jShortcut = root[shortcut.Id];
-        if (shortcut.Current.size() == 1)
+        auto& jShortcut = root[shortcut.second.Id];
+        if (shortcut.second.Current.size() == 1)
         {
-            jShortcut = shortcut.Current[0].ToString();
+            jShortcut = shortcut.second.Current[0].ToString();
         }
         else
         {
             jShortcut = nlohmann::json::array();
-            for (const auto& binding : shortcut.Current)
+            for (const auto& binding : shortcut.second.Current)
             {
                 jShortcut.push_back(binding.ToString());
             }

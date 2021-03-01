@@ -403,9 +403,9 @@ private:
         auto& shortcutManager = GetShortcutManager();
         for (const auto& shortcut : shortcutManager.Shortcuts)
         {
-            if (IsInCurrentTab(shortcut))
+            if (IsInCurrentTab(shortcut.second))
             {
-                result.push_back(&shortcut);
+                result.push_back(&shortcut.second);
             }
         }
         return result;
