@@ -27,8 +27,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-#define CHEATS_MONEY_DEFAULT 10000.00__GBP
-#define CHEATS_MONEY_INCREMENT_DIV 5000.00__GBP
+#define CHEATS_MONEY_DEFAULT 10000.00_GBP
+#define CHEATS_MONEY_INCREMENT_DIV 5000.00_GBP
 
 // clang-format off
 enum
@@ -559,7 +559,7 @@ public:
             case WINDOW_CHEATS_PAGE_GUESTS:
             {
                 auto ft = Formatter::Common();
-                ft.Add<int32_t>(1000.00__GBP);
+                ft.Add<int32_t>(1000.00_GBP);
                 SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
                 SetCheckboxValue(WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
                 SetCheckboxValue(WIDX_DISABLE_LITTERING, gCheatsDisableLittering);

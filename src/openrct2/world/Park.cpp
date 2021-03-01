@@ -279,7 +279,7 @@ void Park::Initialise()
 
     set_all_scenery_items_invented();
 
-    gParkEntranceFee = 10.00__GBP;
+    gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     reset_park_entrance();
@@ -289,15 +289,15 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = 50.00__GBP;
+    gGuestInitialCash = 50.00_GBP;
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
     gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gScenarioObjective.Year = 4;
     gScenarioObjective.NumGuests = 1000;
-    gLandPrice = 90.00__GBP;
-    gConstructionRightsPrice = 40.00__GBP;
+    gLandPrice = 90.00_GBP;
+    gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();
@@ -492,7 +492,7 @@ money32 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += gNumGuestsInPark * 7.00__GBP;
+    result += gNumGuestsInPark * 7.00_GBP;
 
     return result;
 }

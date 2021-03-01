@@ -173,10 +173,10 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
         return false;
 
-    if (gTotalRideValueForMoney < 10.00__GBP)
+    if (gTotalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (park_get_entrance_fee() + 0.10__GBP >= gTotalRideValueForMoney / 2)
+    if (park_get_entrance_fee() + 0.10_GBP >= gTotalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -223,7 +223,7 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
         return false;
 
     money32 parkEntranceFee = park_get_entrance_fee();
-    if (parkEntranceFee == 0.00__GBP)
+    if (parkEntranceFee == 0.00_GBP)
         return false;
     if (parkEntranceFee <= gTotalRideValueForMoney)
         return false;
