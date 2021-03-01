@@ -4016,7 +4016,7 @@ int32_t network_get_player_id(uint32_t index)
 }
 money32 network_get_player_money_spent(uint32_t index)
 {
-    return MONEY(0, 0);
+    return 0.00_GBP;
 }
 std::string network_get_player_ip_address(uint32_t id)
 {

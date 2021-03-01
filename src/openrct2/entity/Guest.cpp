@@ -1066,7 +1066,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && Energy >= 70)
+                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105 && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -3065,7 +3065,7 @@ static void peep_decide_whether_to_leave_park(Guest* peep)
         }
         else
         {
-            if (peep->Energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
+            if (peep->Energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= 5.00_GBP)
             {
                 return;
             }
@@ -3295,7 +3295,7 @@ static bool peep_should_use_cash_machine(Guest* peep, RideId rideIndex)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
-    if (peep->CashInPocket > MONEY(20, 00))
+    if (peep->CashInPocket > 20.00_GBP)
         return false;
     if (115 + (scenario_rand() % 128) > peep->Happiness)
         return false;
@@ -3342,7 +3342,7 @@ void Guest::UpdateBuying()
         {
             if (CurrentRide != PreviousRide)
             {
-                CashInPocket += MONEY(50, 00);
+                CashInPocket += 50.00_GBP;
             }
             window_invalidate_by_number(WC_PEEP, sprite_index);
         }

@@ -539,7 +539,7 @@ void SetCheatAction::ClearLoan() const
     AddMoney(gBankLoan);
 
     // Then pay the loan
-    auto gameAction = ParkSetLoanAction(MONEY(0, 00));
+    auto gameAction = ParkSetLoanAction(0.00_GBP);
     GameActions::ExecuteNested(&gameAction);
 }
 
@@ -604,7 +604,7 @@ void SetCheatAction::GiveObjectToGuests(int32_t object) const
         switch (object)
         {
             case OBJECT_MONEY:
-                peep->CashInPocket = MONEY(1000, 00);
+                peep->CashInPocket = 1000.00_GBP;
                 break;
             case OBJECT_PARK_MAP:
                 peep->GiveItem(ShopItem::Map);

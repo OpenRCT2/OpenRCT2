@@ -151,7 +151,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
 GameActions::Result LandSetHeightAction::Execute() const
 {
-    money32 cost = MONEY(0, 0);
+    money32 cost = 0.00_GBP;
     auto surfaceHeight = tile_element_height(_coords);
     footpath_remove_litter({ _coords, surfaceHeight });
 
@@ -360,7 +360,7 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     {
         int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
         cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
-        cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
+        cost += (abs(cornerHeight) * 5 / 2) * 10;
     }
     return cost;
 }
