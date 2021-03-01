@@ -502,7 +502,7 @@ money32 string_to_money(const char* string_to_monetise)
     auto whole = static_cast<int32_t>(number);
     auto fraction = static_cast<uint8_t>(ceil((number - whole) * 100.0));
 
-    money32 result = MONEY(whole, fraction);
+    money32 result = (whole)*10 + ((fraction) / 10);
     // Check if MONEY resulted in overflow
     if ((whole > 0 && result < 0) || result / 10 < whole)
     {
