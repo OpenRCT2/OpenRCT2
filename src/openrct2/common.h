@@ -140,6 +140,12 @@ constexpr money32 operator"" _GBP(long double money)
 {
     return money * 10;
 }
+// Helper function to convert runtime values to money
+constexpr auto MONEY(int32_t whole, int32_t fraction) 
+{
+    return (whole)*10 + ((fraction) / 10);
+}
+
 
 #define MONEY_FREE 0.00_GBP
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
