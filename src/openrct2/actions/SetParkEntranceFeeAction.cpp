@@ -40,7 +40,7 @@ GameActions::Result::Ptr SetParkEntranceFeeAction::Query() const
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::Disallowed, STR_NONE);
     }
-    if (_fee < MONEY_FREE || _fee > MAX_ENTRANCE_FEE)
+    if (_fee < 0.00_GBP || _fee > MAX_ENTRANCE_FEE)
     {
         return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE);
     }
