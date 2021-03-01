@@ -759,24 +759,24 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         }
         else if (argv[0] == "scenario_initial_cash" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gInitialCash = std::clamp(int_val[0], 0), 0.0__GBP, 1000000.00__GBP);
+            gInitialCash = std::clamp(int_val[0], 0), 0.0_GBP, 1000000.00_GBP);
             console.Execute("get scenario_initial_cash");
         }
         else if (argv[0] == "current_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gBankLoan = std::clamp(int_val[0] - (int_val[0] % 1000), 0), 0.0__GBP, gMaxBankLoan);
+            gBankLoan = std::clamp(int_val[0] - (int_val[0] % 1000), 0), 0.0_GBP, gMaxBankLoan);
             console.Execute("get current_loan");
         }
         else if (argv[0] == "max_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
-            gMaxBankLoan = std::clamp(int_val[0] - (int_val[0] % 1000), 0), 0.0__GBP, 5000000.0__GBP);
+            gMaxBankLoan = std::clamp(int_val[0] - (int_val[0] % 1000), 0), 0.0_GBP, 5000000.0_GBP);
             console.Execute("get max_loan");
         }
         else if (argv[0] == "guest_initial_cash" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             gGuestInitialCash = std::clamp(
-                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0__GBP,
-                1000.0__GBP);
+                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0_GBP,
+                1000.0_GBP);
             console.Execute("get guest_initial_cash");
         }
         else if (argv[0] == "guest_initial_happiness" && invalidArguments(&invalidArgs, int_valid[0]))
@@ -852,15 +852,15 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "land_rights_cost" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             gLandPrice = std::clamp(
-                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0__GBP,
-                200.0__GBP);
+                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0_GBP,
+                200.0_GBP);
             console.Execute("get land_rights_cost");
         }
         else if (argv[0] == "construction_rights_cost" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             gConstructionRightsPrice = std::clamp(
-                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0__GBP,
-                200.0__GBP);
+                static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), 0.0_GBP,
+                200.0_GBP);
             console.Execute("get construction_rights_cost");
         }
         else if (argv[0] == "climate")

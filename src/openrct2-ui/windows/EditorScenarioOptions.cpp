@@ -498,10 +498,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
     switch (widgetIndex)
     {
         case WIDX_INITIAL_CASH_INCREASE:
-            if (gInitialCash < 1000000.00__GBP)
+            if (gInitialCash < 1000000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialCash, gInitialCash + 500.00__GBP);
+                    ScenarioSetSetting::InitialCash, gInitialCash + 500.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -511,10 +511,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             w->Invalidate();
             break;
         case WIDX_INITIAL_CASH_DECREASE:
-            if (gInitialCash > 0.00__GBP)
+            if (gInitialCash > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialCash, gInitialCash - 500.00__GBP);
+                    ScenarioSetSetting::InitialCash, gInitialCash - 500.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -524,10 +524,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_INCREASE:
-            if (gBankLoan < 5000000.00__GBP)
+            if (gBankLoan < 5000000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialLoan, gBankLoan + 1000.00__GBP);
+                    ScenarioSetSetting::InitialLoan, gBankLoan + 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -537,10 +537,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_DECREASE:
-            if (gBankLoan > 0.00__GBP)
+            if (gBankLoan > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialLoan, gBankLoan - 1000.00__GBP);
+                    ScenarioSetSetting::InitialLoan, gBankLoan - 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -550,10 +550,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_INCREASE:
-            if (gMaxBankLoan < 5000000.00__GBP)
+            if (gMaxBankLoan < 5000000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + 1000.00__GBP);
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -563,10 +563,10 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
             w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_DECREASE:
-            if (gMaxBankLoan > 0.00__GBP)
+            if (gMaxBankLoan > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - 1000.00__GBP);
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -783,10 +783,10 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
     switch (widgetIndex)
     {
         case WIDX_CASH_PER_GUEST_INCREASE:
-            if (gGuestInitialCash < 1000.00__GBP)
+            if (gGuestInitialCash < 1000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + 1.00__GBP);
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -796,10 +796,10 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
             w->Invalidate();
             break;
         case WIDX_CASH_PER_GUEST_DECREASE:
-            if (gGuestInitialCash > 0.00__GBP)
+            if (gGuestInitialCash > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - 1.00__GBP);
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1089,10 +1089,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
     switch (widgetIndex)
     {
         case WIDX_LAND_COST_INCREASE:
-            if (gLandPrice < 200.00__GBP)
+            if (gLandPrice < 200.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyLand, gLandPrice + 1.00__GBP);
+                    ScenarioSetSetting::CostToBuyLand, gLandPrice + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1102,10 +1102,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_LAND_COST_DECREASE:
-            if (gLandPrice > 5.00__GBP)
+            if (gLandPrice > 5.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyLand, gLandPrice - 1.00__GBP);
+                    ScenarioSetSetting::CostToBuyLand, gLandPrice - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1115,10 +1115,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-            if (gConstructionRightsPrice < 200.00__GBP)
+            if (gConstructionRightsPrice < 200.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + 1.00__GBP);
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1128,10 +1128,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-            if (gConstructionRightsPrice > 5.00__GBP)
+            if (gConstructionRightsPrice > 5.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - 1.00__GBP);
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1144,7 +1144,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             if (gParkEntranceFee < MAX_ENTRANCE_FEE)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + 1.00__GBP);
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1154,10 +1154,10 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_ENTRY_PRICE_DECREASE:
-            if (gParkEntranceFee > 0.00__GBP)
+            if (gParkEntranceFee > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - 1.00__GBP);
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else

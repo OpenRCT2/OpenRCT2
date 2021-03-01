@@ -26,10 +26,10 @@
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
-    0.00__GBP,   // No funding
-    100.00__GBP, // Minimum funding
-    200.00__GBP, // Normal funding
-    400.00__GBP, // Maximum funding
+    0.00_GBP,   // No funding
+    100.00_GBP, // Minimum funding
+    200.00_GBP, // Normal funding
+    400.00_GBP, // Maximum funding
 };
 
 static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
@@ -211,11 +211,11 @@ void finance_init()
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
 
-    gInitialCash = 10000.00__GBP; // Cheat detection
+    gInitialCash = 10000.00_GBP; // Cheat detection
 
-    gCash = 10000.00__GBP;
-    gBankLoan = 10000.00__GBP;
-    gMaxBankLoan = 20000.00__GBP;
+    gCash = 10000.00_GBP;
+    gBankLoan = 10000.00_GBP;
+    gMaxBankLoan = 20000.00_GBP;
 
     gHistoricalProfit = 0;
 

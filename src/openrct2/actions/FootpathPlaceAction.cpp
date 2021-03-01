@@ -155,7 +155,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pa
     const bool newPathIsQueue = ((_type >> 7) == 1);
     if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
     {
-        res->Cost += 6.00__GBP;
+        res->Cost += 6.00_GBP;
     }
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST && !pathElement->IsGhost())
@@ -171,7 +171,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
     const bool newPathIsQueue = ((_type >> 7) == 1);
     if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
     {
-        res->Cost += 6.00__GBP;
+        res->Cost += 6.00_GBP;
     }
 
     footpath_queue_chain_reset();
@@ -221,7 +221,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
         return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_BUILD_FOOTPATH_HERE);
     }
 
-    res->Cost = 12.00__GBP;
+    res->Cost = 12.00_GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -241,7 +241,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
         if (entranceElement->GetPathType() == (_type & 0xF))
             entranceIsSamePath = true;
         else
-            res->Cost -= 6.00__GBP;
+            res->Cost -= 6.00_GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
@@ -268,7 +268,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? 20.00__GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00__GBP;
+    res->Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
@@ -286,7 +286,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         footpath_remove_litter(_loc);
     }
 
-    res->Cost = 12.00__GBP;
+    res->Cost = 12.00_GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -306,7 +306,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         if (entranceElement->GetPathType() == (_type & 0xF))
             entranceIsSamePath = true;
         else
-            res->Cost -= 6.00__GBP;
+            res->Cost -= 6.00_GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
@@ -330,7 +330,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_BUILD_FOOTPATH_HERE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? 20.00__GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00__GBP;
+    res->Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
 
     if (entrancePath)
     {

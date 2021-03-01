@@ -23,12 +23,12 @@
 #include "NewsItem.h"
 
 const money16 AdvertisingCampaignPricePerWeek[] = {
-    50.00__GBP,  // PARK_ENTRY_FREE
-    50.00__GBP,  // RIDE_FREE
-    50.00__GBP,  // PARK_ENTRY_HALF_PRICE
-    50.00__GBP,  // FOOD_OR_DRINK_FREE
-    350.00__GBP, // PARK
-    200.00__GBP, // RIDE
+    50.00_GBP,  // PARK_ENTRY_FREE
+    50.00_GBP,  // RIDE_FREE
+    50.00_GBP,  // PARK_ENTRY_HALF_PRICE
+    50.00_GBP,  // FOOD_OR_DRINK_FREE
+    350.00_GBP, // PARK
+    200.00_GBP, // RIDE
 };
 
 static constexpr const uint16_t AdvertisingCampaignGuestGenerationProbabilities[] = {
@@ -48,17 +48,17 @@ uint16_t marketing_get_campaign_guest_generation_probability(int32_t campaignTyp
     switch (campaign->Type)
     {
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-            if (park_get_entrance_fee() < 4.00__GBP)
+            if (park_get_entrance_fee() < 4.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-            if (park_get_entrance_fee() < 6.00__GBP)
+            if (park_get_entrance_fee() < 6.00_GBP)
                 probability /= 8;
             break;
         case ADVERTISING_CAMPAIGN_RIDE_FREE:
         {
             auto ride = get_ride(campaign->RideId);
-            if (ride == nullptr || ride->price[0] < 0.30__GBP)
+            if (ride == nullptr || ride->price[0] < 0.30_GBP)
                 probability /= 8;
             break;
         }

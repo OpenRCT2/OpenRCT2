@@ -330,13 +330,13 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
             break;
         case OBJECTIVE_PARK_VALUE_BY:
             gScenarioObjective.Year = 3;
-            gScenarioObjective.Currency = 50000.00__GBP;
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_GUESTS_AND_RATING:
             gScenarioObjective.NumGuests = 2000;
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            gScenarioObjective.Currency = 10000.00__GBP;
+            gScenarioObjective.Currency = 10000.00_GBP;
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             gScenarioObjective.MinimumLength = 1200;
@@ -345,10 +345,10 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
             gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
             break;
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            gScenarioObjective.Currency = 50000.00__GBP;
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            gScenarioObjective.Currency = 1000.00__GBP;
+            gScenarioObjective.Currency = 1000.00_GBP;
             break;
     }
 }
@@ -458,24 +458,24 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency >= 2000000.00__GBP)
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += 1000.0__GBP;
+                gScenarioObjective.Currency += 1000.0_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency >= 2000000.00__GBP)
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += 100.0__GBP;
+                gScenarioObjective.Currency += 100.0_GBP;
                 w->Invalidate();
             }
             break;
@@ -522,24 +522,24 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency <= 1000.00__GBP)
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= 1000.0__GBP;
+                gScenarioObjective.Currency -= 1000.0_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency <= 1000.00__GBP)
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= 100.0__GBP;
+                gScenarioObjective.Currency -= 100.0_GBP;
                 w->Invalidate();
             }
             break;
