@@ -85,7 +85,7 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
     }
     auto res = MakeResult();
     res->Position = _loc;
-    res->Cost = 0.0_GBP;
+    res->Cost = 0.00_GBP;
     return res;
 }
 
