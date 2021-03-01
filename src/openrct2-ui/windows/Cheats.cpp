@@ -559,7 +559,7 @@ public:
             case WINDOW_CHEATS_PAGE_GUESTS:
             {
                 auto ft = Formatter::Common();
-                ft.Add<int32_t>(1000.00_GBP);
+                ft.Add<money32>(1000.00_GBP);
                 SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
                 SetCheckboxValue(WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
                 SetCheckboxValue(WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
