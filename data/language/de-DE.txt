@@ -3662,6 +3662,29 @@ STR_6408    :Bitte installieren Sie „innoextract“, um den GOG-Installer zu e
 STR_6409    :Die gewählte Datei ist nicht der Offline-GOG-Installer für RollerCoaster Tycoon 2. Sie haben vielleicht den GOG-Galaxy-Downloader-Stub heruntergeladen oder die falsche Datei ausgewählt.
 STR_6410    :Herein-/hinauszoomen
 STR_6411    :Knöpfe für das Herein- und Hinauszoomen in der Symbolleiste anzeigen
+STR_6412    :NumPad Enter
+STR_6413    :Umschalt
+STR_6414    :Umschalt L
+STR_6415    :Umschalt R
+STR_6416    :Strg
+STR_6417    :Strg L
+STR_6418    :Strg R
+STR_6419    :Alt
+STR_6420    :Alt L
+STR_6421    :Alt R
+STR_6422    :Befehl
+STR_6423    :Befehl L
+STR_6424    :Befehl R
+STR_6425    :Joy links
+STR_6426    :Joy rechts
+STR_6427    :Joy hoch
+STR_6428    :Joy runter
+STR_6429    :Joy {INT32}
+STR_6430    :LMT
+STR_6431    :RMT
+STR_6432    :Maus {INT32}
+STR_6433    :Entfernen
+STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
 
 #############
 # Scenarios #
