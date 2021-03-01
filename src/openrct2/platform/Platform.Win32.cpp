@@ -42,7 +42,9 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
+#    if _WIN32_WINNT >= 0x0600
 constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
+#    endif
 
 namespace Platform
 {
