@@ -528,7 +528,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             }
             else
             {
-                gScenarioObjective.Currency -= 1000.0_GBP;
+                gScenarioObjective.Currency -= 1000.00_GBP;
                 w->Invalidate();
             }
             break;
@@ -539,7 +539,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
             }
             else
             {
-                gScenarioObjective.Currency -= 100.0_GBP;
+                gScenarioObjective.Currency -= 100.00_GBP;
                 w->Invalidate();
             }
             break;

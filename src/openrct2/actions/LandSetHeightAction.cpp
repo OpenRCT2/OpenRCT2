@@ -152,7 +152,7 @@ GameActions::Result::Ptr LandSetHeightAction::Query() const
 
 GameActions::Result::Ptr LandSetHeightAction::Execute() const
 {
-    money32 cost = 0.0_GBP;
+    money32 cost = 0.00_GBP;
     auto surfaceHeight = tile_element_height(_coords);
     footpath_remove_litter({ _coords, surfaceHeight });
 
