@@ -27,8 +27,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-#define CHEATS_MONEY_DEFAULT 10000.00_GBP
-#define CHEATS_MONEY_INCREMENT_DIV 5000.00_GBP
+constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
+constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
 // clang-format off
 enum
