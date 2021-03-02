@@ -4119,7 +4119,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, {}, { TextAlignment::CENTRE });
+                DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, {}, { TextAlignment::LEFT });
             }
             else
             {
@@ -4128,7 +4128,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     auto ft = Formatter();
                     staff->FormatNameTo(ft);
-                    DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, ft, { TextAlignment::CENTRE });
+                    DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, ft, { TextAlignment::LEFT });
                 }
             }
         }
