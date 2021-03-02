@@ -565,8 +565,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
     const auto* newsItemText = newsItem->Text.c_str();
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
-    gfx_draw_string_centred_wrapped_partial(
-        dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
+    DrawNewsTicker(dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,

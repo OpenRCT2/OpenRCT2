@@ -4082,7 +4082,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     stringId = (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) ? STR_CURRENT_BREAKDOWN : STR_LAST_BREAKDOWN;
     rct_string_id breakdownMessage = RideBreakdownReasonNames[ride->breakdown_reason];
     DrawTextBasic(dpi, screenCoords, stringId, &breakdownMessage);
-    screenCoords.y += 10;
+    screenCoords.y += 12;
 
     // Mechanic status
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -4119,7 +4119,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE)
             {
-                DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, {}, { TextAlignment::CENTRE });
+                DrawTextWrapped(dpi, screenCoords, 280, stringId, {}, { TextAlignment::LEFT });
             }
             else
             {
@@ -4128,7 +4128,7 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     auto ft = Formatter();
                     staff->FormatNameTo(ft);
-                    DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 280, stringId, ft, { TextAlignment::CENTRE });
+                    DrawTextWrapped(dpi, screenCoords, 280, stringId, ft, { TextAlignment::LEFT });
                 }
             }
         }
