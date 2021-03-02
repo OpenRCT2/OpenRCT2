@@ -145,6 +145,7 @@ namespace OpenRCT2::Scripting
         IPlatformEnvironment& _env;
         DukContext _context;
         bool _initialised{};
+        bool _hotReloading{};
         bool _pluginsLoaded{};
         bool _pluginsStarted{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
@@ -247,12 +248,20 @@ namespace OpenRCT2::Scripting
 
     private:
         void Initialise();
+        void RefreshPlugins();
+        std::vector<std::string> GetPluginFiles() const;
+        void UnregisterPlugin(std::string_view path);
+        void RegisterPlugin(std::string_view path);
+        void StartIntransientPlugins();
         void StartPlugins();
         void StopPlugins();
         void LoadPlugin(const std::string& path);
         void LoadPlugin(std::shared_ptr<Plugin>& plugin);
+        void UnloadPlugin(std::shared_ptr<Plugin>& plugin);
+        void StartPlugin(std::shared_ptr<Plugin> plugin);
         void StopPlugin(std::shared_ptr<Plugin> plugin);
-        bool ShouldLoadScript(const std::string& path);
+        void StopUnloadRegisterAllPlugins();
+        static bool ShouldLoadScript(std::string_view path);
         bool ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin);
         void SetupHotReloading();
         void AutoReloadPlugins();

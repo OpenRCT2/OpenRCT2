@@ -443,6 +443,149 @@ void ScriptEngine::Initialise()
     ClearParkStorage();
 }
 
+void ScriptEngine::RefreshPlugins()
+{
+    if (!_initialised)
+    {
+        Initialise();
+    }
+
+    // Get a list of removed and added plugin files
+    auto pluginFiles = GetPluginFiles();
+    std::vector<std::string> plugins;
+    std::vector<std::string> removedPlugins;
+    std::vector<std::string> addedPlugins;
+    for (const auto& plugin : _plugins)
+    {
+        plugins.push_back(std::string(plugin->GetPath()));
+    }
+    std::set_difference(
+        plugins.begin(), plugins.end(), pluginFiles.begin(), pluginFiles.end(), std::back_inserter(removedPlugins));
+    std::set_difference(
+        pluginFiles.begin(), pluginFiles.end(), plugins.begin(), plugins.end(), std::back_inserter(addedPlugins));
+
+    // Unregister plugin files that were removed
+    for (const auto& plugin : removedPlugins)
+    {
+        UnregisterPlugin(plugin);
+    }
+
+    // Register plugin files that were added
+    for (const auto& plugin : addedPlugins)
+    {
+        RegisterPlugin(plugin);
+    }
+
+    // Turn on hot reload if not already enabled
+    if (!_hotReloading && gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+    {
+        SetupHotReloading();
+    }
+
+    // Start any new intransient plugins
+    StartIntransientPlugins();
+}
+
+std::vector<std::string> ScriptEngine::GetPluginFiles() const
+{
+    // Scan for .js files in plugin directory
+    std::vector<std::string> pluginFiles;
+    auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
+    if (Path::DirectoryExists(base))
+    {
+        auto pattern = Path::Combine(base, "*.js");
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(pattern, true));
+        while (scanner->Next())
+        {
+            auto path = std::string(scanner->GetPath());
+            if (ShouldLoadScript(path))
+            {
+                pluginFiles.push_back(path);
+            }
+        }
+    }
+    return pluginFiles;
+}
+
+bool ScriptEngine::ShouldLoadScript(std::string_view path)
+{
+    // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
+    return path.find("/node_modules/") == std::string_view::npos && path.find("\\node_modules\\") == std::string_view::npos;
+}
+
+void ScriptEngine::UnregisterPlugin(std::string_view path)
+{
+    try
+    {
+        auto pluginIt = std::find_if(_plugins.begin(), _plugins.end(), [path](const std::shared_ptr<Plugin>& plugin) {
+            return plugin->GetPath() == path;
+        });
+        auto& plugin = *pluginIt;
+
+        StopPlugin(plugin);
+        UnloadPlugin(plugin);
+        LogPluginInfo(plugin, "Unregistered");
+
+        _plugins.erase(pluginIt);
+    }
+    catch (const std::exception& e)
+    {
+        _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::RegisterPlugin(std::string_view path)
+{
+    try
+    {
+        auto plugin = std::make_shared<Plugin>(_context, path);
+
+        // We must load the plugin to get the metadata for it
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        plugin->Load();
+
+        // Unload the plugin now, metadata is kept
+        plugin->Unload();
+
+        LogPluginInfo(plugin, "Registered");
+        _plugins.push_back(std::move(plugin));
+    }
+    catch (const std::exception& e)
+    {
+        _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::StartIntransientPlugins()
+{
+    for (auto& plugin : _plugins)
+    {
+        if (!plugin->HasStarted() && !plugin->IsTransient())
+        {
+            LoadPlugin(plugin);
+            StartPlugin(plugin);
+        }
+    }
+}
+
+void ScriptEngine::StopUnloadRegisterAllPlugins()
+{
+    std::vector<std::string> pluginPaths;
+    for (auto& plugin : _plugins)
+    {
+        pluginPaths.push_back(std::string(plugin->GetPath()));
+        StopPlugin(plugin);
+    }
+    for (auto& plugin : _plugins)
+    {
+        UnloadPlugin(plugin);
+    }
+    for (auto& pluginPath : pluginPaths)
+    {
+        UnregisterPlugin(pluginPath);
+    }
+}
+
 void ScriptEngine::LoadPlugins()
 {
     if (!_initialised)
@@ -487,23 +630,47 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
 {
     try
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-        plugin->Load();
-
-        auto metadata = plugin->GetMetadata();
-        if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+        if (!plugin->IsLoaded())
         {
-            LogPluginInfo(plugin, "Loaded");
-            _plugins.push_back(std::move(plugin));
-        }
-        else
-        {
-            LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+            const auto& metadata = plugin->GetMetadata();
+            if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+            {
+                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+                plugin->Load();
+                LogPluginInfo(plugin, "Loaded");
+            }
+            else
+            {
+                LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+            }
         }
     }
     catch (const std::exception& e)
     {
         _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::UnloadPlugin(std::shared_ptr<Plugin>& plugin)
+{
+    plugin->Unload();
+    LogPluginInfo(plugin, "Unloaded");
+}
+
+void ScriptEngine::StartPlugin(std::shared_ptr<Plugin> plugin)
+{
+    if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        try
+        {
+            LogPluginInfo(plugin, "Started");
+            plugin->Start();
+        }
+        catch (const std::exception& e)
+        {
+            _console.WriteLineError(e.what());
+        }
     }
 }
 
@@ -526,22 +693,20 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     }
 }
 
-bool ScriptEngine::ShouldLoadScript(const std::string& path)
-{
-    // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
-    return path.find("/node_modules/") == std::string::npos && path.find("\\node_modules\\") == std::string::npos;
-}
-
 void ScriptEngine::SetupHotReloading()
 {
     try
     {
         auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
-        _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-        _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
-            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-            _changedPluginFiles.emplace(path);
-        };
+        if (Path::DirectoryExists(base))
+        {
+            _pluginFileWatcher = std::make_unique<FileWatcher>(base);
+            _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
+                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+                _changedPluginFiles.emplace(path);
+            };
+            _hotReloading = true;
+        }
     }
     catch (const std::exception& e)
     {
@@ -652,6 +817,7 @@ void ScriptEngine::Tick()
     if (!_initialised)
     {
         Initialise();
+        RefreshPlugins();
     }
 
     if (_pluginsLoaded)

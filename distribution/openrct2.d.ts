@@ -15,7 +15,7 @@
 //   /// <reference path="/path/to/openrct2.d.ts" />
 //
 
-export type PluginType = "local" | "remote";
+export type PluginType = "local" | "remote" | intransient;
 
 declare global {
     /**
