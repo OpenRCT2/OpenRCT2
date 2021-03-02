@@ -243,13 +243,13 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             auto ft = Formatter();
             ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
             ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-            DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE });
+            DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
         }
         // Item text
         {
             auto ft = Formatter();
             ft.Add<const char*>(newsItem.Text.c_str());
-            DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft);
+            DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontSpriteBase::SMALL });
         }
         // Subject button
         if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
