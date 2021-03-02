@@ -1247,8 +1247,7 @@ void window_footpath_keyboard_shortcut_turn_left()
 {
     rct_window* w = window_find_by_class(WC_FOOTPATH);
     if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
-        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE)
-        || gFootpathConstructionMode != 2)
+        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE) || gFootpathConstructionMode != 2)
     {
         return;
     }
@@ -1261,8 +1260,7 @@ void window_footpath_keyboard_shortcut_turn_right()
 {
     rct_window* w = window_find_by_class(WC_FOOTPATH);
     if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
-        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE)
-        || gFootpathConstructionMode != 2)
+        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE) || gFootpathConstructionMode != 2)
     {
         return;
     }
