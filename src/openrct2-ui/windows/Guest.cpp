@@ -1808,7 +1808,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         auto ft = Formatter();
         peep_thought_set_format_args(thought, ft);
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
