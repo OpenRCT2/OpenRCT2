@@ -132,26 +132,6 @@ execute_process(
 )
 
 
-# Defines
-if (USE_MMAP)
-    add_definitions(-DUSE_MMAP)
-endif ()
-if (DISABLE_NETWORK)
-    add_definitions(-DDISABLE_NETWORK)
-endif ()
-if (DISABLE_HTTP)
-    add_definitions(-DDISABLE_HTTP)
-endif ()
-if (DISABLE_TTF)
-    add_definitions(-DNO_TTF)
-endif ()
-if (ENABLE_LIGHTFX)
-    add_definitions(-D__ENABLE_LIGHTFX__)
-endif ()
-if (ENABLE_SCRIPTING)
-    add_definitions(-DENABLE_SCRIPTING)
-endif ()
-
 if (NOT DISABLE_DISCORD_RPC)
     if (UNIX AND NOT APPLE)
         find_package(DiscordRPC)
@@ -309,6 +289,27 @@ include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
 if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
+
+# Defines
+if (USE_MMAP)
+    target_compile_options(libopenrct2 PUBLIC -DUSE_MMAP)
+endif ()
+if (DISABLE_NETWORK)
+    target_compile_options(libopenrct2 PUBLIC -DDISABLE_NETWORK)
+endif ()
+if (DISABLE_HTTP)
+    target_compile_options(libopenrct2 PUBLIC -DDISABLE_HTTP)
+endif ()
+if (DISABLE_TTF)
+    target_compile_options(libopenrct2 PUBLIC -DNO_TTF)
+endif ()
+if (ENABLE_LIGHTFX)
+    target_compile_options(libopenrct2 PUBLIC -D__ENABLE_LIGHTFX__)
+endif ()
+if (ENABLE_SCRIPTING)
+    target_compile_options(libopenrct2 PUBLIC -DENABLE_SCRIPTING)
+endif ()
+
 
 # g2
 add_custom_command(
