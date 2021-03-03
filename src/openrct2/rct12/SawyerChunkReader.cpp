@@ -27,19 +27,6 @@ constexpr const char* EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger t
 constexpr const char* EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
 constexpr const char* EXCEPTION_MSG_ZERO_SIZED_CHUNK = "Encountered zero-sized chunk.";
 
-class SawyerChunkException : public IOException
-{
-public:
-    explicit SawyerChunkException(const char* message)
-        : IOException(message)
-    {
-    }
-    explicit SawyerChunkException(const std::string& message)
-        : IOException(message)
-    {
-    }
-};
-
 SawyerChunkReader::SawyerChunkReader(OpenRCT2::IStream* stream)
     : _stream(stream)
 {
