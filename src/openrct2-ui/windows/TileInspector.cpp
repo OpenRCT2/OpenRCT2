@@ -801,13 +801,14 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
         return;
     }
 
-    // Get the selected map element
     TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+    if (tileElement == nullptr)
+        return;
 
     // Page widgets
-    switch (w->tileInspectorPage)
+    switch (tileElement->GetType())
     {
-        case TileInspectorPage::Surface:
+        case TILE_ELEMENT_TYPE_SURFACE:
             switch (widgetIndex)
             {
                 case WIDX_SURFACE_BUTTON_REMOVE_FENCES:
@@ -829,7 +830,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widgetindex
             break;
 
-        case TileInspectorPage::Path:
+        case TILE_ELEMENT_TYPE_PATH:
             switch (widgetIndex)
             {
                 case WIDX_PATH_CHECK_SLOPED:
@@ -867,7 +868,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widget index
             break;
 
-        case TileInspectorPage::Track:
+        case TILE_ELEMENT_TYPE_TRACK:
             switch (widgetIndex)
             {
                 case WIDX_TRACK_CHECK_APPLY_TO_ALL:
@@ -892,7 +893,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widget index
             break;
 
-        case TileInspectorPage::Scenery:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_CHECK_QUARTER_N:
@@ -912,7 +913,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widget index
             break;
 
-        case TileInspectorPage::Entrance:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
             switch (widgetIndex)
             {
                 case WIDX_ENTRANCE_BUTTON_MAKE_USABLE:
@@ -921,7 +922,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widget index
             break;
 
-        case TileInspectorPage::Banner:
+        case TILE_ELEMENT_TYPE_BANNER:
             switch (widgetIndex)
             {
                 case WIDX_BANNER_CHECK_BLOCK_NE:
@@ -934,7 +935,7 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
             } // switch widget index
             break;
 
-        case TileInspectorPage::Corrupt:
+        case TILE_ELEMENT_TYPE_CORRUPT:
             switch (widgetIndex)
             {
                 case WIDX_CORRUPT_BUTTON_CLAMP:
@@ -942,13 +943,11 @@ static void window_tile_inspector_mouseup(rct_window* w, rct_widgetindex widgetI
                     break;
             } // switch widget index
             break;
-        case TileInspectorPage::Default:
-            [[fallthrough]];
-        case TileInspectorPage::Wall:
-            [[fallthrough]];
-        case TileInspectorPage::LargeScenery:
-            break; // Nothing.
-    }              // switch page
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TILE_ELEMENT_TYPE_WALL:
+        default:
+            break;
+    }
 }
 
 static void window_tile_inspector_resize(rct_window* w)
@@ -999,9 +998,13 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
         return;
     }
 
-    switch (w->tileInspectorPage)
+    const TileElement* tileElement = window_tile_inspector_get_selected_element(w);
+    if (tileElement == nullptr)
+        return;
+
+    switch (tileElement->GetType())
     {
-        case TileInspectorPage::Surface:
+        case TILE_ELEMENT_TYPE_SURFACE:
             switch (widgetIndex)
             {
                 case WIDX_SURFACE_SPINNER_HEIGHT_INCREASE:
@@ -1013,7 +1016,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Path:
+        case TILE_ELEMENT_TYPE_PATH:
             switch (widgetIndex)
             {
                 case WIDX_PATH_SPINNER_HEIGHT_INCREASE:
@@ -1025,7 +1028,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Track:
+        case TILE_ELEMENT_TYPE_TRACK:
             switch (widgetIndex)
             {
                 case WIDX_TRACK_SPINNER_HEIGHT_INCREASE:
@@ -1051,7 +1054,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Scenery:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             switch (widgetIndex)
             {
                 case WIDX_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -1063,7 +1066,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Entrance:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
             switch (widgetIndex)
             {
                 case WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE:
@@ -1078,7 +1081,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Wall:
+        case TILE_ELEMENT_TYPE_WALL:
             switch (widgetIndex)
             {
                 case WIDX_WALL_SPINNER_HEIGHT_INCREASE:
@@ -1104,7 +1107,6 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                         Dropdown::Flag::StayOpen, 3, widget->width() - 3);
 
                     // Set current value as checked
-                    TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
                     Dropdown::SetChecked(tileElement->AsWall()->GetSlope(), true);
                     break;
                 }
@@ -1117,7 +1119,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::LargeScenery:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             switch (widgetIndex)
             {
                 case WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE:
@@ -1129,7 +1131,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Banner:
+        case TILE_ELEMENT_TYPE_BANNER:
             switch (widgetIndex)
             {
                 case WIDX_BANNER_SPINNER_HEIGHT_INCREASE:
@@ -1141,7 +1143,7 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
             } // switch widget index
             break;
 
-        case TileInspectorPage::Corrupt:
+        case TILE_ELEMENT_TYPE_CORRUPT:
             switch (widgetIndex)
             {
                 case WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE:
@@ -1151,9 +1153,9 @@ static void window_tile_inspector_mousedown(rct_window* w, rct_widgetindex widge
                     window_tile_inspector_base_height_offset(windowTileInspectorSelectedIndex, -1);
                     break;
             } // switch widget index
-        case TileInspectorPage::Default:
-            break; // Nothing.
-    }              // switch page
+        default:
+            break;
+    }
 }
 
 static void window_tile_inspector_update(rct_window* w)
@@ -1456,10 +1458,12 @@ static void window_tile_inspector_invalidate(rct_window* w)
     // needed here, as only the mouseup and invalidate functions are different.
     const int32_t propertiesAnchor = w->widgets[WIDX_GROUPBOX_PROPERTIES].top;
     const TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+    if (tileElement == nullptr)
+        return;
 
-    switch (w->tileInspectorPage)
+    switch (tileElement->GetType())
     {
-        case TileInspectorPage::Surface:
+        case TILE_ELEMENT_TYPE_SURFACE:
             w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_SURFACE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_SURFACE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1495,7 +1499,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             WidgetSetCheckboxValue(
                 w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
             break;
-        case TileInspectorPage::Path:
+        case TILE_ELEMENT_TYPE_PATH:
             w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_PATH_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_PATH_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1541,7 +1545,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             WidgetSetCheckboxValue(
                 w, WIDX_PATH_CHECK_EDGE_N, tileElement->AsPath()->GetCorners() & (1 << ((3 - get_current_rotation()) & 3)));
             break;
-        case TileInspectorPage::Track:
+        case TILE_ELEMENT_TYPE_TRACK:
             w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].top = GBBT(propertiesAnchor, 0);
             w->widgets[WIDX_TRACK_CHECK_APPLY_TO_ALL].bottom = GBBB(propertiesAnchor, 0);
             w->widgets[WIDX_TRACK_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 1) + 3;
@@ -1561,7 +1565,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->BlockBrakeClosed());
             WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE, tileElement->AsTrack()->IsIndestructible());
             break;
-        case TileInspectorPage::Scenery:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         {
             // Raise / Lower
             w->widgets[WIDX_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
@@ -1610,7 +1614,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             WidgetSetCheckboxValue(w, WIDX_SCENERY_CHECK_COLLISION_W, W);
             break;
         }
-        case TileInspectorPage::Entrance:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
             w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1623,7 +1627,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
                 w, WIDX_ENTRANCE_BUTTON_MAKE_USABLE,
                 tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE);
             break;
-        case TileInspectorPage::Wall:
+        case TILE_ELEMENT_TYPE_WALL:
         {
             bool canBeSloped = false;
             bool hasAnimation = false;
@@ -1664,7 +1668,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             WidgetSetEnabled(w, WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE, hasAnimation);
             break;
         }
-        case TileInspectorPage::LargeScenery:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1672,7 +1676,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].top = GBBT(propertiesAnchor, 0) + 4;
             w->widgets[WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE].bottom = GBBB(propertiesAnchor, 0) - 4;
             break;
-        case TileInspectorPage::Banner:
+        case TILE_ELEMENT_TYPE_BANNER:
             w->widgets[WIDX_BANNER_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_BANNER_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_BANNER_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1700,7 +1704,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
                 w, WIDX_BANNER_CHECK_BLOCK_NW,
                 !(tileElement->AsBanner()->GetAllowedEdges() & (1 << ((3 - get_current_rotation()) & 3))));
             break;
-        case TileInspectorPage::Corrupt:
+        case TILE_ELEMENT_TYPE_CORRUPT:
             w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1710,7 +1714,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].top = GBBT(propertiesAnchor, 1);
             w->widgets[WIDX_CORRUPT_BUTTON_CLAMP].bottom = GBBB(propertiesAnchor, 1);
             break;
-        case TileInspectorPage::Default:
+        default:
             break; // Nothing.
     }
 }
@@ -1783,10 +1787,12 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // Get map element
         TileElement* const tileElement = window_tile_inspector_get_selected_element(w);
+        if (tileElement == nullptr)
+            return;
 
-        switch (w->tileInspectorPage)
+        switch (tileElement->GetType())
         {
-            case TileInspectorPage::Surface:
+            case TILE_ELEMENT_TYPE_SURFACE:
             {
                 // Details
                 // Terrain texture name
@@ -1849,7 +1855,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Path:
+            case TILE_ELEMENT_TYPE_PATH:
             {
                 // Details
                 // Path name
@@ -1891,7 +1897,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Track:
+            case TILE_ELEMENT_TYPE_TRACK:
             {
                 // Details
                 // Ride
@@ -1957,7 +1963,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Scenery:
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             {
                 // Details
                 // Age
@@ -2005,7 +2011,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Entrance:
+            case TILE_ELEMENT_TYPE_ENTRANCE:
             {
                 // Details
                 // Entrance type
@@ -2077,7 +2083,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Wall:
+            case TILE_ELEMENT_TYPE_WALL:
             {
                 // Details
                 // Type
@@ -2136,7 +2142,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::LargeScenery:
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             {
                 // Details
                 // Type
@@ -2183,7 +2189,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Banner:
+            case TILE_ELEMENT_TYPE_BANNER:
             {
                 // Details
                 // Banner info
@@ -2212,7 +2218,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Corrupt:
+            case TILE_ELEMENT_TYPE_CORRUPT:
             {
                 // Properties
                 // Raise / lower label
@@ -2226,11 +2232,11 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
             }
 
-            case TileInspectorPage::Default:
+            default:
             {
-                break; // Nothing.
+                break;
             }
-        } // switch page
+        }
     }
 }
 
