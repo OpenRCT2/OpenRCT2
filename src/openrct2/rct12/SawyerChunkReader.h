@@ -10,10 +10,24 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/IStream.hpp"
 #include "../util/SawyerCoding.h"
 #include "SawyerChunk.h"
 
 #include <memory>
+
+class SawyerChunkException : public IOException
+{
+public:
+    explicit SawyerChunkException(const char* message)
+        : IOException(message)
+    {
+    }
+    explicit SawyerChunkException(const std::string& message)
+        : IOException(message)
+    {
+    }
+};
 
 namespace OpenRCT2
 {
