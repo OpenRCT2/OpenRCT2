@@ -1965,8 +1965,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_SCENERY_AGE, &age, { COLOUR_WHITE });
 
                 // Quadrant value
-                const rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tileElement->AsSmallScenery()->GetEntryIndex());
-                if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
+                const rct_scenery_entry* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
+                if (sceneryEntry != nullptr && !(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
                     static rct_string_id quadrant_string_idx[] = { STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
@@ -2085,8 +2085,8 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_WALL_TYPE, &wallType, { COLOUR_WHITE });
 
                 // Banner info
-                rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
-                if (wallEntry.flags & WALL_SCENERY_IS_BANNER)
+                const auto wallEntry = tileElement->AsWall()->GetEntry();
+                if (wallEntry != nullptr && wallEntry->wall.flags & WALL_SCENERY_IS_BANNER)
                 {
                     auto banner = tileElement->AsWall()->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
@@ -2152,7 +2152,7 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
                 // Banner info
                 rct_scenery_entry* largeSceneryEntry = get_large_scenery_entry(largeSceneryType);
-                if (largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
+                if (largeSceneryEntry != nullptr && largeSceneryEntry->large_scenery.scrolling_mode != SCROLLING_MODE_NONE)
                 {
                     auto banner = sceneryElement->GetBanner();
                     if (banner != nullptr && !banner->IsNull())
