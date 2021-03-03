@@ -1625,6 +1625,16 @@ static void window_tile_inspector_invalidate(rct_window* w)
             break;
         case TileInspectorPage::Wall:
         {
+            bool canBeSloped = false;
+            bool hasAnimation = false;
+            const auto sceneryEntry = tileElement->AsWall()->GetEntry();
+            if (sceneryEntry != nullptr)
+            {
+                const rct_wall_scenery_entry wallEntry = sceneryEntry->wall;
+                canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
+                hasAnimation = wallEntry.flags & WALL_SCENERY_IS_DOOR;
+            }
+
             w->widgets[WIDX_WALL_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;
             w->widgets[WIDX_WALL_SPINNER_HEIGHT].bottom = GBBB(propertiesAnchor, 0) - 3;
             w->widgets[WIDX_WALL_SPINNER_HEIGHT_INCREASE].top = GBBT(propertiesAnchor, 0) + 4;
@@ -1642,10 +1652,7 @@ static void window_tile_inspector_invalidate(rct_window* w)
             w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
             w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].top = GBBT(propertiesAnchor, 2) + 4;
             w->widgets[WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE].bottom = GBBB(propertiesAnchor, 2) - 4;
-            const auto wallType = tileElement->AsWall()->GetEntryIndex();
-            const rct_wall_scenery_entry wallEntry = get_wall_entry(wallType)->wall;
-            const bool canBeSloped = !(wallEntry.flags & WALL_SCENERY_CANT_BUILD_ON_SLOPE);
-            const bool hasAnimation = wallEntry.flags & WALL_SCENERY_IS_DOOR;
+
             // Wall slope dropdown
             WidgetSetEnabled(w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
             widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
