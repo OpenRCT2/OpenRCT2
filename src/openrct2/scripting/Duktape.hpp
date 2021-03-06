@@ -12,8 +12,8 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../core/Console.hpp"
-#    include "../world/Map.h"
 #    include "../ride/Vehicle.h"
+#    include "../world/Map.h"
 
 #    include <cstdio>
 #    include <dukglue/dukglue.h>
