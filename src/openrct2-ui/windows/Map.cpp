@@ -26,11 +26,8 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
-<<<<<<< HEAD
-#include <openrct2/world/EntityList.h>
-=======
 #include <openrct2/ride/TrainManager.h>
->>>>>>> 3d9159e1a... Make train manager view
+#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
