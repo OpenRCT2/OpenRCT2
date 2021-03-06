@@ -288,6 +288,7 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
+    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
@@ -298,7 +299,7 @@ static void scenario_day_update()
             scenario_objective_check();
             break;
         default:
-            if (gConfigGeneral.allow_early_completion)
+            if (allowEarlyCompletion)
                 scenario_objective_check();
             break;
     }
@@ -712,8 +713,9 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 {
     int16_t parkRating = gParkRating;
     int32_t currentMonthYear = gDateMonthsElapsed;
+    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || gConfigGeneral.allow_early_completion)
+    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
     {
         if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
         {
@@ -733,8 +735,9 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     int32_t currentMonthYear = gDateMonthsElapsed;
     money32 objectiveParkValue = Currency;
     money32 parkValue = gParkValue;
+    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || gConfigGeneral.allow_early_completion)
+    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
     {
         if (parkValue >= objectiveParkValue)
         {
