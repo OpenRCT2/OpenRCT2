@@ -1164,7 +1164,7 @@ declare global {
         /**
          * The current g-forces of this car.
          */
-        gForces: GForces;
+        readonly gForces: GForces;
 
         /**
          * The progress on the current track piece, in steps.
