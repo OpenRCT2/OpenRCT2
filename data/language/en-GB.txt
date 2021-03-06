@@ -3293,18 +3293,18 @@ STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLI
 STR_6015    :Sloped
 STR_6016    :Modify Tile
 STR_6017    :Please slow down
-STR_6018    :Ride construction - Turn left
-STR_6019    :Ride construction - Turn right
-STR_6020    :Ride construction - Use default track
-STR_6021    :Ride construction - Slope down
-STR_6022    :Ride construction - Slope up
-STR_6023    :Ride construction - Toggle chain lift
-STR_6024    :Ride construction - Bank left
-STR_6025    :Ride construction - Bank right
-STR_6026    :Ride construction - Previous track
-STR_6027    :Ride construction - Next track
-STR_6028    :Ride construction - Build current
-STR_6029    :Ride construction - Demolish current
+STR_6018    :Construction - Turn left
+STR_6019    :Construction - Turn right
+STR_6020    :Construction - Use default track
+STR_6021    :Construction - Slope down
+STR_6022    :Construction - Slope up
+STR_6023    :Construction - Toggle chain lift
+STR_6024    :Construction - Bank left
+STR_6025    :Construction - Bank right
+STR_6026    :Construction - Previous track
+STR_6027    :Construction - Next track
+STR_6028    :Construction - Build current
+STR_6029    :Construction - Demolish current
 STR_6030    :Scenery picker. Click any scenery on the map to select the same piece for construction.
 STR_6031    :Server Description:
 STR_6032    :Server Greeting:

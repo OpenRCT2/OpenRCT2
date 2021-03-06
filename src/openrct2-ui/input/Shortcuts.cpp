@@ -609,6 +609,101 @@ static void ShortcutToggleConsole()
     }
 }
 
+static void ShortcutConstructionTurnLeft()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_turn_left();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_turn_left();
+    }
+}
+
+static void ShortcutConstructionTurnRight()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_turn_right();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_turn_right();
+    }
+}
+
+static void ShortcutConstructionSlopeUp()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_slope_up();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_slope_up();
+    }
+}
+
+static void ShortcutConstructionBuildCurrent()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_build_current();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_build_current();
+    }
+}
+
+static void ShortcutConstructionSlopeDown()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_slope_down();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_slope_down();
+    }
+}
+
+static void ShortcutConstructionDemolishCurrent()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    rct_window* window = window_find_by_class(WC_FOOTPATH);
+    if (window != nullptr)
+    {
+        window_footpath_keyboard_shortcut_demolish_current();
+    }
+    else
+    {
+        window_ride_construction_keyboard_shortcut_demolish_current();
+    }
+}
+
 #pragma endregion
 
 using namespace OpenRCT2::Ui;
@@ -737,18 +832,18 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::ViewToggleGridlines, STR_SHORTCUT_GRIDLINES_DISPLAY_TOGGLE, "7", []() { ToggleViewFlag(VIEWPORT_FLAG_GRIDLINES); });
 
     // Window
-    RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", []() { window_ride_construction_keyboard_shortcut_turn_left(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_RIDE_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", []() { window_ride_construction_keyboard_shortcut_turn_right(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_RIDE_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeDown, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_DOWN, "NUMPAD 2", []() { window_ride_construction_keyboard_shortcut_slope_down(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeUp, STR_SHORTCUT_RIDE_CONSTRUCTION_SLOPE_UP, "NUMPAD 8", []() { window_ride_construction_keyboard_shortcut_slope_up(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionChainLift, STR_SHORTCUT_RIDE_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "NUMPAD +", []() { window_ride_construction_keyboard_shortcut_chain_lift_toggle(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBankLeft, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_LEFT, "NUMPAD 1", []() { window_ride_construction_keyboard_shortcut_bank_left(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBankRight, STR_SHORTCUT_RIDE_CONSTRUCTION_BANK_RIGHT, "NUMPAD 3", []() { window_ride_construction_keyboard_shortcut_bank_right(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionPrevious, STR_SHORTCUT_RIDE_CONSTRUCTION_PREVIOUS_TRACK, "NUMPAD 7", []() { window_ride_construction_keyboard_shortcut_previous_track(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_RIDE_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", []() { window_ride_construction_keyboard_shortcut_next_track(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_RIDE_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { window_ride_construction_keyboard_shortcut_build_current(); });
-    RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_RIDE_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { window_ride_construction_keyboard_shortcut_demolish_current(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionTurnLeft, STR_SHORTCUT_CONSTRUCTION_TURN_LEFT, "NUMPAD 4", []() { ShortcutConstructionTurnLeft(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionTurnRight, STR_SHORTCUT_CONSTRUCTION_TURN_RIGHT, "NUMPAD 6", []() { ShortcutConstructionTurnRight(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionDefault, STR_SHORTCUT_CONSTRUCTION_USE_TRACK_DEFAULT, "NUMPAD 5", []() { window_ride_construction_keyboard_shortcut_use_track_default(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeDown, STR_SHORTCUT_CONSTRUCTION_SLOPE_DOWN, "NUMPAD 2", []() { ShortcutConstructionSlopeDown(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionSlopeUp, STR_SHORTCUT_CONSTRUCTION_SLOPE_UP, "NUMPAD 8", []() { ShortcutConstructionSlopeUp(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionChainLift, STR_SHORTCUT_CONSTRUCTION_CHAIN_LIFT_TOGGLE, "NUMPAD +", []() { window_ride_construction_keyboard_shortcut_chain_lift_toggle(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBankLeft, STR_SHORTCUT_CONSTRUCTION_BANK_LEFT, "NUMPAD 1", []() { window_ride_construction_keyboard_shortcut_bank_left(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBankRight, STR_SHORTCUT_CONSTRUCTION_BANK_RIGHT, "NUMPAD 3", []() { window_ride_construction_keyboard_shortcut_bank_right(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionPrevious, STR_SHORTCUT_CONSTRUCTION_PREVIOUS_TRACK, "NUMPAD 7", []() { window_ride_construction_keyboard_shortcut_previous_track(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionNext, STR_SHORTCUT_CONSTRUCTION_NEXT_TRACK, "NUMPAD 9", []() { window_ride_construction_keyboard_shortcut_next_track(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { ShortcutConstructionBuildCurrent(); });
+    RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { ShortcutConstructionDemolishCurrent(); });
 
     RegisterShortcut(ShortcutId::WindowTileInspectorInsertCorrupt, STR_SHORTCUT_INSERT_CORRPUT_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_CORRUPT); });
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_COPY); });

@@ -1242,3 +1242,98 @@ static bool footpath_select_default()
         return true;
     }
 }
+
+void window_footpath_keyboard_shortcut_turn_left()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
+        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE) || gFootpathConstructionMode != 2)
+    {
+        return;
+    }
+    int32_t currentRotation = get_current_rotation();
+    int32_t turnedRotation = gFootpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? 1 : -1);
+    window_footpath_mousedown_direction(turnedRotation);
+}
+
+void window_footpath_keyboard_shortcut_turn_right()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
+        || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE) || gFootpathConstructionMode != 2)
+    {
+        return;
+    }
+    int32_t currentRotation = get_current_rotation();
+    int32_t turnedRotation = gFootpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? -1 : 1);
+    window_footpath_mousedown_direction(turnedRotation);
+}
+
+void window_footpath_keyboard_shortcut_slope_down()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_SLOPEDOWN) || WidgetIsDisabled(w, WIDX_LEVEL)
+        || WidgetIsDisabled(w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+    {
+        return;
+    }
+
+    switch (gFootpathConstructSlope)
+    {
+        case 0:
+            window_event_mouse_down_call(w, WIDX_SLOPEDOWN);
+            break;
+        case 2:
+            window_event_mouse_down_call(w, WIDX_LEVEL);
+            break;
+        default:
+        case 6:
+            return;
+    }
+}
+
+void window_footpath_keyboard_shortcut_slope_up()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_SLOPEDOWN) || WidgetIsDisabled(w, WIDX_LEVEL)
+        || WidgetIsDisabled(w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+    {
+        return;
+    }
+
+    switch (gFootpathConstructSlope)
+    {
+        case 6:
+            window_event_mouse_down_call(w, WIDX_LEVEL);
+            break;
+        case 0:
+            window_event_mouse_down_call(w, WIDX_SLOPEUP);
+            break;
+        default:
+        case 2:
+            return;
+    }
+}
+
+void window_footpath_keyboard_shortcut_demolish_current()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_REMOVE) || w->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
+        || (!gCheatsBuildInPauseMode && game_is_paused()))
+    {
+        return;
+    }
+
+    window_footpath_remove();
+}
+
+void window_footpath_keyboard_shortcut_build_current()
+{
+    rct_window* w = window_find_by_class(WC_FOOTPATH);
+    if (w == nullptr || WidgetIsDisabled(w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+    {
+        return;
+    }
+
+    window_event_mouse_up_call(w, WIDX_CONSTRUCT);
+}
