@@ -6353,7 +6353,8 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, uint8_t* rideToV
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
-            if (!(tileElement->AsLargeScenery()->GetEntry()->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
+            const auto* entry = tileElement->AsLargeScenery()->GetEntry();
+            if (entry == nullptr || !(entry->large_scenery.flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
