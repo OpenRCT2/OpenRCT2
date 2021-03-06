@@ -19,6 +19,7 @@ struct Banner;
 struct CoordsXY;
 struct rct_scenery_entry;
 struct rct_footpath_entry;
+class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
 using track_type_t = uint16_t;
@@ -492,6 +493,7 @@ public:
     ObjectEntryIndex GetEntryIndex() const;
     void SetEntryIndex(ObjectEntryIndex newIndex);
     rct_scenery_entry* GetEntry() const;
+    const LargeSceneryObject* GetObject() const;
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newIndex);
