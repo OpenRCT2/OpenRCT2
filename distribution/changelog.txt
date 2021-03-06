@@ -29,6 +29,7 @@
 - Feature: [#14171] [Plugin] Add API for creating custom widgets.
 - Feature: [#14171] [Plugin] Add API for drawing graphics for custom widgets.
 - Feature: [#14171] [Plugin] Add click event to spinners and allow them to be held down.
+- Feature: [#14252] [Plugin] Add API for vehicle g-forces. 
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
 - Change: [#13857] Change Rotation Control Toggle to track element number 256
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
