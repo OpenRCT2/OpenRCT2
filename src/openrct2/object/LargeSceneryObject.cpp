@@ -274,3 +274,11 @@ std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(jso
     }
     return glyphs;
 }
+
+const rct_large_scenery_tile* LargeSceneryObject::GetTileForSequence(uint8_t SequenceIndex) const
+{
+    if (SequenceIndex >= _tiles.size())
+        return nullptr;
+
+    return &_tiles[SequenceIndex];
+}

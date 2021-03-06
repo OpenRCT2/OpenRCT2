@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../common.h"
+#include "../object/LargeSceneryObject.h"
 #include "../object/ObjectManager.h"
 #include "../world/Banner.h"
 #include "TileElement.h"
@@ -77,6 +78,11 @@ ObjectEntryIndex LargeSceneryElement::GetEntryIndex() const
 rct_scenery_entry* LargeSceneryElement::GetEntry() const
 {
     return get_large_scenery_entry(GetEntryIndex());
+}
+
+const LargeSceneryObject* LargeSceneryElement::GetObject() const
+{
+    return static_cast<const LargeSceneryObject*>(object_entry_get_object(ObjectType::LargeScenery, GetEntryIndex()));
 }
 
 uint8_t LargeSceneryElement::GetSequenceIndex() const

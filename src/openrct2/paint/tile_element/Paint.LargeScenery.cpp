@@ -11,6 +11,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/LargeSceneryObject.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
@@ -27,7 +28,7 @@
 // 6B8172:
 static void large_scenery_paint_supports(
     paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
-    rct_large_scenery_tile* tile)
+    const rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
     {
@@ -227,12 +228,19 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     session->InteractionType = ViewportInteractionItem::LargeScenery;
     uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
-    rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
+    const LargeSceneryObject* object = tileElement->AsLargeScenery()->GetObject();
+    if (object == nullptr)
+        return;
+
+    const rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
     if (entry == nullptr)
         return;
 
     uint32_t image_id = (sequenceNum << 2) + entry->image + 4 + direction;
-    rct_large_scenery_tile* tile = &entry->large_scenery.tiles[sequenceNum];
+    const rct_large_scenery_tile* tile = object->GetTileForSequence(sequenceNum);
+    if (tile == nullptr)
+        return;
+
     uint32_t dword_F4387C = 0;
     image_id |= SPRITE_ID_PALETTE_COLOUR_2(
         tileElement->AsLargeScenery()->GetPrimaryColour(), tileElement->AsLargeScenery()->GetSecondaryColour());
