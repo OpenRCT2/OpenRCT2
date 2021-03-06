@@ -233,6 +233,9 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
 
     uint32_t image_id = (sequenceNum << 2) + entry->image + 4 + direction;
     rct_large_scenery_tile* tile = &entry->large_scenery.tiles[sequenceNum];
+    if (tile == nullptr)
+        return;
+
     uint32_t dword_F4387C = 0;
     image_id |= SPRITE_ID_PALETTE_COLOUR_2(
         tileElement->AsLargeScenery()->GetPrimaryColour(), tileElement->AsLargeScenery()->GetSecondaryColour());
