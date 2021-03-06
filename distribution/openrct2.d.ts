@@ -115,6 +115,14 @@ declare global {
     }
 
     /**
+     * Represents lateral and vertical g-forces.
+     */
+    interface GForces {
+        lateralG: number;
+        verticalG: number;
+    }
+
+    /**
      * Represents information about the plugin such as type, name, author and version.
      * It also includes the entry point.
      */
@@ -1152,6 +1160,11 @@ declare global {
          * The location and direction of where the car is on the track.
          */
         trackLocation: CoordsXYZD;
+
+        /**
+         * The current g-forces of this car.
+         */
+        gForces: GForces;
 
         /**
          * The progress on the current track piece, in steps.
