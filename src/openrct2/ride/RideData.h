@@ -360,4 +360,9 @@ constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideT
     return RideTypeDescriptors[rideType];
 }
 
+constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
+{
+    return rideType < std::size(RideTypeDescriptors);
+}
+
 #endif

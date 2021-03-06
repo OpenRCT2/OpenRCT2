@@ -57,6 +57,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     for (auto& rideType : _legacyType.ride_type)
     {
         rideType = stream->ReadValue<uint8_t>();
+        if (!RideTypeIsValid(rideType))
+            rideType = RIDE_TYPE_NULL;
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
@@ -537,7 +539,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            uint8_t rideType = RIDE_TYPE_NULL;
+            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
 
             if (i < numRideTypes)
             {
