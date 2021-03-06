@@ -153,8 +153,7 @@ enum TOP_TOOLBAR_DEBUG_DDIDX {
 
 enum TOP_TOOLBAR_NETWORK_DDIDX {
     DDIDX_MULTIPLAYER = 0,
-    DDIDX_NETWORK = 1,
-    DDIDX_MULTIPLAYER_RECONNECT = 2,
+    DDIDX_MULTIPLAYER_RECONNECT = 1,
 
     TOP_TOOLBAR_NETWORK_COUNT
 };
@@ -3554,7 +3553,6 @@ static void top_toolbar_init_debug_menu(rct_window* w, rct_widget* widget)
 static void top_toolbar_init_network_menu(rct_window* w, rct_widget* widget)
 {
     gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
-    gDropdownItemsFormat[DDIDX_NETWORK] = STR_NETWORK;
     gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
 
     WindowDropdownShowText(
@@ -3602,9 +3600,6 @@ static void top_toolbar_network_menu_dropdown(int16_t dropdownIndex)
         {
             case DDIDX_MULTIPLAYER:
                 context_open_window(WC_MULTIPLAYER);
-                break;
-            case DDIDX_NETWORK:
-                context_open_window(WC_NETWORK);
                 break;
             case DDIDX_MULTIPLAYER_RECONNECT:
                 network_reconnect();
