@@ -245,7 +245,7 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
         if (sceneryEntry == nullptr)
             continue;
 
-        cost += MONEY(sceneryEntry->small_scenery.removal_price, 0);
+        cost += sceneryEntry->small_scenery.removal_price;
     }
 
     return cost;
@@ -359,7 +359,7 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     {
         int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
         cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
-        cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
+        cost += abs(cornerHeight) * 5 / 2;
     }
     return cost;
 }
