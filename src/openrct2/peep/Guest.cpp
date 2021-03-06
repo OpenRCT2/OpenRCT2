@@ -3690,6 +3690,8 @@ void Guest::UpdateRideFreeVehicleCheck()
         return;
     }
     vehicle = vehicle->GetCar(CurrentCar);
+    if (vehicle == nullptr)
+        return;
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
     if (ride_entry == nullptr)
