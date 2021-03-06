@@ -503,7 +503,7 @@ money32 string_to_money(const char* string_to_monetise)
     // Check if MONEY resulted in overflow
     uint64_t result = std::min<uint64_t>(number * 10.0, (std::numeric_limits<uint32_t>::max)());
     result *= sign;
-    return (uint32_t)result;
+    return static_cast<uint32_t>(result);
 }
 
 /**
