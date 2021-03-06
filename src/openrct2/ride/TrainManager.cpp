@@ -9,7 +9,8 @@
 
 #include "TrainManager.h"
 
-#include "../world/Sprite.h"
+#include "../world/Entity.h"
+#include "../world/EntityList.h"
 #include "Vehicle.h"
 
 namespace TrainManager
