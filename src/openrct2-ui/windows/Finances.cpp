@@ -754,7 +754,8 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
         ft.Add<money32>(axisValue);
-        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(
+            dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, { FontSpriteBase::SMALL, TextAlignment::RIGHT });
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -859,7 +860,8 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
         money32 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
         ft.Add<money32>(axisValue);
-        DrawTextBasic(dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(
+            dpi, { x + 70, y }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, { FontSpriteBase::SMALL, TextAlignment::RIGHT });
         gfx_fill_rect_inset(dpi, x + 70, y + 5, graphLeft + 482, y + 5, w->colours[2], INSET_RECT_FLAG_BORDER_INSET);
         y += 39;
     }
@@ -965,7 +967,8 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
         auto ft = Formatter();
         ft.Add<money32>(axisValue);
         DrawTextBasic(
-            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft, { TextAlignment::RIGHT });
+            dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
+            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
         gfx_fill_rect_inset(
             dpi, screenPos.x + 70, screenPos.y + 5, graphLeft + 482, screenPos.y + 5, w->colours[2],
             INSET_RECT_FLAG_BORDER_INSET);
