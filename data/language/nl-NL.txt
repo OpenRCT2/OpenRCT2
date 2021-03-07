@@ -3536,15 +3536,6 @@ STR_6280    :Chat
 STR_6281    :Toont een knop voor het openen van de chat in de werkbalk.
 STR_6282    :Chat
 STR_6283    :Chat is momenteel niet beschikbaar. Weet je zeker dat je verbonden bent met een server?
-STR_6284    :Netwerk
-STR_6285    :Netwerkinformatie
-STR_6286    :Ontvangen
-STR_6287    :Verzonden
-STR_6288    :Totaal ontvangen
-STR_6289    :Totaal verzonden
-STR_6290    :Basisprotocol
-STR_6291    :Commando’s
-STR_6292    :Kaart
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

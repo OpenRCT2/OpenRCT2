@@ -3541,15 +3541,6 @@ STR_6281    :Vis en separat knapp for chattevinduet i verktøyjinjen
 STR_6282    :Chat
 STR_6283    :Chat not available at this time. Are you connected to a server?
 STR_6283    :Chatten er for øyeblikket ikke tilgjengelig. Er du koblet til en server?
-STR_6284    :Nettverk
-STR_6285    :Nettverksinformasjon
-STR_6286    :Motta
-STR_6287    :Sende
-STR_6288    :Totalt mottatt
-STR_6289    :Totalt sendt
-STR_6290    :Base protocol
-STR_6291    :Kommandoer
-STR_6292    :Kart
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

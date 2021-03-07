@@ -3537,15 +3537,6 @@ STR_6280    :Czat
 STR_6281    :Pokaż osobny przycisk dla czatu w pasku narzędzi
 STR_6282    :Czat
 STR_6283    :Czat nie jest odstępny. Sprawdź połączenie z serwerem
-STR_6284    :Sieć
-STR_6285    :Informacja o sieci
-STR_6286    :Odbierz
-STR_6287    :Wyślij
-STR_6288    :Suma odebranych
-STR_6289    :Suma wysłanych
-STR_6290    :Protokół bazowy
-STR_6291    :Poleceni
-STR_6292    :Mapa
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

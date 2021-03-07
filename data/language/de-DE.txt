@@ -3534,15 +3534,6 @@ STR_6280    :Chat
 STR_6281    :Eine separate Schaltfläche für das Chatfenster in der Symbolleiste anzeigen
 STR_6282    :Chat
 STR_6283    :Der Chat ist derzeit nicht verfügbar. Sind Sie mit einem Server verbunden?
-STR_6284    :Netzwerk
-STR_6285    :Netzwerkinformation
-STR_6286    :Empfangen
-STR_6287    :Senden
-STR_6288    :Ges. empfangen
-STR_6289    :Ges. gesendet
-STR_6290    :Basisprotokoll
-STR_6291    :Befehle
-STR_6292    :Karte
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

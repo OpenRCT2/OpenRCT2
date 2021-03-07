@@ -3540,15 +3540,6 @@ STR_6280    :Chatt
 STR_6281    :Visa en egen knapp för chattfönstret i verktygsfältet
 STR_6282    :Chatt
 STR_6283    :Chatten är inte tillgänglig just nu. Är du ansluten till en server?
-STR_6284    :Nätverk
-STR_6285    :Nätverksinformation
-STR_6286    :Ta emot
-STR_6287    :Skicka
-STR_6288    :Summa mottaget
-STR_6289    :Summa skickat
-STR_6290    :Grundprotokoll
-STR_6291    :Kommandon
-STR_6292    :Karta
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

@@ -3497,15 +3497,6 @@ STR_6280    :Chat
 STR_6281    :Külön gomb a chat ablak számára az eszköztáron
 STR_6282    :Chat
 STR_6283    :A chat jelenleg nem elérhető. Csatlakozva vagy szerverhez?
-STR_6284    :Hálózat
-STR_6285    :Hálózati információ
-STR_6286    :Küldés
-STR_6287    :Fogadás
-STR_6288    :Összes fogadott
-STR_6289    :Összes küldött
-STR_6290    :Alap protokoll
-STR_6291    :Parancsok
-STR_6292    :Térkép
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

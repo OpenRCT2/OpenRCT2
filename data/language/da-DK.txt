@@ -3535,15 +3535,6 @@ STR_6280    :Chat
 STR_6281    :Vis en separat knap, for chat vinduet i værktøjslinjen
 STR_6282    :Chat
 STR_6283    :Chat er ikke tilgængelig på nuværende tidspunkt. Er du forbundet til en server?
-STR_6284    :Netværk
-STR_6285    :Netværksinformation
-STR_6286    :Modtag
-STR_6287    :Send
-STR_6288    :Total modtaget
-STR_6289    :Total sendt
-STR_6290    :Basis protokol
-STR_6291    :Kommando
-STR_6292    :Kort
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

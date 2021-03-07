@@ -3536,15 +3536,6 @@ STR_6280    :Chat
 STR_6281    :Zobrazit tlačítko pro chat na hlavní liště
 STR_6282    :Chat
 STR_6283    :Chat momentálně není dostupný. Jste připojeni k serveru?
-STR_6284    :Síť
-STR_6285    :Informace o síti
-STR_6286    :Přijato
-STR_6287    :Odesláno
-STR_6288    :Celkem přijato
-STR_6289    :Celkem odesláno
-STR_6290    :Komunikační protokol
-STR_6291    :Příkazy
-STR_6292    :Mapa
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

@@ -3540,15 +3540,6 @@ STR_6280    :Xat
 STR_6281    :Mostra un botó per la finestra del xat a la barra d'eines.
 STR_6282    :Xat
 STR_6283    :Ara mateix el xat no està disponible. Esteu connectats al servidor?
-STR_6284    :Xarxa
-STR_6285    :Informació de la xarxa
-STR_6286    :Rebut
-STR_6287    :Enviat
-STR_6288    :Total rebut
-STR_6289    :Total enviat
-STR_6290    :Protocol base
-STR_6291    :Ordres
-STR_6292    :Mapa
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

@@ -3542,15 +3542,6 @@ STR_6280    :Chat
 STR_6281    :Affiche un bouton séparé pour la fenêtre du chat dans la barre d’outils
 STR_6282    :Chat
 STR_6283    :Le chat n’est pas disponible actuellement. Etes-vous connecté(e) à un serveur ?
-STR_6284    :Réseau
-STR_6285    :Informations réseau
-STR_6286    :Réception
-STR_6287    :Envoi
-STR_6288    :Total reçu
-STR_6289    :Total envoyé
-STR_6290    :Protocole de base
-STR_6291    :Commandes
-STR_6292    :Carte
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

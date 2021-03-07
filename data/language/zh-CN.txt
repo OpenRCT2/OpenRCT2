@@ -3540,15 +3540,6 @@ STR_6276    :{RED}{STRINGID} 有游客被困住了，这可能是因为无效的
 STR_6277    :{WINDOW_COLOUR_2}车站编号: {BLACK}{STRINGID}
 STR_6278    :自动保存数量
 STR_6279    :应该保留的自动保存数量
-STR_6284    :网络
-STR_6285    :网络信息
-STR_6286    :接收
-STR_6287    :发送
-STR_6288    :已接收
-STR_6289    :已发生
-STR_6290    :基础协议
-STR_6291    :指令
-STR_6292    :测绘
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

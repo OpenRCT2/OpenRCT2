@@ -3293,18 +3293,18 @@ STR_6014    :Gastoj pagos nur enirbiletojn por atrakcioj kaj servoj.{NEWLINE}Ili
 STR_6015    :Dekliva
 STR_6016    :Modifi Blokon
 STR_6017    :Bonvolu malakceli
-STR_6018    :Konstruado de atrakcio - Turni maldekstren
-STR_6019    :Konstruado de atrakcio - Turni dekstren
-STR_6020    :Konstruado de atrakcio - Uzi defaŭltan trakon
-STR_6021    :Konstruado de atrakcio - Deklivi malsupren
-STR_6022    :Konstruado de atrakcio - Deklivi supren
-STR_6023    :Konstruado de atrakcio - Baskuligi ĉenlifton
-STR_6024    :Konstruado de atrakcio - Turnkliniĝi maldestren
-STR_6025    :Konstruado de atrakcio - Turnkliniĝi destren
-STR_6026    :Konstruado de atrakcio - Pasinta trako
-STR_6027    :Konstruado de atrakcio - Sekva trako
-STR_6028    :Konstruado de atrakcio - Konstrui nuna
-STR_6029    :Konstruado de atrakcio - Malkonstrui nuna
+STR_6018    :Konstruado - Turni maldekstren
+STR_6019    :Konstruado - Turni dekstren
+STR_6020    :Konstruado - Uzi defaŭltan trakon
+STR_6021    :Konstruado - Deklivi malsupren
+STR_6022    :Konstruado - Deklivi supren
+STR_6023    :Konstruado - Baskuligi ĉenlifton
+STR_6024    :Konstruado - Turnkliniĝi maldestren
+STR_6025    :Konstruado - Turnkliniĝi destren
+STR_6026    :Konstruado - Pasinta trako
+STR_6027    :Konstruado - Sekva trako
+STR_6028    :Konstruado - Konstrui nuna
+STR_6029    :Konstruado - Malkonstrui nuna
 STR_6030    :Pejzaĝo-elektilo. Alklaku iun ajn pejzaĝon sur la mapo por elekti la saman pecon por konstrui.
 STR_6031    :Priskribo de servilo:
 STR_6032    :Saluto de servilo:
@@ -3537,15 +3537,6 @@ STR_6280    :Por babili
 STR_6281    :Montri apartan butonon por la Babilejo-fenestro en la ilobreto
 STR_6282    :Babili
 STR_6283    :Babilejo ne disponeblas jam nun. Ĉu vi konektis al servilo?
-STR_6284    :Reto
-STR_6285    :Retinformaĵo
-STR_6286    :Ricevi
-STR_6287    :Sendi
-STR_6288    :Totalo ricevita
-STR_6289    :Totalo sendita
-STR_6290    :Baza protokolo
-STR_6291    :Komandoj
-STR_6292    :Mapo
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

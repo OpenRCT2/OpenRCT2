@@ -3542,15 +3542,6 @@ STR_6280    :Chat
 STR_6281    :Mostrar un botón para el chat separado en la barra de herramientas
 STR_6282    :Chat
 STR_6283    :Chat no disponible ¿Estás conectado a un servidor?
-STR_6284    :Red
-STR_6285    :Información de Red
-STR_6286    :Recibir
-STR_6287    :Enviar
-STR_6288    :Total recibidos
-STR_6289    :Total enviados
-STR_6290    :Protocolo base
-STR_6291    :Comandos
-STR_6292    :Mapa
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB

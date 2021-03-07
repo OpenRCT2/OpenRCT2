@@ -3293,18 +3293,18 @@ STR_6014    :Visitantes pagarão apenas o ingresso para entrar nas atrações e 
 STR_6015    :Inclinado
 STR_6016    :Modificar Azulejo
 STR_6017    :Por favor, diminua a velocidade
-STR_6018    :Construir atraç.: Virar à esquerda
-STR_6019    :Construir atraç.: Virar à direita
-STR_6020    :Construir atraç.: Usar pista padrão
-STR_6021    :Construir atraç.: Inclinar para baixo
-STR_6022    :Construir atraç.: Inclinar para cima
-STR_6023    :Construir atraç.: Corrente de elevação
-STR_6024    :Construir atraç.: Torcer à esquerda
-STR_6025    :Construir atraç.: Torcer à direita
-STR_6026    :Construir atraç.: Peça anterior
-STR_6027    :Construir atraç.: Próxima peça
-STR_6028    :Construir atraç.: Construir atual
-STR_6029    :Construir atraç.: Demolir atual
+STR_6018    :Construção: Virar à esquerda
+STR_6019    :Construção: Virar à direita
+STR_6020    :Construção: Usar pista padrão
+STR_6021    :Construção: Inclinar para baixo
+STR_6022    :Construção: Inclinar para cima
+STR_6023    :Construção: Corrente de elevação
+STR_6024    :Construção: Torcer à esquerda
+STR_6025    :Construção: Torcer à direita
+STR_6026    :Construção: Peça anterior
+STR_6027    :Construção: Próxima peça
+STR_6028    :Construção: Construir atual
+STR_6029    :Construção: Demolir atual
 STR_6030    :Apanhador de cenário. Clique em qualquer cenário do mapa para selecionar a mesma peça para construção.
 STR_6031    :Descrição do Servidor:
 STR_6032    :Saudação do Servidor:
@@ -3537,15 +3537,6 @@ STR_6280    :Bate-papo
 STR_6281    :Mostra um botão separado para a janela de Bate-papo na barra de ferramentas
 STR_6282    :Bate-papo
 STR_6283    :Bate-papo não está disponível agora. Você está conectado em um servidor?
-STR_6284    :Rede
-STR_6285    :Informação da Rede
-STR_6286    :Receber
-STR_6287    :Enviar
-STR_6288    :Total recebido
-STR_6289    :Total enviado
-STR_6290    :Protocolo base
-STR_6291    :Comandos
-STR_6292    :Mapa
 STR_6293    :B
 STR_6294    :KiB
 STR_6295    :MiB
