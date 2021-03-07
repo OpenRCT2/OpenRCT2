@@ -200,8 +200,10 @@ enum
     SPR_WOODEN_RC_FLAT_NW_SE = 23754,
     SPR_WOODEN_RC_BRAKES_SW_NE = 23755,
     SPR_WOODEN_RC_BRAKES_NW_SE = 23756,
-    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE = 23757,
-    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE = 23758,
+    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN = 23757,
+    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN = 23758,
+    SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED = 23759,
+    SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED = 23760,
 
     SPR_WOODEN_RC_STATION_SW_NE = 23973,
     SPR_WOODEN_RC_STATION_NW_SE = 23974,
@@ -383,11 +385,11 @@ enum
     SPR_WOODEN_RC_STATION_RAILS_NW_SE = 24840,
 };
 
-static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][2] = {
-    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
-    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
+static constexpr const uint32_t _wooden_rc_block_brakes_image_ids[4][3] = {
+    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_SW_NE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_SW_NE },
+    { SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_OPEN, SPR_WOODEN_RC_BLOCK_BRAKES_NW_SE_CLOSED, SPR_WOODEN_RC_BLOCK_BRAKES_RAILS_NW_SE },
 };
 
 static uint32_t wooden_rc_get_track_colour(paint_session* session)
@@ -475,9 +477,11 @@ static void wooden_rc_track_station(
     int32_t trackType = tileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::EndStation)
     {
+        const auto brakeImg = tileElement->AsTrack()->BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                                         : _wooden_rc_block_brakes_image_ids[direction][0];
         wooden_rc_track_paint(
-            session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1],
-            direction, 0, 2, 32, 27, 2, height, 0, 2, height);
+            session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 27, 2, height, 0, 2,
+            height);
     }
     else
     {
@@ -11483,9 +11487,10 @@ static void wooden_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    const auto brakeImg = tileElement->AsTrack()->BlockBrakeClosed() ? _wooden_rc_block_brakes_image_ids[direction][1]
+                                                                     : _wooden_rc_block_brakes_image_ids[direction][0];
     wooden_rc_track_paint(
-        session, _wooden_rc_block_brakes_image_ids[direction][0], _wooden_rc_block_brakes_image_ids[direction][1], direction, 0,
-        2, 32, 25, 2, height, 0, 3, height);
+        session, brakeImg, _wooden_rc_block_brakes_image_ids[direction][2], direction, 0, 2, 32, 25, 2, height, 0, 3, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

@@ -25,8 +25,10 @@ enum
     SPR_WILD_MOUSE_FLAT_NW_SE = 16901,
     SPR_WILD_MOUSE_BRAKES_SW_NE = 16902,
     SPR_WILD_MOUSE_BRAKES_NW_SE = 16903,
-    SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE = 16904,
-    SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE = 16905,
+    SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_OPEN = 16904,
+    SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_OPEN = 16905,
+    SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_CLOSED = 16906,
+    SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_CLOSED = 16907,
 
     SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE = 16908,
     SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE = 16909,
@@ -155,11 +157,11 @@ static constexpr const uint32_t _wild_mouse_brakes_image_ids[4] = {
     SPR_WILD_MOUSE_BRAKES_NW_SE,
 };
 
-static constexpr const uint32_t _wild_mouse_block_brakes_image_ids[4] = {
-    SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE,
-    SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE,
-    SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE,
-    SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE,
+static constexpr const uint32_t _wild_mouse_block_brakes_image_ids[NumOrthogonalDirections][2] = {
+    { SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_CLOSED },
+    { SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_CLOSED },
+    { SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE_CLOSED },
+    { SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_OPEN, SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE_CLOSED },
 };
 
 /** rct2: 0x0078B1E4 */
@@ -204,9 +206,10 @@ static void wild_mouse_track_station(
         height);
     if (trackType == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, _wild_mouse_block_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK], 0, 0, 32,
-            20, 2, height, 0, 0, height);
+            session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session->TrackColours[SCHEME_TRACK],
+            0, 0, 32, 20, 2, height, 0, 0, height);
     }
     else
     {
@@ -923,7 +926,8 @@ static void wild_mouse_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction] | session->TrackColours[SCHEME_TRACK];
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction][isClosed] | session->TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {

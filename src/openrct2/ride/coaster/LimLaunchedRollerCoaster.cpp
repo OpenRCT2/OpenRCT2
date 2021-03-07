@@ -19,23 +19,36 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN = 15020;
+static constexpr const uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN = 15021;
+static constexpr const uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED = 15022;
+static constexpr const uint32_t LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED = 15023;
+
+static constexpr const uint32_t _LimLauncherBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+    { LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void lim_launched_rc_track_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 15018, 15020, SPR_STATION_BASE_B_SW_NE },
-        { 15019, 15021, SPR_STATION_BASE_B_NW_SE },
-        { 15018, 15020, SPR_STATION_BASE_B_SW_NE },
-        { 15019, 15021, SPR_STATION_BASE_B_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 15018, SPR_STATION_BASE_B_SW_NE },
+        { 15019, SPR_STATION_BASE_B_NW_SE },
+        { 15018, SPR_STATION_BASE_B_SW_NE },
+        { 15019, SPR_STATION_BASE_B_NW_SE },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
-            height + 3);
+            session, direction, _LimLauncherBlockBrakeImages[direction][isClosed] | session->TrackColours[SCHEME_TRACK], 0, 0,
+            32, 20, 1, height, 0, 6, height + 3);
     }
     else
     {
@@ -44,7 +57,7 @@ static void lim_launched_rc_track_station(
             height + 3);
     }
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, rideIndex, direction, height, tileElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -1643,19 +1656,11 @@ static void lim_launched_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 15020, 0, 0, 32, 20, 3, height, 0, 6, height);
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 15021, 0, 0, 32, 20, 3, height, 0, 6, height);
-            break;
-    }
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _LimLauncherBlockBrakeImages[direction][isClosed], 0, 0, 32,
+        20, 3, height, 0, 6, height);
+
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);

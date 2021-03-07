@@ -19,6 +19,18 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN = 16232;
+static constexpr const uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN = 16233;
+static constexpr const uint32_t CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED = 16234;
+static constexpr const uint32_t CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED = 16235;
+
+static constexpr const uint32_t _CorkscrewRCBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+    { CORKSCREW_RC_BLOCK_BRAKE_SW_NE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { CORKSCREW_RC_BLOCK_BRAKE_NW_SE_OPEN, CORKSCREW_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 /** rct2: 0x008A7AF8 */
 static void corkscrew_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -81,18 +93,19 @@ static void corkscrew_rc_track_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 16236, 16232, SPR_STATION_BASE_A_SW_NE },
-        { 16237, 16233, SPR_STATION_BASE_A_NW_SE },
-        { 16236, 16232, SPR_STATION_BASE_A_SW_NE },
-        { 16237, 16233, SPR_STATION_BASE_A_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 16236, SPR_STATION_BASE_A_SW_NE },
+        { 16237, SPR_STATION_BASE_A_NW_SE },
+        { 16236, SPR_STATION_BASE_A_SW_NE },
+        { 16237, SPR_STATION_BASE_A_NW_SE },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
-            height + 3);
+            session, direction, _CorkscrewRCBlockBrakeImages[direction][isClosed] | session->TrackColours[SCHEME_TRACK], 0, 0,
+            32, 20, 1, height, 0, 6, height + 3);
     }
     else
     {
@@ -101,7 +114,7 @@ static void corkscrew_rc_track_station(
             height + 3);
     }
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -8516,19 +8529,10 @@ static void corkscrew_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 16232, 0, 0, 32, 20, 3, height, 0, 6, height);
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 16233, 0, 0, 32, 20, 3, height, 0, 6, height);
-            break;
-    }
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _CorkscrewRCBlockBrakeImages[direction][isClosed], 0, 0, 32,
+        20, 3, height, 0, 6, height);
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(

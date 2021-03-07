@@ -19,6 +19,18 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_OPEN = 18742;
+static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_OPEN = 18743;
+static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED = 18744;
+static constexpr const uint32_t MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED = 18745;
+
+static constexpr const uint32_t _MiniRCBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { MINI_RC_BLOCK_BRAKE_NW_SE_OPEN, MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+    { MINI_RC_BLOCK_BRAKE_SW_NE_OPEN, MINI_RC_BLOCK_BRAKE_SW_NE_CLOSED },
+    { MINI_RC_BLOCK_BRAKE_NW_SE_OPEN, MINI_RC_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 /** rct2: 0x008A4ABC */
 static void mini_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -102,18 +114,19 @@ static void mini_rc_track_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 18746, 18742, SPR_STATION_BASE_A_SW_NE },
-        { 18747, 18743, SPR_STATION_BASE_A_NW_SE },
-        { 18746, 18742, SPR_STATION_BASE_A_SW_NE },
-        { 18747, 18743, SPR_STATION_BASE_A_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 18746, SPR_STATION_BASE_A_SW_NE },
+        { 18747, SPR_STATION_BASE_A_NW_SE },
+        { 18746, SPR_STATION_BASE_A_SW_NE },
+        { 18747, SPR_STATION_BASE_A_NW_SE },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
-            height + 3);
+            session, direction, _MiniRCBlockBrakeImages[direction][isClosed] | session->TrackColours[SCHEME_TRACK], 0, 0, 32,
+            20, 1, height, 0, 6, height + 3);
     }
     else
     {
@@ -122,7 +135,7 @@ static void mini_rc_track_station(
             height + 3);
     }
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -7524,12 +7537,14 @@ static void mini_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _MiniRCBlockBrakeImages[direction][isClosed], 0, 0, 32, 20, 3,
+        height, 0, 6, height);
     switch (direction)
     {
         case 0:
         case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18742, 0, 0, 32, 20, 3, height, 0, 6, height);
             if (track_paint_util_should_paint_supports(session->MapPosition))
             {
                 metal_a_supports_paint_setup(
@@ -7538,8 +7553,6 @@ static void mini_rc_track_block_brakes(
             break;
         case 1:
         case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18743, 0, 0, 32, 20, 3, height, 0, 6, height);
             if (track_paint_util_should_paint_supports(session->MapPosition))
             {
                 metal_a_supports_paint_setup(
