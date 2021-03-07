@@ -555,6 +555,10 @@ declare global {
 
     type Direction = 0 | 1 | 2 | 3;
 
+    type TileElement =
+        SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
+        | LargeSceneryElement | BannerElement | CorruptElement;
+
     interface BaseTileElement {
         type: TileElementType;
         baseHeight: number;
@@ -567,6 +571,8 @@ declare global {
     }
 
     interface SurfaceElement extends BaseTileElement {
+        type: "surface";
+
         slope: number;
         surfaceStyle: number;
         edgeStyle: number;
@@ -580,6 +586,8 @@ declare global {
     }
 
     interface FootpathElement extends BaseTileElement {
+        type: "footpath";
+
         object: number;
 
         edges: number;
@@ -600,6 +608,8 @@ declare global {
     }
 
     interface TrackElement extends BaseTileElement {
+        type: "track";
+
         direction: Direction;
         trackType: number;
         sequence: number | null;
@@ -618,6 +628,8 @@ declare global {
     }
 
     interface SmallSceneryElement extends BaseTileElement {
+        type: "small_scenery";
+
         direction: Direction;
         object: number;
         primaryColour: number;
@@ -627,6 +639,8 @@ declare global {
     }
 
     interface WallElement extends BaseTileElement {
+        type: "wall";
+
         direction: Direction;
         object: number;
         primaryColour: number;
@@ -637,6 +651,8 @@ declare global {
     }
 
     interface EntranceElement extends BaseTileElement {
+        type: "entrance";
+
         direction: Direction;
         object: number;
         ride: number;
@@ -646,6 +662,8 @@ declare global {
     }
 
     interface LargeSceneryElement extends BaseTileElement {
+        type: "large_scenery";
+
         direction: Direction;
         object: number;
         primaryColour: number;
@@ -655,11 +673,13 @@ declare global {
     }
 
     interface BannerElement extends BaseTileElement {
+        type: "banner";
         direction: Direction;
         bannerIndex: number;
     }
 
     interface CorruptElement extends BaseTileElement {
+        type: "openrct2_corrupt_deprecated";
     }
 
     /**
@@ -672,7 +692,7 @@ declare global {
         /** The y position in tiles. */
         readonly y: number;
         /** Gets an array of all the tile elements on this tile. */
-        readonly elements: BaseTileElement[];
+        readonly elements: TileElement[];
         /** Gets the number of tile elements on this tile. */
         readonly numElements: number;
         /**
@@ -683,11 +703,11 @@ declare global {
         data: Uint8Array;
 
         /** Gets the tile element at the given index on this tile. */
-        getElement(index: number): BaseTileElement;
+        getElement(index: number): TileElement;
         /** Gets the tile element at the given index on this tile. */
-        getElement<T extends BaseTileElement>(index: number): T;
+        getElement<T extends TileElement>(index: number): T;
         /** Inserts a new tile element at the given index on this tile. */
-        insertElement(index: number): BaseTileElement;
+        insertElement(index: number): TileElement;
         /** Removes the tile element at the given index from this tile. */
         removeElement(index: number): void;
     }
@@ -1858,12 +1878,12 @@ declare global {
          * Whether to browse a file for loading or saving. Saving will prompt the user
          * before overwriting a file.
          */
-        type: 'load';
+        type: "load";
 
         /**
          * The type of file to browse for.
          */
-        fileType: 'game' | 'heightmap';
+        fileType: "game" | "heightmap";
 
         /**
          * The pre-selected file to load by default if the user clicks OK.
@@ -1891,8 +1911,8 @@ declare global {
      */
     interface ScenarioFile {
         id: number;
-        category: 'beginner' | 'challenging' | 'expert' | 'real' | 'other' | 'dlc' | 'build_your_own';
-        sourceGame: 'rct1' | 'rct1_aa' | 'rct1_ll' | 'rct2' | 'rct2_ww' | 'rct2_tt' | 'real' | 'other';
+        category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "other";
         path: string;
         internalName: string;
         name: string;
@@ -2024,6 +2044,7 @@ declare global {
 
     interface WidgetBase {
         readonly window?: Window;
+        type: WidgetType;
         x: number;
         y: number;
         width: number;
@@ -2035,7 +2056,7 @@ declare global {
     }
 
     interface ButtonWidget extends WidgetBase {
-        type: 'button';
+        type: "button";
         /**
          * Whether the button has a 3D border.
          * By default, text buttons have borders and image buttons do not but it can be overridden.
@@ -2048,36 +2069,36 @@ declare global {
     }
 
     interface CheckboxWidget extends WidgetBase {
-        type: 'checkbox';
+        type: "checkbox";
         text?: string;
         isChecked?: boolean;
         onChange?: (isChecked: boolean) => void;
     }
 
     interface ColourPickerWidget extends WidgetBase {
-        type: 'colourpicker';
+        type: "colourpicker";
         colour?: number;
         onChange?: (colour: number) => void;
     }
 
     interface CustomWidget extends WidgetBase {
-        type: 'custom';
+        type: "custom";
         onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
     }
 
     interface DropdownWidget extends WidgetBase {
-        type: 'dropdown';
+        type: "dropdown";
         items?: string[];
         selectedIndex?: number;
         onChange?: (index: number) => void;
     }
 
     interface GroupBoxWidget extends WidgetBase {
-        type: 'groupbox';
+        type: "groupbox";
     }
 
     interface LabelWidget extends WidgetBase {
-        type: 'label';
+        type: "label";
         text?: string;
         textAlign?: TextAlignment;
         onChange?: (index: number) => void;
@@ -2101,7 +2122,7 @@ declare global {
     }
 
     interface ListViewItemSeperator {
-        type: 'seperator';
+        type: "seperator";
         text?: string;
     }
 
@@ -2113,7 +2134,7 @@ declare global {
     }
 
     interface ListView extends WidgetBase {
-        type: 'listview';
+        type: "listview";
         scrollbars?: ScrollbarType;
         isStriped?: boolean;
         showColumnHeaders?: boolean;
@@ -2128,7 +2149,7 @@ declare global {
     }
 
     interface SpinnerWidget extends WidgetBase {
-        type: 'spinner';
+        type: "spinner";
         text?: string;
 
         onDecrement?: () => void;
@@ -2137,14 +2158,14 @@ declare global {
     }
 
     interface TextBoxWidget extends WidgetBase {
-        type: 'textbox';
+        type: "textbox";
         text?: string;
         maxLength?: number;
         onChange?: (text: string) => void;
     }
 
     interface ViewportWidget extends WidgetBase {
-        type: 'viewport';
+        type: "viewport";
         viewport?: Viewport;
     }
 
@@ -2266,9 +2287,9 @@ declare global {
         listen(port: number, host?: string): Listener;
         close(): Listener;
 
-        on(event: 'connection', callback: (socket: Socket) => void): Listener;
+        on(event: "connection", callback: (socket: Socket) => void): Listener;
 
-        off(event: 'connection', callback: (socket: Socket) => void): Listener;
+        off(event: "connection", callback: (socket: Socket) => void): Listener;
     }
 
     /**
@@ -2282,13 +2303,13 @@ declare global {
         end(data?: string): Socket;
         write(data: string): boolean;
 
-        on(event: 'close', callback: (hadError: boolean) => void): Socket;
-        on(event: 'error', callback: (hadError: boolean) => void): Socket;
-        on(event: 'data', callback: (data: string) => void): Socket;
+        on(event: "close", callback: (hadError: boolean) => void): Socket;
+        on(event: "error", callback: (hadError: boolean) => void): Socket;
+        on(event: "data", callback: (data: string) => void): Socket;
 
-        off(event: 'close', callback: (hadError: boolean) => void): Socket;
-        off(event: 'error', callback: (hadError: boolean) => void): Socket;
-        off(event: 'data', callback: (data: string) => void): Socket;
+        off(event: "close", callback: (hadError: boolean) => void): Socket;
+        off(event: "error", callback: (hadError: boolean) => void): Socket;
+        off(event: "data", callback: (data: string) => void): Socket;
     }
 
     interface TitleSequence {
@@ -2380,64 +2401,64 @@ declare global {
     }
 
     type TitleSequenceCommandType =
-        'load' |
-        'loadsc' |
-        'location' |
-        'rotate' |
-        'zoom' |
-        'speed' |
-        'follow' |
-        'wait' |
-        'restart' |
-        'end';
+        "load" |
+        "loadsc" |
+        "location" |
+        "rotate" |
+        "zoom" |
+        "speed" |
+        "follow" |
+        "wait" |
+        "restart" |
+        "end";
 
     interface LoadTitleSequenceCommand {
-        type: 'load';
+        type: "load";
         index: number;
     }
 
     interface LocationTitleSequenceCommand {
-        type: 'location';
+        type: "location";
         x: number;
         y: number;
     }
 
     interface RotateTitleSequenceCommand {
-        type: 'rotate';
+        type: "rotate";
         rotations: number;
     }
 
     interface ZoomTitleSequenceCommand {
-        type: 'zoom';
+        type: "zoom";
         zoom: number;
     }
 
     interface FollowTitleSequenceCommand {
-        type: 'follow';
+        type: "follow";
         id: number | null;
     }
 
     interface SpeedTitleSequenceCommand {
-        type: 'speed';
+        type: "speed";
         speed: number;
     }
 
     interface WaitTitleSequenceCommand {
-        type: 'wait';
+        type: "wait";
         duration: number;
     }
 
     interface LoadScenarioTitleSequenceCommand {
-        type: 'loadsc';
+        type: "loadsc";
         scenario: string;
     }
 
     interface RestartTitleSequenceCommand {
-        type: 'restart';
+        type: "restart";
     }
 
     interface EndTitleSequenceCommand {
-        type: 'end';
+        type: "end";
     }
 
     type TitleSequenceCommand =
