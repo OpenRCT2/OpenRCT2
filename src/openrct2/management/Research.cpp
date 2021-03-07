@@ -200,11 +200,11 @@ void research_finish_item(ResearchItem* researchItem)
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
+            if (base_ride_type >= RIDE_TYPE_COUNT)
+                log_warning("Invalid ride type: %d", base_ride_type);
+
             rct_string_id availabilityString;
-
             ride_type_set_invented(base_ride_type);
-            openrct2_assert(base_ride_type < RIDE_TYPE_COUNT, "Invalid base_ride_type = %d", base_ride_type);
-
             ride_entry_set_invented(rideEntryIndex);
 
             bool seenRideEntry[MAX_RIDE_OBJECTS]{};
@@ -539,8 +539,10 @@ bool ride_entry_is_invented(int32_t rideEntryIndex)
 
 void ride_type_set_invented(uint32_t rideType)
 {
-    Guard::Assert(rideType < std::size(_researchedRideTypes), GUARD_LINE);
-    _researchedRideTypes[rideType] = true;
+    if (rideType < std::size(_researchedRideTypes))
+    {
+        _researchedRideTypes[rideType] = true;
+    }
 }
 
 void ride_entry_set_invented(int32_t rideEntryIndex)
