@@ -599,8 +599,12 @@ static void window_tile_inspector_rotate_element(int32_t elementIndex)
 // Swap element with its parent
 static void window_tile_inspector_swap_elements(int16_t first, int16_t second)
 {
-    openrct2_assert(first >= 0 && first < windowTileInspectorElementCount, "first out of range");
-    openrct2_assert(second >= 0 && second < windowTileInspectorElementCount, "second out of range");
+    bool firstInRange = first >= 0 && first < windowTileInspectorElementCount;
+    bool secondInRange = second >= 0 && second < windowTileInspectorElementCount;
+    // This might happen if two people are modifying the same tile.
+    if (!firstInRange || !secondInRange)
+        return;
+
     auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnySwap, first, second);
     GameActions::Execute(&modifyTile);
 }
