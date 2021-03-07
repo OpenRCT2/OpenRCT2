@@ -29,7 +29,9 @@ namespace Graph
                 // Draw month text
                 auto ft = Formatter();
                 ft.Add<uint32_t>(DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)]);
-                DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft, { TextAlignment::CENTRE });
+                DrawTextBasic(
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, ft,
+                    { FontSpriteBase::SMALL, TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
@@ -171,7 +173,8 @@ namespace Graph
                 // Draw month text
                 int32_t monthFormat = DateGameShortMonthNames[date_get_month((yearOver32 / 4) + MONTH_COUNT)];
                 DrawTextBasic(
-                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, &monthFormat, { TextAlignment::CENTRE });
+                    dpi, screenCoords - ScreenCoordsXY{ 0, 10 }, STR_GRAPH_LABEL, &monthFormat,
+                    { FontSpriteBase::SMALL, TextAlignment::CENTRE });
 
                 // Draw month mark
                 gfx_fill_rect(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 0, 3 } }, PALETTE_INDEX_10);
