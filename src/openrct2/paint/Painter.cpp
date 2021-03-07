@@ -85,7 +85,7 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
     char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{RED}{STRING}", text);
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{RED}{STRING}", text);
 
     auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     screenCoords.x = screenCoords.x - stringWidth;
@@ -104,7 +104,7 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
     MeasureFPS();
 
     char buffer[64]{};
-    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{WHITE}{INT32}", _currentFPS);
+    FormatStringToBuffer(buffer, sizeof(buffer), "{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
     int32_t stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
