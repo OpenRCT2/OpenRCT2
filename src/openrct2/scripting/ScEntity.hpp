@@ -270,6 +270,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
             dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
             dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
 
@@ -625,6 +626,18 @@ namespace OpenRCT2::Scripting
                 result.resize(len);
             }
             return result;
+        }
+
+        DukValue gForces_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto vehicle = GetVehicle();
+            if (vehicle != nullptr)
+            {
+                GForces gForces = vehicle->GetGForces();
+                return ToDuk<GForces>(ctx, gForces);
+            }
+            return ToDuk(ctx, nullptr);
         }
 
         void travelBy(int32_t value)

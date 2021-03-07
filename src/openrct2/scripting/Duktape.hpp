@@ -12,6 +12,7 @@
 #ifdef ENABLE_SCRIPTING
 
 #    include "../core/Console.hpp"
+#    include "../ride/Vehicle.h"
 #    include "../world/Map.h"
 
 #    include <cstdio>
@@ -406,6 +407,14 @@ namespace OpenRCT2::Scripting
             dukCoords.Set("direction", value.direction);
             return dukCoords.Take();
         }
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const GForces& value)
+    {
+        DukObject dukGForces(ctx);
+        dukGForces.Set("lateralG", value.LateralG);
+        dukGForces.Set("verticalG", value.VerticalG);
+        return dukGForces.Take();
     }
 
     template<> inline CoordsXYZD FromDuk(const DukValue& value)
