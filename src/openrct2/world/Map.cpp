@@ -1215,7 +1215,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
         case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -1237,7 +1238,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             sceneryEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -1245,7 +1247,8 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
             auto ft = Formatter(res.ErrorMessageArgs.data());
-            ft.Add<rct_string_id>(sceneryEntry->name);
+            rct_string_id stringId = sceneryEntry != nullptr ? sceneryEntry->name : static_cast<rct_string_id>(STR_EMPTY);
+            ft.Add<rct_string_id>(stringId);
             break;
         }
     }
