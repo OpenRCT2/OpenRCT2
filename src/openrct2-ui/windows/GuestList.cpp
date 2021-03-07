@@ -707,7 +707,7 @@ private:
 
                             ft = Formatter();
                             peep_thought_set_format_args(&thought, ft);
-                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft);
+                            DrawTextEllipsised(&dpi, { 118, y }, 329, format, ft, { FontSpriteBase::SMALL });
                             break;
                         }
                         break;
@@ -747,9 +747,19 @@ private:
                         0);
                 }
 
-                // Draw action
+                // Draw action/thoughts
                 Formatter ft(group.Arguments.args);
-                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
+                TextPaint paint;
+                // Draw small font if displaying guests
+                if (_selectedView == GuestViewType::Thoughts)
+                {
+                    paint = { FontSpriteBase::SMALL };
+                }
+                else
+                {
+                    paint = NULL;
+                }
+                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, paint);
 
                 // Draw guest count
                 ft = Formatter();
