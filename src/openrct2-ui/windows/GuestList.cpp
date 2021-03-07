@@ -749,17 +749,15 @@ private:
 
                 // Draw action/thoughts
                 Formatter ft(group.Arguments.args);
-                TextPaint paint;
                 // Draw small font if displaying guests
                 if (_selectedView == GuestViewType::Thoughts)
                 {
-                    paint = { FontSpriteBase::SMALL };
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, { FontSpriteBase::SMALL });
                 }
                 else
                 {
-                    paint = NULL;
+                    DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft);
                 }
-                DrawTextEllipsised(&dpi, { 0, y }, 414, format, ft, paint);
 
                 // Draw guest count
                 ft = Formatter();
