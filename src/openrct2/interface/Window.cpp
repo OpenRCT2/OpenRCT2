@@ -1402,9 +1402,10 @@ void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
 
 void window_event_resize_call(rct_window* w)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->resize != nullptr)
-            w->event_handlers->resize(w);
+    if (w->event_handlers == nullptr)
+        w->OnResize();
+    else if (w->event_handlers->resize != nullptr)
+        w->event_handlers->resize(w);
 }
 
 void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
