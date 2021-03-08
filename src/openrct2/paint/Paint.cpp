@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -694,9 +694,7 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
 paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(
-        session, image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, offset.x, offset.y,
-        offset.z);
+    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, offset);
 }
 
 paint_struct* PaintAddImageAsParent(
@@ -724,16 +722,11 @@ paint_struct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
 {
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
-
-    CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
 
     auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
     if (ps == nullptr)
@@ -744,6 +737,16 @@ paint_struct* PaintAddImageAsParent(
     PaintSessionAddPSToQuadrant(session, ps);
 
     return ps;
+}
+
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
+    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+{
+    return PaintAddImageAsParent(
+        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
+        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
 /**
@@ -811,9 +814,7 @@ paint_struct* PaintAddImageAsChild(
     paint_struct* parentPS = session->LastPS;
     if (parentPS == nullptr)
     {
-        return PaintAddImageAsParent(
-            session, image_id, offset.x, offset.y, boundBoxLength.x, boundBoxLength.y, boundBoxLength.z, offset.z,
-            boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z);
+        return PaintAddImageAsParent(session, image_id, offset, boundBoxLength, boundBoxOffset);
     }
 
     auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxLength, boundBoxOffset);
