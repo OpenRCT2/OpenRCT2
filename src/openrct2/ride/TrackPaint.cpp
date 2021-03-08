@@ -894,11 +894,11 @@ void track_paint_util_draw_pier(
         hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, session->CurrentRotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE)
             | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 0, 6, 32, 1, height, 2, 0, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 1 }, { 2, 0, height });
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
 
         imageId = SPR_STATION_PIER_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 24, 0, 8, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, { 24, 0, height }, { 8, 32, 1 });
 
         hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, session->CurrentRotation);
         if (hasFence)
@@ -913,11 +913,11 @@ void track_paint_util_draw_pier(
         hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, rotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW)
             | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 6, 1, height, 0, 2, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 1 }, { 0, 2, height });
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
 
         imageId = SPR_STATION_PIER_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
-        PaintAddImageAsParent(session, imageId, 0, 24, 32, 8, 1, height);
+        PaintAddImageAsParent(session, imageId, { 0, 24, height }, { 32, 8, 1 });
 
         hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, rotation);
         if (hasFence)
@@ -2003,11 +2003,11 @@ void track_paint_util_spinning_tunnel_paint(paint_session* session, int8_t thick
     imageId = trackSpritesGhostTrainSpinningTunnel[direction & 1][1][frame] | colourFlags;
     if (direction == 0 || direction == 2)
     {
-        PaintAddImageAsParent(session, imageId, 0, 0, 26, 1, 23, height, 4, 28, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 1, 23 }, { 4, 28, height });
     }
     else
     {
-        PaintAddImageAsParent(session, imageId, 0, 0, 1, 26, 23, height, 28, 4, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 26, 23 }, { 28, 4, height });
     }
 }
 
@@ -2027,24 +2027,24 @@ void track_paint_util_onride_photo_small_paint(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, 26, 0, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 26, 31, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 6, 0, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, 0, 6, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 31, 6, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 0, 26, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, 6, 0, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 6, 31, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 26, 31, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, 0, 26, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 31, 26, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 31, 6, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
             break;
     }
 }
@@ -2065,24 +2065,24 @@ void track_paint_util_onride_photo_paint(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParent(session, imageId, 26, 0, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 26, 31, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 6, 0, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 26, 0, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 26, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 6, 0, height }, { 1, 1, 19 });
             break;
         case 1:
-            PaintAddImageAsParent(session, imageId, 0, 6, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 31, 6, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 0, 26, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 0, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 31, 6, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 0, 26, height }, { 1, 1, 19 });
             break;
         case 2:
-            PaintAddImageAsParent(session, imageId, 6, 0, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 6, 31, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 26, 31, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 6, 0, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 6, 31, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 26, 31, height }, { 1, 1, 19 });
             break;
         case 3:
-            PaintAddImageAsParent(session, imageId, 0, 26, 1, 1, 19, height);
-            PaintAddImageAsParent(session, imageId, 31, 26, 1, 1, 19, height);
-            PaintAddImageAsParent(session, flashImageId, 31, 6, 1, 1, 19, height);
+            PaintAddImageAsParent(session, imageId, { 0, 26, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, imageId, { 31, 26, height }, { 1, 1, 19 });
+            PaintAddImageAsParent(session, flashImageId, { 31, 6, height }, { 1, 1, 19 });
             break;
     }
 }
