@@ -104,7 +104,7 @@ public:
     void Clear(uint8_t paletteIndex) override;
     void FillRect(uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
     void FilterRect(FilterPaletteID palette, int32_t left, int32_t top, int32_t right, int32_t bottom) override;
-    void DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2) override;
+    void DrawLine(uint32_t colour, const ScreenLine& line) override;
     void DrawSprite(uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
     void DrawSpriteRawMasked(int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
     void DrawSpriteSolid(uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
@@ -165,7 +165,7 @@ public:
                     int32_t pixelX = xPixelOffset % dpi->width;
                     int32_t pixelY = (xPixelOffset / dpi->width) % dpi->height;
 
-                    _drawingContext->DrawLine(patternPixel, pixelX, pixelY, pixelX + 1, pixelY + 1);
+                    _drawingContext->DrawLine(patternPixel, { { pixelX, pixelY }, { pixelX + 1, pixelY + 1 } });
                 }
             }
 
@@ -598,17 +598,12 @@ void OpenGLDrawingContext::FilterRect(FilterPaletteID palette, int32_t left, int
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawLine(uint32_t colour, int32_t x1, int32_t y1, int32_t x2, int32_t y2)
+void OpenGLDrawingContext::DrawLine(uint32_t colour, const ScreenLine& line)
 {
-    x1 += _offsetX;
-    y1 += _offsetY;
-    x2 += _offsetX;
-    y2 += _offsetY;
-
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-    command.bounds = { x1, y1, x2, y2 };
+    command.bounds = { line.GetX1() + _offsetX, line.GetY1() + _offsetY, line.GetX2() + _offsetX, line.GetY2() + _offsetY };
     command.colour = colour & 0xFF;
     command.depth = _drawCount++;
 }
