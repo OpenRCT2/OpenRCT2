@@ -658,7 +658,7 @@ static void viewport_surface_draw_tile_side_bottom(
         {
             uint32_t image_id = base_image_id + image_offset;
             PaintAddImageAsParent(
-                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+                session, image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
             curHeight++;
         }
     }
@@ -683,7 +683,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
             const uint32_t image_id = base_image_id + image_offset;
             PaintAddImageAsParent(
-                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+                session, image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
 
             return;
         }
@@ -699,7 +699,8 @@ static void viewport_surface_draw_tile_side_bottom(
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
                 PaintAddImageAsParent(
-                    session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * COORDS_Z_PER_TINY_Z);
+                    session, base_image_id, { offset.x, offset.y, curHeight * COORDS_Z_PER_TINY_Z },
+                    { bounds.x, bounds.y, 15 });
 
                 curHeight++;
                 continue;
@@ -877,7 +878,7 @@ static void viewport_surface_draw_tile_side_top(
         {
             const uint32_t image_id = base_image_id + image_offset;
             PaintAddImageAsParent(
-                session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
+                session, image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
             cur_height++;
         }
     }
@@ -893,7 +894,7 @@ static void viewport_surface_draw_tile_side_top(
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
         PaintAddImageAsParent(
-            session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
+            session, base_image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
         cur_height++;
     }
 
@@ -909,7 +910,8 @@ static void viewport_surface_draw_tile_side_top(
     }
 
     const uint32_t image_id = base_image_id + image_offset;
-    PaintAddImageAsParent(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * COORDS_Z_PER_TINY_Z);
+    PaintAddImageAsParent(
+        session, image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
 }
 
 /**
@@ -1049,10 +1051,10 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
     if (session->VerticalTunnelHeight * COORDS_Z_PER_TINY_Z == height)
     {
         // Vertical tunnels
-        PaintAddImageAsParent(session, 1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40);
-        PaintAddImageAsParent(session, 1576, 0, 0, 30, 1, 0, height, 1, 31, height);
-        PaintAddImageAsParent(session, 1577, 0, 0, 1, 30, 0, height, 31, 1, height);
-        PaintAddImageAsParent(session, 1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40);
+        PaintAddImageAsParent(session, 1575, { 0, 0, height }, { 1, 30, 39 }, { -2, 1, height - 40 });
+        PaintAddImageAsParent(session, 1576, { 0, 0, height }, { 30, 1, 0 }, { 1, 31, height });
+        PaintAddImageAsParent(session, 1577, { 0, 0, height }, { 1, 30, 0 }, { 31, 1, height });
+        PaintAddImageAsParent(session, 1578, { 0, 0, height }, { 30, 1, 39 }, { 1, -2, height - 40 });
     }
     else
     {
@@ -1081,7 +1083,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             imageId |= 0x41880000;
         }
 
-        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, -1, height);
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
         has_surface = true;
     }
 
@@ -1124,7 +1126,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             image_id |= patrolColour << 19;
 
             paint_struct* backup = session->LastPS;
-            PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 1, local_height);
+            PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
             session->LastPS = backup;
         }
     }
@@ -1142,7 +1144,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
                 const int32_t offset = (direction_reverse(spawn.direction) + rotation) & 3;
                 const uint32_t image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
-                PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 19, spawn.z);
+                PaintAddImageAsParent(session, image_id, { 0, 0, spawn.z }, { 32, 32, 19 });
             }
         }
     }
@@ -1160,7 +1162,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = (tile_element_height({ pos.x + 16, pos.y + 16 })) + 3;
             paint_struct* backup = session->LastPS;
-            PaintAddImageAsParent(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2);
+            PaintAddImageAsParent(session, SPR_LAND_OWNERSHIP_AVAILABLE, { 16, 16, height2 }, { 1, 1, 0 });
             session->LastPS = backup;
         }
     }
@@ -1177,7 +1179,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             const CoordsXY& pos = session->MapPosition;
             const int32_t height2 = tile_element_height({ pos.x + 16, pos.y + 16 });
             paint_struct* backup = session->LastPS;
-            PaintAddImageAsParent(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3);
+            PaintAddImageAsParent(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, { 16, 16, height2 + 3 }, { 1, 1, 0 });
             session->LastPS = backup;
         }
     }
@@ -1232,7 +1234,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
                 const int32_t image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
                 paint_struct* backup = session->LastPS;
-                PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 1, local_height);
+                PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
                 session->LastPS = backup;
             }
         }
@@ -1314,7 +1316,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
         const int32_t image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
             | EnumValue(FilterPaletteID::PaletteWater) << 19;
-        PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, -1, waterHeight);
+        PaintAddImageAsParent(session, image_id, { 0, 0, waterHeight }, { 32, 32, -1 });
 
         const bool transparent = gConfigGeneral.transparent_water || (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE);
         const uint32_t overlayStart = transparent ? SPR_WATER_OVERLAY : SPR_RCT1_WATER_OVERLAY;
@@ -1393,8 +1395,9 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
             }
 
             PaintAddImageAsParent(
-                session, image_id, fenceData.offset.x, fenceData.offset.y, fenceData.box_size.x, fenceData.box_size.y, 9,
-                local_height, fenceData.box_offset.x, fenceData.box_offset.y, local_height + 1);
+                session, image_id, { fenceData.offset.x, fenceData.offset.y, local_height },
+                { fenceData.box_size.x, fenceData.box_size.y, 9 },
+                { fenceData.box_offset.x, fenceData.box_offset.y, local_height + 1 });
         }
     }
 
