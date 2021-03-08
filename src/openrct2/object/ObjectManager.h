@@ -26,7 +26,7 @@ struct IObjectManager
 
     virtual Object* GetLoadedObject(size_t index) abstract;
     virtual Object* GetLoadedObject(ObjectType objectType, size_t index) abstract;
-    virtual Object* GetLoadedObject(const rct_object_entry* entry) abstract;
+    virtual Object* GetLoadedObject(const ObjectEntryDescriptor& entry) abstract;
     virtual ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) abstract;
     virtual std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) abstract;
 

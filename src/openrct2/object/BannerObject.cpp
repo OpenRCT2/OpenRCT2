@@ -29,7 +29,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
 
@@ -52,7 +52,7 @@ void BannerObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* st
             || sourceGame == ObjectSourceGame::Custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
-            SetPrimarySceneryGroup(&scgPathX);
+            SetPrimarySceneryGroup(scgPathX);
         }
     }
 }
@@ -97,7 +97,7 @@ void BannerObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR },
             });
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
     }
 
     PopulateTablesFromJson(context, root);

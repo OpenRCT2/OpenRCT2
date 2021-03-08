@@ -32,7 +32,7 @@ void WallObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stre
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
 
@@ -108,7 +108,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         _legacyType.wall.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
         // clang-format off
         _legacyType.wall.flags = Json::GetFlags<uint8_t>(
