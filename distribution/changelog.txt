@@ -10,6 +10,7 @@
 - Feature: [#13376] Open custom window at specified tab.
 - Feature: [#13384] [Plugin] Expose all TileElement data.
 - Feature: [#13398] Add pause button to the Track Designer.
+- Feature: [#13436] macOS: use new icon that matches Big Sur's style.
 - Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
 - Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
 - Feature: [#13512] [Plugin] Add item separators to list view.
