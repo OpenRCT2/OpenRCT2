@@ -49,6 +49,7 @@
   <!-- Files -->
   <ItemGroup>
     <ClCompile Include="..\..\src\openrct2\core\Console.cpp" />
+    <ClCompile Include="..\..\src\openrct2\core\Diagnostics.cpp" />
     <ClCompile Include="..\..\src\openrct2\core\Guard.cpp" />
     <ClCompile Include="..\..\src\openrct2\core\String.cpp" />
     <ClCompile Include="..\..\src\openrct2\Diagnostic.cpp" />
@@ -83,6 +84,7 @@
     <ClCompile Include="..\..\src\openrct2\ride\coaster\ReverseFreefallCoaster.cpp" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\ReverserRollerCoaster.cpp" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\SideFrictionRollerCoaster.cpp" />
+    <ClCompile Include="..\..\src\openrct2\ride\coaster\SingleRailRollerCoaster.cpp" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\Steeplechase.cpp" />
     <ClCompile Include="..\..\src\openrct2\ride\coaster\SuspendedSwingingCoaster.cpp" />
