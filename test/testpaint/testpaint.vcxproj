@@ -151,7 +151,6 @@
     <ClCompile Include="SideTunnelCall.cpp" />
     <ClCompile Include="TestPaint.cpp" />
     <ClCompile Include="TestTrack.cpp" />
-    <ClCompile Include="TrackDataOld.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="VerticalTunnelCall.cpp" />
   </ItemGroup>

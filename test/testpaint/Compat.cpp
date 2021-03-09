@@ -7,8 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Addresses.h"
-
 #include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>

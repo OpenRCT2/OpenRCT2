@@ -37,7 +37,7 @@
 struct TestCase
 {
     uint8_t rideType;
-    std::vector<uint8_t> trackTypes;
+    std::vector<track_type_t> trackTypes;
 };
 
 enum CLIColour
@@ -200,16 +200,9 @@ static void PrintRideTypes()
 {
     for (uint8_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
     {
-        CLIColour colour = CLIColour::DEFAULT;
-        bool implemented = Utils::rideIsImplemented(rideType);
+        CLIColour colour = CLIColour::GREEN;
         const char* rideName = RideNames[rideType];
-        const char* status = "";
-        if (implemented)
-        {
-            status = " [IMPLEMENTED]";
-            colour = CLIColour::GREEN;
-        }
-
+        const char* status = " [IMPLEMENTED]";
         Write(colour, "%2d: %-30s%s\n", rideType, rideName, status);
     }
 }
@@ -289,11 +282,6 @@ int main(int argc, char* argv[])
             continue;
         }
 
-        if (!Utils::rideIsImplemented(rideType))
-        {
-            continue;
-        }
-
         TestCase testCase = {};
         testCase.rideType = rideType;
 
@@ -303,7 +291,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            for (int trackType = 0; trackType < 256; trackType++)
+            for (track_type_t trackType = 0; trackType < TrackElemType::Count; trackType++)
             {
                 if (Utils::rideSupportsTrackType(rideType, trackType))
                 {
@@ -339,15 +327,7 @@ int main(int argc, char* argv[])
 
         for (auto&& trackType : tc.trackTypes)
         {
-            const_utf8string trackTypeName;
-            if (GetRideTypeDescriptor(tc.rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
-            {
-                trackTypeName = FlatTrackNames[trackType];
-            }
-            else
-            {
-                trackTypeName = TrackNames[trackType];
-            }
+            const_utf8string trackTypeName = TrackNames[trackType];
 
             Write(CLIColour::GREEN, "[ RUN      ] ");
             Write("%s.%s\n", rideTypeName, trackTypeName);

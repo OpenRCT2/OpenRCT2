@@ -10,7 +10,6 @@
 #include "PaintIntercept.hpp"
 
 #include "FunctionCall.hpp"
-#include "Hook.h"
 #include "TestPaint.hpp"
 
 #include <cstring>

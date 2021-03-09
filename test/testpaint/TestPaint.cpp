@@ -10,7 +10,6 @@
 #include "TestPaint.hpp"
 
 #include "GeneralSupportHeightCall.hpp"
-#include "Hook.h"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
 #include "Utils.hpp"

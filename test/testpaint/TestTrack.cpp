@@ -37,38 +37,38 @@ public:
     {
     }
 
-    virtual bool AppliesTo(uint8_t rideType, uint8_t trackType) abstract;
+    virtual bool AppliesTo(uint8_t rideType, track_type_t trackType) abstract;
 
-    virtual int Variations(uint8_t rideType, uint8_t trackType) abstract;
+    virtual int Variations(uint8_t rideType, track_type_t trackType) abstract;
 
-    virtual std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) abstract;
+    virtual std::string VariantName(uint8_t rideType, track_type_t trackType, int variant) abstract;
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
-        rct_ride_entry* rideEntry) abstract;
+        uint8_t rideType, track_type_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) abstract;
 };
 
 class CableLiftFilter : public ITestTrackFilter
 {
 public:
-    bool AppliesTo(uint8_t rideType, uint8_t trackType) override
+    bool AppliesTo(uint8_t rideType, track_type_t trackType) override
     {
         return rideType == RIDE_TYPE_GIGA_COASTER;
     }
 
-    int Variations(uint8_t rideType, uint8_t trackType) override
+    int Variations(uint8_t rideType, track_type_t trackType) override
     {
         return 2;
     }
 
-    std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) override
+    std::string VariantName(uint8_t rideType, track_type_t trackType, int variant) override
     {
         return String::Format("cableLift:%d", variant);
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, track_type_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -84,24 +84,24 @@ public:
 class ChainLiftFilter : public ITestTrackFilter
 {
 public:
-    bool AppliesTo(uint8_t rideType, uint8_t trackType) override
+    bool AppliesTo(uint8_t rideType, track_type_t trackType) override
     {
         return !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE);
     }
 
-    int Variations(uint8_t rideType, uint8_t trackType) override
+    int Variations(uint8_t rideType, track_type_t trackType) override
     {
         return 2;
     }
 
-    std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) override
+    std::string VariantName(uint8_t rideType, track_type_t trackType, int variant) override
     {
         return String::Format("chainLift:%d", variant);
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, track_type_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         tileElement->AsTrack()->SetHasChain(variant != 0);
     }
@@ -110,7 +110,7 @@ public:
 class InvertedFilter : public ITestTrackFilter
 {
 public:
-    bool AppliesTo(uint8_t rideType, uint8_t trackType) override
+    bool AppliesTo(uint8_t rideType, track_type_t trackType) override
     {
         if (rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_FLYING_ROLLER_COASTER
             || rideType == RIDE_TYPE_LAY_DOWN_ROLLER_COASTER)
@@ -121,19 +121,19 @@ public:
         return false;
     }
 
-    int Variations(uint8_t rideType, uint8_t trackType) override
+    int Variations(uint8_t rideType, track_type_t trackType) override
     {
         return 2;
     }
 
-    std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) override
+    std::string VariantName(uint8_t rideType, track_type_t trackType, int variant) override
     {
         return String::Format("inverted:%d", variant);
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, track_type_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         if (variant == 0)
         {
@@ -149,7 +149,7 @@ public:
 class EntranceStyleFilter : public ITestTrackFilter
 {
 public:
-    bool AppliesTo(uint8_t rideType, uint8_t trackType) override
+    bool AppliesTo(uint8_t rideType, track_type_t trackType) override
     {
         if (track_type_is_station(trackType))
         {
@@ -159,19 +159,19 @@ public:
         return false;
     }
 
-    int Variations(uint8_t rideType, uint8_t trackType) override
+    int Variations(uint8_t rideType, track_type_t trackType) override
     {
         return 12;
     }
 
-    std::string VariantName(uint8_t rideType, uint8_t trackType, int variant) override
+    std::string VariantName(uint8_t rideType, track_type_t trackType, int variant) override
     {
         return String::Format("entranceStyle:%d", variant);
     }
 
     virtual void ApplyTo(
-        uint8_t rideType, uint8_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement, Ride* ride,
-        rct_ride_entry* rideEntry) override
+        uint8_t rideType, track_type_t trackType, int variant, TileElement* tileElement, TileElement* surfaceElement,
+        Ride* ride, rct_ride_entry* rideEntry) override
     {
         ride->entrance_style = variant;
         // RCT2_Rides[0].entrance_style = variant;
@@ -179,7 +179,8 @@ public:
 };
 
 static void CallNew(
-    uint8_t rideType, uint8_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height, TileElement* tileElement)
+    uint8_t rideType, track_type_t trackType, uint8_t direction, uint8_t trackSequence, uint16_t height,
+    TileElement* tileElement)
 {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = GetRideTypeDescriptor(rideType).TrackPaintFunction;
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType);
@@ -187,21 +188,22 @@ static void CallNew(
     newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, tileElement);
 }
 
-using TestFunction = uint8_t (*)(uint8_t, uint8_t, uint8_t, std::string*);
+using TestFunction = uint8_t (*)(uint8_t, track_type_t, uint8_t, std::string*);
 
-static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+static uint8_t TestTrackElementPaintCalls(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error);
 
 static uint8_t TestTrackElementSegmentSupportHeight(
-    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error);
 
 static uint8_t TestTrackElementGeneralSupportHeight(
-    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error);
 
-static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+static uint8_t TestTrackElementSideTunnels(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error);
 
-static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error);
+static uint8_t TestTrackElementVerticalTunnels(
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error);
 
-uint8_t TestTrack::TestPaintTrackElement(uint8_t rideType, uint8_t trackType, std::string* out)
+uint8_t TestTrack::TestPaintTrackElement(uint8_t rideType, track_type_t trackType, std::string* out)
 {
     if (!Utils::rideSupportsTrackType(rideType, trackType))
     {
@@ -218,7 +220,8 @@ uint8_t TestTrack::TestPaintTrackElement(uint8_t rideType, uint8_t trackType, st
     }
 
     int sequenceCount = Utils::getTrackSequenceCount(rideType, trackType);
-    std::string error = String::Format("rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
+    std::string error = "";
+    // TODO: make equivalent String::Format("rct2: 0x%08X\n", RideTypeTrackPaintFunctionsOld[rideType][trackType]);
 
     uint8_t retVal = TEST_SUCCESS;
 
@@ -244,7 +247,7 @@ uint8_t TestTrack::TestPaintTrackElement(uint8_t rideType, uint8_t trackType, st
     return retVal;
 }
 
-static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+static uint8_t TestTrackElementPaintCalls(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -407,7 +410,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
 }
 
 static uint8_t TestTrackElementSegmentSupportHeight(
-    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -494,7 +497,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
 }
 
 static uint8_t TestTrackElementGeneralSupportHeight(
-    uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -595,7 +598,7 @@ static uint8_t TestTrackElementGeneralSupportHeight(
     return TEST_SUCCESS;
 }
 
-static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+static uint8_t TestTrackElementSideTunnels(uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 
@@ -723,7 +726,8 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
     return TEST_SUCCESS;
 }
 
-static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackType, uint8_t trackSequence, std::string* error)
+static uint8_t TestTrackElementVerticalTunnels(
+    uint8_t rideType, track_type_t trackType, uint8_t trackSequence, std::string* error)
 {
     uint16_t height = 3 * 16;
 

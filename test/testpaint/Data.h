@@ -12,13 +12,11 @@
 
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/Track.h>
 
 extern const_utf8string RideNames[RCT2_RIDE_TYPE_COUNT];
-extern const_utf8string TrackNames[256];
-extern const_utf8string FlatTrackNames[256];
-extern const_utf8string TrackElemNames[256];
-extern const_utf8string RideCodeNames[RCT2_RIDE_TYPE_COUNT];
-extern const_utf8string TrackCodeNames[256];
+extern const_utf8string TrackNames[TrackElemType::Count];
+extern const_utf8string TrackElemNames[TrackElemType::Count];
 extern const uint32_t* RideTypeTrackPaintFunctionsOld[RCT2_RIDE_TYPE_COUNT];
 
 #endif // #endif _TEST_PAINT_DATA_H_

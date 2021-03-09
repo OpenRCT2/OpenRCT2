@@ -9,8 +9,6 @@
 
 #pragma once
 
-#include "Addresses.h"
-
 #include <openrct2/common.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
