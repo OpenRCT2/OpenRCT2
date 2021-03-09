@@ -1968,7 +1968,7 @@ STR_2752    :잔디 청소
 STR_2753    :잔디 깎기
 STR_2754    :물 주기
 STR_2755    :파괴된 시설물 수리
-STR_2756    :쓰레기통 비우기
+STR_2756    :쓰레기/구토 치우기
 STR_2763    :???
 STR_2765    :손님 많이 부르기
 STR_2766    :시나리오 클리어
@@ -2410,7 +2410,7 @@ STR_3308    :{WINDOW_COLOUR_2}흥미도:
 STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
-STR_3312    :{WINDOW_COLOUR_2}보호되고 있는 놀이기구/시설 순서:
+STR_3312    :{WINDOW_COLOUR_2}파괴할 수 없는 놀이기구/시설:
 STR_3313    :시나리오 이름
 STR_3314    :시나리오 이름을 입력하세요:
 STR_3315    :공원/시나리오 상세 설명
