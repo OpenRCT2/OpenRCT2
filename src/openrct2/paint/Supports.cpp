@@ -1,4 +1,4 @@
-﻿/*****************************************************************************
+/*****************************************************************************
  * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
@@ -1002,9 +1002,7 @@ bool metal_a_supports_paint_setup(
         image_id += z - 1;
         image_id |= imageColourFlags;
 
-        PaintAddImageAsParent(
-            session, image_id, { xOffset, yOffset, height }, { 0, 0, 0 },
-            { boundBoxOffset.x, boundBoxOffset.y, boundBoxOffset.z });
+        PaintAddImageAsParent(session, image_id, { xOffset, yOffset, height }, { 0, 0, 0 }, boundBoxOffset);
 
         height += z;
     }
