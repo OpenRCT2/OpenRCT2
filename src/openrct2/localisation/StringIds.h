@@ -1342,7 +1342,7 @@ enum
     STR_CONTINUE_SAVED_GAME_TIP = 1922,
     STR_EXIT = 1924,
     STR_ERR_CANT_PLACE_PERSON_HERE = 1925,
-    // STR_1926    :{SMALLFONT} // Used in window_game_bottom_toolbar_onpaint and window_news_onscrollpaint
+    // STR_1926    :<removed string - do not use>
     STR_RIDE_IS_BROKEN_DOWN = 1927,
     STR_RIDE_HAS_CRASHED = 1928,
     STR_RIDE_IS_STILL_NOT_FIXED = 1929,
@@ -2004,7 +2004,7 @@ enum
     // 2671--2679 unused
 
     STR_RESEARCH_COMPLETED_AL = 2680,
-    STR_CHEAT_5K_MONEY_TIP = 2681,
+    // STR_2681    :<removed string - do not use>
     // STR_2682    :<removed string - do not use>
     // STR_2683    :<removed string - do not use>
     STR_CHEAT_LARGE_TRAM_GUESTS_TIP = 2684,
