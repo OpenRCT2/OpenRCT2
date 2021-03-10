@@ -52,6 +52,7 @@ realpath() {
 }
 scriptsdir="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 export PATH="$scriptsdir:$PATH"
+export PATH="/usr/lib/ccache:/usr/local/opt/ccache/libexec:$PATH"
 
 # Output all the variables
 if [[ "$1" != "-q" ]]; then
