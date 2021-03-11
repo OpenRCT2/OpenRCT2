@@ -390,6 +390,8 @@ struct Objective
         return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
     }
 
+    bool AllowEarlyCompletion() const;
+
     ObjectiveStatus Check() const;
 
 private:
@@ -431,7 +433,7 @@ extern uint32_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
 extern Objective gScenarioObjective;
-
+extern bool gAllowEarlyCompletionInNetworkPlay;
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;

@@ -2754,6 +2754,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
         gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
+        gAllowEarlyCompletionInNetworkPlay = stream->ReadValue<uint8_t>() != 0;
 
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
@@ -2803,6 +2804,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);
         stream->WriteValue<uint8_t>(gConfigGeneral.show_real_names_of_guests);
         stream->WriteValue<uint8_t>(gCheatsIgnoreResearchStatus);
+        stream->WriteValue<uint8_t>(gConfigGeneral.allow_early_completion);
 
         result = true;
     }
