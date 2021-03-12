@@ -200,7 +200,7 @@ void research_finish_item(ResearchItem* researchItem)
 
         if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
-            if (RideTypeIsValid(base_ride_type))
+            if (!RideTypeIsValid(base_ride_type))
             {
                 log_warning("Invalid ride type: %d", base_ride_type);
                 base_ride_type = ride_entry_get_first_non_null_ride_type(rideEntry);
