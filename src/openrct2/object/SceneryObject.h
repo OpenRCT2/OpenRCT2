@@ -25,7 +25,7 @@ public:
     }
     virtual ~SceneryObject() = default;
 
-    const ObjectEntryDescriptor& GetPrimarySceneryGroup()
+    const ObjectEntryDescriptor& GetPrimarySceneryGroup() const
     {
         return _primarySceneryGroupEntry;
     }

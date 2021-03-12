@@ -42,7 +42,7 @@ private:
     static std::vector<uint8_t> ReadFrameOffsets(OpenRCT2::IStream* stream);
     static std::vector<uint8_t> ReadJsonFrameOffsets(json_t& jFrameOffsets);
     void PerformFixes();
-    ObjectEntryDescriptor GetScgPiratHeader();
-    ObjectEntryDescriptor GetScgMineHeader();
-    ObjectEntryDescriptor GetScgAbstrHeader();
+    ObjectEntryDescriptor GetScgPiratHeader() const;
+    ObjectEntryDescriptor GetScgMineHeader() const;
+    ObjectEntryDescriptor GetScgAbstrHeader() const;
 };

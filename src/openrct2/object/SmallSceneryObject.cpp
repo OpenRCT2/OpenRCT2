@@ -208,17 +208,17 @@ void SmallSceneryObject::PerformFixes()
 }
 // clang-format on
 
-ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 {
     return ObjectEntryDescriptor("rct2.scgpirat");
 }
 
-ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
 {
     return ObjectEntryDescriptor("rct2.scgpirat");
 }
 
-ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
 {
     return ObjectEntryDescriptor("rct2.scgabstr");
 }

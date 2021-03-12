@@ -91,12 +91,12 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
     return GetStringTable().GetString(language, index);
 }
 
-ObjectEntryDescriptor Object::GetScgWallsHeader()
+ObjectEntryDescriptor Object::GetScgWallsHeader() const
 {
     return ObjectEntryDescriptor("rct2.scgwalls");
 }
 
-ObjectEntryDescriptor Object::GetScgPathXHeader()
+ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
     return ObjectEntryDescriptor("rct2.scgpathx");
 }
