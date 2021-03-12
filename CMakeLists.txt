@@ -45,8 +45,8 @@ set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.20/objects.zip")
-set(OBJECTS_SHA1 "151424d24b1d49a167932b58319bedaa6ec368e9")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.21/objects.zip")
+set(OBJECTS_SHA1 "c38af45d51a6e440386180feacf76c64720b6ac5")
 
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.31/replays.zip")
 set(REPLAYS_SHA1 "693BDD6F4B7C3B312AABEBCAEA4800FE97B33527")

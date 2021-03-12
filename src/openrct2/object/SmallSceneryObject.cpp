@@ -40,7 +40,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     if (scenery_small_entry_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
@@ -156,14 +156,14 @@ std::vector<uint8_t> SmallSceneryObject::ReadFrameOffsets(OpenRCT2::IStream* str
 void SmallSceneryObject::PerformFixes()
 {
     auto identifier = GetLegacyIdentifier();
-    static const rct_object_entry scgWalls = Object::GetScgWallsHeader();
+    static const auto& scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
     if (identifier == "XXBBCL01" ||
         identifier == "XXBBMD01" ||
         identifier == "ARBASE2 ")
     {
-        SetPrimarySceneryGroup(&scgWalls);
+        SetPrimarySceneryGroup(scgWalls);
 
         _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
     }
@@ -179,8 +179,8 @@ void SmallSceneryObject::PerformFixes()
         identifier == "TTPRF10 " ||
         identifier == "TTPRF11 ")
     {
-        static const rct_object_entry scgPirat = GetScgPiratHeader();
-        SetPrimarySceneryGroup(&scgPirat);
+        static const auto& scgPirat = GetScgPiratHeader();
+        SetPrimarySceneryGroup(scgPirat);
     }
 
     // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
@@ -193,8 +193,8 @@ void SmallSceneryObject::PerformFixes()
         identifier == "TTRFWD07" ||
         identifier == "TTRFWD08")
     {
-        static const rct_object_entry scgMine = GetScgMineHeader();
-        SetPrimarySceneryGroup(&scgMine);
+        static const auto& scgMine = GetScgMineHeader();
+        SetPrimarySceneryGroup(scgMine);
     }
 
     // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
@@ -202,25 +202,25 @@ void SmallSceneryObject::PerformFixes()
         identifier == "TTRFGL02" ||
         identifier == "TTRFGL03")
     {
-        static const rct_object_entry scgAbstr = GetScgAbstrHeader();
-        SetPrimarySceneryGroup(&scgAbstr);
+        static const auto& scgAbstr = GetScgAbstrHeader();
+        SetPrimarySceneryGroup(scgAbstr);
     }
 }
 // clang-format on
 
-rct_object_entry SmallSceneryObject::GetScgPiratHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 {
-    return Object::CreateHeader("SCGPIRAT", 169381767, 132382977);
+    return ObjectEntryDescriptor("rct2.scgpirat");
 }
 
-rct_object_entry SmallSceneryObject::GetScgMineHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
 {
-    return Object::CreateHeader("SCGMINE ", 207140231, 3638141733);
+    return ObjectEntryDescriptor("rct2.scgpirat");
 }
 
-rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
+ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
 {
-    return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
+    return ObjectEntryDescriptor("rct2.scgabstr");
 }
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -301,7 +301,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
             _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS;
         }
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
     }
 
     PopulateTablesFromJson(context, root);

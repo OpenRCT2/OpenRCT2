@@ -38,7 +38,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
@@ -160,7 +160,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
             _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
         }
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
     }
 
     PopulateTablesFromJson(context, root);

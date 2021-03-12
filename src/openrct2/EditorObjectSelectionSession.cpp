@@ -405,15 +405,16 @@ static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
         objectManager.UnloadObjects(oldEntries);
     }
 
-    const rct_object_entry* newPaletteEntry = &item->ObjectEntry;
+    const rct_object_entry& newPaletteEntry = item->ObjectEntry;
 
-    if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
+    if (objectManager.GetLoadedObject(ObjectEntryDescriptor(newPaletteEntry)) != nullptr
+        || objectManager.LoadObject(&newPaletteEntry) != nullptr)
     {
         load_palette();
     }
     else
     {
-        log_error("Failed to load selected palette %.8s", newPaletteEntry->name);
+        log_error("Failed to load selected palette %.8s", newPaletteEntry.name);
     }
 }
 
