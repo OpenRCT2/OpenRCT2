@@ -21,6 +21,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -32,7 +33,6 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
-#include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
@@ -1798,7 +1798,8 @@ static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetInd
             // current value of allow_early_completion to all clients
             if (network_get_mode() == NETWORK_MODE_SERVER)
             {
-                auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.allow_early_completion);
+                auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
+                    ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.allow_early_completion);
                 GameActions::Execute(&setAllowEarlyCompletionAction);
             }
             config_save_default();
