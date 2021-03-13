@@ -54,37 +54,37 @@ static rct_widget window_new_campaign_widgets[] = {
 class NewCampaignWindow final : public Window
 {
 private:
-    std::vector<ride_id_t> RideList = {};
-    uint8_t ShopItems[64] = {};
+    std::vector<ride_id_t> RideList;
+    std::vector<ShopItem> ShopItems;
 
-    static int32_t RideValueCompare(const void* a, const void* b)
+    static bool RideValueCompare(const ride_id_t& a, const ride_id_t& b)
     {
         auto valueA = 0;
-        auto rideA = get_ride(*(static_cast<const uint8_t*>(a)));
+        auto rideA = get_ride(a);
         if (rideA != nullptr)
             valueA = rideA->value;
 
         auto valueB = 0;
-        auto rideB = get_ride(*(static_cast<const uint8_t*>(b)));
+        auto rideB = get_ride(b);
         if (rideB != nullptr)
             valueB = rideB->value;
 
-        return valueB - valueA;
+        return (valueB - valueA) < 0;
     }
 
-    static int32_t RideNameCompare(const void* a, const void* b)
+    static int32_t RideNameCompare(const ride_id_t& a, const ride_id_t& b)
     {
-        std::string rideAName;
-        auto rideA = get_ride(*(static_cast<const uint8_t*>(a)));
+        std::string rideAName = "";
+        auto rideA = get_ride(a);
         if (rideA != nullptr)
             rideAName = rideA->GetName();
 
-        std::string rideBName;
-        auto rideB = get_ride(*(static_cast<const uint8_t*>(b)));
+        std::string rideBName = "";
+        auto rideB = get_ride(b);
         if (rideB != nullptr)
             rideBName = rideB->GetName();
 
-        return _strcmpi(rideAName.c_str(), rideBName.c_str());
+        return strlogicalcmp(rideAName.c_str(), rideBName.c_str()) < 0;
     }
 
     /**
@@ -93,7 +93,7 @@ private:
      */
     void GetShopItems()
     {
-        uint64_t items = 0;
+        std::bitset<EnumValue(ShopItem::Count)> items = {};
         for (auto& curRide : GetRideManager())
         {
             auto rideEntry = curRide.GetRideEntry();
@@ -103,22 +103,19 @@ private:
                 {
                     if (itemType != ShopItem::None && GetShopItemDescriptor(itemType).IsFoodOrDrink())
                     {
-                        items |= EnumToFlag(itemType);
+                        items[EnumValue(itemType)] = true;
                     }
                 }
             }
         }
 
-        //
-        auto numItems = 0;
-        for (auto i = 0; i < 64; i++)
+        for (auto i = 0; i < EnumValue(ShopItem::Count); i++)
         {
-            if (items & (1ULL << i))
+            if (items[i])
             {
-                ShopItems[numItems++] = i;
+                ShopItems.push_back(ShopItem(i));
             }
         }
-        ShopItems[numItems] = 255;
     }
 
 public:
@@ -139,15 +136,14 @@ public:
             }
         }
 
-        // Take top 128 most valuable rides
         if (RideList.size() > Dropdown::ItemsMaxSize)
         {
-            qsort(RideList.data(), RideList.size(), sizeof(ride_id_t), RideValueCompare);
+            std::sort(RideList.begin(), RideList.end(), RideValueCompare);
             RideList.resize(Dropdown::ItemsMaxSize);
         }
 
         // Sort rides by name
-        qsort(RideList.data(), RideList.size(), sizeof(ride_id_t), RideNameCompare);
+        std::sort(RideList.begin(), RideList.end(), RideNameCompare);
     }
 
     void OnOpen() override
@@ -161,7 +157,7 @@ public:
 
     void SetCampaign(int16_t campaignType)
     {
-        window_new_campaign_widgets[WIDX_TITLE].text = MarketingCampaignNames[campaignType][0];
+        widgets[WIDX_TITLE].text = MarketingCampaignNames[campaignType][0];
 
         // Campaign type
         campaign.campaign_type = campaignType;
@@ -188,16 +184,14 @@ public:
                 if (campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
                     GetShopItems();
-                    if (ShopItems[0] != 255)
+                    if (!ShopItems.empty())
                     {
                         int32_t numItems = 0;
-                        for (int32_t i = 0; i < Dropdown::ItemsMaxSize; i++)
+                        int32_t maxSize = std::min(Dropdown::ItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
+                        for (int32_t i = 0; i < maxSize; i++)
                         {
-                            if (ShopItems[i] == 255)
-                                break;
-
                             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                            gDropdownItemsArgs[i] = GetShopItemDescriptor(ShopItem(ShopItems[i])).Naming.Plural;
+                            gDropdownItemsArgs[i] = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
                             numItems++;
                         }
 
@@ -280,13 +274,10 @@ public:
 
         if (campaign.campaign_type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
-            if (static_cast<size_t>(dropdownIndex) >= std::size(ShopItems))
+            if (static_cast<size_t>(dropdownIndex) >= ShopItems.size())
                 return;
 
-            if (ShopItems[dropdownIndex] == 255)
-                return;
-
-            campaign.ShopItemId = ShopItems[dropdownIndex];
+            campaign.ShopItemId = EnumValue(ShopItems[dropdownIndex]);
         }
         else
         {
@@ -301,24 +292,24 @@ public:
 
     void OnPrepareDraw() override
     {
-        window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Empty;
-        window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::Empty;
-        window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
-        window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
+        widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Empty;
+        widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::Empty;
+        widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+        widgets[WIDX_RIDE_DROPDOWN].text = STR_MARKETING_NOT_SELECTED;
         switch (campaign.campaign_type)
         {
             case ADVERTISING_CAMPAIGN_RIDE_FREE:
             case ADVERTISING_CAMPAIGN_RIDE:
-                window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-                window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
+                widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
+                widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
+                widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
                 if (campaign.RideId != SELECTED_RIDE_UNDEFINED)
                 {
                     auto curRide = get_ride(campaign.RideId);
                     if (curRide != nullptr)
                     {
-                        window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
+                        widgets[WIDX_RIDE_DROPDOWN].text = STR_STRINGID;
 
                         auto ft = Formatter::Common();
                         curRide->FormatNameTo(ft);
@@ -326,26 +317,24 @@ public:
                 }
                 break;
             case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                window_new_campaign_widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
-                window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
-                window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
+                widgets[WIDX_RIDE_LABEL].type = WindowWidgetType::Label;
+                widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
+                widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+                widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
                 if (campaign.ShopItemId != SELECTED_RIDE_UNDEFINED)
                 {
-                    window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(campaign.ShopItemId))
-                                                                               .Naming.Plural;
+                    widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(campaign.ShopItemId)).Naming.Plural;
                 }
                 break;
         }
 
         // Set current number of weeks spinner (moved to paint due to required parameter)
-        window_new_campaign_widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
+        widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
 
         // Enable / disable start button based on ride dropdown
-        disabled_widgets &= ~(1 << WIDX_START_BUTTON);
-        if (window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu
-            && campaign.RideId == SELECTED_RIDE_UNDEFINED)
-            disabled_widgets |= 1 << WIDX_START_BUTTON;
+        WidgetSetDisabled(this, WIDX_START_BUTTON, false);
+        if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == SELECTED_RIDE_UNDEFINED)
+            WidgetSetDisabled(this, WIDX_START_BUTTON, true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -355,7 +344,7 @@ public:
         DrawWidgets(dpi);
 
         // Number of weeks
-        rct_widget* spinnerWidget = &window_new_campaign_widgets[WIDX_WEEKS_SPINNER];
+        rct_widget* spinnerWidget = &widgets[WIDX_WEEKS_SPINNER];
         DrawTextBasic(
             &dpi, windowPos + ScreenCoordsXY{ spinnerWidget->left + 1, spinnerWidget->top },
             campaign.no_weeks == 1 ? STR_MARKETING_1_WEEK : STR_X_WEEKS, &campaign.no_weeks, { colours[0] });
