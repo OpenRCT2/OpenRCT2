@@ -240,7 +240,6 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::AllowEarlyCompletion:
             gAllowEarlyCompletionInNetworkPlay = _value;
             break;
-            
         default:
             log_error("Invalid setting: %u", _setting);
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
