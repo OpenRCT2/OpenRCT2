@@ -54,6 +54,9 @@ else
 
     mkdir -p $workdir/OpenRCT2
     cp -r $install/bin/* $workdir/OpenRCT2
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        cp -R $install/lib/ $workdir/OpenRCT2
+    fi
     cp -r $install/share/doc/openrct2 $workdir/OpenRCT2/doc
     cp -r $install/share/openrct2 $workdir/OpenRCT2/data
     pushd $workdir > /dev/null
