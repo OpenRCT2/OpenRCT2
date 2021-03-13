@@ -3292,18 +3292,18 @@ STR_6014    :Bezoekers betalen om in attracties te gaan en voor faciliteiten{NEW
 STR_6015    :Helling
 STR_6016    :Vakje aanpassen
 STR_6017    :Ietsje langzamer alsjeblieft.
-STR_6018    :Attractiebouw: bocht naar links
-STR_6019    :Attractiebouw: bocht naar rechts
-STR_6020    :Attractiebouw: standaardbaanstuk
-STR_6021    :Attractiebouw: helling naar beneden
-STR_6022    :Attractiebouw: helling naar boven
-STR_6023    :Attractiebouw: kettinglift aan/uit
-STR_6024    :Attractiebouw: verkanting (links)
-STR_6025    :Attractiebouw: verkanting (rechts)
-STR_6026    :Attractiebouw: vorig baanstuk
-STR_6027    :Attractiebouw: volgend baanstuk
-STR_6028    :Attractiebouw: onderdeel bouwen
-STR_6029    :Attractiebouw: onderdeel verwijderen
+STR_6018    :Bouw: bocht naar links
+STR_6019    :Bouw: bocht naar rechts
+STR_6020    :Bouw: standaardbaanstuk
+STR_6021    :Bouw: helling naar beneden
+STR_6022    :Bouw: helling naar boven
+STR_6023    :Bouw: kettinglift aan/uit
+STR_6024    :Bouw: verkanting (links)
+STR_6025    :Bouw: verkanting (rechts)
+STR_6026    :Bouw: vorig baanstuk
+STR_6027    :Bouw: volgend baanstuk
+STR_6028    :Bouw: onderdeel bouwen
+STR_6029    :Bouw: onderdeel verwijderen
 STR_6030    :Decorselector. Klik op een al geplaatst decorstuk om het te selecteren in dit venster (inclusief de kleuren).
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
