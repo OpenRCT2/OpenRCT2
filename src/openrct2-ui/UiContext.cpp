@@ -14,7 +14,7 @@
 #include "TextComposition.h"
 #include "WindowManager.h"
 #include "drawing/engines/DrawingEngineFactory.hpp"
-#include "input/KeyboardShortcuts.h"
+#include "input/ShortcutManager.h"
 #include "interface/InGameConsole.h"
 #include "interface/Theme.h"
 #include "scripting/UiExtensions.h"
@@ -26,6 +26,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <memory>
+#include <openrct2-ui/input/InputManager.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -48,7 +49,6 @@
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
-using namespace OpenRCT2::Input;
 using namespace OpenRCT2::Scripting;
 using namespace OpenRCT2::Ui;
 
@@ -79,7 +79,8 @@ private:
     bool _steamOverlayActive = false;
 
     // Input
-    KeyboardShortcuts _keyboardShortcuts;
+    InputManager _inputManager;
+    ShortcutManager _shortcutManager;
     TextComposition _textComposition;
     CursorState _cursorState = {};
     uint32_t _lastKeyPressed = 0;
@@ -97,18 +98,27 @@ public:
         return _inGameConsole;
     }
 
+    InputManager& GetInputManager()
+    {
+        return _inputManager;
+    }
+
+    ShortcutManager& GetShortcutManager()
+    {
+        return _shortcutManager;
+    }
+
     explicit UiContext(const std::shared_ptr<IPlatformEnvironment>& env)
         : _platformUiContext(CreatePlatformUiContext())
         , _windowManager(CreateWindowManager())
-        , _keyboardShortcuts(env)
+        , _shortcutManager(env)
     {
-        if (SDL_Init(SDL_INIT_VIDEO) < 0)
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
-            SDLException::Throw("SDL_Init(SDL_INIT_VIDEO)");
+            SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
         }
         _cursorRepository.LoadCursors();
-        _keyboardShortcuts.Reset();
-        _keyboardShortcuts.Load();
+        _shortcutManager.LoadUserBindings();
     }
 
     ~UiContext() override
@@ -134,7 +144,7 @@ public:
 
     void Draw(rct_drawpixelinfo* dpi) override
     {
-        auto bgColour = theme_get_colour(WC_CHAT, 0);
+        auto bgColour = ThemeGetColour(WC_CHAT, 0);
         chat_draw(dpi, bgColour);
         _inGameConsole.Draw(dpi);
     }
@@ -401,7 +411,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_PRESS, mousePos);
+                            StoreMouseInput(MouseState::LeftPress, mousePos);
                             _cursorState.left = CURSOR_PRESSED;
                             _cursorState.old = 1;
                             break;
@@ -409,12 +419,21 @@ public:
                             _cursorState.middle = CURSOR_PRESSED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_PRESS, mousePos);
+                            StoreMouseInput(MouseState::RightPress, mousePos);
                             _cursorState.right = CURSOR_PRESSED;
                             _cursorState.old = 2;
                             break;
                     }
                     _cursorState.touch = false;
+
+                    {
+                        InputEvent ie;
+                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Modifiers = SDL_GetModState();
+                        ie.Button = e.button.button;
+                        ie.State = InputEventState::Down;
+                        _inputManager.QueueInputEvent(std::move(ie));
+                    }
                     break;
                 }
                 case SDL_MOUSEBUTTONUP:
@@ -428,7 +447,7 @@ public:
                     switch (e.button.button)
                     {
                         case SDL_BUTTON_LEFT:
-                            store_mouse_input(MOUSE_STATE_LEFT_RELEASE, mousePos);
+                            StoreMouseInput(MouseState::LeftRelease, mousePos);
                             _cursorState.left = CURSOR_RELEASED;
                             _cursorState.old = 3;
                             break;
@@ -436,12 +455,21 @@ public:
                             _cursorState.middle = CURSOR_RELEASED;
                             break;
                         case SDL_BUTTON_RIGHT:
-                            store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, mousePos);
+                            StoreMouseInput(MouseState::RightRelease, mousePos);
                             _cursorState.right = CURSOR_RELEASED;
                             _cursorState.old = 4;
                             break;
                     }
                     _cursorState.touch = false;
+
+                    {
+                        InputEvent ie;
+                        ie.DeviceKind = InputDeviceKind::Mouse;
+                        ie.Modifiers = SDL_GetModState();
+                        ie.Button = e.button.button;
+                        ie.State = InputEventState::Release;
+                        _inputManager.QueueInputEvent(std::move(ie));
+                    }
                     break;
                 }
                 // Apple sends touchscreen events for trackpads, so ignore these events on macOS
@@ -461,13 +489,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_PRESS, fingerPos);
+                        StoreMouseInput(MouseState::RightPress, fingerPos);
                         _cursorState.right = CURSOR_PRESSED;
                         _cursorState.old = 2;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_PRESS, fingerPos);
+                        StoreMouseInput(MouseState::LeftPress, fingerPos);
                         _cursorState.left = CURSOR_PRESSED;
                         _cursorState.old = 1;
                     }
@@ -482,13 +510,13 @@ public:
 
                     if (_cursorState.touchIsDouble)
                     {
-                        store_mouse_input(MOUSE_STATE_RIGHT_RELEASE, fingerPos);
+                        StoreMouseInput(MouseState::RightRelease, fingerPos);
                         _cursorState.right = CURSOR_RELEASED;
                         _cursorState.old = 4;
                     }
                     else
                     {
-                        store_mouse_input(MOUSE_STATE_LEFT_RELEASE, fingerPos);
+                        StoreMouseInput(MouseState::LeftRelease, fingerPos);
                         _cursorState.left = CURSOR_RELEASED;
                         _cursorState.old = 3;
                     }
@@ -497,8 +525,20 @@ public:
                 }
 #endif
                 case SDL_KEYDOWN:
+                {
                     _textComposition.HandleMessage(&e);
+                    auto ie = GetInputEventFromSDLEvent(e);
+                    ie.State = InputEventState::Down;
+                    _inputManager.QueueInputEvent(std::move(ie));
                     break;
+                }
+                case SDL_KEYUP:
+                {
+                    auto ie = GetInputEventFromSDLEvent(e);
+                    ie.State = InputEventState::Release;
+                    _inputManager.QueueInputEvent(std::move(ie));
+                    break;
+                }
                 case SDL_MULTIGESTURE:
                     if (e.mgesture.numFingers == 2)
                     {
@@ -526,7 +566,10 @@ public:
                     _textComposition.HandleMessage(&e);
                     break;
                 default:
+                {
+                    _inputManager.QueueInputEvent(e);
                     break;
+                }
             }
         }
 
@@ -604,6 +647,16 @@ public:
         _platformUiContext->ShowMessageBox(_window, message);
     }
 
+    bool HasMenuSupport() override
+    {
+        return _platformUiContext->HasMenuSupport();
+    }
+
+    int32_t ShowMenuDialog(const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+    {
+        return _platformUiContext->ShowMenuDialog(options, title, text);
+    }
+
     void OpenFolder(const std::string& path) override
     {
         _platformUiContext->OpenFolder(path);
@@ -622,6 +675,11 @@ public:
     std::string ShowDirectoryDialog(const std::string& title) override
     {
         return _platformUiContext->ShowDirectoryDialog(_window, title);
+    }
+
+    bool HasFilePicker() const override
+    {
+        return _platformUiContext->HasFilePicker();
     }
 
     IWindowManager* GetWindowManager() override
@@ -884,6 +942,32 @@ private:
             return;
         }
     }
+
+    InputEvent GetInputEventFromSDLEvent(const SDL_Event& e)
+    {
+        InputEvent ie;
+        ie.DeviceKind = InputDeviceKind::Keyboard;
+        ie.Modifiers = e.key.keysym.mod;
+        ie.Button = e.key.keysym.sym;
+
+        // Handle dead keys
+        if (ie.Button == (SDLK_SCANCODE_MASK | 0))
+        {
+            switch (e.key.keysym.scancode)
+            {
+                case SDL_SCANCODE_APOSTROPHE:
+                    ie.Button = '\'';
+                    break;
+                case SDL_SCANCODE_GRAVE:
+                    ie.Button = '`';
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return ie;
+    }
 };
 
 std::unique_ptr<IUiContext> OpenRCT2::Ui::CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env)
@@ -895,4 +979,16 @@ InGameConsole& OpenRCT2::Ui::GetInGameConsole()
 {
     auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
     return uiContext->GetInGameConsole();
+}
+
+InputManager& OpenRCT2::Ui::GetInputManager()
+{
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
+    return uiContext->GetInputManager();
+}
+
+ShortcutManager& OpenRCT2::Ui::GetShortcutManager()
+{
+    auto uiContext = std::static_pointer_cast<UiContext>(GetContext()->GetUiContext());
+    return uiContext->GetShortcutManager();
 }

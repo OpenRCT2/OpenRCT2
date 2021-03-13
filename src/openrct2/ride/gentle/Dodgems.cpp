@@ -10,6 +10,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../util/Util.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
@@ -30,9 +31,9 @@ static constexpr const uint32_t dodgems_fence_sprites[] = { SPR_DODGEMS_FENCE_TO
 static void paint_dodgems_roof(paint_session* session, int32_t height, int32_t offset)
 {
     uint32_t image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
-    sub_98196C(session, image_id, 0, 0, 32, 32, 2, height);
+    PaintAddImageAsParent(session, image_id, 0, 0, 32, 32, 2, height);
 
-    image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
+    image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (EnumValue(FilterPaletteID::PaletteDarken3) << 19) | IMAGE_TYPE_TRANSPARENT;
     PaintAttachToPreviousPS(session, image_id, 0, 0);
 }
 
@@ -47,7 +48,7 @@ static void paint_dodgems(
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height);
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
@@ -97,7 +98,7 @@ static void paint_dodgems(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_dodgems(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_4_X_4)
+    if (trackType != TrackElemType::FlatTrack4x4)
     {
         return nullptr;
     }

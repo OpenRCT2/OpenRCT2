@@ -37,7 +37,7 @@ void wall_remove_at(const CoordsXYRangedZ& wallPos)
     for (auto wallElement = map_get_wall_element_at(wallPos); wallElement != nullptr;
          wallElement = map_get_wall_element_at(wallPos))
     {
-        tile_element_remove_banner_entry(reinterpret_cast<TileElement*>(wallElement));
+        reinterpret_cast<TileElement*>(wallElement)->RemoveBannerEntry();
         map_invalidate_tile_zoom1({ wallPos, wallElement->GetBaseZ(), wallElement->GetBaseZ() + 72 });
         tile_element_remove(reinterpret_cast<TileElement*>(wallElement));
     }
@@ -74,7 +74,7 @@ void wall_remove_intersecting_walls(const CoordsXYRangedZ& wallPos, Direction di
         if (direction != tileElement->GetDirection())
             continue;
 
-        tile_element_remove_banner_entry(tileElement);
+        tileElement->RemoveBannerEntry();
         map_invalidate_tile_zoom1({ wallPos, tileElement->GetBaseZ(), tileElement->GetBaseZ() + 72 });
         tile_element_remove(tileElement);
         tileElement--;
@@ -185,17 +185,4 @@ void WallElement::SetAnimationIsBackwards(bool isBackwards)
     animation &= ~WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
     if (isBackwards)
         animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-}
-
-void WallElement::SetRawRCT1Data(uint32_t rawData)
-{
-    entryIndex = rawData & 0xFF;
-    colour_3 = (rawData >> 8) & 0xFF;
-    colour_1 = (rawData >> 16) & 0xFF;
-    animation = (rawData >> 24) & 0xFF;
-}
-
-uint8_t WallElement::GetRCT1Slope() const
-{
-    return entryIndex & 0b00011111;
 }

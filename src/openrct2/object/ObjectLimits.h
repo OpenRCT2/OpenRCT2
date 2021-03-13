@@ -22,10 +22,10 @@ constexpr const uint16_t MAX_SCENERY_GROUP_OBJECTS = 19;
 constexpr const uint16_t MAX_PARK_ENTRANCE_OBJECTS = 1;
 constexpr const uint16_t MAX_WATER_OBJECTS = 1;
 constexpr const uint16_t MAX_SCENARIO_TEXT_OBJECTS = 1;
-constexpr const uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 14;
+constexpr const uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 18;
 constexpr const uint16_t MAX_TERRAIN_EDGE_OBJECTS = 255;
 constexpr const uint16_t MAX_STATION_OBJECTS = 255;
-constexpr const uint16_t MAX_MUSIC_OBJECTS = 0;
+constexpr const uint16_t MAX_MUSIC_OBJECTS = 255;
 
 // clang-format off
 constexpr const uint16_t OBJECT_ENTRY_COUNT =

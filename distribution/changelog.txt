@@ -1,3 +1,76 @@
+0.3.2+ (in development)
+------------------------------------------------------------------------
+- Feature: [#6677] Add Discord RPC to macOS builds.
+- Feature: [#6844] Enhanced track designer with ability to add/remove scenery and footpaths.
+- Feature: [#7059] Landscape doors for the Ghost Train.
+- Feature: [#11859] Add on-ride photo section to Air Powered Vertical and Reverse Freefall Coaster.
+- Feature: [#12307] Allow extraction of GOG installer via innoextract (for Linux users).
+- Feature: [#13057] Make GameAction flags accessible by plugins.
+- Feature: [#13078] [Plugin] Add colour picker widget.
+- Feature: [#13376] Open custom window at specified tab.
+- Feature: [#13384] [Plugin] Expose all TileElement data.
+- Feature: [#13398] Add pause button to the Track Designer.
+- Feature: [#13436] macOS: use new icon that matches Big Sur's style.
+- Feature: [#13495] [Plugin] Add properties for park value, guests and company value.
+- Feature: [#13509] [Plugin] Add ability to format strings using OpenRCT2 string framework.
+- Feature: [#13512] [Plugin] Add item separators to list view.
+- Feature: [#13583] [Plugin] Add allowed_hosts to plugin section of config.
+- Feature: [#13593] [Plugin] Add ability to read and change the position of ride vehicles.
+- Feature: [#13613] Add single-rail roller coaster (Rocky Mountain Construction Raptor).
+- Feature: [#13614] Add terrain surfaces from RollerCoaster Tycoon 1.
+- Feature: [#13675] [Plugin] Add context.setInterval and context.setTimeout.
+- Feature: [#13848] Replace shortcut engine allowing multiple bindings from different input devices.
+- Feature: [#13927] [Plugin] Add isVisible and text box widget.
+- Feature: [#13965] Make ride construction shortcuts work for footpath, too.
+- Feature: [#13969] [Plugin] Add APIs for editing title sequences.
+- Feature: [#14002] [Plugin] Use allowed_hosts when checking the binding IP for listening.
+- Feature: [#14059] [Plugin] Add optional filter to custom tools.
+- Feature: [#14142] [Plugin] Add option for taking transparent screenshots.
+- Feature: [#14171] [Plugin] Add API for getting network traffic statistics.
+- Feature: [#14171] [Plugin] Add API for creating custom widgets.
+- Feature: [#14171] [Plugin] Add API for drawing graphics for custom widgets.
+- Feature: [#14171] [Plugin] Add click event to spinners and allow them to be held down.
+- Feature: [#14252] [Plugin] Add API for vehicle g-forces. 
+- Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
+- Change: [#13857] Change Rotation Control Toggle to track element number 256
+- Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
+- Fix: [#7772] Hacked vehicles may incorrectly not mark a vehicle object as in use causing accidental removal when remove_unused_objects is used.
+- Fix: [#9631, #10716] Banners drawing glitches when there are more than 32 on the screen at once.
+- Fix: [#11438] Freeze when shrinking map size.
+- Fix: [#11484] Console output does not properly return to column 0 after line ending.
+- Fix: [#12895] Mechanics are called to repair rides that have already been fixed.
+- Fix: [#13048] Keyboard mute button interpreted as `C` key.
+- Fix: [#13102] Underflow on height chart (Ride measurements).
+- Fix: [#13234] Incorrect vehicle mass after using Remove All Guests cheat.
+- Fix: [#13236] New ride type appears as new vehicle type in research.
+- Fix: [#13257] Rides that are exactly the minimum objective length are not counted.
+- Fix: [#13334] Uninitialised variables in CustomTabDesc.
+- Fix: [#13342] Rename tabChange to onTabChange in WindowDesc interface.
+- Fix: [#13427] Newly created Go-Karts show “Race won by <blank>”.
+- Fix: [#13431] [Plugin] UI disabled widgets can still be interacted with.
+- Fix: [#13454] Plug-ins do not load on Windows if the user directory contains non-ASCII characters.
+- Fix: [#13466] “Build 5 roller coasters” excitement corrupted in Park window.
+- Fix: [#13469] Exception thrown from plugin in context.subscribe.
+- Fix: [#13477] Plug-in widget tooltips do not work.
+- Fix: [#13489] Mechanics continue heading to inspect broken down rides.
+- Fix: [#13510] [Plugin] list view scroll resets when items is set.
+- Fix: [#13574] Crash when a JSON object does not set `originalId`.
+- Fix: [#13832] Players last action position is invalid on opening/closing a ride in multiplayer.
+- Fix: [#13937] Pathfinding gets confused when two entrances/exits from the same ride are on top of each other.
+- Fix: [#13961] Animation for Guests sliding down Spiral Slide is missing on close zoom levels.
+- Fix: [#14012] 'Finish 5 roller coasters' goal is listed incorrectly in scenario selector.
+- Fix: [#14095] Holding down [-][+] buttons does not decrease/increase number of circuits.
+- Fix: [#14225] Desync when “allow early scenario completion” is enabled.
+- Fix: [#14247] Scenarios from RCT1 allow hiring too many staff.
+- Improved: [#6022] Allow up to 128 ride objects to be selected in track designer.
+- Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
+- Improved: [#13386] A GUI error message is now displayed if the language files are missing.
+- Improved: [#14193] [Plugin] Add TileElement union type and use it in Tile interface instead of BaseTileElement.
+- Improved: [#14193] [Plugin] Add exact type field to each TileElement, add type field to WidgetBase.
+- Improved: [#14193] [Plugin] Change single quotes to double quotes in openrct2.d.ts.
+- Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
+- Removed: [#14186] Network traffic window (replaced by plug-in).
+
 0.3.2 (2020-11-01)
 ------------------------------------------------------------------------
 - Feature: [#12110] Add Hybrid Coaster (Rocky Mountain Construction I-Box) track type.

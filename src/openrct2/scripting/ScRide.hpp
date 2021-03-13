@@ -196,10 +196,10 @@ namespace OpenRCT2::Scripting
             auto ride = GetRide();
             if (ride != nullptr)
             {
-                auto rideObject = GetContext()->GetObjectManager().GetLoadedObject(OBJECT_TYPE_RIDE, ride->subtype);
+                auto rideObject = GetContext()->GetObjectManager().GetLoadedObject(ObjectType::Ride, ride->subtype);
                 if (rideObject != nullptr)
                 {
-                    return std::make_shared<ScRideObject>(OBJECT_TYPE_RIDE, ride->subtype);
+                    return std::make_shared<ScRideObject>(ObjectType::Ride, ride->subtype);
                 }
             }
             return nullptr;

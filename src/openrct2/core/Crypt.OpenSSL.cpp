@@ -19,7 +19,7 @@
 
 using namespace Crypt;
 
-static void OpenSSLThrowOnBadStatus(const std::string_view& name, int status)
+static void OpenSSLThrowOnBadStatus(std::string_view name, int status)
 {
     if (status != 1)
     {
@@ -156,12 +156,12 @@ public:
         }
     }
 
-    void SetPrivate(const std::string_view& pem) override
+    void SetPrivate(std::string_view pem) override
     {
         SetKey(pem, true);
     }
 
-    void SetPublic(const std::string_view& pem) override
+    void SetPublic(std::string_view pem) override
     {
         SetKey(pem, false);
     }
@@ -179,7 +179,7 @@ public:
 private:
     EVP_PKEY* _evpKey{};
 
-    void SetKey(const std::string_view& pem, bool isPrivate)
+    void SetKey(std::string_view pem, bool isPrivate)
     {
         // Read PEM data via BIO buffer
         // HACK first parameter is not const on MINGW for some reason

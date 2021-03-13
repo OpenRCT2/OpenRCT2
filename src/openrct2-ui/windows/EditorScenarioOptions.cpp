@@ -17,8 +17,8 @@
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/ClimateSetAction.hpp>
-#include <openrct2/actions/ScenarioSetSettingAction.hpp>
+#include <openrct2/actions/ClimateSetAction.h>
+#include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
@@ -119,52 +119,52 @@ enum {
 
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WWT_RESIZE,   WindowColour::Secondary                                                            ),
+    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
     MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
     MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
     MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
-    MakeSpinnerWidgets({168,  65}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  82}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168,  99}, {              100,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeSpinnerWidgets({168, 116}, {               70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+    MakeSpinnerWidgets({168,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
+    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_guests_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
-    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WWT_RESIZE,   WindowColour::Secondary),
-    MakeRemapWidget   ({  3,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
-    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
-    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
-    MakeSpinnerWidgets({268,  48}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  65}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  82}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeSpinnerWidgets({268,  99}, {            70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
-    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
+    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
+    MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
+    MakeRemapWidget   ({ 34,  17}, {            31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
+    MakeRemapWidget   ({ 65,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
+    MakeSpinnerWidgets({268,  48}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  65}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  82}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
+    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_scenario_options_park_widgets[] = {
     WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
-    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WWT_RESIZE,   WindowColour::Secondary                                                                  ),
-    MakeRemapWidget   ({  3,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
-    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
-    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WWT_TAB,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeSpinnerWidgets({188,  48}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeSpinnerWidgets({188,  65}, {          70,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeWidget        ({  8,  82}, {         210,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeWidget        ({206,  83}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
-    MakeSpinnerWidgets({328,  82}, {          67,  12}, WWT_SPINNER,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
-    MakeWidget        ({188,  99}, {         207,  12}, WWT_DROPDOWN, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({383, 100}, {          11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
-    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
-    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WWT_CHECKBOX, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
+    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
+    MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
+    MakeRemapWidget   ({ 34,  17}, {          31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
+    MakeRemapWidget   ({ 65,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
+    MakeSpinnerWidgets({188,  48}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeSpinnerWidgets({188,  65}, {          70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({  8,  82}, {         210,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeWidget        ({206,  83}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_PAY_FOR_PARK_PAY_FOR_RIDES_TIP),
+    MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
+    MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
+    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     { WIDGETS_END }
 };
 
@@ -331,12 +331,12 @@ rct_window* window_editor_scenario_options_open()
     if (w != nullptr)
         return w;
 
-    w = window_create_centred(
+    w = WindowCreateCentred(
         280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
     w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->page = 0;
 
     return w;
@@ -411,7 +411,7 @@ static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }
 
@@ -483,10 +483,10 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
         gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[i] = ClimateNames[i];
     }
-    window_dropdown_show_text_custom_width(
+    WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
-        w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
-    dropdown_set_checked(static_cast<uint8_t>(gClimate), true);
+        w->colours[1], 0, Dropdown::Flag::StayOpen, static_cast<uint8_t>(ClimateType::Count), dropdownWidget->width() - 3);
+    Dropdown::SetChecked(static_cast<uint8_t>(gClimate), true);
 }
 
 /**
@@ -631,7 +631,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -641,24 +641,24 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     {
         w->pressed_widgets |= (1 << WIDX_NO_MONEY);
         for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
-            w->widgets[i].type = WWT_EMPTY;
+            w->widgets[i].type = WindowWidgetType::Empty;
     }
     else
     {
         w->pressed_widgets &= ~(1 << WIDX_NO_MONEY);
-        w->widgets[WIDX_INITIAL_CASH].type = WWT_SPINNER;
-        w->widgets[WIDX_INITIAL_CASH_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INITIAL_CASH_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INITIAL_LOAN].type = WWT_SPINNER;
-        w->widgets[WIDX_INITIAL_LOAN_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INITIAL_LOAN_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_MAXIMUM_LOAN].type = WWT_SPINNER;
-        w->widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INTEREST_RATE].type = WWT_SPINNER;
-        w->widgets[WIDX_INTEREST_RATE_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_INTEREST_RATE_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_FORBID_MARKETING].type = WWT_CHECKBOX;
+        w->widgets[WIDX_INITIAL_CASH].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_INITIAL_CASH_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_INITIAL_CASH_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_INITIAL_LOAN].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_INITIAL_LOAN_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_INITIAL_LOAN_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
     }
 
     if (gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN)
@@ -666,7 +666,8 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     else
         w->pressed_widgets &= ~(1 << WIDX_FORBID_MARKETING);
 
-    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
+    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                : WindowWidgetType::CloseBox;
 
     window_editor_scenario_options_anchor_border_widgets(w);
 }
@@ -679,49 +680,49 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
 {
     ScreenCoordsXY screenCoords{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_INITIAL_CASH].type != WWT_EMPTY)
+    if (w->widgets[WIDX_INITIAL_CASH].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_CASH].top };
-        gfx_draw_string_left(dpi, STR_INIT_CASH_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INIT_CASH_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_CASH].left + 1, w->widgets[WIDX_INITIAL_CASH].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gInitialCash, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gInitialCash);
     }
 
-    if (w->widgets[WIDX_INITIAL_LOAN].type != WWT_EMPTY)
+    if (w->widgets[WIDX_INITIAL_LOAN].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INITIAL_LOAN].top };
-        gfx_draw_string_left(dpi, STR_INIT_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INIT_LOAN_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INITIAL_LOAN].left + 1, w->widgets[WIDX_INITIAL_LOAN].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gBankLoan, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gBankLoan);
     }
 
-    if (w->widgets[WIDX_MAXIMUM_LOAN].type != WWT_EMPTY)
+    if (w->widgets[WIDX_MAXIMUM_LOAN].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        gfx_draw_string_left(dpi, STR_MAX_LOAN_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_MAX_LOAN_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_MAXIMUM_LOAN].left + 1, w->widgets[WIDX_MAXIMUM_LOAN].top };
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &gMaxBankLoan);
     }
 
-    if (w->widgets[WIDX_INTEREST_RATE].type != WWT_EMPTY)
+    if (w->widgets[WIDX_INTEREST_RATE].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_INTEREST_RATE].top };
-        gfx_draw_string_left(dpi, STR_INTEREST_RATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_INTEREST_RATE_LABEL);
 
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_INTEREST_RATE].left + 1, w->widgets[WIDX_INTEREST_RATE].top };
 
         int16_t interestRate = std::clamp<int16_t>(static_cast<int16_t>(gBankLoanInterestRate), INT16_MIN, INT16_MAX);
-        gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &interestRate, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &interestRate);
     }
 }
 
@@ -911,7 +912,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -919,15 +920,15 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
     {
-        w->widgets[WIDX_CASH_PER_GUEST].type = WWT_EMPTY;
-        w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_EMPTY;
-        w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_EMPTY;
+        w->widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Empty;
     }
     else
     {
-        w->widgets[WIDX_CASH_PER_GUEST].type = WWT_SPINNER;
-        w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WWT_BUTTON;
+        w->widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_CASH_PER_GUEST_DECREASE].type = WindowWidgetType::Button;
     }
 
     // Guests prefer less intense rides checkbox
@@ -942,7 +943,8 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
     else
         w->pressed_widgets &= ~(1 << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES);
 
-    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
+    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                : WindowWidgetType::CloseBox;
 
     window_editor_scenario_options_anchor_border_widgets(w);
 }
@@ -956,51 +958,51 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
     int32_t arg;
     ScreenCoordsXY screenCoords{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_CASH_PER_GUEST].type != WWT_EMPTY)
+    if (w->widgets[WIDX_CASH_PER_GUEST].type != WindowWidgetType::Empty)
     {
         // Cash per guest label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CASH_PER_GUEST].top };
-        gfx_draw_string_left(dpi, STR_CASH_PER_GUEST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CASH_PER_GUEST_LABEL);
 
         // Cash per guest value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CASH_PER_GUEST].left + 1, w->widgets[WIDX_CASH_PER_GUEST].top };
         arg = gGuestInitialCash;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     // Guest initial happiness label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HAPPINESS, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HAPPINESS);
 
     // Guest initial happiness value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].left + 1, w->widgets[WIDX_GUEST_INITIAL_HAPPINESS].top };
     arg = (gGuestInitialHappiness * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 
     // Guest initial hunger label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_HUNGER, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_HUNGER);
 
     // Guest initial hunger value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_HUNGER].left + 1, w->widgets[WIDX_GUEST_INITIAL_HUNGER].top };
     arg = ((255 - gGuestInitialHunger) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 
     // Guest initial thirst label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
-    gfx_draw_string_left(dpi, STR_GUEST_INIT_THIRST, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_INIT_THIRST);
 
     // Guest initial thirst value
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_GUEST_INITIAL_THIRST].left + 1, w->widgets[WIDX_GUEST_INITIAL_THIRST].top };
     arg = ((255 - gGuestInitialThirst) * 100) / 255;
-    gfx_draw_string_left(dpi, STR_PERCENT_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PERCENT_FORMAT_LABEL, &arg);
 }
 
 #pragma endregion
@@ -1174,16 +1176,16 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
             gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
-                w->colours[1], 0, DROPDOWN_FLAG_STAY_OPEN, 3, dropdownWidget->width() - 3);
+                w->colours[1], 0, Dropdown::Flag::StayOpen, 3, dropdownWidget->width() - 3);
 
             if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
-                dropdown_set_checked(2, true);
+                Dropdown::SetChecked(2, true);
             else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                dropdown_set_checked(0, true);
+                Dropdown::SetChecked(0, true);
             else
-                dropdown_set_checked(1, true);
+                Dropdown::SetChecked(1, true);
 
             break;
         case WIDX_CLIMATE_DROPDOWN:
@@ -1245,7 +1247,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     window_editor_scenario_options_set_pressed_tab(w);
@@ -1254,30 +1256,30 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
     {
         for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
-            w->widgets[i].type = WWT_EMPTY;
+            w->widgets[i].type = WindowWidgetType::Empty;
     }
     else
     {
-        w->widgets[WIDX_LAND_COST].type = WWT_SPINNER;
-        w->widgets[WIDX_LAND_COST_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_LAND_COST_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WWT_SPINNER;
-        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WWT_BUTTON;
-        w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WWT_DROPDOWN;
-        w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WWT_BUTTON;
+        w->widgets[WIDX_LAND_COST].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_LAND_COST_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_LAND_COST_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type = WindowWidgetType::Spinner;
+        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE].type = WindowWidgetType::Button;
+        w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WindowWidgetType::DropdownMenu;
+        w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WindowWidgetType::Button;
 
         if (!park_entry_price_unlocked())
         {
-            w->widgets[WIDX_ENTRY_PRICE].type = WWT_EMPTY;
-            w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_EMPTY;
-            w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_EMPTY;
+            w->widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Empty;
+            w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Empty;
+            w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Empty;
         }
         else
         {
-            w->widgets[WIDX_ENTRY_PRICE].type = WWT_SPINNER;
-            w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_BUTTON;
-            w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_BUTTON;
+            w->widgets[WIDX_ENTRY_PRICE].type = WindowWidgetType::Spinner;
+            w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WindowWidgetType::Button;
+            w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WindowWidgetType::Button;
         }
     }
 
@@ -1302,7 +1304,8 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
 
     w->pressed_widgets = pressedWidgets;
 
-    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WWT_EMPTY : WWT_CLOSEBOX;
+    w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
+                                                                                : WindowWidgetType::CloseBox;
 
     window_editor_scenario_options_anchor_border_widgets(w);
 }
@@ -1317,36 +1320,36 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
     ScreenCoordsXY screenCoords{};
     rct_string_id stringId;
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_editor_scenario_options_draw_tab_images(w, dpi);
 
-    if (w->widgets[WIDX_LAND_COST].type != WWT_EMPTY)
+    if (w->widgets[WIDX_LAND_COST].type != WindowWidgetType::Empty)
     {
         // Cost to buy land label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_LAND_COST].top };
-        gfx_draw_string_left(dpi, STR_LAND_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_LAND_COST_LABEL);
 
         // Cost to buy land value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
         arg = gLandPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
-    if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WWT_EMPTY)
+    if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WindowWidgetType::Empty)
     {
         // Cost to buy construction rights label
         screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
-        gfx_draw_string_left(dpi, STR_RIGHTS_COST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_RIGHTS_COST_LABEL);
 
         // Cost to buy construction rights value
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
                               w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
         arg = gConstructionRightsPrice;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
-    if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WWT_EMPTY)
+    if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WindowWidgetType::Empty)
     {
         // Pay for park or rides label
         screenCoords = w->windowPos
@@ -1360,30 +1363,30 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         else
             stringId = STR_PAY_PARK_ENTER;
 
-        gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
     }
 
-    if (w->widgets[WIDX_ENTRY_PRICE].type != WWT_EMPTY)
+    if (w->widgets[WIDX_ENTRY_PRICE].type != WindowWidgetType::Empty)
     {
         // Entry price label
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].right + 8, w->widgets[WIDX_ENTRY_PRICE].top };
-        gfx_draw_string_left(dpi, STR_ENTRY_PRICE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
         // Entry price value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
         arg = gParkEntranceFee;
-        gfx_draw_string_left(dpi, STR_CURRENCY_FORMAT_LABEL, &arg, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
     }
 
     // Climate label
     screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIMATE].top };
-    gfx_draw_string_left(dpi, STR_CLIMATE_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_CLIMATE_LABEL);
 
     // Climate value
     screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_CLIMATE].left + 1, w->widgets[WIDX_CLIMATE].top };
     stringId = ClimateNames[static_cast<uint8_t>(gClimate)];
-    gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, &stringId);
 }
 
 #pragma endregion

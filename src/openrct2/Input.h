@@ -16,7 +16,7 @@ enum INPUT_FLAGS
 {
     INPUT_FLAG_WIDGET_PRESSED = (1 << 0),
 
-    // The dropdown can stay open if the mouse is released, set on flag DROPDOWN_FLAG_STAY_OPEN
+    // The dropdown can stay open if the mouse is released, set on flag Dropdown::Flag::StayOpen
     INPUT_FLAG_DROPDOWN_STAY_OPEN = (1 << 1),
 
     // The mouse has been released and the dropdown is still open
@@ -37,13 +37,13 @@ enum INPUT_FLAGS
     INPUT_FLAG_VIEWPORT_SCROLLING = (1 << 7)
 };
 
-enum MOUSE_STATE
+enum class MouseState : uint32_t
 {
-    MOUSE_STATE_RELEASED,
-    MOUSE_STATE_LEFT_PRESS,
-    MOUSE_STATE_LEFT_RELEASE,
-    MOUSE_STATE_RIGHT_PRESS,
-    MOUSE_STATE_RIGHT_RELEASE
+    Released,
+    LeftPress,
+    LeftRelease,
+    RightPress,
+    RightRelease
 };
 
 enum class InputState
@@ -85,7 +85,7 @@ extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
 
-extern TOOL_IDX gCurrentToolId;
+extern Tool gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
 // TODO: Move to openrct2-ui and make static again
@@ -93,21 +93,21 @@ extern InputState _inputState;
 extern uint8_t _inputFlags;
 extern uint16_t _tooltipNotShownTicks;
 
-void input_window_position_begin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 void title_handle_keyboard_input();
-void game_handle_input();
+void GameHandleInput();
 void game_handle_keyboard_input();
-void game_handle_edge_scroll();
-int32_t get_next_key();
+void GameHandleEdgeScroll();
+int32_t GetNextKey();
 
-void store_mouse_input(int32_t state, const ScreenCoordsXY& screenCoords);
+void StoreMouseInput(MouseState state, const ScreenCoordsXY& screenCoords);
 
 void input_set_flag(INPUT_FLAGS flag, bool on);
 bool input_test_flag(INPUT_FLAGS flag);
 void input_reset_flags();
 
-bool input_test_place_object_modifier(PLACE_OBJECT_MODIFIER modifier);
+bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier);
 
 void input_set_state(InputState state);
 InputState input_get_state();
@@ -116,6 +116,6 @@ void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 
-void input_scroll_viewport(const ScreenCoordsXY& screenCoords);
+void InputScrollViewport(const ScreenCoordsXY& screenCoords);
 
 #endif

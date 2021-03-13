@@ -12,6 +12,7 @@
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
+#include "GameState.h"
 #include "GameStateSnapshots.h"
 #include "Input.h"
 #include "OpenRCT2.h"
@@ -35,8 +36,10 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
+#include <chrono>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
@@ -188,19 +191,19 @@ void GameState::Update()
         // it was done due to inability to reproduce original frequency
         // and decision that the original one looks too fast
         if (gCurrentRealTimeTicks % 4 == 0)
-            gWindowMapFlashingFlags ^= (1 << 15);
+            gWindowMapFlashingFlags ^= MapFlashingFlags::SwitchColour;
 
         // Handle guest map flashing
-        gWindowMapFlashingFlags &= ~(1 << 1);
-        if (gWindowMapFlashingFlags & (1 << 0))
-            gWindowMapFlashingFlags |= (1 << 1);
-        gWindowMapFlashingFlags &= ~(1 << 0);
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashGuests;
+        if (gWindowMapFlashingFlags & MapFlashingFlags::GuestListOpen)
+            gWindowMapFlashingFlags |= MapFlashingFlags::FlashGuests;
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::GuestListOpen;
 
         // Handle staff map flashing
-        gWindowMapFlashingFlags &= ~(1 << 3);
-        if (gWindowMapFlashingFlags & (1 << 2))
-            gWindowMapFlashingFlags |= (1 << 3);
-        gWindowMapFlashingFlags &= ~(1 << 2);
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::FlashStaff;
+        if (gWindowMapFlashingFlags & MapFlashingFlags::StaffListOpen)
+            gWindowMapFlashingFlags |= MapFlashingFlags::FlashStaff;
+        gWindowMapFlashingFlags &= ~MapFlashingFlags::StaffListOpen;
 
         context_update_map_tooltip();
 
@@ -225,8 +228,17 @@ void GameState::Update()
     gInUpdateCode = false;
 }
 
-void GameState::UpdateLogic()
+void GameState::UpdateLogic(LogicTimings* timings)
 {
+    auto start_time = std::chrono::high_resolution_clock::now();
+
+    auto report_time = [timings, start_time](LogicTimePart part) {
+        if (timings != nullptr)
+        {
+            timings->TimingInfo[part][timings->CurrentIdx] = std::chrono::high_resolution_clock::now() - start_time;
+        }
+    };
+
     gScreenAge++;
     if (gScreenAge == 0)
         gScreenAge--;
@@ -234,6 +246,7 @@ void GameState::UpdateLogic()
     GetContext()->GetReplayManager()->Update();
 
     network_update();
+    report_time(LogicTimePart::NetworkUpdate);
 
     if (network_get_mode() == NETWORK_MODE_SERVER)
     {
@@ -277,33 +290,51 @@ void GameState::UpdateLogic()
 
     date_update();
     _date = Date(static_cast<uint32_t>(gDateMonthsElapsed), gDateMonthTicks);
+    report_time(LogicTimePart::Date);
 
     scenario_update();
+    report_time(LogicTimePart::Scenario);
     climate_update();
+    report_time(LogicTimePart::Climate);
     map_update_tiles();
+    report_time(LogicTimePart::MapTiles);
     // Temporarily remove provisional paths to prevent peep from interacting with them
     map_remove_provisional_elements();
+    report_time(LogicTimePart::MapStashProvisionalElements);
     map_update_path_wide_flags();
+    report_time(LogicTimePart::MapPathWideFlags);
     peep_update_all();
+    report_time(LogicTimePart::Peep);
     map_restore_provisional_elements();
+    report_time(LogicTimePart::MapRestoreProvisionalElements);
     vehicle_update_all();
+    report_time(LogicTimePart::Vehicle);
     sprite_misc_update_all();
+    report_time(LogicTimePart::Misc);
     Ride::UpdateAll();
+    report_time(LogicTimePart::Ride);
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         _park->Update(_date);
     }
+    report_time(LogicTimePart::Park);
 
     research_update();
+    report_time(LogicTimePart::Research);
     ride_ratings_update_all();
+    report_time(LogicTimePart::RideRatings);
     ride_measurements_update();
+    report_time(LogicTimePart::RideMeasurments);
     News::UpdateCurrentItem();
+    report_time(LogicTimePart::News);
 
     map_animation_invalidate_all();
+    report_time(LogicTimePart::MapAnimation);
     vehicle_sounds_update();
     peep_update_crowd_noise();
     climate_update_sound();
+    report_time(LogicTimePart::Sounds);
     editor_open_windows_for_current_step();
 
     // Update windows
@@ -316,9 +347,11 @@ void GameState::UpdateLogic()
     }
 
     GameActions::ProcessQueue();
+    report_time(LogicTimePart::GameActions);
 
     network_process_pending();
     network_flush();
+    report_time(LogicTimePart::NetworkFlush);
 
     gCurrentTicks++;
     gScenarioTicks++;
@@ -332,7 +365,13 @@ void GameState::UpdateLogic()
     {
         hookEngine.Call(HOOK_TYPE::INTERVAL_DAY, true);
     }
+    report_time(LogicTimePart::Scripts);
 #endif
+
+    if (timings != nullptr)
+    {
+        timings->CurrentIdx = (timings->CurrentIdx + 1) % LOGIC_UPDATE_MEASUREMENTS_COUNT;
+    }
 }
 
 void GameState::CreateStateSnapshot()

@@ -9,11 +9,11 @@
 
 #include "WindowManager.h"
 
-#include "input/Input.h"
-#include "input/KeyboardShortcuts.h"
 #include "interface/Theme.h"
 #include "windows/Window.h"
 
+#include <openrct2-ui/input/InputManager.h>
+#include <openrct2-ui/input/ShortcutManager.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
@@ -30,8 +30,7 @@ class WindowManager final : public IWindowManager
 public:
     void Init() override
     {
-        theme_manager_initialise();
-        window_guest_list_init_vars();
+        ThemeManagerInitialise();
         window_new_ride_init_vars();
     }
 
@@ -133,8 +132,6 @@ public:
                 return window_viewport_open();
             case WC_WATER:
                 return window_water_open();
-            case WC_NETWORK:
-                return window_network_open();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -211,7 +208,7 @@ public:
         return window_error_open(title, message, args);
     }
 
-    rct_window* ShowError(const std::string_view& title, const std::string_view& message) override
+    rct_window* ShowError(std::string_view title, std::string_view message) override
     {
         return window_error_open(title, message);
     }
@@ -237,8 +234,15 @@ public:
                 loadsave_callback callback = reinterpret_cast<loadsave_callback>(
                     intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
                 TrackDesign* trackDesign = static_cast<TrackDesign*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
-                rct_window* w = window_loadsave_open(type, defaultName.c_str(), callback, trackDesign);
-
+                auto* w = window_loadsave_open(
+                    type, defaultName,
+                    [callback](int32_t result, std::string_view path) {
+                        if (callback != nullptr)
+                        {
+                            callback(result, std::string(path).c_str());
+                        }
+                    },
+                    trackDesign);
                 return w;
             }
             case WC_MANAGE_TRACK_DESIGN:
@@ -505,19 +509,20 @@ public:
 
     void HandleInput() override
     {
-        game_handle_input();
+        GameHandleInput();
     }
 
     void HandleKeyboard(bool isTitle) override
     {
-        input_handle_keyboard(isTitle);
+        auto& inputManager = GetInputManager();
+        inputManager.Process();
     }
 
-    std::string GetKeyboardShortcutString(int32_t shortcut) override
+    std::string GetKeyboardShortcutString(std::string_view shortcutId) override
     {
-        utf8 buffer[256];
-        keyboard_shortcuts_format_string(buffer, sizeof(buffer), shortcut);
-        return std::string(buffer);
+        auto& shortcutManager = GetShortcutManager();
+        auto* shortcut = shortcutManager.GetShortcut(shortcutId);
+        return shortcut != nullptr ? shortcut->GetDisplayString() : std::string();
     }
 
     void SetMainView(const ScreenCoordsXY& viewPos, ZoomLevel zoom, int32_t rotation) override
@@ -550,7 +555,7 @@ public:
 
     void UpdateMouseWheel() override
     {
-        window_all_wheel_input();
+        WindowAllWheelInput();
     }
 
     rct_window* GetOwner(const rct_viewport* viewport) override

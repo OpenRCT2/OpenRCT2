@@ -9,7 +9,7 @@
 
 #include "../TrackImporter.h"
 #include "../config/Config.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -141,7 +141,7 @@ public:
             return nullptr;
         }
 
-        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {
@@ -169,7 +169,14 @@ public:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t6TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t6TrackElement.type;
+
+                track_type_t trackType = RCT2TrackTypeToOpenRCT2(t6TrackElement.type, td->type);
+                if (trackType == TrackElemType::InvertedUp90ToFlatQuarterLoopAlias)
+                {
+                    trackType = TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop;
+                }
+
+                trackElement.type = trackType;
                 trackElement.flags = t6TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }
@@ -202,7 +209,7 @@ public:
             sceneryElement.flags = t6SceneryElement.flags;
             sceneryElement.primary_colour = t6SceneryElement.primary_colour;
             sceneryElement.secondary_colour = t6SceneryElement.secondary_colour;
-            td->scenery_elements.push_back(sceneryElement);
+            td->scenery_elements.push_back(std::move(sceneryElement));
         }
 
         td->name = _name;

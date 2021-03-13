@@ -11,14 +11,52 @@
 
 #    include "CustomMenu.h"
 
+#    include <openrct2-ui/input/ShortcutManager.h>
 #    include <openrct2/Input.h>
 #    include <openrct2/world/Map.h>
 #    include <openrct2/world/Sprite.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2::Scripting
 {
     std::optional<CustomTool> ActiveCustomTool;
     std::vector<CustomToolbarMenuItem> CustomMenuItems;
+    std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
+
+    CustomShortcut::CustomShortcut(
+        std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
+        DukValue callback)
+        : Owner(owner)
+        , Id(id)
+        , Text(text)
+        , Bindings(bindings)
+        , Callback(callback)
+    {
+        auto& shortcutManager = GetShortcutManager();
+
+        RegisteredShortcut registeredShortcut(Id, Text, [this]() { Invoke(); });
+        for (const auto& binding : bindings)
+        {
+            registeredShortcut.Default.emplace_back(binding);
+        }
+        registeredShortcut.Current = registeredShortcut.Default;
+        shortcutManager.RegisterShortcut(std::move(registeredShortcut));
+        shortcutManager.LoadUserBindings();
+    }
+
+    CustomShortcut::~CustomShortcut()
+    {
+        auto& shortcutManager = GetShortcutManager();
+        shortcutManager.RemoveShortcut(Id);
+    }
+
+    void CustomShortcut::Invoke() const
+    {
+        auto& scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+    }
 
     static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
         "arrow",         "blank",      "up_arrow",      "up_down_arrow", "hand_point", "zzz",         "diagonal_arrows",
@@ -26,6 +64,21 @@ namespace OpenRCT2::Scripting
         "lamppost_down", "fence_down", "flower_down",   "path_down",     "dig_down",   "water_down",  "house_down",
         "volcano_down",  "walk_down",  "paint_down",    "entrance_down", "hand_open",  "hand_closed",
     };
+
+    static const DukEnumMap<ViewportInteractionItem> ToolFilterMap({
+        { "terrain", ViewportInteractionItem::Terrain },
+        { "entity", ViewportInteractionItem::Entity },
+        { "ride", ViewportInteractionItem::Ride },
+        { "water", ViewportInteractionItem::Water },
+        { "scenery", ViewportInteractionItem::Scenery },
+        { "footpath", ViewportInteractionItem::Footpath },
+        { "footpath_item", ViewportInteractionItem::FootpathItem },
+        { "park_entrance", ViewportInteractionItem::ParkEntrance },
+        { "wall", ViewportInteractionItem::Wall },
+        { "large_scenery", ViewportInteractionItem::LargeScenery },
+        { "label", ViewportInteractionItem::Label },
+        { "banner", ViewportInteractionItem::Banner },
+    });
 
     template<> DukValue ToDuk(duk_context* ctx, const CursorID& cursorId)
     {
@@ -68,6 +121,19 @@ namespace OpenRCT2::Scripting
             if (it->Owner == owner)
             {
                 it = menuItems.erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+
+        auto& shortcuts = CustomShortcuts;
+        for (auto it = shortcuts.begin(); it != shortcuts.end();)
+        {
+            if ((*it)->Owner == owner)
+            {
+                it = shortcuts.erase(it);
             }
             else
             {
@@ -120,16 +186,14 @@ namespace OpenRCT2::Scripting
         if (dukHandler.is_function())
         {
             auto ctx = dukHandler.context();
-
-            auto flags = 0;
-            auto info = get_map_coordinates_from_pos(screenCoords, flags);
+            auto info = get_map_coordinates_from_pos(screenCoords, Filter);
 
             DukObject obj(dukHandler.context());
             obj.Set("isDown", MouseDown);
             obj.Set("screenCoords", ToDuk(ctx, screenCoords));
             obj.Set("mapCoords", ToDuk(ctx, info.Loc));
 
-            if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_SPRITE && info.Entity != nullptr)
+            if (info.SpriteType == ViewportInteractionItem::Entity && info.Entity != nullptr)
             {
                 obj.Set("entityId", info.Entity->sprite_index);
             }
@@ -150,11 +214,10 @@ namespace OpenRCT2::Scripting
                     } while (!(el++)->IsLastForTile());
                 }
             }
-            auto eventArgs = obj.Take();
 
             auto& scriptEngine = GetContext()->GetScriptEngine();
             std::vector<DukValue> args;
-            args.push_back(eventArgs);
+            args.emplace_back(obj.Take());
             scriptEngine.ExecutePluginCall(Owner, dukHandler, args, false);
         }
     }
@@ -173,6 +236,26 @@ namespace OpenRCT2::Scripting
                 {
                     customTool.Cursor = CursorID::Arrow;
                 }
+
+                auto dukFilter = dukValue["filter"];
+                if (dukFilter.is_array())
+                {
+                    customTool.Filter = 0;
+                    auto dukItems = dukFilter.as_array();
+                    for (const auto& dukItem : dukItems)
+                    {
+                        if (dukItem.type() == DukValue::Type::STRING)
+                        {
+                            auto value = ToolFilterMap[dukItem.as_string()];
+                            customTool.Filter |= static_cast<uint32_t>(EnumToFlag(value));
+                        }
+                    }
+                }
+                else
+                {
+                    customTool.Filter = ViewportInteractionItemAll;
+                }
+
                 customTool.onStart = dukValue["onStart"];
                 customTool.onDown = dukValue["onDown"];
                 customTool.onMove = dukValue["onMove"];
@@ -186,7 +269,7 @@ namespace OpenRCT2::Scripting
                     // prevents abort from being called.
                     rct_widgetindex widgetIndex = -2;
                     tool_cancel();
-                    tool_set(toolbarWindow, widgetIndex, static_cast<TOOL_IDX>(customTool.Cursor));
+                    tool_set(toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
                     ActiveCustomTool = std::move(customTool);
                     ActiveCustomTool->Start();
                 }

@@ -51,13 +51,13 @@ static constexpr const int32_t WH = 155;
 
 static rct_widget window_view_clipping_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({     11,  19}, {    159,  11}, WWT_CHECKBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
-    MakeWidget        ({      5,  36}, {WW - 10,  48}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
-    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WWT_SPINNER,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
-    MakeWidget        ({     11,  66}, {    158,  13}, WWT_SCROLL,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
-    MakeWidget        ({      5,  90}, {WW - 10,  60}, WWT_GROUPBOX, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
-    MakeWidget        ({     11, 105}, {    158,  17}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
-    MakeWidget        ({     11, 126}, {    158,  18}, WWT_BUTTON,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
+    MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
+    MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
+    MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
+    MakeWidget        ({     11,  66}, {    158,  13}, WindowWidgetType::Scroll,   WindowColour::Primary, SCROLL_HORIZONTAL,                     STR_VIEW_CLIPPING_HEIGHT_SCROLL_TIP  ), // clip height scrollbar
+    MakeWidget        ({      5,  90}, {WW - 10,  60}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_HORIZONTAL_CLIPPING                                       ),
+    MakeWidget        ({     11, 105}, {    158,  17}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_SELECT_AREA                                               ), // selector
+    MakeWidget        ({     11, 126}, {    158,  18}, WindowWidgetType::Button,   WindowColour::Primary, STR_VIEW_CLIPPING_CLEAR_SELECTION                                           ), // clear
 
     { WIDGETS_END }
 };
@@ -130,14 +130,14 @@ rct_window* window_view_clipping_open()
     }
 
     // Window is not open - create it.
-    window = window_create(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
+    window = WindowCreate(ScreenCoordsXY(32, 32), WW, WH, &window_view_clipping_events, WC_VIEW_CLIPPING, 0);
     window->widgets = window_view_clipping_widgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
         | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
         | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
     window->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Initialise the clip height slider from the current clip height value.
     window_view_clipping_set_clipheight(window, gClipHeight);
@@ -217,7 +217,7 @@ static void window_view_clipping_mouseup(rct_window* w, rct_widgetindex widgetIn
             break;
         case WIDX_CLIP_SELECTOR:
             // Activate the selection tool
-            tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
+            tool_set(w, WIDX_BACKGROUND, Tool::Crosshair);
             _toolActive = true;
             _dragging = false;
 
@@ -357,12 +357,12 @@ static void window_view_clipping_tool_up(struct rct_window*, rct_widgetindex, co
 
 static void window_view_clipping_invalidate(rct_window* w)
 {
-    widget_scroll_update_thumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
+    WidgetScrollUpdateThumbs(w, WIDX_CLIP_HEIGHT_SLIDER);
 
     rct_window* mainWindow = window_get_main();
     if (mainWindow != nullptr)
     {
-        widget_set_checkbox_value(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+        WidgetSetCheckboxValue(w, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
     }
 
     if (window_view_clipping_tool_is_active())
@@ -377,11 +377,11 @@ static void window_view_clipping_invalidate(rct_window* w)
 
 static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Clip height value
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
-    gfx_draw_string_left(dpi, STR_VIEW_CLIPPING_HEIGHT_VALUE, nullptr, w->colours[0], screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_VIEW_CLIPPING_HEIGHT_VALUE, {}, { w->colours[0] });
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_CLIP_HEIGHT_VALUE].left + 1, w->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
@@ -394,8 +394,8 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case DISPLAY_TYPE::DISPLAY_RAW:
         default:
-            gfx_draw_string_left(
-                dpi, STR_FORMAT_INTEGER, &clipHeightRawValue, w->colours[0], screenCoords); // Printing the raw value.
+            DrawTextBasic(
+                dpi, screenCoords, STR_FORMAT_INTEGER, &clipHeightRawValue, { w->colours[0] }); // Printing the raw value.
             break;
 
         case DISPLAY_TYPE::DISPLAY_UNITS:
@@ -404,9 +404,9 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Height label is Units.
                 clipHeightValueInUnits = static_cast<fixed16_1dp>(FIXED_1DP(gClipHeight, 0) / 2 - FIXED_1DP(7, 0));
-                gfx_draw_string_left(
-                    dpi, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits, w->colours[0],
-                    screenCoords); // Printing the value in Height Units.
+                DrawTextBasic(
+                    dpi, screenCoords, STR_UNIT1DP_NO_SUFFIX, &clipHeightValueInUnits,
+                    { w->colours[0] }); // Printing the value in Height Units.
             }
             else
             {
@@ -418,13 +418,13 @@ static void window_view_clipping_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     case MeasurementFormat::SI:
                         clipHeightValueInMeters = static_cast<fixed32_2dp>(
                             FIXED_2DP(gClipHeight, 0) / 2 * 1.5f - FIXED_2DP(10, 50));
-                        gfx_draw_string_left(
-                            dpi, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, w->colours[0], screenCoords);
+                        DrawTextBasic(
+                            dpi, screenCoords, STR_UNIT2DP_SUFFIX_METRES, &clipHeightValueInMeters, { w->colours[0] });
                         break;
                     case MeasurementFormat::Imperial:
                         clipHeightValueInFeet = static_cast<fixed16_1dp>(
                             FIXED_1DP(gClipHeight, 0) / 2.0f * 5 - FIXED_1DP(35, 0));
-                        gfx_draw_string_left(dpi, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, w->colours[0], screenCoords);
+                        DrawTextBasic(dpi, screenCoords, STR_UNIT1DP_SUFFIX_FEET, &clipHeightValueInFeet, { w->colours[0] });
                         break;
                 }
             }

@@ -57,18 +57,18 @@ enum WINDOW_RIDE_LIST_WIDGET_IDX {
 
 static rct_widget window_ride_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {340, 197}, WWT_RESIZE,   WindowColour::Secondary                                                                ), // tab page background
-    MakeWidget({315, 60}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
-    MakeWidget({150, 46}, {124,  12}, WWT_DROPDOWN, WindowColour::Secondary                                                                ), // current information type
-    MakeWidget({262, 47}, { 11,  10}, WWT_BUTTON,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
-    MakeWidget({280, 46}, { 54,  12}, WWT_BUTTON,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
+    MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
+    MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
+    MakeWidget({150, 46}, {124,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                ), // current information type
+    MakeWidget({262, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,         STR_RIDE_LIST_INFORMATION_TYPE_TIP), // information type dropdown button
+    MakeWidget({280, 46}, { 54,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_SORT,                   STR_RIDE_LIST_SORT_TIP            ), // sort button
     MakeTab   ({  3, 17},                                                                                STR_LIST_RIDES_TIP                ), // tab 1
     MakeTab   ({ 34, 17},                                                                                STR_LIST_SHOPS_AND_STALLS_TIP     ), // tab 2
     MakeTab   ({ 65, 17},                                                                                STR_LIST_KIOSKS_AND_FACILITIES_TIP), // tab 3
-    MakeWidget({  3, 60}, {334, 177}, WWT_SCROLL,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
-    MakeWidget({320, 62}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
-    MakeWidget({320, 76}, { 14,  14}, WWT_IMGBTN,   WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
-    MakeWidget({315, 90}, { 24,  24}, WWT_FLATBTN,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
+    MakeWidget({  3, 60}, {334, 177}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                               ), // list
+    MakeWidget({320, 62}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_RCT1_CLOSE_BUTTON_0                                    ),
+    MakeWidget({320, 76}, { 14,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, SPR_G2_RCT1_OPEN_BUTTON_0                                     ),
+    MakeWidget({315, 90}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH,               STR_QUICK_DEMOLISH_RIDE           ),
     { WIDGETS_END },
 };
 
@@ -187,7 +187,7 @@ rct_window* window_ride_list_open()
     window = window_bring_to_front_by_class(WC_RIDE_LIST);
     if (window == nullptr)
     {
-        window = window_create_auto_pos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(340, 240, &window_ride_list_events, WC_RIDE_LIST, WF_10 | WF_RESIZABLE);
         window->widgets = window_ride_list_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_OPEN_CLOSE_ALL) | (1 << WIDX_CURRENT_INFORMATION_TYPE)
             | (1 << WIDX_INFORMATION_TYPE_DROPDOWN) | (1 << WIDX_SORT) | (1 << WIDX_TAB_1) | (1 << WIDX_TAB_2)
@@ -196,7 +196,7 @@ rct_window* window_ride_list_open()
         {
             window->enabled_widgets |= (1 << WIDX_QUICK_DEMOLISH);
         }
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->page = PAGE_RIDES;
         window->no_list_items = 0;
         window->selected_list_item = -1;
@@ -305,7 +305,7 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
     {
         gDropdownItemsFormat[0] = STR_CLOSE_ALL;
         gDropdownItemsFormat[1] = STR_OPEN_ALL;
-        window_dropdown_show_text(
+        WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0, 2);
     }
     else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
@@ -340,12 +340,12 @@ static void window_ride_list_mousedown(rct_window* w, rct_widgetindex widgetInde
             numItems++;
         }
 
-        window_dropdown_show_text_custom_width(
+        WindowDropdownShowTextCustomWidth(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height(), w->colours[1], 0,
-            DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
+            Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
         if (selectedIndex != -1)
         {
-            dropdown_set_checked(selectedIndex, true);
+            Dropdown::SetChecked(selectedIndex, true);
         }
     }
 }
@@ -497,7 +497,7 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
     w->widgets[WIDX_TITLE].right = w->width - 2;
 
-    // if close buttton is on the right then it must move
+    // if close button is on the right then it must move
     w->widgets[WIDX_CLOSE].left = w->width - 13;
     w->widgets[WIDX_CLOSE].right = w->width - 3;
 
@@ -512,11 +512,11 @@ static void window_ride_list_invalidate(rct_window* w)
     w->widgets[WIDX_QUICK_DEMOLISH].right = w->width - 2;
     w->widgets[WIDX_QUICK_DEMOLISH].left = w->width - 25;
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_RIDE)
     {
-        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_EMPTY;
-        w->widgets[WIDX_CLOSE_LIGHT].type = WWT_IMGBTN;
-        w->widgets[WIDX_OPEN_LIGHT].type = WWT_IMGBTN;
+        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
+        w->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
 
         const auto& rideManager = GetRideManager();
         auto allClosed = true;
@@ -533,20 +533,21 @@ static void window_ride_list_invalidate(rct_window* w)
         }
 
         w->widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
-            + widget_is_pressed(w, WIDX_CLOSE_LIGHT);
+            + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
         w->widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-            + widget_is_pressed(w, WIDX_OPEN_LIGHT);
+            + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_LIGHT].bottom + 3;
     }
     else
     {
-        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WWT_FLATBTN;
-        w->widgets[WIDX_CLOSE_LIGHT].type = WWT_EMPTY;
-        w->widgets[WIDX_OPEN_LIGHT].type = WWT_EMPTY;
+        w->widgets[WIDX_OPEN_CLOSE_ALL].type = WindowWidgetType::FlatBtn;
+        w->widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
+        w->widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
         w->widgets[WIDX_QUICK_DEMOLISH].top = w->widgets[WIDX_OPEN_CLOSE_ALL].bottom + 3;
     }
     w->widgets[WIDX_QUICK_DEMOLISH].bottom = w->widgets[WIDX_QUICK_DEMOLISH].top + 23;
-    w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WWT_FLATBTN : WWT_EMPTY;
+    w->widgets[WIDX_QUICK_DEMOLISH].type = network_get_mode() != NETWORK_MODE_CLIENT ? WindowWidgetType::FlatBtn
+                                                                                     : WindowWidgetType::Empty;
 }
 
 /**
@@ -555,13 +556,13 @@ static void window_ride_list_invalidate(rct_window* w)
  */
 static void window_ride_list_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_ride_list_draw_tab_images(dpi, w);
 
     // Draw number of attractions on bottom
-    gfx_draw_string_left(
-        dpi, ride_list_statusbar_count_strings[w->page], &w->no_list_items, COLOUR_BLACK,
-        w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[w->page],
+        &w->no_list_items);
 }
 
 /**
@@ -581,7 +582,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         if (i == w->selected_list_item)
         {
             // Background highlight
-            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, FilterPaletteID::PaletteDarken1);
             format = (_quickDemolishMode ? STR_LIGHTPINK_STRINGID : STR_WINDOW_COLOUR_2_STRINGID);
         }
 
@@ -593,7 +594,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         // Ride name
         auto ft = Formatter();
         ride->FormatNameTo(ft);
-        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { 0, y - 1 }, 159, format, ft);
 
         // Ride information
         ft = Formatter();
@@ -745,7 +746,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             ft.Rewind();
             ft.Add<rct_string_id>(formatSecondary);
         }
-        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft, COLOUR_BLACK);
+        DrawTextEllipsised(dpi, { 160, y - 1 }, 157, format, ft);
         y += SCROLLABLE_ROW_HEIGHT;
     }
 }

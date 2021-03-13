@@ -11,9 +11,10 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../GameState.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
-#include "../actions/SetCheatAction.hpp"
+#include "../actions/SetCheatAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Imaging.h"
@@ -41,7 +42,7 @@ using namespace OpenRCT2::Drawing;
 
 uint8_t gScreenshotCountdown = 0;
 
-static bool WriteDpiToFile(const std::string_view& path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
+static bool WriteDpiToFile(std::string_view path, const rct_drawpixelinfo* dpi, const GamePalette& palette)
 {
     auto const pixels8 = dpi->bits;
     auto const pixelsLen = (dpi->width + dpi->pitch) * dpi->height;
@@ -509,7 +510,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "%s", e.what());
+        Console::Error::WriteLine("%s", e.what());
     }
 
     for (auto& dpi : dpis)
@@ -550,15 +551,9 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
 
 static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewport)
 {
-    if (options->weather != 0)
+    if (options->weather != WeatherType::Sunny && options->weather != WeatherType::Count)
     {
-        if (options->weather < 1 || options->weather > 6)
-        {
-            throw std::runtime_error("Weather can only be set to an integer value from 1 till 6.");
-        }
-
-        uint8_t customWeather = options->weather - 1;
-        climate_force_weather(customWeather);
+        climate_force_weather(WeatherType{ static_cast<uint8_t>(EnumValue(options->weather) - 1) });
     }
 
     if (options->hide_guests)
@@ -818,6 +813,11 @@ void CaptureImage(const CaptureOptions& options)
 
     auto backupRotation = gCurrentRotation;
     gCurrentRotation = options.Rotation;
+
+    if (options.Transparent)
+    {
+        viewport.flags |= VIEWPORT_FLAG_TRANSPARENT_BACKGROUND;
+    }
 
     auto outputPath = ResolveFilenameForCapture(options.Filename);
     auto dpi = CreateDPI(viewport);

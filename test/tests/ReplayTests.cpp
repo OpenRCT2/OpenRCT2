@@ -59,7 +59,7 @@ static std::vector<ReplayTestData> GetReplayFiles()
         ReplayTestData test;
         test.name = sanitizeTestName(scanner->GetFileInfo()->Name);
         test.filePath = scanner->GetPath();
-        res.push_back(test);
+        res.push_back(std::move(test));
     }
     return res;
 }
@@ -98,8 +98,11 @@ TEST_P(ReplayTests, RunReplay)
     while (replayManager->IsReplaying())
     {
         gs->UpdateLogic();
-        ASSERT_TRUE(replayManager->IsPlaybackStateMismatching() == false);
+        if (replayManager->IsPlaybackStateMismatching())
+            break;
     }
+    ASSERT_FALSE(replayManager->IsReplaying());
+    ASSERT_FALSE(replayManager->IsPlaybackStateMismatching());
 #endif
 }
 

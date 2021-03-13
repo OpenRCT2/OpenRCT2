@@ -12,12 +12,13 @@
 #include "../common.h"
 #include "../ride/RideTypes.h"
 
+#include <vector>
+
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
 {
     constexpr size_t MaxDeviceNameSize = 256;
-    constexpr size_t MaxRideMusic = 32;
     constexpr size_t MaxVehicleSounds = 14;
     constexpr size_t MaxDefaultMusic = 46;
     constexpr uint16_t SoundIdNull = 0xFFFF;
@@ -25,33 +26,6 @@ namespace OpenRCT2::Audio
 #define AUDIO_PLAY_AT_CENTRE 0x8000
 
     enum class SoundId : uint8_t;
-
-    struct RideMusic
-    {
-        ride_id_t ride_id;
-        uint8_t tune_id;
-        int16_t volume;
-        int16_t pan;
-        uint16_t frequency;
-        void* sound_channel;
-    };
-
-    struct RideMusicInfo
-    {
-        uint8_t path_id;
-        uint32_t offset;
-        uint32_t length;
-    };
-
-    struct RideMusicParams
-    {
-        ride_id_t ride_id;
-        uint8_t tune_id;
-        int32_t offset;
-        int16_t volume;
-        int16_t pan;
-        uint16_t frequency;
-    };
 
     struct Sound
     {
@@ -157,11 +131,6 @@ namespace OpenRCT2::Audio
     extern void* gTitleMusicChannel;
     extern void* gWeatherSoundChannel;
 
-    extern RideMusic gRideMusicList[MaxRideMusic];
-    extern RideMusicInfo gRideMusicInfoList[MaxDefaultMusic];
-    extern RideMusicParams gRideMusicParamsList[MaxRideMusic];
-    extern RideMusicParams* gRideMusicParamsListEnd;
-
     extern VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
     /**
@@ -246,12 +215,6 @@ namespace OpenRCT2::Audio
      * Stops the weather sound effect from playing.
      */
     void StopWeatherSound();
-
-    /**
-     * Stops ride music from playing.
-     * rct2: 0x006BCA9F
-     */
-    void StopRideMusic();
 
     /**
      * Stops the title music from playing.

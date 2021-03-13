@@ -15,7 +15,7 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 #include "../world/ScenerySelection.h"
-#include "ZoomLevel.hpp"
+#include "ZoomLevel.h"
 
 #include <functional>
 #include <limits>
@@ -76,7 +76,11 @@ namespace WIDGET_FLAGS
     const WidgetFlags IS_PRESSED = 1 << 2;
     const WidgetFlags IS_DISABLED = 1 << 3;
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
+    const WidgetFlags IS_HIDDEN = 1 << 5;
+    const WidgetFlags IS_HOLDABLE = 1 << 6;
 } // namespace WIDGET_FLAGS
+
+enum class WindowWidgetType : uint8_t;
 
 /**
  * Widget structure
@@ -84,12 +88,12 @@ namespace WIDGET_FLAGS
  */
 struct rct_widget
 {
-    uint8_t type;   // 0x00
-    uint8_t colour; // 0x01
-    int16_t left;   // 0x02
-    int16_t right;  // 0x04
-    int16_t top;    // 0x06
-    int16_t bottom; // 0x08
+    WindowWidgetType type; // 0x00
+    uint8_t colour;        // 0x01
+    int16_t left;          // 0x02
+    int16_t right;         // 0x04
+    int16_t top;           // 0x06
+    int16_t bottom;        // 0x08
     union
     { // 0x0A
         uint32_t image;
@@ -130,6 +134,11 @@ struct rct_widget
         else
             return top - 1;
     }
+
+    bool IsVisible() const
+    {
+        return !(flags & WIDGET_FLAGS::IS_HIDDEN);
+    }
 };
 
 /**
@@ -163,6 +172,8 @@ struct rct_viewport
     }
 
     [[nodiscard]] ScreenCoordsXY ScreenToViewportCoord(const ScreenCoordsXY& screenCoord) const;
+
+    void Invalidate() const;
 };
 
 /**
@@ -171,15 +182,15 @@ struct rct_viewport
  */
 struct rct_scroll
 {
-    uint16_t flags;          // 0x00
-    uint16_t h_left;         // 0x02
-    uint16_t h_right;        // 0x04
-    uint16_t h_thumb_left;   // 0x06
-    uint16_t h_thumb_right;  // 0x08
-    uint16_t v_top;          // 0x0A
-    uint16_t v_bottom;       // 0x0C
-    uint16_t v_thumb_top;    // 0x0E
-    uint16_t v_thumb_bottom; // 0x10
+    uint16_t flags{};          // 0x00
+    uint16_t h_left{};         // 0x02
+    uint16_t h_right{};        // 0x04
+    uint16_t h_thumb_left{};   // 0x06
+    uint16_t h_thumb_right{};  // 0x08
+    uint16_t v_top{};          // 0x0A
+    uint16_t v_bottom{};       // 0x0C
+    uint16_t v_thumb_top{};    // 0x0E
+    uint16_t v_thumb_bottom{}; // 0x10
 };
 
 constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
@@ -337,43 +348,6 @@ struct rct_window;
 #define RCT_WINDOW_RIGHT(w) ((w)->windowPos.x + (w)->width)
 #define RCT_WINDOW_BOTTOM(w) ((w)->windowPos.y + (w)->height)
 
-enum WINDOW_EVENTS
-{
-    WE_CLOSE = 0,
-    WE_MOUSE_UP = 1,
-    WE_RESIZE = 2,
-    WE_MOUSE_DOWN = 3,
-    WE_DROPDOWN = 4,
-    WE_UNKNOWN_05 = 5,
-    // Unknown 05: Used to update tabs that are not being animated
-    // see window_peep. When the overview tab is not highlighted the
-    // items being carried such as hats/balloons still need to be shown
-    // and removed. Probably called after anything that affects items
-    // being carried.
-    WE_UPDATE = 6,
-    WE_UNKNOWN_07 = 7,
-    WE_UNKNOWN_08 = 8,
-    WE_TOOL_UPDATE = 9,
-    WE_TOOL_DOWN = 10,
-    WE_TOOL_DRAG = 11,
-    WE_TOOL_UP = 12,
-    WE_TOOL_ABORT = 13,
-    WE_UNKNOWN_0E = 14,
-    WE_SCROLL_GETSIZE = 15,
-    WE_SCROLL_MOUSEDOWN = 16,
-    WE_SCROLL_MOUSEDRAG = 17,
-    WE_SCROLL_MOUSEOVER = 18,
-    WE_TEXT_INPUT = 19,
-    WE_VIEWPORT_ROTATE = 20,
-    WE_UNKNOWN_15 = 21, // scroll mouse move?
-    WE_TOOLTIP = 22,
-    WE_CURSOR = 23,
-    WE_MOVED = 24,
-    WE_INVALIDATE = 25,
-    WE_PAINT = 26,
-    WE_SCROLL_PAINT = 27,
-};
-
 enum WINDOW_FLAGS
 {
     /*
@@ -399,7 +373,11 @@ enum WINDOW_FLAGS
     WF_WHITE_BORDER_ONE = (1 << 12),
     WF_WHITE_BORDER_MASK = (1 << 12) | (1 << 13),
 
-    WF_NO_SNAPPING = (1 << 15)
+    WF_NO_SNAPPING = (1 << 15),
+
+    // Create only flags
+    WF_AUTO_POSITION = (1 << 16),
+    WF_CENTRE_SCREEN = (1 << 17),
 };
 
 enum SCROLL_FLAGS
@@ -507,7 +485,6 @@ enum
     WC_DEBUG_PAINT = 130,
     WC_VIEW_CLIPPING = 131,
     WC_OBJECT_LOAD_ERROR = 132,
-    WC_NETWORK = 133,
 
     // Only used for colour schemes
     WC_STAFF = 220,
@@ -587,31 +564,31 @@ enum
 #define WC_TILE_INSPECTOR__WIDX_SPINNER_X_DECREASE 6
 #define WC_TILE_INSPECTOR__WIDX_SPINNER_Y_INCREASE 8
 #define WC_TILE_INSPECTOR__WIDX_SPINNER_Y_DECREASE 9
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE 1
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SURFACE TileInspectorPage::Surface
 #define WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_SURFACE_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH 2
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_PATH TileInspectorPage::Path
 #define WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_PATH_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK 3
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_TRACK TileInspectorPage::Track
 #define WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_INCREASE 27
 #define WC_TILE_INSPECTOR__WIDX_TRACK_SPINNER_HEIGHT_DECREASE 28
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY 4
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_SCENERY TileInspectorPage::Scenery
 #define WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_SCENERY_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE 5
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_ENTRANCE TileInspectorPage::Entrance
 #define WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL 6
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_WALL TileInspectorPage::Wall
 #define WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_WALL_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY 7
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_LARGE_SCENERY TileInspectorPage::LargeScenery
 #define WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER 8
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_BANNER TileInspectorPage::Banner
 #define WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_BANNER_SPINNER_HEIGHT_DECREASE 27
-#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT 9
+#define WC_TILE_INSPECTOR__TILE_INSPECTOR_PAGE_CORRUPT TileInspectorPage::Corrupt
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE 26
 #define WC_TILE_INSPECTOR__WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE 27
 
@@ -667,19 +644,19 @@ enum class GuestListFilterType : int32_t
     GuestsThinkingX,
 };
 
-enum TOOL_IDX
+enum class Tool
 {
-    TOOL_ARROW = 0,
-    TOOL_UP_ARROW = 2,
-    TOOL_UP_DOWN_ARROW = 3,
-    TOOL_PICKER = 7,
-    TOOL_CROSSHAIR = 12,
-    TOOL_PATH_DOWN = 17,
-    TOOL_DIG_DOWN = 18,
-    TOOL_WATER_DOWN = 19,
-    TOOL_WALK_DOWN = 22,
-    TOOL_PAINT_DOWN = 23,
-    TOOL_ENTRANCE_DOWN = 24,
+    Arrow = 0,
+    UpArrow = 2,
+    UpDownArrow = 3,
+    Picker = 7,
+    Crosshair = 12,
+    PathDown = 17,
+    DigDown = 18,
+    WaterDown = 19,
+    WalkDown = 22,
+    PaintDown = 23,
+    EntranceDown = 24,
 };
 
 using modal_callback = void (*)(int32_t result);
@@ -692,6 +669,14 @@ using close_callback = void (*)();
 extern rct_window* gWindowAudioExclusive;
 
 extern uint16_t gWindowUpdateTicks;
+namespace MapFlashingFlags
+{
+    constexpr uint16_t GuestListOpen = (1 << 0);
+    constexpr uint16_t FlashGuests = (1 << 1);
+    constexpr uint16_t StaffListOpen = (1 << 2);
+    constexpr uint16_t FlashStaff = (1 << 3);
+    constexpr uint16_t SwitchColour = (1 << 15); // Every couple ticks the colour switches
+} // namespace MapFlashingFlags
 extern uint16_t gWindowMapFlashingFlags;
 
 extern colour_t gCurrentWindowColours[4];
@@ -707,13 +692,52 @@ void window_update_all();
 
 void window_set_window_limit(int32_t value);
 
-rct_window* window_create(
-    const ScreenCoordsXY& screenCoords, int32_t width, int32_t height, rct_window_event_list* event_handlers,
-    rct_windowclass cls, uint16_t flags);
-rct_window* window_create_auto_pos(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
-rct_window* window_create_centred(
-    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint16_t flags);
+rct_window* window_bring_to_front(rct_window* w);
+rct_window* window_bring_to_front_by_class(rct_windowclass cls);
+rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
+rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
+
+rct_window* WindowCreate(
+    std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, {}, width, height, flags | WF_AUTO_POSITION));
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowFocusOrCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    auto* w = window_bring_to_front_by_class(cls);
+    if (w == nullptr)
+    {
+        w = WindowCreate<T>(cls, pos, width, height, flags);
+    }
+    return static_cast<T*>(w);
+}
+template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
+T* WindowFocusOrCreate(rct_windowclass cls, int32_t width, int32_t height, uint32_t flags = 0)
+{
+    auto* w = window_bring_to_front_by_class(cls);
+    if (w == nullptr)
+    {
+        w = WindowCreate<T>(cls, width, height, flags);
+    }
+    return static_cast<T*>(w);
+}
+
+rct_window* WindowCreate(
+    const ScreenCoordsXY& pos, int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls,
+    uint32_t flags);
+rct_window* WindowCreateAutoPos(
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
+rct_window* WindowCreateCentred(
+    int32_t width, int32_t height, rct_window_event_list* event_handlers, rct_windowclass cls, uint32_t flags);
+
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
@@ -731,14 +755,9 @@ void window_invalidate_all();
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
-void window_init_scroll_widgets(rct_window* w);
+void WindowInitScrollWidgets(rct_window* w);
 void window_update_scroll_widgets(rct_window* w);
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index);
-
-rct_window* window_bring_to_front(rct_window* w);
-rct_window* window_bring_to_front_by_class(rct_windowclass cls);
-rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
-rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
 
 void window_push_others_right(rct_window* w);
 void window_push_others_below(rct_window* w1);
@@ -760,7 +779,7 @@ void window_show_textinput(rct_window* w, rct_widgetindex widgetIndex, uint16_t 
 
 void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom);
 void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void window_draw_widgets(rct_window* w, rct_drawpixelinfo* dpi);
+void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
 
 void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords);
@@ -768,7 +787,7 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, TOOL_IDX tool);
+bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool);
 void tool_cancel();
 
 void window_close_construction_windows();
@@ -821,7 +840,7 @@ void window_event_invalidate_call(rct_window* w);
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi);
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-void invalidate_all_windows_after_input();
+void InvalidateAllWindowsAfterInput();
 void textinput_cancel();
 
 void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity);
@@ -856,6 +875,13 @@ void window_ride_construction_keyboard_shortcut_previous_track();
 void window_ride_construction_keyboard_shortcut_next_track();
 void window_ride_construction_keyboard_shortcut_build_current();
 void window_ride_construction_keyboard_shortcut_demolish_current();
+
+void window_footpath_keyboard_shortcut_turn_left();
+void window_footpath_keyboard_shortcut_turn_right();
+void window_footpath_keyboard_shortcut_slope_down();
+void window_footpath_keyboard_shortcut_slope_up();
+void window_footpath_keyboard_shortcut_build_current();
+void window_footpath_keyboard_shortcut_demolish_current();
 
 void window_follow_sprite(rct_window* w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window* w);

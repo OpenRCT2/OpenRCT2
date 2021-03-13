@@ -16,7 +16,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/PlatformEnvironment.h>
-#include <openrct2/actions/LoadOrQuitAction.hpp>
+#include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -36,11 +36,11 @@ static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
 static rct_widget window_title_menu_widgets[] = {
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
-    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WWT_IMGBTN, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
-    MakeWidget({0,                       0}, UpdateButtonDims, WWT_EMPTY,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
+    MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_TOOLBOX,        STR_GAME_TOOLS_TIP),
+    MakeWidget({0,                       0}, UpdateButtonDims, WindowWidgetType::Empty,  WindowColour::Secondary, STR_UPDATE_AVAILABLE),
     { WIDGETS_END },
 };
 
@@ -71,7 +71,7 @@ rct_window* window_title_menu_open()
     rct_window* window;
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
@@ -87,7 +87,7 @@ rct_window* window_title_menu_open()
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
-        if (widget_is_enabled(window, i))
+        if (WidgetIsEnabled(window, i))
         {
             widget->left = x;
             widget->right = x + MenuButtonDims.width - 1;
@@ -96,7 +96,7 @@ rct_window* window_title_menu_open()
         }
         else
         {
-            widget->type = WWT_EMPTY;
+            widget->type = WindowWidgetType::Empty;
         }
         i++;
     }
@@ -105,7 +105,7 @@ rct_window* window_title_menu_open()
     window->windowPos.x = (context_get_width() - window->width) / 2;
     window->colours[1] = TRANSLUCENT(COLOUR_LIGHT_ORANGE);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     return window;
 }
@@ -177,9 +177,9 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
         gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
         gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
         gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
-        window_dropdown_show_text(
+        WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, TRANSLUCENT(w->colours[0]),
-            DROPDOWN_FLAG_STAY_OPEN, 5);
+            Dropdown::Flag::StayOpen, 5);
     }
 }
 
@@ -226,13 +226,13 @@ static void window_title_menu_invalidate(rct_window* w)
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
-        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         _filterRect.Point1.y = w->windowPos.y;
     }
 }
 
 static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    gfx_filter_rect(dpi, _filterRect, PALETTE_51);
-    window_draw_widgets(w, dpi);
+    gfx_filter_rect(dpi, _filterRect, FilterPaletteID::Palette51);
+    WindowDrawWidgets(w, dpi);
 }

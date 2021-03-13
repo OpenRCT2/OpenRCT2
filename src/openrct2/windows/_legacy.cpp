@@ -11,7 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/TrackPlaceAction.hpp"
+#include "../actions/TrackPlaceAction.h"
 #include "../audio/audio.h"
 #include "../interface/Viewport.h"
 #include "../network/network.h"
@@ -91,15 +91,15 @@ money32 place_provisional_track_piece(
             return result;
 
         int16_t z_begin, z_end;
-        const rct_track_coordinates* coords = get_track_coord_from_ride(ride, trackType);
-        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        const rct_track_coordinates& coords = TrackCoordinates[trackType];
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
-            z_begin = coords->z_begin;
-            z_end = coords->z_end;
+            z_begin = coords.z_begin;
+            z_end = coords.z_end;
         }
         else
         {
-            z_end = z_begin = coords->z_begin;
+            z_end = z_begin = coords.z_begin;
         }
 
         _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
@@ -124,7 +124,7 @@ money32 place_provisional_track_piece(
     }
 }
 
-static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track_element()
+static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()
 {
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES);
     context_broadcast_intent(&intent);
@@ -142,8 +142,8 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
         endBank = _previousTrackBankEnd;
     }
 
-    uint16_t curve = _currentTrackCurve;
-    if (curve == 0xFFFF)
+    auto curve = _currentTrackCurve;
+    if (curve == TrackElemType::None)
     {
         return std::make_tuple(false, 0);
     }
@@ -182,7 +182,7 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
         return std::make_tuple(false, 0);
     }
 
-    switch (curve & 0xFF)
+    switch (curve & 0xFFFF)
     {
         case TrackElemType::EndStation:
         case TrackElemType::SBendLeft:
@@ -197,7 +197,7 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
                 return std::make_tuple(false, 0);
             }
 
-            return std::make_tuple(true, curve & 0xFF);
+            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
 
         case TrackElemType::LeftVerticalLoop:
         case TrackElemType::RightVerticalLoop:
@@ -221,10 +221,10 @@ static std::tuple<bool, uint8_t> window_ride_construction_update_state_get_track
                 }
             }
 
-            return std::make_tuple(true, curve & 0xFF);
+            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
 
         default:
-            return std::make_tuple(true, curve & 0xFF);
+            return std::make_tuple(true, static_cast<track_type_t>(curve & 0xFFFF));
     }
 }
 
@@ -246,7 +246,7 @@ bool window_ride_construction_update_state(
     CoordsXYZ* _trackPos, int32_t* _properties)
 {
     ride_id_t rideIndex;
-    uint8_t trackType, trackDirection;
+    uint8_t trackDirection;
     uint16_t x, y, liftHillAndInvertedState, properties;
 
     auto updated_element = window_ride_construction_update_state_get_track_element();
@@ -255,7 +255,7 @@ bool window_ride_construction_update_state(
         return true;
     }
 
-    trackType = std::get<1>(updated_element);
+    track_type_t trackType = std::get<1>(updated_element);
     liftHillAndInvertedState = 0;
     rideIndex = _currentRideIndex;
     if (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED)
@@ -300,37 +300,38 @@ bool window_ride_construction_update_state(
         }
     }
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
+    const auto& rtd = ride->GetRideTypeDescriptor();
+    if (rtd.HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)
         && _currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES)
     {
-        auto availablePieces = RideTypeDescriptors[ride->type].CoveredTrackPieces;
+        auto availablePieces = rtd.CoveredTrackPieces;
         auto alternativeType = AlternativeTrackTypes[trackType];
-        if (alternativeType != -1 && availablePieces & (1ULL << trackType))
+        if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
         {
-            trackType = static_cast<uint8_t>(alternativeType);
+            trackType = alternativeType;
             liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
 
-    const rct_track_coordinates* trackCoordinates = get_track_coord_from_ride(ride, trackType);
+    const rct_track_coordinates& trackCoordinates = TrackCoordinates[trackType];
 
     x = _currentTrackBegin.x;
     y = _currentTrackBegin.y;
     auto z = _currentTrackBegin.z;
     if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_BACK)
     {
-        z -= trackCoordinates->z_end;
+        z -= trackCoordinates.z_end;
         trackDirection = _currentTrackPieceDirection ^ 0x02;
-        trackDirection -= trackCoordinates->rotation_end;
-        trackDirection += trackCoordinates->rotation_begin;
+        trackDirection -= trackCoordinates.rotation_end;
+        trackDirection += trackCoordinates.rotation_begin;
         trackDirection &= 0x03;
 
-        if (trackCoordinates->rotation_begin & (1 << 2))
+        if (trackCoordinates.rotation_begin & (1 << 2))
         {
             trackDirection |= 0x04;
         }
 
-        CoordsXY offsets = { trackCoordinates->x, trackCoordinates->y };
+        CoordsXY offsets = { trackCoordinates.x, trackCoordinates.y };
         CoordsXY coords = { x, y };
         coords += offsets.Rotate(direction_reverse(trackDirection));
         x = static_cast<uint16_t>(coords.x);
@@ -338,7 +339,7 @@ bool window_ride_construction_update_state(
     }
     else
     {
-        z -= trackCoordinates->z_begin;
+        z -= trackCoordinates.z_begin;
         trackDirection = _currentTrackPieceDirection;
     }
 
@@ -435,7 +436,7 @@ void window_ride_construction_mouseup_demolish_next_piece(const CoordsXYZD& piec
         _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
         _currentTrackSelectionFlags = 0;
         _currentTrackPieceDirection = piecePos.direction & 3;
-        int32_t savedCurrentTrackCurve = _currentTrackCurve;
+        auto savedCurrentTrackCurve = _currentTrackCurve;
         int32_t savedPreviousTrackSlopeEnd = _previousTrackSlopeEnd;
         int32_t savedCurrentTrackSlopeEnd = _currentTrackSlopeEnd;
         int32_t savedPreviousTrackBankEnd = _previousTrackBankEnd;

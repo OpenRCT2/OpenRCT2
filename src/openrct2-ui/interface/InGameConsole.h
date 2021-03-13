@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2/interface/InteractiveConsole.h>
+#include <openrct2/localisation/FormatCodes.h>
 #include <openrct2/world/Location.hpp>
 
 namespace OpenRCT2::Ui
@@ -52,7 +53,7 @@ namespace OpenRCT2::Ui
         void Close() override;
         void Hide() override;
         void Toggle();
-        void WriteLine(const std::string& s, uint32_t colourFormat) override;
+        void WriteLine(const std::string& s, FormatToken colourFormat) override;
 
         void Input(ConsoleInput input);
         void RefreshCaret(size_t position = 0);

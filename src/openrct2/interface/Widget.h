@@ -13,43 +13,44 @@
 #include "../localisation/StringIds.h"
 #include "Window.h"
 
-enum WINDOW_WIDGET_TYPES
+enum class WindowWidgetType : uint8_t
 {
-    WWT_EMPTY = 0,
-    WWT_FRAME = 1,
-    WWT_RESIZE = 2,
-    WWT_IMGBTN = 3,
-    WWT_COLOURBTN = 6,
-    WWT_TRNBTN = 7,
-    WWT_TAB = 8,
-    WWT_FLATBTN = 9,
-    WWT_BUTTON = 10,
-    WWT_LABEL_CENTRED = 12, // Centred text
-    WWT_TABLE_HEADER = 13,  // Left-aligned textual button
-    WWT_LABEL = 14,         // Left-aligned text
-    WWT_SPINNER = 15,
-    WWT_DROPDOWN = 16,
-    WWT_VIEWPORT = 17,
-    WWT_GROUPBOX = 19,
-    WWT_CAPTION = 20,
-    WWT_CLOSEBOX = 21,
-    WWT_SCROLL = 22,
-    WWT_CHECKBOX = 23,
-    WWT_PLACEHOLDER = 25,
-    WWT_TEXT_BOX = 27,
-    WWT_LAST = 26,
+    Empty = 0,
+    Frame = 1,
+    Resize = 2,
+    ImgBtn = 3,
+    ColourBtn = 6,
+    TrnBtn = 7,
+    Tab = 8,
+    FlatBtn = 9,
+    Button = 10,
+    LabelCentred = 12, // Centred text
+    TableHeader = 13,  // Left-aligned textual button
+    Label = 14,        // Left-aligned text
+    Spinner = 15,
+    DropdownMenu = 16,
+    Viewport = 17,
+    Groupbox = 19,
+    Caption = 20,
+    CloseBox = 21,
+    Scroll = 22,
+    Checkbox = 23,
+    Placeholder = 25,
+    Custom = 28,
+    TextBox = 27,
+    Last = 26,
 };
 
-#define WIDGETS_END WWT_LAST, 0, 0, 0, 0, 0, 0, 0
+#define WIDGETS_END WindowWidgetType::Last, 0, 0, 0, 0, 0, 0, 0
 #define BAR_BLINK (1u << 31)
 
 #define SPINNER_INCREASE(l, r, t, b) (r) - 12, (r)-1, (t) + 1, (b)-1
 #define SPINNER_DECREASE(l, r, t, b) (r) - 25, (r)-13, (t) + 1, (b)-1
 #define SPINNER_WIDGETS(colour, left, right, top, bottom, text, tooltip)                                                       \
-    { WWT_SPINNER, colour, left, right, top, bottom, text, tooltip },                                                          \
-        { WWT_BUTTON, colour, SPINNER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP, STR_NONE },                          \
+    { WindowWidgetType::Spinner, colour, left, right, top, bottom, text, tooltip },                                            \
+        { WindowWidgetType::Button, colour, SPINNER_INCREASE(left, right, top, bottom), STR_NUMERIC_UP, STR_NONE },            \
     {                                                                                                                          \
-        WWT_BUTTON, colour, SPINNER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE                             \
+        WindowWidgetType::Button, colour, SPINNER_DECREASE(left, right, top, bottom), STR_NUMERIC_DOWN, STR_NONE               \
     }
 
 enum
@@ -72,8 +73,8 @@ constexpr uint8_t SCROLLBAR_WIDTH = 10;
 constexpr const ScreenSize TAB_SIZE = { 31, 27 };
 
 constexpr rct_widget MakeWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, WindowColour colour, uint32_t content = 0xFFFFFFFF,
-    rct_string_id tooltip = STR_NONE)
+    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     rct_widget out = {};
     out.left = origin.x;
@@ -89,8 +90,8 @@ constexpr rct_widget MakeWidget(
 }
 
 constexpr rct_widget MakeRemapWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, uint8_t type, WindowColour colour, uint32_t content = 0xFFFFFFFF,
-    rct_string_id tooltip = STR_NONE)
+    const ScreenCoordsXY& origin, const ScreenSize& size, WindowWidgetType type, WindowColour colour,
+    uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     return MakeWidget(origin, size, type, colour, IMAGE_TYPE_REMAP | content, tooltip);
 }
@@ -98,7 +99,7 @@ constexpr rct_widget MakeRemapWidget(
 constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip = STR_NONE)
 {
     const ScreenSize size = TAB_SIZE;
-    const uint8_t type = WWT_TAB;
+    const WindowWidgetType type = WindowWidgetType::Tab;
     const WindowColour colour = WindowColour::Secondary;
     const uint32_t content = 0xFFFFFFFF;
 
@@ -109,7 +110,7 @@ constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
 constexpr rct_widget MakeSpinnerDecreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, WindowColour colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 26;
@@ -117,11 +118,11 @@ constexpr rct_widget MakeSpinnerDecreaseWidget(
     const uint16_t width = 13;
     const uint16_t height = size.height - 2;
 
-    return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_DOWN, tooltip);
+    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
 }
 
 constexpr rct_widget MakeSpinnerIncreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] uint8_t type, WindowColour colour,
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
 {
     const int16_t xPos = origin.x + size.width - 13;
@@ -129,22 +130,27 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
     const uint16_t width = 12;
     const uint16_t height = size.height - 2;
 
-    return MakeWidget({ xPos, yPos }, { width, height }, WWT_BUTTON, colour, STR_NUMERIC_UP, tooltip);
+    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
 }
 
-void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index);
-void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
+void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
-bool widget_is_enabled(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_disabled(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_highlighted(rct_window* w, rct_widgetindex widgetIndex);
-bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex);
-void widget_scroll_get_part(
+bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
+void WidgetScrollGetPart(
     rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
-void widget_set_enabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
-void widget_set_checkbox_value(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
+void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
+void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
 
 #endif

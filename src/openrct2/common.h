@@ -87,14 +87,14 @@ namespace
 #    define _strdup(x) strdup((x))
 
 #    if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
-#        define RCT2_ENDIANESS __ORDER_LITTLE_ENDIAN__
+#        define RCT2_ENDIANNESS __ORDER_LITTLE_ENDIAN__
 #        define LOBYTE(w) (static_cast<uint8_t>(w))
 #        define HIBYTE(w) (static_cast<uint8_t>((static_cast<uint16_t>(w) >> 8) & 0xFF))
 #    endif // __BYTE_ORDER__
 
-#    ifndef RCT2_ENDIANESS
-#        error Unknown endianess!
-#    endif // RCT2_ENDIANESS
+#    ifndef RCT2_ENDIANNESS
+#        error Unknown endianness!
+#    endif // RCT2_ENDIANNESS
 
 #endif // defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
 
@@ -144,6 +144,8 @@ using money64 = fixed64_1dp;
 
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;
+
+constexpr uint16_t SPRITE_INDEX_NULL = 0xFFFF;
 
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \
@@ -209,70 +211,5 @@ using rct_string_id = uint16_t;
 #else      // PLATFORM_X86
 #    define FASTCALL
 #endif // PLATFORM_X86
-
-/**
- * x86 register structure, only used for easy interop to RCT2 code.
- */
-#pragma pack(push, 1)
-struct registers
-{
-    union
-    {
-        int32_t eax;
-        int16_t ax;
-        struct
-        {
-            char al;
-            char ah;
-        };
-    };
-    union
-    {
-        int32_t ebx;
-        int16_t bx;
-        struct
-        {
-            char bl;
-            char bh;
-        };
-    };
-    union
-    {
-        int32_t ecx;
-        int16_t cx;
-        struct
-        {
-            char cl;
-            char ch;
-        };
-    };
-    union
-    {
-        int32_t edx;
-        int16_t dx;
-        struct
-        {
-            char dl;
-            char dh;
-        };
-    };
-    union
-    {
-        int32_t esi;
-        int16_t si;
-    };
-    union
-    {
-        int32_t edi;
-        int16_t di;
-    };
-    union
-    {
-        int32_t ebp;
-        int16_t bp;
-    };
-};
-assert_struct_size(registers, 7 * 4);
-#pragma pack(pop)
 
 #endif

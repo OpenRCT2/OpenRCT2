@@ -12,11 +12,11 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
-#include "../actions/BannerRemoveAction.hpp"
-#include "../actions/FootpathSceneryRemoveAction.hpp"
-#include "../actions/LargeSceneryRemoveAction.hpp"
-#include "../actions/SmallSceneryRemoveAction.hpp"
-#include "../actions/WallRemoveAction.hpp"
+#include "../actions/BannerRemoveAction.h"
+#include "../actions/FootpathAdditionRemoveAction.h"
+#include "../actions/LargeSceneryRemoveAction.h"
+#include "../actions/SmallSceneryRemoveAction.h"
+#include "../actions/WallRemoveAction.h"
 #include "../common.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
@@ -114,8 +114,8 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         return;
     }
 
-    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)
-        || (gClimateCurrent.Weather < WEATHER_RAIN) || GetAge() < 5)
+    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) || WeatherIsDry(gClimateCurrent.Weather)
+        || GetAge() < 5)
     {
         IncreaseAge(sceneryPos);
         return;
@@ -190,9 +190,9 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)
                 continue;
 
-            auto footpathSceneryRemoveAction = FootpathSceneryRemoveAction(gSceneryGhostPosition);
-            footpathSceneryRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
-            GameActions::Execute(&footpathSceneryRemoveAction);
+            auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction(gSceneryGhostPosition);
+            footpathAdditionRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+            GameActions::Execute(&footpathAdditionRemoveAction);
             break;
         } while (!(tileElement++)->IsLastForTile());
     }
@@ -233,7 +233,7 @@ rct_scenery_entry* get_wall_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_WALLS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Walls, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -245,7 +245,7 @@ rct_scenery_entry* get_banner_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_BANNERS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::Banners, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -257,7 +257,7 @@ rct_scenery_entry* get_footpath_item_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_PATH_BITS, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::PathBits, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());
@@ -269,7 +269,7 @@ rct_scenery_group_entry* get_scenery_group_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_group_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SCENERY_GROUP, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::SceneryGroup, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_group_entry*>(obj->GetLegacyData());

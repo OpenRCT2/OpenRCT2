@@ -13,38 +13,28 @@
 #include "../common.h"
 #include "../peep/Peep.h"
 #include "../ride/Vehicle.h"
+#include "Entity.h"
 #include "Fountain.h"
 #include "SpriteBase.h"
 
-#define SPRITE_INDEX_NULL 0xFFFF
-#define MAX_SPRITES 10000
-
-enum SPRITE_IDENTIFIER
+enum class SpriteIdentifier : uint8_t
 {
-    SPRITE_IDENTIFIER_VEHICLE = 0,
-    SPRITE_IDENTIFIER_PEEP = 1,
-    SPRITE_IDENTIFIER_MISC = 2,
-    SPRITE_IDENTIFIER_LITTER = 3,
-    SPRITE_IDENTIFIER_NULL = 255
+    Vehicle = 0,
+    Peep = 1,
+    Misc = 2,
+    Litter = 3,
+    Null = 255
 };
 
-enum class EntityListId : uint8_t
-{
-    Free,
-    TrainHead,
-    Peep,
-    Misc,
-    Litter,
-    Vehicle,
-    Count,
-};
+enum LitterType : uint8_t;
 
 struct Litter : SpriteBase
 {
+    LitterType SubType;
     uint32_t creationTick;
 };
 
-struct Balloon : SpriteGeneric
+struct Balloon : MiscEntity
 {
     uint16_t popped;
     uint8_t time_to_move;
@@ -55,15 +45,22 @@ struct Balloon : SpriteGeneric
     void Press();
 };
 
-struct Duck : SpriteGeneric
+struct Duck : MiscEntity
 {
+    enum class DuckState : uint8_t
+    {
+        FlyToWater,
+        Swim,
+        Drink,
+        DoubleDrink,
+        FlyAway,
+    };
     int16_t target_x;
     int16_t target_y;
-    uint8_t state;
+    DuckState state;
 
     void Update();
     uint32_t GetFrameImage(int32_t direction) const;
-    void Invalidate();
     bool IsFlying();
     void Remove();
 
@@ -75,7 +72,7 @@ private:
     void UpdateFlyAway();
 };
 
-struct MoneyEffect : SpriteBase
+struct MoneyEffect : MiscEntity
 {
     uint16_t MoveDelay;
     uint8_t NumMovements;
@@ -90,7 +87,7 @@ struct MoneyEffect : SpriteBase
     std::pair<rct_string_id, money32> GetStringId() const;
 };
 
-struct VehicleCrashParticle : SpriteGeneric
+struct VehicleCrashParticle : MiscEntity
 {
     uint16_t time_to_live;
     uint8_t colour[2];
@@ -105,22 +102,22 @@ struct VehicleCrashParticle : SpriteGeneric
     void Update();
 };
 
-struct ExplosionFlare : SpriteGeneric
+struct ExplosionFlare : MiscEntity
 {
     void Update();
 };
 
-struct ExplosionCloud : SpriteGeneric
+struct ExplosionCloud : MiscEntity
 {
     void Update();
 };
 
-struct CrashSplashParticle : SpriteGeneric
+struct CrashSplashParticle : MiscEntity
 {
     void Update();
 };
 
-struct SteamParticle : SpriteGeneric
+struct SteamParticle : MiscEntity
 {
     uint16_t time_to_move;
 
@@ -135,7 +132,7 @@ struct SteamParticle : SpriteGeneric
 union rct_sprite
 {
     uint8_t pad_00[0x200];
-    SpriteGeneric generic;
+    MiscEntity misc;
     Peep peep;
     Litter litter;
     Vehicle vehicle;
@@ -164,18 +161,18 @@ struct rct_sprite_checksum
 
 #pragma pack(pop)
 
-enum
+enum class MiscEntityType : uint8_t
 {
-    SPRITE_MISC_STEAM_PARTICLE,
-    SPRITE_MISC_MONEY_EFFECT,
-    SPRITE_MISC_CRASHED_VEHICLE_PARTICLE,
-    SPRITE_MISC_EXPLOSION_CLOUD,
-    SPRITE_MISC_CRASH_SPLASH,
-    SPRITE_MISC_EXPLOSION_FLARE,
-    SPRITE_MISC_JUMPING_FOUNTAIN_WATER,
-    SPRITE_MISC_BALLOON,
-    SPRITE_MISC_DUCK,
-    SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
+    SteamParticle,
+    MoneyEffect,
+    CrashedVehicleParticle,
+    ExplosionCloud,
+    CrashSplash,
+    ExplosionFlare,
+    JumpingFountainWater,
+    Balloon,
+    Duck,
+    JumpingFountainSnow
 };
 
 enum
@@ -185,7 +182,7 @@ enum
     SPRITE_FLAGS_PEEP_FLASHING = 1 << 9, // Deprecated: Use sprite_set_flashing/sprite_get_flashing instead.
 };
 
-enum
+enum LitterType : uint8_t
 {
     LITTER_TYPE_SICK,
     LITTER_TYPE_SICK_ALT,
@@ -201,49 +198,24 @@ enum
     LITTER_TYPE_EMPTY_BOWL_BLUE,
 };
 
-SpriteBase* try_get_sprite(size_t spriteIndex);
-SpriteBase* get_sprite(size_t sprite_idx);
-template<typename T = SpriteBase> T* GetEntity(size_t sprite_idx)
-{
-    auto spr = get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
-
-template<typename T = SpriteBase> T* TryGetEntity(size_t sprite_idx)
-{
-    auto spr = try_get_sprite(sprite_idx);
-    return spr != nullptr ? spr->As<T>() : nullptr;
-}
-
-uint16_t GetEntityListCount(EntityListId list);
-extern uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
-extern uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
-
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
-extern uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
 
 extern const rct_string_id litterNames[12];
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier);
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex);
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier);
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex);
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
 void sprite_misc_update_all();
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite);
 void sprite_remove(SpriteBase* sprite);
-void litter_create(const CoordsXYZD& litterPos, int32_t type);
+void litter_create(const CoordsXYZD& litterPos, LitterType type);
 void litter_remove_at(const CoordsXYZ& litterPos);
 uint16_t remove_floating_sprites();
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos);
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos);
-uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos);
-void sprite_position_tween_store_a();
-void sprite_position_tween_store_b();
-void sprite_position_tween_all(float nudge);
-void sprite_position_tween_restore();
-void sprite_position_tween_reset();
 
 ///////////////////////////////////////////////////////////////
 // Balloon
@@ -268,107 +240,25 @@ rct_sprite_checksum sprite_checksum();
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing);
 bool sprite_get_flashing(SpriteBase* sprite);
-int32_t check_for_sprite_list_cycles(bool fix);
-int32_t fix_disjoint_sprites();
 
-template<typename T, uint16_t SpriteBase::*NextList> class EntityIterator
+class EntityTweener
 {
+    std::vector<SpriteBase*> Entities;
+    std::vector<CoordsXYZ> PrePos;
+    std::vector<CoordsXYZ> PostPos;
+
 private:
-    T* Entity = nullptr;
-    uint16_t NextEntityId = SPRITE_INDEX_NULL;
+    void PopulateEntities(EntityListId id);
 
 public:
-    EntityIterator(const uint16_t _EntityId)
-        : NextEntityId(_EntityId)
-    {
-        ++(*this);
-    }
-    EntityIterator& operator++()
-    {
-        Entity = nullptr;
+    static EntityTweener& Get();
 
-        while (NextEntityId != SPRITE_INDEX_NULL && Entity == nullptr)
-        {
-            auto baseEntity = GetEntity(NextEntityId);
-            if (!baseEntity)
-            {
-                NextEntityId = SPRITE_INDEX_NULL;
-                continue;
-            }
-            NextEntityId = baseEntity->*NextList;
-            Entity = baseEntity->template As<T>();
-        }
-        return *this;
-    }
-
-    EntityIterator operator++(int)
-    {
-        EntityIterator retval = *this;
-        ++(*this);
-        return retval;
-    }
-    bool operator==(EntityIterator other) const
-    {
-        return Entity == other.Entity;
-    }
-    bool operator!=(EntityIterator other) const
-    {
-        return !(*this == other);
-    }
-    T* operator*()
-    {
-        return Entity;
-    }
-    // iterator traits
-    using difference_type = std::ptrdiff_t;
-    using value_type = T;
-    using pointer = const T*;
-    using reference = const T&;
-    using iterator_category = std::forward_iterator_tag;
-};
-
-template<typename T = SpriteBase> class EntityTileList
-{
-private:
-    uint16_t FirstEntity = SPRITE_INDEX_NULL;
-    using EntityTileIterator = EntityIterator<T, &SpriteBase::next_in_quadrant>;
-
-public:
-    EntityTileList(const CoordsXY& loc)
-        : FirstEntity(sprite_get_first_in_quadrant(loc))
-    {
-    }
-
-    EntityTileIterator begin()
-    {
-        return EntityTileIterator(FirstEntity);
-    }
-    EntityTileIterator end()
-    {
-        return EntityTileIterator(SPRITE_INDEX_NULL);
-    }
-};
-
-template<typename T = SpriteBase> class EntityList
-{
-private:
-    uint16_t FirstEntity = SPRITE_INDEX_NULL;
-    using EntityListIterator = EntityIterator<T, &SpriteBase::next>;
-
-public:
-    EntityList(EntityListId type)
-        : FirstEntity(gSpriteListHead[static_cast<uint8_t>(type)])
-    {
-    }
-
-    EntityListIterator begin()
-    {
-        return EntityListIterator(FirstEntity);
-    }
-    EntityListIterator end()
-    {
-        return EntityListIterator(SPRITE_INDEX_NULL);
-    }
+    void PreTick();
+    void PostTick();
+    void RemoveEntity(SpriteBase* entity);
+    void Tween(float alpha);
+    void Restore();
+    void Reset();
 };
 
 #endif

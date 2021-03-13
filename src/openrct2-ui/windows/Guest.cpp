@@ -14,8 +14,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/GuestSetFlagsAction.hpp>
-#include <openrct2/actions/PeepPickupAction.hpp>
+#include <openrct2/actions/GuestSetFlagsAction.h>
+#include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
@@ -76,7 +76,7 @@ static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({  0, 43}, {192, 114}, WWT_RESIZE, WindowColour::Secondary), /* Resize */ \
+    MakeWidget({  0, 43}, {192, 114}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
     MakeTab   ({  3, 17}, STR_SHOW_GUEST_VIEW_TIP                        ), /* Tab 1 */ \
     MakeTab   ({ 34, 17}, STR_SHOW_GUEST_NEEDS_TIP                       ), /* Tab 2 */ \
     MakeTab   ({ 65, 17}, STR_SHOW_GUEST_VISITED_RIDES_TIP               ), /* Tab 3 */ \
@@ -87,13 +87,13 @@ static constexpr int32_t TabWidth = 30;
 
 static rct_widget window_guest_overview_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({  3,  45}, {164, 12}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Thought marquee
-    MakeWidget({  3,  57}, {164, 87}, WWT_VIEWPORT,      WindowColour::Secondary                                               ), // Viewport
-    MakeWidget({  3, 144}, {164, 11}, WWT_LABEL_CENTRED, WindowColour::Secondary                                               ), // Label Action
-    MakeWidget({167,  45}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
-    MakeWidget({167,  69}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
-    MakeWidget({167,  93}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
-    MakeWidget({167, 117}, { 24, 24}, WWT_FLATBTN,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
+    MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
+    MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
+    MakeWidget({  3, 144}, {164, 11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Action
+    MakeWidget({167,  45}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_PICKUP_BTN, STR_PICKUP_TIP               ), // Pickup Button
+    MakeWidget({167,  69}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_RENAME,     STR_NAME_GUEST_TIP           ), // Rename Button
+    MakeWidget({167,  93}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,     STR_LOCATE_SUBJECT_TIP       ), // Locate Button
+    MakeWidget({167, 117}, { 24, 24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_TRACK_PEEP, STR_TOGGLE_GUEST_TRACKING_TIP), // Track Button
     { WIDGETS_END },
 };
 
@@ -104,7 +104,7 @@ static rct_widget window_guest_stats_widgets[] = {
 
 static rct_widget window_guest_rides_widgets[] = {
     MAIN_GUEST_WIDGETS,
-    MakeWidget({3, 57}, {186, 87}, WWT_SCROLL, WindowColour::Secondary, SCROLL_VERTICAL),
+    MakeWidget({3, 57}, {186, 87}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     { WIDGETS_END },
 };
 
@@ -386,7 +386,7 @@ rct_window* window_guest_open(Peep* peep)
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = window_create_auto_pos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
+        window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
         window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
@@ -417,7 +417,7 @@ rct_window* window_guest_open(Peep* peep)
     window->pressed_widgets = 0;
 
     window_guest_disable_widgets(window);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_guest_viewport_init(window);
 
     return window;
@@ -449,7 +449,7 @@ static void window_guest_common_invalidate(rct_window* w)
     if (window_guest_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_guest_page_widgets[w->page];
-        window_init_scroll_widgets(w);
+        WindowInitScrollWidgets(w);
     }
 
     w->pressed_widgets |= 1ULL << (w->page + WIDX_TAB_1);
@@ -487,7 +487,7 @@ void window_guest_disable_widgets(rct_window* w)
     }
     uint64_t disabled_widgets = 0;
 
-    if (peep_can_be_picked_up(peep))
+    if (peep->CanBePickedUp())
     {
         if (w->disabled_widgets & (1 << WIDX_PICKUP))
             w->Invalidate();
@@ -579,7 +579,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_PICKUP:
         {
-            if (!peep_can_be_picked_up(peep))
+            if (!peep->CanBePickedUp())
             {
                 return;
             }
@@ -593,7 +593,7 @@ void window_guest_overview_mouse_up(rct_window* w, rct_widgetindex widgetIndex)
                 rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                 if (wind)
                 {
-                    tool_set(wind, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+                    tool_set(wind, WC_PEEP__WIDX_PICKUP, Tool::Picker);
                 }
             });
             GameActions::Execute(&pickupAction);
@@ -653,7 +653,7 @@ void window_guest_set_page(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 
     if (listen && w->viewport)
@@ -944,7 +944,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -978,7 +978,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto ft = Formatter();
         peep->FormatActionTo(ft);
         int32_t width = widget->width();
-        DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, COLOUR_BLACK, TextAlignment::CENTRE);
+        DrawTextEllipsised(dpi, screenPos, width, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
     }
 
     // Draw the marquee thought
@@ -996,7 +996,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t i = 0;
     for (; i < PEEP_MAX_THOUGHTS; ++i)
     {
-        if (peep->Thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+        if (peep->Thoughts[i].type == PeepThoughtType::None)
         {
             w->list_information_type = 0;
             return;
@@ -1016,7 +1016,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         peep_thought_set_format_args(&peep->Thoughts[i], ft);
-        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, COLOUR_BLACK);
+        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, {});
     }
 }
 
@@ -1102,7 +1102,7 @@ void window_guest_overview_update(rct_window* w)
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)
                 {
-                    peep->InsertNewThought(PEEP_THOUGHT_TYPE_WATCHED, PEEP_THOUGHT_ITEM_NONE);
+                    peep->InsertNewThought(PeepThoughtType::Watched, PEEP_THOUGHT_ITEM_NONE);
                 }
             }
         }
@@ -1145,8 +1145,8 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     gPickupPeepImage = UINT32_MAX;
 
-    auto info = get_map_coordinates_from_pos(screenCoords, VIEWPORT_INTERACTION_MASK_NONE);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
+    if (info.SpriteType == ViewportInteractionItem::None)
         return;
 
     gPickupPeepX = screenCoords.x - 1;
@@ -1260,7 +1260,7 @@ void window_guest_stats_update(rct_window* w)
 static void window_guest_stats_bars_paint(
     int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
 {
-    if (font_get_line_height(gCurrentFontSpriteBase) > 10)
+    if (font_get_line_height(FontSpriteBase::MEDIUM) > 10)
     {
         y += 1;
     }
@@ -1295,7 +1295,7 @@ static int32_t NormalizeGuestStatValue(int32_t value, int32_t currMax, int32_t n
  */
 void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1318,7 +1318,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
                           window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     // Happiness
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HAPPINESS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
 
     int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
     int32_t barColour = COLOUR_BRIGHT_GREEN;
@@ -1327,7 +1327,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_ENERGY_LABEL);
 
     int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
     barColour = COLOUR_BRIGHT_GREEN;
@@ -1336,7 +1336,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_HUNGER_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HUNGER_LABEL);
 
     int32_t hunger = NormalizeGuestStatValue(peep->Hunger - 32, 158, 0);
     hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
@@ -1346,7 +1346,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_THIRST_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_THIRST_LABEL);
 
     int32_t thirst = NormalizeGuestStatValue(peep->Thirst - 32, 158, 0);
     thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
@@ -1356,7 +1356,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_LABEL);
 
     int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
     barColour = COLOUR_BRIGHT_RED;
@@ -1365,7 +1365,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TOILET_LABEL);
 
     int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
     barColour = COLOUR_BRIGHT_RED;
@@ -1380,7 +1380,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
         ft.Add<uint16_t>(timeInPark & 0xFFFF);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_TIME_IN_PARK, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
     }
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
@@ -1389,7 +1389,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
-    gfx_draw_string_left(dpi, STR_GUEST_STAT_PREFERRED_RIDE, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_PREFERRED_RIDE);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Intensity
@@ -1410,7 +1410,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<uint16_t>(maxIntensity);
         }
 
-        gfx_draw_string_left(dpi, string_id, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 4, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, string_id, ft);
     }
 
     // Nausea tolerance
@@ -1425,7 +1425,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
         auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
         auto ft = Formatter();
         ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
     }
 }
 
@@ -1550,7 +1550,7 @@ void window_guest_rides_invalidate(rct_window* w)
  */
 void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1570,7 +1570,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2,
                           window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
-    gfx_draw_string_left(dpi, STR_GUEST_LABEL_RIDES_BEEN_ON, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
 
     screenCoords.y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
@@ -1585,7 +1585,7 @@ void window_guest_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<rct_string_id>(STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE);
     }
 
-    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, screenCoords, w->width - 14, STR_FAVOURITE_RIDE, ft);
 }
 
 /**
@@ -1603,7 +1603,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         rct_string_id stringId = STR_BLACK_STRING;
         if (list_index == w->selected_list_item)
         {
-            gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, 800, y + 9, FilterPaletteID::PaletteDarken1);
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
@@ -1612,7 +1612,7 @@ void window_guest_rides_scroll_paint(rct_window* w, rct_drawpixelinfo* dpi, int3
         {
             auto ft = Formatter();
             ride->FormatNameTo(ft);
-            gfx_draw_string_left(dpi, stringId, ft.Data(), COLOUR_BLACK, { 0, y - 1 });
+            DrawTextBasic(dpi, { 0, y - 1 }, stringId, ft);
         }
     }
 }
@@ -1635,7 +1635,7 @@ void window_guest_finance_update(rct_window* w)
  */
 void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1659,7 +1659,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->CashInPocket);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_IN_POCKET, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
 
@@ -1667,7 +1667,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->CashSpent);
-        gfx_draw_string_left(dpi, STR_GUEST_STAT_CASH_SPENT, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
         screenCoords.y += LIST_ROW_HEIGHT * 2;
     }
 
@@ -1679,7 +1679,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money32>(peep->PaidToEnter);
-        gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft.Data(), COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     // Paid on rides
@@ -1689,11 +1689,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->GuestNumRides);
         if (peep->GuestNumRides != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_RIDE, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_RIDE, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1704,11 +1704,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfFood);
         if (peep->AmountOfFood != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_FOOD, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_FOOD, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1720,11 +1720,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfDrinks);
         if (peep->AmountOfDrinks != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_DRINK, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_DRINK, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1735,11 +1735,11 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(peep->AmountOfSouvenirs);
         if (peep->AmountOfSouvenirs != 1)
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR_PLURAL, ft);
         }
         else
         {
-            gfx_draw_string_left(dpi, STR_GUEST_EXPENSES_SOUVENIR, ft.Data(), COLOUR_BLACK, screenCoords);
+            DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_SOUVENIR, ft);
         }
     }
 }
@@ -1773,7 +1773,7 @@ void window_guest_thoughts_update(rct_window* w)
  */
 void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1793,12 +1793,12 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                           window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
-    gfx_draw_string_left(dpi, STR_GUEST_RECENT_THOUGHTS_LABEL, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
     screenCoords.y += 10;
     for (rct_peep_thought* thought = peep->Thoughts; thought < &peep->Thoughts[PEEP_MAX_THOUGHTS]; ++thought)
     {
-        if (thought->type == PEEP_THOUGHT_TYPE_NONE)
+        if (thought->type == PeepThoughtType::None)
             return;
         if (thought->freshness == 0)
             continue;
@@ -1808,7 +1808,7 @@ void window_guest_thoughts_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         auto ft = Formatter();
         peep_thought_set_format_args(thought, ft);
-        screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, width, STR_BLACK_STRING, COLOUR_BLACK);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
 
         // If this is the last visible line end drawing.
         if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
@@ -1839,15 +1839,15 @@ void window_guest_inventory_update(rct_window* w)
     }
 }
 
-static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, int32_t item)
+static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, ShopItem item)
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto parkName = park.Name.c_str();
 
     // Default arguments
     auto ft = Formatter();
-    ft.Add<uint32_t>(ShopItems[item].Image);
-    ft.Add<rct_string_id>(ShopItems[item].Naming.Display);
+    ft.Add<uint32_t>(GetShopItemDescriptor(item).Image);
+    ft.Add<rct_string_id>(GetShopItemDescriptor(item).Naming.Display);
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(parkName);
 
@@ -1855,11 +1855,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     Ride* ride{};
     switch (item)
     {
-        case SHOP_ITEM_BALLOON:
+        case ShopItem::Balloon:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | GetShopItemDescriptor(item).Image);
             break;
-        case SHOP_ITEM_PHOTO:
+        case ShopItem::Photo:
             ride = get_ride(peep->Photo1RideRef);
             if (ride != nullptr)
             {
@@ -1869,11 +1869,11 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
 
             break;
-        case SHOP_ITEM_UMBRELLA:
+        case ShopItem::Umbrella:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | GetShopItemDescriptor(item).Image);
             break;
-        case SHOP_ITEM_VOUCHER:
+        case ShopItem::Voucher:
             switch (peep->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
@@ -1904,19 +1904,19 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(ShopItems[peep->VoucherShopItem].Naming.Singular);
+                    ft.Add<rct_string_id>(GetShopItemDescriptor(peep->VoucherShopItem).Naming.Singular);
                     break;
             }
             break;
-        case SHOP_ITEM_HAT:
+        case ShopItem::Hat:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | GetShopItemDescriptor(item).Image);
             break;
-        case SHOP_ITEM_TSHIRT:
+        case ShopItem::TShirt:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | ShopItems[item].Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | GetShopItemDescriptor(item).Image);
             break;
-        case SHOP_ITEM_PHOTO2:
+        case ShopItem::Photo2:
             ride = get_ride(peep->Photo2RideRef);
             if (ride != nullptr)
             {
@@ -1925,7 +1925,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case SHOP_ITEM_PHOTO3:
+        case ShopItem::Photo3:
             ride = get_ride(peep->Photo3RideRef);
             if (ride != nullptr)
             {
@@ -1934,7 +1934,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ride->FormatNameTo(ft);
             }
             break;
-        case SHOP_ITEM_PHOTO4:
+        case ShopItem::Photo4:
             ride = get_ride(peep->Photo4RideRef);
             if (ride != nullptr)
             {
@@ -1942,6 +1942,9 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                 ft.Increment(6);
                 ride->FormatNameTo(ft);
             }
+            break;
+        default:
+            // This switch handles only items visible in peep window
             break;
     }
 
@@ -1954,7 +1957,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
  */
 void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -1976,10 +1979,10 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t maxY = w->windowPos.y + w->height - 22;
     int32_t numItems = 0;
 
-    gfx_draw_string_left(dpi, STR_CARRYING, nullptr, COLOUR_BLACK, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_CARRYING);
     screenCoords.y += 10;
 
-    for (int32_t item = 0; item < SHOP_ITEM_COUNT; item++)
+    for (ShopItem item = ShopItem::Balloon; item < ShopItem::Count; item++)
     {
         if (screenCoords.y >= maxY)
             break;
@@ -1987,13 +1990,13 @@ void window_guest_inventory_paint(rct_window* w, rct_drawpixelinfo* dpi)
             continue;
 
         auto [stringId, ft] = window_guest_inventory_format_item(guest, item);
-        screenCoords.y += gfx_draw_string_left_wrapped(dpi, ft.Data(), screenCoords, itemNameWidth, stringId, COLOUR_BLACK);
+        screenCoords.y += DrawTextWrapped(dpi, screenCoords, itemNameWidth, stringId, ft);
         numItems++;
     }
 
     if (numItems == 0)
     {
-        gfx_draw_string_left(dpi, STR_NOTHING, nullptr, COLOUR_BLACK, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_NOTHING);
     }
 }
 
@@ -2012,7 +2015,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     char buffer[512]{};
     char buffer2[512]{};
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_guest_overview_tab_paint(w, dpi);
     window_guest_stats_tab_paint(w, dpi);
     window_guest_rides_tab_paint(w, dpi);
@@ -2032,7 +2035,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<uint32_t>(peep->sprite_index);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_SPRITE_INDEX, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_SPRITE_INDEX, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2040,7 +2043,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->x);
         ft.Add<int32_t>(peep->y);
         ft.Add<int32_t>(peep->z);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_POSITION, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_POSITION, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2061,7 +2064,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
             format_string(buffer2, sizeof(buffer2), STR_PEEP_DEBUG_NEXT_SLOPE, ft2.Data());
             safe_strcat(buffer, buffer2, sizeof(buffer));
         }
-        gfx_draw_string(dpi, buffer, 0, screenCoords);
+        gfx_draw_string(dpi, screenCoords, buffer, {});
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2069,7 +2072,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->DestinationX);
         ft.Add<int32_t>(peep->DestinationY);
         ft.Add<int32_t>(peep->DestinationTolerance);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_DEST, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_DEST, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
     {
@@ -2078,10 +2081,10 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(peep->PathfindGoal.y);
         ft.Add<int32_t>(peep->PathfindGoal.z);
         ft.Add<int32_t>(peep->PathfindGoal.direction);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_GOAL, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_GOAL, ft);
     }
     screenCoords.y += LIST_ROW_HEIGHT;
-    gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY, nullptr, 0, screenCoords);
+    DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY);
     screenCoords.y += LIST_ROW_HEIGHT;
 
     screenCoords.x += 10;
@@ -2092,7 +2095,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<int32_t>(point.y);
         ft.Add<int32_t>(point.z);
         ft.Add<int32_t>(point.direction);
-        gfx_draw_string_left(dpi, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft.Data(), 0, screenCoords);
+        DrawTextBasic(dpi, screenCoords, STR_PEEP_DEBUG_PATHFIND_HISTORY_ITEM, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     screenCoords.x -= 10;

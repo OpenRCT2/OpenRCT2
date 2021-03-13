@@ -20,88 +20,86 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 
-static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
-static void widget_hscrollbar_draw(
+static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetHScrollbarDraw(
     rct_drawpixelinfo* dpi, rct_scroll* scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
-static void widget_vscrollbar_draw(
+static void WidgetVScrollbarDraw(
     rct_drawpixelinfo* dpi, rct_scroll* scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour);
-static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
 /**
  *
  *  rct2: 0x006EB2A8
  */
-void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (w->widgets[widgetIndex].type)
     {
-        case WWT_EMPTY:
+        case WindowWidgetType::Frame:
+            WidgetFrameDraw(dpi, w, widgetIndex);
             break;
-        case WWT_FRAME:
-            widget_frame_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::Resize:
+            WidgetResizeDraw(dpi, w, widgetIndex);
             break;
-        case WWT_RESIZE:
-            widget_resize_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::ImgBtn:
+            WidgetButtonDraw(dpi, w, widgetIndex);
             break;
-        case WWT_IMGBTN:
-            widget_button_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::ColourBtn:
+        case WindowWidgetType::TrnBtn:
+        case WindowWidgetType::Tab:
+            WidgetTabDraw(dpi, w, widgetIndex);
             break;
-        case WWT_COLOURBTN:
-        case WWT_TRNBTN:
-        case WWT_TAB:
-            widget_tab_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::FlatBtn:
+            WidgetFlatButtonDraw(dpi, w, widgetIndex);
             break;
-        case WWT_FLATBTN:
-            widget_flat_button_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::Button:
+        case WindowWidgetType::TableHeader:
+            WidgetTextButton(dpi, w, widgetIndex);
             break;
-        case WWT_BUTTON:
-        case WWT_TABLE_HEADER:
-            widget_text_button(dpi, w, widgetIndex);
+        case WindowWidgetType::LabelCentred:
+            WidgetTextCentred(dpi, w, widgetIndex);
             break;
-        case WWT_LABEL_CENTRED:
-            widget_text_centred(dpi, w, widgetIndex);
+        case WindowWidgetType::Label:
+            WidgetText(dpi, w, widgetIndex);
             break;
-        case WWT_LABEL:
-            widget_text(dpi, w, widgetIndex);
+        case WindowWidgetType::Spinner:
+        case WindowWidgetType::DropdownMenu:
+        case WindowWidgetType::Viewport:
+            WidgetTextInset(dpi, w, widgetIndex);
             break;
-        case WWT_SPINNER:
-        case WWT_DROPDOWN:
-        case WWT_VIEWPORT:
-            widget_text_inset(dpi, w, widgetIndex);
+        case WindowWidgetType::Groupbox:
+            WidgetGroupboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_GROUPBOX:
-            widget_groupbox_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::Caption:
+            WidgetCaptionDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CAPTION:
-            widget_caption_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::CloseBox:
+            WidgetCloseboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CLOSEBOX:
-            widget_closebox_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::Scroll:
+            WidgetScrollDraw(dpi, w, widgetIndex);
             break;
-        case WWT_SCROLL:
-            widget_scroll_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::Checkbox:
+            WidgetCheckboxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_CHECKBOX:
-            widget_checkbox_draw(dpi, w, widgetIndex);
+        case WindowWidgetType::TextBox:
+            WidgetTextBoxDraw(dpi, w, widgetIndex);
             break;
-        case WWT_PLACEHOLDER:
-            break;
-        case WWT_TEXT_BOX:
-            widget_text_box_draw(dpi, w, widgetIndex);
+        default:
             break;
     }
 }
@@ -110,7 +108,7 @@ void widget_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIn
  *
  *  rct2: 0x006EB6CE
  */
-static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -144,7 +142,7 @@ static void widget_frame_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
  *
  *  rct2: 0x006EB765
  */
-static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -175,7 +173,7 @@ static void widget_resize_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
  *
  *  rct2: 0x006EB8E5
  */
-static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -185,8 +183,7 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
                      w->windowPos + ScreenCoordsXY{ widget->right, widget->bottom } };
 
     // Check if the button is pressed down
-    uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
-                                                                                               : 0;
+    uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
@@ -201,24 +198,24 @@ static void widget_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // Draw the border with fill
     gfx_fill_rect_inset(dpi, rect, colour, press);
 
-    widget_draw_image(dpi, w, widgetIndex);
+    WidgetDrawImage(dpi, w, widgetIndex);
 }
 
 /**
  *
  *  rct2: 0x006EB806
  */
-static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
 
-    if (widget->type != WWT_TAB && static_cast<int32_t>(widget->image) == -1)
+    if (widget->type != WindowWidgetType::Tab && static_cast<int32_t>(widget->image) == -1)
         return;
 
-    if (widget->type == WWT_TAB)
+    if (widget->type == WindowWidgetType::Tab)
     {
-        if (widget_is_disabled(w, widgetIndex))
+        if (WidgetIsDisabled(w, widgetIndex))
             return;
 
         if (widget->image == static_cast<uint32_t>(SPR_NONE))
@@ -229,15 +226,15 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 
     // Draw widgets that aren't explicitly disabled.
-    if (!widget_is_disabled(w, widgetIndex))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
-        widget_draw_image(dpi, w, widgetIndex);
+        WidgetDrawImage(dpi, w, widgetIndex);
         return;
     }
 
-    if (widget->type != WWT_TRNBTN)
+    if (widget->type != WindowWidgetType::TrnBtn)
     {
-        widget_draw_image(dpi, w, widgetIndex);
+        WidgetDrawImage(dpi, w, widgetIndex);
         return;
     }
 
@@ -256,11 +253,11 @@ static void widget_tab_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
  *
  *  rct2: 0x006EB861
  */
-static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (!widget_is_disabled(w, widgetIndex) && widget_is_highlighted(w, widgetIndex))
+    if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
     {
-        widget_button_draw(dpi, w, widgetIndex);
+        WidgetButtonDraw(dpi, w, widgetIndex);
         return;
     }
 
@@ -275,7 +272,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     uint8_t colour = w->colours[widget->colour];
 
     // Check if the button is pressed down
-    if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+    if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
     {
         if (static_cast<int32_t>(widget->image) == -2)
         {
@@ -289,14 +286,14 @@ static void widget_flat_button_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_w
     }
 
     // Draw image
-    widget_draw_image(dpi, w, widgetIndex);
+    WidgetDrawImage(dpi, w, widgetIndex);
 }
 
 /**
  *
  *  rct2: 0x006EBBEB
  */
-static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -309,18 +306,17 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     uint8_t colour = w->colours[widget->colour];
 
     // Border
-    uint8_t press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET
-                                                                                               : 0;
+    uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
     gfx_fill_rect_inset(dpi, rect, colour, press);
 
     // Button caption
-    if (widget->type != WWT_TABLE_HEADER)
+    if (widget->type != WindowWidgetType::TableHeader)
     {
-        widget_text_centred(dpi, w, widgetIndex);
+        WidgetTextCentred(dpi, w, widgetIndex);
     }
     else
     {
-        widget_text(dpi, w, widgetIndex);
+        WidgetText(dpi, w, widgetIndex);
     }
 }
 
@@ -328,7 +324,7 @@ static void widget_text_button(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
  *
  *  rct2: 0x006EBC41
  */
-static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -337,16 +333,16 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         return;
 
     // Get the colour
-    uint8_t colour = w->colours[widget->colour];
+    colour_t colour = w->colours[widget->colour];
     colour &= ~(COLOUR_FLAG_TRANSLUCENT);
-    if (widget_is_disabled(w, widgetIndex))
+    if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
     auto topLeft = w->windowPos + ScreenCoordsXY{ widget->left, 0 };
     int32_t r = w->windowPos.x + widget->right;
 
-    if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
+    if (widget->type == WindowWidgetType::Button || widget->type == WindowWidgetType::TableHeader)
         topLeft.y += widget->textTop();
     else
         topLeft.y += widget->top;
@@ -358,15 +354,23 @@ static void widget_text_centred(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
         stringId = STR_STRING;
         ft.Add<utf8*>(widget->string);
     }
-    DrawTextEllipsised(
-        dpi, { (topLeft.x + r + 1) / 2 - 1, topLeft.y }, widget->width() - 2, stringId, ft, colour, TextAlignment::CENTRE);
+
+    ScreenCoordsXY coords = { (topLeft.x + r + 1) / 2 - 1, topLeft.y };
+    if (widget->type == WindowWidgetType::LabelCentred)
+    {
+        DrawTextWrapped(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+    }
+    else
+    {
+        DrawTextEllipsised(dpi, coords, widget->width() - 2, stringId, ft, { colour, TextAlignment::CENTRE });
+    }
 }
 
 /**
  *
  *  rct2: 0x006EBD52
  */
-static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -376,7 +380,7 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
 
     // Get the colour
     uint8_t colour = w->colours[widget->colour];
-    if (widget_is_disabled(w, widgetIndex))
+    if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
@@ -384,8 +388,8 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
     int32_t r = w->windowPos.x + widget->right;
     int32_t t;
 
-    if (widget->type == WWT_BUTTON || widget->type == WWT_DROPDOWN || widget->type == WWT_SPINNER
-        || widget->type == WWT_TABLE_HEADER)
+    if (widget->type == WindowWidgetType::Button || widget->type == WindowWidgetType::DropdownMenu
+        || widget->type == WindowWidgetType::Spinner || widget->type == WindowWidgetType::TableHeader)
     {
         t = w->windowPos.y + widget->textTop();
     }
@@ -399,14 +403,23 @@ static void widget_text(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex w
         stringId = STR_STRING;
         ft.Add<utf8*>(widget->string);
     }
-    DrawTextEllipsised(dpi, { l + 1, t }, r - l, stringId, ft, colour);
+
+    ScreenCoordsXY coords = { l + 1, t };
+    if (widget->type == WindowWidgetType::LabelCentred)
+    {
+        DrawTextWrapped(dpi, coords, r - l, stringId, ft, { colour, TextAlignment::CENTRE });
+    }
+    else
+    {
+        DrawTextEllipsised(dpi, coords, r - l, stringId, ft, colour);
+    }
 }
 
 /**
  *
  *  rct2: 0x006EBD1F
  */
-static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -419,7 +432,7 @@ static void widget_text_inset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     uint8_t colour = w->colours[widget->colour];
 
     gfx_fill_rect_inset(dpi, rect, colour, INSET_RECT_F_60);
-    widget_text(dpi, w, widgetIndex);
+    WidgetText(dpi, w, widgetIndex);
 }
 
 static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_widget* widget)
@@ -446,7 +459,7 @@ static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_wi
  *
  *  rct2: 0x006EB535
  */
-static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -463,15 +476,15 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget->colour] & 0x7F;
-        if (widget_is_disabled(w, widgetIndex))
+        if (WidgetIsDisabled(w, widgetIndex))
             colour |= COLOUR_FLAG_INSET;
 
         utf8 buffer[512] = { 0 };
         format_string(buffer, sizeof(buffer), stringId, formatArgs);
         auto ft = Formatter();
         ft.Add<utf8*>(buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), colour, { l, t });
-        textRight = l + gfx_get_string_width(buffer) + 1;
+        DrawTextBasic(dpi, { l, t }, STR_STRING, ft, { colour });
+        textRight = l + gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) + 1;
     }
 
     // Border
@@ -509,7 +522,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
  *
  *  rct2: 0x006EB2F9
  */
-static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetCaptionDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -533,7 +546,8 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
             dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, ColourMapA[colour].dark);
     else
         gfx_filter_rect(
-            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } }, PALETTE_DARKEN_3);
+            dpi, { { topLeft + ScreenCoordsXY{ 1, 1 } }, { bottomRight - ScreenCoordsXY{ 1, 1 } } },
+            FilterPaletteID::PaletteDarken3);
 
     // Draw text
     if (widget->text == STR_NONE)
@@ -541,22 +555,22 @@ static void widget_caption_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widge
 
     topLeft = w->windowPos + ScreenCoordsXY{ widget->left + 2, widget->top + 1 };
     int32_t width = widget->width() - 4;
-    if ((widget + 1)->type == WWT_CLOSEBOX)
+    if ((widget + 1)->type == WindowWidgetType::CloseBox)
     {
         width -= 10;
-        if ((widget + 2)->type == WWT_CLOSEBOX)
+        if ((widget + 2)->type == WindowWidgetType::CloseBox)
             width -= 10;
     }
     topLeft.x += width / 2;
     DrawTextEllipsised(
-        dpi, topLeft, width, widget->text, Formatter::Common(), COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE);
+        dpi, topLeft, width, widget->text, Formatter::Common(), { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::CENTRE });
 }
 
 /**
  *
  *  rct2: 0x006EBB85
  */
-static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -569,7 +583,7 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     uint8_t press = 0;
     if (w->flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
-    if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+    if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
         press |= INSET_RECT_FLAG_BORDER_INSET;
 
     // Get the colour
@@ -583,17 +597,17 @@ static void widget_closebox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
     topLeft = w->windowPos + ScreenCoordsXY{ widget->midX() - 1, std::max<int32_t>(widget->top, widget->midY() - 5) };
 
-    if (widget_is_disabled(w, widgetIndex))
+    if (WidgetIsDisabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
-    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), colour, TextAlignment::CENTRE);
+    DrawTextEllipsised(dpi, topLeft, widget->width() - 2, widget->text, Formatter::Common(), { colour, TextAlignment::CENTRE });
 }
 
 /**
  *
  *  rct2: 0x006EBAD9
  */
-static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -604,22 +618,22 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     ScreenCoordsXY midLeft = { topLeft.x, (topLeft.y + bottomRight.y) / 2 };
 
     // Get the colour
-    uint8_t colour = w->colours[widget->colour];
+    colour_t colour = w->colours[widget->colour];
 
     // checkbox
     gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
-    if (widget_is_disabled(w, widgetIndex))
+    if (WidgetIsDisabled(w, widgetIndex))
     {
         colour |= COLOUR_FLAG_INSET;
     }
 
     // fill it when checkbox is pressed
-    if (widget_is_pressed(w, widgetIndex))
+    if (WidgetIsPressed(w, widgetIndex))
     {
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         gfx_draw_string(
-            dpi, static_cast<const char*>(CheckBoxMarkString), NOT_TRANSLUCENT(colour), { midLeft - ScreenCoordsXY{ 0, 5 } });
+            dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
+            { static_cast<colour_t>(NOT_TRANSLUCENT(colour)) });
     }
 
     // draw the text
@@ -634,7 +648,7 @@ static void widget_checkbox_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
  *
  *  rct2: 0x006EBD96
  */
-static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     int32_t scrollIndex = window_get_scroll_data_index(w, widgetIndex);
@@ -657,18 +671,16 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     bottomRight.x--;
     bottomRight.y--;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
     // Horizontal scrollbar
     if (scroll->flags & HSCROLLBAR_VISIBLE)
-        widget_hscrollbar_draw(
+        WidgetHScrollbarDraw(
             dpi, scroll, topLeft.x, bottomRight.y - SCROLLBAR_WIDTH,
             ((scroll->flags & VSCROLLBAR_VISIBLE) ? bottomRight.x - (SCROLLBAR_WIDTH + 1) : bottomRight.x), bottomRight.y,
             colour);
 
     // Vertical scrollbar
     if (scroll->flags & VSCROLLBAR_VISIBLE)
-        widget_vscrollbar_draw(
+        WidgetVScrollbarDraw(
             dpi, scroll, bottomRight.x - SCROLLBAR_WIDTH, topLeft.y, bottomRight.x,
             ((scroll->flags & HSCROLLBAR_VISIBLE) ? bottomRight.y - (SCROLLBAR_WIDTH + 1) : bottomRight.y), colour);
 
@@ -704,7 +716,7 @@ static void widget_scroll_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
         window_event_scroll_paint_call(w, &scroll_dpi, scrollIndex);
 }
 
-static void widget_hscrollbar_draw(
+static void WidgetHScrollbarDraw(
     rct_drawpixelinfo* dpi, rct_scroll* scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
@@ -721,7 +733,7 @@ static void widget_hscrollbar_draw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_LEFT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { l, t }, { l + (SCROLLBAR_WIDTH - 1), b } }, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackLeftArrowString), COLOUR_BLACK, { l + 1, t });
+        gfx_draw_string(dpi, { l + 1, t }, static_cast<const char*>(BlackLeftArrowString), {});
     }
 
     // Thumb
@@ -738,11 +750,11 @@ static void widget_hscrollbar_draw(
         uint8_t flags = (scroll->flags & HSCROLLBAR_RIGHT_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
         gfx_fill_rect_inset(dpi, { { r - (SCROLLBAR_WIDTH - 1), t }, { r, b } }, colour, flags);
-        gfx_draw_string(dpi, static_cast<const char*>(BlackRightArrowString), COLOUR_BLACK, { r - 6, t });
+        gfx_draw_string(dpi, { r - 6, t }, static_cast<const char*>(BlackRightArrowString), {});
     }
 }
 
-static void widget_vscrollbar_draw(
+static void WidgetVScrollbarDraw(
     rct_drawpixelinfo* dpi, rct_scroll* scroll, int32_t l, int32_t t, int32_t r, int32_t b, int32_t colour)
 {
     colour &= 0x7F;
@@ -758,7 +770,7 @@ static void widget_vscrollbar_draw(
     gfx_fill_rect_inset(
         dpi, { { l, t }, { r, t + (SCROLLBAR_WIDTH - 1) } }, colour,
         ((scroll->flags & VSCROLLBAR_UP_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, static_cast<const char*>(BlackUpArrowString), COLOUR_BLACK, { l + 1, t - 1 });
+    gfx_draw_string(dpi, { l + 1, t - 1 }, static_cast<const char*>(BlackUpArrowString), {});
 
     // Thumb
     gfx_fill_rect_inset(
@@ -771,14 +783,14 @@ static void widget_vscrollbar_draw(
     gfx_fill_rect_inset(
         dpi, { { l, b - (SCROLLBAR_WIDTH - 1) }, { r, b } }, colour,
         ((scroll->flags & VSCROLLBAR_DOWN_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
-    gfx_draw_string(dpi, static_cast<const char*>(BlackDownArrowString), COLOUR_BLACK, { l + 1, b - (SCROLLBAR_WIDTH - 1) });
+    gfx_draw_string(dpi, { l + 1, b - (SCROLLBAR_WIDTH - 1) }, static_cast<const char*>(BlackDownArrowString), {});
 }
 
 /**
  *
  *  rct2: 0x006EB951
  */
-static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget* widget = &w->widgets[widgetIndex];
@@ -794,11 +806,12 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // Get the colour
     uint8_t colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
-    if (widget->type == WWT_COLOURBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
-        if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
+    if (widget->type == WindowWidgetType::ColourBtn || widget->type == WindowWidgetType::TrnBtn
+        || widget->type == WindowWidgetType::Tab)
+        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             image++;
 
-    if (widget_is_disabled(w, widgetIndex))
+    if (WidgetIsDisabled(w, widgetIndex))
     {
         // Draw greyed out (light border bottom right shadow)
         colour = w->colours[widget->colour];
@@ -826,17 +839,29 @@ static void widget_draw_image(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     }
 }
 
-bool widget_is_enabled(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (!WidgetIsVisible(w, widgetIndex))
+        return false;
     return (w->enabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool widget_is_disabled(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
 {
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex)
+{
+    return (w->hold_down_widgets & (1LL << widgetIndex)) != 0;
+}
+
+bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
+{
+    return w->widgets[widgetIndex].IsVisible();
+}
+
+bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (w->pressed_widgets & (1LL << widgetIndex))
     {
@@ -857,7 +882,7 @@ bool widget_is_pressed(rct_window* w, rct_widgetindex widgetIndex)
     return false;
 }
 
-bool widget_is_highlighted(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gHoverWidget.window_classification != w->classification)
         return false;
@@ -868,7 +893,7 @@ bool widget_is_highlighted(rct_window* w, rct_widgetindex widgetIndex)
     return true;
 }
 
-bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
@@ -892,14 +917,14 @@ bool widget_is_active_tool(rct_window* w, rct_widgetindex widgetIndex)
  *  esi: w
  *  edi: widget
  */
-void widget_scroll_get_part(
+void WidgetScrollGetPart(
     rct_window* w, rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id)
 {
     *scroll_id = 0;
     for (rct_widget* iterator = w->widgets; iterator != widget; iterator++)
     {
-        if (iterator->type == WWT_SCROLL)
+        if (iterator->type == WindowWidgetType::Scroll)
         {
             *scroll_id += 1;
         }
@@ -999,7 +1024,7 @@ void widget_scroll_get_part(
     }
 }
 
-void widget_set_enabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
+void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
 {
     if (enabled)
     {
@@ -1013,7 +1038,43 @@ void widget_set_enabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled
     }
 }
 
-void widget_set_checkbox_value(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
+void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->disabled_widgets |= (1ULL << widgetIndex);
+    }
+    else
+    {
+        w->disabled_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
+void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->hold_down_widgets |= (1ULL << widgetIndex);
+    }
+    else
+    {
+        w->hold_down_widgets &= ~(1ULL << widgetIndex);
+    }
+}
+
+void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    if (value)
+    {
+        w->widgets[widgetIndex].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
+    }
+    else
+    {
+        w->widgets[widgetIndex].flags |= WIDGET_FLAGS::IS_HIDDEN;
+    }
+}
+
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
 {
     if (value)
         w->pressed_widgets |= (1ULL << widgetIndex);
@@ -1021,10 +1082,9 @@ void widget_set_checkbox_value(rct_window* w, rct_widgetindex widgetIndex, int32
         w->pressed_widgets &= ~(1ULL << widgetIndex);
 }
 
-static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
+static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
     int32_t no_lines = 0;
-    int32_t font_height = 0;
     char wrapped_string[TEXT_INPUT_SIZE];
 
     // Get the widget
@@ -1043,9 +1103,6 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // gfx_fill_rect_inset(dpi, l, t, r, b, colour, 0x20 | (!active ? 0x40 : 0x00));
     gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, colour, INSET_RECT_F_60);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gCurrentFontFlags = 0;
-
     // Figure out where the text should be positioned vertically.
     topLeft.y = w->windowPos.y + widget->textTop();
 
@@ -1054,8 +1111,9 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         if (w->widgets[widgetIndex].text != 0)
         {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);
-            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, &no_lines, &font_height);
-            gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+            gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5, FontSpriteBase::MEDIUM, &no_lines);
+            gfx_draw_string_no_formatting(
+                dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
         }
         return;
     }
@@ -1064,16 +1122,16 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
 
     // String length needs to add 12 either side of box
     // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, &no_lines, &font_height);
+    gfx_wrap_string(wrapped_string, bottomRight.x - topLeft.x - 5 - 6, FontSpriteBase::MEDIUM, &no_lines);
 
-    gfx_draw_string(dpi, wrapped_string, w->colours[1], { topLeft.x + 2, topLeft.y });
+    gfx_draw_string_no_formatting(dpi, { topLeft.x + 2, topLeft.y }, wrapped_string, { w->colours[1], FontSpriteBase::MEDIUM });
 
     size_t string_length = get_string_size(wrapped_string) - 1;
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
     std::memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
-    int32_t cur_x = topLeft.x + gfx_get_string_width(temp_string) + 3;
+    int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) + 3;
 
     int32_t width = 6;
     if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
@@ -1082,7 +1140,7 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = std::max(gfx_get_string_width(temp_string) - 2, 4);
+        width = std::max(gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15)
@@ -1091,4 +1149,9 @@ static void widget_text_box_draw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
         auto y = topLeft.y + (widget->height() - 1);
         gfx_fill_rect(dpi, { { cur_x, y }, { cur_x + width, y } }, colour + 5);
     }
+}
+
+uint32_t GetColourButtonImage(colour_t colour)
+{
+    return SPRITE_ID_PALETTE_COLOUR_1(colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 }

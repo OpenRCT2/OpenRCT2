@@ -25,6 +25,7 @@
 
 struct rct_drawpixelinfo;
 struct PaletteMap;
+enum class FilterPaletteID : int32_t;
 
 struct GlyphId
 {
@@ -223,7 +224,7 @@ public:
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
-    static GLint PaletteToY(uint32_t palette);
+    static GLint PaletteToY(FilterPaletteID palette);
 
 private:
     void CreateTextures();

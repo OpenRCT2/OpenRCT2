@@ -85,6 +85,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: windows-mingw
       - name: Build OpenRCT2
         run: |
           sudo su
@@ -100,6 +104,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: windows-mingw-nt51
       - name: Build OpenRCT2
         run: |
           sudo su
@@ -111,8 +119,8 @@ jobs:
         with:
           name: "OpenRCT2-NT5.1"
           path: bin/openrct2.exe
-  macos:
-    name: macOS
+  macos-xcode:
+    name: macOS (x64) using Xcode
     runs-on: macos-latest
     needs: [check-code-formatting]
     steps:
@@ -140,6 +148,33 @@ jobs:
           else
               echo 'Not going to push build'
           fi
+  macos-cmake:
+    name: macOS (x64) using CMake
+    runs-on: macos-latest
+    needs: [check-code-formatting]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: macos
+      - name: Build OpenRCT2
+        run: |
+          brew install ninja
+          . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on
+      - name: Run Tests
+        shell: bash
+        run: . scripts/setenv -q && run-tests
+      - name: Build artifacts
+        shell: bash
+        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz bin/install/usr
+      - name: Upload artifacts (CI)
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: "OpenRCT2-macOS-cmake"
+          path: artifacts
+
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
@@ -149,6 +184,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-portable
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv && get-discord-rpc
@@ -184,6 +223,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-portable-32
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv && get-discord-rpc
@@ -224,12 +267,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-appimage
       - name: Get pre-reqs
         shell: bash
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=off
+        run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
       - name: Build AppImage
         shell: bash
         run: . scripts/setenv -q && build-appimage
@@ -282,6 +329,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: linux-clang
       - name: Build OpenRCT2
         shell: bash
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
@@ -294,6 +345,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1
+        with:
+          key: android
       - name: Build OpenRCT2
         shell: bash
         run: |

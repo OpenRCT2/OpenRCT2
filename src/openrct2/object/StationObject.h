@@ -24,9 +24,9 @@ public:
     rct_string_id NameStringId{};
     uint32_t BaseImageId{};
     uint32_t ShelterImageId{};
-    uint32_t Flags;
-    int32_t Height;
-    uint8_t ScrollingMode;
+    uint32_t Flags{};
+    int32_t Height{};
+    uint8_t ScrollingMode{};
 
     explicit StationObject(const rct_object_entry& entry)
         : Object(entry)

@@ -22,6 +22,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../platform/platform.h"
+#include "../ride/RideAudio.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
@@ -129,9 +130,7 @@ void window_update_all_viewports()
  */
 void window_update_all()
 {
-    // gfx_draw_all_dirty_blocks();
     // window_update_all_viewports();
-    // gfx_draw_all_dirty_blocks();
 
     // 1000 tick update
     gWindowUpdateTicks += gCurrentDeltaTime;
@@ -351,7 +350,7 @@ void window_close_top()
 
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
-        if (gS6Info.editor_step != EDITOR_STEP_LANDSCAPE_EDITOR)
+        if (gS6Info.editor_step != EditorStep::LandscapeEditor)
             return;
     }
 
@@ -431,11 +430,11 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
     for (int32_t i = 0;; i++)
     {
         rct_widget* widget = &w->widgets[i];
-        if (widget->type == WWT_LAST)
+        if (widget->type == WindowWidgetType::Last)
         {
             break;
         }
-        else if (widget->type != WWT_EMPTY)
+        else if (widget->type != WindowWidgetType::Empty && widget->IsVisible())
         {
             if (screenCoords.x >= w->windowPos.x + widget->left && screenCoords.x <= w->windowPos.x + widget->right
                 && screenCoords.y >= w->windowPos.y + widget->top && screenCoords.y <= w->windowPos.y + widget->bottom)
@@ -447,7 +446,7 @@ rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsX
 
     // Return next widget if a dropdown
     if (widget_index != -1)
-        if (w->widgets[widget_index].type == WWT_DROPDOWN)
+        if (w->widgets[widget_index].type == WindowWidgetType::DropdownMenu)
             widget_index++;
 
     // Return the widget index
@@ -510,7 +509,7 @@ void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex)
 #ifdef DEBUG
     for (int32_t i = 0; i <= widgetIndex; i++)
     {
-        assert(w->widgets[i].type != WWT_LAST);
+        assert(w->widgets[i].type != WindowWidgetType::Last);
     }
 #endif
 
@@ -575,9 +574,9 @@ void window_update_scroll_widgets(rct_window* w)
     widgetIndex = 0;
     scrollIndex = 0;
     assert(w != nullptr);
-    for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++)
+    for (widget = w->widgets; widget->type != WindowWidgetType::Last; widget++, widgetIndex++)
     {
-        if (widget->type != WWT_SCROLL)
+        if (widget->type != WindowWidgetType::Scroll)
             continue;
 
         scroll = &w->scrolls[scrollIndex];
@@ -610,7 +609,7 @@ void window_update_scroll_widgets(rct_window* w)
 
         if (scrollPositionChanged)
         {
-            widget_scroll_update_thumbs(w, widgetIndex);
+            WidgetScrollUpdateThumbs(w, widgetIndex);
             w->Invalidate();
         }
         scrollIndex++;
@@ -625,7 +624,7 @@ int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index
     assert(w != nullptr);
     for (i = 0; i < widget_index; i++)
     {
-        if (w->widgets[i].type == WWT_SCROLL)
+        if (w->widgets[i].type == WindowWidgetType::Scroll)
             result++;
     }
     return result;
@@ -1084,7 +1083,7 @@ void main_window_zoom(bool zoomIn, bool atCursor)
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
         return;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EditorStep::LandscapeEditor)
     {
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
         {
@@ -1276,7 +1275,6 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& deltaCoords)
 
 void window_resize(rct_window* w, int32_t dw, int32_t dh)
 {
-    int32_t i;
     if (dw == 0 && dh == 0)
         return;
 
@@ -1291,7 +1289,7 @@ void window_resize(rct_window* w, int32_t dw, int32_t dh)
     window_event_invalidate_call(w);
 
     // Update scroll widgets
-    for (i = 0; i < 3; i++)
+    for (int32_t i = 0; i < 3; i++)
     {
         w->scrolls[i].h_right = WINDOW_SCROLL_UNDEFINED;
         w->scrolls[i].v_bottom = WINDOW_SCROLL_UNDEFINED;
@@ -1331,7 +1329,7 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, TOOL_IDX tool)
+bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
@@ -1388,97 +1386,136 @@ void tool_cancel()
 
 void window_event_close_call(rct_window* w)
 {
-    if (w->event_handlers->close != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnClose();
+    else if (w->event_handlers->close != nullptr)
         w->event_handlers->close(w);
 }
 
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->mouse_up != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnMouseUp(widgetIndex);
+    else if (w->event_handlers->mouse_up != nullptr)
         w->event_handlers->mouse_up(w, widgetIndex);
 }
 
 void window_event_resize_call(rct_window* w)
 {
-    if (w->event_handlers->resize != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnResize();
+    else if (w->event_handlers->resize != nullptr)
         w->event_handlers->resize(w);
 }
 
 void window_event_mouse_down_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->mouse_down != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnMouseDown(widgetIndex);
+    else if (w->event_handlers->mouse_down != nullptr)
         w->event_handlers->mouse_down(w, widgetIndex, &w->widgets[widgetIndex]);
 }
 
 void window_event_dropdown_call(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
-    if (w->event_handlers->dropdown != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        if (dropdownIndex != -1)
+        {
+            w->OnDropdown(widgetIndex, dropdownIndex);
+        }
+    }
+    else if (w->event_handlers->dropdown != nullptr)
+    {
         w->event_handlers->dropdown(w, widgetIndex, dropdownIndex);
+    }
 }
 
 void window_event_unknown_05_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_05 != nullptr)
-        w->event_handlers->unknown_05(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_05 != nullptr)
+            w->event_handlers->unknown_05(w);
 }
 
 void window_event_update_call(rct_window* w)
 {
-    if (w->event_handlers->update != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnUpdate();
+    else if (w->event_handlers->update != nullptr)
         w->event_handlers->update(w);
 }
 
 void window_event_periodic_update_call(rct_window* w)
 {
-    if (w->event_handlers->periodic_update != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnPeriodicUpdate();
+    else if (w->event_handlers->periodic_update != nullptr)
         w->event_handlers->periodic_update(w);
 }
 
 void window_event_unknown_08_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_08 != nullptr)
-        w->event_handlers->unknown_08(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_08 != nullptr)
+            w->event_handlers->unknown_08(w);
 }
 
 void window_event_tool_update_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_update != nullptr)
-        w->event_handlers->tool_update(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_update != nullptr)
+            w->event_handlers->tool_update(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_down_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_down != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnToolDown(widgetIndex, screenCoords);
+    else if (w->event_handlers->tool_down != nullptr)
         w->event_handlers->tool_down(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_drag_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_drag != nullptr)
-        w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_drag != nullptr)
+            w->event_handlers->tool_drag(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_up_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->tool_up != nullptr)
-        w->event_handlers->tool_up(w, widgetIndex, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->tool_up != nullptr)
+            w->event_handlers->tool_up(w, widgetIndex, screenCoords);
 }
 
 void window_event_tool_abort_call(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->event_handlers->tool_abort != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnToolAbort(widgetIndex);
+    else if (w->event_handlers->tool_abort != nullptr)
         w->event_handlers->tool_abort(w, widgetIndex);
 }
 
 void window_event_unknown_0E_call(rct_window* w)
 {
-    if (w->event_handlers->unknown_0E != nullptr)
-        w->event_handlers->unknown_0E(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_0E != nullptr)
+            w->event_handlers->unknown_0E(w);
 }
 
 void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    if (w->event_handlers->get_scroll_size != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        auto size = w->OnScrollGetSize(scrollIndex);
+        if (width != nullptr)
+            *width = size.width;
+        if (height != nullptr)
+            *height = size.height;
+    }
+    else if (w->event_handlers->get_scroll_size != nullptr)
     {
         w->event_handlers->get_scroll_size(w, scrollIndex, width, height);
     }
@@ -1486,43 +1523,64 @@ void window_get_scroll_size(rct_window* w, int32_t scrollIndex, int32_t* width, 
 
 void window_event_scroll_mousedown_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mousedown != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseDown(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mousedown != nullptr)
         w->event_handlers->scroll_mousedown(w, scrollIndex, screenCoords);
 }
 
 void window_event_scroll_mousedrag_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mousedrag != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseDrag(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mousedrag != nullptr)
         w->event_handlers->scroll_mousedrag(w, scrollIndex, screenCoords);
 }
 
 void window_event_scroll_mouseover_call(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->scroll_mouseover != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollMouseOver(scrollIndex, screenCoords);
+    else if (w->event_handlers->scroll_mouseover != nullptr)
         w->event_handlers->scroll_mouseover(w, scrollIndex, screenCoords);
 }
 
 void window_event_textinput_call(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    if (w->event_handlers->text_input != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        if (text != nullptr)
+        {
+            w->OnTextInput(widgetIndex, text);
+        }
+    }
+    else if (w->event_handlers->text_input != nullptr)
+    {
         w->event_handlers->text_input(w, widgetIndex, text);
+    }
 }
 
 void window_event_viewport_rotate_call(rct_window* w)
 {
-    if (w->event_handlers->viewport_rotate != nullptr)
-        w->event_handlers->viewport_rotate(w);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->viewport_rotate != nullptr)
+            w->event_handlers->viewport_rotate(w);
 }
 
 void window_event_unknown_15_call(rct_window* w, int32_t scrollIndex, int32_t scrollAreaType)
 {
-    if (w->event_handlers->unknown_15 != nullptr)
-        w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->unknown_15 != nullptr)
+            w->event_handlers->unknown_15(w, scrollIndex, scrollAreaType);
 }
 
 OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex widgetIndex, const rct_string_id fallback)
 {
-    if (w->event_handlers->tooltip != nullptr)
+    if (w->event_handlers == nullptr)
+    {
+        return w->OnTooltip(widgetIndex, fallback);
+    }
+    else if (w->event_handlers->tooltip != nullptr)
     {
         return w->event_handlers->tooltip(w, widgetIndex, fallback);
     }
@@ -1535,32 +1593,40 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     CursorID cursorId = CursorID::Arrow;
-    if (w->event_handlers->cursor != nullptr)
-        w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->cursor != nullptr)
+            w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
 }
 
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers->moved != nullptr)
-        w->event_handlers->moved(w, screenCoords);
+    if (w->event_handlers != nullptr)
+        if (w->event_handlers->moved != nullptr)
+            w->event_handlers->moved(w, screenCoords);
 }
 
 void window_event_invalidate_call(rct_window* w)
 {
-    if (w->event_handlers->invalidate != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnPrepareDraw();
+    else if (w->event_handlers->invalidate != nullptr)
         w->event_handlers->invalidate(w);
 }
 
 void window_event_paint_call(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->event_handlers->paint != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnDraw(*dpi);
+    else if (w->event_handlers->paint != nullptr)
         w->event_handlers->paint(w, dpi);
 }
 
 void window_event_scroll_paint_call(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    if (w->event_handlers->scroll_paint != nullptr)
+    if (w->event_handlers == nullptr)
+        w->OnScrollDraw(scrollIndex, *dpi);
+    else if (w->event_handlers->scroll_paint != nullptr)
         w->event_handlers->scroll_paint(w, dpi, scrollIndex);
 }
 
@@ -1664,7 +1730,7 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         viewport->height = height;
         viewport->view_width = width * viewport->zoom;
         viewport->view_height = height * viewport->zoom;
-        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WWT_VIEWPORT)
+        if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;
             mainWind->widgets[WC_MAIN_WINDOW__0].bottom = height;
@@ -1720,7 +1786,7 @@ void window_close_construction_windows()
  */
 void window_update_viewport_ride_music()
 {
-    OpenRCT2::Audio::gRideMusicParamsListEnd = &OpenRCT2::Audio::gRideMusicParamsList[0];
+    OpenRCT2::RideAudio::ClearAllViewportInstances();
     g_music_tracking_viewport = nullptr;
 
     for (auto it = g_window_list.rbegin(); it != g_window_list.rend(); it++)
@@ -1939,13 +2005,19 @@ void window_cancel_textbox()
     if (gUsingWidgetTextBox)
     {
         rct_window* w = window_find_by_number(gCurrentTextBox.window.classification, gCurrentTextBox.window.number);
-        window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
+        if (w != nullptr)
+        {
+            window_event_textinput_call(w, gCurrentTextBox.widget_index, nullptr);
+        }
         gCurrentTextBox.window.classification = WC_NULL;
         gCurrentTextBox.window.number = 0;
         context_stop_text_input();
         gUsingWidgetTextBox = false;
-        widget_invalidate(w, gCurrentTextBox.widget_index);
-        gCurrentTextBox.widget_index = WWT_LAST;
+        if (w != nullptr)
+        {
+            widget_invalidate(w, gCurrentTextBox.widget_index);
+        }
+        gCurrentTextBox.widget_index = static_cast<uint16_t>(WindowWidgetType::Last);
     }
 }
 
@@ -2071,7 +2143,7 @@ void window_init_all()
 
 void window_follow_sprite(rct_window* w, size_t spriteIndex)
 {
-    if (spriteIndex < MAX_SPRITES || spriteIndex == SPRITE_INDEX_NULL)
+    if (spriteIndex < MAX_ENTITIES || spriteIndex == SPRITE_INDEX_NULL)
     {
         w->viewport_smart_follow_sprite = static_cast<uint16_t>(spriteIndex);
     }
@@ -2119,7 +2191,7 @@ rct_windowclass window_get_classification(rct_window* window)
  *
  *  rct2: 0x006EAF26
  */
-void widget_scroll_update_thumbs(rct_window* w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
 {
     rct_widget* widget = &w->widgets[widget_index];
     rct_scroll* scroll = &w->scrolls[window_get_scroll_data_index(w, widget_index)];

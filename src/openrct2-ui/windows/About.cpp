@@ -50,21 +50,21 @@ enum WINDOW_ABOUT_WIDGET_IDX {
 
 #define WIDGETS_MAIN \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WWT_IMGBTN, WindowColour::Secondary               ), /* page background */       \
-    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
-    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WWT_TAB,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
+    MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::ImgBtn, WindowColour::Secondary               ), /* page background */       \
+    MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
+    MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
 static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WWT_BUTTON,      WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WWT_BUTTON,      WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
-    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WWT_PLACEHOLDER, WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 2}, {200, 14}, WindowWidgetType::Button,      WindowColour::Secondary, STR_CHANGELOG_ELLIPSIS), // changelog button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 1}, {200, 14}, WindowWidgetType::Button,      WindowColour::Secondary, STR_JOIN_DISCORD      ), // "join discord" button
+    MakeWidget({100, WH - TABHEIGHT - (14 + 3) * 0}, {200, 14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_UPDATE_AVAILABLE  ), // "new version" button
     { WIDGETS_END }
 };
 
 static rct_widget window_about_rct2_widgets[] = {
     WIDGETS_MAIN,
-    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WWT_BUTTON, WindowColour::Secondary, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
+    MakeWidget({100, WH - TABHEIGHT}, {200, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_MUSIC_ACKNOWLEDGEMENTS_ELLIPSIS), // music credits button
     { WIDGETS_END },
 };
 
@@ -123,11 +123,11 @@ rct_window* window_about_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
+    window = WindowCreateCentred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
     window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_GREY;
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -162,7 +162,7 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
 
 static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     const auto& aboutOpenRCT2 = w->widgets[WIDX_TAB_ABOUT_OPENRCT2];
     const auto& aboutRCT2 = w->widgets[WIDX_TAB_ABOUT_RCT2];
@@ -174,13 +174,14 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_OPENRCT2);
-        gfx_draw_string_centred_wrapped(
-            dpi, ft.Data(), aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutOpenRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
     {
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RCT2);
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, COLOUR_AQUAMARINE);
+        DrawTextWrapped(
+            dpi, aboutRCT2Coords, 87, STR_WINDOW_COLOUR_2_STRINGID, ft, { COLOUR_AQUAMARINE, TextAlignment::CENTRE });
     }
 }
 
@@ -188,42 +189,43 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     window_about_openrct2_common_paint(w, dpi);
 
-    int32_t width;
-    rct_size16 logoSize;
-
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY aboutCoords(
         w->windowPos.x + (w->width / 2), w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight);
-    width = w->width - 20;
+    int32_t width = w->width - 20;
 
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION, {}, { w->colours[2], TextAlignment::CENTRE })
         + lineHeight;
 
-    logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
+    rct_size16 logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
     gfx_draw_sprite(dpi, SPR_G2_LOGO, aboutCoords - ScreenCoordsXY{ logoSize.width / 2, 0 }, 0);
     aboutCoords.y += logoSize.height + lineHeight * 2;
 
     // About OpenRCT2 text
-    aboutCoords.y += gfx_draw_string_centred_wrapped(
-                         dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2])
+    aboutCoords.y += DrawTextWrapped(
+                         dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, {},
+                         { w->colours[2], TextAlignment::CENTRE })
         + lineHeight + 5;
 
     // Copyright disclaimer; hidden when using truetype fonts to prevent
     // the text from overlapping the changelog button.
     if (!LocalisationService_UseTrueTypeFont())
     {
-        gfx_draw_string_centred_wrapped(dpi, nullptr, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+        DrawTextWrapped(
+            dpi, aboutCoords, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, {}, { w->colours[2], TextAlignment::CENTRE });
     }
 
     // Version info
     utf8 buffer[256];
     utf8* ch = buffer;
     openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    auto ft = Formatter();
+    ft.Add<const char*>(buffer);
 
     aboutCoords.y = w->windowPos.y + WH - 25;
-    gfx_draw_string_centred_wrapped(dpi, &ch, aboutCoords, width, STR_STRING, w->colours[2]);
+    DrawTextWrapped(dpi, aboutCoords, width, STR_STRING, ft, { w->colours[2], TextAlignment::CENTRE });
 }
 
 static void window_about_openrct2_invalidate(rct_window* w)
@@ -231,8 +233,8 @@ static void window_about_openrct2_invalidate(rct_window* w)
     if (w->page == WINDOW_ABOUT_PAGE_OPENRCT2 && OpenRCT2::GetContext()->HasNewVersionInfo())
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
-        w->widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
-        window_about_openrct2_widgets[WIDX_NEW_VERSION].type = WWT_BUTTON;
+        w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+        window_about_openrct2_widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
     }
 }
 
@@ -267,34 +269,32 @@ static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex
  */
 static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t yPage;
-
     window_about_openrct2_common_paint(w, dpi);
 
-    yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
+    int32_t yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
 
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + 200, yPage + 5 };
 
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Credits
-    gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_COPYRIGHT_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 74;
-    gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_DESIGNED_AND_PROGRAMMED_BY_CS, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_GRAPHICS_BY_SF, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_SOUND_AND_MUSIC_BY_AB, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight + 3;
-    gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_REPRESENTATION_BY_JL, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO, {}, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
-    gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_THANKS_TO_PEOPLE, {}, { TextAlignment::CENTRE });
     screenCoords.y += 2 * lineHeight + 5;
-    gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, {}, { TextAlignment::CENTRE });
 
     // Images
     gfx_draw_sprite(dpi, SPR_CREDITS_CHRIS_SAWYER_SMALL, { w->windowPos.x + 92, yPage + 24 }, 0);
@@ -315,6 +315,6 @@ static void window_about_set_page(rct_window* w, int32_t page)
 
     w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
     w->Invalidate();
 }

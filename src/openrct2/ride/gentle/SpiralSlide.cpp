@@ -60,7 +60,7 @@ static void spiral_slide_paint_tile_right(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_RIGHT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3);
+    PaintAddImageAsParent(session, image_id, 16, 16, 16, 16, 108, height, 16, 0, height + 3);
 }
 
 static void spiral_slide_paint_tile_left(
@@ -78,7 +78,7 @@ static void spiral_slide_paint_tile_left(
     if (direction == 3)
         image_id = SPIRAL_SLIDE_LEFT_R3 | session->TrackColours[SCHEME_TRACK];
 
-    sub_98197C(session, image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3);
+    PaintAddImageAsParent(session, image_id, 16, 16, 16, 16, 108, height, 0, 16, height + 3);
 }
 
 static void spiral_slide_paint_tile_front(
@@ -94,37 +94,37 @@ static void spiral_slide_paint_tile_front(
     if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R1 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 2, 16, 108, height, -12, 0, height + 3);
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_INSIDE_R2 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 16, 2, 108, height, 0, -12, height + 3);
     }
 
     if (direction == 0)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R0 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 16, 8, 108, height, 0, 8, height + 3);
     }
     else if (direction == 1)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R1 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 2, 16, 108, height, 14, 0, height + 3);
     }
     else if (direction == 2)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R2 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 16, 2, 108, height, 0, 14, height + 3);
     }
     else if (direction == 3)
     {
         image_id = SPIRAL_SLIDE_CENTRE_R3 | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
+        PaintAddImageAsParent(session, image_id, 16, 16, 8, 16, 108, height, 8, 0, height + 3);
     }
 
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level == 0 && ride->slide_in_use != 0)
+    if (dpi->zoom_level <= 0 && ride->slide_in_use != 0)
     {
         uint8_t slide_progress = ride->spiral_slide_progress;
         if (slide_progress != 0)
@@ -174,7 +174,7 @@ static void spiral_slide_paint_tile_front(
 
             image_id = (offset + slide_progress) | (ride->slide_peep_t_shirt_colour << 19) | (1 << 29);
 
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, 16, 16, boundingBox.x, boundingBox.y, boundingBox.z, height, boundingBoxOffset.x,
                 boundingBoxOffset.y, boundingBoxOffset.z);
         }
@@ -203,7 +203,7 @@ static void paint_spiral_slide(
 
     // Base
     uint32_t imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
@@ -235,7 +235,7 @@ static void paint_spiral_slide(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_spiral_slide(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_2_X_2)
+    if (trackType != TrackElemType::FlatTrack2x2)
     {
         return nullptr;
     }

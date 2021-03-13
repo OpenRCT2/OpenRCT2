@@ -12,8 +12,8 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/StaffHireNewAction.hpp"
-#include "../actions/StaffSetOrdersAction.hpp"
+#include "../actions/StaffHireNewAction.h"
+#include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
@@ -31,6 +31,7 @@
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
+#include "../windows/Intent.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Scenery.h"
@@ -42,18 +43,6 @@
 
 #include <algorithm>
 #include <iterator>
-
-/**
- * Monthly staff wages
- *
- * rct2: 0x00992A00
- */
-const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)] = {
-    MONEY(50, 00), // Handyman
-    MONEY(80, 00), // Mechanic
-    MONEY(60, 00), // Security guard
-    MONEY(55, 00), // Entertainer
-};
 
 // clang-format off
 const rct_string_id StaffCostumeNames[] = {
@@ -664,9 +653,7 @@ bool Staff::DoHandymanPathFinding()
     }
 
     PeepDirection = newDirection;
-    DestinationX = chosenTile.x + 16;
-    DestinationY = chosenTile.y + 16;
-    DestinationTolerance = 3;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, 3);
     if (State == PeepState::Queuing)
     {
         DestinationTolerance = (scenario_rand() & 7) + 2;
@@ -883,9 +870,8 @@ bool Staff::DoMechanicPathFinding()
     }
 
     PeepDirection = newDirection;
-    DestinationX = chosenTile.x + 16;
-    DestinationY = chosenTile.y + 16;
-    DestinationTolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (scenario_rand() & 7) + 2;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
 }
@@ -962,9 +948,8 @@ bool Staff::DoMiscPathFinding()
     }
 
     PeepDirection = newDirection;
-    DestinationX = chosenTile.x + 16;
-    DestinationY = chosenTile.y + 16;
-    DestinationTolerance = (scenario_rand() & 7) + 2;
+    auto tolerance = (scenario_rand() & 7) + 2;
+    SetDestination(chosenTile + CoordsXY{ 16, 16 }, tolerance);
 
     return false;
 }
@@ -1184,8 +1169,8 @@ void Staff::UpdateMowing()
             return;
         }
 
-        DestinationX = _MowingWaypoints[Var37].x + NextLoc.x;
-        DestinationY = _MowingWaypoints[Var37].y + NextLoc.y;
+        auto destination = _MowingWaypoints[Var37] + NextLoc;
+        SetDestination(destination);
 
         if (Var37 != 7)
             continue;
@@ -1457,12 +1442,8 @@ void Staff::UpdateHeadingToInspect()
 
         PeepDirection = rideEntranceExitElement->GetDirection();
 
-        int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
-        int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
-
-        DestinationX = destX;
-        DestinationY = destY;
-        DestinationTolerance = 2;
+        auto newDestination = CoordsXY{ 16, 16 } + NextLoc + (DirectionOffsets[PeepDirection] * 53);
+        SetDestination(newDestination, 2);
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1470,14 +1451,14 @@ void Staff::UpdateHeadingToInspect()
         // Falls through into SubState 4
     }
 
-    int16_t delta_y = abs(y - DestinationY);
+    int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
         if (delta_y < 20)
         {
-            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -1571,9 +1552,7 @@ void Staff::UpdateAnswering()
         int32_t destX = NextLoc.x + 16 + DirectionOffsets[PeepDirection].x * 53;
         int32_t destY = NextLoc.y + 16 + DirectionOffsets[PeepDirection].y * 53;
 
-        DestinationX = destX;
-        DestinationY = destY;
-        DestinationTolerance = 2;
+        SetDestination({ destX, destY }, 2);
         sprite_direction = PeepDirection << 3;
 
         z = rideEntranceExitElement->base_height * 4;
@@ -1581,14 +1560,14 @@ void Staff::UpdateAnswering()
         // Falls through into SubState 4
     }
 
-    int16_t delta_y = abs(y - DestinationY);
+    int16_t delta_y = abs(y - GetDestination().y);
     if (auto loc = UpdateAction())
     {
         int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
 
         if (delta_y < 20)
         {
-            newZ += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, newZ });
@@ -1666,9 +1645,8 @@ bool Staff::UpdatePatrollingFindWatering()
             Var37 = chosen_position;
 
             SubState = 0;
-            DestinationX = (x & 0xFFE0) + _WateringUseOffsets[chosen_position].x;
-            DestinationY = (y & 0xFFE0) + _WateringUseOffsets[chosen_position].y;
-            DestinationTolerance = 3;
+            auto destination = _WateringUseOffsets[chosen_position] + GetLocation().ToTileStart();
+            SetDestination(destination, 3);
 
             return true;
         } while (!(tile_element++)->IsLastForTile());
@@ -1735,9 +1713,8 @@ bool Staff::UpdatePatrollingFindBin()
     SetState(PeepState::EmptyingBin);
 
     SubState = 0;
-    DestinationX = (x & 0xFFE0) + BinUseOffsets[chosen_position].x;
-    DestinationY = (y & 0xFFE0) + BinUseOffsets[chosen_position].y;
-    DestinationTolerance = 3;
+    auto destination = BinUseOffsets[chosen_position] + GetLocation().ToTileStart();
+    SetDestination(destination, 3);
     return true;
 }
 
@@ -1764,9 +1741,9 @@ bool Staff::UpdatePatrollingFindGrass()
             SetState(PeepState::Mowing);
             Var37 = 0;
             // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
-            DestinationX = NextLoc.x + _MowingWaypoints[0].x;
-            DestinationY = NextLoc.y + _MowingWaypoints[0].y;
-            DestinationTolerance = 3;
+
+            auto destination = _MowingWaypoints[0] + NextLoc;
+            SetDestination(destination, 3);
             return true;
         }
     }
@@ -1792,9 +1769,7 @@ bool Staff::UpdatePatrollingFindSweeping()
         SetState(PeepState::Sweeping);
 
         Var37 = 0;
-        DestinationX = litter->x;
-        DestinationY = litter->y;
-        DestinationTolerance = 5;
+        SetDestination(litter->GetLocation(), 5);
         return true;
     }
 
@@ -1831,9 +1806,7 @@ void Staff::Tick128UpdateStaff()
 
 bool Staff::IsMechanic() const
 {
-    return (
-        sprite_identifier == SPRITE_IDENTIFIER_PEEP && AssignedPeepType == PeepType::Staff
-        && AssignedStaffType == StaffType::Mechanic);
+    return AssignedStaffType == StaffType::Mechanic;
 }
 
 void Staff::UpdateStaff(uint32_t stepsToTake)
@@ -2163,7 +2136,7 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
                 break;
             }
 
-            uint8_t trackType = vehicle->GetTrackType();
+            auto trackType = vehicle->GetTrackType();
             if (track_type_is_station(trackType))
             {
                 break;
@@ -2177,9 +2150,8 @@ bool Staff::UpdateFixingMoveToBrokenDownVehicle(bool firstRun, const Ride* ride)
         }
 
         CoordsXY offset = DirectionOffsets[PeepDirection];
-        DestinationX = (offset.x * -12) + vehicle->x;
-        DestinationY = (offset.y * -12) + vehicle->y;
-        DestinationTolerance = 2;
+        auto destination = (offset * -12) + vehicle->GetLocation();
+        SetDestination(destination, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2296,7 +2268,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2320,18 +2292,16 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
         stationPos.x += 16 + offset.x;
         if (offset.x == 0)
         {
-            stationPos.x = DestinationX;
+            stationPos.x = GetDestination().x;
         }
 
         stationPos.y += 16 + offset.y;
         if (offset.y == 0)
         {
-            stationPos.y = DestinationY;
+            stationPos.y = GetDestination().y;
         }
 
-        DestinationX = stationPos.x;
-        DestinationY = stationPos.y;
-        DestinationTolerance = 2;
+        SetDestination(stationPos, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2384,7 +2354,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2422,26 +2392,22 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
         }
 
         // loc_6C12ED:
-        uint16_t destinationX = input.x + 16;
-        uint16_t destinationY = input.y + 16;
+        auto destination = CoordsXY{ input.x + 16, input.y + 16 };
+        auto offset = _StationFixingOffsets[stationDirection];
 
-        CoordsXY offset = _StationFixingOffsets[stationDirection];
-
-        destinationX -= offset.x;
+        destination.x -= offset.x;
         if (offset.x == 0)
         {
-            destinationX = DestinationX;
+            destination.x = GetDestination().x;
         }
 
-        destinationY -= offset.y;
+        destination.y -= offset.y;
         if (offset.y == 0)
         {
-            destinationY = DestinationY;
+            destination.y = GetDestination().y;
         }
 
-        DestinationX = destinationX;
-        DestinationY = destinationY;
-        DestinationTolerance = 2;
+        SetDestination(destination, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2464,7 +2430,7 @@ bool Staff::UpdateFixingFixStationStart(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_HAS_NO_TRACK))
         {
             return true;
         }
@@ -2554,9 +2520,7 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
         stationPosition.x += stationPlatformDirection.x * 20;
         stationPosition.y += stationPlatformDirection.y * 20;
 
-        DestinationX = stationPosition.x;
-        DestinationY = stationPosition.y;
-        DestinationTolerance = 2;
+        SetDestination(stationPosition, 2);
     }
 
     if (auto loc = UpdateAction())
@@ -2579,15 +2543,13 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
 {
     if (!firstRun)
     {
-        ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
-
         if (State == PeepState::Inspecting)
         {
             UpdateRideInspected(CurrentRide);
 
             StaffRidesInspected++;
             WindowInvalidateFlags |= RIDE_INVALIDATE_RIDE_INCOME | RIDE_INVALIDATE_RIDE_LIST;
-
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
             return true;
         }
 
@@ -2610,7 +2572,7 @@ bool Staff::UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* r
     }
 
     ride_fix_breakdown(ride, steps);
-
+    ride->mechanic_status = RIDE_MECHANIC_STATUS_UNDEFINED;
     return true;
 }
 
@@ -2641,9 +2603,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
         exitPosition.x -= ebx_direction.x * 19;
         exitPosition.y -= ebx_direction.y * 19;
 
-        DestinationX = exitPosition.x;
-        DestinationY = exitPosition.y;
-        DestinationTolerance = 2;
+        SetDestination(exitPosition, 2);
     }
 
     int16_t xy_distance;
@@ -2653,7 +2613,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 
         if (xy_distance >= 16)
         {
-            stationHeight += RideTypeDescriptors[ride->type].Heights.PlatformHeight;
+            stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
         }
 
         MoveTo({ *loc, stationHeight });
@@ -2676,5 +2636,21 @@ void Staff::UpdateRideInspected(ride_id_t rideIndex)
         ride->last_inspection = 0;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE | RIDE_INVALIDATE_RIDE_MAIN
             | RIDE_INVALIDATE_RIDE_LIST;
+    }
+}
+
+money32 GetStaffWage(StaffType type)
+{
+    switch (type)
+    {
+        default:
+        case StaffType::Handyman:
+            return MONEY(50, 00);
+        case StaffType::Mechanic:
+            return MONEY(80, 00);
+        case StaffType::Security:
+            return MONEY(60, 00);
+        case StaffType::Entertainer:
+            return MONEY(55, 00);
     }
 }

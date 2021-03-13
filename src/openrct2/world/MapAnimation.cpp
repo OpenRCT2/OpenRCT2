@@ -18,6 +18,7 @@
 #include "../ride/Track.h"
 #include "../world/Wall.h"
 #include "Banner.h"
+#include "EntityList.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"
@@ -205,7 +206,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
                     peep->ActionFrame = 0;
                     peep->ActionSpriteImageOffset = 0;
                     peep->UpdateCurrentActionSpriteType();
-                    peep->Invalidate1();
+                    peep->Invalidate();
                     break;
                 }
             }

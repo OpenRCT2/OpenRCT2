@@ -95,6 +95,17 @@ namespace OpenRCT2::Ui
             MessageBoxW(hwnd, messageW.c_str(), L"OpenRCT2", MB_OK);
         }
 
+        bool HasMenuSupport() override
+        {
+            return false;
+        }
+
+        int32_t ShowMenuDialog(
+            const std::vector<std::string>& options, const std::string& title, const std::string& text) override
+        {
+            return -1;
+        }
+
         void OpenFolder(const std::string& path) override
         {
             std::wstring pathW = String::ToWideChar(path);
@@ -197,6 +208,11 @@ namespace OpenRCT2::Ui
             return result;
         }
 
+        bool HasFilePicker() const override
+        {
+            return true;
+        }
+
     private:
         HWND GetHWND(SDL_Window* window)
         {
@@ -219,7 +235,7 @@ namespace OpenRCT2::Ui
         static std::wstring GetFilterString(const std::vector<FileDialogDesc::Filter> filters)
         {
             std::wstringstream filtersb;
-            for (auto filter : filters)
+            for (const auto& filter : filters)
             {
                 filtersb << String::ToWideChar(filter.Name) << '\0' << String::ToWideChar(filter.Pattern) << '\0';
             }

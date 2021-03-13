@@ -19,9 +19,10 @@
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
 #include "ReplayManager.h"
-#include "actions/LoadOrQuitAction.hpp"
+#include "actions/LoadOrQuitAction.h"
 #include "audio/audio.h"
 #include "config/Config.h"
+#include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
 #include "interface/Colour.h"
@@ -144,7 +145,7 @@ enum
  */
 void update_palette_effects()
 {
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
 
     if (gClimateLightningFlash == 1)
     {
@@ -203,10 +204,10 @@ void update_palette_effects()
         if (gConfigGeneral.render_weather_gloom)
         {
             auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
-            if (paletteId != PALETTE_NULL)
+            if (paletteId != FilterPaletteID::PaletteNull)
             {
                 shade = 1;
-                if (paletteId != PALETTE_DARKEN_1)
+                if (paletteId != FilterPaletteID::PaletteDarken1)
                 {
                     shade = 2;
                 }
@@ -366,7 +367,7 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 {
     if (length > 0)
     {
-        auto temp = rct2_to_utf8(buffer, RCT2_LANGUAGE_ID_ENGLISH_UK);
+        auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
     }
 }
@@ -377,25 +378,9 @@ void rct2_to_utf8_self(char* buffer, size_t length)
 void game_convert_strings_to_utf8()
 {
     // Scenario details
-    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioName = rct2_to_utf8(gScenarioName, RCT2_LANGUAGE_ID_ENGLISH_UK);
-    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2_LANGUAGE_ID_ENGLISH_UK);
-
-    // News items
-    game_convert_news_items_to_utf8();
-}
-
-void game_convert_news_items_to_utf8()
-{
-    for (int32_t i = 0; i < News::MaxItems; i++)
-    {
-        News::Item* newsItem = News::GetItem(i);
-
-        if (!str_is_null_or_empty(newsItem->Text))
-        {
-            rct2_to_utf8_self(newsItem->Text, sizeof(newsItem->Text));
-        }
-    }
+    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+    gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
+    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
 }
 
 /**
@@ -414,15 +399,6 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
         if (!str_is_null_or_empty(userString))
         {
             utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
-        }
-    }
-
-    // News items
-    for (auto& newsItem : s6->news_items)
-    {
-        if (!str_is_null_or_empty(newsItem.Text))
-        {
-            utf8_to_rct2_self(newsItem.Text, sizeof(newsItem.Text));
         }
     }
 }
@@ -506,13 +482,12 @@ void game_fix_save_vars()
             if (surfaceElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                auto tileElement = tile_element_insert(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
-                if (tileElement == nullptr)
+                surfaceElement = TileElementInsert<SurfaceElement>(TileCoordsXYZ{ x, y, 14 }.ToCoordsXYZ(), 0b0000);
+                if (surfaceElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
-                surfaceElement = tileElement->AsSurface();
             }
 
             // Fix the invisible border tiles.
@@ -613,10 +588,10 @@ void game_unload_scripts()
  */
 void reset_all_sprite_quadrant_placements()
 {
-    for (size_t i = 0; i < MAX_SPRITES; i++)
+    for (size_t i = 0; i < MAX_ENTITIES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
         {
             spr->MoveTo({ spr->x, spr->y, spr->z });
         }
@@ -788,7 +763,7 @@ void game_autosave()
     }
 
     if (!scenario_save(path, saveFlags))
-        std::fprintf(stderr, "Could not autosave the scenario. Is the save folder writeable?\n");
+        Console::Error::WriteLine("Could not autosave the scenario. Is the save folder writeable?");
 }
 
 static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8* path)

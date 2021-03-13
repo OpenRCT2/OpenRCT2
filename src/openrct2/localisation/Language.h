@@ -46,24 +46,24 @@ enum
     LANGUAGE_COUNT
 };
 
-enum RCT2LanguageId
+enum class RCT2LanguageId
 {
-    RCT2_LANGUAGE_ID_ENGLISH_UK,
-    RCT2_LANGUAGE_ID_ENGLISH_US,
-    RCT2_LANGUAGE_ID_FRENCH,
-    RCT2_LANGUAGE_ID_GERMAN,
-    RCT2_LANGUAGE_ID_SPANISH,
-    RCT2_LANGUAGE_ID_ITALIAN,
-    RCT2_LANGUAGE_ID_DUTCH,
-    RCT2_LANGUAGE_ID_SWEDISH,
-    RCT2_LANGUAGE_ID_JAPANESE,
-    RCT2_LANGUAGE_ID_KOREAN,
-    RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
-    RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
-    RCT2_LANGUAGE_ID_12,
-    RCT2_LANGUAGE_ID_PORTUGUESE,
-    RCT2_LANGUAGE_ID_BLANK = 254,
-    RCT2_LANGUAGE_ID_END = 255
+    EnglishUK,
+    EnglishUS,
+    French,
+    German,
+    Spanish,
+    Italian,
+    Dutch,
+    Swedish,
+    Japanese,
+    Korean,
+    ChineseSimplified,
+    ChineseTraditional,
+    Undefined,
+    Portuguese,
+    Blank = 254,
+    End = 255
 };
 
 #define FONT_OPENRCT2_SPRITE NULL
@@ -85,11 +85,11 @@ struct language_descriptor
 
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
-extern const utf8 BlackUpArrowString[];
-extern const utf8 BlackDownArrowString[];
-extern const utf8 BlackLeftArrowString[];
-extern const utf8 BlackRightArrowString[];
-extern const utf8 CheckBoxMarkString[];
+constexpr const char* BlackUpArrowString = u8"{BLACK}▲";
+constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
+constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
+constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
+constexpr const char* CheckBoxMarkString = u8"✓";
 
 uint8_t language_get_id_from_locale(const char* locale);
 const char* language_get_string(rct_string_id id);
@@ -98,17 +98,14 @@ bool language_open(int32_t id);
 uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr);
 int32_t utf8_insert_codepoint(utf8* dst, uint32_t codepoint);
 bool utf8_is_codepoint_start(const utf8* text);
-void utf8_remove_format_codes(utf8* text, bool allowcolours);
 int32_t utf8_get_codepoint_length(char32_t codepoint);
 int32_t utf8_length(const utf8* text);
 
-std::string rct2_to_utf8(const std::string_view& src, RCT2LanguageId languageId);
-std::string utf8_to_rct2(const std::string_view& src);
+std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId);
+std::string utf8_to_rct2(std::string_view src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_allocate_object_string(const std::string& target);
-std::string language_convert_string_to_tokens(const std::string_view& s);
-std::string language_convert_string(const std::string_view& s);
 
 constexpr utf8* utf8_write_codepoint(utf8* dst, uint32_t codepoint)
 {

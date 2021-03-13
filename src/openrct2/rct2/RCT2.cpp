@@ -9,6 +9,7 @@
 
 #include "../object/Object.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 
 #include <cstdint>
@@ -82,4 +83,81 @@ uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type)
         default:
             return openrct2Type;
     }
+}
+
+size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen)
+{
+    constexpr char MULTIBYTE = static_cast<char>(255);
+    size_t len = 0;
+    for (size_t i = 0; i < maxBufferLen; i++)
+    {
+        auto ch = buffer[i];
+        if (ch == MULTIBYTE)
+        {
+            i += 2;
+
+            // Check if reading two more bytes exceeds max buffer len
+            if (i < maxBufferLen)
+            {
+                len += 3;
+            }
+        }
+        else if (ch == '\0')
+        {
+            break;
+        }
+        else
+        {
+            len++;
+        }
+    }
+    return len;
+}
+
+uint8_t rct2_ride::GetMinCarsPerTrain() const
+{
+    return min_max_cars_per_train >> 4;
+}
+
+uint8_t rct2_ride::GetMaxCarsPerTrain() const
+{
+    return min_max_cars_per_train & 0xF;
+}
+
+void rct2_ride::SetMinCarsPerTrain(uint8_t newValue)
+{
+    min_max_cars_per_train &= ~0xF0;
+    min_max_cars_per_train |= (newValue << 4);
+}
+
+void rct2_ride::SetMaxCarsPerTrain(uint8_t newValue)
+{
+    min_max_cars_per_train &= ~0x0F;
+    min_max_cars_per_train |= newValue & 0x0F;
+}
+
+bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType)
+{
+    // Boosters share their ID with the Spinning Control track.
+    return rideType != RIDE_TYPE_SPINNING_WILD_MOUSE && rideType != RIDE_TYPE_STEEL_WILD_MOUSE
+        && trackType == TrackElemType::Booster;
+}
+
+track_type_t RCT2TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType)
+{
+    if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
+        return RCT12FlatTrackTypeToOpenRCT2(origTrackType);
+    if (origTrackType == TrackElemType::RotationControlToggleAlias && !RCT2TrackTypeIsBooster(rideType, origTrackType))
+        return TrackElemType::RotationControlToggle;
+
+    return origTrackType;
+}
+
+RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
+{
+    if (origTrackType == TrackElemType::RotationControlToggle)
+        return TrackElemType::RotationControlToggleAlias;
+
+    // This function is safe to run this way round.
+    return OpenRCT2FlatTrackTypeToRCT12(origTrackType);
 }

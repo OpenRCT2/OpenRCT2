@@ -35,12 +35,12 @@ static constexpr const int32_t WH = 94;
 
 static rct_widget window_clear_scenery_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
-    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
-    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
-    MakeRemapWidget({ 7, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
-    MakeRemapWidget({37, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
-    MakeRemapWidget({67, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
+    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,        STR_NONE),                                   // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_TIP),                // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_TIP),                 // increment size
+    MakeRemapWidget({ 7, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
+    MakeRemapWidget({37, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY, STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
+    MakeRemapWidget({67, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,      STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP),     // footpaths
     { WIDGETS_END },
 };
 
@@ -78,13 +78,13 @@ rct_window* window_clear_scenery_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(
+    window = WindowCreate(
         ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, &window_clear_scenery_events, WC_CLEAR_SCENERY, 0);
     window->widgets = window_clear_scenery_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_SMALL_SCENERY) | (1 << WIDX_LARGE_SCENERY) | (1 << WIDX_FOOTPATH);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     gLandToolSize = 2;
@@ -206,7 +206,7 @@ static void window_clear_scenery_invalidate(rct_window* w)
         | (gClearLargeScenery ? (1 << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1 << WIDX_FOOTPATH) : 0);
 
     // Update the preview image (for tool sizes up to 7)
-    window_clear_scenery_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 }
 
 /**
@@ -215,15 +215,15 @@ static void window_clear_scenery_invalidate(rct_window* w)
  */
 static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw number for tool sizes bigger than 7
     ScreenCoordsXY screenCoords = { w->windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
                                     w->windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
@@ -231,6 +231,6 @@ static void window_clear_scenery_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + w->windowPos.x;
         screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 5 + 27;
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &gClearSceneryCost);
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &gClearSceneryCost, { TextAlignment::CENTRE });
     }
 }

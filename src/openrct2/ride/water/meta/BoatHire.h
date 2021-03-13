@@ -31,7 +31,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(DefaultMode, RideMode::BoatHire),
     SET_FIELD(OperatingSettings, { 0, 0, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_BOAT_HIRE, STR_RIDE_DESCRIPTION_BOAT_HIRE }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_BOAT, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM, RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }),
+    SET_FIELD(NameConvention, { RideComponentType::Boat, RideComponentType::DockingPlatform, RideComponentType::DockingPlatform }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_BOAT_HIRE)),
     SET_FIELD(AvailableBreakdowns, (1 << BREAKDOWN_VEHICLE_MALFUNCTION)),
     SET_FIELD(Heights, { 255, 16, 0, 3, }),
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(BuildCosts, { 55, 5, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_WATER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 40),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_WHITE },

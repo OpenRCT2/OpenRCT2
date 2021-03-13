@@ -121,7 +121,7 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
     {
         uint8_t newAge = age++;
 
-        // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
+        // Only invalidate tiles when scenery crosses the withering thresholds, and can be withered.
         if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
         {
             rct_scenery_entry* entry = GetEntry();
@@ -177,7 +177,7 @@ rct_scenery_entry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
 {
     rct_scenery_entry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
+    auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<rct_scenery_entry*>(obj->GetLegacyData());

@@ -84,7 +84,7 @@ static TileElement* get_banner_on_path(TileElement* path_element)
         // Found a banner
         if (bannerElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
             return bannerElement;
-        // Last element so there cant be any other banners
+        // Last element so there can't be any other banners
         if (bannerElement->IsLastForTile())
             return nullptr;
 
@@ -132,13 +132,43 @@ static int32_t peep_move_one_tile(Direction direction, Peep* peep)
     }
 
     peep->PeepDirection = direction;
-    peep->DestinationX = newTile.x;
-    peep->DestinationY = newTile.y;
-    peep->DestinationTolerance = 2;
     if (peep->State != PeepState::Queuing)
     {
-        peep->DestinationTolerance = (scenario_rand() & 7) + 2;
+        // When peeps are walking along a path, we would like them to be spread out across the width of the path,
+        // instead of all walking along the exact center line of the path.
+        //
+        // Setting a random DestinationTolerance does not work very well for this. It means that peeps will make
+        // their new pathfinding decision at a random time, and so will distribute a bit when they are turning
+        // corners (which is good); but, as they walk along a straight path, they will - eventually - have had a
+        // low tolerance value which forced them back to the center of the path, where they stay until they turn
+        // a corner.
+        //
+        // What we want instead is to apply that randomness in the direction they are walking ONLY, and keep their
+        // other coordinate constant.
+        //
+        // However, we have also seen some situations where guests end up too far from the center of paths. We've
+        // not identified exactly what causes this yet, but to limit the impact of it, we don't just keep the other
+        // coordinate constant, but instead clamp it to an acceptable range. This brings in 'outlier' guests from
+        // the edges of the path, while allowing guests who are already in an acceptable position to stay there.
+
+        const int8_t offset = (scenario_rand() & 7) - 3;
+        if (direction == 0 || direction == 2)
+        {
+            // Peep is moving along X, so apply the offset to the X position of the destination and clamp their current Y
+            const int32_t centreLine = (peep->y & 0xFFE0) + COORDS_XY_HALF_TILE;
+            newTile.x += offset;
+            newTile.y = std::clamp<int32_t>(peep->y, centreLine - 3, centreLine + 3);
+        }
+        else
+        {
+            // Peep is moving along Y, so apply the offset to the Y position of the destination and clamp their current X
+            const int32_t centreLine = (peep->x & 0xFFE0) + COORDS_XY_HALF_TILE;
+            newTile.x = std::clamp<int32_t>(peep->x, centreLine - 3, centreLine + 3);
+            newTile.y += offset;
+        }
     }
+    peep->SetDestination(newTile, 2);
+
     return 0;
 }
 
@@ -260,7 +290,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != 0xFF)
+        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL)
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
@@ -315,7 +345,7 @@ static uint8_t footpath_element_dest_in_dir(
                     continue;
                 ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride != nullptr && ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 {
                     *outRideIndex = rideIndex;
                     return PATH_SEARCH_SHOP_ENTRANCE;
@@ -468,7 +498,7 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
     }
 
-    if (peep->ItemStandardFlags & PEEP_ITEM_MAP)
+    if (peep->HasItem(ShopItem::Map))
         return 7;
 
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
@@ -679,9 +709,10 @@ static void peep_pathfind_heuristic_search(
     }
 
     bool nextInPatrolArea = inPatrolArea;
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
+    auto* staff = peep->As<Staff>();
+    if (staff != nullptr && staff->IsMechanic())
     {
-        nextInPatrolArea = peep->AsStaff()->IsLocationInPatrol(loc.ToCoordsXY());
+        nextInPatrolArea = staff->IsLocationInPatrol(loc.ToCoordsXY());
         if (inPatrolArea && !nextInPatrolArea)
         {
 /* The mechanic will leave his patrol area by taking
@@ -723,7 +754,7 @@ static void peep_pathfind_heuristic_search(
                  * tile. */
                 rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
-                if (ride == nullptr || !ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+                if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                     continue;
 
                 found = true;
@@ -790,7 +821,6 @@ static void peep_pathfind_heuristic_search(
                 if (tileElement->AsPath()->IsWide())
                 {
                     /* Check if staff can ignore this wide flag. */
-                    const Staff* staff = peep->As<Staff>();
                     if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
                     {
                         searchResult = PATH_SEARCH_WIDE;
@@ -1464,12 +1494,13 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             uint8_t endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
-            if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Mechanic)
+            auto* staff = peep->As<Staff>();
+            if (staff != nullptr && staff->IsMechanic())
             {
                 /* Mechanics are the only staff type that
                  * pathfind to a destination. Determine if the
                  * mechanic is in their patrol area. */
-                inPatrolArea = peep->AsStaff()->IsLocationInPatrol(peep->NextLoc);
+                inPatrolArea = staff->IsLocationInPatrol(peep->NextLoc);
             }
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -2060,7 +2091,7 @@ int32_t guest_path_finding(Guest* peep)
      * In principle, peeps with food are not paying as much attention to
      * where they are going and are consequently more like to walk up
      * dead end paths, paths to ride exits, etc. */
-    if (!peep->HasFood() && (scenario_rand() & 0xFFFF) >= 2184)
+    if (!peep->HasFoodOrDrink() && (scenario_rand() & 0xFFFF) >= 2184)
     {
         uint8_t adjustedEdges = edges;
         for (Direction chosenDirection : ALL_DIRECTIONS)
@@ -2087,7 +2118,7 @@ int32_t guest_path_finding(Guest* peep)
     /* If there are still multiple directions to choose from,
      * peeps with maps will randomly read the map: probability of doing so
      * is much higher when heading for a ride or the park exit. */
-    if (peep->ItemStandardFlags & PEEP_ITEM_MAP)
+    if (peep->HasItem(ShopItem::Map))
     {
         // If at least 2 directions consult map
         if (bitcount(edges) >= 2)

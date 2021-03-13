@@ -12,7 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
@@ -25,6 +25,7 @@
 #include "FootpathItemObject.h"
 #include "FootpathObject.h"
 #include "LargeSceneryObject.h"
+#include "MusicObject.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 #include "ObjectList.h"
@@ -43,7 +44,8 @@
 struct IFileDataRetriever
 {
     virtual ~IFileDataRetriever() = default;
-    virtual std::vector<uint8_t> GetData(const std::string_view& path) const abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) const abstract;
+    virtual ObjectAsset GetAsset(std::string_view path) const abstract;
 };
 
 class FileSystemDataRetriever : public IFileDataRetriever
@@ -52,32 +54,45 @@ private:
     std::string _basePath;
 
 public:
-    FileSystemDataRetriever(const std::string_view& basePath)
+    FileSystemDataRetriever(std::string_view basePath)
         : _basePath(basePath)
     {
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(std::string_view path) const override
     {
-        auto absolutePath = Path::Combine(_basePath, path.data());
+        auto absolutePath = Path::Combine(_basePath, path);
         return File::ReadAllBytes(absolutePath);
+    }
+
+    ObjectAsset GetAsset(std::string_view path) const override
+    {
+        auto absolutePath = Path::Combine(_basePath, path);
+        return ObjectAsset(absolutePath);
     }
 };
 
 class ZipDataRetriever : public IFileDataRetriever
 {
 private:
+    const std::string _path;
     const IZipArchive& _zipArchive;
 
 public:
-    ZipDataRetriever(const IZipArchive& zipArchive)
-        : _zipArchive(zipArchive)
+    ZipDataRetriever(std::string_view path, const IZipArchive& zipArchive)
+        : _path(path)
+        , _zipArchive(zipArchive)
     {
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) const override
+    std::vector<uint8_t> GetData(std::string_view path) const override
     {
         return _zipArchive.GetFileData(path);
+    }
+
+    ObjectAsset GetAsset(std::string_view path) const override
+    {
+        return ObjectAsset(_path, path);
     }
 };
 
@@ -128,11 +143,20 @@ public:
         return _loadImages;
     }
 
-    std::vector<uint8_t> GetData(const std::string_view& path) override
+    std::vector<uint8_t> GetData(std::string_view path) override
     {
         if (_fileDataRetriever != nullptr)
         {
             return _fileDataRetriever->GetData(path);
+        }
+        return {};
+    }
+
+    ObjectAsset GetAsset(std::string_view path) override
+    {
+        if (_fileDataRetriever != nullptr)
+        {
+            return _fileDataRetriever->GetAsset(path);
         }
         return {};
     }
@@ -212,7 +236,7 @@ namespace ObjectFactory
 
             rct_object_entry entry = fs.ReadValue<rct_object_entry>();
 
-            if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+            if (entry.GetType() != ObjectType::ScenarioText)
             {
                 result = CreateObject(entry);
 
@@ -273,46 +297,49 @@ namespace ObjectFactory
         std::unique_ptr<Object> result;
         switch (entry.GetType())
         {
-            case OBJECT_TYPE_RIDE:
+            case ObjectType::Ride:
                 result = std::make_unique<RideObject>(entry);
                 break;
-            case OBJECT_TYPE_SMALL_SCENERY:
+            case ObjectType::SmallScenery:
                 result = std::make_unique<SmallSceneryObject>(entry);
                 break;
-            case OBJECT_TYPE_LARGE_SCENERY:
+            case ObjectType::LargeScenery:
                 result = std::make_unique<LargeSceneryObject>(entry);
                 break;
-            case OBJECT_TYPE_WALLS:
+            case ObjectType::Walls:
                 result = std::make_unique<WallObject>(entry);
                 break;
-            case OBJECT_TYPE_BANNERS:
+            case ObjectType::Banners:
                 result = std::make_unique<BannerObject>(entry);
                 break;
-            case OBJECT_TYPE_PATHS:
+            case ObjectType::Paths:
                 result = std::make_unique<FootpathObject>(entry);
                 break;
-            case OBJECT_TYPE_PATH_BITS:
+            case ObjectType::PathBits:
                 result = std::make_unique<FootpathItemObject>(entry);
                 break;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
                 result = std::make_unique<SceneryGroupObject>(entry);
                 break;
-            case OBJECT_TYPE_PARK_ENTRANCE:
+            case ObjectType::ParkEntrance:
                 result = std::make_unique<EntranceObject>(entry);
                 break;
-            case OBJECT_TYPE_WATER:
+            case ObjectType::Water:
                 result = std::make_unique<WaterObject>(entry);
                 break;
-            case OBJECT_TYPE_SCENARIO_TEXT:
+            case ObjectType::ScenarioText:
                 break;
-            case OBJECT_TYPE_TERRAIN_SURFACE:
+            case ObjectType::TerrainSurface:
                 result = std::make_unique<TerrainSurfaceObject>(entry);
                 break;
-            case OBJECT_TYPE_TERRAIN_EDGE:
+            case ObjectType::TerrainEdge:
                 result = std::make_unique<TerrainEdgeObject>(entry);
                 break;
-            case OBJECT_TYPE_STATION:
+            case ObjectType::Station:
                 result = std::make_unique<StationObject>(entry);
+                break;
+            case ObjectType::Music:
+                result = std::make_unique<MusicObject>(entry);
                 break;
             default:
                 throw std::runtime_error("Invalid object type");
@@ -320,38 +347,40 @@ namespace ObjectFactory
         return result;
     }
 
-    static uint8_t ParseObjectType(const std::string& s)
+    static ObjectType ParseObjectType(const std::string& s)
     {
         if (s == "ride")
-            return OBJECT_TYPE_RIDE;
+            return ObjectType::Ride;
         if (s == "footpath")
-            return OBJECT_TYPE_PATHS;
+            return ObjectType::Paths;
         if (s == "footpath_banner")
-            return OBJECT_TYPE_BANNERS;
+            return ObjectType::Banners;
         if (s == "footpath_item")
-            return OBJECT_TYPE_PATH_BITS;
+            return ObjectType::PathBits;
         if (s == "scenery_small")
-            return OBJECT_TYPE_SMALL_SCENERY;
+            return ObjectType::SmallScenery;
         if (s == "scenery_large")
-            return OBJECT_TYPE_LARGE_SCENERY;
+            return ObjectType::LargeScenery;
         if (s == "scenery_wall")
-            return OBJECT_TYPE_WALLS;
+            return ObjectType::Walls;
         if (s == "scenery_group")
-            return OBJECT_TYPE_SCENERY_GROUP;
+            return ObjectType::SceneryGroup;
         if (s == "park_entrance")
-            return OBJECT_TYPE_PARK_ENTRANCE;
+            return ObjectType::ParkEntrance;
         if (s == "water")
-            return OBJECT_TYPE_WATER;
+            return ObjectType::Water;
         if (s == "terrain_surface")
-            return OBJECT_TYPE_TERRAIN_SURFACE;
+            return ObjectType::TerrainSurface;
         if (s == "terrain_edge")
-            return OBJECT_TYPE_TERRAIN_EDGE;
+            return ObjectType::TerrainEdge;
         if (s == "station")
-            return OBJECT_TYPE_STATION;
-        return 0xFF;
+            return ObjectType::Station;
+        if (s == "music")
+            return ObjectType::Music;
+        return ObjectType::None;
     }
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, const std::string_view& path)
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path)
     {
         try
         {
@@ -366,13 +395,13 @@ namespace ObjectFactory
 
             if (jRoot.is_object())
             {
-                auto fileDataRetriever = ZipDataRetriever(*archive);
+                auto fileDataRetriever = ZipDataRetriever(path, *archive);
                 return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
             }
         }
         catch (const std::exception& e)
         {
-            Console::Error::WriteLine("Unable to open or read '%s': %s", path.data(), e.what());
+            Console::Error::WriteLine("Unable to open or read '%s': %s", std::string(path).c_str(), e.what());
         }
         return nullptr;
     }
@@ -437,7 +466,7 @@ namespace ObjectFactory
         std::unique_ptr<Object> result;
 
         auto objectType = ParseObjectType(Json::GetString(jRoot["objectType"]));
-        if (objectType != 0xFF)
+        if (objectType != ObjectType::None)
         {
             auto id = Json::GetString(jRoot["id"]);
 
@@ -450,6 +479,8 @@ namespace ObjectFactory
                 originalName = originalId.substr(9, 8);
                 entry.checksum = std::stoul(originalId.substr(18, 8), nullptr, 16);
             }
+            // Always set, since originalId might be missing or incorrect.
+            entry.SetType(objectType);
             auto minLength = std::min<size_t>(8, originalName.length());
             std::memcpy(entry.name, originalName.c_str(), minLength);
 

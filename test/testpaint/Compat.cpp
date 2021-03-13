@@ -9,6 +9,7 @@
 
 #include "Addresses.h"
 
+#include <openrct2/Context.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/interface/Viewport.h>
@@ -35,7 +36,7 @@ Ride gRideList[MAX_RIDES];
 int16_t gMapSizeUnits;
 int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
-uint8_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
+ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
 uint8_t gClipHeight = 255;
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
@@ -127,7 +128,7 @@ Ride* get_ride(ride_id_t index)
 
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
-    if (index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
+    if (index >= object_entry_group_counts[static_cast<int>(ObjectType::Ride)])
     {
         log_error("invalid index %d for ride type", index);
         return nullptr;
@@ -153,7 +154,7 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_PEEP;
+    return sprite_identifier == SpriteIdentifier::Peep;
 }
 
 template<> bool SpriteBase::Is<Guest>() const
@@ -164,12 +165,12 @@ template<> bool SpriteBase::Is<Guest>() const
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_VEHICLE;
+    return sprite_identifier == SpriteIdentifier::Vehicle;
 }
 
 SpriteBase* get_sprite(size_t sprite_idx)
 {
-    assert(sprite_idx < MAX_SPRITES);
+    assert(sprite_idx < MAX_ENTITIES);
     return reinterpret_cast<SpriteBase*>(&sprite_list[sprite_idx]);
 }
 
@@ -212,11 +213,6 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-bool ride_type_has_flag(int rideType, uint64_t flag)
-{
-    return (RideTypeDescriptors[rideType].Flags & flag) != 0;
-}
-
 int16_t get_height_marker_offset()
 {
     return 0;
@@ -229,6 +225,10 @@ bool is_csg_loaded()
 
 uint8_t TrackElement::GetSeatRotation() const
 {
+    const auto* ride = get_ride(GetRideIndex());
+    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        return DEFAULT_SEAT_ROTATION;
+
     return ColourScheme >> 4;
 }
 
@@ -860,3 +860,31 @@ void ride_ratings_calculate_drink_stall([[maybe_unused]] Ride* ride)
 void ride_ratings_calculate_hybrid_coaster([[maybe_unused]] Ride* ride)
 {
 }
+
+void ride_ratings_calculate_single_rail_roller_coaster([[maybe_unused]] Ride* ride)
+{
+}
+
+const RideTypeDescriptor& Ride::GetRideTypeDescriptor() const
+{
+    return ::GetRideTypeDescriptor(type);
+}
+
+uint8_t TileElementBase::GetOwner() const
+{
+    return owner & OWNER_MASK;
+}
+
+void TileElementBase::SetOwner(uint8_t newOwner)
+{
+    owner &= ~OWNER_MASK;
+    owner |= (newOwner & OWNER_MASK);
+}
+
+namespace OpenRCT2
+{
+    IContext* GetContext()
+    {
+        return nullptr;
+    }
+} // namespace OpenRCT2

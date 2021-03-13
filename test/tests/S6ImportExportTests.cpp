@@ -37,7 +37,7 @@ using namespace OpenRCT2;
 
 struct GameState_t
 {
-    rct_sprite sprites[MAX_SPRITES];
+    rct_sprite sprites[MAX_ENTITIES];
 };
 
 static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
@@ -68,7 +68,7 @@ static void GameInit(bool retainSpatialIndices)
     scenery_set_default_placement_configuration();
     load_palette();
     map_reorganise_elements();
-    sprite_position_tween_reset();
+    EntityTweener::Get().Reset();
     AutoCreateMapAnimations();
     fix_invalid_vehicle_sprite_sizes();
 
@@ -106,11 +106,11 @@ static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
 static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& context)
 {
     std::unique_ptr<GameState_t> res = std::make_unique<GameState_t>();
-    for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; spriteIdx++)
+    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; spriteIdx++)
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
-            res->sprites[spriteIdx].generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
+            res->sprites[spriteIdx].misc.sprite_identifier = SpriteIdentifier::Null;
         else
             res->sprites[spriteIdx] = *sprite;
     }
@@ -131,10 +131,6 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
 {
     COMPARE_FIELD(sprite_identifier);
-    COMPARE_FIELD(type);
-    COMPARE_FIELD(next_in_quadrant);
-    COMPARE_FIELD(next);
-    COMPARE_FIELD(previous);
     COMPARE_FIELD(linked_list_index);
     COMPARE_FIELD(sprite_index);
     COMPARE_FIELD(flags);
@@ -191,7 +187,7 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     {
         COMPARE_FIELD(RideTypesBeenOn[i]);
     }
-    COMPARE_FIELD(ItemExtraFlags);
+    COMPARE_FIELD(ItemFlags);
     COMPARE_FIELD(Photo2RideRef);
     COMPARE_FIELD(Photo3RideRef);
     COMPARE_FIELD(Photo4RideRef);
@@ -267,11 +263,11 @@ static void CompareSpriteDataPeep(const Peep& left, const Peep& right)
     COMPARE_FIELD(HatColour);
     COMPARE_FIELD(FavouriteRide);
     COMPARE_FIELD(FavouriteRideRating);
-    COMPARE_FIELD(ItemStandardFlags);
 }
 
 static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(vehicle_sprite_type);
     COMPARE_FIELD(bank_rotation);
     COMPARE_FIELD(remaining_distance);
@@ -282,7 +278,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(colours.body_colour);
     COMPARE_FIELD(colours.trim_colour);
     COMPARE_FIELD(track_progress);
-    COMPARE_FIELD(track_direction);
+    COMPARE_FIELD(TrackTypeAndDirection);
     COMPARE_FIELD(TrackLocation.x);
     COMPARE_FIELD(TrackLocation.y);
     COMPARE_FIELD(TrackLocation.z);
@@ -346,6 +342,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
 
 static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(creationTick);
 }
 
@@ -405,43 +402,48 @@ static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 
 static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
 {
-    CompareSpriteDataCommon(left.generic, right.generic);
-    if (left.generic.sprite_identifier == right.generic.sprite_identifier)
+    CompareSpriteDataCommon(left.misc, right.misc);
+    if (left.misc.sprite_identifier == right.misc.sprite_identifier)
     {
-        switch (left.generic.sprite_identifier)
+        switch (left.misc.sprite_identifier)
         {
-            case SPRITE_IDENTIFIER_PEEP:
+            case SpriteIdentifier::Peep:
                 CompareSpriteDataPeep(left.peep, right.peep);
                 break;
-            case SPRITE_IDENTIFIER_VEHICLE:
+            case SpriteIdentifier::Vehicle:
                 CompareSpriteDataVehicle(left.vehicle, right.vehicle);
                 break;
-            case SPRITE_IDENTIFIER_LITTER:
+            case SpriteIdentifier::Litter:
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
-            case SPRITE_IDENTIFIER_MISC:
-                switch (left.generic.type)
+            case SpriteIdentifier::Misc:
+                COMPARE_FIELD(misc.SubType);
+                switch (left.misc.SubType)
                 {
-                    case SPRITE_MISC_STEAM_PARTICLE:
+                    case MiscEntityType::SteamParticle:
                         CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
                         break;
-                    case SPRITE_MISC_MONEY_EFFECT:
+                    case MiscEntityType::MoneyEffect:
                         CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
                         break;
-                    case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                    case MiscEntityType::CrashedVehicleParticle:
                         CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
                         break;
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    case MiscEntityType::JumpingFountainSnow:
+                    case MiscEntityType::JumpingFountainWater:
                         CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
                         break;
-                    case SPRITE_MISC_BALLOON:
+                    case MiscEntityType::Balloon:
                         CompareSpriteDataBalloon(left.balloon, right.balloon);
                         break;
-                    case SPRITE_MISC_DUCK:
+                    case MiscEntityType::Duck:
                         CompareSpriteDataDuck(left.duck, right.duck);
                         break;
+                    default:
+                        break;
                 }
+                break;
+            case SpriteIdentifier::Null:
                 break;
         }
     }
@@ -459,10 +461,10 @@ static void CompareStates(
             static_cast<unsigned long long>(exportBuffer.GetLength()));
     }
 
-    for (size_t spriteIdx = 0; spriteIdx < MAX_SPRITES; ++spriteIdx)
+    for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; ++spriteIdx)
     {
-        if (importedState->sprites[spriteIdx].generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
-            && exportedState->sprites[spriteIdx].generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (importedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null
+            && exportedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null)
         {
             continue;
         }

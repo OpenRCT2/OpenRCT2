@@ -10,12 +10,13 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/FixedVector.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
 struct TileElement;
-enum ViewportInteractionItem : uint8_t;
+enum class ViewportInteractionItem : uint8_t;
 
 #pragma pack(push, 1)
 /* size 0x12 */
@@ -137,24 +138,25 @@ struct tunnel_entry
 struct paint_session
 {
     rct_drawpixelinfo DPI;
-    paint_entry PaintStructs[4000];
+    FixedVector<paint_entry, 4000> PaintStructs;
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
+    paint_struct* LastPS;
+    paint_string_struct* PSStringHead;
+    paint_string_struct* LastPSString;
+    attached_paint_struct* LastAttachedPS;
+    const TileElement* SurfaceElement;
+    const void* CurrentlyDrawnItem;
+    TileElement* PathElementOnSameHeight;
+    TileElement* TrackElementOnSameHeight;
     paint_struct PaintHead;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    const void* CurrentlyDrawnItem;
-    paint_entry* EndOfPaintStructArray;
-    paint_entry* NextFreePaintStruct;
     CoordsXY SpritePosition;
-    paint_struct* LastRootPS;
-    attached_paint_struct* LastAttachedPS;
     ViewportInteractionItem InteractionType;
     uint8_t CurrentRotation;
     support_height SupportSegments[9];
     support_height Support;
-    paint_string_struct* PSStringHead;
-    paint_string_struct* LastPSString;
     paint_struct* WoodenSupportsPrependTo;
     CoordsXY MapPosition;
     tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
@@ -162,13 +164,42 @@ struct paint_session
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
-    const TileElement* SurfaceElement;
-    TileElement* PathElementOnSameHeight;
-    TileElement* TrackElementOnSameHeight;
     bool DidPassSurface;
     uint8_t Unk141E9DB;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
+
+    constexpr bool NoPaintStructsAvailable() noexcept
+    {
+        return PaintStructs.size() >= PaintStructs.capacity();
+    }
+
+    constexpr paint_struct* AllocateNormalPaintEntry() noexcept
+    {
+        LastPS = &PaintStructs.emplace_back().basic;
+        return LastPS;
+    }
+
+    constexpr attached_paint_struct* AllocateAttachedPaintEntry() noexcept
+    {
+        LastAttachedPS = &PaintStructs.emplace_back().attached;
+        return LastAttachedPS;
+    }
+
+    constexpr paint_string_struct* AllocateStringPaintEntry() noexcept
+    {
+        auto* string = &PaintStructs.emplace_back().string;
+        if (LastPSString == nullptr)
+        {
+            PSStringHead = string;
+        }
+        else
+        {
+            LastPSString->next = string;
+        }
+        LastPSString = string;
+        return LastPSString;
+    }
 };
 
 extern paint_session gPaintSession;
@@ -185,33 +216,35 @@ extern bool gPaintBoundingBoxes;
 extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
-paint_struct* sub_98196C(
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
-paint_struct* sub_98197C(
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98198C(
+[[nodiscard]] paint_struct* PaintAddImageAsOrphan(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 
-paint_struct* sub_98196C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset);
-paint_struct* sub_98197C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);
-paint_struct* sub_98199C_rotated(
+paint_struct* PaintAddImageAsChildRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z);

@@ -11,55 +11,57 @@
 #include "../ride/TrackPaint.h"
 #include "Paint.h"
 
-paint_struct* sub_98196C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
     if (direction & 1)
     {
-        return sub_98196C(
-            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset);
+        return PaintAddImageAsParent(
+            session, image_id, { y_offset, x_offset, z_offset },
+            { bound_box_length_y, bound_box_length_x, bound_box_length_z });
     }
     else
     {
-        return sub_98196C(
-            session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset);
+        return PaintAddImageAsParent(
+            session, image_id, { x_offset, y_offset, z_offset },
+            { bound_box_length_x, bound_box_length_y, bound_box_length_z });
     }
 }
 
-paint_struct* sub_98197C_rotated(
+paint_struct* PaintAddImageAsParentRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     if (direction & 1)
     {
-        return sub_98197C(
+        return PaintAddImageAsParent(
             session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
             bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
     else
     {
-        return sub_98197C(
+        return PaintAddImageAsParent(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
             bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }
 }
 
-paint_struct* sub_98199C_rotated(
+paint_struct* PaintAddImageAsChildRotated(
     paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
 {
     if (direction & 1)
     {
-        return sub_98199C(
+        return PaintAddImageAsChild(
             session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
             bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
     }
     else
     {
-        return sub_98199C(
+        return PaintAddImageAsChild(
             session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
             bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
     }

@@ -50,8 +50,7 @@ namespace OpenRCT2::Audio
             int32_t numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
             for (int32_t i = 0; i < numDevices; i++)
             {
-                std::string deviceName = String::ToStd(SDL_GetAudioDeviceName(i, SDL_FALSE));
-                devices.push_back(deviceName);
+                devices.emplace_back(String::ToStd(SDL_GetAudioDeviceName(i, SDL_FALSE)));
             }
             return devices;
         }
@@ -69,6 +68,11 @@ namespace OpenRCT2::Audio
         IAudioSource* CreateStreamFromWAV(const std::string& path) override
         {
             return AudioSource::CreateStreamFromWAV(path);
+        }
+
+        IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
+        {
+            return AudioSource::CreateStreamFromWAV(std::move(stream));
         }
 
         void StartTitleMusic() override

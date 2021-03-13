@@ -189,8 +189,12 @@ namespace OpenRCT2::Scripting
         }
         bool isSticky_get() const
         {
-            auto flags = GetWindow()->flags;
-            return (flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
+            auto w = GetWindow();
+            if (w != nullptr)
+            {
+                return (w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)) != 0;
+            }
+            return false;
         }
 
         std::vector<DukValue> widgets_get() const
@@ -202,7 +206,7 @@ namespace OpenRCT2::Scripting
             if (w != nullptr)
             {
                 rct_widgetindex widgetIndex = 0;
-                for (auto widget = w->widgets; widget->type != WWT_LAST; widget++)
+                for (auto widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
                 {
                     result.push_back(ScWidget::ToDukValue(ctx, w, widgetIndex));
                     widgetIndex++;
@@ -232,8 +236,16 @@ namespace OpenRCT2::Scripting
             {
                 for (size_t i = 0; i < std::size(w->colours); i++)
                 {
-                    w->colours[i] = i < colours.size() ? std::clamp<int32_t>(colours[i], COLOUR_BLACK, COLOUR_COUNT - 1)
-                                                       : COLOUR_BLACK;
+                    int32_t c = COLOUR_BLACK;
+                    if (i < colours.size())
+                    {
+                        c = std::clamp<int32_t>(BASE_COLOUR(colours[i]), COLOUR_BLACK, COLOUR_COUNT - 1);
+                        if (colours[i] & COLOUR_FLAG_TRANSLUCENT)
+                        {
+                            c = TRANSLUCENT(c);
+                        }
+                    }
+                    w->colours[i] = c;
                 }
             }
         }
@@ -243,7 +255,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
             {
-                return language_convert_string_to_tokens(GetWindowTitle(w));
+                return GetWindowTitle(w);
             }
             return {};
         }
@@ -252,7 +264,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr && w->classification == WC_CUSTOM)
             {
-                UpdateWindowTitle(w, language_convert_string(value));
+                UpdateWindowTitle(w, value);
             }
         }
 

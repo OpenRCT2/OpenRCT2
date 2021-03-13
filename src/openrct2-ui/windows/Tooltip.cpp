@@ -21,7 +21,7 @@ enum {
 };
 
 static rct_widget window_tooltip_widgets[] = {
-    MakeWidget({0, 0}, {200, 32}, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -50,16 +50,18 @@ void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
 // Returns the width of the new tooltip text
 static int32_t FormatTextForTooltip(const OpenRCT2String& message)
 {
-    format_string(_tooltipText, sizeof(_tooltipText), message.str, message.args.Data());
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+    utf8 tempBuffer[sizeof(gCommonStringFormatBuffer)];
+    format_string(tempBuffer, sizeof(tempBuffer), message.str, message.args.Data());
 
-    auto textWidth = gfx_get_string_width_new_lined(_tooltipText);
+    OpenRCT2String formattedMessage{ STR_STRING_TOOLTIP, Formatter() };
+    formattedMessage.args.Add<const char*>(tempBuffer);
+    format_string(_tooltipText, sizeof(_tooltipText), formattedMessage.str, formattedMessage.args.Data());
+
+    auto textWidth = gfx_get_string_width_new_lined(_tooltipText, FontSpriteBase::SMALL);
     textWidth = std::min(textWidth, 196);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    int32_t numLines, fontSpriteBase;
-    textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, &numLines, &fontSpriteBase);
+    int32_t numLines;
+    textWidth = gfx_wrap_string(_tooltipText, textWidth + 1, FontSpriteBase::SMALL, &numLines);
     _tooltipNumLines = numLines;
     return textWidth;
 }
@@ -72,7 +74,7 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
 
     int32_t textWidth = FormatTextForTooltip(message);
     int32_t width = textWidth + 3;
-    int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FONT_SPRITE_BASE_MEDIUM)) + 4;
+    int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FontSpriteBase::SMALL)) + 4;
     window_tooltip_widgets[WIDX_BACKGROUND].right = width;
     window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
 
@@ -91,7 +93,7 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
         screenCoords.y -= height + 40;
     screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
 
-    w = window_create(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    w = WindowCreate(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
 
     reset_tooltip_not_shown();
@@ -103,32 +105,37 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
  */
 void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
 {
-    rct_widget* widget;
-
     if (widgetWindow == nullptr || widgetIndex == -1)
         return;
 
-    widget = &widgetWindow->widgets[widgetIndex];
+    auto widget = &widgetWindow->widgets[widgetIndex];
     window_event_invalidate_call(widgetWindow);
 
-    rct_string_id stringId = widget->tooltip;
-
-    if (stringId == STR_NONE)
-        return;
-
-    gTooltipWidget.window_classification = widgetWindow->classification;
-    gTooltipWidget.window_number = widgetWindow->number;
-    gTooltipWidget.widget_index = widgetIndex;
-    auto result = window_event_tooltip_call(widgetWindow, widgetIndex, stringId);
-    if (result.str == STR_NONE)
-        return;
-
+    OpenRCT2String result;
     if (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING)
     {
         result.str = STR_STRING_TOOLTIP;
         result.args = Formatter();
         result.args.Add<const char*>(widget->sztooltip);
+
+        gTooltipWidget.window_classification = widgetWindow->classification;
+        gTooltipWidget.window_number = widgetWindow->number;
+        gTooltipWidget.widget_index = widgetIndex;
     }
+    else
+    {
+        auto stringId = widget->tooltip;
+        if (stringId == STR_NONE)
+            return;
+
+        gTooltipWidget.window_classification = widgetWindow->classification;
+        gTooltipWidget.window_number = widgetWindow->number;
+        gTooltipWidget.widget_index = widgetIndex;
+        result = window_event_tooltip_call(widgetWindow, widgetIndex, stringId);
+        if (result.str == STR_NONE)
+            return;
+    }
+
     window_tooltip_show(result, screenCords);
 }
 
@@ -164,23 +171,23 @@ static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t bottom = w->windowPos.y + w->height - 1;
 
     // Background
-    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, PALETTE_45);
-    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, PALETTE_GLASS_LIGHT_ORANGE);
+    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::Palette45);
+    gfx_filter_rect(dpi, { { left + 1, top + 1 }, { right - 1, bottom - 1 } }, FilterPaletteID::PaletteGlassLightOrange);
 
     // Sides
-    gfx_filter_rect(dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, { { left + 0, top + 2 }, { left + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, { { right + 0, top + 2 }, { right + 0, bottom - 2 } }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, { { left + 2, bottom + 0 }, { right - 2, bottom + 0 } }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, { { left + 2, top + 0 }, { right - 2, top + 0 } }, FilterPaletteID::PaletteDarken3);
 
     // Corners
-    gfx_filter_pixel(dpi, { left + 1, top + 1 }, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, { right - 1, top + 1 }, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, { left + 1, bottom - 1 }, PALETTE_DARKEN_3);
-    gfx_filter_pixel(dpi, { right - 1, bottom - 1 }, PALETTE_DARKEN_3);
+    gfx_filter_pixel(dpi, { left + 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_pixel(dpi, { right - 1, top + 1 }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_pixel(dpi, { left + 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
+    gfx_filter_pixel(dpi, { right - 1, bottom - 1 }, FilterPaletteID::PaletteDarken3);
 
     // Text
     left = w->windowPos.x + ((w->width + 1) / 2) - 1;
     top = w->windowPos.y + 1;
-    draw_string_centred_raw(dpi, { left, top }, _tooltipNumLines, _tooltipText);
+    draw_string_centred_raw(dpi, { left, top }, _tooltipNumLines, _tooltipText, FontSpriteBase::SMALL);
 }

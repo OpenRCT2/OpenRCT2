@@ -89,7 +89,6 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                 }
 
                 utf8* newText = String::Duplicate(e->text.text);
-                utf8_remove_formatting(newText, false);
                 Insert(newText);
                 Memory::Free(newText);
 
@@ -186,7 +185,6 @@ void TextComposition::HandleMessage(const SDL_Event* e)
                     if ((modifier & KEYBOARD_PRIMARY_MODIFIER) && SDL_HasClipboardText())
                     {
                         utf8* text = SDL_GetClipboardText();
-                        utf8_remove_formatting(text, false);
                         Insert(text);
                         SDL_free(text);
                         window_update_textbox();

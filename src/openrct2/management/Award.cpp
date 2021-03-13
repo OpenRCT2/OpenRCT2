@@ -93,9 +93,8 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
+            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -122,12 +121,11 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VERY_CLEAN)
+        if (peep->Thoughts[0].type == PeepThoughtType::VeryClean)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
+            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -203,12 +201,11 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
         if (peep->Thoughts[0].freshness > 5)
             continue;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_SCENERY)
+        if (peep->Thoughts[0].type == PeepThoughtType::Scenery)
             positiveCount++;
 
-        if (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_BAD_LITTER
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_PATH_DISGUSTING
-            || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].type == PeepThoughtType::BadLitter || peep->Thoughts[0].type == PeepThoughtType::PathDisgusting
+            || peep->Thoughts[0].type == PeepThoughtType::Vandalism)
         {
             negativeCount++;
         }
@@ -241,7 +238,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
     {
         if (peep->OutsideOfPark)
             continue;
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_VANDALISM)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Vandalism)
             peepsWhoDislikeVandalism++;
     }
 
@@ -266,23 +263,12 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
         return false;
 
-    auto peepCount = 0;
-    auto staffCount = 0;
-    auto staffTypeFlags = 0;
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
-    {
-        if (peep->AssignedPeepType == PeepType::Staff)
-        {
-            staffCount++;
-            staffTypeFlags |= (1 << static_cast<uint8_t>(peep->AssignedStaffType));
-        }
-        else
-        {
-            peepCount++;
-        }
-    }
+    auto staff = EntityList<Staff>(EntityListId::Peep);
+    auto staffCount = std::distance(staff.begin(), staff.end());
+    auto guests = EntityList<Guest>(EntityListId::Peep);
+    auto peepCount = std::distance(guests.begin(), guests.end());
 
-    return ((staffTypeFlags & 0xF) && staffCount >= 20 && staffCount >= peepCount / 32);
+    return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
 }
 
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
@@ -293,21 +279,21 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 
     uint32_t shops = 0;
     uint32_t uniqueShops = 0;
-    uint32_t shopTypes = 0;
+    uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
 
         shops++;
         auto rideEntry = get_ride_entry(ride.subtype);
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
+            if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item[0]);
+                shopTypes |= EnumToFlag(rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }
@@ -323,7 +309,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps <= 12);
@@ -337,21 +323,21 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 
     uint32_t shops = 0;
     uint32_t uniqueShops = 0;
-    uint32_t shopTypes = 0;
+    uint64_t shopTypes = 0;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status != RIDE_STATUS_OPEN)
             continue;
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_SELLS_FOOD))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
             continue;
 
         shops++;
         auto rideEntry = ride.GetRideEntry();
         if (rideEntry != nullptr)
         {
-            if (!(shopTypes & (1ULL << rideEntry->shop_item[0])))
+            if (!(shopTypes & EnumToFlag(rideEntry->shop_item[0])))
             {
-                shopTypes |= (1ULL << rideEntry->shop_item[0]);
+                shopTypes |= EnumToFlag(rideEntry->shop_item[0]);
                 uniqueShops++;
             }
         }
@@ -367,7 +353,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_HUNGRY)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Hungry)
             hungryPeeps++;
     }
     return (hungryPeeps > 15);
@@ -397,7 +383,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
         if (peep->OutsideOfPark)
             continue;
 
-        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_TOILET)
+        if (peep->Thoughts[0].freshness <= 5 && peep->Thoughts[0].type == PeepThoughtType::Toilet)
             guestsWhoNeedRestroom++;
     }
     return (guestsWhoNeedRestroom <= 16);
@@ -467,7 +453,7 @@ static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardType
     auto customDesignedRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN)
             continue;
@@ -495,7 +481,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
     auto colourfulRides = 0;
     for (const auto& ride : GetRideManager())
     {
-        if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
+        if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
 
         countedRides++;
@@ -526,7 +512,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 
         peepsCounted++;
         if (peep->Thoughts[0].freshness <= 5
-            && (peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_LOST || peep->Thoughts[0].type == PEEP_THOUGHT_TYPE_CANT_FIND))
+            && (peep->Thoughts[0].type == PeepThoughtType::Lost || peep->Thoughts[0].type == PeepThoughtType::CantFind))
             peepsLost++;
     }
 

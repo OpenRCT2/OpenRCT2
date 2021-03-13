@@ -15,7 +15,7 @@
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
-#include "../actions/ParkSetParameterAction.hpp"
+#include "../actions/ParkSetParameterAction.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
 #include "../interface/Colour.h"
@@ -339,10 +339,8 @@ void Park::Update(const Date& date)
 
 int32_t Park::CalculateParkSize() const
 {
-    int32_t tiles;
+    int32_t tiles = 0;
     tile_element_iterator it;
-
-    tiles = 0;
     tile_element_iterator_begin(&it);
     do
     {
@@ -504,7 +502,8 @@ money32 Park::CalculateRideValue(const Ride* ride) const
     money32 result = 0;
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
-        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + RideTypeDescriptors[ride->type].BonusValue * 4);
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        result = (ride->value * 10) * (ride_customers_in_last_5_minutes(ride) + rtd.BonusValue * 4);
     }
     return result;
 }
@@ -564,7 +563,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
             continue;
 
         // Add guest score for ride type
-        suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue;
+        suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue;
     }
 
     // If difficult guest generation, extra guests are available for good rides
@@ -579,9 +578,9 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_TESTED))
                 continue;
-            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 continue;
-            if (!ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
+            if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
                 continue;
             if (ride.stations[0].SegmentLength < (600 << 16))
                 continue;
@@ -589,7 +588,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
 
             // Bonus guests for good ride
-            suggestedMaxGuests += RideTypeDescriptors[ride.type].BonusValue * 2;
+            suggestedMaxGuests += ride.GetRideTypeDescriptor().BonusValue * 2;
         }
     }
 
@@ -722,11 +721,8 @@ Peep* Park::GenerateGuest()
         {
             peep->sprite_direction = direction << 3;
 
-            // Get the centre point of the tile the peep is on
-            peep->DestinationX = (peep->x & 0xFFE0) + 16;
-            peep->DestinationY = (peep->y & 0xFFE0) + 16;
-
-            peep->DestinationTolerance = 5;
+            auto destination = peep->GetLocation().ToTileCentre();
+            peep->SetDestination(destination, 5);
             peep->PeepDirection = direction;
             peep->Var37 = 0;
             peep->State = PeepState::EnteringPark;

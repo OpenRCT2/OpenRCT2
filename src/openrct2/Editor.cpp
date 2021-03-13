@@ -16,8 +16,8 @@
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
-#include "actions/LandBuyRightsAction.hpp"
-#include "actions/LandSetRightsAction.hpp"
+#include "actions/LandBuyRightsAction.h"
+#include "actions/LandSetRightsAction.h"
 #include "audio/audio.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
@@ -38,6 +38,7 @@
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <array>
@@ -47,7 +48,7 @@ using namespace OpenRCT2;
 
 namespace Editor
 {
-    static std::array<std::vector<uint8_t>, OBJECT_TYPE_COUNT> _editorSelectedObjectFlags;
+    static std::array<std::vector<uint8_t>, EnumValue(ObjectType::Count)> _editorSelectedObjectFlags;
 
     static void ConvertSaveToScenarioCallback(int32_t result, const utf8* path);
     static void SetAllLandOwned();
@@ -82,7 +83,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
@@ -137,7 +138,7 @@ namespace Editor
         climate_reset(gClimate);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
-        gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectiveSelection;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         News::InitQueue();
@@ -160,7 +161,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -181,7 +182,7 @@ namespace Editor
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         SetAllLandOwned();
-        gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
+        gS6Info.editor_step = EditorStep::ObjectSelection;
         viewport_init_all();
         rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
@@ -240,7 +241,7 @@ namespace Editor
         load_from_sv4(path);
         ClearMapForEditing(true);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -254,7 +255,7 @@ namespace Editor
         load_from_sc4(path);
         ClearMapForEditing(false);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -283,7 +284,7 @@ namespace Editor
 
         ClearMapForEditing(loadedFromSave);
 
-        gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
+        gS6Info.editor_step = EditorStep::LandscapeEditor;
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
@@ -309,7 +310,7 @@ namespace Editor
         ride_init_all();
 
         //
-        for (int32_t i = 0; i < MAX_SPRITES; i++)
+        for (int32_t i = 0; i < MAX_ENTITIES; i++)
         {
             auto peep = GetEntity<Peep>(i);
             if (peep != nullptr)
@@ -380,7 +381,7 @@ namespace Editor
 
         switch (gS6Info.editor_step)
         {
-            case EDITOR_STEP_OBJECT_SELECTION:
+            case EditorStep::ObjectSelection:
                 if (window_find_by_class(WC_EDITOR_OBJECT_SELECTION))
                 {
                     return;
@@ -398,7 +399,7 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_OBJECT_SELECTION);
                 break;
-            case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
+            case EditorStep::InventionsListSetUp:
                 if (window_find_by_class(WC_EDITOR_INVENTION_LIST))
                 {
                     return;
@@ -406,7 +407,7 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_INVENTION_LIST);
                 break;
-            case EDITOR_STEP_OPTIONS_SELECTION:
+            case EditorStep::OptionsSelection:
                 if (window_find_by_class(WC_EDITOR_SCENARIO_OPTIONS))
                 {
                     return;
@@ -414,13 +415,19 @@ namespace Editor
 
                 context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
                 break;
-            case EDITOR_STEP_OBJECTIVE_SELECTION:
+            case EditorStep::ObjectiveSelection:
                 if (window_find_by_class(WC_EDITOR_OBJECTIVE_OPTIONS))
                 {
                     return;
                 }
 
                 context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
+                break;
+            case EditorStep::LandscapeEditor:
+            case EditorStep::SaveScenario:
+            case EditorStep::RollercoasterDesigner:
+            case EditorStep::DesignsManager:
+            case EditorStep::Invalid:
                 break;
         }
     }
@@ -445,41 +452,41 @@ namespace Editor
      *
      *  rct2: 0x006AB9B8
      */
-    int32_t CheckObjectSelection()
+    ObjectType CheckObjectSelection()
     {
         bool isTrackDesignerManager = gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER);
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PATHS))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::Paths))
             {
                 gGameCommandErrorText = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
-                return OBJECT_TYPE_PATHS;
+                return ObjectType::Paths;
             }
         }
 
-        if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_RIDE))
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::Ride))
         {
             gGameCommandErrorText = STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED;
-            return OBJECT_TYPE_RIDE;
+            return ObjectType::Ride;
         }
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_PARK_ENTRANCE))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::ParkEntrance))
             {
                 gGameCommandErrorText = STR_PARK_ENTRANCE_TYPE_MUST_BE_SELECTED;
-                return OBJECT_TYPE_PARK_ENTRANCE;
+                return ObjectType::ParkEntrance;
             }
 
-            if (!editor_check_object_group_at_least_one_selected(OBJECT_TYPE_WATER))
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::Water))
             {
                 gGameCommandErrorText = STR_WATER_TYPE_MUST_BE_SELECTED;
-                return OBJECT_TYPE_WATER;
+                return ObjectType::Water;
             }
         }
 
-        return -1;
+        return ObjectType::None;
     }
 
     /**
@@ -530,10 +537,10 @@ namespace Editor
         return true;
     }
 
-    uint8_t GetSelectedObjectFlags(int32_t objectType, size_t index)
+    uint8_t GetSelectedObjectFlags(ObjectType objectType, size_t index)
     {
         uint8_t result = 0;
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() > index)
         {
             result = list[index];
@@ -541,9 +548,9 @@ namespace Editor
         return result;
     }
 
-    void ClearSelectedObject(int32_t objectType, size_t index, uint32_t flags)
+    void ClearSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
             list.resize(index + 1);
@@ -551,9 +558,9 @@ namespace Editor
         list[index] &= ~flags;
     }
 
-    void SetSelectedObject(int32_t objectType, size_t index, uint32_t flags)
+    void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
-        auto& list = _editorSelectedObjectFlags[objectType];
+        auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
             list.resize(index + 1);

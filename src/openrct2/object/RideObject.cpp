@@ -24,6 +24,7 @@
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
 #include "../ride/Track.h"
+#include "../ride/Vehicle.h"
 #include "ObjectRepository.h"
 
 #include <algorithm>
@@ -56,6 +57,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     for (auto& rideType : _legacyType.ride_type)
     {
         rideType = stream->ReadValue<uint8_t>();
+        if (!RideTypeIsValid(rideType))
+            rideType = RIDE_TYPE_NULL;
     }
     _legacyType.min_cars_in_train = stream->ReadValue<uint8_t>();
     _legacyType.max_cars_in_train = stream->ReadValue<uint8_t>();
@@ -83,8 +86,8 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     _legacyType.max_height = stream->ReadValue<uint8_t>();
     // Skipping a uint64_t for the enabled track pieces and two uint8_ts for the categories.
     stream->Seek(10, STREAM_SEEK_CURRENT);
-    _legacyType.shop_item[0] = stream->ReadValue<uint8_t>();
-    _legacyType.shop_item[1] = stream->ReadValue<uint8_t>();
+    _legacyType.shop_item[0] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
+    _legacyType.shop_item[1] = static_cast<ShopItem>(stream->ReadValue<uint8_t>());
 
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
     GetStringTable().Read(context, stream, ObjectStringID::DESCRIPTION);
@@ -152,7 +155,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
                 entry[2].y = stream->ReadValue<int8_t>();
                 stream->ReadValue<uint16_t>(); // Skip blanks
 
-                _peepLoadingWaypoints[i].push_back(entry);
+                _peepLoadingWaypoints[i].push_back(std::move(entry));
             }
         }
         else
@@ -160,8 +163,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
             _legacyType.vehicles[i].peep_loading_waypoint_segments = 0;
 
             auto data = stream->ReadArray<int8_t>(numPeepLoadingPositions);
-            _peepLoadingPositions[i] = std::vector<int8_t>(data, data + numPeepLoadingPositions);
-            Memory::Free(data);
+            _peepLoadingPositions[i] = std::vector<int8_t>(data.get(), data.get() + numPeepLoadingPositions);
         }
     }
 
@@ -405,7 +407,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
     uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
-    uint8_t category = RideTypeDescriptors[firstRideType].Category;
+    uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
     for (int32_t i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
@@ -537,7 +539,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
         for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            uint8_t rideType = RIDE_TYPE_NULL;
+            ObjectEntryIndex rideType = RIDE_TYPE_NULL;
 
             if (i < numRideTypes)
             {
@@ -557,7 +559,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         // This needs to be set for both shops/facilities _and_ regular rides.
         for (auto& item : _legacyType.shop_item)
         {
-            item = SHOP_ITEM_NONE;
+            item = ShopItem::None;
         }
 
         auto carColours = Json::AsArray(properties["carColours"]);
@@ -584,7 +586,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
-                if (shopItem == SHOP_ITEM_NONE)
+                if (shopItem == ShopItem::None)
                 {
                     context->LogWarning(ObjectError::InvalidProperty, "Unknown shop item");
                 }
@@ -695,15 +697,13 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
         {
             if (jCar.is_object())
             {
-                auto car = ReadJsonCar(jCar);
-                cars.push_back(car);
+                cars.push_back(ReadJsonCar(jCar));
             }
         }
     }
     else if (jCars.is_object())
     {
-        auto car = ReadJsonCar(jCars);
-        cars.push_back(car);
+        cars.push_back(ReadJsonCar(jCars));
     }
 
     return cars;
@@ -777,7 +777,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                         }
                     }
 
-                    car.peep_loading_waypoints.push_back(entry);
+                    car.peep_loading_waypoints.push_back(std::move(entry));
                 }
             }
         }
@@ -1017,7 +1017,13 @@ uint8_t RideObject::ParseRideType(const std::string& s)
         { "mini_rc", RIDE_TYPE_MINI_ROLLER_COASTER },
         { "mine_ride", RIDE_TYPE_MINE_RIDE },
         { "lim_launched_rc", RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+        { "hypercoaster", RIDE_TYPE_HYPERCOASTER },
+        { "hyper_twister", RIDE_TYPE_HYPER_TWISTER },
+        { "monster_trucks", RIDE_TYPE_MONSTER_TRUCKS },
+        { "spinning_wild_mouse", RIDE_TYPE_SPINNING_WILD_MOUSE },
+        { "classic_mini_rc", RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER },
         { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
+        { "single_rail_rc", RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER }
     };
     auto result = LookupTable.find(s);
     return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_TYPE_NULL);
@@ -1037,47 +1043,47 @@ uint8_t RideObject::ParseRideCategory(const std::string& s)
     return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(RIDE_CATEGORY_TRANSPORT);
 }
 
-uint8_t RideObject::ParseShopItem(const std::string& s)
+ShopItem RideObject::ParseShopItem(const std::string& s)
 {
-    static const std::unordered_map<std::string, uint8_t> LookupTable{
-        { "burger", SHOP_ITEM_BURGER },
-        { "chips", SHOP_ITEM_CHIPS },
-        { "ice_cream", SHOP_ITEM_ICE_CREAM },
-        { "candyfloss", SHOP_ITEM_CANDYFLOSS },
-        { "pizza", SHOP_ITEM_PIZZA },
-        { "popcorn", SHOP_ITEM_POPCORN },
-        { "hot_dog", SHOP_ITEM_HOT_DOG },
-        { "tentacle", SHOP_ITEM_TENTACLE },
-        { "toffee_apple", SHOP_ITEM_TOFFEE_APPLE },
-        { "doughnut", SHOP_ITEM_DOUGHNUT },
-        { "chicken", SHOP_ITEM_CHICKEN },
-        { "pretzel", SHOP_ITEM_PRETZEL },
-        { "funnel_cake", SHOP_ITEM_FUNNEL_CAKE },
-        { "beef_noodles", SHOP_ITEM_BEEF_NOODLES },
-        { "fried_rice_noodles", SHOP_ITEM_FRIED_RICE_NOODLES },
-        { "wonton_soup", SHOP_ITEM_WONTON_SOUP },
-        { "meatball_soup", SHOP_ITEM_MEATBALL_SOUP },
-        { "sub_sandwich", SHOP_ITEM_SUB_SANDWICH },
-        { "cookie", SHOP_ITEM_COOKIE },
-        { "roast_sausage", SHOP_ITEM_ROAST_SAUSAGE },
-        { "drink", SHOP_ITEM_DRINK },
-        { "coffee", SHOP_ITEM_COFFEE },
-        { "lemonade", SHOP_ITEM_LEMONADE },
-        { "chocolate", SHOP_ITEM_CHOCOLATE },
-        { "iced_tea", SHOP_ITEM_ICED_TEA },
-        { "fruit_juice", SHOP_ITEM_FRUIT_JUICE },
-        { "soybean_milk", SHOP_ITEM_SOYBEAN_MILK },
-        { "sujeonggwa", SHOP_ITEM_SUJEONGGWA },
-        { "balloon", SHOP_ITEM_BALLOON },
-        { "toy", SHOP_ITEM_TOY },
-        { "map", SHOP_ITEM_MAP },
-        { "photo", SHOP_ITEM_PHOTO },
-        { "umbrella", SHOP_ITEM_UMBRELLA },
-        { "voucher", SHOP_ITEM_VOUCHER },
-        { "hat", SHOP_ITEM_HAT },
-        { "tshirt", SHOP_ITEM_TSHIRT },
-        { "sunglasses", SHOP_ITEM_SUNGLASSES },
+    static const std::unordered_map<std::string, ShopItem> LookupTable{
+        { "burger", ShopItem::Burger },
+        { "chips", ShopItem::Chips },
+        { "ice_cream", ShopItem::IceCream },
+        { "candyfloss", ShopItem::Candyfloss },
+        { "pizza", ShopItem::Pizza },
+        { "popcorn", ShopItem::Popcorn },
+        { "hot_dog", ShopItem::HotDog },
+        { "tentacle", ShopItem::Tentacle },
+        { "toffee_apple", ShopItem::ToffeeApple },
+        { "doughnut", ShopItem::Doughnut },
+        { "chicken", ShopItem::Chicken },
+        { "pretzel", ShopItem::Pretzel },
+        { "funnel_cake", ShopItem::FunnelCake },
+        { "beef_noodles", ShopItem::BeefNoodles },
+        { "fried_rice_noodles", ShopItem::FriedRiceNoodles },
+        { "wonton_soup", ShopItem::WontonSoup },
+        { "meatball_soup", ShopItem::MeatballSoup },
+        { "sub_sandwich", ShopItem::SubSandwich },
+        { "cookie", ShopItem::Cookie },
+        { "roast_sausage", ShopItem::RoastSausage },
+        { "drink", ShopItem::Drink },
+        { "coffee", ShopItem::Coffee },
+        { "lemonade", ShopItem::Lemonade },
+        { "chocolate", ShopItem::Chocolate },
+        { "iced_tea", ShopItem::IcedTea },
+        { "fruit_juice", ShopItem::FruitJuice },
+        { "soybean_milk", ShopItem::SoybeanMilk },
+        { "sujeonggwa", ShopItem::Sujeonggwa },
+        { "balloon", ShopItem::Balloon },
+        { "toy", ShopItem::Toy },
+        { "map", ShopItem::Map },
+        { "photo", ShopItem::Photo },
+        { "umbrella", ShopItem::Umbrella },
+        { "voucher", ShopItem::Voucher },
+        { "hat", ShopItem::Hat },
+        { "tshirt", ShopItem::TShirt },
+        { "sunglasses", ShopItem::Sunglasses },
     };
     auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ? result->second : static_cast<uint8_t>(SHOP_ITEM_NONE);
+    return (result != LookupTable.end()) ? result->second : ShopItem::None;
 }

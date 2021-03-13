@@ -36,9 +36,10 @@
 
 static struct
 {
-    uint32_t width, height;
-    uint8_t* mono_bitmap;
-} _heightMapData = { 0, 0, nullptr };
+    uint32_t width = 0;
+    uint32_t height = 0;
+    std::vector<uint8_t> mono_bitmap;
+} _heightMapData;
 
 #pragma endregion Height map struct
 
@@ -46,36 +47,36 @@ static struct
 
 static constexpr const char* GrassTrees[] = {
     // Dark
-    "TCF     ", // Caucasian Fir Tree
-    "TRF     ", // Red Fir Tree
-    "TRF2    ", // Red Fir Tree
-    "TSP     ", // Scots Pine Tree
-    "TMZP    ", // Montezuma Pine Tree
-    "TAP     ", // Aleppo Pine Tree
-    "TCRP    ", // Corsican Pine Tree
-    "TBP     ", // Black Poplar Tree
+    "rct2.tcf",  // Caucasian Fir Tree
+    "rct2.trf",  // Red Fir Tree
+    "rct2.trf2", // Red Fir Tree
+    "rct2.tsp",  // Scots Pine Tree
+    "rct2.tmzp", // Montezuma Pine Tree
+    "rct2.tap",  // Aleppo Pine Tree
+    "rct2.tcrp", // Corsican Pine Tree
+    "rct2.tbp",  // Black Poplar Tree
 
     // Light
-    "TCL     ", // Cedar of Lebanon Tree
-    "TEL     ", // European Larch Tree
+    "rct2.tcl", // Cedar of Lebanon Tree
+    "rct2.tel", // European Larch Tree
 };
 
 static constexpr const char* DesertTrees[] = {
-    "TMP     ", // Monkey-Puzzle Tree
-    "THL     ", // Honey Locust Tree
-    "TH1     ", // Canary Palm Tree
-    "TH2     ", // Palm Tree
-    "TPM     ", // Palm Tree
-    "TROPT1  ", // Tree
-    "TBC     ", // Cactus
-    "TSC     ", // Cactus
+    "rct2.tmp",    // Monkey-Puzzle Tree
+    "rct2.thl",    // Honey Locust Tree
+    "rct2.th1",    // Canary Palm Tree
+    "rct2.th2",    // Palm Tree
+    "rct2.tpm",    // Palm Tree
+    "rct2.tropt1", // Tree
+    "rct2.tbc",    // Cactus
+    "rct2.tsc",    // Cactus
 };
 
 static constexpr const char* SnowTrees[] = {
-    "TCFS    ", // Snow-covered Caucasian Fir Tree
-    "TNSS    ", // Snow-covered Norway Spruce Tree
-    "TRF3    ", // Snow-covered Red Fir Tree
-    "TRFS    ", // Snow-covered Red Fir Tree
+    "rct2.tcfs", // Snow-covered Caucasian Fir Tree
+    "rct2.tnss", // Snow-covered Norway Spruce Tree
+    "rct2.trf3", // Snow-covered Red Fir Tree
+    "rct2.trfs", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
@@ -240,12 +241,12 @@ static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
     }
 
     int32_t surfaceZ = tile_element_height(loc.ToTileCentre());
-    TileElement* tileElement = tile_element_insert({ loc, surfaceZ }, 0b1111);
-    assert(tileElement != nullptr);
-    tileElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
-    tileElement->SetType(TILE_ELEMENT_TYPE_SMALL_SCENERY);
-    tileElement->SetDirection(util_rand() & 3);
-    SmallSceneryElement* sceneryElement = tileElement->AsSmallScenery();
+
+    auto* sceneryElement = TileElementInsert<SmallSceneryElement>({ loc, surfaceZ }, 0b1111);
+    Guard::Assert(sceneryElement != nullptr);
+
+    sceneryElement->SetClearanceZ(surfaceZ + sceneryEntry->small_scenery.height);
+    sceneryElement->SetDirection(util_rand() & 3);
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
@@ -260,10 +261,10 @@ static void mapgen_place_trees()
     std::vector<int32_t> desertTreeIds(std::size(DesertTrees), 0);
     std::vector<int32_t> snowTreeIds(std::size(SnowTrees), 0);
 
-    for (int32_t i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++)
+    for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
         auto sceneryEntry = get_small_scenery_entry(i);
-        auto entry = object_entry_get_entry(OBJECT_TYPE_SMALL_SCENERY, i);
+        auto entry = object_entry_get_object(ObjectType::SmallScenery, i);
 
         if (sceneryEntry == nullptr)
             continue;
@@ -271,7 +272,7 @@ static void mapgen_place_trees()
         uint32_t j;
         for (j = 0; j < std::size(GrassTrees); j++)
         {
-            if (strncmp(GrassTrees[j], entry->name, 8) == 0)
+            if (GrassTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(GrassTrees))
@@ -282,7 +283,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(DesertTrees); j++)
         {
-            if (strncmp(DesertTrees[j], entry->name, 8) == 0)
+            if (DesertTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(DesertTrees))
@@ -293,7 +294,7 @@ static void mapgen_place_trees()
 
         for (j = 0; j < std::size(SnowTrees); j++)
         {
-            if (strncmp(SnowTrees[j], entry->name, 8) == 0)
+            if (SnowTrees[j] == entry->GetIdentifier())
                 break;
         }
         if (j != std::size(SnowTrees))
@@ -671,8 +672,7 @@ bool mapgen_load_heightmap(const utf8* path)
         }
 
         // Allocate memory for the height map values, one byte pixel
-        delete[] _heightMapData.mono_bitmap;
-        _heightMapData.mono_bitmap = new uint8_t[size * size];
+        _heightMapData.mono_bitmap.resize(size * size);
         _heightMapData.width = size;
         _heightMapData.height = size;
 
@@ -715,7 +715,7 @@ bool mapgen_load_heightmap(const utf8* path)
  */
 void mapgen_unload_heightmap()
 {
-    SafeDeleteArray(_heightMapData.mono_bitmap);
+    _heightMapData.mono_bitmap.clear();
     _heightMapData.width = 0;
     _heightMapData.height = 0;
 }
@@ -723,10 +723,10 @@ void mapgen_unload_heightmap()
 /**
  * Applies box blur to the surface N times
  */
-static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
+static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
 {
     // Create buffer to store one channel
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
+    std::vector<uint8_t> dest(src.size());
 
     for (int32_t i = 0; i < strength; i++)
     {
@@ -764,19 +764,16 @@ static void mapgen_smooth_heightmap(uint8_t* src, int32_t strength)
             }
         }
     }
-
-    delete[] dest;
 }
 
 void mapgen_generate_from_heightmap(mapgen_settings* settings)
 {
     openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
-    openrct2_assert(_heightMapData.mono_bitmap != nullptr, "No height map loaded");
+    openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
-    uint8_t* dest = new uint8_t[_heightMapData.width * _heightMapData.height];
-    std::memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
+    auto dest = _heightMapData.mono_bitmap;
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
 
@@ -806,7 +803,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         if (minValue == maxValue)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE, {});
-            delete[] dest;
             return;
         }
     }
@@ -864,9 +860,6 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
                 break;
         }
     }
-
-    // Clean up
-    delete[] dest;
 }
 
 #pragma endregion

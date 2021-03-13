@@ -9,7 +9,6 @@
 
 #pragma once
 
-#include <openrct2-ui/input/KeyboardShortcuts.h>
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
@@ -54,7 +53,6 @@ rct_window* window_land_rights_open();
 rct_window* window_main_open();
 rct_window* window_mapgen_open();
 rct_window* window_multiplayer_open();
-rct_window* window_network_open();
 rct_window* window_music_credits_open();
 rct_window* window_news_open();
 rct_window* window_news_options_open();
@@ -64,7 +62,6 @@ rct_window* window_save_prompt_open();
 rct_window* window_server_list_open();
 rct_window* window_server_start_open();
 #endif
-rct_window* window_shortcut_change_open(OpenRCT2::Input::Shortcut shortcut, rct_string_id key_string_id);
 rct_window* window_shortcut_keys_open();
 rct_window* window_staff_list_open();
 rct_window* window_staff_open(Peep* peep);
@@ -98,7 +95,6 @@ rct_window* window_player_open(uint8_t id);
 rct_window* window_new_campaign_open(int16_t campaignType);
 
 rct_window* window_install_track_open(const utf8* path);
-void window_guest_list_init_vars();
 void window_guest_list_refresh_list();
 rct_window* window_guest_list_open();
 rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index);
@@ -106,11 +102,14 @@ rct_window* window_staff_fire_prompt_open(Peep* peep);
 void window_title_editor_open(int32_t tab);
 void window_title_command_editor_open(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
+rct_window* window_scenarioselect_open(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
 rct_window* window_error_open(rct_string_id title, rct_string_id message, const class Formatter& formatter);
-rct_window* window_error_open(const std::string_view& title, const std::string_view& message);
+rct_window* window_error_open(std::string_view title, std::string_view message);
 struct TrackDesign;
-rct_window* window_loadsave_open(int32_t type, const char* defaultName, loadsave_callback callback, TrackDesign* t6Exporter);
+rct_window* window_loadsave_open(
+    int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
+    TrackDesign* trackDesign);
 rct_window* window_track_place_open(const struct track_design_file_ref* tdFileRef);
 rct_window* window_track_manage_open(struct track_design_file_ref* tdFileRef);
 
@@ -161,8 +160,8 @@ void window_text_input_raw_open(
     const_utf8string existing_text, int32_t maxLength);
 
 void window_text_input_open(
-    const std::string_view& title, const std::string_view& description, const std::string_view& initialValue, size_t maxLength,
-    std::function<void(const std::string_view&)> okCallback, std::function<void()> cancelCallback);
+    std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
+    std::function<void(std::string_view)> okCallback, std::function<void()> cancelCallback);
 
 rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const rct_object_entry* missingObjects);
 
@@ -201,9 +200,9 @@ rct_window* window_scenery_scatter_open();
 
 // clang-format off
 #define WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \
-    { WWT_FRAME,    0,  0,          WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  STR_NONE }, \
-    { WWT_CAPTION,  0,  1,          WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
-    { WWT_CLOSEBOX, 0,  WIDTH - 13, WIDTH - 3, 2, 13,         CLOSE_STR, STR_CLOSE_WINDOW_TIP }
+    { WindowWidgetType::Frame,    0,  0,          WIDTH - 1, 0, HEIGHT - 1, 0xFFFFFFFF,  STR_NONE }, \
+    { WindowWidgetType::Caption,  0,  1,          WIDTH - 2, 1, 14,         TITLE,       STR_WINDOW_TITLE_TIP }, \
+    { WindowWidgetType::CloseBox, 0,  WIDTH - 13, WIDTH - 3, 2, 13,         CLOSE_STR, STR_CLOSE_WINDOW_TIP }
 
 #define WINDOW_SHIM(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X)
 #define WINDOW_SHIM_WHITE(TITLE, WIDTH, HEIGHT) WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, STR_CLOSE_X_WHITE)

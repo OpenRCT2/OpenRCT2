@@ -26,6 +26,9 @@ extern ObjectEntryIndex gLandToolTerrainEdge;
 extern money32 gWaterToolRaiseCost;
 extern money32 gWaterToolLowerCost;
 
-uint32_t land_tool_size_to_sprite_index(uint16_t size);
-void land_tool_show_surface_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType);
-void land_tool_show_edge_style_dropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType);
+namespace LandTool
+{
+    uint32_t SizeToSpriteIndex(uint16_t size);
+    void ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType);
+    void ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType);
+} // namespace LandTool

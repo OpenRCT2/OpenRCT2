@@ -30,7 +30,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(DefaultMode, RideMode::Maze),
     SET_FIELD(OperatingSettings, { 1, 64, 0, 0, 0, 0 }),
     SET_FIELD(Naming, { STR_RIDE_NAME_MAZE, STR_RIDE_DESCRIPTION_MAZE }),
-    SET_FIELD(NameConvention, { RIDE_COMPONENT_TYPE_TRAIN, RIDE_COMPONENT_TYPE_TRACK, RIDE_COMPONENT_TYPE_STATION }),
+    SET_FIELD(NameConvention, { RideComponentType::Train, RideComponentType::Track, RideComponentType::Station }),
     SET_FIELD(EnumName, nameof(RIDE_TYPE_MAZE)),
     SET_FIELD(AvailableBreakdowns, 0),
     SET_FIELD(Heights, { 6, 24, 0, 1, }),
@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(BuildCosts, { 55, 2, 8, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_STYLE_SUMMER),
-    SET_FIELD(PhotoItem, SHOP_ITEM_PHOTO),
+    SET_FIELD(PhotoItem, ShopItem::Photo),
     SET_FIELD(BonusValue, 40),
     SET_FIELD(ColourPresets, TRACK_COLOUR_PRESETS(
         { COLOUR_GREY, COLOUR_GREY, COLOUR_GREY },

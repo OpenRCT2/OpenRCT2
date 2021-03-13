@@ -343,7 +343,7 @@ bool metal_b_supports_paint_setup(
         SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
-paint_struct* sub_98196C(
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
 {
@@ -352,7 +352,14 @@ paint_struct* sub_98196C(
         session->CurrentRotation);
 }
 
-paint_struct* sub_98197C(
+paint_struct* PaintAddImageAsParent(
+    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+{
+    return PaintIntercept::Paint6C(
+        image_id, offset.x, offset.y, boundBoxSize.x, boundBoxSize.y, boundBoxSize.z, offset.z, session->CurrentRotation);
+}
+
+paint_struct* PaintAddImageAsParent(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
@@ -362,7 +369,7 @@ paint_struct* sub_98197C(
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
@@ -370,7 +377,7 @@ paint_struct* sub_98199C(
         PAINT_98198C_COORDS, image_id, offset, boundBoxLength, boundBoxOffset, session->CurrentRotation);
 }
 
-paint_struct* sub_98198C(
+paint_struct* PaintAddImageAsOrphan(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)
@@ -380,7 +387,7 @@ paint_struct* sub_98198C(
         bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, session->CurrentRotation);
 }
 
-paint_struct* sub_98199C(
+paint_struct* PaintAddImageAsChild(
     paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z)

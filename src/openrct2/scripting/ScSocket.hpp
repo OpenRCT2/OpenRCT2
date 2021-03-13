@@ -13,6 +13,7 @@
 #    ifndef DISABLE_NETWORK
 
 #        include "../Context.h"
+#        include "../config/Config.h"
 #        include "../network/Socket.h"
 #        include "Duktape.hpp"
 #        include "ScriptEngine.h"
@@ -81,6 +82,22 @@ namespace OpenRCT2::Scripting
         static bool IsLocalhostAddress(std::string_view s)
         {
             return s == "localhost" || s == "127.0.0.1" || s == "::";
+        }
+
+        static bool IsOnWhiteList(std::string_view host)
+        {
+            constexpr char delimiter = ',';
+            size_t start_pos = 0;
+            size_t end_pos = 0;
+            while ((end_pos = gConfigPlugin.allowed_hosts.find(delimiter, start_pos)) != std::string::npos)
+            {
+                if (host == gConfigPlugin.allowed_hosts.substr(start_pos, end_pos - start_pos))
+                {
+                    return true;
+                }
+                start_pos = end_pos + 1;
+            }
+            return host == gConfigPlugin.allowed_hosts.substr(start_pos, gConfigPlugin.allowed_hosts.length() - start_pos);
         }
 
     public:
@@ -166,7 +183,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is already connecting.");
             }
-            else if (!IsLocalhostAddress(host))
+            else if (!IsLocalhostAddress(host) && !IsOnWhiteList(host))
             {
                 duk_error(ctx, DUK_ERR_ERROR, "For security reasons, only connecting to localhost is allowed.");
             }
@@ -422,7 +439,7 @@ namespace OpenRCT2::Scripting
                     if (dukHost.type() == DukValue::Type::STRING)
                     {
                         auto host = dukHost.as_string();
-                        if (IsLocalhostAddress(host))
+                        if (IsLocalhostAddress(host) || IsOnWhiteList(host))
                         {
                             try
                             {
@@ -467,7 +484,7 @@ namespace OpenRCT2::Scripting
             return this;
         }
 
-        uint32_t GetEventType(const std::string_view& name)
+        uint32_t GetEventType(std::string_view name)
         {
             if (name == "connection")
                 return EVENT_CONNECTION;

@@ -38,7 +38,7 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     if (_legacyType.large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT)
     {
@@ -115,7 +115,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStr
     {
         stream->Seek(-2, OpenRCT2::STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();
-        tiles.push_back(tile);
+        tiles.push_back(std::move(tile));
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
     return tiles;
@@ -160,7 +160,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
             _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
         }
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
     }
 
     PopulateTablesFromJson(context, root);
@@ -196,7 +196,7 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(json_t& jT
             auto walls = Json::GetNumber<int16_t>(jTile["walls"]);
             tile.flags |= (walls & 0xFF) << 8;
 
-            tiles.push_back(tile);
+            tiles.push_back(std::move(tile));
         }
     }
 
@@ -273,4 +273,12 @@ std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(jso
         }
     }
     return glyphs;
+}
+
+const rct_large_scenery_tile* LargeSceneryObject::GetTileForSequence(uint8_t SequenceIndex) const
+{
+    if (SequenceIndex >= _tiles.size())
+        return nullptr;
+
+    return &_tiles[SequenceIndex];
 }

@@ -41,7 +41,7 @@ public:
     }
 
     StringVariant(std::string&& s)
-        : String(s)
+        : String(std::move(s))
     {
     }
 
@@ -158,15 +158,15 @@ class GameActionParameterVisitor
 public:
     virtual ~GameActionParameterVisitor() = default;
 
-    virtual void Visit(const std::string_view& name, bool& param)
+    virtual void Visit(std::string_view name, bool& param)
     {
     }
 
-    virtual void Visit(const std::string_view& name, int32_t& param)
+    virtual void Visit(std::string_view name, int32_t& param)
     {
     }
 
-    virtual void Visit(const std::string_view& name, std::string& param)
+    virtual void Visit(std::string_view name, std::string& param)
     {
     }
 
@@ -191,7 +191,7 @@ public:
         Visit("direction", param.direction);
     }
 
-    template<typename T> void Visit(const std::string_view& name, T& param)
+    template<typename T> void Visit(std::string_view name, T& param)
     {
         static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
         auto value = static_cast<int32_t>(param);
@@ -199,7 +199,7 @@ public:
         param = static_cast<T>(value);
     }
 
-    template<typename T, size_t _TypeID> void Visit(const std::string_view& name, NetworkObjectId_t<T, _TypeID>& param)
+    template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId_t<T, _TypeID>& param)
     {
         Visit(name, param.id);
     }
@@ -212,7 +212,7 @@ public:
     using Callback_t = std::function<void(const struct GameAction*, const GameActions::Result*)>;
 
 private:
-    uint32_t const _type;
+    GameCommand const _type;
 
     NetworkPlayerId_t _playerId = { -1 }; // Callee
     uint32_t _flags = 0;                  // GAME_COMMAND_FLAGS
@@ -220,7 +220,7 @@ private:
     Callback_t _callback;
 
 public:
-    GameAction(uint32_t type)
+    GameAction(GameCommand type)
         : _type(type)
     {
     }
@@ -231,6 +231,11 @@ public:
 
     virtual void AcceptParameters(GameActionParameterVisitor&)
     {
+    }
+
+    void AcceptFlags(GameActionParameterVisitor& visitor)
+    {
+        visitor.Visit("flags", _flags);
     }
 
     NetworkPlayerId_t GetPlayer() const
@@ -277,7 +282,7 @@ public:
         return _flags = flags;
     }
 
-    uint32_t GetType() const
+    GameCommand GetType() const
     {
         return _type;
     }
@@ -339,16 +344,16 @@ public:
 #    pragma GCC diagnostic pop
 #endif
 
-template<uint32_t TId> struct GameActionNameQuery
+template<GameCommand TId> struct GameActionNameQuery
 {
 };
 
-template<uint32_t TType, typename TResultType> struct GameActionBase : GameAction
+template<GameCommand TType, typename TResultType> struct GameActionBase : GameAction
 {
 public:
     using Result = TResultType;
 
-    static constexpr uint32_t TYPE = TType;
+    static constexpr GameCommand TYPE = TType;
 
     GameActionBase()
         : GameAction(TYPE)
@@ -395,7 +400,7 @@ namespace GameActions
     void ProcessQueue();
     void ClearQueue();
 
-    GameAction::Ptr Create(uint32_t id);
+    GameAction::Ptr Create(GameCommand id);
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
@@ -406,7 +411,7 @@ namespace GameActions
     GameActions::Result::Ptr QueryNested(const GameAction* action);
     GameActions::Result::Ptr ExecuteNested(const GameAction* action);
 
-    GameActionFactory Register(uint32_t id, GameActionFactory action);
+    GameActionFactory Register(GameCommand id, GameActionFactory action);
 
     template<typename T> static GameActionFactory Register()
     {

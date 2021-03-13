@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -38,14 +38,19 @@ declare global {
     /** APIs for the current scenario. */
     var scenario: Scenario;
     /**
+     * APIs for creating and editing title sequences.
+     * These will only be available to clients that are not running headless mode.
+     */
+    var titleSequenceManager: TitleSequenceManager;
+    /**
      * APIs for controlling the user interface.
      * These will only be available to servers and clients that are not running headless mode.
      * Plugin writers should check if ui is available using `typeof ui !== 'undefined'`.
-    */
+     */
     var ui: Ui;
 
     /**
-     * Registers the plugin. This only only be called once.
+     * Registers the plugin. This may only be called once.
      * @param metadata Information about the plugin and the entry point.
      */
     function registerPlugin(metadata: PluginMetadata): void;
@@ -63,6 +68,14 @@ declare global {
     interface ScreenCoordsXY {
         x: number;
         y: number;
+    }
+
+    /**
+     * Represents the width and height in pixels.
+     */
+    interface ScreenSize {
+        width: number;
+        height: number;
     }
 
     /**
@@ -99,6 +112,14 @@ declare global {
     interface MapRange {
         leftTop: CoordsXY;
         rightBottom: CoordsXY;
+    }
+
+    /**
+     * Represents lateral and vertical g-forces.
+     */
+    interface GForces {
+        lateralG: number;
+        verticalG: number;
     }
 
     /**
@@ -144,7 +165,7 @@ declare global {
         configuration: Configuration;
 
         /**
-         * Shared generic storage for all plugins. Data is persistant across instances
+         * Shared generic storage for all plugins. Data is persistent across instances
          * of OpenRCT2 and is stored externally as a single JSON file in the OpenRCT2
          * user directory. Internally it is a JavaScript object. Objects and arrays
          * are only copied by reference. The external file is only written when using
@@ -182,6 +203,13 @@ declare global {
          * @param max The maximum value exclusive.
          */
         getRandom(min: number, max: number): number;
+
+        /**
+         * Formats a new string using the given format string and the arguments.
+         * @param fmt The format string, e.g. "Guests: {COMMA16}"
+         * @param args The arguments to insert into the string.
+         */
+        formatString(fmt: string, ...args: any[]): string;
 
         /**
          * Registers a new game action that allows clients to interact with the game.
@@ -230,6 +258,34 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
+
+        /**
+         * Registers a function to be called every so often in realtime, specified by the given delay.
+         * @param callback The function to call every time the delay has elapsed.
+         * @param delay The number of milliseconds to wait between each call to the given function.
+         */
+        setInterval(callback: Function, delay: number): number;
+
+        /**
+         * Like `setInterval`, except the callback will only execute once after the given delay.
+         * @param callback The function to call after the given delay has elapsed.
+         * @param delay The number of milliseconds to wait for before calling the given function.
+         */
+        setTimeout(callback: Function, delay: number): number;
+
+        /**
+         * Removes the registered interval specified by the numeric handle. The handles
+         * are shared with `setTimeout`.
+         * @param handle
+         */
+        clearInterval(handle: number): void;
+
+        /**
+         * Removes the registered timeout specified by the numeric handle. The handles
+         * are shared with `setInterval`.
+         * @param handle The numerical handle of the registered timeout to remove.
+         */
+        clearTimeout(handle: number): void;
     }
 
     interface Configuration {
@@ -274,6 +330,11 @@ declare global {
          * Rotation of the camera from 0 to 3.
          */
         rotation: number;
+
+        /**
+         * Whether to enable transparency in the screenshot.
+         */
+        transparent?: boolean;
     }
 
     type ObjectType =
@@ -324,9 +385,9 @@ declare global {
         "climateset" |
         "footpathplace" |
         "footpathplacefromtrack" |
-        "foothpathremove" |
-        "footpathsceneryplace" |
-        "footpathsceneryremove" |
+        "footpathremove" |
+        "footpathadditionplace" |
+        "footpathadditionremove" |
         "guestsetflags" |
         "guestsetname" |
         "landbuyrights" |
@@ -502,15 +563,24 @@ declare global {
 
     type Direction = 0 | 1 | 2 | 3;
 
+    type TileElement =
+        SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
+        | LargeSceneryElement | BannerElement | CorruptElement;
+
     interface BaseTileElement {
         type: TileElementType;
         baseHeight: number;
+        baseZ: number;
         clearanceHeight: number;
+        clearanceZ: number;
         occupiedQuadrants: number;
+        isGhost: boolean;
         isHidden: boolean; /** Take caution when changing this field, it may invalidate TileElements you have stored in your script. */
     }
 
     interface SurfaceElement extends BaseTileElement {
+        type: "surface";
+
         slope: number;
         surfaceStyle: number;
         edgeStyle: number;
@@ -524,65 +594,101 @@ declare global {
     }
 
     interface FootpathElement extends BaseTileElement {
-        footpathType: number;
-        edgesAndCorners: number;
+        type: "footpath";
+
+        object: number;
+
+        edges: number;
+        corners: number;
         slopeDirection: number | null;
         isBlockedByVehicle: boolean;
         isWide: boolean;
 
         isQueue: boolean;
         queueBannerDirection: number | null;
-        ride: number;
-        station: number;
+        ride: number | null;
+        station: number | null;
 
         addition: number | null;
-        isAdditionBroken: boolean;
-
-        direction: Direction;
+        additionStatus: number | null;
+        isAdditionBroken: boolean | null;
+        isAdditionGhost: boolean | null;
     }
 
     interface TrackElement extends BaseTileElement {
-        trackType: number;
-        sequence: number;
-        ride: number;
-        station: number;
-        hasChainLift: boolean;
+        type: "track";
+
         direction: Direction;
+        trackType: number;
+        sequence: number | null;
+        mazeEntry: number | null;
+
+        colourScheme: number | null;
+        seatRotation: number | null;
+
+        ride: number;
+        station: number | null;
+
+        brakeBoosterSpeed: number | null;
+        hasChainLift: boolean;
+        isInverted: boolean;
+        hasCableLift: boolean;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
+        type: "small_scenery";
+
+        direction: Direction;
         object: number;
         primaryColour: number;
         secondaryColour: number;
-        direction: Direction;
         quadrant: number;
-    }
-
-    interface EntranceElement extends BaseTileElement {
-        object: number;
-        sequence: number;
-        ride: number;
-        station: number;
+        age: number;
     }
 
     interface WallElement extends BaseTileElement {
-        object: number;
-        direction: Direction;
-    }
+        type: "wall";
 
-    interface LargeSceneryElement extends BaseTileElement {
+        direction: Direction;
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
+        bannerIndex: number | null;
+        slope: Direction;
+    }
+
+    interface EntranceElement extends BaseTileElement {
+        type: "entrance";
+
+        direction: Direction;
+        object: number;
+        ride: number;
+        station: number;
+        sequence: number;
+        footpathObject: number;
+    }
+
+    interface LargeSceneryElement extends BaseTileElement {
+        type: "large_scenery";
+
+        direction: Direction;
+        object: number;
+        primaryColour: number;
+        secondaryColour: number;
+        bannerIndex: number | null;
+        sequence: number;
     }
 
     interface BannerElement extends BaseTileElement {
+        type: "banner";
+        direction: Direction;
+        bannerIndex: number;
     }
 
     interface CorruptElement extends BaseTileElement {
+        type: "openrct2_corrupt_deprecated";
     }
-
-    type TileElement = SurfaceElement | FootpathElement | TrackElement;
 
     /**
      * Represents a tile containing tile elements on the map. This is a fixed handle
@@ -607,7 +713,7 @@ declare global {
         /** Gets the tile element at the given index on this tile. */
         getElement(index: number): TileElement;
         /** Gets the tile element at the given index on this tile. */
-        getElement<T extends BaseTileElement>(index: number): T;
+        getElement<T extends TileElement>(index: number): T;
         /** Inserts a new tile element at the given index on this tile. */
         insertElement(index: number): TileElement;
         /** Removes the tile element at the given index from this tile. */
@@ -930,7 +1036,19 @@ declare global {
     }
 
     type EntityType =
-        "car" | "duck" | "peep";
+        "balloon" |
+        "car" |
+        "crash_splash" |
+        "crashed_vehicle_particle" |
+        "duck" |
+        "explosion_cloud" |
+        "explosion_flare" |
+        "jumping_fountain_snow" |
+        "jumping_fountain_water" |
+        "litter" |
+        "money_effect" |
+        "peep" |
+        "steam_particle";
 
     /**
      * Represents an object "entity" on the map that can typically moves and has a sub-tile coordinate.
@@ -1059,9 +1177,36 @@ declare global {
         status: VehicleStatus;
 
         /**
+         * The location and direction of where the car is on the track.
+         */
+        trackLocation: CoordsXYZD;
+
+        /**
+         * The current g-forces of this car.
+         */
+        readonly gForces: GForces;
+
+        /**
+         * The progress on the current track piece, in steps.
+         */
+        readonly trackProgress: number;
+
+        /**
+         * The currently projected remaining distance the car will travel.
+         */
+        readonly remainingDistance: number;
+
+        /**
          * List of peep IDs ordered by seat.
          */
-        peeps: (number | null)[];
+        peeps: Array<number | null>;
+
+        /**
+         * Moves the vehicle forward or backwards along the track, relative to its current
+         * position. A single visible step is about 8.000 to 14.000 in distance depending
+         * on the direction its moving in.
+         */
+        travelBy(distance: number): void;
     }
 
     type VehicleStatus =
@@ -1298,6 +1443,7 @@ declare global {
         readonly players: Player[];
         readonly currentPlayer: Player;
         defaultGroup: number;
+        readonly stats: NetworkStats;
 
         getServerInfo(): ServerInfo;
         addGroup(): void;
@@ -1341,6 +1487,11 @@ declare global {
         readonly providerName: string;
         readonly providerEmail: string;
         readonly providerWebsite: string;
+    }
+
+    interface NetworkStats {
+        bytesReceived: number[];
+        bytesSent: number[];
     }
 
     type PermissionType =
@@ -1454,6 +1605,49 @@ declare global {
          */
         entranceFee: number;
 
+        /**
+         * The number of guests within the park, not including any outside the park but still
+         * on the map.
+         */
+        readonly guests: number;
+
+        /**
+         * The park value, will be updated every 512 ticks.
+         */
+        value: number;
+
+        /**
+         * The company value, will be updated every 512 ticks.
+         * Calculation is: `park.value + park.cash - park.bankLoan`
+         */
+        companyValue: number;
+
+        /**
+         * The total number of guests that have entered the park.
+         */
+        totalAdmissions: number;
+
+        /**
+         * The total amount of income gained from admissions into the park.
+         */
+        totalIncomeFromAdmissions: number;
+
+        /**
+         * The purchase price of one tile for park ownership.
+         */
+        landPrice: number;
+
+        /**
+         * The purchase price of one tile for construction rights.
+         */
+        constructionRightsPrice: number;
+
+        /**
+         * The number of tiles on the map with park ownership or construction rights.
+         * Updated every 4096 ticks.
+         */
+        readonly parkSize: number;
+
         name: string;
         messages: ParkMessage[];
 
@@ -1485,7 +1679,7 @@ declare global {
         "monthlyRideIncome" |
         "10RollercoastersLength" |
         "finish5Rollercoasters" |
-        "replayLoanAndParkValue" |
+        "repayLoanAndParkValue" |
         "monthlyFoodIncome";
 
     interface ScenarioObjective {
@@ -1613,7 +1807,7 @@ declare global {
         readonly windows: number;
         readonly mainViewport: Viewport;
         readonly tileSelection: TileSelection;
-        readonly tool: Tool;
+        readonly tool: Tool | null;
 
         getWindow(id: number): Window;
         getWindow(classification: string): Window;
@@ -1635,6 +1829,19 @@ declare global {
         showTextInput(desc: TextInputDesc): void;
 
         /**
+         * Shows the window for loading or saving a file and calls the given callback when a file
+         * is selected.
+         * @param desc The parameters for the file browse window.
+         */
+        showFileBrowse(desc: FileBrowseDesc): void;
+
+        /**
+         * Shows the scenario select window and calls the given callback when a scenario is
+         * selected.
+         */
+        showScenarioSelect(desc: ScenarioSelectDesc): void;
+
+        /**
          * Begins a new tool session. The cursor will change to the style specified by the
          * given tool descriptor and cursor events will be provided.
          * @param tool The properties and event handlers for the tool.
@@ -1642,6 +1849,8 @@ declare global {
         activateTool(tool: ToolDesc): void;
 
         registerMenuItem(text: string, callback: () => void): void;
+
+        registerShortcut(desc: ShortcutDesc): void;
     }
 
     /**
@@ -1674,6 +1883,59 @@ declare global {
         callback: (value: string) => void;
     }
 
+    /**
+     * Parameters for the file browse window.
+     */
+    interface FileBrowseDesc {
+        /**
+         * Whether to browse a file for loading or saving. Saving will prompt the user
+         * before overwriting a file.
+         */
+        type: "load";
+
+        /**
+         * The type of file to browse for.
+         */
+        fileType: "game" | "heightmap";
+
+        /**
+         * The pre-selected file to load by default if the user clicks OK.
+         */
+        defaultPath?: string;
+
+        /**
+         * The function to call when the user has selected a file.
+         */
+        callback: (path: string) => void;
+    }
+
+    /**
+     * Parameters for the scenario select window.
+     */
+    interface ScenarioSelectDesc {
+        /**
+         * The function to call when the user has selected a scenario.
+         */
+        callback: (scenario: ScenarioFile) => void;
+    }
+
+    /**
+     * Represents an installed scenario's path and metadata.
+     */
+    interface ScenarioFile {
+        id: number;
+        category: "beginner" | "challenging" | "expert" | "real" | "other" | "dlc" | "build_your_own";
+        sourceGame: "rct1" | "rct1_aa" | "rct1_ll" | "rct2" | "rct2_ww" | "rct2_tt" | "real" | "other";
+        path: string;
+        internalName: string;
+        name: string;
+        details: string;
+        highscore: {
+            name: string;
+            companyValue: number;
+        };
+    }
+
     interface TileSelection {
         range: MapRange;
         tiles: CoordsXY[];
@@ -1701,11 +1963,17 @@ declare global {
         id: string;
         cursor?: CursorType;
 
-        onStart: () => void;
-        onDown: (e: ToolEventArgs) => void;
-        onMove: (e: ToolEventArgs) => void;
-        onUp: (e: ToolEventArgs) => void;
-        onFinish: () => void;
+        /**
+         * What types of object in the game can be selected with the tool.
+         * E.g. only specify terrain if you only want a tile selection.
+         */
+        filter?: ToolFilter[];
+
+        onStart?: () => void;
+        onDown?: (e: ToolEventArgs) => void;
+        onMove?: (e: ToolEventArgs) => void;
+        onUp?: (e: ToolEventArgs) => void;
+        onFinish?: () => void;
     }
 
     type CursorType =
@@ -1737,13 +2005,58 @@ declare global {
         "water_down" |
         "zzz";
 
+    type ToolFilter =
+        "terrain" |
+        "entity" |
+        "ride" |
+        "water" |
+        "scenery" |
+        "footpath" |
+        "footpath_item" |
+        "park_entrance" |
+        "wall" |
+        "large_scenery" |
+        "label" |
+        "banner";
+
+    interface ShortcutDesc {
+        /**
+         * The unique identifier for the shortcut.
+         * If the identifier already exists, the shortcut will not be registered.
+         * Use full stops to group shortcuts together, e.g. `yourplugin.somewindow.apply`.
+         */
+        id: string;
+
+        /**
+         * The display text for the shortcut.
+         */
+        text: string;
+
+        /**
+         * Default bindings for the shortcut.
+         * E.g. `["CTRL+SHIFT+L", "MOUSE 3"]`
+         */
+        bindings?: string[];
+
+        /**
+         * Function to call when the shortcut is invoked.
+         */
+        callback: () => void;
+    }
+
     /**
      * Represents the type of a widget, e.g. button or label.
      */
     type WidgetType =
-        "button" | "checkbox" | "dropdown" | "groupbox" | "label" | "listview" | "spinner" | "viewport";
+        "button" | "checkbox" | "colourpicker" | "custom" | "dropdown" | "groupbox" |
+        "label" | "listview" | "spinner" | "textbox" | "viewport";
 
-    interface Widget {
+    type Widget =
+        ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
+        LabelWidget | ListView | SpinnerWidget | TextBoxWidget | ViewportWidget;
+
+    interface WidgetBase {
+        readonly window?: Window;
         type: WidgetType;
         x: number;
         y: number;
@@ -1752,36 +2065,59 @@ declare global {
         name?: string;
         tooltip?: string;
         isDisabled?: boolean;
+        isVisible?: boolean;
     }
 
-    interface ButtonWidget extends Widget {
+    interface ButtonWidget extends WidgetBase {
+        type: "button";
         /**
          * Whether the button has a 3D border.
          * By default, text buttons have borders and image buttons do not but it can be overridden.
          */
         border?: boolean;
-        image: number;
-        isPressed: boolean;
-        text: string;
-        onClick: () => void;
+        image?: number;
+        isPressed?: boolean;
+        text?: string;
+        onClick?: () => void;
     }
 
-    interface CheckboxWidget extends Widget {
-        text: string;
-        isChecked: boolean;
-        onChange: (isChecked: boolean) => void;
+    interface CheckboxWidget extends WidgetBase {
+        type: "checkbox";
+        text?: string;
+        isChecked?: boolean;
+        onChange?: (isChecked: boolean) => void;
     }
 
-    interface DropdownWidget extends Widget {
-        items: string[];
-        selectedIndex: number;
-        onChange: (index: number) => void;
+    interface ColourPickerWidget extends WidgetBase {
+        type: "colourpicker";
+        colour?: number;
+        onChange?: (colour: number) => void;
     }
 
-    interface LabelWidget extends Widget {
-        text: string;
-        onChange: (index: number) => void;
+    interface CustomWidget extends WidgetBase {
+        type: "custom";
+        onDraw?: (this: CustomWidget, g: GraphicsContext) => void;
     }
+
+    interface DropdownWidget extends WidgetBase {
+        type: "dropdown";
+        items?: string[];
+        selectedIndex?: number;
+        onChange?: (index: number) => void;
+    }
+
+    interface GroupBoxWidget extends WidgetBase {
+        type: "groupbox";
+    }
+
+    interface LabelWidget extends WidgetBase {
+        type: "label";
+        text?: string;
+        textAlign?: TextAlignment;
+        onChange?: (index: number) => void;
+    }
+
+    type TextAlignment = "left" | "centred";
 
     type SortOrder = "none" | "ascending" | "descending";
 
@@ -1798,14 +2134,20 @@ declare global {
         maxWidth?: number;
     }
 
-    type ListViewItem = string[];
+    interface ListViewItemSeperator {
+        type: "seperator";
+        text?: string;
+    }
+
+    type ListViewItem = ListViewItemSeperator | string[];
 
     interface RowColumn {
         row: number;
         column: number;
     }
 
-    interface ListView extends Widget {
+    interface ListView extends WidgetBase {
+        type: "listview";
         scrollbars?: ScrollbarType;
         isStriped?: boolean;
         showColumnHeaders?: boolean;
@@ -1815,18 +2157,29 @@ declare global {
         readonly highlightedCell?: RowColumn;
         canSelect?: boolean;
 
-        onHighlight: (item: number, column: number) => void;
-        onClick: (item: number, column: number) => void;
+        onHighlight?: (item: number, column: number) => void;
+        onClick?: (item: number, column: number) => void;
     }
 
-    interface SpinnerWidget extends Widget {
-        text: string;
-        onDecrement: () => void;
-        onIncrement: () => void;
+    interface SpinnerWidget extends WidgetBase {
+        type: "spinner";
+        text?: string;
+
+        onDecrement?: () => void;
+        onIncrement?: () => void;
+        onClick?: () => void;
     }
 
-    interface ViewportWidget extends Widget {
-        viewport: Viewport
+    interface TextBoxWidget extends WidgetBase {
+        type: "textbox";
+        text?: string;
+        maxLength?: number;
+        onChange?: (text: string) => void;
+    }
+
+    interface ViewportWidget extends WidgetBase {
+        type: "viewport";
+        viewport?: Viewport;
     }
 
     interface Window {
@@ -1866,10 +2219,11 @@ declare global {
         widgets?: Widget[];
         colours?: number[];
         tabs?: WindowTabDesc[];
+        tabIndex?: number;
 
         onClose?: () => void;
         onUpdate?: () => void;
-        tabChange?: () => void;
+        onTabChange?: () => void;
     }
 
     interface ImageAnimation {
@@ -1899,18 +2253,56 @@ declare global {
     }
 
     /**
-     * Listens for incomming connections.
+     * API for drawing graphics.
+     */
+    interface GraphicsContext {
+        colour: number | undefined;
+        secondaryColour: number | undefined;
+        ternaryColour: number | undefined;
+        stroke: number;
+        fill: number;
+        paletteId: number | undefined;
+        readonly width: number;
+        readonly height: number;
+
+        getImage(id: number): ImageInfo | undefined;
+        measureText(text: string): ScreenSize;
+
+        clear(): void;
+        clip(x: number, y: number, width: number, height: number): void;
+        box(x: number, y: number, width: number, height: number): void;
+        image(id: number, x: number, y: number): void;
+        line(x1: number, y1: number, x2: number, y2: number): void;
+        rect(x: number, y: number, width: number, height: number): void;
+        text(text: string, x: number, y: number): void;
+        well(x: number, y: number, width: number, height: number): void;
+    }
+
+    interface ImageInfo {
+        readonly id: number;
+        readonly offset: ScreenCoordsXY;
+        readonly width: number;
+        readonly height: number;
+        readonly isBMP: boolean;
+        readonly isRLE: boolean;
+        readonly isPalette: boolean;
+        readonly noZoom: boolean;
+        readonly nextZoomId: number | undefined;
+    }
+
+    /**
+     * Listens for incoming connections.
      * Based on node.js net.Server, see https://nodejs.org/api/net.html for more information.
      */
     interface Listener {
         readonly listening: boolean;
 
-        listen(port: number): Listener;
+        listen(port: number, host?: string): Listener;
         close(): Listener;
 
-        on(event: 'connection', callback: (socket: Socket) => void): Listener;
+        on(event: "connection", callback: (socket: Socket) => void): Listener;
 
-        off(event: 'connection', callback: (socket: Socket) => void): Listener;
+        off(event: "connection", callback: (socket: Socket) => void): Listener;
     }
 
     /**
@@ -1924,12 +2316,186 @@ declare global {
         end(data?: string): Socket;
         write(data: string): boolean;
 
-        on(event: 'close', callback: (hadError: boolean) => void): Socket;
-        on(event: 'error', callback: (hadError: boolean) => void): Socket;
-        on(event: 'data', callback: (data: string) => void): Socket;
+        on(event: "close", callback: (hadError: boolean) => void): Socket;
+        on(event: "error", callback: (hadError: boolean) => void): Socket;
+        on(event: "data", callback: (data: string) => void): Socket;
 
-        off(event: 'close', callback: (hadError: boolean) => void): Socket;
-        off(event: 'error', callback: (hadError: boolean) => void): Socket;
-        off(event: 'data', callback: (data: string) => void): Socket;
+        off(event: "close", callback: (hadError: boolean) => void): Socket;
+        off(event: "error", callback: (hadError: boolean) => void): Socket;
+        off(event: "data", callback: (data: string) => void): Socket;
+    }
+
+    interface TitleSequence {
+        /**
+         * The name of the title sequence.
+         */
+        name: string;
+
+        /**
+         * The full path of the title sequence.
+         */
+        readonly path: string;
+
+        /**
+         * Whether the title sequence is a single file or directory.
+         */
+        readonly isDirectory: boolean;
+
+        /**
+         * Whether or not the title sequence is read-only (e.g. a pre-installed sequence).
+         */
+        readonly isReadOnly: boolean;
+
+        /**
+         * The parks stored within this title sequence.
+         */
+        readonly parks: TitleSequencePark[];
+
+        /**
+         * The commands that describe how to play the title sequence.
+         */
+        commands: TitleSequenceCommand[];
+
+        /**
+         * Whether the title sequence is currently playing.
+         */
+        readonly isPlaying: boolean;
+
+        /**
+         * The current command the title sequence is on if playing.
+         */
+        readonly position: number | null;
+
+        addPark(path: string, fileName: string): void;
+
+        /**
+         * Creates a new title sequence identical to this one.
+         * @param name The name of the new title sequence.
+         */
+        clone(name: string): TitleSequence;
+
+        /**
+         * Deletes this title sequence from disc.
+         */
+        delete(): void;
+
+        /**
+         * Play the title sequence.
+         */
+        play(): void;
+
+        /**
+         * Seek to a specific command in the sequence.
+         * @param position The index of the command to seek to.
+         */
+        seek(position: number): void;
+
+        /**
+         * Stops playing the title sequence.
+         */
+        stop(): void;
+    }
+
+    interface TitleSequencePark {
+        /**
+         * The file name of the park.
+         */
+        fileName: string;
+
+        /**
+         * Deletes this park from the title sequence.
+         */
+        delete(): void;
+
+        /**
+         * Loads this park.
+         */
+        load(): void;
+    }
+
+    type TitleSequenceCommandType =
+        "load" |
+        "loadsc" |
+        "location" |
+        "rotate" |
+        "zoom" |
+        "speed" |
+        "follow" |
+        "wait" |
+        "restart" |
+        "end";
+
+    interface LoadTitleSequenceCommand {
+        type: "load";
+        index: number;
+    }
+
+    interface LocationTitleSequenceCommand {
+        type: "location";
+        x: number;
+        y: number;
+    }
+
+    interface RotateTitleSequenceCommand {
+        type: "rotate";
+        rotations: number;
+    }
+
+    interface ZoomTitleSequenceCommand {
+        type: "zoom";
+        zoom: number;
+    }
+
+    interface FollowTitleSequenceCommand {
+        type: "follow";
+        id: number | null;
+    }
+
+    interface SpeedTitleSequenceCommand {
+        type: "speed";
+        speed: number;
+    }
+
+    interface WaitTitleSequenceCommand {
+        type: "wait";
+        duration: number;
+    }
+
+    interface LoadScenarioTitleSequenceCommand {
+        type: "loadsc";
+        scenario: string;
+    }
+
+    interface RestartTitleSequenceCommand {
+        type: "restart";
+    }
+
+    interface EndTitleSequenceCommand {
+        type: "end";
+    }
+
+    type TitleSequenceCommand =
+        LoadTitleSequenceCommand |
+        LocationTitleSequenceCommand |
+        RotateTitleSequenceCommand |
+        ZoomTitleSequenceCommand |
+        FollowTitleSequenceCommand |
+        SpeedTitleSequenceCommand |
+        WaitTitleSequenceCommand |
+        LoadScenarioTitleSequenceCommand |
+        RestartTitleSequenceCommand |
+        EndTitleSequenceCommand;
+
+    interface TitleSequenceManager {
+        /**
+         * Gets all the available title sequences.
+         */
+        readonly titleSequences: TitleSequence[];
+
+        /**
+         * Creates a new blank title sequence.
+         * @param name The name of the title sequence.
+         */
+        create(name: string): TitleSequence;
     }
 }

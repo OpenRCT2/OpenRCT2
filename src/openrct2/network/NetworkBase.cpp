@@ -14,9 +14,9 @@
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../actions/LoadOrQuitAction.hpp"
-#include "../actions/NetworkModifyGroupAction.hpp"
-#include "../actions/PeepPickupAction.hpp"
+#include "../actions/LoadOrQuitAction.h"
+#include "../actions/NetworkModifyGroupAction.h"
+#include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../platform/Platform2.h"
@@ -24,7 +24,9 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
+#include "../world/EntityList.h"
 #include "../world/Location.hpp"
+#include "../world/Sprite.h"
 #include "network.h"
 
 #include <algorithm>
@@ -34,7 +36,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "0"
+#define NETWORK_STREAM_VERSION "19"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -52,7 +54,7 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../actions/GameAction.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
-#    include "../core/FileStream.hpp"
+#    include "../core/FileStream.h"
 #    include "../core/MemoryStream.h"
 #    include "../core/Nullable.hpp"
 #    include "../core/Path.hpp"
@@ -268,7 +270,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     BeginServerLog();
 
     // We need to wait for the map load before we execute any actions.
-    // If the client has the title screen running then theres a potential
+    // If the client has the title screen running then there's a potential
     // risk of tick collision with the server map and title screen map.
     GameActions::SuspendQueue();
 
@@ -390,7 +392,8 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
         _userManager.Save();
     }
 
-    printf("Ready for clients...\n");
+    auto* szAddress = address.empty() ? "*" : address.c_str();
+    Console::WriteLine("Listening for clients on %s:%hu", szAddress, port);
     network_chat_show_connected_message();
     network_chat_show_server_greeting();
 
@@ -695,23 +698,18 @@ NetworkGroup* NetworkBase::GetGroupByID(uint8_t id)
 
 const char* NetworkBase::FormatChat(NetworkPlayer* fromplayer, const char* text)
 {
-    static char formatted[1024];
-    char* lineCh = formatted;
-    formatted[0] = 0;
+    static std::string formatted;
+    formatted.clear();
+    formatted += "{OUTLINE}";
     if (fromplayer)
     {
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_BABYBLUE);
-        safe_strcpy(lineCh, static_cast<const char*>(fromplayer->Name.c_str()), sizeof(formatted) - (lineCh - formatted));
-        safe_strcat(lineCh, ": ", sizeof(formatted) - (lineCh - formatted));
-        lineCh = strchr(lineCh, '\0');
+        formatted += "{BABYBLUE}";
+        formatted += fromplayer->Name;
+        formatted += ": ";
     }
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-    lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
-    char* ptrtext = lineCh;
-    safe_strcpy(lineCh, text, 800);
-    utf8_remove_format_codes(ptrtext, true);
-    return formatted;
+    formatted += "{WHITE}";
+    formatted += text;
+    return formatted.c_str();
 }
 
 void NetworkBase::SendPacketToClients(const NetworkPacket& packet, bool front, bool gameCmd)
@@ -1092,7 +1090,6 @@ void NetworkBase::AppendLog(std::ostream& fs, const std::string& s)
         if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
             String::Append(buffer, sizeof(buffer), s.c_str());
-            utf8_remove_formatting(buffer, false);
             String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
             fs.write(buffer, strlen(buffer));
@@ -1736,7 +1733,7 @@ void NetworkBase::ProcessPending()
 }
 
 static bool ProcessPlayerAuthenticatePluginHooks(
-    const NetworkConnection& connection, const std::string_view& name, const std::string_view& publicKeyHash)
+    const NetworkConnection& connection, std::string_view name, std::string_view publicKeyHash)
 {
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
@@ -1836,7 +1833,7 @@ void NetworkBase::ProcessPlayerList()
             std::vector<uint8_t> newPlayers;
             std::vector<uint8_t> removedPlayers;
 
-            for (auto&& pendingPlayer : itPending->second.players)
+            for (const auto& pendingPlayer : itPending->second.players)
             {
                 activePlayerIds.push_back(pendingPlayer.Id);
 
@@ -2340,13 +2337,13 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         uint32_t flags = 0;
         packet >> checksum >> flags;
 
-        const auto* object = repo.FindObject(objectName);
+        const auto* object = repo.FindObjectLegacy(objectName);
         // This could potentially request the object if checksums don't match, but since client
         // won't replace its version with server-provided one, we don't do that.
         if (object == nullptr)
         {
             log_verbose("Requesting object %s with checksum %x from server", objectName, checksum);
-            _missingObjects.push_back(objectName);
+            _missingObjects.emplace_back(objectName);
         }
         else if (object->ObjectEntry.checksum != checksum || object->ObjectEntry.flags != flags)
         {
@@ -2482,7 +2479,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
         // This is required, as packet does not have null terminator
         std::string s(name, name + 8);
         log_verbose("Client requested object %s", s.c_str());
-        const ObjectRepositoryItem* item = repo.FindObject(s.c_str());
+        const ObjectRepositoryItem* item = repo.FindObjectLegacy(s.c_str());
         if (item == nullptr)
         {
             log_warning("Client tried getting non-existent object %s from us.", s.c_str());
@@ -2566,7 +2563,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         if (connection.AuthStatus == NetworkAuth::Verified)
         {
             const NetworkGroup* group = GetGroupByID(GetGroupIDByHash(connection.Key.PublicKeyHash()));
-            passwordless = group->CanPerformCommand(MISC_COMMAND_PASSWORDLESS_LOGIN);
+            passwordless = group->CanPerformCommand(GameCommand::PasswordlessLogin);
         }
         if (!gameversion || network_get_version() != gameversion)
         {
@@ -2724,7 +2721,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
         importer->Import();
 
-        sprite_position_tween_reset();
+        EntityTweener::Get().Reset();
         AutoCreateMapAnimations();
 
         // Read checksum
@@ -2869,7 +2866,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
     if (connection.Player)
     {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
-        if (!group || !group->CanPerformCommand(MISC_COMMAND_CHAT))
+        if (!group || !group->CanPerformCommand(GameCommand::Chat))
         {
             return;
         }
@@ -2893,7 +2890,7 @@ void NetworkBase::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacke
 void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t actionType;
+    GameCommand actionType;
     packet >> tick >> actionType;
 
     MemoryStream stream;
@@ -2929,7 +2926,7 @@ void NetworkBase::Client_Handle_GAME_ACTION([[maybe_unused]] NetworkConnection& 
 void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPacket& packet)
 {
     uint32_t tick;
-    uint32_t actionType;
+    GameCommand actionType;
 
     NetworkPlayer* player = connection.Player;
     if (player == nullptr)
@@ -2940,12 +2937,12 @@ void NetworkBase::Server_Handle_GAME_ACTION(NetworkConnection& connection, Netwo
     packet >> tick >> actionType;
 
     // Don't let clients send pause or quit
-    if (actionType == GAME_COMMAND_TOGGLE_PAUSE || actionType == GAME_COMMAND_LOAD_OR_QUIT)
+    if (actionType == GameCommand::TogglePause || actionType == GameCommand::LoadOrQuit)
     {
         return;
     }
 
-    if (actionType != GAME_COMMAND_CUSTOM)
+    if (actionType != GameCommand::Custom)
     {
         // Check if player's group permission allows command to run
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
@@ -3054,7 +3051,7 @@ void NetworkBase::Client_Handle_PLAYERLIST([[maybe_unused]] NetworkConnection& c
         NetworkPlayer tempplayer;
         tempplayer.Read(packet);
 
-        pending.players.push_back(tempplayer);
+        pending.players.push_back(std::move(tempplayer));
     }
 }
 
@@ -3365,7 +3362,7 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
     return gNetwork.player_list[index]->LastAction;
 }
 
-void network_set_player_last_action(uint32_t index, int32_t command)
+void network_set_player_last_action(uint32_t index, GameCommand command)
 {
     Guard::IndexInRange(index, gNetwork.player_list);
 
@@ -3452,7 +3449,7 @@ const char* network_get_group_name(uint32_t index)
 void network_chat_show_connected_message()
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-    std::string s = windowManager->GetKeyboardShortcutString(41 /* SHORTCUT_OPEN_CHAT_WINDOW */);
+    std::string s = windowManager->GetKeyboardShortcutString("interface.misc.multiplayer_chat");
     const char* sptr = s.c_str();
 
     utf8 buffer[256];
@@ -3467,18 +3464,13 @@ void network_chat_show_connected_message()
 // Display server greeting if one exists
 void network_chat_show_server_greeting()
 {
-    const char* greeting = network_get_server_greeting();
+    auto greeting = network_get_server_greeting();
     if (!str_is_null_or_empty(greeting))
     {
-        static char greeting_formatted[CHAT_INPUT_SIZE];
-        char* lineCh = greeting_formatted;
-        greeting_formatted[0] = 0;
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_OUTLINE);
-        lineCh = utf8_write_codepoint(lineCh, FORMAT_GREEN);
-        char* ptrtext = lineCh;
-        safe_strcpy(lineCh, greeting, CHAT_INPUT_SIZE - 24); // Limit to 1000 characters so we don't overflow the buffer
-        utf8_remove_format_codes(ptrtext, true);
-        chat_history_add(greeting_formatted);
+        thread_local std::string greeting_formatted;
+        greeting_formatted.assign("{OUTLINE}{GREEN}");
+        greeting_formatted += greeting;
+        chat_history_add(greeting_formatted.c_str());
     }
 }
 
@@ -3582,7 +3574,7 @@ GameActions::Result::Ptr network_modify_groups(
         case ModifyGroupType::SetPermissions:
         {
             if (groupId == 0)
-            { // cant change admin group permissions
+            { // can't change admin group permissions
                 return std::make_unique<GameActions::Result>(
                     GameActions::Status::Disallowed, STR_THIS_GROUP_CANNOT_BE_MODIFIED);
             }
@@ -3735,7 +3727,7 @@ int32_t network_can_perform_command(uint32_t groupindex, int32_t index)
 {
     Guard::IndexInRange(groupindex, gNetwork.group_list);
 
-    return gNetwork.group_list[groupindex]->CanPerformCommand(index);
+    return gNetwork.group_list[groupindex]->CanPerformCommand(static_cast<GameCommand>(index)); // TODO
 }
 
 void network_set_pickup_peep(uint8_t playerid, Peep* peep)
@@ -4070,7 +4062,7 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
 {
     return -999;
 }
-void network_set_player_last_action(uint32_t index, int32_t command)
+void network_set_player_last_action(uint32_t index, GameCommand command)
 {
 }
 CoordsXYZ network_get_player_last_action_coord(uint32_t index)

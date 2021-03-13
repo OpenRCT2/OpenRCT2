@@ -24,14 +24,15 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <vector>
 
-uint16_t gSpriteListHead[static_cast<uint8_t>(EntityListId::Count)];
-uint16_t gSpriteListCount[static_cast<uint8_t>(EntityListId::Count)];
-static rct_sprite _spriteList[MAX_SPRITES];
+static rct_sprite _spriteList[MAX_ENTITIES];
+static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
+static std::vector<uint16_t> _freeIdList;
 
-static bool _spriteFlashingList[MAX_SPRITES];
+static bool _spriteFlashingList[MAX_ENTITIES];
 
-uint16_t gSpriteSpatialIndex[SPATIAL_INDEX_SIZE];
+static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
 
 const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_LITTER_VOMIT,
@@ -46,11 +47,25 @@ const rct_string_id litterNames[12] = { STR_LITTER_VOMIT,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_JUICE_CUP,
                                         STR_SHOP_ITEM_SINGULAR_EMPTY_BOWL_BLUE };
 
-static CoordsXYZ _spritelocations1[MAX_SPRITES];
-static CoordsXYZ _spritelocations2[MAX_SPRITES];
+constexpr size_t GetSpatialIndexOffset(int32_t x, int32_t y)
+{
+    size_t index = SPATIAL_INDEX_LOCATION_NULL;
+    if (x != LOCATION_NULL)
+    {
+        x = std::clamp(x, 0, 0xFFFF);
+        y = std::clamp(y, 0, 0xFFFF);
 
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y);
-static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex);
+        int16_t flooredX = floor2(x, 32);
+        uint8_t tileY = y >> 5;
+        index = (flooredX << 3) | tileY;
+    }
+
+    if (index >= sizeof(gSpriteSpatialIndex))
+    {
+        return SPATIAL_INDEX_LOCATION_NULL;
+    }
+    return index;
+}
 
 // Required for GetEntity to return a default
 template<> bool SpriteBase::Is<SpriteBase>() const
@@ -60,27 +75,40 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Litter>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_LITTER;
+    return sprite_identifier == SpriteIdentifier::Litter;
+}
+
+template<> bool SpriteBase::Is<MiscEntity>() const
+{
+    return sprite_identifier == SpriteIdentifier::Misc;
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_STEAM_PARTICLE;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_FLARE;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_EXPLOSION_CLOUD;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::ExplosionCloud;
 }
 
 uint16_t GetEntityListCount(EntityListId list)
 {
-    return gSpriteListCount[static_cast<uint8_t>(list)];
+    return static_cast<uint16_t>(gEntityLists[static_cast<uint8_t>(list)].size());
+}
+
+uint16_t GetNumFreeEntities()
+{
+    return static_cast<uint16_t>(_freeIdList.size());
 }
 
 std::string rct_sprite_checksum::ToString() const
@@ -100,7 +128,7 @@ std::string rct_sprite_checksum::ToString() const
 
 SpriteBase* try_get_sprite(size_t spriteIndex)
 {
-    return spriteIndex >= MAX_SPRITES ? nullptr : &_spriteList[spriteIndex].generic;
+    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].misc;
 }
 
 SpriteBase* get_sprite(size_t spriteIndex)
@@ -109,55 +137,117 @@ SpriteBase* get_sprite(size_t spriteIndex)
     {
         return nullptr;
     }
-    openrct2_assert(spriteIndex < MAX_SPRITES, "Tried getting sprite %u", spriteIndex);
+    openrct2_assert(spriteIndex < MAX_ENTITIES, "Tried getting sprite %u", spriteIndex);
     return try_get_sprite(spriteIndex);
 }
 
-uint16_t sprite_get_first_in_quadrant(const CoordsXY& spritePos)
+const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
     return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos.x, spritePos.y)];
 }
 
-static void invalidate_sprite_max_zoom(SpriteBase* sprite, int32_t maxZoom)
+void SpriteBase::Invalidate()
 {
-    if (sprite->sprite_left == LOCATION_NULL)
+    if (sprite_left == LOCATION_NULL)
         return;
 
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
+    int32_t maxZoom = 0;
+    switch (sprite_identifier)
     {
-        rct_viewport* viewport = &g_viewport_list[i];
-        if (viewport->width != 0 && viewport->zoom <= maxZoom)
+        case SpriteIdentifier::Vehicle:
+        case SpriteIdentifier::Peep:
+            maxZoom = 2;
+            break;
+        case SpriteIdentifier::Misc:
         {
-            viewport_invalidate(viewport, sprite->sprite_left, sprite->sprite_top, sprite->sprite_right, sprite->sprite_bottom);
+            auto* misc = As<MiscEntity>();
+            if (misc == nullptr)
+            {
+                return;
+            }
+            switch (misc->SubType)
+            {
+                case MiscEntityType::CrashedVehicleParticle:
+                case MiscEntityType::JumpingFountainWater:
+                case MiscEntityType::JumpingFountainSnow:
+                    maxZoom = 0;
+                    break;
+                case MiscEntityType::Duck:
+                    maxZoom = 1;
+                    break;
+                case MiscEntityType::SteamParticle:
+                case MiscEntityType::MoneyEffect:
+                case MiscEntityType::ExplosionCloud:
+                case MiscEntityType::CrashSplash:
+                case MiscEntityType::ExplosionFlare:
+                case MiscEntityType::Balloon:
+                    maxZoom = 2;
+                    break;
+                default:
+                    break;
+            }
+        }
+        break;
+        case SpriteIdentifier::Litter:
+            maxZoom = 0;
+            break;
+        default:
+            break;
+    }
+
+    viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
+}
+constexpr EntityListId EntityIdentifierToListId(const SpriteIdentifier type)
+{
+    EntityListId linkedListIndex = EntityListId::Free;
+    switch (type)
+    {
+        case SpriteIdentifier::Vehicle:
+            linkedListIndex = EntityListId::Vehicle;
+            break;
+        case SpriteIdentifier::Peep:
+            linkedListIndex = EntityListId::Peep;
+            break;
+        case SpriteIdentifier::Misc:
+            linkedListIndex = EntityListId::Misc;
+            break;
+        case SpriteIdentifier::Litter:
+            linkedListIndex = EntityListId::Litter;
+            break;
+        default:
+            break;
+    }
+    return linkedListIndex;
+}
+
+void RebuildEntityLists()
+{
+    for (auto& list : gEntityLists)
+    {
+        list.clear();
+    }
+
+    _freeIdList.clear();
+
+    for (auto& ent : _spriteList)
+    {
+        if (ent.misc.sprite_identifier == SpriteIdentifier::Null)
+        {
+            _freeIdList.push_back(ent.misc.sprite_index);
+        }
+        else
+        {
+            // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
+            gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
         }
     }
+    // List needs to be back to front to simplify removing
+    std::sort(std::begin(_freeIdList), std::end(_freeIdList), std::greater<uint16_t>());
 }
 
-/**
- * Invalidate the sprite if at closest zoom.
- *  rct2: 0x006EC60B
- */
-void SpriteBase::Invalidate0()
+const std::list<uint16_t>& GetEntityList(const EntityListId id)
 {
-    invalidate_sprite_max_zoom(this, 0);
-}
-
-/**
- * Invalidate sprite if at closest zoom or next zoom up from closest.
- *  rct2: 0x006EC53F
- */
-void SpriteBase::Invalidate1()
-{
-    invalidate_sprite_max_zoom(this, 1);
-}
-
-/**
- * Invalidate sprite if not at furthest zoom.
- *  rct2: 0x006EC473
- */
-void SpriteBase::Invalidate2()
-{
-    invalidate_sprite_max_zoom(this, 2);
+    return gEntityLists[EnumValue(id)];
 }
 
 /**
@@ -168,17 +258,7 @@ void reset_sprite_list()
 {
     gSavedAge = 0;
     std::memset(static_cast<void*>(_spriteList), 0, sizeof(_spriteList));
-
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-    {
-        gSpriteListHead[i] = SPRITE_INDEX_NULL;
-        gSpriteListCount[i] = 0;
-        _spriteFlashingList[i] = false;
-    }
-
-    SpriteBase* previous_spr = nullptr;
-
-    for (int32_t i = 0; i < MAX_SPRITES; ++i)
+    for (int32_t i = 0; i < MAX_ENTITIES; ++i)
     {
         auto* spr = GetEntity(i);
         if (spr == nullptr)
@@ -186,29 +266,17 @@ void reset_sprite_list()
             continue;
         }
 
-        spr->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+        spr->sprite_identifier = SpriteIdentifier::Null;
         spr->sprite_index = i;
-        spr->next = SPRITE_INDEX_NULL;
         spr->linked_list_index = EntityListId::Free;
 
-        if (previous_spr != nullptr)
-        {
-            spr->previous = previous_spr->sprite_index;
-            previous_spr->next = i;
-        }
-        else
-        {
-            spr->previous = SPRITE_INDEX_NULL;
-            gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = i;
-        }
         _spriteFlashingList[i] = false;
-        previous_spr = spr;
     }
-
-    gSpriteListCount[static_cast<uint8_t>(EntityListId::Free)] = MAX_SPRITES;
-
+    RebuildEntityLists();
     reset_sprite_spatial_index();
 }
+
+static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
 
 /**
  *
@@ -218,38 +286,18 @@ void reset_sprite_list()
  */
 void reset_sprite_spatial_index()
 {
-    std::fill_n(gSpriteSpatialIndex, std::size(gSpriteSpatialIndex), SPRITE_INDEX_NULL);
-    for (size_t i = 0; i < MAX_SPRITES; i++)
+    for (auto& vec : gSpriteSpatialIndex)
+    {
+        vec.clear();
+    }
+    for (size_t i = 0; i < MAX_ENTITIES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SPRITE_IDENTIFIER_NULL)
+        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
         {
-            size_t index = GetSpatialIndexOffset(spr->x, spr->y);
-            uint32_t nextSpriteId = gSpriteSpatialIndex[index];
-            gSpriteSpatialIndex[index] = spr->sprite_index;
-            spr->next_in_quadrant = nextSpriteId;
+            SpriteSpatialInsert(spr, { spr->x, spr->y });
         }
     }
-}
-
-static size_t GetSpatialIndexOffset(int32_t x, int32_t y)
-{
-    size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != LOCATION_NULL)
-    {
-        x = std::clamp(x, 0, 0xFFFF);
-        y = std::clamp(y, 0, 0xFFFF);
-
-        int16_t flooredX = floor2(x, 32);
-        uint8_t tileY = y >> 5;
-        index = (flooredX << 3) | tileY;
-    }
-
-    if (index >= sizeof(gSpriteSpatialIndex))
-    {
-        return SPATIAL_INDEX_LOCATION_NULL;
-    }
-    return index;
 }
 
 #ifndef DISABLE_NETWORK
@@ -272,37 +320,28 @@ rct_sprite_checksum sprite_checksum()
         }
 
         _spriteHashAlg->Clear();
-        for (size_t i = 0; i < MAX_SPRITES; i++)
+        for (size_t i = 0; i < MAX_ENTITIES; i++)
         {
             // TODO create a way to copy only the specific type
             auto sprite = GetEntity(i);
-            if (sprite != nullptr && sprite->sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && sprite->sprite_identifier != SPRITE_IDENTIFIER_MISC)
+            if (sprite != nullptr && sprite->sprite_identifier != SpriteIdentifier::Null
+                && sprite->sprite_identifier != SpriteIdentifier::Misc)
             {
                 // Upconvert it to rct_sprite so that the full size is copied.
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
 
                 // Only required for rendering/invalidation, has no meaning to the game state.
-                copy.generic.sprite_left = copy.generic.sprite_right = copy.generic.sprite_top = copy.generic.sprite_bottom = 0;
-                copy.generic.sprite_width = copy.generic.sprite_height_negative = copy.generic.sprite_height_positive = 0;
+                copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
+                copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
 
-                // Next in quadrant might be a misc sprite, set first non-misc sprite in quadrant.
-                while (auto* nextSprite = GetEntity(copy.generic.next_in_quadrant))
-                {
-                    if (nextSprite->sprite_identifier == SPRITE_IDENTIFIER_MISC)
-                        copy.generic.next_in_quadrant = nextSprite->next_in_quadrant;
-                    else
-                        break;
-                }
-
-                if (copy.generic.Is<Peep>())
+                if (copy.misc.Is<Peep>())
                 {
                     // Name is pointer and will not be the same across clients
                     copy.peep.Name = {};
 
                     // We set this to 0 because as soon the client selects a guest the window will remove the
-                    // invalidation flags causing the sprite checksum to be different than on server, the flag does not affect
-                    // game state.
+                    // invalidation flags causing the sprite checksum to be different than on server, the flag does not
+                    // affect game state.
                     copy.peep.WindowInvalidateFlags = 0;
                 }
 
@@ -333,20 +372,14 @@ static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
     auto llto = sprite->linked_list_index;
-    uint16_t next = sprite->next;
-    uint16_t next_in_quadrant = sprite->next_in_quadrant;
-    uint16_t prev = sprite->previous;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
     sprite->linked_list_index = llto;
-    sprite->next = next;
-    sprite->next_in_quadrant = next_in_quadrant;
-    sprite->previous = prev;
     sprite->sprite_index = sprite_index;
-    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
+    sprite->sprite_identifier = SpriteIdentifier::Null;
 }
 
 /**
@@ -355,29 +388,48 @@ static void sprite_reset(SpriteBase* sprite)
  */
 void sprite_clear_all_unused()
 {
-    for (auto sprite : EntityList(EntityListId::Free))
+    for (auto index : _freeIdList)
     {
-        sprite_reset(sprite);
-        sprite->linked_list_index = EntityListId::Free;
-
-        // sprite->next_in_quadrant will only end up as zero owing to corruption
-        // most likely due to previous builds not preserving it when resetting sprites
-        // We reset it to SPRITE_INDEX_NULL to prevent cycles in the sprite lists
-        if (sprite->next_in_quadrant == 0)
+        auto* entity = GetEntity(index);
+        if (entity == nullptr)
         {
-            sprite->next_in_quadrant = SPRITE_INDEX_NULL;
+            continue;
         }
-        _spriteFlashingList[sprite->sprite_index] = false;
+        sprite_reset(entity);
+        entity->linked_list_index = EntityListId::Free;
+
+        _spriteFlashingList[entity->sprite_index] = false;
     }
 }
 
-static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc);
-
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
-
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linkedListIndex)
+static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
 {
-    if (GetEntityListCount(EntityListId::Free) == 0)
+    auto& list = gEntityLists[EnumValue(linkedListIndex)];
+    entity->linked_list_index = linkedListIndex;
+    // Entity list must be in sprite_index order to prevent desync issues
+    list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
+}
+
+static void AddToFreeList(uint16_t index)
+{
+    // Free list must be in reverse sprite_index order to prevent desync issues
+    _freeIdList.insert(std::upper_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index).base(), index);
+}
+
+static void RemoveFromEntityList(SpriteBase* entity)
+{
+    auto& list = gEntityLists[EnumValue(entity->linked_list_index)];
+    auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
+    if (ptr != std::end(list) && *ptr == entity->sprite_index)
+    {
+        list.erase(ptr);
+    }
+}
+
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
+{
+    if (_freeIdList.size() == 0)
     {
         // No free sprites.
         return nullptr;
@@ -389,19 +441,20 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linke
         // free it will fail to keep slots for more relevant sprites.
         // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
         uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetEntityListCount(EntityListId::Misc);
-        if (miscSlotsRemaining >= GetEntityListCount(EntityListId::Free))
+        if (miscSlotsRemaining >= _freeIdList.size())
         {
             return nullptr;
         }
     }
 
-    auto* sprite = GetEntity(gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]);
+    auto* sprite = GetEntity(_freeIdList.back());
     if (sprite == nullptr)
     {
         return nullptr;
     }
-    move_sprite_to_list(sprite, linkedListIndex);
+    _freeIdList.pop_back();
 
+    AddToEntityList(linkedListIndex, sprite);
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
@@ -420,21 +473,21 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier, EntityListId linke
     return reinterpret_cast<rct_sprite*>(sprite);
 }
 
-rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier)
 {
     EntityListId linkedListIndex = EntityListId::Free;
     switch (spriteIdentifier)
     {
-        case SPRITE_IDENTIFIER_VEHICLE:
+        case SpriteIdentifier::Vehicle:
             linkedListIndex = EntityListId::Vehicle;
             break;
-        case SPRITE_IDENTIFIER_PEEP:
+        case SpriteIdentifier::Peep:
             linkedListIndex = EntityListId::Peep;
             break;
-        case SPRITE_IDENTIFIER_MISC:
+        case SpriteIdentifier::Misc:
             linkedListIndex = EntityListId::Misc;
             break;
-        case SPRITE_IDENTIFIER_LITTER:
+        case SpriteIdentifier::Litter:
             linkedListIndex = EntityListId::Litter;
             break;
         default:
@@ -444,92 +497,14 @@ rct_sprite* create_sprite(SPRITE_IDENTIFIER spriteIdentifier)
     return create_sprite(spriteIdentifier, linkedListIndex);
 }
 
-/*
- * rct2: 0x0069ED0B
- * This function moves a sprite to the specified sprite linked list.
- * The game uses this list to categorise sprites by type.
- */
-static void move_sprite_to_list(SpriteBase* sprite, EntityListId newListIndex)
-{
-    auto oldListIndex = sprite->linked_list_index;
-
-    // No need to move if the sprite is already in the desired list
-    if (oldListIndex == newListIndex)
-    {
-        return;
-    }
-
-    // If the sprite is currently the head of the list, the
-    // sprite following this one becomes the new head of the list.
-    if (sprite->previous == SPRITE_INDEX_NULL)
-    {
-        gSpriteListHead[static_cast<uint8_t>(oldListIndex)] = sprite->next;
-    }
-    else
-    {
-        // Hook up sprite->previous->next to sprite->next, removing the sprite from its old list
-        auto previous = GetEntity(sprite->previous);
-        if (previous == nullptr)
-        {
-            log_error("Broken previous entity id. Entity list corrupted!");
-        }
-        else
-        {
-            previous->next = sprite->next;
-        }
-    }
-
-    // Similarly, hook up sprite->next->previous to sprite->previous
-    if (sprite->next != SPRITE_INDEX_NULL)
-    {
-        auto next = GetEntity(sprite->next);
-        if (next == nullptr)
-        {
-            log_error("Broken next entity id. Entity list corrupted!");
-        }
-        else
-        {
-            next->previous = sprite->previous;
-        }
-    }
-
-    sprite->previous = SPRITE_INDEX_NULL; // We become the new head of the target list, so there's no previous sprite
-    sprite->linked_list_index = newListIndex;
-
-    sprite->next = gSpriteListHead[static_cast<uint8_t>(
-        newListIndex)]; // This sprite's next sprite is the old head, since we're the new head
-    gSpriteListHead[static_cast<uint8_t>(newListIndex)] = sprite->sprite_index; // Store this sprite's index as head of its new
-                                                                                // list
-
-    if (sprite->next != SPRITE_INDEX_NULL)
-    {
-        // Fix the chain by settings sprite->next->previous to sprite_index
-        auto next = GetEntity(sprite->next);
-        if (next == nullptr)
-        {
-            log_error("Broken next entity id. Entity list corrupted!");
-        }
-        else
-        {
-            next->previous = sprite->sprite_index;
-        }
-    }
-
-    // These globals are probably counters for each sprite list?
-    // Decrement old list counter, increment new list counter.
-    gSpriteListCount[static_cast<uint8_t>(oldListIndex)]--;
-    gSpriteListCount[static_cast<uint8_t>(newListIndex)]++;
-}
-
 /**
  *
  *  rct2: 0x00673200
  */
 void SteamParticle::Update()
 {
-    Invalidate2();
-
     // Move up 1 z every 3 ticks (Starts after 4 ticks)
+    Invalidate();
     time_to_move++;
     if (time_to_move >= 4)
     {
@@ -549,15 +524,15 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = SPRITE_MISC_EXPLOSION_CLOUD;
+        sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
     }
 }
@@ -568,7 +543,7 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
  */
 void ExplosionCloud::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 128;
     if (frame >= (36 * 128))
     {
@@ -582,15 +557,15 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->type = SPRITE_MISC_EXPLOSION_FLARE;
+        sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
     }
 }
@@ -601,7 +576,7 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
  */
 void ExplosionFlare::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 64;
     if (frame >= (124 * 64))
     {
@@ -609,43 +584,17 @@ void ExplosionFlare::Update()
     }
 }
 
-/**
- *
- *  rct2: 0x006731CD
- */
-static void sprite_misc_update(SpriteBase* sprite)
+template<typename T> void MiscUpdateAllType()
 {
-    switch (sprite->type)
+    for (auto misc : EntityList<T>(EntityListId::Misc))
     {
-        case SPRITE_MISC_STEAM_PARTICLE:
-            sprite->As<SteamParticle>()->Update();
-            break;
-        case SPRITE_MISC_MONEY_EFFECT:
-            sprite->As<MoneyEffect>()->Update();
-            break;
-        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
-            sprite->As<VehicleCrashParticle>()->Update();
-            break;
-        case SPRITE_MISC_EXPLOSION_CLOUD:
-            sprite->As<ExplosionCloud>()->Update();
-            break;
-        case SPRITE_MISC_CRASH_SPLASH:
-            sprite->As<CrashSplashParticle>()->Update();
-            break;
-        case SPRITE_MISC_EXPLOSION_FLARE:
-            sprite->As<ExplosionFlare>()->Update();
-            break;
-        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-            sprite->As<JumpingFountain>()->Update();
-            break;
-        case SPRITE_MISC_BALLOON:
-            sprite->As<Balloon>()->Update();
-            break;
-        case SPRITE_MISC_DUCK:
-            sprite->As<Duck>()->Update();
-            break;
+        misc->Update();
     }
+}
+
+template<typename... T> void MiscUpdateAllTypes()
+{
+    (MiscUpdateAllType<T>(), ...);
 }
 
 /**
@@ -654,51 +603,34 @@ static void sprite_misc_update(SpriteBase* sprite)
  */
 void sprite_misc_update_all()
 {
-    for (auto entity : EntityList(EntityListId::Misc))
-    {
-        sprite_misc_update(entity);
-    }
+    MiscUpdateAllTypes<
+        SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
+        Balloon, Duck>();
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
 static void SpriteSpatialInsert(SpriteBase* sprite, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc.x, newLoc.y);
-
-    auto* next = &gSpriteSpatialIndex[newIndex];
-    while (sprite->sprite_index < *next && *next != SPRITE_INDEX_NULL)
-    {
-        auto sprite2 = GetEntity(*next);
-        next = &sprite2->next_in_quadrant;
-    }
-
-    sprite->next_in_quadrant = *next;
-    *next = sprite->sprite_index;
+    auto& spatialVector = gSpriteSpatialIndex[newIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
+    spatialVector.insert(index, sprite->sprite_index);
 }
 
 static void SpriteSpatialRemove(SpriteBase* sprite)
 {
     size_t currentIndex = GetSpatialIndexOffset(sprite->x, sprite->y);
-    auto* index = &gSpriteSpatialIndex[currentIndex];
-
-    // This indicates that the spatial index data is incorrect.
-    if (*index == SPRITE_INDEX_NULL)
+    auto& spatialVector = gSpriteSpatialIndex[currentIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
+    if (index != std::end(spatialVector) && *index == sprite->sprite_index)
+    {
+        spatialVector.erase(index, index + 1);
+    }
+    else
     {
         log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
         reset_sprite_spatial_index();
     }
-
-    auto* sprite2 = GetEntity(*index);
-    while (sprite != sprite2)
-    {
-        index = &sprite2->next_in_quadrant;
-        if (*index == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        sprite2 = GetEntity(*index);
-    }
-    *index = sprite->next_in_quadrant;
 }
 
 static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
@@ -712,17 +644,14 @@ static void SpriteSpatialMove(SpriteBase* sprite, const CoordsXY& newLoc)
     SpriteSpatialInsert(sprite, newLoc);
 }
 
-/**
- * Moves a sprite to a new location.
- *  rct2: 0x0069E9D3
- *
- * @param x (ax)
- * @param y (cx)
- * @param z (dx)
- * @param sprite (esi)
- */
 void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
 {
+    if (x != LOCATION_NULL)
+    {
+        // Invalidate old position.
+        Invalidate();
+    }
+
     auto loc = newLocation;
     if (!map_is_location_valid(loc))
     {
@@ -741,7 +670,20 @@ void SpriteBase::MoveTo(const CoordsXYZ& newLocation)
     else
     {
         sprite_set_coordinates(loc, this);
+        Invalidate(); // Invalidate new position.
     }
+}
+
+CoordsXYZ SpriteBase::GetLocation() const
+{
+    return { x, y, z };
+}
+
+void SpriteBase::SetLocation(const CoordsXYZ& newLocation)
+{
+    x = static_cast<int16_t>(newLocation.x);
+    y = static_cast<int16_t>(newLocation.y);
+    z = static_cast<int16_t>(newLocation.z);
 }
 
 void sprite_set_coordinates(const CoordsXYZ& spritePos, SpriteBase* sprite)
@@ -769,11 +711,12 @@ void sprite_remove(SpriteBase* sprite)
         peep->SetName({});
     }
 
-    move_sprite_to_list(sprite, EntityListId::Free);
-    sprite->sprite_identifier = SPRITE_IDENTIFIER_NULL;
-    _spriteFlashingList[sprite->sprite_index] = false;
+    EntityTweener::Get().RemoveEntity(sprite);
+    RemoveFromEntityList(sprite); // remove from existing list
+    AddToFreeList(sprite->sprite_index);
 
     SpriteSpatialRemove(sprite);
+    sprite_reset(sprite);
 }
 
 static bool litter_can_be_at(const CoordsXYZ& mapPos)
@@ -804,7 +747,7 @@ static bool litter_can_be_at(const CoordsXYZ& mapPos)
  *
  *  rct2: 0x0067375D
  */
-void litter_create(const CoordsXYZD& litterPos, int32_t type)
+void litter_create(const CoordsXYZD& litterPos, LitterType type)
 {
     if (gCheatsDisableLittering)
         return;
@@ -831,12 +774,12 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
 
         if (newestLitter != nullptr)
         {
-            newestLitter->Invalidate0();
+            newestLitter->Invalidate();
             sprite_remove(newestLitter);
         }
     }
 
-    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SPRITE_IDENTIFIER_LITTER));
+    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
     if (litter == nullptr)
         return;
 
@@ -844,10 +787,9 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
-    litter->sprite_identifier = SPRITE_IDENTIFIER_LITTER;
-    litter->type = type;
+    litter->sprite_identifier = SpriteIdentifier::Litter;
+    litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
-    litter->Invalidate0();
     litter->creationTick = gScenarioTicks;
 }
 
@@ -857,16 +799,21 @@ void litter_create(const CoordsXYZD& litterPos, int32_t type)
  */
 void litter_remove_at(const CoordsXYZ& litterPos)
 {
+    std::vector<Litter*> removals;
     for (auto litter : EntityTileList<Litter>(litterPos))
     {
         if (abs(litter->z - litterPos.z) <= 16)
         {
             if (abs(litter->x - litterPos.x) <= 8 && abs(litter->y - litterPos.y) <= 8)
             {
-                litter->Invalidate0();
-                sprite_remove(litter);
+                removals.push_back(litter);
             }
         }
+    }
+    for (auto* litter : removals)
+    {
+        litter->Invalidate();
+        sprite_remove(litter);
     }
 }
 
@@ -877,290 +824,133 @@ void litter_remove_at(const CoordsXYZ& litterPos)
 uint16_t remove_floating_sprites()
 {
     uint16_t removed = 0;
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    for (auto* balloon : EntityList<Balloon>(EntityListId::Misc))
     {
-        auto* entity = GetEntity(i);
-        if (entity->Is<Balloon>())
+        sprite_remove(balloon);
+        removed++;
+    }
+    for (auto* duck : EntityList<Duck>(EntityListId::Misc))
+    {
+        if (duck->IsFlying())
         {
-            sprite_remove(entity);
+            sprite_remove(duck);
             removed++;
         }
-        else if (entity->Is<Duck>())
-        {
-            auto* duck = entity->As<Duck>();
-            if (duck->IsFlying())
-            {
-                duck->Remove();
-                removed++;
-            }
-        }
-        else if (entity->Is<MoneyEffect>())
-        {
-            sprite_remove(entity);
-            removed++;
-        }
+    }
+    for (auto* money : EntityList<MoneyEffect>(EntityListId::Misc))
+    {
+        sprite_remove(money);
+        removed++;
     }
     return removed;
 }
 
-/**
- * Determines whether it's worth tweening a sprite or not when frame smoothing is on.
- */
-static bool sprite_should_tween(SpriteBase* sprite)
+void EntityTweener::PopulateEntities(EntityListId id)
 {
-    switch (sprite->sprite_identifier)
+    for (auto ent : EntityList(id))
     {
-        case SPRITE_IDENTIFIER_PEEP:
-        case SPRITE_IDENTIFIER_VEHICLE:
-            return true;
-    }
-    return false;
-}
-
-static void store_sprite_locations(CoordsXYZ* sprite_locations)
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        // skip going through `get_sprite` to not get stalled on assert,
-        // this can get very expensive for busy parks with uncap FPS option on
-        const rct_sprite* sprite = &_spriteList[i];
-        sprite_locations[i].x = sprite->generic.x;
-        sprite_locations[i].y = sprite->generic.y;
-        sprite_locations[i].z = sprite->generic.z;
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
     }
 }
 
-void sprite_position_tween_store_a()
+void EntityTweener::PreTick()
 {
-    store_sprite_locations(_spritelocations1);
+    Restore();
+    Reset();
+    PopulateEntities(EntityListId::Peep);
+    PopulateEntities(EntityListId::Vehicle);
+    PopulateEntities(EntityListId::TrainHead);
 }
 
-void sprite_position_tween_store_b()
+void EntityTweener::PostTick()
 {
-    store_sprite_locations(_spritelocations2);
+    for (auto* ent : Entities)
+    {
+        if (ent == nullptr)
+        {
+            // Sprite was removed, add a dummy position to keep the index aligned.
+            PostPos.emplace_back(0, 0, 0);
+        }
+        else
+        {
+            PostPos.emplace_back(ent->x, ent->y, ent->z);
+        }
+    }
 }
 
-void sprite_position_tween_all(float alpha)
+void EntityTweener::RemoveEntity(SpriteBase* entity)
+{
+    if (entity->sprite_identifier != SpriteIdentifier::Peep && entity->sprite_identifier != SpriteIdentifier::Vehicle)
+    {
+        // Only peeps and vehicles are tweened, bail if type is incorrect.
+        return;
+    }
+
+    auto it = std::find(Entities.begin(), Entities.end(), entity);
+    if (it != Entities.end())
+        *it = nullptr;
+}
+
+void EntityTweener::Tween(float alpha)
 {
     const float inv = (1.0f - alpha);
-
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
+    for (size_t i = 0; i < Entities.size(); ++i)
     {
-        auto* sprite = GetEntity(i);
-        if (sprite != nullptr && sprite_should_tween(sprite))
-        {
-            auto posA = _spritelocations1[i];
-            auto posB = _spritelocations2[i];
-            if (posA == posB)
-            {
-                continue;
-            }
-            sprite_set_coordinates(
-                { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
-                  static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
-                  static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
-                sprite);
-            sprite->Invalidate2();
-        }
-    }
-}
-
-/**
- * Restore the real positions of the sprites so they aren't left at the mid-tween positions
- */
-void sprite_position_tween_restore()
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        auto* sprite = GetEntity(i);
-        if (sprite != nullptr && sprite_should_tween(sprite))
-        {
-            sprite->Invalidate2();
-
-            auto pos = _spritelocations2[i];
-            sprite_set_coordinates(pos, sprite);
-        }
-    }
-}
-
-void sprite_position_tween_reset()
-{
-    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-    {
-        auto* sprite = GetEntity(i);
-        if (sprite == nullptr)
-        {
+        auto* ent = Entities[i];
+        if (ent == nullptr)
             continue;
-        }
 
-        _spritelocations1[i].x = _spritelocations2[i].x = sprite->x;
-        _spritelocations1[i].y = _spritelocations2[i].y = sprite->y;
-        _spritelocations1[i].z = _spritelocations2[i].z = sprite->z;
+        auto& posA = PrePos[i];
+        auto& posB = PostPos[i];
+
+        if (posA == posB)
+            continue;
+
+        sprite_set_coordinates(
+            { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
+              static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
+              static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
+            ent);
+        ent->Invalidate();
     }
+}
+
+void EntityTweener::Restore()
+{
+    for (size_t i = 0; i < Entities.size(); ++i)
+    {
+        auto* ent = Entities[i];
+        if (ent == nullptr)
+            continue;
+
+        sprite_set_coordinates(PostPos[i], ent);
+        ent->Invalidate();
+    }
+}
+
+void EntityTweener::Reset()
+{
+    Entities.clear();
+    PrePos.clear();
+    PostPos.clear();
+}
+
+static EntityTweener tweener;
+
+EntityTweener& EntityTweener::Get()
+{
+    return tweener;
 }
 
 void sprite_set_flashing(SpriteBase* sprite, bool flashing)
 {
-    assert(sprite->sprite_index < MAX_SPRITES);
+    assert(sprite->sprite_index < MAX_ENTITIES);
     _spriteFlashingList[sprite->sprite_index] = flashing;
 }
 
 bool sprite_get_flashing(SpriteBase* sprite)
 {
-    assert(sprite->sprite_index < MAX_SPRITES);
+    assert(sprite->sprite_index < MAX_ENTITIES);
     return _spriteFlashingList[sprite->sprite_index];
-}
-
-static SpriteBase* find_sprite_list_cycle(uint16_t sprite_idx)
-{
-    if (sprite_idx == SPRITE_INDEX_NULL)
-    {
-        return nullptr;
-    }
-    const SpriteBase* fast = GetEntity(sprite_idx);
-    const SpriteBase* slow = fast;
-    bool increment_slow = false;
-    SpriteBase* cycle_start = nullptr;
-    while (fast->sprite_index != SPRITE_INDEX_NULL)
-    {
-        // increment fast every time, unless reached the end
-        if (fast->next == SPRITE_INDEX_NULL)
-        {
-            break;
-        }
-        else
-        {
-            fast = GetEntity(fast->next);
-        }
-        // increment slow only every second iteration
-        if (increment_slow)
-        {
-            slow = GetEntity(slow->next);
-        }
-        increment_slow = !increment_slow;
-        if (fast == slow)
-        {
-            cycle_start = GetEntity(slow->sprite_index);
-            break;
-        }
-    }
-    return cycle_start;
-}
-
-static bool index_is_in_list(uint16_t index, EntityListId sl)
-{
-    for (auto entity : EntityList(sl))
-    {
-        if (entity->sprite_index == index)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-int32_t check_for_sprite_list_cycles(bool fix)
-{
-    for (int32_t i = 0; i < static_cast<uint8_t>(EntityListId::Count); i++)
-    {
-        auto* cycle_start = find_sprite_list_cycle(gSpriteListHead[i]);
-        if (cycle_start != nullptr)
-        {
-            if (fix)
-            {
-                // Fix head list, but only in reverse order
-                // This is likely not needed, but just in case
-                auto head = GetEntity(gSpriteListHead[i]);
-                if (head == nullptr)
-                {
-                    log_error("SpriteListHead is corrupted!");
-                    return -1;
-                }
-                head->previous = SPRITE_INDEX_NULL;
-
-                // Store the leftover part of cycle to be fixed
-                uint16_t cycle_next = cycle_start->next;
-
-                // Break the cycle
-                cycle_start->next = SPRITE_INDEX_NULL;
-
-                // Now re-add remainder of the cycle back to list, safely.
-                // Add each sprite to the list until we encounter one that is already part of the list.
-                while (!index_is_in_list(cycle_next, static_cast<EntityListId>(i)))
-                {
-                    auto* spr = GetEntity(cycle_next);
-                    if (spr == nullptr)
-                    {
-                        log_error("EntityList is corrupted!");
-                        return -1;
-                    }
-                    cycle_start->next = cycle_next;
-                    spr->previous = cycle_start->sprite_index;
-                    cycle_next = spr->next;
-                    spr->next = SPRITE_INDEX_NULL;
-                    cycle_start = spr;
-                }
-            }
-            return i;
-        }
-    }
-    return -1;
-}
-
-/**
- * Finds and fixes null sprites that are not reachable via EntityListId::Free list.
- *
- * @return count of disjoint sprites found
- */
-int32_t fix_disjoint_sprites()
-{
-    // Find reachable sprites
-    bool reachable[MAX_SPRITES] = { false };
-
-    SpriteBase* null_list_tail = nullptr;
-    for (uint16_t sprite_idx = gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)]; sprite_idx != SPRITE_INDEX_NULL;)
-    {
-        reachable[sprite_idx] = true;
-        // cache the tail, so we don't have to walk the list twice
-        null_list_tail = GetEntity(sprite_idx);
-        if (null_list_tail == nullptr)
-        {
-            log_error("Broken Entity list");
-            sprite_idx = SPRITE_INDEX_NULL;
-            return 0;
-        }
-        sprite_idx = null_list_tail->next;
-    }
-
-    int32_t count = 0;
-
-    // Find all null sprites
-    for (uint16_t sprite_idx = 0; sprite_idx < MAX_SPRITES; sprite_idx++)
-    {
-        auto* spr = GetEntity(sprite_idx);
-        if (spr != nullptr && spr->sprite_identifier == SPRITE_IDENTIFIER_NULL)
-        {
-            openrct2_assert(null_list_tail != nullptr, "Null list is empty, yet found null sprites");
-            spr->sprite_index = sprite_idx;
-            if (!reachable[sprite_idx])
-            {
-                // Add the sprite directly to the list
-                if (null_list_tail == nullptr)
-                {
-                    gSpriteListHead[static_cast<uint8_t>(EntityListId::Free)] = sprite_idx;
-                    spr->previous = SPRITE_INDEX_NULL;
-                }
-                else
-                {
-                    null_list_tail->next = sprite_idx;
-                    spr->previous = null_list_tail->sprite_index;
-                }
-                spr->next = SPRITE_INDEX_NULL;
-                null_list_tail = spr;
-                count++;
-                reachable[sprite_idx] = true;
-            }
-        }
-    }
-    return count;
 }

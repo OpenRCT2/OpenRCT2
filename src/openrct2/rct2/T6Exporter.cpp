@@ -10,7 +10,7 @@
 #include "T6Exporter.h"
 
 #include "../Context.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -99,7 +99,12 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
     {
         for (const auto& trackElement : _trackDesign->track_elements)
         {
-            tempStream.WriteValue<uint8_t>(trackElement.type);
+            auto trackType = OpenRCT2TrackTypeToRCT2(trackElement.type);
+            if (trackType == TrackElemType::MultiDimInvertedUp90ToFlatQuarterLoop)
+            {
+                trackType = TrackElemType::InvertedUp90ToFlatQuarterLoopAlias;
+            }
+            tempStream.WriteValue<uint8_t>(static_cast<uint8_t>(trackType));
             tempStream.WriteValue<uint8_t>(trackElement.flags);
         }
 

@@ -85,7 +85,7 @@ namespace OpenRCT2::Scripting
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
-        void SetCode(const std::string_view& code);
+        void SetCode(std::string_view code);
         void Load();
         void Start();
         void Stop();
@@ -94,8 +94,8 @@ namespace OpenRCT2::Scripting
         void LoadCodeFromFile();
 
         static PluginMetadata GetMetadata(const DukValue& dukMetadata);
-        static PluginType ParsePluginType(const std::string_view& type);
-        static void CheckForLicence(const DukValue& dukLicence, const std::string_view& pluginName);
+        static PluginType ParsePluginType(std::string_view type);
+        static void CheckForLicence(const DukValue& dukLicence, std::string_view pluginName);
     };
 } // namespace OpenRCT2::Scripting
 

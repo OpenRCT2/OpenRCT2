@@ -11,10 +11,11 @@
 
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
+#include "../util/Util.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 
-#include <algorithm>
+#include <memory>
 #include <optional>
 #include <string_view>
 #include <vector>
@@ -23,26 +24,29 @@ using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
 
 // First 0xF of rct_object_entry->flags
-enum OBJECT_TYPE
+enum class ObjectType : uint8_t
 {
-    OBJECT_TYPE_RIDE,
-    OBJECT_TYPE_SMALL_SCENERY,
-    OBJECT_TYPE_LARGE_SCENERY,
-    OBJECT_TYPE_WALLS,
-    OBJECT_TYPE_BANNERS,
-    OBJECT_TYPE_PATHS,
-    OBJECT_TYPE_PATH_BITS,
-    OBJECT_TYPE_SCENERY_GROUP,
-    OBJECT_TYPE_PARK_ENTRANCE,
-    OBJECT_TYPE_WATER,
-    OBJECT_TYPE_SCENARIO_TEXT,
-    OBJECT_TYPE_TERRAIN_SURFACE,
-    OBJECT_TYPE_TERRAIN_EDGE,
-    OBJECT_TYPE_STATION,
-    OBJECT_TYPE_MUSIC,
+    Ride,
+    SmallScenery,
+    LargeScenery,
+    Walls,
+    Banners,
+    Paths,
+    PathBits,
+    SceneryGroup,
+    ParkEntrance,
+    Water,
+    ScenarioText,
+    TerrainSurface,
+    TerrainEdge,
+    Station,
+    Music,
 
-    OBJECT_TYPE_COUNT
+    Count,
+    None = 255
 };
+
+ObjectType& operator++(ObjectType& d, int);
 
 enum OBJECT_SELECTION_FLAGS
 {
@@ -98,11 +102,17 @@ struct rct_object_entry
         return std::string_view(name, std::size(name));
     }
 
-    void SetName(const std::string_view& value);
+    void SetName(std::string_view value);
 
-    uint8_t GetType() const
+    ObjectType GetType() const
     {
-        return flags & 0x0F;
+        return static_cast<ObjectType>(flags & 0x0F);
+    }
+
+    void SetType(ObjectType newType)
+    {
+        flags &= ~0x0F;
+        flags |= (static_cast<uint8_t>(newType) & 0x0F);
     }
 
     std::optional<uint8_t> GetSceneryType() const;
@@ -140,6 +150,38 @@ struct rct_object_filters
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
+enum class ObjectGeneration : uint8_t
+{
+    DAT,
+    JSON,
+};
+
+struct ObjectEntryDescriptor
+{
+    ObjectGeneration Generation;
+    std::string Identifier; // For JSON objects
+    rct_object_entry Entry; // For DAT objects
+
+    ObjectEntryDescriptor()
+        : Generation(ObjectGeneration::JSON)
+        , Identifier()
+        , Entry()
+    {
+    }
+
+    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry)
+    {
+        Generation = ObjectGeneration::DAT;
+        Entry = newEntry;
+    }
+
+    explicit ObjectEntryDescriptor(std::string_view newIdentifier)
+    {
+        Generation = ObjectGeneration::JSON;
+        Identifier = std::string(newIdentifier);
+    }
+};
+
 struct IObjectRepository;
 namespace OpenRCT2
 {
@@ -159,6 +201,29 @@ enum class ObjectError : uint32_t
     UnexpectedEOF,
 };
 
+class ObjectAsset
+{
+private:
+    std::string _zipPath;
+    std::string _path;
+
+public:
+    ObjectAsset() = default;
+    ObjectAsset(std::string_view path)
+        : _path(path)
+    {
+    }
+    ObjectAsset(std::string_view zipPath, std::string_view path)
+        : _zipPath(zipPath)
+        , _path(path)
+    {
+    }
+
+    bool IsAvailable() const;
+    size_t GetSize() const;
+    std::unique_ptr<OpenRCT2::IStream> GetStream() const;
+};
+
 struct IReadObjectContext
 {
     virtual ~IReadObjectContext() = default;
@@ -166,7 +231,8 @@ struct IReadObjectContext
     virtual std::string_view GetObjectIdentifier() abstract;
     virtual IObjectRepository& GetObjectRepository() abstract;
     virtual bool ShouldLoadImages() abstract;
-    virtual std::vector<uint8_t> GetData(const std::string_view& path) abstract;
+    virtual std::vector<uint8_t> GetData(std::string_view path) abstract;
+    virtual ObjectAsset GetAsset(std::string_view path) abstract;
 
     virtual void LogWarning(ObjectError code, const utf8* text) abstract;
     virtual void LogError(ObjectError code, const utf8* text) abstract;
@@ -224,7 +290,7 @@ public:
     {
         return _identifier;
     }
-    void SetIdentifier(const std::string_view& identifier)
+    void SetIdentifier(std::string_view identifier)
     {
         _identifier = identifier;
     }
@@ -264,7 +330,7 @@ public:
     {
     }
 
-    virtual uint8_t GetObjectType() const final
+    virtual ObjectType GetObjectType() const final
     {
         return _objectEntry.GetType();
     }
@@ -278,15 +344,15 @@ public:
     void SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames);
 
     const std::vector<std::string>& GetAuthors() const;
-    void SetAuthors(const std::vector<std::string>&& authors);
+    void SetAuthors(std::vector<std::string>&& authors);
 
     const ImageTable& GetImageTable() const
     {
         return _imageTable;
     }
 
-    rct_object_entry GetScgWallsHeader();
-    rct_object_entry GetScgPathXHeader();
+    ObjectEntryDescriptor GetScgWallsHeader() const;
+    ObjectEntryDescriptor GetScgPathXHeader() const;
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
     uint32_t GetNumImages() const
@@ -304,12 +370,12 @@ extern int32_t object_entry_group_encoding[];
 bool object_entry_is_empty(const rct_object_entry* entry);
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
-bool find_object_in_entry_group(const rct_object_entry* entry, uint8_t* entry_type, ObjectEntryIndex* entryIndex);
+bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
 
 const rct_object_entry* object_list_find(rct_object_entry* entry);
 
 void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_object_entry* entry);
 
-void* object_entry_get_chunk(int32_t objectType, ObjectEntryIndex index);
-const rct_object_entry* object_entry_get_entry(int32_t objectType, ObjectEntryIndex index);
+void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
+const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);

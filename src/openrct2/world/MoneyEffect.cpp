@@ -20,7 +20,8 @@ static constexpr const CoordsXY _moneyEffectMoveOffset[] = { { 1, -1 }, { 1, 1 }
 
 template<> bool SpriteBase::Is<MoneyEffect>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_MONEY_EFFECT;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::MoneyEffect;
 }
 
 /**
@@ -32,7 +33,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     if (value == MONEY(0, 00))
         return;
 
-    MoneyEffect* moneyEffect = &create_sprite(SPRITE_IDENTIFIER_MISC)->money_effect;
+    MoneyEffect* moneyEffect = &create_sprite(SpriteIdentifier::Misc)->money_effect;
     if (moneyEffect == nullptr)
         return;
 
@@ -41,9 +42,9 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     moneyEffect->sprite_width = 64;
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
-    moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+    moneyEffect->sprite_identifier = SpriteIdentifier::Misc;
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->type = SPRITE_MISC_MONEY_EFFECT;
+    moneyEffect->SubType = MiscEntityType::MoneyEffect;
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
 
@@ -53,8 +54,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
         auto [stringId, newValue] = moneyEffect->GetStringId();
         char buffer[128];
         format_string(buffer, 128, stringId, &newValue);
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        offsetX = -(gfx_get_string_width(buffer) / 2);
+        offsetX = -(gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2);
     }
     moneyEffect->OffsetX = offsetX;
     moneyEffect->Wiggle = 0;
@@ -99,7 +99,6 @@ void MoneyEffect::Create(money32 value, const CoordsXYZ& loc)
  */
 void MoneyEffect::Update()
 {
-    Invalidate2();
     Wiggle++;
     if (Wiggle >= 22)
     {

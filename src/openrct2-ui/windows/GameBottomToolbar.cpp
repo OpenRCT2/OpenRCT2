@@ -48,20 +48,20 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
 
 static rct_widget window_game_bottom_toolbar_widgets[] =
 {
-    MakeWidget({  0,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left outset panel
-    MakeWidget({  2,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Left inset panel
-    MakeWidget({  2,  1}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
-    MakeWidget({  2, 11}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Guests window
-    MakeWidget({  2, 21}, {138, 11}, WWT_FLATBTN,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
+    MakeWidget({  0,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left outset panel
+    MakeWidget({  2,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Left inset panel
+    MakeWidget({  2,  1}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP), // Money window
+    MakeWidget({  2, 11}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Guests window
+    MakeWidget({  2, 21}, {138, 11}, WindowWidgetType::FlatBtn,     WindowColour::Primary , 0xFFFFFFFF, STR_PARK_RATING_TIP                   ), // Park rating window
 
-    MakeWidget({142,  0}, {356, 34}, WWT_IMGBTN,      WindowColour::Tertiary                                                    ), // Middle outset panel
-    MakeWidget({144,  2}, {352, 30}, WWT_PLACEHOLDER, WindowColour::Tertiary                                                    ), // Middle inset panel
-    MakeWidget({147,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
-    MakeWidget({469,  5}, { 24, 24}, WWT_FLATBTN,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
+    MakeWidget({142,  0}, {356, 34}, WindowWidgetType::ImgBtn,      WindowColour::Tertiary                                                    ), // Middle outset panel
+    MakeWidget({144,  2}, {352, 30}, WindowWidgetType::Placeholder, WindowColour::Tertiary                                                    ), // Middle inset panel
+    MakeWidget({147,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, 0xFFFFFFFF, STR_SHOW_SUBJECT_TIP                  ), // Associated news item window
+    MakeWidget({469,  5}, { 24, 24}, WindowWidgetType::FlatBtn,     WindowColour::Tertiary, SPR_LOCATE, STR_LOCATE_SUBJECT_TIP                ), // Scroll to news item target
 
-    MakeWidget({498,  0}, {142, 34}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right outset panel
-    MakeWidget({500,  2}, {138, 30}, WWT_IMGBTN,      WindowColour::Primary                                                     ), // Right inset panel
-    MakeWidget({500,  2}, {138, 12}, WWT_FLATBTN,     WindowColour::Primary                                                     ), // Date
+    MakeWidget({498,  0}, {142, 34}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right outset panel
+    MakeWidget({500,  2}, {138, 30}, WindowWidgetType::ImgBtn,      WindowColour::Primary                                                     ), // Right inset panel
+    MakeWidget({500,  2}, {138, 12}, WindowWidgetType::FlatBtn,     WindowColour::Primary                                                     ), // Date
     { WIDGETS_END },
 };
 
@@ -109,10 +109,10 @@ rct_window* window_game_bottom_toolbar_open()
     int32_t screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
     uint32_t toolbar_height = line_height * 2 + 12;
 
-    rct_window* window = window_create(
+    rct_window* window = WindowCreate(
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
@@ -121,11 +121,11 @@ rct_window* window_game_bottom_toolbar_open()
         | (1 << WIDX_RIGHT_OUTSET) | (1 << WIDX_DATE);
 
     window->frame_no = 0;
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
 
     // Reset the middle widget to not show by default.
     // If it is required to be shown news_update will reshow it.
-    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
+    window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
 
     return window;
 }
@@ -222,7 +222,7 @@ static OpenRCT2String window_game_bottom_toolbar_tooltip(
 static void window_game_bottom_toolbar_invalidate(rct_window* w)
 {
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 2 + 12;
@@ -237,7 +237,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     // Reposition left widgets in accordance with line height... depending on whether there is money in play.
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
-        w->widgets[WIDX_MONEY].type = WWT_EMPTY;
+        w->widgets[WIDX_MONEY].type = WindowWidgetType::Empty;
         w->widgets[WIDX_GUESTS].top = 1;
         w->widgets[WIDX_GUESTS].bottom = line_height + 7;
         w->widgets[WIDX_PARK_RATING].top = line_height + 8;
@@ -245,7 +245,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     }
     else
     {
-        w->widgets[WIDX_MONEY].type = WWT_FLATBTN;
+        w->widgets[WIDX_MONEY].type = WindowWidgetType::FlatBtn;
         w->widgets[WIDX_MONEY].bottom = w->widgets[WIDX_MONEY].top + line_height;
         w->widgets[WIDX_GUESTS].top = w->widgets[WIDX_MONEY].bottom + 1;
         w->widgets[WIDX_GUESTS].bottom = w->widgets[WIDX_GUESTS].top + line_height;
@@ -278,24 +278,24 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     window_game_bottom_toolbar_widgets[WIDX_DATE].left = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 2;
     window_game_bottom_toolbar_widgets[WIDX_DATE].right = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right - 2;
 
-    window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
-    window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
+    window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WindowWidgetType::Empty;
+    window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WindowWidgetType::Empty;
 
     if (News::IsQueueEmpty())
     {
-        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+        if (!(ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
         {
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
         }
         else
         {
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::Empty;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
         }
@@ -303,10 +303,10 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
     else
     {
         News::Item* newsItem = News::GetItem(0);
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
-        window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WindowWidgetType::ImgBtn;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WindowWidgetType::Placeholder;
+        window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::FlatBtn;
+        window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WindowWidgetType::FlatBtn;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 2;
         w->disabled_widgets &= ~(1 << WIDX_NEWS_SUBJECT);
@@ -321,7 +321,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window* w)
         if (!(newsItem->TypeHasSubject()))
         {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
-            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
+            window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WindowWidgetType::Empty;
         }
 
         if (newsItem->HasButton())
@@ -355,24 +355,24 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
         dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left,
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top,
         w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, PALETTE_51);
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom, FilterPaletteID::Palette51);
     gfx_filter_rect(
         dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left,
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top,
         w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right,
-        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, PALETTE_51);
+        w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom, FilterPaletteID::Palette51);
 
-    if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
         gfx_filter_rect(
             dpi, w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].left,
             w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].top,
             w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].right,
-            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, PALETTE_51);
+            w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].bottom, FilterPaletteID::Palette51);
     }
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     window_game_bottom_toolbar_draw_left_panel(dpi, w);
     window_game_bottom_toolbar_draw_right_panel(dpi, w);
@@ -381,7 +381,7 @@ static void window_game_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* d
     {
         window_game_bottom_toolbar_draw_news_item(dpi, w);
     }
-    else if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
+    else if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         window_game_bottom_toolbar_draw_middle_panel(dpi, w);
     }
@@ -397,7 +397,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         w->windowPos.y + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].bottom - 1, w->colours[1], INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -406,14 +406,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(),
                                             w->windowPos.y + widget.midY() - (line_height == 10 ? 5 : 6) };
 
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        rct_string_id stringId = gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH;
         auto ft = Formatter();
         ft.Add<money32>(gCash);
-        gfx_draw_string_centred(
-            dpi, (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH), screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            ft.Data());
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     static constexpr const rct_string_id guestCountFormats[] = {
@@ -433,14 +433,15 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        gfx_draw_string_centred(
-            dpi,
-            gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier] : guestCountFormats[gGuestChangeModifier],
-            screenCoords,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
-                 ? COLOUR_WHITE
-                 : NOT_TRANSLUCENT(w->colours[0])),
-            &gNumGuestsInPark);
+        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : guestCountFormats[gGuestChangeModifier];
+        colour_t colour
+            = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
+                   ? COLOUR_WHITE
+                   : NOT_TRANSLUCENT(w->colours[0]));
+        auto ft = Formatter();
+        ft.Add<uint32_t>(gNumGuestsInPark);
+        DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
     // Draw park rating
@@ -495,20 +496,19 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     int32_t month = date_get_month(gDateMonthsElapsed);
     int32_t day = ((gDateMonthTicks * days_in_month[month]) >> 16) & 0xFF;
 
+    colour_t colour
+        = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
+               ? COLOUR_WHITE
+               : NOT_TRANSLUCENT(w->colours[0]));
     rct_string_id stringId = DateFormatStringFormatIds[gConfigGeneral.date_format];
     auto ft = Formatter();
     ft.Add<rct_string_id>(DateDayNames[day]);
     ft.Add<int16_t>(month);
     ft.Add<int16_t>(year);
-    gfx_draw_string_centred(
-        dpi, stringId, screenCoords,
-        (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_DATE
-             ? COLOUR_WHITE
-             : NOT_TRANSLUCENT(w->colours[0])),
-        ft.Data());
+    DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     // Temperature
     screenCoords = { w->windowPos.x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15,
@@ -523,7 +523,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     }
     ft = Formatter();
     ft.Add<int16_t>(temperature);
-    gfx_draw_string_left(dpi, format, ft.Data(), COLOUR_BLACK, screenCoords + ScreenCoordsXY{ 0, 6 });
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 0, 6 }, format, ft);
     screenCoords.x += 30;
 
     // Current weather
@@ -562,11 +562,10 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
         INSET_RECT_F_30);
 
     // Text
-    utf8* newsItemText = newsItem->Text;
+    const auto* newsItemText = newsItem->Text.c_str();
     auto screenCoords = w->windowPos + ScreenCoordsXY{ middleOutsetWidget->midX(), middleOutsetWidget->top + 11 };
     width = middleOutsetWidget->width() - 62;
-    gfx_draw_string_centred_wrapped_partial(
-        dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
+    DrawNewsTicker(dpi, screenCoords, width, COLOUR_BRIGHT_GREEN, STR_BOTTOM_TOOLBAR_NEWS_TEXT, &newsItemText, newsItem->Ticks);
 
     screenCoords = w->windowPos
         + ScreenCoordsXY{ window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left,
@@ -663,7 +662,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
         INSET_RECT_F_30);
 
     // Figure out how much line height we have to work with.
-    uint32_t line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32_t line_height = font_get_line_height(FontSpriteBase::MEDIUM);
 
     ScreenCoordsXY middleWidgetCoords(
         w->windowPos.x + middleOutsetWidget->midX(), w->windowPos.y + middleOutsetWidget->top + line_height + 1);
@@ -675,12 +674,13 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo* dpi,
     std::memcpy(&stringId, ft.Data(), sizeof(rct_string_id));
     if (stringId == STR_NONE)
     {
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, w->colours[0]);
+        DrawTextWrapped(
+            dpi, middleWidgetCoords, width, STR_TITLE_SEQUENCE_OPENRCT2, ft, { w->colours[0], TextAlignment::CENTRE });
     }
     else
     {
         // Show tooltip in bottom toolbar
-        gfx_draw_string_centred_wrapped(dpi, ft.Data(), middleWidgetCoords, width, STR_STRINGID, w->colours[0]);
+        DrawTextWrapped(dpi, middleWidgetCoords, width, STR_STRINGID, ft, { w->colours[0], TextAlignment::CENTRE });
     }
 }
 

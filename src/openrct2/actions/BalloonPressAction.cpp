@@ -1,0 +1,59 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2020 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "BalloonPressAction.h"
+
+#include "../world/Sprite.h"
+#include "GameAction.h"
+
+BalloonPressAction::BalloonPressAction(uint16_t spriteIndex)
+    : _spriteIndex(spriteIndex)
+{
+}
+
+void BalloonPressAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _spriteIndex);
+}
+
+uint16_t BalloonPressAction::GetActionFlags() const
+{
+    return GameAction::GetActionFlags();
+}
+
+void BalloonPressAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+    stream << DS_TAG(_spriteIndex);
+}
+
+GameActions::Result::Ptr BalloonPressAction::Query() const
+{
+    auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+    if (balloon == nullptr)
+    {
+        log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
+    return MakeResult();
+}
+
+GameActions::Result::Ptr BalloonPressAction::Execute() const
+{
+    auto balloon = TryGetEntity<Balloon>(_spriteIndex);
+    if (balloon == nullptr)
+    {
+        log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
+        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
+    }
+
+    balloon->Press();
+
+    return MakeResult();
+}

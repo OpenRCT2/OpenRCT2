@@ -23,8 +23,10 @@ namespace OpenRCT2
     struct IStream;
 }
 
+struct Litter;
 struct ObjectRepositoryItem;
 struct RCT12SpriteBase;
+union rct_sprite;
 struct SpriteBase;
 
 /**
@@ -46,13 +48,10 @@ public:
     void ExportParkName();
     void ExportRides();
     void ExportRide(rct2_ride* dst, const Ride* src);
-    void ExportSprites();
-    void ExportSprite(RCT2Sprite* dst, const rct_sprite* src);
-    void ExportSpriteCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
-    void ExportSpriteVehicle(RCT2SpriteVehicle* dst, const Vehicle* src);
-    void ExportSpritePeep(RCT2SpritePeep* dst, const Peep* src);
-    void ExportSpriteMisc(RCT12SpriteBase* dst, const SpriteBase* src);
-    void ExportSpriteLitter(RCT12SpriteLitter* dst, const Litter* src);
+    void ExportEntities();
+    template<typename RCT12_T, typename OpenRCT2_T> void ExportEntity(RCT12_T* dst, const OpenRCT2_T* src);
+    void ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src);
+    void ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src);
 
 private:
     rct_s6_data _s6{};
@@ -76,6 +75,7 @@ private:
     void ExportTileElements();
     void ExportTileElement(RCT12TileElement* dst, TileElement* src);
 
-    std::optional<uint16_t> AllocateUserString(const std::string_view& value);
+    std::optional<uint16_t> AllocateUserString(std::string_view value);
     void ExportUserStrings();
+    void RebuildEntityLinks();
 };

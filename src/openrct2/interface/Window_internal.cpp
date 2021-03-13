@@ -1,5 +1,6 @@
 #include "Window_internal.h"
 
+#include "../world/EntityList.h"
 #include "../world/Sprite.h"
 
 void rct_window::SetLocation(const CoordsXYZ& coords)
@@ -48,6 +49,6 @@ void rct_window::RemoveViewport()
     if (viewport == nullptr)
         return;
 
-    viewport->width = 0;
+    viewport_remove(viewport);
     viewport = nullptr;
 }

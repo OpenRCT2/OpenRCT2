@@ -16,6 +16,7 @@
 #    include "../peep/Peep.h"
 #    include "../peep/Staff.h"
 #    include "../util/Util.h"
+#    include "../world/EntityList.h"
 #    include "../world/Sprite.h"
 #    include "Duktape.hpp"
 #    include "ScRide.hpp"
@@ -52,21 +53,48 @@ namespace OpenRCT2::Scripting
             {
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         return "car";
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                         return "peep";
-                    case SPRITE_IDENTIFIER_MISC:
-                        switch (entity->type)
+                    case SpriteIdentifier::Misc:
+                    {
+                        auto misc = entity->As<MiscEntity>();
+                        if (misc == nullptr)
                         {
-                            case SPRITE_MISC_BALLOON:
-                                return "balloon";
-                            case SPRITE_MISC_DUCK:
-                                return "duck";
+                            return "unknown";
                         }
-                        break;
-                    case SPRITE_IDENTIFIER_LITTER:
+                        switch (misc->SubType)
+                        {
+                            case MiscEntityType::SteamParticle:
+                                return "steam_particle";
+                            case MiscEntityType::MoneyEffect:
+                                return "money_effect";
+                            case MiscEntityType::CrashedVehicleParticle:
+                                return "crashed_vehicle_particle";
+                            case MiscEntityType::ExplosionCloud:
+                                return "explosion_cloud";
+                            case MiscEntityType::CrashSplash:
+                                return "crash_splash";
+                            case MiscEntityType::ExplosionFlare:
+                                return "explosion_flare";
+                            case MiscEntityType::JumpingFountainWater:
+                                return "jumping_fountain_water";
+                            case MiscEntityType::Balloon:
+                                return "balloon";
+                            case MiscEntityType::Duck:
+                                return "duck";
+                            case MiscEntityType::JumpingFountainSnow:
+                                return "jumping_fountain_snow";
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                    case SpriteIdentifier::Litter:
                         return "litter";
+                    case SpriteIdentifier::Null:
+                        return "unknown";
                 }
             }
             return "unknown";
@@ -84,9 +112,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate2();
                 entity->MoveTo({ value, entity->y, entity->z });
-                entity->Invalidate2();
             }
         }
 
@@ -102,9 +128,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate2();
                 entity->MoveTo({ entity->x, value, entity->z });
-                entity->Invalidate2();
             }
         }
 
@@ -120,9 +144,7 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate2();
                 entity->MoveTo({ entity->x, entity->y, value });
-                entity->Invalidate2();
             }
         }
 
@@ -132,13 +154,13 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                entity->Invalidate2();
+                entity->Invalidate();
                 switch (entity->sprite_identifier)
                 {
-                    case SPRITE_IDENTIFIER_VEHICLE:
+                    case SpriteIdentifier::Vehicle:
                         duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
                         break;
-                    case SPRITE_IDENTIFIER_PEEP:
+                    case SpriteIdentifier::Peep:
                     {
                         auto peep = static_cast<Peep*>(entity);
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
@@ -153,9 +175,11 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     }
-                    case SPRITE_IDENTIFIER_MISC:
-                    case SPRITE_IDENTIFIER_LITTER:
+                    case SpriteIdentifier::Misc:
+                    case SpriteIdentifier::Litter:
                         sprite_remove(entity);
+                        break;
+                    case SpriteIdentifier::Null:
                         break;
                 }
             }
@@ -239,11 +263,15 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScVehicle::bankRotation_get, &ScVehicle::bankRotation_set, "bankRotation");
             dukglue_register_property(ctx, &ScVehicle::colours_get, &ScVehicle::colours_set, "colours");
             dukglue_register_property(ctx, &ScVehicle::trackLocation_get, &ScVehicle::trackLocation_set, "trackLocation");
+            dukglue_register_property(ctx, &ScVehicle::trackProgress_get, nullptr, "trackProgress");
+            dukglue_register_property(ctx, &ScVehicle::remainingDistance_get, nullptr, "remainingDistance");
             dukglue_register_property(
                 ctx, &ScVehicle::poweredAcceleration_get, &ScVehicle::poweredAcceleration_set, "poweredAcceleration");
             dukglue_register_property(ctx, &ScVehicle::poweredMaxSpeed_get, &ScVehicle::poweredMaxSpeed_set, "poweredMaxSpeed");
             dukglue_register_property(ctx, &ScVehicle::status_get, &ScVehicle::status_set, "status");
             dukglue_register_property(ctx, &ScVehicle::peeps_get, nullptr, "peeps");
+            dukglue_register_property(ctx, &ScVehicle::gForces_get, nullptr, "gForces");
+            dukglue_register_method(ctx, &ScVehicle::travelBy, "travelBy");
         }
 
     private:
@@ -496,7 +524,7 @@ namespace OpenRCT2::Scripting
             auto vehicle = GetVehicle();
             if (vehicle != nullptr)
             {
-                auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->track_direction & 3);
+                auto coords = CoordsXYZD(vehicle->TrackLocation, vehicle->GetTrackDirection());
                 return ToDuk<CoordsXYZD>(ctx, coords);
             }
             return ToDuk(ctx, nullptr);
@@ -509,9 +537,20 @@ namespace OpenRCT2::Scripting
             {
                 auto coords = FromDuk<CoordsXYZD>(value);
                 vehicle->TrackLocation = CoordsXYZ(coords.x, coords.y, coords.z);
-                vehicle->track_direction &= ~3;
-                vehicle->track_direction |= coords.direction & 3;
+                vehicle->SetTrackDirection(coords.direction);
             }
+        }
+
+        uint16_t trackProgress_get() const
+        {
+            auto vehicle = GetVehicle();
+            return vehicle != nullptr ? vehicle->track_progress : 0;
+        }
+
+        int32_t remainingDistance_get() const
+        {
+            auto vehicle = GetVehicle();
+            return vehicle != nullptr ? vehicle->remaining_distance : 0;
         }
 
         uint8_t poweredAcceleration_get() const
@@ -587,6 +626,28 @@ namespace OpenRCT2::Scripting
                 result.resize(len);
             }
             return result;
+        }
+
+        DukValue gForces_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto vehicle = GetVehicle();
+            if (vehicle != nullptr)
+            {
+                GForces gForces = vehicle->GetGForces();
+                return ToDuk<GForces>(ctx, gForces);
+            }
+            return ToDuk(ctx, nullptr);
+        }
+
+        void travelBy(int32_t value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto vehicle = GetVehicle();
+            if (vehicle != nullptr)
+            {
+                vehicle->MoveRelativeDistance(value);
+            }
         }
     };
 
@@ -696,7 +757,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return ToDuk(ctx, CoordsXY(peep->DestinationX, peep->DestinationY));
+                return ToDuk(ctx, peep->GetDestination());
             }
             return ToDuk(ctx, nullptr);
         }
@@ -708,8 +769,7 @@ namespace OpenRCT2::Scripting
             if (peep != nullptr)
             {
                 auto pos = FromDuk<CoordsXY>(value);
-                peep->DestinationX = pos.x;
-                peep->DestinationY = pos.y;
+                peep->SetDestination(pos);
                 peep->Invalidate();
             }
         }
@@ -787,7 +847,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return peep->AsGuest();
+                return peep->As<Guest>();
             }
             return nullptr;
         }
@@ -1076,7 +1136,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return peep->AsStaff();
+                return peep->As<Staff>();
             }
             return nullptr;
         }

@@ -15,7 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/actions/LandBuyRightsAction.hpp>
+#include <openrct2/actions/LandBuyRightsAction.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 94;
 static constexpr const int32_t WW = 98;
 
 // clang-format off
-enum WINDOW_WATER_WIDGET_IDX {
+enum WINDOW_LAND_RIGHTS_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -38,11 +38,11 @@ enum WINDOW_WATER_WIDGET_IDX {
 
 static rct_widget window_land_rights_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget     ({27, 17}, {44, 32}, WWT_IMGBTN,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
-    MakeRemapWidget({28, 18}, {16, 16}, WWT_TRNBTN,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
-    MakeRemapWidget({54, 32}, {16, 16}, WWT_TRNBTN,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
-    MakeRemapWidget({22, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
-    MakeRemapWidget({52, 53}, {24, 24}, WWT_FLATBTN, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
+    MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
+    MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
+    MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
+    MakeRemapWidget({22, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_LAND_RIGHTS,         STR_BUY_LAND_RIGHTS_TIP           ), // land rights
+    MakeRemapWidget({52, 53}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Tertiary, SPR_BUY_CONSTRUCTION_RIGHTS, STR_BUY_CONSTRUCTION_RIGHTS_TIP   ), // construction rights
     { WIDGETS_END },
 };
 
@@ -92,12 +92,12 @@ rct_window* window_land_rights_open()
     if (window != nullptr)
         return window;
 
-    window = window_create(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
+    window = WindowCreate(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
     window->widgets = window_land_rights_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_DECREMENT) | (1 << WIDX_INCREMENT) | (1 << WIDX_PREVIEW)
         | (1 << WIDX_BUY_LAND_RIGHTS) | (1 << WIDX_BUY_CONSTRUCTION_RIGHTS);
     window->hold_down_widgets = (1 << WIDX_INCREMENT) | (1 << WIDX_DECREMENT);
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
     _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
@@ -106,7 +106,7 @@ rct_window* window_land_rights_open()
     gLandToolSize = 1;
 
     show_gridlines();
-    tool_set(window, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+    tool_set(window, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
     input_set_flag(INPUT_FLAG_6, true);
 
     show_land_rights();
@@ -144,7 +144,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_LAND_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
             {
-                tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
                 show_land_rights();
                 w->Invalidate();
@@ -153,7 +153,7 @@ static void window_land_rights_mouseup(rct_window* w, rct_widgetindex widgetInde
         case WIDX_BUY_CONSTRUCTION_RIGHTS:
             if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
             {
-                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
+                tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
                 _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
                 show_construction_rights();
                 w->Invalidate();
@@ -227,7 +227,7 @@ static void window_land_rights_invalidate(rct_window* w)
                                                                           : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
     // Update the preview image
-    window_land_rights_widgets[WIDX_PREVIEW].image = land_tool_size_to_sprite_index(gLandToolSize);
+    window_land_rights_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 
     // Disable ownership and/or construction buying functions if there are no tiles left for sale
     if (gLandRemainingOwnershipSales == 0)
@@ -258,12 +258,12 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
                                         w->windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
 
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     // Draw number for tool sizes bigger than 7
     if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &gLandToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &gLandToolSize, { TextAlignment::CENTRE });
     }
 
     // Draw cost amount
@@ -271,7 +271,7 @@ static void window_land_rights_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
                          window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
-        gfx_draw_string_centred(dpi, STR_COST_AMOUNT, screenCoords, COLOUR_BLACK, &_landRightsCost);
+        DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, &_landRightsCost, { TextAlignment::CENTRE });
     }
 }
 

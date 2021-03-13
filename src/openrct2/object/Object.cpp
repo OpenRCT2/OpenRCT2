@@ -10,8 +10,11 @@
 #include "Object.h"
 
 #include "../Context.h"
+#include "../core/File.h"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../core/Zip.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -21,6 +24,13 @@
 #include <algorithm>
 #include <cstring>
 #include <stdexcept>
+
+using namespace OpenRCT2;
+
+ObjectType& operator++(ObjectType& d, int)
+{
+    return d = (d == ObjectType::Count) ? ObjectType::Ride : static_cast<ObjectType>(static_cast<uint8_t>(d) + 1);
+}
 
 Object::Object(const rct_object_entry& entry)
 {
@@ -81,14 +91,14 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
     return GetStringTable().GetString(language, index);
 }
 
-rct_object_entry Object::GetScgWallsHeader()
+ObjectEntryDescriptor Object::GetScgWallsHeader() const
 {
-    return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
+    return ObjectEntryDescriptor("rct2.scgwalls");
 }
 
-rct_object_entry Object::GetScgPathXHeader()
+ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
-    return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
+    return ObjectEntryDescriptor("rct2.scgpathx");
 }
 
 rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)
@@ -125,7 +135,7 @@ std::string Object::GetName(int32_t language) const
     return GetString(language, ObjectStringID::NAME);
 }
 
-void rct_object_entry::SetName(const std::string_view& value)
+void rct_object_entry::SetName(std::string_view value)
 {
     std::memset(name, ' ', sizeof(name));
     std::memcpy(name, value.data(), std::min(sizeof(name), value.size()));
@@ -136,28 +146,159 @@ const std::vector<std::string>& Object::GetAuthors() const
     return _authors;
 }
 
-void Object::SetAuthors(const std::vector<std::string>&& authors)
+void Object::SetAuthors(std::vector<std::string>&& authors)
 {
-    _authors = authors;
+    _authors = std::move(authors);
 }
 
 std::optional<uint8_t> rct_object_entry::GetSceneryType() const
 {
     switch (GetType())
     {
-        case OBJECT_TYPE_SMALL_SCENERY:
+        case ObjectType::SmallScenery:
             return SCENERY_TYPE_SMALL;
-        case OBJECT_TYPE_LARGE_SCENERY:
+        case ObjectType::LargeScenery:
             return SCENERY_TYPE_LARGE;
-        case OBJECT_TYPE_WALLS:
+        case ObjectType::Walls:
             return SCENERY_TYPE_WALL;
-        case OBJECT_TYPE_BANNERS:
+        case ObjectType::Banners:
             return SCENERY_TYPE_BANNER;
-        case OBJECT_TYPE_PATH_BITS:
+        case ObjectType::PathBits:
             return SCENERY_TYPE_PATH_ITEM;
         default:
             return std::nullopt;
     }
+}
+
+/**
+ * Couples a zip archive and a zip item stream to ensure the lifetime of the zip archive is maintained
+ * for the lifetime of the stream.
+ */
+class ZipStreamWrapper final : public IStream
+{
+private:
+    std::unique_ptr<IZipArchive> _zipArchive;
+    std::unique_ptr<IStream> _base;
+
+public:
+    ZipStreamWrapper(std::unique_ptr<IZipArchive> zipArchive, std::unique_ptr<IStream> base)
+        : _zipArchive(std::move(zipArchive))
+        , _base(std::move(base))
+    {
+    }
+
+    bool CanRead() const override
+    {
+        return _base->CanRead();
+    }
+
+    bool CanWrite() const override
+    {
+        return _base->CanWrite();
+    }
+
+    uint64_t GetLength() const override
+    {
+        return _base->GetLength();
+    }
+
+    uint64_t GetPosition() const override
+    {
+        return _base->GetPosition();
+    }
+
+    void SetPosition(uint64_t position) override
+    {
+        _base->SetPosition(position);
+    }
+
+    void Seek(int64_t offset, int32_t origin) override
+    {
+        _base->Seek(offset, origin);
+    }
+
+    void Read(void* buffer, uint64_t length) override
+    {
+        _base->Read(buffer, length);
+    }
+
+    void Write(const void* buffer, uint64_t length) override
+    {
+        _base->Write(buffer, length);
+    }
+
+    uint64_t TryRead(void* buffer, uint64_t length) override
+    {
+        return _base->TryRead(buffer, length);
+    }
+
+    const void* GetData() const override
+    {
+        return _base->GetData();
+    }
+};
+
+bool ObjectAsset::IsAvailable() const
+{
+    if (_zipPath.empty())
+    {
+        return File::Exists(_path);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        return zipArchive != nullptr && zipArchive->Exists(_path);
+    }
+}
+
+size_t ObjectAsset::GetSize() const
+{
+    if (_zipPath.empty())
+    {
+        try
+        {
+            return File::ReadAllBytes(_path).size();
+        }
+        catch (...)
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto index = zipArchive->GetIndexFromPath(_path);
+            if (index)
+            {
+                auto size = zipArchive->GetFileSize(*index);
+                return size;
+            }
+        }
+    }
+    return 0;
+}
+
+std::unique_ptr<IStream> ObjectAsset::GetStream() const
+{
+    if (_zipPath.empty())
+    {
+        return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
+    }
+    else
+    {
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto stream = zipArchive->GetFileStream(_path);
+            if (stream != nullptr)
+            {
+                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            }
+        }
+    }
+    return {};
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

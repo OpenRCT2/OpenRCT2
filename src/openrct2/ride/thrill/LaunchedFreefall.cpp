@@ -44,11 +44,11 @@ void vehicle_visual_launched_freefall(
     // Draw back:
     int32_t baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
     auto image_id = (baseImage_id + 2) | imageFlags;
-    sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
+    PaintAddImageAsParent(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1);
 
     // Draw front:
     image_id = (baseImage_id + 1) | imageFlags;
-    sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+    PaintAddImageAsParent(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
 
     // Draw peeps:
     if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
@@ -61,24 +61,24 @@ void vehicle_visual_launched_freefall(
         auto directionOffset = imageDirection / 8;
         image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
-        sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+        PaintAddImageAsChild(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         if (vehicle->num_peeps > 2)
         {
             image_id = (baseImage_id + (((directionOffset + 1) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
-            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+            PaintAddImageAsChild(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
         if (vehicle->num_peeps > 4)
         {
             image_id = (baseImage_id + (((directionOffset + 2) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
-            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+            PaintAddImageAsChild(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
         if (vehicle->num_peeps > 6)
         {
             image_id = (baseImage_id + (((directionOffset + 3) & 3) * 3))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
-            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+            PaintAddImageAsChild(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
         }
     }
 
@@ -97,7 +97,7 @@ static void paint_launched_freefall_base(
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32_t imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
-    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height);
 
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
@@ -110,15 +110,15 @@ static void paint_launched_freefall_base(
     if (trackSequence == 0)
     {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3);
+        PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3);
 
         height += 32;
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
         height += 32;
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
         paint_util_set_vertical_tunnel(session, height + 32);
 
@@ -172,13 +172,13 @@ static void paint_launched_freefall_tower_section(
     }
 
     uint32_t imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+    PaintAddImageAsParent(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
 
     const TileElement* nextTileElement = tileElement + 1;
     if (tileElement->IsLastForTile() || tileElement->GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
-        sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+        PaintAddImageAsChild(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

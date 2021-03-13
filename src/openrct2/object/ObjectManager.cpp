@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"
@@ -65,9 +66,9 @@ public:
         return _loadedObjects[index].get();
     }
 
-    Object* GetLoadedObject(int32_t objectType, size_t index) override
+    Object* GetLoadedObject(ObjectType objectType, size_t index) override
     {
-        if (index >= static_cast<size_t>(object_entry_group_counts[objectType]))
+        if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
             log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
@@ -79,7 +80,7 @@ public:
         return GetLoadedObject(objectIndex);
     }
 
-    Object* GetLoadedObject(const rct_object_entry* entry) override
+    Object* GetLoadedObject(const ObjectEntryDescriptor& entry) override
     {
         Object* loadedObject = nullptr;
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
@@ -101,35 +102,16 @@ public:
         return result;
     }
 
+    Object* LoadObject(std::string_view identifier) override
+    {
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
+        return RepositoryItemToObject(ori);
+    }
+
     Object* LoadObject(const rct_object_entry* entry) override
     {
-        Object* loadedObject = nullptr;
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
-        if (ori != nullptr)
-        {
-            loadedObject = ori->LoadedObject;
-            if (loadedObject == nullptr)
-            {
-                uint8_t objectType = ori->ObjectEntry.GetType();
-                int32_t slot = FindSpareSlot(objectType);
-                if (slot != -1)
-                {
-                    auto object = GetOrLoadObject(ori);
-                    if (object != nullptr)
-                    {
-                        if (_loadedObjects.size() <= static_cast<size_t>(slot))
-                        {
-                            _loadedObjects.resize(slot + 1);
-                        }
-                        loadedObject = object.get();
-                        _loadedObjects[slot] = std::move(object);
-                        UpdateSceneryGroupIndexes();
-                        ResetTypeToRideEntryIndexMap();
-                    }
-                }
-            }
-        }
-        return loadedObject;
+        return RepositoryItemToObject(ori);
     }
 
     void LoadObjects(const rct_object_entry* entries, size_t count) override
@@ -222,52 +204,91 @@ public:
         // loaded RCT1 and RCT2 save files.
 
         // Surfaces
-        LoadObject("#RCT2SGR");
-        LoadObject("#RCT2SSY");
-        LoadObject("#RCT2SDI");
-        LoadObject("#RCT2SRO");
-        LoadObject("#RCT2SMA");
-        LoadObject("#RCT2SCH");
-        LoadObject("#RCT2SGC");
-        LoadObject("#RCT2SIC");
-        LoadObject("#RCT2SIR");
-        LoadObject("#RCT2SIY");
-        LoadObject("#RCT2SIP");
-        LoadObject("#RCT2SIG");
-        LoadObject("#RCT2SSR");
-        LoadObject("#RCT2SSA");
+        LoadObject("rct2.surface.grass");
+        LoadObject("rct2.surface.sand");
+        LoadObject("rct2.surface.dirt");
+        LoadObject("rct2.surface.rock");
+        LoadObject("rct2.surface.martian");
+        LoadObject("rct2.surface.chequerboard");
+        LoadObject("rct2.surface.grassclumps");
+        LoadObject("rct2.surface.ice");
+        LoadObject("rct2.surface.gridred");
+        LoadObject("rct2.surface.gridyellow");
+        LoadObject("rct2.surface.gridpurple");
+        LoadObject("rct2.surface.gridgreen");
+        LoadObject("rct2.surface.sandred");
+        LoadObject("rct2.surface.sandbrown");
+        LoadObject("rct1.aa.surface.roofred");
+        LoadObject("rct1.ll.surface.roofgrey");
+        LoadObject("rct1.ll.surface.rust");
+        LoadObject("rct1.ll.surface.wood");
 
         // Edges
-        LoadObject("#RCT2ERO");
-        LoadObject("#RCT2EWR");
-        LoadObject("#RCT2EWB");
-        LoadObject("#RCT2EIC");
-        LoadObject("#RCT1EBR");
-        LoadObject("#RCT1EIR");
-        LoadObject("#RCT1EGY");
-        LoadObject("#RCT1EYE");
-        LoadObject("#RCT1ERE");
-        LoadObject("#RCT1EPU");
-        LoadObject("#RCT1EGR");
-        LoadObject("#RCT1ESN");
-        LoadObject("#RCT1ESG");
-        LoadObject("#RCT1ESA");
-        LoadObject("#RCT1ESB");
+        LoadObject("rct2.edge.rock");
+        LoadObject("rct2.edge.woodred");
+        LoadObject("rct2.edge.woodblack");
+        LoadObject("rct2.edge.ice");
+        LoadObject("rct1.edge.brick");
+        LoadObject("rct1.edge.iron");
+        LoadObject("rct1.aa.edge.grey");
+        LoadObject("rct1.aa.edge.yellow");
+        LoadObject("rct1.aa.edge.red");
+        LoadObject("rct1.ll.edge.purple");
+        LoadObject("rct1.ll.edge.green");
+        LoadObject("rct1.ll.edge.stonebrown");
+        LoadObject("rct1.ll.edge.stonegrey");
+        LoadObject("rct1.ll.edge.skyscrapera");
+        LoadObject("rct1.ll.edge.skyscraperb");
 
         // Stations
-        LoadObject("#RCT2STN");
-        LoadObject("#RCT2STW");
-        LoadObject("#RCT2STV");
-        LoadObject("#RCT2ST3");
-        LoadObject("#RCT2ST4");
-        LoadObject("#RCT2STJ");
-        LoadObject("#RCT2STL");
-        LoadObject("#RCT2STC");
-        LoadObject("#RCT2STA");
-        LoadObject("#RCT2STS");
-        LoadObject("#RCT2STP");
-        LoadObject("#RCT2STE");
-        LoadObject("#ORCT2SN");
+        LoadObject("rct2.station.plain");
+        LoadObject("rct2.station.wooden");
+        LoadObject("rct2.station.canvastent");
+        LoadObject("rct2.station.castlegrey");
+        LoadObject("rct2.station.castlebrown");
+        LoadObject("rct2.station.jungle");
+        LoadObject("rct2.station.log");
+        LoadObject("rct2.station.classical");
+        LoadObject("rct2.station.abstract");
+        LoadObject("rct2.station.snow");
+        LoadObject("rct2.station.pagoda");
+        LoadObject("rct2.station.space");
+        LoadObject("openrct2.station.noentrance");
+
+        // Music
+        auto baseIndex = GetIndexFromTypeEntry(ObjectType::Music, 0);
+        LoadObject(baseIndex + MUSIC_STYLE_DODGEMS_BEAT, "rct2.music.dodgems");
+        LoadObject(baseIndex + MUSIC_STYLE_FAIRGROUND_ORGAN, "rct2.music.fairground");
+        LoadObject(baseIndex + MUSIC_STYLE_ROMAN_FANFARE, "rct2.music.roman");
+        LoadObject(baseIndex + MUSIC_STYLE_ORIENTAL, "rct2.music.oriental");
+        LoadObject(baseIndex + MUSIC_STYLE_MARTIAN, "rct2.music.martian");
+        LoadObject(baseIndex + MUSIC_STYLE_JUNGLE_DRUMS, "rct2.music.jungle");
+        LoadObject(baseIndex + MUSIC_STYLE_EGYPTIAN, "rct2.music.egyptian");
+        LoadObject(baseIndex + MUSIC_STYLE_TOYLAND, "rct2.music.toyland");
+        LoadObject(baseIndex + MUSIC_STYLE_SPACE, "rct2.music.space");
+        LoadObject(baseIndex + MUSIC_STYLE_HORROR, "rct2.music.horror");
+        LoadObject(baseIndex + MUSIC_STYLE_TECHNO, "rct2.music.techno");
+        LoadObject(baseIndex + MUSIC_STYLE_GENTLE, "rct2.music.gentle");
+        LoadObject(baseIndex + MUSIC_STYLE_SUMMER, "rct2.music.summer");
+        LoadObject(baseIndex + MUSIC_STYLE_WATER, "rct2.music.water");
+        LoadObject(baseIndex + MUSIC_STYLE_WILD_WEST, "rct2.music.wildwest");
+        LoadObject(baseIndex + MUSIC_STYLE_JURASSIC, "rct2.music.jurassic");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK, "rct2.music.rock1");
+        LoadObject(baseIndex + MUSIC_STYLE_RAGTIME, "rct2.music.ragtime");
+        LoadObject(baseIndex + MUSIC_STYLE_FANTASY, "rct2.music.fantasy");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_2, "rct2.music.rock2");
+        LoadObject(baseIndex + MUSIC_STYLE_ICE, "rct2.music.ice");
+        LoadObject(baseIndex + MUSIC_STYLE_SNOW, "rct2.music.snow");
+        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_1, "rct2.music.custom1");
+        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_2, "rct2.music.custom2");
+        LoadObject(baseIndex + MUSIC_STYLE_MEDIEVAL, "rct2.music.medieval");
+        LoadObject(baseIndex + MUSIC_STYLE_URBAN, "rct2.music.urban");
+        LoadObject(baseIndex + MUSIC_STYLE_ORGAN, "rct2.music.organ");
+        LoadObject(baseIndex + MUSIC_STYLE_MECHANICAL, "rct2.music.mechanical");
+        LoadObject(baseIndex + MUSIC_STYLE_MODERN, "rct2.music.modern");
+        LoadObject(baseIndex + MUSIC_STYLE_PIRATES, "rct2.music.pirate");
+        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_3, "rct2.music.rock3");
+        LoadObject(baseIndex + MUSIC_STYLE_CANDY_STYLE, "rct2.music.candy");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
@@ -304,17 +325,57 @@ public:
     }
 
 private:
-    Object* LoadObject(const std::string& name)
+    Object* LoadObject(int32_t slot, std::string_view identifier)
     {
-        rct_object_entry entry{};
-        std::copy_n(name.c_str(), 8, entry.name);
-        return LoadObject(&entry);
+        const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
+        return RepositoryItemToObject(ori, slot);
     }
 
-    int32_t FindSpareSlot(uint8_t objectType)
+    Object* RepositoryItemToObject(const ObjectRepositoryItem* ori, std::optional<int32_t> slot = {})
+    {
+        Object* loadedObject = nullptr;
+        if (ori != nullptr)
+        {
+            loadedObject = ori->LoadedObject;
+            if (loadedObject == nullptr)
+            {
+                ObjectType objectType = ori->ObjectEntry.GetType();
+                if (slot)
+                {
+                    if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)
+                    {
+                        // Slot already taken
+                        return nullptr;
+                    }
+                }
+                else
+                {
+                    slot = FindSpareSlot(objectType);
+                }
+                if (slot)
+                {
+                    auto object = GetOrLoadObject(ori);
+                    if (object != nullptr)
+                    {
+                        if (_loadedObjects.size() <= static_cast<size_t>(*slot))
+                        {
+                            _loadedObjects.resize(*slot + 1);
+                        }
+                        loadedObject = object.get();
+                        _loadedObjects[*slot] = std::move(object);
+                        UpdateSceneryGroupIndexes();
+                        ResetTypeToRideEntryIndexMap();
+                    }
+                }
+            }
+        }
+        return loadedObject;
+    }
+
+    std::optional<int32_t> FindSpareSlot(ObjectType objectType)
     {
         size_t firstIndex = GetIndexFromTypeEntry(objectType, 0);
-        size_t endIndex = firstIndex + object_entry_group_counts[objectType];
+        size_t endIndex = firstIndex + object_entry_group_counts[EnumValue(objectType)];
         for (size_t i = firstIndex; i < endIndex; i++)
         {
             if (_loadedObjects.size() <= i)
@@ -327,7 +388,7 @@ private:
                 return static_cast<int32_t>(i);
             }
         }
-        return -1;
+        return {};
     }
 
     size_t GetLoadedObjectIndex(const Object* object)
@@ -422,29 +483,44 @@ private:
                 rct_scenery_entry* sceneryEntry;
                 switch (loadedObject->GetObjectType())
                 {
-                    case OBJECT_TYPE_SMALL_SCENERY:
+                    case ObjectType::SmallScenery:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->small_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_LARGE_SCENERY:
+                    }
+                    case ObjectType::LargeScenery:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->large_scenery.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_WALLS:
+                    }
+                    case ObjectType::Walls:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->wall.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_BANNERS:
+                    }
+                    case ObjectType::Banners:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->banner.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_PATH_BITS:
+                    }
+                    case ObjectType::PathBits:
+                    {
                         sceneryEntry = static_cast<rct_scenery_entry*>(loadedObject->GetLegacyData());
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject.get());
                         break;
-                    case OBJECT_TYPE_SCENERY_GROUP:
+                    }
+                    case ObjectType::SceneryGroup:
+                    {
                         auto sgObject = dynamic_cast<SceneryGroupObject*>(loadedObject.get());
                         sgObject->UpdateEntryIndexes();
+                        break;
+                    }
+                    default:
+                        // This switch only handles scenery ObjectTypes.
                         break;
                 }
             }
@@ -458,7 +534,7 @@ private:
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
     {
         auto sceneryObject = dynamic_cast<SceneryObject*>(loadedObject);
-        const rct_object_entry* primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
+        const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
         auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
@@ -495,7 +571,7 @@ private:
             ori = _objectRepository.FindObject(&entry);
             if (ori == nullptr)
             {
-                if (entry.GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (entry.GetType() != ObjectType::ScenarioText)
                 {
                     invalidEntries.push_back(entry);
                     ReportMissingObject(&entry);
@@ -535,7 +611,7 @@ private:
             if (!object_entry_is_empty(entry))
             {
                 ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry->GetType() != OBJECT_TYPE_SCENARIO_TEXT)
+                if (ori == nullptr && entry->GetType() != ObjectType::ScenarioText)
                 {
                     missingObjects.push_back(*entry);
                     ReportMissingObject(entry);
@@ -680,10 +756,10 @@ private:
         }
 
         // Build object lists
-        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[OBJECT_TYPE_RIDE]);
+        auto maxRideObjects = static_cast<size_t>(object_entry_group_counts[EnumValue(ObjectType::Ride)]);
         for (size_t i = 0; i < maxRideObjects; i++)
         {
-            auto rideObject = static_cast<RideObject*>(GetLoadedObject(OBJECT_TYPE_RIDE, i));
+            auto rideObject = static_cast<RideObject*>(GetLoadedObject(ObjectType::Ride, i));
             if (rideObject != nullptr)
             {
                 const auto entry = static_cast<rct_ride_entry*>(rideObject->GetLegacyData());
@@ -716,10 +792,10 @@ private:
         Console::Error::WriteLine("[%s] Object could not be loaded.", objName);
     }
 
-    static int32_t GetIndexFromTypeEntry(int32_t objectType, size_t entryIndex)
+    static int32_t GetIndexFromTypeEntry(ObjectType objectType, size_t entryIndex)
     {
         int32_t result = 0;
-        for (int32_t i = 0; i < objectType; i++)
+        for (int32_t i = 0; i < EnumValue(objectType); i++)
         {
             result += object_entry_group_counts[i];
         }
@@ -743,7 +819,7 @@ Object* object_manager_get_loaded_object_by_index(size_t index)
 Object* object_manager_get_loaded_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.GetLoadedObject(entry);
+    Object* loadedObject = objectManager.GetLoadedObject(ObjectEntryDescriptor(*entry));
     return loadedObject;
 }
 

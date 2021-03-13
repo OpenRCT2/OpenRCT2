@@ -11,13 +11,14 @@
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Path.hpp"
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
 #include "Drawing.h"
+#include "ScrollingText.h"
 
 #include <algorithm>
 #include <memory>
@@ -180,6 +181,7 @@ void mask_scalar(
 static rct_gx _g1 = {};
 static rct_gx _g2 = {};
 static rct_gx _csg = {};
+static rct_g1_element _scrollingText[MaxScrollingTextEntries]{};
 static bool _csgLoaded = false;
 
 static rct_g1_element _g1Temp = {};
@@ -218,7 +220,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g1.header.num_entries; i++)
         {
-            _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data);
+            _g1.elements[i].offset += reinterpret_cast<uintptr_t>(_g1.data.get());
         }
         return true;
     }
@@ -239,21 +241,21 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
 
 void gfx_unload_g1()
 {
-    SafeFree(_g1.data);
+    _g1.data.reset();
     _g1.elements.clear();
     _g1.elements.shrink_to_fit();
 }
 
 void gfx_unload_g2()
 {
-    SafeFree(_g2.data);
+    _g2.data.reset();
     _g2.elements.clear();
     _g2.elements.shrink_to_fit();
 }
 
 void gfx_unload_csg()
 {
-    SafeFree(_csg.data);
+    _csg.data.reset();
     _csg.elements.clear();
     _csg.elements.shrink_to_fit();
 }
@@ -281,7 +283,7 @@ bool gfx_load_g2()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
         {
-            _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data);
+            _g2.elements[i].offset += reinterpret_cast<uintptr_t>(_g2.data.get());
         }
         return true;
     }
@@ -338,7 +340,7 @@ bool gfx_load_csg()
         // Fix entry data offsets
         for (uint32_t i = 0; i < _csg.header.num_entries; i++)
         {
-            _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data);
+            _csg.elements[i].offset += reinterpret_cast<uintptr_t>(_csg.data.get());
             // RCT1 used zoomed offsets that counted from the beginning of the file, rather than from the current sprite.
             if (_csg.elements[i].flags & G1_FLAG_HAS_ZOOM_SPRITE)
             {
@@ -701,6 +703,14 @@ const rct_g1_element* gfx_get_g1_element(int32_t image_id)
             }
         }
     }
+    else if (offset < SPR_SCROLLING_TEXT_END)
+    {
+        size_t idx = offset - SPR_SCROLLING_TEXT_START;
+        if (idx < std::size(_scrollingText))
+        {
+            return &_scrollingText[idx];
+        }
+    }
     else if (offset < SPR_IMAGE_LIST_END)
     {
         size_t idx = offset - SPR_IMAGE_LIST_BEGIN;
@@ -737,6 +747,14 @@ void gfx_set_g1_element(int32_t imageId, const rct_g1_element* g1)
                 if (imageId < static_cast<int32_t>(_g1.elements.size()))
                 {
                     _g1.elements[imageId] = *g1;
+                }
+            }
+            else if (imageId < SPR_SCROLLING_TEXT_END)
+            {
+                size_t idx = static_cast<size_t>(imageId) - SPR_SCROLLING_TEXT_START;
+                if (idx < std::size(_scrollingText))
+                {
+                    _scrollingText[idx] = *g1;
                 }
             }
             else

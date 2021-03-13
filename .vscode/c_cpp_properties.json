@@ -6,7 +6,7 @@
                 "/usr/include",
                 "/usr/local/include",
                 "${workspaceRoot}",
-                "${workspaceRoot}/src"
+                "${workspaceRoot}/src/**"
             ],
             "defines": [],
             "intelliSenseMode": "clang-x64",

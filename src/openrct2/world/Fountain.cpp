@@ -72,8 +72,9 @@ const uint8_t _fountainPatternFlags[] = {
 
 template<> bool SpriteBase::Is<JumpingFountain>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC
-        && (type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW || type == SPRITE_MISC_JUMPING_FOUNTAIN_WATER);
+    auto* misc = As<MiscEntity>();
+    return misc
+        && (misc->SubType == MiscEntityType::JumpingFountainSnow || misc->SubType == MiscEntityType::JumpingFountainWater);
 }
 
 void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
@@ -128,7 +129,7 @@ void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newL
 void JumpingFountain::Create(
     const int32_t newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
 {
-    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SPRITE_IDENTIFIER_MISC));
+    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SpriteIdentifier::Misc));
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;
@@ -137,10 +138,10 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_width = 33;
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
-        jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        jumpingFountain->sprite_identifier = SpriteIdentifier::Misc;
         jumpingFountain->MoveTo(newLoc);
-        jumpingFountain->type = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? SPRITE_MISC_JUMPING_FOUNTAIN_SNOW
-                                                                      : SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
+        jumpingFountain->SubType = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? MiscEntityType::JumpingFountainSnow
+                                                                         : MiscEntityType::JumpingFountainWater;
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
     }
@@ -158,12 +159,12 @@ void JumpingFountain::Update()
         return;
     }
 
-    Invalidate0();
+    Invalidate();
     frame++;
 
-    switch (type)
+    switch (SubType)
     {
-        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+        case MiscEntityType::JumpingFountainWater:
             if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
             {
                 AdvanceAnimation();
@@ -173,11 +174,13 @@ void JumpingFountain::Update()
                 AdvanceAnimation();
             }
             break;
-        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+        case MiscEntityType::JumpingFountainSnow:
             if (frame == 16)
             {
                 AdvanceAnimation();
             }
+            break;
+        default:
             break;
     }
 
@@ -189,8 +192,8 @@ void JumpingFountain::Update()
 
 int32_t JumpingFountain::GetType() const
 {
-    const int32_t fountainType = type == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                           : JUMPING_FOUNTAIN_TYPE_WATER;
+    const int32_t fountainType = SubType == MiscEntityType::JumpingFountainSnow ? JUMPING_FOUNTAIN_TYPE_SNOW
+                                                                                : JUMPING_FOUNTAIN_TYPE_WATER;
     return fountainType;
 }
 

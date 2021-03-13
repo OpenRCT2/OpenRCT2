@@ -12,9 +12,10 @@
 #    include "ScriptEngine.h"
 
 #    include "../PlatformEnvironment.h"
-#    include "../actions/CustomAction.hpp"
+#    include "../actions/CustomAction.h"
 #    include "../actions/GameAction.h"
-#    include "../actions/RideCreateAction.hpp"
+#    include "../actions/RideCreateAction.h"
+#    include "../actions/StaffHireNewAction.h"
 #    include "../config/Config.h"
 #    include "../core/File.h"
 #    include "../core/FileScanner.h"
@@ -43,7 +44,7 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;
 
-static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 7;
+static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 24;
 
 struct ExpressionStringifier final
 {
@@ -72,8 +73,14 @@ private:
         _ss << "\n" << std::string(_indent, ' ');
     }
 
-    void Stringify(const DukValue& val, bool canStartWithNewLine)
+    void Stringify(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
+        if (nestLevel >= 8)
+        {
+            _ss << "[...]";
+            return;
+        }
+
         switch (val.type())
         {
             case DukValue::Type::UNDEFINED:
@@ -98,11 +105,11 @@ private:
                 }
                 else if (val.is_array())
                 {
-                    StringifyArray(val, canStartWithNewLine);
+                    StringifyArray(val, canStartWithNewLine, nestLevel);
                 }
                 else
                 {
-                    StringifyObject(val, canStartWithNewLine);
+                    StringifyObject(val, canStartWithNewLine, nestLevel);
                 }
                 break;
             case DukValue::Type::BUFFER:
@@ -117,7 +124,7 @@ private:
         }
     }
 
-    void StringifyArray(const DukValue& val, bool canStartWithNewLine)
+    void StringifyArray(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
         constexpr auto maxItemsToShow = 4;
 
@@ -138,7 +145,7 @@ private:
                     {
                         _ss << ", ";
                     }
-                    Stringify(DukValue::take_from_stack(_context), false);
+                    Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                 }
             }
             _ss << " ]";
@@ -176,7 +183,7 @@ private:
                 {
                     if (duk_get_prop_index(_context, -1, i))
                     {
-                        Stringify(DukValue::take_from_stack(_context), false);
+                        Stringify(DukValue::take_from_stack(_context), false, nestLevel + 1);
                     }
                 }
             }
@@ -190,7 +197,7 @@ private:
         duk_pop(_context);
     }
 
-    void StringifyObject(const DukValue& val, bool canStartWithNewLine)
+    void StringifyObject(const DukValue& val, bool canStartWithNewLine, int32_t nestLevel)
     {
         auto numEnumerables = GetNumEnumerablesOnObject(val);
         if (numEnumerables == 0)
@@ -221,7 +228,7 @@ private:
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true);
+                Stringify(value, true, nestLevel + 1);
                 index++;
             }
             duk_pop_2(_context);
@@ -260,7 +267,7 @@ private:
                     // For some reason the key was not a string
                     _ss << "?: ";
                 }
-                Stringify(value, true);
+                Stringify(value, true, nestLevel + 1);
                 index++;
             }
             duk_pop_2(_context);
@@ -342,7 +349,7 @@ public:
     static std::string StringifyExpression(const DukValue& val)
     {
         ExpressionStringifier instance(val.context());
-        instance.Stringify(val, false);
+        instance.Stringify(val, false, 0);
         return instance._ss.str();
     }
 };
@@ -488,9 +495,10 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
     if (plugin->HasStarted())
     {
         RemoveCustomGameActions(plugin);
+        RemoveIntervals(plugin);
         RemoveSockets(plugin);
         _hookEngine.UnsubscribeAll(plugin);
-        for (auto callback : _pluginStoppedSubscriptions)
+        for (const auto& callback : _pluginStoppedSubscriptions)
         {
             callback(plugin);
         }
@@ -526,7 +534,7 @@ void ScriptEngine::SetupHotReloading()
     }
     catch (const std::exception& e)
     {
-        std::fprintf(stderr, "Unable to enable hot reloading of plugins: %s\n", e.what());
+        Console::Error::WriteLine("Unable to enable hot reloading of plugins: %s", e.what());
     }
 }
 
@@ -650,6 +658,7 @@ void ScriptEngine::Update()
         }
     }
 
+    UpdateIntervals();
     UpdateSockets();
     ProcessREPL();
 }
@@ -689,16 +698,26 @@ std::future<void> ScriptEngine::Eval(const std::string& s)
 DukValue ScriptEngine::ExecutePluginCall(
     const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args, bool isGameStateMutable)
 {
+    duk_push_undefined(_context);
+    auto dukUndefined = DukValue::take_from_stack(_context);
+    return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
+}
+
+DukValue ScriptEngine::ExecutePluginCall(
+    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+    bool isGameStateMutable)
+{
     DukStackFrame frame(_context);
     if (func.is_function())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
         func.push();
+        thisValue.push();
         for (const auto& arg : args)
         {
             arg.push();
         }
-        auto result = duk_pcall(_context, static_cast<duk_idx_t>(args.size()));
+        auto result = duk_pcall_method(_context, static_cast<duk_idx_t>(args.size()));
         if (result == DUK_EXEC_SUCCESS)
         {
             return DukValue::take_from_stack(_context);
@@ -713,13 +732,20 @@ DukValue ScriptEngine::ExecutePluginCall(
     return DukValue();
 }
 
-void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, const std::string_view& message)
+void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message)
 {
-    const auto& pluginName = plugin->GetMetadata().Name;
-    _console.WriteLine("[" + pluginName + "] " + std::string(message));
+    if (plugin == nullptr)
+    {
+        _console.WriteLine(std::string(message));
+    }
+    else
+    {
+        const auto& pluginName = plugin->GetMetadata().Name;
+        _console.WriteLine("[" + pluginName + "] " + std::string(message));
+    }
 }
 
-void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
+void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
     auto plugin = std::make_shared<Plugin>(_context, std::string());
     plugin->SetCode(code);
@@ -727,7 +753,7 @@ void ScriptEngine::AddNetworkPlugin(const std::string_view& code)
 }
 
 std::unique_ptr<GameActions::Result> ScriptEngine::QueryOrExecuteCustomGameAction(
-    const std::string_view& id, const std::string_view& args, bool isExecute)
+    std::string_view id, std::string_view args, bool isExecute)
 {
     std::string actionz = std::string(id);
     auto kvp = _customActions.find(actionz);
@@ -815,7 +841,7 @@ std::string_view ScriptEngine::ExpenditureTypeToString(ExpenditureType expenditu
     return {};
 }
 
-ExpenditureType ScriptEngine::StringToExpenditureType(const std::string_view& expenditureType)
+ExpenditureType ScriptEngine::StringToExpenditureType(std::string_view expenditureType)
 {
     auto it = std::find(std::begin(ExpenditureTypes), std::end(ExpenditureTypes), expenditureType);
     if (it != std::end(ExpenditureTypes))
@@ -849,7 +875,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
         obj.Set("expenditureType", ExpenditureTypeToString(result->Expenditure));
     }
 
-    if (action.GetType() == GAME_COMMAND_CREATE_RIDE)
+    if (action.GetType() == GameCommand::CreateRide)
     {
         auto& rideCreateResult = static_cast<RideCreateGameActionResult&>(*result.get());
         if (rideCreateResult.rideIndex != RIDE_ID_NULL)
@@ -857,12 +883,20 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const std
             obj.Set("ride", rideCreateResult.rideIndex);
         }
     }
+    else if (action.GetType() == GameCommand::HireNewStaffMember)
+    {
+        auto& staffHireResult = static_cast<StaffHireNewActionResult&>(*result.get());
+        if (staffHireResult.peepSriteIndex != SPRITE_INDEX_NULL)
+        {
+            obj.Set("peep", staffHireResult.peepSriteIndex);
+        }
+    }
 
     return obj.Take();
 }
 
 bool ScriptEngine::RegisterCustomAction(
-    const std::shared_ptr<Plugin>& plugin, const std::string_view& action, const DukValue& query, const DukValue& execute)
+    const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute)
 {
     std::string actionz = std::string(action);
     if (_customActions.find(actionz) != _customActions.end())
@@ -901,21 +935,21 @@ private:
 
 public:
     DukToGameActionParameterVisitor(DukValue&& dukValue)
-        : _dukValue(dukValue)
+        : _dukValue(std::move(dukValue))
     {
     }
 
-    void Visit(const std::string_view& name, bool& param) override
+    void Visit(std::string_view name, bool& param) override
     {
         param = _dukValue[name].as_bool();
     }
 
-    void Visit(const std::string_view& name, int32_t& param) override
+    void Visit(std::string_view name, int32_t& param) override
     {
         param = _dukValue[name].as_int();
     }
 
-    void Visit(const std::string_view& name, std::string& param) override
+    void Visit(std::string_view name, std::string& param) override
     {
         param = _dukValue[name].as_string();
     }
@@ -932,107 +966,107 @@ public:
     {
     }
 
-    void Visit(const std::string_view& name, bool& param) override
+    void Visit(std::string_view name, bool& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);
     }
 
-    void Visit(const std::string_view& name, int32_t& param) override
+    void Visit(std::string_view name, int32_t& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);
     }
 
-    void Visit(const std::string_view& name, std::string& param) override
+    void Visit(std::string_view name, std::string& param) override
     {
         std::string szName(name);
         _dukObject.Set(szName.c_str(), param);
     }
 };
 
-const static std::unordered_map<std::string, uint32_t> ActionNameToType = {
-    { "balloonpress", GAME_COMMAND_BALLOON_PRESS },
-    { "bannerplace", GAME_COMMAND_PLACE_BANNER },
-    { "bannerremove", GAME_COMMAND_REMOVE_BANNER },
-    { "bannersetcolour", GAME_COMMAND_SET_BANNER_COLOUR },
-    { "bannersetname", GAME_COMMAND_SET_BANNER_NAME },
-    { "bannersetstyle", GAME_COMMAND_SET_BANNER_STYLE },
-    { "clearscenery", GAME_COMMAND_CLEAR_SCENERY },
-    { "climateset", GAME_COMMAND_SET_CLIMATE },
-    { "footpathplace", GAME_COMMAND_PLACE_PATH },
-    { "footpathplacefromtrack", GAME_COMMAND_PLACE_PATH_FROM_TRACK },
-    { "footpathremove", GAME_COMMAND_REMOVE_PATH },
-    { "footpathsceneryplace", GAME_COMMAND_PLACE_FOOTPATH_SCENERY },
-    { "footpathsceneryremove", GAME_COMMAND_REMOVE_FOOTPATH_SCENERY },
-    { "guestsetflags", GAME_COMMAND_GUEST_SET_FLAGS },
-    { "guestsetname", GAME_COMMAND_SET_GUEST_NAME },
-    { "landbuyrights", GAME_COMMAND_BUY_LAND_RIGHTS },
-    { "landlower", GAME_COMMAND_LOWER_LAND },
-    { "landraise", GAME_COMMAND_RAISE_LAND },
-    { "landsetheight", GAME_COMMAND_SET_LAND_HEIGHT },
-    { "landsetrights", GAME_COMMAND_SET_LAND_OWNERSHIP },
-    { "landsmoothaction", GAME_COMMAND_EDIT_LAND_SMOOTH },
-    { "largesceneryplace", GAME_COMMAND_PLACE_LARGE_SCENERY },
-    { "largesceneryremove", GAME_COMMAND_REMOVE_LARGE_SCENERY },
-    { "largescenerysetcolour", GAME_COMMAND_SET_SCENERY_COLOUR },
-    { "loadorquit", GAME_COMMAND_LOAD_OR_QUIT },
-    { "mazeplacetrack", GAME_COMMAND_PLACE_MAZE_DESIGN },
-    { "mazesettrack", GAME_COMMAND_SET_MAZE_TRACK },
-    { "networkmodifygroup", GAME_COMMAND_MODIFY_GROUPS },
-    { "parkentranceremove", GAME_COMMAND_REMOVE_PARK_ENTRANCE },
-    { "parkmarketing", GAME_COMMAND_START_MARKETING_CAMPAIGN },
-    { "parksetdate", GAME_COMMAND_SET_DATE },
-    { "parksetloan", GAME_COMMAND_SET_CURRENT_LOAN },
-    { "parksetname", GAME_COMMAND_SET_PARK_NAME },
-    { "parksetparameter", GAME_COMMAND_SET_PARK_OPEN },
-    { "parksetresearchfunding", GAME_COMMAND_SET_RESEARCH_FUNDING },
-    { "pausetoggle", GAME_COMMAND_TOGGLE_PAUSE },
-    { "peeppickup", GAME_COMMAND_PICKUP_GUEST },
-    { "placeparkentrance", GAME_COMMAND_PLACE_PARK_ENTRANCE },
-    { "placepeepspawn", GAME_COMMAND_PLACE_PEEP_SPAWN },
-    { "playerkick", GAME_COMMAND_KICK_PLAYER },
-    { "playersetgroup", GAME_COMMAND_SET_PLAYER_GROUP },
-    { "ridecreate", GAME_COMMAND_CREATE_RIDE },
-    { "ridedemolish", GAME_COMMAND_DEMOLISH_RIDE },
-    { "rideentranceexitplace", GAME_COMMAND_PLACE_RIDE_ENTRANCE_OR_EXIT },
-    { "rideentranceexitremove", GAME_COMMAND_REMOVE_RIDE_ENTRANCE_OR_EXIT },
-    { "ridesetappearance", GAME_COMMAND_SET_RIDE_APPEARANCE },
-    { "ridesetcolourscheme", GAME_COMMAND_SET_COLOUR_SCHEME },
-    { "ridesetname", GAME_COMMAND_SET_RIDE_NAME },
-    { "ridesetprice", GAME_COMMAND_SET_RIDE_PRICE },
-    { "ridesetsetting", GAME_COMMAND_SET_RIDE_SETTING },
-    { "ridesetstatus", GAME_COMMAND_SET_RIDE_STATUS },
-    { "ridesetvehicles", GAME_COMMAND_SET_RIDE_VEHICLES },
-    { "scenariosetsetting", GAME_COMMAND_EDIT_SCENARIO_OPTIONS },
-    { "setcheataction", GAME_COMMAND_CHEAT },
-    { "setparkentrancefee", GAME_COMMAND_SET_PARK_ENTRANCE_FEE },
-    { "signsetname", GAME_COMMAND_SET_SIGN_NAME },
-    { "signsetstyle", GAME_COMMAND_SET_SIGN_STYLE },
-    { "smallsceneryplace", GAME_COMMAND_PLACE_SCENERY },
-    { "smallsceneryremove", GAME_COMMAND_REMOVE_SCENERY },
-    { "stafffire", GAME_COMMAND_FIRE_STAFF_MEMBER },
-    { "staffhire", GAME_COMMAND_HIRE_NEW_STAFF_MEMBER },
-    { "staffsetcolour", GAME_COMMAND_SET_STAFF_COLOUR },
-    { "staffsetcostume", GAME_COMMAND_SET_STAFF_COSTUME },
-    { "staffsetname", GAME_COMMAND_SET_STAFF_NAME },
-    { "staffsetorders", GAME_COMMAND_SET_STAFF_ORDERS },
-    { "staffsetpatrolarea", GAME_COMMAND_SET_STAFF_PATROL },
-    { "surfacesetstyle", GAME_COMMAND_CHANGE_SURFACE_STYLE },
-    { "tilemodify", GAME_COMMAND_MODIFY_TILE },
-    { "trackdesign", GAME_COMMAND_PLACE_TRACK_DESIGN },
-    { "trackplace", GAME_COMMAND_PLACE_TRACK },
-    { "trackremove", GAME_COMMAND_REMOVE_TRACK },
-    { "tracksetbrakespeed", GAME_COMMAND_SET_BRAKES_SPEED },
-    { "wallplace", GAME_COMMAND_PLACE_WALL },
-    { "wallremove", GAME_COMMAND_REMOVE_WALL },
-    { "wallsetcolour", GAME_COMMAND_SET_WALL_COLOUR },
-    { "waterlower", GAME_COMMAND_LOWER_WATER },
-    { "waterraise", GAME_COMMAND_RAISE_WATER },
-    { "watersetheight", GAME_COMMAND_SET_WATER_HEIGHT }
+const static std::unordered_map<std::string, GameCommand> ActionNameToType = {
+    { "balloonpress", GameCommand::BalloonPress },
+    { "bannerplace", GameCommand::PlaceBanner },
+    { "bannerremove", GameCommand::RemoveBanner },
+    { "bannersetcolour", GameCommand::SetBannerColour },
+    { "bannersetname", GameCommand::SetBannerName },
+    { "bannersetstyle", GameCommand::SetBannerStyle },
+    { "clearscenery", GameCommand::ClearScenery },
+    { "climateset", GameCommand::SetClimate },
+    { "footpathplace", GameCommand::PlacePath },
+    { "footpathplacefromtrack", GameCommand::PlacePathFromTrack },
+    { "footpathremove", GameCommand::RemovePath },
+    { "footpathadditionplace", GameCommand::PlaceFootpathAddition },
+    { "footpathadditionremove", GameCommand::RemoveFootpathAddition },
+    { "guestsetflags", GameCommand::GuestSetFlags },
+    { "guestsetname", GameCommand::SetGuestName },
+    { "landbuyrights", GameCommand::BuyLandRights },
+    { "landlower", GameCommand::LowerLand },
+    { "landraise", GameCommand::RaiseLand },
+    { "landsetheight", GameCommand::SetLandHeight },
+    { "landsetrights", GameCommand::SetLandOwnership },
+    { "landsmoothaction", GameCommand::EditLandSmooth },
+    { "largesceneryplace", GameCommand::PlaceLargeScenery },
+    { "largesceneryremove", GameCommand::RemoveLargeScenery },
+    { "largescenerysetcolour", GameCommand::SetSceneryColour },
+    { "loadorquit", GameCommand::LoadOrQuit },
+    { "mazeplacetrack", GameCommand::PlaceMazeDesign },
+    { "mazesettrack", GameCommand::SetMazeTrack },
+    { "networkmodifygroup", GameCommand::ModifyGroups },
+    { "parkentranceremove", GameCommand::RemoveParkEntrance },
+    { "parkmarketing", GameCommand::StartMarketingCampaign },
+    { "parksetdate", GameCommand::SetDate },
+    { "parksetloan", GameCommand::SetCurrentLoan },
+    { "parksetname", GameCommand::SetParkName },
+    { "parksetparameter", GameCommand::SetParkOpen },
+    { "parksetresearchfunding", GameCommand::SetResearchFunding },
+    { "pausetoggle", GameCommand::TogglePause },
+    { "peeppickup", GameCommand::PickupGuest },
+    { "placeparkentrance", GameCommand::PlaceParkEntrance },
+    { "placepeepspawn", GameCommand::PlacePeepSpawn },
+    { "playerkick", GameCommand::KickPlayer },
+    { "playersetgroup", GameCommand::SetPlayerGroup },
+    { "ridecreate", GameCommand::CreateRide },
+    { "ridedemolish", GameCommand::DemolishRide },
+    { "rideentranceexitplace", GameCommand::PlaceRideEntranceOrExit },
+    { "rideentranceexitremove", GameCommand::RemoveRideEntranceOrExit },
+    { "ridesetappearance", GameCommand::SetRideAppearance },
+    { "ridesetcolourscheme", GameCommand::SetColourScheme },
+    { "ridesetname", GameCommand::SetRideName },
+    { "ridesetprice", GameCommand::SetRidePrice },
+    { "ridesetsetting", GameCommand::SetRideSetting },
+    { "ridesetstatus", GameCommand::SetRideStatus },
+    { "ridesetvehicles", GameCommand::SetRideVehicles },
+    { "scenariosetsetting", GameCommand::EditScenarioOptions },
+    { "setcheataction", GameCommand::Cheat },
+    { "setparkentrancefee", GameCommand::SetParkEntranceFee },
+    { "signsetname", GameCommand::SetSignName },
+    { "signsetstyle", GameCommand::SetSignStyle },
+    { "smallsceneryplace", GameCommand::PlaceScenery },
+    { "smallsceneryremove", GameCommand::RemoveScenery },
+    { "stafffire", GameCommand::FireStaffMember },
+    { "staffhire", GameCommand::HireNewStaffMember },
+    { "staffsetcolour", GameCommand::SetStaffColour },
+    { "staffsetcostume", GameCommand::SetStaffCostume },
+    { "staffsetname", GameCommand::SetStaffName },
+    { "staffsetorders", GameCommand::SetStaffOrders },
+    { "staffsetpatrolarea", GameCommand::SetStaffPatrol },
+    { "surfacesetstyle", GameCommand::ChangeSurfaceStyle },
+    { "tilemodify", GameCommand::ModifyTile },
+    { "trackdesign", GameCommand::PlaceTrackDesign },
+    { "trackplace", GameCommand::PlaceTrack },
+    { "trackremove", GameCommand::RemoveTrack },
+    { "tracksetbrakespeed", GameCommand::SetBrakesSpeed },
+    { "wallplace", GameCommand::PlaceWall },
+    { "wallremove", GameCommand::RemoveWall },
+    { "wallsetcolour", GameCommand::SetWallColour },
+    { "waterlower", GameCommand::LowerWater },
+    { "waterraise", GameCommand::RaiseWater },
+    { "watersetheight", GameCommand::SetWaterHeight }
 };
 
-static std::string GetActionName(uint32_t commandId)
+static std::string GetActionName(GameCommand commandId)
 {
     auto it = std::find_if(
         ActionNameToType.begin(), ActionNameToType.end(), [commandId](const auto& kvp) { return kvp.second == commandId; });
@@ -1063,7 +1097,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
         DukObject obj(_context);
 
         auto actionId = action.GetType();
-        if (action.GetType() == GAME_COMMAND_CUSTOM)
+        if (action.GetType() == GameCommand::Custom)
         {
             auto customAction = static_cast<const CustomAction&>(action);
             obj.Set("action", customAction.GetId());
@@ -1090,11 +1124,12 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, std::unique_ptr<
             DukObject args(_context);
             DukFromGameActionParameterVisitor visitor(args);
             const_cast<GameAction&>(action).AcceptParameters(visitor);
+            const_cast<GameAction&>(action).AcceptFlags(visitor);
             obj.Set("args", args.Take());
         }
 
         obj.Set("player", action.GetPlayer());
-        obj.Set("type", actionId);
+        obj.Set("type", EnumValue(actionId));
 
         auto flags = action.GetActionFlags();
         obj.Set("isClientOnly", (flags & GameActions::Flags::ClientOnly) != 0);
@@ -1129,6 +1164,10 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
         DukValue argsCopy = args;
         DukToGameActionParameterVisitor visitor(std::move(argsCopy));
         action->AcceptParameters(visitor);
+        if (args["flags"].type() == DukValue::Type::NUMBER)
+        {
+            action->AcceptFlags(visitor);
+        }
         return action;
     }
     else
@@ -1176,7 +1215,7 @@ void ScriptEngine::LoadSharedStorage()
     }
     catch (const std::exception&)
     {
-        fprintf(stderr, "Unable to read '%s'\n", path.c_str());
+        Console::Error::WriteLine("Unable to read '%s'", path.c_str());
     }
 }
 
@@ -1193,7 +1232,96 @@ void ScriptEngine::SaveSharedStorage()
     }
     catch (const std::exception&)
     {
-        fprintf(stderr, "Unable to write to '%s'\n", path.c_str());
+        Console::Error::WriteLine("Unable to write to '%s'", path.c_str());
+    }
+}
+
+IntervalHandle ScriptEngine::AllocateHandle()
+{
+    for (size_t i = 0; i < _intervals.size(); i++)
+    {
+        if (!_intervals[i].IsValid())
+        {
+            return static_cast<IntervalHandle>(i + 1);
+        }
+    }
+    _intervals.emplace_back();
+    return static_cast<IntervalHandle>(_intervals.size());
+}
+
+IntervalHandle ScriptEngine::AddInterval(const std::shared_ptr<Plugin>& plugin, int32_t delay, bool repeat, DukValue&& callback)
+{
+    auto handle = AllocateHandle();
+    if (handle != 0)
+    {
+        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+        interval.Owner = plugin;
+        interval.Handle = handle;
+        interval.Delay = delay;
+        interval.LastTimestamp = _lastIntervalTimestamp;
+        interval.Callback = std::move(callback);
+        interval.Repeat = repeat;
+    }
+    return handle;
+}
+
+void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, IntervalHandle handle)
+{
+    if (handle > 0 && static_cast<size_t>(handle) <= _intervals.size())
+    {
+        auto& interval = _intervals[static_cast<size_t>(handle) - 1];
+
+        // Only allow owner or REPL (nullptr) to remove intervals
+        if (plugin == nullptr || interval.Owner == plugin)
+        {
+            interval = {};
+        }
+    }
+}
+
+void ScriptEngine::UpdateIntervals()
+{
+    uint32_t timestamp = platform_get_ticks();
+    if (timestamp < _lastIntervalTimestamp)
+    {
+        // timestamp has wrapped, subtract all intervals by the remaining amount before wrap
+        auto delta = static_cast<int64_t>(std::numeric_limits<uint32_t>::max() - _lastIntervalTimestamp);
+        for (auto& interval : _intervals)
+        {
+            if (interval.IsValid())
+            {
+                interval.LastTimestamp = -delta;
+            }
+        }
+    }
+    _lastIntervalTimestamp = timestamp;
+
+    for (auto& interval : _intervals)
+    {
+        if (interval.IsValid())
+        {
+            if (timestamp >= interval.LastTimestamp + interval.Delay)
+            {
+                ExecutePluginCall(interval.Owner, interval.Callback, {}, false);
+
+                interval.LastTimestamp = timestamp;
+                if (!interval.Repeat)
+                {
+                    RemoveInterval(nullptr, interval.Handle);
+                }
+            }
+        }
+    }
+}
+
+void ScriptEngine::RemoveIntervals(const std::shared_ptr<Plugin>& plugin)
+{
+    for (auto& interval : _intervals)
+    {
+        if (interval.Owner == plugin)
+        {
+            interval = {};
+        }
     }
 }
 
@@ -1253,7 +1381,7 @@ std::string OpenRCT2::Scripting::Stringify(const DukValue& val)
 std::string OpenRCT2::Scripting::ProcessString(const DukValue& value)
 {
     if (value.type() == DukValue::Type::STRING)
-        return language_convert_string(value.as_string());
+        return value.as_string();
     return {};
 }
 

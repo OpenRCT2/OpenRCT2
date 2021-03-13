@@ -50,18 +50,18 @@ static constexpr const int32_t WW = 300;
 static constexpr const int32_t WH = 154;
 
 static rct_widget window_server_start_widgets[] = {
-    MakeWidget        ({    0,       0}, { WW, WH}, WWT_FRAME,    WindowColour::Primary                                                          ), // panel / background
-    MakeWidget        ({    1,       1}, {298, 14}, WWT_CAPTION,  WindowColour::Primary  , STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
-    MakeWidget        ({WW-13,       2}, { 11, 12}, WWT_CLOSEBOX, WindowColour::Primary  , STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
-    MakeWidget        ({  120,      20}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // port text box
-    MakeWidget        ({  120,      36}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // name text box
-    MakeWidget        ({  120,      52}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // description text box
-    MakeWidget        ({  120,      68}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // greeting text box
-    MakeWidget        ({  120,      84}, {173, 13}, WWT_TEXT_BOX, WindowColour::Secondary                                                        ), // password text box
-    MakeSpinnerWidgets({  120,     100}, {173, 12}, WWT_SPINNER,  WindowColour::Secondary, STR_SERVER_MAX_PLAYERS_VALUE                          ), // max players (3 widgets)
-    MakeWidget        ({    6,     117}, {287, 14}, WWT_CHECKBOX, WindowColour::Secondary, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
-    MakeWidget        ({    6, WH-6-13}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_NEW_GAME                                          ), // start server button
-    MakeWidget        ({  112, WH-6-13}, {101, 14}, WWT_BUTTON,   WindowColour::Secondary, STR_LOAD_GAME                                         ), // None
+    MakeWidget        ({    0,       0}, { WW, WH}, WindowWidgetType::Frame,    WindowColour::Primary                                                          ), // panel / background
+    MakeWidget        ({    1,       1}, {298, 14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
+    MakeWidget        ({WW-13,       2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
+    MakeWidget        ({  120,      20}, {173, 13}, WindowWidgetType::TextBox, WindowColour::Secondary                                                        ), // port text box
+    MakeWidget        ({  120,      36}, {173, 13}, WindowWidgetType::TextBox, WindowColour::Secondary                                                        ), // name text box
+    MakeWidget        ({  120,      52}, {173, 13}, WindowWidgetType::TextBox, WindowColour::Secondary                                                        ), // description text box
+    MakeWidget        ({  120,      68}, {173, 13}, WindowWidgetType::TextBox, WindowColour::Secondary                                                        ), // greeting text box
+    MakeWidget        ({  120,      84}, {173, 13}, WindowWidgetType::TextBox, WindowColour::Secondary                                                        ), // password text box
+    MakeSpinnerWidgets({  120,     100}, {173, 12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_SERVER_MAX_PLAYERS_VALUE                          ), // max players (3 widgets)
+    MakeWidget        ({    6,     117}, {287, 14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_ADVERTISE,                STR_ADVERTISE_SERVER_TIP), // advertise checkbox
+    MakeWidget        ({    6, WH-6-13}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_NEW_GAME                                          ), // start server button
+    MakeWidget        ({  112, WH-6-13}, {101, 14}, WindowWidgetType::Button,   WindowColour::Secondary, STR_LOAD_GAME                                         ), // None
     { WIDGETS_END },
 };
 
@@ -92,7 +92,7 @@ rct_window* window_server_start_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
+    window = WindowCreateCentred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
 
     window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
     window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
@@ -105,7 +105,7 @@ rct_window* window_server_start_open()
            | (1 << WIDX_GREETING_INPUT) | (1 << WIDX_PASSWORD_INPUT) | (1 << WIDX_MAXPLAYERS) | (1 << WIDX_MAXPLAYERS_INCREASE)
            | (1 << WIDX_MAXPLAYERS_DECREASE) | (1 << WIDX_ADVERTISE_CHECKBOX) | (1 << WIDX_START_SERVER)
            | (1 << WIDX_LOAD_SERVER));
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -307,9 +307,9 @@ static void window_server_start_textinput(rct_window* w, rct_widgetindex widgetI
 
 static void window_server_start_invalidate(rct_window* w)
 {
-    colour_scheme_update_by_class(w, WC_SERVER_LIST);
+    ColourSchemeUpdateByClass(w, WC_SERVER_LIST);
 
-    widget_set_checkbox_value(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+    WidgetSetCheckboxValue(w, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
     auto ft = Formatter::Common();
     ft.Increment(18);
     ft.Add<uint16_t>(gConfigNetwork.maxplayers);
@@ -317,22 +317,21 @@ static void window_server_start_invalidate(rct_window* w)
 
 static void window_server_start_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
-    gfx_draw_string_left(
-        dpi, STR_PORT, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_NAME, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_NAME_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_DESCRIPTION, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_DESCRIPTION_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_SERVER_GREETING, nullptr, w->colours[1],
-        w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_GREETING_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_PASSWORD, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PASSWORD_INPUT].top });
-    gfx_draw_string_left(
-        dpi, STR_MAX_PLAYERS, nullptr, w->colours[1], w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_MAXPLAYERS].top });
+    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PORT_INPUT].top }, STR_PORT, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_NAME_INPUT].top }, STR_SERVER_NAME, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_DESCRIPTION_INPUT].top }, STR_SERVER_DESCRIPTION, {},
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_GREETING_INPUT].top }, STR_SERVER_GREETING, {},
+        { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PASSWORD_INPUT].top }, STR_PASSWORD, {}, { w->colours[1] });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_MAXPLAYERS].top }, STR_MAX_PLAYERS, {}, { w->colours[1] });
 }
 
 #endif

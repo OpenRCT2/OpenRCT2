@@ -113,10 +113,16 @@ namespace OpenRCT2
             virtual void TriggerResize() abstract;
 
             virtual void ShowMessageBox(const std::string& message) abstract;
+
+            virtual bool HasMenuSupport() abstract;
+            // Creates a menu with a series of options, returns the index of the selected option
+            virtual int32_t ShowMenuDialog(
+                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
             virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(const std::string& title) abstract;
+            virtual bool HasFilePicker() const abstract;
 
             // Input
             virtual const CursorState* GetCursorState() abstract;

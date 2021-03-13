@@ -17,6 +17,6 @@
 #include "../world/Water.h"
 #include "ObjectLimits.h"
 
-void get_type_entry_index(size_t index, uint8_t* outObjectType, ObjectEntryIndex* outEntryIndex);
+void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex);
 const rct_object_entry* get_loaded_object_entry(size_t index);
 void* get_loaded_object_chunk(size_t index);

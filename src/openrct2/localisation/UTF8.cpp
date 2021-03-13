@@ -112,15 +112,7 @@ int32_t utf8_length(const utf8* text)
  */
 utf8* get_string_end(const utf8* text)
 {
-    int32_t codepoint;
-    const utf8* ch = text;
-
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
-    {
-        int32_t argLength = utf8_get_format_code_arg_length(codepoint);
-        ch += argLength;
-    }
-    return const_cast<utf8*>(ch - 1);
+    return const_cast<char*>(std::strchr(text, 0));
 }
 
 /**
@@ -129,84 +121,4 @@ utf8* get_string_end(const utf8* text)
 size_t get_string_size(const utf8* text)
 {
     return get_string_end(text) - text + 1;
-}
-
-/**
- * Return the number of visible characters (excludes format codes) in the given UTF-8 string.
- */
-int32_t get_string_length(const utf8* text)
-{
-    char32_t codepoint;
-    const utf8* ch = text;
-
-    int32_t count = 0;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
-    {
-        if (utf8_is_format_code(codepoint))
-        {
-            ch += utf8_get_format_code_arg_length(codepoint);
-        }
-        else
-        {
-            count++;
-        }
-    }
-    return count;
-}
-
-int32_t utf8_get_format_code_arg_length(char32_t codepoint)
-{
-    switch (codepoint)
-    {
-        case FORMAT_MOVE_X:
-        case FORMAT_ADJUST_PALETTE:
-        case FORMAT_3:
-        case FORMAT_4:
-            return 1;
-        case FORMAT_NEWLINE_X_Y:
-            return 2;
-        case FORMAT_INLINE_SPRITE:
-            return 4;
-        default:
-            return 0;
-    }
-}
-
-void utf8_remove_formatting(utf8* string, bool allowColours)
-{
-    utf8* readPtr = string;
-    utf8* writePtr = string;
-
-    while (true)
-    {
-        char32_t code = utf8_get_next(readPtr, const_cast<const utf8**>(&readPtr));
-
-        if (code == 0)
-        {
-            *writePtr = 0;
-            break;
-        }
-        else if (!utf8_is_format_code(code) || (allowColours && utf8_is_colour_code(code)))
-        {
-            writePtr = utf8_write_codepoint(writePtr, code);
-        }
-    }
-}
-
-bool utf8_is_format_code(char32_t codepoint)
-{
-    if (codepoint < 32)
-        return true;
-    if (codepoint >= FORMAT_ARGUMENT_CODE_START && codepoint <= FORMAT_ARGUMENT_CODE_END)
-        return true;
-    if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
-        return true;
-    if (codepoint == FORMAT_COMMA1DP16)
-        return true;
-    return false;
-}
-
-bool utf8_is_colour_code(char32_t codepoint)
-{
-    return codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END;
 }

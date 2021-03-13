@@ -16,8 +16,8 @@
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
+#include "../world/Climate.h"
 #include "../world/MapAnimation.h"
-#include "../world/Sprite.h"
 
 constexpr const uint16_t RCT1_MAX_TILE_ELEMENTS = 0xC000;
 constexpr const uint16_t RCT1_MAX_SPRITES = 5000;
@@ -241,9 +241,8 @@ struct rct1_vehicle : RCT12SpriteBase
     };
     union
     {
-        int16_t track_direction; // 0x36 (0000 0000 0000 0011)
-        int16_t track_type;      // 0x36 (0000 0011 1111 1100)
-        RCT12xy8 boat_location;  // 0x36
+        int16_t TrackTypeAndDirection; // 0x36
+        RCT12xy8 boat_location;        // 0x36
     };
     uint16_t track_x;               // 0x38
     uint16_t track_y;               // 0x3A
@@ -320,6 +319,16 @@ struct rct1_vehicle : RCT12SpriteBase
     uint8_t mini_golf_flags;  // 0xD5
     uint8_t ride_subtype;     // 0xD6
     uint8_t colours_extended; // 0xD7
+
+    uint16_t GetTrackType() const
+    {
+        return TrackTypeAndDirection >> 2;
+    }
+
+    uint8_t GetTrackDirection() const
+    {
+        return TrackTypeAndDirection & RCT12VehicleTrackDirectionMask;
+    }
 };
 
 struct rct1_peep : RCT12SpriteBase
@@ -362,12 +371,8 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t window_invalidate_flags; // 0x45
     money16 paid_on_drink;           // 0x46
     uint8_t ride_types_been_on[16];  // 0x48
-    uint32_t item_extra_flags;       // 0x58
-    uint8_t photo2_ride_ref;         // 0x5C
-    uint8_t photo3_ride_ref;         // 0x5D
-    uint8_t photo4_ride_ref;         // 0x5E
-    uint8_t pad_5F[0x09];            // 0x5F
-    uint8_t current_ride;            // 0x68
+    uint8_t pad_5F[0x10];            // 0x58
+    RCT12RideId current_ride;        // 0x68
     uint8_t current_ride_station;    // 0x69
     uint8_t current_train;           // 0x6A
     union
@@ -406,7 +411,7 @@ struct rct1_peep : RCT12SpriteBase
         uint8_t maze_last_edge; // 0x78
         uint8_t direction;      // Direction ?
     };
-    uint8_t interaction_ride_index;
+    RCT12RideId interaction_ride_index;
     uint16_t time_in_queue;    // 0x7A
     uint8_t rides_been_on[32]; // 0x7C
     // 255 bit bitmap of every ride the peep has been on see
@@ -416,21 +421,21 @@ struct rct1_peep : RCT12SpriteBase
     money32 cash_spent;                                 // 0xA4
     int32_t park_entry_time;                            // 0xA8
     int8_t rejoin_queue_timeout;                        // 0xAC
-    uint8_t previous_ride;                              // 0xAD
+    RCT12RideId previous_ride;                          // 0xAD
     uint16_t previous_ride_time_out;                    // 0xAE
     RCT12PeepThought thoughts[RCT12_PEEP_MAX_THOUGHTS]; // 0xB0
     uint8_t pad_C4;
     union
     {
-        uint8_t staff_id;                 // 0xC5
-        uint8_t guest_heading_to_ride_id; // 0xC5
+        uint8_t staff_id;                     // 0xC5
+        RCT12RideId guest_heading_to_ride_id; // 0xC5
     };
     union
     {
         uint8_t staff_orders;           // 0xC6
         uint8_t peep_is_lost_countdown; // 0xC6
     };
-    uint8_t photo1_ride_ref;         // 0xC7
+    RCT12RideId photo1_ride_ref;     // 0xC7
     uint32_t peep_flags;             // 0xC8
     rct12_xyzd8 pathfind_goal;       // 0xCC
     rct12_xyzd8 pathfind_history[4]; // 0xD0
@@ -453,7 +458,7 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t no_of_souvenirs;              // 0xEE
     uint8_t vandalism_seen;               // 0xEF
     uint8_t voucher_type;                 // 0xF0
-    uint8_t voucher_arguments;            // 0xF1 ride_id or string_offset_id
+    RCT12RideId voucher_arguments;        // 0xF1 ride_id or string_offset_id
     uint8_t surroundings_thought_timeout; // 0xF2
     uint8_t angriness;                    // 0xF3
     uint8_t time_lost;
@@ -461,10 +466,14 @@ struct rct1_peep : RCT12SpriteBase
     uint8_t balloon_colour;        // 0xF6
     uint8_t umbrella_colour;       // 0xF7
     uint8_t hat_colour;            // 0xF8
-    uint8_t favourite_ride;        // 0xF9
+    RCT12RideId favourite_ride;    // 0xF9
     uint8_t favourite_ride_rating; // 0xFA
     uint8_t pad_FB;
     uint32_t item_standard_flags; // 0xFC
+    uint64_t GetItemFlags() const
+    {
+        return item_standard_flags;
+    }
 };
 assert_struct_size(rct1_peep, 0x100);
 
@@ -1123,7 +1132,7 @@ enum
     RCT1_RESEARCH_CATEGORY_THRILL_RIDES = 1 << 1,
     RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES = 1 << 2,
     RCT1_RESEARCH_CATEGORY_SHOPS = 1 << 3,
-    RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING = 1 << 4,
+    RCT1_RESEARCH_CATEGORY_SCENERY_THEMING = 1 << 4,
     RCT1_RESEARCH_CATEGORY_RIDE_IMPROVEMENTS = 1 << 5,
 };
 
@@ -1273,5 +1282,7 @@ enum
 
 void load_from_sv4(const char* path);
 void load_from_sc4(const char* path);
+
+track_type_t RCT1TrackTypeToOpenRCT2(RCT12TrackType origTrackType, uint8_t rideType);
 
 #endif

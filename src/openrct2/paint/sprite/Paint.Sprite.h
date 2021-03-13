@@ -11,13 +11,15 @@
 #define _PAINT_SPRITE_H
 
 #include "../../common.h"
-#include "../../world/Sprite.h"
 
 struct paint_session;
+struct Litter;
+struct MiscEntity;
+struct Peep;
 
 void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y);
 
-void misc_paint(paint_session* session, const SpriteBase* misc, int32_t imageDirection);
+void misc_paint(paint_session* session, const MiscEntity* misc, int32_t imageDirection);
 void litter_paint(paint_session* session, const Litter* litter, int32_t imageDirection);
 void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection);
 

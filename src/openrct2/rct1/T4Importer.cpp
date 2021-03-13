@@ -9,7 +9,7 @@
 
 #include "../TrackImporter.h"
 #include "../config/Config.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -146,7 +146,7 @@ private:
             td->ride_mode = RideMode::PoweredLaunch;
         }
 
-        // Convert RCT1 vehicle type to RCT2 vehicle type. Intialise with an string consisting of 8 spaces.
+        // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
         rct_object_entry vehicleObject = { 0x80, "        " };
         if (td4Base.type == RIDE_TYPE_MAZE)
         {
@@ -223,7 +223,7 @@ private:
         td->number_of_cars_per_train = td4Base.number_of_cars_per_train;
         td->min_waiting_time = td4Base.min_waiting_time;
         td->max_waiting_time = td4Base.max_waiting_time;
-        td->operation_setting = std::min(td4Base.operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td4Base.operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
         td->max_speed = td4Base.max_speed;
         td->average_speed = td4Base.average_speed;
         td->ride_length = td4Base.ride_length;
@@ -250,7 +250,7 @@ private:
         td->space_required_y = 255;
         td->lift_hill_speed = 5;
         td->num_circuits = 0;
-        td->operation_setting = std::min(td->operation_setting, RideTypeDescriptors[td->type].OperatingSettings.MaxValue);
+        td->operation_setting = std::min(td->operation_setting, GetRideTypeDescriptor(td->type).OperatingSettings.MaxValue);
 
         if (td->type == RIDE_TYPE_MAZE)
         {
@@ -278,7 +278,7 @@ private:
                 _stream.SetPosition(_stream.GetPosition() - 1);
                 _stream.Read(&t4TrackElement, sizeof(rct_td46_track_element));
                 TrackDesignTrackElement trackElement{};
-                trackElement.type = t4TrackElement.type;
+                trackElement.type = RCT1TrackTypeToOpenRCT2(t4TrackElement.type, td->type);
                 trackElement.flags = t4TrackElement.flags;
                 td->track_elements.push_back(trackElement);
             }

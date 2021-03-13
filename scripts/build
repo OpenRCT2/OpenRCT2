@@ -2,7 +2,11 @@
 set -e
 
 # Ensure we are in root directory
-basedir="$(readlink -f `dirname $0`/..)"
+if [[ $(uname) == "Darwin" ]]; then
+    basedir="$(perl -MCwd=abs_path -le 'print abs_path readlink(shift);' `dirname $0`/..)"
+else
+    basedir="$(readlink -f `dirname $0`/..)"
+fi
 cd $basedir
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
@@ -30,8 +34,10 @@ else
     mkdir -p bin && cd bin
     export DESTDIR=install
     cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
+
     if [[ "$TESTPAINT" == "true" ]]; then
         testpaint_target=testpaint
     fi
+
     ninja -k0 $testpaint_target all install
 fi

@@ -18,13 +18,15 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/actions/LandSetRightsAction.hpp>
-#include <openrct2/actions/PlaceParkEntranceAction.hpp>
-#include <openrct2/actions/PlacePeepSpawnAction.hpp>
-#include <openrct2/actions/SurfaceSetStyleAction.hpp>
+#include <openrct2/actions/LandSetRightsAction.h>
+#include <openrct2/actions/PlaceParkEntranceAction.h>
+#include <openrct2/actions/PlacePeepSpawnAction.h>
+#include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
+#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
@@ -32,15 +34,30 @@
 #include <openrct2/world/Surface.h>
 #include <vector>
 
-#define MAP_COLOUR_2(colourA, colourB) (((colourA) << 8) | (colourB))
-#define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
-#define MAP_COLOUR_UNOWNED(colour) (PALETTE_INDEX_10 | ((colour)&0xFF00))
+static constexpr uint16_t MapColour2(uint8_t colourA, uint8_t colourB)
+{
+    return (colourA << 8) | colourB;
+}
+static constexpr uint16_t MapColour(uint8_t colour)
+{
+    return MapColour2(colour, colour);
+}
+static constexpr uint16_t MapColourUnowned(uint16_t colour)
+{
+    return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
+}
 
 constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
+
+constexpr uint8_t DefaultPeepMapColour = PALETTE_INDEX_20;
+constexpr uint8_t GuestMapColour = PALETTE_INDEX_172;
+constexpr uint8_t GuestMapColourAlternate = PALETTE_INDEX_21;
+constexpr uint8_t StaffMapColour = PALETTE_INDEX_138;
+constexpr uint8_t StaffMapColourAlternate = PALETTE_INDEX_10;
 
 // Some functions manipulate coordinates on the map. These are the coordinates of the pixels in the
 // minimap. In order to distinguish those from actual coordinates, we use a separate name.
@@ -81,23 +98,23 @@ validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 static rct_widget window_map_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget        ({  0,  43}, {245, 215}, WWT_RESIZE,    WindowColour::Secondary                                                                                  ),
-    MakeRemapWidget   ({  3,  17}, { 31,  27}, WWT_COLOURBTN, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
-    MakeRemapWidget   ({ 34,  17}, { 31,  27}, WWT_COLOURBTN, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
-    MakeWidget        ({  3,  46}, {239, 180}, WWT_SCROLL,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
-    MakeSpinnerWidgets({104, 229}, { 95,  12}, WWT_SPINNER,   WindowColour::Secondary, STR_MAP_SIZE_VALUE                                                              ), // NB: 3 widgets
-    MakeWidget        ({  4,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
-    MakeWidget        ({  4,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_PARK_ENTRANCE,               STR_BUILD_PARK_ENTRANCE_TIP                    ),
-    MakeWidget        ({ 28,   1}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
-    MakeWidget        ({  4,  17}, { 44,  32}, WWT_IMGBTN,    WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                                            ),
-    MakeRemapWidget   ({  5,  18}, { 16,  16}, WWT_TRNBTN,    WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_TIP                    ),
-    MakeRemapWidget   ({ 31,  32}, { 16,  16}, WWT_TRNBTN,    WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_TIP                     ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
-    MakeWidget        ({ 58, 197}, {184,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
-    MakeWidget        ({ 58, 197}, {174,  12}, WWT_CHECKBOX,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
-    MakeWidget        ({218,  45}, { 24,  24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_ROTATE_ARROW,                STR_ROTATE_OBJECTS_90                          ),
-    MakeWidget        ({110, 189}, {131,  14}, WWT_BUTTON,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
+    MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
+    MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
+    MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
+    MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
+    MakeSpinnerWidgets({104, 229}, { 95,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_MAP_SIZE_VALUE                                                              ), // NB: 3 widgets
+    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
+    MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PARK_ENTRANCE,               STR_BUILD_PARK_ENTRANCE_TIP                    ),
+    MakeWidget        ({ 28,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
+    MakeWidget        ({  4,  17}, { 44,  32}, WindowWidgetType::ImgBtn,    WindowColour::Secondary, SPR_LAND_TOOL_SIZE_0                                                            ),
+    MakeRemapWidget   ({  5,  18}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_DECREASE,          STR_ADJUST_SMALLER_LAND_TIP                    ),
+    MakeRemapWidget   ({ 31,  32}, { 16,  16}, WindowWidgetType::TrnBtn,    WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,          STR_ADJUST_LARGER_LAND_TIP                     ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_OWNED,                  STR_SET_LAND_TO_BE_OWNED_TIP                   ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_OWNED,   STR_SET_CONSTRUCTION_RIGHTS_TO_BE_OWNED_TIP    ),
+    MakeWidget        ({ 58, 197}, {184,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_LAND_SALE,                   STR_SET_LAND_TO_BE_AVAILABLE_TIP               ),
+    MakeWidget        ({ 58, 197}, {174,  12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_CONSTRUCTION_RIGHTS_SALE,    STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP),
+    MakeWidget        ({218,  45}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,                STR_ROTATE_OBJECTS_90                          ),
+    MakeWidget        ({110, 189}, {131,  14}, WindowWidgetType::Button,    WindowColour::Secondary, STR_MAPGEN_WINDOW_TITLE,         STR_MAP_GENERATOR_TIP                          ),
     { WIDGETS_END },
 };
 
@@ -112,14 +129,14 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
 
 /** rct2: 0x00981BCC */
 static constexpr const uint16_t RideKeyColours[] = {
-    MAP_COLOUR(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
-    MAP_COLOUR(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
-    MAP_COLOUR(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
-    MAP_COLOUR(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
-    MAP_COLOUR(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
-    MAP_COLOUR(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
-    MAP_COLOUR(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
-    MAP_COLOUR(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
+    MapColour(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
+    MapColour(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
+    MapColour(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
+    MapColour(PALETTE_INDEX_209),  // COLOUR_KEY_SOUVENIR
+    MapColour(PALETTE_INDEX_136),  // COLOUR_KEY_KIOSK
+    MapColour(PALETTE_INDEX_102),  // COLOUR_KEY_FIRST_AID
+    MapColour(PALETTE_INDEX_55),   // COLOUR_KEY_CASH_MACHINE
+    MapColour(PALETTE_INDEX_161),  // COLOUR_KEY_TOILETS
 };
 
 static void window_map_close(rct_window *w);
@@ -217,7 +234,7 @@ rct_window* window_map_open()
         return nullptr;
     }
 
-    w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
+    w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_PEOPLE_TAB) | (1 << WIDX_RIDES_TAB) | (1 << WIDX_MAP_SIZE_SPINNER)
         | (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL)
@@ -229,7 +246,7 @@ rct_window* window_map_open()
     w->hold_down_widgets = (1 << WIDX_MAP_SIZE_SPINNER_UP) | (1 << WIDX_MAP_SIZE_SPINNER_DOWN) | (1 << WIDX_LAND_TOOL_LARGER)
         | (1 << WIDX_LAND_TOOL_SMALLER);
 
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     w->map.rotation = get_current_rotation();
 
@@ -286,7 +303,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_SET_LAND_RIGHTS:
             w->Invalidate();
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
             _activeTool = 2;
             // Prevent mountain tool size.
@@ -329,7 +346,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_BUILD_PARK_ENTRANCE:
             w->Invalidate();
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
 
             gParkEntranceGhostExists = false;
@@ -343,7 +360,7 @@ static void window_map_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
-            if (tool_set(w, widgetIndex, TOOL_UP_ARROW))
+            if (tool_set(w, widgetIndex, Tool::UpArrow))
                 break;
 
             show_gridlines();
@@ -586,7 +603,7 @@ static void window_map_scrollmousedown(rct_window* w, int32_t scrollIndex, const
             gLandToolTerrainSurface, gLandToolTerrainEdge);
         GameActions::Execute(&surfaceSetStyleAction);
     }
-    else if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
+    else if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
         // Set land rights
         int32_t landRightsToolSize = std::max<int32_t>(1, _landRightsToolSize);
@@ -744,7 +761,7 @@ static void window_map_invalidate(rct_window* w)
     // Disable all scenario editor related widgets
     for (i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_MAP_GENERATOR; i++)
     {
-        w->widgets[i].type = WWT_EMPTY;
+        w->widgets[i].type = WindowWidgetType::Empty;
     }
 
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
@@ -753,11 +770,11 @@ static void window_map_invalidate(rct_window* w)
         if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP
             && gCurrentToolWidget.widget_index == WIDX_BUILD_PARK_ENTRANCE)
         {
-            w->widgets[WIDX_ROTATE_90].type = WWT_FLATBTN;
+            w->widgets[WIDX_ROTATE_90].type = WindowWidgetType::FlatBtn;
         }
 
         // Always show set land rights button
-        w->widgets[WIDX_SET_LAND_RIGHTS].type = WWT_FLATBTN;
+        w->widgets[WIDX_SET_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
         // If any tool is active
         if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_MAP)
@@ -769,14 +786,14 @@ static void window_map_invalidate(rct_window* w)
             }
             else
             { // if in set land rights mode: show land tool buttons + modes
-                w->widgets[WIDX_LAND_TOOL].type = WWT_IMGBTN;
-                w->widgets[WIDX_LAND_TOOL_SMALLER].type = WWT_TRNBTN;
-                w->widgets[WIDX_LAND_TOOL_LARGER].type = WWT_TRNBTN;
+                w->widgets[WIDX_LAND_TOOL].type = WindowWidgetType::ImgBtn;
+                w->widgets[WIDX_LAND_TOOL_SMALLER].type = WindowWidgetType::TrnBtn;
+                w->widgets[WIDX_LAND_TOOL_LARGER].type = WindowWidgetType::TrnBtn;
 
                 for (i = 0; i < 4; i++)
-                    w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WWT_CHECKBOX;
+                    w->widgets[WIDX_LAND_OWNED_CHECKBOX + i].type = WindowWidgetType::Checkbox;
 
-                w->widgets[WIDX_LAND_TOOL].image = land_tool_size_to_sprite_index(_landRightsToolSize);
+                w->widgets[WIDX_LAND_TOOL].image = LandTool::SizeToSpriteIndex(_landRightsToolSize);
             }
         }
         else
@@ -793,22 +810,23 @@ static void window_map_invalidate(rct_window* w)
  */
 static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_map_draw_tab_images(w, dpi);
 
     auto screenCoords = w->windowPos
         + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
 
     // Draw land tool size
-    if (widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
+    if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        gfx_draw_string_centred(
-            dpi, STR_LAND_TOOL_SIZE_VALUE, screenCoords - ScreenCoordsXY{ 0, 2 }, COLOUR_BLACK, &_landRightsToolSize);
+        DrawTextBasic(
+            dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, &_landRightsToolSize,
+            { TextAlignment::CENTRE });
     }
     screenCoords.y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
 
     // People starting position (scenario editor only)
-    if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WWT_EMPTY)
+    if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
     {
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
@@ -834,7 +852,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 gfx_fill_rect(
                     dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } }, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 });
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, mapLabels[i], w);
                 screenCoords.y += LIST_ROW_HEIGHT;
                 if (i == 3)
                 {
@@ -843,11 +861,11 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
             }
         }
     }
-    else if (!widget_is_active_tool(w, WIDX_SET_LAND_RIGHTS))
+    else if (!WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS))
     {
-        gfx_draw_string_left(
-            dpi, STR_MAP_SIZE, nullptr, w->colours[1],
-            w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 });
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_SPINNER].top + 1 }, STR_MAP_SIZE, {},
+            { w->colours[1] });
     }
 }
 
@@ -940,7 +958,7 @@ static void window_map_centre_on_view_point()
 
     w_map->scrolls[0].h_left = cx;
     w_map->scrolls[0].v_top = dx;
-    widget_scroll_update_thumbs(w_map, WIDX_MAP);
+    WidgetScrollUpdateThumbs(w_map, WIDX_MAP);
 }
 
 /**
@@ -949,15 +967,15 @@ static void window_map_centre_on_view_point()
  */
 static void window_map_show_default_scenario_editor_buttons(rct_window* w)
 {
-    w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
-    w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
-    w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_BUTTON;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_BUTTON;
+    w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
+    w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
+    w->widgets[WIDX_MAP_SIZE_SPINNER].type = WindowWidgetType::Spinner;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WindowWidgetType::Button;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WindowWidgetType::Button;
 
     // Only show this in the scenario editor, even when in sandbox mode.
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        w->widgets[WIDX_MAP_GENERATOR].type = WWT_BUTTON;
+        w->widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
     auto ft = Formatter::Common();
     ft.Increment(2);
@@ -1030,47 +1048,67 @@ static MapCoordsXY window_map_transform_to_map_coords(CoordsXY c)
     return { -x + y + MAXIMUM_MAP_SIZE_TECHNICAL - 8, x + y - 8 };
 }
 
+static void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixelinfo* dpi)
+{
+    if (peep->x == LOCATION_NULL)
+        return;
+
+    MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
+    auto leftTop = ScreenCoordsXY{ c.x, c.y };
+    auto rightBottom = leftTop;
+    uint8_t colour = DefaultPeepMapColour;
+    if (sprite_get_flashing(peep))
+    {
+        colour = flashColour;
+        // If flashing then map peep pixel size is increased (by moving left top downwards)
+        if (flashColour != DefaultPeepMapColour)
+        {
+            leftTop.x--;
+        }
+    }
+
+    gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+}
+
+static uint8_t MapGetGuestFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashGuests) != 0)
+    {
+        colour = GuestMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = GuestMapColourAlternate;
+    }
+    return colour;
+}
+
+static uint8_t MapGetStaffFlashColour()
+{
+    uint8_t colour = DefaultPeepMapColour;
+    if ((gWindowMapFlashingFlags & MapFlashingFlags::FlashStaff) != 0)
+    {
+        colour = StaffMapColour;
+        if ((gWindowMapFlashingFlags & MapFlashingFlags::SwitchColour) == 0)
+            colour = StaffMapColourAlternate;
+    }
+    return colour;
+}
+
 /**
  *
  *  rct2: 0x0068DADA
  */
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto peep : EntityList<Peep>(EntityListId::Peep))
+    auto flashColour = MapGetGuestFlashColour();
+    for (auto guest : EntityList<Guest>(EntityListId::Peep))
     {
-        if (peep->x == LOCATION_NULL)
-            continue;
-
-        MapCoordsXY c = window_map_transform_to_map_coords({ peep->x, peep->y });
-        auto leftTop = ScreenCoordsXY{ c.x, c.y };
-        auto rightBottom = leftTop;
-
-        int16_t colour = PALETTE_INDEX_20;
-
-        if (sprite_get_flashing(peep))
-        {
-            if (peep->AssignedPeepType == PeepType::Staff)
-            {
-                if ((gWindowMapFlashingFlags & (1 << 3)) != 0)
-                {
-                    colour = PALETTE_INDEX_138;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_10;
-                }
-            }
-            else
-            {
-                if ((gWindowMapFlashingFlags & (1 << 1)) != 0)
-                {
-                    colour = PALETTE_INDEX_172;
-                    leftTop.x--;
-                    if ((gWindowMapFlashingFlags & (1 << 15)) == 0)
-                        colour = PALETTE_INDEX_21;
-                }
-            }
-        }
-        gfx_fill_rect(dpi, { leftTop, rightBottom }, colour);
+        DrawMapPeepPixel(guest, flashColour, dpi);
+    }
+    flashColour = MapGetStaffFlashColour();
+    for (auto staff : EntityList<Staff>(EntityListId::Peep))
+    {
+        DrawMapPeepPixel(staff, flashColour, dpi);
     }
 }
 
@@ -1172,7 +1210,7 @@ static void window_map_set_land_rights_tool_update(const ScreenCoordsXY& screenC
 static CoordsXYZD place_park_entrance_get_map_position(const ScreenCoordsXY& screenCoords)
 {
     CoordsXYZD parkEntranceMapPosition{ 0, 0, 0, INVALID_DIRECTION };
-    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     parkEntranceMapPosition = { mapCoords.x, mapCoords.y, 0, INVALID_DIRECTION };
     if (parkEntranceMapPosition.isNull())
         return parkEntranceMapPosition;
@@ -1366,22 +1404,22 @@ static void map_window_decrease_map_size()
     gfx_invalidate_screen();
 }
 
-static constexpr const uint16_t WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
+static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
 static constexpr const uint16_t TerrainColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_73),                      // TERRAIN_GRASS
-    MAP_COLOUR(PALETTE_INDEX_40),                      // TERRAIN_SAND
-    MAP_COLOUR(PALETTE_INDEX_108),                     // TERRAIN_DIRT
-    MAP_COLOUR(PALETTE_INDEX_12),                      // TERRAIN_ROCK
-    MAP_COLOUR(PALETTE_INDEX_62),                      // TERRAIN_MARTIAN
-    MAP_COLOUR_2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
-    MAP_COLOUR_2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
-    MAP_COLOUR(PALETTE_INDEX_141),                     // TERRAIN_ICE
-    MAP_COLOUR_2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
-    MAP_COLOUR_2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
-    MAP_COLOUR_2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
-    MAP_COLOUR_2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
-    MAP_COLOUR(PALETTE_INDEX_111),                     // TERRAIN_SAND_DARK
-    MAP_COLOUR(PALETTE_INDEX_222),                     // TERRAIN_SAND_LIGHT
+    MapColour(PALETTE_INDEX_73),                     // TERRAIN_GRASS
+    MapColour(PALETTE_INDEX_40),                     // TERRAIN_SAND
+    MapColour(PALETTE_INDEX_108),                    // TERRAIN_DIRT
+    MapColour(PALETTE_INDEX_12),                     // TERRAIN_ROCK
+    MapColour(PALETTE_INDEX_62),                     // TERRAIN_MARTIAN
+    MapColour2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
+    MapColour2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
+    MapColour(PALETTE_INDEX_141),                    // TERRAIN_ICE
+    MapColour2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
+    MapColour2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
+    MapColour2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
+    MapColour2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
+    MapColour(PALETTE_INDEX_111),                    // TERRAIN_SAND_DARK
+    MapColour(PALETTE_INDEX_222),                    // TERRAIN_SAND_LIGHT
 };
 
 static constexpr const uint16_t ElementTypeMaskColour[] = {
@@ -1397,15 +1435,15 @@ static constexpr const uint16_t ElementTypeMaskColour[] = {
 };
 
 static constexpr const uint16_t ElementTypeAddColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_SURFACE
-    MAP_COLOUR(PALETTE_INDEX_17),                     // TILE_ELEMENT_TYPE_PATH
-    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
-    MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_186),                    // TILE_ELEMENT_TYPE_ENTRANCE
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_WALL
-    MAP_COLOUR(PALETTE_INDEX_99),                     // TILE_ELEMENT_TYPE_LARGE_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_0),                      // TILE_ELEMENT_TYPE_BANNER
-    MAP_COLOUR(PALETTE_INDEX_68),                     // TILE_ELEMENT_TYPE_CORRUPT
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_SURFACE
+    MapColour(PALETTE_INDEX_17),                    // TILE_ELEMENT_TYPE_PATH
+    MapColour2(PALETTE_INDEX_183, PALETTE_INDEX_0), // TILE_ELEMENT_TYPE_TRACK
+    MapColour2(PALETTE_INDEX_0, PALETTE_INDEX_99),  // TILE_ELEMENT_TYPE_SMALL_SCENERY
+    MapColour(PALETTE_INDEX_186),                   // TILE_ELEMENT_TYPE_ENTRANCE
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_WALL
+    MapColour(PALETTE_INDEX_99),                    // TILE_ELEMENT_TYPE_LARGE_SCENERY
+    MapColour(PALETTE_INDEX_0),                     // TILE_ELEMENT_TYPE_BANNER
+    MapColour(PALETTE_INDEX_68),                    // TILE_ELEMENT_TYPE_CORRUPT
 };
 
 static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
@@ -1418,7 +1456,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
         colour = WaterColour;
 
     if (!(surfaceElement->GetOwnership() & OWNERSHIP_OWNED))
-        colour = MAP_COLOUR_UNOWNED(colour);
+        colour = MapColourUnowned(colour);
 
     const int32_t maxSupportedTileElementType = static_cast<int32_t>(std::size(ElementTypeAddColour));
     auto tileElement = reinterpret_cast<TileElement*>(surfaceElement);
@@ -1426,7 +1464,7 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
     {
         if (tileElement->IsGhost())
         {
-            colour = MAP_COLOUR(PALETTE_INDEX_21);
+            colour = MapColour(PALETTE_INDEX_21);
             break;
         }
 
@@ -1445,8 +1483,8 @@ static uint16_t map_window_get_pixel_colour_peep(const CoordsXY& c)
 static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 {
     Ride* ride;
-    uint16_t colourA = 0;                            // highlight colour
-    uint16_t colourB = MAP_COLOUR(PALETTE_INDEX_13); // surface colour (dark grey)
+    uint16_t colourA = 0;                           // highlight colour
+    uint16_t colourB = MapColour(PALETTE_INDEX_13); // surface colour (dark grey)
 
     // as an improvement we could use first_element to show underground stuff?
     TileElement* tileElement = reinterpret_cast<TileElement*>(map_get_surface_element_at(c));
@@ -1457,7 +1495,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
 
         if (tileElement->IsGhost())
         {
-            colourA = MAP_COLOUR(PALETTE_INDEX_21);
+            colourA = MapColour(PALETTE_INDEX_21);
             break;
         }
 
@@ -1466,12 +1504,12 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
             case TILE_ELEMENT_TYPE_SURFACE:
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
-                    colourB = MAP_COLOUR(PALETTE_INDEX_194);
+                    colourB = MapColour(PALETTE_INDEX_194);
                 if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
-                    colourB = MAP_COLOUR_UNOWNED(colourB);
+                    colourB = MapColourUnowned(colourB);
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                colourA = MAP_COLOUR(PALETTE_INDEX_14); // lighter grey
+                colourA = MapColour(PALETTE_INDEX_14); // lighter grey
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -1479,7 +1517,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
                 break;
@@ -1487,7 +1525,7 @@ static uint16_t map_window_get_pixel_colour_ride(const CoordsXY& c)
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
                 {
-                    const auto& colourKey = RideTypeDescriptors[ride->type].ColourKey;
+                    const auto& colourKey = ride->GetRideTypeDescriptor().ColourKey;
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
 

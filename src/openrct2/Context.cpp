@@ -31,7 +31,7 @@
 #include "core/Console.hpp"
 #include "core/File.h"
 #include "core/FileScanner.h"
-#include "core/FileStream.hpp"
+#include "core/FileStream.h"
 #include "core/Guard.hpp"
 #include "core/Http.h"
 #include "core/MemoryStream.h"
@@ -64,6 +64,7 @@
 #include "ui/WindowManager.h"
 #include "util/Util.h"
 #include "world/Park.h"
+#include "world/Sprite.h"
 
 #include <algorithm>
 #include <cmath>
@@ -118,11 +119,12 @@ namespace OpenRCT2
         bool _initialised = false;
         bool _isWindowMinimised = false;
         uint32_t _lastTick = 0;
-        uint32_t _accumulator = 0;
+        float _accumulator = 0.0f;
+        float _timeScale = 1.0f;
         uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
-        // If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to
+        // If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to
         // false.
         bool _finished = false;
 
@@ -174,6 +176,7 @@ namespace OpenRCT2
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
             gfx_unload_g1();
+            Audio::Close();
             config_release();
 
             Instance = nullptr;
@@ -271,6 +274,11 @@ namespace OpenRCT2
             _stdInOutConsole.WriteLine(s);
         }
 
+        void WriteErrorLine(const std::string& s) override
+        {
+            _stdInOutConsole.WriteLineError(s);
+        }
+
         /**
          * Causes the OpenRCT2 game loop to finish.
          */
@@ -364,6 +372,8 @@ namespace OpenRCT2
                 catch (const std::exception& eFallback)
                 {
                     log_fatal("Failed to open fallback language: %s", eFallback.what());
+                    auto uiContext = GetContext()->GetUiContext();
+                    uiContext->ShowMessageBox("Failed to load language file!\nYour installation may be damaged.");
                     return false;
                 }
             }
@@ -622,7 +632,7 @@ namespace OpenRCT2
                 gFirstTimeSaving = true;
                 game_fix_save_vars();
                 AutoCreateMapAnimations();
-                sprite_position_tween_reset();
+                EntityTweener::Get().Reset();
                 gScreenAge = 0;
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
@@ -949,6 +959,12 @@ namespace OpenRCT2
             {
                 _lastTick = 0;
                 _variableFrame = useVariableFrame;
+
+                // Switching from variable to fixed frame requires reseting
+                // of entity positions back to end of tick positions
+                auto& tweener = EntityTweener::Get();
+                tweener.Restore();
+                tweener.Reset();
             }
 
             if (useVariableFrame)
@@ -970,9 +986,9 @@ namespace OpenRCT2
                 _lastTick = currentTick;
             }
 
-            uint32_t elapsed = currentTick - _lastTick;
+            float elapsed = (currentTick - _lastTick) * _timeScale;
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
+            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -985,6 +1001,10 @@ namespace OpenRCT2
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 Update();
+
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
+
                 _accumulator -= GAME_UPDATE_TIME_MS;
             }
 
@@ -993,7 +1013,6 @@ namespace OpenRCT2
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-                _drawingEngine->UpdateWindows();
             }
         }
 
@@ -1001,17 +1020,19 @@ namespace OpenRCT2
         {
             uint32_t currentTick = platform_get_ticks();
 
+            auto& tweener = EntityTweener::Get();
+
             bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
             if (_lastTick == 0)
             {
-                sprite_position_tween_reset();
+                tweener.Reset();
                 _lastTick = currentTick;
             }
 
-            uint32_t elapsed = currentTick - _lastTick;
+            float elapsed = (currentTick - _lastTick) * _timeScale;
 
             _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<uint32_t>(GAME_UPDATE_MAX_THRESHOLD));
+            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
@@ -1019,33 +1040,28 @@ namespace OpenRCT2
             {
                 // Get the original position of each sprite
                 if (draw)
-                    sprite_position_tween_store_a();
+                    tweener.PreTick();
 
                 Update();
+
+                // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
+                window_update_all();
 
                 _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if (draw)
-                    sprite_position_tween_store_b();
+                    tweener.PostTick();
             }
 
             if (draw)
             {
-                const float alpha = std::min(static_cast<float>(_accumulator) / GAME_UPDATE_TIME_MS, 1.0f);
-                sprite_position_tween_all(alpha);
+                const float alpha = std::min(_accumulator / static_cast<float>(GAME_UPDATE_TIME_MS), 1.0f);
+                tweener.Tween(alpha);
 
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
                 _drawingEngine->EndDraw();
-
-                sprite_position_tween_restore();
-
-                // Note: It's important to call UpdateWindows after restoring the sprite positions, not in between,
-                // otherwise the window updates to positions of sprites could be reverted.
-                // This can be observed when changing ride settings using the mouse wheel that removes all
-                // vehicles and peeps from the ride: it can freeze the game.
-                _drawingEngine->UpdateWindows();
             }
         }
 
@@ -1212,6 +1228,16 @@ namespace OpenRCT2
         {
             return &_newVersionInfo;
         }
+
+        void SetTimeScale(float newScale) override
+        {
+            _timeScale = std::clamp(newScale, GAME_MIN_TIME_SCALE, GAME_MAX_TIME_SCALE);
+        }
+
+        float GetTimeScale() const override
+        {
+            return _timeScale;
+        }
     };
 
     Context* Context::Instance = nullptr;
@@ -1232,6 +1258,7 @@ namespace OpenRCT2
     {
         return Context::Instance;
     }
+
 } // namespace OpenRCT2
 
 void context_init()

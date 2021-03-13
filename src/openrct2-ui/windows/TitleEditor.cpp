@@ -19,6 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/scenario/Scenario.h>
@@ -31,6 +32,8 @@
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+
+using namespace OpenRCT2;
 
 // clang-format off
 enum WINDOW_TITLE_EDITOR_TAB {
@@ -134,40 +137,40 @@ static constexpr int32_t SCROLL_WIDTH = 350;
 
 static rct_widget window_title_editor_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({   0,  43}, { 320,  84}, WWT_RESIZE,        WindowColour::Secondary             ), // tab content panel
+    MakeWidget({   0,  43}, { 320,  84}, WindowWidgetType::Resize,        WindowColour::Secondary             ), // tab content panel
     MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                                         ), // presets tab
     MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                                      ), // saves tab
     MakeTab   ({  65,  17}, STR_TITLE_EDITOR_SCRIPT_TAB_TIP                                     ), // script tab
-    MakeWidget({  89,  48}, { 228, 219}, WWT_SCROLL,        WindowColour::Secondary, SCROLL_BOTH), // command/save list
+    MakeWidget({  89,  48}, { 228, 219}, WindowWidgetType::Scroll,        WindowColour::Secondary, SCROLL_BOTH), // command/save list
 
     // Presets Tab
-    MakeWidget     ({ 125,  60},  { 175,  14}, WWT_DROPDOWN,        WindowColour::Secondary                                                                                   ), // Preset title sequences
-    MakeWidget     ({ 288,  61},  {  11,  10}, WWT_BUTTON,          WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                               ),
-    MakeWidget     ({  10,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
-    MakeWidget     ({  10, 102},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
-    MakeWidget     ({ 110,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
-    MakeWidget     ({ 210,  82},   ACTION_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
+    MakeWidget     ({ 125,  60},  { 175,  14}, WindowWidgetType::DropdownMenu,        WindowColour::Secondary                                                                                   ), // Preset title sequences
+    MakeWidget     ({ 288,  61},  {  11,  10}, WindowWidgetType::Button,          WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                               ),
+    MakeWidget     ({  10,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
+    MakeWidget     ({  10, 102},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
+    MakeWidget     ({ 110,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
+    MakeWidget     ({ 210,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
 
     // Saves Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
+    MakeWidget     ({   8,  52},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
+    MakeWidget     ({   8,  70},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
+    MakeWidget     ({   8,  88},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
+    MakeWidget     ({   8, 106},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
 
     // Script Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
-    MakeWidget     ({   8,  70},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
-    MakeWidget     ({   8,  88},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
-    // MakeWidget  ({   8, 106},     EDIT_BTN, WWT_DROPDOWN_BUTTON, WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
-    MakeWidget     ({   8, 106},     EDIT_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
+    MakeWidget     ({   8,  52},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
+    MakeWidget     ({   8,  70},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
+    MakeWidget     ({   8,  88},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
+    // MakeWidget  ({   8, 106},     EDIT_BTN, WindowWidgetType::DropdownMenu_BUTTON, WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
+    MakeWidget     ({   8, 106},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
 
-    MakeWidget     ({   8, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
-    MakeWidget     ({  44, 142},  REORDER_BTN, WWT_BUTTON,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
+    MakeWidget     ({   8, 142},  REORDER_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
+    MakeWidget     ({  44, 142},  REORDER_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
 
-    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
-    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
-    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
-    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WWT_IMGBTN,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
+    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
+    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
+    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
+    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     { WIDGETS_END },
 };
 
@@ -209,7 +212,7 @@ void window_title_editor_open(int32_t tab)
     if (_selectedTitleSequence == SIZE_MAX)
         _selectedTitleSequence = title_get_config_sequence();
 
-    window = window_create_auto_pos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
+    window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
     window->enabled_widgets = (1 << WIDX_TITLE_EDITOR_CLOSE) | (1 << WIDX_TITLE_EDITOR_PRESETS_TAB)
         | (1 << WIDX_TITLE_EDITOR_SAVES_TAB) | (1 << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
@@ -228,7 +231,7 @@ void window_title_editor_open(int32_t tab)
         (1 << WIDX_TITLE_EDITOR_PLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_REPLAY)
         | (1 << WIDX_TITLE_EDITOR_SKIP);
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->list_information_type = 0;
 
     window->selected_tab = tab;
@@ -532,10 +535,10 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
                 }
 
                 widget--;
-                window_dropdown_show_text_custom_width(
+                WindowDropdownShowTextCustomWidth(
                     { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
-                    DROPDOWN_FLAG_STAY_OPEN, numItems, widget->width() - 3);
-                dropdown_set_checked(static_cast<int32_t>(_selectedTitleSequence), true);
+                    Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
+                Dropdown::SetChecked(static_cast<int32_t>(_selectedTitleSequence), true);
             }
             break;
     }
@@ -561,7 +564,7 @@ static void window_title_editor_update(rct_window* w)
         w->frame_no = 0;
     }
 
-    if (!widget_is_highlighted(w, WIDX_TITLE_EDITOR_LIST))
+    if (!WidgetIsHighlighted(w, WIDX_TITLE_EDITOR_LIST))
     {
         _window_title_editor_highlighted_index = -1;
         widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
@@ -698,66 +701,66 @@ static void window_title_editor_invalidate(rct_window* w)
 
     w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_EMPTY;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_EMPTY;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_EMPTY;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_EMPTY;
-    // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_EMPTY;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WWT_EMPTY;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Empty;
+    // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::Empty;
+    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::Empty;
 
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WWT_DROPDOWN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_BUTTON;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::DropdownMenu;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Button;
             break;
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WWT_IMGBTN;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_BUTTON;
-            // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_DROPDOWN_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_IMGBTN;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WWT_IMGBTN;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Button;
+            // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WindowWidgetType::DropdownMenu_BUTTON;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Button;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
+            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
             break;
     }
 
@@ -796,7 +799,7 @@ static void window_title_editor_invalidate(rct_window* w)
 static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_title_editor_draw_tab_images(dpi, w);
 
     // Draw strings
@@ -804,9 +807,9 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         {
-            gfx_draw_string_left(
-                dpi, STR_TITLE_SEQUENCE, nullptr, w->colours[1],
-                w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 });
+            DrawTextBasic(
+                dpi, w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 },
+                STR_TITLE_SEQUENCE, {}, { w->colours[1] });
 
             auto ft = Formatter();
             ft.Add<const char*>(_sequenceName);
@@ -816,7 +819,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
             auto width = w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
                 - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
 
-            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, w->colours[1]);
+            DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, { w->colours[1] });
             break;
         }
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -871,21 +874,19 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
-        char buffer[256];
+        auto saveName = _editingTitleSequence->Saves[i].c_str();
         auto ft = Formatter();
-        ft.Add<const char*>(_editingTitleSequence->Saves[i].c_str());
         if (selected || hover)
         {
-            format_string(buffer, 256, STR_STRING, ft.Data());
+            ft.Add<rct_string_id>(STR_STRING);
         }
         else
         {
-            format_string(buffer + 1, 255, STR_STRING, ft.Data());
-            buffer[0] = static_cast<utf8>(static_cast<uint8_t>(FORMAT_BLACK));
+            ft.Add<rct_string_id>(STR_BLACK_STRING);
+            ft.Add<rct_string_id>(STR_STRING);
         }
-        ft = Formatter();
-        ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        ft.Add<const char*>(saveName);
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 5, 0 }, STR_STRINGID, ft, { w->colours[1] });
     }
 }
 
@@ -924,63 +925,102 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
+        if (command.Type == TitleScript::Load && command.SaveIndex == SAVE_INDEX_INVALID)
+            error = true;
+
         auto ft = Formatter();
-        rct_string_id commandName = STR_NONE;
+        if (error)
+        {
+            ft.Add<rct_string_id>(selected || hover ? STR_LIGHTPINK_STRINGID : STR_RED_STRINGID);
+        }
+        else
+        {
+            ft.Add<rct_string_id>(selected || hover ? STR_STRINGID : STR_BLACK_STRING);
+        }
+
         switch (command.Type)
         {
-            case TITLE_SCRIPT_LOAD:
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
+            case TitleScript::Load:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 if (command.SaveIndex == SAVE_INDEX_INVALID)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
-                    error = true;
+                    ft.Add<rct_string_id>(commandName);
                 }
                 else
                 {
+                    ft.Add<rct_string_id>(commandName);
                     ft.Add<const char*>(_editingTitleSequence->Saves[command.SaveIndex].c_str());
                 }
                 break;
-            case TITLE_SCRIPT_LOCATION:
-                commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
+            }
+            case TitleScript::Location:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.X);
                 ft.Add<uint16_t>(command.Y);
                 break;
-            case TITLE_SCRIPT_ROTATE:
-                commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
+            }
+            case TitleScript::Rotate:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_ROTATE;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Rotations);
                 break;
-            case TITLE_SCRIPT_ZOOM:
-                commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
+            }
+            case TitleScript::Zoom:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_ZOOM;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Zoom);
                 break;
-            case TITLE_SCRIPT_SPEED:
-                commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
+            }
+            case TitleScript::Speed:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<rct_string_id>(SpeedNames[command.Speed - 1]);
                 break;
-            case TITLE_SCRIPT_FOLLOW:
-                commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
+            }
+            case TitleScript::Follow:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
                 if (command.SpriteIndex == SPRITE_INDEX_NULL)
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
+                    ft.Add<rct_string_id>(commandName);
                 }
                 else
                 {
+                    ft.Add<rct_string_id>(commandName);
                     ft.Add<utf8*>(command.SpriteName);
                 }
                 break;
-            case TITLE_SCRIPT_WAIT:
-                commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
+            }
+            case TitleScript::Wait:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<uint16_t>(command.Milliseconds);
                 break;
-            case TITLE_SCRIPT_RESTART:
-                commandName = STR_TITLE_EDITOR_RESTART;
-                break;
-            case TITLE_SCRIPT_END:
-                commandName = STR_TITLE_EDITOR_END;
-                break;
-            case TITLE_SCRIPT_LOADSC:
+            }
+            case TitleScript::Restart:
             {
-                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
+                auto commandName = STR_TITLE_EDITOR_RESTART;
+                ft.Add<rct_string_id>(commandName);
+                break;
+            }
+            case TitleScript::End:
+            {
+                auto commandName = STR_TITLE_EDITOR_END;
+                ft.Add<rct_string_id>(commandName);
+                break;
+            }
+            case TitleScript::LoadSc:
+            {
+                auto commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
                 const char* name = "";
                 auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (command.Scenario[0] == '\0')
@@ -995,26 +1035,17 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_LOAD_MISSING_SCENARIO;
                 }
+                ft.Add<rct_string_id>(commandName);
                 ft.Add<const char*>(name);
                 break;
             }
             default:
+            {
+                ft.Add<rct_string_id>(STR_NONE);
                 log_warning("Unknown command %d", command.Type);
+            }
         }
-
-        char buffer[256];
-        if ((selected || hover) && !error)
-        {
-            format_string(buffer, 256, commandName, ft.Data());
-        }
-        else
-        {
-            format_string(buffer + 1, 255, commandName, ft.Data());
-            buffer[0] = static_cast<utf8>(error ? ((selected || hover) ? FORMAT_LIGHTPINK : FORMAT_RED) : FORMAT_BLACK);
-        }
-        ft = Formatter();
-        ft.Add<const char*>(&buffer);
-        gfx_draw_string_left(dpi, STR_STRING, ft.Data(), w->colours[1], screenCoords + ScreenCoordsXY{ 5, 0 });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 5, 0 }, STR_STRINGID, ft, { w->colours[1] });
     }
 }
 

@@ -13,6 +13,7 @@
 
 #    include "../Diagnostic.h"
 #    include "../OpenRCT2.h"
+#    include "../core/File.h"
 #    include "Duktape.hpp"
 
 #    include <algorithm>
@@ -27,7 +28,7 @@ Plugin::Plugin(duk_context* context, const std::string& path)
 {
 }
 
-void Plugin::SetCode(const std::string_view& code)
+void Plugin::SetCode(std::string_view code)
 {
     _code = code;
 }
@@ -101,16 +102,7 @@ void Plugin::Stop()
 
 void Plugin::LoadCodeFromFile()
 {
-    std::string code;
-    std::ifstream fs(_path);
-    if (fs.is_open())
-    {
-        fs.seekg(0, std::ios::end);
-        code.reserve(fs.tellg());
-        fs.seekg(0, std::ios::beg);
-        code.assign(std::istreambuf_iterator<char>(fs), std::istreambuf_iterator<char>());
-    }
-    _code = std::move(code);
+    _code = File::ReadAllText(_path);
 }
 
 static std::string TryGetString(const DukValue& value, const std::string& message)
@@ -154,7 +146,7 @@ PluginMetadata Plugin::GetMetadata(const DukValue& dukMetadata)
     return metadata;
 }
 
-PluginType Plugin::ParsePluginType(const std::string_view& type)
+PluginType Plugin::ParsePluginType(std::string_view type)
 {
     if (type == "local")
         return PluginType::Local;
@@ -163,10 +155,10 @@ PluginType Plugin::ParsePluginType(const std::string_view& type)
     throw std::invalid_argument("Unknown plugin type.");
 }
 
-void Plugin::CheckForLicence(const DukValue& dukLicence, const std::string_view& pluginName)
+void Plugin::CheckForLicence(const DukValue& dukLicence, std::string_view pluginName)
 {
     if (dukLicence.type() != DukValue::Type::STRING || dukLicence.as_string().empty())
-        log_error("Plugin %s does not specify a licence", pluginName.data());
+        log_error("Plugin %s does not specify a licence", std::string(pluginName).c_str());
 }
 
 #endif

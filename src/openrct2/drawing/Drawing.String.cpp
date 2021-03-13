@@ -9,8 +9,10 @@
 
 #include "../common.h"
 #include "../config/Config.h"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../platform/platform.h"
@@ -20,47 +22,54 @@
 
 #include <algorithm>
 
+using namespace OpenRCT2;
+
 enum : uint32_t
 {
     TEXT_DRAW_FLAG_INSET = 1 << 0,
     TEXT_DRAW_FLAG_OUTLINE = 1 << 1,
     TEXT_DRAW_FLAG_DARK = 1 << 2,
     TEXT_DRAW_FLAG_EXTRA_DARK = 1 << 3,
+    TEXT_DRAW_FLAG_NO_FORMATTING = 1 << 28,
     TEXT_DRAW_FLAG_Y_OFFSET_EFFECT = 1 << 29,
     TEXT_DRAW_FLAG_TTF = 1 << 30,
     TEXT_DRAW_FLAG_NO_DRAW = 1u << 31
 };
 
-static int32_t ttf_get_string_width(const utf8* text);
+static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase, bool noFormatting);
 
 /**
  *
  *  rct2: 0x006C23B1
  */
-int32_t gfx_get_string_width_new_lined(utf8* text)
+int32_t gfx_get_string_width_new_lined(std::string_view text, FontSpriteBase fontSpriteBase)
 {
-    utf8* ch = text;
-    utf8* firstCh = text;
-    utf8* nextCh;
-    utf8 backup;
-    int32_t codepoint;
+    thread_local std::string buffer;
+    buffer.clear();
 
-    int32_t maxWidth = 0;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+    std::optional<int32_t> maxWidth;
+    FmtString fmt(text);
+    for (const auto& token : fmt)
     {
-        if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER)
+        if (token.kind == FormatToken::Newline || token.kind == FormatToken::NewlineSmall)
         {
-            backup = *nextCh;
-            *nextCh = 0;
-            maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
-            *nextCh = backup;
-            firstCh = nextCh;
+            auto width = gfx_get_string_width(buffer, fontSpriteBase);
+            if (!maxWidth || maxWidth > width)
+            {
+                maxWidth = width;
+            }
+            buffer.clear();
         }
-        ch = nextCh;
+        else
+        {
+            buffer.append(token.text);
+        }
     }
-    maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
-
-    return maxWidth;
+    if (!maxWidth)
+    {
+        maxWidth = gfx_get_string_width(buffer, fontSpriteBase);
+    }
+    return *maxWidth;
 }
 
 /**
@@ -69,9 +78,14 @@ int32_t gfx_get_string_width_new_lined(utf8* text)
  *  rct2: 0x006C2321
  * buffer (esi)
  */
-int32_t gfx_get_string_width(const utf8* buffer)
+int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase)
 {
-    return ttf_get_string_width(buffer);
+    return ttf_get_string_width(text, fontSpriteBase, false);
+}
+
+int32_t gfx_get_string_width_no_formatting(std::string_view text, FontSpriteBase fontSpriteBase)
+{
+    return ttf_get_string_width(text, fontSpriteBase, true);
 }
 
 /**
@@ -81,69 +95,66 @@ int32_t gfx_get_string_width(const utf8* buffer)
  * buffer (esi)
  * width (edi)
  */
-int32_t gfx_clip_string(utf8* text, int32_t width)
+int32_t gfx_clip_string(utf8* text, int32_t width, FontSpriteBase fontSpriteBase)
 {
-    int32_t clippedWidth;
-
     if (width < 6)
     {
         *text = 0;
         return 0;
     }
 
-    clippedWidth = gfx_get_string_width(text);
+    // If width of the full string is less than allowed width then we don't need to clip
+    auto clippedWidth = gfx_get_string_width(text, fontSpriteBase);
     if (clippedWidth <= width)
     {
         return clippedWidth;
     }
 
-    utf8 backup[4];
-    utf8* ch = text;
-    utf8* nextCh = text;
-    utf8* clipCh = text;
-    int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+    // Append each character 1 by 1 with an ellipsis on the end until width is exceeded
+    thread_local std::string buffer;
+    buffer.clear();
+
+    size_t bestLength = 0;
+    int32_t bestWidth = 0;
+
+    FmtString fmt(text);
+    for (const auto& token : fmt)
     {
-        if (utf8_is_format_code(codepoint))
+        CodepointView codepoints(token.text);
+        for (auto codepoint : codepoints)
         {
-            ch = nextCh;
-            ch += utf8_get_format_code_arg_length(codepoint);
-            continue;
-        }
+            // Add the ellipsis before checking the width
+            buffer.append("...");
 
-        for (int32_t i = 0; i < 4; i++)
-        {
-            backup[i] = nextCh[i];
-        };
-        for (int32_t i = 0; i < 3; i++)
-        {
-            nextCh[i] = '.';
-        }
-        nextCh[3] = 0;
-
-        int32_t queryWidth = gfx_get_string_width(text);
-        if (queryWidth < width)
-        {
-            clipCh = nextCh;
-            clippedWidth = queryWidth;
-        }
-        else
-        {
-            for (int32_t i = 0; i < 3; i++)
+            auto currentWidth = gfx_get_string_width(buffer, fontSpriteBase);
+            if (currentWidth < width)
             {
-                clipCh[i] = '.';
-            }
-            clipCh[3] = 0;
-            return clippedWidth;
-        }
+                bestLength = buffer.size();
+                bestWidth = currentWidth;
 
-        for (int32_t i = 0; i < 4; i++)
-        {
-            nextCh[i] = backup[i];
-        };
-        ch = nextCh;
+                // Trim the ellipsis
+                buffer.resize(bestLength - 3);
+            }
+            else
+            {
+                // Width exceeded, rollback to best length and put ellipsis back
+                buffer.resize(bestLength);
+                for (auto i = static_cast<int32_t>(bestLength) - 1; i >= 0 && i >= static_cast<int32_t>(bestLength) - 3; i--)
+                {
+                    buffer[i] = '.';
+                }
+
+                // Copy buffer back to input text buffer
+                std::strcpy(text, buffer.c_str());
+                return bestWidth;
+            }
+
+            char cb[8]{};
+            utf8_write_codepoint(cb, codepoint);
+            buffer.append(cb);
+        }
     }
-    return gfx_get_string_width(text);
+    return gfx_get_string_width(text, fontSpriteBase);
 }
 
 /**
@@ -159,99 +170,108 @@ int32_t gfx_clip_string(utf8* text, int32_t width)
  * num_lines (edi) - out
  * font_height (ebx) - out
  */
-int32_t gfx_wrap_string(utf8* text, int32_t width, int32_t* outNumLines, int32_t* outFontHeight)
+int32_t gfx_wrap_string(utf8* text, int32_t width, FontSpriteBase fontSpriteBase, int32_t* outNumLines)
 {
-    int32_t lineWidth = 0;
+    constexpr size_t NULL_INDEX = std::numeric_limits<size_t>::max();
+    thread_local std::string buffer;
+    buffer.resize(0);
+
+    size_t currentLineIndex = 0;
+    size_t splitIndex = NULL_INDEX;
+    size_t bestSplitIndex = NULL_INDEX;
+    size_t numLines = 0;
     int32_t maxWidth = 0;
-    *outNumLines = 0;
 
-    // Pointer to the start of the current word
-    utf8* currentWord = nullptr;
-
-    // Width of line up to current word
-    int32_t currentWidth = 0;
-
-    utf8* ch = text;
-    utf8* firstCh = text;
-    utf8* nextCh;
-    int32_t codepoint;
-    int32_t numCharactersOnLine = 0;
-    while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+    FmtString fmt = text;
+    for (const auto& token : fmt)
     {
-        if (codepoint == ' ')
+        if (token.IsLiteral())
         {
-            currentWord = ch;
-            currentWidth = lineWidth;
-            numCharactersOnLine++;
-        }
-        else if (codepoint == FORMAT_NEWLINE)
-        {
-            *ch++ = 0;
-            maxWidth = std::max(maxWidth, lineWidth);
-            (*outNumLines)++;
-            lineWidth = 0;
-            currentWord = nullptr;
-            firstCh = ch;
-            numCharactersOnLine = 0;
-            continue;
-        }
-        else if (utf8_is_format_code(codepoint))
-        {
-            ch = nextCh;
-            ch += utf8_get_format_code_arg_length(codepoint);
-            continue;
-        }
+            CodepointView codepoints(token.text);
+            for (auto codepoint : codepoints)
+            {
+                char cb[8]{};
+                utf8_write_codepoint(cb, codepoint);
+                buffer.append(cb);
 
-        uint8_t saveCh = *nextCh;
-        *nextCh = 0;
-        lineWidth = gfx_get_string_width(firstCh);
-        *nextCh = saveCh;
+                auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], fontSpriteBase);
+                if (lineWidth <= width || (splitIndex == NULL_INDEX && bestSplitIndex == NULL_INDEX))
+                {
+                    if (codepoint == ' ')
+                    {
+                        // Mark line split here
+                        splitIndex = buffer.size() - 1;
+                    }
+                    else if (splitIndex == NULL_INDEX)
+                    {
+                        // Mark line split here (this is after first character of line)
+                        bestSplitIndex = buffer.size();
+                    }
+                }
+                else
+                {
+                    // Insert new line before current word
+                    if (splitIndex == NULL_INDEX)
+                    {
+                        splitIndex = bestSplitIndex;
+                    }
+                    buffer.insert(buffer.begin() + splitIndex, '\0');
 
-        if (lineWidth <= width || numCharactersOnLine == 0)
-        {
-            ch = nextCh;
-            numCharactersOnLine++;
+                    // Recalculate the line length after splitting
+                    lineWidth = gfx_get_string_width(&buffer[currentLineIndex], fontSpriteBase);
+                    maxWidth = std::max(maxWidth, lineWidth);
+                    numLines++;
+
+                    currentLineIndex = splitIndex + 1;
+                    splitIndex = NULL_INDEX;
+                    bestSplitIndex = NULL_INDEX;
+
+                    // Trim the beginning of the new line
+                    while (buffer[currentLineIndex] == ' ')
+                    {
+                        buffer.erase(buffer.begin() + currentLineIndex);
+                    }
+                }
+            }
         }
-        else if (currentWord == nullptr)
+        else if (token.kind == FormatToken::Newline)
         {
-            // Single word is longer than line, insert null terminator
-            ch += utf8_insert_codepoint(ch, 0);
+            buffer.push_back('\0');
+
+            auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], fontSpriteBase);
             maxWidth = std::max(maxWidth, lineWidth);
-            (*outNumLines)++;
-            lineWidth = 0;
-            currentWord = nullptr;
-            firstCh = ch;
-            numCharactersOnLine = 0;
+            numLines++;
+
+            currentLineIndex = buffer.size();
+            splitIndex = NULL_INDEX;
+            bestSplitIndex = NULL_INDEX;
         }
         else
         {
-            ch = currentWord;
-            *ch++ = 0;
-
-            maxWidth = std::max(maxWidth, currentWidth);
-            (*outNumLines)++;
-            lineWidth = 0;
-            currentWord = nullptr;
-            firstCh = ch;
-            numCharactersOnLine = 0;
+            buffer.append(token.text);
         }
     }
-    maxWidth = std::max(maxWidth, lineWidth);
-    *outFontHeight = gCurrentFontSpriteBase;
-    return maxWidth == 0 ? lineWidth : maxWidth;
+    {
+        // Final line width calculation
+        auto lineWidth = gfx_get_string_width(&buffer[currentLineIndex], fontSpriteBase);
+        maxWidth = std::max(maxWidth, lineWidth);
+    }
+
+    std::memcpy(text, buffer.data(), buffer.size() + 1);
+    *outNumLines = static_cast<int32_t>(numLines);
+    return maxWidth;
 }
 
 /**
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(
-    rct_drawpixelinfo* dpi, rct_string_id format, void* args, int32_t colour, const ScreenCoordsXY& coords)
+    rct_drawpixelinfo* dpi, rct_string_id format, void* args, colour_t colour, const ScreenCoordsXY& coords)
 {
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     char* buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, format, args);
-    int32_t height = string_get_height_raw(buffer);
-    gfx_draw_string(dpi, buffer, colour, coords - ScreenCoordsXY{ 0, (height / 2) });
+    int32_t height = string_get_height_raw(buffer, FontSpriteBase::MEDIUM);
+    gfx_draw_string(dpi, coords - ScreenCoordsXY{ 0, (height / 2) }, buffer, { colour });
 }
 
 /**
@@ -309,18 +329,17 @@ static void colour_char_window(uint8_t colour, const uint16_t* current_font_flag
  * text     : esi
  * dpi      : edi
  */
-void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text)
+void draw_string_centred_raw(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t numLines, char* text, FontSpriteBase fontSpriteBase)
 {
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, "", COLOUR_BLACK, screenCoords);
+    gfx_draw_string(dpi, screenCoords, "", { COLOUR_BLACK, fontSpriteBase });
     screenCoords = coords;
-    gCurrentFontFlags = 0;
 
     for (int32_t i = 0; i <= numLines; i++)
     {
-        int32_t width = gfx_get_string_width(text);
-        gfx_draw_string(dpi, text, TEXT_COLOUR_254, screenCoords - ScreenCoordsXY{ width / 2, 0 });
+        int32_t width = gfx_get_string_width(text, fontSpriteBase);
+        gfx_draw_string(dpi, screenCoords - ScreenCoordsXY{ width / 2, 0 }, text, { TEXT_COLOUR_254, fontSpriteBase });
 
         const utf8* ch = text;
         const utf8* nextCh = nullptr;
@@ -331,79 +350,62 @@ void draw_string_centred_raw(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coord
         }
         text = const_cast<char*>(ch + 1);
 
-        screenCoords.y += font_get_line_height(gCurrentFontSpriteBase);
+        screenCoords.y += font_get_line_height(fontSpriteBase);
     }
 }
 
-int32_t string_get_height_raw(char* buffer)
+int32_t string_get_height_raw(std::string_view text, FontSpriteBase fontBase)
 {
-    uint16_t fontBase = gCurrentFontSpriteBase;
-
     int32_t height = 0;
-    if (fontBase <= FONT_SPRITE_BASE_MEDIUM)
+    if (fontBase <= FontSpriteBase::MEDIUM)
         height += 10;
-    else if (fontBase == FONT_SPRITE_BASE_TINY)
+    else if (fontBase == FontSpriteBase::TINY)
         height += 6;
 
-    char* ch = buffer;
-    while (*ch != 0)
+    FmtString fmt(text);
+    for (const auto& token : fmt)
     {
-        char c = *ch++;
-        switch (c)
+        switch (token.kind)
         {
-            case FORMAT_NEWLINE:
-                if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
+            case FormatToken::Newline:
+                if (fontBase == FontSpriteBase::SMALL || fontBase == FontSpriteBase::MEDIUM)
                 {
                     height += 10;
                     break;
                 }
-                else if (fontBase == FONT_SPRITE_BASE_TINY)
+                else if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 6;
                     break;
                 }
                 height += 18;
                 break;
-            case FORMAT_NEWLINE_SMALLER:
-                if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM)
+            case FormatToken::NewlineSmall:
+                if (fontBase == FontSpriteBase::SMALL || fontBase == FontSpriteBase::MEDIUM)
                 {
                     height += 5;
                     break;
                 }
-                else if (fontBase == FONT_SPRITE_BASE_TINY)
+                else if (fontBase == FontSpriteBase::TINY)
                 {
                     height += 3;
                     break;
                 }
                 height += 9;
                 break;
-            case FORMAT_TINYFONT:
-                fontBase = FONT_SPRITE_BASE_TINY;
+            case FormatToken::FontTiny:
+                fontBase = FontSpriteBase::TINY;
                 break;
-            case FORMAT_MEDIUMFONT:
-                fontBase = FONT_SPRITE_BASE_MEDIUM;
+            case FormatToken::FontMedium:
+                fontBase = FontSpriteBase::MEDIUM;
                 break;
-            case FORMAT_SMALLFONT:
-                fontBase = FONT_SPRITE_BASE_SMALL;
+            case FormatToken::FontSmall:
+                fontBase = FontSpriteBase::SMALL;
                 break;
             default:
-                if (c >= 32)
-                    continue;
-                if (c <= 4)
-                {
-                    ch++;
-                    continue;
-                }
-                if (c <= 16)
-                    continue;
-                ch += 2;
-                if (c <= 22)
-                    continue;
-                ch += 2;
                 break;
         }
     }
-
     return height;
 }
 
@@ -420,50 +422,53 @@ int32_t string_get_height_raw(char* buffer)
  * width    : bp
  * ticks    : ebp >> 16
  */
-void gfx_draw_string_centred_wrapped_partial(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, int32_t colour, rct_string_id format, void* args,
+void DrawNewsTicker(
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
     int32_t ticks)
 {
-    int32_t numLines, fontSpriteBase, lineHeight, lineY;
+    int32_t numLines, lineHeight, lineY;
     utf8* buffer = gCommonStringFormatBuffer;
     ScreenCoordsXY screenCoords(dpi->x, dpi->y);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, "", colour, screenCoords);
+    gfx_draw_string(dpi, screenCoords, "", { colour });
     format_string(buffer, 256, format, args);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
+    gfx_wrap_string(buffer, width, FontSpriteBase::SMALL, &numLines);
+    lineHeight = font_get_line_height(FontSpriteBase::SMALL);
 
     int32_t numCharactersDrawn = 0;
     int32_t numCharactersToDraw = ticks;
 
-    gCurrentFontFlags = 0;
     lineY = coords.y - ((numLines * lineHeight) / 2);
     for (int32_t line = 0; line <= numLines; line++)
     {
-        int32_t halfWidth = gfx_get_string_width(buffer) / 2;
+        int32_t halfWidth = gfx_get_string_width(buffer, FontSpriteBase::SMALL) / 2;
 
-        utf8* ch = buffer;
-        utf8* nextCh;
-        int32_t codepoint;
-        while ((codepoint = utf8_get_next(ch, const_cast<const utf8**>(&nextCh))) != 0)
+        FmtString fmt(buffer);
+        for (const auto& token : fmt)
         {
-            if (!utf8_is_format_code(codepoint))
+            bool doubleBreak = false;
+            if (token.IsLiteral())
             {
-                numCharactersDrawn++;
-                if (numCharactersDrawn > numCharactersToDraw)
+                CodepointView codepoints(token.text);
+                for (auto it = codepoints.begin(); it != codepoints.end(); it++)
                 {
-                    *ch = 0;
-                    break;
+                    numCharactersDrawn++;
+                    if (numCharactersDrawn > numCharactersToDraw)
+                    {
+                        auto ch = const_cast<char*>(&token.text[it.GetIndex()]);
+                        *ch = '\0';
+                        doubleBreak = true;
+                        break;
+                    }
                 }
             }
-            ch = nextCh;
+            if (doubleBreak)
+                break;
         }
 
         screenCoords = { coords.x - halfWidth, lineY };
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, screenCoords);
+        gfx_draw_string(dpi, screenCoords, buffer, { TEXT_COLOUR_254, FontSpriteBase::SMALL });
 
         if (numCharactersDrawn > numCharactersToDraw)
         {
@@ -485,7 +490,7 @@ struct text_draw_info
     int32_t maxY;
     int32_t flags;
     uint8_t palette[8];
-    uint16_t font_sprite_base;
+    FontSpriteBase font_sprite_base;
     const int8_t* y_offset;
 };
 
@@ -509,20 +514,18 @@ static void ttf_draw_character_sprite(rct_drawpixelinfo* dpi, int32_t codepoint,
     info->x += characterWidth;
 }
 
-static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
+static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
-    const utf8* ch = text;
-    int32_t codepoint;
-
-    while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &ch)))
+    CodepointView codepoints(text);
+    for (auto codepoint : codepoints)
     {
         ttf_draw_character_sprite(dpi, codepoint, info);
-    };
+    }
 }
 
 #ifndef NO_TTF
 
-static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
+static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     if (!ttf_initialise())
         return;
@@ -670,201 +673,191 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo* dpi, const utf8* text, te
 
 #endif // NO_TTF
 
-static void ttf_draw_string_raw(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
+static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::token& token, text_draw_info* info)
 {
-#ifndef NO_TTF
-    if (info->flags & TEXT_DRAW_FLAG_TTF)
+    switch (token.kind)
     {
-        ttf_draw_string_raw_ttf(dpi, text, info);
-    }
-    else
-    {
-#endif // NO_TTF
-        ttf_draw_string_raw_sprite(dpi, text, info);
-#ifndef NO_TTF
-    }
-#endif // NO_TTF
-}
-
-static const utf8* ttf_process_format_code(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
-{
-    const utf8* nextCh;
-    int32_t codepoint;
-
-    codepoint = utf8_get_next(text, &nextCh);
-    switch (codepoint)
-    {
-        case FORMAT_MOVE_X:
-            info->x = info->startX + static_cast<uint8_t>(*nextCh++);
+        case FormatToken::Move:
+            info->x = info->startX + token.parameter;
             break;
-        case FORMAT_ADJUST_PALETTE:
-        {
-            auto paletteMapId = static_cast<colour_t>(*nextCh++);
-            auto paletteMap = GetPaletteMapForColour(paletteMapId);
-            if (paletteMap)
-            {
-                uint32_t c = (*paletteMap)[249] + 256;
-                if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE))
-                {
-                    c &= 0xFF;
-                }
-                info->palette[1] = c & 0xFF;
-                info->palette[2] = (c >> 8) & 0xFF;
-
-                // Adjust the text palette
-                info->palette[3] = (*paletteMap)[247];
-                info->palette[4] = (*paletteMap)[248];
-                info->palette[5] = (*paletteMap)[250];
-                info->palette[6] = (*paletteMap)[251];
-            }
-            break;
-        }
-        case FORMAT_3:
-        case FORMAT_4:
-            nextCh++;
-            break;
-        case FORMAT_NEWLINE:
+        case FormatToken::Newline:
             info->x = info->startX;
             info->y += font_get_line_height(info->font_sprite_base);
             break;
-        case FORMAT_NEWLINE_SMALLER:
+        case FormatToken::NewlineSmall:
             info->x = info->startX;
             info->y += font_get_line_height_small(info->font_sprite_base);
             break;
-        case FORMAT_TINYFONT:
-            info->font_sprite_base = FONT_SPRITE_BASE_TINY;
+        case FormatToken::FontTiny:
+            info->font_sprite_base = FontSpriteBase::TINY;
             break;
-        case FORMAT_SMALLFONT:
-            info->font_sprite_base = FONT_SPRITE_BASE_SMALL;
+        case FormatToken::FontSmall:
+            info->font_sprite_base = FontSpriteBase::SMALL;
             break;
-        case FORMAT_MEDIUMFONT:
-            info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+        case FormatToken::FontMedium:
+            info->font_sprite_base = FontSpriteBase::MEDIUM;
             break;
-        case FORMAT_OUTLINE:
+        case FormatToken::OutlineEnable:
             info->flags |= TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FORMAT_OUTLINE_OFF:
+        case FormatToken::OutlineDisable:
             info->flags &= ~TEXT_DRAW_FLAG_OUTLINE;
             break;
-        case FORMAT_WINDOW_COLOUR_1:
+        case FormatToken::ColourWindow1:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[0], &flags, info->palette);
             break;
         }
-        case FORMAT_WINDOW_COLOUR_2:
+        case FormatToken::ColourWindow2:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[1], &flags, info->palette);
             break;
         }
-        case FORMAT_WINDOW_COLOUR_3:
+        case FormatToken::ColourWindow3:
         {
             uint16_t flags = info->flags;
             colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
             break;
         }
-        case FORMAT_16:
-            break;
-        case FORMAT_INLINE_SPRITE:
+        case FormatToken::InlineSprite:
         {
-            uint32_t imageId;
-            std::memcpy(&imageId, nextCh, sizeof(uint32_t));
-            const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
+            auto g1 = gfx_get_g1_element(token.parameter & 0x7FFFF);
             if (g1 != nullptr)
             {
                 if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW))
                 {
-                    gfx_draw_sprite(dpi, imageId, { info->x, info->y }, 0);
+                    gfx_draw_sprite(dpi, token.parameter, { info->x, info->y }, 0);
                 }
                 info->x += g1->width;
             }
-            nextCh += 4;
             break;
         }
         default:
-            if (codepoint >= FORMAT_COLOUR_CODE_START && codepoint <= FORMAT_COLOUR_CODE_END)
+            if (FormatTokenIsColour(token.kind))
             {
                 uint16_t flags = info->flags;
-                colour_char(codepoint - FORMAT_COLOUR_CODE_START, &flags, info->palette);
+                auto colourIndex = FormatTokenGetTextColourIndex(token.kind);
+                colour_char(static_cast<uint8_t>(colourIndex), &flags, info->palette);
             }
-            else if (codepoint <= 0x16)
-            { // case 0x11? FORMAT_NEW_LINE_X_Y
-                nextCh += 2;
+            break;
+    }
+}
+
+static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
+{
+    switch (codepoint)
+    {
+        case UnicodeChar::up:
+        case UnicodeChar::down:
+        case UnicodeChar::leftguillemet:
+        case UnicodeChar::tick:
+        case UnicodeChar::cross:
+        case UnicodeChar::right:
+        case UnicodeChar::rightguillemet:
+        case UnicodeChar::small_up:
+        case UnicodeChar::small_down:
+        case UnicodeChar::left:
+        case UnicodeChar::quote_open:
+        case UnicodeChar::quote_close:
+        case UnicodeChar::german_quote_open:
+        case UnicodeChar::plus:
+        case UnicodeChar::minus:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+{
+#ifndef NO_TTF
+    bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
+#else
+    bool isTTF = false;
+#endif // NO_TTF
+
+    if (!isTTF)
+    {
+        ttf_draw_string_raw_sprite(dpi, text, info);
+    }
+#ifndef NO_TTF
+    else
+    {
+        CodepointView codepoints(text);
+        std::optional<size_t> ttfRunIndex;
+        for (auto it = codepoints.begin(); it != codepoints.end(); it++)
+        {
+            auto codepoint = *it;
+            if (ShouldUseSpriteForCodepoint(codepoint))
+            {
+                if (ttfRunIndex)
+                {
+                    // Draw the TTF run
+                    auto len = it.GetIndex() - *ttfRunIndex;
+                    ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
+                    ttfRunIndex = std::nullopt;
+                }
+
+                // Draw the sprite font glyph
+                ttf_draw_character_sprite(dpi, codepoint, info);
             }
             else
             {
-                nextCh += 4; // never happens?
+                if (!ttfRunIndex)
+                {
+                    ttfRunIndex = it.GetIndex();
+                }
             }
-            break;
+        }
+
+        if (ttfRunIndex)
+        {
+            // Final TTF run
+            auto len = text.size() - *ttfRunIndex;
+            ttf_draw_string_raw_ttf(dpi, text.substr(*ttfRunIndex, len), info);
+        }
     }
-    return nextCh;
+#endif // NO_TTF
 }
 
-static const utf8* ttf_process_glyph_run(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
+static void ttf_process_string_codepoint(rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
 {
-    utf8 buffer[512];
-    const utf8* ch = text;
-    const utf8* lastCh;
-    int32_t codepoint;
+    char buffer[8]{};
+    utf8_write_codepoint(buffer, codepoint);
+    ttf_process_string_literal(dpi, buffer, info);
+}
 
-#ifndef NO_TTF
-    bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
-#else
-    bool isTTF = false;
-#endif // NO_TTF
-    while (!utf8_is_format_code(codepoint = utf8_get_next(ch, &lastCh)))
+static void ttf_process_string(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+{
+    if (info->flags & TEXT_DRAW_FLAG_NO_FORMATTING)
     {
-        if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint))
-        {
-            break;
-        }
-        ch = lastCh;
-    }
-    if (codepoint == 0)
-    {
-        ttf_draw_string_raw(dpi, text, info);
-        return ch;
+        ttf_process_string_literal(dpi, text, info);
+        info->maxX = std::max(info->maxX, info->x);
+        info->maxY = std::max(info->maxY, info->y);
     }
     else
     {
-        size_t length = static_cast<size_t>(ch - text);
-        std::memcpy(buffer, text, length);
-        buffer[length] = 0;
-        ttf_draw_string_raw(dpi, buffer, info);
-        return ch;
-    }
-}
-
-static void ttf_process_string(rct_drawpixelinfo* dpi, const utf8* text, text_draw_info* info)
-{
-    const utf8* ch = text;
-    const utf8* nextCh;
-    int32_t codepoint;
-
-#ifndef NO_TTF
-    bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
-#else
-    bool isTTF = false;
-#endif // NO_TTF
-
-    while ((codepoint = utf8_get_next(ch, &nextCh)) != 0)
-    {
-        if (utf8_is_format_code(codepoint))
+        FmtString fmt(text);
+        for (const auto& token : fmt)
         {
-            ch = ttf_process_format_code(dpi, ch, info);
+            if (token.IsLiteral())
+            {
+                ttf_process_string_literal(dpi, token.text, info);
+            }
+            else if (token.IsCodepoint())
+            {
+                auto codepoint = token.GetCodepoint();
+                ttf_process_string_codepoint(dpi, codepoint, info);
+            }
+            else
+            {
+                ttf_process_format_code(dpi, token, info);
+            }
+            info->maxX = std::max(info->maxX, info->x);
+            info->maxY = std::max(info->maxY, info->y);
         }
-        else if (isTTF && utf8_should_use_sprite_for_codepoint(codepoint))
-        {
-            ttf_draw_character_sprite(dpi, codepoint, info);
-            ch = nextCh;
-        }
-        else
-        {
-            ch = ttf_process_glyph_run(dpi, ch, info);
-        }
-        info->maxX = std::max(info->maxX, info->x);
-        info->maxY = std::max(info->maxY, info->y);
     }
 }
 
@@ -873,14 +866,15 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     if (colour != TEXT_COLOUR_254 && colour != TEXT_COLOUR_255)
     {
         info->flags &= ~(TEXT_DRAW_FLAG_INSET | TEXT_DRAW_FLAG_OUTLINE | TEXT_DRAW_FLAG_DARK | TEXT_DRAW_FLAG_EXTRA_DARK);
-        if (static_cast<int16_t>(info->font_sprite_base) < 0)
+        if (info->font_sprite_base == FontSpriteBase::MEDIUM_DARK
+            || info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
         {
             info->flags |= TEXT_DRAW_FLAG_DARK;
-            if (static_cast<int16_t>(info->font_sprite_base) == FONT_SPRITE_BASE_MEDIUM_EXTRA_DARK)
+            if (info->font_sprite_base == FontSpriteBase::MEDIUM_EXTRA_DARK)
             {
                 info->flags |= TEXT_DRAW_FLAG_EXTRA_DARK;
             }
-            info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
+            info->font_sprite_base = FontSpriteBase::MEDIUM;
         }
         if (colour & COLOUR_FLAG_OUTLINE)
         {
@@ -933,14 +927,16 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
     }
 }
 
-void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords)
+void ttf_draw_string(
+    rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
+    FontSpriteBase fontSpriteBase)
 {
     if (text == nullptr)
         return;
 
     text_draw_info info;
-    info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.font_sprite_base = fontSpriteBase;
+    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
@@ -951,23 +947,25 @@ void ttf_draw_string(rct_drawpixelinfo* dpi, const_utf8string text, int32_t colo
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
+    if (noFormatting)
+    {
+        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+    }
+
     std::memcpy(info.palette, text_palette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
-    gCurrentFontSpriteBase = info.font_sprite_base;
-    gCurrentFontFlags = info.flags;
-
     gLastDrawStringX = info.x;
     gLastDrawStringY = info.y;
 }
 
-static int32_t ttf_get_string_width(const utf8* text)
+static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase, bool noFormatting)
 {
     text_draw_info info;
-    info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.font_sprite_base = fontSpriteBase;
+    info.flags = 0;
     info.startX = 0;
     info.startY = 0;
     info.x = 0;
@@ -981,6 +979,11 @@ static int32_t ttf_get_string_width(const utf8* text)
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
+    if (noFormatting)
+    {
+        info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
+    }
+
     ttf_process_string(nullptr, text, &info);
 
     return info.maxX;
@@ -992,11 +995,11 @@ static int32_t ttf_get_string_width(const utf8* text)
  */
 void gfx_draw_string_with_y_offsets(
     rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
-    bool forceSpriteFont)
+    bool forceSpriteFont, FontSpriteBase fontSpriteBase)
 {
     text_draw_info info;
-    info.font_sprite_base = gCurrentFontSpriteBase;
-    info.flags = gCurrentFontFlags;
+    info.font_sprite_base = fontSpriteBase;
+    info.flags = 0;
     info.startX = coords.x;
     info.startY = coords.y;
     info.x = coords.x;
@@ -1015,19 +1018,16 @@ void gfx_draw_string_with_y_offsets(
     ttf_process_string(dpi, text, &info);
     std::memcpy(text_palette, info.palette, sizeof(info.palette));
 
-    gCurrentFontSpriteBase = info.font_sprite_base;
-    gCurrentFontFlags = info.flags;
-
     gLastDrawStringX = info.x;
     gLastDrawStringY = info.y;
 }
 
-void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth)
+void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontSpriteBase fontSpriteBase)
 {
     size_t length = strlen(path);
 
     // Return full string if it fits
-    if (gfx_get_string_width(const_cast<char*>(path)) <= availableWidth)
+    if (gfx_get_string_width(const_cast<char*>(path), fontSpriteBase) <= availableWidth)
     {
         safe_strcpy(buffer, path, bufferSize);
         return;
@@ -1056,7 +1056,7 @@ void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t ava
         } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');
 
         safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
-        if (gfx_get_string_width(buffer) <= availableWidth)
+        if (gfx_get_string_width(buffer, fontSpriteBase) <= availableWidth)
         {
             return;
         }

@@ -15,7 +15,6 @@
 #include "../rct12/RCT12.h"
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
-#include "Vehicle.h"
 
 struct Ride;
 
@@ -221,7 +220,7 @@ void track_design_save_reset_scenery();
 bool track_design_save_contains_tile_element(const TileElement* tileElement);
 void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
 void track_design_save_select_tile_element(
-    int32_t interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
+    ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
 
 bool track_design_are_entrance_and_exit_placed();
 

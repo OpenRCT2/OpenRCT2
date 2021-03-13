@@ -30,7 +30,7 @@ namespace OpenRCT2::Ui
         {
             return nullptr;
         }
-        rct_window* ShowError(const std::string_view& /*title*/, const std::string_view& /*message*/) override
+        rct_window* ShowError(std::string_view /*title*/, std::string_view /*message*/) override
         {
             return nullptr;
         }
@@ -53,7 +53,7 @@ namespace OpenRCT2::Ui
         void HandleKeyboard(bool /*isTitle*/) override
         {
         }
-        std::string GetKeyboardShortcutString(int32_t /*shortcut*/) override
+        std::string GetKeyboardShortcutString(std::string_view /*shortcutId*/) override
         {
             return std::string();
         }

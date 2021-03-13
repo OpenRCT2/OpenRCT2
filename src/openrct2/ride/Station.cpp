@@ -280,11 +280,9 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         if (vehicle->num_peeps != 0)
         {
-            auto peep = GetEntity<Peep>(vehicle->peep[0]);
+            auto* guest = GetEntity<Guest>(vehicle->peep[0]);
 
             // Easter egg names should only work on guests
-            Guest* guest = peep->AsGuest();
-
             if (guest != nullptr)
             {
                 switch (guest->GetEasterEggNameId())

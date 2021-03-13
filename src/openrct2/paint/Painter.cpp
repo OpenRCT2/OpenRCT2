@@ -19,6 +19,7 @@
 #include "../interface/Chat.h"
 #include "../interface/InteractiveConsole.h"
 #include "../localisation/FormatCodes.h"
+#include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
 #include "../title/TitleScreen.h"
@@ -83,20 +84,14 @@ void Painter::PaintReplayNotice(rct_drawpixelinfo* dpi, const char* text)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, _uiContext->GetHeight() - 44);
 
-    // Format string
-    utf8 buffer[64] = { 0 };
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_RED);
+    char buffer[64]{};
+    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{RED}{STRING}", text);
 
-    snprintf(ch, 64 - (ch - buffer), "%s", text);
-
-    int32_t stringWidth = gfx_get_string_width(buffer);
+    auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     screenCoords.x = screenCoords.x - stringWidth;
 
     if (((gCurrentTicks >> 1) & 0xF) > 4)
-        gfx_draw_string(dpi, buffer, COLOUR_SATURATED_RED, screenCoords);
+        gfx_draw_string(dpi, screenCoords, buffer, { COLOUR_SATURATED_RED });
 
     // Make area dirty so the text doesn't get drawn over the last
     gfx_set_dirty_blocks({ screenCoords, screenCoords + ScreenCoordsXY{ stringWidth, 16 } });
@@ -106,22 +101,15 @@ void Painter::PaintFPS(rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords(_uiContext->GetWidth() / 2, 2);
 
-    // Measure FPS
     MeasureFPS();
 
-    // Format string
-    utf8 buffer[64] = { 0 };
-    utf8* ch = buffer;
-    ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
-    ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
-    ch = utf8_write_codepoint(ch, FORMAT_WHITE);
-
-    snprintf(ch, 64 - (ch - buffer), "%d", _currentFPS);
+    char buffer[64]{};
+    FormatStringToBuffer(buffer, sizeof(buffer), "{MEDIUMFONT}{OUTLINE}{WHITE}{INT32}", _currentFPS);
 
     // Draw Text
-    int32_t stringWidth = gfx_get_string_width(buffer);
+    int32_t stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
     screenCoords.x = screenCoords.x - (stringWidth / 2);
-    gfx_draw_string(dpi, buffer, 0, screenCoords);
+    gfx_draw_string(dpi, screenCoords, buffer);
 
     // Make area dirty so the text doesn't get drawn over the last
     gfx_set_dirty_blocks({ { screenCoords - ScreenCoordsXY{ 16, 4 } }, { gLastDrawStringX + 16, 16 } });
@@ -147,8 +135,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     if (_freePaintSessions.empty() == false)
     {
         // Re-use.
-        const size_t idx = _freePaintSessions.size() - 1;
-        session = _freePaintSessions[idx];
+        session = _freePaintSessions.back();
 
         // Shrink by one.
         _freePaintSessions.pop_back();
@@ -161,17 +148,14 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     }
 
     session->DPI = *dpi;
-    session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
-    session->NextFreePaintStruct = session->PaintStructs;
-    session->LastRootPS = nullptr;
-    session->LastAttachedPS = nullptr;
     session->ViewFlags = viewFlags;
-    for (auto& quadrant : session->Quadrants)
-    {
-        quadrant = nullptr;
-    }
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
+    session->PaintStructs.clear();
+
+    std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
+    session->LastPS = nullptr;
+    session->LastAttachedPS = nullptr;
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;
     session->WoodenSupportsPrependTo = nullptr;

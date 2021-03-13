@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
@@ -153,7 +154,7 @@ private:
     {
         try
         {
-            std::printf("Downloading %s\n", url.c_str());
+            Console::WriteLine("Downloading %s", url.c_str());
             Http::Request req;
             req.method = Http::Method::GET;
             req.url = url;
@@ -175,14 +176,14 @@ private:
                 }
                 else
                 {
-                    std::printf("  Failed to download %s\n", name.c_str());
+                    Console::Error::WriteLine("  Failed to download %s", name.c_str());
                 }
                 QueueNextDownload();
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to download %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to download %s", name.c_str());
             QueueNextDownload();
         }
     }
@@ -226,19 +227,20 @@ private:
                 }
                 else if (response.status == Http::Status::NotFound)
                 {
-                    std::printf("  %s not found\n", name.c_str());
+                    Console::Error::WriteLine("  %s not found", name.c_str());
                     QueueNextDownload();
                 }
                 else
                 {
-                    std::printf("  %s query failed (status %d)\n", name.c_str(), static_cast<int32_t>(response.status));
+                    Console::Error::WriteLine(
+                        "  %s query failed (status %d)", name.c_str(), static_cast<int32_t>(response.status));
                     QueueNextDownload();
                 }
             });
         }
         catch (const std::exception&)
         {
-            std::printf("  Failed to query %s\n", name.c_str());
+            Console::Error::WriteLine("  Failed to query %s", name.c_str());
         }
     }
 };
@@ -269,14 +271,14 @@ constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
 
 static rct_widget window_object_load_error_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
-    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
-    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WWT_TABLE_HEADER, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
-    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WWT_SCROLL,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
-    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
-    MakeWidget({            152, 377}, {145,  14}, WWT_BUTTON,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
+    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+    MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
-    MakeWidget({            300, 377}, {146,  14}, WWT_BUTTON,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
+    MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
 #endif
     { WIDGETS_END },
 };
@@ -327,34 +329,34 @@ static rct_string_id get_object_type_string(const rct_object_entry* entry)
     rct_string_id result;
     switch (entry->GetType())
     {
-        case OBJECT_TYPE_RIDE:
+        case ObjectType::Ride:
             result = STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS;
             break;
-        case OBJECT_TYPE_SMALL_SCENERY:
+        case ObjectType::SmallScenery:
             result = STR_OBJECT_SELECTION_SMALL_SCENERY;
             break;
-        case OBJECT_TYPE_LARGE_SCENERY:
+        case ObjectType::LargeScenery:
             result = STR_OBJECT_SELECTION_LARGE_SCENERY;
             break;
-        case OBJECT_TYPE_WALLS:
+        case ObjectType::Walls:
             result = STR_OBJECT_SELECTION_WALLS_FENCES;
             break;
-        case OBJECT_TYPE_BANNERS:
+        case ObjectType::Banners:
             result = STR_OBJECT_SELECTION_PATH_SIGNS;
             break;
-        case OBJECT_TYPE_PATHS:
+        case ObjectType::Paths:
             result = STR_OBJECT_SELECTION_FOOTPATHS;
             break;
-        case OBJECT_TYPE_PATH_BITS:
+        case ObjectType::PathBits:
             result = STR_OBJECT_SELECTION_PATH_EXTRAS;
             break;
-        case OBJECT_TYPE_SCENERY_GROUP:
+        case ObjectType::SceneryGroup:
             result = STR_OBJECT_SELECTION_SCENERY_GROUPS;
             break;
-        case OBJECT_TYPE_PARK_ENTRANCE:
+        case ObjectType::ParkEntrance:
             result = STR_OBJECT_SELECTION_PARK_ENTRANCE;
             break;
-        case OBJECT_TYPE_WATER:
+        case ObjectType::Water:
             result = STR_OBJECT_SELECTION_WATER;
             break;
         default:
@@ -407,13 +409,13 @@ rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, 
     rct_window* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
     if (window == nullptr)
     {
-        window = window_create_centred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
+        window = WindowCreateCentred(WW, WH, &window_object_load_error_events, WC_OBJECT_LOAD_ERROR, 0);
 
         window->widgets = window_object_load_error_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_COPY_CURRENT) | (1 << WIDX_COPY_ALL)
             | (1 << WIDX_DOWNLOAD_ALL);
 
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_LIGHT_BLUE;
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -438,7 +440,7 @@ static void window_object_load_error_update(rct_window* w)
     w->frame_no++;
 
     // Check if the mouse is hovering over the list
-    if (!widget_is_highlighted(w, WIDX_SCROLL))
+    if (!WidgetIsHighlighted(w, WIDX_SCROLL))
     {
         highlighted_index = -1;
         widget_invalidate(w, WIDX_SCROLL);
@@ -534,19 +536,18 @@ static void window_object_load_error_scrollgetsize(rct_window* w, int32_t scroll
 
 static void window_object_load_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw explanatory message
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_EXPLANATION);
-    gfx_draw_string_left_wrapped(
-        dpi, ft.Data(), w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, COLOUR_BLACK);
+    DrawTextWrapped(dpi, w->windowPos + ScreenCoordsXY{ 5, 18 }, WW - 10, STR_BLACK_STRING, ft);
 
     // Draw file name
     ft = Formatter();
     ft.Add<rct_string_id>(STR_OBJECT_ERROR_WINDOW_FILE);
     ft.Add<utf8*>(file_path.c_str());
-    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft, COLOUR_BLACK);
+    DrawTextEllipsised(dpi, { w->windowPos.x + 5, w->windowPos.y + 43 }, WW - 5, STR_BLACK_STRING, ft);
 }
 
 static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
@@ -577,15 +578,15 @@ static void window_object_load_error_scrollpaint(rct_window* w, rct_drawpixelinf
 
         // Draw the actual object entry's name...
         screenCoords.x = NAME_COL_LEFT - 3;
-        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, screenCoords);
+        gfx_draw_string(dpi, screenCoords, strndup(_invalid_entries[i].name, 8), { COLOUR_DARK_GREEN });
 
         // ... source game ...
         rct_string_id sourceStringId = object_manager_get_source_game_string(_invalid_entries[i].GetSourceGame());
-        gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, { SOURCE_COL_LEFT - 3, screenCoords.y });
+        DrawTextBasic(dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
 
         // ... and type
         rct_string_id type = get_object_type_string(&_invalid_entries[i]);
-        gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, { TYPE_COL_LEFT - 3, screenCoords.y });
+        DrawTextBasic(dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
     }
 }
 

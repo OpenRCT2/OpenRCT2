@@ -23,10 +23,12 @@
 #include "../audio/audio.h"
 #include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
+#include "../management/Research.h"
 #include "../sprites.h"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
+#include "Vehicle.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"
@@ -53,6 +55,7 @@
 #include "coaster/meta/ReverseFreefallCoaster.h"
 #include "coaster/meta/ReverserRollerCoaster.h"
 #include "coaster/meta/SideFrictionRollerCoaster.h"
+#include "coaster/meta/SingleRailRollerCoaster.h"
 #include "coaster/meta/SpinningWildMouse.h"
 #include "coaster/meta/SpiralRollerCoaster.h"
 #include "coaster/meta/StandUpRollerCoaster.h"
@@ -309,6 +312,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_SPINNING_WILD_MOUSE,               */ SpinningWildMouseRTD,
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
+    /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
@@ -328,4 +332,27 @@ uint64_t RideTypeDescriptor::GetAvailableTrackPieces() const
 bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
 {
     return GetAvailableTrackPieces() & (1ULL << trackPiece);
+}
+
+ResearchCategory RideTypeDescriptor::GetResearchCategory() const
+{
+    switch (Category)
+    {
+        case RIDE_CATEGORY_TRANSPORT:
+            return ResearchCategory::Transport;
+        case RIDE_CATEGORY_GENTLE:
+            return ResearchCategory::Gentle;
+        case RIDE_CATEGORY_ROLLERCOASTER:
+            return ResearchCategory::Rollercoaster;
+        case RIDE_CATEGORY_THRILL:
+            return ResearchCategory::Thrill;
+        case RIDE_CATEGORY_WATER:
+            return ResearchCategory::Water;
+        case RIDE_CATEGORY_SHOP:
+            return ResearchCategory::Shop;
+        case RIDE_CATEGORY_NONE:
+            break;
+    }
+    log_error("Cannot get Research Category of invalid RideCategory");
+    return ResearchCategory::Transport;
 }

@@ -11,10 +11,11 @@
 
 #include "../common.h"
 #include "Console.hpp"
+#include "DataSerialiser.h"
 #include "File.h"
 #include "FileScanner.h"
-#include "FileStream.hpp"
-#include "JobPool.hpp"
+#include "FileStream.h"
+#include "JobPool.h"
 #include "Path.hpp"
 
 #include <chrono>
@@ -130,14 +131,9 @@ protected:
     virtual std::tuple<bool, TItem> Create(int32_t language, const std::string& path) const abstract;
 
     /**
-     * Serialises an index item to the given stream.
+     * Serialises/DeSerialises an index item to/from the given stream.
      */
-    virtual void Serialise(OpenRCT2::IStream* stream, const TItem& item) const abstract;
-
-    /**
-     * Deserialises an index item from the given stream.
-     */
-    virtual TItem Deserialise(OpenRCT2::IStream* stream) const abstract;
+    virtual void Serialise(DataSerialiser& ds, TItem& item) const abstract;
 
 private:
     ScanResult Scan() const
@@ -156,14 +152,14 @@ private:
                 auto fileInfo = scanner->GetFileInfo();
                 auto path = std::string(scanner->GetPath());
 
-                files.push_back(path);
-
                 stats.TotalFiles++;
                 stats.TotalFileSize += fileInfo->Size;
                 stats.FileDateModifiedChecksum ^= static_cast<uint32_t>(fileInfo->LastModified >> 32)
                     ^ static_cast<uint32_t>(fileInfo->LastModified & 0xFFFFFFFF);
                 stats.FileDateModifiedChecksum = ror32(stats.FileDateModifiedChecksum, 5);
                 stats.PathChecksum += GetPathChecksum(path);
+
+                files.push_back(std::move(path));
             }
             delete scanner;
         }
@@ -237,7 +233,7 @@ private:
 
             jobPool.Join(reportProgress);
 
-            for (auto&& itr : containers)
+            for (const auto& itr : containers)
             {
                 allItems.insert(allItems.end(), itr.begin(), itr.end());
             }
@@ -272,11 +268,13 @@ private:
                     && header.Stats.PathChecksum == stats.PathChecksum)
                 {
                     items.reserve(header.NumItems);
+                    DataSerialiser ds(false, fs);
                     // Directory is the same, just read the saved items
                     for (uint32_t i = 0; i < header.NumItems; i++)
                     {
-                        auto item = Deserialise(&fs);
-                        items.push_back(item);
+                        TItem item;
+                        Serialise(ds, item);
+                        items.emplace_back(std::move(item));
                     }
                     loadedItems = true;
                 }
@@ -291,10 +289,10 @@ private:
                 Console::Error::WriteLine("%s", e.what());
             }
         }
-        return std::make_tuple(loadedItems, items);
+        return std::make_tuple(loadedItems, std::move(items));
     }
 
-    void WriteIndexFile(int32_t language, const DirectoryStats& stats, const std::vector<TItem>& items) const
+    void WriteIndexFile(int32_t language, const DirectoryStats& stats, std::vector<TItem>& items) const
     {
         try
         {
@@ -312,10 +310,11 @@ private:
             header.NumItems = static_cast<uint32_t>(items.size());
             fs.WriteValue(header);
 
+            DataSerialiser ds(true, fs);
             // Write items
-            for (const auto& item : items)
+            for (auto& item : items)
             {
-                Serialise(&fs, item);
+                Serialise(ds, item);
             }
         }
         catch (const std::exception& e)

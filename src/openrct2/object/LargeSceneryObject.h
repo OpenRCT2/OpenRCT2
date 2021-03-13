@@ -40,6 +40,7 @@ public:
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+    const rct_large_scenery_tile* GetTileForSequence(uint8_t SequenceIndex) const;
 
 private:
     static std::vector<rct_large_scenery_tile> ReadTiles(OpenRCT2::IStream* stream);

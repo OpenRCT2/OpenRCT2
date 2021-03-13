@@ -63,7 +63,7 @@ static void top_spin_paint_vehicle(
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
         armRotation = vehicle->vehicle_sprite_type;
@@ -89,7 +89,8 @@ static void top_spin_paint_vehicle(
     image_id += rideEntry->vehicles[0].base_image_id;
     // Left back bottom support
     image_id += 572;
-    sub_98197C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsParent(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -110,7 +111,8 @@ static void top_spin_paint_vehicle(
     // Left hand arm
     image_id += 380;
 
-    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     uint32_t seatImageId;
 
@@ -163,7 +165,7 @@ static void top_spin_paint_vehicle(
             break;
     }
 
-    sub_98199C(
+    PaintAddImageAsChild(
         session, image_id, static_cast<int8_t>(seatCoords.x), static_cast<int8_t>(seatCoords.y), lengthX, lengthY, 90,
         seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
@@ -173,7 +175,7 @@ static void top_spin_paint_vehicle(
         image_id = (seatImageId + (1 * 76))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
 
-        sub_98199C(
+        PaintAddImageAsChild(
             session, image_id, static_cast<int8_t>(seatCoords.x), static_cast<int8_t>(seatCoords.y), lengthX, lengthY, 90,
             seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
@@ -182,7 +184,7 @@ static void top_spin_paint_vehicle(
             image_id = (seatImageId + (2 * 76))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
 
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, static_cast<int8_t>(seatCoords.x), static_cast<int8_t>(seatCoords.y), lengthX, lengthY, 90,
                 seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
@@ -192,7 +194,7 @@ static void top_spin_paint_vehicle(
             image_id = (seatImageId + (3 * 76))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
 
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, static_cast<int8_t>(seatCoords.x), static_cast<int8_t>(seatCoords.y), lengthX, lengthY, 90,
                 seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
@@ -202,7 +204,7 @@ static void top_spin_paint_vehicle(
             image_id = (seatImageId + (4 * 76))
                 | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
 
-            sub_98199C(
+            PaintAddImageAsChild(
                 session, image_id, static_cast<int8_t>(seatCoords.x), static_cast<int8_t>(seatCoords.y), lengthX, lengthY, 90,
                 seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
         }
@@ -220,7 +222,8 @@ static void top_spin_paint_vehicle(
     // Right hand arm
     image_id += 476;
 
-    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -233,10 +236,11 @@ static void top_spin_paint_vehicle(
     // Right back bottom support
     image_id += 573;
 
-    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
+    PaintAddImageAsChild(
+        session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     session->CurrentlyDrawnItem = curTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /**
@@ -313,7 +317,7 @@ static void paint_top_spin(
 /* 0x0076659C */
 TRACK_PAINT_FUNCTION get_track_paint_function_topspin(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_3_X_3)
+    if (trackType != TrackElemType::FlatTrack3x3)
     {
         return nullptr;
     }

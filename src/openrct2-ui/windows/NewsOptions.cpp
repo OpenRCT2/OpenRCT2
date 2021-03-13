@@ -54,7 +54,7 @@ static constexpr const notification_def NewsItemOptionDefinitions[] = {
     { NOTIFICATION_CATEGORY_GUEST,  STR_NOTIFICATION_GUEST_DIED,                        offsetof(NotificationConfiguration, guest_died)                         },
 };
 
-enum WINDOW_NEWS_WIDGET_IDX {
+enum WINDOW_NEWS_OPTIONS_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -67,19 +67,19 @@ enum WINDOW_NEWS_WIDGET_IDX {
 
 static rct_widget window_news_options_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({ 0, 43}, {400, 257}, WWT_RESIZE,   WindowColour::Secondary), // tab content panel
+    MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // tab content panel
     MakeTab   ({ 3, 17}                                                   ), // tab 1
     MakeTab   ({34, 17}                                                   ), // tab 2
     MakeTab   ({65, 17}                                                   ), // tab 2
-    MakeWidget({ 7, 49}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
-    MakeWidget({ 0,  0}, {343,  14}, WWT_CHECKBOX, WindowColour::Tertiary ),
+    MakeWidget({ 7, 49}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
+    MakeWidget({ 0,  0}, {343,  14}, WindowWidgetType::Checkbox, WindowColour::Tertiary ),
     { WIDGETS_END },
 };
 
@@ -109,10 +109,10 @@ rct_window* window_news_options_open()
     window = window_bring_to_front_by_class(WC_NOTIFICATION_OPTIONS);
     if (window == nullptr)
     {
-        window = window_create_centred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
+        window = WindowCreateCentred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
         window->widgets = window_news_options_widgets;
         window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB_PARK) | (1 << WIDX_TAB_RIDE) | (1 << WIDX_TAB_GUEST);
-        window_init_scroll_widgets(window);
+        WindowInitScrollWidgets(window);
         window->colours[0] = COLOUR_GREY;
         window->colours[1] = COLOUR_LIGHT_BLUE;
         window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -192,7 +192,7 @@ static void window_news_options_invalidate(rct_window* w)
 
         w->enabled_widgets |= (1ULL << checkboxWidgetIndex);
 
-        checkboxWidget->type = WWT_CHECKBOX;
+        checkboxWidget->type = WindowWidgetType::Checkbox;
         checkboxWidget->left = baseCheckBox->left;
         checkboxWidget->right = baseCheckBox->right;
         checkboxWidget->top = y;
@@ -200,7 +200,7 @@ static void window_news_options_invalidate(rct_window* w)
         checkboxWidget->text = ndef->caption;
 
         const bool* configValue = get_notification_value_ptr(ndef);
-        widget_set_checkbox_value(w, checkboxWidgetIndex, *configValue);
+        WidgetSetCheckboxValue(w, checkboxWidgetIndex, *configValue);
 
         checkboxWidgetIndex++;
         checkboxWidget++;
@@ -208,11 +208,11 @@ static void window_news_options_invalidate(rct_window* w)
     }
 
     // Remove unused checkboxes
-    while (checkboxWidget->type != WWT_LAST)
+    while (checkboxWidget->type != WindowWidgetType::Last)
     {
         w->enabled_widgets &= ~(1ULL << checkboxWidgetIndex);
 
-        checkboxWidget->type = WWT_EMPTY;
+        checkboxWidget->type = WindowWidgetType::Empty;
         checkboxWidgetIndex++;
         checkboxWidget++;
     }
@@ -232,7 +232,7 @@ static void window_news_options_invalidate(rct_window* w)
 
 static void window_news_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
     window_news_options_draw_tab_images(w, dpi);
 }
 

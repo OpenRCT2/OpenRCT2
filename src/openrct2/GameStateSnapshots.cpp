@@ -11,6 +11,7 @@
 
 #include "core/CircularBuffer.h"
 #include "peep/Peep.h"
+#include "world/EntityList.h"
 #include "world/Sprite.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;
@@ -49,7 +50,7 @@ struct GameStateSnapshot_t
             for (size_t i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(i);
-                if (entity == nullptr || entity->generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+                if (entity == nullptr || entity->misc.sprite_identifier == SpriteIdentifier::Null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -76,42 +77,46 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.generic.sprite_identifier;
+            ds << sprite.misc.sprite_identifier;
 
-            switch (sprite.generic.sprite_identifier)
+            switch (sprite.misc.sprite_identifier)
             {
-                case SPRITE_IDENTIFIER_VEHICLE:
+                case SpriteIdentifier::Vehicle:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Vehicle)]>(sprite.vehicle);
                     break;
-                case SPRITE_IDENTIFIER_PEEP:
+                case SpriteIdentifier::Peep:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Peep)]>(sprite.peep);
                     break;
-                case SPRITE_IDENTIFIER_LITTER:
+                case SpriteIdentifier::Litter:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Litter)]>(sprite.litter);
                     break;
-                case SPRITE_IDENTIFIER_MISC:
+                case SpriteIdentifier::Misc:
                 {
-                    ds << sprite.generic.type;
-                    switch (sprite.generic.type)
+                    ds << sprite.misc.SubType;
+                    switch (sprite.misc.SubType)
                     {
-                        case SPRITE_MISC_MONEY_EFFECT:
+                        case MiscEntityType::MoneyEffect:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
                             break;
-                        case SPRITE_MISC_BALLOON:
+                        case MiscEntityType::Balloon:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
                             break;
-                        case SPRITE_MISC_DUCK:
+                        case MiscEntityType::Duck:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
                             break;
-                        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                        case MiscEntityType::JumpingFountainWater:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
                             break;
-                        case SPRITE_MISC_STEAM_PARTICLE:
+                        case MiscEntityType::SteamParticle:
                             ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
                             break;
+                        default:
+                            break;
                     }
+                    break;
                 }
-                break;
+                case SpriteIdentifier::Null:
+                    break;
             }
         }
     }
@@ -141,7 +146,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_SPRITES, true);
+            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -167,15 +172,15 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     std::vector<rct_sprite> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
         std::vector<rct_sprite> spriteList;
-        spriteList.resize(MAX_SPRITES);
+        spriteList.resize(MAX_ENTITIES);
 
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.generic.sprite_identifier = SPRITE_IDENTIFIER_NULL;
+            sprite.misc.sprite_identifier = SpriteIdentifier::Null;
         }
 
-        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_SPRITES, false);
+        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_ENTITIES, false);
 
         return spriteList;
     }
@@ -196,10 +201,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         COMPARE_FIELD(SpriteBase, sprite_identifier);
-        COMPARE_FIELD(SpriteBase, type);
-        COMPARE_FIELD(SpriteBase, next_in_quadrant);
-        COMPARE_FIELD(SpriteBase, next);
-        COMPARE_FIELD(SpriteBase, previous);
         COMPARE_FIELD(SpriteBase, linked_list_index);
         COMPARE_FIELD(SpriteBase, sprite_index);
         COMPARE_FIELD(SpriteBase, flags);
@@ -255,7 +256,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         {
             COMPARE_FIELD(Peep, RideTypesBeenOn[i]);
         }
-        COMPARE_FIELD(Peep, ItemExtraFlags);
+        COMPARE_FIELD(Peep, ItemFlags);
         COMPARE_FIELD(Peep, Photo2RideRef);
         COMPARE_FIELD(Peep, Photo3RideRef);
         COMPARE_FIELD(Peep, Photo4RideRef);
@@ -322,7 +323,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, HatColour);
         COMPARE_FIELD(Peep, FavouriteRide);
         COMPARE_FIELD(Peep, FavouriteRideRating);
-        COMPARE_FIELD(Peep, ItemStandardFlags);
     }
 
     void CompareSpriteDataVehicle(
@@ -337,7 +337,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, vehicle_type);
         COMPARE_FIELD(Vehicle, colours);
         COMPARE_FIELD(Vehicle, track_progress);
-        COMPARE_FIELD(Vehicle, track_direction);
+        COMPARE_FIELD(Vehicle, TrackTypeAndDirection);
         COMPARE_FIELD(Vehicle, TrackLocation.x);
         COMPARE_FIELD(Vehicle, TrackLocation.y);
         COMPARE_FIELD(Vehicle, TrackLocation.z);
@@ -466,60 +466,65 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, Iteration);
     }
 
-    void CompareSpriteDataGeneric(
-        const SpriteGeneric& spriteBase, const SpriteGeneric& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteDataMisc(
+        const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(SpriteGeneric, frame);
+        COMPARE_FIELD(MiscEntity, SubType);
+        COMPARE_FIELD(MiscEntity, frame);
     }
 
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        CompareSpriteDataCommon(spriteBase.generic, spriteCmp.generic, changeData);
-        if (spriteBase.generic.sprite_identifier == spriteCmp.generic.sprite_identifier)
+        CompareSpriteDataCommon(spriteBase.misc, spriteCmp.misc, changeData);
+        if (spriteBase.misc.sprite_identifier == spriteCmp.misc.sprite_identifier)
         {
-            switch (spriteBase.generic.sprite_identifier)
+            switch (spriteBase.misc.sprite_identifier)
             {
-                case SPRITE_IDENTIFIER_PEEP:
+                case SpriteIdentifier::Peep:
                     CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
                     break;
-                case SPRITE_IDENTIFIER_VEHICLE:
+                case SpriteIdentifier::Vehicle:
                     CompareSpriteDataVehicle(spriteBase.vehicle, spriteCmp.vehicle, changeData);
                     break;
-                case SPRITE_IDENTIFIER_LITTER:
+                case SpriteIdentifier::Litter:
                     CompareSpriteDataLitter(spriteBase.litter, spriteCmp.litter, changeData);
                     break;
-                case SPRITE_IDENTIFIER_MISC:
+                case SpriteIdentifier::Misc:
                     // This is not expected to happen, as misc sprites do not constitute sprite checksum
-                    CompareSpriteDataGeneric(spriteBase.generic, spriteCmp.generic, changeData);
-                    switch (spriteBase.generic.type)
+                    CompareSpriteDataMisc(spriteBase.misc, spriteCmp.misc, changeData);
+                    switch (spriteBase.misc.SubType)
                     {
-                        case SPRITE_MISC_STEAM_PARTICLE:
+                        case MiscEntityType::SteamParticle:
                             CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
                             break;
-                        case SPRITE_MISC_MONEY_EFFECT:
+                        case MiscEntityType::MoneyEffect:
                             CompareSpriteDataMoneyEffect(spriteBase.money_effect, spriteCmp.money_effect, changeData);
                             break;
-                        case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                        case MiscEntityType::CrashedVehicleParticle:
                             CompareSpriteDataVehicleCrashParticle(
                                 spriteBase.crashed_vehicle_particle, spriteCmp.crashed_vehicle_particle, changeData);
                             break;
-                        case SPRITE_MISC_EXPLOSION_CLOUD:
-                        case SPRITE_MISC_CRASH_SPLASH:
-                        case SPRITE_MISC_EXPLOSION_FLARE:
-                            // SpriteGeneric
+                        case MiscEntityType::ExplosionCloud:
+                        case MiscEntityType::CrashSplash:
+                        case MiscEntityType::ExplosionFlare:
+                            // MiscEntity
                             break;
-                        case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-                        case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                        case MiscEntityType::JumpingFountainWater:
+                        case MiscEntityType::JumpingFountainSnow:
                             CompareSpriteDataJumpingFountain(
                                 spriteBase.jumping_fountain, spriteCmp.jumping_fountain, changeData);
                             break;
-                        case SPRITE_MISC_BALLOON:
+                        case MiscEntityType::Balloon:
                             CompareSpriteDataBalloon(spriteBase.balloon, spriteCmp.balloon, changeData);
                             break;
-                        case SPRITE_MISC_DUCK:
+                        case MiscEntityType::Duck:
                             CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
                             break;
+                        default:
+                            break;
                     }
+                    break;
+                case SpriteIdentifier::Null:
                     break;
             }
         }
@@ -528,7 +533,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual GameStateCompareData_t Compare(const GameStateSnapshot_t& base, const GameStateSnapshot_t& cmp) const override final
     {
         GameStateCompareData_t res;
-        res.tick = base.tick;
+        res.tickLeft = base.tick;
+        res.tickRight = cmp.tick;
         res.srand0Left = base.srand0;
         res.srand0Right = cmp.srand0;
 
@@ -543,27 +549,30 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteBase = spritesBase[i];
             const rct_sprite& spriteCmp = spritesCmp[i];
 
-            changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
-            changeData.miscIdentifier = spriteBase.generic.type;
+            changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
+            // This will be nonsense information for all types apart from MiscEntities.
+            // This is not an issue though as only MiscEntities will use this field in GetSpriteIdentifierName
+            // TODO: Don't do this.
+            changeData.miscIdentifier = spriteBase.misc.SubType;
 
-            if (spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
-                && spriteCmp.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL)
+            if (spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier != SpriteIdentifier::Null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange_t::ADDED;
-                changeData.spriteIdentifier = spriteCmp.generic.sprite_identifier;
+                changeData.spriteIdentifier = spriteCmp.misc.sprite_identifier;
             }
             else if (
-                spriteBase.generic.sprite_identifier != SPRITE_IDENTIFIER_NULL
-                && spriteCmp.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+                spriteBase.misc.sprite_identifier != SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange_t::REMOVED;
-                changeData.spriteIdentifier = spriteBase.generic.sprite_identifier;
+                changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
             }
             else if (
-                spriteBase.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL
-                && spriteCmp.generic.sprite_identifier == SPRITE_IDENTIFIER_NULL)
+                spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
+                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange_t::EQUAL;
@@ -581,47 +590,49 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                 }
             }
 
-            res.spriteChanges.push_back(changeData);
+            res.spriteChanges.push_back(std::move(changeData));
         }
 
         return res;
     }
 
-    static const char* GetSpriteIdentifierName(uint32_t spriteIdentifier, uint8_t miscIdentifier)
+    static const char* GetSpriteIdentifierName(SpriteIdentifier spriteIdentifier, MiscEntityType miscIdentifier)
     {
         switch (spriteIdentifier)
         {
-            case SPRITE_IDENTIFIER_NULL:
+            case SpriteIdentifier::Null:
                 return "Null";
-            case SPRITE_IDENTIFIER_PEEP:
+            case SpriteIdentifier::Peep:
                 return "Peep";
-            case SPRITE_IDENTIFIER_VEHICLE:
+            case SpriteIdentifier::Vehicle:
                 return "Vehicle";
-            case SPRITE_IDENTIFIER_LITTER:
+            case SpriteIdentifier::Litter:
                 return "Litter";
-            case SPRITE_IDENTIFIER_MISC:
+            case SpriteIdentifier::Misc:
                 switch (miscIdentifier)
                 {
-                    case SPRITE_MISC_STEAM_PARTICLE:
+                    case MiscEntityType::SteamParticle:
                         return "Misc: Steam Particle";
-                    case SPRITE_MISC_MONEY_EFFECT:
+                    case MiscEntityType::MoneyEffect:
                         return "Misc: Money effect";
-                    case SPRITE_MISC_CRASHED_VEHICLE_PARTICLE:
+                    case MiscEntityType::CrashedVehicleParticle:
                         return "Misc: Crash Vehicle Particle";
-                    case SPRITE_MISC_EXPLOSION_CLOUD:
+                    case MiscEntityType::ExplosionCloud:
                         return "Misc: Explosion Cloud";
-                    case SPRITE_MISC_CRASH_SPLASH:
+                    case MiscEntityType::CrashSplash:
                         return "Misc: Crash Splash";
-                    case SPRITE_MISC_EXPLOSION_FLARE:
+                    case MiscEntityType::ExplosionFlare:
                         return "Misc: Explosion Flare";
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
+                    case MiscEntityType::JumpingFountainWater:
                         return "Misc: Jumping fountain water";
-                    case SPRITE_MISC_BALLOON:
+                    case MiscEntityType::Balloon:
                         return "Misc: Balloon";
-                    case SPRITE_MISC_DUCK:
+                    case MiscEntityType::Duck:
                         return "Misc: Duck";
-                    case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
+                    case MiscEntityType::JumpingFountainSnow:
                         return "Misc: Jumping fountain snow";
+                    default:
+                        break;
                 }
                 return "Misc";
         }
@@ -633,7 +644,13 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         std::string outputBuffer;
         char tempBuffer[1024] = {};
 
-        snprintf(tempBuffer, sizeof(tempBuffer), "tick: %08X\n", cmpData.tick);
+        if (cmpData.tickLeft != cmpData.tickRight)
+        {
+            outputBuffer += "WARNING: Comparing two snapshots with different ticks, this will very likely result in false "
+                            "positives\n";
+        }
+
+        snprintf(tempBuffer, sizeof(tempBuffer), "tick left = %08X, tick right = %08X\n", cmpData.tickLeft, cmpData.tickRight);
         outputBuffer += tempBuffer;
 
         snprintf(

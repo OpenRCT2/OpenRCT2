@@ -11,6 +11,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/LargeSceneryObject.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
@@ -27,7 +28,7 @@
 // 6B8172:
 static void large_scenery_paint_supports(
     paint_session* session, uint8_t direction, uint16_t height, const TileElement* tileElement, uint32_t dword_F4387C,
-    rct_large_scenery_tile* tile)
+    const rct_large_scenery_tile* tile)
 {
     if (tile->flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
     {
@@ -225,14 +226,21 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         return;
     }
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
+    session->InteractionType = ViewportInteractionItem::LargeScenery;
     uint32_t sequenceNum = tileElement->AsLargeScenery()->GetSequenceIndex();
-    rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
+    const LargeSceneryObject* object = tileElement->AsLargeScenery()->GetObject();
+    if (object == nullptr)
+        return;
+
+    const rct_scenery_entry* entry = tileElement->AsLargeScenery()->GetEntry();
     if (entry == nullptr)
         return;
 
     uint32_t image_id = (sequenceNum << 2) + entry->image + 4 + direction;
-    rct_large_scenery_tile* tile = &entry->large_scenery.tiles[sequenceNum];
+    const rct_large_scenery_tile* tile = object->GetTileForSequence(sequenceNum);
+    if (tile == nullptr)
+        return;
+
     uint32_t dword_F4387C = 0;
     image_id |= SPRITE_ID_PALETTE_COLOUR_2(
         tileElement->AsLargeScenery()->GetPrimaryColour(), tileElement->AsLargeScenery()->GetSecondaryColour());
@@ -242,7 +250,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     {
         if (!track_design_save_contains_tile_element(tileElement))
         {
-            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(PALETTE_46);
+            sequenceNum = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
             image_id &= 0x7FFFF;
             dword_F4387C = sequenceNum;
             image_id |= dword_F4387C;
@@ -250,7 +258,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     }
     if (tileElement->IsGhost())
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        session->InteractionType = ViewportInteractionItem::None;
         sequenceNum = CONSTRUCTION_MARKER;
         image_id &= 0x7FFFF;
         dword_F4387C = sequenceNum;
@@ -276,7 +284,7 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
     boxlength.x = s98E3C4[esi].length.x;
     boxlength.y = s98E3C4[esi].length.y;
     boxlength.z = ah;
-    sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
+    PaintAddImageAsParent(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z);
     if (entry->large_scenery.scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
@@ -440,11 +448,9 @@ void large_scenery_paint(paint_session* session, uint8_t direction, uint16_t hei
             format_string(signString, sizeof(signString), STR_SCROLLING_SIGN_TEXT, ft.Data());
         }
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
-
-        uint16_t stringWidth = gfx_get_string_width(signString);
+        uint16_t stringWidth = gfx_get_string_width(signString, FontSpriteBase::TINY);
         uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
-        sub_98199C(
+        PaintAddImageAsChild(
             session, scrolling_text_setup(session, STR_SCROLLING_SIGN_TEXT, ft, scroll, scrollMode, textColour), 0, 0, 1, 1, 21,
             height + 25, boxoffset.x, boxoffset.y, boxoffset.z);
     }

@@ -18,6 +18,7 @@
 enum class MeasurementFormat : int32_t;
 enum class TemperatureUnit : int32_t;
 enum class ScaleQuality : int32_t;
+enum class Sort : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
 
@@ -98,7 +99,7 @@ struct GeneralConfiguration
 
     // Loading and saving
     bool confirmation_prompt;
-    int32_t load_save_sort;
+    Sort load_save_sort;
     utf8* last_save_game_directory;
     utf8* last_save_landscape_directory;
     utf8* last_save_scenario_directory;
@@ -116,6 +117,7 @@ struct InterfaceConfiguration
     bool toolbar_show_news;
     bool toolbar_show_mute;
     bool toolbar_show_chat;
+    bool toolbar_show_zoom;
     bool console_small_font;
     bool random_title_sequence;
     utf8* current_theme_preset;
@@ -204,14 +206,15 @@ struct FontConfiguration
 struct PluginConfiguration
 {
     bool enable_hot_reloading;
+    std::string allowed_hosts;
 };
 
-enum SORT
+enum class Sort : int32_t
 {
-    SORT_NAME_ASCENDING,
-    SORT_NAME_DESCENDING,
-    SORT_DATE_ASCENDING,
-    SORT_DATE_DESCENDING,
+    NameAscending,
+    NameDescending,
+    DateAscending,
+    DateDescending,
 };
 
 enum class TemperatureUnit : int32_t
@@ -255,5 +258,5 @@ std::string FindCsg1datAtLocation(const utf8* path);
 bool Csg1datPresentAtLocation(const utf8* path);
 std::string FindCsg1idatAtLocation(const utf8* path);
 bool Csg1idatPresentAtLocation(const utf8* path);
-bool CsgIsUsable(rct_gx csg);
+bool CsgIsUsable(const rct_gx& csg);
 bool CsgAtLocationIsUsable(const utf8* path);

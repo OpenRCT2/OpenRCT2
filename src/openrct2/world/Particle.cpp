@@ -16,12 +16,14 @@
 
 template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::CrashedVehicleParticle;
 }
 
 template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
-    return sprite_identifier == SPRITE_IDENTIFIER_MISC && type == SPRITE_MISC_CRASH_SPLASH;
+    auto* misc = As<MiscEntity>();
+    return misc && misc->SubType == MiscEntityType::CrashSplash;
 }
 /**
  *
@@ -29,7 +31,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
-    VehicleCrashParticle* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = &create_sprite(SpriteIdentifier::Misc)->crashed_vehicle_particle;
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -37,9 +39,9 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
         sprite->sprite_width = 8;
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(vehiclePos);
-        sprite->type = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
+        sprite->SubType = MiscEntityType::CrashedVehicleParticle;
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
@@ -59,7 +61,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
  */
 void VehicleCrashParticle::Update()
 {
-    Invalidate0();
+    Invalidate();
     time_to_live--;
     if (time_to_live == 0)
     {
@@ -106,7 +108,6 @@ void VehicleCrashParticle::Update()
         newLoc.z = landZ;
     }
     MoveTo(newLoc);
-    Invalidate0();
 
     frame += 85;
     if (frame >= 3072)
@@ -121,15 +122,15 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    SpriteGeneric* sprite = &create_sprite(SPRITE_IDENTIFIER_MISC)->generic;
+    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;
         sprite->sprite_height_negative = 51;
         sprite->sprite_height_positive = 16;
-        sprite->sprite_identifier = SPRITE_IDENTIFIER_MISC;
+        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
-        sprite->type = SPRITE_MISC_CRASH_SPLASH;
+        sprite->SubType = MiscEntityType::CrashSplash;
         sprite->frame = 0;
     }
 }
@@ -140,7 +141,7 @@ void crash_splash_create(const CoordsXYZ& splashPos)
  */
 void CrashSplashParticle::Update()
 {
-    Invalidate2();
+    Invalidate();
     frame += 85;
     if (frame >= 7168)
     {

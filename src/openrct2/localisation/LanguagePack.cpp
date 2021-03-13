@@ -10,12 +10,12 @@
 #include "LanguagePack.h"
 
 #include "../common.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/RTL.h"
 #include "../core/String.hpp"
-#include "../core/StringBuilder.hpp"
-#include "../core/StringReader.hpp"
+#include "../core/StringBuilder.h"
+#include "../core/StringReader.h"
 #include "Language.h"
 #include "Localisation.h"
 
@@ -191,7 +191,7 @@ public:
         }
     }
 
-    rct_string_id GetObjectOverrideStringId(const std::string_view& legacyIdentifier, uint8_t index) override
+    rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) override
     {
         Guard::Assert(index < ObjectOverrideMaxStringCount);
 
@@ -404,7 +404,7 @@ private:
                         log_warning("Maximum number of localised object strings exceeded.");
                     }
 
-                    _objectOverrides.push_back(ObjectOverride());
+                    _objectOverrides.emplace_back();
                     _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
                     std::copy_n(_currentGroup.c_str(), 8, _currentObjectOverride->name);
                 }
@@ -448,7 +448,7 @@ private:
                     log_warning("Maximum number of scenario strings exceeded.");
                 }
 
-                _scenarioOverrides.push_back(ScenarioOverride());
+                _scenarioOverrides.emplace_back();
                 _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
                 _currentScenarioOverride->filename = std::string(sb.GetBuffer());
             }
@@ -539,32 +539,8 @@ private:
         sb.Clear();
         while (reader->TryPeek(&codepoint) && !IsNewLine(codepoint))
         {
-            if (codepoint == '{')
-            {
-                uint32_t token;
-                bool isByte;
-                if (ParseToken(reader, &token, &isByte))
-                {
-                    if (isByte)
-                    {
-                        sb.Append(reinterpret_cast<const utf8*>(&token), 1);
-                    }
-                    else
-                    {
-                        sb.Append(static_cast<int32_t>(token));
-                    }
-                }
-                else
-                {
-                    // Syntax error or unknown token, ignore line entirely
-                    return;
-                }
-            }
-            else
-            {
-                reader->Skip();
-                sb.Append(codepoint);
-            }
+            reader->Skip();
+            sb.Append(codepoint);
         }
 
         std::string s;
@@ -598,47 +574,6 @@ private:
                 _currentScenarioOverride->strings[stringId] = s;
             }
         }
-    }
-
-    bool ParseToken(IStringReader* reader, uint32_t* token, bool* isByte)
-    {
-        auto sb = StringBuilder();
-        codepoint_t codepoint;
-
-        // Skip open brace
-        reader->Skip();
-
-        while (reader->TryPeek(&codepoint))
-        {
-            if (IsNewLine(codepoint))
-                return false;
-            if (IsWhitespace(codepoint))
-                return false;
-
-            reader->Skip();
-
-            if (codepoint == '}')
-                break;
-
-            sb.Append(codepoint);
-        }
-
-        const utf8* tokenName = sb.GetBuffer();
-        *token = format_get_code(tokenName);
-        *isByte = false;
-
-        // Handle explicit byte values
-        if (*token == 0)
-        {
-            int32_t number;
-            if (sscanf(tokenName, "%d", &number) == 1)
-            {
-                *token = std::clamp(number, 0, 255);
-                *isByte = true;
-            }
-        }
-
-        return true;
     }
 };
 

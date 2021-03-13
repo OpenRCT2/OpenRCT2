@@ -56,7 +56,7 @@ struct CoordsXYE : public CoordsXY
         , element(_e)
     {
     }
-    TileElement* element;
+    TileElement* element = nullptr;
 };
 
 enum
@@ -144,6 +144,36 @@ constexpr auto SURFACE_STYLE_FLAG_RAISE_OR_LOWER_BASE_HEIGHT = 0x20;
 extern const uint8_t tile_element_lower_styles[9][32];
 extern const uint8_t tile_element_raise_styles[9][32];
 
+template<typename T> class TilePointerIndex
+{
+    std::vector<T*> TilePointers;
+    uint16_t MapSize;
+
+public:
+    explicit TilePointerIndex(const uint16_t mapSize, T* tileElements)
+    {
+        MapSize = mapSize;
+        const uint16_t MaxTileElementPointers = MapSize * MapSize;
+        TilePointers.reserve(MaxTileElementPointers);
+
+        T* tileElement = tileElements;
+        for (size_t y = 0; y < MapSize; y++)
+        {
+            for (size_t x = 0; x < MapSize; x++)
+            {
+                TilePointers.emplace_back(tileElement);
+                while (!(tileElement++)->IsLastForTile())
+                    ;
+            }
+        }
+    }
+
+    T* GetFirstElementAt(TileCoordsXY coords)
+    {
+        return TilePointers[coords.x + (coords.y * MapSize)];
+    }
+};
+
 void map_init(int32_t size);
 
 void map_count_remaining_land_rights();
@@ -183,7 +213,13 @@ void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(int32_t num_elements);
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants);
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+
+template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
+{
+    auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
+    return element->template as<T>();
+}
 
 namespace GameActions
 {
@@ -251,11 +287,11 @@ std::optional<CoordsXYZ> map_large_scenery_get_origin(
 ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos);
 
 TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos);
-TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, int32_t trackType);
-TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, int32_t trackType, int32_t sequence);
-TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, int32_t trackType);
-TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, int32_t trackType, int32_t sequence);
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, int32_t trackType, ride_id_t rideIndex);
+TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_type_t trackType);
+TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
+TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType);
+TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence);
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex);
 TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
 

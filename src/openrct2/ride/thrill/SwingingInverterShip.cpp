@@ -61,7 +61,7 @@ static void paint_swinging_inverter_ship_structure(
     {
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
@@ -99,25 +99,25 @@ static void paint_swinging_inverter_ship_structure(
 
     if (direction & 2)
     {
-        sub_98197C(
+        PaintAddImageAsParent(
             session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
-        sub_98199C(
+        PaintAddImageAsChild(
             session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
     }
     else
     {
-        sub_98197C(
+        PaintAddImageAsParent(
             session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
-        sub_98199C(
+        PaintAddImageAsChild(
             session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
             boundBox.offset_y, height);
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x00760260 */
@@ -142,25 +142,25 @@ static void paint_swinging_inverter_ship(
         }
 
         imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParent(session, imageId, 0, 0, 32, 32, 1, height);
 
         switch (direction)
         {
             case 0:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, 0, 24, 32, 8, 1, height + 9);
                 break;
             case 1:
                 imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9);
+                PaintAddImageAsParent(session, imageId, 24, 0, 8, 32, 1, height + 9);
                 break;
             case 2:
                 imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height);
+                PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height);
                 break;
             case 3:
                 imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height);
+                PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height);
                 break;
         }
     }
@@ -194,7 +194,7 @@ static void paint_swinging_inverter_ship(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
+    if (trackType != TrackElemType::FlatTrack1x4B)
     {
         return nullptr;
     }

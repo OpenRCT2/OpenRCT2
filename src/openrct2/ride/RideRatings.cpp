@@ -203,7 +203,7 @@ static void ride_ratings_update_state_2()
     }
 
     auto loc = gRideRatingsCalcData.Proximity;
-    int32_t trackType = gRideRatingsCalcData.ProximityTrackType;
+    track_type_t trackType = gRideRatingsCalcData.ProximityTrackType;
 
     TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -222,11 +222,12 @@ static void ride_ratings_update_state_2()
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 continue;
         }
 
-        if (trackType == 255
+        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
+        if (trackType == 0xFF || trackType == TrackElemType::None
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TrackElemType::EndStation)
@@ -309,7 +310,7 @@ static void ride_ratings_update_state_5()
     }
 
     auto loc = gRideRatingsCalcData.Proximity;
-    int32_t trackType = gRideRatingsCalcData.ProximityTrackType;
+    track_type_t trackType = gRideRatingsCalcData.ProximityTrackType;
 
     TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -328,11 +329,12 @@ static void ride_ratings_update_state_5()
         if (tileElement->AsTrack()->GetRideIndex() != ride->id)
         {
             // Only check that the track belongs to the same ride if ride does not have buildable track
-            if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
                 continue;
         }
 
-        if (trackType == 255 || trackType == tileElement->AsTrack()->GetTrackType())
+        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
+        if (trackType == 0xFF || trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(tileElement);
 
@@ -390,9 +392,8 @@ static void ride_ratings_begin_proximity_loop()
             }
 
             auto location = ride->stations[i].GetStart();
-
             gRideRatingsCalcData.Proximity = location;
-            gRideRatingsCalcData.ProximityTrackType = 255;
+            gRideRatingsCalcData.ProximityTrackType = TrackElemType::None;
             gRideRatingsCalcData.ProximityStart = location;
             return;
         }
@@ -520,7 +521,7 @@ static void ride_ratings_score_close_proximity_loops_helper(const CoordsXYE& coo
  */
 static void ride_ratings_score_close_proximity_loops(TileElement* inputTileElement)
 {
-    int32_t trackType = inputTileElement->AsTrack()->GetTrackType();
+    auto trackType = inputTileElement->AsTrack()->GetTrackType();
     if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
     {
         ride_ratings_score_close_proximity_loops_helper({ gRideRatingsCalcData.Proximity, inputTileElement });
@@ -616,7 +617,7 @@ static void ride_ratings_score_close_proximity(TileElement* inputTileElement)
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
             {
-                int32_t trackType = tileElement->AsTrack()->GetTrackType();
+                auto trackType = tileElement->AsTrack()->GetTrackType();
                 if (trackType == TrackElemType::LeftVerticalLoop || trackType == TrackElemType::RightVerticalLoop)
                 {
                     int32_t sequence = tileElement->AsTrack()->GetSequenceIndex();
@@ -808,7 +809,7 @@ static void ride_ratings_calculate_value(Ride* ride)
     }
 
     // Start with the base ratings, multiplied by the ride type specific weights for excitement, intensity and nausea.
-    const auto& ratingsMultipliers = RideTypeDescriptors[ride->type].RatingsMultipliers;
+    const auto& ratingsMultipliers = ride->GetRideTypeDescriptor().RatingsMultipliers;
     int32_t value = (((ride->excitement * ratingsMultipliers.Excitement) * 32) >> 15)
         + (((ride->intensity * ratingsMultipliers.Intensity) * 32) >> 15)
         + (((ride->nausea * ratingsMultipliers.Nausea) * 32) >> 15);
@@ -869,9 +870,9 @@ static void ride_ratings_calculate_value(Ride* ride)
 static uint16_t ride_compute_upkeep(Ride* ride)
 {
     // data stored at 0x0057E3A8, incrementing 18 bytes at a time
-    uint16_t upkeep = RideTypeDescriptors[ride->type].UpkeepCosts.BaseCost;
+    uint16_t upkeep = ride->GetRideTypeDescriptor().UpkeepCosts.BaseCost;
 
-    uint16_t trackCost = RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrackPiece;
+    uint16_t trackCost = ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrackPiece;
     uint8_t dropFactor = ride->drops;
 
     dropFactor >>= 6;
@@ -884,7 +885,7 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // rides that had tracks. The 0's were fixed rides like crooked house or
     // dodgems.
     // Data source is 0x0097E3AC
-    totalLength *= RideTypeDescriptors[ride->type].UpkeepCosts.TrackLengthMultiplier;
+    totalLength *= ride->GetRideTypeDescriptor().UpkeepCosts.TrackLengthMultiplier;
     upkeep += static_cast<uint16_t>(totalLength >> 10);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_RIDE_PHOTO)
@@ -911,12 +912,12 @@ static uint16_t ride_compute_upkeep(Ride* ride)
     // various variables set on the ride itself.
 
     // https://gist.github.com/kevinburke/e19b803cd2769d96c540
-    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerTrain * ride->num_vehicles;
-    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerCar * ride->num_cars_per_train;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerTrain * ride->num_vehicles;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerCar * ride->num_cars_per_train;
 
     // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
-    upkeep += RideTypeDescriptors[ride->type].UpkeepCosts.CostPerStation * ride->num_stations;
+    upkeep += ride->GetRideTypeDescriptor().UpkeepCosts.CostPerStation * ride->num_stations;
 
     if (ride->mode == RideMode::ReverseInclineLaunchedShuttle)
     {
@@ -968,7 +969,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
-    if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
     {
         uint16_t totalAirTime = ride->total_air_time;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
@@ -987,10 +988,9 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         }
     }
 #else
-    if (RideTypeDescriptors[ride->type].Flags & RIDE_TYPE_FLAG_HAS_AIR_TIME)
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_AIR_TIME))
     {
         int32_t excitementModifier;
-        int32_t nauseaModifier;
         if (rideEntry->flags & RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS)
         {
             // Limit airtime bonus for heartline twister coaster (see issues #2031 and #2064)
@@ -1000,7 +1000,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
         {
             excitementModifier = ride->total_air_time / 8;
         }
-        nauseaModifier = ride->total_air_time / 16;
+        int32_t nauseaModifier = ride->total_air_time / 16;
 
         ride_ratings_add(ratings, excitementModifier, 0, nauseaModifier);
     }
@@ -1013,7 +1013,7 @@ static void ride_ratings_apply_adjustments(Ride* ride, RatingTuple* ratings)
  */
 static void ride_ratings_apply_intensity_penalty(RatingTuple* ratings)
 {
-    static const ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
+    static constexpr ride_rating intensityBounds[] = { 1000, 1100, 1200, 1320, 1450 };
     ride_rating excitement = ratings->Excitement;
     for (auto intensityBound : intensityBounds)
     {
@@ -1032,7 +1032,7 @@ static void ride_ratings_apply_intensity_penalty(RatingTuple* ratings)
 static void set_unreliability_factor(Ride* ride)
 {
     // The bigger the difference in lift speed and minimum the higher the unreliability
-    uint8_t minLiftSpeed = RideTypeDescriptors[ride->type].LiftData.minimum_speed;
+    uint8_t minLiftSpeed = ride->GetRideTypeDescriptor().LiftData.minimum_speed;
     ride->unreliability_factor += (ride->lift_hill_speed - minLiftSpeed) * 2;
 }
 
@@ -2999,8 +2999,6 @@ void ride_ratings_calculate_reverse_freefall_coaster(Ride* ride)
 
 void ride_ratings_calculate_lift(Ride* ride)
 {
-    int32_t totalLength;
-
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
         return;
 
@@ -3010,7 +3008,7 @@ void ride_ratings_calculate_lift(Ride* ride)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
 
-    totalLength = ride_get_total_length(ride) >> 16;
+    int32_t totalLength = ride_get_total_length(ride) >> 16;
     ride_ratings_add(&ratings, (totalLength * 45875) >> 16, 0, (totalLength * 26214) >> 16);
 
     ride_ratings_apply_proximity(&ratings, 11183);
@@ -4390,13 +4388,59 @@ void ride_ratings_calculate_hybrid_coaster(Ride* ride)
     ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
 }
 
+void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 16;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(3, 50), RIDE_RATING(0, 60), RIDE_RATING(0, 40));
+    ride_ratings_apply_length(&ratings, ride, 6000, 764);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 40), RIDE_RATING(0, 05));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 364088, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 150, 26214);
+    ride_ratings_apply_gforces(&ratings, ride, 36864, 35746, 49648);
+    ride_ratings_apply_turns(&ratings, ride, 26749, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 29127, 46811, 49152);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
+    ride_ratings_apply_proximity(&ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 6693);
+
+    if (ride->inversions == 0)
+        ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 14, 2, 2, 2); // Done
+
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0xA0000, 2, 2, 2); // Done
+
+    if (ride->inversions == 0)
+    {
+        ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2); // Done
+        ride_ratings_apply_num_drops_penalty(&ratings, ride, 2, 2, 2, 2);                     // Done
+    }
+
+    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648); // Done
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
 #pragma endregion
 
 #pragma region Ride rating calculation function table
 
 ride_ratings_calculation ride_ratings_get_calculate_func(uint8_t rideType)
 {
-    return RideTypeDescriptors[rideType].RatingsCalculationFunction;
+    return GetRideTypeDescriptor(rideType).RatingsCalculationFunction;
 }
 
 #pragma endregion

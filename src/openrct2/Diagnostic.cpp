@@ -9,6 +9,7 @@
 
 #include "Diagnostic.h"
 
+#include "core/Console.hpp"
 #include "core/String.hpp"
 
 #include <cstdarg>
@@ -73,6 +74,15 @@ static constexpr const char* _level_strings[] = {
     "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO",
 };
 
+static void diagnostic_print(DiagnosticLevel level, const std::string& prefix, const std::string& msg)
+{
+    auto stream = diagnostic_get_stream(level);
+    if (stream == stdout)
+        Console::WriteLine("%s%s", prefix.c_str(), msg.c_str());
+    else
+        Console::Error::WriteLine("%s%s", prefix.c_str(), msg.c_str());
+}
+
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
 {
     va_list args;
@@ -86,8 +96,7 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
         auto msg = String::StdFormat_VA(format, args);
         va_end(args);
 
-        auto stream = diagnostic_get_stream(diagnosticLevel);
-        fprintf(stream, "%s%s\n", prefix.c_str(), msg.c_str());
+        diagnostic_print(diagnosticLevel, prefix, msg);
     }
 }
 
@@ -114,8 +123,7 @@ void diagnostic_log_with_location(
         auto msg = String::StdFormat_VA(format, args);
         va_end(args);
 
-        auto stream = diagnostic_get_stream(diagnosticLevel);
-        fprintf(stream, "%s%s\n", prefix.c_str(), msg.c_str());
+        diagnostic_print(diagnosticLevel, prefix, msg);
     }
 }
 

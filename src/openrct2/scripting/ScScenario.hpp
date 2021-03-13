@@ -35,7 +35,7 @@ namespace OpenRCT2::Scripting
         { "monthlyRideIncome", OBJECTIVE_MONTHLY_RIDE_INCOME },
         { "10RollercoastersLength", OBJECTIVE_10_ROLLERCOASTERS_LENGTH },
         { "finish5Rollercoasters", OBJECTIVE_FINISH_5_ROLLERCOASTERS },
-        { "replayLoanAndParkValue", OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE },
+        { "repayLoanAndParkValue", OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE },
         { "monthlyFoodIncome", OBJECTIVE_MONTHLY_FOOD_INCOME },
     });
 
@@ -128,7 +128,7 @@ namespace OpenRCT2::Scripting
         money32 parkValue_get()
         {
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE)
+                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
                 return gScenarioObjective.Currency;
             }
@@ -139,7 +139,7 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE)
+                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
                 gScenarioObjective.Currency = value;
             }
@@ -159,7 +159,7 @@ namespace OpenRCT2::Scripting
         {
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.Type == OBJECTIVE_PARK_VALUE_BY
-                || gScenarioObjective.Type == OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE)
+                || gScenarioObjective.Type == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
                 gScenarioObjective.Currency = value;
             }

@@ -34,7 +34,7 @@
 #include "../util/Util.h"
 #include "Memory.hpp"
 #include "String.hpp"
-#include "StringBuilder.hpp"
+#include "StringBuilder.h"
 
 namespace String
 {
@@ -65,7 +65,7 @@ namespace String
         return returnValue;
     }
 
-    std::string ToUtf8(const std::wstring_view& src)
+    std::string ToUtf8(std::wstring_view src)
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
@@ -93,7 +93,7 @@ namespace String
 #endif
     }
 
-    std::wstring ToWideChar(const std::string_view& src)
+    std::wstring ToWideChar(std::string_view src)
     {
 #ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
@@ -126,6 +126,23 @@ namespace String
 #endif
     }
 
+    std::string_view ToStringView(const char* ch, size_t maxLen)
+    {
+        size_t len{};
+        for (size_t i = 0; i < maxLen; i++)
+        {
+            if (ch[i] == '\0')
+            {
+                break;
+            }
+            else
+            {
+                len++;
+            }
+        }
+        return std::string_view(ch, len);
+    }
+
     bool IsNullOrEmpty(const utf8* str)
     {
         return str == nullptr || str[0] == '\0';
@@ -154,9 +171,70 @@ namespace String
         }
     }
 
+    bool Equals(std::string_view a, std::string_view b, bool ignoreCase)
+    {
+        if (ignoreCase)
+        {
+            if (a.size() == b.size())
+            {
+                for (size_t i = 0; i < a.size(); i++)
+                {
+                    if (tolower(a[i]) != tolower(b[i]))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return a == b;
+        }
+    }
+
     bool Equals(const std::string& a, const std::string& b, bool ignoreCase)
     {
-        return Equals(a.c_str(), b.c_str(), ignoreCase);
+        if (a.size() != b.size())
+            return false;
+
+        if (ignoreCase)
+        {
+            for (size_t i = 0; i < a.size(); i++)
+            {
+                auto ai = a[i];
+                auto bi = b[i];
+
+                // Only do case insensitive comparison on ASCII characters
+                if ((ai & 0x80) != 0 || (bi & 0x80) != 0)
+                {
+                    if (a[i] != b[i])
+                    {
+                        return false;
+                    }
+                }
+                else if (tolower(ai) != tolower(bi))
+                {
+                    return false;
+                }
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < a.size(); i++)
+            {
+                if (a[i] != b[i])
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase)
@@ -176,43 +254,22 @@ namespace String
         }
     }
 
-    bool StartsWith(const utf8* str, const utf8* match, bool ignoreCase)
+    bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase)
     {
-        if (ignoreCase)
+        if (str.size() >= match.size())
         {
-            while (*match != '\0')
-            {
-                if (*str == '\0' || tolower(*str++) != tolower(*match++))
-                {
-                    return false;
-                }
-            }
-            return true;
+            auto view = str.substr(0, match.size());
+            return Equals(view, match, ignoreCase);
         }
-        else
-        {
-            while (*match != '\0')
-            {
-                if (*str == '\0' || *str++ != *match++)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
+        return false;
     }
 
-    bool StartsWith(const std::string& str, const std::string& match, bool ignoreCase)
-    {
-        return StartsWith(str.c_str(), match.c_str(), ignoreCase);
-    }
-
-    bool EndsWith(const std::string_view& str, const std::string_view& match, bool ignoreCase)
+    bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase)
     {
         if (str.size() >= match.size())
         {
             auto view = str.substr(str.size() - match.size());
-            return Equals(view.data(), match.data(), ignoreCase);
+            return Equals(view, match, ignoreCase);
         }
         return false;
     }
@@ -417,7 +474,7 @@ namespace String
         return DiscardUse(ptr, String::Duplicate(replacement));
     }
 
-    std::vector<std::string> Split(const std::string& s, const std::string& delimiter)
+    std::vector<std::string> Split(std::string_view s, std::string_view delimiter)
     {
         if (delimiter.empty())
         {
@@ -432,16 +489,14 @@ namespace String
             do
             {
                 nextIndex = s.find(delimiter, index);
-                std::string value;
                 if (nextIndex == std::string::npos)
                 {
-                    value = s.substr(index);
+                    results.emplace_back(s.substr(index));
                 }
                 else
                 {
-                    value = s.substr(index, nextIndex - index);
+                    results.emplace_back(s.substr(index, nextIndex - index));
                 }
-                results.push_back(value);
                 index = nextIndex + delimiter.size();
             } while (nextIndex != SIZE_MAX);
         }
@@ -481,6 +536,13 @@ namespace String
     utf8* WriteCodepoint(utf8* dst, codepoint_t codepoint)
     {
         return utf8_write_codepoint(dst, codepoint);
+    }
+
+    void AppendCodepoint(std::string& str, codepoint_t codepoint)
+    {
+        char buffer[8]{};
+        utf8_write_codepoint(buffer, codepoint);
+        str.append(buffer);
     }
 
     bool IsWhiteSpace(codepoint_t codepoint)
@@ -661,7 +723,7 @@ namespace String
     }
 #endif
 
-    std::string Convert(const std::string_view& src, int32_t srcCodePage, int32_t dstCodePage)
+    std::string Convert(std::string_view src, int32_t srcCodePage, int32_t dstCodePage)
     {
 #ifdef _WIN32
         // Convert from source code page to UTF-16
@@ -701,7 +763,7 @@ namespace String
 #endif
     }
 
-    std::string ToUpper(const std::string_view& src)
+    std::string ToUpper(std::string_view src)
     {
 #ifdef _WIN32
 #    if _WIN32_WINNT >= 0x0600
@@ -731,8 +793,9 @@ namespace String
             return String::ToUtf8(dstW);
         }
 #    else
-        log_warning("String::ToUpper not supported");
-        return std::string(src);
+        std::string dst = std::string(src);
+        std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::toupper(c); });
+        return dst;
 #    endif
 #else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
@@ -744,16 +807,9 @@ namespace String
         return res;
 #endif
     }
-
-    bool ContainsColourCode(const std::string& string)
-    {
-        for (unsigned char c : string)
-        {
-            if (c >= FORMAT_COLOUR_CODE_START && c <= FORMAT_COLOUR_CODE_END)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 } // namespace String
+
+char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)
+{
+    return utf8_get_next(ch, next);
+}

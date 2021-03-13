@@ -33,30 +33,6 @@
 
 static Banner _banners[MAX_BANNERS];
 
-namespace
-{
-    template<uint32_t TFrom, uint32_t TTo> struct CodePointToUtf8
-    {
-        constexpr CodePointToUtf8()
-        {
-            for (uint32_t i = TFrom; i <= TTo; ++i)
-            {
-                utf8_write_codepoint(m_colors[i - TFrom], i);
-            }
-        }
-
-        constexpr auto operator()(uint8_t colourId) const
-        {
-            return m_colors[colourId];
-        }
-
-        using Utf8Colour = utf8[5]; // A 32bit codepoint uses at most 4 bytes in utf8
-        Utf8Colour m_colors[TTo - TFrom + 1]{};
-    };
-} // namespace
-
-static constexpr CodePointToUtf8<FORMAT_COLOUR_CODE_START, FORMAT_COLOUR_CODE_END> colourToUtf8;
-
 std::string Banner::GetText() const
 {
     Formatter ft;
@@ -68,7 +44,10 @@ void Banner::FormatTextTo(Formatter& ft, bool addColour) const
 {
     if (addColour)
     {
-        ft.Add<rct_string_id>(STR_STRING_STRINGID).Add<const char*>(colourToUtf8(text_colour));
+        auto formatToken = FormatTokenFromTextColour(text_colour);
+        auto tokenText = FormatTokenToString(formatToken, true);
+        ft.Add<rct_string_id>(STR_STRING_STRINGID);
+        ft.Add<const char*>(tokenText.data());
     }
 
     FormatTextTo(ft);
@@ -119,7 +98,7 @@ static uint8_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
-        if (ride == nullptr || ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         if ((tileElement->GetClearanceZ()) + (4 * COORDS_Z_STEP) <= bannerCoords.z)
@@ -196,7 +175,7 @@ TileElement* banner_get_tile_element(BannerIndex bannerIndex)
         {
             do
             {
-                if (tile_element_get_banner_index(tileElement) == bannerIndex)
+                if (tileElement->GetBannerIndex() == bannerIndex)
                 {
                     return tileElement;
                 }
@@ -263,7 +242,7 @@ uint8_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
-        if (ride_type_has_flag(ride.type, RIDE_TYPE_FLAG_IS_SHOP))
+        if (ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
 
         auto rideCoords = ride.overall_view;
@@ -309,7 +288,10 @@ void fix_duplicated_banners()
                     // occupy multiple tiles that should both refer to the same banner index.
                     if (tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8_t bannerIndex = tileElement->AsBanner()->GetIndex();
+                        auto bannerIndex = tileElement->AsBanner()->GetIndex();
+                        if (bannerIndex == BANNER_INDEX_NULL)
+                            continue;
+
                         if (activeBanners[bannerIndex])
                         {
                             log_info(
@@ -326,9 +308,13 @@ void fix_duplicated_banners()
                             Guard::Assert(!activeBanners[newBannerIndex]);
 
                             // Copy over the original banner, but update the location
-                            auto& newBanner = *GetBanner(newBannerIndex);
-                            newBanner = *GetBanner(bannerIndex);
-                            newBanner.position = { x, y };
+                            auto newBanner = GetBanner(newBannerIndex);
+                            auto oldBanner = GetBanner(bannerIndex);
+                            if (oldBanner != nullptr && newBanner != nullptr)
+                            {
+                                *newBanner = *oldBanner;
+                                newBanner->position = { x, y };
+                            }
 
                             tileElement->AsBanner()->SetIndex(newBannerIndex);
                         }

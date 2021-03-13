@@ -15,7 +15,7 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
-#include "../core/JobPool.hpp"
+#include "../core/JobPool.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/IDrawingEngine.h"
 #include "../paint/Paint.h"
@@ -25,6 +25,7 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Map.h"
 #include "../world/Sprite.h"
 #include "Colour.h"
@@ -33,6 +34,7 @@
 
 #include <algorithm>
 #include <cstring>
+#include <list>
 
 using namespace OpenRCT2;
 
@@ -41,10 +43,11 @@ uint8_t gShowGridLinesRefCount;
 uint8_t gShowLandRightsRefCount;
 uint8_t gShowConstuctionRightsRefCount;
 
-rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
+static std::list<rct_viewport> _viewports;
 rct_viewport* g_music_tracking_viewport;
 
 static std::unique_ptr<JobPool> _paintJobs;
+static std::vector<paint_session*> _paintColumns;
 
 ScreenCoordsXY gSavedView;
 ZoomLevel gSavedViewZoom;
@@ -75,12 +78,6 @@ void viewport_init_all()
     }
 
     window_init_all();
-
-    // Setting up viewports
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        g_viewport_list[i].width = 0;
-    }
 
     // ?
     input_reset_flags();
@@ -141,20 +138,15 @@ void viewport_create(
     char flags, uint16_t sprite)
 {
     rct_viewport* viewport = nullptr;
-    for (int32_t i = 0; i < MAX_VIEWPORT_COUNT; i++)
-    {
-        if (g_viewport_list[i].width == 0)
-        {
-            viewport = &g_viewport_list[i];
-            break;
-        }
-    }
-    if (viewport == nullptr)
+    if (_viewports.size() >= MAX_VIEWPORT_COUNT)
     {
         log_error("No more viewport slots left to allocate.");
         return;
     }
 
+    auto itViewport = _viewports.insert(_viewports.end(), rct_viewport{});
+
+    viewport = &*itViewport;
     viewport->pos = screenCoords;
     viewport->width = width;
     viewport->height = height;
@@ -200,6 +192,28 @@ void viewport_create(
     }
     w->savedViewPos = *centreLoc;
     viewport->viewPos = *centreLoc;
+}
+
+void viewport_remove(rct_viewport* viewport)
+{
+    auto it = std::find_if(_viewports.begin(), _viewports.end(), [viewport](const auto& vp) { return &vp == viewport; });
+    if (it == _viewports.end())
+    {
+        log_error("Unable to remove viewport: %p", viewport);
+        return;
+    }
+    _viewports.erase(it);
+}
+
+void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bottom, int32_t maxZoom)
+{
+    for (auto& vp : _viewports)
+    {
+        if (maxZoom == -1 || vp.zoom <= maxZoom)
+        {
+            viewport_invalidate(&vp, left, top, right, bottom);
+        }
+    }
 }
 
 /**
@@ -654,7 +668,7 @@ void viewport_update_smart_sprite_follow(rct_window* window)
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
     }
-    else if (entity->sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    else if (entity->sprite_identifier == SpriteIdentifier::Peep)
     {
         Peep* peep = TryGetEntity<Peep>(window->viewport_smart_follow_sprite);
         if (peep == nullptr)
@@ -670,11 +684,11 @@ void viewport_update_smart_sprite_follow(rct_window* window)
         else if (peep->AssignedPeepType == PeepType::Staff)
             viewport_update_smart_staff_follow(window, peep);
     }
-    else if (entity->sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+    else if (entity->sprite_identifier == SpriteIdentifier::Vehicle)
     {
         viewport_update_smart_vehicle_follow(window);
     }
-    else if (entity->sprite_identifier == SPRITE_IDENTIFIER_MISC || entity->sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+    else if (entity->sprite_identifier == SpriteIdentifier::Misc || entity->sprite_identifier == SpriteIdentifier::Litter)
     {
         window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
         window->viewport_target_sprite = window->viewport_smart_follow_sprite;
@@ -836,8 +850,8 @@ static void record_session(const paint_session* session, std::vector<paint_sessi
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
-    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy; there
-    // is no column information embedded in the session itself.
+    // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
+    // there is no column information embedded in the session itself.
     (*recorded_sessions)[record_index] = (*session);
     paint_session* session_copy = &recorded_sessions->at(record_index);
 
@@ -930,7 +944,8 @@ void viewport_paint(
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
-    rct_drawpixelinfo dpi1 = *dpi;
+    rct_drawpixelinfo dpi1;
+    dpi1.DrawingEngine = dpi->DrawingEngine;
     dpi1.bits = dpi->bits + (x - dpi->x) + ((y - dpi->y) * (dpi->width + dpi->pitch));
     dpi1.x = left;
     dpi1.y = top;
@@ -946,7 +961,7 @@ void viewport_paint(
     const int16_t rightBorder = dpi1.x + dpi1.width;
     const int16_t alignedX = floor2(dpi1.x, 32);
 
-    std::vector<paint_session*> columns;
+    _paintColumns.clear();
 
     bool useMultithreading = gConfigGeneral.multithreading;
     if (useMultithreading && _paintJobs == nullptr)
@@ -971,7 +986,7 @@ void viewport_paint(
     for (x = alignedX; x < rightBorder; x += 32, index++)
     {
         paint_session* session = PaintSessionAlloc(&dpi1, viewFlags);
-        columns.push_back(session);
+        _paintColumns.push_back(session);
 
         rct_drawpixelinfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
@@ -1008,7 +1023,7 @@ void viewport_paint(
         _paintJobs->Join();
     }
 
-    for (auto&& column : columns)
+    for (auto column : _paintColumns)
     {
         viewport_paint_column(column);
     }
@@ -1017,7 +1032,7 @@ void viewport_paint(
 static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
 {
     auto paletteId = climate_get_weather_gloom_palette_id(gClimateCurrent);
-    if (paletteId != PALETTE_NULL)
+    if (paletteId != FilterPaletteID::PaletteNull)
     {
         // Only scale width if zoomed in more than 1:1
         auto zoomLevel = dpi->zoom_level < 0 ? dpi->zoom_level : 0;
@@ -1085,6 +1100,11 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     ret.x = ((screenCoords.x - pos.x) * zoom) + viewPos.x;
     ret.y = ((screenCoords.y - pos.y) * zoom) + viewPos.y;
     return ret;
+}
+
+void rct_viewport::Invalidate() const
+{
+    viewport_invalidate(this, viewPos.x, viewPos.y, viewPos.x + view_width, viewPos.y + view_height);
 }
 
 CoordsXY viewport_coord_to_map_coord(const ScreenCoordsXY& coords, int32_t z)
@@ -1277,24 +1297,16 @@ void viewport_set_visibility(uint8_t mode)
  */
 static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 {
-    if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_NONE
-        || ps->sprite_type == 11 // 11 as a type seems to not exist, maybe part of the typo mentioned later on.
-        || ps->sprite_type > VIEWPORT_INTERACTION_ITEM_BANNER)
-        return false;
-
-    uint16_t mask;
-    if (ps->sprite_type == VIEWPORT_INTERACTION_ITEM_BANNER)
-        // I think CS made a typo here. Let's replicate the original behaviour.
-        mask = 1 << (ps->sprite_type - 3);
-    else
-        mask = 1 << (ps->sprite_type - 1);
-
-    if (filter & mask)
+    if (ps->sprite_type != ViewportInteractionItem::None && ps->sprite_type != ViewportInteractionItem::Label
+        && ps->sprite_type <= ViewportInteractionItem::Banner)
     {
-        return false;
+        auto mask = EnumToFlag(ps->sprite_type);
+        if (filter & mask)
+        {
+            return true;
+        }
     }
-
-    return true;
+    return false;
 }
 
 /**
@@ -1688,7 +1700,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
 /**
  * Left, top, right and bottom represent 2D map coordinates at zoom 0.
  */
-void viewport_invalidate(rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
+void viewport_invalidate(const rct_viewport* viewport, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
@@ -1773,8 +1785,8 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
         return std::nullopt;
     }
     auto myViewport = window->viewport;
-    auto info = get_map_coordinates_from_pos_window(window, screenCoords, VIEWPORT_INTERACTION_MASK_TERRAIN);
-    if (info.SpriteType == VIEWPORT_INTERACTION_ITEM_NONE)
+    auto info = get_map_coordinates_from_pos_window(window, screenCoords, EnumsToFlags(ViewportInteractionItem::Terrain));
+    if (info.SpriteType == ViewportInteractionItem::None)
     {
         return std::nullopt;
     }

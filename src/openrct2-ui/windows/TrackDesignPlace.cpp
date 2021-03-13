@@ -62,10 +62,10 @@ validate_global_widx(WC_TRACK_DESIGN_PLACE, WIDX_ROTATE);
 
 static rct_widget window_track_place_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({173,  83}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
-    MakeWidget({173,  59}, { 24, 24}, WWT_FLATBTN, WindowColour::Primary, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),
-    MakeWidget({  4, 109}, {192, 12}, WWT_BUTTON,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
-    MakeWidget({  0,   0}, {  1,  1}, WWT_EMPTY,   WindowColour::Primary),
+    MakeWidget({173,  83}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_ROTATE_ARROW,              STR_ROTATE_90_TIP                         ),
+    MakeWidget({173,  59}, { 24, 24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_MIRROR_ARROW,              STR_MIRROR_IMAGE_TIP                      ),
+    MakeWidget({  4, 109}, {192, 12}, WindowWidgetType::Button,  WindowColour::Primary, STR_SELECT_A_DIFFERENT_DESIGN, STR_GO_BACK_TO_DESIGN_SELECTION_WINDOW_TIP),
+    MakeWidget({  0,   0}, {  1,  1}, WindowWidgetType::Empty,   WindowColour::Primary),
     { WIDGETS_END },
 };
 
@@ -142,11 +142,11 @@ rct_window* window_track_place_open(const track_design_file_ref* tdFileRef)
 
     _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
-    rct_window* w = window_create(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
+    rct_window* w = WindowCreate(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
     w->enabled_widgets = 1 << WIDX_CLOSE | 1 << WIDX_ROTATE | 1 << WIDX_MIRROR | 1 << WIDX_SELECT_DIFFERENT_DESIGN;
-    window_init_scroll_widgets(w);
-    tool_set(w, WIDX_PRICE, TOOL_CROSSHAIR);
+    WindowInitScrollWidgets(w);
+    tool_set(w, WIDX_PRICE, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
     window_push_others_right(w);
     show_gridlines();
@@ -233,7 +233,7 @@ static GameActions::Result::Ptr FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, 
         tdAction.SetFlags(flags);
         res = GameActions::Query(&tdAction);
 
-        // If successful dont keep trying.
+        // If successful don't keep trying.
         // If failure due to no money then increasing height only makes problem worse
         if (res->Error == GameActions::Status::Ok || res->Error == GameActions::Status::InsufficientFunds)
         {
@@ -257,7 +257,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     // Get the tool map position
-    CoordsXY mapCoords = sub_68A15E(screenCoords);
+    CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     if (mapCoords.isNull())
     {
         window_track_place_clear_provisional();
@@ -322,7 +322,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
-    const CoordsXY mapCoords = sub_68A15E(screenCoords);
+    const CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
     if (mapCoords.isNull())
         return;
 
@@ -479,7 +479,7 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto ft = Formatter::Common();
     ft.Add<char*>(_trackDesign->name.c_str());
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
@@ -496,8 +496,9 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Price
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        gfx_draw_string_centred(
-            dpi, STR_COST_LABEL, w->windowPos + ScreenCoordsXY{ 88, 94 }, COLOUR_BLACK, &_window_track_place_last_cost);
+        DrawTextBasic(
+            dpi, w->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, &_window_track_place_last_cost,
+            { TextAlignment::CENTRE });
     }
 }
 
@@ -537,8 +538,6 @@ static void window_track_place_draw_mini_preview_track(
 {
     const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
-    const rct_preview_track** trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks
-                                                                                                          : FlatRideTrackBlocks;
     CoordsXY curTrackStart = origin;
     uint8_t curTrackRotation = rotation;
     for (const auto& trackElement : td6->track_elements)
@@ -550,7 +549,7 @@ static void window_track_place_draw_mini_preview_track(
         }
 
         // Follow a single track piece shape
-        const rct_preview_track* trackBlock = trackBlockArray[trackType];
+        const rct_preview_track* trackBlock = TrackBlocks[trackType];
         while (trackBlock->index != 255)
         {
             auto rotatedAndOffsetTrackBlock = curTrackStart + CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(curTrackRotation);

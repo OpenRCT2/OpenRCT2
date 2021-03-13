@@ -30,12 +30,45 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
-    std::string Combine(const std::string& a, const std::string& b)
+    static constexpr bool IsPathSeparator(char c)
     {
-        utf8 buffer[MAX_PATH];
-        String::Set(buffer, sizeof(buffer), a.c_str());
-        Path::Append(buffer, sizeof(buffer), b.c_str());
-        return std::string(buffer);
+#ifdef _WIN32
+        if (c == '\\')
+            return true;
+#endif
+        return c == '/';
+    }
+
+    std::string Combine(std::string_view a, std::string_view b)
+    {
+        if (a.empty())
+            return std::string(b);
+        if (b.empty())
+            return std::string(a);
+        auto aEnd = a.back();
+        auto bBegin = b.front();
+        if (IsPathSeparator(aEnd))
+        {
+            if (IsPathSeparator(bBegin))
+            {
+                return std::string(a) + std::string(b.substr(1));
+            }
+            else
+            {
+                return std::string(a) + std::string(b);
+            }
+        }
+        else
+        {
+            if (IsPathSeparator(bBegin))
+            {
+                return std::string(a) + std::string(b);
+            }
+            else
+            {
+                return std::string(a) + PATH_SEPARATOR + std::string(b);
+            }
+        }
     }
 
     std::string GetDirectory(const std::string& path)

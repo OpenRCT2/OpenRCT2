@@ -73,7 +73,8 @@ namespace SawyerEncoding
 
         try
         {
-            auto data{ stream->ReadArray<uint8_t>(dataSize) };
+            const auto buffer = stream->ReadArray<uint8_t>(dataSize);
+            const auto* data = buffer.get();
             uint32_t checksum = 0;
             for (size_t i = 0; i < dataSize; i++, ++data)
             {

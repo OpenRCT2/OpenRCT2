@@ -14,8 +14,9 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/DataSerialiser.h"
 #include "../core/FileIndex.hpp"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
@@ -68,13 +69,14 @@ struct ObjectEntryEqual
     }
 };
 
+using ObjectIdentifierMap = std::unordered_map<std::string, size_t>;
 using ObjectEntryMap = std::unordered_map<rct_object_entry, size_t, ObjectEntryHash, ObjectEntryEqual>;
 
 class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 21;
+    static constexpr uint16_t VERSION = 27;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -111,6 +113,7 @@ public:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
+            item.Identifier = object->GetIdentifier();
             item.ObjectEntry = *object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
@@ -123,96 +126,32 @@ public:
     }
 
 protected:
-    void Serialise(IStream* stream, const ObjectRepositoryItem& item) const override
+    void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
     {
-        stream->WriteValue(item.ObjectEntry);
-        stream->WriteString(item.Path);
-        stream->WriteString(item.Name);
+        ds << item.Identifier;
+        ds << item.ObjectEntry;
+        ds << item.Path;
+        ds << item.Name;
 
-        uint8_t sourceLength = static_cast<uint8_t>(item.Sources.size());
-        stream->WriteValue(sourceLength);
-        for (auto source : item.Sources)
-        {
-            stream->WriteValue(source);
-        }
-
-        uint8_t authorsLength = static_cast<uint8_t>(item.Authors.size());
-        stream->WriteValue(authorsLength);
-        for (const auto& author : item.Authors)
-        {
-            stream->WriteString(author);
-        }
+        ds << item.Sources;
+        ds << item.Authors;
 
         switch (item.ObjectEntry.GetType())
         {
-            case OBJECT_TYPE_RIDE:
-                stream->WriteValue<uint8_t>(item.RideInfo.RideFlags);
-                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-                {
-                    stream->WriteValue<uint8_t>(item.RideInfo.RideCategory[i]);
-                }
-                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-                {
-                    stream->WriteValue<uint8_t>(item.RideInfo.RideType[i]);
-                }
+            case ObjectType::Ride:
+                ds << item.RideInfo.RideFlags;
+                ds << item.RideInfo.RideCategory;
+                ds << item.RideInfo.RideType;
                 break;
-            case OBJECT_TYPE_SCENERY_GROUP:
-                stream->WriteValue<uint16_t>(static_cast<uint16_t>(item.SceneryGroupInfo.Entries.size()));
-                for (const auto& entry : item.SceneryGroupInfo.Entries)
-                {
-                    stream->WriteValue<rct_object_entry>(entry);
-                }
-                break;
-        }
-    }
-
-    ObjectRepositoryItem Deserialise(IStream* stream) const override
-    {
-        ObjectRepositoryItem item;
-
-        item.ObjectEntry = stream->ReadValue<rct_object_entry>();
-        item.Path = stream->ReadStdString();
-        item.Name = stream->ReadStdString();
-
-        auto sourceLength = stream->ReadValue<uint8_t>();
-        for (size_t i = 0; i < sourceLength; i++)
-        {
-            auto value = stream->ReadValue<uint8_t>();
-            item.Sources.push_back(static_cast<ObjectSourceGame>(value));
-        }
-
-        auto authorsLength = stream->ReadValue<uint8_t>();
-        for (size_t i = 0; i < authorsLength; i++)
-        {
-            auto author = stream->ReadStdString();
-            item.Authors.emplace_back(author);
-        }
-
-        switch (item.ObjectEntry.GetType())
-        {
-            case OBJECT_TYPE_RIDE:
-                item.RideInfo.RideFlags = stream->ReadValue<uint8_t>();
-                for (int32_t i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
-                {
-                    item.RideInfo.RideCategory[i] = stream->ReadValue<uint8_t>();
-                }
-                for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
-                {
-                    item.RideInfo.RideType[i] = stream->ReadValue<uint8_t>();
-                }
-                break;
-            case OBJECT_TYPE_SCENERY_GROUP:
+            case ObjectType::SceneryGroup:
             {
-                auto numEntries = stream->ReadValue<uint16_t>();
-                item.SceneryGroupInfo.Entries = std::vector<rct_object_entry>(numEntries);
-                for (size_t i = 0; i < numEntries; i++)
-                {
-                    item.SceneryGroupInfo.Entries[i] = stream->ReadValue<rct_object_entry>();
-                }
+                ds << item.SceneryGroupInfo.Entries;
                 break;
             }
+            default:
+                // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
+                break;
         }
-        return item;
     }
 
 private:
@@ -227,6 +166,7 @@ class ObjectRepository final : public IObjectRepository
     std::shared_ptr<IPlatformEnvironment> const _env;
     ObjectFileIndex const _fileIndex;
     std::vector<ObjectRepositoryItem> _items;
+    ObjectIdentifierMap _newItemMap;
     ObjectEntryMap _itemMap;
 
 public:
@@ -266,13 +206,23 @@ public:
         return _items.data();
     }
 
-    const ObjectRepositoryItem* FindObject(const std::string_view& legacyIdentifier) const override
+    const ObjectRepositoryItem* FindObjectLegacy(std::string_view legacyIdentifier) const override
     {
         rct_object_entry entry = {};
         entry.SetName(legacyIdentifier);
 
         auto kvp = _itemMap.find(entry);
         if (kvp != _itemMap.end())
+        {
+            return &_items[kvp->second];
+        }
+        return nullptr;
+    }
+
+    const ObjectRepositoryItem* FindObject(std::string_view identifier) const override final
+    {
+        auto kvp = _newItemMap.find(std::string(identifier));
+        if (kvp != _newItemMap.end())
         {
             return &_items[kvp->second];
         }
@@ -287,6 +237,14 @@ public:
             return &_items[kvp->second];
         }
         return nullptr;
+    }
+
+    const ObjectRepositoryItem* FindObject(const ObjectEntryDescriptor& entry) const override final
+    {
+        if (entry.Generation == ObjectGeneration::DAT)
+            return FindObject(&entry.Entry);
+
+        return FindObject(entry.Identifier);
     }
 
     std::unique_ptr<Object> LoadObject(const ObjectRepositoryItem* ori) override
@@ -352,7 +310,7 @@ public:
         }
     }
 
-    void AddObjectFromFile(const std::string_view& objectName, const void* data, size_t dataSize) override
+    void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) override
     {
         log_verbose("Adding object: [%s]", std::string(objectName).c_str());
         auto path = GetPathForNewObject(objectName);
@@ -408,6 +366,7 @@ private:
     void ClearItems()
     {
         _items.clear();
+        _newItemMap.clear();
         _itemMap.clear();
     }
 
@@ -425,17 +384,22 @@ private:
 
         // Rebuild item map
         _itemMap.clear();
+        _newItemMap.clear();
         for (size_t i = 0; i < _items.size(); i++)
         {
             rct_object_entry entry = _items[i].ObjectEntry;
             _itemMap[entry] = i;
+            if (!_items[i].Identifier.empty())
+            {
+                _newItemMap[_items[i].Identifier] = i;
+            }
         }
     }
 
     void AddItems(const std::vector<ObjectRepositoryItem>& items)
     {
         size_t numConflicts = 0;
-        for (auto item : items)
+        for (const auto& item : items)
         {
             if (!AddItem(item))
             {
@@ -456,7 +420,11 @@ private:
             size_t index = _items.size();
             auto copy = item;
             copy.Id = index;
-            _items.push_back(copy);
+            _items.push_back(std::move(copy));
+            if (!item.Identifier.empty())
+            {
+                _newItemMap[item.Identifier] = index;
+            }
             _itemMap[item.ObjectEntry] = index;
             return true;
         }
@@ -480,7 +448,7 @@ private:
     }
 
     static void SaveObject(
-        const std::string_view& path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
+        std::string_view path, const rct_object_entry* entry, const void* data, size_t dataSize, bool fixChecksum = true)
     {
         if (fixChecksum)
         {
@@ -532,9 +500,9 @@ private:
         }
 
         // Encode data
-        uint8_t objectType = entry->GetType();
+        ObjectType objectType = entry->GetType();
         sawyercoding_chunk_header chunkHeader;
-        chunkHeader.encoding = object_entry_group_encoding[objectType];
+        chunkHeader.encoding = object_entry_group_encoding[EnumValue(objectType)];
         chunkHeader.length = static_cast<uint32_t>(dataSize);
         uint8_t* encodedDataBuffer = Memory::Allocate<uint8_t>(0x600000);
         size_t encodedDataSize = sawyercoding_write_chunk_buffer(
@@ -586,7 +554,7 @@ private:
         return salt;
     }
 
-    std::string GetPathForNewObject(const std::string_view& name)
+    std::string GetPathForNewObject(std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
         auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
@@ -605,7 +573,7 @@ private:
         return fullPath;
     }
 
-    std::string GetFileNameForNewObject(const std::string_view& name)
+    std::string GetFileNameForNewObject(std::string_view name)
     {
         // Trim name
         char normalisedName[9] = { 0 };
@@ -664,7 +632,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
     auto type = object->ObjectEntry.GetType();
-    if (type > OBJECT_TYPE_SCENARIO_TEXT)
+    if (type > ObjectType::ScenarioText)
     {
         return false;
     }
@@ -746,7 +714,7 @@ const ObjectRepositoryItem* object_repository_find_object_by_entry(const rct_obj
 const ObjectRepositoryItem* object_repository_find_object_by_name(const char* name)
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
-    return objectRepository.FindObject(name);
+    return objectRepository.FindObjectLegacy(name);
 }
 
 bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)

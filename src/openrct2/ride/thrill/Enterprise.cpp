@@ -34,7 +34,7 @@ static void paint_enterprise_structure(
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType = ViewportInteractionItem::Entity;
         vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
     }
@@ -52,7 +52,7 @@ static void paint_enterprise_structure(
     }
 
     uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
-    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
+    PaintAddImageAsParent(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
@@ -68,12 +68,12 @@ static void paint_enterprise_structure(
             uint32_t peepFrameOffset = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
             uint32_t ax = (imageOffset & 0xFFFFFFFC) << 2;
             imageId = (baseImageId + 196 + peepFrameOffset + ax) | SPRITE_ID_PALETTE_COLOUR_1(vehicle->peep_tshirt_colours[i]);
-            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
+            PaintAddImageAsChild(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height);
         }
     }
 
     session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x008A1584 */
@@ -165,7 +165,7 @@ static void paint_enterprise(
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(int32_t trackType)
 {
-    if (trackType != FLAT_TRACK_ELEM_4_X_4)
+    if (trackType != TrackElemType::FlatTrack4x4)
     {
         return nullptr;
     }

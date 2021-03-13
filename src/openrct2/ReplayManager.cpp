@@ -15,13 +15,13 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "PlatformEnvironment.h"
-#include "actions/FootpathPlaceAction.hpp"
+#include "actions/FootpathPlaceAction.h"
 #include "actions/GameAction.h"
-#include "actions/RideEntranceExitPlaceAction.hpp"
-#include "actions/RideSetSetting.hpp"
-#include "actions/SetCheatAction.hpp"
-#include "actions/TileModifyAction.hpp"
-#include "actions/TrackPlaceAction.hpp"
+#include "actions/RideEntranceExitPlaceAction.h"
+#include "actions/RideSetSettingAction.h"
+#include "actions/SetCheatAction.h"
+#include "actions/TileModifyAction.h"
+#include "actions/TrackPlaceAction.h"
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
@@ -30,6 +30,7 @@
 #include "object/ObjectRepository.h"
 #include "rct2/S6Exporter.h"
 #include "world/Park.h"
+#include "world/Sprite.h"
 #include "zlib.h"
 
 #include <chrono>
@@ -147,7 +148,7 @@ namespace OpenRCT2
 
         void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
         {
-            _currentRecording->checksums.emplace_back(std::make_pair(tick, checksum));
+            _currentRecording->checksums.emplace_back(std::make_pair(tick, std::move(checksum)));
         }
 
         // Function runs each Tick.
@@ -450,10 +451,6 @@ namespace OpenRCT2
 
         virtual bool IsPlaybackStateMismatching() const override
         {
-            if (_mode != ReplayMode::PLAYING)
-            {
-                return false;
-            }
             return _faultyChecksumIndex != -1;
         }
 
@@ -530,7 +527,7 @@ namespace OpenRCT2
 
                 importer->Import();
 
-                sprite_position_tween_reset();
+                EntityTweener::Get().Reset();
 
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);
@@ -695,13 +692,13 @@ namespace OpenRCT2
                 {
                     return false;
                 }
-                actionType = command.action->GetType();
+                actionType = EnumValue(command.action->GetType());
             }
             serialiser << actionType;
 
             if (serialiser.IsLoading())
             {
-                command.action = GameActions::Create(actionType);
+                command.action = GameActions::Create(static_cast<GameCommand>(actionType));
                 Guard::Assert(command.action != nullptr);
             }
 
@@ -799,6 +796,8 @@ namespace OpenRCT2
             const auto& savedChecksum = _currentReplay->checksums[checksumIndex];
             if (_currentReplay->checksums[checksumIndex].first == gCurrentTicks)
             {
+                _currentReplay->checksumIndex++;
+
                 rct_sprite_checksum checksum = sprite_checksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
@@ -818,7 +817,6 @@ namespace OpenRCT2
                         "Good state at tick %u ; Saved: %s, Current: %s", gCurrentTicks,
                         savedChecksum.second.ToString().c_str(), checksum.ToString().c_str());
                 }
-                _currentReplay->checksumIndex++;
             }
         }
 #endif // DISABLE_NETWORK

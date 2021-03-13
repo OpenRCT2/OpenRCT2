@@ -332,7 +332,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         std::vector<rct_g1_element> newEntries;
         for (uint32_t i = 0; i < numImages; i++)
         {
-            rct_g1_element g1Element;
+            rct_g1_element g1Element{};
 
             uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
             g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
@@ -344,7 +344,7 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
             g1Element.flags = stream->ReadValue<uint16_t>();
             g1Element.zoomed_offset = stream->ReadValue<uint16_t>();
 
-            newEntries.push_back(g1Element);
+            newEntries.push_back(std::move(g1Element));
         }
 
         // Read g1 element data
@@ -445,5 +445,5 @@ void ImageTable::AddImage(const rct_g1_element* g1)
         newg1.offset = new uint8_t[length];
         std::copy_n(g1->offset, length, newg1.offset);
     }
-    _entries.push_back(newg1);
+    _entries.push_back(std::move(newg1));
 }

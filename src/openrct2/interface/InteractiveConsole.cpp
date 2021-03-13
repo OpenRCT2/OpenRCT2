@@ -16,11 +16,11 @@
 #include "../PlatformEnvironment.h"
 #include "../ReplayManager.h"
 #include "../Version.h"
-#include "../actions/ClimateSetAction.hpp"
-#include "../actions/RideSetPriceAction.hpp"
-#include "../actions/RideSetSetting.hpp"
-#include "../actions/SetCheatAction.hpp"
-#include "../actions/StaffSetCostumeAction.hpp"
+#include "../actions/ClimateSetAction.h"
+#include "../actions/RideSetPriceAction.h"
+#include "../actions/RideSetSettingAction.h"
+#include "../actions/SetCheatAction.h"
+#include "../actions/StaffSetCostumeAction.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
@@ -46,6 +46,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
+#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
@@ -655,7 +656,7 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
             {
                 rct_viewport* viewport = window_get_viewport(w);
                 auto info = get_map_coordinates_from_pos(
-                    { viewport->view_width / 2, viewport->view_height / 2 }, VIEWPORT_INTERACTION_MASK_TERRAIN);
+                    { viewport->view_width / 2, viewport->view_height / 2 }, EnumsToFlags(ViewportInteractionItem::Terrain));
 
                 auto tileMapCoord = TileCoordsXY(info.Loc);
                 console.WriteFormatLine("location %d %d", tileMapCoord.x, tileMapCoord.y);
@@ -692,6 +693,10 @@ static int32_t cc_get(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "current_rotation")
         {
             console.WriteFormatLine("current_rotation %d", get_current_rotation());
+        }
+        else if (argv[0] == "host_timescale")
+        {
+            console.WriteFormatLine("host_timescale %.02f", OpenRCT2::GetContext()->GetTimeScale());
         }
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting")
@@ -1011,6 +1016,14 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             }
             console.Execute("get current_rotation");
         }
+        else if (argv[0] == "host_timescale" && invalidArguments(&invalidArgs, double_valid[0]))
+        {
+            float newScale = static_cast<float>(double_val[0]);
+
+            OpenRCT2::GetContext()->SetTimeScale(newScale);
+
+            console.Execute("get host_timescale");
+        }
 #ifndef NO_TTF
         else if (argv[0] == "enable_hinting" && invalidArguments(&invalidArgs, int_valid[0]))
         {
@@ -1073,8 +1086,8 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         auto groupIndex = object_manager_get_loaded_object_entry_index(loadedObject);
 
-        uint8_t objectType = entry->GetType();
-        if (objectType == OBJECT_TYPE_RIDE)
+        ObjectType objectType = entry->GetType();
+        if (objectType == ObjectType::Ride)
         {
             // Automatically research the ride so it's supported by the game.
             rct_ride_entry* rideEntry;
@@ -1087,7 +1100,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
                 {
-                    uint8_t category = RideTypeDescriptors[rideType].Category;
+                    ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
                     research_insert_ride_entry(rideType, groupIndex, category, true);
                 }
             }
@@ -1096,7 +1109,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
             research_reset_current_item();
             gSilentResearch = false;
         }
-        else if (objectType == OBJECT_TYPE_SCENERY_GROUP)
+        else if (objectType == ObjectType::SceneryGroup)
         {
             research_insert_scenery_group_entry(groupIndex, true);
 
@@ -1124,17 +1137,18 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
     };
 
-    for (int32_t i = 0; i < 10; i++)
+    for (ObjectType i = ObjectType::Ride; i < ObjectType::ScenarioText; i++)
     {
         int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++)
+        for (; entryGroupIndex < object_entry_group_counts[EnumValue(i)]; entryGroupIndex++)
         {
             if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
-        console.WriteFormatLine("%s: %d/%d", object_type_names[i], entryGroupIndex, object_entry_group_counts[i]);
+        console.WriteFormatLine(
+            "%s: %d/%d", object_type_names[EnumValue(i)], entryGroupIndex, object_entry_group_counts[EnumValue(i)]);
     }
 
     return 0;
@@ -1230,7 +1244,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     int32_t spriteCount = 0;
     for (int32_t i = 1; i < static_cast<uint8_t>(EntityListId::Count); ++i)
     {
-        spriteCount += gSpriteListCount[i];
+        spriteCount += GetEntityListCount(EntityListId(i));
     }
 
     int32_t staffCount = 0;
@@ -1252,7 +1266,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
         }
     }
 
-    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_SPRITES);
+    console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
     console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
@@ -1575,10 +1589,10 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
 
     std::vector<Peep*> peeps;
 
-    for (int i = 0; i < MAX_SPRITES; i++)
+    for (int i = 0; i < MAX_ENTITIES; i++)
     {
         auto* sprite = GetEntity(i);
-        if (sprite == nullptr || sprite->sprite_identifier == SPRITE_IDENTIFIER_NULL)
+        if (sprite == nullptr || sprite->sprite_identifier == SpriteIdentifier::Null)
             continue;
 
         auto peep = sprite->As<Peep>();
@@ -1600,7 +1614,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
                 if (peeps.size() > 1)
                     peep = peeps[util_rand() % peeps.size() - 1];
                 peep->TshirtColour = util_rand() & 0xFF;
-                peep->Invalidate0();
+                peep->Invalidate();
             }
             break;
         }
@@ -1930,17 +1944,17 @@ void InteractiveConsole::Execute(const std::string& s)
 
 void InteractiveConsole::WriteLine(const std::string& s)
 {
-    WriteLine(s, FORMAT_WINDOW_COLOUR_2);
+    WriteLine(s, FormatToken::ColourWindow2);
 }
 
 void InteractiveConsole::WriteLineError(const std::string& s)
 {
-    WriteLine(s, FORMAT_RED);
+    WriteLine(s, FormatToken::ColourRed);
 }
 
 void InteractiveConsole::WriteLineWarning(const std::string& s)
 {
-    WriteLine(s, FORMAT_YELLOW);
+    WriteLine(s, FormatToken::ColourYellow);
 }
 
 void InteractiveConsole::WriteFormatLine(const char* format, ...)

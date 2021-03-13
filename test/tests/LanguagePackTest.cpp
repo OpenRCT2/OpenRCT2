@@ -14,10 +14,6 @@
 
 #include <gtest/gtest.h>
 
-#ifndef _WIN32
-const language_descriptor LanguagesDescriptors[] = {};
-#endif
-
 class LanguagePackTest : public testing::Test
 {
 protected:

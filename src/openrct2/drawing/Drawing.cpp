@@ -85,9 +85,6 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
 thread_local int32_t gLastDrawStringX;
 thread_local int32_t gLastDrawStringY;
 
-thread_local int16_t gCurrentFontSpriteBase;
-thread_local uint16_t gCurrentFontFlags;
-
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
@@ -294,39 +291,39 @@ enum
     SPR_PALETTE_GLASS_LIGHT_PINK = 5047,
 };
 
-const FILTER_PALETTE_ID GlassPaletteIds[COLOUR_COUNT] = {
-    PALETTE_GLASS_BLACK,
-    PALETTE_GLASS_GREY,
-    PALETTE_GLASS_WHITE,
-    PALETTE_GLASS_DARK_PURPLE,
-    PALETTE_GLASS_LIGHT_PURPLE,
-    PALETTE_GLASS_BRIGHT_PURPLE,
-    PALETTE_GLASS_DARK_BLUE,
-    PALETTE_GLASS_LIGHT_BLUE,
-    PALETTE_GLASS_ICY_BLUE,
-    PALETTE_GLASS_TEAL,
-    PALETTE_GLASS_AQUAMARINE,
-    PALETTE_GLASS_SATURATED_GREEN,
-    PALETTE_GLASS_DARK_GREEN,
-    PALETTE_GLASS_MOSS_GREEN,
-    PALETTE_GLASS_BRIGHT_GREEN,
-    PALETTE_GLASS_OLIVE_GREEN,
-    PALETTE_GLASS_DARK_OLIVE_GREEN,
-    PALETTE_GLASS_BRIGHT_YELLOW,
-    PALETTE_GLASS_YELLOW,
-    PALETTE_GLASS_DARK_YELLOW,
-    PALETTE_GLASS_LIGHT_ORANGE,
-    PALETTE_GLASS_DARK_ORANGE,
-    PALETTE_GLASS_LIGHT_BROWN,
-    PALETTE_GLASS_SATURATED_BROWN,
-    PALETTE_GLASS_DARK_BROWN,
-    PALETTE_GLASS_SALMON_PINK,
-    PALETTE_GLASS_BORDEAUX_RED,
-    PALETTE_GLASS_SATURATED_RED,
-    PALETTE_GLASS_BRIGHT_RED,
-    PALETTE_GLASS_DARK_PINK,
-    PALETTE_GLASS_BRIGHT_PINK,
-    PALETTE_GLASS_LIGHT_PINK,
+const FilterPaletteID GlassPaletteIds[COLOUR_COUNT] = {
+    FilterPaletteID::PaletteGlassBlack,
+    FilterPaletteID::PaletteGlassGrey,
+    FilterPaletteID::PaletteGlassWhite,
+    FilterPaletteID::PaletteGlassDarkPurple,
+    FilterPaletteID::PaletteGlassLightPurple,
+    FilterPaletteID::PaletteGlassBrightPurple,
+    FilterPaletteID::PaletteGlassDarkBlue,
+    FilterPaletteID::PaletteGlassLightBlue,
+    FilterPaletteID::PaletteGlassIcyBlue,
+    FilterPaletteID::PaletteGlassTeal,
+    FilterPaletteID::PaletteGlassAquamarine,
+    FilterPaletteID::PaletteGlassSaturatedGreen,
+    FilterPaletteID::PaletteGlassDarkGreen,
+    FilterPaletteID::PaletteGlassMossGreen,
+    FilterPaletteID::PaletteGlassBrightGreen,
+    FilterPaletteID::PaletteGlassOliveGreen,
+    FilterPaletteID::PaletteGlassDarkOliveGreen,
+    FilterPaletteID::PaletteGlassBrightYellow,
+    FilterPaletteID::PaletteGlassYellow,
+    FilterPaletteID::PaletteGlassDarkYellow,
+    FilterPaletteID::PaletteGlassLightOrange,
+    FilterPaletteID::PaletteGlassDarkOrange,
+    FilterPaletteID::PaletteGlassLightBrown,
+    FilterPaletteID::PaletteGlassSaturatedBrown,
+    FilterPaletteID::PaletteGlassDarkBrown,
+    FilterPaletteID::PaletteGlassSalmonPink,
+    FilterPaletteID::PaletteGlassBordeauxRed,
+    FilterPaletteID::PaletteGlassSaturatedRed,
+    FilterPaletteID::PaletteGlassBrightRed,
+    FilterPaletteID::PaletteGlassDarkPink,
+    FilterPaletteID::PaletteGlassBrightPink,
+    FilterPaletteID::PaletteGlassLightPink,
 };
 
 // Previously 0x97FCBC use it to get the correct palette from g1_elements
@@ -365,9 +362,9 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_LIGHT_PINK,
 
 
-    SPR_PALETTE_WATER,      // PALETTE_WATER (water)
+    SPR_PALETTE_WATER,      // PaletteWater (water)
     SPR_PALETTE_3100,
-    SPR_PALETTE_3101,       // PALETTE_34
+    SPR_PALETTE_3101,       // Palette34
     SPR_PALETTE_3102,
     SPR_PALETTE_3103,
     SPR_PALETTE_3104,
@@ -378,13 +375,13 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_3110,
     SPR_PALETTE_3105,
     SPR_PALETTE_4948,
-    SPR_PALETTE_4949,       // PALETTE_45
+    SPR_PALETTE_4949,       // Palette45
     SPR_PALETTE_4950,
-    SPR_PALETTE_DARKEN_3,   // PALETTE_DARKEN_3
+    SPR_PALETTE_DARKEN_3,   // PaletteDarken3
     SPR_PALETTE_4952,       // Decreases contrast
-    SPR_PALETTE_DARKEN_1,   // PALETTE_DARKEN_1
-    SPR_PALETTE_DARKEN_2,   // PALETTE_DARKEN_2 (construction marker)
-    SPR_PALETTE_4955,       // PALETTE_51
+    SPR_PALETTE_DARKEN_1,   // PaletteDarken1
+    SPR_PALETTE_DARKEN_2,   // PaletteDarken2 (construction marker)
+    SPR_PALETTE_4955,       // Palette51
 
     SPR_PALETTE_TRANSLUCENT_GREY,
     SPR_PALETTE_TRANSLUCENT_GREY_HIGHLIGHT,
@@ -481,35 +478,35 @@ static const uint16_t palette_to_g1_offset[PALETTE_TO_G1_OFFSET_COUNT] = {
     SPR_PALETTE_GLASS_LIGHT_PINK,
 };
 
-#define WINDOW_PALETTE_GREY                 {PALETTE_TRANSLUCENT_GREY,                  PALETTE_TRANSLUCENT_GREY_HIGHLIGHT,             PALETTE_TRANSLUCENT_GREY_SHADOW}
-#define WINDOW_PALETTE_LIGHT_PURPLE         {PALETTE_TRANSLUCENT_LIGHT_PURPLE,          PALETTE_TRANSLUCENT_LIGHT_PURPLE_HIGHLIGHT,     PALETTE_TRANSLUCENT_LIGHT_PURPLE_SHADOW}
-#define WINDOW_PALETTE_LIGHT_BLUE           {PALETTE_TRANSLUCENT_LIGHT_BLUE,            PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT,       PALETTE_TRANSLUCENT_LIGHT_BLUE_SHADOW}
-#define WINDOW_PALETTE_TEAL                 {PALETTE_TRANSLUCENT_TEAL,                  PALETTE_TRANSLUCENT_TEAL_HIGHLIGHT,             PALETTE_TRANSLUCENT_TEAL_SHADOW}
-#define WINDOW_PALETTE_BRIGHT_GREEN         {PALETTE_TRANSLUCENT_BRIGHT_GREEN,          PALETTE_TRANSLUCENT_BRIGHT_GREEN_HIGHLIGHT,     PALETTE_TRANSLUCENT_BRIGHT_GREEN_SHADOW}
-#define WINDOW_PALETTE_YELLOW               {PALETTE_TRANSLUCENT_YELLOW,                PALETTE_TRANSLUCENT_YELLOW_HIGHLIGHT,           PALETTE_TRANSLUCENT_YELLOW_SHADOW}
-#define WINDOW_PALETTE_LIGHT_ORANGE         {PALETTE_TRANSLUCENT_LIGHT_ORANGE,          PALETTE_TRANSLUCENT_LIGHT_ORANGE_HIGHLIGHT,     PALETTE_TRANSLUCENT_LIGHT_ORANGE_SHADOW}
-#define WINDOW_PALETTE_LIGHT_BROWN          {PALETTE_TRANSLUCENT_LIGHT_BROWN,           PALETTE_TRANSLUCENT_LIGHT_BROWN_HIGHLIGHT,      PALETTE_TRANSLUCENT_LIGHT_BROWN_SHADOW}
-#define WINDOW_PALETTE_BRIGHT_RED           {PALETTE_TRANSLUCENT_BRIGHT_RED,            PALETTE_TRANSLUCENT_BRIGHT_RED_HIGHLIGHT,       PALETTE_TRANSLUCENT_BRIGHT_RED_SHADOW}
-#define WINDOW_PALETTE_BRIGHT_PINK          {PALETTE_TRANSLUCENT_BRIGHT_PINK,           PALETTE_TRANSLUCENT_BRIGHT_PINK_HIGHLIGHT,      PALETTE_TRANSLUCENT_BRIGHT_PINK_SHADOW}
+#define WINDOW_PALETTE_GREY                 {FilterPaletteID::PaletteTranslucentGrey,                  FilterPaletteID::PaletteTranslucentGreyHighlight,             FilterPaletteID::PaletteTranslucentGreyShadow}
+#define WINDOW_PALETTE_LIGHT_PURPLE         {FilterPaletteID::PaletteTranslucentLightPurple,          FilterPaletteID::PaletteTranslucentLightPurpleHighlight,     FilterPaletteID::PaletteTranslucentLightPurpleShadow}
+#define WINDOW_PALETTE_LIGHT_BLUE           {FilterPaletteID::PaletteTranslucentLightBlue,            FilterPaletteID::PaletteTranslucentLightBlueHighlight,       FilterPaletteID::PaletteTranslucentLightBlueShadow}
+#define WINDOW_PALETTE_TEAL                 {FilterPaletteID::PaletteTranslucentTeal,                  FilterPaletteID::PaletteTranslucentTealHighlight,             FilterPaletteID::PaletteTranslucentTealShadow}
+#define WINDOW_PALETTE_BRIGHT_GREEN         {FilterPaletteID::PaletteTranslucentBrightGreen,          FilterPaletteID::PaletteTranslucentBrightGreenHighlight,     FilterPaletteID::PaletteTranslucentBrightGreenShadow}
+#define WINDOW_PALETTE_YELLOW               {FilterPaletteID::PaletteTranslucentYellow,                FilterPaletteID::PaletteTranslucentYellowHighlight,           FilterPaletteID::PaletteTranslucentYellowShadow}
+#define WINDOW_PALETTE_LIGHT_ORANGE         {FilterPaletteID::PaletteTranslucentLightOrange,          FilterPaletteID::PaletteTranslucentLightOrangeHighlight,     FilterPaletteID::PaletteTranslucentLightOrangeShadow}
+#define WINDOW_PALETTE_LIGHT_BROWN          {FilterPaletteID::PaletteTranslucentLightBrown,           FilterPaletteID::PaletteTranslucentLightBrownHighlight,      FilterPaletteID::PaletteTranslucentLightBrownShadow}
+#define WINDOW_PALETTE_BRIGHT_RED           {FilterPaletteID::PaletteTranslucentBrightRed,            FilterPaletteID::PaletteTranslucentBrightRedHighlight,       FilterPaletteID::PaletteTranslucentBrightRedShadow}
+#define WINDOW_PALETTE_BRIGHT_PINK          {FilterPaletteID::PaletteTranslucentBrightPink,           FilterPaletteID::PaletteTranslucentBrightPinkHighlight,      FilterPaletteID::PaletteTranslucentBrightPinkShadow}
 
 const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_GREY,                    // COLOUR_BLACK
     WINDOW_PALETTE_GREY,                    // COLOUR_GREY
-    {PALETTE_TRANSLUCENT_WHITE,             PALETTE_TRANSLUCENT_WHITE_HIGHLIGHT,            PALETTE_TRANSLUCENT_WHITE_SHADOW},
+    {FilterPaletteID::PaletteTranslucentWhite,             FilterPaletteID::PaletteTranslucentWhiteHighlight,            FilterPaletteID::PaletteTranslucentWhiteShadow},
     WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_DARK_PURPLE
     WINDOW_PALETTE_LIGHT_PURPLE,            // COLOUR_LIGHT_PURPLE
-    {PALETTE_TRANSLUCENT_BRIGHT_PURPLE,     PALETTE_TRANSLUCENT_BRIGHT_PURPLE_HIGHLIGHT,    PALETTE_TRANSLUCENT_BRIGHT_PURPLE_SHADOW},
+    {FilterPaletteID::PaletteTranslucentBrightPurple,     FilterPaletteID::PaletteTranslucentBrightPurpleHighlight,    FilterPaletteID::PaletteTranslucentBrightPurpleShadow},
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_DARK_BLUE
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_LIGHT_BLUE
     WINDOW_PALETTE_LIGHT_BLUE,              // COLOUR_ICY_BLUE
     WINDOW_PALETTE_TEAL,                    // COLOUR_TEAL
     WINDOW_PALETTE_TEAL,                    // COLOUR_AQUAMARINE
     WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_SATURATED_GREEN
-    {PALETTE_TRANSLUCENT_DARK_GREEN,        PALETTE_TRANSLUCENT_DARK_GREEN_HIGHLIGHT,       PALETTE_TRANSLUCENT_DARK_GREEN_SHADOW},
-    {PALETTE_TRANSLUCENT_MOSS_GREEN,        PALETTE_TRANSLUCENT_MOSS_GREEN_HIGHLIGHT,       PALETTE_TRANSLUCENT_MOSS_GREEN_SHADOW},
+    {FilterPaletteID::PaletteTranslucentDarkGreen,        FilterPaletteID::PaletteTranslucentDarkGreenHighlight,       FilterPaletteID::PaletteTranslucentDarkGreenShadow},
+    {FilterPaletteID::PaletteTranslucentMossGreen,        FilterPaletteID::PaletteTranslucentMossGreenHighlight,       FilterPaletteID::PaletteTranslucentMossGreenShadow},
     WINDOW_PALETTE_BRIGHT_GREEN,            // COLOUR_BRIGHT_GREEN
-    {PALETTE_TRANSLUCENT_OLIVE_GREEN,       PALETTE_TRANSLUCENT_OLIVE_GREEN_HIGHLIGHT,      PALETTE_TRANSLUCENT_OLIVE_GREEN_SHADOW},
-    {PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN,  PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN_HIGHLIGHT, PALETTE_TRANSLUCENT_DARK_OLIVE_GREEN_SHADOW},
+    {FilterPaletteID::PaletteTranslucentOliveGreen,       FilterPaletteID::PaletteTranslucentOliveGreenHighlight,      FilterPaletteID::PaletteTranslucentOliveGreenShadow},
+    {FilterPaletteID::PaletteTranslucentDarkOliveGreen,  FilterPaletteID::PaletteTranslucentDarkOliveGreenHighlight, FilterPaletteID::PaletteTranslucentDarkOliveGreenShadow},
     WINDOW_PALETTE_YELLOW,                  // COLOUR_BRIGHT_YELLOW
     WINDOW_PALETTE_YELLOW,                  // COLOUR_YELLOW
     WINDOW_PALETTE_YELLOW,                  // COLOUR_DARK_YELLOW
@@ -517,14 +514,14 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_LIGHT_ORANGE,            // COLOUR_DARK_ORANGE
     WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_LIGHT_BROWN
     WINDOW_PALETTE_LIGHT_BROWN,             // COLOUR_SATURATED_BROWN
-    {PALETTE_TRANSLUCENT_DARK_BROWN,        PALETTE_TRANSLUCENT_DARK_BROWN_HIGHLIGHT,       PALETTE_TRANSLUCENT_DARK_BROWN_SHADOW},
-    {PALETTE_TRANSLUCENT_SALMON_PINK,       PALETTE_TRANSLUCENT_SALMON_PINK_HIGHLIGHT,      PALETTE_TRANSLUCENT_SALMON_PINK_SHADOW},
-    {PALETTE_TRANSLUCENT_BORDEAUX_RED,      PALETTE_TRANSLUCENT_BORDEAUX_RED_HIGHLIGHT,     PALETTE_TRANSLUCENT_BORDEAUX_RED_SHADOW},
+    {FilterPaletteID::PaletteTranslucentDarkBrown,        FilterPaletteID::PaletteTranslucentDarkBrownHighlight,       FilterPaletteID::PaletteTranslucentDarkBrownShadow},
+    {FilterPaletteID::PaletteTranslucentSalmonPink,       FilterPaletteID::PaletteTranslucentSalmonPinkHighlight,      FilterPaletteID::PaletteTranslucentSalmonPinkShadow},
+    {FilterPaletteID::PaletteTranslucentBordeauxRed,      FilterPaletteID::PaletteTranslucentBordeauxRedHighlight,     FilterPaletteID::PaletteTranslucentBordeauxRedShadow},
     WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_SATURATED_RED
     WINDOW_PALETTE_BRIGHT_RED,              // COLOUR_BRIGHT_RED
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_DARK_PINK
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_BRIGHT_PINK
-    {PALETTE_TRANSLUCENT_LIGHT_PINK,        PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT,       PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW},
+    {FilterPaletteID::PaletteTranslucentLightPink,        FilterPaletteID::PaletteTranslucentLightPinkHighlight,       FilterPaletteID::PaletteTranslucentLightPinkShadow},
 };
 // clang-format on
 
@@ -578,12 +575,7 @@ void mask_init()
     }
 }
 
-void gfx_draw_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t colour)
-{
-    gfx_fill_rect(dpi, { coords, coords }, colour);
-}
-
-void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FILTER_PALETTE_ID palette)
+void gfx_filter_pixel(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, FilterPaletteID palette)
 {
     gfx_filter_rect(dpi, { coords, coords }, palette);
 }
@@ -627,7 +619,7 @@ void load_palette()
         return;
     }
 
-    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(OBJECT_TYPE_WATER, 0));
+    auto water_type = static_cast<rct_water_type*>(object_entry_get_chunk(ObjectType::Water, 0));
 
     uint32_t palette = 0x5FC;
 

@@ -24,8 +24,8 @@ using namespace OpenRCT2;
 
 void StdInOutConsole::Start()
 {
-    // Only start if stdin is a TTY
-    if (!isatty(fileno(stdin)))
+    // Only start if stdin/stdout is a TTY
+    if (!isatty(fileno(stdin)) || !isatty(fileno(stdout)))
     {
         return;
     }
@@ -40,7 +40,9 @@ void StdInOutConsole::Start()
         {
             std::string line;
             std::string left = prompt;
+            _isPromptShowing = true;
             auto quit = linenoise::Readline(left.c_str(), line);
+            _isPromptShowing = false;
             if (quit)
             {
                 if (lastPromptQuit)
@@ -51,7 +53,7 @@ void StdInOutConsole::Start()
                 else
                 {
                     lastPromptQuit = true;
-                    std::puts("(To exit, press ^C again or type exit)");
+                    std::puts("(To exit, press ^C again)");
                 }
             }
             else
@@ -108,28 +110,38 @@ void StdInOutConsole::Close()
     openrct2_finish();
 }
 
-void StdInOutConsole::WriteLine(const std::string& s, uint32_t colourFormat)
+void StdInOutConsole::WriteLine(const std::string& s, FormatToken colourFormat)
 {
     std::string formatBegin;
-    if (colourFormat != FORMAT_WINDOW_COLOUR_2)
+    switch (colourFormat)
     {
-        switch (colourFormat)
-        {
-            case FORMAT_RED:
-                formatBegin = "\033[31m";
-                break;
-            case FORMAT_YELLOW:
-                formatBegin = "\033[33m";
-                break;
-        }
+        case FormatToken::ColourRed:
+            formatBegin = "\033[31m";
+            break;
+        case FormatToken::ColourYellow:
+            formatBegin = "\033[33m";
+            break;
+        default:
+            break;
     }
 
-    if (formatBegin.empty() || !Platform::IsColourTerminalSupported())
+    if (!Platform::IsColourTerminalSupported())
     {
         std::printf("%s\n", s.c_str());
+        std::fflush(stdout);
     }
     else
     {
-        std::printf("%s%s%s\n", formatBegin.c_str(), s.c_str(), "\x1b[0m");
+        if (_isPromptShowing)
+        {
+            std::printf("\r%s%s\x1b[0m\x1b[0K\r\n", formatBegin.c_str(), s.c_str());
+            std::fflush(stdout);
+            linenoise::linenoiseEditRefreshLine();
+        }
+        else
+        {
+            std::printf("%s%s\x1b[0m\n", formatBegin.c_str(), s.c_str());
+            std::fflush(stdout);
+        }
     }
 }

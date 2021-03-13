@@ -46,6 +46,8 @@ public:
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
+    static uint8_t ParseRideType(const std::string& s);
+
 private:
     void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
 
@@ -59,8 +61,7 @@ private:
     static uint8_t CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* vehicleEntry);
 
     static bool IsRideTypeShopOrFacility(uint8_t rideType);
-    static uint8_t ParseRideType(const std::string& s);
     static uint8_t ParseRideCategory(const std::string& s);
-    static uint8_t ParseShopItem(const std::string& s);
+    static ShopItem ParseShopItem(const std::string& s);
     static colour_t ParseColour(const std::string& s);
 };

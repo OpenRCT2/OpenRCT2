@@ -59,7 +59,6 @@ enum class CheatType : int32_t
     SetGuestParameter,
     GenerateGuests,
     RemoveAllGuests,
-    ExplodeGuests,
     GiveAllGuests,
     SetGrassLength,
     WaterPlants,

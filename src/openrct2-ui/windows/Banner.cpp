@@ -12,10 +12,10 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
-#include <openrct2/actions/BannerRemoveAction.hpp>
-#include <openrct2/actions/BannerSetColourAction.hpp>
-#include <openrct2/actions/BannerSetNameAction.hpp>
-#include <openrct2/actions/BannerSetStyleAction.hpp>
+#include <openrct2/actions/BannerRemoveAction.h>
+#include <openrct2/actions/BannerSetColourAction.h>
+#include <openrct2/actions/BannerSetNameAction.h>
+#include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
@@ -59,13 +59,13 @@ static constexpr const rct_string_id BannerColouredTextFormats[] = {
 
 static rct_widget window_banner_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({      3,      17}, {85, 60}, WWT_VIEWPORT,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
-    MakeWidget({WW - 25,      19}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
-    MakeWidget({WW - 25,      43}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
-    MakeWidget({WW - 25,      67}, {24, 24}, WWT_FLATBTN,   WindowColour::Secondary, SPR_DEMOLISH,       STR_DEMOLISH_BANNER_TIP        ), // demolish button
-    MakeWidget({      5, WH - 16}, {12, 12}, WWT_COLOURBTN, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
-    MakeWidget({     43, WH - 16}, {39, 12}, WWT_DROPDOWN,  WindowColour::Secondary                                                     ), // high money
-    MakeWidget({     70, WH - 15}, {11, 10}, WWT_BUTTON,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
+    MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
+    MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
+    MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
+    MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH,       STR_DEMOLISH_BANNER_TIP        ), // demolish button
+    MakeWidget({      5, WH - 16}, {12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,         STR_SELECT_MAIN_SIGN_COLOUR_TIP), // high money
+    MakeWidget({     43, WH - 16}, {39, 12}, WindowWidgetType::DropdownMenu,  WindowColour::Secondary                                                     ), // high money
+    MakeWidget({     70, WH - 15}, {11, 10}, WindowWidgetType::Button,    WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_TEXT_COLOUR_TIP     ), // high money
     { WIDGETS_END },
 };
 
@@ -103,13 +103,13 @@ rct_window* window_banner_open(rct_windownumber number)
     if (w != nullptr)
         return w;
 
-    w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
+    w = WindowCreateAutoPos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_banner_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_BANNER_TEXT) | (1 << WIDX_BANNER_NO_ENTRY) | (1 << WIDX_BANNER_DEMOLISH)
         | (1 << WIDX_MAIN_COLOUR) | (1 << WIDX_TEXT_COLOUR_DROPDOWN) | (1 << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
 
     w->number = number;
-    window_init_scroll_widgets(w);
+    WindowInitScrollWidgets(w);
 
     auto banner = GetBanner(w->number);
     auto bannerViewPos = banner->position.ToCoordsXY().ToTileCentre();
@@ -200,7 +200,7 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
     switch (widgetIndex)
     {
         case WIDX_MAIN_COLOUR:
-            window_dropdown_show_colour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
+            WindowDropdownShowColour(w, widget, TRANSLUCENT(w->colours[1]), banner->colour);
             break;
         case WIDX_TEXT_COLOUR_DROPDOWN_BUTTON:
 
@@ -213,11 +213,11 @@ static void window_banner_mousedown(rct_window* w, rct_widgetindex widgetIndex, 
             // Switch to the dropdown box widget.
             widget--;
 
-            window_dropdown_show_text_custom_width(
+            WindowDropdownShowTextCustomWidth(
                 { widget->left + w->windowPos.x, widget->top + w->windowPos.y }, widget->height() + 1, w->colours[1], 0,
-                DROPDOWN_FLAG_STAY_OPEN, 13, widget->width() - 3);
+                Dropdown::Flag::StayOpen, 13, widget->width() - 3);
 
-            dropdown_set_checked(banner->text_colour - 1, true);
+            Dropdown::SetChecked(banner->text_colour - 1, true);
             break;
     }
 }
@@ -271,13 +271,13 @@ static void window_banner_invalidate(rct_window* w)
 {
     auto banner = GetBanner(w->number);
     rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
-    colour_btn->type = WWT_EMPTY;
+    colour_btn->type = WindowWidgetType::Empty;
 
     // Scenery item not sure why we use this instead of banner?
     rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
-    if (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+    if (sceneryEntry != nullptr && (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
     {
-        colour_btn->type = WWT_COLOURBTN;
+        colour_btn->type = WindowWidgetType::ColourBtn;
     }
 
     w->pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
@@ -300,7 +300,7 @@ static void window_banner_invalidate(rct_window* w)
 /* rct2: 0x006BA4C5 */
 static void window_banner_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 
     // Draw viewport
     if (w->viewport != nullptr)
@@ -315,13 +315,9 @@ static void window_banner_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_banner_viewport_rotate(rct_window* w)
 {
-    rct_viewport* view = w->viewport;
-    w->viewport = nullptr;
-
-    view->width = 0;
+    w->RemoveViewport();
 
     auto banner = GetBanner(w->number);
-
     auto bannerViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), w->frame_no };
 
     // Create viewport

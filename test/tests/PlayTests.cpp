@@ -15,8 +15,8 @@
 #include <openrct2/GameState.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/actions/ParkSetParameterAction.hpp>
-#include <openrct2/actions/RideSetPriceAction.hpp>
+#include <openrct2/actions/ParkSetParameterAction.h>
+#include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
@@ -54,7 +54,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     scenery_set_default_placement_configuration();
     load_palette();
     map_reorganise_elements();
-    sprite_position_tween_reset();
+    EntityTweener::Get().Reset();
     AutoCreateMapAnimations();
     fix_invalid_vehicle_sprite_sizes();
 
@@ -110,7 +110,7 @@ TEST_F(PlayTests, SecondGuestInQueueShouldNotRideIfNoFunds)
     ride_set_status(&ferrisWheel, RIDE_STATUS_OPEN);
     execute<RideSetPriceAction>(ferrisWheel.id, 0, true);
 
-    // Ignore intesity to stimulate peeps to queue into ferris wheel
+    // Ignore intensity to stimulate peeps to queue into ferris wheel
     gCheatsIgnoreRideIntensity = true;
 
     // Insert a rich guest
@@ -170,7 +170,7 @@ TEST_F(PlayTests, CarRideWithOneCarOnlyAcceptsTwoGuests)
     ride_set_status(&carRide, RIDE_STATUS_OPEN);
     execute<RideSetPriceAction>(carRide.id, 0, true);
 
-    // Ignore intesity to stimulate peeps to queue into the ride
+    // Ignore intensity to stimulate peeps to queue into the ride
     gCheatsIgnoreRideIntensity = true;
 
     // Create some guests

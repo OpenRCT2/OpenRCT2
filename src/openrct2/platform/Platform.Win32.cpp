@@ -30,6 +30,7 @@
 #    endif
 
 #    include "../OpenRCT2.h"
+#    include "../common.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "Platform2.h"
@@ -41,7 +42,9 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
+#    if _WIN32_WINNT >= 0x0600
 constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
+#    endif
 
 namespace Platform
 {
@@ -382,7 +385,7 @@ namespace Platform
         return _dllModule;
     }
 
-    static std::wstring get_progIdName(const std::string_view& extension)
+    static std::wstring get_progIdName(std::string_view extension)
     {
         auto progIdName = std::string(OPENRCT2_NAME) + std::string(extension);
         auto progIdNameW = String::ToWideChar(progIdName);
@@ -391,8 +394,8 @@ namespace Platform
 #    endif
 
     bool SetUpFileAssociation(
-        const std::string extension, const std::string fileTypeText, const std::string commandText,
-        const std::string commandArgs, const uint32_t iconIndex)
+        std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
+        const uint32_t iconIndex)
     {
 #    if _WIN32_WINNT >= 0x0600
         wchar_t exePathW[MAX_PATH];
@@ -519,6 +522,18 @@ namespace Platform
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
         return false;
+    }
+
+    bool FindApp(const std::string& app, std::string* output)
+    {
+        log_warning("FindApp() not implemented for Windows!");
+        return false;
+    }
+
+    int32_t Execute(const std::string& command, std::string* output)
+    {
+        log_warning("Execute() not implemented for Windows!");
+        return -1;
     }
 } // namespace Platform
 

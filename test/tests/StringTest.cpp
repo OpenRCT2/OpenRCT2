@@ -177,3 +177,29 @@ TEST_F(StringTest, strlogicalcmp)
     EXPECT_LT(strlogicalcmp("!", "A"), 0);
     EXPECT_LT(strlogicalcmp("!", "a"), 0);
 }
+
+class CodepointViewTest : public testing::Test
+{
+};
+
+static std::vector<char32_t> ToVector(std::string_view s)
+{
+    std::vector<char32_t> codepoints;
+    for (auto codepoint : CodepointView(s))
+    {
+        codepoints.push_back(codepoint);
+    }
+    return codepoints;
+}
+
+static void AssertCodepoints(std::string_view s, const std::vector<char32_t>& expected)
+{
+    ASSERT_EQ(ToVector(s), expected);
+}
+
+TEST_F(CodepointViewTest, CodepointView_iterate)
+{
+    AssertCodepoints("test", { 't', 'e', 's', 't' });
+    AssertCodepoints("ゲスト", { U'ゲ', U'ス', U'ト' });
+    AssertCodepoints("<🎢>", { U'<', U'🎢', U'>' });
+}

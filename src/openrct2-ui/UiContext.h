@@ -12,6 +12,7 @@
 #include <memory>
 #include <openrct2/common.h>
 #include <string>
+#include <vector>
 
 struct SDL_Window;
 
@@ -33,11 +34,16 @@ namespace OpenRCT2
             virtual bool IsSteamOverlayAttached() abstract;
 
             virtual void ShowMessageBox(SDL_Window* window, const std::string& message) abstract;
+            virtual bool HasMenuSupport() abstract;
+            virtual int32_t ShowMenuDialog(
+                const std::vector<std::string>& options, const std::string& title, const std::string& text) abstract;
             virtual void OpenFolder(const std::string& path) abstract;
 
             virtual void OpenURL(const std::string& url) abstract;
             virtual std::string ShowFileDialog(SDL_Window* window, const FileDialogDesc& desc) abstract;
             virtual std::string ShowDirectoryDialog(SDL_Window* window, const std::string& title) abstract;
+
+            virtual bool HasFilePicker() const abstract;
         };
 
         std::unique_ptr<IUiContext> CreateUiContext(const std::shared_ptr<IPlatformEnvironment>& env);

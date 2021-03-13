@@ -23,7 +23,7 @@ enum {
 };
 
 static rct_widget window_error_widgets[] = {
-    MakeWidget({0, 0}, {200, 42}, WWT_IMGBTN, WindowColour::Primary),
+    MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     { WIDGETS_END }
 };
 
@@ -54,29 +54,20 @@ rct_window* window_error_open(rct_string_id title, rct_string_id message, const 
     return window_error_open(titlez, messagez);
 }
 
-rct_window* window_error_open(const std::string_view& title, const std::string_view& message)
+rct_window* window_error_open(std::string_view title, std::string_view message)
 {
-    int32_t numLines, fontHeight, width, height, maxY;
+    int32_t numLines, width, height, maxY;
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
     auto& buffer = _window_error_text;
-    buffer.clear();
-
-    // Format the title
-    {
-        char temp[8]{};
-        utf8_write_codepoint(temp, FORMAT_BLACK);
-        buffer.append(temp);
-    }
+    buffer.assign("{BLACK}");
     buffer.append(title);
 
     // Format the message
     if (!message.empty())
     {
-        char temp[8]{};
-        utf8_write_codepoint(temp, FORMAT_NEWLINE);
-        buffer.append(temp);
+        buffer.push_back('\n');
         buffer.append(message);
     }
 
@@ -92,16 +83,14 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
     if (buffer.size() <= 1)
         return nullptr;
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    width = gfx_get_string_width_new_lined(buffer.data());
+    width = gfx_get_string_width_new_lined(buffer.data(), FontSpriteBase::MEDIUM);
     width = std::clamp(width, 64, 196);
 
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(buffer.data(), width + 1, &numLines, &fontHeight);
+    gfx_wrap_string(buffer.data(), width + 1, FontSpriteBase::MEDIUM, &numLines);
 
     _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * font_get_line_height(gCurrentFontSpriteBase) + 4;
+    height = (numLines + 1) * font_get_line_height(FontSpriteBase::MEDIUM) + 4;
 
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;
@@ -118,7 +107,7 @@ rct_window* window_error_open(const std::string_view& title, const std::string_v
         windowPosition.y = std::min(windowPosition.y - height - 40, maxY);
     }
 
-    w = window_create(
+    w = WindowCreate(
         windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
     w->widgets = window_error_widgets;
     w->error.var_480 = 0;
@@ -154,20 +143,20 @@ static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
     r = w->windowPos.x + w->width - 1;
     b = w->windowPos.y + w->height - 1;
 
-    gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, PALETTE_45);
-    gfx_filter_rect(dpi, l, t, r, b, PALETTE_GLASS_SATURATED_RED);
+    gfx_filter_rect(dpi, l + 1, t + 1, r - 1, b - 1, FilterPaletteID::Palette45);
+    gfx_filter_rect(dpi, l, t, r, b, FilterPaletteID::PaletteGlassSaturatedRed);
 
-    gfx_filter_rect(dpi, l, t + 2, l, b - 2, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, r, t + 2, r, b - 2, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, l + 2, b, r - 2, b, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, l + 2, t, r - 2, t, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, l, t + 2, l, b - 2, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, r, t + 2, r, b - 2, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, l + 2, b, r - 2, b, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, l + 2, t, r - 2, t, FilterPaletteID::PaletteDarken3);
 
-    gfx_filter_rect(dpi, r + 1, t + 1, r + 1, t + 1, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, r - 1, t + 1, r - 1, t + 1, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, PALETTE_DARKEN_3);
-    gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, PALETTE_DARKEN_3);
+    gfx_filter_rect(dpi, r + 1, t + 1, r + 1, t + 1, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, r - 1, t + 1, r - 1, t + 1, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, l + 1, b - 1, l + 1, b - 1, FilterPaletteID::PaletteDarken3);
+    gfx_filter_rect(dpi, r - 1, b - 1, r - 1, b - 1, FilterPaletteID::PaletteDarken3);
 
     l = w->windowPos.x + (w->width + 1) / 2 - 1;
     t = w->windowPos.y + 1;
-    draw_string_centred_raw(dpi, { l, t }, _window_error_num_lines, _window_error_text.data());
+    draw_string_centred_raw(dpi, { l, t }, _window_error_num_lines, _window_error_text.data(), FontSpriteBase::MEDIUM);
 }

@@ -4,14 +4,11 @@
 
 struct CoordsXYZ;
 enum class EntityListId : uint8_t;
+enum class SpriteIdentifier : uint8_t;
 
 struct SpriteBase
 {
-    uint8_t sprite_identifier;
-    uint8_t type;
-    uint16_t next_in_quadrant;
-    uint16_t next;
-    uint16_t previous;
+    SpriteIdentifier sprite_identifier;
     // Valid values are EntityListId::...
     EntityListId linked_list_index;
     // Height from centre of sprite to bottom
@@ -33,10 +30,25 @@ struct SpriteBase
 
     uint8_t sprite_direction;
 
+    /**
+     * Moves a sprite to a new location, invalidates the current position if valid
+     * and also the new position.
+     *
+     *  rct2: 0x0069E9D3
+     */
     void MoveTo(const CoordsXYZ& newLocation);
-    void Invalidate0();
-    void Invalidate1();
-    void Invalidate2();
+
+    /**
+     * Sets the entity location without screen invalidation.
+     */
+    void SetLocation(const CoordsXYZ& newLocation);
+
+    /**
+     * Gets the entity current location.
+     */
+    CoordsXYZ GetLocation() const;
+
+    void Invalidate();
     template<typename T> bool Is() const;
     template<typename T> T* As()
     {
@@ -48,7 +60,9 @@ struct SpriteBase
     }
 };
 
-struct SpriteGeneric : SpriteBase
+enum class MiscEntityType : uint8_t;
+struct MiscEntity : SpriteBase
 {
+    MiscEntityType SubType;
     uint16_t frame;
 };

@@ -27,7 +27,7 @@ enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {
 
 static rct_widget window_music_credits_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({4, 18}, {502, 292}, WWT_SCROLL, WindowColour::Primary, SCROLL_VERTICAL), // scroll
+    MakeWidget({4, 18}, {502, 292}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL), // scroll
     { WIDGETS_END },
 };
 
@@ -106,12 +106,12 @@ rct_window* window_music_credits_open()
     if (window != nullptr)
         return window;
 
-    window = window_create_centred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
+    window = WindowCreateCentred(510, 314, &window_music_credits_events, WC_MUSIC_CREDITS, 0);
 
     window->widgets = window_music_credits_widgets;
     window->enabled_widgets = 1 << WIDX_CLOSE;
 
-    window_init_scroll_widgets(window);
+    WindowInitScrollWidgets(window);
     window->colours[0] = COLOUR_LIGHT_BLUE;
     window->colours[1] = COLOUR_LIGHT_BLUE;
     window->colours[2] = COLOUR_LIGHT_BLUE;
@@ -139,7 +139,7 @@ static void window_music_credits_mouseup(rct_window* w, rct_widgetindex widgetIn
  */
 static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
     *height = static_cast<int32_t>(std::size(music_credits) + std::size(music_credits_rct2)) * lineHeight + 12;
 }
 
@@ -149,7 +149,7 @@ static void window_music_credits_scrollgetsize(rct_window* w, int32_t scrollInde
  */
 static void window_music_credits_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_draw_widgets(w, dpi);
+    WindowDrawWidgets(w, dpi);
 }
 
 /**
@@ -158,19 +158,19 @@ static void window_music_credits_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
-    int32_t lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    int32_t lineHeight = font_get_line_height(FontSpriteBase::MEDIUM);
 
     auto screenCoords = ScreenCoordsXY{ 245, 2 };
 
     for (size_t i = 0; i < std::size(music_credits); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits[i], screenCoords, COLOUR_BLACK, nullptr);
+        DrawTextBasic(dpi, screenCoords, music_credits[i], nullptr, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
     }
 
     // Add 4 more space before "Original recordings ...".
     screenCoords.y += 4;
-    gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, screenCoords, COLOUR_BLACK, nullptr);
+    DrawTextBasic(dpi, screenCoords, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, nullptr, { TextAlignment::CENTRE });
     screenCoords.y += lineHeight;
 
     // Draw the separator
@@ -180,7 +180,7 @@ static void window_music_credits_scrollpaint(rct_window* w, rct_drawpixelinfo* d
 
     for (size_t i = 0; i < std::size(music_credits_rct2); i++)
     {
-        gfx_draw_string_centred(dpi, music_credits_rct2[i], screenCoords, COLOUR_BLACK, nullptr);
+        DrawTextBasic(dpi, screenCoords, music_credits_rct2[i], nullptr, { TextAlignment::CENTRE });
         screenCoords.y += lineHeight;
     }
 }

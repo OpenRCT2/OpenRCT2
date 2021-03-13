@@ -68,7 +68,7 @@ TEST_F(CryptTests, SHA1_Multiple)
     };
 
     auto alg = Crypt::CreateSHA1();
-    for (auto s : input)
+    for (const auto& s : input)
     {
         alg->Update(s.data(), s.size());
     }
@@ -99,7 +99,7 @@ TEST_F(CryptTests, SHA1_Many)
         "This park is really clean and tidy",
         "This balloon from Balloon Stall 1 is really good value",
     };
-    for (auto s : inputA)
+    for (const auto& s : inputA)
     {
         alg->Update(s.data(), s.size());
     }
@@ -113,7 +113,7 @@ TEST_F(CryptTests, SHA1_Many)
         "This park is really clean and tidy",
         "Merry-go-round 2 looks too intense for me",
     };
-    for (auto s : inputB)
+    for (const auto& s : inputB)
     {
         alg->Update(s.data(), s.size());
     }

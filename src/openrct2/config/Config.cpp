@@ -11,9 +11,10 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../core/Console.hpp"
 #include "../core/File.h"
-#include "../core/FileStream.hpp"
+#include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -101,6 +102,13 @@ namespace Config
         ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
     });
 
+    static const auto Enum_Sort = ConfigEnum<Sort>({
+        ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
+        ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
+        ConfigEnumEntry<Sort>("DATE_ASCENDING", Sort::DateAscending),
+        ConfigEnumEntry<Sort>("DATE_DESCENDING", Sort::DateDescending),
+    });
+
     static const auto Enum_VirtualFloorStyle = ConfigEnum<VirtualFloorStyles>({
         ConfigEnumEntry<VirtualFloorStyles>("OFF", VirtualFloorStyles::Off),
         ConfigEnumEntry<VirtualFloorStyles>("CLEAR", VirtualFloorStyles::Clear),
@@ -183,7 +191,7 @@ namespace Config
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
             model->last_run_version = reader->GetCString("last_run_version", nullptr);
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
-            model->load_save_sort = reader->GetInt32("load_save_sort", SORT_NAME_ASCENDING);
+            model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
             model->disable_screensaver = reader->GetBoolean("disable_screensaver", true);
 
@@ -263,7 +271,7 @@ namespace Config
         writer->WriteInt32("default_inspection_interval", model->default_inspection_interval);
         writer->WriteString("last_run_version", model->last_run_version);
         writer->WriteBoolean("invert_viewport_drag", model->invert_viewport_drag);
-        writer->WriteInt32("load_save_sort", model->load_save_sort);
+        writer->WriteEnum<Sort>("load_save_sort", model->load_save_sort, Enum_Sort);
         writer->WriteBoolean("minimize_fullscreen_focus_loss", model->minimize_fullscreen_focus_loss);
         writer->WriteBoolean("disable_screensaver", model->disable_screensaver);
         writer->WriteBoolean("day_night_cycle", model->day_night_cycle);
@@ -310,6 +318,7 @@ namespace Config
             model->toolbar_show_news = reader->GetBoolean("toolbar_show_news", false);
             model->toolbar_show_mute = reader->GetBoolean("toolbar_show_mute", false);
             model->toolbar_show_chat = reader->GetBoolean("toolbar_show_chat", false);
+            model->toolbar_show_zoom = reader->GetBoolean("toolbar_show_zoom", true);
             model->console_small_font = reader->GetBoolean("console_small_font", false);
             model->current_theme_preset = reader->GetCString("current_theme", "*RCT2");
             model->current_title_sequence_preset = reader->GetCString("current_title_sequence", "*OPENRCT2");
@@ -329,6 +338,7 @@ namespace Config
         writer->WriteBoolean("toolbar_show_news", model->toolbar_show_news);
         writer->WriteBoolean("toolbar_show_mute", model->toolbar_show_mute);
         writer->WriteBoolean("toolbar_show_chat", model->toolbar_show_chat);
+        writer->WriteBoolean("toolbar_show_zoom", model->toolbar_show_zoom);
         writer->WriteBoolean("console_small_font", model->console_small_font);
         writer->WriteString("current_theme", model->current_theme_preset);
         writer->WriteString("current_title_sequence", model->current_title_sequence_preset);
@@ -390,7 +400,7 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = String::Duplicate(playerName);
+            model->player_name = playerName;
             model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetString("listen_address", "");
             model->default_password = reader->GetString("default_password", "");
@@ -537,6 +547,7 @@ namespace Config
         {
             auto model = &gConfigPlugin;
             model->enable_hot_reloading = reader->GetBoolean("enable_hot_reloading", false);
+            model->allowed_hosts = reader->GetString("allowed_hosts", "");
         }
     }
 
@@ -545,6 +556,7 @@ namespace Config
         auto model = &gConfigPlugin;
         writer->WriteSection("plugin");
         writer->WriteBoolean("enable_hot_reloading", model->enable_hot_reloading);
+        writer->WriteString("allowed_hosts", model->allowed_hosts);
     }
 
     static bool SetDefaults()
@@ -712,6 +724,39 @@ namespace Config
         }
         return std::string();
     }
+
+    static bool SelectGogInstaller(utf8* installerPath)
+    {
+        file_dialog_desc desc;
+        memset(&desc, 0, sizeof(desc));
+        desc.type = FileDialogType::Open;
+        desc.title = language_get_string(STR_SELECT_GOG_INSTALLER);
+        desc.filters[0].name = language_get_string(STR_GOG_INSTALLER);
+        desc.filters[0].pattern = "*.exe";
+        desc.filters[1].name = language_get_string(STR_ALL_FILES);
+        desc.filters[1].pattern = "*";
+        desc.filters[2].name = nullptr;
+
+        desc.initial_directory = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME).c_str();
+
+        return platform_open_common_file_dialog(installerPath, &desc, 4096);
+    }
+
+    static bool ExtractGogInstaller(const utf8* installerPath, const utf8* targetPath)
+    {
+        std::string path;
+        std::string output;
+
+        if (!Platform::FindApp("innoextract", &path))
+        {
+            log_error("Please install innoextract to extract files from GOG.");
+            return false;
+        }
+        int32_t exit_status = Platform::Execute(
+            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath, targetPath), &output);
+        log_info("Exit status %d", exit_status);
+        return exit_status == 0;
+    }
 } // namespace Config
 
 GeneralConfiguration gConfigGeneral;
@@ -794,20 +839,88 @@ bool config_find_or_browse_install_directory()
             return false;
         }
 
+        auto uiContext = GetContext()->GetUiContext();
+        if (!uiContext->HasFilePicker())
+        {
+            uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES_MANUAL, nullptr));
+            return false;
+        }
+
         try
         {
             const char* g1DatPath = PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat";
             while (true)
             {
-                auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox(format_string(STR_NEEDS_RCT2_FILES, nullptr));
+                std::string gog = language_get_string(STR_OWN_ON_GOG);
+                std::string hdd = language_get_string(STR_INSTALLED_ON_HDD);
 
-                std::string installPath = uiContext->ShowDirectoryDialog(format_string(STR_PICK_RCT2_DIR, nullptr));
+                std::vector<std::string> options;
+                std::string chosenOption;
+
+                if (uiContext->HasMenuSupport())
+                {
+                    options.push_back(hdd);
+                    options.push_back(gog);
+                    int optionIndex = uiContext->ShowMenuDialog(
+                        options, language_get_string(STR_OPENRCT2_SETUP), language_get_string(STR_WHICH_APPLIES_BEST));
+                    if (optionIndex < 0 || static_cast<uint32_t>(optionIndex) >= options.size())
+                    {
+                        // graceful fallback if app errors or user exits out of window
+                        chosenOption = hdd;
+                    }
+                    else
+                    {
+                        chosenOption = options[optionIndex];
+                    }
+                }
+                else
+                {
+                    chosenOption = hdd;
+                }
+
+                std::string installPath;
+                if (chosenOption == hdd)
+                {
+                    installPath = uiContext->ShowDirectoryDialog(language_get_string(STR_PICK_RCT2_DIR));
+                }
+                else if (chosenOption == gog)
+                {
+                    // Check if innoextract is installed. If not, prompt the user to install it.
+                    std::string dummy;
+                    if (!Platform::FindApp("innoextract", &dummy))
+                    {
+                        uiContext->ShowMessageBox(format_string(STR_INSTALL_INNOEXTRACT, nullptr));
+                        return false;
+                    }
+
+                    const std::string dest = Path::Combine(
+                        GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::CONFIG), "rct2");
+
+                    while (true)
+                    {
+                        uiContext->ShowMessageBox(language_get_string(STR_PLEASE_SELECT_GOG_INSTALLER));
+                        utf8 gogPath[4096];
+                        if (!Config::SelectGogInstaller(gogPath))
+                        {
+                            // The user clicked "Cancel", so stop trying.
+                            return false;
+                        }
+
+                        uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
+
+                        if (Config::ExtractGogInstaller(gogPath, dest.c_str()))
+                            break;
+
+                        uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
+                    }
+
+                    installPath = Path::Combine(dest, "app");
+                }
                 if (installPath.empty())
                 {
                     return false;
                 }
-
                 Memory::Free(gConfigGeneral.rct2_path);
                 gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
 
@@ -885,7 +998,7 @@ bool RCT1DataPresentAtLocation(const utf8* path)
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
 
-bool CsgIsUsable(rct_gx csg)
+bool CsgIsUsable(const rct_gx& csg)
 {
     return csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
 }

@@ -52,8 +52,6 @@ enum class EntertainerCostume : uint8_t
     Count
 };
 
-extern const money32 gStaffWageTable[static_cast<uint8_t>(StaffType::Count)];
-
 extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 extern uint32_t gStaffPatrolAreas[(STAFF_MAX_COUNT + static_cast<uint8_t>(StaffType::Count)) * STAFF_PATROL_AREA_SIZE];
@@ -75,6 +73,7 @@ bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();
 int32_t staff_get_available_entertainer_costume_list(EntertainerCostume* costumeList);
 
+money32 GetStaffWage(StaffType type);
 PeepSpriteType EntertainerCostumeToSprite(EntertainerCostume entertainerType);
 
 #endif

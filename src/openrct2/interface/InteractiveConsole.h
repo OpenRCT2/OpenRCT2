@@ -46,13 +46,14 @@ public:
     virtual void Clear() abstract;
     virtual void Close() abstract;
     virtual void Hide() abstract;
-    virtual void WriteLine(const std::string& s, uint32_t colourFormat) abstract;
+    virtual void WriteLine(const std::string& s, FormatToken colourFormat) abstract;
 };
 
 class StdInOutConsole final : public InteractiveConsole
 {
 private:
     std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
+    bool _isPromptShowing{};
 
 public:
     void Start();
@@ -68,5 +69,5 @@ public:
     {
         InteractiveConsole::WriteLine(s);
     }
-    void WriteLine(const std::string& s, uint32_t colourFormat) override;
+    void WriteLine(const std::string& s, FormatToken colourFormat) override;
 };

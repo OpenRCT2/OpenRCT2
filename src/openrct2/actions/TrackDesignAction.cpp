@@ -15,16 +15,61 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ride/TrackDesign.h"
-#include "RideCreateAction.hpp"
-#include "RideDemolishAction.hpp"
-#include "RideSetName.hpp"
-#include "RideSetSetting.hpp"
-#include "RideSetVehiclesAction.hpp"
+#include "RideCreateAction.h"
+#include "RideDemolishAction.h"
+#include "RideSetNameAction.h"
+#include "RideSetSettingAction.h"
+#include "RideSetVehicleAction.h"
 
 static int32_t place_virtual_track(
     const TrackDesign& td6, uint8_t ptdOperation, bool placeScenery, Ride* ride, const CoordsXYZ& loc)
 {
     return place_virtual_track(const_cast<TrackDesign*>(&td6), ptdOperation, placeScenery, ride, loc);
+}
+
+TrackDesignActionResult::TrackDesignActionResult()
+    : GameActions::Result(GameActions::Status::Ok, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id title, rct_string_id message)
+    : GameActions::Result(error, title, message)
+{
+}
+
+TrackDesignActionResult::TrackDesignActionResult(GameActions::Status error, rct_string_id message)
+    : GameActions::Result(error, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, message)
+{
+}
+
+TrackDesignAction::TrackDesignAction(const CoordsXYZD& location, const TrackDesign& td)
+    : _loc(location)
+    , _td(td)
+{
+}
+
+void TrackDesignAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit(_loc);
+    // TODO visit the track design (it has a lot of sub fields)
+}
+
+uint16_t TrackDesignAction::GetActionFlags() const
+{
+    return GameActionBase::GetActionFlags();
+}
+
+void TrackDesignAction::Serialise(DataSerialiser& stream)
+{
+    GameAction::Serialise(stream);
+
+    stream << DS_TAG(_loc);
+    _td.Serialise(stream);
 }
 
 GameActions::Result::Ptr TrackDesignAction::Query() const
@@ -43,7 +88,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {
@@ -106,7 +151,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
 
     const rct_object_entry* rideEntryObject = &_td.vehicle_object;
 
-    uint8_t entryType;
+    ObjectType entryType;
     ObjectEntryIndex entryIndex;
     if (!find_object_in_entry_group(rideEntryObject, &entryType, &entryIndex))
     {
@@ -174,7 +219,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         return MakeResult(GameActions::Status::Disallowed, error_reason);
     }
 
-    if (entryIndex != 0xFF)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
         auto rideSetVehicleAction = RideSetVehicleAction(ride->id, RideSetVehicleType::RideEntry, entryIndex, colour);
