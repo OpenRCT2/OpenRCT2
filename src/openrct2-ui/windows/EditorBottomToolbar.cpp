@@ -441,11 +441,10 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (drawPreviousButton)
         {
             gfx_draw_sprite(
-                dpi, SPR_PREVIOUS,
+                dpi, ImageId(SPR_PREVIOUS),
                 w->windowPos
                     + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6,
-                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 },
-                0);
+                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
@@ -471,11 +470,10 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         {
             gfx_draw_sprite(
-                dpi, SPR_NEXT,
+                dpi, ImageId(SPR_NEXT),
                 w->windowPos
                     + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29,
-                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 },
-                0);
+                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 

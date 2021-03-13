@@ -504,7 +504,7 @@ static void window_editor_inventions_list_paint(rct_window* w, rct_drawpixelinfo
 
     // Tab image
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top };
-    gfx_draw_sprite(dpi, SPR_TAB_FINANCES_RESEARCH_0 + (w->frame_no / 2) % 8, screenPos, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0 + (w->frame_no / 2) % 8), screenPos);
 
     // Pre-researched items label
     screenPos = w->windowPos

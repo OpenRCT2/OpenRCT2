@@ -208,7 +208,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, screenPos, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), screenPos);
 
     screenPos = w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 12 };
 

@@ -754,7 +754,7 @@ private:
             if (page == WINDOW_CHEATS_PAGE_MONEY)
                 sprite_idx += (frame_no / 2) % 8;
             gfx_draw_sprite(
-                &dpi, sprite_idx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top }, 0);
+                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_1].left, widgets[WIDX_TAB_1].top });
         }
 
         // Guests tab
@@ -764,15 +764,14 @@ private:
             if (page == WINDOW_CHEATS_PAGE_GUESTS)
                 sprite_idx += (frame_no / 3) % 8;
             gfx_draw_sprite(
-                &dpi, sprite_idx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top }, 0);
+                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
         }
 
         // Misc tab
         if (!IsWidgetDisabled(WIDX_TAB_3))
         {
-            uint32_t sprite_idx = SPR_TAB_PARK;
             gfx_draw_sprite(
-                &dpi, sprite_idx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top }, 0);
+                &dpi, ImageId(SPR_TAB_PARK), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
         }
 
         // Rides tab
@@ -782,7 +781,7 @@ private:
             if (page == WINDOW_CHEATS_PAGE_RIDES)
                 sprite_idx += (frame_no / 4) % 16;
             gfx_draw_sprite(
-                &dpi, sprite_idx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top }, 0);
+                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
     }
 

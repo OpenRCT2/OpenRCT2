@@ -832,9 +832,7 @@ static void window_map_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_STARTING_POSITION].left + 12,
                               w->widgets[WIDX_PEOPLE_STARTING_POSITION].top + 18 };
-        gfx_draw_sprite(
-            dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410,
-            screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_6410, COLOUR_BRIGHT_RED, COLOUR_LIGHT_BROWN), screenCoords);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
@@ -886,7 +884,7 @@ static void window_map_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
-    gfx_draw_sprite(dpi, SPR_TEMP, { 0, 0 }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TEMP), { 0, 0 });
 
     if (w->selected_tab == PAGE_PEEPS)
     {
@@ -1007,7 +1005,8 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top }, 0);
+        dpi, ImageId(image),
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PEOPLE_TAB].left, w->widgets[WIDX_PEOPLE_TAB].top });
 
     // Ride/stall tab image (animated)
     image = SPR_TAB_RIDE_0;
@@ -1015,7 +1014,7 @@ static void window_map_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
         image += w->list_information_type / 4;
 
     gfx_draw_sprite(
-        dpi, image, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top }, 0);
+        dpi, ImageId(image), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_RIDES_TAB].left, w->widgets[WIDX_RIDES_TAB].top });
 }
 
 /**

@@ -863,8 +863,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
         imgId = SPR_TOOLBAR_STAFF;
         if (WidgetIsPressed(w, WIDX_STAFF))
             imgId++;
-        imgId |= SPRITE_ID_PALETTE_COLOUR_2(gStaffHandymanColour, gStaffMechanicColour);
-        gfx_draw_sprite(dpi, imgId, screenPos, 0);
+        gfx_draw_sprite(dpi, ImageId(imgId, gStaffHandymanColour, gStaffMechanicColour), screenPos);
     }
 
     // Draw fast forward button
@@ -874,16 +873,15 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                       w->windowPos.y + window_top_toolbar_widgets[WIDX_FASTFORWARD].top + 0 };
         if (WidgetIsPressed(w, WIDX_FASTFORWARD))
             screenPos.y++;
-        imgId = SPR_G2_FASTFORWARD;
-        gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 6, 3 }, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_G2_FASTFORWARD), screenPos + ScreenCoordsXY{ 6, 3 });
 
         for (int32_t i = 0; i < gGameSpeed && gGameSpeed <= 4; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_SPEED_ARROW, screenPos + ScreenCoordsXY{ 5 + i * 5, 15 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_G2_SPEED_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 5, 15 });
         }
         for (int32_t i = 0; i < 3 && i < gGameSpeed - 4 && gGameSpeed >= 5; i++)
         {
-            gfx_draw_sprite(dpi, SPR_G2_HYPER_ARROW, screenPos + ScreenCoordsXY{ 5 + i * 6, 15 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_G2_HYPER_ARROW), screenPos + ScreenCoordsXY{ 5 + i * 6, 15 });
         }
     }
 
@@ -895,8 +893,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_CHEATS].top - 1 };
         if (WidgetIsPressed(w, WIDX_CHEATS))
             screenPos.y++;
-        imgId = SPR_G2_SANDBOX;
-        gfx_draw_sprite(dpi, imgId, screenPos, 3);
+        gfx_draw_sprite(dpi, ImageId(SPR_G2_SANDBOX), screenPos);
 
         // Draw an overlay if clearance checks are disabled
         if (gCheatsDisableClearanceChecks)
@@ -914,8 +911,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_CHAT].left, window_top_toolbar_widgets[WIDX_CHAT].top - 2 };
         if (WidgetIsPressed(w, WIDX_CHAT))
             screenPos.y++;
-        imgId = SPR_G2_CHAT;
-        gfx_draw_sprite(dpi, imgId, screenPos, 3);
+        gfx_draw_sprite(dpi, ImageId(SPR_G2_CHAT), screenPos);
     }
 
     // Draw debug button
@@ -925,8 +921,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_DEBUG].left, window_top_toolbar_widgets[WIDX_DEBUG].top - 1 };
         if (WidgetIsPressed(w, WIDX_DEBUG))
             screenPos.y++;
-        imgId = SPR_TAB_GEARS_0;
-        gfx_draw_sprite(dpi, imgId, screenPos, 3);
+        gfx_draw_sprite(dpi, ImageId(SPR_TAB_GEARS_0), screenPos);
     }
 
     // Draw research button
@@ -937,8 +932,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_RESEARCH].top };
         if (WidgetIsPressed(w, WIDX_RESEARCH))
             screenPos.y++;
-        imgId = SPR_TAB_FINANCES_RESEARCH_0;
-        gfx_draw_sprite(dpi, imgId, screenPos, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_TAB_FINANCES_RESEARCH_0), screenPos);
     }
 
     // Draw finances button
@@ -949,8 +943,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
                               window_top_toolbar_widgets[WIDX_FINANCES].top + 1 };
         if (WidgetIsPressed(w, WIDX_FINANCES))
             screenPos.y++;
-        imgId = SPR_FINANCE;
-        gfx_draw_sprite(dpi, imgId, screenPos, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenPos);
     }
 
     // Draw news button
@@ -960,8 +953,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ window_top_toolbar_widgets[WIDX_NEWS].left + 3, window_top_toolbar_widgets[WIDX_NEWS].top + 0 };
         if (WidgetIsPressed(w, WIDX_NEWS))
             screenPos.y++;
-        imgId = SPR_G2_TAB_NEWS;
-        gfx_draw_sprite(dpi, imgId, screenPos, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_G2_TAB_NEWS), screenPos);
     }
 
     // Draw network button
@@ -975,7 +967,7 @@ static void window_top_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
         // Draw (de)sync icon.
         imgId = (network_is_desynchronised() ? SPR_G2_MULTIPLAYER_DESYNC : SPR_G2_MULTIPLAYER_SYNC);
-        gfx_draw_sprite(dpi, imgId, screenPos + ScreenCoordsXY{ 3, 11 }, 0);
+        gfx_draw_sprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
         // Draw number of players.
         auto ft = Formatter();

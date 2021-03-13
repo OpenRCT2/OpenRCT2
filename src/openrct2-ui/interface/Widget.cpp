@@ -135,7 +135,7 @@ static void WidgetFrameDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w->windowPos + ScreenCoordsXY{ widget->right - 18, widget->bottom - 18 };
-    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), leftTop, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -166,7 +166,7 @@ static void WidgetResizeDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
 
     // Draw the resize sprite at the bottom right corner
     leftTop = w->windowPos + ScreenCoordsXY{ widget->right - 18, widget->bottom - 18 };
-    gfx_draw_sprite(dpi, SPR_RESIZE | IMAGE_TYPE_REMAP | ((colour & 0x7F) << 19), leftTop, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_RESIZE, colour & 0x7F), leftTop);
 }
 
 /**
@@ -246,7 +246,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
     uint32_t image = widget->image + 2;
 
     // Draw disabled image
-    gfx_draw_sprite(dpi, image | (colour << 19), leftTop, 0);
+    gfx_draw_sprite(dpi, ImageId(image, colour), leftTop);
 }
 
 /**
@@ -835,7 +835,7 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
         else
             image |= colour << 19;
 
-        gfx_draw_sprite(dpi, image, screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId::FromUInt32(image), screenCoords);
     }
 }
 

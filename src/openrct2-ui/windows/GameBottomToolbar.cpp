@@ -472,8 +472,8 @@ static void window_game_bottom_toolbar_draw_park_rating(
     }
 
     // Draw thumbs on the sides
-    gfx_draw_sprite(dpi, SPR_RATING_LOW, { x - 14, y }, 0);
-    gfx_draw_sprite(dpi, SPR_RATING_HIGH, { x + 114, y }, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_LOW), { x - 14, y });
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_HIGH), { x + 114, y });
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, rct_window* w)
@@ -528,7 +528,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
 
     // Current weather
     auto currentWeatherSpriteId = climate_get_weather_sprite_id(gClimateCurrent);
-    gfx_draw_sprite(dpi, currentWeatherSpriteId, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(currentWeatherSpriteId), screenCoords);
 
     // Next weather
     auto nextWeatherSpriteId = climate_get_weather_sprite_id(gClimateNext);
@@ -536,8 +536,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, 
     {
         if (gClimateUpdateTimer < 960)
         {
-            gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, screenCoords + ScreenCoordsXY{ 27, 5 }, 0);
-            gfx_draw_sprite(dpi, nextWeatherSpriteId, screenCoords + ScreenCoordsXY{ 40, 0 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_NEXT_WEATHER), screenCoords + ScreenCoordsXY{ 27, 5 });
+            gfx_draw_sprite(dpi, ImageId(nextWeatherSpriteId), screenCoords + ScreenCoordsXY{ 40, 0 });
         }
     }
 }
@@ -573,7 +573,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
     switch (newsItem->Type)
     {
         case News::ItemType::Ride:
-            gfx_draw_sprite(dpi, SPR_RIDE, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_RIDE), screenCoords);
             break;
         case News::ItemType::PeepOnRide:
         case News::ItemType::Peep:
@@ -602,48 +602,37 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             image_id_base += w->frame_no & 0xFFFFFFFC;
             image_id_base++;
 
-            uint32_t image_id = image_id_base;
-            image_id |= SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-
-            gfx_draw_sprite(&cliped_dpi, image_id, clipCoords, 0);
+            auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
+            gfx_draw_sprite(&cliped_dpi, image_id, clipCoords);
 
             if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
             {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
+                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->BalloonColour), clipCoords);
             }
             else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
             {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
+                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->UmbrellaColour), clipCoords);
             }
             else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
             {
-                image_id_base += 32;
-                image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-
-                gfx_draw_sprite(&cliped_dpi, image_id_base, clipCoords, 0);
+                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->HatColour), clipCoords);
             }
             break;
         }
         case News::ItemType::Money:
-            gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
             break;
         case News::ItemType::Research:
-            gfx_draw_sprite(dpi, (newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(newsItem->Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
             break;
         case News::ItemType::Peeps:
-            gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_GUESTS), screenCoords);
             break;
         case News::ItemType::Award:
-            gfx_draw_sprite(dpi, SPR_AWARD, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_AWARD), screenCoords);
             break;
         case News::ItemType::Graph:
-            gfx_draw_sprite(dpi, SPR_GRAPH, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_GRAPH), screenCoords);
             break;
         case News::ItemType::Null:
         case News::ItemType::Blank:

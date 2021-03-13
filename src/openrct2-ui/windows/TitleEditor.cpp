@@ -1064,11 +1064,10 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_wind
             screenCoords = ScreenCoordsXY{ 4, 1 };
         }
         gfx_draw_sprite(
-            dpi, spriteId,
+            dpi, ImageId(spriteId),
             w->windowPos + screenCoords
                 + ScreenCoordsXY{ w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].left,
-                                  w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top },
-            0);
+                                  w->widgets[WIDX_TITLE_EDITOR_PRESETS_TAB + i].top });
     }
 }
 

@@ -490,7 +490,7 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
         gfx_set_g1_element(SPR_TEMP, &g1temp);
-        gfx_draw_sprite(&clippedDpi, SPR_TEMP | SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), { 0, 0 }, 0);
+        gfx_draw_sprite(&clippedDpi, ImageId(SPR_TEMP, NOT_TRANSLUCENT(w->colours[0])), { 0, 0 });
     }
 
     // Price

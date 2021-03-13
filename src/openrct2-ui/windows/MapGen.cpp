@@ -1319,7 +1319,8 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, 
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 

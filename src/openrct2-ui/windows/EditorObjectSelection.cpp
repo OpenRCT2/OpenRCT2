@@ -953,9 +953,9 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
         widget = &w->widgets[WIDX_TAB_1 + i];
         if (widget->type != WindowWidgetType::Empty)
         {
-            auto image = ObjectSelectionPages[i].Image;
+            auto image = ImageId(ObjectSelectionPages[i].Image);
             auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            gfx_draw_sprite(dpi, image, screenPos, 0);
+            gfx_draw_sprite(dpi, image, screenPos);
         }
     }
 
@@ -983,7 +983,7 @@ static void window_editor_object_selection_paint(rct_window* w, rct_drawpixelinf
             spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
             auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-            gfx_draw_sprite(dpi, spriteIndex | (w->colours[1] << 19), screenPos, 0);
+            gfx_draw_sprite(dpi, ImageId(spriteIndex, w->colours[1]), screenPos);
         }
     }
 
