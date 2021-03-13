@@ -52,6 +52,8 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
+#    define BACKTRACE_TOKEN L"e650b4d649dc93a37d98b8611fa47b8732c6c08386979c22b5c3a545fea65f76"
+
 // Note: uploading gzipped crash dumps manually requires specifying
 // 'Content-Encoding: gzip' header in HTTP request, but we cannot do that,
 // so just hope the file name with '.gz' suffix is enough.
@@ -64,7 +66,7 @@ static bool UploadMinidump(const std::map<std::wstring, std::wstring>& files, in
         wprintf(L"files[%s] = %s\n", file.first.c_str(), file.second.c_str());
     }
     std::wstring url(L"https://openrct2.sp.backtrace.io:6098/"
-                     L"post?format=minidump&token=98675313b384d2fb1d3d3ce8ad9cab3ed61b9e08186ae47b0e3342adc3ff0714");
+                     L"post?format=minidump&token=" BACKTRACE_TOKEN);
     std::map<std::wstring, std::wstring> parameters;
     parameters[L"product_name"] = L"openrct2";
     // In case of releases this can be empty
