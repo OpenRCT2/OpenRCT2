@@ -238,7 +238,7 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
             }
             break;
         case ScenarioSetSetting::AllowEarlyCompletion:
-            gAllowEarlyCompletionInNetworkPlay = _value != 0 ? true : false;
+            gAllowEarlyCompletionInNetworkPlay = _value;
             break;
             
         default:
