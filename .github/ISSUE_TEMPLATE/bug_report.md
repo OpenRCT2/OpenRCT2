@@ -11,7 +11,7 @@ assignees: ''
   Fill in the placeholders below. Delete any headings and placeholders that you do not fill in.
 -->
 **OS:** [e.g. Windows 10]
-**Version:** [e.g. 0.3.2]
+**Version:** [e.g. 0.3.3]
 **Commit/Build:** [e.g. 426e106]
 
 <!-- Explanation of the issue -->
