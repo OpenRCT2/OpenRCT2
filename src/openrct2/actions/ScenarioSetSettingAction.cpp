@@ -15,6 +15,7 @@
 #include "../peep/Peep.h"
 #include "../util/Util.h"
 #include "../world/Park.h"
+#include "../scenario/Scenario.h"
 
 #include <algorithm>
 
@@ -236,6 +237,10 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
                 gParkFlags &= ~PARK_FLAGS_DIFFICULT_GUEST_GENERATION;
             }
             break;
+        case ScenarioSetSetting::AllowEarlyCompletion:
+            gAllowEarlyCompletionInNetworkPlay = _value != 0 ? true : false;
+            break;
+            
         default:
             log_error("Invalid setting: %u", _setting);
             return MakeResult(GameActions::Status::InvalidParameters, STR_NONE);
