@@ -47,9 +47,16 @@ struct ImageTable::RequiredImage
     {
         auto length = g1_calculate_data_size(&orig);
         g1 = orig;
-        g1.offset = new uint8_t[length];
-        std::memcpy(g1.offset, orig.offset, length);
-        g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+        if (length == 0)
+        {
+            g1.offset = nullptr;
+        }
+        else
+        {
+            g1.offset = new uint8_t[length];
+            std::memcpy(g1.offset, orig.offset, length);
+            g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+        }
     }
 
     RequiredImage(uint32_t idx, std::function<const rct_g1_element*(uint32_t)> getter)
@@ -59,16 +66,23 @@ struct ImageTable::RequiredImage
         {
             auto length = g1_calculate_data_size(orig);
             g1 = *orig;
-            g1.offset = new uint8_t[length];
-            std::memcpy(g1.offset, orig->offset, length);
-            if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
+            if (length == 0)
             {
-                // Fetch image for next zoom level
-                next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomed_offset), getter);
-                if (!next_zoom->HasData())
+                g1.offset = nullptr;
+            }
+            else
+            {
+                g1.offset = new uint8_t[length];
+                std::memcpy(g1.offset, orig->offset, length);
+                if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
                 {
-                    next_zoom = nullptr;
-                    g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+                    // Fetch image for next zoom level
+                    next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomed_offset), getter);
+                    if (!next_zoom->HasData())
+                    {
+                        next_zoom = nullptr;
+                        g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+                    }
                 }
             }
         }
@@ -99,6 +113,10 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
                         [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                    if (result.back()->g1.offset == nullptr)
+                    {
+                        context->LogWarning(ObjectError::BadEncoding, s.c_str());
+                    }
                 }
             }
         }
@@ -397,10 +415,19 @@ void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 
         // Now add all the images to the image table
         auto imagesStartIndex = GetCount();
+        bool valid = true;
         for (const auto& img : allImages)
         {
             const auto& g1 = img->g1;
+            if (g1.offset == nullptr)
+            {
+                valid = false;
+            }
             AddImage(&g1);
+        }
+        if (!valid)
+        {
+            context->LogWarning(ObjectError::BadEncoding, "Failed to validate images");
         }
 
         // Add all the zoom images at the very end of the image table.
