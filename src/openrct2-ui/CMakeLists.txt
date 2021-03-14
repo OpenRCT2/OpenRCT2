@@ -168,6 +168,7 @@ if(MACOS_BUNDLE)
 
     # copy data
     file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/shaders DESTINATION "${BUNDLE_RESOURCE_DIR}")
 
     # download objects and sequences
     set(OBJECTS_DIR ${CMAKE_BINARY_DIR}/object)
