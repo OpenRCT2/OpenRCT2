@@ -42,10 +42,12 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip")
+set(TITLE_SEQUENCE_VERSION "0.1.2c")
+set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v1.0.21/objects.zip")
+set(OBJECTS_VERSION "1.0.21")
+set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "c38af45d51a6e440386180feacf76c64720b6ac5")
 
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.37/replays.zip")
@@ -105,34 +107,20 @@ endif ()
 if (APPLE AND MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     # update dylibs
+    include(cmake/download.cmake)
+    
     set(MACOS_DYLIBS_VERSION "28")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-x64-macos-dylibs.zip")
+    set(MACOS_DYLIBS_SHA1 "29e5480376cf4ac5943f114387e32685204c8b78")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
-    if (NOT EXISTS ${MACOS_DYLIBS_DIR})
-        set(DOWNLOAD_DYLIBS 1)
-    else ()
-        file(READ "${MACOS_DYLIBS_DIR}/libversion" MACOS_DYLIBS_CACHED_VERSION)
-        if (NOT ${MACOS_DYLIBS_CACHED_VERSION} STREQUAL ${MACOS_DYLIBS_VERSION})
-        message("Cached macOS dylibs out of date")
-        set(DOWNLOAD_DYLIBS 1)
-        endif ()
-    endif ()
-    if (DOWNLOAD_DYLIBS)
-        message("Downloading macOS dylibs")
-        file(DOWNLOAD "${MACOS_DYLIBS_URL}" "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
-        file(ARCHIVE_EXTRACT
-            INPUT "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}"
-            DESTINATION "${MACOS_DYLIBS_DIR}"
-        )
-        file(WRITE
-            "${MACOS_DYLIBS_DIR}/libversion"
-            "${MACOS_DYLIBS_VERSION}"
-        )
-        file(REMOVE "${MACOS_DYLIBS_DIR}/${MACOS_DYLIBS_ZIPFILE}")
-    endif ()
-    # TODO: make the above routine a function, use it for objects, title sequences, and languages
+    download_openrct2_zip(
+        ZIP_VERSION ${MACOS_DYLIBS_VERSION}
+        DOWNLOAD_DIR ${MACOS_DYLIBS_DIR}
+        ZIP_URL ${MACOS_DYLIBS_URL}
+        SHA1 ${MACOS_DYLIBS_SHA1}
+    )
 
     set(CMAKE_MACOSX_RPATH 1)
     list(APPEND CMAKE_PREFIX_PATH "${MACOS_DYLIBS_DIR}")

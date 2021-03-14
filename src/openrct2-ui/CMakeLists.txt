@@ -139,24 +139,18 @@ if(MACOS_BUNDLE)
 
     # Add distribution sources
     target_sources(${PROJECT_NAME}
-        PUBLIC distribution/readme.txt
-        PUBLIC distribution/changelog.txt
-        PUBLIC g2.dat
-        PUBLIC resources/mac/openrct2.icns
-        PUBLIC ${SOURCE_DATA_DIR}/language
-        PUBLIC ${SOURCE_DATA_DIR}/object
-        PUBLIC ${SOURCE_DATA_DIR}/sequence
+        PUBLIC ${ROOT_DIR}/distribution/readme.txt
+        PUBLIC ${ROOT_DIR}/distribution/changelog.txt
+        PUBLIC ${CMAKE_BINARY_DIR}/g2.dat
+        PUBLIC ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
     # Specify the resources to move to the bundle
     set(BUNDLE_RESOURCES
-        distribution/readme.txt
-        distribution/changelog.txt
-        g2.dat
-        resources/mac/openrct2.icns
-        ${SOURCE_DATA_DIR}/language
-        ${SOURCE_DATA_DIR}/object
-        ${SOURCE_DATA_DIR}/sequence
+        ${ROOT_DIR}/distribution/readme.txt
+        ${ROOT_DIR}/distribution/changelog.txt
+        ${CMAKE_BINARY_DIR}/g2.dat
+        ${ROOT_DIR}/resources/mac/openrct2.icns
         )
 
 
@@ -174,8 +168,26 @@ if(MACOS_BUNDLE)
 
     # copy data
     file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
-    file(COPY ${SOURCE_DATA_DIR}/object DESTINATION "${BUNDLE_RESOURCE_DIR}")
-    file(COPY ${SOURCE_DATA_DIR}/sequence DESTINATION "${BUNDLE_RESOURCE_DIR}")
+
+    # download objects and sequences
+    set(OBJECTS_DIR ${CMAKE_BINARY_DIR}/object)
+    set(TITLE_SEQUENCE_DIR ${CMAKE_BINARY_DIR}/sequence)
+    download_openrct2_zip(
+        ZIP_VERSION ${OBJECTS_VERSION}
+        DOWNLOAD_DIR ${OBJECTS_DIR}
+        ZIP_URL ${OBJECTS_URL}
+        SHA1 ${OBJECTS_SHA1}
+    )
+
+    download_openrct2_zip(
+        ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
+        DOWNLOAD_DIR ${TITLE_SEQUENCE_DIR}
+        ZIP_URL ${TITLE_SEQUENCE_URL}
+        SHA1 ${TITLE_SEQUENCE_SHA1}
+    )
+    
+    file(COPY ${OBJECTS_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${TITLE_SEQUENCE_DIR} DESTINATION "${BUNDLE_RESOURCE_DIR}")
 
     # Create as a bundle
     set_target_properties(${PROJECT_NAME} PROPERTIES
@@ -191,5 +203,4 @@ if(MACOS_BUNDLE)
         verify_app(${CMAKE_BINARY_DIR}/${MACOS_APP_NAME})
         "  BUNDLE DESTINATION ${CMAKE_BINARY_DIR}
     )
-    
 endif ()
