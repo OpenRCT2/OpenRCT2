@@ -15,7 +15,7 @@
 
 namespace TrainManager
 {
-    TrainView::TrainViewIterator& TrainView::TrainViewIterator::operator++()
+    View::Iterator& View::Iterator::operator++()
     {
         Entity = nullptr;
 
@@ -30,7 +30,7 @@ namespace TrainManager
         return *this;
     }
 
-    TrainView::TrainView()
+    View::View()
     {
         vec = &GetEntityList(EntityListId::Vehicle);
     }

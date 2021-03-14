@@ -110,7 +110,7 @@ namespace OpenRCT2::Scripting
             if (type == "car")
             {
                 std::vector<DukValue> result;
-                for (auto trainHead : TrainManager::TrainView())
+                for (auto trainHead : TrainManager::View())
                 {
                     for (auto carId = trainHead->sprite_index; carId != SPRITE_INDEX_NULL;)
                     {

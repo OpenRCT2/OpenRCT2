@@ -1119,7 +1119,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
  */
 static void window_map_paint_train_overlay(rct_drawpixelinfo* dpi)
 {
-    for (auto train : TrainManager::TrainView())
+    for (auto train : TrainManager::View())
     {
         for (Vehicle* vehicle = train; vehicle != nullptr; vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train))
         {

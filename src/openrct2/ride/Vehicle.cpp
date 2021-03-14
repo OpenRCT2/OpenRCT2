@@ -1296,7 +1296,7 @@ void vehicle_sounds_update()
 
     vehicle_sounds_update_window_setup();
 
-    for (auto vehicle : TrainManager::TrainView())
+    for (auto vehicle : TrainManager::View())
     {
         vehicle->UpdateSoundParams(vehicleSoundParamsList);
     }
@@ -1379,7 +1379,7 @@ void vehicle_update_all()
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         return;
 
-    for (auto vehicle : TrainManager::TrainView())
+    for (auto vehicle : TrainManager::View())
     {
         vehicle->Update();
     }

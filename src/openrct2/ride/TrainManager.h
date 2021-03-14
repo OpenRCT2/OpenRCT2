@@ -14,12 +14,13 @@ struct Vehicle;
 
 namespace TrainManager
 {
-    class TrainView
+    // Iteration of heads of trains
+    class View
     {
     private:
         const std::list<uint16_t>* vec;
 
-        class TrainViewIterator
+        class Iterator
         {
         private:
             std::list<uint16_t>::const_iterator iter;
@@ -27,25 +28,25 @@ namespace TrainManager
             Vehicle* Entity = nullptr;
 
         public:
-            TrainViewIterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
+            Iterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
                 : iter(_iter)
                 , end(_end)
             {
                 ++(*this);
             }
-            TrainViewIterator& operator++();
+            Iterator& operator++();
 
-            TrainViewIterator operator++(int)
+            Iterator operator++(int)
             {
-                TrainViewIterator retval = *this;
+                Iterator retval = *this;
                 ++(*this);
                 return retval;
             }
-            bool operator==(TrainViewIterator other) const
+            bool operator==(Iterator other) const
             {
                 return Entity == other.Entity;
             }
-            bool operator!=(TrainViewIterator other) const
+            bool operator!=(Iterator other) const
             {
                 return !(*this == other);
             }
@@ -62,15 +63,15 @@ namespace TrainManager
         };
 
     public:
-        TrainView();
+        View();
 
-        TrainViewIterator begin()
+        Iterator begin()
         {
-            return TrainViewIterator(std::cbegin(*vec), std::cend(*vec));
+            return Iterator(std::cbegin(*vec), std::cend(*vec));
         }
-        TrainViewIterator end()
+        Iterator end()
         {
-            return TrainViewIterator(std::cend(*vec), std::cend(*vec));
+            return Iterator(std::cend(*vec), std::cend(*vec));
         }
     };
 } // namespace TrainManager
