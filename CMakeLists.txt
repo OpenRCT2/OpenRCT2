@@ -60,6 +60,8 @@ option(DOWNLOAD_OBJECTS "Download objects during installation." ON)
 CMAKE_DEPENDENT_OPTION(DOWNLOAD_REPLAYS "Download replays during installation." ON
     "WITH_TESTS" OFF)
 option(MACOS_USE_DEPENDENCIES "Use OpenRCT2 dependencies instead of system libraries" ON)
+CMAKE_DEPENDENT_OPTION(MACOS_BUNDLE "Build macOS application bundle (OpenRCT2.app)" OFF
+     "MACOS_USE_DEPENDENCIES; NOT DISABLE_GUI" OFF)
 
 # Options
 option(STATIC "Create a static build.")
@@ -435,7 +437,7 @@ if (DOWNLOAD_REPLAYS)
 endif ()
 install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                               ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-if(NOT DISABLE_GUI)
+if(NOT DISABLE_GUI AND NOT MACOS_BUNDLE)
     install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 endif()
 install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

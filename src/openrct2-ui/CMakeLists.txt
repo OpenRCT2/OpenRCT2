@@ -127,3 +127,69 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     get_target_property(OPENRCT2_INCLUDE_DIRS ${PROJECT_NAME} INCLUDE_DIRECTORIES)
     set_target_properties(${PROJECT_NAME}-headers-check PROPERTIES INCLUDE_DIRECTORIES "${OPENRCT2_INCLUDE_DIRS}")
 endif ()
+
+
+if(MACOS_BUNDLE)
+    add_dependencies(${PROJECT_NAME} openrct2-cli)
+    set(OUTPUT_NAME "OpenRCT2")
+    set(MACOS_APP_NAME "${OUTPUT_NAME}.app")
+    set(BUNDLE_FRAMEWORK_DIR "${MACOS_APP_NAME}/Contents/Frameworks")
+    set(BUNDLE_RESOURCE_DIR "${MACOS_APP_NAME}/Contents/Resources")
+    set(SOURCE_DATA_DIR "${ROOT_DIR}/data")
+
+    # Add distribution sources
+    target_sources(${PROJECT_NAME}
+        PUBLIC distribution/readme.txt
+        PUBLIC distribution/changelog.txt
+        PUBLIC g2.dat
+        PUBLIC resources/mac/openrct2.icns
+        PUBLIC ${SOURCE_DATA_DIR}/language
+        PUBLIC ${SOURCE_DATA_DIR}/object
+        PUBLIC ${SOURCE_DATA_DIR}/sequence
+        )
+
+    # Specify the resources to move to the bundle
+    set(BUNDLE_RESOURCES
+        distribution/readme.txt
+        distribution/changelog.txt
+        g2.dat
+        resources/mac/openrct2.icns
+        ${SOURCE_DATA_DIR}/language
+        ${SOURCE_DATA_DIR}/object
+        ${SOURCE_DATA_DIR}/sequence
+        )
+
+
+    if(${OPENRCT2_BRANCH} EQUAL master)
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG}")
+    else()
+        set(MACOSX_BUNDLE_SHORT_VERSION_STRING "${OPENRCT2_VERSION_TAG} ${OPENRCT2_BRANCH}")
+    endif()
+
+    set(PRODUCT_BUNDLE_IDENTIFIER "io.openrct2.OpenRCT2")
+    set(MACOSX_BUNDLE_BUNDLE_VERSION "${OPENRCT2_COMMIT_SHA1_SHORT}")
+    set(EXECUTABLE_NAME "${OUTPUT_NAME}")
+    set(MACOSX_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}")
+    set(PRODUCT_NAME "${OUTPUT_NAME}")
+
+    # copy data
+    file(COPY ${SOURCE_DATA_DIR}/language DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/object DESTINATION "${BUNDLE_RESOURCE_DIR}")
+    file(COPY ${SOURCE_DATA_DIR}/sequence DESTINATION "${BUNDLE_RESOURCE_DIR}")
+
+    # Create as a bundle
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        MACOSX_BUNDLE ON
+        OUTPUT_NAME ${OUTPUT_NAME}
+        MACOSX_BUNDLE_BUNDLE_NAME ${OUTPUT_NAME}
+        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_CURRENT_SOURCE_DIR}/distribution/macos/Info.plist
+        RESOURCE "${BUNDLE_RESOURCES}")
+
+    install(CODE "
+        include(BundleUtilities)
+        fixup_bundle(${CMAKE_BINARY_DIR}/${MACOS_APP_NAME} \"\" \"\")
+        verify_app(${CMAKE_BINARY_DIR}/${MACOS_APP_NAME})
+        "  BUNDLE DESTINATION ${CMAKE_BINARY_DIR}
+    )
+    
+endif ()
