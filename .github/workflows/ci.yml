@@ -197,7 +197,7 @@ jobs:
           mv bin/OpenRCT2.app artifacts
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
           cd artifacts
-          zip -rq openrct2-macos-cmake-app.zip OpenRCT2.app
+          zip -rqy openrct2-macos-cmake-app.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
