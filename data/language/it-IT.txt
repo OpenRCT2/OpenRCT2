@@ -95,6 +95,7 @@ STR_0090    :Corsa nella miniera
 STR_0091    :Attrazione sconosciuta (59)
 STR_0092    :Ottovolante a lancio MIL
 STR_0093    :Ottovolante ibrido
+STR_0094    :Ottovolante a binario singolo
 STR_0512    :Un ottovolante compatto con una salita a spirale e cadute fluide e tortuose.
 STR_0513    :Un ottovolante con giro della morte dove i passeggeri si trovano in una posizione eretta
 STR_0514    :I treni, sospesi sotto l'ottovolante, durante le curve oscillano lateralmente
@@ -175,6 +176,7 @@ STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in 
 STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
 STR_0602    :I treni dell'ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
 STR_0603    :Un ottovolante in legno con i binari in acciaio, in grado di avere ripide discese e inversioni.
+STR_0604    :I visitatori viaggiano lungo un sottile tracciato da monorotaia, attraverso strette inversioni e cambi di direzione.
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -3298,18 +3300,18 @@ STR_6014    :I visitatori pagheranno solo l'ingresso nelle attrazioni.{NEWLINE}L
 STR_6015    :Inclinato
 STR_6016    :Modifica cella
 STR_6017    :Si prega di rallentare
-STR_6018    :Costruzione percorso - Curva a sinistra
-STR_6019    :Costruzione percorso - Curva a destra
-STR_6020    :Costruzione percorso - Usa percorso predefinito
-STR_6021    :Costruzione percorso - Discesa
-STR_6022    :Costruzione percorso - Salita
-STR_6023    :Costruzione percorso - Attiva catena di traino
-STR_6024    :Costruzione percorso - Inclina a sinistra
-STR_6025    :Costruzione percorso - Inclina a destra
-STR_6026    :Costruzione percorso - Pezzo precedente
-STR_6027    :Costruzione percorso - Pezzo successivo
-STR_6028    :Costruzione percorso - Costruisci attuale
-STR_6029    :Costruzione percorso - Demolisci attuale
+STR_6018    :Costruzione - Curva a sinistra
+STR_6019    :Costruzione - Curva a destra
+STR_6020    :Costruzione - Usa percorso predefinito
+STR_6021    :Costruzione - Discesa
+STR_6022    :Costruzione - Salita
+STR_6023    :Costruzione - Attiva catena di traino
+STR_6024    :Costruzione - Inclina a sinistra
+STR_6025    :Costruzione - Inclina a destra
+STR_6026    :Costruzione - Percorso precedente
+STR_6027    :Costruzione - Percorso successivo
+STR_6028    :Costruzione - Costruisci attuale
+STR_6029    :Costruzione - Demolisci attuale
 STR_6030    :Contagocce scenario. Fare clic su un qualsiasi elemento dello scenario per attivare la costruzione di quel pezzo.
 STR_6031    :Descrizione server:
 STR_6032    :Messaggio di benvenuto server:
@@ -3648,6 +3650,43 @@ STR_6394    :Obiettivo
 STR_6395    :Manutenzione
 STR_6396    :Disattiva screensaver e risparmio energetico dello schermo
 STR_6397    :Se attivato, le funzionalità di screensaver e di risparmio energetico dello schermo saranno disabilitate mentre OpenRCT2 è in esecuzione.
+STR_6398    :Il file contiene tipi di percorsi non supportati. Aggiornare a una nuova versione di OpenRCT2.
+STR_6399    :OpenRCT2 necessita dei file originali di RollerCoaster Tycoon 2 per funzionare. Impostare la variabile “game_path” nel file config.ini al percorso nel quale è installato RollerCoaster Tycoon 2, dopodiché riavviare OpenRCT2.
+STR_6400    :Si è in possesso dell'installatore offline di GOG per RollerCoaster Tycoon 2, ma non è installato
+STR_6401    :RollerCoaster Tycoon 2 è già installato
+STR_6402    :Installazione dati di OpenRCT2
+STR_6403    :Selezionare l'opzione più adatta
+STR_6404    :Selezionare l'installatore di GOG per RollerCoaster Tycoon 2.
+STR_6405    :Selezionare l'installatore di GOG
+STR_6406    :Installatore di GOG per RollerCoaster Tycoon 2
+STR_6407    :Quest’operazione richiederà alcuni minuti.
+STR_6408    :Installare “innoextract” per estrarre l'installatore di GOG, dopodiché riavviare OpenRCT2.
+STR_6409    :Il file selezionato non è l’installatore offline di GOG per RollerCoaster Tycoon 2. Potrebbe essere stato selezionato un file sbagliato o il downloader incompleto di GOG Galaxy.
+STR_6410    :Zoom avanti/indietro
+STR_6411    :Mostra bottoni per zoomare avanti e indietro nella barra degli strumenti
+STR_6412    :Invio BlocNum
+STR_6413    :Maiusc
+STR_6414    :Maiusc sx
+STR_6415    :Maiusc dx
+STR_6416    :Ctrl
+STR_6417    :Ctrl sx
+STR_6418    :Ctrl dx
+STR_6419    :Alt
+STR_6420    :Alt sx
+STR_6421    :Alt dx
+STR_6422    :Cmd
+STR_6423    :Cmd sx
+STR_6424    :Cmd dx
+STR_6425    :Sinistra joy
+STR_6426    :Destra joy
+STR_6427    :Su joy
+STR_6428    :Giù joy
+STR_6429    :Joy {INT32}
+STR_6430    :Clic sx
+STR_6431    :Clic dx
+STR_6432    :Mouse {INT32}
+STR_6433    :Rimuovi
+STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
 
 
 #############
