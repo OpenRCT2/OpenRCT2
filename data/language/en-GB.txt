@@ -3679,6 +3679,7 @@ STR_6431    :RMB
 STR_6432    :Mouse {INT32}
 STR_6433    :Remove
 STR_6434    :Remove all bindings for this shortcut.
+STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

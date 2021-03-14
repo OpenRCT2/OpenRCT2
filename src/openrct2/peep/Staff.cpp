@@ -357,6 +357,7 @@ void Staff::ResetStats()
         peep->StaffGardensWatered = 0;
         peep->StaffRidesInspected = 0;
         peep->StaffLitterSwept = 0;
+        peep->StaffVandalsStopped = 0;
         peep->StaffBinsEmptied = 0;
     }
 }
