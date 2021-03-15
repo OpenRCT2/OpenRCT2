@@ -29,6 +29,6 @@ extern money32 gWaterToolLowerCost;
 namespace LandTool
 {
     uint32_t SizeToSpriteIndex(uint16_t size);
-    void ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentSurfaceType);
-    void ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, uint8_t currentEdgeType);
+    void ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType);
+    void ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentEdgeType);
 } // namespace LandTool
