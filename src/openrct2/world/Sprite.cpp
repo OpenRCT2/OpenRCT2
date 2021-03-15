@@ -394,8 +394,8 @@ rct_sprite_checksum sprite_checksum()
         {
             // TODO create a way to copy only the specific type
             auto sprite = GetEntity(i);
-            if (sprite != nullptr && sprite->sprite_identifier != SpriteIdentifier::Null
-                && sprite->sprite_identifier != SpriteIdentifier::Misc)
+            if (sprite != nullptr && sprite->Type != EntityType::Count
+                && !sprite->Is<MiscEntity>())
             {
                 // Upconvert it to rct_sprite so that the full size is copied.
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
@@ -447,7 +447,7 @@ static void sprite_reset(SpriteBase* sprite)
     std::memset(sprite, 0, sizeof(rct_sprite));
 
     sprite->sprite_index = sprite_index;
-    sprite->sprite_identifier = SpriteIdentifier::Null;
+    sprite->Type = EntityType::Count;
 }
 
 /**
@@ -507,70 +507,6 @@ uint16_t GetMiscEntityCount()
     return count;
 }
 
-static void SetLegacyFields(SpriteBase& base, EntityType type)
-{
-    auto spriteIdentifier = EntityTypeToSpriteIdentifier(type);
-    base.sprite_identifier = spriteIdentifier;
-    switch (spriteIdentifier)
-    {
-        case SpriteIdentifier::Peep:
-        {
-            Peep* peep = base.As<Peep>();
-            if (peep != nullptr)
-            {
-                if (type == EntityType::Guest)
-                {
-                    peep->AssignedPeepType = PeepType::Guest;
-                }
-                else
-                {
-                    peep->AssignedPeepType = PeepType::Staff;
-                }
-            }
-            break;
-        }
-        case SpriteIdentifier::Misc:
-        {
-            MiscEntity* misc = base.As<MiscEntity>();
-            switch (type)
-            {
-                case EntityType::SteamParticle:
-                    misc->SubType = MiscEntityType::SteamParticle;
-                    break;
-                case EntityType::MoneyEffect:
-                    misc->SubType = MiscEntityType::MoneyEffect;
-                    break;
-                case EntityType::CrashedVehicleParticle:
-                    misc->SubType = MiscEntityType::CrashedVehicleParticle;
-                    break;
-                case EntityType::ExplosionCloud:
-                    misc->SubType = MiscEntityType::ExplosionCloud;
-                    break;
-                case EntityType::CrashSplash:
-                    misc->SubType = MiscEntityType::CrashSplash;
-                    break;
-                case EntityType::ExplosionFlare:
-                    misc->SubType = MiscEntityType::ExplosionFlare;
-                    break;
-                case EntityType::JumpingFountain:
-                    misc->SubType = MiscEntityType::JumpingFountainWater;
-                    break;
-                case EntityType::Balloon:
-                    misc->SubType = MiscEntityType::Balloon;
-                    break;
-                case EntityType::Duck:
-                    misc->SubType = MiscEntityType::Duck;
-                    break;
-                default:
-                    break;
-            }
-            break;
-        }
-        default:
-            break;
-    }
-}
-
 rct_sprite* create_sprite(EntityType type)
 {
     if (_freeIdList.size() == 0)
@@ -603,7 +539,7 @@ rct_sprite* create_sprite(EntityType type)
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
 
-    SetLegacyFields(*sprite, type);
+    sprite->Type = type;
     AddToEntityList(sprite);
 
     sprite->x = LOCATION_NULL;
@@ -1009,7 +945,7 @@ void EntityTweener::PostTick()
 
 void EntityTweener::RemoveEntity(SpriteBase* entity)
 {
-    if (entity->sprite_identifier != SpriteIdentifier::Peep && entity->sprite_identifier != SpriteIdentifier::Vehicle)
+    if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
     {
         // Only peeps and vehicles are tweened, bail if type is incorrect.
         return;

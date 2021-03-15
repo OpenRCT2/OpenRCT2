@@ -3,7 +3,6 @@
 #include "../common.h"
 
 struct CoordsXYZ;
-enum class SpriteIdentifier : uint8_t;
 
 enum class EntityType : uint8_t
 {
@@ -25,7 +24,7 @@ enum class EntityType : uint8_t
 
 struct SpriteBase
 {
-    SpriteIdentifier sprite_identifier;
+    EntityType Type;
     // Height from centre of sprite to bottom
     uint8_t sprite_height_negative;
     uint16_t sprite_index;
