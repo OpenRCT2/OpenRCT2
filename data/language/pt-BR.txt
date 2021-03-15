@@ -3679,6 +3679,7 @@ STR_6431    :Botão Direito Mouse
 STR_6432    :Mouse {INT32}
 STR_6433    :Remover
 STR_6434    :Remover todos os vínculos desse atalho.
+STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA16}
 
 #############
 # Scenarios #
