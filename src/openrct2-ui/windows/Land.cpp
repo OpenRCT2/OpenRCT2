@@ -235,15 +235,16 @@ public:
             edgeImage = edgeObj->IconImageId;
         }
 
-        pressed_widgets = (1 << WIDX_PREVIEW);
+        pressed_widgets = 0;
+        SetWidgetPressed(WIDX_PREVIEW, true);
         if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
-            pressed_widgets |= (1 << WIDX_FLOOR);
+            SetWidgetPressed(WIDX_FLOOR, true);
         if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
-            pressed_widgets |= (1 << WIDX_WALL);
+            SetWidgetPressed(WIDX_WALL, true);
         if (gLandMountainMode)
-            pressed_widgets |= (1 << WIDX_MOUNTAINMODE);
+            SetWidgetPressed(WIDX_MOUNTAINMODE, true);
         if (gLandPaintMode)
-            pressed_widgets |= (1 << WIDX_PAINTMODE);
+            SetWidgetPressed(WIDX_PAINTMODE, true);
 
         widgets[WIDX_FLOOR].image = surfaceImage;
         widgets[WIDX_WALL].image = edgeImage;
