@@ -15,6 +15,8 @@
 
 struct JumpingFountain : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::JumpingFountain;
+
     uint8_t NumTicksAlive;
     uint8_t FountainFlags;
     int16_t TargetX;

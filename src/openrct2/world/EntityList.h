@@ -29,9 +29,9 @@ enum class EntityListId : uint8_t
     Count,
 };
 
-const std::list<uint16_t>& GetEntityList(const EntityListId id);
+const std::list<uint16_t>& GetEntityList(const EntityType id);
 
-uint16_t GetEntityListCount(EntityListId list);
+uint16_t GetEntityListCount(EntityType list);
 uint16_t GetNumFreeEntities();
 void RebuildEntityLists();
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
@@ -222,8 +222,8 @@ private:
     const std::list<uint16_t>& vec;
 
 public:
-    EntityList(EntityListId type)
-        : vec(GetEntityList(type))
+    EntityList()
+        : vec(GetEntityList(T::cEntityType))
     {
     }
 

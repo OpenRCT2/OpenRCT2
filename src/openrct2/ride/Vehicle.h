@@ -53,6 +53,8 @@ constexpr const uint16_t VehicleTrackTypeMask = 0b1111111111111100;
 
 struct Vehicle : SpriteBase
 {
+    static constexpr auto cEntityType = EntityType::Vehicle;
+
     enum class Type : uint8_t
     {
         Head,

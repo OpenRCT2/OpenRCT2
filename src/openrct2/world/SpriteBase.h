@@ -5,6 +5,7 @@
 struct CoordsXYZ;
 enum class EntityListId : uint8_t;
 enum class SpriteIdentifier : uint8_t;
+enum class EntityType : uint8_t;
 
 struct SpriteBase
 {

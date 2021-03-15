@@ -30,12 +30,14 @@ enum LitterType : uint8_t;
 
 struct Litter : SpriteBase
 {
+    static constexpr auto cEntityType = EntityType::Litter;
     LitterType SubType;
     uint32_t creationTick;
 };
 
 struct Balloon : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::Balloon;
     uint16_t popped;
     uint8_t time_to_move;
     uint8_t colour;
@@ -47,6 +49,7 @@ struct Balloon : MiscEntity
 
 struct Duck : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::Duck;
     enum class DuckState : uint8_t
     {
         FlyToWater,
@@ -74,6 +77,7 @@ private:
 
 struct MoneyEffect : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::MoneyEffect;
     uint16_t MoveDelay;
     uint8_t NumMovements;
     uint8_t Vertical;
@@ -89,6 +93,7 @@ struct MoneyEffect : MiscEntity
 
 struct VehicleCrashParticle : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::CrashedVehicleParticle;
     uint16_t time_to_live;
     uint8_t colour[2];
     uint16_t crashed_sprite_base;
@@ -104,21 +109,25 @@ struct VehicleCrashParticle : MiscEntity
 
 struct ExplosionFlare : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::ExplosionFlare;
     void Update();
 };
 
 struct ExplosionCloud : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::ExplosionCloud;
     void Update();
 };
 
 struct CrashSplashParticle : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::CrashSplash;
     void Update();
 };
 
 struct SteamParticle : MiscEntity
 {
+    static constexpr auto cEntityType = EntityType::SteamParticle;
     uint16_t time_to_move;
 
     void Update();
@@ -203,7 +212,11 @@ constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
 extern const rct_string_id litterNames[12];
 
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier);
+rct_sprite* create_sprite(EntityType type);
+template<typename T> T* CreateEntity()
+{
+    return reinterpret_cast<T*>(create_sprite(T::cEntityType));
+}
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
@@ -247,7 +260,14 @@ class EntityTweener
     std::vector<CoordsXYZ> PostPos;
 
 private:
-    void PopulateEntities(EntityListId id);
+    template<typename T> void PopulateEntities()
+    {
+        for (auto ent : EntityList<T>())
+        {
+            Entities.push_back(ent);
+            PrePos.emplace_back(ent->x, ent->y, ent->z);
+        }
+    }
 
 public:
     static EntityTweener& Get();
