@@ -31,7 +31,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
-    VehicleCrashParticle* sprite = &create_sprite(SpriteIdentifier::Misc)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -121,7 +121,7 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
+    auto* sprite = CreateEntity<CrashSplashParticle>();
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;

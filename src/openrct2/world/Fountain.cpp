@@ -129,7 +129,7 @@ void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newL
 void JumpingFountain::Create(
     const int32_t newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
 {
-    auto* jumpingFountain = reinterpret_cast<JumpingFountain*>(create_sprite(SpriteIdentifier::Misc));
+    auto* jumpingFountain = CreateEntity<JumpingFountain>();
     if (jumpingFountain != nullptr)
     {
         jumpingFountain->Iteration = iteration;

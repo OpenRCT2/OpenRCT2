@@ -1392,59 +1392,55 @@ void S6Exporter::ExportEntities()
         entity.unknown.linked_list_type_offset = RCT12EntityLinkListOffset::Free;
     }
 
-    for (auto* entity : EntityList<Guest>(EntityListId::Peep))
+    for (auto* entity : EntityList<Guest>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].peep, entity);
     }
-    for (auto* entity : EntityList<Staff>(EntityListId::Peep))
+    for (auto* entity : EntityList<Staff>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].peep, entity);
     }
-    for (auto* entity : EntityList<Vehicle>(EntityListId::Vehicle))
+    for (auto* entity : EntityList<Vehicle>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].vehicle, entity);
     }
-    for (auto* entity : EntityList<Vehicle>(EntityListId::TrainHead))
-    {
-        ExportEntity(&_s6.sprites[entity->sprite_index].vehicle, entity);
-    }
-    for (auto* entity : EntityList<Litter>(EntityListId::Litter))
+    for (auto* entity : EntityList<Litter>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].litter, entity);
     }
-    for (auto* entity : EntityList<Duck>(EntityListId::Misc))
+    for (auto* entity : EntityList<Duck>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].duck, entity);
     }
-    for (auto* entity : EntityList<SteamParticle>(EntityListId::Misc))
+    for (auto* entity : EntityList<SteamParticle>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].steam_particle, entity);
     }
-    for (auto* entity : EntityList<MoneyEffect>(EntityListId::Misc))
+    for (auto* entity : EntityList<MoneyEffect>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].money_effect, entity);
     }
-    for (auto* entity : EntityList<VehicleCrashParticle>(EntityListId::Misc))
+    for (auto* entity : EntityList<VehicleCrashParticle>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].crashed_vehicle_particle, entity);
     }
-    for (auto* entity : EntityList<JumpingFountain>(EntityListId::Misc))
+    for (auto* entity : EntityList<JumpingFountain>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].jumping_fountain, entity);
     }
-    for (auto* entity : EntityList<Balloon>(EntityListId::Misc))
+    for (auto* entity : EntityList<Balloon>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].balloon, entity);
     }
-    for (auto* entity : EntityList<ExplosionCloud>(EntityListId::Misc))
+    for (auto* entity : EntityList<ExplosionCloud>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }
-    for (auto* entity : EntityList<ExplosionFlare>(EntityListId::Misc))
+    for (auto* entity : EntityList<ExplosionFlare>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }
-    for (auto* entity : EntityList<CrashSplashParticle>(EntityListId::Misc))
+    for (auto* entity : EntityList<CrashSplashParticle>())
     {
         ExportEntity(&_s6.sprites[entity->sprite_index].misc_particle, entity);
     }

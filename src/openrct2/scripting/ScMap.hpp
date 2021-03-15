@@ -100,16 +100,16 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> getAllEntities(const std::string& type) const
         {
-            EntityListId targetList{};
-            MiscEntityType targetType{};
+            std::vector<DukValue> result;
             if (type == "balloon")
             {
-                targetList = EntityListId::Misc;
-                targetType = MiscEntityType::Balloon;
+                for (auto sprite : EntityList<Balloon>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                }
             }
             if (type == "car")
             {
-                std::vector<DukValue> result;
                 for (auto trainHead : TrainManager::View())
                 {
                     for (auto carId = trainHead->sprite_index; carId != SPRITE_INDEX_NULL;)
@@ -119,45 +119,37 @@ namespace OpenRCT2::Scripting
                         carId = car->next_vehicle_on_train;
                     }
                 }
-                return result;
             }
             else if (type == "litter")
             {
-                targetList = EntityListId::Litter;
+                for (auto sprite : EntityList<Litter>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                }
             }
             else if (type == "duck")
             {
-                targetList = EntityListId::Misc;
-                targetType = MiscEntityType::Duck;
+                for (auto sprite : EntityList<Duck>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+                }
             }
             else if (type == "peep")
             {
-                targetList = EntityListId::Peep;
+                for (auto sprite : EntityList<Guest>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+                }
+                for (auto sprite : EntityList<Staff>())
+                {
+                    result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+                }
             }
             else
             {
                 duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
             }
 
-            std::vector<DukValue> result;
-            for (auto sprite : EntityList(targetList))
-            {
-                if (targetList == EntityListId::Peep)
-                {
-                    if (sprite->Is<Staff>())
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
-                    else
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
-                }
-                else if (targetList == EntityListId::Misc)
-                {
-                    auto* misc = sprite->As<MiscEntity>();
-                    if (misc && misc->SubType == targetType)
-                    {
-                        result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
-                    }
-                }
-            }
             return result;
         }
 

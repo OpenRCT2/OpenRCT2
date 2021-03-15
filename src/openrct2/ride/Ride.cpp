@@ -362,7 +362,7 @@ void ride_update_favourited_stat()
     for (auto& ride : GetRideManager())
         ride.guests_favourite = 0;
 
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->FavouriteRide != RIDE_ID_NULL)
         {
@@ -1116,7 +1116,7 @@ void ride_remove_peeps(Ride* ride)
     }
 
     // Place all the guests at exit
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
             || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
@@ -1151,7 +1151,7 @@ void ride_remove_peeps(Ride* ride)
         }
     }
     // Place all the staff at exit
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         if (peep->State == PeepState::Fixing || peep->State == PeepState::Inspecting)
         {
@@ -2732,7 +2732,7 @@ Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspect
     Peep* closestMechanic = nullptr;
     uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
 
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         if (!peep->IsMechanic())
             continue;
@@ -4050,7 +4050,7 @@ static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startEl
  */
 static int32_t count_free_misc_sprite_slots()
 {
-    int32_t miscSpriteCount = GetEntityListCount(EntityListId::Misc);
+    int32_t miscSpriteCount = GetMiscEntityCount();
     int32_t remainingSpriteCount = GetNumFreeEntities();
     return std::max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
@@ -4093,7 +4093,7 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SpriteIdentifier::Vehicle)->vehicle;
+    auto vehicle = CreateEntity<Vehicle>();
     if (vehicle == nullptr)
         return nullptr;
 
@@ -5195,7 +5195,7 @@ int32_t ride_get_refund_price(const Ride* ride)
  */
 void Ride::StopGuestsQueuing()
 {
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->State != PeepState::Queuing)
             continue;

@@ -493,20 +493,82 @@ static void RemoveFromEntityList(SpriteBase* entity)
     }
 }
 
-static uint16_t GetMiscEntityCount()
+uint16_t GetMiscEntityCount()
 {
     uint16_t count = 0;
     for (auto id : { EntityType::SteamParticle, EntityType::MoneyEffect, EntityType::CrashedVehicleParticle,
                      EntityType::ExplosionCloud, EntityType::CrashSplash, EntityType::ExplosionFlare,
-                     EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck})
+                     EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck })
     {
         count += GetEntityListCount(id);
     }
     return count;
 }
 
-rct_sprite* create_sprite(EntityType type)
+void SetLegacyFields(SpriteBase& base, EntityType type)
+{
+    auto spriteIdentifier = EntityTypeToSpriteIdentifier(type);
+    base.sprite_identifier = spriteIdentifier;
+    switch (spriteIdentifier)
     {
+        case SpriteIdentifier::Peep:
+        {
+            Peep* peep = base.As<Peep>();
+            if (peep != nullptr)
+            {
+                if (type == EntityType::Guest)
+                {
+                    peep->AssignedPeepType = PeepType::Guest;
+                }
+                else
+                {
+                    peep->AssignedPeepType = PeepType::Staff;
+                }
+            }
+            break;
+        }
+        case SpriteIdentifier::Misc:
+        {
+            MiscEntity* misc = base.As<MiscEntity>();
+            switch (type)
+            {
+                case EntityType::SteamParticle:
+                    misc->SubType = MiscEntityType::SteamParticle;
+                    break;
+                case EntityType::MoneyEffect:
+                    misc->SubType = MiscEntityType::MoneyEffect;
+                    break;
+                case EntityType::CrashedVehicleParticle:
+                    misc->SubType = MiscEntityType::CrashedVehicleParticle;
+                    break;
+                case EntityType::ExplosionCloud:
+                    misc->SubType = MiscEntityType::ExplosionCloud;
+                    break;
+                case EntityType::CrashSplash:
+                    misc->SubType = MiscEntityType::CrashSplash;
+                    break;
+                case EntityType::ExplosionFlare:
+                    misc->SubType = MiscEntityType::ExplosionFlare;
+                    break;
+                case EntityType::JumpingFountain:
+                    misc->SubType = MiscEntityType::JumpingFountainWater;
+                    break;
+                case EntityType::Balloon:
+                    misc->SubType = MiscEntityType::Balloon;
+                    break;
+                case EntityType::Duck:
+                    misc->SubType = MiscEntityType::Duck;
+                    break;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+}
+
+rct_sprite* create_sprite(EntityType type)
+{
     if (_freeIdList.size() == 0)
     {
         // No free sprites.
@@ -537,7 +599,7 @@ rct_sprite* create_sprite(EntityType type)
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
 
-    sprite->sprite_identifier = spriteIdentifier;
+    SetLegacyFields(*sprite, type);
     AddToEntityList(sprite);
 
     sprite->x = LOCATION_NULL;
@@ -641,7 +703,7 @@ void ExplosionFlare::Update()
 
 template<typename T> void MiscUpdateAllType()
 {
-    for (auto misc : EntityList<T>(EntityListId::Misc))
+    for (auto misc : EntityList<T>())
     {
         misc->Update();
     }
@@ -899,13 +961,30 @@ uint16_t remove_floating_sprites()
     return removed;
 }
 
+void EntityTweener::PopulateEntities()
+{
+    for (auto ent : EntityList<Guest>())
+    {
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
+    }
+    for (auto ent : EntityList<Staff>())
+    {
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
+    }
+    for (auto ent : EntityList<Vehicle>())
+    {
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
+    }
+}
+
 void EntityTweener::PreTick()
 {
     Restore();
     Reset();
-    PopulateEntities<Guest>();
-    PopulateEntities<Staff>();
-    PopulateEntities<Vehicle>();
+    PopulateEntities();
 }
 
 void EntityTweener::PostTick()

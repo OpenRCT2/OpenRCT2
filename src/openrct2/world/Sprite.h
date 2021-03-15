@@ -260,14 +260,7 @@ class EntityTweener
     std::vector<CoordsXYZ> PostPos;
 
 private:
-    template<typename T> void PopulateEntities()
-    {
-        for (auto ent : EntityList<T>())
-        {
-            Entities.push_back(ent);
-            PrePos.emplace_back(ent->x, ent->y, ent->z);
-        }
-    }
+    void PopulateEntities();
 
 public:
     static EntityTweener& Get();

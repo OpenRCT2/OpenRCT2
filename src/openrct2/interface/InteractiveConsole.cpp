@@ -436,7 +436,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
     {
         if (argv[0] == "list")
         {
-            for (auto peep : EntityList<Staff>(EntityListId::Peep))
+            for (auto peep : EntityList<Staff>())
             {
                 auto name = peep->GetName();
                 console.WriteFormatLine(
@@ -1242,19 +1242,12 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
 
     int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;
-    for (int32_t i = 1; i < static_cast<uint8_t>(EntityListId::Count); ++i)
+    for (int32_t i = 1; i < static_cast<uint8_t>(EntityType::Count); ++i)
     {
-        spriteCount += GetEntityListCount(EntityListId(i));
+        spriteCount += GetEntityListCount(EntityType(i));
     }
 
-    int32_t staffCount = 0;
-    for (int32_t i = 0; i < STAFF_MAX_COUNT; ++i)
-    {
-        if (gStaffModes[i] != StaffMode::None)
-        {
-            staffCount++;
-        }
-    }
+    int32_t staffCount = GetEntityListCount(EntityType::Staff);
 
     int32_t bannerCount = 0;
     for (BannerIndex i = 0; i < MAX_BANNERS; ++i)

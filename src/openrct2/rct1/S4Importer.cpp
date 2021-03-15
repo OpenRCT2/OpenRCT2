@@ -1137,7 +1137,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SpriteIdentifier::Vehicle));
+                    Vehicle* vehicle = CreateEntity<Vehicle>();
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1347,7 +1347,15 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Peep)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SpriteIdentifier::Peep));
+                Peep* peep = nullptr;
+                if (static_cast<PeepType>(srcPeep->type) == PeepType::Guest)
+                {
+                    peep = CreateEntity<Guest>();
+                }
+                else
+                {
+                    peep = CreateEntity<Staff>();
+                }
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1368,7 +1376,7 @@ private:
         }
 
         {
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 FixPeepNextInQueue(peep, spriteIndexMap);
             }
@@ -1394,7 +1402,7 @@ private:
             gStaffModes[i] = static_cast<StaffMode>(_s4.staff_modes[i]);
         }
 
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             ImportStaffPatrolArea(peep);
         }
@@ -1649,7 +1657,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
+                Litter* litter = CreateEntity<Litter>();
                 litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->SubType = LitterType(srcLitter->type);
 
@@ -1666,6 +1674,42 @@ private:
         }
     }
 
+    MiscEntity* CreateMiscFromType(MiscEntityType type)
+    {
+        MiscEntity* misc = nullptr;
+        switch (type)
+        {
+            case MiscEntityType::SteamParticle:
+                misc = CreateEntity<SteamParticle>();
+                break;
+            case MiscEntityType::MoneyEffect:
+                misc = CreateEntity<MoneyEffect>();
+                break;
+            case MiscEntityType::CrashedVehicleParticle:
+                misc = CreateEntity<VehicleCrashParticle>();
+                break;
+            case MiscEntityType::ExplosionCloud:
+                misc = CreateEntity<ExplosionCloud>();
+                break;
+            case MiscEntityType::CrashSplash:
+                misc = CreateEntity<CrashSplashParticle>();
+                break;
+            case MiscEntityType::ExplosionFlare:
+                misc = CreateEntity<ExplosionFlare>();
+                break;
+            case MiscEntityType::JumpingFountainWater:
+                misc = CreateEntity<JumpingFountain>();
+                break;
+            case MiscEntityType::Balloon:
+                misc = CreateEntity<Balloon>();
+                break;
+            case MiscEntityType::Duck:
+                misc = CreateEntity<Duck>();
+                break;
+        }
+        return misc;
+    }
+
     void ImportMiscSprites()
     {
         for (auto& sprite : _s4.sprites)
@@ -1673,7 +1717,7 @@ private:
             if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                MiscEntity* dst = reinterpret_cast<MiscEntity*>(create_sprite(SpriteIdentifier::Misc));
+                MiscEntity* dst = CreateMiscFromType(MiscEntityType(src->type));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
@@ -2965,7 +3009,7 @@ private:
         if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
         {
             // First, make the queuing peep exit
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
                 {

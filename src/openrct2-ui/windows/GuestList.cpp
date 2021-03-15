@@ -610,7 +610,7 @@ public:
         {
             _guestList.clear();
 
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 sprite_set_flashing(peep, false);
                 if (peep->OutsideOfPark)
@@ -828,7 +828,7 @@ private:
         _lastFindGroupsWait = 320;
         _groups.clear();
 
-        for (auto peep : EntityList<Guest>(EntityListId::Peep))
+        for (auto peep : EntityList<Guest>())
         {
             if (peep->OutsideOfPark)
                 continue;

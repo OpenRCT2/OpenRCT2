@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "Map.h"
-#include "SpriteBase.h"
+#include "Entity.h"
 
 struct JumpingFountain : MiscEntity
 {

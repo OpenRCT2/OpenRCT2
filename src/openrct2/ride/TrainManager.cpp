@@ -32,6 +32,6 @@ namespace TrainManager
 
     View::View()
     {
-        vec = &GetEntityList(EntityListId::Vehicle);
+        vec = &GetEntityList(EntityType::Vehicle);
     }
 } // namespace TrainManager
