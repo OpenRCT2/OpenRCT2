@@ -105,7 +105,10 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer = text;
+        char* tmp = new char[maxLength];
+        safe_strcpy(tmp, std::string(text).c_str(), maxLength);
+        _buffer = tmp;
+        delete[] tmp;
         _buffer.resize(maxLength);
         _maxInputLength = maxLength;
         gTextInput = context_start_text_input(_buffer.data(), maxLength);
