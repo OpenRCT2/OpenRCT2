@@ -19,6 +19,21 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN = 15812;
+static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN = 15813;
+static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED = 15814;
+static constexpr const uint32_t MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED = 15815;
+
+static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 16220;
+static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 16221;
+static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 16222;
+static constexpr const uint32_t MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 16223;
+
+static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN = 26551;
+static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN = 26552;
+static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED = 26553;
+static constexpr const uint32_t MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED = 26554;
+
 /** rct2: 0x00792D88 */
 static void multi_dimension_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -108,18 +123,20 @@ static void multi_dimension_rc_track_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 15810, 15812, SPR_STATION_INVERTED_BAR_A_SW_NE },
-        { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
-        { 15810, 15812, SPR_STATION_INVERTED_BAR_A_SW_NE },
-        { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
+    static constexpr const uint32_t imageIds[NumOrthogonalDirections][3] = {
+        { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
+        { 15811, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED },
+        { 15810, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_SW_NE_CLOSED },
+        { 15811, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_STATION_BLOCK_BRAKE_NW_SE_CLOSED },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+        uint8_t offset = isClosed ? 2 : 1;
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0, 3,
-            height + 3);
+            session, direction, imageIds[direction][offset] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1, height, 0,
+            3, height + 3);
     }
     else
     {
@@ -12497,21 +12514,20 @@ static void multi_dimension_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+
     if (!tileElement->AsTrack()->IsInverted())
     {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 16220, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-            case 1:
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 16221, 0, 0, 32, 20, 3, height, 0, 6, height);
-                break;
-        }
+        static constexpr const uint32_t imageIds[NumOrthogonalDirections][2] = {
+            { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
+            { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
+            { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
+            { MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_NON_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
+        };
+
+        PaintAddImageAsParentRotated(
+            session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction][isClosed], 0, 0, 32, 20, 3, height, 0,
+            6, height);
         metal_a_supports_paint_setup(
             session, METAL_SUPPORTS_TUBES_INVERTED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -12520,21 +12536,16 @@ static void multi_dimension_rc_track_block_brakes(
     }
     else
     {
-        switch (direction)
-        {
-            case 0:
-            case 2:
-                PaintAddImageAsParentRotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 26551, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 24);
-                break;
-            case 1:
-            case 3:
-                PaintAddImageAsParentRotated(
-                    session, direction, session->TrackColours[SCHEME_TRACK] | 26552, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 24);
-                break;
-        }
+        static constexpr const uint32_t imageIds[NumOrthogonalDirections][2] = {
+            { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
+            { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
+            { MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_SW_NE_CLOSED },
+            { MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_OPEN, MULTI_DIM_INVERTED_BLOCK_BRAKE_NW_SE_CLOSED },
+        };
+
+        PaintAddImageAsParentRotated(
+            session, direction, session->TrackColours[SCHEME_TRACK] | imageIds[direction][isClosed], 0, 0, 32, 20, 3,
+            height + 24, 0, 6, height + 24);
 
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);

@@ -19,6 +19,18 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN = 14586;
+static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN = 14587;
+static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED = 14588;
+static constexpr const uint32_t BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED = 14589;
+
+static constexpr const uint32_t _BobsleighBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
+    { BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN, BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED },
+    { BOBSLEIGH_BLOCK_BRAKE_SW_NE_OPEN, BOBSLEIGH_BLOCK_BRAKE_SW_NE_CLOSED },
+    { BOBSLEIGH_BLOCK_BRAKE_NW_SE_OPEN, BOBSLEIGH_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 /** rct2: 0x006FE5B4 */
 static void bobsleigh_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -3482,19 +3494,22 @@ static void bobsleigh_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 14586, 0, 0, 32, 20, 2, height, 0, 6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | _BobsleighBlockBrakeImages[direction][isClosed], 0, 0,
+                32, 20, 2, height, 0, 6, height);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14590, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 14587, 0, 0, 32, 20, 2, height, 0, 6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | _BobsleighBlockBrakeImages[direction][isClosed], 0, 0,
+                32, 20, 2, height, 0, 6, height);
             PaintAddImageAsParentRotated(
                 session, direction, session->TrackColours[SCHEME_TRACK] | 14591, 0, 0, 32, 1, 26, height, 0, 27, height);
             break;
