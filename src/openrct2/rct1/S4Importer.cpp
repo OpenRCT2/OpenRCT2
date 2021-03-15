@@ -37,6 +37,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/TrainManager.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
@@ -1136,11 +1137,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    // If vehicle is the first car on a train add to train list
-                    auto isFirstCar = srcVehicle->type == static_cast<uint8_t>(Vehicle::Type::Head);
-                    auto llt = isFirstCar ? EntityListId::TrainHead : EntityListId::Vehicle;
-
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SpriteIdentifier::Vehicle, llt));
+                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SpriteIdentifier::Vehicle));
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 

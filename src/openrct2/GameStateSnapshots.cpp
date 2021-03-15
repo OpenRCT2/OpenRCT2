@@ -201,7 +201,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         COMPARE_FIELD(SpriteBase, sprite_identifier);
-        COMPARE_FIELD(SpriteBase, linked_list_index);
         COMPARE_FIELD(SpriteBase, sprite_index);
         COMPARE_FIELD(SpriteBase, flags);
         COMPARE_FIELD(SpriteBase, x);

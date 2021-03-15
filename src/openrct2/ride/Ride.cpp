@@ -63,6 +63,7 @@
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
+#include "TrainManager.h"
 #include "Vehicle.h"
 
 #include <algorithm>
@@ -4092,12 +4093,10 @@ static Vehicle* vehicle_create_car(
         return nullptr;
 
     auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
-    auto vehicle = &create_sprite(SpriteIdentifier::Vehicle, carIndex == 0 ? EntityListId::TrainHead : EntityListId::Vehicle)
-                        ->vehicle;
+    auto vehicle = &create_sprite(SpriteIdentifier::Vehicle)->vehicle;
     if (vehicle == nullptr)
         return nullptr;
 
-    vehicle->sprite_identifier = SpriteIdentifier::Vehicle;
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
 

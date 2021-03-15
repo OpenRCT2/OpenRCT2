@@ -237,8 +237,8 @@ void RebuildEntityLists()
         }
         else
         {
-            // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
-            gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
+            auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
+            gEntityLists[EnumValue(listId)].push_back(ent.misc.sprite_index);
         }
     }
     // List needs to be back to front to simplify removing
@@ -268,7 +268,6 @@ void reset_sprite_list()
 
         spr->sprite_identifier = SpriteIdentifier::Null;
         spr->sprite_index = i;
-        spr->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[i] = false;
     }
@@ -371,13 +370,11 @@ rct_sprite_checksum sprite_checksum()
 static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
-    auto llto = sprite->linked_list_index;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
-    sprite->linked_list_index = llto;
     sprite->sprite_index = sprite_index;
     sprite->sprite_identifier = SpriteIdentifier::Null;
 }
@@ -396,17 +393,16 @@ void sprite_clear_all_unused()
             continue;
         }
         sprite_reset(entity);
-        entity->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[entity->sprite_index] = false;
     }
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
-static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
+static void AddToEntityList(SpriteBase* entity)
 {
-    auto& list = gEntityLists[EnumValue(linkedListIndex)];
-    entity->linked_list_index = linkedListIndex;
+    auto listId = EntityIdentifierToListId(entity->sprite_identifier);
+    auto& list = gEntityLists[EnumValue(listId)];
     // Entity list must be in sprite_index order to prevent desync issues
     list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
 }
@@ -419,7 +415,8 @@ static void AddToFreeList(uint16_t index)
 
 static void RemoveFromEntityList(SpriteBase* entity)
 {
-    auto& list = gEntityLists[EnumValue(entity->linked_list_index)];
+    auto listId = EntityIdentifierToListId(entity->sprite_identifier);
+    auto& list = gEntityLists[EnumValue(listId)];
     auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
     if (ptr != std::end(list) && *ptr == entity->sprite_index)
     {
@@ -427,7 +424,7 @@ static void RemoveFromEntityList(SpriteBase* entity)
     }
 }
 
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
+rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier)
 {
     if (_freeIdList.size() == 0)
     {
@@ -435,7 +432,7 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
         return nullptr;
     }
 
-    if (linkedListIndex == EntityListId::Misc)
+    if (spriteIdentifier == SpriteIdentifier::Misc)
     {
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
@@ -454,10 +451,12 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
     }
     _freeIdList.pop_back();
 
-    AddToEntityList(linkedListIndex, sprite);
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
+
+    sprite->sprite_identifier = spriteIdentifier;
+    AddToEntityList(sprite);
 
     sprite->x = LOCATION_NULL;
     sprite->y = LOCATION_NULL;
@@ -471,30 +470,6 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
     SpriteSpatialInsert(sprite, { LOCATION_NULL, 0 });
 
     return reinterpret_cast<rct_sprite*>(sprite);
-}
-
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier)
-{
-    EntityListId linkedListIndex = EntityListId::Free;
-    switch (spriteIdentifier)
-    {
-        case SpriteIdentifier::Vehicle:
-            linkedListIndex = EntityListId::Vehicle;
-            break;
-        case SpriteIdentifier::Peep:
-            linkedListIndex = EntityListId::Peep;
-            break;
-        case SpriteIdentifier::Misc:
-            linkedListIndex = EntityListId::Misc;
-            break;
-        case SpriteIdentifier::Litter:
-            linkedListIndex = EntityListId::Litter;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
-    }
-    return create_sprite(spriteIdentifier, linkedListIndex);
 }
 
 /**
@@ -530,7 +505,6 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_width = 44;
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
@@ -563,7 +537,6 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_width = 25;
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
@@ -787,7 +760,6 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
-    litter->sprite_identifier = SpriteIdentifier::Litter;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gScenarioTicks;
@@ -860,7 +832,6 @@ void EntityTweener::PreTick()
     Reset();
     PopulateEntities(EntityListId::Peep);
     PopulateEntities(EntityListId::Vehicle);
-    PopulateEntities(EntityListId::TrainHead);
 }
 
 void EntityTweener::PostTick()
