@@ -318,7 +318,7 @@ const bool gSpriteTypeToSlowWalkMap[] = {
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SpriteIdentifier::Peep;
+    return Type == EntityType::Guest || Type == EntityType::Staff;
 }
 
 uint8_t Peep::GetNextDirection() const
@@ -411,7 +411,7 @@ void peep_update_all()
         {
             peep_128_tick_update(peep, i);
             // 128 tick can delete so double check its not deleted
-            if (peep->sprite_identifier == SpriteIdentifier::Peep)
+            if (peep->Type == EntityType::Guest)
             {
                 peep->Update();
             }
@@ -430,7 +430,7 @@ void peep_update_all()
         {
             peep_128_tick_update(staff, i);
             // 128 tick can delete so double check its not deleted
-            if (staff->sprite_identifier == SpriteIdentifier::Peep)
+            if (staff->Type == EntityType::Staff)
             {
                 staff->Update();
             }
@@ -839,7 +839,7 @@ void peep_sprite_remove(Peep* peep)
 
     window_close_by_number(WC_PEEP, peep->sprite_index);
 
-    window_close_by_number(WC_FIRE_PROMPT, EnumValue(peep->sprite_identifier));
+    window_close_by_number(WC_FIRE_PROMPT, EnumValue(peep->Type));
 
     // Needed for invalidations after sprite removal
     bool wasGuest = peep->AssignedPeepType == PeepType::Guest;

@@ -19,7 +19,8 @@ enum class EntityType : uint8_t
     JumpingFountain,
     Balloon,
     Duck,
-    Count
+    Count,
+    Null = 255
 };
 
 struct SpriteBase

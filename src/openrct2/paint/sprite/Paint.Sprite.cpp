@@ -56,7 +56,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                     continue;
                 }
             }
-            else if (spr->sprite_identifier != SpriteIdentifier::Litter)
+            else if (spr->Type != EntityType::Litter)
             {
                 continue;
             }
@@ -100,9 +100,9 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         session->SpritePosition.y = spr->y;
         session->InteractionType = ViewportInteractionItem::Entity;
 
-        switch (spr->sprite_identifier)
+        switch (spr->Type)
         {
-            case SpriteIdentifier::Vehicle:
+            case EntityType::Vehicle:
                 vehicle_paint(session, spr->As<Vehicle>(), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
@@ -111,14 +111,23 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 }
 #endif
                 break;
-            case SpriteIdentifier::Peep:
+            case EntityType::Guest:
+            case EntityType::Staff:
                 peep_paint(session, spr->As<Peep>(), image_direction);
                 break;
-            case SpriteIdentifier::Misc:
+            case EntityType::SteamParticle:
+            case EntityType::MoneyEffect:
+            case EntityType::CrashedVehicleParticle:
+            case EntityType::ExplosionCloud:
+            case EntityType::CrashSplash:
+            case EntityType::ExplosionFlare:
+            case EntityType::JumpingFountain:
+            case EntityType::Balloon:
+            case EntityType::Duck:
                 // TODO: Update misc_paint to take a specific sprite type
                 misc_paint(session, spr->As<MiscEntity>(), image_direction);
                 break;
-            case SpriteIdentifier::Litter:
+            case EntityType::Litter:
                 litter_paint(session, spr->As<Litter>(), image_direction);
                 break;
             default:
