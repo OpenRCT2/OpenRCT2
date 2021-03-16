@@ -285,6 +285,8 @@ constexpr SpriteIdentifier EntityTypeToSpriteIdentifier(const EntityType type)
         case EntityType::Balloon:
         case EntityType::Duck:
             return SpriteIdentifier::Misc;
+        case EntityType::Count:
+            return SpriteIdentifier::Null;
     }
     return SpriteIdentifier::Null;
 }
@@ -505,7 +507,7 @@ uint16_t GetMiscEntityCount()
     return count;
 }
 
-void SetLegacyFields(SpriteBase& base, EntityType type)
+static void SetLegacyFields(SpriteBase& base, EntityType type)
 {
     auto spriteIdentifier = EntityTypeToSpriteIdentifier(type);
     base.sprite_identifier = spriteIdentifier;
@@ -558,6 +560,8 @@ void SetLegacyFields(SpriteBase& base, EntityType type)
                     break;
                 case EntityType::Duck:
                     misc->SubType = MiscEntityType::Duck;
+                    break;
+                default:
                     break;
             }
             break;

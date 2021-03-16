@@ -1698,6 +1698,7 @@ private:
                 misc = CreateEntity<ExplosionFlare>();
                 break;
             case MiscEntityType::JumpingFountainWater:
+            case MiscEntityType::JumpingFountainSnow:
                 misc = CreateEntity<JumpingFountain>();
                 break;
             case MiscEntityType::Balloon:
@@ -1705,6 +1706,8 @@ private:
                 break;
             case MiscEntityType::Duck:
                 misc = CreateEntity<Duck>();
+                break;
+            default:
                 break;
         }
         return misc;
