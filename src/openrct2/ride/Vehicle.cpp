@@ -734,7 +734,7 @@ static const struct
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SpriteIdentifier::Vehicle;
+    return Type == EntityType::Vehicle;
 }
 
 static bool vehicle_move_info_valid(

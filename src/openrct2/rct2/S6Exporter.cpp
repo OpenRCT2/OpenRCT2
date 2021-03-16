@@ -990,9 +990,9 @@ void S6Exporter::RebuildEntityLinks()
 constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
 {
     RCT12EntityLinkListOffset output = RCT12EntityLinkListOffset::Free;
-    switch (src->sprite_identifier)
+    switch (src->Type)
     {
-        case SpriteIdentifier::Vehicle:
+        case EntityType::Vehicle:
         {
             auto veh = src->As<Vehicle>();
             if (veh && veh->IsHead())
@@ -1005,14 +1005,55 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
             }
         }
         break;
-        case SpriteIdentifier::Peep:
+        case EntityType::Guest:
+        case EntityType::Staff:
             output = RCT12EntityLinkListOffset::Peep;
             break;
-        case SpriteIdentifier::Misc:
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::JumpingFountain:
+        case EntityType::Balloon:
+        case EntityType::Duck:
             output = RCT12EntityLinkListOffset::Misc;
             break;
-        case SpriteIdentifier::Litter:
+        case EntityType::Litter:
             output = RCT12EntityLinkListOffset::Litter;
+            break;
+        default:
+            break;
+    }
+    return output;
+}
+
+constexpr SpriteIdentifier GetRCT2SpriteIdentifier(const SpriteBase* src)
+{
+    SpriteIdentifier output = SpriteIdentifier::Null;
+    switch (src->Type)
+    {
+        case EntityType::Vehicle:
+            output = SpriteIdentifier::Vehicle;
+            break;
+        case EntityType::Guest:
+        case EntityType::Staff:
+            output = SpriteIdentifier::Peep;
+            break;
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::JumpingFountain:
+        case EntityType::Balloon:
+        case EntityType::Duck:
+            output = SpriteIdentifier::Misc;
+            break;
+        case EntityType::Litter:
+            output = SpriteIdentifier::Litter;
             break;
         default:
             break;
@@ -1022,7 +1063,7 @@ constexpr RCT12EntityLinkListOffset GetRCT2LinkListOffset(const SpriteBase* src)
 
 void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const SpriteBase* src)
 {
-    dst->sprite_identifier = src->sprite_identifier;
+    dst->sprite_identifier = GetRCT2SpriteIdentifier(src);
     dst->linked_list_type_offset = GetRCT2LinkListOffset(src);
     dst->next_in_quadrant = SPRITE_INDEX_NULL;
     dst->sprite_height_negative = src->sprite_height_negative;

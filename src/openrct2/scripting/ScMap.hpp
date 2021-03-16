@@ -89,7 +89,7 @@ namespace OpenRCT2::Scripting
             {
                 auto spriteId = static_cast<uint16_t>(id);
                 auto sprite = GetEntity(spriteId);
-                if (sprite != nullptr && sprite->sprite_identifier != SpriteIdentifier::Null)
+                if (sprite != nullptr && sprite->Type != EntityType::Null)
                 {
                     return GetEntityAsDukValue(sprite);
                 }
@@ -169,17 +169,14 @@ namespace OpenRCT2::Scripting
         DukValue GetEntityAsDukValue(const SpriteBase* sprite) const
         {
             auto spriteId = sprite->sprite_index;
-            switch (sprite->sprite_identifier)
+            switch (sprite->Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                     return GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(spriteId));
-                case SpriteIdentifier::Peep:
-                {
-                    if (sprite->Is<Staff>())
-                        return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
-                    else
-                        return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
-                }
+                case EntityType::Staff:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScStaff>(spriteId));
+                case EntityType::Guest:
+                    return GetObjectAsDukValue(_context, std::make_shared<ScGuest>(spriteId));
                 default:
                     return GetObjectAsDukValue(_context, std::make_shared<ScEntity>(spriteId));
             }

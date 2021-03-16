@@ -51,49 +51,34 @@ namespace OpenRCT2::Scripting
             auto entity = GetEntity();
             if (entity != nullptr)
             {
-                switch (entity->sprite_identifier)
+                switch (entity->Type)
                 {
-                    case SpriteIdentifier::Vehicle:
+                    case EntityType::Vehicle:
                         return "car";
-                    case SpriteIdentifier::Peep:
+                    case EntityType::Guest:
+                    case EntityType::Staff:
                         return "peep";
-                    case SpriteIdentifier::Misc:
-                    {
-                        auto misc = entity->As<MiscEntity>();
-                        if (misc == nullptr)
-                        {
-                            return "unknown";
-                        }
-                        switch (misc->SubType)
-                        {
-                            case MiscEntityType::SteamParticle:
-                                return "steam_particle";
-                            case MiscEntityType::MoneyEffect:
-                                return "money_effect";
-                            case MiscEntityType::CrashedVehicleParticle:
-                                return "crashed_vehicle_particle";
-                            case MiscEntityType::ExplosionCloud:
-                                return "explosion_cloud";
-                            case MiscEntityType::CrashSplash:
-                                return "crash_splash";
-                            case MiscEntityType::ExplosionFlare:
-                                return "explosion_flare";
-                            case MiscEntityType::JumpingFountainWater:
-                                return "jumping_fountain_water";
-                            case MiscEntityType::Balloon:
-                                return "balloon";
-                            case MiscEntityType::Duck:
-                                return "duck";
-                            case MiscEntityType::JumpingFountainSnow:
-                                return "jumping_fountain_snow";
-                            default:
-                                break;
-                        }
-                    }
-                    break;
-                    case SpriteIdentifier::Litter:
+                    case EntityType::SteamParticle:
+                        return "steam_particle";
+                    case EntityType::MoneyEffect:
+                        return "money_effect";
+                    case EntityType::CrashedVehicleParticle:
+                        return "crashed_vehicle_particle";
+                    case EntityType::ExplosionCloud:
+                        return "explosion_cloud";
+                    case EntityType::CrashSplash:
+                        return "crash_splash";
+                    case EntityType::ExplosionFlare:
+                        return "explosion_flare";
+                    case EntityType::Balloon:
+                        return "balloon";
+                    case EntityType::Duck:
+                        return "duck";
+                    case EntityType::JumpingFountain:
+                        return "jumping_fountain";
+                    case EntityType::Litter:
                         return "litter";
-                    case SpriteIdentifier::Null:
+                    case EntityType::Null:
                         return "unknown";
                 }
             }
@@ -155,17 +140,18 @@ namespace OpenRCT2::Scripting
             if (entity != nullptr)
             {
                 entity->Invalidate();
-                switch (entity->sprite_identifier)
+                switch (entity->Type)
                 {
-                    case SpriteIdentifier::Vehicle:
+                    case EntityType::Vehicle:
                         duk_error(ctx, DUK_ERR_ERROR, "Removing a vehicle is currently unsupported.");
                         break;
-                    case SpriteIdentifier::Peep:
+                    case EntityType::Guest:
+                    case EntityType::Staff:
                     {
-                        auto peep = static_cast<Peep*>(entity);
+                        auto peep = entity->As<Peep>();
                         // We can't remove a single peep from a ride at the moment as this can cause complications with the
                         // vehicle car having an unsupported peep capacity.
-                        if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
+                        if (peep == nullptr || peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
                         {
                             duk_error(ctx, DUK_ERR_ERROR, "Removing a peep that is on a ride is currently unsupported.");
                         }
@@ -175,11 +161,19 @@ namespace OpenRCT2::Scripting
                         }
                         break;
                     }
-                    case SpriteIdentifier::Misc:
-                    case SpriteIdentifier::Litter:
+                    case EntityType::SteamParticle:
+                    case EntityType::MoneyEffect:
+                    case EntityType::CrashedVehicleParticle:
+                    case EntityType::ExplosionCloud:
+                    case EntityType::CrashSplash:
+                    case EntityType::ExplosionFlare:
+                    case EntityType::JumpingFountain:
+                    case EntityType::Balloon:
+                    case EntityType::Duck:
+                    case EntityType::Litter:
                         sprite_remove(entity);
                         break;
-                    case SpriteIdentifier::Null:
+                    case EntityType::Null:
                         break;
                 }
             }

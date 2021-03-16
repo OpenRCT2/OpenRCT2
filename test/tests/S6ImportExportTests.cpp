@@ -110,7 +110,7 @@ static std::unique_ptr<GameState_t> GetGameState(std::unique_ptr<IContext>& cont
     {
         rct_sprite* sprite = reinterpret_cast<rct_sprite*>(GetEntity(spriteIdx));
         if (sprite == nullptr)
-            res->sprites[spriteIdx].misc.sprite_identifier = SpriteIdentifier::Null;
+            res->sprites[spriteIdx].misc.Type = EntityType::Null;
         else
             res->sprites[spriteIdx] = *sprite;
     }
@@ -130,7 +130,7 @@ static void AdvanceGameTicks(uint32_t ticks, std::unique_ptr<IContext>& context)
 
 static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& right)
 {
-    COMPARE_FIELD(sprite_identifier);
+    COMPARE_FIELD(Type);
     COMPARE_FIELD(sprite_index);
     COMPARE_FIELD(flags);
     COMPARE_FIELD(x);
@@ -347,11 +347,13 @@ static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 
 static void CompareSpriteDataSteamParticle(const SteamParticle& left, const SteamParticle& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(time_to_move);
 }
 
 static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEffect& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(MoveDelay);
     COMPARE_FIELD(NumMovements);
     COMPARE_FIELD(Vertical);
@@ -362,6 +364,7 @@ static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEff
 
 static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(time_to_live);
     for (size_t i = 0; i < std::size(left.colour); i++)
     {
@@ -378,6 +381,7 @@ static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& 
 
 static void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const JumpingFountain& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(NumTicksAlive);
     COMPARE_FIELD(FountainFlags);
     COMPARE_FIELD(TargetX);
@@ -387,6 +391,7 @@ static void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const 
 
 static void CompareSpriteDataBalloon(const Balloon& left, const Balloon& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(popped);
     COMPARE_FIELD(time_to_move);
     COMPARE_FIELD(colour);
@@ -394,6 +399,7 @@ static void CompareSpriteDataBalloon(const Balloon& left, const Balloon& right)
 
 static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 {
+    COMPARE_FIELD(SubType);
     COMPARE_FIELD(target_x);
     COMPARE_FIELD(target_y);
     COMPARE_FIELD(state);
@@ -402,47 +408,39 @@ static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
 {
     CompareSpriteDataCommon(left.misc, right.misc);
-    if (left.misc.sprite_identifier == right.misc.sprite_identifier)
+    if (left.misc.Type == right.misc.Type)
     {
-        switch (left.misc.sprite_identifier)
+        switch (left.misc.Type)
         {
-            case SpriteIdentifier::Peep:
+            case EntityType::Guest:
+            case EntityType::Staff:
                 CompareSpriteDataPeep(left.peep, right.peep);
                 break;
-            case SpriteIdentifier::Vehicle:
+            case EntityType::Vehicle:
                 CompareSpriteDataVehicle(left.vehicle, right.vehicle);
                 break;
-            case SpriteIdentifier::Litter:
+            case EntityType::Litter:
                 CompareSpriteDataLitter(left.litter, right.litter);
                 break;
-            case SpriteIdentifier::Misc:
-                COMPARE_FIELD(misc.SubType);
-                switch (left.misc.SubType)
-                {
-                    case MiscEntityType::SteamParticle:
-                        CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
-                        break;
-                    case MiscEntityType::MoneyEffect:
-                        CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
-                        break;
-                    case MiscEntityType::CrashedVehicleParticle:
-                        CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
-                        break;
-                    case MiscEntityType::JumpingFountainSnow:
-                    case MiscEntityType::JumpingFountainWater:
-                        CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
-                        break;
-                    case MiscEntityType::Balloon:
-                        CompareSpriteDataBalloon(left.balloon, right.balloon);
-                        break;
-                    case MiscEntityType::Duck:
-                        CompareSpriteDataDuck(left.duck, right.duck);
-                        break;
-                    default:
-                        break;
-                }
+            case EntityType::SteamParticle:
+                CompareSpriteDataSteamParticle(left.steam_particle, right.steam_particle);
                 break;
-            case SpriteIdentifier::Null:
+            case EntityType::MoneyEffect:
+                CompareSpriteDataMoneyEffect(left.money_effect, right.money_effect);
+                break;
+            case EntityType::CrashedVehicleParticle:
+                CompareSpriteDataCrashedVehicleParticle(left.crashed_vehicle_particle, right.crashed_vehicle_particle);
+                break;
+            case EntityType::JumpingFountain:
+                CompareSpriteDataJumpingFountain(left.jumping_fountain, right.jumping_fountain);
+                break;
+            case EntityType::Balloon:
+                CompareSpriteDataBalloon(left.balloon, right.balloon);
+                break;
+            case EntityType::Duck:
+                CompareSpriteDataDuck(left.duck, right.duck);
+                break;
+            case EntityType::Null:
                 break;
         }
     }
@@ -462,8 +460,8 @@ static void CompareStates(
 
     for (size_t spriteIdx = 0; spriteIdx < MAX_ENTITIES; ++spriteIdx)
     {
-        if (importedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null
-            && exportedState->sprites[spriteIdx].misc.sprite_identifier == SpriteIdentifier::Null)
+        if (importedState->sprites[spriteIdx].misc.Type == EntityType::Null
+            && exportedState->sprites[spriteIdx].misc.Type == EntityType::Null)
         {
             continue;
         }
