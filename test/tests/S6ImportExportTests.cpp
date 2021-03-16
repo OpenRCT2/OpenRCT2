@@ -440,7 +440,14 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
             case EntityType::Duck:
                 CompareSpriteDataDuck(left.duck, right.duck);
                 break;
+            case EntityType::ExplosionCloud:
+            case EntityType::CrashSplash:
+            case EntityType::ExplosionFlare:
+                COMPARE_FIELD(misc.SubType);
+                break;
             case EntityType::Null:
+                break;
+            default:
                 break;
         }
     }
