@@ -75,7 +75,7 @@ template<> bool SpriteBase::Is<JumpingFountain>() const
     return Type == EntityType::JumpingFountain;
 }
 
-void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement)
+void JumpingFountain::StartAnimation(const JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement)
 {
     int32_t randomIndex;
     auto newZ = tileElement->GetBaseZ();
@@ -125,7 +125,8 @@ void JumpingFountain::StartAnimation(const int32_t newType, const CoordsXY& newL
 }
 
 void JumpingFountain::Create(
-    const int32_t newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags, const int32_t iteration)
+    const JumpingFountainType newType, const CoordsXYZ& newLoc, const int32_t direction, const int32_t newFlags,
+    const int32_t iteration)
 {
     auto* jumpingFountain = CreateEntity<JumpingFountain>();
     if (jumpingFountain != nullptr)
@@ -137,8 +138,9 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_negative = 36;
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->MoveTo(newLoc);
-        jumpingFountain->SubType = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? MiscEntityType::JumpingFountainSnow
-                                                                         : MiscEntityType::JumpingFountainWater;
+        jumpingFountain->FountainType = newType;
+        jumpingFountain->SubType = newType == JumpingFountainType::Snow ? MiscEntityType::JumpingFountainSnow
+                                                                        : MiscEntityType::JumpingFountainWater;
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
     }
@@ -187,16 +189,14 @@ void JumpingFountain::Update()
     }
 }
 
-int32_t JumpingFountain::GetType() const
+JumpingFountainType JumpingFountain::GetType() const
 {
-    const int32_t fountainType = SubType == MiscEntityType::JumpingFountainSnow ? JUMPING_FOUNTAIN_TYPE_SNOW
-                                                                                : JUMPING_FOUNTAIN_TYPE_WATER;
-    return fountainType;
+    return FountainType;
 }
 
 void JumpingFountain::AdvanceAnimation()
 {
-    const int32_t newType = GetType();
+    const JumpingFountainType newType = GetType();
     const int32_t direction = (sprite_direction >> 3) & 7;
     const CoordsXY newLoc = CoordsXY{ x, y } + CoordsDirectionDelta[direction];
 
@@ -240,10 +240,10 @@ void JumpingFountain::AdvanceAnimation()
     Random({ newLoc, z }, availableDirections);
 }
 
-bool JumpingFountain::IsJumpingFountain(const int32_t newType, const CoordsXYZ& newLoc)
+bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const CoordsXYZ& newLoc)
 {
-    const int32_t pathBitFlagMask = newType == JUMPING_FOUNTAIN_TYPE_SNOW ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
-                                                                          : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
+    const int32_t pathBitFlagMask = newType == JumpingFountainType::Snow ? PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW
+                                                                         : PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
     TileElement* tileElement = map_get_first_element_at(newLoc);
     if (tileElement == nullptr)
@@ -332,7 +332,7 @@ void JumpingFountain::Split(const CoordsXYZ& newLoc, int32_t availableDirections
 {
     if (Iteration < 3)
     {
-        const int32_t newType = GetType();
+        const auto newType = GetType();
         int32_t direction = ((sprite_direction >> 3) ^ 2) << 1;
         availableDirections &= ~(1 << direction);
         availableDirections &= ~(1 << (direction + 1));
@@ -370,7 +370,7 @@ void JumpingFountain::Random(const CoordsXYZ& newLoc, int32_t availableDirection
 
 void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) const
 {
-    const int32_t newType = GetType();
+    const auto newType = GetType();
     int32_t newFlags = FountainFlags & ~FOUNTAIN_FLAG::DIRECTION;
     if (direction & 1)
     {

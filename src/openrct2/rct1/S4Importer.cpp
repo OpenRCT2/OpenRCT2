@@ -1793,6 +1793,7 @@ private:
         dst->Iteration = src->iteration;
         dst->NumTicksAlive = src->num_ticks_alive;
         dst->frame = src->frame;
+        dst->FountainType = JumpingFountainType::Water;
     }
 
     void ImportBalloon(Balloon* dst, RCT12SpriteBalloon* src)

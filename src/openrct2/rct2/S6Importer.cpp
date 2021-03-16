@@ -1643,6 +1643,9 @@ public:
                 dst->TargetX = src->target_x;
                 dst->TargetY = src->target_y;
                 dst->Iteration = src->iteration;
+                dst->FountainType = MiscEntityType(src->type) == MiscEntityType::JumpingFountainSnow
+                    ? JumpingFountainType::Snow
+                    : JumpingFountainType::Water;
                 break;
             }
             case MiscEntityType::Balloon:
