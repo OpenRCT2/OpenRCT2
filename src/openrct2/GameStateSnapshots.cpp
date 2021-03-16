@@ -110,6 +110,8 @@ struct GameStateSnapshot_t
                     break;
                 case EntityType::Null:
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -515,6 +517,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
                     CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
                     break;
                 case EntityType::Null:
+                    break;
+                default:
                     break;
             }
         }

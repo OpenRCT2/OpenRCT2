@@ -80,6 +80,8 @@ namespace OpenRCT2::Scripting
                         return "litter";
                     case EntityType::Null:
                         return "unknown";
+                    default:
+                        break;
                 }
             }
             return "unknown";
@@ -174,6 +176,8 @@ namespace OpenRCT2::Scripting
                         sprite_remove(entity);
                         break;
                     case EntityType::Null:
+                        break;
+                    default:
                         break;
                 }
             }
