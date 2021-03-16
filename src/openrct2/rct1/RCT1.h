@@ -29,6 +29,7 @@ constexpr const uint16_t RCT1_MAX_ANIMATED_OBJECTS = 1000;
 constexpr const uint8_t RCT1_MAX_BANNERS = 100;
 constexpr int32_t RCT1_COORDS_Z_STEP = 4;
 constexpr const uint32_t RCT1_NUM_LL_CSG_ENTRIES = 69917;
+constexpr const uint32_t RCT1_LL_CSG1_DAT_FILE_SIZE = 41402869;
 
 struct ParkLoadResult;
 
