@@ -19,7 +19,7 @@
  *
  *  rct2: 0x0068F0FB
  */
-void peep_paint(paint_session* session, const Peep* peep, int32_t imageDirection)
+template<> void PaintEntity(paint_session* session, const Peep* peep, int32_t imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())

@@ -103,7 +103,7 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
         switch (spr->Type)
         {
             case EntityType::Vehicle:
-                vehicle_paint(session, spr->As<Vehicle>(), image_direction);
+                PaintEntity(session, spr->As<Vehicle>(), image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
@@ -113,22 +113,37 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
                 break;
             case EntityType::Guest:
             case EntityType::Staff:
-                peep_paint(session, spr->As<Peep>(), image_direction);
+                PaintEntity(session, spr->As<Peep>(), image_direction);
                 break;
             case EntityType::SteamParticle:
+                PaintEntity(session, spr->As<SteamParticle>(), image_direction);
+                break;
             case EntityType::MoneyEffect:
+                PaintEntity(session, spr->As<MoneyEffect>(), image_direction);
+                break;
             case EntityType::CrashedVehicleParticle:
+                PaintEntity(session, spr->As<VehicleCrashParticle>(), image_direction);
+                break;
             case EntityType::ExplosionCloud:
+                PaintEntity(session, spr->As<ExplosionCloud>(), image_direction);
+                break;
             case EntityType::CrashSplash:
+                PaintEntity(session, spr->As<CrashSplashParticle>(), image_direction);
+                break;
             case EntityType::ExplosionFlare:
+                PaintEntity(session, spr->As<ExplosionFlare>(), image_direction);
+                break;
             case EntityType::JumpingFountain:
+                PaintEntity(session, spr->As<JumpingFountain>(), image_direction);
+                break;
             case EntityType::Balloon:
+                PaintEntity(session, spr->As<Balloon>(), image_direction);
+                break;
             case EntityType::Duck:
-                // TODO: Update misc_paint to take a specific sprite type
-                misc_paint(session, spr->As<MiscEntity>(), image_direction);
+                PaintEntity(session, spr->As<Duck>(), image_direction);
                 break;
             case EntityType::Litter:
-                litter_paint(session, spr->As<Litter>(), image_direction);
+                PaintEntity(session, spr->As<Litter>(), image_direction);
                 break;
             default:
                 assert(false);
