@@ -56,7 +56,7 @@ GameActions::Result::Ptr StaffSetColourAction::Execute() const
     }
 
     // Update each staff member's uniform
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         if (peep->AssignedStaffType == static_cast<StaffType>(_staffType))
         {

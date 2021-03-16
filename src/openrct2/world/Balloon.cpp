@@ -82,11 +82,11 @@ void Balloon::Pop()
 
 void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
-    rct_sprite* sprite = create_sprite(SpriteIdentifier::Misc);
+    auto* sprite = CreateEntity<Balloon>();
     if (sprite == nullptr)
         return;
-    sprite->misc.SubType = MiscEntityType::Balloon;
-    auto balloon = sprite->misc.As<Balloon>();
+    sprite->SubType = MiscEntityType::Balloon;
+    auto balloon = sprite->As<Balloon>();
     if (balloon == nullptr)
         return; // can never happen
 

@@ -33,7 +33,7 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     if (value == MONEY(0, 00))
         return;
 
-    MoneyEffect* moneyEffect = &create_sprite(SpriteIdentifier::Misc)->money_effect;
+    MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
     if (moneyEffect == nullptr)
         return;
 

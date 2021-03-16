@@ -3,8 +3,25 @@
 #include "../common.h"
 
 struct CoordsXYZ;
-enum class EntityListId : uint8_t;
 enum class SpriteIdentifier : uint8_t;
+
+enum class EntityType : uint8_t
+{
+    Vehicle,
+    Guest,
+    Staff,
+    Litter,
+    SteamParticle,
+    MoneyEffect,
+    CrashedVehicleParticle,
+    ExplosionCloud,
+    CrashSplash,
+    ExplosionFlare,
+    JumpingFountain,
+    Balloon,
+    Duck,
+    Count
+};
 
 struct SpriteBase
 {

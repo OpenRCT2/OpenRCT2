@@ -111,7 +111,7 @@ void finance_pay_wages()
         return;
     }
 
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         finance_payment(GetStaffWage(peep->AssignedStaffType) / 4, ExpenditureType::Wages);
     }
@@ -242,7 +242,7 @@ void finance_update_daily_profit()
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
         // Staff costs
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             current_profit -= GetStaffWage(peep->AssignedStaffType);
         }

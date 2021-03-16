@@ -785,6 +785,8 @@ private:
 
 struct Guest : Peep
 {
+    static constexpr auto cEntityType = EntityType::Guest;
+
 public:
     void UpdateGuest();
     void Tick128UpdateGuest(int32_t index);
@@ -872,6 +874,8 @@ private:
 
 struct Staff : Peep
 {
+    static constexpr auto cEntityType = EntityType::Staff;
+
 public:
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();

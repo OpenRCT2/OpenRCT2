@@ -1102,12 +1102,12 @@ static uint8_t MapGetStaffFlashColour()
 static void window_map_paint_peep_overlay(rct_drawpixelinfo* dpi)
 {
     auto flashColour = MapGetGuestFlashColour();
-    for (auto guest : EntityList<Guest>(EntityListId::Peep))
+    for (auto guest : EntityList<Guest>())
     {
         DrawMapPeepPixel(guest, flashColour, dpi);
     }
     flashColour = MapGetStaffFlashColour();
-    for (auto staff : EntityList<Staff>(EntityListId::Peep))
+    for (auto staff : EntityList<Staff>())
     {
         DrawMapPeepPixel(staff, flashColour, dpi);
     }

@@ -7237,7 +7237,7 @@ static void steam_particle_create(const CoordsXYZ& coords)
     auto surfaceElement = map_get_surface_element_at(coords);
     if (surfaceElement != nullptr && coords.z > surfaceElement->GetBaseZ())
     {
-        SteamParticle* steam = &create_sprite(SpriteIdentifier::Misc)->steam_particle;
+        SteamParticle* steam = CreateEntity<SteamParticle>();
         if (steam == nullptr)
             return;
 

@@ -707,7 +707,7 @@ struct PeepDistance
 template<typename T>
 PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
 {
-    for (auto peep : EntityList<T>(EntityListId::Peep))
+    for (auto peep : EntityList<T>())
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;
