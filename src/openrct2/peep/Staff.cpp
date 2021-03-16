@@ -74,8 +74,7 @@ const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
 template<> bool SpriteBase::Is<Staff>() const
 {
-    auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Staff;
+    return Type == EntityType::Staff;
 }
 
 /**
