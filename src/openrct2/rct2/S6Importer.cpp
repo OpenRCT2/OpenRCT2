@@ -1327,7 +1327,6 @@ public:
         {
             ImportEntity(_s6.sprites[i].unknown);
         }
-        RebuildEntityLists();
     }
 
     template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
@@ -1563,8 +1562,7 @@ public:
 
 template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Vehicle*>(baseDst);
+    auto dst = CreateEntityAt<Vehicle>(baseSrc.sprite_index);
     auto src = static_cast<const RCT2SpriteVehicle*>(&baseSrc);
     const auto& ride = _s6.rides[src->ride];
 
@@ -1672,24 +1670,21 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
 
 template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Guest*>(baseDst);
+    auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
     auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
     ImportEntityPeep(dst, src);
 }
 
 template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Staff*>(baseDst);
+    auto dst = CreateEntityAt<Staff>(baseSrc.sprite_index);
     auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
     ImportEntityPeep(dst, src);
 }
 
 template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<SteamParticle*>(baseDst);
+    auto dst = CreateEntityAt<SteamParticle>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteSteamParticle*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->time_to_move = src->time_to_move;
@@ -1698,8 +1693,7 @@ template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& b
 
 template<> void S6Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<MoneyEffect*>(baseDst);
+    auto dst = CreateEntityAt<MoneyEffect>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteMoneyEffect*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->MoveDelay = src->move_delay;
@@ -1712,8 +1706,7 @@ template<> void S6Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& bas
 
 template<> void S6Importer::ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<VehicleCrashParticle*>(baseDst);
+    auto dst = CreateEntityAt<VehicleCrashParticle>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->frame = src->frame;
@@ -1732,8 +1725,7 @@ template<> void S6Importer::ImportEntity<VehicleCrashParticle>(const RCT12Sprite
 
 template<> void S6Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<ExplosionCloud*>(baseDst);
+    auto dst = CreateEntityAt<ExplosionCloud>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->frame = src->frame;
@@ -1741,8 +1733,7 @@ template<> void S6Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& 
 
 template<> void S6Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<ExplosionFlare*>(baseDst);
+    auto dst = CreateEntityAt<ExplosionFlare>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->frame = src->frame;
@@ -1750,8 +1741,7 @@ template<> void S6Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& 
 
 template<> void S6Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<CrashSplashParticle*>(baseDst);
+    auto dst = CreateEntityAt<CrashSplashParticle>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->frame = src->frame;
@@ -1759,8 +1749,7 @@ template<> void S6Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteB
 
 template<> void S6Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<JumpingFountain*>(baseDst);
+    auto dst = CreateEntityAt<JumpingFountain>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteJumpingFountain*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->NumTicksAlive = src->num_ticks_alive;
@@ -1775,8 +1764,7 @@ template<> void S6Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase&
 
 template<> void S6Importer::ImportEntity<Balloon>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Balloon*>(baseDst);
+    auto dst = CreateEntityAt<Balloon>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteBalloon*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->popped = src->popped;
@@ -1787,8 +1775,7 @@ template<> void S6Importer::ImportEntity<Balloon>(const RCT12SpriteBase& baseSrc
 
 template<> void S6Importer::ImportEntity<Duck>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Duck*>(baseDst);
+    auto dst = CreateEntityAt<Duck>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteDuck*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->frame = src->frame;
@@ -1799,8 +1786,7 @@ template<> void S6Importer::ImportEntity<Duck>(const RCT12SpriteBase& baseSrc)
 
 template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
 {
-    auto baseDst = GetEntity(baseSrc.sprite_index);
-    auto dst = static_cast<Litter*>(baseDst);
+    auto dst = CreateEntityAt<Litter>(baseSrc.sprite_index);
     auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
     ImportEntityCommonProperties(dst, src);
     dst->SubType = LitterType(src->type);
