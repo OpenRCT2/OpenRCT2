@@ -384,10 +384,7 @@ Peep* try_get_guest(uint16_t spriteIndex)
 
 int32_t peep_get_staff_count()
 {
-    auto list = EntityList<Staff>();
-    auto count = std::distance(list.begin(), list.end());
-
-    return count;
+    return GetEntityListCount(EntityType::Staff);
 }
 
 /**
