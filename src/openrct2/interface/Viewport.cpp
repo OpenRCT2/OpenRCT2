@@ -679,9 +679,9 @@ void viewport_update_smart_sprite_follow(rct_window* window)
             return;
         }
 
-        if (peep->AssignedPeepType == PeepType::Guest)
+        if (peep->Is<Guest>())
             viewport_update_smart_guest_follow(window, peep);
-        else if (peep->AssignedPeepType == PeepType::Staff)
+        else if (peep->Is<Staff>())
             viewport_update_smart_staff_follow(window, peep);
     }
     else if (entity->Type == EntityType::Vehicle)

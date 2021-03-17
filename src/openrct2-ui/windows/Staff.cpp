@@ -1019,7 +1019,7 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+    if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t ebx = GetPeepAnimation(peep->SpriteType).base_image + 1;

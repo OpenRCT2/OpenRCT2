@@ -481,7 +481,7 @@ static int32_t guest_path_find_aimless(Peep* peep, uint8_t edges)
  */
 static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
 {
-    if (peep->AssignedPeepType == PeepType::Staff)
+    if (peep->Is<Staff>())
         return 8;
 
     // PEEP_FLAGS_2? It's cleared here but not set anywhere!
@@ -1262,9 +1262,9 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 
     /* The max number of tiles to check - a whole-search limit.
      * Mainly to limit the performance impact of the path finding. */
-    int32_t maxTilesChecked = (peep->AssignedPeepType == PeepType::Staff) ? 50000 : 15000;
+    int32_t maxTilesChecked = (peep->Is<Staff>()) ? 50000 : 15000;
     // Used to allow walking through no entry banners
-    _peepPathFindIsStaff = (peep->AssignedPeepType == PeepType::Staff);
+    _peepPathFindIsStaff = peep->Is<Staff>();
 
     TileCoordsXYZ goal = gPeepPathFindGoalPosition;
 

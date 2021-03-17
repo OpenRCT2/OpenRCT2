@@ -48,10 +48,10 @@ void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t
     {
         if (highlightPathIssues)
         {
-            const auto peep = spr->As<Peep>();
-            if (peep != nullptr)
+            const auto staff = spr->As<Staff>();
+            if (staff != nullptr)
             {
-                if (!(peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Handyman))
+                if (staff->AssignedStaffType != StaffType::Handyman)
                 {
                     continue;
                 }

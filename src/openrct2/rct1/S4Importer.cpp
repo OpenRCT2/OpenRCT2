@@ -1575,7 +1575,7 @@ private:
 
         dst->SetItemFlags(src->GetItemFlags());
 
-        if (dst->AssignedPeepType == PeepType::Guest)
+        if (dst->Is<Guest>())
         {
             if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
             {
