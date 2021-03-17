@@ -570,7 +570,6 @@ struct Peep : SpriteBase
         PeepUsingBinSubState UsingBinSubState;
     };
     PeepSpriteType SpriteType;
-    PeepType AssignedPeepType;
     union
     {
         StaffType AssignedStaffType;

@@ -223,7 +223,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, State);
         COMPARE_FIELD(Peep, SubState);
         COMPARE_FIELD(Peep, SpriteType);
-        COMPARE_FIELD(Peep, AssignedPeepType);
         COMPARE_FIELD(Peep, GuestNumRides);
         COMPARE_FIELD(Peep, TshirtColour);
         COMPARE_FIELD(Peep, TrousersColour);

@@ -1447,8 +1447,6 @@ private:
         dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
 
-        dst->AssignedPeepType = static_cast<PeepType>(src->type);
-
         dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
         dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
         dst->UmbrellaColour = RCT1::GetColour(src->umbrella_colour);

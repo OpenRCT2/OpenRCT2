@@ -847,9 +847,7 @@ void peep_sprite_remove(Peep* peep)
     else
     {
         gStaffModes[peep->StaffId] = StaffMode::None;
-        peep->AssignedPeepType = PeepType::Invalid;
         staff_update_greyed_patrol_areas();
-        peep->AssignedPeepType = PeepType::Staff;
 
         News::DisableNewsItems(News::ItemType::Peep, peep->sprite_index);
     }
@@ -1631,7 +1629,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->Mass = (scenario_rand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RIDE_ID_NULL;
-    peep->AssignedPeepType = PeepType::Guest;
     peep->PreviousRide = RIDE_ID_NULL;
     peep->Thoughts->type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
@@ -2596,7 +2593,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
     int16_t z = peep->GetZOnSlope(coords.x, coords.y);
 
-    if (Is<Staff>())
+    if (peep->Is<Staff>())
     {
         peep->MoveTo({ coords, z });
         return;
