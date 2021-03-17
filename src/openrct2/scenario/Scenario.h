@@ -452,7 +452,7 @@ void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
 bool scenario_create_ducks();
-bool allowEarlyCompletion();
+bool AllowEarlyCompletion();
 
 const random_engine_t::state_type& scenario_rand_state();
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);
