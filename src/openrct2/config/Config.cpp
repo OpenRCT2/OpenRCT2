@@ -1000,7 +1000,7 @@ bool RCT1DataPresentAtLocation(const utf8* path)
 
 bool CsgIsUsable(const rct_gx& csg)
 {
-    return csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
+    return csg.header.total_size == RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1_NUM_LL_CSG_ENTRIES;
 }
 
 bool CsgAtLocationIsUsable(const utf8* path)
