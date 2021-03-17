@@ -464,12 +464,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(JumpingFountain, TargetX);
         COMPARE_FIELD(JumpingFountain, TargetY);
         COMPARE_FIELD(JumpingFountain, Iteration);
+        COMPARE_FIELD(JumpingFountain, FountainType);
     }
 
     void CompareSpriteDataMisc(
         const MiscEntity& spriteBase, const MiscEntity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(MiscEntity, SubType);
         COMPARE_FIELD(MiscEntity, frame);
     }
 

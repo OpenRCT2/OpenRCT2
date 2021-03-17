@@ -7244,7 +7244,6 @@ static void steam_particle_create(const CoordsXYZ& coords)
         steam->sprite_width = 20;
         steam->sprite_height_negative = 18;
         steam->sprite_height_positive = 16;
-        steam->SubType = MiscEntityType::SteamParticle;
         steam->frame = 256;
         steam->time_to_move = 0;
         steam->MoveTo(coords);

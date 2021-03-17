@@ -347,13 +347,13 @@ static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
 
 static void CompareSpriteDataSteamParticle(const SteamParticle& left, const SteamParticle& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(time_to_move);
 }
 
 static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEffect& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(MoveDelay);
     COMPARE_FIELD(NumMovements);
     COMPARE_FIELD(Vertical);
@@ -364,7 +364,7 @@ static void CompareSpriteDataMoneyEffect(const MoneyEffect& left, const MoneyEff
 
 static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& left, const VehicleCrashParticle& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(time_to_live);
     for (size_t i = 0; i < std::size(left.colour); i++)
     {
@@ -381,17 +381,18 @@ static void CompareSpriteDataCrashedVehicleParticle(const VehicleCrashParticle& 
 
 static void CompareSpriteDataJumpingFountain(const JumpingFountain& left, const JumpingFountain& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(NumTicksAlive);
     COMPARE_FIELD(FountainFlags);
     COMPARE_FIELD(TargetX);
     COMPARE_FIELD(TargetY);
     COMPARE_FIELD(Iteration);
+    COMPARE_FIELD(FountainType);
 }
 
 static void CompareSpriteDataBalloon(const Balloon& left, const Balloon& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(popped);
     COMPARE_FIELD(time_to_move);
     COMPARE_FIELD(colour);
@@ -399,7 +400,7 @@ static void CompareSpriteDataBalloon(const Balloon& left, const Balloon& right)
 
 static void CompareSpriteDataDuck(const Duck& left, const Duck& right)
 {
-    COMPARE_FIELD(SubType);
+    COMPARE_FIELD(frame);
     COMPARE_FIELD(target_x);
     COMPARE_FIELD(target_y);
     COMPARE_FIELD(state);
@@ -443,7 +444,7 @@ static void CompareSpriteData(const rct_sprite& left, const rct_sprite& right)
             case EntityType::ExplosionCloud:
             case EntityType::CrashSplash:
             case EntityType::ExplosionFlare:
-                COMPARE_FIELD(misc.SubType);
+                COMPARE_FIELD(misc.frame);
                 break;
             case EntityType::Null:
                 break;

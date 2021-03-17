@@ -42,7 +42,6 @@ void MoneyEffect::CreateAt(money32 value, const CoordsXYZ& effectPos, bool verti
     moneyEffect->sprite_height_negative = 20;
     moneyEffect->sprite_height_positive = 30;
     moneyEffect->MoveTo(effectPos);
-    moneyEffect->SubType = MiscEntityType::MoneyEffect;
     moneyEffect->NumMovements = 0;
     moneyEffect->MoveDelay = 0;
 

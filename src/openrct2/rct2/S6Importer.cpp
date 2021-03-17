@@ -1582,8 +1582,7 @@ public:
     void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        cdst->SubType = MiscEntityType(csrc->type);
-        switch (cdst->SubType)
+        switch (MiscEntityType(csrc->type))
         {
             case MiscEntityType::SteamParticle:
             {
@@ -1669,7 +1668,7 @@ public:
                 break;
             }
             default:
-                log_warning("Misc. sprite type %d can not be imported.", cdst->SubType);
+                log_warning("Misc. sprite type %d can not be imported.", csrc->type);
                 break;
         }
     }

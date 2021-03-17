@@ -1723,7 +1723,6 @@ private:
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
                     break;
                 }
-                dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
                 dst->sprite_width = src->sprite_width;

@@ -139,8 +139,6 @@ void JumpingFountain::Create(
         jumpingFountain->sprite_height_positive = 12;
         jumpingFountain->MoveTo(newLoc);
         jumpingFountain->FountainType = newType;
-        jumpingFountain->SubType = newType == JumpingFountainType::Snow ? MiscEntityType::JumpingFountainSnow
-                                                                        : MiscEntityType::JumpingFountainWater;
         jumpingFountain->NumTicksAlive = 0;
         jumpingFountain->frame = 0;
     }
@@ -161,9 +159,9 @@ void JumpingFountain::Update()
     Invalidate();
     frame++;
 
-    switch (SubType)
+    switch (FountainType)
     {
-        case MiscEntityType::JumpingFountainWater:
+        case JumpingFountainType::Water:
             if (frame == 11 && (FountainFlags & FOUNTAIN_FLAG::FAST))
             {
                 AdvanceAnimation();
@@ -173,7 +171,7 @@ void JumpingFountain::Update()
                 AdvanceAnimation();
             }
             break;
-        case MiscEntityType::JumpingFountainSnow:
+        case JumpingFountainType::Snow:
             if (frame == 16)
             {
                 AdvanceAnimation();

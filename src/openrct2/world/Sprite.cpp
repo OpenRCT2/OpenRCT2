@@ -519,7 +519,6 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
     }
 }
@@ -551,7 +550,6 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
     }
 }

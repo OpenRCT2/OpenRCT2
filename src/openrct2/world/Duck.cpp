@@ -280,8 +280,8 @@ uint32_t Duck::GetFrameImage(int32_t direction) const
 
 void create_duck(const CoordsXY& pos)
 {
-    auto* sprite = CreateEntity<Duck>();
-    if (sprite == nullptr)
+    auto* duck = CreateEntity<Duck>();
+    if (duck == nullptr)
         return;
 
     CoordsXY targetPos = pos;
@@ -290,10 +290,6 @@ void create_duck(const CoordsXY& pos)
     targetPos.x += offsetXY;
     targetPos.y += offsetXY;
 
-    sprite->SubType = MiscEntityType::Duck;
-    auto duck = sprite->As<Duck>();
-    if (duck == nullptr)
-        return; // can never happen
     duck->sprite_width = 9;
     duck->sprite_height_negative = 12;
     duck->sprite_height_positive = 9;
