@@ -14,6 +14,7 @@
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
+#include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
 #include "../world/Sprite.h"
 #include "Track.h"
@@ -3131,7 +3132,7 @@ void vehicle_visual_default(
  *
  *  rct2: 0x006D4244
  */
-void vehicle_paint(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
+template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
 {
     const rct_ride_entry_vehicle* vehicleEntry;
 

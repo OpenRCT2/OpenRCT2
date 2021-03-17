@@ -11,6 +11,7 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../../paint/sprite/Paint.Sprite.h"
 #include "../../world/Sprite.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
@@ -1269,6 +1270,6 @@ void vehicle_visual_splash_boats_or_water_coaster(
     imageDirection = ((session->CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;
     session->SpritePosition.x = vehicle->x;
     session->SpritePosition.y = vehicle->y;
-    vehicle_paint(session, vehicle, imageDirection);
+    PaintEntity(session, vehicle, imageDirection);
 }
 #endif

@@ -65,7 +65,7 @@ static constexpr const litter_sprite litter_sprites[] = {
  * Litter Paint Setup
  *  rct2: 0x006736FC
  */
-void litter_paint(paint_session* session, const Litter* litter, int32_t imageDirection)
+template<> void PaintEntity(paint_session* session, const Litter* litter, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi;
 
