@@ -299,7 +299,7 @@ static void scenario_day_update()
             scenario_objective_check();
             break;
         default:
-            if (allowEarlyCompletion())
+            if (AllowEarlyCompletion())
                 scenario_objective_check();
             break;
     }
@@ -714,7 +714,7 @@ ObjectiveStatus Objective::CheckGuestsBy() const
     int16_t parkRating = gParkRating;
     int32_t currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion())
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
         {
@@ -735,7 +735,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     money32 objectiveParkValue = Currency;
     money32 parkValue = gParkValue;
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion())
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkValue >= objectiveParkValue)
         {
@@ -946,7 +946,7 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
  * Returns the AllowEarlyCompletion-Option to be used
  * depending on the Current Network-Mode.
  */
-bool allowEarlyCompletion()
+bool AllowEarlyCompletion()
 {
     switch (network_get_mode())
     {
