@@ -39,8 +39,7 @@ struct GameStateSpriteChange_t
     };
 
     uint8_t changeType;
-    SpriteIdentifier spriteIdentifier;
-    MiscEntityType miscIdentifier;
+    EntityType entityType;
     uint32_t spriteIndex;
 
     std::vector<Diff_t> diffs;

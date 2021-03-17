@@ -74,8 +74,7 @@ const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
 template<> bool SpriteBase::Is<Staff>() const
 {
-    auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Staff;
+    return Type == EntityType::Staff;
 }
 
 /**
@@ -149,7 +148,7 @@ void staff_update_greyed_patrol_areas()
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             if (static_cast<uint8_t>(peep->AssignedStaffType) == staff_type)
             {
@@ -349,7 +348,7 @@ uint8_t Staff::GetValidPatrolDirections(const CoordsXY& loc) const
  */
 void Staff::ResetStats()
 {
-    for (auto peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto peep : EntityList<Staff>())
     {
         peep->SetHireDate(gDateMonthsElapsed);
         peep->StaffLawnsMown = 0;
@@ -357,6 +356,7 @@ void Staff::ResetStats()
         peep->StaffGardensWatered = 0;
         peep->StaffRidesInspected = 0;
         peep->StaffLitterSwept = 0;
+        peep->StaffVandalsStopped = 0;
         peep->StaffBinsEmptied = 0;
     }
 }
@@ -423,7 +423,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
 {
     uint16_t nearestLitterDist = 0xFFFF;
     Litter* nearestLitter = nullptr;
-    for (auto litter : EntityList<Litter>(EntityListId::Litter))
+    for (auto litter : EntityList<Litter>())
     {
         uint16_t distance = abs(litter->x - x) + abs(litter->y - y) + abs(litter->z - z) * 4;
 
@@ -960,7 +960,7 @@ bool Staff::DoMiscPathFinding()
  */
 void Staff::EntertainerUpdateNearbyPeeps() const
 {
-    for (auto guest : EntityList<Guest>(EntityListId::Peep))
+    for (auto guest : EntityList<Guest>())
     {
         if (guest->x == LOCATION_NULL)
             continue;

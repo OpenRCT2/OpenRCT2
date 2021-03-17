@@ -3936,6 +3936,8 @@ enum
     STR_SHORTCUT_REMOVE = 6433,
     STR_SHORTCUT_REMOVE_TIP = 6434,
 
+    STR_STAFF_STAT_VANDALS_STOPPED = 6435,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

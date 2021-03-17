@@ -24,9 +24,7 @@
 Vehicle* cable_lift_segment_create(
     Ride& ride, int32_t x, int32_t y, int32_t z, int32_t direction, uint16_t var_44, int32_t remaining_distance, bool head)
 {
-    Vehicle* current = &(
-        create_sprite(SpriteIdentifier::Vehicle, head ? EntityListId::TrainHead : EntityListId::Vehicle)->vehicle);
-    current->sprite_identifier = SpriteIdentifier::Vehicle;
+    Vehicle* current = CreateEntity<Vehicle>();
     current->ride = ride.id;
     current->ride_subtype = RIDE_ENTRY_INDEX_NULL;
     if (head)

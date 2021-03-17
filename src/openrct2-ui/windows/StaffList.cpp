@@ -189,7 +189,7 @@ public:
             if (window_find_by_class(WC_MAP) != nullptr)
             {
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
-                for (auto peep : EntityList<Staff>(EntityListId::Peep))
+                for (auto peep : EntityList<Staff>())
                 {
                     sprite_set_flashing(peep, false);
                     if (peep->AssignedStaffType == GetSelectedStaffType())
@@ -483,7 +483,7 @@ public:
     {
         _staffList.clear();
 
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             sprite_set_flashing(peep, false);
             if (peep->AssignedStaffType == GetSelectedStaffType())
@@ -559,7 +559,7 @@ private:
 
         Peep* closestPeep = nullptr;
         auto closestPeepDistance = std::numeric_limits<int32_t>::max();
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             if (peep->AssignedStaffType != GetSelectedStaffType())
                 continue;

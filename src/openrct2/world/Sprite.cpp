@@ -27,7 +27,7 @@
 #include <vector>
 
 static rct_sprite _spriteList[MAX_ENTITIES];
-static std::array<std::list<uint16_t>, EnumValue(EntityListId::Count)> gEntityLists;
+static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<uint16_t> _freeIdList;
 
 static bool _spriteFlashingList[MAX_ENTITIES];
@@ -75,35 +75,46 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Litter>() const
 {
-    return sprite_identifier == SpriteIdentifier::Litter;
+    return Type == EntityType::Litter;
 }
 
 template<> bool SpriteBase::Is<MiscEntity>() const
 {
-    return sprite_identifier == SpriteIdentifier::Misc;
+    switch (Type)
+    {
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::JumpingFountain:
+        case EntityType::Balloon:
+        case EntityType::Duck:
+            return true;
+        default:
+            return false;
+    }
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::SteamParticle;
+    return Type == EntityType::SteamParticle;
 }
 
 template<> bool SpriteBase::Is<ExplosionFlare>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::ExplosionFlare;
+    return Type == EntityType::ExplosionFlare;
 }
 
 template<> bool SpriteBase::Is<ExplosionCloud>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::ExplosionCloud;
+    return Type == EntityType::ExplosionCloud;
 }
 
-uint16_t GetEntityListCount(EntityListId list)
+uint16_t GetEntityListCount(EntityType type)
 {
-    return static_cast<uint16_t>(gEntityLists[static_cast<uint8_t>(list)].size());
+    return static_cast<uint16_t>(gEntityLists[EnumValue(type)].size());
 }
 
 uint16_t GetNumFreeEntities()
@@ -152,43 +163,29 @@ void SpriteBase::Invalidate()
         return;
 
     int32_t maxZoom = 0;
-    switch (sprite_identifier)
+    switch (Type)
     {
-        case SpriteIdentifier::Vehicle:
-        case SpriteIdentifier::Peep:
+        case EntityType::Vehicle:
+        case EntityType::Guest:
+        case EntityType::Staff:
             maxZoom = 2;
             break;
-        case SpriteIdentifier::Misc:
-        {
-            auto* misc = As<MiscEntity>();
-            if (misc == nullptr)
-            {
-                return;
-            }
-            switch (misc->SubType)
-            {
-                case MiscEntityType::CrashedVehicleParticle:
-                case MiscEntityType::JumpingFountainWater:
-                case MiscEntityType::JumpingFountainSnow:
-                    maxZoom = 0;
-                    break;
-                case MiscEntityType::Duck:
-                    maxZoom = 1;
-                    break;
-                case MiscEntityType::SteamParticle:
-                case MiscEntityType::MoneyEffect:
-                case MiscEntityType::ExplosionCloud:
-                case MiscEntityType::CrashSplash:
-                case MiscEntityType::ExplosionFlare:
-                case MiscEntityType::Balloon:
-                    maxZoom = 2;
-                    break;
-                default:
-                    break;
-            }
-        }
-        break;
-        case SpriteIdentifier::Litter:
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::JumpingFountain:
+            maxZoom = 0;
+            break;
+        case EntityType::Duck:
+            maxZoom = 1;
+            break;
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::Balloon:
+            maxZoom = 2;
+            break;
+        case EntityType::Litter:
             maxZoom = 0;
             break;
         default:
@@ -197,27 +194,34 @@ void SpriteBase::Invalidate()
 
     viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
 }
-constexpr EntityListId EntityIdentifierToListId(const SpriteIdentifier type)
+
+constexpr SpriteIdentifier EntityTypeToSpriteIdentifier(const EntityType type)
 {
-    EntityListId linkedListIndex = EntityListId::Free;
     switch (type)
     {
-        case SpriteIdentifier::Vehicle:
-            linkedListIndex = EntityListId::Vehicle;
-            break;
-        case SpriteIdentifier::Peep:
-            linkedListIndex = EntityListId::Peep;
-            break;
-        case SpriteIdentifier::Misc:
-            linkedListIndex = EntityListId::Misc;
-            break;
-        case SpriteIdentifier::Litter:
-            linkedListIndex = EntityListId::Litter;
-            break;
-        default:
-            break;
+        case EntityType::Vehicle:
+            return SpriteIdentifier::Vehicle;
+        case EntityType::Guest:
+            return SpriteIdentifier::Peep;
+        case EntityType::Staff:
+            return SpriteIdentifier::Peep;
+        case EntityType::Litter:
+            return SpriteIdentifier::Litter;
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::JumpingFountain:
+        case EntityType::Balloon:
+        case EntityType::Duck:
+            return SpriteIdentifier::Misc;
+        case EntityType::Null:
+        case EntityType::Count:
+            return SpriteIdentifier::Null;
     }
-    return linkedListIndex;
+    return SpriteIdentifier::Null;
 }
 
 void RebuildEntityLists()
@@ -231,21 +235,20 @@ void RebuildEntityLists()
 
     for (auto& ent : _spriteList)
     {
-        if (ent.misc.sprite_identifier == SpriteIdentifier::Null)
+        if (ent.misc.Type == EntityType::Null)
         {
             _freeIdList.push_back(ent.misc.sprite_index);
         }
         else
         {
-            // auto listId = EntityIdentifierToListId(ent.misc.sprite_identifier);
-            gEntityLists[EnumValue(ent.misc.linked_list_index)].push_back(ent.misc.sprite_index);
+            gEntityLists[EnumValue(ent.misc.Type)].push_back(ent.misc.sprite_index);
         }
     }
     // List needs to be back to front to simplify removing
     std::sort(std::begin(_freeIdList), std::end(_freeIdList), std::greater<uint16_t>());
 }
 
-const std::list<uint16_t>& GetEntityList(const EntityListId id)
+const std::list<uint16_t>& GetEntityList(const EntityType id)
 {
     return gEntityLists[EnumValue(id)];
 }
@@ -266,9 +269,8 @@ void reset_sprite_list()
             continue;
         }
 
-        spr->sprite_identifier = SpriteIdentifier::Null;
+        spr->Type = EntityType::Null;
         spr->sprite_index = i;
-        spr->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[i] = false;
     }
@@ -293,7 +295,7 @@ void reset_sprite_spatial_index()
     for (size_t i = 0; i < MAX_ENTITIES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
+        if (spr != nullptr && spr->Type != EntityType::Null)
         {
             SpriteSpatialInsert(spr, { spr->x, spr->y });
         }
@@ -324,8 +326,7 @@ rct_sprite_checksum sprite_checksum()
         {
             // TODO create a way to copy only the specific type
             auto sprite = GetEntity(i);
-            if (sprite != nullptr && sprite->sprite_identifier != SpriteIdentifier::Null
-                && sprite->sprite_identifier != SpriteIdentifier::Misc)
+            if (sprite != nullptr && sprite->Type != EntityType::Null && !sprite->Is<MiscEntity>())
             {
                 // Upconvert it to rct_sprite so that the full size is copied.
                 auto copy = *reinterpret_cast<rct_sprite*>(sprite);
@@ -371,15 +372,13 @@ rct_sprite_checksum sprite_checksum()
 static void sprite_reset(SpriteBase* sprite)
 {
     // Need to retain how the sprite is linked in lists
-    auto llto = sprite->linked_list_index;
     uint16_t sprite_index = sprite->sprite_index;
     _spriteFlashingList[sprite_index] = false;
 
     std::memset(sprite, 0, sizeof(rct_sprite));
 
-    sprite->linked_list_index = llto;
     sprite->sprite_index = sprite_index;
-    sprite->sprite_identifier = SpriteIdentifier::Null;
+    sprite->Type = EntityType::Null;
 }
 
 /**
@@ -396,17 +395,15 @@ void sprite_clear_all_unused()
             continue;
         }
         sprite_reset(entity);
-        entity->linked_list_index = EntityListId::Free;
 
         _spriteFlashingList[entity->sprite_index] = false;
     }
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
-static void AddToEntityList(const EntityListId linkedListIndex, SpriteBase* entity)
+static void AddToEntityList(SpriteBase* entity)
 {
-    auto& list = gEntityLists[EnumValue(linkedListIndex)];
-    entity->linked_list_index = linkedListIndex;
+    auto& list = gEntityLists[EnumValue(entity->Type)];
     // Entity list must be in sprite_index order to prevent desync issues
     list.insert(std::lower_bound(std::begin(list), std::end(list), entity->sprite_index), entity->sprite_index);
 }
@@ -419,7 +416,7 @@ static void AddToFreeList(uint16_t index)
 
 static void RemoveFromEntityList(SpriteBase* entity)
 {
-    auto& list = gEntityLists[EnumValue(entity->linked_list_index)];
+    auto& list = gEntityLists[EnumValue(entity->Type)];
     auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
     if (ptr != std::end(list) && *ptr == entity->sprite_index)
     {
@@ -427,7 +424,19 @@ static void RemoveFromEntityList(SpriteBase* entity)
     }
 }
 
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linkedListIndex)
+uint16_t GetMiscEntityCount()
+{
+    uint16_t count = 0;
+    for (auto id : { EntityType::SteamParticle, EntityType::MoneyEffect, EntityType::CrashedVehicleParticle,
+                     EntityType::ExplosionCloud, EntityType::CrashSplash, EntityType::ExplosionFlare,
+                     EntityType::JumpingFountain, EntityType::Balloon, EntityType::Duck })
+    {
+        count += GetEntityListCount(id);
+    }
+    return count;
+}
+
+rct_sprite* create_sprite(EntityType type)
 {
     if (_freeIdList.size() == 0)
     {
@@ -435,12 +444,13 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
         return nullptr;
     }
 
-    if (linkedListIndex == EntityListId::Misc)
+    auto spriteIdentifier = EntityTypeToSpriteIdentifier(type);
+    if (spriteIdentifier == SpriteIdentifier::Misc)
     {
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
         // Also there can't be more than MAX_MISC_SPRITES sprites in this list.
-        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetEntityListCount(EntityListId::Misc);
+        uint16_t miscSlotsRemaining = MAX_MISC_SPRITES - GetMiscEntityCount();
         if (miscSlotsRemaining >= _freeIdList.size())
         {
             return nullptr;
@@ -454,10 +464,12 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
     }
     _freeIdList.pop_back();
 
-    AddToEntityList(linkedListIndex, sprite);
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
+
+    sprite->Type = type;
+    AddToEntityList(sprite);
 
     sprite->x = LOCATION_NULL;
     sprite->y = LOCATION_NULL;
@@ -471,30 +483,6 @@ rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier, EntityListId linked
     SpriteSpatialInsert(sprite, { LOCATION_NULL, 0 });
 
     return reinterpret_cast<rct_sprite*>(sprite);
-}
-
-rct_sprite* create_sprite(SpriteIdentifier spriteIdentifier)
-{
-    EntityListId linkedListIndex = EntityListId::Free;
-    switch (spriteIdentifier)
-    {
-        case SpriteIdentifier::Vehicle:
-            linkedListIndex = EntityListId::Vehicle;
-            break;
-        case SpriteIdentifier::Peep:
-            linkedListIndex = EntityListId::Peep;
-            break;
-        case SpriteIdentifier::Misc:
-            linkedListIndex = EntityListId::Misc;
-            break;
-        case SpriteIdentifier::Litter:
-            linkedListIndex = EntityListId::Litter;
-            break;
-        default:
-            Guard::Assert(false, "Invalid sprite identifier: 0x%02X", spriteIdentifier);
-            return nullptr;
-    }
-    return create_sprite(spriteIdentifier, linkedListIndex);
 }
 
 /**
@@ -524,13 +512,12 @@ void SteamParticle::Update()
  */
 void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
+    auto* sprite = CreateEntity<ExplosionCloud>();
     if (sprite != nullptr)
     {
         sprite->sprite_width = 44;
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
         sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
@@ -557,13 +544,12 @@ void ExplosionCloud::Update()
  */
 void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
+    MiscEntity* sprite = CreateEntity<ExplosionFlare>();
     if (sprite != nullptr)
     {
         sprite->sprite_width = 25;
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
         sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
@@ -586,7 +572,7 @@ void ExplosionFlare::Update()
 
 template<typename T> void MiscUpdateAllType()
 {
-    for (auto misc : EntityList<T>(EntityListId::Misc))
+    for (auto misc : EntityList<T>())
     {
         misc->Update();
     }
@@ -759,11 +745,11 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
     if (!litter_can_be_at(offsetLitterPos))
         return;
 
-    if (GetEntityListCount(EntityListId::Litter) >= 500)
+    if (GetEntityListCount(EntityType::Litter) >= 500)
     {
         Litter* newestLitter = nullptr;
         uint32_t newestLitterCreationTick = 0;
-        for (auto litter : EntityList<Litter>(EntityListId::Litter))
+        for (auto litter : EntityList<Litter>())
         {
             if (newestLitterCreationTick <= litter->creationTick)
             {
@@ -779,7 +765,7 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
         }
     }
 
-    Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
+    Litter* litter = CreateEntity<Litter>();
     if (litter == nullptr)
         return;
 
@@ -787,7 +773,6 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
     litter->sprite_width = 6;
     litter->sprite_height_negative = 6;
     litter->sprite_height_positive = 3;
-    litter->sprite_identifier = SpriteIdentifier::Litter;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
     litter->creationTick = gScenarioTicks;
@@ -824,12 +809,12 @@ void litter_remove_at(const CoordsXYZ& litterPos)
 uint16_t remove_floating_sprites()
 {
     uint16_t removed = 0;
-    for (auto* balloon : EntityList<Balloon>(EntityListId::Misc))
+    for (auto* balloon : EntityList<Balloon>())
     {
         sprite_remove(balloon);
         removed++;
     }
-    for (auto* duck : EntityList<Duck>(EntityListId::Misc))
+    for (auto* duck : EntityList<Duck>())
     {
         if (duck->IsFlying())
         {
@@ -837,7 +822,7 @@ uint16_t remove_floating_sprites()
             removed++;
         }
     }
-    for (auto* money : EntityList<MoneyEffect>(EntityListId::Misc))
+    for (auto* money : EntityList<MoneyEffect>())
     {
         sprite_remove(money);
         removed++;
@@ -845,9 +830,19 @@ uint16_t remove_floating_sprites()
     return removed;
 }
 
-void EntityTweener::PopulateEntities(EntityListId id)
+void EntityTweener::PopulateEntities()
 {
-    for (auto ent : EntityList(id))
+    for (auto ent : EntityList<Guest>())
+    {
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
+    }
+    for (auto ent : EntityList<Staff>())
+    {
+        Entities.push_back(ent);
+        PrePos.emplace_back(ent->x, ent->y, ent->z);
+    }
+    for (auto ent : EntityList<Vehicle>())
     {
         Entities.push_back(ent);
         PrePos.emplace_back(ent->x, ent->y, ent->z);
@@ -858,9 +853,7 @@ void EntityTweener::PreTick()
 {
     Restore();
     Reset();
-    PopulateEntities(EntityListId::Peep);
-    PopulateEntities(EntityListId::Vehicle);
-    PopulateEntities(EntityListId::TrainHead);
+    PopulateEntities();
 }
 
 void EntityTweener::PostTick()
@@ -881,7 +874,7 @@ void EntityTweener::PostTick()
 
 void EntityTweener::RemoveEntity(SpriteBase* entity)
 {
-    if (entity->sprite_identifier != SpriteIdentifier::Peep && entity->sprite_identifier != SpriteIdentifier::Vehicle)
+    if (!entity->Is<Peep>() && !entity->Is<Vehicle>())
     {
         // Only peeps and vehicles are tweened, bail if type is incorrect.
         return;

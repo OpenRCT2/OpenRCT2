@@ -128,7 +128,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
     }
 
-    Peep* newPeep = &(create_sprite(SpriteIdentifier::Peep)->peep);
+    Peep* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {
         // Too many peeps exist already.
@@ -142,7 +142,6 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
     }
     else
     {
-        newPeep->sprite_identifier = SpriteIdentifier::Peep;
         newPeep->WindowInvalidateFlags = 0;
         newPeep->Action = PeepActionType::None2;
         newPeep->SpecialSprite = 0;
@@ -166,7 +165,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         {
             bool found = false;
             ++newStaffId;
-            for (auto searchPeep : EntityList<Staff>(EntityListId::Peep))
+            for (auto searchPeep : EntityList<Staff>())
             {
                 if (static_cast<uint8_t>(searchPeep->AssignedStaffType) != _staffType)
                     continue;
@@ -251,7 +250,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
 
     // Count number of walking guests
     {
-        for (auto guest : EntityList<Guest>(EntityListId::Peep))
+        for (auto guest : EntityList<Guest>())
         {
             if (guest->State == PeepState::Walking)
             {
@@ -270,7 +269,7 @@ void StaffHireNewAction::AutoPositionNewStaff(Peep* newPeep) const
         uint32_t rand = scenario_rand_max(count);
         Guest* chosenGuest = nullptr;
 
-        for (auto guest : EntityList<Guest>(EntityListId::Peep))
+        for (auto guest : EntityList<Guest>())
         {
             if (guest->State == PeepState::Walking)
             {

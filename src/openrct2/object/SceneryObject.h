@@ -16,7 +16,7 @@
 class SceneryObject : public Object
 {
 private:
-    rct_object_entry _primarySceneryGroupEntry = {};
+    ObjectEntryDescriptor _primarySceneryGroupEntry = {};
 
 public:
     explicit SceneryObject(const rct_object_entry& entry)
@@ -25,15 +25,14 @@ public:
     }
     virtual ~SceneryObject() = default;
 
-    const rct_object_entry* GetPrimarySceneryGroup()
+    const ObjectEntryDescriptor& GetPrimarySceneryGroup() const
     {
-        return &_primarySceneryGroupEntry;
+        return _primarySceneryGroupEntry;
     }
 
 protected:
-    void SetPrimarySceneryGroup(const rct_object_entry* entry)
+    void SetPrimarySceneryGroup(const ObjectEntryDescriptor& entry)
     {
-        _primarySceneryGroupEntry = *entry;
+        _primarySceneryGroupEntry = entry;
     }
-    void SetPrimarySceneryGroup(const std::string& s);
 };

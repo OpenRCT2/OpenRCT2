@@ -86,9 +86,9 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
     switch (info.SpriteType)
     {
         case ViewportInteractionItem::Entity:
-            switch (sprite->sprite_identifier)
+            switch (sprite->Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                 {
                     auto vehicle = sprite->As<Vehicle>();
                     if (vehicle != nullptr && vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
@@ -97,7 +97,8 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                         info.SpriteType = ViewportInteractionItem::None;
                 }
                 break;
-                case SpriteIdentifier::Peep:
+                case EntityType::Guest:
+                case EntityType::Staff:
                 {
                     auto peep = sprite->As<Peep>();
                     if (peep != nullptr)
@@ -110,9 +111,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                     }
                 }
                 break;
-                case SpriteIdentifier::Misc:
-                case SpriteIdentifier::Litter:
-                case SpriteIdentifier::Null:
+                default:
                     break;
             }
             break;
@@ -176,54 +175,45 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
-            switch (entity->sprite_identifier)
+            switch (entity->Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                 {
                     auto intent = Intent(WD_VEHICLE);
                     intent.putExtra(INTENT_EXTRA_VEHICLE, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SpriteIdentifier::Peep:
+                case EntityType::Guest:
+                case EntityType::Staff:
                 {
                     auto intent = Intent(WC_PEEP);
                     intent.putExtra(INTENT_EXTRA_PEEP, entity);
                     context_open_intent(&intent);
                     break;
                 }
-                case SpriteIdentifier::Misc:
+                case EntityType::Balloon:
+                {
                     if (game_is_not_paused())
                     {
-                        auto miscEntity = entity->As<MiscEntity>();
-                        if (miscEntity == nullptr)
+                        auto balloonPress = BalloonPressAction(entity->sprite_index);
+                        GameActions::Execute(&balloonPress);
+                    }
+                }
+                break;
+                case EntityType::Duck:
+                {
+                    if (game_is_not_paused())
+                    {
+                        auto duck = entity->As<Duck>();
+                        if (duck != nullptr)
                         {
-                            break;
-                        }
-                        switch (miscEntity->SubType)
-                        {
-                            case MiscEntityType::Balloon:
-                            {
-                                auto balloonPress = BalloonPressAction(entity->sprite_index);
-                                GameActions::Execute(&balloonPress);
-                            }
-                            break;
-                            case MiscEntityType::Duck:
-                            {
-                                auto duck = entity->As<Duck>();
-                                if (duck != nullptr)
-                                {
-                                    duck_press(duck);
-                                }
-                            }
-                            break;
-                            default:
-                                break;
+                            duck_press(duck);
                         }
                     }
-                    break;
-                case SpriteIdentifier::Litter:
-                case SpriteIdentifier::Null:
+                }
+                break;
+                default:
                     break;
             }
             return true;
@@ -270,7 +260,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
         case ViewportInteractionItem::Entity:
         {
             auto sprite = info.Entity;
-            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->sprite_identifier != SpriteIdentifier::Vehicle)
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || sprite->Type != EntityType::Vehicle)
             {
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
@@ -541,7 +531,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
         case ViewportInteractionItem::Entity:
         {
             auto entity = info.Entity;
-            if (entity->sprite_identifier == SpriteIdentifier::Vehicle)
+            if (entity->Type == EntityType::Vehicle)
             {
                 auto vehicle = entity->As<Vehicle>();
                 if (vehicle == nullptr)
@@ -707,7 +697,7 @@ struct PeepDistance
 template<typename T>
 PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t maxDistance, PeepDistance goal)
 {
-    for (auto peep : EntityList<T>(EntityListId::Peep))
+    for (auto peep : EntityList<T>())
     {
         if (peep->sprite_left == LOCATION_NULL)
             continue;

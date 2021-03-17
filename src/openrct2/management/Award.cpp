@@ -85,7 +85,7 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
         return false;
 
     uint32_t negativeCount = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -113,7 +113,7 @@ static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 
     uint32_t positiveCount = 0;
     uint32_t negativeCount = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -192,7 +192,7 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 
     uint32_t positiveCount = 0;
     uint32_t negativeCount = 0;
-    auto list = EntityList<Guest>(EntityListId::Peep);
+    auto list = EntityList<Guest>();
     for (auto peep : list)
     {
         if (peep->OutsideOfPark)
@@ -234,7 +234,7 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
 static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 {
     auto peepsWhoDislikeVandalism = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -263,10 +263,8 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
     if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
         return false;
 
-    auto staff = EntityList<Staff>(EntityListId::Peep);
-    auto staffCount = std::distance(staff.begin(), staff.end());
-    auto guests = EntityList<Guest>(EntityListId::Peep);
-    auto peepCount = std::distance(guests.begin(), guests.end());
+    auto staffCount = GetEntityListCount(EntityType::Staff);
+    auto peepCount = GetEntityListCount(EntityType::Guest);
 
     return ((staffCount != 0) && staffCount >= 20 && staffCount >= peepCount / 32);
 }
@@ -304,7 +302,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     auto hungryPeeps = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -348,7 +346,7 @@ static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 
     // Count hungry peeps
     auto hungryPeeps = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -378,7 +376,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 
     // Count number of guests who are thinking they need the restroom
     auto guestsWhoNeedRestroom = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;
@@ -505,7 +503,7 @@ static bool award_is_deserved_most_confusing_layout([[maybe_unused]] int32_t act
 {
     uint32_t peepsCounted = 0;
     uint32_t peepsLost = 0;
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         if (peep->OutsideOfPark)
             continue;

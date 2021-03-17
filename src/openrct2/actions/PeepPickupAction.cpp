@@ -48,7 +48,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
     }
 
     auto* const peep = TryGetEntity<Peep>(_spriteId);
-    if (!peep || peep->sprite_identifier != SpriteIdentifier::Peep)
+    if (peep == nullptr)
     {
         log_error("Failed to pick up peep for sprite %d", _spriteId);
         return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);
@@ -106,7 +106,7 @@ GameActions::Result::Ptr PeepPickupAction::Query() const
 GameActions::Result::Ptr PeepPickupAction::Execute() const
 {
     Peep* const peep = TryGetEntity<Peep>(_spriteId);
-    if (!peep || peep->sprite_identifier != SpriteIdentifier::Peep)
+    if (peep == nullptr)
     {
         log_error("Failed to pick up peep for sprite %d", _spriteId);
         return MakeResult(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE);

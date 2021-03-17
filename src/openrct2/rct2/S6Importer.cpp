@@ -43,6 +43,7 @@
 #include "../ride/ShopItem.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/TrainManager.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../util/SawyerCoding.h"
@@ -1677,10 +1678,72 @@ public:
         dst->creationTick = src->creationTick;
     }
 
+    constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12SpriteBase* src)
+    {
+        EntityType output = EntityType::Null;
+        switch (src->sprite_identifier)
+        {
+            case SpriteIdentifier::Vehicle:
+                output = EntityType::Vehicle;
+                break;
+            case SpriteIdentifier::Peep:
+                if (PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == PeepType::Guest)
+                {
+                    output = EntityType::Guest;
+                }
+                else
+                {
+                    output = EntityType::Staff;
+                }
+                break;
+            case SpriteIdentifier::Misc:
+
+                switch (MiscEntityType(src->type))
+                {
+                    case MiscEntityType::SteamParticle:
+                        output = EntityType::SteamParticle;
+                        break;
+                    case MiscEntityType::MoneyEffect:
+                        output = EntityType::MoneyEffect;
+                        break;
+                    case MiscEntityType::CrashedVehicleParticle:
+                        output = EntityType::CrashedVehicleParticle;
+                        break;
+                    case MiscEntityType::ExplosionCloud:
+                        output = EntityType::ExplosionCloud;
+                        break;
+                    case MiscEntityType::CrashSplash:
+                        output = EntityType::CrashSplash;
+                        break;
+                    case MiscEntityType::ExplosionFlare:
+                        output = EntityType::ExplosionFlare;
+                        break;
+                    case MiscEntityType::JumpingFountainWater:
+                    case MiscEntityType::JumpingFountainSnow:
+                        output = EntityType::JumpingFountain;
+                        break;
+                    case MiscEntityType::Balloon:
+                        output = EntityType::Balloon;
+                        break;
+                    case MiscEntityType::Duck:
+                        output = EntityType::Duck;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case SpriteIdentifier::Litter:
+                output = EntityType::Litter;
+                break;
+            default:
+                break;
+        }
+        return output;
+    }
+
     void ImportSpriteCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
-        dst->sprite_identifier = src->sprite_identifier;
-        dst->linked_list_index = static_cast<EntityListId>(EnumValue(src->linked_list_type_offset) >> 1);
+        dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
         dst->flags = src->flags;

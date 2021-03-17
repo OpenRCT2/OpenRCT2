@@ -232,8 +232,7 @@ bool loc_690FD0(Peep* peep, uint8_t* rideToView, uint8_t* rideSeatToView, TileEl
 
 template<> bool SpriteBase::Is<Guest>() const
 {
-    auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Guest;
+    return Type == EntityType::Guest;
 }
 
 bool Guest::GuestHasValidXY() const
@@ -2754,7 +2753,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
         }
     }
 
-    for (auto litter : EntityList<Litter>(EntityListId::Litter))
+    for (auto litter : EntityList<Litter>())
     {
         int16_t dist_x = abs(litter->x - centre_x);
         int16_t dist_y = abs(litter->y - centre_y);
@@ -5891,7 +5890,7 @@ static void peep_update_walking_break_scenery(Peep* peep)
         return;
     }
 
-    for (auto inner_peep : EntityList<Staff>(EntityListId::Peep))
+    for (auto inner_peep : EntityList<Staff>())
     {
         if (inner_peep->AssignedStaffType != StaffType::Security)
             continue;
@@ -5903,7 +5902,10 @@ static void peep_update_walking_break_scenery(Peep* peep)
         int32_t y_diff = abs(inner_peep->y - peep->y);
 
         if (std::max(x_diff, y_diff) < 224)
+        {
+            inner_peep->StaffVandalsStopped++;
             return;
+        }
     }
 
     tileElement->SetIsBroken(true);

@@ -1125,7 +1125,7 @@ STR_1738    :바퀴 수를 변경할 수 없습니다…
 STR_1739    :레이스 우승자 : 손님 {INT32}
 STR_1740    :레이스 우승자 : {STRINGID}
 STR_1741    :아직 건설되지 않았습니다!
-STR_1742    :{WINDOW_COLOUR_2}최대 놀이기구 탑승 인원:
+STR_1742    :{WINDOW_COLOUR_2}최대 탑승 인원:
 STR_1743    :이 놀이기구에 한 번에 탑승할 수 있는 최대 인원 수를 설정합니다
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1746    :변경할 수 없습니다…
@@ -1991,8 +1991,8 @@ STR_2784    :키보드 단축키 변경
 STR_2785    :{WINDOW_COLOUR_2}새 단축키를 누르세요:{NEWLINE}“{STRINGID}”
 STR_2786    :새 단축키를 설정하려면 단축키 설명을 클릭하세요
 STR_2787    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}축하합니다 !{NEWLINE}{BLACK}시나리오 목표를 {CURRENCY}의 회사 가치로 달성하였습니다 !
-STR_2789    :{WINDOW_COLOUR_2}목표 달성에 실패하였습니다 !
+STR_2788    :{WINDOW_COLOUR_2}축하합니다!{NEWLINE}{BLACK}시나리오 목표를 {CURRENCY}의 회사 가치로 달성하였습니다!
+STR_2789    :{WINDOW_COLOUR_2}목표 달성에 실패하였습니다!
 STR_2790    :시나리오 차트에 이름을 기록하세요
 STR_2791    :이름을 입력하세요
 STR_2792    :시나리오 차트에 이름을 기록하세요:
@@ -3220,7 +3220,7 @@ STR_5938    :{WINDOW_COLOUR_2}수면 고도: {BLACK}{COMMA16}
 STR_5939    :공원 울타리 제거
 STR_5940    :공원 울타리 복구
 STR_5941    :{WINDOW_COLOUR_2}기본 높이:
-STR_5942    :{WINDOW_COLOUR_2}공원 이름: {BLACK}{STRINGID}
+STR_5942    :{WINDOW_COLOUR_2}보도 이름: {BLACK}{STRINGID}
 STR_5943    :{WINDOW_COLOUR_2}기물: {BLACK}{STRINGID}
 STR_5944    :{WINDOW_COLOUR_2}기물: {BLACK}없음
 STR_5945    :{WINDOW_COLOUR_2}연결된 면:
@@ -3682,6 +3682,7 @@ STR_6431    :오른쪽 마우스 버튼
 STR_6432    :마우스 {INT32}
 STR_6433    :해제
 STR_6434    :여기에 할당된 단축키를 해제합니다.
+STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

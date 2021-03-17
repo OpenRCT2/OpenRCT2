@@ -95,6 +95,7 @@ STR_0090    :Bányavasút
 STR_0091    :Ismeretlen játék (59)
 STR_0092    :Aszinkronmotoros hullámvasút
 STR_0093    :Hibrid hullámvasút
+STR_0094    :Egysínű hullámvasút
 STR_0512    :Egy kompakt hullámvasút spirális felvonórésszel és sima, csavaros esésekkel
 STR_0513    :Egy átforduló hullámvasút, amelyen az utasok álló helyzetben utaznak
 STR_0514    :A hullámvasút pályája alatt felfüggesztett vonatok oldalt kilengenek a kanyarokban
@@ -164,6 +165,7 @@ STR_0599    :Egy kompakt hullámvasút különálló kocsikkal és sima, csavaro
 STR_0600    :Motoros bányavonatok futnak egy sima és csavaros pálya mentén
 STR_0602    :A hullámvasút vonatai aszinkronmotoros gyorsítással hagyják el az állomást, hogy átszáguldjanak a csavaros fordítókon
 STR_0603    :Egy fa stílusú hullámvasút acélpályával, meredek esésekkel és fordítókkal.
+STR_0604    :Az utasok egymás mögött utaznak egy keskeny, egysínű pályán, ahogy átszáguldanak a szoros fordítókon és irányváltásokon.
 STR_0767    :Vendég {INT32}
 STR_0768    :Mindenes {INT32}
 STR_0769    :Gépész {INT32}
@@ -2052,7 +2054,7 @@ STR_2861    :{WINDOW_COLOUR_2}Az Infogrames Interactive Inc. számára licencelv
 STR_2862    :Zenei köszönetnyilvánítások…
 STR_2863    :Zenei köszönetnyilvánítások
 STR_2864    :{WINDOW_COLOUR_2}Induló - Die Regimentskinder:   (Fucik) copyright nélküli
-STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
+STR_2865    :{WINDOW_COLOUR_2}Heyken’s Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
 STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) copyright nélküli
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Tradicionális)
 STR_2868    :{WINDOW_COLOUR_2}Mesél a bécsi erdő:   (JohannSTRauss) copyright nélküli
@@ -2065,19 +2067,19 @@ STR_2874    :{WINDOW_COLOUR_2}Bella Bella Bimba:   (Tradicionális)
 STR_2875    :{WINDOW_COLOUR_2}Eredeti felvételek (P) 1976 C.J.Mears Organization,  engedéllyel használva
 STR_2876    :{WINDOW_COLOUR_2}RollerCoaster Tycoon 2 főcímzene:   (Allister Brimble) copyright © Chris Sawyer
 STR_2877    :{WINDOW_COLOUR_2}Dodgems Beat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2878    :{WINDOW_COLOUR_2}Mid Summer's Heat:   (Allister Brimble) copyright © Chris Sawyer
-STR_2879    :{WINDOW_COLOUR_2}Pharaoh's Tomb:   (Allister Brimble) copyright © Chris Sawyer
-STR_2880    :{WINDOW_COLOUR_2}Caesar's March:   (Allister Brimble) copyright © Chris Sawyer
+STR_2878    :{WINDOW_COLOUR_2}Mid Summer’s Heat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2879    :{WINDOW_COLOUR_2}Pharaoh’s Tomb:   (Allister Brimble) copyright © Chris Sawyer
+STR_2880    :{WINDOW_COLOUR_2}Caesar’s March:   (Allister Brimble) copyright © Chris Sawyer
 STR_2881    :{WINDOW_COLOUR_2}Drifting To Heaven:   (Allister Brimble) copyright © Chris Sawyer
 STR_2882    :{WINDOW_COLOUR_2}Invaders:   (Allister Brimble) copyright © Chris Sawyer
 STR_2883    :{WINDOW_COLOUR_2}Eternal Toybox:   (Allister Brimble) copyright © Chris Sawyer
 STR_2884    :{WINDOW_COLOUR_2}Jungle Juice:   (Allister Brimble) copyright © Chris Sawyer
-STR_2885    :{WINDOW_COLOUR_2}Ninja's Noodles:   (Allister Brimble) copyright © Chris Sawyer
+STR_2885    :{WINDOW_COLOUR_2}Ninja’s Noodles:   (Allister Brimble) copyright © Chris Sawyer
 STR_2886    :{WINDOW_COLOUR_2}Voyage to Andromeda:   (Allister Brimble) copyright © Chris Sawyer
-STR_2887    :{WINDOW_COLOUR_2}Brimble's Beat:   (Allister Brimble) copyright © Chris Sawyer
+STR_2887    :{WINDOW_COLOUR_2}Brimble’s Beat:   (Allister Brimble) copyright © Chris Sawyer
 STR_2888    :{WINDOW_COLOUR_2}Atlantis:   (Allister Brimble) copyright © Chris Sawyer
 STR_2889    :{WINDOW_COLOUR_2}Wild West Kid:   (Allister Brimble) copyright © Chris Sawyer
-STR_2890    :{WINDOW_COLOUR_2}Vampire's Lair:   (Allister Brimble) copyright © Chris Sawyer
+STR_2890    :{WINDOW_COLOUR_2}Vampire’s Lair:   (Allister Brimble) copyright © Chris Sawyer
 STR_2891    :{WINDOW_COLOUR_2}Blockbuster:   (Allister Brimble) copyright © Chris Sawyer
 STR_2892    :{WINDOW_COLOUR_2}Airtime Rock:   (Allister Brimble) copyright © Chris Sawyer
 STR_2893    :{WINDOW_COLOUR_2}Searchlight Rag:   (Scott Joplin/Allister Brimble) copyright © Chris Sawyer
@@ -3090,7 +3092,7 @@ STR_5831    :A hőmérséklet kijelzéséhez{NEWLINE}használt mértékegység m
 STR_5833    :A játék által használt dátumformátum megváltoztatása
 STR_5834    :Az OpenRCT2 által használt hangeszköz kiválasztása
 STR_5835    :A játék némítása, ha az ablak elveszti a fókuszt
-STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a 'data/css17.dat'-ot átmásolod az RCT2 mappán belül a 'data/css50.dat'-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
+STR_5836    :A főmenüben használt zene kiválasztása.{NEWLINE}Az RCT1 témája csak akkor választható, ha az RCT1 játékmappájából a ’data/css17.dat’-ot átmásolod az RCT2 mappán belül a ’data/css50.dat’-ba, vagy megadod az RCT1 útvonalát az Egyéb fülön.
 STR_5838    :Külön gomb a pénzügyi ablak számára az eszköztáron
 STR_5839    :Külön gomb a kutatás-fejlesztés ablak számára az eszköztáron
 STR_5840    :Külön gomb a csalások ablak számára az eszköztáron
@@ -3258,18 +3260,18 @@ STR_6014    :A vendégek csak a játékok belépőjegyéért és a szolgáltatá
 STR_6015    :Lejtős
 STR_6016    :Mező módosítása
 STR_6017    :Kérlek lassíts
-STR_6018    :Játék építése - Balkanyar
-STR_6019    :Játék építése - Jobbkanyar
-STR_6020    :Játék építése - Alapértelmezett pálya
-STR_6021    :Játék építése - Lejtő
-STR_6022    :Játék építése - Emelkedő
-STR_6023    :Játék építése - Láncos felvonó be/ki
-STR_6024    :Játék építése - Döntés balra
-STR_6025    :Játék építése - Döntés jobbra
-STR_6026    :Játék építése - Előző szakasz
-STR_6027    :Játék építése - Következő szakasz
-STR_6028    :Játék építése - Jelenlegi építése
-STR_6029    :Játék építése - Jelenlegi lerombolása
+STR_6018    :Építkezés - Balkanyar
+STR_6019    :Építkezés - Jobbkanyar
+STR_6020    :Építkezés - Alapértelmezett pálya
+STR_6021    :Építkezés - Lejtő
+STR_6022    :Építkezés - Emelkedő
+STR_6023    :Építkezés - Láncos felvonó be/ki
+STR_6024    :Építkezés - Döntés balra
+STR_6025    :Építkezés - Döntés jobbra
+STR_6026    :Építkezés - Előző szakasz
+STR_6027    :Építkezés - Következő szakasz
+STR_6028    :Építkezés - Jelenlegi építése
+STR_6029    :Építkezés - Jelenlegi lerombolása
 STR_6030    :Díszletválasztó. Kattints bármelyik díszletre a térképen, hogy újat építhess ugyanabból a darabból.
 STR_6031    :Szerver leírása:
 STR_6032    :Szerver üdvözlés:
@@ -3310,34 +3312,34 @@ STR_6066    :Minden felhasználói tevékenységet naplóz a felhasználói mapp
 STR_6067    :Szerver elindítva.
 STR_6068    :Szerver leállítva.
 STR_6069    :{STRING} ki lett rúgva a szerverről {STRING} által.
-STR_6070    :{STRING} a(z) '{STRING}' csoportba lett rakva {STRING} által.
-STR_6071    :{STRING} egy új játékoscsoportot hozott létre '{STRING}' néven.
-STR_6072    :{STRING} törölte a(z) '{String}' játékoscsoportot.
-STR_6073    :{STRING} módosította a(z) '{String}' játékoscsoport engedélyeit.
-STR_6074    :{STRING} megváltoztatta egy játékoscsoport nevét. Régi név: '{STRING}' / Új név: '{STRING}'
-STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: '{String}'.
-STR_6076    :{STRING} használt/bekapcsolt egy csalást: '{STRING}'.
+STR_6070    :{STRING} a(z) ’{STRING}’ csoportba lett rakva {STRING} által.
+STR_6071    :{STRING} egy új játékoscsoportot hozott létre ’{STRING}’ néven.
+STR_6072    :{STRING} törölte a(z) ’{String}’ játékoscsoportot.
+STR_6073    :{STRING} módosította a(z) ’{String}’ játékoscsoport engedélyeit.
+STR_6074    :{STRING} megváltoztatta egy játékoscsoport nevét. Régi név: ’{STRING}’ / Új név: ’{STRING}’
+STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: ’{String}’.
+STR_6076    :{STRING} használt/bekapcsolt egy csalást: ’{STRING}’.
 STR_6077    :Pénz hozzáadása
-STR_6078    :{STRING} új játékot hozott létre: '{STRING}'.
-STR_6079    :{STRING} lerombolta a(z) '{STRING}' játékot.
-STR_6080    :{STRING} megváltoztatta a(z) '{STRING}' játék kinézetét.
-STR_6081    :{STRING} megváltoztatta a(z) '{STRING}' játék státuszát erre: zárva
-STR_6082    :{STRING} megváltoztatta a(z) '{STRING}' játék státuszát erre: nyitva
-STR_6083    :{STRING} megváltoztatta a(z) '{STRING}' játék státuszát erre: tesztelés
-STR_6084    :{STRING} megváltoztatta '{STRING}' járműbeállításait.
-STR_6085    :{STRING} megváltoztatta '{STRING}' játékbeállításait.
-STR_6086    :{STRING} átnevezett egy játékot. Régi név: '{STRING}' / Új név: '{STRING}'
-STR_6087    :{STRING} megváltoztatta a(z) '{STRING}' játék árát erre: {STRING}
-STR_6088    :{STRING} megváltoztatta a(z) '{STRING}' játék másodlagos árát erre: {STRING}
-STR_6089    :{STRING} átnevezte a parkot. Régi név: '{STRING}' / Új név: '{STRING}'
+STR_6078    :{STRING} új játékot hozott létre: ’{STRING}’.
+STR_6079    :{STRING} lerombolta a(z) ’{STRING}’ játékot.
+STR_6080    :{STRING} megváltoztatta a(z) ’{STRING}’ játék kinézetét.
+STR_6081    :{STRING} megváltoztatta a(z) ’{STRING}’ játék státuszát erre: zárva
+STR_6082    :{STRING} megváltoztatta a(z) ’{STRING}’ játék státuszát erre: nyitva
+STR_6083    :{STRING} megváltoztatta a(z) ’{STRING}’ játék státuszát erre: tesztelés
+STR_6084    :{STRING} megváltoztatta ’{STRING}’ járműbeállításait.
+STR_6085    :{STRING} megváltoztatta ’{STRING}’ játékbeállításait.
+STR_6086    :{STRING} átnevezett egy játékot. Régi név: ’{STRING}’ / Új név: ’{STRING}’
+STR_6087    :{STRING} megváltoztatta a(z) ’{STRING}’ játék árát erre: {STRING}
+STR_6088    :{STRING} megváltoztatta a(z) ’{STRING}’ játék másodlagos árát erre: {STRING}
+STR_6089    :{STRING} átnevezte a parkot. Régi név: ’{STRING}’ / Új név: ’{STRING}’
 STR_6090    :{STRING} megnyitotta a parkot.
 STR_6091    :{STRING} bezárta a parkot.
 STR_6092    :{STRING} megváltoztatta a park belépési díját: {STRING}
 STR_6093    :{STRING} egy új díszletet rakott le.
 STR_6094    :{STRING} eltávolított egy díszletet.
 STR_6095    :{STRING} módosított egy díszletet.
-STR_6096    :{STRING} megváltoztatta egy tábla feliratát: '{STRING}'.
-STR_6097    :{STRING} lerakta '{STRING}' játék egy pályaelemét.
+STR_6096    :{STRING} megváltoztatta egy tábla feliratát: ’{STRING}’.
+STR_6097    :{STRING} lerakta ’{STRING}’ játék egy pályaelemét.
 STR_6098    :{STRING} eltávolított egy pályaelemet valamelyik játékról.
 STR_6099    :Kapcsolódtál a szerverhez.
 STR_6100    :Bontottad a kapcsolatot a szerverrel.
@@ -3602,6 +3604,43 @@ STR_6394    :Cél
 STR_6395    :Karbantartás
 STR_6396    :Képernyővédő és a monitor energiagazdálkodása ki
 STR_6397    :Ha ki van választva, szüneteltetve lesz a képernyővédő és a monitor egyéb energiagazdálkodásosi funkciói, amíg az OpenRCT2 fut.
+STR_6398    :A fájl nem támogatott játék-típusokat tartalmaz. Kérlek frissíts egy újabb OpenRCT2 verzióra.
+STR_6399    :Az OpenRCT2 működéséhez szükség van az eredeti RollerCoaster Tycoon 2 fájljaira. Kérlek állítsd be a „game_path” változót a config.ini-ben arra a mappára, amelybe telepítetted a RollerCoaster Tycoon 2-t, majd indítsd újra az OpenRCT2-t.
+STR_6400    :Letöltöttem a GOG RollerCoaster Tycoon 2 offline telepítőjét, de nincs telepítve
+STR_6401    :Már telepítettem a RollerCoaster Tycoon 2-t
+STR_6402    :OpenRCT2 adatok beállítása
+STR_6403    :Válaszd ki a számodra legmegfelelőbbet
+STR_6404    :Kérlek válaszd ki a GOG RollerCoaster Tycoon 2 telepítőjét.
+STR_6405    :GOG telepítő kiválasztása
+STR_6406    :GOG RollerCoaster Tycoon 2 telepítő
+STR_6407    :Ez eltarthat pár percig.
+STR_6408    :Kérlek rakd fel az “innoextract”-ot a GOG telepítő kitömörítéséhez, majd indítsd újra az OpenRCT2-t.
+STR_6409    :A kiválasztott fájl nem a GOG RollerCoaster Tycoon 2 offline telepítője. Lehet, hogy a GOG Galaxy letöltő stub-ját töltötted le, vagy rossz fájlt választottál.
+STR_6410    :Kicsinyítés/nagyítás
+STR_6411    :A kicsinyítés és nagyítás gombjainak megjelenítése az eszköztáron
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :Bal Shift
+STR_6415    :Jobb Shift
+STR_6416    :Ctrl
+STR_6417    :Bal Ctrl
+STR_6418    :Jobb Ctrl
+STR_6419    :Alt
+STR_6420    :Bal Alt
+STR_6421    :Jobb Alt
+STR_6422    :Cmd
+STR_6423    :Bal Cmd
+STR_6424    :Jobb Cmd
+STR_6425    :Joy bal
+STR_6426    :Joy jobb
+STR_6427    :Joy fel
+STR_6428    :Joy le
+STR_6429    :Joy {INT32}
+STR_6430    :Bal egérgomb
+STR_6431    :Jobb egérgomb
+STR_6432    :Egér {INT32}
+STR_6433    :Eltávolítás
+STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
 
 
 #############

@@ -19,6 +19,18 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN = 20060;
+static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN = 20061;
+static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED = 20062;
+static constexpr const uint32_t MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED = 20063;
+
+static constexpr const uint32_t _MineTrainBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
+    { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
+    { MINE_TRAIN_BLOCK_BRAKE_SW_NE_OPEN, MINE_TRAIN_BLOCK_BRAKE_SW_NE_CLOSED },
+    { MINE_TRAIN_BLOCK_BRAKE_NW_SE_OPEN, MINE_TRAIN_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 /** rct2: 0x0071BFA4 */
 static void mine_train_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -78,21 +90,22 @@ static void mine_train_rc_track_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 20064, 20060, SPR_STATION_BASE_B_SW_NE },
-        { 20065, 20061, SPR_STATION_BASE_B_NW_SE },
-        { 20064, 20060, SPR_STATION_BASE_B_SW_NE },
-        { 20065, 20061, SPR_STATION_BASE_B_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 20064, SPR_STATION_BASE_B_SW_NE },
+        { 20065, SPR_STATION_BASE_B_NW_SE },
+        { 20064, SPR_STATION_BASE_B_SW_NE },
+        { 20065, SPR_STATION_BASE_B_NW_SE },
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2,
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2,
         height);
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 0,
-            height);
+            session, direction, _MineTrainBlockBrakeImages[direction][isClosed] | session->TrackColours[SCHEME_TRACK], 0, 0, 32,
+            20, 1, height, 0, 0, height);
     }
     else
     {
@@ -7279,21 +7292,11 @@ static void mine_train_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 20060, 0, 0, 32, 20, 1, height, 0, 6, height);
-            wooden_a_supports_paint_setup(session, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 20061, 0, 0, 32, 20, 1, height, 0, 6, height);
-            wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
-            break;
-    }
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _MineTrainBlockBrakeImages[direction][isClosed], 0, 0, 32, 20,
+        1, height, 0, 6, height);
+    wooden_a_supports_paint_setup(session, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

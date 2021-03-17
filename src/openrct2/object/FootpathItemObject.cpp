@@ -33,7 +33,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     GetStringTable().Read(context, stream, ObjectStringID::NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
-    SetPrimarySceneryGroup(&sgEntry);
+    SetPrimarySceneryGroup(ObjectEntryDescriptor(sgEntry));
 
     GetImageTable().Read(context, stream);
 
@@ -56,7 +56,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
             || sourceGame == ObjectSourceGame::Custom)
         {
             auto scgPathX = Object::GetScgPathXHeader();
-            SetPrimarySceneryGroup(&scgPathX);
+            SetPrimarySceneryGroup(scgPathX);
         }
     }
 }
@@ -110,7 +110,7 @@ void FootpathItemObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.path_bit.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::LamppostDown);
         _legacyType.path_bit.price = Json::GetNumber<int16_t>(properties["price"]);
 
-        SetPrimarySceneryGroup(Json::GetString(properties["sceneryGroup"]));
+        SetPrimarySceneryGroup(ObjectEntryDescriptor(Json::GetString(properties["sceneryGroup"])));
 
         // clang-format off
         _legacyType.path_bit.flags = Json::GetFlags<uint16_t>(

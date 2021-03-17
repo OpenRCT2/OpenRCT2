@@ -208,7 +208,7 @@ void gfx_draw_line(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colou
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext(dpi);
-        dc->DrawLine(colour, line.GetX1(), line.GetY1(), line.GetX2(), line.GetY2());
+        dc->DrawLine(colour, line);
     }
 }
 
@@ -240,7 +240,7 @@ void gfx_draw_dashed_line(
         {
             x = screenLine.GetX1() + dxPrecise * i * 2 / precisionFactor;
             y = screenLine.GetY1() + dyPrecise * i * 2 / precisionFactor;
-            dc->DrawLine(color, x, y, x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor);
+            dc->DrawLine(color, { { x, y }, { x + dxPrecise / precisionFactor, y + dyPrecise / precisionFactor } });
         }
     }
 }

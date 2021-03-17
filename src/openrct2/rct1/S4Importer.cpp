@@ -37,6 +37,7 @@
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/TrainManager.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
@@ -1136,11 +1137,7 @@ private:
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
                 {
-                    // If vehicle is the first car on a train add to train list
-                    auto isFirstCar = srcVehicle->type == static_cast<uint8_t>(Vehicle::Type::Head);
-                    auto llt = isFirstCar ? EntityListId::TrainHead : EntityListId::Vehicle;
-
-                    Vehicle* vehicle = reinterpret_cast<Vehicle*>(create_sprite(SpriteIdentifier::Vehicle, llt));
+                    Vehicle* vehicle = CreateEntity<Vehicle>();
                     spriteIndexMap[i] = vehicle->sprite_index;
                     vehicles.push_back(vehicle);
 
@@ -1163,7 +1160,6 @@ private:
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->sprite_identifier = SpriteIdentifier::Vehicle;
         dst->ride = src->ride;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
@@ -1350,7 +1346,15 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Peep)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
-                Peep* peep = reinterpret_cast<Peep*>(create_sprite(SpriteIdentifier::Peep));
+                Peep* peep = nullptr;
+                if (static_cast<PeepType>(srcPeep->type) == PeepType::Guest)
+                {
+                    peep = CreateEntity<Guest>();
+                }
+                else
+                {
+                    peep = CreateEntity<Staff>();
+                }
                 spriteIndexMap[i] = peep->sprite_index;
 
                 ImportPeep(peep, srcPeep);
@@ -1371,7 +1375,7 @@ private:
         }
 
         {
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 FixPeepNextInQueue(peep, spriteIndexMap);
             }
@@ -1397,7 +1401,7 @@ private:
             gStaffModes[i] = static_cast<StaffMode>(_s4.staff_modes[i]);
         }
 
-        for (auto peep : EntityList<Staff>(EntityListId::Peep))
+        for (auto peep : EntityList<Staff>())
         {
             ImportStaffPatrolArea(peep);
         }
@@ -1407,7 +1411,6 @@ private:
 
     void ImportPeep(Peep* dst, rct1_peep* src)
     {
-        dst->sprite_identifier = SpriteIdentifier::Peep;
         // Peep vs. staff (including which kind)
         dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->Action = static_cast<PeepActionType>(src->action);
@@ -1652,8 +1655,7 @@ private:
             {
                 const auto* srcLitter = &sprite.litter;
 
-                Litter* litter = reinterpret_cast<Litter*>(create_sprite(SpriteIdentifier::Litter));
-                litter->sprite_identifier = srcLitter->sprite_identifier;
+                Litter* litter = CreateEntity<Litter>();
                 litter->SubType = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
@@ -1669,6 +1671,45 @@ private:
         }
     }
 
+    MiscEntity* CreateMiscFromType(MiscEntityType type)
+    {
+        MiscEntity* misc = nullptr;
+        switch (type)
+        {
+            case MiscEntityType::SteamParticle:
+                misc = CreateEntity<SteamParticle>();
+                break;
+            case MiscEntityType::MoneyEffect:
+                misc = CreateEntity<MoneyEffect>();
+                break;
+            case MiscEntityType::CrashedVehicleParticle:
+                misc = CreateEntity<VehicleCrashParticle>();
+                break;
+            case MiscEntityType::ExplosionCloud:
+                misc = CreateEntity<ExplosionCloud>();
+                break;
+            case MiscEntityType::CrashSplash:
+                misc = CreateEntity<CrashSplashParticle>();
+                break;
+            case MiscEntityType::ExplosionFlare:
+                misc = CreateEntity<ExplosionFlare>();
+                break;
+            case MiscEntityType::JumpingFountainWater:
+            case MiscEntityType::JumpingFountainSnow:
+                misc = CreateEntity<JumpingFountain>();
+                break;
+            case MiscEntityType::Balloon:
+                misc = CreateEntity<Balloon>();
+                break;
+            case MiscEntityType::Duck:
+                misc = CreateEntity<Duck>();
+                break;
+            default:
+                break;
+        }
+        return misc;
+    }
+
     void ImportMiscSprites()
     {
         for (auto& sprite : _s4.sprites)
@@ -1676,13 +1717,12 @@ private:
             if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                MiscEntity* dst = reinterpret_cast<MiscEntity*>(create_sprite(SpriteIdentifier::Misc));
+                MiscEntity* dst = CreateMiscFromType(MiscEntityType(src->type));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
                     break;
                 }
-                dst->sprite_identifier = src->sprite_identifier;
                 dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;
@@ -2968,7 +3008,7 @@ private:
         if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
         {
             // First, make the queuing peep exit
-            for (auto peep : EntityList<Guest>(EntityListId::Peep))
+            for (auto peep : EntityList<Guest>())
             {
                 if (peep->State == PeepState::QueuingFront && peep->CurrentRide == 0)
                 {

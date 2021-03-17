@@ -21,6 +21,18 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_OPEN = 17150;
+static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_OPEN = 17151;
+static constexpr const uint32_t BM_BLOCK_BRAKE_SW_NE_CLOSED = 17152;
+static constexpr const uint32_t BM_BLOCK_BRAKE_NW_SE_CLOSED = 17153;
+
+static constexpr const uint32_t _BolligerMabillardBlockBrakeImages[NumOrthogonalDirections][2] = {
+    { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
+    { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
+    { BM_BLOCK_BRAKE_SW_NE_OPEN, BM_BLOCK_BRAKE_SW_NE_CLOSED },
+    { BM_BLOCK_BRAKE_NW_SE_OPEN, BM_BLOCK_BRAKE_NW_SE_CLOSED },
+};
+
 void bolliger_mabillard_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement, int32_t supportType)
@@ -60,18 +72,19 @@ void bolliger_mabillard_track_station(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement, int32_t supportType)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
-        { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
-        { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 17154, SPR_STATION_BASE_A_SW_NE },
+        { 17155, SPR_STATION_BASE_A_NW_SE },
+        { 17154, SPR_STATION_BASE_A_SW_NE },
+        { 17155, SPR_STATION_BASE_A_NW_SE },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
-            height + 3);
+            session, direction, _BolligerMabillardBlockBrakeImages[direction][isClosed] | session->TrackColours[SCHEME_TRACK],
+            0, 0, 32, 20, 1, height, 0, 6, height + 3);
     }
     else
     {
@@ -80,7 +93,7 @@ void bolliger_mabillard_track_station(
             height + 3);
     }
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(
         session, direction, height, session->TrackColours[SCHEME_SUPPORTS], supportType);
 
@@ -8831,17 +8844,22 @@ void bolliger_mabillard_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement, int32_t supportType)
 {
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
     switch (direction)
     {
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 17150, 0, 0, 32, 20, 3, height, 0, 6, height);
+                session, direction,
+                session->TrackColours[SCHEME_TRACK] | _BolligerMabillardBlockBrakeImages[direction][isClosed], 0, 0, 32, 20, 3,
+                height, 0, 6, height);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 17151, 0, 0, 32, 20, 3, height, 0, 6, height);
+                session, direction,
+                session->TrackColours[SCHEME_TRACK] | _BolligerMabillardBlockBrakeImages[direction][isClosed], 0, 0, 32, 20, 3,
+                height, 0, 6, height);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))

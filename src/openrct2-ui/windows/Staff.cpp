@@ -1139,6 +1139,10 @@ void window_staff_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
+            ft = Formatter();
+            ft.Add<uint16_t>(peep->StaffVandalsStopped);
+            DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
+            break;
         case StaffType::Entertainer:
         case StaffType::Count:
             break;

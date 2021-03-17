@@ -16,14 +16,12 @@
 
 template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::CrashedVehicleParticle;
+    return Type == EntityType::CrashedVehicleParticle;
 }
 
 template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::CrashSplash;
+    return Type == EntityType::CrashSplash;
 }
 /**
  *
@@ -31,7 +29,7 @@ template<> bool SpriteBase::Is<CrashSplashParticle>() const
  */
 void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos)
 {
-    VehicleCrashParticle* sprite = &create_sprite(SpriteIdentifier::Misc)->crashed_vehicle_particle;
+    VehicleCrashParticle* sprite = CreateEntity<VehicleCrashParticle>();
     if (sprite != nullptr)
     {
         sprite->colour[0] = colours.body_colour;
@@ -39,7 +37,6 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, const CoordsXYZ
         sprite->sprite_width = 8;
         sprite->sprite_height_negative = 8;
         sprite->sprite_height_positive = 8;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(vehiclePos);
         sprite->SubType = MiscEntityType::CrashedVehicleParticle;
 
@@ -122,13 +119,12 @@ void VehicleCrashParticle::Update()
  */
 void crash_splash_create(const CoordsXYZ& splashPos)
 {
-    MiscEntity* sprite = &create_sprite(SpriteIdentifier::Misc)->misc;
+    auto* sprite = CreateEntity<CrashSplashParticle>();
     if (sprite != nullptr)
     {
         sprite->sprite_width = 33;
         sprite->sprite_height_negative = 51;
         sprite->sprite_height_positive = 16;
-        sprite->sprite_identifier = SpriteIdentifier::Misc;
         sprite->MoveTo(splashPos + CoordsXYZ{ 0, 0, 3 });
         sprite->SubType = MiscEntityType::CrashSplash;
         sprite->frame = 0;

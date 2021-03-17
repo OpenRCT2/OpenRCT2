@@ -72,8 +72,13 @@ static void gfx_draw_line_on_buffer(rct_drawpixelinfo* dpi, char colour, int32_t
  * y2 (dx)
  * colour (ebp)
  */
-void gfx_draw_line_software(rct_drawpixelinfo* dpi, int32_t x1, int32_t y1, int32_t x2, int32_t y2, int32_t colour)
+
+void gfx_draw_line_software(rct_drawpixelinfo* dpi, const ScreenLine& line, int32_t colour)
 {
+    int32_t x1 = line.GetX1();
+    int32_t x2 = line.GetX2();
+    int32_t y1 = line.GetY1();
+    int32_t y2 = line.GetY2();
     // Check to make sure the line is within the drawing area
     if ((x1 < dpi->x) && (x2 < dpi->x))
     {

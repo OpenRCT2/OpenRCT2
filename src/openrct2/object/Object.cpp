@@ -91,14 +91,14 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
     return GetStringTable().GetString(language, index);
 }
 
-rct_object_entry Object::GetScgWallsHeader()
+ObjectEntryDescriptor Object::GetScgWallsHeader() const
 {
-    return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
+    return ObjectEntryDescriptor("rct2.scgwalls");
 }
 
-rct_object_entry Object::GetScgPathXHeader()
+ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
-    return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
+    return ObjectEntryDescriptor("rct2.scgpathx");
 }
 
 rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)

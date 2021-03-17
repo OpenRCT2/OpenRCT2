@@ -19,6 +19,27 @@
 #include "../TrackData.h"
 #include "../TrackPaint.h"
 
+// Closed block brakes and regular brakes use the same images
+static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_1 = 18076;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_1 = 18077;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_1 = 18078;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_1 = 18079;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_OPEN_2 = 18080;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_OPEN_2 = 18081;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 = 18082;
+static constexpr const uint32_t GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 = 18083;
+
+static constexpr const uint32_t _GigaCoasterBrakeImages[NumOrthogonalDirections][2][2] = {
+    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
+      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
+    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
+      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
+    { { GIGA_COASTER_BRAKE_SW_NE_OPEN_1, GIGA_COASTER_BRAKE_SW_NE_OPEN_2 },
+      { GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, GIGA_COASTER_BRAKE_SW_NE_CLOSED_2 } },
+    { { GIGA_COASTER_BRAKE_NW_SE_OPEN_1, GIGA_COASTER_BRAKE_NW_SE_OPEN_2 },
+      { GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, GIGA_COASTER_BRAKE_NW_SE_CLOSED_2 } },
+};
+
 /** rct2: 0x008AD674 */
 static void giga_rc_track_flat(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -100,18 +121,19 @@ static void giga_rc_track_station(
     paint_session* session, ride_id_t rideIndex, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    static constexpr const uint32_t imageIds[4][3] = {
-        { 18084, 18076, SPR_STATION_BASE_A_SW_NE },
-        { 18085, 18077, SPR_STATION_BASE_A_NW_SE },
-        { 18084, 18076, SPR_STATION_BASE_A_SW_NE },
-        { 18085, 18077, SPR_STATION_BASE_A_NW_SE },
+    static constexpr const uint32_t imageIds[4][2] = {
+        { 18084, SPR_STATION_BASE_A_SW_NE },
+        { 18085, SPR_STATION_BASE_A_NW_SE },
+        { 18084, SPR_STATION_BASE_A_SW_NE },
+        { 18085, SPR_STATION_BASE_A_NW_SE },
     };
 
     if (tileElement->AsTrack()->GetTrackType() == TrackElemType::EndStation)
     {
+        bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
         PaintAddImageAsParentRotated(
-            session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6,
-            height + 3);
+            session, direction, _GigaCoasterBrakeImages[direction][isClosed][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32,
+            20, 1, height, 0, 6, height + 3);
     }
     else
     {
@@ -120,7 +142,7 @@ static void giga_rc_track_station(
             height + 3);
     }
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
+        session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_2(session, rideIndex, direction, height, tileElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -3774,16 +3796,20 @@ static void giga_rc_track_brakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18078, 0, 0, 32, 20, 3, height, 0, 6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | GIGA_COASTER_BRAKE_SW_NE_CLOSED_1, 0, 0, 32, 20, 3,
+                height, 0, 6, height);
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18082, 0, 0, 32, 1, 11, height, 0, 27, height + 5);
+                session, direction, session->TrackColours[SCHEME_TRACK] | GIGA_COASTER_BRAKE_SW_NE_CLOSED_2, 0, 0, 32, 1, 11,
+                height, 0, 27, height + 5);
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18079, 0, 0, 32, 20, 3, height, 0, 6, height);
+                session, direction, session->TrackColours[SCHEME_TRACK] | GIGA_COASTER_BRAKE_NW_SE_CLOSED_1, 0, 0, 32, 20, 3,
+                height, 0, 6, height);
             PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18083, 0, 0, 32, 1, 11, height, 0, 27, height + 5);
+                session, direction, session->TrackColours[SCHEME_TRACK] | GIGA_COASTER_BRAKE_NW_SE_CLOSED_2, 0, 0, 32, 1, 11,
+                height, 0, 27, height + 5);
             break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
@@ -7724,23 +7750,14 @@ static void giga_rc_track_block_brakes(
     paint_session* session, ride_id_t rideIndex, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TileElement* tileElement)
 {
-    switch (direction)
-    {
-        case 0:
-        case 2:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18076, 0, 0, 32, 20, 3, height, 0, 6, height);
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18080, 0, 0, 32, 1, 11, height, 0, 27, height + 5);
-            break;
-        case 1:
-        case 3:
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18077, 0, 0, 32, 20, 3, height, 0, 6, height);
-            PaintAddImageAsParentRotated(
-                session, direction, session->TrackColours[SCHEME_TRACK] | 18081, 0, 0, 32, 1, 11, height, 0, 27, height + 5);
-            break;
-    }
+    bool isClosed = tileElement->AsTrack()->BlockBrakeClosed();
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _GigaCoasterBrakeImages[direction][isClosed][0], 0, 0, 32, 20,
+        3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(
+        session, direction, session->TrackColours[SCHEME_TRACK] | _GigaCoasterBrakeImages[direction][isClosed][1], 0, 0, 32, 1,
+        11, height, 0, 27, height + 5);
+
     if (track_paint_util_should_paint_supports(session->MapPosition))
     {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);

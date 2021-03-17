@@ -143,7 +143,7 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
         }
     }
 
-    for (auto peep : EntityList<Guest>(EntityListId::Peep))
+    for (auto peep : EntityList<Guest>())
     {
         uint8_t ride_id_bit = _rideIndex % 8;
         uint8_t ride_id_offset = _rideIndex / 8;

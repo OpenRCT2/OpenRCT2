@@ -154,18 +154,17 @@ template<> bool SpriteBase::Is<SpriteBase>() const
 
 template<> bool SpriteBase::Is<Peep>() const
 {
-    return sprite_identifier == SpriteIdentifier::Peep;
+    return Type == EntityType::Guest || Type == EntityType::Staff;
 }
 
 template<> bool SpriteBase::Is<Guest>() const
 {
-    auto peep = As<Peep>();
-    return peep && peep->AssignedPeepType == PeepType::Guest;
+    return Type == EntityType::Guest;
 }
 
 template<> bool SpriteBase::Is<Vehicle>() const
 {
-    return sprite_identifier == SpriteIdentifier::Vehicle;
+    return Type == EntityType::Vehicle;
 }
 
 SpriteBase* get_sprite(size_t sprite_idx)

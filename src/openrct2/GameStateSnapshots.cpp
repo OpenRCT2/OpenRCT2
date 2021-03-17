@@ -50,7 +50,7 @@ struct GameStateSnapshot_t
             for (size_t i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(i);
-                if (entity == nullptr || entity->misc.sprite_identifier == SpriteIdentifier::Null)
+                if (entity == nullptr || entity->misc.Type == EntityType::Null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
             }
@@ -77,45 +77,40 @@ struct GameStateSnapshot_t
             }
             auto& sprite = *entity;
 
-            ds << sprite.misc.sprite_identifier;
+            ds << sprite.misc.Type;
 
-            switch (sprite.misc.sprite_identifier)
+            switch (sprite.misc.Type)
             {
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Vehicle:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Vehicle)]>(sprite.vehicle);
                     break;
-                case SpriteIdentifier::Peep:
-                    ds << reinterpret_cast<uint8_t(&)[sizeof(Peep)]>(sprite.peep);
+                case EntityType::Guest:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Guest)]>(sprite.peep);
                     break;
-                case SpriteIdentifier::Litter:
+                case EntityType::Staff:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Staff)]>(sprite.peep);
+                    break;
+                case EntityType::Litter:
                     ds << reinterpret_cast<uint8_t(&)[sizeof(Litter)]>(sprite.litter);
                     break;
-                case SpriteIdentifier::Misc:
-                {
-                    ds << sprite.misc.SubType;
-                    switch (sprite.misc.SubType)
-                    {
-                        case MiscEntityType::MoneyEffect:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
-                            break;
-                        case MiscEntityType::Balloon:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
-                            break;
-                        case MiscEntityType::Duck:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
-                            break;
-                        case MiscEntityType::JumpingFountainWater:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
-                            break;
-                        case MiscEntityType::SteamParticle:
-                            ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
-                            break;
-                        default:
-                            break;
-                    }
+                case EntityType::MoneyEffect:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(MoneyEffect)]>(sprite.money_effect);
                     break;
-                }
-                case SpriteIdentifier::Null:
+                case EntityType::Balloon:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Balloon)]>(sprite.balloon);
+                    break;
+                case EntityType::Duck:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(Duck)]>(sprite.duck);
+                    break;
+                case EntityType::JumpingFountain:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(JumpingFountain)]>(sprite.jumping_fountain);
+                    break;
+                case EntityType::SteamParticle:
+                    ds << reinterpret_cast<uint8_t(&)[sizeof(SteamParticle)]>(sprite.steam_particle);
+                    break;
+                case EntityType::Null:
+                    break;
+                default:
                     break;
             }
         }
@@ -177,7 +172,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         for (auto& sprite : spriteList)
         {
             // By default they don't exist.
-            sprite.misc.sprite_identifier = SpriteIdentifier::Null;
+            sprite.misc.Type = EntityType::Null;
         }
 
         snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_ENTITIES, false);
@@ -200,8 +195,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataCommon(
         const SpriteBase& spriteBase, const SpriteBase& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
-        COMPARE_FIELD(SpriteBase, sprite_identifier);
-        COMPARE_FIELD(SpriteBase, linked_list_index);
+        COMPARE_FIELD(SpriteBase, Type);
         COMPARE_FIELD(SpriteBase, sprite_index);
         COMPARE_FIELD(SpriteBase, flags);
         COMPARE_FIELD(SpriteBase, x);
@@ -409,6 +403,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataMoneyEffect(
         const MoneyEffect& spriteBase, const MoneyEffect& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(MoneyEffect, MoveDelay);
         COMPARE_FIELD(MoneyEffect, NumMovements);
         COMPARE_FIELD(MoneyEffect, Vertical);
@@ -420,6 +415,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataSteamParticle(
         const SteamParticle& spriteBase, const SteamParticle& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(SteamParticle, time_to_move);
     }
 
@@ -427,6 +423,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         const VehicleCrashParticle& spriteBase, const VehicleCrashParticle& spriteCmp,
         GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(VehicleCrashParticle, time_to_live);
         for (int i = 0; i < 2; i++)
         {
@@ -443,6 +440,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
 
     void CompareSpriteDataDuck(const Duck& spriteBase, const Duck& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(Duck, target_x);
         COMPARE_FIELD(Duck, target_y);
         COMPARE_FIELD(Duck, state);
@@ -451,6 +449,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataBalloon(
         const Balloon& spriteBase, const Balloon& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(Balloon, popped);
         COMPARE_FIELD(Balloon, time_to_move);
         COMPARE_FIELD(Balloon, colour);
@@ -459,6 +458,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteDataJumpingFountain(
         const JumpingFountain& spriteBase, const JumpingFountain& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
+        CompareSpriteDataMisc(spriteBase, spriteCmp, changeData);
         COMPARE_FIELD(JumpingFountain, NumTicksAlive);
         COMPARE_FIELD(JumpingFountain, FountainFlags);
         COMPARE_FIELD(JumpingFountain, TargetX);
@@ -476,55 +476,49 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.misc, spriteCmp.misc, changeData);
-        if (spriteBase.misc.sprite_identifier == spriteCmp.misc.sprite_identifier)
+        if (spriteBase.misc.Type == spriteCmp.misc.Type)
         {
-            switch (spriteBase.misc.sprite_identifier)
+            switch (spriteBase.misc.Type)
             {
-                case SpriteIdentifier::Peep:
+                case EntityType::Guest:
                     CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
                     break;
-                case SpriteIdentifier::Vehicle:
+                case EntityType::Staff:
+                    CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
+                    break;
+                case EntityType::Vehicle:
                     CompareSpriteDataVehicle(spriteBase.vehicle, spriteCmp.vehicle, changeData);
                     break;
-                case SpriteIdentifier::Litter:
+                case EntityType::Litter:
                     CompareSpriteDataLitter(spriteBase.litter, spriteCmp.litter, changeData);
                     break;
-                case SpriteIdentifier::Misc:
-                    // This is not expected to happen, as misc sprites do not constitute sprite checksum
-                    CompareSpriteDataMisc(spriteBase.misc, spriteCmp.misc, changeData);
-                    switch (spriteBase.misc.SubType)
-                    {
-                        case MiscEntityType::SteamParticle:
-                            CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
-                            break;
-                        case MiscEntityType::MoneyEffect:
-                            CompareSpriteDataMoneyEffect(spriteBase.money_effect, spriteCmp.money_effect, changeData);
-                            break;
-                        case MiscEntityType::CrashedVehicleParticle:
-                            CompareSpriteDataVehicleCrashParticle(
-                                spriteBase.crashed_vehicle_particle, spriteCmp.crashed_vehicle_particle, changeData);
-                            break;
-                        case MiscEntityType::ExplosionCloud:
-                        case MiscEntityType::CrashSplash:
-                        case MiscEntityType::ExplosionFlare:
-                            // MiscEntity
-                            break;
-                        case MiscEntityType::JumpingFountainWater:
-                        case MiscEntityType::JumpingFountainSnow:
-                            CompareSpriteDataJumpingFountain(
-                                spriteBase.jumping_fountain, spriteCmp.jumping_fountain, changeData);
-                            break;
-                        case MiscEntityType::Balloon:
-                            CompareSpriteDataBalloon(spriteBase.balloon, spriteCmp.balloon, changeData);
-                            break;
-                        case MiscEntityType::Duck:
-                            CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
-                            break;
-                        default:
-                            break;
-                    }
+                case EntityType::SteamParticle:
+                    CompareSpriteDataSteamParticle(spriteBase.steam_particle, spriteCmp.steam_particle, changeData);
                     break;
-                case SpriteIdentifier::Null:
+                case EntityType::MoneyEffect:
+                    CompareSpriteDataMoneyEffect(spriteBase.money_effect, spriteCmp.money_effect, changeData);
+                    break;
+                case EntityType::CrashedVehicleParticle:
+                    CompareSpriteDataVehicleCrashParticle(
+                        spriteBase.crashed_vehicle_particle, spriteCmp.crashed_vehicle_particle, changeData);
+                    break;
+                case EntityType::ExplosionCloud:
+                case EntityType::CrashSplash:
+                case EntityType::ExplosionFlare:
+                    CompareSpriteDataMisc(spriteBase.misc, spriteCmp.misc, changeData);
+                    break;
+                case EntityType::JumpingFountain:
+                    CompareSpriteDataJumpingFountain(spriteBase.jumping_fountain, spriteCmp.jumping_fountain, changeData);
+                    break;
+                case EntityType::Balloon:
+                    CompareSpriteDataBalloon(spriteBase.balloon, spriteCmp.balloon, changeData);
+                    break;
+                case EntityType::Duck:
+                    CompareSpriteDataDuck(spriteBase.duck, spriteCmp.duck, changeData);
+                    break;
+                case EntityType::Null:
+                    break;
+                default:
                     break;
             }
         }
@@ -549,30 +543,21 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             const rct_sprite& spriteBase = spritesBase[i];
             const rct_sprite& spriteCmp = spritesCmp[i];
 
-            changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
-            // This will be nonsense information for all types apart from MiscEntities.
-            // This is not an issue though as only MiscEntities will use this field in GetSpriteIdentifierName
-            // TODO: Don't do this.
-            changeData.miscIdentifier = spriteBase.misc.SubType;
+            changeData.entityType = spriteBase.misc.Type;
 
-            if (spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
-                && spriteCmp.misc.sprite_identifier != SpriteIdentifier::Null)
+            if (spriteBase.misc.Type == EntityType::Null && spriteCmp.misc.Type != EntityType::Null)
             {
                 // Sprite was added.
                 changeData.changeType = GameStateSpriteChange_t::ADDED;
-                changeData.spriteIdentifier = spriteCmp.misc.sprite_identifier;
+                changeData.entityType = spriteCmp.misc.Type;
             }
-            else if (
-                spriteBase.misc.sprite_identifier != SpriteIdentifier::Null
-                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
+            else if (spriteBase.misc.Type != EntityType::Null && spriteCmp.misc.Type == EntityType::Null)
             {
                 // Sprite was removed.
                 changeData.changeType = GameStateSpriteChange_t::REMOVED;
-                changeData.spriteIdentifier = spriteBase.misc.sprite_identifier;
+                changeData.entityType = spriteBase.misc.Type;
             }
-            else if (
-                spriteBase.misc.sprite_identifier == SpriteIdentifier::Null
-                && spriteCmp.misc.sprite_identifier == SpriteIdentifier::Null)
+            else if (spriteBase.misc.Type == EntityType::Null && spriteCmp.misc.Type == EntityType::Null)
             {
                 // Do nothing.
                 changeData.changeType = GameStateSpriteChange_t::EQUAL;
@@ -596,45 +581,40 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         return res;
     }
 
-    static const char* GetSpriteIdentifierName(SpriteIdentifier spriteIdentifier, MiscEntityType miscIdentifier)
+    static const char* GetEntityTypeName(EntityType type)
     {
-        switch (spriteIdentifier)
+        switch (type)
         {
-            case SpriteIdentifier::Null:
+            case EntityType::Null:
                 return "Null";
-            case SpriteIdentifier::Peep:
-                return "Peep";
-            case SpriteIdentifier::Vehicle:
+            case EntityType::Guest:
+                return "Guest";
+            case EntityType::Staff:
+                return "Staff";
+            case EntityType::Vehicle:
                 return "Vehicle";
-            case SpriteIdentifier::Litter:
+            case EntityType::Litter:
                 return "Litter";
-            case SpriteIdentifier::Misc:
-                switch (miscIdentifier)
-                {
-                    case MiscEntityType::SteamParticle:
-                        return "Misc: Steam Particle";
-                    case MiscEntityType::MoneyEffect:
-                        return "Misc: Money effect";
-                    case MiscEntityType::CrashedVehicleParticle:
-                        return "Misc: Crash Vehicle Particle";
-                    case MiscEntityType::ExplosionCloud:
-                        return "Misc: Explosion Cloud";
-                    case MiscEntityType::CrashSplash:
-                        return "Misc: Crash Splash";
-                    case MiscEntityType::ExplosionFlare:
-                        return "Misc: Explosion Flare";
-                    case MiscEntityType::JumpingFountainWater:
-                        return "Misc: Jumping fountain water";
-                    case MiscEntityType::Balloon:
-                        return "Misc: Balloon";
-                    case MiscEntityType::Duck:
-                        return "Misc: Duck";
-                    case MiscEntityType::JumpingFountainSnow:
-                        return "Misc: Jumping fountain snow";
-                    default:
-                        break;
-                }
-                return "Misc";
+            case EntityType::SteamParticle:
+                return "Misc: Steam Particle";
+            case EntityType::MoneyEffect:
+                return "Misc: Money effect";
+            case EntityType::CrashedVehicleParticle:
+                return "Misc: Crash Vehicle Particle";
+            case EntityType::ExplosionCloud:
+                return "Misc: Explosion Cloud";
+            case EntityType::CrashSplash:
+                return "Misc: Crash Splash";
+            case EntityType::ExplosionFlare:
+                return "Misc: Explosion Flare";
+            case EntityType::JumpingFountain:
+                return "Misc: Jumping fountain";
+            case EntityType::Balloon:
+                return "Misc: Balloon";
+            case EntityType::Duck:
+                return "Misc: Duck";
+            default:
+                break;
         }
         return "Unknown";
     }
@@ -663,7 +643,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             if (change.changeType == GameStateSpriteChange_t::EQUAL)
                 continue;
 
-            const char* typeName = GetSpriteIdentifierName(change.spriteIdentifier, change.miscIdentifier);
+            const char* typeName = GetEntityTypeName(change.entityType);
 
             if (change.changeType == GameStateSpriteChange_t::ADDED)
             {

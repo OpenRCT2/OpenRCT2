@@ -351,8 +351,8 @@ public:
         return _imageTable;
     }
 
-    rct_object_entry GetScgWallsHeader();
-    rct_object_entry GetScgPathXHeader();
+    ObjectEntryDescriptor GetScgWallsHeader() const;
+    ObjectEntryDescriptor GetScgPathXHeader() const;
     rct_object_entry CreateHeader(const char name[9], uint32_t flags, uint32_t checksum);
 
     uint32_t GetNumImages() const

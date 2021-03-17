@@ -80,7 +80,7 @@ public:
         return GetLoadedObject(objectIndex);
     }
 
-    Object* GetLoadedObject(const rct_object_entry* entry) override
+    Object* GetLoadedObject(const ObjectEntryDescriptor& entry) override
     {
         Object* loadedObject = nullptr;
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(entry);
@@ -534,7 +534,7 @@ private:
     ObjectEntryIndex GetPrimarySceneryGroupEntryIndex(Object* loadedObject)
     {
         auto sceneryObject = dynamic_cast<SceneryObject*>(loadedObject);
-        const rct_object_entry* primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
+        const auto& primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object* sgObject = GetLoadedObject(primarySGEntry);
 
         auto entryIndex = OBJECT_ENTRY_INDEX_NULL;
@@ -819,7 +819,7 @@ Object* object_manager_get_loaded_object_by_index(size_t index)
 Object* object_manager_get_loaded_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.GetLoadedObject(entry);
+    Object* loadedObject = objectManager.GetLoadedObject(ObjectEntryDescriptor(*entry));
     return loadedObject;
 }
 
