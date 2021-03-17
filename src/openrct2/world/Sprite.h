@@ -194,6 +194,14 @@ template<typename T> T* CreateEntity()
 {
     return reinterpret_cast<T*>(create_sprite(T::cEntityType));
 }
+
+// Use only with imports that must happen at a specified index
+SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type);
+// Use only with imports that must happen at a specified index
+template<typename T> T* CreateEntityAt(const uint16_t index)
+{
+    return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
+}
 void reset_sprite_list();
 void reset_sprite_spatial_index();
 void sprite_clear_all_unused();
