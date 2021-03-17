@@ -591,7 +591,7 @@ void reset_all_sprite_quadrant_placements()
     for (size_t i = 0; i < MAX_ENTITIES; i++)
     {
         auto* spr = GetEntity(i);
-        if (spr != nullptr && spr->sprite_identifier != SpriteIdentifier::Null)
+        if (spr != nullptr && spr->Type != EntityType::Null)
         {
             spr->MoveTo({ spr->x, spr->y, spr->z });
         }

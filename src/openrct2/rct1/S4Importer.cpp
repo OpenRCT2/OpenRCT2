@@ -1160,7 +1160,6 @@ private:
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->sprite_identifier = SpriteIdentifier::Vehicle;
         dst->ride = src->ride;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
@@ -1412,7 +1411,6 @@ private:
 
     void ImportPeep(Peep* dst, rct1_peep* src)
     {
-        dst->sprite_identifier = SpriteIdentifier::Peep;
         // Peep vs. staff (including which kind)
         dst->SpriteType = RCT1::GetPeepSpriteType(src->sprite_type);
         dst->Action = static_cast<PeepActionType>(src->action);
@@ -1658,7 +1656,6 @@ private:
                 const auto* srcLitter = &sprite.litter;
 
                 Litter* litter = CreateEntity<Litter>();
-                litter->sprite_identifier = srcLitter->sprite_identifier;
                 litter->SubType = LitterType(srcLitter->type);
 
                 litter->x = srcLitter->x;
@@ -1726,7 +1723,6 @@ private:
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
                     break;
                 }
-                dst->sprite_identifier = src->sprite_identifier;
                 dst->SubType = MiscEntityType(src->type);
                 dst->flags = src->flags;
                 dst->sprite_direction = src->sprite_direction;

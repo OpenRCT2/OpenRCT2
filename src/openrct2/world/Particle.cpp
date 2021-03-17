@@ -16,14 +16,12 @@
 
 template<> bool SpriteBase::Is<VehicleCrashParticle>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::CrashedVehicleParticle;
+    return Type == EntityType::CrashedVehicleParticle;
 }
 
 template<> bool SpriteBase::Is<CrashSplashParticle>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::CrashSplash;
+    return Type == EntityType::CrashSplash;
 }
 /**
  *

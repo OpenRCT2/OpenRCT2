@@ -1585,7 +1585,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
     for (int i = 0; i < MAX_ENTITIES; i++)
     {
         auto* sprite = GetEntity(i);
-        if (sprite == nullptr || sprite->sprite_identifier == SpriteIdentifier::Null)
+        if (sprite == nullptr || sprite->Type == EntityType::Null)
             continue;
 
         auto peep = sprite->As<Peep>();

@@ -16,8 +16,7 @@
 
 template<> bool SpriteBase::Is<Balloon>() const
 {
-    auto* misc = As<MiscEntity>();
-    return misc && misc->SubType == MiscEntityType::Balloon;
+    return Type == EntityType::Balloon;
 }
 
 void Balloon::Update()
