@@ -73,6 +73,7 @@ random_engine_t gScenarioRand;
 
 Objective gScenarioObjective;
 
+bool gAllowEarlyCompletionInNetworkPlay;
 uint16_t gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
@@ -288,7 +289,6 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_10_ROLLERCOASTERS:
@@ -299,7 +299,7 @@ static void scenario_day_update()
             scenario_objective_check();
             break;
         default:
-            if (allowEarlyCompletion)
+            if (AllowEarlyCompletion())
                 scenario_objective_check();
             break;
     }
@@ -713,9 +713,8 @@ ObjectiveStatus Objective::CheckGuestsBy() const
 {
     int16_t parkRating = gParkRating;
     int32_t currentMonthYear = gDateMonthsElapsed;
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
         {
@@ -735,9 +734,8 @@ ObjectiveStatus Objective::CheckParkValueBy() const
     int32_t currentMonthYear = gDateMonthsElapsed;
     money32 objectiveParkValue = Currency;
     money32 parkValue = gParkValue;
-    bool allowEarlyCompletion = gConfigGeneral.allow_early_completion && (network_get_mode() == NETWORK_MODE_NONE);
 
-    if (currentMonthYear == MONTH_COUNT * Year || allowEarlyCompletion)
+    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
     {
         if (parkValue >= objectiveParkValue)
         {
@@ -942,6 +940,23 @@ ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
     }
 
     return ObjectiveStatus::Undecided;
+}
+
+/*
+ * Returns the AllowEarlyCompletion-Option to be used
+ * depending on the Current Network-Mode.
+ */
+bool AllowEarlyCompletion()
+{
+    switch (network_get_mode())
+    {
+        case NETWORK_MODE_CLIENT:
+            return gAllowEarlyCompletionInNetworkPlay;
+        case NETWORK_MODE_NONE:
+        case NETWORK_MODE_SERVER:
+        default:
+            return gConfigGeneral.allow_early_completion;
+    }
 }
 
 static void scenario_objective_check()

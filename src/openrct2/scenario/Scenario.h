@@ -431,7 +431,7 @@ extern uint32_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
 extern Objective gScenarioObjective;
-
+extern bool gAllowEarlyCompletionInNetworkPlay;
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money32 gScenarioCompletedCompanyValue;
 extern money32 gScenarioCompanyValueRecord;
@@ -452,6 +452,7 @@ void load_from_sc6(const char* path);
 void scenario_begin();
 void scenario_update();
 bool scenario_create_ducks();
+bool AllowEarlyCompletion();
 
 const random_engine_t::state_type& scenario_rand_state();
 void scenario_rand_seed(random_engine_t::result_type s0, random_engine_t::result_type s1);

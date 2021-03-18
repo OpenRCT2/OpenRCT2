@@ -21,6 +21,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -1793,6 +1794,14 @@ static void window_options_misc_mouseup(rct_window* w, rct_widgetindex widgetInd
             break;
         case WIDX_ALLOW_EARLY_COMPLETION:
             gConfigGeneral.allow_early_completion ^= 1;
+            // Only the server can control this setting and needs to send the
+            // current value of allow_early_completion to all clients
+            if (network_get_mode() == NETWORK_MODE_SERVER)
+            {
+                auto setAllowEarlyCompletionAction = ScenarioSetSettingAction(
+                    ScenarioSetSetting::AllowEarlyCompletion, gConfigGeneral.allow_early_completion);
+                GameActions::Execute(&setAllowEarlyCompletionAction);
+            }
             config_save_default();
             w->Invalidate();
             break;
@@ -1898,6 +1907,14 @@ static void window_options_misc_invalidate(rct_window* w)
     {
         w->disabled_widgets |= (1ULL << WIDX_REAL_NAME_CHECKBOX);
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+        // Disable the use of the allow_early_completion option during network play on clients.
+        // This is to prevent confusion on clients because changing this setting during network play wouldn't change
+        // the way scenarios are completed during this network-session
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        {
+            w->disabled_widgets |= (1ULL << WIDX_ALLOW_EARLY_COMPLETION);
+            window_options_misc_widgets[WIDX_ALLOW_EARLY_COMPLETION].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
+        }
     }
 
     WidgetSetCheckboxValue(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);

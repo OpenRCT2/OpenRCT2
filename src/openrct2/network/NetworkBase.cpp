@@ -36,7 +36,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "3"
+#define NETWORK_STREAM_VERSION "4"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -2754,6 +2754,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
         gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
         gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
+        gAllowEarlyCompletionInNetworkPlay = stream->ReadValue<uint8_t>() != 0;
 
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
@@ -2803,6 +2804,7 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
         stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);
         stream->WriteValue<uint8_t>(gConfigGeneral.show_real_names_of_guests);
         stream->WriteValue<uint8_t>(gCheatsIgnoreResearchStatus);
+        stream->WriteValue<uint8_t>(gConfigGeneral.allow_early_completion);
 
         result = true;
     }
