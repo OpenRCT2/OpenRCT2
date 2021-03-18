@@ -218,7 +218,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
     auto* element = tile_element_insert(loc, occupiedQuadrants, T::ElementType);
-    return element->template as<T>();
+    return (element != nullptr) ? element->template as<T>() : nullptr;
 }
 
 namespace GameActions
