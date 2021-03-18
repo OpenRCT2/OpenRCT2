@@ -807,6 +807,22 @@ namespace String
         return res;
 #endif
     }
+
+    std::string_view UTF8Truncate(std::string_view v, size_t size)
+    {
+        auto trunc = v.substr(0, size);
+        for (size_t i = 0; i < trunc.size();)
+        {
+            auto length = UTF8GetCodePointSize(trunc.substr(i, trunc.size()));
+            if (!length.has_value())
+            {
+                return trunc.substr(0, i);
+            }
+            i += *length;
+        }
+
+        return trunc;
+    }
 } // namespace String
 
 char32_t CodepointView::iterator::GetNextCodepoint(const char* ch, const char** next)

@@ -105,8 +105,7 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer = text;
-        _buffer.resize(maxLength);
+        _buffer = String::UTF8Truncate(text, maxLength);
         _maxInputLength = maxLength;
         gTextInput = context_start_text_input(_buffer.data(), maxLength);
     }
