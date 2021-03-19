@@ -83,7 +83,7 @@ void create_balloon(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
 {
     auto* balloon = CreateEntity<Balloon>();
     if (balloon == nullptr)
-        return; // can never happen
+        return;
 
     balloon->sprite_width = 13;
     balloon->sprite_height_negative = 22;

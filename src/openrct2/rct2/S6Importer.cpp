@@ -1012,7 +1012,7 @@ public:
         uint16_t numRiders = 0;
         for (const auto& sprite : _s6.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Peep)
+            if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
             {
                 if (sprite.peep.current_ride == rideIndex
                     && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
@@ -1337,19 +1337,19 @@ public:
         std::memset(&dst->pad_00, 0, sizeof(rct_sprite));
         switch (src->unknown.sprite_identifier)
         {
-            case SpriteIdentifier::Null:
+            case RCT12SpriteIdentifier::Null:
                 ImportSpriteCommonProperties(reinterpret_cast<SpriteBase*>(dst), &src->unknown);
                 break;
-            case SpriteIdentifier::Vehicle:
+            case RCT12SpriteIdentifier::Vehicle:
                 ImportSpriteVehicle(&dst->vehicle, &src->vehicle);
                 break;
-            case SpriteIdentifier::Peep:
+            case RCT12SpriteIdentifier::Peep:
                 ImportSpritePeep(&dst->peep, &src->peep);
                 break;
-            case SpriteIdentifier::Misc:
+            case RCT12SpriteIdentifier::Misc:
                 ImportSpriteMisc(&dst->misc, &src->unknown);
                 break;
-            case SpriteIdentifier::Litter:
+            case RCT12SpriteIdentifier::Litter:
                 ImportSpriteLitter(&dst->litter, &src->litter);
                 break;
             default:
@@ -1582,9 +1582,9 @@ public:
     void ImportSpriteMisc(MiscEntity* cdst, const RCT12SpriteBase* csrc)
     {
         ImportSpriteCommonProperties(cdst, csrc);
-        switch (MiscEntityType(csrc->type))
+        switch (RCT12MiscEntityType(csrc->type))
         {
-            case MiscEntityType::SteamParticle:
+            case RCT12MiscEntityType::SteamParticle:
             {
                 auto src = static_cast<const RCT12SpriteSteamParticle*>(csrc);
                 auto dst = static_cast<SteamParticle*>(cdst);
@@ -1592,7 +1592,7 @@ public:
                 dst->frame = src->frame;
                 break;
             }
-            case MiscEntityType::MoneyEffect:
+            case RCT12MiscEntityType::MoneyEffect:
             {
                 auto src = static_cast<const RCT12SpriteMoneyEffect*>(csrc);
                 auto dst = static_cast<MoneyEffect*>(cdst);
@@ -1604,7 +1604,7 @@ public:
                 dst->Wiggle = src->wiggle;
                 break;
             }
-            case MiscEntityType::CrashedVehicleParticle:
+            case RCT12MiscEntityType::CrashedVehicleParticle:
             {
                 auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(csrc);
                 auto dst = static_cast<VehicleCrashParticle*>(cdst);
@@ -1622,17 +1622,17 @@ public:
                 dst->acceleration_z = src->acceleration_z;
                 break;
             }
-            case MiscEntityType::ExplosionCloud:
-            case MiscEntityType::ExplosionFlare:
-            case MiscEntityType::CrashSplash:
+            case RCT12MiscEntityType::ExplosionCloud:
+            case RCT12MiscEntityType::ExplosionFlare:
+            case RCT12MiscEntityType::CrashSplash:
             {
                 auto src = static_cast<const RCT12SpriteParticle*>(csrc);
                 auto dst = static_cast<MiscEntity*>(cdst);
                 dst->frame = src->frame;
                 break;
             }
-            case MiscEntityType::JumpingFountainWater:
-            case MiscEntityType::JumpingFountainSnow:
+            case RCT12MiscEntityType::JumpingFountainWater:
+            case RCT12MiscEntityType::JumpingFountainSnow:
             {
                 auto* src = static_cast<const RCT12SpriteJumpingFountain*>(csrc);
                 auto* dst = static_cast<JumpingFountain*>(cdst);
@@ -1642,12 +1642,12 @@ public:
                 dst->TargetX = src->target_x;
                 dst->TargetY = src->target_y;
                 dst->Iteration = src->iteration;
-                dst->FountainType = MiscEntityType(src->type) == MiscEntityType::JumpingFountainSnow
+                dst->FountainType = RCT12MiscEntityType(src->type) == RCT12MiscEntityType::JumpingFountainSnow
                     ? JumpingFountainType::Snow
                     : JumpingFountainType::Water;
                 break;
             }
-            case MiscEntityType::Balloon:
+            case RCT12MiscEntityType::Balloon:
             {
                 auto src = static_cast<const RCT12SpriteBalloon*>(csrc);
                 auto dst = static_cast<Balloon*>(cdst);
@@ -1657,7 +1657,7 @@ public:
                 dst->colour = src->colour;
                 break;
             }
-            case MiscEntityType::Duck:
+            case RCT12MiscEntityType::Duck:
             {
                 auto src = static_cast<const RCT12SpriteDuck*>(csrc);
                 auto dst = static_cast<Duck*>(cdst);
@@ -1685,10 +1685,10 @@ public:
         EntityType output = EntityType::Null;
         switch (src->sprite_identifier)
         {
-            case SpriteIdentifier::Vehicle:
+            case RCT12SpriteIdentifier::Vehicle:
                 output = EntityType::Vehicle;
                 break;
-            case SpriteIdentifier::Peep:
+            case RCT12SpriteIdentifier::Peep:
                 if (PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == PeepType::Guest)
                 {
                     output = EntityType::Guest;
@@ -1698,43 +1698,43 @@ public:
                     output = EntityType::Staff;
                 }
                 break;
-            case SpriteIdentifier::Misc:
+            case RCT12SpriteIdentifier::Misc:
 
-                switch (MiscEntityType(src->type))
+                switch (RCT12MiscEntityType(src->type))
                 {
-                    case MiscEntityType::SteamParticle:
+                    case RCT12MiscEntityType::SteamParticle:
                         output = EntityType::SteamParticle;
                         break;
-                    case MiscEntityType::MoneyEffect:
+                    case RCT12MiscEntityType::MoneyEffect:
                         output = EntityType::MoneyEffect;
                         break;
-                    case MiscEntityType::CrashedVehicleParticle:
+                    case RCT12MiscEntityType::CrashedVehicleParticle:
                         output = EntityType::CrashedVehicleParticle;
                         break;
-                    case MiscEntityType::ExplosionCloud:
+                    case RCT12MiscEntityType::ExplosionCloud:
                         output = EntityType::ExplosionCloud;
                         break;
-                    case MiscEntityType::CrashSplash:
+                    case RCT12MiscEntityType::CrashSplash:
                         output = EntityType::CrashSplash;
                         break;
-                    case MiscEntityType::ExplosionFlare:
+                    case RCT12MiscEntityType::ExplosionFlare:
                         output = EntityType::ExplosionFlare;
                         break;
-                    case MiscEntityType::JumpingFountainWater:
-                    case MiscEntityType::JumpingFountainSnow:
+                    case RCT12MiscEntityType::JumpingFountainWater:
+                    case RCT12MiscEntityType::JumpingFountainSnow:
                         output = EntityType::JumpingFountain;
                         break;
-                    case MiscEntityType::Balloon:
+                    case RCT12MiscEntityType::Balloon:
                         output = EntityType::Balloon;
                         break;
-                    case MiscEntityType::Duck:
+                    case RCT12MiscEntityType::Duck:
                         output = EntityType::Duck;
                         break;
                     default:
                         break;
                 }
                 break;
-            case SpriteIdentifier::Litter:
+            case RCT12SpriteIdentifier::Litter:
                 output = EntityType::Litter;
                 break;
             default:

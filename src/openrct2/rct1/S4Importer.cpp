@@ -1132,7 +1132,7 @@ private:
         for (int i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             spriteIndexMap[i] = SPRITE_INDEX_NULL;
-            if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Vehicle)
+            if (_s4.sprites[i].unknown.sprite_identifier == RCT12SpriteIdentifier::Vehicle)
             {
                 rct1_vehicle* srcVehicle = &_s4.sprites[i].vehicle;
                 if (srcVehicle->x != LOCATION_NULL)
@@ -1343,7 +1343,7 @@ private:
         for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
         {
             spriteIndexMap[i] = SPRITE_INDEX_NULL;
-            if (_s4.sprites[i].unknown.sprite_identifier == SpriteIdentifier::Peep)
+            if (_s4.sprites[i].unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
                 Peep* peep = nullptr;
@@ -1651,7 +1651,7 @@ private:
     {
         for (auto& sprite : _s4.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Litter)
+            if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Litter)
             {
                 const auto* srcLitter = &sprite.litter;
 
@@ -1671,37 +1671,37 @@ private:
         }
     }
 
-    MiscEntity* CreateMiscFromType(MiscEntityType type)
+    MiscEntity* CreateMiscFromType(RCT12MiscEntityType type)
     {
         MiscEntity* misc = nullptr;
         switch (type)
         {
-            case MiscEntityType::SteamParticle:
+            case RCT12MiscEntityType::SteamParticle:
                 misc = CreateEntity<SteamParticle>();
                 break;
-            case MiscEntityType::MoneyEffect:
+            case RCT12MiscEntityType::MoneyEffect:
                 misc = CreateEntity<MoneyEffect>();
                 break;
-            case MiscEntityType::CrashedVehicleParticle:
+            case RCT12MiscEntityType::CrashedVehicleParticle:
                 misc = CreateEntity<VehicleCrashParticle>();
                 break;
-            case MiscEntityType::ExplosionCloud:
+            case RCT12MiscEntityType::ExplosionCloud:
                 misc = CreateEntity<ExplosionCloud>();
                 break;
-            case MiscEntityType::CrashSplash:
+            case RCT12MiscEntityType::CrashSplash:
                 misc = CreateEntity<CrashSplashParticle>();
                 break;
-            case MiscEntityType::ExplosionFlare:
+            case RCT12MiscEntityType::ExplosionFlare:
                 misc = CreateEntity<ExplosionFlare>();
                 break;
-            case MiscEntityType::JumpingFountainWater:
-            case MiscEntityType::JumpingFountainSnow:
+            case RCT12MiscEntityType::JumpingFountainWater:
+            case RCT12MiscEntityType::JumpingFountainSnow:
                 misc = CreateEntity<JumpingFountain>();
                 break;
-            case MiscEntityType::Balloon:
+            case RCT12MiscEntityType::Balloon:
                 misc = CreateEntity<Balloon>();
                 break;
-            case MiscEntityType::Duck:
+            case RCT12MiscEntityType::Duck:
                 misc = CreateEntity<Duck>();
                 break;
             default:
@@ -1714,10 +1714,10 @@ private:
     {
         for (auto& sprite : _s4.sprites)
         {
-            if (sprite.unknown.sprite_identifier == SpriteIdentifier::Misc)
+            if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Misc)
             {
                 rct1_unk_sprite* src = &sprite.unknown;
-                MiscEntity* dst = CreateMiscFromType(MiscEntityType(src->type));
+                MiscEntity* dst = CreateMiscFromType(RCT12MiscEntityType(src->type));
                 if (dst == nullptr)
                 {
                     log_warning("SV4 has too many misc entities. No more misc entities will be imported!");
@@ -1731,30 +1731,30 @@ private:
 
                 dst->MoveTo({ src->x, src->y, src->z });
 
-                switch (static_cast<MiscEntityType>(src->type))
+                switch (static_cast<RCT12MiscEntityType>(src->type))
                 {
-                    case MiscEntityType::SteamParticle:
+                    case RCT12MiscEntityType::SteamParticle:
                         ImportSteamParticle(dst->As<SteamParticle>(), reinterpret_cast<RCT12SpriteSteamParticle*>(src));
                         break;
-                    case MiscEntityType::MoneyEffect:
+                    case RCT12MiscEntityType::MoneyEffect:
                         ImportMoneyEffect(dst->As<MoneyEffect>(), reinterpret_cast<RCT12SpriteMoneyEffect*>(src));
                         break;
-                    case MiscEntityType::CrashedVehicleParticle:
+                    case RCT12MiscEntityType::CrashedVehicleParticle:
                         break;
-                    case MiscEntityType::ExplosionCloud:
+                    case RCT12MiscEntityType::ExplosionCloud:
                         break;
-                    case MiscEntityType::CrashSplash:
+                    case RCT12MiscEntityType::CrashSplash:
                         break;
-                    case MiscEntityType::ExplosionFlare:
+                    case RCT12MiscEntityType::ExplosionFlare:
                         break;
-                    case MiscEntityType::JumpingFountainWater:
+                    case RCT12MiscEntityType::JumpingFountainWater:
                         ImportJumpingFountainWater(
                             dst->As<JumpingFountain>(), reinterpret_cast<RCT12SpriteJumpingFountain*>(src));
                         break;
-                    case MiscEntityType::Balloon:
+                    case RCT12MiscEntityType::Balloon:
                         ImportBalloon(dst->As<Balloon>(), reinterpret_cast<RCT12SpriteBalloon*>(src));
                         break;
-                    case MiscEntityType::Duck:
+                    case RCT12MiscEntityType::Duck:
                         ImportDuck(dst->As<Duck>(), reinterpret_cast<RCT12SpriteDuck*>(src));
                         break;
                     default:
