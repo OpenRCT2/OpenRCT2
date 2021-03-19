@@ -35,6 +35,8 @@ namespace OpenRCT2::Ui
     class LinuxContext final : public IPlatformUiContext
     {
     private:
+        mutable std::optional<bool> _hasFilePicker = std::nullopt;
+
     public:
         LinuxContext()
         {
@@ -253,8 +255,13 @@ namespace OpenRCT2::Ui
 
         bool HasFilePicker() const override
         {
-            std::string dummy;
-            return GetDialogApp(&dummy) != DIALOG_TYPE::NONE;
+            if (!_hasFilePicker.has_value())
+            {
+                std::string dummy;
+                _hasFilePicker = (GetDialogApp(&dummy) != DIALOG_TYPE::NONE);
+            }
+
+            return _hasFilePicker.value();
         }
 
         bool HasMenuSupport() override
