@@ -53,7 +53,7 @@ private:
 
     int32_t _cursorBlink{};
     size_t _maxInputLength{};
-    std::string _buffer;
+    std::vector<utf8> _buffer;
 
 public:
     void OnOpen() override
@@ -105,8 +105,8 @@ public:
 
     void SetText(std::string_view text, size_t maxLength)
     {
-        _buffer = String::UTF8Truncate(text, maxLength);
         _buffer.resize(maxLength);
+        safe_strcpy(_buffer.data(), std::string(text).c_str(), maxLength);
         _maxInputLength = maxLength;
         gTextInput = context_start_text_input(_buffer.data(), maxLength);
     }
@@ -165,7 +165,7 @@ public:
     void OnPrepareDraw() override
     {
         // Change window size if required.
-        int32_t newHeight = CalculateWindowHeight(_buffer);
+        int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
             Invalidate();
@@ -216,7 +216,7 @@ public:
         screenCoords.y += 25;
 
         char wrapped_string[TEXT_INPUT_SIZE];
-        safe_strcpy(wrapped_string, _buffer.c_str(), TEXT_INPUT_SIZE);
+        safe_strcpy(wrapped_string, _buffer.data(), _buffer.size());
 
         // String length needs to add 12 either side of box
         // +13 for cursor when max length.
@@ -250,7 +250,7 @@ public:
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
-                if (gTextInput->SelectionStart < _buffer.length())
+                if (gTextInput->SelectionStart < strnlen_s(_buffer.data(), _buffer.size()))
                 {
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
@@ -343,7 +343,7 @@ private:
             {
                 if (_callback)
                 {
-                    _callback(_buffer);
+                    _callback(_buffer.data());
                 }
             }
             else
