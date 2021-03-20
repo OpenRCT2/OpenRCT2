@@ -76,6 +76,7 @@ class MazePathfindingEntry
     uint16_t GetXTile() const;
     void SetVisitedFlags(uint8_t visitedFlags);
     void AddVisitedFlags(Direction visitedDirection);
+    void DelVisitedFlags(Direction visitedDirection);
     void SetCompletlyVisited(bool completlyVisited);
     void SetYTile(uint16_t yTile);
     uint16_t GetYTile() const;
@@ -110,11 +111,17 @@ public:
     Direction GetOrigin() const;
 
     /**
-     * Update / mark as visited a direction stating from at the intersection.
+     * Update / mark as visited a direction at the intersection.
      * @param source          Direction from which the guest comes.
      * @param openEdgesCount  Number of edges open at the intersection.
      */
     void MarkVisited(Direction source, uint8_t openEdgesCount);
+
+    /**
+     * Forget / unmark a direction at this intersection.
+     * @param direction     Direction to forget. Does nothing if the direction is the origin or is already not marked.
+     */
+    void UnmarkVisited(Direction direction);
 
     /**
      * Get the flags corresponding to the directions already visited from this intersection.
@@ -165,7 +172,7 @@ public:
     /**
      * Get the entry corresponding to the last intersection encountered by the guest.
      */
-    const MazePathfindingEntry& GetLast() const;
+    MazePathfindingEntry& GetLast();
 
     /**
      * Get a read-only access to the all history entries.

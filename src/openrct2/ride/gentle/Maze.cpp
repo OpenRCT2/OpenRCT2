@@ -304,6 +304,11 @@ void MazePathfindingEntry::AddVisitedFlags(Direction visitedDirection)
     SetVisitedFlags(GetVisited() | (1 << GetField(visitedDirection, 2)));
 }
 
+void MazePathfindingEntry::DelVisitedFlags(Direction visitedDirection)
+{
+    SetVisitedFlags(GetVisited() & ~(1 << GetField(visitedDirection, 2)));
+}
+
 void MazePathfindingEntry::SetCompletlyVisited(bool completlyVisited)
 {
     SetField<uint32_t>(Data, completlyVisited, 1, 20);
@@ -361,6 +366,13 @@ void MazePathfindingEntry::MarkVisited(Direction source, uint8_t openEdgesCount)
         SetCompletlyVisited(true);
 }
 
+void MazePathfindingEntry::UnmarkVisited(Direction direction)
+{
+    DelVisitedFlags(direction);
+    if (direction != GetOrigin())
+        SetCompletlyVisited(false);
+}
+
 uint8_t MazePathfindingEntry::GetVisited() const
 {
     return GetField(Data, 4, 16);
@@ -415,7 +427,7 @@ std::pair<MazePathfindingEntry&, uint8_t> MazePathfindingHistory::MeetIntersecti
     return std::pair(std::ref(Stack[0]), i);
 }
 
-const MazePathfindingEntry& MazePathfindingHistory::GetLast() const
+MazePathfindingEntry& MazePathfindingHistory::GetLast()
 {
     return Stack[0];
 }

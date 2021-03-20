@@ -4661,8 +4661,11 @@ void Guest::UpdateRideMazePathfinding()
             }
         }
 
-        // Probability table that the guest remember of the already taken edges
-        // TODO: Tune these values
+        /*
+         * Probability table listing odds for the guest to forget already taken direction
+         * (0.00: always remember, 1.00: always forget)
+         * TODO: Tune these values
+         */
         static const std::array<std::array<uint16_t, 4>, 6> rememberThreshold = {
             { // visited,               origin,                 visited+peeked,         origin+peeked
               // Last intersection
@@ -4702,7 +4705,11 @@ void Guest::UpdateRideMazePathfinding()
     assert(chosenEdge != 0xFF);
 
     if (openEdgesCount > 2)
+    {
         PeepMazeRegister.SetDirectionAtLastIntersection(chosenEdge);
+        // If the guest takes an already visited direction, that means that he forgot about it
+        MazePathfindHistory.GetLast().UnmarkVisited(chosenEdge);
+    }
 
     targetLoc = GetDestination() + CoordsDirectionDelta[chosenEdge] / 2;
 
