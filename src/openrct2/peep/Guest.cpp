@@ -4018,6 +4018,8 @@ void Guest::UpdateRideLeaveVehicle()
 
     rideEntry = vehicle->GetRideEntry();
     rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    if (vehicleEntry == nullptr)
+        return;
 
     Var37 = ((exitLocation.direction | peep_get_waypointed_seat_location(this, ride, vehicleEntry, station_direction) * 4) * 4)
         | 1;
