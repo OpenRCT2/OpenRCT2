@@ -496,7 +496,7 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
             continue;
 
         sceneryEntry = tileElement->AsWall()->GetEntry();
-        if (!(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
+        if (sceneryEntry == nullptr || !(sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR))
             continue;
 
         if (game_is_paused())
