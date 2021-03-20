@@ -250,7 +250,7 @@ public:
                 cursorY = screenCoords.y;
 
                 int32_t textWidth = 6;
-                if (gTextInput->SelectionStart < strnlen_s(_buffer.data(), _buffer.size()))
+                if (gTextInput->SelectionStart < strlen(_buffer.data()))
                 {
                     // Make a 1 utf8-character wide string for measuring the width
                     // of the currently selected character.
