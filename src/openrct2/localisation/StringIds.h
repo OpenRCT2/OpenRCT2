@@ -3055,8 +3055,6 @@ enum
     STR_NOTIFICATION_GUEST_DIED = 5606,
     STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT = 5608,
     STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT = 5609,
-    // STR_5610    :Remove the currently selected map element. This will forcefully remove it, so no cash will
-    // be used/gained. Use with caution.
     STR_REMOVE_SELECTED_ELEMENT_TIP = 5610,
     STR_TILE_INSPECTOR_FLAG_GHOST_SHORT = 5611,
     STR_TILE_INSPECTOR_FLAG_GHOST = 5612,
