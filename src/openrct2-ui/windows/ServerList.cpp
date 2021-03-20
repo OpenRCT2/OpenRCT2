@@ -520,7 +520,7 @@ static void server_list_get_item_button(int32_t buttonIndex, int32_t x, int32_t 
 
 static void join_server(std::string address)
 {
-    int32_t port = gConfigNetwork.default_port;
+    int32_t port = NETWORK_DEFAULT_PORT;
     auto beginBracketIndex = address.find('[');
     auto endBracketIndex = address.find(']');
     auto dotIndex = address.find('.');
