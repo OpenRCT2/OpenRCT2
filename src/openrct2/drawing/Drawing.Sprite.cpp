@@ -814,7 +814,17 @@ size_t g1_calculate_data_size(const rct_g1_element* g1)
                 ptr += chunkSize;
                 endOfLine = (chunk0 & 0x80) != 0;
             } while (!endOfLine);
-            return ptr - g1->offset;
+            auto result = ptr - g1->offset;
+            // The original `offset` value is located at two bytes spanning `g1->offset[idx]` and `g1->offset[idx + 1]`,
+            // assume these positions are part of the entry itself, after accounting for 0-based indexing, ensure any length
+            // lower than such idx forms an invalid entry. Returning 0 here will skip buffer allocation and simply not draw it.
+            // This seems to be the the case with NEDesigns "RCTLL GOG to Awesome" hacks:
+            // https://www.nedesigns.com/topic/30699/rctll-gog-to-awesome/
+            if (result < idx + 2)
+            {
+                result = 0;
+            }
+            return result;
         }
     }
     else

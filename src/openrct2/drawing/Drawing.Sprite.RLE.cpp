@@ -12,7 +12,8 @@
 #include <algorithm>
 #include <cstring>
 
-template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp, size_t TZoom, bool with_checks = false>
+static bool FASTCALL DrawRLESpriteMagnify(DrawSpriteArgs& args, [[maybe_unused]] size_t buffer_length = 0)
 {
     auto dpi = args.DPI;
     auto src0 = args.SourceImage.offset;
@@ -81,9 +82,11 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
             }
         }
     }
+    return true;
 }
 
-template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteMinify(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp, size_t TZoom, bool with_checks = false>
+static bool FASTCALL DrawRLESpriteMinify(DrawSpriteArgs& args, [[maybe_unused]] size_t buffer_length = 0)
 {
     auto dpi = args.DPI;
     auto src0 = args.SourceImage.offset;
@@ -94,6 +97,7 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     auto height = args.Height;
     auto zoom = 1 << TZoom;
     auto dstLineWidth = (static_cast<size_t>(dpi->width) >> TZoom) + dpi->pitch;
+    [[maybe_unused]] auto srcEnd = src0 + buffer_length;
 
     // Move up to the first line of the image if source_y_start is negative. Why does this even occur?
     if (srcY < 0)
@@ -108,6 +112,15 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
     {
         int32_t y = srcY + i;
 
+        if constexpr (with_checks)
+        {
+            const auto ptr = &src0[y * 2 + 1];
+            if (ptr >= srcEnd)
+            {
+                return false;
+            }
+        }
+
         // The first part of the source pointer is a list of offsets to different lines
         // This will move the pointer to the correct source line.
         uint16_t lineOffset = src0[y * 2] | (src0[y * 2 + 1] << 8);
@@ -120,6 +133,16 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
         {
             // Read chunk metadata
             auto src = nextRun;
+
+            if constexpr (with_checks)
+            {
+                const auto ptr = src + 2;
+                if (ptr > srcEnd)
+                {
+                    return false;
+                }
+            }
+
             auto dataSize = *src++;
             auto firstPixelX = *src++;
             isEndOfLine = (dataSize & 0x80) != 0;
@@ -155,55 +178,62 @@ template<DrawBlendOp TBlendOp, size_t TZoom> static void FASTCALL DrawRLESpriteM
             numPixels = std::min(numPixels, width - x);
 
             auto dst = dstLineStart + (x >> TZoom);
-            if constexpr ((TBlendOp & BLEND_SRC) == 0 && (TBlendOp & BLEND_DST) == 0 && TZoom == 0)
+            if constexpr (with_checks)
             {
-                // Since we're sampling each pixel at this zoom level, just do a straight std::memcpy
-                if (numPixels > 0)
+                const auto ptr = src + numPixels;
+                if (numPixels > 0 && ptr > srcEnd)
                 {
-                    std::memcpy(dst, src, numPixels);
+                    return false;
                 }
             }
             else
             {
-                auto& paletteMap = args.PalMap;
-                while (numPixels > 0)
+                if constexpr ((TBlendOp & BLEND_SRC) == 0 && (TBlendOp & BLEND_DST) == 0 && TZoom == 0)
                 {
-                    BlitPixel<TBlendOp>(src, dst, paletteMap);
-                    numPixels -= zoom;
-                    src += zoom;
-                    dst++;
+                    // Since we're sampling each pixel at this zoom level, just do a straight std::memcpy
+                    if (numPixels > 0)
+                    {
+                        std::memcpy(dst, src, numPixels);
+                    }
+                }
+                else
+                {
+                    auto& paletteMap = args.PalMap;
+                    while (numPixels > 0)
+                    {
+                        BlitPixel<TBlendOp>(src, dst, paletteMap);
+                        numPixels -= zoom;
+                        src += zoom;
+                        dst++;
+                    }
                 }
             }
         }
     }
+    return true;
 }
 
-template<DrawBlendOp TBlendOp> static void FASTCALL DrawRLESprite(DrawSpriteArgs& args)
+template<DrawBlendOp TBlendOp, bool with_checks = false>
+static bool FASTCALL DrawRLESprite(DrawSpriteArgs& args, [[maybe_unused]] size_t buffer_length = 0)
 {
     auto zoom_level = static_cast<int8_t>(args.DPI->zoom_level);
     switch (zoom_level)
     {
         case -2:
-            DrawRLESpriteMagnify<TBlendOp, 2>(args);
-            break;
+            return DrawRLESpriteMagnify<TBlendOp, 2, with_checks>(args, buffer_length);
         case -1:
-            DrawRLESpriteMagnify<TBlendOp, 1>(args);
-            break;
+            return DrawRLESpriteMagnify<TBlendOp, 1, with_checks>(args, buffer_length);
         case 0:
-            DrawRLESpriteMinify<TBlendOp, 0>(args);
-            break;
+            return DrawRLESpriteMinify<TBlendOp, 0, with_checks>(args, buffer_length);
         case 1:
-            DrawRLESpriteMinify<TBlendOp, 1>(args);
-            break;
+            return DrawRLESpriteMinify<TBlendOp, 1, with_checks>(args, buffer_length);
         case 2:
-            DrawRLESpriteMinify<TBlendOp, 2>(args);
-            break;
+            return DrawRLESpriteMinify<TBlendOp, 2, with_checks>(args, buffer_length);
         case 3:
-            DrawRLESpriteMinify<TBlendOp, 3>(args);
-            break;
+            return DrawRLESpriteMinify<TBlendOp, 3, with_checks>(args, buffer_length);
         default:
             assert(false);
-            break;
+            return false;
     }
 }
 
@@ -233,5 +263,31 @@ void FASTCALL gfx_rle_sprite_to_buffer(DrawSpriteArgs& args)
     else
     {
         DrawRLESprite<BLEND_TRANSPARENT>(args);
+    }
+}
+
+/**
+ * Verifies the inbound sprite for out-of-bounds accesses. Does not copy any data.
+ */
+bool FASTCALL check_gfx_rle_sprite_to_buffer(DrawSpriteArgs& args, size_t buffer_length)
+{
+    if (args.Image.HasPrimary())
+    {
+        if (args.Image.IsBlended())
+        {
+            return DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC | BLEND_DST, true>(args, buffer_length);
+        }
+        else
+        {
+            return DrawRLESprite<BLEND_TRANSPARENT | BLEND_SRC, true>(args, buffer_length);
+        }
+    }
+    else if (args.Image.IsBlended())
+    {
+        return DrawRLESprite<BLEND_TRANSPARENT | BLEND_DST, true>(args, buffer_length);
+    }
+    else
+    {
+        return DrawRLESprite<BLEND_TRANSPARENT, true>(args, buffer_length);
     }
 }

@@ -248,3 +248,12 @@ SET_CHECK_CXX_FLAGS(test_s6importexporttests)
 target_link_libraries(test_s6importexporttests ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_s6importexporttests)
 add_test(NAME s6importexporttests COMMAND test_s6importexporttests)
+
+# Sprite loading test
+set(SPRITELOADING_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/SpriteLoadingTests.cpp"
+                               "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
+add_executable(test_spriteloadingtests ${SPRITELOADING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_spriteloadingtests)
+target_link_libraries(test_spriteloadingtests ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_spriteloadingtests)
+add_test(NAME spriteloadingtests COMMAND test_spriteloadingtests)
