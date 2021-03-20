@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -2108,7 +2108,7 @@ void window_guest_debug_paint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords.y += LIST_ROW_HEIGHT;
 
         screenCoords.x += 10;
-        for (auto& point : peep->PathfindHistory)
+        for (const auto& point : peep->PathfindHistory)
         {
             auto ft = Formatter();
             ft.Add<int32_t>(point.x);

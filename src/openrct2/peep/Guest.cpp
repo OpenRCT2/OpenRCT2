@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -3275,7 +3275,7 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
 
 static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    // By default, the guest turn right after the maze entrance
+    // By default, the guest turns right after the maze entrance
     peep->PeepMazeRegister.SetLastDirection(entrance_loc.direction + 1);
 
     entrance_loc.x += CoordsDirectionDelta[entrance_loc.direction].x;
@@ -4552,9 +4552,9 @@ void Guest::UpdateRideLeaveSpiralSlide()
 /**
  * Helper function to define maze pathfinding thresholds
  */
-static constexpr uint16_t maze_forget_odds(double odds)
+static constexpr uint16_t MazeForgetOdds(double odds)
 {
-    return odds * UINT16_MAX;
+    return odds * std::numeric_limits<uint16_t>::max();
 }
 
 /**
@@ -4594,7 +4594,6 @@ void Guest::UpdateRideMazePathfinding()
     }
 
     auto targetLoc = GetDestination().ToTileStart();
-    uint16_t stationBaseZ = ride->stations[0].GetBaseZ();
     // var_37 is 3, 7, 11 or 15
     uint8_t subTileIndex = Var37 / 4;
     uint8_t openEdgesFlags = 0;
@@ -4602,7 +4601,7 @@ void Guest::UpdateRideMazePathfinding()
 
     // Get info on open edges at the current subTile
     {
-        TrackElement* trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
+        auto trackElement = map_get_track_element_at({ targetLoc, ride->stations[0].GetBaseZ() });
         if (trackElement == nullptr)
             return;
 
@@ -4616,7 +4615,7 @@ void Guest::UpdateRideMazePathfinding()
         if (nearEntranceTile.x == targetLoc.x && nearEntranceTile.y == targetLoc.y
             && (subTileIndex == entranceDirection || subTileIndex == direction_next(entranceDirection)))
         {
-            mazeEntry |= 0x1 << gMazeCurrentDirectionToHedge[subTileIndex][direction_reverse(nearEntranceTile.direction)];
+            mazeEntry |= 0x1 << gMazeCurrentDirectionToHedge[subTileIndex][entranceDirection];
         }
 
         // Check open edges (without hedge)
@@ -4649,7 +4648,7 @@ void Guest::UpdateRideMazePathfinding()
         {
             if (currentEntry.IsCompletlyVisited())
             {
-                // Offer amnesia to completly lost guest
+                // Offer amnesia to completly lose guest
                 MazePathfindHistory.Initialize();
             }
             else
@@ -4669,25 +4668,25 @@ void Guest::UpdateRideMazePathfinding()
         static const std::array<std::array<uint16_t, 4>, 6> rememberThreshold = {
             { // visited,               origin,                 visited+peeked,         origin+peeked
               // Last intersection
-              { maze_forget_odds(0.04), maze_forget_odds(0.02), maze_forget_odds(0.00), maze_forget_odds(0.00) },
+              { MazeForgetOdds(0.04), MazeForgetOdds(0.02), MazeForgetOdds(0.00), MazeForgetOdds(0.00) },
               // -1
-              { maze_forget_odds(0.09), maze_forget_odds(0.03), maze_forget_odds(0.03), maze_forget_odds(0.01) },
+              { MazeForgetOdds(0.09), MazeForgetOdds(0.03), MazeForgetOdds(0.03), MazeForgetOdds(0.01) },
               // -2
-              { maze_forget_odds(0.27), maze_forget_odds(0.18), maze_forget_odds(0.07), maze_forget_odds(0.03) },
+              { MazeForgetOdds(0.27), MazeForgetOdds(0.18), MazeForgetOdds(0.07), MazeForgetOdds(0.03) },
               // -3
-              { maze_forget_odds(0.39), maze_forget_odds(0.25), maze_forget_odds(0.15), maze_forget_odds(0.10) },
+              { MazeForgetOdds(0.39), MazeForgetOdds(0.25), MazeForgetOdds(0.15), MazeForgetOdds(0.10) },
               // -4
-              { maze_forget_odds(0.50), maze_forget_odds(0.45), maze_forget_odds(0.32), maze_forget_odds(0.30) },
+              { MazeForgetOdds(0.50), MazeForgetOdds(0.45), MazeForgetOdds(0.32), MazeForgetOdds(0.30) },
               // New or forgotten intersection
-              { maze_forget_odds(1.00), maze_forget_odds(1.00), maze_forget_odds(1.00), maze_forget_odds(1.00) } }
+              { MazeForgetOdds(1.00), MazeForgetOdds(1.00), MazeForgetOdds(1.00), MazeForgetOdds(1.00) } }
         };
 
         // If the guest succeeded his memory roll, remove visited edges (other that the origin edge)
-        if ((scenario_rand() & 0xffff) >= rememberThreshold[entryIndex][peekFlag * 2])
+        if ((scenario_rand() & 0xFFFF) >= rememberThreshold[entryIndex][peekFlag * 2])
             openEdgesFlags &= ~currentEntry.GetVisited();
 
         // Second dice roll, if succeeded remove also the origin edge (unless all the other edges are already visited)
-        if (bitcount(openEdgesFlags) > 1 && (scenario_rand() & 0xffff) >= rememberThreshold[entryIndex][1 + peekFlag * 2])
+        if (bitcount(openEdgesFlags) > 1 && (scenario_rand() & 0xFFFF) >= rememberThreshold[entryIndex][1 + peekFlag * 2])
             openEdgesFlags &= ~(0x1 << currentEntry.GetOrigin());
     }
     if (openEdgesFlags == 0)
@@ -4727,7 +4726,7 @@ void Guest::UpdateRideMazePathfinding()
         return;
     do
     {
-        if (stationBaseZ != tileElement->GetBaseZ())
+        if (ride->stations[0].GetBaseZ() != tileElement->GetBaseZ())
             continue;
 
         if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -418,7 +418,7 @@ std::pair<MazePathfindingEntry&, uint8_t> MazePathfindingHistory::MeetIntersecti
             break;
     }
 
-    for (uint8_t j = std::min((uint8_t)(Stack.size() - 1), i); j > 0; --j)
+    for (uint8_t j = std::min(static_cast<uint8_t>(Stack.size() - 1), i); j > 0; --j)
         std::swap(Stack[j - 1], Stack[j]);
 
     if (i == Stack.size())
