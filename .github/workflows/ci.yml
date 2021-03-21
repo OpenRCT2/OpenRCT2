@@ -138,7 +138,7 @@ jobs:
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
-          name: "OpenRCT2-macOS"
+          name: "OpenRCT2-macOS-xcode"
           path: artifacts/openrct2-macos.zip
       - name: Upload artifacts (openrct2.org)
         run: |
@@ -168,42 +168,18 @@ jobs:
         run: . scripts/setenv -q && run-tests
       - name: Build artifacts
         shell: bash
-        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz bin/install/usr
-      - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2-preview
-        with:
-          name: "OpenRCT2-macOS-cmake"
-          path: artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz
-  macos-cmake-portable:
-    name: macOS (x64, portable) using CMake
-    runs-on: macos-latest
-    needs: [check-code-formatting]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v1
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1
-        with:
-          key: macos-app
-      - name: Build OpenRCT2
         run: |
-          brew install ninja
-          . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on -DMACOS_BUNDLE=on
-      - name: Build artifacts
-        shell: bash
-        run:  |
           . scripts/setenv
           mkdir -p artifacts
           mv bin/OpenRCT2.app artifacts
           echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
           cd artifacts
-          zip -rqy openrct2-macos-cmake-app.zip OpenRCT2.app
+          zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
-          name: "OpenRCT2-macOS-cmake-app"
-          path: artifacts/openrct2-macos-cmake-app.zip 
-
+          name: "OpenRCT2-macOS-cmake"
+          path: artifacts/openrct2-macos.zip
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
