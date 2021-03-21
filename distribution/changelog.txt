@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#14071] “Vandals stopped” statistic for security guards.
 - Feature: [#14296] Allow using early scenario completion in multiplayer.
+- Feature: [#14373] [Plugin] ui.activateTool returns a Tool object instead of void.
 - Fix: [#11829] Visual glitches and crashes when using RCT1 assets from mismatched or corrupt CSG1.DAT and CSG1i.DAT files.
 - Fix: [#13581] Opening the Options menu causes a noticeable drop in FPS.
 - Fix: [#13894] Block brakes do not animate.
