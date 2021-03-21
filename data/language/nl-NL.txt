@@ -1194,8 +1194,8 @@ STR_1816    :Selecteer het type informatie dat je in de bezoekerslijst wilt zien
 STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
-STR_1820    :{WINDOW_COLOUR_2}Bezoekers met de volgende status: {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Bezoekers met de volgende gedachte: {STRINGID}
+STR_1820    :{WINDOW_COLOUR_2}Bezoekers met status: {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Bezoekers met gedachte: {STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Bezoekers met gedachten over {POP16}{STRINGID}
 STR_1823    :Toon de gedachten van bezoekers over deze attractie
 STR_1824    :Toon de bezoekers in deze attractie
@@ -3678,6 +3678,7 @@ STR_6431    :R-muiskn.
 STR_6432    :Muiskn. {INT32}
 STR_6433    :Verwijderen
 STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
+STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA16}
 
 #############
 # Scenarios #

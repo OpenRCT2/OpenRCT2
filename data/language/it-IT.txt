@@ -899,7 +899,7 @@ STR_1509    :{SMALLFONT}“Voglio uscire da {STRINGID}”
 STR_1510    :{SMALLFONT}“Non andrò su {STRINGID} - Non è sicuro”
 STR_1511    :{SMALLFONT}“Questo percorso è disgustoso”
 STR_1512    :{SMALLFONT}“È troppo affollato qui”
-STR_1513    :{SMALLFONT}“Ci sono troppi atti vandalici”
+STR_1513    :{SMALLFONT}“Ci sono troppi vandalismi”
 STR_1514    :{SMALLFONT}“Bello scenario!”
 STR_1515    :{SMALLFONT}“Questo parco è davvero pulito e ordinato”
 STR_1516    :{SMALLFONT}“Le fontane zampillanti sono fantastiche”
@@ -2838,7 +2838,7 @@ STR_5511    :(UNKNOWN)
 STR_5512    :Salva partita con nome…
 STR_5513    :Salvataggio veloce
 STR_5514    :Disattiva vandalismi
-STR_5515    :Impedisce ai visitatori del parco di compiere atti vandalici quando sono arrabbiati
+STR_5515    :Impedisce ai visitatori del parco di compiere vandalismi quando sono arrabbiati
 STR_5516    :Nero
 STR_5517    :Grigio
 STR_5518    :Bianco
@@ -3687,6 +3687,7 @@ STR_6431    :Clic dx
 STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
+STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA16}
 
 
 #############
