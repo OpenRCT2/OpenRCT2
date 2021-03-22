@@ -93,19 +93,21 @@ private:
     void InitTileElement()
     {
         TileElement* tileElement = map_get_first_element_at(_banner->position.ToCoordsXY().ToTileCentre());
-        if (tileElement == nullptr)
+        if (tileElement != nullptr)
         {
-            _tileElement = nullptr;
-            return;
+            while (1)
+            {
+                if ((tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tileElement->AsBanner()->GetIndex() == number))
+                {
+                    _tileElement = tileElement;
+                    return;
+                }
+                if (tileElement->IsLastForTile())
+                    break;
+                tileElement++;
+            }
         }
-
-        while (1)
-        {
-            if ((tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tileElement->AsBanner()->GetIndex() == number))
-                break;
-            tileElement++;
-        }
-        _tileElement = tileElement;
+        _tileElement = nullptr;
     }
 
 public:
