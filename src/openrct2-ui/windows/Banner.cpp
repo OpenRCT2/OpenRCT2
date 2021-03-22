@@ -92,8 +92,8 @@ private:
 
     void InitTileElement()
     {
-        TileElement* tile_element = map_get_first_element_at(_banner->position.ToCoordsXY().ToTileCentre());
-        if (tile_element == nullptr)
+        TileElement* tileElement = map_get_first_element_at(_banner->position.ToCoordsXY().ToTileCentre());
+        if (tileElement == nullptr)
         {
             _tileElement = nullptr;
             return;
@@ -101,11 +101,11 @@ private:
 
         while (1)
         {
-            if ((tile_element->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tile_element->AsBanner()->GetIndex() == number))
+            if ((tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tileElement->AsBanner()->GetIndex() == number))
                 break;
-            tile_element++;
+            tileElement++;
         }
-        _tileElement = tile_element;
+        _tileElement = tileElement;
     }
 
 public:
@@ -243,13 +243,13 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_widget* colour_btn = &window_banner_widgets[WIDX_MAIN_COLOUR];
-        colour_btn->type = WindowWidgetType::Empty;
+        rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
+        colourBtn->type = WindowWidgetType::Empty;
         // Scenery item not sure why we use this instead of banner?
         rct_scenery_entry* sceneryEntry = get_banner_entry(_banner->type);
         if (sceneryEntry != nullptr && (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR))
         {
-            colour_btn->type = WindowWidgetType::ColourBtn;
+            colourBtn->type = WindowWidgetType::ColourBtn;
         }
         pressed_widgets &= ~(1ULL << WIDX_BANNER_NO_ENTRY);
         disabled_widgets &= ~(
@@ -260,9 +260,9 @@ public:
             disabled_widgets |= (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
                 | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
-        colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        rct_widget* drop_down_widget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
-        drop_down_widget->text = BannerColouredTextFormats[_banner->text_colour];
+        colourBtn->image = SPRITE_ID_PALETTE_COLOUR_1(_banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+        dropDownWidget->text = BannerColouredTextFormats[_banner->text_colour];
     }
 };
 
