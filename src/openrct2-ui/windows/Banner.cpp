@@ -118,20 +118,18 @@ public:
         WindowInitScrollWidgets(this);
     }
 
-    BannerWindow* Initialise(rct_windownumber _number)
+    void Initialise(rct_windownumber _number)
     {
         number = _number;
         _banner = GetBanner(number);
 
         InitTileElement();
         if (_tileElement == nullptr)
-            return nullptr;
+            return;
 
         frame_no = _tileElement->GetBaseZ();
         _bannerViewPos = CoordsXYZ{ _banner->position.ToCoordsXY().ToTileCentre(), frame_no };
         CreateViewport();
-
-        return this;
     }
 
     void OnMouseDown(rct_widgetindex widgetIndex) override
@@ -280,7 +278,7 @@ rct_window* window_banner_open(rct_windownumber number)
     w = WindowCreate<BannerWindow>(WC_BANNER, WW, WH, 0);
 
     if (w != nullptr)
-        w = w->Initialise(number);
+        w->Initialise(number);
 
     return w;
 }
