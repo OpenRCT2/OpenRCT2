@@ -13,35 +13,36 @@
 #include "Map.h"
 #include "SpriteBase.h"
 
+enum class JumpingFountainType : uint8_t
+{
+    Water,
+    Snow
+};
+
 struct JumpingFountain : MiscEntity
 {
     static constexpr auto cEntityType = EntityType::JumpingFountain;
 
+    JumpingFountainType FountainType;
     uint8_t NumTicksAlive;
     uint8_t FountainFlags;
     int16_t TargetX;
     int16_t TargetY;
     uint16_t Iteration;
-
     void Update();
-    static void StartAnimation(int32_t newType, const CoordsXY& newLoc, const TileElement* tileElement);
+    static void StartAnimation(JumpingFountainType newType, const CoordsXY& newLoc, const TileElement* tileElement);
 
 private:
-    int32_t GetType() const;
+    JumpingFountainType GetType() const;
     void AdvanceAnimation();
     void GoToEdge(const CoordsXYZ& newLoc, int32_t availableDirections) const;
     void Bounce(const CoordsXYZ& newLoc, int32_t availableDirections);
     void Split(const CoordsXYZ& newLoc, int32_t availableDirections) const;
     void Random(const CoordsXYZ& newLoc, int32_t availableDirections) const;
     void CreateNext(const CoordsXYZ& newLoc, int32_t direction) const;
-    static void Create(int32_t newType, const CoordsXYZ& newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
-    static bool IsJumpingFountain(int32_t newType, const CoordsXYZ& newLoc);
-};
-
-enum
-{
-    JUMPING_FOUNTAIN_TYPE_WATER,
-    JUMPING_FOUNTAIN_TYPE_SNOW
+    static void Create(
+        JumpingFountainType newType, const CoordsXYZ& newLoc, int32_t direction, int32_t newFlags, int32_t iteration);
+    static bool IsJumpingFountain(JumpingFountainType newType, const CoordsXYZ& newLoc);
 };
 
 namespace FOUNTAIN_FLAG

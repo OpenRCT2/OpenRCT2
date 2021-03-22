@@ -88,6 +88,9 @@ template<> void PaintEntity(paint_session* session, const ExplosionFlare* flare,
     PaintAddImageAsParent(session, imageId, 0, 0, 1, 1, 0, flare->z);
 }
 
+constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
+constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
+
 template<> void PaintEntity(paint_session* session, const JumpingFountain* jumpingFountain, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
@@ -113,7 +116,8 @@ template<> void PaintEntity(paint_session* session, const JumpingFountain* jumpi
         isAntiClockwise = !isAntiClockwise;
     }
 
-    uint32_t baseImageId = (jumpingFountain->SubType == MiscEntityType::JumpingFountainSnow) ? 23037 : 22973;
+    uint32_t baseImageId = (jumpingFountain->FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
+                                                                                        : JumpingFountainWaterBaseImage;
     uint32_t imageId = baseImageId + ebx * 16 + jumpingFountain->frame;
     constexpr std::array<CoordsXY, 2> antiClockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, -3 }, CoordsXY{ 0, -3 } };
     constexpr std::array<CoordsXY, 2> clockWiseBoundingBoxes = { CoordsXY{ -COORDS_XY_STEP, 3 }, CoordsXY{ 0, 3 } };

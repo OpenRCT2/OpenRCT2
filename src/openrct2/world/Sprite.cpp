@@ -78,9 +78,9 @@ template<> bool SpriteBase::Is<Litter>() const
     return Type == EntityType::Litter;
 }
 
-template<> bool SpriteBase::Is<MiscEntity>() const
+constexpr bool EntityTypeIsMiscEntity(const EntityType type)
 {
-    switch (Type)
+    switch (type)
     {
         case EntityType::SteamParticle:
         case EntityType::MoneyEffect:
@@ -95,6 +95,11 @@ template<> bool SpriteBase::Is<MiscEntity>() const
         default:
             return false;
     }
+}
+
+template<> bool SpriteBase::Is<MiscEntity>() const
+{
+    return EntityTypeIsMiscEntity(Type);
 }
 
 template<> bool SpriteBase::Is<SteamParticle>() const
@@ -193,35 +198,6 @@ void SpriteBase::Invalidate()
     }
 
     viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
-}
-
-constexpr SpriteIdentifier EntityTypeToSpriteIdentifier(const EntityType type)
-{
-    switch (type)
-    {
-        case EntityType::Vehicle:
-            return SpriteIdentifier::Vehicle;
-        case EntityType::Guest:
-            return SpriteIdentifier::Peep;
-        case EntityType::Staff:
-            return SpriteIdentifier::Peep;
-        case EntityType::Litter:
-            return SpriteIdentifier::Litter;
-        case EntityType::SteamParticle:
-        case EntityType::MoneyEffect:
-        case EntityType::CrashedVehicleParticle:
-        case EntityType::ExplosionCloud:
-        case EntityType::CrashSplash:
-        case EntityType::ExplosionFlare:
-        case EntityType::JumpingFountain:
-        case EntityType::Balloon:
-        case EntityType::Duck:
-            return SpriteIdentifier::Misc;
-        case EntityType::Null:
-        case EntityType::Count:
-            return SpriteIdentifier::Null;
-    }
-    return SpriteIdentifier::Null;
 }
 
 void RebuildEntityLists()
@@ -444,8 +420,7 @@ rct_sprite* create_sprite(EntityType type)
         return nullptr;
     }
 
-    auto spriteIdentifier = EntityTypeToSpriteIdentifier(type);
-    if (spriteIdentifier == SpriteIdentifier::Misc)
+    if (EntityTypeIsMiscEntity(type))
     {
         // Misc sprites are commonly used for effects, if there are less than MAX_MISC_SPRITES
         // free it will fail to keep slots for more relevant sprites.
@@ -519,7 +494,6 @@ void sprite_misc_explosion_cloud_create(const CoordsXYZ& cloudPos)
         sprite->sprite_height_negative = 32;
         sprite->sprite_height_positive = 34;
         sprite->MoveTo(cloudPos + CoordsXYZ{ 0, 0, 4 });
-        sprite->SubType = MiscEntityType::ExplosionCloud;
         sprite->frame = 0;
     }
 }
@@ -551,7 +525,6 @@ void sprite_misc_explosion_flare_create(const CoordsXYZ& flarePos)
         sprite->sprite_height_negative = 85;
         sprite->sprite_height_positive = 8;
         sprite->MoveTo(flarePos + CoordsXYZ{ 0, 0, 4 });
-        sprite->SubType = MiscEntityType::ExplosionFlare;
         sprite->frame = 0;
     }
 }

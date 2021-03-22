@@ -17,15 +17,6 @@
 #include "Fountain.h"
 #include "SpriteBase.h"
 
-enum class SpriteIdentifier : uint8_t
-{
-    Vehicle = 0,
-    Peep = 1,
-    Misc = 2,
-    Litter = 3,
-    Null = 255
-};
-
 enum LitterType : uint8_t;
 
 struct Litter : SpriteBase
@@ -169,20 +160,6 @@ struct rct_sprite_checksum
 };
 
 #pragma pack(pop)
-
-enum class MiscEntityType : uint8_t
-{
-    SteamParticle,
-    MoneyEffect,
-    CrashedVehicleParticle,
-    ExplosionCloud,
-    CrashSplash,
-    ExplosionFlare,
-    JumpingFountainWater,
-    Balloon,
-    Duck,
-    JumpingFountainSnow
-};
 
 enum
 {

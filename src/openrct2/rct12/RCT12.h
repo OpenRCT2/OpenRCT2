@@ -85,8 +85,6 @@ constexpr const uint16_t RCT12_PEEP_SPAWN_UNDEFINED = 0xFFFF;
 constexpr const uint16_t RCT12VehicleTrackDirectionMask = 0b0000000000000011;
 constexpr const uint16_t RCT12VehicleTrackTypeMask = 0b1111111111111100;
 
-enum class SpriteIdentifier : uint8_t;
-
 enum class RCT12TrackDesignVersion : uint8_t
 {
     TD4,
@@ -692,9 +690,32 @@ enum class RCT12EntityLinkListOffset : uint8_t
     Vehicle = 5 * sizeof(uint16_t),
 };
 
+enum class RCT12SpriteIdentifier : uint8_t
+{
+    Vehicle = 0,
+    Peep = 1,
+    Misc = 2,
+    Litter = 3,
+    Null = 255
+};
+
+enum class RCT12MiscEntityType : uint8_t
+{
+    SteamParticle,
+    MoneyEffect,
+    CrashedVehicleParticle,
+    ExplosionCloud,
+    CrashSplash,
+    ExplosionFlare,
+    JumpingFountainWater,
+    Balloon,
+    Duck,
+    JumpingFountainSnow
+};
+
 struct RCT12SpriteBase
 {
-    SpriteIdentifier sprite_identifier;                // 0x00
+    RCT12SpriteIdentifier sprite_identifier;           // 0x00
     uint8_t type;                                      // 0x01
     uint16_t next_in_quadrant;                         // 0x02
     uint16_t next;                                     // 0x04

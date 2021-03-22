@@ -75,9 +75,7 @@ struct SpriteBase
     }
 };
 
-enum class MiscEntityType : uint8_t;
 struct MiscEntity : SpriteBase
 {
-    MiscEntityType SubType;
     uint16_t frame;
 };
