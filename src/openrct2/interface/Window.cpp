@@ -1564,7 +1564,7 @@ void window_event_viewport_rotate_call(rct_window* w)
 {
     if (w->event_handlers == nullptr)
         w->OnViewportRotate();
-    if (w->event_handlers != nullptr)
+    else if (w->event_handlers != nullptr)
         if (w->event_handlers->viewport_rotate != nullptr)
             w->event_handlers->viewport_rotate(w);
 }
