@@ -50,7 +50,8 @@ set(OBJECTS_VERSION "1.0.21")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "c38af45d51a6e440386180feacf76c64720b6ac5")
 
-set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v0.0.37/replays.zip")
+set(REPLAYS_VERSION "0.0.37")
+set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
 set(REPLAYS_SHA1 "C31C299539EB86DA013AEE47C9B2B2F4609F52C4")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
@@ -399,36 +400,37 @@ if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     # targets, like `install`, so we have to trick it and execute dependency ourselves.
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
     if (DOWNLOAD_TITLE_SEQUENCES)
-        # If openrct2.parkseq or data/sequence/ exists, assume all the title sequences are already present
-        install(CODE
-            "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/openrct2.parkseq\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/sequence/)\n\
-                message(\"Using cached title sequences\")\n\
-            else () \n\
-                file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)\n\
-                execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/ \"${CMAKE_COMMAND}\" -E tar xf title-sequences.zip)\n\
-                file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/title-sequences.zip)\n\
-            endif ()")
+        # Checks if this version of the title sequences are already installed, updates if necessary
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${TITLE_SEQUENCE_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/sequence/
+                ZIP_URL ${TITLE_SEQUENCE_URL}
+                SHA1 ${TITLE_SEQUENCE_SHA1}
+            )")
     endif ()
     if (DOWNLOAD_OBJECTS)
-        # If rct2.wtrcyan.json or data/object/ exists, assume all the objects are already present
-        install(CODE
-            "if (EXISTS \"\$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/rct2/water/rct2.wtrcyan.json\" OR EXISTS ${CMAKE_SOURCE_DIR}/data/object/)\n\
-                message(\"Using cached objects\")\n\
-            else () \n\
-                file(DOWNLOAD ${OBJECTS_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/objects.zip EXPECTED_HASH SHA1=${OBJECTS_SHA1} SHOW_PROGRESS)\n\
-                execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/ \"${CMAKE_COMMAND}\" -E tar xf objects.zip)\n\
-                file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/objects.zip)\n\
-            endif ()")
+        # Checks if this version of the objects are already installed, updates if necessary
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${OBJECTS_VERSION}
+                DOWNLOAD_DIR \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT_NAME}/object/
+                ZIP_URL ${OBJECTS_URL}
+                SHA1 ${OBJECTS_SHA1}
+            )")
     endif ()
     if (DOWNLOAD_REPLAYS)
-        install(CODE
-            "if (EXISTS \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/)\n\
-                message(\"Using cached replays\")\n\
-            else () \n\
-            file(DOWNLOAD ${REPLAYS_URL} \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/replays.zip EXPECTED_HASH SHA1=${REPLAYS_SHA1} SHOW_PROGRESS)\n\
-                execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/ \"${CMAKE_COMMAND}\" -E tar xf replays.zip)\n\
-                file(REMOVE \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/replays.zip)\n\
-            endif ()")
+        # Checks if this version of the replays are already installed, updates if necessary
+        install(CODE "
+            include(${ROOT_DIR}/cmake/download.cmake)
+            download_openrct2_zip(
+                ZIP_VERSION ${REPLAYS_VERSION}
+                DOWNLOAD_DIR \${CMAKE_CURRENT_BINARY_DIR}/testdata/replays/
+                ZIP_URL ${REPLAYS_URL}
+                SHA1 ${REPLAYS_SHA1}
+            )")
     endif ()
     install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
     install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
