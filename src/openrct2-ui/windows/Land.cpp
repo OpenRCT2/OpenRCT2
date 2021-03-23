@@ -272,8 +272,8 @@ public:
         else if (gLandMountainMode)
         {
             screenCoords = { windowPos.x + previewWidget->left, windowPos.y + previewWidget->top };
-            int32_t sprite = gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD;
-            gfx_draw_sprite(&dpi, sprite, screenCoords, 0);
+            auto sprite = ImageId(gLandToolSize % 2 == 0 ? SPR_G2_MOUNTAIN_TOOL_EVEN : SPR_G2_MOUNTAIN_TOOL_ODD);
+            gfx_draw_sprite(&dpi, sprite, screenCoords);
             WidgetDraw(&dpi, this, WIDX_DECREMENT);
             WidgetDraw(&dpi, this, WIDX_INCREMENT);
         }

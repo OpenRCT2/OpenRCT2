@@ -567,15 +567,13 @@ static void window_player_set_page(rct_window* w, int32_t page)
 static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widget* widget;
-    int32_t imageId;
 
     // Tab 1
     if (!WidgetIsDisabled(w, WIDX_TAB_1))
     {
         widget = &w->widgets[WIDX_TAB_1];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        imageId = SPR_PEEP_LARGE_FACE_NORMAL;
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(SPR_PEEP_LARGE_FACE_NORMAL), screenCoords);
     }
 
     // Tab 2
@@ -583,14 +581,14 @@ static void window_player_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
     {
         widget = &w->widgets[WIDX_TAB_2];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
-        imageId = SPR_TAB_FINANCES_SUMMARY_0;
+        int32_t imageId = SPR_TAB_FINANCES_SUMMARY_0;
 
         if (w->page == WINDOW_PLAYER_PAGE_STATISTICS)
         {
             imageId += (w->frame_no / 2) & 7;
         }
 
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(imageId), screenCoords);
     }
 }
 

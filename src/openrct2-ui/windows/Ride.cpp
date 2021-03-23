@@ -942,7 +942,8 @@ static void window_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, in
         }
 
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 
@@ -978,8 +979,8 @@ static void window_ride_draw_tab_main(rct_drawpixelinfo* dpi, rct_window* w)
                     break;
             }
             gfx_draw_sprite(
-                dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top },
-                0);
+                dpi, ImageId(spriteIndex),
+                w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
         }
     }
 }
@@ -1052,7 +1053,7 @@ static void window_ride_draw_tab_vehicle(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
         spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
-        gfx_draw_sprite(&clipDPI, spriteIndex, screenCoords, vehicleColour.additional_2);
+        gfx_draw_sprite(&clipDPI, ImageId::FromUInt32(spriteIndex, vehicleColour.additional_2), screenCoords);
     }
 }
 
@@ -1075,7 +1076,8 @@ static void window_ride_draw_tab_customer(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex += 1;
         spriteIndex |= 0xA9E00000;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 6 }, 0);
+        gfx_draw_sprite(
+            dpi, ImageId::FromUInt32(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->midX(), widget->bottom - 6 });
     }
 }
 
@@ -2604,7 +2606,7 @@ static void window_ride_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         window_draw_viewport(dpi, w);
         if (w->viewport->flags & VIEWPORT_FLAG_SOUND_ON)
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
     }
 
     // View dropdown
@@ -4786,8 +4788,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
         // Track
         if (ride->type == RIDE_TYPE_MAZE)
         {
-            int32_t spriteIndex = MazeOptions[trackColour.supports].sprite;
-            gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(MazeOptions[trackColour.supports].sprite), screenCoords);
         }
         else
         {
@@ -4795,16 +4796,14 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             int32_t spriteIndex = typeDescriptor.ColourPreview.Track;
             if (spriteIndex != 0)
             {
-                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
-                gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
+                gfx_draw_sprite(dpi, ImageId(spriteIndex, trackColour.main, trackColour.additional), screenCoords);
             }
 
             // Supports
             spriteIndex = typeDescriptor.ColourPreview.Supports;
             if (spriteIndex != 0)
             {
-                spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(trackColour.supports);
-                gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
+                gfx_draw_sprite(dpi, ImageId(spriteIndex, trackColour.supports), screenCoords);
             }
         }
     }
@@ -4814,10 +4813,7 @@ static void window_ride_colour_paint(rct_window* w, rct_drawpixelinfo* dpi)
             + ScreenCoordsXY{ (widget->left + widget->right) / 2 - 8, (widget->bottom + widget->top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        int32_t spriteIndex = GetShopItemDescriptor(shopItem).Image;
-        spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour[0].main);
-
-        gfx_draw_sprite(dpi, spriteIndex, screenCoords, 0);
+        gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
     }
 
     // Entrance preview
@@ -4898,7 +4894,7 @@ static void window_ride_colour_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     spriteIndex += rideVehicleEntry->base_image_id;
     spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
     spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
-    gfx_draw_sprite(dpi, spriteIndex, screenCoords, vehicleColour.additional_2);
+    gfx_draw_sprite(dpi, ImageId::FromUInt32(spriteIndex, vehicleColour.additional_2), screenCoords);
 }
 
 #pragma endregion

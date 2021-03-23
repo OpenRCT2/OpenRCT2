@@ -613,10 +613,9 @@ static void window_new_ride_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w
 
         spriteIndex += page == WINDOW_NEW_RIDE_PAGE_THRILL ? ThrillRidesTabAnimationSequence[frame] : frame;
 
-        spriteIndex |= w->colours[1] << 19;
-
         gfx_draw_sprite(
-            dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top }, 0);
+            dpi, ImageId(spriteIndex, w->colours[1]),
+            w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
     }
 }
 

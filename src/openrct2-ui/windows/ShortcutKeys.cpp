@@ -492,7 +492,7 @@ private:
                 }
 
                 const auto& widget = widgets[widgetIndex];
-                gfx_draw_sprite(&dpi, imageId, windowPos + ScreenCoordsXY{ widget.left, widget.top }, 0);
+                gfx_draw_sprite(&dpi, ImageId(imageId), windowPos + ScreenCoordsXY{ widget.left, widget.top });
             }
         }
     }

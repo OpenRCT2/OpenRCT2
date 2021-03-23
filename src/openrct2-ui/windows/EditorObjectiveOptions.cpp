@@ -267,7 +267,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN)
         spriteIndex += (w->frame_no / 4) % 16;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     if (!(w->disabled_widgets & (1 << WIDX_TAB_2)))
@@ -277,7 +277,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
         if (w->page == WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_RIDES)
             spriteIndex += (w->frame_no / 4) % 16;
 
-        gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+        gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
     }
 }
 

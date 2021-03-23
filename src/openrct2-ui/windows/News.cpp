@@ -268,7 +268,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
             switch (newsItem.Type)
             {
                 case News::ItemType::Ride:
-                    gfx_draw_sprite(dpi, SPR_RIDE, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_RIDE), screenCoords);
                     break;
                 case News::ItemType::Peep:
                 case News::ItemType::PeepOnRide:
@@ -301,23 +301,23 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     image_id += 0xA0000001;
                     image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
 
-                    gfx_draw_sprite(&cliped_dpi, image_id, clipCoords, 0);
+                    gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
                     break;
                 }
                 case News::ItemType::Money:
-                    gfx_draw_sprite(dpi, SPR_FINANCE, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
                     break;
                 case News::ItemType::Research:
-                    gfx_draw_sprite(dpi, newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
                     break;
                 case News::ItemType::Peeps:
-                    gfx_draw_sprite(dpi, SPR_GUESTS, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_GUESTS), screenCoords);
                     break;
                 case News::ItemType::Award:
-                    gfx_draw_sprite(dpi, SPR_AWARD, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_AWARD), screenCoords);
                     break;
                 case News::ItemType::Graph:
-                    gfx_draw_sprite(dpi, SPR_GRAPH, screenCoords, 0);
+                    gfx_draw_sprite(dpi, ImageId(SPR_GRAPH), screenCoords);
                     break;
                 case News::ItemType::Null:
                 case News::ItemType::Blank:
@@ -339,7 +339,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     press = 0x20;
             }
             gfx_fill_rect_inset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, w->colours[2], press);
-            gfx_draw_sprite(dpi, SPR_LOCATE, screenCoords, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_LOCATE), screenCoords);
         }
 
         y += itemHeight;

@@ -772,31 +772,25 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     }
     animationFrame += animationFrameOffset;
 
-    int32_t sprite_id = animationFrame | SPRITE_ID_PALETTE_COLOUR_2(peep->TshirtColour, peep->TrousersColour);
-    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords, 0);
+    auto sprite_id = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
+    gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords);
 
     // If holding a balloon
     if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
     {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
+        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->BalloonColour), screenCoords);
     }
 
     // If holding umbrella
     if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
     {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
+        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->UmbrellaColour), screenCoords);
     }
 
     // If wearing hat
     if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
     {
-        animationFrame += 32;
-        animationFrame |= SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour);
-        gfx_draw_sprite(&clip_dpi, animationFrame, screenCoords, 0);
+        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->HatColour), screenCoords);
     }
 }
 
@@ -835,7 +829,7 @@ static void window_guest_stats_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
                 break;
         }
     }
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -857,7 +851,7 @@ static void window_guest_rides_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 4) & 0xF;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -879,7 +873,7 @@ static void window_guest_finance_tab_paint(rct_window* w, rct_drawpixelinfo* dpi
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -901,7 +895,7 @@ static void window_guest_thoughts_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         image_id += (w->frame_no / 2) & 0x7;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -916,9 +910,7 @@ static void window_guest_inventory_tab_paint(rct_window* w, rct_drawpixelinfo* d
     rct_widget* widget = &w->widgets[WIDX_TAB_6];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-    int32_t image_id = SPR_TAB_GUEST_INVENTORY;
-
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(SPR_TAB_GUEST_INVENTORY), screenCoords);
 }
 
 static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -935,7 +927,7 @@ static void window_guest_debug_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
         image_id += (w->frame_no / 2) & 0x3;
     }
 
-    gfx_draw_sprite(dpi, image_id, screenCoords, 0);
+    gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
 }
 
 /**
@@ -960,7 +952,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
         rct_viewport* viewport = w->viewport;
         if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
-            gfx_draw_sprite(dpi, SPR_HEARING_VIEWPORT, w->windowPos + ScreenCoordsXY{ 2, 2 }, 0);
+            gfx_draw_sprite(dpi, ImageId(SPR_HEARING_VIEWPORT), w->windowPos + ScreenCoordsXY{ 2, 2 });
         }
     }
 

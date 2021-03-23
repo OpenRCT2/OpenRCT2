@@ -376,7 +376,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_FINANCIAL)
         spriteIndex += (w->frame_no / 2) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
     widget = &w->widgets[WIDX_TAB_2];
@@ -384,12 +384,12 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
     if (w->page == WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_GUESTS)
         spriteIndex += (w->frame_no / 4) % 8;
 
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 3
     widget = &w->widgets[WIDX_TAB_3];
     spriteIndex = SPR_TAB_PARK;
-    gfx_draw_sprite(dpi, spriteIndex, w->windowPos + ScreenCoordsXY{ widget->left, widget->top }, 0);
+    gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 }
 
 /**

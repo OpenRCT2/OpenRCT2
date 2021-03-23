@@ -345,9 +345,8 @@ static void window_dropdown_paint(rct_window* w, rct_drawpixelinfo* dpi)
                     image++;
 
                 gfx_draw_sprite(
-                    dpi, image,
-                    w->windowPos + ScreenCoordsXY{ 2 + (cell_x * _dropdown_item_width), 2 + (cell_y * _dropdown_item_height) },
-                    0);
+                    dpi, ImageId::FromUInt32(image),
+                    w->windowPos + ScreenCoordsXY{ 2 + (cell_x * _dropdown_item_width), 2 + (cell_y * _dropdown_item_height) });
             }
             else
             {

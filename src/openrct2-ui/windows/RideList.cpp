@@ -764,21 +764,21 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo* dpi, rct_window*
     if (w->page == PAGE_RIDES)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top });
 
     // Shops and stalls tab
     sprite_idx = SPR_TAB_SHOPS_AND_STALLS_0;
     if (w->page == PAGE_SHOPS_AND_STALLS)
         sprite_idx += w->frame_no / 4;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top });
 
     // Information kiosks and facilities tab
     sprite_idx = SPR_TAB_KIOSKS_AND_FACILITIES_0;
     if (w->page == PAGE_KIOSKS_AND_FACILITIES)
         sprite_idx += (w->frame_no / 4) % 8;
     gfx_draw_sprite(
-        dpi, sprite_idx, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top }, 0);
+        dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top });
 }
 
 /**
