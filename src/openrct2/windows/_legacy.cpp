@@ -311,7 +311,8 @@ bool window_ride_construction_update_state(
         if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
         {
             trackType = alternativeType;
-            liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
+            if (!gCheatsEnableChainLiftOnAllTrack)
+                liftHillAndInvertedState &= ~CONSTRUCTION_LIFT_HILL_SELECTED;
         }
     }
 
