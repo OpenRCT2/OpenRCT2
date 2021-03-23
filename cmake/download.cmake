@@ -23,10 +23,14 @@ function(download_openrct2_zip)
         file(DOWNLOAD
             "${DOWNLOAD_OPENRCT2_ZIP_URL}" "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}"
             EXPECTED_HASH SHA1=${DOWNLOAD_OPENRCT2_SHA1} SHOW_PROGRESS)
-        file(ARCHIVE_EXTRACT
-            INPUT "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}"
-            DESTINATION "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}"
-        )
+        if(${CMAKE_VERSION} VERSION_LESS "3.18.0") 
+            execute_process(COMMAND ${CMAKE_COMMAND} -E chdir ${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR} ${CMAKE_COMMAND} -E tar xf ${ZIP_FILE_NAME})
+        else()
+            file(ARCHIVE_EXTRACT
+                INPUT "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/${ZIP_FILE_NAME}"
+                DESTINATION "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}"
+            )
+        endif()
         file(WRITE
             "${DOWNLOAD_OPENRCT2_DOWNLOAD_DIR}/zipversion"
             "${DOWNLOAD_OPENRCT2_ZIP_VERSION}"
