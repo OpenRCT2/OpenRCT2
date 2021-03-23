@@ -1347,7 +1347,7 @@ private:
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
                 Peep* peep = nullptr;
-                if (static_cast<PeepType>(srcPeep->type) == PeepType::Guest)
+                if (static_cast<RCT12PeepType>(srcPeep->type) == RCT12PeepType::Guest)
                 {
                     peep = CreateEntity<Guest>();
                 }

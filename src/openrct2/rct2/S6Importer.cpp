@@ -1688,7 +1688,7 @@ public:
                 output = EntityType::Vehicle;
                 break;
             case RCT12SpriteIdentifier::Peep:
-                if (PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == PeepType::Guest)
+                if (RCT12PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == RCT12PeepType::Guest)
                 {
                     output = EntityType::Guest;
                 }

@@ -1228,7 +1228,7 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->state = static_cast<uint8_t>(src->State);
     dst->sub_state = src->SubState;
     dst->sprite_type = static_cast<uint8_t>(src->SpriteType);
-    dst->peep_type = static_cast<uint8_t>(src->Type == EntityType::Staff ? PeepType::Staff : PeepType::Guest);
+    dst->peep_type = static_cast<uint8_t>(src->Type == EntityType::Staff ? RCT12PeepType::Staff : RCT12PeepType::Guest);
     dst->no_of_rides = src->GuestNumRides;
     dst->tshirt_colour = src->TshirtColour;
     dst->trousers_colour = src->TrousersColour;
