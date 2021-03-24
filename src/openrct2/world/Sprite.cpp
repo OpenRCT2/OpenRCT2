@@ -467,8 +467,8 @@ rct_sprite* create_sprite(EntityType type)
 
 SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
 {
-    auto id = std::upper_bound(std::begin(_freeIdList), std::end(_freeIdList), index);
-    if (id == std::end(_freeIdList) || *id != index)
+    auto id = std::lower_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    if (id == std::rend(_freeIdList) || *id != index)
     {
         return nullptr;
     }
@@ -479,7 +479,7 @@ SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
         return nullptr;
     }
 
-    _freeIdList.erase(id);
+    _freeIdList.erase(std::next(id).base());
 
     PrepareNewEntity(entity, type);
     return entity;
