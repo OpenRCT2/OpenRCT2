@@ -4419,6 +4419,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_DOWN_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
+            }
+            break;
         case TRACK_SLOPE_DOWN_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
@@ -4430,6 +4438,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_DOWN) && w->widgets[WIDX_SLOPE_DOWN].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
@@ -4476,6 +4490,12 @@ void window_ride_construction_keyboard_shortcut_slope_down()
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4484,6 +4504,14 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_UP_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
             }
             break;
         default:
@@ -4501,6 +4529,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
 
     switch (_currentTrackSlopeEnd)
     {
+        case TRACK_SLOPE_UP_60:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
+            }
+            break;
         case TRACK_SLOPE_UP_25:
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
@@ -4511,6 +4547,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             if (!WidgetIsDisabled(w, WIDX_SLOPE_UP) && w->widgets[WIDX_SLOPE_UP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
+            }
+            else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
             }
             else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
@@ -4555,6 +4597,12 @@ void window_ride_construction_keyboard_shortcut_slope_up()
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP);
             }
             else if (
+                is_track_enabled(TRACK_SLOPE_VERTICAL)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+            {
+                return;
+            }
+            else if (
                 !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP) && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
@@ -4562,6 +4610,14 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             else
             {
                 return;
+            }
+            break;
+        case TRACK_SLOPE_DOWN_90:
+            if (is_track_enabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
+                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
+            {
+                window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
             }
             break;
         default:
