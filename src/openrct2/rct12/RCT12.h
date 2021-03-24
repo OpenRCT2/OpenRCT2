@@ -713,6 +713,14 @@ enum class RCT12MiscEntityType : uint8_t
     JumpingFountainSnow
 };
 
+enum class RCT12PeepType : uint8_t
+{
+    Guest,
+    Staff,
+
+    Invalid = 0xFF
+};
+
 struct RCT12SpriteBase
 {
     RCT12SpriteIdentifier sprite_identifier;           // 0x00

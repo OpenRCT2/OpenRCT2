@@ -1478,7 +1478,6 @@ public:
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->SpriteType = static_cast<PeepSpriteType>(src->sprite_type);
-        dst->AssignedPeepType = static_cast<PeepType>(src->peep_type);
         dst->GuestNumRides = src->no_of_rides;
         dst->TshirtColour = src->tshirt_colour;
         dst->TrousersColour = src->trousers_colour;
@@ -1689,7 +1688,7 @@ public:
                 output = EntityType::Vehicle;
                 break;
             case RCT12SpriteIdentifier::Peep:
-                if (PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == PeepType::Guest)
+                if (RCT12PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == RCT12PeepType::Guest)
                 {
                     output = EntityType::Guest;
                 }

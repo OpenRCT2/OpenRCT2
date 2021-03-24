@@ -703,7 +703,7 @@ namespace OpenRCT2::Scripting
             auto peep = GetPeep();
             if (peep != nullptr)
             {
-                return peep->AssignedPeepType == PeepType::Staff ? "staff" : "guest";
+                return peep->Is<Staff>() ? "staff" : "guest";
             }
             return "";
         }

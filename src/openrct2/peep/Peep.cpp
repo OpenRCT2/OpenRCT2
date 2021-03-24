@@ -708,7 +708,7 @@ void peep_window_state_update(Peep* peep)
     if (w != nullptr)
         window_event_invalidate_call(w);
 
-    if (peep->AssignedPeepType == PeepType::Guest)
+    if (peep->Is<Guest>())
     {
         if (peep->State == PeepState::OnRide || peep->State == PeepState::EnteringRide)
         {
@@ -810,7 +810,7 @@ std::unique_ptr<GameActions::Result> Peep::Place(const TileCoordsXYZ& location, 
         PathCheckOptimisation = 0;
         EntityTweener::Get().Reset();
 
-        if (AssignedPeepType == PeepType::Guest)
+        if (Is<Guest>())
         {
             ActionSpriteType = PeepActionSpriteType::Invalid;
             HappinessTarget = std::max(HappinessTarget - 10, 0);
@@ -839,17 +839,15 @@ void peep_sprite_remove(Peep* peep)
     window_close_by_number(WC_FIRE_PROMPT, EnumValue(peep->Type));
 
     // Needed for invalidations after sprite removal
-    bool wasGuest = peep->AssignedPeepType == PeepType::Guest;
-    if (peep->AssignedPeepType == PeepType::Guest)
+    bool wasGuest = peep->Is<Guest>();
+    if (wasGuest)
     {
         News::DisableNewsItems(News::ItemType::PeepOnRide, peep->sprite_index);
     }
     else
     {
         gStaffModes[peep->StaffId] = StaffMode::None;
-        peep->AssignedPeepType = PeepType::Invalid;
         staff_update_greyed_patrol_areas();
-        peep->AssignedPeepType = PeepType::Staff;
 
         News::DisableNewsItems(News::ItemType::Peep, peep->sprite_index);
     }
@@ -864,7 +862,7 @@ void peep_sprite_remove(Peep* peep)
  */
 void Peep::Remove()
 {
-    if (AssignedPeepType == PeepType::Guest)
+    if (Is<Guest>())
     {
         if (!OutsideOfPark)
         {
@@ -1007,7 +1005,7 @@ void Peep::Update1()
     if (!CheckForPath())
         return;
 
-    if (AssignedPeepType == PeepType::Guest)
+    if (Is<Guest>())
     {
         SetState(PeepState::Walking);
     }
@@ -1109,7 +1107,7 @@ static void peep_update_thoughts(Peep* peep)
  */
 void Peep::Update()
 {
-    if (AssignedPeepType == PeepType::Guest)
+    if (Is<Guest>())
     {
         if (PreviousRide != RIDE_ID_NULL)
             if (++PreviousRideTimeOut >= 720)
@@ -1631,7 +1629,6 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->Mass = (scenario_rand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
     peep->InteractionRideIndex = RIDE_ID_NULL;
-    peep->AssignedPeepType = PeepType::Guest;
     peep->PreviousRide = RIDE_ID_NULL;
     peep->Thoughts->type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
@@ -1951,7 +1948,7 @@ void Peep::FormatNameTo(Formatter& ft) const
 {
     if (Name == nullptr)
     {
-        if (AssignedPeepType == PeepType::Staff)
+        if (Is<Staff>())
         {
             static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
@@ -2155,7 +2152,7 @@ int32_t get_peep_face_sprite_large(Peep* peep)
 void peep_set_map_tooltip(Peep* peep)
 {
     auto ft = Formatter();
-    if (peep->AssignedPeepType == PeepType::Guest)
+    if (peep->Is<Guest>())
     {
         ft.Add<rct_string_id>((peep->PeepFlags & PEEP_FLAGS_TRACKING) ? STR_TRACKED_GUEST_MAP_TIP : STR_GUEST_MAP_TIP);
         ft.Add<uint32_t>(get_peep_face_sprite_small(peep));
@@ -2596,7 +2593,7 @@ static void peep_footpath_move_forward(Peep* peep, const CoordsXYE& coords, bool
 
     int16_t z = peep->GetZOnSlope(coords.x, coords.y);
 
-    if (peep->AssignedPeepType == PeepType::Staff)
+    if (peep->Is<Staff>())
     {
         peep->MoveTo({ coords, z });
         return;
@@ -3058,10 +3055,10 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    if (AssignedPeepType == PeepType::Staff || (GetNextIsSurface()))
+    if (Is<Staff>() || (GetNextIsSurface()))
     {
         int16_t height = abs(tile_element_height(newLoc) - z);
-        if (height <= 3 || (AssignedPeepType == PeepType::Staff && height <= 32))
+        if (height <= 3 || (Is<Staff>() && height <= 32))
         {
             InteractionRideIndex = RIDE_ID_NULL;
             if (State == PeepState::Queuing)
@@ -3090,7 +3087,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
 
-            if (AssignedPeepType == PeepType::Staff && !GetNextIsSurface())
+            if (Is<Staff>() && !GetNextIsSurface())
             {
                 // Prevent staff from leaving the path on their own unless they're allowed to mow.
                 if (!((this->StaffOrders & STAFF_ORDERS_MOWING) && this->StaffMowingTimeout >= 12))
@@ -3165,9 +3162,9 @@ int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_
     }
 
     // Compare types
-    if (peep_a->AssignedPeepType != peep_b->AssignedPeepType)
+    if (peep_a->Type != peep_b->Type)
     {
-        return static_cast<int32_t>(peep_a->AssignedPeepType) - static_cast<int32_t>(peep_b->AssignedPeepType);
+        return static_cast<int32_t>(peep_a->Type) - static_cast<int32_t>(peep_b->Type);
     }
 
     if (peep_a->Name == nullptr && peep_b->Name == nullptr)

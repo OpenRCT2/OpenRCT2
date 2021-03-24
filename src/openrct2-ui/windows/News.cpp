@@ -288,7 +288,7 @@ static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32
                     // If normal peep set sprite to normal (no food)
                     // If staff set sprite to staff sprite
                     auto spriteType = PeepSpriteType::Normal;
-                    if (peep->AssignedPeepType == PeepType::Staff)
+                    if (peep->Is<Staff>())
                     {
                         spriteType = peep->SpriteType;
                         if (peep->AssignedStaffType == StaffType::Entertainer)

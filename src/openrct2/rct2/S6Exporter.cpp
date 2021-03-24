@@ -1200,7 +1200,7 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     }
     if (generateName)
     {
-        if (src->AssignedPeepType == PeepType::Staff)
+        if (src->Is<Staff>())
         {
             static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
@@ -1228,7 +1228,7 @@ void S6Exporter::ExportEntityPeep(RCT2SpritePeep* dst, const Peep* src)
     dst->state = static_cast<uint8_t>(src->State);
     dst->sub_state = src->SubState;
     dst->sprite_type = static_cast<uint8_t>(src->SpriteType);
-    dst->peep_type = static_cast<uint8_t>(src->AssignedPeepType);
+    dst->peep_type = static_cast<uint8_t>(src->Type == EntityType::Staff ? RCT12PeepType::Staff : RCT12PeepType::Guest);
     dst->no_of_rides = src->GuestNumRides;
     dst->tshirt_colour = src->TshirtColour;
     dst->trousers_colour = src->TrousersColour;

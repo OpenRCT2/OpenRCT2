@@ -372,7 +372,7 @@ rct_window* window_guest_open(Peep* peep)
     {
         return nullptr;
     }
-    if (peep->AssignedPeepType == PeepType::Staff)
+    if (peep->Is<Staff>())
     {
         return window_staff_open(peep);
     }
@@ -758,7 +758,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
     }
 
-    if (peep->AssignedPeepType == PeepType::Staff && peep->AssignedStaffType == StaffType::Entertainer)
+    if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t animationFrame = GetPeepAnimation(peep->SpriteType).base_image + 1;

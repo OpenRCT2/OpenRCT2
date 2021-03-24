@@ -922,9 +922,9 @@ private:
         if (peepA != nullptr && peepB != nullptr)
         {
             // Compare types
-            if (peepA->AssignedPeepType != peepB->AssignedPeepType)
+            if (peepA->Type != peepB->Type)
             {
-                return static_cast<int32_t>(peepA->AssignedPeepType) < static_cast<int32_t>(peepB->AssignedPeepType);
+                return static_cast<int32_t>(peepA->Type) < static_cast<int32_t>(peepB->Type);
             }
 
             // Compare name

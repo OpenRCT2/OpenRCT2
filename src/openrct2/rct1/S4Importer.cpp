@@ -1347,7 +1347,7 @@ private:
             {
                 rct1_peep* srcPeep = &_s4.sprites[i].peep;
                 Peep* peep = nullptr;
-                if (static_cast<PeepType>(srcPeep->type) == PeepType::Guest)
+                if (static_cast<RCT12PeepType>(srcPeep->type) == RCT12PeepType::Guest)
                 {
                     peep = CreateEntity<Guest>();
                 }
@@ -1446,8 +1446,6 @@ private:
         dst->TimeToConsume = src->time_to_consume;
         dst->StepProgress = src->step_progress;
         dst->VandalismSeen = src->vandalism_seen;
-
-        dst->AssignedPeepType = static_cast<PeepType>(src->type);
 
         dst->TshirtColour = RCT1::GetColour(src->tshirt_colour);
         dst->TrousersColour = RCT1::GetColour(src->trousers_colour);
@@ -1575,7 +1573,7 @@ private:
 
         dst->SetItemFlags(src->GetItemFlags());
 
-        if (dst->AssignedPeepType == PeepType::Guest)
+        if (dst->Is<Guest>())
         {
             if (dst->OutsideOfPark && dst->State != PeepState::LeavingPark)
             {

@@ -56,14 +56,6 @@ namespace GameActions
 }
 using ParkEntranceIndex = uint8_t;
 
-enum class PeepType : uint8_t
-{
-    Guest,
-    Staff,
-
-    Invalid = 0xFF
-};
-
 enum class StaffType : uint8_t
 {
     Handyman,
@@ -570,7 +562,6 @@ struct Peep : SpriteBase
         PeepUsingBinSubState UsingBinSubState;
     };
     PeepSpriteType SpriteType;
-    PeepType AssignedPeepType;
     union
     {
         StaffType AssignedStaffType;

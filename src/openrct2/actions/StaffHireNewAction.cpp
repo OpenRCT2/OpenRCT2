@@ -149,7 +149,6 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->WalkingFrameNum = 0;
         newPeep->ActionSpriteType = PeepActionSpriteType::None;
         newPeep->PathCheckOptimisation = 0;
-        newPeep->AssignedPeepType = PeepType::Staff;
         newPeep->OutsideOfPark = false;
         newPeep->PeepFlags = 0;
         newPeep->PaidToEnter = 0;
