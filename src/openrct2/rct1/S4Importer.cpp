@@ -1360,13 +1360,9 @@ private:
                 ImportPeep(peep, srcPeep);
             }
         }
-        for (size_t i = 0; i < MAX_ENTITIES; i++)
+        for (auto* vehicle : EntityList<Vehicle>())
         {
-            auto vehicle = GetEntity<Vehicle>(i);
-            if (vehicle != nullptr)
-            {
-                FixVehiclePeepLinks(vehicle, spriteIndexMap);
-            }
+            FixVehiclePeepLinks(vehicle, spriteIndexMap);
         }
 
         for (auto& ride : GetRideManager())
@@ -1374,12 +1370,11 @@ private:
             FixRidePeepLinks(&ride, spriteIndexMap);
         }
 
+        for (auto peep : EntityList<Guest>())
         {
-            for (auto peep : EntityList<Guest>())
-            {
-                FixPeepNextInQueue(peep, spriteIndexMap);
-            }
+            FixPeepNextInQueue(peep, spriteIndexMap);
         }
+
         // Fix the news items in advance
         for (auto i = 0; i < News::MaxItems; i++)
         {

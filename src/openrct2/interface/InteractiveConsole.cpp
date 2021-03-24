@@ -1580,17 +1580,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         desyncType = atoi(argv[0].c_str());
     }
 
-    std::vector<Peep*> peeps;
+    std::vector<Guest*> peeps;
 
-    for (int i = 0; i < MAX_ENTITIES; i++)
+    for (auto* guest : EntityList<Guest>())
     {
-        auto* sprite = GetEntity(i);
-        if (sprite == nullptr || sprite->Type == EntityType::Null)
-            continue;
-
-        auto peep = sprite->As<Peep>();
-        if (peep != nullptr)
-            peeps.push_back(peep);
+        peeps.push_back(guest);
     }
 
     switch (desyncType)
@@ -1599,7 +1593,7 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         {
             if (peeps.empty())
             {
-                console.WriteFormatLine("No peeps");
+                console.WriteFormatLine("No guests");
             }
             else
             {
@@ -1611,11 +1605,11 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
             }
             break;
         }
-        case 1: // Remove random peep.
+        case 1: // Remove random guest.
         {
             if (peeps.empty())
             {
-                console.WriteFormatLine("No peep removed");
+                console.WriteFormatLine("No guest removed");
             }
             else
             {
