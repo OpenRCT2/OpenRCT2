@@ -279,22 +279,21 @@ template<typename T> void ComputeChecksumForEntityType(Crypt::HashAlgorithm<20>*
 {
     for (auto* ent : EntityList<T>())
     {
-        // Upconvert it to rct_sprite so that the full size is copied.
-        auto copy = *reinterpret_cast<rct_sprite*>(ent);
+        T copy = *ent;
 
         // Only required for rendering/invalidation, has no meaning to the game state.
-        copy.misc.sprite_left = copy.misc.sprite_right = copy.misc.sprite_top = copy.misc.sprite_bottom = 0;
-        copy.misc.sprite_width = copy.misc.sprite_height_negative = copy.misc.sprite_height_positive = 0;
+        copy.sprite_left = copy.sprite_right = copy.sprite_top = copy.sprite_bottom = 0;
+        copy.sprite_width = copy.sprite_height_negative = copy.sprite_height_positive = 0;
 
         if constexpr (std::is_base_of_v<Peep, T>)
         {
             // Name is pointer and will not be the same across clients
-            copy.peep.Name = {};
+            copy.Name = {};
 
             // We set this to 0 because as soon the client selects a guest the window will remove the
             // invalidation flags causing the sprite checksum to be different than on server, the flag does not
             // affect game state.
-            copy.peep.WindowInvalidateFlags = 0;
+            copy.WindowInvalidateFlags = 0;
         }
 
         _entityHashAlg->Update(&copy, sizeof(copy));
