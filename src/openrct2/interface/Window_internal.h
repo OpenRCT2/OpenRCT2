@@ -179,6 +179,9 @@ struct rct_window
     virtual void OnToolAbort(rct_widgetindex widgetIndex)
     {
     }
+    virtual void OnViewportRotate()
+    {
+    }
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
