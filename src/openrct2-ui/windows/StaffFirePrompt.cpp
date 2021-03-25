@@ -99,7 +99,7 @@ static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    Peep* peep = GetEntity<Peep>(w->number);
+    Peep* peep = GetEntity<Staff>(w->number);
     auto ft = Formatter();
     peep->FormatNameTo(ft);
 

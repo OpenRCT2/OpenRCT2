@@ -1230,7 +1230,7 @@ void vehicle_visual_mini_golf_player(
     if (rideEntry == nullptr)
         return;
 
-    auto* peep = GetEntity<Peep>(vehicle->peep[0]);
+    auto* peep = GetEntity<Guest>(vehicle->peep[0]);
     if (peep == nullptr)
         return;
 
