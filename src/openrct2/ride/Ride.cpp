@@ -838,7 +838,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
         mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         && race_winner != SPRITE_INDEX_NULL)
     {
-        auto peep = GetEntity<Peep>(race_winner);
+        auto peep = GetEntity<Guest>(race_winner);
         if (peep != nullptr)
         {
             ft.Add<rct_string_id>(STR_RACE_WON_BY);

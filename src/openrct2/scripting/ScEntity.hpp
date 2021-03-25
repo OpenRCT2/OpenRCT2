@@ -842,23 +842,18 @@ namespace OpenRCT2::Scripting
     private:
         Guest* GetGuest() const
         {
-            auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                return peep->As<Guest>();
-            }
-            return nullptr;
+            return ::GetEntity<Guest>(_id);
         }
 
         uint8_t tshirtColour_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->TshirtColour : 0;
         }
         void tshirtColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->TshirtColour = value;
@@ -868,13 +863,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t trousersColour_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->TrousersColour : 0;
         }
         void trousersColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->TrousersColour = value;
@@ -884,13 +879,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t balloonColour_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->BalloonColour : 0;
         }
         void balloonColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->BalloonColour = value;
@@ -900,13 +895,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t hatColour_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->HatColour : 0;
         }
         void hatColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->HatColour = value;
@@ -916,13 +911,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t umbrellaColour_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->UmbrellaColour : 0;
         }
         void umbrellaColour_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->UmbrellaColour = value;
@@ -932,13 +927,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t happiness_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Happiness : 0;
         }
         void happiness_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Happiness = value;
@@ -947,13 +942,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t happinessTarget_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->HappinessTarget : 0;
         }
         void happinessTarget_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->HappinessTarget = value;
@@ -962,13 +957,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t nausea_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Nausea : 0;
         }
         void nausea_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Nausea = value;
@@ -977,13 +972,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t nauseaTarget_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->NauseaTarget : 0;
         }
         void nauseaTarget_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->NauseaTarget = value;
@@ -992,13 +987,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t hunger_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Hunger : 0;
         }
         void hunger_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Hunger = value;
@@ -1007,13 +1002,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t thirst_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Thirst : 0;
         }
         void thirst_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Thirst = value;
@@ -1022,13 +1017,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t toilet_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Toilet : 0;
         }
         void toilet_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Toilet = value;
@@ -1037,13 +1032,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t mass_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Mass : 0;
         }
         void mass_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Mass = value;
@@ -1052,13 +1047,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t minIntensity_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Intensity.GetMinimum() : 0;
         }
         void minIntensity_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Intensity = peep->Intensity.WithMinimum(value);
@@ -1067,13 +1062,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t maxIntensity_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->Intensity.GetMaximum() : 0;
         }
         void maxIntensity_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->Intensity = peep->Intensity.WithMaximum(value);
@@ -1082,13 +1077,13 @@ namespace OpenRCT2::Scripting
 
         uint8_t nauseaTolerance_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? EnumValue(peep->NauseaTolerance) : 0;
         }
         void nauseaTolerance_set(uint8_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->NauseaTolerance = static_cast<PeepNauseaTolerance>(std::min<uint8_t>(value, 3));
@@ -1097,13 +1092,13 @@ namespace OpenRCT2::Scripting
 
         int32_t cash_get() const
         {
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             return peep != nullptr ? peep->CashInPocket : 0;
         }
         void cash_set(int32_t value)
         {
             ThrowIfGameStateNotMutable();
-            auto peep = GetPeep();
+            auto peep = GetGuest();
             if (peep != nullptr)
             {
                 peep->CashInPocket = std::max(0, value);
@@ -1131,12 +1126,7 @@ namespace OpenRCT2::Scripting
     private:
         Staff* GetStaff() const
         {
-            auto peep = GetPeep();
-            if (peep != nullptr)
-            {
-                return peep->As<Staff>();
-            }
-            return nullptr;
+            return ::GetEntity<Staff>(_id);
         }
 
         std::string staffType_get() const

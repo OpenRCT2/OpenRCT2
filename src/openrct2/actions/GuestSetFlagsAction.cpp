@@ -39,7 +39,7 @@ void GuestSetFlagsAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result::Ptr GuestSetFlagsAction::Query() const
 {
-    Peep* peep = TryGetEntity<Peep>(_peepId);
+    auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
@@ -50,7 +50,7 @@ GameActions::Result::Ptr GuestSetFlagsAction::Query() const
 
 GameActions::Result::Ptr GuestSetFlagsAction::Execute() const
 {
-    Peep* peep = TryGetEntity<Peep>(_peepId);
+    auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));

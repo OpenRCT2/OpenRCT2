@@ -124,9 +124,9 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
             return;
 
         // Open window for new staff.
-        auto peep = GetEntity<Peep>(res->peepSriteIndex);
+        auto* staff = GetEntity<Staff>(res->peepSriteIndex);
         auto intent = Intent(WC_PEEP);
-        intent.putExtra(INTENT_EXTRA_PEEP, peep);
+        intent.putExtra(INTENT_EXTRA_PEEP, staff);
         context_open_intent(&intent);
     });
 

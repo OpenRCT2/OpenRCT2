@@ -1421,7 +1421,7 @@ rct_window* window_ride_open_vehicle(Vehicle* vehicle)
             int32_t numPeepsLeft = vehicle->num_peeps;
             for (int32_t i = 0; i < 32 && numPeepsLeft > 0; i++)
             {
-                Peep* peep = GetEntity<Peep>(vehicle->peep[i]);
+                Peep* peep = GetEntity<Guest>(vehicle->peep[i]);
                 if (peep == nullptr)
                     continue;
 
