@@ -74,10 +74,12 @@ namespace OpenRCT2::Scripting
     {
     private:
         duk_context* _ctx{};
+        std::optional<CustomTool> _customTool;
 
     public:
-        ScTool(duk_context* ctx)
+        ScTool(duk_context* ctx, std::optional<CustomTool> customTool)
             : _ctx(ctx)
+            , _customTool(customTool)
         {
         }
 
@@ -91,7 +93,7 @@ namespace OpenRCT2::Scripting
     private:
         std::string id_get() const
         {
-            return ActiveCustomTool ? ActiveCustomTool->Id : "";
+            return _customTool ? _customTool->Id : "";
         }
 
         DukValue cursor_get() const
@@ -101,7 +103,11 @@ namespace OpenRCT2::Scripting
 
         void cancel()
         {
-            tool_cancel();
+            // cancel if this is the active tool
+            if (ActiveCustomTool->Id == _customTool->Id)
+            {
+                tool_cancel();
+            }
         }
     };
 
@@ -144,7 +150,7 @@ namespace OpenRCT2::Scripting
         {
             if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             {
-                return std::make_shared<ScTool>(_scriptEngine.GetContext());
+                return std::make_shared<ScTool>(_scriptEngine.GetContext(), ActiveCustomTool);
             }
             return {};
         }
@@ -296,9 +302,11 @@ namespace OpenRCT2::Scripting
                 false, true);
         }
 
-        void activateTool(const DukValue& desc)
+        std::shared_ptr<ScTool> activateTool(const DukValue& desc)
         {
             InitialiseCustomTool(_scriptEngine, desc);
+            // ActiveCustomTool contains just now initialised custom tool
+            return std::make_shared<ScTool>(_scriptEngine.GetContext(), ActiveCustomTool);
         }
 
         void registerMenuItem(std::string text, DukValue callback)

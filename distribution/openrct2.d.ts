@@ -1846,7 +1846,7 @@ declare global {
          * given tool descriptor and cursor events will be provided.
          * @param tool The properties and event handlers for the tool.
          */
-        activateTool(tool: ToolDesc): void;
+        activateTool(tool: ToolDesc): Tool;
 
         registerMenuItem(text: string, callback: () => void): void;
 
