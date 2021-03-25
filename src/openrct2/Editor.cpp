@@ -34,6 +34,7 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
+#include "world/EntityList.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Park.h"
@@ -310,13 +311,13 @@ namespace Editor
         ride_init_all();
 
         //
-        for (int32_t i = 0; i < MAX_ENTITIES; i++)
+        for (auto* guest : EntityList<Guest>())
         {
-            auto peep = GetEntity<Peep>(i);
-            if (peep != nullptr)
-            {
-                peep->SetName({});
-            }
+            guest->SetName({});
+        }
+        for (auto* staff : EntityList<Staff>())
+        {
+            staff->SetName({});
         }
 
         reset_sprite_list();
