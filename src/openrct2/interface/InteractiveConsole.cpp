@@ -1580,43 +1580,43 @@ static int32_t cc_mp_desync(InteractiveConsole& console, const arguments_t& argv
         desyncType = atoi(argv[0].c_str());
     }
 
-    std::vector<Guest*> peeps;
+    std::vector<Guest*> guests;
 
     for (auto* guest : EntityList<Guest>())
     {
-        peeps.push_back(guest);
+        guests.push_back(guest);
     }
 
     switch (desyncType)
     {
-        case 0: // Peep t-shirts.
+        case 0: // Guest t-shirts.
         {
-            if (peeps.empty())
+            if (guests.empty())
             {
                 console.WriteFormatLine("No guests");
             }
             else
             {
-                auto* peep = peeps[0];
-                if (peeps.size() > 1)
-                    peep = peeps[util_rand() % peeps.size() - 1];
-                peep->TshirtColour = util_rand() & 0xFF;
-                peep->Invalidate();
+                auto* guest = guests[0];
+                if (guests.size() > 1)
+                    guest = guests[util_rand() % guests.size() - 1];
+                guest->TshirtColour = util_rand() & 0xFF;
+                guest->Invalidate();
             }
             break;
         }
         case 1: // Remove random guest.
         {
-            if (peeps.empty())
+            if (guests.empty())
             {
                 console.WriteFormatLine("No guest removed");
             }
             else
             {
-                auto* peep = peeps[0];
-                if (peeps.size() > 1)
-                    peep = peeps[util_rand() % peeps.size() - 1];
-                peep->Remove();
+                auto* guest = guests[0];
+                if (guests.size() > 1)
+                    guest = guests[util_rand() % guests.size() - 1];
+                guest->Remove();
             }
             break;
         }
@@ -1804,7 +1804,7 @@ static constexpr const console_command console_command_table[] = {
     { "replay_start", cc_replay_start, "Starts a replay", "replay_start <name>"},
     { "replay_stop", cc_replay_stop, "Stops the replay", "replay_stop"},
     { "replay_normalise", cc_replay_normalise, "Normalises the replay to remove all gaps", "replay_normalise <input file> <output file>"},
-    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random peep, 1 = Remove random peep ]"},
+    { "mp_desync", cc_mp_desync, "Forces a multiplayer desync", "cc_mp_desync [desync_type, 0 = Random t-shirt color on random guest, 1 = Remove random guest ]"},
 
 };
 // clang-format on
