@@ -24,6 +24,7 @@
 #include <algorithm>
 #include <cmath>
 #include <iterator>
+#include <numeric>
 #include <vector>
 
 static rct_sprite _spriteList[MAX_ENTITIES];
@@ -200,28 +201,21 @@ void SpriteBase::Invalidate()
     viewports_invalidate(sprite_left, sprite_top, sprite_right, sprite_bottom, maxZoom);
 }
 
-void RebuildEntityLists()
+static void ResetEntityLists()
 {
     for (auto& list : gEntityLists)
     {
         list.clear();
     }
+}
 
+static void ResetFreeIds()
+{
     _freeIdList.clear();
 
-    for (auto& ent : _spriteList)
-    {
-        if (ent.misc.Type == EntityType::Null)
-        {
-            _freeIdList.push_back(ent.misc.sprite_index);
-        }
-        else
-        {
-            gEntityLists[EnumValue(ent.misc.Type)].push_back(ent.misc.sprite_index);
-        }
-    }
+    _freeIdList.resize(MAX_ENTITIES);
     // List needs to be back to front to simplify removing
-    std::sort(std::begin(_freeIdList), std::end(_freeIdList), std::greater<uint16_t>());
+    std::iota(std::rbegin(_freeIdList), std::rend(_freeIdList), 0);
 }
 
 const std::list<uint16_t>& GetEntityList(const EntityType id)
@@ -250,7 +244,8 @@ void reset_sprite_list()
 
         _spriteFlashingList[i] = false;
     }
-    RebuildEntityLists();
+    ResetEntityLists();
+    ResetFreeIds();
     reset_sprite_spatial_index();
 }
 
@@ -412,6 +407,27 @@ uint16_t GetMiscEntityCount()
     return count;
 }
 
+static void PrepareNewEntity(SpriteBase* base, const EntityType type)
+{
+    // Need to reset all sprite data, as the uninitialised values
+    // may contain garbage and cause a desync later on.
+    sprite_reset(base);
+
+    base->Type = type;
+    AddToEntityList(base);
+
+    base->x = LOCATION_NULL;
+    base->y = LOCATION_NULL;
+    base->z = 0;
+    base->sprite_width = 0x10;
+    base->sprite_height_negative = 0x14;
+    base->sprite_height_positive = 0x8;
+    base->flags = 0;
+    base->sprite_left = LOCATION_NULL;
+
+    SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
+}
+
 rct_sprite* create_sprite(EntityType type)
 {
     if (_freeIdList.size() == 0)
@@ -439,27 +455,30 @@ rct_sprite* create_sprite(EntityType type)
     }
     _freeIdList.pop_back();
 
-    // Need to reset all sprite data, as the uninitialised values
-    // may contain garbage and cause a desync later on.
-    sprite_reset(sprite);
-
-    sprite->Type = type;
-    AddToEntityList(sprite);
-
-    sprite->x = LOCATION_NULL;
-    sprite->y = LOCATION_NULL;
-    sprite->z = 0;
-    sprite->sprite_width = 0x10;
-    sprite->sprite_height_negative = 0x14;
-    sprite->sprite_height_positive = 0x8;
-    sprite->flags = 0;
-    sprite->sprite_left = LOCATION_NULL;
-
-    SpriteSpatialInsert(sprite, { LOCATION_NULL, 0 });
+    PrepareNewEntity(sprite, type);
 
     return reinterpret_cast<rct_sprite*>(sprite);
 }
 
+SpriteBase* CreateEntityAt(const uint16_t index, const EntityType type)
+{
+    auto id = std::lower_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    if (id == std::rend(_freeIdList) || *id != index)
+    {
+        return nullptr;
+    }
+
+    auto* entity = GetEntity(index);
+    if (entity == nullptr)
+    {
+        return nullptr;
+    }
+
+    _freeIdList.erase(std::next(id).base());
+
+    PrepareNewEntity(entity, type);
+    return entity;
+}
 /**
  *
  *  rct2: 0x00673200
