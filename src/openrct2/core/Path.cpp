@@ -196,34 +196,7 @@ namespace Path
 
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
     {
-#ifdef _WIN32
-        auto relativePathW = String::ToWideChar(relativePath);
-        wchar_t absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(
-            relativePathW.c_str(), static_cast<DWORD>(std::size(absolutePathW)), absolutePathW, nullptr);
-        if (length == 0)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-        else
-        {
-            auto absolutePath = String::ToUtf8(absolutePathW);
-            String::Set(buffer, bufferSize, absolutePath.c_str());
-            return buffer;
-        }
-#else
-        utf8* absolutePath = realpath(relativePath, nullptr);
-        if (absolutePath == nullptr)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-        else
-        {
-            String::Set(buffer, bufferSize, absolutePath);
-            Memory::Free(absolutePath);
-            return buffer;
-        }
-#endif
+        return Platform::GetAbsolutePath(buffer, bufferSize, relativePath);
     }
 
     std::string GetAbsolute(const std::string& relative)

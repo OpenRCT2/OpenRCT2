@@ -559,6 +559,24 @@ namespace Platform
         return c == '\\' || c == '/';
     }
 
+    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath)
+    {
+        auto relativePathW = String::ToWideChar(relativePath);
+        wchar_t absolutePathW[MAX_PATH];
+        DWORD length = GetFullPathNameW(
+            relativePathW.c_str(), static_cast<DWORD>(std::size(absolutePathW)), absolutePathW, nullptr);
+        if (length == 0)
+        {
+            return String::Set(buffer, bufferSize, relativePath);
+        }
+        else
+        {
+            auto absolutePath = String::ToUtf8(absolutePathW);
+            String::Set(buffer, bufferSize, absolutePath.c_str());
+            return buffer;
+        }
+    }
+
 } // namespace Platform
 
 #endif

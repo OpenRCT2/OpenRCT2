@@ -36,6 +36,7 @@ namespace Platform
     std::string GetCurrentExecutableDirectory();
     bool FileExists(const std::string path);
     bool IsPathSeparator(char c);
+    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);
     uint64_t GetLastModified(const std::string& path);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();

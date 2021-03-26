@@ -9,6 +9,7 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
+#    include "../core/Memory.hpp"
 #    include "../core/String.hpp"
 #    include "Platform2.h"
 #    include "platform.h"
@@ -177,6 +178,21 @@ namespace Platform
     bool IsPathSeparator(char c)
     {
         return c == '/';
+    }
+
+    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath)
+    {
+        utf8* absolutePath = realpath(relativePath, nullptr);
+        if (absolutePath == nullptr)
+        {
+            return String::Set(buffer, bufferSize, relativePath);
+        }
+        else
+        {
+            String::Set(buffer, bufferSize, absolutePath);
+            Memory::Free(absolutePath);
+            return buffer;
+        }
     }
 } // namespace Platform
 
