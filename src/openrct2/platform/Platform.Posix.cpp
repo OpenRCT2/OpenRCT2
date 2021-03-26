@@ -175,6 +175,11 @@ namespace Platform
         return lastModified;
     }
 
+    bool ShouldIgnoreCase()
+    {
+        return false;
+    }
+
     bool IsPathSeparator(char c)
     {
         return c == '/';

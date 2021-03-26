@@ -34,6 +34,7 @@ namespace Platform
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
     std::string GetCurrentExecutableDirectory();
+    bool ShouldIgnoreCase();
     bool FileExists(const std::string path);
     bool IsPathSeparator(char c);
     utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);

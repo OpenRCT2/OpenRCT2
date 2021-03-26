@@ -212,11 +212,7 @@ namespace Path
 
     bool Equals(const utf8* a, const utf8* b)
     {
-        bool ignoreCase = false;
-#ifdef _WIN32
-        ignoreCase = true;
-#endif
-        return String::Equals(a, b, ignoreCase);
+        return String::Equals(a, b, Platform::ShouldIgnoreCase());
     }
 
     std::string ResolveCasing(const std::string& path)
