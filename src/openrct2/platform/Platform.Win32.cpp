@@ -582,6 +582,17 @@ namespace Platform
         }
     }
 
+    std::string ResolveCasing(const std::string& path, bool fileExists)
+    {
+        std::string result;
+        if (fileExists)
+        {
+            // Windows is case insensitive so it will exist and that is all that matters
+            // for now. We can properly resolve the casing if we ever need to.
+            result = path;
+        }
+        return result;
+    }
 } // namespace Platform
 
 #endif

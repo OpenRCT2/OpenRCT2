@@ -7,10 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#ifndef _WIN32
-#    include <dirent.h>
-#endif
+#include "Path.hpp"
 
 #include "../localisation/Language.h"
 #include "../platform/Platform2.h"
@@ -19,9 +16,9 @@
 #include "File.h"
 #include "FileSystem.hpp"
 #include "Memory.hpp"
-#include "Path.hpp"
 #include "String.hpp"
 
+#include <algorithm>
 #include <iterator>
 
 namespace Path
@@ -217,42 +214,6 @@ namespace Path
 
     std::string ResolveCasing(const std::string& path)
     {
-        std::string result;
-        if (File::Exists(path))
-        {
-            // Windows is case insensitive so it will exist and that is all that matters
-            // for now. We can properly resolve the casing if we ever need to.
-            result = path;
-        }
-#ifndef _WIN32
-        else
-        {
-            std::string fileName = Path::GetFileName(path);
-            std::string directory = Path::GetDirectory(path);
-
-            struct dirent** files;
-            auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
-            if (count != -1)
-            {
-                // Find a file which matches by name (case insensitive)
-                for (int32_t i = 0; i < count; i++)
-                {
-                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
-                    {
-                        result = Path::Combine(directory, std::string(files[i]->d_name));
-                        break;
-                    }
-                }
-
-                // Free memory
-                for (int32_t i = 0; i < count; i++)
-                {
-                    free(files[i]);
-                }
-                free(files);
-            }
-        }
-#endif
-        return result;
+        return Platform::ResolveCasing(path, File::Exists(path));
     }
 } // namespace Path

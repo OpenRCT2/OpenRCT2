@@ -10,6 +10,7 @@
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
 #    include "../core/Memory.hpp"
+#    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "Platform2.h"
 #    include "platform.h"
@@ -18,6 +19,7 @@
 #    include <cstdlib>
 #    include <cstring>
 #    include <ctime>
+#    include <dirent.h>
 #    include <pwd.h>
 #    include <sys/stat.h>
 
@@ -198,6 +200,45 @@ namespace Platform
             Memory::Free(absolutePath);
             return buffer;
         }
+    }
+
+    std::string ResolveCasing(const std::string& path, bool fileExists)
+    {
+        std::string result;
+        if (fileExists)
+        {
+            // Windows is case insensitive so it will exist and that is all that matters
+            // for now. We can properly resolve the casing if we ever need to.
+            result = path;
+        }
+        else
+        {
+            std::string fileName = Path::GetFileName(path);
+            std::string directory = Path::GetDirectory(path);
+
+            struct dirent** files;
+            auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
+            if (count != -1)
+            {
+                // Find a file which matches by name (case insensitive)
+                for (int32_t i = 0; i < count; i++)
+                {
+                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
+                    {
+                        result = Path::Combine(directory, std::string(files[i]->d_name));
+                        break;
+                    }
+                }
+
+                // Free memory
+                for (int32_t i = 0; i < count; i++)
+                {
+                    free(files[i]);
+                }
+                free(files);
+            }
+        }
+        return result;
     }
 } // namespace Platform
 
