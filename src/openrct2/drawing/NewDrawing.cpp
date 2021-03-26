@@ -15,6 +15,7 @@
 #include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
+#include "../platform/Platform2.h"
 #include "../ui/UiContext.h"
 #include "../world/Location.hpp"
 #include "IDrawingContext.h"
@@ -52,16 +53,8 @@ static IDrawingEngine* GetDrawingEngine()
 
 bool drawing_engine_requires_new_window(DrawingEngine srcEngine, DrawingEngine dstEngine)
 {
-#ifdef _WIN32
-    if (srcEngine != DrawingEngine::OpenGL && dstEngine != DrawingEngine::OpenGL)
-    {
-        // Windows is apparently able to switch to hardware rendering on the fly although
-        // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
-        return false;
-    }
-#endif
-
-    return true;
+    bool openGL = srcEngine == DrawingEngine::OpenGL || dstEngine == DrawingEngine::OpenGL;
+    return Platform::RequireNewWindow(openGL);
 }
 
 void drawing_engine_init()

@@ -66,4 +66,5 @@ namespace Platform
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
     utf8* StrDecompToPrecomp(utf8* input);
+    bool RequireNewWindow(bool openGL);
 } // namespace Platform

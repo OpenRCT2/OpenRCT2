@@ -240,6 +240,11 @@ namespace Platform
         }
         return result;
     }
+
+    bool RequireNewWindow(bool openGL)
+    {
+        return true;
+    }
 } // namespace Platform
 
 #endif
