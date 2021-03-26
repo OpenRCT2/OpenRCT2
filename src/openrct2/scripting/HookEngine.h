@@ -38,6 +38,7 @@ namespace OpenRCT2::Scripting
         NETWORK_LEAVE,
         RIDE_RATINGS_CALCULATE,
         ACTION_LOCATION,
+        GUEST_GENERATION,
         COUNT,
         UNDEFINED = -1,
     };

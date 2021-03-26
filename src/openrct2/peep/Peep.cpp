@@ -31,6 +31,8 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
+#include "../scripting/HookEngine.h"
+#include "../scripting/ScriptEngine.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -1766,6 +1768,22 @@ Peep* Peep::Generate(const CoordsXYZ& coords)
     peep->EnergyTarget = energy;
 
     increment_guests_heading_for_park();
+
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION))
+    {
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = OpenRCT2::Scripting::DukObject(ctx);
+        obj.Set("id", peep->sprite_index);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION, e, true);
+    }
+#endif
 
     return peep;
 }
