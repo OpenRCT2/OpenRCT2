@@ -173,6 +173,11 @@ namespace Platform
         }
         return lastModified;
     }
+
+    bool IsPathSeparator(char c)
+    {
+        return c == '/';
+    }
 } // namespace Platform
 
 #endif

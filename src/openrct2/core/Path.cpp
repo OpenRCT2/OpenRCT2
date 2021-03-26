@@ -13,6 +13,7 @@
 #endif
 
 #include "../localisation/Language.h"
+#include "../platform/Platform2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "File.h"
@@ -30,15 +31,6 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
-    static constexpr bool IsPathSeparator(char c)
-    {
-#ifdef _WIN32
-        if (c == '\\')
-            return true;
-#endif
-        return c == '/';
-    }
-
     std::string Combine(std::string_view a, std::string_view b)
     {
         if (a.empty())
@@ -47,9 +39,9 @@ namespace Path
             return std::string(a);
         auto aEnd = a.back();
         auto bBegin = b.front();
-        if (IsPathSeparator(aEnd))
+        if (Platform::IsPathSeparator(aEnd))
         {
-            if (IsPathSeparator(bBegin))
+            if (Platform::IsPathSeparator(bBegin))
             {
                 return std::string(a) + std::string(b.substr(1));
             }
@@ -60,7 +52,7 @@ namespace Path
         }
         else
         {
-            if (IsPathSeparator(bBegin))
+            if (Platform::IsPathSeparator(bBegin))
             {
                 return std::string(a) + std::string(b);
             }
