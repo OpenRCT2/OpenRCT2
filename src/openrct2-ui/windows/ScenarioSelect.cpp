@@ -628,7 +628,8 @@ static void window_scenarioselect_scrollpaint(rct_window* w, rct_drawpixelinfo* 
                     ft.Add<rct_string_id>(STR_STRING);
                     ft.Add<char*>(buffer);
                     DrawTextBasic(
-                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft, { TextAlignment::CENTRE });
+                        dpi, { wide ? 270 : 210, y + scenarioTitleHeight + 1 }, format, ft,
+                        { FontSpriteBase::SMALL, TextAlignment::CENTRE });
                 }
 
                 y += scenarioItemHeight;

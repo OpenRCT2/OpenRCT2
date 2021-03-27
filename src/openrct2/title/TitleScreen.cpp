@@ -436,7 +436,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
 {
     thread_local std::string buffer;
     buffer.clear();
-    buffer.assign("{MEDIUMFONT}{OUTLINE}{WHITE}");
+    buffer.assign("{OUTLINE}{WHITE}");
 
     // Write name and version information
     buffer += gVersionInfoFull;
@@ -448,7 +448,7 @@ void DrawOpenRCT2(rct_drawpixelinfo* dpi, const ScreenCoordsXY& screenCoords)
         { screenCoords, screenCoords + ScreenCoordsXY{ width, 30 } }); // 30 is an arbitrary height to catch both strings
 
     // Write platform information
-    buffer.assign("{MEDIUMFONT}{OUTLINE}{WHITE}");
+    buffer.assign("{OUTLINE}{WHITE}");
     buffer.append(OPENRCT2_PLATFORM);
     buffer.append(" (");
     buffer.append(OPENRCT2_ARCHITECTURE);

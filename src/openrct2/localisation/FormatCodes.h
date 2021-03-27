@@ -70,7 +70,6 @@ enum class FormatToken
     FontTiny,
     FontSmall,
     FontMedium,
-    FontBig,
 
     OutlineEnable,
     OutlineDisable,

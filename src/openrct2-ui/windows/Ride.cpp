@@ -6078,7 +6078,7 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         if (listType == GRAPH_ALTITUDE)
             scaled_yUnit /= 2;
 
-        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, &scaled_yUnit);
+        DrawTextBasic(dpi, { w->scrolls[0].h_left + 1, y - 4 }, stringID, &scaled_yUnit, { FontSpriteBase::SMALL });
     }
 
     // Time marks
@@ -6086,7 +6086,7 @@ static void window_ride_graphs_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     for (int32_t x = 0; x < dpi->x + dpi->width; x += 80)
     {
         if (x + 80 >= dpi->x)
-            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, &time);
+            DrawTextBasic(dpi, { x + 2, 1 }, STR_RIDE_STATS_TIME, &time, { FontSpriteBase::SMALL });
         time += 5;
     }
 

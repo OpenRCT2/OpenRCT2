@@ -697,7 +697,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Format text
     thread_local std::string buffer;
-    buffer.assign("{MEDIUMFONT}{BLACK}");
+    buffer.assign("{BLACK}");
     buffer += _shortenedDirectory;
 
     // Draw path text

@@ -1008,7 +1008,7 @@ void window_guest_overview_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         peep_thought_set_format_args(&peep->Thoughts[i], ft);
-        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, {});
+        DrawTextBasic(&dpi_marquee, { screenPos.x, 0 }, STR_WINDOW_COLOUR_2_STRINGID, ft, { FontSpriteBase::SMALL });
     }
 }
 
