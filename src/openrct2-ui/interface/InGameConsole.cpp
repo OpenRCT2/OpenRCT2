@@ -237,15 +237,13 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
 
 void InGameConsole::Invalidate() const
 {
-    gfx_set_dirty_blocks({ { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } });
+    gfx_set_dirty_blocks({ _consoleTopLeft, _consoleBottomRight });
 }
 
 void InGameConsole::Update()
 {
-    _consoleLeft = 0;
-    _consoleTop = 0;
-    _consoleRight = context_get_width();
-    _consoleBottom = 322;
+    _consoleTopLeft = { 0, 0 };
+    _consoleBottomRight = { context_get_width(), 322 };
 
     if (_isOpen)
     {
@@ -298,23 +296,22 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     Invalidate();
 
     // Give console area a translucent effect.
-    gfx_filter_rect(dpi, { { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } }, FilterPaletteID::Palette51);
+    gfx_filter_rect(dpi, { _consoleTopLeft, _consoleBottomRight }, FilterPaletteID::Palette51);
 
     // Make input area more opaque.
     gfx_filter_rect(
-        dpi, { { _consoleLeft, _consoleBottom - lineHeight - 10 }, { _consoleRight, _consoleBottom - 1 } },
+        dpi, { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::Palette51);
 
     // Paint background colour.
     uint8_t backgroundColour = ThemeGetColour(WC_CONSOLE, 0);
+    gfx_fill_rect_inset(dpi, { _consoleTopLeft, _consoleBottomRight }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(
-        dpi, { { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
-    gfx_fill_rect_inset(
-        dpi, { { _consoleLeft + 1, _consoleTop + 1 }, { _consoleRight - 1, _consoleBottom - 1 } }, backgroundColour,
+        dpi, { _consoleTopLeft + ScreenCoordsXY{ 1, 1 }, _consoleBottomRight - ScreenCoordsXY{ 1, 1 } }, backgroundColour,
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    auto screenCoords = ScreenCoordsXY{ _consoleLeft + CONSOLE_EDGE_PADDING, _consoleTop + CONSOLE_EDGE_PADDING };
+    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ CONSOLE_EDGE_PADDING, CONSOLE_EDGE_PADDING };
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
@@ -325,7 +322,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         screenCoords.y += lineHeight;
     }
 
-    screenCoords.y = _consoleBottom - lineHeight - CONSOLE_EDGE_PADDING - 1;
+    screenCoords.y = _consoleBottomRight.y - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
     lineBuffer = colourFormatStr + _consoleCurrentLine;
@@ -345,22 +342,25 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Input area top border
     gfx_fill_rect(
-        dpi, { { _consoleLeft, _consoleBottom - lineHeight - 11 }, { _consoleRight, _consoleBottom - lineHeight - 11 } },
+        dpi,
+        { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 11 }, _consoleBottomRight - ScreenCoordsXY{ 0, lineHeight + 11 } },
         borderColour1);
     gfx_fill_rect(
-        dpi, { { _consoleLeft, _consoleBottom - lineHeight - 10 }, { _consoleRight, _consoleBottom - lineHeight - 10 } },
+        dpi,
+        { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, lineHeight + 10 } },
         borderColour2);
 
     // Input area bottom border
-    gfx_fill_rect(dpi, { { _consoleLeft, _consoleBottom - 1 }, { _consoleRight, _consoleBottom - 1 } }, borderColour1);
-    gfx_fill_rect(dpi, { { _consoleLeft, _consoleBottom }, { _consoleRight, _consoleBottom } }, borderColour2);
+    gfx_fill_rect(
+        dpi, { _consoleTopLeft - ScreenCoordsXY{ 0, 1 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } }, borderColour1);
+    gfx_fill_rect(dpi, { _consoleTopLeft, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 int32_t InGameConsole::GetNumVisibleLines() const
 {
     const int32_t lineHeight = InGameConsoleGetLineHeight();
-    const int32_t consoleHeight = _consoleBottom - _consoleTop;
+    const int32_t consoleHeight = _consoleBottomRight.y - _consoleTopLeft.y;
     if (consoleHeight == 0)
         return 0;
     const int32_t drawableHeight = consoleHeight - 2 * lineHeight - 4; // input line, separator - padding
