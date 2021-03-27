@@ -949,7 +949,7 @@ namespace OpenRCT2
         }
     };
 
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Vehicle& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Vehicle& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         auto ride = entity.GetRide();
@@ -1026,22 +1026,22 @@ namespace OpenRCT2
         cs.ReadWrite(entity.target_seat_rotation);
     }
 
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Guest& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Guest& entity)
     {
         ReadWritePeep(cs, entity);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Staff& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Staff& entity)
     {
         ReadWritePeep(cs, entity);
     }
 
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
     {
         ReadWriteEntityCommon(cs, steamParticle);
         cs.ReadWrite(steamParticle.time_to_move);
         cs.ReadWrite(steamParticle.frame);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, MoneyEffect& moneyEffect)
     {
         ReadWriteEntityCommon(cs, moneyEffect);
         cs.ReadWrite(moneyEffect.MoveDelay);
@@ -1051,7 +1051,7 @@ namespace OpenRCT2
         cs.ReadWrite(moneyEffect.OffsetX);
         cs.ReadWrite(moneyEffect.Wiggle);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, VehicleCrashParticle& vehicleCrashParticle)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, VehicleCrashParticle& vehicleCrashParticle)
     {
         ReadWriteEntityCommon(cs, vehicleCrashParticle);
         cs.ReadWrite(vehicleCrashParticle.frame);
@@ -1067,22 +1067,22 @@ namespace OpenRCT2
         cs.ReadWrite(vehicleCrashParticle.acceleration_y);
         cs.ReadWrite(vehicleCrashParticle.acceleration_z);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, ExplosionCloud& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, ExplosionCloud& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, CrashSplashParticle& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, CrashSplashParticle& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, ExplosionFlare& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, ExplosionFlare& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.frame);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, JumpingFountain& fountain)
     {
         ReadWriteEntityCommon(cs, fountain);
         cs.ReadWrite(fountain.NumTicksAlive);
@@ -1093,7 +1093,7 @@ namespace OpenRCT2
         cs.ReadWrite(fountain.TargetY);
         cs.ReadWrite(fountain.Iteration);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Balloon& balloon)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Balloon& balloon)
     {
         ReadWriteEntityCommon(cs, balloon);
         cs.ReadWrite(balloon.popped);
@@ -1101,7 +1101,7 @@ namespace OpenRCT2
         cs.ReadWrite(balloon.frame);
         cs.ReadWrite(balloon.colour);
     }
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Duck& duck)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Duck& duck)
     {
         ReadWriteEntityCommon(cs, duck);
         cs.ReadWrite(duck.frame);
@@ -1110,7 +1110,7 @@ namespace OpenRCT2
         cs.ReadWrite(duck.state);
     }
 
-    template<> static void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Litter& entity)
+    template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Litter& entity)
     {
         ReadWriteEntityCommon(cs, entity);
         cs.ReadWrite(entity.SubType);
