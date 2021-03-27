@@ -34,7 +34,12 @@ namespace Platform
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
     std::string GetCurrentExecutableDirectory();
+    bool ShouldIgnoreCase();
     bool FileExists(const std::string path);
+    bool IsPathSeparator(char c);
+    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);
+    uint64_t GetLastModified(const std::string& path);
+    std::string ResolveCasing(const std::string& path, bool fileExists);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
     bool FindApp(const std::string& app, std::string* output);
@@ -61,4 +66,5 @@ namespace Platform
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
     utf8* StrDecompToPrecomp(utf8* input);
+    bool RequireNewWindow(bool openGL);
 } // namespace Platform

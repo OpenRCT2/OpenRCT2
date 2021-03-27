@@ -7,20 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
-#ifndef _WIN32
-#    include <dirent.h>
-#endif
+#include "Path.hpp"
 
 #include "../localisation/Language.h"
+#include "../platform/Platform2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "File.h"
 #include "FileSystem.hpp"
 #include "Memory.hpp"
-#include "Path.hpp"
 #include "String.hpp"
 
+#include <algorithm>
 #include <iterator>
 
 namespace Path
@@ -28,15 +26,6 @@ namespace Path
     utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
     {
         return safe_strcat_path(buffer, src, bufferSize);
-    }
-
-    static constexpr bool IsPathSeparator(char c)
-    {
-#ifdef _WIN32
-        if (c == '\\')
-            return true;
-#endif
-        return c == '/';
     }
 
     std::string Combine(std::string_view a, std::string_view b)
@@ -47,9 +36,9 @@ namespace Path
             return std::string(a);
         auto aEnd = a.back();
         auto bBegin = b.front();
-        if (IsPathSeparator(aEnd))
+        if (Platform::IsPathSeparator(aEnd))
         {
-            if (IsPathSeparator(bBegin))
+            if (Platform::IsPathSeparator(bBegin))
             {
                 return std::string(a) + std::string(b.substr(1));
             }
@@ -60,7 +49,7 @@ namespace Path
         }
         else
         {
-            if (IsPathSeparator(bBegin))
+            if (Platform::IsPathSeparator(bBegin))
             {
                 return std::string(a) + std::string(b);
             }
@@ -204,34 +193,7 @@ namespace Path
 
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
     {
-#ifdef _WIN32
-        auto relativePathW = String::ToWideChar(relativePath);
-        wchar_t absolutePathW[MAX_PATH];
-        DWORD length = GetFullPathNameW(
-            relativePathW.c_str(), static_cast<DWORD>(std::size(absolutePathW)), absolutePathW, nullptr);
-        if (length == 0)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-        else
-        {
-            auto absolutePath = String::ToUtf8(absolutePathW);
-            String::Set(buffer, bufferSize, absolutePath.c_str());
-            return buffer;
-        }
-#else
-        utf8* absolutePath = realpath(relativePath, nullptr);
-        if (absolutePath == nullptr)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-        else
-        {
-            String::Set(buffer, bufferSize, absolutePath);
-            Memory::Free(absolutePath);
-            return buffer;
-        }
-#endif
+        return Platform::GetAbsolutePath(buffer, bufferSize, relativePath);
     }
 
     std::string GetAbsolute(const std::string& relative)
@@ -247,51 +209,11 @@ namespace Path
 
     bool Equals(const utf8* a, const utf8* b)
     {
-        bool ignoreCase = false;
-#ifdef _WIN32
-        ignoreCase = true;
-#endif
-        return String::Equals(a, b, ignoreCase);
+        return String::Equals(a, b, Platform::ShouldIgnoreCase());
     }
 
     std::string ResolveCasing(const std::string& path)
     {
-        std::string result;
-        if (File::Exists(path))
-        {
-            // Windows is case insensitive so it will exist and that is all that matters
-            // for now. We can properly resolve the casing if we ever need to.
-            result = path;
-        }
-#ifndef _WIN32
-        else
-        {
-            std::string fileName = Path::GetFileName(path);
-            std::string directory = Path::GetDirectory(path);
-
-            struct dirent** files;
-            auto count = scandir(directory.c_str(), &files, nullptr, alphasort);
-            if (count != -1)
-            {
-                // Find a file which matches by name (case insensitive)
-                for (int32_t i = 0; i < count; i++)
-                {
-                    if (String::Equals(files[i]->d_name, fileName.c_str(), true))
-                    {
-                        result = Path::Combine(directory, std::string(files[i]->d_name));
-                        break;
-                    }
-                }
-
-                // Free memory
-                for (int32_t i = 0; i < count; i++)
-                {
-                    free(files[i]);
-                }
-                free(files);
-            }
-        }
-#endif
-        return result;
+        return Platform::ResolveCasing(path, File::Exists(path));
     }
 } // namespace Path
