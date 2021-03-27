@@ -1513,14 +1513,6 @@ private:
             }));
         LoadObjects(ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
         LoadObjects(ObjectType::Water, _waterEntry);
-        LoadObjects(
-            ObjectType::TerrainSurface,
-            std::vector<const char*>({
-                "#RCT1SRR",
-                "#RCT1SWO",
-                "#RCT1SRU",
-                "#RCT1SRG",
-            }));
     }
 
     void LoadObjects(ObjectType objectType, const EntryList& entries)
