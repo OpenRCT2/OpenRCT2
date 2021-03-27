@@ -3680,6 +3680,10 @@ STR_6432    :Mouse {INT32}
 STR_6433    :Remove
 STR_6434    :Remove all bindings for this shortcut.
 STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA16}
+STR_6436    :Toggle invisibility
+STR_6437    :Invisible
+STR_6438    :I
+STR_6439    :Tile Inspector: Toggle invisibility
 
 #############
 # Scenarios #
