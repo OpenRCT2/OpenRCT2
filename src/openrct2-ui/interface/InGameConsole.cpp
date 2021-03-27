@@ -308,9 +308,9 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Paint background colour.
     uint8_t backgroundColour = ThemeGetColour(WC_CONSOLE, 0);
     gfx_fill_rect_inset(
-        dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+        dpi, { { _consoleLeft, _consoleTop }, { _consoleRight, _consoleBottom } }, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
     gfx_fill_rect_inset(
-        dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour,
+        dpi, { { _consoleLeft + 1, _consoleTop + 1 }, { _consoleRight - 1, _consoleBottom - 1 } }, backgroundColour,
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;

@@ -1140,7 +1140,8 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
         {
             // Draw checkbox
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                gfx_fill_rect_inset(dpi, 2, screenCoords.y, 11, screenCoords.y + 10, w->colours[1], INSET_RECT_F_E0);
+                gfx_fill_rect_inset(
+                    dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
             auto highlighted = listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);

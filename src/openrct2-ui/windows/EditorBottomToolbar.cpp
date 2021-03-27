@@ -409,24 +409,20 @@ void window_editor_bottom_toolbar_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
+        const auto topLeft = w->windowPos
+            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1,
+                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+        const auto bottomRight = w->windowPos
+            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1,
+                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
         if (drawPreviousButton)
         {
-            gfx_fill_rect_inset(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 + w->windowPos.y, w->colours[1],
-                INSET_RECT_F_30);
+            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
         if ((drawPreviousButton || drawNextButton) && gS6Info.editor_step != EditorStep::RollercoasterDesigner)
         {
-            gfx_fill_rect_inset(
-                dpi, window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left + 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 1 + w->windowPos.y,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 1 + w->windowPos.x,
-                window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].bottom - 1 + w->windowPos.y, w->colours[1],
-                INSET_RECT_F_30);
+            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
         int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right

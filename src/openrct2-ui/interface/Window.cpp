@@ -650,7 +650,7 @@ void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi)
     if (w->flags & WF_WHITE_BORDER_MASK)
     {
         gfx_fill_rect_inset(
-            dpi, w->windowPos.x, w->windowPos.y, w->windowPos.x + w->width - 1, w->windowPos.y + w->height - 1, COLOUR_WHITE,
+            dpi, { w->windowPos, w->windowPos + ScreenCoordsXY{ w->width - 1, w->height - 1 } }, COLOUR_WHITE,
             INSET_RECT_FLAG_FILL_NONE);
     }
 }
