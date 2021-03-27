@@ -3938,6 +3938,11 @@ enum
 
     STR_STAFF_STAT_VANDALS_STOPPED = 6435,
 
+    STR_TILE_INSPECTOR_TOGGLE_INVISIBILITY_TIP = 6436,
+    STR_TILE_INSPECTOR_FLAG_INVISIBLE = 6437,
+    STR_TILE_INSPECTOR_INVISIBLE_SHORT = 6438,
+    STR_SHORTCUT_TOGGLE_INVISIBILITY = 6439,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
