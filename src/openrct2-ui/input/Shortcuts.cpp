@@ -839,6 +839,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::WindowRideConstructionBuild, STR_SHORTCUT_CONSTRUCTION_BUILD_CURRENT, "NUMPAD 0", []() { ShortcutConstructionBuildCurrent(); });
     RegisterShortcut(ShortcutId::WindowRideConstructionDemolish, STR_SHORTCUT_CONSTRUCTION_DEMOLISH_CURRENT, "NUMPAD -", []() { ShortcutConstructionDemolishCurrent(); });
 
+    RegisterShortcut(ShortcutId::WindowTileInspectorToggleInvisibility, STR_SHORTCUT_TOGGLE_INVISIBILITY, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_TOGGLE_INVISIBILITY); });
     RegisterShortcut(ShortcutId::WindowTileInspectorCopy, STR_SHORTCUT_COPY_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_COPY); });
     RegisterShortcut(ShortcutId::WindowTileInspectorPaste, STR_SHORTCUT_PASTE_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_PASTE); });
     RegisterShortcut(ShortcutId::WindowTileInspectorRemove, STR_SHORTCUT_REMOVE_ELEMENT, []() { TileInspectorMouseUp(WC_TILE_INSPECTOR__WIDX_BUTTON_REMOVE); });

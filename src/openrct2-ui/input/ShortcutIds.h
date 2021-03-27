@@ -98,7 +98,7 @@ namespace OpenRCT2::Ui::ShortcutId
     constexpr std::string_view WindowRideConstructionDemolish = "window.rideconstruction.demolish";
 
     // Window / tile inspector
-    constexpr std::string_view WindowTileInspectorInsertCorrupt = "window.tileinspector.insert_corrupt";
+    constexpr std::string_view WindowTileInspectorToggleInvisibility = "window.tileinspector.toggle_invisibility";
     constexpr std::string_view WindowTileInspectorCopy = "window.tileinspector.copy";
     constexpr std::string_view WindowTileInspectorPaste = "window.tileinspector.paste";
     constexpr std::string_view WindowTileInspectorRemove = "window.tileinspector.remove";
