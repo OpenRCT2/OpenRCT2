@@ -29,11 +29,14 @@
 #include "object/ObjectRepository.h"
 #include "peep/Staff.h"
 #include "ride/ShopItem.h"
+#include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "world/Climate.h"
+#include "world/EntityList.h"
 #include "world/Entrance.h"
 #include "world/Map.h"
 #include "world/Park.h"
+#include "world/Sprite.h"
 
 #include <cstdint>
 #include <ctime>
@@ -434,11 +437,11 @@ namespace OpenRCT2
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
                 auto s = cs.Read<std::string>();
-                String::Set(item.Text, sizeof(item.Text), s.c_str());
+                item.Text = s;
             }
             else
             {
-                cs.Write(std::string_view(item.Text, std::size(item.Text)));
+                cs.Write(std::string_view(item.Text));
             }
         }
 
@@ -763,7 +766,6 @@ namespace OpenRCT2
                         auto& entity = *(get_sprite(index));
                         ReadWriteEntity(cs, entity);
                     });
-                    RebuildEntityLists();
                 }
                 else
                 {
@@ -808,7 +810,6 @@ namespace OpenRCT2
 
         static void ReadWriteEntityCommon(OrcaStream::ChunkStream& cs, SpriteBase& entity)
         {
-            cs.ReadWrite(entity.sprite_identifier);
             cs.ReadWrite(entity.sprite_height_negative);
             cs.ReadWrite(entity.sprite_index);
             cs.ReadWrite(entity.flags);
@@ -905,7 +906,6 @@ namespace OpenRCT2
             cs.ReadWrite(entity.State);
             cs.ReadWrite(entity.SubState);
             cs.ReadWrite(entity.SpriteType);
-            cs.ReadWrite(entity.AssignedPeepType);
             cs.ReadWrite(entity.GuestNumRides);
             cs.ReadWrite(entity.TshirtColour);
             cs.ReadWrite(entity.TrousersColour);
@@ -1102,13 +1102,13 @@ namespace OpenRCT2
         {
             uint16_t numGuestsInPark = 0;
             uint16_t numGuestsHeadingsForPark = 0;
-            for (auto peep : EntityList<Peep>(EntityListId::Peep))
+            for (auto guest : EntityList<Guest>())
             {
-                if (peep->State == PeepState::EnteringPark)
+                if (guest->State == PeepState::EnteringPark)
                 {
                     numGuestsHeadingsForPark++;
                 }
-                if (!peep->OutsideOfPark)
+                if (!guest->OutsideOfPark)
                 {
                     numGuestsInPark++;
                 }
