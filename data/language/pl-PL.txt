@@ -242,7 +242,7 @@ STR_0833    :Pauza
 STR_0834    :Menu zapisu i opcji
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-STR_0847    :O 'OpenRCT2'
+STR_0847    :O „OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, wszystkie prawa zastrzeżone
 STR_0851    :{WINDOW_COLOUR_2}Projekt i implementacja: Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Grafika: Simon Foster
@@ -276,7 +276,7 @@ STR_0887    :Wyjdź z edytora scenariuszy
 STR_0888    :Wyjdź z Projektanta Kolejek
 STR_0889    :Wyjdź z Menadżera Projektów Tras
 STR_0891    :Zrzut ekranu
-STR_0892    :Zrzut ekranu zapisany jako '{STRINGID}'
+STR_0892    :Zrzut ekranu zapisany jako „{STRINGID}”
 STR_0893    :Zrzut ekranu nieudany!
 STR_0894    :Obszar danych krajobrazu jest pełny !
 STR_0895    :Nie można wybudować częściowo nad i pod ziemią
@@ -313,8 +313,8 @@ STR_0925    :Spirala w górę
 STR_0926    :Nie można tego usunąć…
 STR_0927    :Nie można tego tutaj zbudować…
 STR_0928    :Łańcuch do wciągania pojazdów na zbocza
-STR_0929    :Zakręt typu 'S' (w lewo)
-STR_0930    :Zakręt typu 'S' (w prawo)
+STR_0929    :Zakręt typu „S” (w lewo)
+STR_0930    :Zakręt typu „S” (w prawo)
 STR_0931    :Pionowa pętla (w lewo)
 STR_0932    :Pionowa pętla (w prawo)
 STR_0933    :Najpierw podnieś/obniż teren
@@ -600,7 +600,7 @@ STR_1212    :{WINDOW_COLOUR_2}Maks. czas oczekiwania:
 STR_1213    :Wybierz minimalny czas oczekiwania na stacji przed wyruszeniem
 STR_1214    :Wybierz maksymalny czas oczekiwania na stacji przed wyruszeniem
 STR_1215    :{WINDOW_COLOUR_2}Synchronizuj z sąsiadującymi stacjami
-STR_1216    :Wybierz, czy kolejki mają synchronizować start z innymi stacjami (dla 'wyścigów')
+STR_1216    :Wybierz, czy kolejki mają synchronizować start z innymi stacjami (dla „wyścigów”)
 STR_1217    :{COMMA16} sekund
 STR_1218    :{BLACK}+
 STR_1219    :{BLACK}-
@@ -742,7 +742,7 @@ STR_1354    :{WINDOW_COLOUR_2}Wysokość najwyższego spadu: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}Spadki: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}Inwersja: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}Dołki: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}Całkowity czas 'w powietrzu': {BLACK}{COMMA2DP32}sek.
+STR_1358    :{WINDOW_COLOUR_2}Całkowity czas „w powietrzu”: {BLACK}{COMMA2DP32}sek.
 STR_1359    :{WINDOW_COLOUR_2}Czas w kolejce: {BLACK}{COMMA16} minut
 STR_1360    :{WINDOW_COLOUR_2}Czas w kolejce: {BLACK}{COMMA16} minut
 STR_1361    :Nie można zmienić prędkości…
@@ -844,8 +844,8 @@ STR_1456    :{WINDOW_COLOUR_2}Wydał: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}Pieniędzy w kieszeni: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}Czas w parku: {BLACK}{REALTIME}
 STR_1459    :Styl trasy
-STR_1460    :Otwarta trasa typu "U"
-STR_1461    :Zamknięta trasa typu "O"
+STR_1460    :Otwarta trasa typu „U”
+STR_1461    :Zamknięta trasa typu „O”
 STR_1462    :Too steep for lift hill
 STR_1463    :Goście
 STR_1464    :Spirala w górę (mała)
@@ -1824,7 +1824,7 @@ STR_2481    :Pokaż wykres przyspieszenia poprzecznego względem czasu
 STR_2482    :Zysk: {CURRENCY} na tydzień,  Wartość parku: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}Tygodniowy zysk: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}Tygodniowy zysk: {RED}{CURRENCY2DP}
-STR_2487    :Pokazuj "prawdziwe" imiona gości
+STR_2487    :Pokazuj „prawdziwe” imiona gości
 STR_2488    :Przełącza między pokazywaniem imion gości a numerami
 STR_2489    :Skróty klawiszowe…
 STR_2490    :Przypisanie klawiszy
@@ -2118,7 +2118,7 @@ STR_2983    :Wprowadź nową treść baneru:
 STR_2984    :Nie można wprowadzić nowej treści baneru…
 STR_2985    :Baner
 STR_2986    :Zmień treść baneru
-STR_2987    :Ustaw ten baner jako{NEWLINE}'zakaz wstępu' dla gości
+STR_2987    :Ustaw ten baner jako{NEWLINE}„zakaz wstępu” dla gości
 STR_2988    :Usuń ten baner
 STR_2989    :Wybierz główny kolor
 STR_2990    :Wybierz kolor treści
@@ -2876,7 +2876,7 @@ STR_5556    :Wyrzuć gracza
 STR_5557    :Nie rozłączaj po desynchronizacji (tryb wieloosobowy)
 STR_5558    :Wymagany restart dla tej zmiany
 STR_5559    :10 min. inspekcje
-STR_5560    :Ustaw częstotliwość inspekcji na 'Co 10 minut' na wszystkich atrakcjach
+STR_5560    :Ustaw częstotliwość inspekcji na „Co 10 minut” na wszystkich atrakcjach
 STR_5561    :Nie udało się załadować języka
 STR_5562    :UWAGA!
 STR_5563    :Ta funkcja jest obecnie niestabilna, zachowaj szczególną ostrożność.
@@ -3060,7 +3060,7 @@ STR_5778    :Wybudowano: {COMMA16} lat temu
 STR_5779    :Przychód: {CURRENCY2DP} na godzinę
 STR_5780    :Koszty eksploatacji: {CURRENCY2DP} na godzinę
 STR_5781    :Koszty eksploatacji: nieznane
-STR_5782    :Połączono. Naciśnij '{STRING}' aby pisać na chacie.
+STR_5782    :Połączono. Naciśnij „{STRING}” aby pisać na chacie.
 STR_5783    :{WINDOW_COLOUR_2}Scenariusz zablokowany
 STR_5784    :{BLACK}Aby odblokować ten scenariusz ukończ poprzedni.
 STR_5785    :Nie można zmienić nazwy grupy…
@@ -3069,7 +3069,7 @@ STR_5787    :{COMMA32} graczy online
 STR_5788    :Domyślny okres inspekcji:
 STR_5789    :Wyłącz efekty świetlne
 STR_5790    :Mieszany styl płatności RCT1{NEWLINE}(np. jednoczesna odpłatność za wejście i atrakcję)
-STR_5791    :Ustaw niezawodność wszystkich atrakcji na 100%{NEWLINE}i zresetuj datę budowy na "w tym roku"
+STR_5791    :Ustaw niezawodność wszystkich atrakcji na 100%{NEWLINE}i zresetuj datę budowy na „w tym roku”
 STR_5792    :Naprawia wszystkie uszkodzone atrakcje
 STR_5793    :Usuwa historię katastrof,{NEWLINE}dzięki czemu goście nie będą narzekać że jest niebezpieczne
 STR_5794    :Niektóre scenariusze blokują edycję{NEWLINE}istniejących juz w parku atrakcji.{NEWLINE}Ta opcja obchodzi te restrykcje
@@ -3110,11 +3110,11 @@ STR_5828    :Zmień użyty format jednostki użyty do czasu, prędkość itp.
 STR_5829    :Zmień rodzaj użytej waluty. Jedynie w celach wizualnych, nie ma zastosowania żaden przelicznik
 STR_5830    :Zmień używany język
 STR_5831    :Zmień użyty format{NEWLINE}wyświetlanej temperatury
-STR_5832    :Pokaż wysokość jako ogólną jednostkę w miejscu formatu jednostki ustawionej w zakładce "Odległość i Prędkość"
+STR_5832    :Pokaż wysokość jako ogólną jednostkę w miejscu formatu jednostki ustawionej w zakładce „Odległość i Prędkość”
 STR_5833    :Zmień używany format daty
 STR_5834    :Wybierz urządzenie dźwiękowe dla OpenRCT2
 STR_5835    :Wycisz grę przy utracie ostrości okna
-STR_5836    :Wybierz muzykę do ekranu tytułowego.{NEWLINE}Wybranie motywu z RCT1 wymaga skopiowania 'data/css17.dat' z katalogu gry RCT1 do 'data/css50.dat' w twoim katalogu RCT2, lub ustawienia ścieżki do RCT1 w zakładce pozostałych ustawień
+STR_5836    :Wybierz muzykę do ekranu tytułowego.{NEWLINE}Wybranie motywu z RCT1 wymaga skopiowania „data/css17.dat” z katalogu gry RCT1 do „data/css50.dat” w twoim katalogu RCT2, lub ustawienia ścieżki do RCT1 w zakładce pozostałych ustawień
 STR_5837    :Stwórz i zarządzaj własnymi motywami UI
 STR_5838    :Pokaż osobny przycisk dla okienka Finansów w pasku narzędzi
 STR_5839    :Pokaż osobny przycisk dla okienka Badań i Rozwoju w pasku narzędzi
@@ -3293,18 +3293,18 @@ STR_6014    :Goście będą płacić za bilety wstępu na atrakcje i usługi.{NE
 STR_6015    :Nachylony
 STR_6016    :Edytuj kafel
 STR_6017    :Proszę zwolnić
-STR_6018    :Konstrukcja przejażdżki - Obróć w lewo
-STR_6019    :Konstrukcja przejażdżki - Obróć w prawo
-STR_6020    :Konstrukcja przejażdżki - Użyj domyślnej trasy
-STR_6021    :Konstrukcja przejażdżki - Nachylenie w dół
-STR_6022    :Konstrukcja przejażdżki - Nachylenie w górę
-STR_6023    :Konstrukcja przejażdżki - Przełącznik wyciągarki
-STR_6024    :Konstrukcja przejażdżki - Nachylenie w lewo
-STR_6025    :Konstrukcja przejażdżki - Nachylenie w prawo
-STR_6026    :Konstrukcja przejażdżki - Poprzednia element
-STR_6027    :Konstrukcja przejażdżki - Następny element
-STR_6028    :Konstrukcja przejażdżki - Wybuduj bieżący
-STR_6029    :Konstrukcja przejażdżki - Zniszcz bieżący
+STR_6018    :Konstrukcja - Obróć w lewo
+STR_6019    :Konstrukcja - Obróć w prawo
+STR_6020    :Konstrukcja - Użyj domyślnej trasy
+STR_6021    :Konstrukcja - Nachylenie w dół
+STR_6022    :Konstrukcja - Nachylenie w górę
+STR_6023    :Konstrukcja - Przełącznik wyciągarki
+STR_6024    :Konstrukcja - Nachylenie w lewo
+STR_6025    :Konstrukcja - Nachylenie w prawo
+STR_6026    :Konstrukcja - Poprzedni element
+STR_6027    :Konstrukcja - Następny element
+STR_6028    :Konstrukcja - Wybuduj bieżący
+STR_6029    :Konstrukcja - Zniszcz bieżący
 STR_6030    :Przechwytywacz scenerii. Wybierz dowolny element scenerii na mapie aby wybrać taki sam dla konstrukcji.
 STR_6031    :Opis serwera:
 STR_6032    :Wiadomość powitalna:
@@ -3345,34 +3345,34 @@ STR_6066    :Loguje wszystkie akcje użytkowników do plików w katalogu domowym
 STR_6067    :Serwer uruchomiony.
 STR_6068    :Serwer wyłączony.
 STR_6069    :{STRING} został wyrzucony z serwera przez {STRING}.
-STR_6070    :{STRING} został przypisany do grupy '{STRING}' przez {STRING}.
-STR_6071    :{STRING} stworzył nową grupę graczy '{STRING}'.
-STR_6072    :{STRING} usunął grupę graczy '{String}'.
-STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy '{String}'.
-STR_6074    :{STRING} zmienił nazwę grupy graczy z '{String}' na '{String}'.
-STR_6075    :{STRING} zmienił domyślna grupę graczy na '{String}'.
-STR_6076    :{STRING} pokaż/schowaj kody '{STRING}'.
+STR_6070    :{STRING} został przypisany do grupy „{STRING}” przez {STRING}.
+STR_6071    :{STRING} stworzył nową grupę graczy „{STRING}”.
+STR_6072    :{STRING} usunął grupę graczy „{String}”.
+STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy „{String}”.
+STR_6074    :{STRING} zmienił nazwę grupy graczy z „{String}” na „{String}”.
+STR_6075    :{STRING} zmienił domyślna grupę graczy na „{String}”.
+STR_6076    :{STRING} pokaż/schowaj kody „{STRING}”.
 STR_6077    :Dodaj pieniądze 
-STR_6078    :{STRING} stworzył atrakcję '{STRING}'.
-STR_6079    :{STRING} zniszczył atrakcję '{STRING}'.
-STR_6080    :{STRING} zmienił wygląd atrakcji '{STRING}'.
-STR_6081    :{STRING} zmienił status atrakcji '{STRING}' na zamkniętą.
-STR_6082    :{STRING} zmienił status atrakcji '{STRING}' na otwartą.
-STR_6083    :{STRING} zmienił status atrakcji '{STRING}' na testowaną.
-STR_6084    :{STRING} zmienił ustawienia pojazdów na atrakcji '{STRING}'.
-STR_6085    :{STRING} zmienił ustawienia jazdy na atrakcji '{STRING}'.
-STR_6086    :{STRING} zmienił nazwę atrakcji '{STRING}' na '{STRING}'.
-STR_6087    :{STRING} zmienił cenę za atrakcję '{STRING}' na {STRING}
-STR_6088    :{STRING} zmienił drugą cenę atrakcji '{STRING}' na {STRING}
-STR_6089    :{STRING} zmienił nazwę parku '{STRING}' na '{STRING}'.
+STR_6078    :{STRING} stworzył atrakcję „{STRING}”.
+STR_6079    :{STRING} zniszczył atrakcję „{STRING}”.
+STR_6080    :{STRING} zmienił wygląd atrakcji „{STRING}”.
+STR_6081    :{STRING} zmienił status atrakcji „{STRING}” na zamkniętą.
+STR_6082    :{STRING} zmienił status atrakcji „{STRING}” na otwartą.
+STR_6083    :{STRING} zmienił status atrakcji „{STRING}” na testowaną.
+STR_6084    :{STRING} zmienił ustawienia pojazdów na atrakcji „{STRING}”.
+STR_6085    :{STRING} zmienił ustawienia jazdy na atrakcji „{STRING}”.
+STR_6086    :{STRING} zmienił nazwę atrakcji „{STRING}” na „{STRING}”.
+STR_6087    :{STRING} zmienił cenę za atrakcję „{STRING}” na {STRING}
+STR_6088    :{STRING} zmienił drugą cenę atrakcji „{STRING}” na {STRING}
+STR_6089    :{STRING} zmienił nazwę parku „{STRING}” na „{STRING}”.
 STR_6090    :{STRING} otworzył park.
 STR_6091    :{STRING} zamknął park.
 STR_6092    :{STRING} zmienił cenę wstępu do parku na {STRING}
 STR_6093    :{STRING} umieścił nową dekorację.
 STR_6094    :{STRING} usunął dekorację.
 STR_6095    :{STRING} edytował dekorację.
-STR_6096    :{STRING} ustawił nazwę znaku na '{STRING}'.
-STR_6097    :{STRING} dodał odcinek trasy '{STRING}'.
+STR_6096    :{STRING} ustawił nazwę znaku na „{STRING”.
+STR_6097    :{STRING} dodał odcinek trasy „{STRING}”.
 STR_6098    :{STRING} usunął odcinek trasy.
 STR_6099    :Połączyłeś się z serwerem.
 STR_6100    :Rozłączyłeś się z serwerem.
@@ -3654,6 +3654,32 @@ STR_6406    :Instalator GOG RollerCoaster Tycoon 2
 STR_6407    :To może potrwać kilka minut.
 STR_6408    :Wskaż proszę “innoextract” w celu wypakowania instalatora GOG, następnie zrestartuj OpenRCT2.
 STR_6409    :Wskazany plik nie jest offlinowym intalatorem GOG dla RollerCoaster Tycoon 2. Możliwe, że pobrany został GOG Galaxy downloader, albo wskazany błędny plik.
+STR_6410    :Przybliż/oddal
+STR_6411    :Pokaż przyciski do przybliżania i oddalania w pasku narzędzi
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :P Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :P Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :P Alt
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :P Cmd
+STR_6425    :Joy Lewo
+STR_6426    :Joy Prawo
+STR_6427    :Joy Góra
+STR_6428    :Joy Dół
+STR_6429    :Joy {INT32}
+STR_6430    :LPM
+STR_6431    :PPM
+STR_6432    :Mysz {INT32}
+STR_6433    :Usuń
+STR_6434    :Usuń wszystkie przypusania do tego skrótu.
+STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA16}
 
 
 #############
