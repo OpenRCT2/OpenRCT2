@@ -750,9 +750,24 @@ namespace OpenRCT2
             }
         }
 
+        template<typename T> void WriteEntitiesOfType(OrcaStream::ChunkStream& cs)
+        {
+            auto count = GetEntityListCount(T::cEntityType);
+            cs.Write(T::cEntityType);
+            cs.Write(count);
+            for (auto* ent : EntityList<T>())
+            {
+                ReadWriteEntity(cs, *ent);
+            }
+        }
+        template<typename... T> void WriteEntitiesOfTypes(OrcaStream::ChunkStream& cs)
+        {
+            (WriteEntitiesOfType<T>(cs), ...);
+        }
+
         void ReadWriteEntitiesChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     reset_sprite_list();
@@ -769,19 +784,9 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    for (uint16_t i = 0; i < MAX_SPRITES; i++)
-                    {
-                        auto entity = get_sprite(i);
-                        if (entity->sprite_identifier != SpriteIdentifier::Null)
-                        {
-                            entityIndices.push_back(i);
-                        }
-                    }
-                    cs.ReadWriteVector(entityIndices, [&cs](uint16_t index) {
-                        auto& entity = *(get_sprite(index));
-                        cs.ReadWrite(index);
-                        ReadWriteEntity(cs, entity);
-                    });
+                    WriteEntitiesOfTypes<
+                        Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
+                        CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(cs);
                 }
             });
         }
@@ -841,7 +846,7 @@ namespace OpenRCT2
             else
             {
                 // Track direction and type are in the same field
-                cs.ReadWrite(entity.track_direction);
+                cs.ReadWrite(entity.TrackTypeAndDirection);
             }
             cs.ReadWrite(entity.TrackLocation.x);
             cs.ReadWrite(entity.TrackLocation.y);
