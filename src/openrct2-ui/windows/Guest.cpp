@@ -1257,7 +1257,7 @@ static void window_guest_stats_bars_paint(
         y += 1;
     }
 
-    gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(dpi, { x + 61, y + 1, x + 61 + 121, y + 9 }, w->colours[1], INSET_RECT_F_30);
 
     if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
@@ -1267,7 +1267,7 @@ static void window_guest_stats_bars_paint(
         if (value <= 2)
             return;
 
-        gfx_fill_rect_inset(dpi, x + 63, y + 2, x + 63 + value - 1, y + 8, colour, 0);
+        gfx_fill_rect_inset(dpi, { x + 63, y + 2, x + 63 + value - 1, y + 8 }, colour, 0);
     }
 }
 
@@ -1377,7 +1377,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
@@ -1664,7 +1664,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
