@@ -881,7 +881,6 @@ namespace OpenRCT2
             cs.ReadWrite(entity.FavouriteRideRating);
         }
 
-
         template<typename T> void WriteEntitiesOfType(OrcaStream::ChunkStream& cs);
         template<typename... T> void WriteEntitiesOfTypes(OrcaStream::ChunkStream& cs);
 
