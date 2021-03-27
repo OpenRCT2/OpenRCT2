@@ -18,6 +18,9 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/Object.h"
+#include "../object/ObjectManager.h"
+#include "../object/TerrainEdgeObject.h"
+#include "../object/TerrainSurfaceObject.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "Map.h"
@@ -82,7 +85,8 @@ static constexpr const char* SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-static constexpr const uint8_t BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
+static constexpr const std::string_view BaseTerrain[] = { "rct2.surface.grass", "rct2.surface.sand", "rct2.surface.sandbrown",
+                                                          "rct2.surface.dirt", "rct2.surface.ice" };
 
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
@@ -134,46 +138,43 @@ void mapgen_generate_blank(mapgen_settings* settings)
 
 void mapgen_generate(mapgen_settings* settings)
 {
-    int32_t x, y, mapSize, floorTexture, wallTexture, waterLevel;
+    auto mapSize = settings->mapSize;
+    auto waterLevel = settings->water_level;
+    const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
+    std::string floorTexture = selectedFloor != nullptr ? std::string(selectedFloor->GetIdentifier()) : "";
+    const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
+    std::string edgeTexture = selectedFloor != nullptr ? std::string(selectedEdge->GetIdentifier()) : "";
 
-    mapSize = settings->mapSize;
-    floorTexture = settings->floor;
-    wallTexture = settings->wall;
-    waterLevel = settings->water_level;
-
-    if (floorTexture == -1)
+    if (floorTexture == "")
         floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
 
-    if (wallTexture == -1)
+    if (edgeTexture == "")
     {
         // Base edge type on surface type
-        switch (floorTexture)
-        {
-            case TERRAIN_DIRT:
-                wallTexture = TERRAIN_EDGE_WOOD_RED;
-                break;
-            case TERRAIN_ICE:
-                wallTexture = TERRAIN_EDGE_ICE;
-                break;
-            default:
-                wallTexture = TERRAIN_EDGE_ROCK;
-                break;
-        }
+        if (floorTexture == "rct2.surface.dirt")
+            edgeTexture = "rct2.edge.woodred";
+        else if (floorTexture == "rct2.surface.ice")
+            edgeTexture = "rct2.edge.ice";
+        else
+            edgeTexture = "rct2.edge.rock";
     }
+
+    auto floorTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(floorTexture));
+    auto edgeTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(edgeTexture));
 
     map_clear_all_elements();
 
     // Initialise the base map
     map_init(mapSize);
-    for (y = 1; y < mapSize - 1; y++)
+    for (auto y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
             {
-                surfaceElement->SetSurfaceStyle(floorTexture);
-                surfaceElement->SetEdgeStyle(wallTexture);
+                surfaceElement->SetSurfaceStyle(floorTextureId);
+                surfaceElement->SetEdgeStyle(edgeTextureId);
                 surfaceElement->base_height = settings->height;
                 surfaceElement->clearance_height = settings->height;
             }
@@ -201,27 +202,29 @@ void mapgen_generate(mapgen_settings* settings)
     mapgen_set_water_level(waterLevel);
 
     // Add sandy beaches
-    int32_t beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == TERRAIN_GRASS)
+    std::string beachTexture = std::string(floorTexture);
+    if (settings->floor == -1 && floorTexture == "rct2.surface.grass")
     {
         switch (util_rand() % 4)
         {
             case 0:
-                beachTexture = TERRAIN_SAND;
+                beachTexture = "rct2.surface.sand";
                 break;
             case 1:
-                beachTexture = TERRAIN_SAND_LIGHT;
+                beachTexture = "rct2.surface.sandbrown";
                 break;
         }
     }
-    for (y = 1; y < mapSize - 1; y++)
+    auto beachTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(beachTexture));
+
+    for (auto y = 1; y < mapSize - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel + 6)
-                surfaceElement->SetSurfaceStyle(beachTexture);
+                surfaceElement->SetSurfaceStyle(beachTextureId);
         }
     }
 
@@ -250,6 +253,24 @@ static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
     sceneryElement->SetEntryIndex(type);
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(COLOUR_YELLOW);
+}
+
+static bool MapGenSurfaceTakesGrassTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.surface.grass" || id == "rct2.surface.grassclumps" || id == "rct2.surface.dirt";
+}
+
+static bool MapGenSurfaceTakesSandTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.surface.sand" || id == "rct2.surface.sandbrown" || id == "rct2.surface.sandred";
+}
+
+static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
+{
+    const auto& id = surface.GetIdentifier();
+    return id == "rct2.surface.ice";
 }
 
 /**
@@ -353,33 +374,28 @@ static void mapgen_place_trees()
         auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
         if (surfaceElement == nullptr)
             continue;
-        switch (surfaceElement->GetSurfaceStyle())
+        const auto* object = TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+        if (MapGenSurfaceTakesGrassTrees(*object))
         {
-            case TERRAIN_GRASS:
-            case TERRAIN_DIRT:
-            case TERRAIN_GRASS_CLUMPS:
-                if (grassTreeIds.empty())
-                    break;
-
-                type = grassTreeIds[util_rand() % grassTreeIds.size()];
+            if (grassTreeIds.empty())
                 break;
 
-            case TERRAIN_SAND:
-            case TERRAIN_SAND_DARK:
-            case TERRAIN_SAND_LIGHT:
-                if (desertTreeIds.empty())
-                    break;
-
-                if (util_rand() % 4 == 0)
-                    type = desertTreeIds[util_rand() % desertTreeIds.size()];
+            type = grassTreeIds[util_rand() % grassTreeIds.size()];
+        }
+        else if (MapGenSurfaceTakesSandTrees(*object))
+        {
+            if (desertTreeIds.empty())
                 break;
 
-            case TERRAIN_ICE:
-                if (snowTreeIds.empty())
-                    break;
-
-                type = snowTreeIds[util_rand() % snowTreeIds.size()];
+            if (util_rand() % 4 == 0)
+                type = desertTreeIds[util_rand() % desertTreeIds.size()];
+        }
+        else if (MapGenSurfaceTakesSnowTrees(*object))
+        {
+            if (snowTreeIds.empty())
                 break;
+
+            type = snowTreeIds[util_rand() % snowTreeIds.size()];
         }
 
         if (type != -1)

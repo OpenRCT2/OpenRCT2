@@ -816,26 +816,30 @@ Object* object_manager_get_loaded_object_by_index(size_t index)
     return loadedObject;
 }
 
-Object* object_manager_get_loaded_object(const rct_object_entry* entry)
+Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.GetLoadedObject(ObjectEntryDescriptor(*entry));
+    Object* loadedObject = objectManager.GetLoadedObject(entry);
     return loadedObject;
 }
 
-ObjectEntryIndex object_manager_get_loaded_object_entry_index(const void* loadedObject)
+ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    const Object* object = static_cast<const Object*>(loadedObject);
-    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(object);
+    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
     return entryIndex;
 }
 
-void* object_manager_load_object(const rct_object_entry* entry)
+ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry)
+{
+    return object_manager_get_loaded_object_entry_index(object_manager_get_loaded_object(entry));
+}
+
+Object* object_manager_load_object(const rct_object_entry* entry)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
     Object* loadedObject = objectManager.LoadObject(entry);
-    return static_cast<void*>(loadedObject);
+    return loadedObject;
 }
 
 void object_manager_unload_objects(const std::vector<rct_object_entry>& entries)

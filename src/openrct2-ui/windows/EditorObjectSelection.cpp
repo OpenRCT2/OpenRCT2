@@ -1298,7 +1298,7 @@ static void editor_load_selected_objects()
         {
             const ObjectRepositoryItem* item = &items[i];
             const rct_object_entry* entry = &item->ObjectEntry;
-            void* loadedObject = object_manager_get_loaded_object(entry);
+            const auto* loadedObject = object_manager_get_loaded_object(ObjectEntryDescriptor(*item));
             if (loadedObject == nullptr)
             {
                 loadedObject = object_manager_load_object(entry);

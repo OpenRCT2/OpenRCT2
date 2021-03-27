@@ -20,6 +20,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Scenery.h"
 #include "ObjectLimits.h"
+#include "ObjectRepository.h"
 
 #include <algorithm>
 #include <cstring>
@@ -299,6 +300,20 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
         }
     }
     return {};
+}
+
+ObjectEntryDescriptor::ObjectEntryDescriptor(const ObjectRepositoryItem& ori)
+{
+    if (ori.Identifier != "")
+    {
+        Generation = ObjectGeneration::JSON;
+        Identifier = std::string(ori.Identifier);
+    }
+    else
+    {
+        Generation = ObjectGeneration::DAT;
+        Entry = ori.ObjectEntry;
+    }
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

@@ -22,6 +22,7 @@
 
 using ObjectEntryIndex = uint16_t;
 constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<ObjectEntryIndex>::max();
+struct ObjectRepositoryItem;
 
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
@@ -180,6 +181,8 @@ struct ObjectEntryDescriptor
         Generation = ObjectGeneration::JSON;
         Identifier = std::string(newIdentifier);
     }
+
+    explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
 };
 
 struct IObjectRepository;
