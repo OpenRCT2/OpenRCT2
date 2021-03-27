@@ -76,7 +76,7 @@ static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex wid
 static void window_game_bottom_toolbar_unknown05(rct_window *w);
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w);
-static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, int32_t x, int32_t y, uint8_t factor);
+static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, rct_window *w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor);
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rct_window *w);
 static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi, rct_window *w);
@@ -447,10 +447,10 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
     // Draw park rating
     {
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
-        int32_t x = w->windowPos.x + widget.left + 11;
-        int32_t y = w->windowPos.y + widget.midY() - 5;
+        auto screenCoords = w->windowPos + ScreenCoordsXY{ widget.left + 11, widget.midY() - 5 };
 
-        window_game_bottom_toolbar_draw_park_rating(dpi, w, w->colours[3], x, y, std::max(10, ((gParkRating / 4) * 263) / 256));
+        window_game_bottom_toolbar_draw_park_rating(
+            dpi, w, w->colours[3], screenCoords, std::max(10, ((gParkRating / 4) * 263) / 256));
     }
 }
 
@@ -459,21 +459,25 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo* dpi, r
  *  rct2: 0x0066C76C
  */
 static void window_game_bottom_toolbar_draw_park_rating(
-    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, int32_t x, int32_t y, uint8_t factor)
+    rct_drawpixelinfo* dpi, rct_window* w, int32_t colour, const ScreenCoordsXY& coords, uint8_t factor)
 {
     int16_t bar_width;
 
     bar_width = (factor * 114) / 255;
-    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 114, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(
+        dpi, { coords + ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 114, 9 } }, w->colours[1], INSET_RECT_F_30);
     if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentRealTimeTicks & 8))
     {
         if (bar_width > 2)
-            gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
+        {
+            gfx_fill_rect_inset(
+                dpi, { coords + ScreenCoordsXY{ 2, 2 }, coords + ScreenCoordsXY{ bar_width - 1, 8 } }, colour & 0x7FFFFFFF, 0);
+        }
     }
 
     // Draw thumbs on the sides
-    gfx_draw_sprite(dpi, ImageId(SPR_RATING_LOW), { x - 14, y });
-    gfx_draw_sprite(dpi, ImageId(SPR_RATING_HIGH), { x + 114, y });
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_LOW), coords - ScreenCoordsXY{ 14, 0 });
+    gfx_draw_sprite(dpi, ImageId(SPR_RATING_HIGH), coords + ScreenCoordsXY{ 114, 0 });
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo* dpi, rct_window* w)
