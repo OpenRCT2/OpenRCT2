@@ -287,12 +287,12 @@ namespace Graph
     }
 
     void Draw(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
-        DrawMonths(dpi, history, count, baseX, baseY);
-        DrawLineA(dpi, history, count, baseX, baseY, modifier, offset);
-        DrawLineB(dpi, history, count, baseX, baseY, modifier, offset);
-        DrawHoveredValue(dpi, history, count, baseX, baseY, modifier, offset);
+        DrawMonths(dpi, history, count, screenCoords.x, screenCoords.y);
+        DrawLineA(dpi, history, count, screenCoords.x, screenCoords.y, modifier, offset);
+        DrawLineB(dpi, history, count, screenCoords.x, screenCoords.y, modifier, offset);
+        DrawHoveredValue(dpi, history, count, screenCoords.x, screenCoords.y, modifier, offset);
     }
 } // namespace Graph

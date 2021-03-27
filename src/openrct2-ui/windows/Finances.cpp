@@ -760,7 +760,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
 
     // X axis labels and values
     coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-    Graph::Draw(dpi, gCashHistory, 64, coords.x, coords.y, yAxisScale, 128);
+    Graph::Draw(dpi, gCashHistory, 64, coords, yAxisScale, 128);
 }
 
 #pragma endregion
@@ -863,7 +863,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
 
     // X axis labels and values
     coords = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-    Graph::Draw(dpi, gParkValueHistory, 64, coords.x, coords.y, yAxisScale, 0);
+    Graph::Draw(dpi, gParkValueHistory, 64, coords, yAxisScale, 0);
 }
 
 #pragma endregion
@@ -967,7 +967,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
 
     // X axis labels and values
     screenPos = graphTopLeft + ScreenCoordsXY{ 98, 17 };
-    Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos.x, screenPos.y, yAxisScale, 128);
+    Graph::Draw(dpi, gWeeklyProfitHistory, 64, screenPos, yAxisScale, 128);
 }
 
 #pragma endregion
