@@ -796,14 +796,14 @@ STR_1410    :Vertikal Tårn
 STR_1411    :{STRINGID} i vejen
 STR_1412    :{WINDOW_COLOUR_3}Data logning er ikke tilgængelig for denne forlystelse
 STR_1413    :{WINDOW_COLOUR_3}Data logning starter når den næste {STRINGID} forlader {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Hastighed
 STR_1416    :{WINDOW_COLOUR_2}Højde
 STR_1417    :{WINDOW_COLOUR_2}Vert.G
 STR_1418    :{WINDOW_COLOUR_2}Hor.G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Logger data fra {POP16}{STRINGID}
 STR_1423    :Kø linje sti
 STR_1424    :Gangsti
@@ -862,131 +862,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensitet bedømmelse: {BLACK}Ikke tilgængelig e
 STR_1477    :{WINDOW_COLOUR_2}Intensitet bedømmelse: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Kvalme bedømmelse: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Kvalme bedømmelse: {BLACK}Ikke tilgængelig endnu
-STR_1480    :{SMALLFONT}“Jeg har ikke råd til {STRINGID}”
-STR_1481    :{SMALLFONT}“Jeg har brugt alle min penge”
-STR_1482    :{SMALLFONT}“Jeg har det dårligt”
-STR_1483    :{SMALLFONT}“Jeg har det virkelig dårligt”
-STR_1484    :{SMALLFONT}“Jeg vil gerne prøve noget vildere end {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} ser for intens ud til mig ”
-STR_1486    :{SMALLFONT}“Jeg er ikke færdig med min {STRINGID} endnu”
-STR_1487    :{SMALLFONT}“Bare jeg kigge på {STRINGID} får jeg det dårligt”
-STR_1488    :{SMALLFONT}“Jeg vil ikke betale så meget for at komme op i {STRINGID}”
-STR_1489    :{SMALLFONT}“Jeg vil gerne hjem”
-STR_1490    :{SMALLFONT}“{STRINGID} er rigtig god”
-STR_1491    :{SMALLFONT}“Jeg har allerede {STRINGID}”
-STR_1492    :{SMALLFONT}“Jeg har ikke råd til {STRINGID}”
-STR_1493    :{SMALLFONT}“Jeg er ikke sulten”
-STR_1494    :{SMALLFONT}“Jeg er ikke tørstig”
-STR_1495    :{SMALLFONT}“Hjælp! jeg drukner!”
-STR_1496    :{SMALLFONT}“JEg er faret vild!”
-STR_1497    :{SMALLFONT}“{STRINGID} var fantastisk”
-STR_1498    :{SMALLFONT}“Jeg har stået i kø til {STRINGID}, i en evighed”
-STR_1499    :{SMALLFONT}“Jeg er træt”
-STR_1500    :{SMALLFONT}“Jeg er sulten”
-STR_1501    :{SMALLFONT}“Jeg er tørstig”
-STR_1502    :{SMALLFONT}“Jeg skal på toilet”
-STR_1503    :{SMALLFONT}“Jeg kan ikke finde {STRINGID}”
-STR_1504    :{SMALLFONT}“Jeg vil ikke betale så meget, for at bruge {STRINGID}”
-STR_1505    :{SMALLFONT}“Jeg vil ikke have en tur i {STRINGID} imens det regner”
-STR_1506    :{SMALLFONT}“Der er alt for meget affald her”
-STR_1507    :{SMALLFONT}“Jeg kan ikke finde park udgangen”
-STR_1508    :{SMALLFONT}“Jeg vil gerne af {STRINGID}”
-STR_1509    :{SMALLFONT}“Jeg vil gerne ud af {STRINGID}”
-STR_1510    :{SMALLFONT}“Jeg vil ikke have en tur i {STRINGID} - Den er ikke sikker”
-STR_1511    :{SMALLFONT}“Gangstien her er virkelig ulækker”
-STR_1512    :{SMALLFONT}“Der er alt for overfyldt af folk her”
-STR_1513    :{SMALLFONT}“Der er for mange ødelagte ting her”
-STR_1514    :{SMALLFONT}“Fantastisk sceneri!”
-STR_1515    :{SMALLFONT}“Denne park er virkelig flot og veldholdt”
-STR_1516    :{SMALLFONT}“De hoppende fontæner er flotte”
-STR_1517    :{SMALLFONT}“Musikken er god her”
-STR_1518    :{SMALLFONT}“Ballonen fra {STRINGID} er et godt køb”
-STR_1519    :{SMALLFONT}“Krammedyret fra {STRINGID} er et godt køb”
-STR_1520    :{SMALLFONT}“Park kortet fra {STRINGID} er et godt køb”
-STR_1521    :{SMALLFONT}“On-ride billedet fra {STRINGID} er et godt køb”
-STR_1522    :{SMALLFONT}“Paraplyen fra {STRINGID} er et godt køb”
-STR_1523    :{SMALLFONT}“Drikken fra {STRINGID} er et godt køb”
-STR_1524    :{SMALLFONT}“Burgeren {STRINGID} er et godt køb”
-STR_1525    :{SMALLFONT}“Pommes fritterne fra {STRINGID} er et godt køb”
-STR_1526    :{SMALLFONT}“Isen fra {STRINGID} er et godt køb”
-STR_1527    :{SMALLFONT}“Candyfloss'en fra {STRINGID} er et godt køb”
+STR_1480    :“Jeg har ikke råd til {STRINGID}”
+STR_1481    :“Jeg har brugt alle min penge”
+STR_1482    :“Jeg har det dårligt”
+STR_1483    :“Jeg har det virkelig dårligt”
+STR_1484    :“Jeg vil gerne prøve noget vildere end {STRINGID}”
+STR_1485    :“{STRINGID} ser for intens ud til mig ”
+STR_1486    :“Jeg er ikke færdig med min {STRINGID} endnu”
+STR_1487    :“Bare jeg kigge på {STRINGID} får jeg det dårligt”
+STR_1488    :“Jeg vil ikke betale så meget for at komme op i {STRINGID}”
+STR_1489    :“Jeg vil gerne hjem”
+STR_1490    :“{STRINGID} er rigtig god”
+STR_1491    :“Jeg har allerede {STRINGID}”
+STR_1492    :“Jeg har ikke råd til {STRINGID}”
+STR_1493    :“Jeg er ikke sulten”
+STR_1494    :“Jeg er ikke tørstig”
+STR_1495    :“Hjælp! jeg drukner!”
+STR_1496    :“JEg er faret vild!”
+STR_1497    :“{STRINGID} var fantastisk”
+STR_1498    :“Jeg har stået i kø til {STRINGID}, i en evighed”
+STR_1499    :“Jeg er træt”
+STR_1500    :“Jeg er sulten”
+STR_1501    :“Jeg er tørstig”
+STR_1502    :“Jeg skal på toilet”
+STR_1503    :“Jeg kan ikke finde {STRINGID}”
+STR_1504    :“Jeg vil ikke betale så meget, for at bruge {STRINGID}”
+STR_1505    :“Jeg vil ikke have en tur i {STRINGID} imens det regner”
+STR_1506    :“Der er alt for meget affald her”
+STR_1507    :“Jeg kan ikke finde park udgangen”
+STR_1508    :“Jeg vil gerne af {STRINGID}”
+STR_1509    :“Jeg vil gerne ud af {STRINGID}”
+STR_1510    :“Jeg vil ikke have en tur i {STRINGID} - Den er ikke sikker”
+STR_1511    :“Gangstien her er virkelig ulækker”
+STR_1512    :“Der er alt for overfyldt af folk her”
+STR_1513    :“Der er for mange ødelagte ting her”
+STR_1514    :“Fantastisk sceneri!”
+STR_1515    :“Denne park er virkelig flot og veldholdt”
+STR_1516    :“De hoppende fontæner er flotte”
+STR_1517    :“Musikken er god her”
+STR_1518    :“Ballonen fra {STRINGID} er et godt køb”
+STR_1519    :“Krammedyret fra {STRINGID} er et godt køb”
+STR_1520    :“Park kortet fra {STRINGID} er et godt køb”
+STR_1521    :“On-ride billedet fra {STRINGID} er et godt køb”
+STR_1522    :“Paraplyen fra {STRINGID} er et godt køb”
+STR_1523    :“Drikken fra {STRINGID} er et godt køb”
+STR_1524    :“Burgeren {STRINGID} er et godt køb”
+STR_1525    :“Pommes fritterne fra {STRINGID} er et godt køb”
+STR_1526    :“Isen fra {STRINGID} er et godt køb”
+STR_1527    :“Candyfloss'en fra {STRINGID} er et godt køb”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Pizza'en fra {STRINGID} er et godt køb”
+STR_1531    :“Pizza'en fra {STRINGID} er et godt køb”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Popcorn'ene fra {STRINGID} er et godt køb”
-STR_1534    :{SMALLFONT}“Denne Hot dog fra {STRINGID} er et godt køb”
-STR_1535    :{SMALLFONT}“Denne tentakel fra {STRINGID} er et godt køb”
-STR_1536    :{SMALLFONT}“Hatten fra {STRINGID} er et godt køb”
-STR_1537    :{SMALLFONT}“Det kandiserede æble fra {STRINGID} er et godt køb”
-STR_1538    :{SMALLFONT}“T-shirt'en fra {STRINGID} er et godt køb”
-STR_1539    :{SMALLFONT}“Doughnut'en fra {STRINGID} er et godt køb”
-STR_1540    :{SMALLFONT}“Kaffen fra {STRINGID} er et godt køb”
+STR_1533    :“Popcorn'ene fra {STRINGID} er et godt køb”
+STR_1534    :“Denne Hot dog fra {STRINGID} er et godt køb”
+STR_1535    :“Denne tentakel fra {STRINGID} er et godt køb”
+STR_1536    :“Hatten fra {STRINGID} er et godt køb”
+STR_1537    :“Det kandiserede æble fra {STRINGID} er et godt køb”
+STR_1538    :“T-shirt'en fra {STRINGID} er et godt køb”
+STR_1539    :“Doughnut'en fra {STRINGID} er et godt køb”
+STR_1540    :“Kaffen fra {STRINGID} er et godt køb”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Grill kyllingen fra {STRINGID} er et godt køb”
-STR_1543    :{SMALLFONT}“Lemonaden fra {STRINGID} er et godt køb”
+STR_1542    :“Grill kyllingen fra {STRINGID} er et godt køb”
+STR_1543    :“Lemonaden fra {STRINGID} er et godt køb”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Wow!”
-STR_1551    :{SMALLFONT}“Jeg har en under fornemmelse, af at der er nogen, der holder øje med mig”
-STR_1552    :{SMALLFONT}“Jeg vil ikke betale så meget for en ballon fra {STRINGID}”
-STR_1553    :{SMALLFONT}“Jeg vil ikke betale så meget for et krammedyr fra {STRINGID}”
-STR_1554    :{SMALLFONT}“Jeg vil ikke betale så meget for et park kort fra {STRINGID}”
-STR_1555    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
-STR_1556    :{SMALLFONT}“Jeg vil ikke betale så meget for en paraply fra{STRINGID}”
-STR_1557    :{SMALLFONT}“Jeg vil ikke betale så meget for en drik fra {STRINGID}”
-STR_1558    :{SMALLFONT}“Jeg vil ikke betale så meget for en burger fra {STRINGID}”
-STR_1559    :{SMALLFONT}“Jeg vil ikke betale så meget for pommes fritter fra {STRINGID}”
-STR_1560    :{SMALLFONT}“Jeg vil ikke betale så meget for an is fra {STRINGID}”
-STR_1561    :{SMALLFONT}“Jeg vil ikke betale så meget for candyfloss fra {STRINGID}”
+STR_1550    :“Wow!”
+STR_1551    :“Jeg har en under fornemmelse, af at der er nogen, der holder øje med mig”
+STR_1552    :“Jeg vil ikke betale så meget for en ballon fra {STRINGID}”
+STR_1553    :“Jeg vil ikke betale så meget for et krammedyr fra {STRINGID}”
+STR_1554    :“Jeg vil ikke betale så meget for et park kort fra {STRINGID}”
+STR_1555    :“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1556    :“Jeg vil ikke betale så meget for en paraply fra{STRINGID}”
+STR_1557    :“Jeg vil ikke betale så meget for en drik fra {STRINGID}”
+STR_1558    :“Jeg vil ikke betale så meget for en burger fra {STRINGID}”
+STR_1559    :“Jeg vil ikke betale så meget for pommes fritter fra {STRINGID}”
+STR_1560    :“Jeg vil ikke betale så meget for an is fra {STRINGID}”
+STR_1561    :“Jeg vil ikke betale så meget for candyfloss fra {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Jeg vil ikke betale så meget for pizza fra {STRINGID}”
+STR_1565    :“Jeg vil ikke betale så meget for pizza fra {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Jeg vil ikke betale så meget for popcorn fra {STRINGID}”
-STR_1568    :{SMALLFONT}“Jeg vil ikke betale så meget for en hot dog fra {STRINGID}”
-STR_1569    :{SMALLFONT}“Jeg vil ikke betale så meget for en tentakel fra {STRINGID}”
-STR_1570    :{SMALLFONT}“Jeg vil ikke betale så meget for en hat fra {STRINGID}”
-STR_1571    :{SMALLFONT}“Jeg vil ikke betale så meget for et kandiseret æble fra {STRINGID}”
-STR_1572    :{SMALLFONT}“Jeg vil ikke betale så meget for en T-shirt fra {STRINGID}”
-STR_1573    :{SMALLFONT}“Jeg vil ikke betale så meget for en doughnut fra {STRINGID}”
-STR_1574    :{SMALLFONT}“Jeg vil ikke betale så meget kaffe fra {STRINGID}”
+STR_1567    :“Jeg vil ikke betale så meget for popcorn fra {STRINGID}”
+STR_1568    :“Jeg vil ikke betale så meget for en hot dog fra {STRINGID}”
+STR_1569    :“Jeg vil ikke betale så meget for en tentakel fra {STRINGID}”
+STR_1570    :“Jeg vil ikke betale så meget for en hat fra {STRINGID}”
+STR_1571    :“Jeg vil ikke betale så meget for et kandiseret æble fra {STRINGID}”
+STR_1572    :“Jeg vil ikke betale så meget for en T-shirt fra {STRINGID}”
+STR_1573    :“Jeg vil ikke betale så meget for en doughnut fra {STRINGID}”
+STR_1574    :“Jeg vil ikke betale så meget kaffe fra {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Jeg vil ikke betale så meget for grill kylling fra {STRINGID}”
-STR_1577    :{SMALLFONT}“Jeg vil ikke betale så meget for lemonade fra {STRINGID}”
+STR_1576    :“Jeg vil ikke betale så meget for grill kylling fra {STRINGID}”
+STR_1577    :“Jeg vil ikke betale så meget for lemonade fra {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
-STR_1585    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
-STR_1586    :{SMALLFONT}“Dette on-ride billede fra {STRINGID} er et godt køb”
-STR_1587    :{SMALLFONT}“Denne pretzel fra {STRINGID} er et godt køb”
-STR_1588    :{SMALLFONT}“Den varme chokolade fra {STRINGID} er et godt køb”
-STR_1589    :{SMALLFONT}“Is the'en fra {STRINGID} er et godt køb”
-STR_1590    :{SMALLFONT}“Churrios'ene fra {STRINGID} er et godt køb”
-STR_1591    :{SMALLFONT}“Solbrillerne fra {STRINGID} er et godt køb”
-STR_1592    :{SMALLFONT}“Nudlerne fra {STRINGID} er et godt køb”
-STR_1593    :{SMALLFONT}“De ristede ris nuddler fra {STRINGID} er et godt køb”
-STR_1594    :{SMALLFONT}“Wonton suppen fra {STRINGID} er et godt køb”
-STR_1595    :{SMALLFONT}“Kødbolle suppen fra {STRINGID} er et godt køb”
-STR_1596    :{SMALLFONT}“Frugt juicen fra {STRINGID} er et godt køb”
-STR_1597    :{SMALLFONT}“Soya mælken fra {STRINGID} er et godt køb”
-STR_1598    :{SMALLFONT}“Sujeonggwa'en fra {STRINGID} er et godt køb”
-STR_1599    :{SMALLFONT}“Sandwich'en fra {STRINGID} er et godt køb”
-STR_1600    :{SMALLFONT}“Småkagen fra {STRINGID} er et godt køb”
+STR_1584    :“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1585    :“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1586    :“Dette on-ride billede fra {STRINGID} er et godt køb”
+STR_1587    :“Denne pretzel fra {STRINGID} er et godt køb”
+STR_1588    :“Den varme chokolade fra {STRINGID} er et godt køb”
+STR_1589    :“Is the'en fra {STRINGID} er et godt køb”
+STR_1590    :“Churrios'ene fra {STRINGID} er et godt køb”
+STR_1591    :“Solbrillerne fra {STRINGID} er et godt køb”
+STR_1592    :“Nudlerne fra {STRINGID} er et godt køb”
+STR_1593    :“De ristede ris nuddler fra {STRINGID} er et godt køb”
+STR_1594    :“Wonton suppen fra {STRINGID} er et godt køb”
+STR_1595    :“Kødbolle suppen fra {STRINGID} er et godt køb”
+STR_1596    :“Frugt juicen fra {STRINGID} er et godt køb”
+STR_1597    :“Soya mælken fra {STRINGID} er et godt køb”
+STR_1598    :“Sujeonggwa'en fra {STRINGID} er et godt køb”
+STR_1599    :“Sandwich'en fra {STRINGID} er et godt køb”
+STR_1600    :“Småkagen fra {STRINGID} er et godt køb”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Den ristede pølse fra {STRINGID} er et godt køb”
+STR_1604    :“Den ristede pølse fra {STRINGID} er et godt køb”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -998,27 +998,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
-STR_1617    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
-STR_1618    :{SMALLFONT}“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
-STR_1619    :{SMALLFONT}“Jeg vil ikke betale så meget for en pretzel fra {STRINGID}”
-STR_1620    :{SMALLFONT}“Jeg vil ikke betale så meget for varm chokolade fra {STRINGID}”
-STR_1621    :{SMALLFONT}“Jeg vil ikke betale så meget for is the fra {STRINGID}”
-STR_1622    :{SMALLFONT}“Jeg vil ikke betale så meget for en churrio fra {STRINGID}”
-STR_1623    :{SMALLFONT}“Jeg vil ikke betale så meget for solbriller fra {STRINGID}”
-STR_1624    :{SMALLFONT}“Jeg vil ikke betale så meget for nudler fra {STRINGID}”
-STR_1625    :{SMALLFONT}“Jeg vil ikke betale så meget for ristede ris nudler fra {STRINGID}”
-STR_1626    :{SMALLFONT}“Jeg vil ikke betale så meget for wonton suppe fra {STRINGID}”
-STR_1627    :{SMALLFONT}“Jeg vil ikke betale så meget for kødbolle suppe fra {STRINGID}”
-STR_1628    :{SMALLFONT}“Jeg vil ikke betale så meget for frugt juice fra {STRINGID}”
-STR_1629    :{SMALLFONT}“Jeg vil ikke betale så meget for soya mælk fra {STRINGID}”
-STR_1630    :{SMALLFONT}“Jeg vil ikke betale så meget for sujeonggwa fra {STRINGID}”
-STR_1631    :{SMALLFONT}“Jeg vil ikke betale så meget for en sandwich fra {STRINGID}”
-STR_1632    :{SMALLFONT}“Jeg vil ikke betale så meget for en småkage fra {STRINGID}”
+STR_1616    :“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1617    :“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1618    :“Jeg vil ikke betale så meget for et on-ride billede fra {STRINGID}”
+STR_1619    :“Jeg vil ikke betale så meget for en pretzel fra {STRINGID}”
+STR_1620    :“Jeg vil ikke betale så meget for varm chokolade fra {STRINGID}”
+STR_1621    :“Jeg vil ikke betale så meget for is the fra {STRINGID}”
+STR_1622    :“Jeg vil ikke betale så meget for en churrio fra {STRINGID}”
+STR_1623    :“Jeg vil ikke betale så meget for solbriller fra {STRINGID}”
+STR_1624    :“Jeg vil ikke betale så meget for nudler fra {STRINGID}”
+STR_1625    :“Jeg vil ikke betale så meget for ristede ris nudler fra {STRINGID}”
+STR_1626    :“Jeg vil ikke betale så meget for wonton suppe fra {STRINGID}”
+STR_1627    :“Jeg vil ikke betale så meget for kødbolle suppe fra {STRINGID}”
+STR_1628    :“Jeg vil ikke betale så meget for frugt juice fra {STRINGID}”
+STR_1629    :“Jeg vil ikke betale så meget for soya mælk fra {STRINGID}”
+STR_1630    :“Jeg vil ikke betale så meget for sujeonggwa fra {STRINGID}”
+STR_1631    :“Jeg vil ikke betale så meget for en sandwich fra {STRINGID}”
+STR_1632    :“Jeg vil ikke betale så meget for en småkage fra {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Jeg vil ikke betale så meget for en ristet pølse fra {STRINGID}”
+STR_1636    :“Jeg vil ikke betale så meget for en ristet pølse fra {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1030,10 +1030,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Hjælp! Sæt mig ned!”
-STR_1649    :{SMALLFONT}“Jeg er ved at løbe tør for penge!”
-STR_1650    :{SMALLFONT}“Wow! en ny forlystelse er ved at blive bygget!”
-STR_1653    :{SMALLFONT}“…og her er vi på {STRINGID}!”
+STR_1648    :“Hjælp! Sæt mig ned!”
+STR_1649    :“Jeg er ved at løbe tør for penge!”
+STR_1650    :“Wow! en ny forlystelse er ved at blive bygget!”
+STR_1653    :“…og her er vi på {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Seneste tanker:
 STR_1655    :Konstruer gangsti på land
 STR_1656    :Konstruer tunnel eller bro gangsti
@@ -1185,7 +1185,7 @@ STR_1808    :{WINDOW_COLOUR_2}Sidste nedbrud: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuværende nedbrud: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Bærer:
 STR_1811    :Kan ikke bygge det her…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Forskellige objekter
 STR_1814    :Aktiviteter
 STR_1815    :Tanker
@@ -1194,7 +1194,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle gæster
 STR_1819    :{WINDOW_COLOUR_2}Alle gæster (opsummeret)
 STR_1820    :{WINDOW_COLOUR_2}Gæster {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Gæster tænker {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Gæster tænker {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gæster tænker på {POP16}{STRINGID}
 STR_1823    :Vis gæsters tanker omkring forlystelse/attraktion
 STR_1824    :Vis gæster på denne forlystelse/attraktion
@@ -1295,7 +1295,6 @@ STR_1921    :Start et nyt spil
 STR_1922    :Fortsæt et gemt spil
 STR_1924    :Afslut spillet
 STR_1925    :Kan ikke placere en person her…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} er brudt sammen
 STR_1928    :{RED}{STRINGID} er styrtet!
 STR_1929    :{RED}{STRINGID} er stadig ikke bleve repareret{NEWLINE}Kontroller hvor dine mekanikere er, og overvej at organisere dem bedre
@@ -1576,7 +1575,7 @@ STR_2218    :{RED}{STRINGID} på {STRINGID} er ikke kommet tilbage til {STRINGID
 STR_2219    :{RED}{COMMA16} personer er døde i ulykken på {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Vurdering: {BLACK}{COMMA16}
 STR_2221    :Park Vurdering: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Gæster i parken: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Penge: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Penge: {RED}{CURRENCY2DP}
@@ -1589,7 +1588,7 @@ STR_2231    :Bremser for frit fald
 STR_2232    :Kabel hejse bakke
 STR_2233    :Park information
 STR_2234    :Seneste beskeder
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Januar
 STR_2237    :Februar
 STR_2238    :Marts
@@ -1793,7 +1792,7 @@ STR_2450    :{YELLOW}Din reklamekampagne for parken, er slut
 STR_2451    :{YELLOW}Din reklamekampagne for {STRINGID}, er slut
 STR_2452    :{WINDOW_COLOUR_2}Penge (uden lån): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Penge (uden lån): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Vis finanskonti
 STR_2458    :Vis graf for penge (uden lån) over tid
 STR_2459    :Vis graf for park værdi over tid
@@ -1903,7 +1902,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :ScrollLock
 STR_2680    :Al forskning udført
-STR_2681    :{MEDIUMFONT}{BLACK}Forøg dine penge med {CURRENCY}
 STR_2684    :Stor gruppe af gæster ankommer
 STR_2685    :Simplex Støj parametre
 STR_2686    :Lav:
@@ -1990,7 +1988,7 @@ STR_2789    :{WINDOW_COLOUR_2}Du har ikke opnået dit mål!
 STR_2790    :Angiv dit navn til scenarie listen
 STR_2791    :Angiv Navn
 STR_2792    :Angiv venligst dit navn til scenarie listen:
-STR_2793    :{SMALLFONT}(Gennemført af {STRINGID})
+STR_2793    :(Gennemført af {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Gennemført af: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} med en virksomheds værdi på: {BLACK}{CURRENCY}
 STR_2795    :Sorter
 STR_2796    :Sorter ordnen af forlystelseslisten ved hjælp af den viste informationstype
@@ -2497,7 +2495,7 @@ STR_5134    :Justere større areal af land rettigheder
 STR_5135    :Køb land rettigheder og byggetilladelser
 STR_5136    :Land rettigheder
 STR_5137    :Lås op for driftsbegrænsninger
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Deaktiver bremsefejl
 STR_5141    :Deaktiver alle nedbrud
@@ -2643,7 +2641,7 @@ STR_5297    :Åben park
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Hurtig brandpersonale
-STR_5301    :{MEDIUMFONT}{BLACK}Fjern dit lån
+STR_5301    :Fjern dit lån
 STR_5302    :Fjern lån
 STR_5303    :Tillad bygning i pausetilstand
 STR_5304    :Titel sekvens:
@@ -2802,7 +2800,7 @@ STR_5481    :Temaer
 STR_5482    :{WINDOW_COLOUR_2}Tid siden sidste inspektion: {BLACK}1 minut
 STR_5483    :{BLACK}({COMMA16} uger tilbage)
 STR_5484    :{BLACK}({COMMA16} uge tilbage)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Vis foregående meddelelse
 STR_5489    :Vis kun overvågede gæster
@@ -3307,7 +3305,7 @@ STR_6030    :Sceneri vælger. Klik på et sceneri på kortet for at vælge det s
 STR_6031    :Server Beskrivelse:
 STR_6032    :Server Velkomst:
 STR_6033    :Sti til RCT1 installation:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Vælg venligst din RCT1 filmappe
 STR_6036    :Ryd
 STR_6037    :Den valgte folder indeholder ikke en gyldig, RollerCoaster Tycoon 1 installation.
@@ -3452,7 +3450,7 @@ STR_6183    :Følg{MOVE_X}{87}Ingen sprite valgt
 STR_6184    :Følg Sprite
 STR_6185    :Vælg Sprite
 STR_6186    :Ingen sprite valgt
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Opkast
 STR_6189    :And
 STR_6190    :Du kan ikke vælge en sprite, mens titelskærmen er aktiv.
@@ -3602,7 +3600,7 @@ STR_6356    :Generer ænder hvis parken indeholder vand
 STR_6357    :Fjern alle ænder fra kortet
 STR_6358    :Side {UINT16}
 STR_6359    :{POP16}{POP16}Side {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Aktiver lyseffekter på forlystelser (eksperimentel)
 STR_6362    :Hvis aktiv, vognene for spor-forlystelser vil lyse op om natten.
 STR_6363    :Kopierede tekst til udklipsholder

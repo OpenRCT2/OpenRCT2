@@ -797,14 +797,14 @@ STR_1410    :Torre vertical
 STR_1411    :{STRINGID} pel mig
 STR_1412    :{WINDOW_COLOUR_3}No es disposa de les dades estadístiques d'aquesta atracció.
 STR_1413    :{WINDOW_COLOUR_3}Les dades estadístiques s'enregistraran quan el proper {STRINGID} surti de {STRINGID}.
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocitat
 STR_1416    :{WINDOW_COLOUR_2}Altitud
 STR_1417    :{WINDOW_COLOUR_2}Acceleracions verticals
 STR_1418    :{WINDOW_COLOUR_2}Acceleracions laterals
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :S'estan desant les dades de {POP16}{STRINGID}
 STR_1423    :Camí de la cua
 STR_1424    :Camí
@@ -863,131 +863,131 @@ STR_1476    :{WINDOW_COLOUR_2}Nivell d'intensitat: {BLACK}Encara no se sap
 STR_1477    :{WINDOW_COLOUR_2}Nivell d'intensitat: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nivell de nàusea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nivell de nàusea: {BLACK}Encara no se sap
-STR_1480    :{SMALLFONT}«No puc pagar {STRINGID}».
-STR_1481    :{SMALLFONT}«He gastat tots els diners».
-STR_1482    :{SMALLFONT}«Estic marejat».
-STR_1483    :{SMALLFONT}«Estic molt marejat».
-STR_1484    :{SMALLFONT}«Vull provar alguna atracció més intensa que {STRINGID}».
-STR_1485    :{SMALLFONT}«{STRINGID} sembla massa intensa per mi».
-STR_1486    :{SMALLFONT}«Encara no m'he acabat {STRINGID}».
-STR_1487    :{SMALLFONT}«Em marejo només veure {STRINGID}».
-STR_1488    :{SMALLFONT}«No penso pagar tant per pujar a {STRINGID}».
-STR_1489    :{SMALLFONT}«Vull anar-me'n a casa».
-STR_1490    :{SMALLFONT}«{STRINGID} està bé de preu».
-STR_1491    :{SMALLFONT}«Ja tinc {STRINGID}».
-STR_1492    :{SMALLFONT}«No em puc permetre {STRINGID}».
-STR_1493    :{SMALLFONT}«No tinc gana».
-STR_1494    :{SMALLFONT}«No tinc set».
-STR_1495    :{SMALLFONT}«Ajuda! M'ofego!»
-STR_1496    :{SMALLFONT}«M'he perdut!»
-STR_1497    :{SMALLFONT}«{STRINGID} ha estat bé».
-STR_1498    :{SMALLFONT}«He fet cua per {STRINGID} durant una eternitat».
-STR_1499    :{SMALLFONT}«Estic cansat».
-STR_1500    :{SMALLFONT}«Tinc gana».
-STR_1501    :{SMALLFONT}«Tinc set».
-STR_1502    :{SMALLFONT}«He d'anar al lavabo».
-STR_1503    :{SMALLFONT}«No puc trobar {STRINGID}».
-STR_1504    :{SMALLFONT}«No penso pagar tant per {STRINGID}».
-STR_1505    :{SMALLFONT}«No vull pujar a {STRINGID} mentre plou».
-STR_1506    :{SMALLFONT}«Això està molt brut».
-STR_1507    :{SMALLFONT}«No puc trobar la sortida».
-STR_1508    :{SMALLFONT}«Vull baixar de {STRINGID}».
-STR_1509    :{SMALLFONT}«Vull sortir de {STRINGID}»
-STR_1510    :{SMALLFONT}«No pujaré a {STRINGID} - No és gens segur».
-STR_1511    :{SMALLFONT}«Aquest camí és repugnant».
-STR_1512    :{SMALLFONT}«Això és angoixant. Hi ha massa gent».
-STR_1513    :{SMALLFONT}«Aquí hi ha molt vandalisme».
-STR_1514    :{SMALLFONT}«Aquestes vistes són impressionants!»
-STR_1515    :{SMALLFONT}«Aquest parc està molt net i força endreçat».
-STR_1516    :{SMALLFONT}«Aquests salts de les fonts són magnífics».
-STR_1517    :{SMALLFONT}«La música és agradable».
-STR_1518    :{SMALLFONT}«Aquest globus de {STRINGID} està bé de preu».
-STR_1519    :{SMALLFONT}«Aquesta joguina de peluix de {STRINGID} està bé de preu».
-STR_1520    :{SMALLFONT}«Aquest parc del mapa de {STRINGID} està bé de preu».
-STR_1521    :{SMALLFONT}«Aquesta foto de record de l'atracció {STRINGID} està bé de preu».
-STR_1522    :{SMALLFONT}«Aquest paraigües de {STRINGID} està bé de preu».
-STR_1523    :{SMALLFONT}«Aquesta beguda de {STRINGID} està bé de preu».
-STR_1524    :{SMALLFONT}«Aquesta hamburguesa de {STRINGID} està bé de preu».
-STR_1525    :{SMALLFONT}«Aquestes patates fregides de {STRINGID} estan bé de preu».
-STR_1526    :{SMALLFONT}«Aquest gelat de {STRINGID} està bé de preu».
-STR_1527    :{SMALLFONT}«Aquest cotó fluix de sucre{STRINGID} està bé de preu».
+STR_1480    :«No puc pagar {STRINGID}».
+STR_1481    :«He gastat tots els diners».
+STR_1482    :«Estic marejat».
+STR_1483    :«Estic molt marejat».
+STR_1484    :«Vull provar alguna atracció més intensa que {STRINGID}».
+STR_1485    :«{STRINGID} sembla massa intensa per mi».
+STR_1486    :«Encara no m'he acabat {STRINGID}».
+STR_1487    :«Em marejo només veure {STRINGID}».
+STR_1488    :«No penso pagar tant per pujar a {STRINGID}».
+STR_1489    :«Vull anar-me'n a casa».
+STR_1490    :«{STRINGID} està bé de preu».
+STR_1491    :«Ja tinc {STRINGID}».
+STR_1492    :«No em puc permetre {STRINGID}».
+STR_1493    :«No tinc gana».
+STR_1494    :«No tinc set».
+STR_1495    :«Ajuda! M'ofego!»
+STR_1496    :«M'he perdut!»
+STR_1497    :«{STRINGID} ha estat bé».
+STR_1498    :«He fet cua per {STRINGID} durant una eternitat».
+STR_1499    :«Estic cansat».
+STR_1500    :«Tinc gana».
+STR_1501    :«Tinc set».
+STR_1502    :«He d'anar al lavabo».
+STR_1503    :«No puc trobar {STRINGID}».
+STR_1504    :«No penso pagar tant per {STRINGID}».
+STR_1505    :«No vull pujar a {STRINGID} mentre plou».
+STR_1506    :«Això està molt brut».
+STR_1507    :«No puc trobar la sortida».
+STR_1508    :«Vull baixar de {STRINGID}».
+STR_1509    :«Vull sortir de {STRINGID}»
+STR_1510    :«No pujaré a {STRINGID} - No és gens segur».
+STR_1511    :«Aquest camí és repugnant».
+STR_1512    :«Això és angoixant. Hi ha massa gent».
+STR_1513    :«Aquí hi ha molt vandalisme».
+STR_1514    :«Aquestes vistes són impressionants!»
+STR_1515    :«Aquest parc està molt net i força endreçat».
+STR_1516    :«Aquests salts de les fonts són magnífics».
+STR_1517    :«La música és agradable».
+STR_1518    :«Aquest globus de {STRINGID} està bé de preu».
+STR_1519    :«Aquesta joguina de peluix de {STRINGID} està bé de preu».
+STR_1520    :«Aquest parc del mapa de {STRINGID} està bé de preu».
+STR_1521    :«Aquesta foto de record de l'atracció {STRINGID} està bé de preu».
+STR_1522    :«Aquest paraigües de {STRINGID} està bé de preu».
+STR_1523    :«Aquesta beguda de {STRINGID} està bé de preu».
+STR_1524    :«Aquesta hamburguesa de {STRINGID} està bé de preu».
+STR_1525    :«Aquestes patates fregides de {STRINGID} estan bé de preu».
+STR_1526    :«Aquest gelat de {STRINGID} està bé de preu».
+STR_1527    :«Aquest cotó fluix de sucre{STRINGID} està bé de preu».
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}«Aquest tros de pizza de {STRINGID} està bé de preu».
+STR_1531    :«Aquest tros de pizza de {STRINGID} està bé de preu».
 STR_1532    :
-STR_1533    :{SMALLFONT}«Aquestes crispetes de {STRINGID} estan bé de preu».
-STR_1534    :{SMALLFONT}«Aquest entrepà de salsitxa de Frankfurt {STRINGID} està bé de preu».
-STR_1535    :{SMALLFONT}«Aquest tentacle de {STRINGID} està bé de preu».
-STR_1536    :{SMALLFONT}«Aquesta gorra de {STRINGID} està bé de preu».
-STR_1537    :{SMALLFONT}«Aquesta poma de caramel {STRINGID} està bé de preu».
-STR_1538    :{SMALLFONT}«Aquesta samarreta de {STRINGID} està bé de preu».
-STR_1539    :{SMALLFONT}«Aquest dònut de {STRINGID} està bé de preu».
-STR_1540    :{SMALLFONT}«Aquest cafè de {STRINGID} està bé de preu».
+STR_1533    :«Aquestes crispetes de {STRINGID} estan bé de preu».
+STR_1534    :«Aquest entrepà de salsitxa de Frankfurt {STRINGID} està bé de preu».
+STR_1535    :«Aquest tentacle de {STRINGID} està bé de preu».
+STR_1536    :«Aquesta gorra de {STRINGID} està bé de preu».
+STR_1537    :«Aquesta poma de caramel {STRINGID} està bé de preu».
+STR_1538    :«Aquesta samarreta de {STRINGID} està bé de preu».
+STR_1539    :«Aquest dònut de {STRINGID} està bé de preu».
+STR_1540    :«Aquest cafè de {STRINGID} està bé de preu».
 STR_1541    :
-STR_1542    :{SMALLFONT}«Aquest pollastre fregit de {STRINGID} està bé de preu».
-STR_1543    :{SMALLFONT}«Aquesta llimonada {STRINGID} està bé de preu».
+STR_1542    :«Aquest pollastre fregit de {STRINGID} està bé de preu».
+STR_1543    :«Aquesta llimonada {STRINGID} està bé de preu».
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}«Vaja!»
-STR_1551    :{SMALLFONT}«Tinc l'estranya sensació que algú m'està vigilant».
-STR_1552    :{SMALLFONT}«No penso pagar tant per un globus de {STRINGID}».
-STR_1553    :{SMALLFONT}«No penso pagar tant per una joguina de peluix {STRINGID}».
-STR_1554    :{SMALLFONT}«No penso pagar tant per un mapa del parc de {STRINGID}».
-STR_1555    :{SMALLFONT}«No penso pagar tant per una foto de record de {STRINGID}».
-STR_1556    :{SMALLFONT}«No penso pagar tant per un paraigües de {STRINGID}».
-STR_1557    :{SMALLFONT}«No penso pagar tant per una beguda de {STRINGID}».
-STR_1558    :{SMALLFONT}«No penso pagar tant per una hamburguesa de {STRINGID}».
-STR_1559    :{SMALLFONT}«No penso pagar tant per unes patates fregides {STRINGID}».
-STR_1560    :{SMALLFONT}«No penso pagar tant per un gelat de {STRINGID}».
-STR_1561    :{SMALLFONT}«No penso pagar tant pel cotó fluix de caramel de {STRINGID}».
+STR_1550    :«Vaja!»
+STR_1551    :«Tinc l'estranya sensació que algú m'està vigilant».
+STR_1552    :«No penso pagar tant per un globus de {STRINGID}».
+STR_1553    :«No penso pagar tant per una joguina de peluix {STRINGID}».
+STR_1554    :«No penso pagar tant per un mapa del parc de {STRINGID}».
+STR_1555    :«No penso pagar tant per una foto de record de {STRINGID}».
+STR_1556    :«No penso pagar tant per un paraigües de {STRINGID}».
+STR_1557    :«No penso pagar tant per una beguda de {STRINGID}».
+STR_1558    :«No penso pagar tant per una hamburguesa de {STRINGID}».
+STR_1559    :«No penso pagar tant per unes patates fregides {STRINGID}».
+STR_1560    :«No penso pagar tant per un gelat de {STRINGID}».
+STR_1561    :«No penso pagar tant pel cotó fluix de caramel de {STRINGID}».
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}«No penso pagar tant per un tros de pizza de {STRINGID}».
+STR_1565    :«No penso pagar tant per un tros de pizza de {STRINGID}».
 STR_1566    :
-STR_1567    :{SMALLFONT}«No penso pagar tant per unes crispetes de {STRINGID}».
-STR_1568    :{SMALLFONT}«No penso pagar tant per un entrepà de salsitxa de Frankfurt de {STRINGID}».
-STR_1569    :{SMALLFONT}«No penso pagar tant per un tentacle de {STRINGID}».
-STR_1570    :{SMALLFONT}«No penso pagar tant per una gorra de {STRINGID}».
-STR_1571    :{SMALLFONT}«No penso pagar tant per una poma de caramel de {STRINGID}».
-STR_1572    :{SMALLFONT}«No penso pagar tant per una samarreta de {STRINGID}».
-STR_1573    :{SMALLFONT}«No penso pagar tant per un dònut de {STRINGID}».
-STR_1574    :{SMALLFONT}«No penso pagar tant pel cafè de {STRINGID}».
+STR_1567    :«No penso pagar tant per unes crispetes de {STRINGID}».
+STR_1568    :«No penso pagar tant per un entrepà de salsitxa de Frankfurt de {STRINGID}».
+STR_1569    :«No penso pagar tant per un tentacle de {STRINGID}».
+STR_1570    :«No penso pagar tant per una gorra de {STRINGID}».
+STR_1571    :«No penso pagar tant per una poma de caramel de {STRINGID}».
+STR_1572    :«No penso pagar tant per una samarreta de {STRINGID}».
+STR_1573    :«No penso pagar tant per un dònut de {STRINGID}».
+STR_1574    :«No penso pagar tant pel cafè de {STRINGID}».
 STR_1575    :
-STR_1576    :{SMALLFONT}«No penso pagar tant pel pollastre fregit de {STRINGID}».
-STR_1577    :{SMALLFONT}«No penso pagar tant per una llimonada de {STRINGID}».
+STR_1576    :«No penso pagar tant pel pollastre fregit de {STRINGID}».
+STR_1577    :«No penso pagar tant per una llimonada de {STRINGID}».
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}«Aquesta foto de record de {STRINGID} està bé de preu».
-STR_1585    :{SMALLFONT}«Aquesta foto de record de {STRINGID} està bé de preu».
-STR_1586    :{SMALLFONT}«Aquesta foto de record de {STRINGID} està bé de preu».
-STR_1587    :{SMALLFONT}«Aquesta galeta pretzel de {STRINGID} està bé de preu».
-STR_1588    :{SMALLFONT}«Aquesta xocolata calenta de {STRINGID} està bé de preu».
-STR_1589    :{SMALLFONT}«Aquest te gelat de {STRINGID} està bé de preu».
-STR_1590    :{SMALLFONT}«Aquest xurro de {STRINGID} està bé de preu».
-STR_1591    :{SMALLFONT}«Aquestes ulleres de sol de {STRINGID} estan bé de preu».
-STR_1592    :{SMALLFONT}«Aquests fideus xinesos amb vedella de {STRINGID} estan bé de preu».
-STR_1593    :{SMALLFONT}«Aquests fideus xinesos d'arròs fregits de {STRINGID} estan bé de preu».
-STR_1594    :{SMALLFONT}«Aquesta sopa de wonton de {STRINGID} està bé de preu».
-STR_1595    :{SMALLFONT}«Aquesta sopa de mandonguilles de {STRINGID} està bé de preu».
-STR_1596    :{SMALLFONT}«Aquest suc de fruita de {STRINGID} està bé de preu».
-STR_1597    :{SMALLFONT}«Aquesta llet de soia de {STRINGID} està bé de preu».
-STR_1598    :{SMALLFONT}«Aquest sujeonggwa de {STRINGID} està bé de preu».
-STR_1599    :{SMALLFONT}«Aquest sandvitx submarí de {STRINGID} està bé de preu».
-STR_1600    :{SMALLFONT}«Aquesta galeta de {STRINGID} està bé de preu».
+STR_1584    :«Aquesta foto de record de {STRINGID} està bé de preu».
+STR_1585    :«Aquesta foto de record de {STRINGID} està bé de preu».
+STR_1586    :«Aquesta foto de record de {STRINGID} està bé de preu».
+STR_1587    :«Aquesta galeta pretzel de {STRINGID} està bé de preu».
+STR_1588    :«Aquesta xocolata calenta de {STRINGID} està bé de preu».
+STR_1589    :«Aquest te gelat de {STRINGID} està bé de preu».
+STR_1590    :«Aquest xurro de {STRINGID} està bé de preu».
+STR_1591    :«Aquestes ulleres de sol de {STRINGID} estan bé de preu».
+STR_1592    :«Aquests fideus xinesos amb vedella de {STRINGID} estan bé de preu».
+STR_1593    :«Aquests fideus xinesos d'arròs fregits de {STRINGID} estan bé de preu».
+STR_1594    :«Aquesta sopa de wonton de {STRINGID} està bé de preu».
+STR_1595    :«Aquesta sopa de mandonguilles de {STRINGID} està bé de preu».
+STR_1596    :«Aquest suc de fruita de {STRINGID} està bé de preu».
+STR_1597    :«Aquesta llet de soia de {STRINGID} està bé de preu».
+STR_1598    :«Aquest sujeonggwa de {STRINGID} està bé de preu».
+STR_1599    :«Aquest sandvitx submarí de {STRINGID} està bé de preu».
+STR_1600    :«Aquesta galeta de {STRINGID} està bé de preu».
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}«Aquesta salsitxa rostida de {STRINGID} està bé de preu».
+STR_1604    :«Aquesta salsitxa rostida de {STRINGID} està bé de preu».
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -999,27 +999,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}«No penso pagar tant per una foto de record de {STRINGID}».
-STR_1617    :{SMALLFONT}«No penso pagar tant per una foto de record de {STRINGID}».
-STR_1618    :{SMALLFONT}«No penso pagar tant per una foto de record de {STRINGID}».
-STR_1619    :{SMALLFONT}«No penso pagar tant per una galeta pretzel de {STRINGID}».
-STR_1620    :{SMALLFONT}«No penso pagar tant per una xocolata calenta de {STRINGID}».
-STR_1621    :{SMALLFONT}«No penso pagar tant per un te gelat de {STRINGID}».
-STR_1622    :{SMALLFONT}«No penso pagar tant per un xurro de {STRINGID}».
-STR_1623    :{SMALLFONT}«No penso pagar tant per unes ulleres de sol {STRINGID}».
-STR_1624    :{SMALLFONT}«No penso pagar tant per uns fideus xinesos amb vedella de {STRINGID}».
-STR_1625    :{SMALLFONT}«No penso pagar tant per uns fideus xinesos d'arròs fregits de {STRINGID}».
-STR_1626    :{SMALLFONT}«No penso pagar tant per una sopa wonton de {STRINGID}».
-STR_1627    :{SMALLFONT}«No penso pagar tant per una sopa de mandonguilles de {STRINGID}».
-STR_1628    :{SMALLFONT}«No penso pagar tant per un suc de fruita de {STRINGID}».
-STR_1629    :{SMALLFONT}«No penso pagar tant per la llet de soia de {STRINGID}».
-STR_1630    :{SMALLFONT}«No penso pagar tant per un sujeonggwa de {STRINGID}».
-STR_1631    :{SMALLFONT}«No penso pagar tant per un sandvitx submarí de {STRINGID}».
-STR_1632    :{SMALLFONT}«No penso pagar tant per una galeta de {STRINGID}»
+STR_1616    :«No penso pagar tant per una foto de record de {STRINGID}».
+STR_1617    :«No penso pagar tant per una foto de record de {STRINGID}».
+STR_1618    :«No penso pagar tant per una foto de record de {STRINGID}».
+STR_1619    :«No penso pagar tant per una galeta pretzel de {STRINGID}».
+STR_1620    :«No penso pagar tant per una xocolata calenta de {STRINGID}».
+STR_1621    :«No penso pagar tant per un te gelat de {STRINGID}».
+STR_1622    :«No penso pagar tant per un xurro de {STRINGID}».
+STR_1623    :«No penso pagar tant per unes ulleres de sol {STRINGID}».
+STR_1624    :«No penso pagar tant per uns fideus xinesos amb vedella de {STRINGID}».
+STR_1625    :«No penso pagar tant per uns fideus xinesos d'arròs fregits de {STRINGID}».
+STR_1626    :«No penso pagar tant per una sopa wonton de {STRINGID}».
+STR_1627    :«No penso pagar tant per una sopa de mandonguilles de {STRINGID}».
+STR_1628    :«No penso pagar tant per un suc de fruita de {STRINGID}».
+STR_1629    :«No penso pagar tant per la llet de soia de {STRINGID}».
+STR_1630    :«No penso pagar tant per un sujeonggwa de {STRINGID}».
+STR_1631    :«No penso pagar tant per un sandvitx submarí de {STRINGID}».
+STR_1632    :«No penso pagar tant per una galeta de {STRINGID}»
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}«No penso pagar tant per una salsitxa rostida de {STRINGID}».
+STR_1636    :«No penso pagar tant per una salsitxa rostida de {STRINGID}».
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1031,10 +1031,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}«Ajuda! Baixeu-me!»
-STR_1649    :{SMALLFONT}«M'estic quedant sense diners!»
-STR_1650    :{SMALLFONT}«Ostres! Estan construint una atracció nova!»
-STR_1653    :{SMALLFONT}«…i aquí estem en {STRINGID}!»
+STR_1648    :«Ajuda! Baixeu-me!»
+STR_1649    :«M'estic quedant sense diners!»
+STR_1650    :«Ostres! Estan construint una atracció nova!»
+STR_1653    :«…i aquí estem en {STRINGID}!»
 STR_1654    :{WINDOW_COLOUR_2}Pensaments recents:
 STR_1655    :Construeix camí al terra
 STR_1656    :Construeix camí al pont o al túnel
@@ -1186,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Última avaria: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avaria actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Càrrega:
 STR_1811    :No es pot construir aquí…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Altres objectes
 STR_1814    :Accions
 STR_1815    :Pensaments
@@ -1195,7 +1195,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tots els visitants
 STR_1819    :{WINDOW_COLOUR_2}Tots els visitants (resum)
 STR_1820    :{WINDOW_COLOUR_2}Visitants {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Visitants que pensen {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Visitants que pensen {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitants pensant en {POP16}{STRINGID}
 STR_1823    :Mostra els pensaments dels visitants sobre aquesta atracció
 STR_1824    :Mostra els visitants en aquesta atracció
@@ -1298,7 +1298,6 @@ STR_1921    :Comença una nova partida
 STR_1922    :Continua una partida desada
 STR_1924    :Surt
 STR_1925    :Aquesta persona aquí no es pot col·locar…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} s'ha avariat
 STR_1928    :{RED}{STRINGID} sinistrada!
 STR_1929    :{RED}{STRINGID} encara no s'ha arreglat.{NEWLINE}Comproveu on estan els mecànics i penseu si cal organitzar-los millor.
@@ -1579,7 +1578,7 @@ STR_2218    :{RED}{STRINGID} de {STRINGID} encara no ha tornat a {STRINGID}!{NEW
 STR_2219    :{RED}{COMMA16} persones han mort en l'accident de {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoració del parc: {BLACK}{COMMA16}
 STR_2221    :Valoració del parc: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Visitants del parc: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Efectiu: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Efectiu: {RED}{CURRENCY2DP}
@@ -1592,7 +1591,7 @@ STR_2231    :Frens de caiguda lliure
 STR_2232    :Cable d'elevació
 STR_2233    :Informació del parc
 STR_2234    :Missatges recents
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Gener
 STR_2237    :Febrer
 STR_2238    :Març
@@ -1796,7 +1795,7 @@ STR_2450    :{YELLOW}Ha acabat la campanya de màrqueting del parc.
 STR_2451    :{YELLOW}Ha acabat la campanya de màrqueting de {STRINGID}.
 STR_2452    :{WINDOW_COLOUR_2}Efectiu (excloent préstec): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Efectiu (excloent préstec): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Mostra les finances
 STR_2458    :Mostra el gràfic de l'efectiu disponible (excloent el préstec) al llarg del temps.
 STR_2459    :Mostra el gràfic de la valoració del parc al llarg del temps.
@@ -1906,7 +1905,6 @@ STR_2636    :/ (bloc numèric)
 STR_2669    :Bloq Núm
 STR_2670    :Bloq Despl
 STR_2680    :S'han completat totes les recerques.
-STR_2681    :{MEDIUMFONT}{BLACK}Incrementa els diners de l'empresa en {CURRENCY}.
 STR_2684    :Arriba un grup gran de visitants.
 STR_2685    :Paràmetres de soroll del símplex
 STR_2686    :Baix:
@@ -1993,7 +1991,7 @@ STR_2789    :{WINDOW_COLOUR_2}No heu aconseguit els vostres objectius!
 STR_2790    :Introduïu el vostre nom a la taula de l'escenari.
 STR_2791    :Introduïu el vostre nom
 STR_2792    :Si voleu, podeu introduir el vostre nom a la taula de l'escenari:
-STR_2793    :{SMALLFONT}(Superat per {STRINGID})
+STR_2793    :(Superat per {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Superat per: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} amb un valor d'empresa de: {BLACK}{CURRENCY}
 STR_2795    :Ordena
 STR_2796    :Ordena la llista d'atraccions segons el criteri seleccionat
@@ -2502,7 +2500,7 @@ STR_5134    :Ajusta el propietari d'una àrea més gran.
 STR_5135    :Propietaris i drets de construcció
 STR_5136    :Drets de construcció
 STR_5137    :Desactiva límits de funcionament
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Desactiva fallades dels frens
 STR_5141    :Desactiva totes les avaries
@@ -2648,7 +2646,7 @@ STR_5297    :Obre el parc
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Acomiada empleats ràpidament
-STR_5301    :{MEDIUMFONT}{BLACK}Elimina el deute del préstec.
+STR_5301    :Elimina el deute del préstec.
 STR_5302    :Esborra el préstec
 STR_5303    :Permet construir en pausa
 STR_5304    :Seqüència del menú principal:
@@ -2807,7 +2805,7 @@ STR_5481    :Temes
 STR_5482    :{WINDOW_COLOUR_2}Temps des de l'última revisió: {BLACK}1 minut
 STR_5483    :{BLACK}(queden {COMMA16} setmanes)
 STR_5484    :{BLACK}(queden {COMMA16} setmanes)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra els missatges recents.
 STR_5489    :Mostra només els visitants amb seguiment.
@@ -3312,7 +3310,7 @@ STR_6030    :Seleccionador de decoracions. Seleccioneu una decoració del mapa p
 STR_6031    :Descripció del servidor:
 STR_6032    :Missatge de benvinguda:
 STR_6033    :Camí de la instal·lació del RCT1:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Seleccioneu el camí d'instal·lació del RCT1
 STR_6036    :Esborra
 STR_6037    :La carpeta seleccionada no conté una instal·lació del RCT1 vàlida.
@@ -3457,7 +3455,7 @@ STR_6183    :Segueix{MOVE_X}{87}No s'ha seleccionat cap sprite
 STR_6184    :Segueix sprite
 STR_6185    :Selecciona sprite
 STR_6186    :No s'ha seleccionat cap sprite
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vòmit
 STR_6189    :Ànec
 STR_6190    :No podeu seleccionar cap sprite mentre la pantalla del menú de presentació estigui activa.
@@ -3607,7 +3605,7 @@ STR_6356    :Apareixeran ànecs si el parc té aigua.
 STR_6357    :Treu tots els ànecs del mapa.
 STR_6358    :Pàgina {UINT16}
 STR_6359    :{POP16}{POP16}Pàgina {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Activa els efectes d'enllumenat de les atraccions (experimental)
 STR_6362    :Si s'activa, els vehicles de les atraccions amb vies s'encendran durant la nit.
 STR_6363    :S'ha copiat el text al porta-retalls.

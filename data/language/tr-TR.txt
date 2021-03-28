@@ -794,14 +794,14 @@ STR_1410    :Kule
 STR_1411    :{STRINGID} engelliyor
 STR_1412    :{WINDOW_COLOUR_3}Bu alet için diyagram yok
 STR_1413    :{WINDOW_COLOUR_3}Diyagramlar ilk {STRINGID}{STRINGID}u terk ettiğinde oluşturulacakdır
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Hız
 STR_1416    :{WINDOW_COLOUR_2}Yükseklik
 STR_1417    :{WINDOW_COLOUR_2}Dikey. G
 STR_1418    :{WINDOW_COLOUR_2}Yatay. G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :{POP16}{STRINGID}in veri kayıdı
 STR_1423    :Bekleme sırası
 STR_1424    :Yol
@@ -860,131 +860,131 @@ STR_1476    :{WINDOW_COLOUR_2}Şiddet oranı: {BLACK}Ölçülüyor
 STR_1477    :{WINDOW_COLOUR_2}Şiddet oranı: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}Ölçülüyor
-STR_1480    :{SMALLFONT}“{STRINGID} için param yetmiyor”
-STR_1481    :{SMALLFONT}“Tüm paramı harcadım”
-STR_1482    :{SMALLFONT}“Midem bulanıyor”
-STR_1483    :{SMALLFONT}“Midem çok fena”
-STR_1484    :{SMALLFONT}“{STRINGID} aletinden daha heyecanlı bir alete binmek istiyorum”
-STR_1485    :{SMALLFONT}“{STRINGID} çok korkunç görünüyor”
-STR_1486    :{SMALLFONT}“Bunu daha bitirmedim ({STRINGID})”
-STR_1487    :{SMALLFONT}“Üf, {STRINGID} aletini izlerken bile midem bulanıyor”
-STR_1488    :{SMALLFONT}“Buna bu kadar para harcamam ({STRINGID})”
-STR_1489    :{SMALLFONT}“Eve gitmek istiyorum”
-STR_1490    :{SMALLFONT}“{STRINGID} fiyatına değer”
-STR_1491    :{SMALLFONT}“Bundan var bile bende ({STRINGID})”
-STR_1492    :{SMALLFONT}“{STRINGID} için param yetmiyor”
-STR_1493    :{SMALLFONT}“Aç değilim”
-STR_1494    :{SMALLFONT}“Susamadım”
-STR_1495    :{SMALLFONT}“Imdat!Boğuluyorum!”
-STR_1496    :{SMALLFONT}“Kayıp oldum!”
-STR_1497    :{SMALLFONT}“{STRINGID} süperdi!”
-STR_1498    :{SMALLFONT}“{STRINGID} için çok fazla bekledim”
-STR_1499    :{SMALLFONT}“Uykum geldi”
-STR_1500    :{SMALLFONT}“Acıkdım”
-STR_1501    :{SMALLFONT}“Susadım”
-STR_1502    :{SMALLFONT}“Tuvalete gitmem lazim”
-STR_1503    :{SMALLFONT}“{STRINGID} aletini bulamıyorum”
-STR_1504    :{SMALLFONT}“Buna bu kadar para harcamam ({STRINGID})”
-STR_1505    :{SMALLFONT}“{STRINGID} aletine yağmur yağdığı sürece binmem ”
-STR_1506    :{SMALLFONT}“Burada çöp sorunu çok aşırı”
-STR_1507    :{SMALLFONT}“Park çıkışını bulamıyorum”
-STR_1508    :{SMALLFONT}“{STRINGID} aletini terk etmek istiyorum”
-STR_1509    :{SMALLFONT}“{STRINGID} aletinden inmek istiyorum”
-STR_1510    :{SMALLFONT}“{STRINGID} güvenli olmadığı sürece binmem”
-STR_1511    :{SMALLFONT}“Bu yol berbat bir vaziyetde”
-STR_1512    :{SMALLFONT}“Burada çok insan var”
-STR_1513    :{SMALLFONT}“Buradaki vandalizm felaket”
-STR_1514    :{SMALLFONT}“Harika bir manzara!”
-STR_1515    :{SMALLFONT}“Bu Park gerçekden çok derli ve toplu”
-STR_1516    :{SMALLFONT}“Bu çeşmeler harika”
-STR_1517    :{SMALLFONT}“Müzik hoşuma gitti”
-STR_1518    :{SMALLFONT}“Bu {STRINGID} balonu fiyatına değer”
-STR_1519    :{SMALLFONT}“Bu {STRINGID} oyuncağı fiyatına değer”
-STR_1520    :{SMALLFONT}“Bu {STRINGID} haritası fiyatına değer”
-STR_1521    :{SMALLFONT}“Bu {STRINGID} fotoğrafı fiyatına değer”
-STR_1522    :{SMALLFONT}“Bu {STRINGID} şemsiyesi fiyatına değer”
-STR_1523    :{SMALLFONT}“Bu {STRINGID} içeceği fiyatına değer”
-STR_1524    :{SMALLFONT}“Bu {STRINGID} burgeri fiyatına değer”
-STR_1525    :{SMALLFONT}“Bu {STRINGID} patatesi fiyatına değer”
-STR_1526    :{SMALLFONT}“Bu {STRINGID} dondurması fiyatına değer”
-STR_1527    :{SMALLFONT}“Bu {STRINGID} pamuk şekeri fiyatına değer”
+STR_1480    :“{STRINGID} için param yetmiyor”
+STR_1481    :“Tüm paramı harcadım”
+STR_1482    :“Midem bulanıyor”
+STR_1483    :“Midem çok fena”
+STR_1484    :“{STRINGID} aletinden daha heyecanlı bir alete binmek istiyorum”
+STR_1485    :“{STRINGID} çok korkunç görünüyor”
+STR_1486    :“Bunu daha bitirmedim ({STRINGID})”
+STR_1487    :“Üf, {STRINGID} aletini izlerken bile midem bulanıyor”
+STR_1488    :“Buna bu kadar para harcamam ({STRINGID})”
+STR_1489    :“Eve gitmek istiyorum”
+STR_1490    :“{STRINGID} fiyatına değer”
+STR_1491    :“Bundan var bile bende ({STRINGID})”
+STR_1492    :“{STRINGID} için param yetmiyor”
+STR_1493    :“Aç değilim”
+STR_1494    :“Susamadım”
+STR_1495    :“Imdat!Boğuluyorum!”
+STR_1496    :“Kayıp oldum!”
+STR_1497    :“{STRINGID} süperdi!”
+STR_1498    :“{STRINGID} için çok fazla bekledim”
+STR_1499    :“Uykum geldi”
+STR_1500    :“Acıkdım”
+STR_1501    :“Susadım”
+STR_1502    :“Tuvalete gitmem lazim”
+STR_1503    :“{STRINGID} aletini bulamıyorum”
+STR_1504    :“Buna bu kadar para harcamam ({STRINGID})”
+STR_1505    :“{STRINGID} aletine yağmur yağdığı sürece binmem ”
+STR_1506    :“Burada çöp sorunu çok aşırı”
+STR_1507    :“Park çıkışını bulamıyorum”
+STR_1508    :“{STRINGID} aletini terk etmek istiyorum”
+STR_1509    :“{STRINGID} aletinden inmek istiyorum”
+STR_1510    :“{STRINGID} güvenli olmadığı sürece binmem”
+STR_1511    :“Bu yol berbat bir vaziyetde”
+STR_1512    :“Burada çok insan var”
+STR_1513    :“Buradaki vandalizm felaket”
+STR_1514    :“Harika bir manzara!”
+STR_1515    :“Bu Park gerçekden çok derli ve toplu”
+STR_1516    :“Bu çeşmeler harika”
+STR_1517    :“Müzik hoşuma gitti”
+STR_1518    :“Bu {STRINGID} balonu fiyatına değer”
+STR_1519    :“Bu {STRINGID} oyuncağı fiyatına değer”
+STR_1520    :“Bu {STRINGID} haritası fiyatına değer”
+STR_1521    :“Bu {STRINGID} fotoğrafı fiyatına değer”
+STR_1522    :“Bu {STRINGID} şemsiyesi fiyatına değer”
+STR_1523    :“Bu {STRINGID} içeceği fiyatına değer”
+STR_1524    :“Bu {STRINGID} burgeri fiyatına değer”
+STR_1525    :“Bu {STRINGID} patatesi fiyatına değer”
+STR_1526    :“Bu {STRINGID} dondurması fiyatına değer”
+STR_1527    :“Bu {STRINGID} pamuk şekeri fiyatına değer”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Bu {STRINGID} pizzası fiyatına değer”
+STR_1531    :“Bu {STRINGID} pizzası fiyatına değer”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Bu {STRINGID} patlamış mısırı fiyatına değer”
-STR_1534    :{SMALLFONT}“Bu {STRINGID} Hot Dogu fiyatına değer”
-STR_1535    :{SMALLFONT}“Bu {STRINGID} deniz ürünleri fiyatına değer”
-STR_1536    :{SMALLFONT}“Bu {STRINGID} şapkası fiyatına değer”
-STR_1537    :{SMALLFONT}“Bu {STRINGID} şeker elması fiyatına değer”
-STR_1538    :{SMALLFONT}“Bu {STRINGID} tişörü fiyatına değer”
-STR_1539    :{SMALLFONT}“Bu {STRINGID} donutı fiyatına değer”
-STR_1540    :{SMALLFONT}“Bu {STRINGID} kahvesi fiyatına değer”
+STR_1533    :“Bu {STRINGID} patlamış mısırı fiyatına değer”
+STR_1534    :“Bu {STRINGID} Hot Dogu fiyatına değer”
+STR_1535    :“Bu {STRINGID} deniz ürünleri fiyatına değer”
+STR_1536    :“Bu {STRINGID} şapkası fiyatına değer”
+STR_1537    :“Bu {STRINGID} şeker elması fiyatına değer”
+STR_1538    :“Bu {STRINGID} tişörü fiyatına değer”
+STR_1539    :“Bu {STRINGID} donutı fiyatına değer”
+STR_1540    :“Bu {STRINGID} kahvesi fiyatına değer”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Bu {STRINGID} kızarmış tavuğu fiyatına değer”
-STR_1543    :{SMALLFONT}“Bu {STRINGID} limonatası fiyatına değer”
+STR_1542    :“Bu {STRINGID} kızarmış tavuğu fiyatına değer”
+STR_1543    :“Bu {STRINGID} limonatası fiyatına değer”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Wow!”
-STR_1551    :{SMALLFONT}“Sanki birisi beni gözetliyormuş gibime geliyor”
-STR_1552    :{SMALLFONT}“Buradan bu fiyata balon almam: {STRINGID}”
-STR_1553    :{SMALLFONT}“Buradan bu fiyata oyuncak almam: {STRINGID}”
-STR_1554    :{SMALLFONT}“Buradan bu fiyata harita almam: {STRINGID}”
-STR_1555    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam: {STRINGID}”
-STR_1556    :{SMALLFONT}“Buradan bu fiyata şemsiye almam: {STRINGID}”
-STR_1557    :{SMALLFONT}“Buradan bu fiyata içecek almam: {STRINGID}”
-STR_1558    :{SMALLFONT}“Buradan bu fiyata balon almam: {STRINGID}”
-STR_1559    :{SMALLFONT}“Buradan bu fiyata patates almam: {STRINGID}”
-STR_1560    :{SMALLFONT}“Buradan bu fiyata dondurma almam: {STRINGID}”
-STR_1561    :{SMALLFONT}“Buradan bu fiyata pamuk şeker almam: {STRINGID}”
+STR_1550    :“Wow!”
+STR_1551    :“Sanki birisi beni gözetliyormuş gibime geliyor”
+STR_1552    :“Buradan bu fiyata balon almam: {STRINGID}”
+STR_1553    :“Buradan bu fiyata oyuncak almam: {STRINGID}”
+STR_1554    :“Buradan bu fiyata harita almam: {STRINGID}”
+STR_1555    :“Buradan bu fiyata fotoğraf almam: {STRINGID}”
+STR_1556    :“Buradan bu fiyata şemsiye almam: {STRINGID}”
+STR_1557    :“Buradan bu fiyata içecek almam: {STRINGID}”
+STR_1558    :“Buradan bu fiyata balon almam: {STRINGID}”
+STR_1559    :“Buradan bu fiyata patates almam: {STRINGID}”
+STR_1560    :“Buradan bu fiyata dondurma almam: {STRINGID}”
+STR_1561    :“Buradan bu fiyata pamuk şeker almam: {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Buradan bu fiyata pizza almam: {STRINGID}”
+STR_1565    :“Buradan bu fiyata pizza almam: {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Buradan bu fiyata patlamış mısır almam: {STRINGID}”
-STR_1568    :{SMALLFONT}“Buradan bu fiyata Hot Dog almam: {STRINGID}”
-STR_1569    :{SMALLFONT}“Buradan bu fiyata deniz ürünleri almam: {STRINGID}”
-STR_1570    :{SMALLFONT}“Buradan bu fiyata şapka almam: {STRINGID}”
-STR_1571    :{SMALLFONT}“Buradan bu fiyata elmalı şeker almam: {STRINGID}”
-STR_1572    :{SMALLFONT}“Buradan bu fiyata tişört almam: {STRINGID}”
-STR_1573    :{SMALLFONT}“Buradan bu fiyata donut almam: {STRINGID}”
-STR_1574    :{SMALLFONT}“Buradan bu fiyata kahve almam: {STRINGID}”
+STR_1567    :“Buradan bu fiyata patlamış mısır almam: {STRINGID}”
+STR_1568    :“Buradan bu fiyata Hot Dog almam: {STRINGID}”
+STR_1569    :“Buradan bu fiyata deniz ürünleri almam: {STRINGID}”
+STR_1570    :“Buradan bu fiyata şapka almam: {STRINGID}”
+STR_1571    :“Buradan bu fiyata elmalı şeker almam: {STRINGID}”
+STR_1572    :“Buradan bu fiyata tişört almam: {STRINGID}”
+STR_1573    :“Buradan bu fiyata donut almam: {STRINGID}”
+STR_1574    :“Buradan bu fiyata kahve almam: {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Buradan bu fiyata tavuk almam: {STRINGID}”
-STR_1577    :{SMALLFONT}“Buradan bu fiyata limonata almam: {STRINGID}”
+STR_1576    :“Buradan bu fiyata tavuk almam: {STRINGID}”
+STR_1577    :“Buradan bu fiyata limonata almam: {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
-STR_1585    :{SMALLFONT}“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
-STR_1586    :{SMALLFONT}“{STRINGID} aletinin fotoğrafı fiyatına değer”
-STR_1587    :{SMALLFONT}“Bu {STRINGID} simidi fiyatına değer”
-STR_1588    :{SMALLFONT}“Bu {STRINGID} sıcak çikolatası fiyatına değer”
-STR_1589    :{SMALLFONT}“Bu {STRINGID} ice tea'si fiyatına değer”
-STR_1590    :{SMALLFONT}“Bu {STRINGID} keki fiyatına değer”
-STR_1591    :{SMALLFONT}“Bu {STRINGID} güneş gözlüğü fiyatına değer”
-STR_1592    :{SMALLFONT}“Bu {STRINGID} kıymalı makarnası fiyatına değer”
-STR_1593    :{SMALLFONT}“Bu {STRINGID} kızarmış makarnası fiyatına değer”
-STR_1594    :{SMALLFONT}“Bu {STRINGID} Won Ton çorbası fiyatına değer”
-STR_1595    :{SMALLFONT}“Bu {STRINGID} sulu köftesi fiyatına değer”
-STR_1596    :{SMALLFONT}“Bu {STRINGID} meyve suyu fiyatına değer”
-STR_1597    :{SMALLFONT}“Bu {STRINGID} soya sütü fiyatına değer”
-STR_1598    :{SMALLFONT}“Bu {STRINGID} sujongkwa'sı fiyatına değer”
-STR_1599    :{SMALLFONT}“Bu {STRINGID} sandviçi fiyatına değer”
-STR_1600    :{SMALLFONT}“Bu {STRINGID} bisküvisi fiyatına değer”
+STR_1584    :“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
+STR_1585    :“Bu aletin fotoğrafı fiyatına değer: {STRINGID}”
+STR_1586    :“{STRINGID} aletinin fotoğrafı fiyatına değer”
+STR_1587    :“Bu {STRINGID} simidi fiyatına değer”
+STR_1588    :“Bu {STRINGID} sıcak çikolatası fiyatına değer”
+STR_1589    :“Bu {STRINGID} ice tea'si fiyatına değer”
+STR_1590    :“Bu {STRINGID} keki fiyatına değer”
+STR_1591    :“Bu {STRINGID} güneş gözlüğü fiyatına değer”
+STR_1592    :“Bu {STRINGID} kıymalı makarnası fiyatına değer”
+STR_1593    :“Bu {STRINGID} kızarmış makarnası fiyatına değer”
+STR_1594    :“Bu {STRINGID} Won Ton çorbası fiyatına değer”
+STR_1595    :“Bu {STRINGID} sulu köftesi fiyatına değer”
+STR_1596    :“Bu {STRINGID} meyve suyu fiyatına değer”
+STR_1597    :“Bu {STRINGID} soya sütü fiyatına değer”
+STR_1598    :“Bu {STRINGID} sujongkwa'sı fiyatına değer”
+STR_1599    :“Bu {STRINGID} sandviçi fiyatına değer”
+STR_1600    :“Bu {STRINGID} bisküvisi fiyatına değer”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Bu {STRINGID} sosisi fiyatına değer”
+STR_1604    :“Bu {STRINGID} sosisi fiyatına değer”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -996,27 +996,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
-STR_1617    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
-STR_1618    :{SMALLFONT}“Buradan bu fiyata fotoğraf almam:{STRINGID}”
-STR_1619    :{SMALLFONT}“Buradan bu fiyata simit almam:{STRINGID}”
-STR_1620    :{SMALLFONT}“Buradan bu fiyata sıcak çikolata almam:{STRINGID}”
-STR_1621    :{SMALLFONT}“Buradan bu fiyata ice tea almam:{STRINGID}”
-STR_1622    :{SMALLFONT}“Buradan bu fiyata kek almam:{STRINGID}”
-STR_1623    :{SMALLFONT}“Buradan bu fiyata güneş gözlüğü almam:{STRINGID}”
-STR_1624    :{SMALLFONT}“Buradan bu fiyata kıymalı makarna almam:{STRINGID}”
-STR_1625    :{SMALLFONT}“Buradan bu fiyata kızarmış makarna almam:{STRINGID}”
-STR_1626    :{SMALLFONT}“Buradan bu fiyata Won Ton çorbası almam:{STRINGID}”
-STR_1627    :{SMALLFONT}“Buradan bu fiyata sulu köfte almam:{STRINGID}”
-STR_1628    :{SMALLFONT}“Buradan bu fiyata meyve suyu almam:{STRINGID}”
-STR_1629    :{SMALLFONT}“Buradan bu fiyata soya sütü almam:{STRINGID}”
-STR_1630    :{SMALLFONT}“Buradan bu fiyata Sujongkwa almam:{STRINGID}”
-STR_1631    :{SMALLFONT}“Buradan bu fiyata sandviç almam:{STRINGID}”
-STR_1632    :{SMALLFONT}“Buradan bu fiyata bisküvi almam:{STRINGID}”
+STR_1616    :“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1617    :“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1618    :“Buradan bu fiyata fotoğraf almam:{STRINGID}”
+STR_1619    :“Buradan bu fiyata simit almam:{STRINGID}”
+STR_1620    :“Buradan bu fiyata sıcak çikolata almam:{STRINGID}”
+STR_1621    :“Buradan bu fiyata ice tea almam:{STRINGID}”
+STR_1622    :“Buradan bu fiyata kek almam:{STRINGID}”
+STR_1623    :“Buradan bu fiyata güneş gözlüğü almam:{STRINGID}”
+STR_1624    :“Buradan bu fiyata kıymalı makarna almam:{STRINGID}”
+STR_1625    :“Buradan bu fiyata kızarmış makarna almam:{STRINGID}”
+STR_1626    :“Buradan bu fiyata Won Ton çorbası almam:{STRINGID}”
+STR_1627    :“Buradan bu fiyata sulu köfte almam:{STRINGID}”
+STR_1628    :“Buradan bu fiyata meyve suyu almam:{STRINGID}”
+STR_1629    :“Buradan bu fiyata soya sütü almam:{STRINGID}”
+STR_1630    :“Buradan bu fiyata Sujongkwa almam:{STRINGID}”
+STR_1631    :“Buradan bu fiyata sandviç almam:{STRINGID}”
+STR_1632    :“Buradan bu fiyata bisküvi almam:{STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Buradan bu fiyata sosis almam:{STRINGID}”
+STR_1636    :“Buradan bu fiyata sosis almam:{STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1028,10 +1028,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Imdat! Yere bırakın beni!”
-STR_1649    :{SMALLFONT}“Param bitiyor!”
-STR_1650    :{SMALLFONT}“Wow! Yeni alet inşa ediliyor!”
-STR_1653    :{SMALLFONT}“…sonunda varabildim! ({STRINGID})”
+STR_1648    :“Imdat! Yere bırakın beni!”
+STR_1649    :“Param bitiyor!”
+STR_1650    :“Wow! Yeni alet inşa ediliyor!”
+STR_1653    :“…sonunda varabildim! ({STRINGID})”
 STR_1654    :{WINDOW_COLOUR_2}Şu anki düşünceleri:
 STR_1655    :Yolu yer seviyesine inşa et
 STR_1656    :Eğimli yol veya köprü/tünel inşa et
@@ -1183,7 +1183,7 @@ STR_1808    :{WINDOW_COLOUR_2}Son arıza: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Şu anki arıza: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Yanında taşıdıkları:
 STR_1811    :Bu buraya inşa edilemiyor…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Diğer cisimler
 STR_1814    :Yaptıkları
 STR_1815    :Düşünceleri
@@ -1192,7 +1192,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tüm müşteriler
 STR_1819    :{WINDOW_COLOUR_2}Tüm müşteriler (özetli)
 STR_1820    :{WINDOW_COLOUR_2}Müşteri {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Düşünce: {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Düşünce: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Müşterilerin {POP16}{STRINGID} hakkında düşündükleri
 STR_1823    :Müşterilerin bu alet{NEWLINE}üzeri düşünceleri
 STR_1824    :Bu aletin müşterile
@@ -1293,7 +1293,6 @@ STR_1921    :Yeni oyun başlat
 STR_1922    :Kayıtlı oyunu yükle
 STR_1924    :Çıkış
 STR_1925    :Buraya bırakılamaz…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} bozuldu
 STR_1928    :{RED}{STRINGID} kaza yaptı!
 STR_1929    :{RED}{STRINGID} halen tamir edilmedi{NEWLINE}Tamircilerin nerede olduğunu kontrol ediniz ve daha iyi organize ediniz
@@ -1574,7 +1573,7 @@ STR_2218    :{RED}{STRINGID} aletinde {STRINGID} halen {STRINGID}ye dönmedi!{NE
 STR_2219    :{RED}{STRINGID} aletinde {COMMA16} kişi canını kayıp etti
 STR_2220    :{WINDOW_COLOUR_2}Park değerlendirmesi: {BLACK}{COMMA16}
 STR_2221    :Park değerlendirmesi: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Parkdaki müşteri sayısı: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Para: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Para: {RED}{CURRENCY2DP}
@@ -1587,7 +1586,7 @@ STR_2231    :Düşüş freni (heyecan arttırmak için)
 STR_2232    :Asansörlü tırmanma zinciri
 STR_2233    :Park biligisi
 STR_2234    :Son bildirimler
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Ocak
 STR_2237    :Şubat
 STR_2238    :Mart
@@ -1791,7 +1790,7 @@ STR_2450    :{YELLOW}Park için reklam kampanyası bitti
 STR_2451    :{YELLOW}{STRINGID} için reklam kampanyası bitti
 STR_2452    :{WINDOW_COLOUR_2}Para (borçsuz): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Para (borçsuz): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Finansal genel bakış
 STR_2458    :Aylık para değişimi grafiği (kredisiz)
 STR_2459    :Aylık park değeri grafiği
@@ -1901,7 +1900,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Tüm araştırmalar gerçekleşti
-STR_2681    :{MEDIUMFONT}{BLACK}Paranızı {CURRENCY} yükseltiyor
 STR_2684    :Büyük sayıda müşteri parka geliyor
 STR_2685    :Simplex Noise parametreleri
 STR_2686    :Derinlik:
@@ -1988,7 +1986,7 @@ STR_2789    :{WINDOW_COLOUR_2}Hedeflerinize ulaşamadınız !
 STR_2790    :Isminizi giriniz
 STR_2791    :Isminizi yazınız
 STR_2792    :Senaryo listesi için isminizi yazınız:
-STR_2793    :{SMALLFONT}({STRINGID} tarafından tamamlandı)
+STR_2793    :({STRINGID} tarafından tamamlandı)
 STR_2794    :{BLACK}{STRINGID}{WINDOW_COLOUR_2} tarafından{NEWLINE}{BLACK}{CURRENCY}{WINDOW_COLOUR_2} park değeri ile tamamlandı
 STR_2795    :Sıralama
 STR_2796    :Aletleri kullandığınız bilgiye göre sıralayınız
@@ -2495,7 +2493,7 @@ STR_5134    :Büyült
 STR_5135    :Arazi veya inşa izni satın alınız
 STR_5136    :Arazi satın alma
 STR_5137    :Çalışma sınırlarını kaldır
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Fren hatalarını devre dışı bırak
 STR_5141    :Tüm alet arızalarını devre dışı bırak
@@ -2641,7 +2639,7 @@ STR_5297    :Parkı açınız
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Hızlı işci kovma
-STR_5301    :{MEDIUMFONT}{BLACK}Krediyi sıfırla
+STR_5301    :Krediyi sıfırla
 STR_5302    :Krediyi sıfırla
 STR_5303    :Oyun durdurulurken inşa et
 STR_5304    :Kullanılan başlık dizisi:
@@ -2800,7 +2798,7 @@ STR_5481    :Temalar
 STR_5482    :{WINDOW_COLOUR_2}Son denetlemeden bu yana geçen süre: {BLACK}1 dakika
 STR_5483    :{BLACK}({COMMA16} hafta kaldı)
 STR_5484    :{BLACK}({COMMA16} hafta kaldı)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Son bildirimleri göster
 STR_5489    :Takip ettiğiniz müşteriler
@@ -3304,7 +3302,7 @@ STR_6030    :Dekorasyon seçici. Bu araç ile seçdiğiniz dekorasyonun aynısı
 STR_6031    :Server açıklaması:
 STR_6032    :Server karşılaması:
 STR_6033    :RCT1 klasörü:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :RCT1'in kurulu olduğu klasörü belirleyiniz
 STR_6036    :Temizle
 STR_6037    :Lütfen geçerli bir RCT1 klasörü seçiniz
@@ -3449,7 +3447,7 @@ STR_6183    :Takip{MOVE_X}{87}Cisim seçilmedi
 STR_6184    :Takip
 STR_6185    :Alet/Kişi seçiniz
 STR_6186    :Alet/Kişi seçilemdi
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Kusmuk
 STR_6189    :Ördek
 STR_6190    :Varsayılan başlık dizisi oynarken cisim seçemezsiniz
@@ -3518,7 +3516,7 @@ STR_6266    :Özel içerik klasörünü aç
 STR_6267    :Zemin deneticisini aç		
 STR_6268    :Bir sonraki tick'e atla		
 STR_6269    :Geçersiz hava ID'si
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 
 #############
 # Scenarios #

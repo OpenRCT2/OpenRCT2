@@ -796,14 +796,14 @@ STR_1410    :Verticale toren
 STR_1411    :{STRINGID} staat in de weg
 STR_1412    :{15}Datalog is niet beschikbaar voor dit type attractie
 STR_1413    :{15}Datalog zal beginnen wanneer de volgende {STRINGID} {STRINGID} verlaat
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Snelheid
 STR_1416    :{WINDOW_COLOUR_2}Hoogte
 STR_1417    :{WINDOW_COLOUR_2}Vert. G
 STR_1418    :{WINDOW_COLOUR_2}Zijw. G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Loggegevens van {POP16}{STRINGID}
 STR_1423    :Wachtrijpad
 STR_1424    :Voetpad
@@ -862,131 +862,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensiteitswaarde: {BLACK}Nog niet beschikbaar
 STR_1477    :{WINDOW_COLOUR_2}Intensiteitswaarde: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Misselijkheidswaarde: {BLACK}Nog niet beschikbaar
-STR_1480    :{SMALLFONT}“Ik kan {STRINGID} niet betalen”
-STR_1481    :{SMALLFONT}“Ik heb al mijn geld uitgegeven”
-STR_1482    :{SMALLFONT}“Ik ben misselijk”
-STR_1483    :{SMALLFONT}“Ik ben erg misselijk”
-STR_1484    :{SMALLFONT}“Ik wil in iets spannenders dan {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} vind ik te eng”
-STR_1486    :{SMALLFONT}“Ik heb mijn {STRINGID} nog niet op”
-STR_1487    :{SMALLFONT}“Als ik alleen al kijk naar {STRINGID} word ik al misselijk”
-STR_1488    :{SMALLFONT}“Zoveel betaal ik niet voor {STRINGID}”
-STR_1489    :{SMALLFONT}“Ik wil naar huis”
-STR_1490    :{SMALLFONT}“{STRINGID} is erg goedkoop”
-STR_1491    :{SMALLFONT}“Ik heb al {STRINGID}”
-STR_1492    :{SMALLFONT}“Ik kan {STRINGID} niet betalen”
-STR_1493    :{SMALLFONT}“Ik heb geen honger”
-STR_1494    :{SMALLFONT}“Ik heb geen dorst”
-STR_1495    :{SMALLFONT}“Help! Ik verdrink!”
-STR_1496    :{SMALLFONT}“Ik ben verdwaald!”
-STR_1497    :{SMALLFONT}“{STRINGID} was geweldig”
-STR_1498    :{SMALLFONT}“Ik sta al eeuwen in de rij voor {STRINGID}”
-STR_1499    :{SMALLFONT}“Ik ben moe”
-STR_1500    :{SMALLFONT}“Ik heb honger”
-STR_1501    :{SMALLFONT}“Ik heb dorst”
-STR_1502    :{SMALLFONT}“Ik moet naar de wc”
-STR_1503    :{SMALLFONT}“Ik kan {STRINGID} niet vinden”
-STR_1504    :{SMALLFONT}“Zoveel betaal ik niet voor het gebruik van {STRINGID}”
-STR_1505    :{SMALLFONT}“Ik ga niet in {STRINGID} als het regent”
-STR_1506    :{SMALLFONT}“Het is hier een zwijnenstal”
-STR_1507    :{SMALLFONT}“Ik kan de parkuitgang niet vinden”
-STR_1508    :{SMALLFONT}“Ik wil uit {STRINGID}”
-STR_1509    :{SMALLFONT}“Ik wil uit {STRINGID}”
-STR_1510    :{SMALLFONT}“Ik ga niet in {STRINGID} - het is gevaarlijk”
-STR_1511    :{SMALLFONT}“Dit pad is smerig”
-STR_1512    :{SMALLFONT}“Het is hier te druk”
-STR_1513    :{SMALLFONT}“Er is hier erg veel vandalisme”
-STR_1514    :{SMALLFONT}“Mooi decor!”
-STR_1515    :{SMALLFONT}“Dit park is erg schoon en netjes”
-STR_1516    :{SMALLFONT}“Die springende fonteinen zijn erg leuk”
-STR_1517    :{SMALLFONT}“Er wordt hier leuke muziek gedraaid”
-STR_1518    :{SMALLFONT}“Deze ballon van {STRINGID} is erg goedkoop”
-STR_1519    :{SMALLFONT}“Deze knuffel van {STRINGID} is erg goedkoop”
-STR_1520    :{SMALLFONT}“Deze plattegrond van {STRINGID} is erg goedkoop”
-STR_1521    :{SMALLFONT}“Deze actiefoto van {STRINGID} is erg goedkoop”
-STR_1522    :{SMALLFONT}“Deze paraplu van {STRINGID} is erg goedkoop”
-STR_1523    :{SMALLFONT}“Deze frisdrank van {STRINGID} is erg goedkoop”
-STR_1524    :{SMALLFONT}“Deze hamburger van {STRINGID} is erg goedkoop”
-STR_1525    :{SMALLFONT}“Deze frietjes van {STRINGID} zijn erg goedkoop”
-STR_1526    :{SMALLFONT}“Dit ijsje van {STRINGID} is erg goedkoop”
-STR_1527    :{SMALLFONT}“Deze suikerspin van {STRINGID} is erg goedkoop”
+STR_1480    :“Ik kan {STRINGID} niet betalen”
+STR_1481    :“Ik heb al mijn geld uitgegeven”
+STR_1482    :“Ik ben misselijk”
+STR_1483    :“Ik ben erg misselijk”
+STR_1484    :“Ik wil in iets spannenders dan {STRINGID}”
+STR_1485    :“{STRINGID} vind ik te eng”
+STR_1486    :“Ik heb mijn {STRINGID} nog niet op”
+STR_1487    :“Als ik alleen al kijk naar {STRINGID} word ik al misselijk”
+STR_1488    :“Zoveel betaal ik niet voor {STRINGID}”
+STR_1489    :“Ik wil naar huis”
+STR_1490    :“{STRINGID} is erg goedkoop”
+STR_1491    :“Ik heb al {STRINGID}”
+STR_1492    :“Ik kan {STRINGID} niet betalen”
+STR_1493    :“Ik heb geen honger”
+STR_1494    :“Ik heb geen dorst”
+STR_1495    :“Help! Ik verdrink!”
+STR_1496    :“Ik ben verdwaald!”
+STR_1497    :“{STRINGID} was geweldig”
+STR_1498    :“Ik sta al eeuwen in de rij voor {STRINGID}”
+STR_1499    :“Ik ben moe”
+STR_1500    :“Ik heb honger”
+STR_1501    :“Ik heb dorst”
+STR_1502    :“Ik moet naar de wc”
+STR_1503    :“Ik kan {STRINGID} niet vinden”
+STR_1504    :“Zoveel betaal ik niet voor het gebruik van {STRINGID}”
+STR_1505    :“Ik ga niet in {STRINGID} als het regent”
+STR_1506    :“Het is hier een zwijnenstal”
+STR_1507    :“Ik kan de parkuitgang niet vinden”
+STR_1508    :“Ik wil uit {STRINGID}”
+STR_1509    :“Ik wil uit {STRINGID}”
+STR_1510    :“Ik ga niet in {STRINGID} - het is gevaarlijk”
+STR_1511    :“Dit pad is smerig”
+STR_1512    :“Het is hier te druk”
+STR_1513    :“Er is hier erg veel vandalisme”
+STR_1514    :“Mooi decor!”
+STR_1515    :“Dit park is erg schoon en netjes”
+STR_1516    :“Die springende fonteinen zijn erg leuk”
+STR_1517    :“Er wordt hier leuke muziek gedraaid”
+STR_1518    :“Deze ballon van {STRINGID} is erg goedkoop”
+STR_1519    :“Deze knuffel van {STRINGID} is erg goedkoop”
+STR_1520    :“Deze plattegrond van {STRINGID} is erg goedkoop”
+STR_1521    :“Deze actiefoto van {STRINGID} is erg goedkoop”
+STR_1522    :“Deze paraplu van {STRINGID} is erg goedkoop”
+STR_1523    :“Deze frisdrank van {STRINGID} is erg goedkoop”
+STR_1524    :“Deze hamburger van {STRINGID} is erg goedkoop”
+STR_1525    :“Deze frietjes van {STRINGID} zijn erg goedkoop”
+STR_1526    :“Dit ijsje van {STRINGID} is erg goedkoop”
+STR_1527    :“Deze suikerspin van {STRINGID} is erg goedkoop”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Deze pizza van {STRINGID} is erg goedkoop”
+STR_1531    :“Deze pizza van {STRINGID} is erg goedkoop”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Deze popcorn van {STRINGID} is erg goedkoop”
-STR_1534    :{SMALLFONT}“Deze hotdog van {STRINGID} is erg goedkoop”
-STR_1535    :{SMALLFONT}“Deze tentakel van {STRINGID} is erg goedkoop”
-STR_1536    :{SMALLFONT}“Deze hoed van {STRINGID} is erg goedkoop”
-STR_1537    :{SMALLFONT}“Deze gevulde appel van {STRINGID} is erg goedkoop”
-STR_1538    :{SMALLFONT}“Dit T-shirt van {STRINGID} is erg goedkoop”
-STR_1539    :{SMALLFONT}“Deze donut van {STRINGID} is erg goedkoop”
-STR_1540    :{SMALLFONT}“Deze koffie van {STRINGID} is erg goedkoop”
+STR_1533    :“Deze popcorn van {STRINGID} is erg goedkoop”
+STR_1534    :“Deze hotdog van {STRINGID} is erg goedkoop”
+STR_1535    :“Deze tentakel van {STRINGID} is erg goedkoop”
+STR_1536    :“Deze hoed van {STRINGID} is erg goedkoop”
+STR_1537    :“Deze gevulde appel van {STRINGID} is erg goedkoop”
+STR_1538    :“Dit T-shirt van {STRINGID} is erg goedkoop”
+STR_1539    :“Deze donut van {STRINGID} is erg goedkoop”
+STR_1540    :“Deze koffie van {STRINGID} is erg goedkoop”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Deze gegrilde kip van {STRINGID} is erg goedkoop”
-STR_1543    :{SMALLFONT}“Deze limonade van {STRINGID} is erg goedkoop”
+STR_1542    :“Deze gegrilde kip van {STRINGID} is erg goedkoop”
+STR_1543    :“Deze limonade van {STRINGID} is erg goedkoop”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Wauw!”
-STR_1551    :{SMALLFONT}“Ik heb het vreemde gevoel dat er iemand naar me kijkt”
-STR_1552    :{SMALLFONT}“Zoveel betaal ik niet voor een ballon van {STRINGID}”
-STR_1553    :{SMALLFONT}“Zoveel betaal ik niet voor een knuffel van {STRINGID}”
-STR_1554    :{SMALLFONT}“Zoveel betaal ik niet voor een plattegrond van {STRINGID}”
-STR_1555    :{SMALLFONT}“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
-STR_1556    :{SMALLFONT}“Zoveel betaal ik niet voor een paraplu van {STRINGID}”
-STR_1557    :{SMALLFONT}“Zoveel betaal ik niet voor frisdrank van {STRINGID}”
-STR_1558    :{SMALLFONT}“Zoveel betaal ik niet voor een hamburger van {STRINGID}”
-STR_1559    :{SMALLFONT}“Zoveel betaal ik niet voor frietjes van {STRINGID}”
-STR_1560    :{SMALLFONT}“Zoveel betaal ik niet voor een ijsje van {STRINGID}”
-STR_1561    :{SMALLFONT}“Zoveel betaal ik niet voor een suikerspin van {STRINGID}”
+STR_1550    :“Wauw!”
+STR_1551    :“Ik heb het vreemde gevoel dat er iemand naar me kijkt”
+STR_1552    :“Zoveel betaal ik niet voor een ballon van {STRINGID}”
+STR_1553    :“Zoveel betaal ik niet voor een knuffel van {STRINGID}”
+STR_1554    :“Zoveel betaal ik niet voor een plattegrond van {STRINGID}”
+STR_1555    :“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
+STR_1556    :“Zoveel betaal ik niet voor een paraplu van {STRINGID}”
+STR_1557    :“Zoveel betaal ik niet voor frisdrank van {STRINGID}”
+STR_1558    :“Zoveel betaal ik niet voor een hamburger van {STRINGID}”
+STR_1559    :“Zoveel betaal ik niet voor frietjes van {STRINGID}”
+STR_1560    :“Zoveel betaal ik niet voor een ijsje van {STRINGID}”
+STR_1561    :“Zoveel betaal ik niet voor een suikerspin van {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Zoveel betaal ik niet voor pizza van {STRINGID}”
+STR_1565    :“Zoveel betaal ik niet voor pizza van {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Zoveel betaal ik niet voor popcorn van {STRINGID}”
-STR_1568    :{SMALLFONT}“Zoveel betaal ik niet voor een hotdog van {STRINGID}”
-STR_1569    :{SMALLFONT}“Zoveel betaal ik niet voor een tentakel van {STRINGID}”
-STR_1570    :{SMALLFONT}“Zoveel betaal ik niet voor een hoed van {STRINGID}”
-STR_1571    :{SMALLFONT}“Zoveel betaal ik niet voor een gevulde appel van {STRINGID}”
-STR_1572    :{SMALLFONT}“Zoveel betaal ik niet voor een T-shirt van {STRINGID}”
-STR_1573    :{SMALLFONT}“Zoveel betaal ik niet voor een donut van {STRINGID}”
-STR_1574    :{SMALLFONT}“Zoveel betaal ik niet voor koffie van {STRINGID}”
+STR_1567    :“Zoveel betaal ik niet voor popcorn van {STRINGID}”
+STR_1568    :“Zoveel betaal ik niet voor een hotdog van {STRINGID}”
+STR_1569    :“Zoveel betaal ik niet voor een tentakel van {STRINGID}”
+STR_1570    :“Zoveel betaal ik niet voor een hoed van {STRINGID}”
+STR_1571    :“Zoveel betaal ik niet voor een gevulde appel van {STRINGID}”
+STR_1572    :“Zoveel betaal ik niet voor een T-shirt van {STRINGID}”
+STR_1573    :“Zoveel betaal ik niet voor een donut van {STRINGID}”
+STR_1574    :“Zoveel betaal ik niet voor koffie van {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Zoveel betaal ik niet voor gegrilde kip van {STRINGID}”
-STR_1577    :{SMALLFONT}“Zoveel betaal ik niet voor limonade van {STRINGID}”
+STR_1576    :“Zoveel betaal ik niet voor gegrilde kip van {STRINGID}”
+STR_1577    :“Zoveel betaal ik niet voor limonade van {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Deze actiefoto van {STRINGID} is erg goedkoop”
-STR_1585    :{SMALLFONT}“Deze actiefoto van {STRINGID} is erg goedkoop”
-STR_1586    :{SMALLFONT}“Deze actiefoto van {STRINGID} is erg goedkoop”
-STR_1587    :{SMALLFONT}“Deze krakeling van {STRINGID} is erg goedkoop”
-STR_1588    :{SMALLFONT}“Deze warme chocolademelk van {STRINGID} is erg goedkoop”
-STR_1589    :{SMALLFONT}“Deze ijsthee van {STRINGID} is erg goedkoop”
-STR_1590    :{SMALLFONT}“Deze oliebollen van {STRINGID} zijn erg goedkoop”
-STR_1591    :{SMALLFONT}“Deze zonnebril van {STRINGID} is erg goedkoop”
-STR_1592    :{SMALLFONT}“Deze rundernoedels van {STRINGID} zijn erg goedkoop”
-STR_1593    :{SMALLFONT}“Deze rijstnoedels van {STRINGID} zijn erg goedkoop”
-STR_1594    :{SMALLFONT}“Deze wantansoep van {STRINGID} is erg goedkoop”
-STR_1595    :{SMALLFONT}“Deze soep met balletjes van {STRINGID} is erg goedkoop”
-STR_1596    :{SMALLFONT}“Dit sap van {STRINGID} is erg goedkoop”
-STR_1597    :{SMALLFONT}“Deze sojamelk van {STRINGID} is erg goedkoop”
-STR_1598    :{SMALLFONT}“Deze sujeonggwa van {STRINGID} is erg goedkoop”
-STR_1599    :{SMALLFONT}“Dit broodje van {STRINGID} is erg goedkoop”
-STR_1600    :{SMALLFONT}“Dit koekje van {STRINGID} is erg goedkoop”
+STR_1584    :“Deze actiefoto van {STRINGID} is erg goedkoop”
+STR_1585    :“Deze actiefoto van {STRINGID} is erg goedkoop”
+STR_1586    :“Deze actiefoto van {STRINGID} is erg goedkoop”
+STR_1587    :“Deze krakeling van {STRINGID} is erg goedkoop”
+STR_1588    :“Deze warme chocolademelk van {STRINGID} is erg goedkoop”
+STR_1589    :“Deze ijsthee van {STRINGID} is erg goedkoop”
+STR_1590    :“Deze oliebollen van {STRINGID} zijn erg goedkoop”
+STR_1591    :“Deze zonnebril van {STRINGID} is erg goedkoop”
+STR_1592    :“Deze rundernoedels van {STRINGID} zijn erg goedkoop”
+STR_1593    :“Deze rijstnoedels van {STRINGID} zijn erg goedkoop”
+STR_1594    :“Deze wantansoep van {STRINGID} is erg goedkoop”
+STR_1595    :“Deze soep met balletjes van {STRINGID} is erg goedkoop”
+STR_1596    :“Dit sap van {STRINGID} is erg goedkoop”
+STR_1597    :“Deze sojamelk van {STRINGID} is erg goedkoop”
+STR_1598    :“Deze sujeonggwa van {STRINGID} is erg goedkoop”
+STR_1599    :“Dit broodje van {STRINGID} is erg goedkoop”
+STR_1600    :“Dit koekje van {STRINGID} is erg goedkoop”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Deze gebraden worst van {STRINGID} is erg goedkoop”
+STR_1604    :“Deze gebraden worst van {STRINGID} is erg goedkoop”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -998,27 +998,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
-STR_1617    :{SMALLFONT}“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
-STR_1618    :{SMALLFONT}“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
-STR_1619    :{SMALLFONT}“Zoveel betaal ik niet voor een krakeling van {STRINGID}”
-STR_1620    :{SMALLFONT}“Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}”
-STR_1621    :{SMALLFONT}“Zoveel betaal ik niet voor ijsthee van {STRINGID}”
-STR_1622    :{SMALLFONT}“Zoveel betaal ik niet voor een oliebol van {STRINGID}”
-STR_1623    :{SMALLFONT}“Zoveel betaal ik niet voor een zonnebril van {STRINGID}”
-STR_1624    :{SMALLFONT}“Zoveel betaal ik niet voor rundernoedels van {STRINGID}”
-STR_1625    :{SMALLFONT}“Zoveel betaal ik niet voor rijstnoedels van {STRINGID}”
-STR_1626    :{SMALLFONT}“Zoveel betaal ik niet voor wantansoep van {STRINGID}”
-STR_1627    :{SMALLFONT}“Zoveel betaal ik niet voor soep met balletjes van {STRINGID}”
-STR_1628    :{SMALLFONT}“Zoveel betaal ik niet voor sap van {STRINGID}”
-STR_1629    :{SMALLFONT}“Zoveel betaal ik niet voor sojamelk van {STRINGID}”
-STR_1630    :{SMALLFONT}“Zoveel betaal ik niet voor sujeonggwa van {STRINGID}”
-STR_1631    :{SMALLFONT}“Zoveel betaal ik niet voor een broodje van {STRINGID}”
-STR_1632    :{SMALLFONT}“Zoveel betaal ik niet voor een koekje van {STRINGID}”
+STR_1616    :“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
+STR_1617    :“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
+STR_1618    :“Zoveel betaal ik niet voor een actiefoto van {STRINGID}”
+STR_1619    :“Zoveel betaal ik niet voor een krakeling van {STRINGID}”
+STR_1620    :“Zoveel betaal ik niet voor warme chocolademelk van {STRINGID}”
+STR_1621    :“Zoveel betaal ik niet voor ijsthee van {STRINGID}”
+STR_1622    :“Zoveel betaal ik niet voor een oliebol van {STRINGID}”
+STR_1623    :“Zoveel betaal ik niet voor een zonnebril van {STRINGID}”
+STR_1624    :“Zoveel betaal ik niet voor rundernoedels van {STRINGID}”
+STR_1625    :“Zoveel betaal ik niet voor rijstnoedels van {STRINGID}”
+STR_1626    :“Zoveel betaal ik niet voor wantansoep van {STRINGID}”
+STR_1627    :“Zoveel betaal ik niet voor soep met balletjes van {STRINGID}”
+STR_1628    :“Zoveel betaal ik niet voor sap van {STRINGID}”
+STR_1629    :“Zoveel betaal ik niet voor sojamelk van {STRINGID}”
+STR_1630    :“Zoveel betaal ik niet voor sujeonggwa van {STRINGID}”
+STR_1631    :“Zoveel betaal ik niet voor een broodje van {STRINGID}”
+STR_1632    :“Zoveel betaal ik niet voor een koekje van {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Zoveel betaal ik niet voor een gebraden worst van {STRINGID}”
+STR_1636    :“Zoveel betaal ik niet voor een gebraden worst van {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1030,11 +1030,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Help! Zet me neer!”
-STR_1649    :{SMALLFONT}“Mijn geld is bijna op!”
-STR_1650    :{SMALLFONT}“Wauw! Hier wordt een nieuwe attractie gebouwd!”
+STR_1648    :“Help! Zet me neer!”
+STR_1649    :“Mijn geld is bijna op!”
+STR_1650    :“Wauw! Hier wordt een nieuwe attractie gebouwd!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}“… en nu zijn we in {STRINGID}!”
+STR_1653    :“… en nu zijn we in {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recente gedachten:
 STR_1655    :Voetpaden op land aanleggen
 STR_1656    :Voetpad over bruggen of door tunnels aanleggen
@@ -1186,7 +1186,7 @@ STR_1808    :{WINDOW_COLOUR_2}Laatste defect: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Huidig defect: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Heeft bij zich:
 STR_1811    :Kan dit hier niet bouwen…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Overige objecten
 STR_1814    :Acties
 STR_1815    :Gedachten
@@ -1195,7 +1195,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle bezoekers
 STR_1819    :{WINDOW_COLOUR_2}Alle bezoekers (samengevat)
 STR_1820    :{WINDOW_COLOUR_2}Bezoekers met status: {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Bezoekers met gedachte: {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Bezoekers met gedachte: {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Bezoekers met gedachten over {POP16}{STRINGID}
 STR_1823    :Toon de gedachten van bezoekers over deze attractie
 STR_1824    :Toon de bezoekers in deze attractie
@@ -1298,7 +1298,6 @@ STR_1921    :Een nieuw spel starten
 STR_1922    :Verder gaan met een opgeslagen spel
 STR_1924    :Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} is kapot gegaan
 STR_1928    :{RED}{STRINGID} is neergestort!
 STR_1929    :{RED}{STRINGID} is nog steeds niet gerepareerd{NEWLINE}Controleer waar je monteurs zijn en overweeg ze beter te organiseren
@@ -1579,7 +1578,7 @@ STR_2218    :{RED}{STRINGID} van {STRINGID} is nog niet teruggekeerd naar de ops
 STR_2219    :{RED}{COMMA16} personen zijn om het leven gekomen bij een ongeluk in {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Parkwaardering: {BLACK}{COMMA16}
 STR_2221    :Parkwaardering: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Bezoekers in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Contant: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Contant: {RED}{CURRENCY2DP}
@@ -1592,7 +1591,7 @@ STR_2231    :Vasthoudrem voor afdaling
 STR_2232    :Kabelliftheuvel
 STR_2233    :Parkinformatie
 STR_2234    :Recente berichten
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :januari
 STR_2237    :februari
 STR_2238    :maart
@@ -1796,7 +1795,7 @@ STR_2450    :{YELLOW}Je advertentiecampagne voor het park is afgelopen
 STR_2451    :{YELLOW}Je advertentiecampagne voor {STRINGID} is afgelopen
 STR_2452    :{WINDOW_COLOUR_2}Saldo (zonder lening): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Saldo (zonder lening): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Laat financiële posten zien
 STR_2458    :Toon grafiek van saldoverloop (zonder lening)
 STR_2459    :Toon grafiek van parkwaardeverloop
@@ -1906,7 +1905,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Alle onderzoeken zijn voltooid
-STR_2681    :{MEDIUMFONT}{BLACK}Verhoog je saldo met {CURRENCY}
 STR_2684    :Er arriveert een grote groep bezoekers
 STR_2685    :Parameters voor Simplex noise
 STR_2686    :Minimum:
@@ -1991,7 +1989,7 @@ STR_2789    :{WINDOW_COLOUR_2}Je hebt je doelstelling niet bereikt!
 STR_2790    :Naam invoeren voor scenario-overzicht
 STR_2791    :Naam invoeren
 STR_2792    :Voer je naam in voor het scenario-overzicht:
-STR_2793    :{SMALLFONT}(Voltooid door {STRINGID})
+STR_2793    :(Voltooid door {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Voltooid door: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} met een bedrijfswaarde van: {BLACK}{CURRENCY}
 STR_2795    :Sorteren
 STR_2796    :Sorteer de lijst met attracties op basis van het aangegeven informatietype
@@ -2498,7 +2496,7 @@ STR_5134    :Een groter gebied landrechten aanpassen
 STR_5135    :Land en bouwrechten kopen
 STR_5136    :Landrechten
 STR_5137    :Bedrijfslimieten van attracties opheffen
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Defecte remmen onmogelijk maken
 STR_5141    :Attractiedefecten uitschakelen
@@ -2646,7 +2644,7 @@ STR_5297    :Park openen
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Snel ontslaan
-STR_5301    :{MEDIUMFONT}{BLACK}Wist je lening
+STR_5301    :Wist je lening
 STR_5302    :Lening afbetalen
 STR_5303    :Bouwen in pauzemodus toestaan
 STR_5304    :Titelpresentatie:
@@ -2805,7 +2803,7 @@ STR_5481    :Thema’s
 STR_5482    :{WINDOW_COLOUR_2}Tijd sinds laatste inspectie: {BLACK}1 minuut
 STR_5483    :{BLACK}({COMMA16} weken resterend)
 STR_5484    :{BLACK}({COMMA16} week resterend)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Recente berichten tonen
 STR_5489    :Enkel bezoekers die gevolgd worden weergeven
@@ -3308,7 +3306,7 @@ STR_6030    :Decorselector. Klik op een al geplaatst decorstuk om het te selecte
 STR_6031    :Serverbeschrijving:
 STR_6032    :Welkomstboodschap:
 STR_6033    :Locatie RCT1-bestanden:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Selecteer de map waar je RCT1-bestanden staan
 STR_6036    :Wissen
 STR_6037    :De geselecteerde map bevat geen geldige RollerCoaster Tycoon 1-installatie.
@@ -3453,7 +3451,7 @@ STR_6183    :Volg{MOVE_X}{87}Geen sprite geselecteerd
 STR_6184    :Sprite volgen
 STR_6185    :Sprite selecteren
 STR_6186    :Geen sprite geselecteerd
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Braaksel
 STR_6189    :Eend
 STR_6190    :Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
@@ -3603,7 +3601,7 @@ STR_6356    :Maakt eenden aan, mits er water op de kaart is.
 STR_6357    :Verwijdert alle eenden van de kaart.
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Belichtingseffecten op attracties (experimenteel)
 STR_6362    :Als dit is ingeschakeld zullen de voertuigen van attracties die een baan hebben ’s nachts verlicht worden.
 STR_6363    :Tekst is naar het klembord gekopieerd.
@@ -3679,6 +3677,10 @@ STR_6432    :Muiskn. {INT32}
 STR_6433    :Verwijderen
 STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
 STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA16}
+STR_6436    :Onzichtbaarheid in/uitschakelen
+STR_6437    :Onzichtbaar
+STR_6438    :O
+STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
 
 #############
 # Scenarios #

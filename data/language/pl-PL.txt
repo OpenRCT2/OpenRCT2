@@ -798,14 +798,14 @@ STR_1410    :Wieża pionowa
 STR_1411    :{STRINGID} blokuje
 STR_1412    :{WINDOW_COLOUR_3}Zbieranie danych nie jest dostępne dla tego typu atrakcji
 STR_1413    :{WINDOW_COLOUR_3}Zbieranie danych rozpocznie się gdy następne {STRINGID} opuści {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Prędkość
 STR_1416    :{WINDOW_COLOUR_2}Wysokość
 STR_1417    :{WINDOW_COLOUR_2}Pionowe G
 STR_1418    :{WINDOW_COLOUR_2}Boczne G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Dane zebrane z {POP16}{STRINGID}
 STR_1423    :Kolejka do atrakcji
 STR_1424    :Chodnik
@@ -864,131 +864,131 @@ STR_1476    :{WINDOW_COLOUR_2}Ocena intensywności: {BLACK}Jeszcze nie dostępna
 STR_1477    :{WINDOW_COLOUR_2}Ocena intensywności: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Ocena mdłości: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Ocena mdłości: {BLACK}Jeszcze nie dostępna
-STR_1480    :{SMALLFONT}“Nie mogę sobie pozwolić na {STRINGID}”
-STR_1481    :{SMALLFONT}“Wydałem wszystkie swoje pieniądze”
-STR_1482    :{SMALLFONT}“Niedobrze mi”
-STR_1483    :{SMALLFONT}“Zaraz zwymiotuję”
-STR_1484    :{SMALLFONT}“Chcę pójść na coś bardziej intensywnego niż {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} wygląda zbyt intensywne dla mnie”
-STR_1486    :{SMALLFONT}“Nie skończyłem {STRINGID} jeszcze”
-STR_1487    :{SMALLFONT}“Od samego patrzenia na {STRINGID} robi mi się niedobrze”
-STR_1488    :{SMALLFONT}“Nie zapłacę tyle za {STRINGID}”
-STR_1489    :{SMALLFONT}“Chcę już do domu”
-STR_1490    :{SMALLFONT}“{STRINGID} ma naprawdę dobrą cenę”
-STR_1491    :{SMALLFONT}“Mam już {STRINGID}”
-STR_1492    :{SMALLFONT}“Nie mogę sobie pozwolić na {STRINGID}”
-STR_1493    :{SMALLFONT}“Nie jestem głodny”
-STR_1494    :{SMALLFONT}“Nie jestem spragniony”
-STR_1495    :{SMALLFONT}“Pomocy! Tonę!”
-STR_1496    :{SMALLFONT}“Zgubiłem się!”
-STR_1497    :{SMALLFONT}“Na atrakcji {STRINGID} było świetnie”
-STR_1498    :{SMALLFONT}“Czekam już wieki w kolejce na {STRINGID}”
-STR_1499    :{SMALLFONT}“Jestem zmęczony”
-STR_1500    :{SMALLFONT}“Jestem głodny”
-STR_1501    :{SMALLFONT}“Jestem spragniony”
-STR_1502    :{SMALLFONT}“Muszę do toalety”
-STR_1503    :{SMALLFONT}“Nie mogę znaleźć {STRINGID}”
-STR_1504    :{SMALLFONT}“Nie zapłacę tyle za {STRINGID}”
-STR_1505    :{SMALLFONT}“Nie pójdę na {STRINGID} dopóki pada”
-STR_1506    :{SMALLFONT}“Ścieżki tutaj są okropne”
-STR_1507    :{SMALLFONT}“Nie mogę znaleźć wyjścia z parku”
-STR_1508    :{SMALLFONT}“Muszę odpocząć od {STRINGID}”
-STR_1509    :{SMALLFONT}“Chcę już wyjść z {STRINGID}”
-STR_1510    :{SMALLFONT}“Nie pójdę na {STRINGID} - nie wygląda za bezpiecznie”
-STR_1511    :{SMALLFONT}“Ta ścieżka jest obrzydliwa”
-STR_1512    :{SMALLFONT}“Tutaj jest zdecydowanie za tłoczno”
-STR_1513    :{SMALLFONT}“Wandalizm stanowi tutaj duży problem”
-STR_1514    :{SMALLFONT}“Świetna sceneria!”
-STR_1515    :{SMALLFONT}“Ten park jest naprawdę czysty”
-STR_1516    :{SMALLFONT}“Ta skaczą fontanna jest świetna”
-STR_1517    :{SMALLFONT}“Leci tutaj miła muzyka”
-STR_1518    :{SMALLFONT}“Ten balon z {STRINGID} był naprawdę opłacalny”
-STR_1519    :{SMALLFONT}“Ta przytulanka z {STRINGID} była naprawdę opłacalna”
-STR_1520    :{SMALLFONT}“Ta mapa parku z {STRINGID} była naprawdę opłacalna”
-STR_1521    :{SMALLFONT}“To zdjęcie z przejazdu na {STRINGID} było naprawdę opłacalne”
-STR_1522    :{SMALLFONT}“Ta parasolka z {STRINGID} była naprawdę opłacalna”
-STR_1523    :{SMALLFONT}“Ten napój z {STRINGID} był naprawdę opłacalny”
-STR_1524    :{SMALLFONT}“Ten burger z {STRINGID} był naprawdę opłacalny”
-STR_1525    :{SMALLFONT}“Te frytki z {STRINGID} były naprawdę opłacalne”
-STR_1526    :{SMALLFONT}“Te lody z {STRINGID} były naprawdę opłacalne”
-STR_1527    :{SMALLFONT}“Ta wata cukrowa {STRINGID} była naprawdę opłacalna”
+STR_1480    :“Nie mogę sobie pozwolić na {STRINGID}”
+STR_1481    :“Wydałem wszystkie swoje pieniądze”
+STR_1482    :“Niedobrze mi”
+STR_1483    :“Zaraz zwymiotuję”
+STR_1484    :“Chcę pójść na coś bardziej intensywnego niż {STRINGID}”
+STR_1485    :“{STRINGID} wygląda zbyt intensywne dla mnie”
+STR_1486    :“Nie skończyłem {STRINGID} jeszcze”
+STR_1487    :“Od samego patrzenia na {STRINGID} robi mi się niedobrze”
+STR_1488    :“Nie zapłacę tyle za {STRINGID}”
+STR_1489    :“Chcę już do domu”
+STR_1490    :“{STRINGID} ma naprawdę dobrą cenę”
+STR_1491    :“Mam już {STRINGID}”
+STR_1492    :“Nie mogę sobie pozwolić na {STRINGID}”
+STR_1493    :“Nie jestem głodny”
+STR_1494    :“Nie jestem spragniony”
+STR_1495    :“Pomocy! Tonę!”
+STR_1496    :“Zgubiłem się!”
+STR_1497    :“Na atrakcji {STRINGID} było świetnie”
+STR_1498    :“Czekam już wieki w kolejce na {STRINGID}”
+STR_1499    :“Jestem zmęczony”
+STR_1500    :“Jestem głodny”
+STR_1501    :“Jestem spragniony”
+STR_1502    :“Muszę do toalety”
+STR_1503    :“Nie mogę znaleźć {STRINGID}”
+STR_1504    :“Nie zapłacę tyle za {STRINGID}”
+STR_1505    :“Nie pójdę na {STRINGID} dopóki pada”
+STR_1506    :“Ścieżki tutaj są okropne”
+STR_1507    :“Nie mogę znaleźć wyjścia z parku”
+STR_1508    :“Muszę odpocząć od {STRINGID}”
+STR_1509    :“Chcę już wyjść z {STRINGID}”
+STR_1510    :“Nie pójdę na {STRINGID} - nie wygląda za bezpiecznie”
+STR_1511    :“Ta ścieżka jest obrzydliwa”
+STR_1512    :“Tutaj jest zdecydowanie za tłoczno”
+STR_1513    :“Wandalizm stanowi tutaj duży problem”
+STR_1514    :“Świetna sceneria!”
+STR_1515    :“Ten park jest naprawdę czysty”
+STR_1516    :“Ta skaczą fontanna jest świetna”
+STR_1517    :“Leci tutaj miła muzyka”
+STR_1518    :“Ten balon z {STRINGID} był naprawdę opłacalny”
+STR_1519    :“Ta przytulanka z {STRINGID} była naprawdę opłacalna”
+STR_1520    :“Ta mapa parku z {STRINGID} była naprawdę opłacalna”
+STR_1521    :“To zdjęcie z przejazdu na {STRINGID} było naprawdę opłacalne”
+STR_1522    :“Ta parasolka z {STRINGID} była naprawdę opłacalna”
+STR_1523    :“Ten napój z {STRINGID} był naprawdę opłacalny”
+STR_1524    :“Ten burger z {STRINGID} był naprawdę opłacalny”
+STR_1525    :“Te frytki z {STRINGID} były naprawdę opłacalne”
+STR_1526    :“Te lody z {STRINGID} były naprawdę opłacalne”
+STR_1527    :“Ta wata cukrowa {STRINGID} była naprawdę opłacalna”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Ta pizza z {STRINGID} była naprawdę opłacalna”
+STR_1531    :“Ta pizza z {STRINGID} była naprawdę opłacalna”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Ten popcorn z {STRINGID} był naprawdę opłacalny”
-STR_1534    :{SMALLFONT}“Ten hotdog z {STRINGID} był naprawdę opłacalny”
-STR_1535    :{SMALLFONT}“Ta ośmiorniczka z {STRINGID} była naprawdę opłacalna”
-STR_1536    :{SMALLFONT}“Ten kapelusz {STRINGID} był naprawdę opłacalny”
-STR_1537    :{SMALLFONT}“To kandyzowane jabłko z {STRINGID} było naprawdę opłacalne”
-STR_1538    :{SMALLFONT}“Ten t-shirt z {STRINGID} był naprawdę opłacalny”
-STR_1539    :{SMALLFONT}“Ten pączek z {STRINGID} był naprawdę opłacalny”
-STR_1540    :{SMALLFONT}“Ta kawa z {STRINGID} była naprawdę opłacalna”
+STR_1533    :“Ten popcorn z {STRINGID} był naprawdę opłacalny”
+STR_1534    :“Ten hotdog z {STRINGID} był naprawdę opłacalny”
+STR_1535    :“Ta ośmiorniczka z {STRINGID} była naprawdę opłacalna”
+STR_1536    :“Ten kapelusz {STRINGID} był naprawdę opłacalny”
+STR_1537    :“To kandyzowane jabłko z {STRINGID} było naprawdę opłacalne”
+STR_1538    :“Ten t-shirt z {STRINGID} był naprawdę opłacalny”
+STR_1539    :“Ten pączek z {STRINGID} był naprawdę opłacalny”
+STR_1540    :“Ta kawa z {STRINGID} była naprawdę opłacalna”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Ten smażony kurczak z {STRINGID} był naprawdę opłacalny”
-STR_1543    :{SMALLFONT}“Ta lemoniada z {STRINGID} była naprawdę opłacalna”
+STR_1542    :“Ten smażony kurczak z {STRINGID} był naprawdę opłacalny”
+STR_1543    :“Ta lemoniada z {STRINGID} była naprawdę opłacalna”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Świetnie!”
-STR_1551    :{SMALLFONT}“Mam dziwne uczucie jakby mnie ktoś podglądał”
-STR_1552    :{SMALLFONT}“Nie zapłacę tyle za balona z {STRINGID}”
-STR_1553    :{SMALLFONT}“Nie zapłacę tyle za przytulankę z {STRINGID}”
-STR_1554    :{SMALLFONT}“Nie zapłacę tyle za mapę parku z {STRINGID}”
-STR_1555    :{SMALLFONT}“Nie zapłacę tyle za zdjęcie z przejażdżki z {STRINGID}”
-STR_1556    :{SMALLFONT}“Nie zapłacę tyle za parasol z {STRINGID}”
-STR_1557    :{SMALLFONT}“Nie zapłacę tyle za napój z {STRINGID}”
-STR_1558    :{SMALLFONT}“Nie zapłacę tyle za burgera z {STRINGID}”
-STR_1559    :{SMALLFONT}“Nie zapłacę tyle za frytki z {STRINGID}”
-STR_1560    :{SMALLFONT}“Nie zapłacę tyle za lody z {STRINGID}”
-STR_1561    :{SMALLFONT}“Nie zapłacę tyle za watę cukrową z {STRINGID}”
+STR_1550    :“Świetnie!”
+STR_1551    :“Mam dziwne uczucie jakby mnie ktoś podglądał”
+STR_1552    :“Nie zapłacę tyle za balona z {STRINGID}”
+STR_1553    :“Nie zapłacę tyle za przytulankę z {STRINGID}”
+STR_1554    :“Nie zapłacę tyle za mapę parku z {STRINGID}”
+STR_1555    :“Nie zapłacę tyle za zdjęcie z przejażdżki z {STRINGID}”
+STR_1556    :“Nie zapłacę tyle za parasol z {STRINGID}”
+STR_1557    :“Nie zapłacę tyle za napój z {STRINGID}”
+STR_1558    :“Nie zapłacę tyle za burgera z {STRINGID}”
+STR_1559    :“Nie zapłacę tyle za frytki z {STRINGID}”
+STR_1560    :“Nie zapłacę tyle za lody z {STRINGID}”
+STR_1561    :“Nie zapłacę tyle za watę cukrową z {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Nie zapłacę tyle za pizzę z {STRINGID}”
+STR_1565    :“Nie zapłacę tyle za pizzę z {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Nie zapłacę tyle za popcorn z {STRINGID}”
-STR_1568    :{SMALLFONT}“Nie zapłacę tyle za hotdoga z {STRINGID}”
-STR_1569    :{SMALLFONT}“Nie zapłacę tyle za ośmiorniczkę z {STRINGID}”
-STR_1570    :{SMALLFONT}“Nie zapłacę tyle za kapelusz z {STRINGID}”
-STR_1571    :{SMALLFONT}“Nie zapłacę tyle za kandyzowane jabłko z {STRINGID}”
-STR_1572    :{SMALLFONT}“Nie zapłacę tyle za koszulkę z {STRINGID}”
-STR_1573    :{SMALLFONT}“Nie zapłacę tyle za pączka z {STRINGID}”
-STR_1574    :{SMALLFONT}“Nie zapłacę tyle za kawę z {STRINGID}”
+STR_1567    :“Nie zapłacę tyle za popcorn z {STRINGID}”
+STR_1568    :“Nie zapłacę tyle za hotdoga z {STRINGID}”
+STR_1569    :“Nie zapłacę tyle za ośmiorniczkę z {STRINGID}”
+STR_1570    :“Nie zapłacę tyle za kapelusz z {STRINGID}”
+STR_1571    :“Nie zapłacę tyle za kandyzowane jabłko z {STRINGID}”
+STR_1572    :“Nie zapłacę tyle za koszulkę z {STRINGID}”
+STR_1573    :“Nie zapłacę tyle za pączka z {STRINGID}”
+STR_1574    :“Nie zapłacę tyle za kawę z {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Nie zapłacę tyle za kurczaka z {STRINGID}”
-STR_1577    :{SMALLFONT}“Nie zapłacę tyle za lemoniadę z {STRINGID}”
+STR_1576    :“Nie zapłacę tyle za kurczaka z {STRINGID}”
+STR_1577    :“Nie zapłacę tyle za lemoniadę z {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
-STR_1585    :{SMALLFONT}“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalneENDQUOTES}
-STR_1586    :{SMALLFONT}“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
-STR_1587    :{SMALLFONT}“Ten precel z {STRINGID} był naprawdę opłacalny”
-STR_1588    :{SMALLFONT}“Ta gorąca czekolada z {STRINGID} była naprawdę opłacalna”
-STR_1589    :{SMALLFONT}“Ta mrożona herbata z {STRINGID} była naprawdę opłacalna”
-STR_1590    :{SMALLFONT}“Ten precel z {STRINGID} był naprawdę opłacalny”
-STR_1591    :{SMALLFONT}“Te okulary przeciwsłoneczne z {STRINGID} były naprawdę opłacalne”
-STR_1592    :{SMALLFONT}“Ten makaron z wołowiną z {STRINGID} był naprawdę opłacalny”
-STR_1593    :{SMALLFONT}“Ten smażony makaron z {STRINGID} był naprawdę opłacalny”
-STR_1594    :{SMALLFONT}“Ta zupa wonton z {STRINGID} była naprawdę opłacalna”
-STR_1595    :{SMALLFONT}“Ta zupa z klopsikami z {STRINGID} była naprawdę opłacalna”
-STR_1596    :{SMALLFONT}“Ten sok owocowy z {STRINGID} był naprawdę opłacalny”
-STR_1597    :{SMALLFONT}“Te mleko sojowe z {STRINGID} było naprawdę opłacalne”
-STR_1598    :{SMALLFONT}“Ta sujongkwa z {STRINGID} była naprawdę opłacalna”
-STR_1599    :{SMALLFONT}“Ta kanapka z {STRINGID} była naprawdę opłacalna”
-STR_1600    :{SMALLFONT}“To ciasteczko z {STRINGID} było naprawdę opłacalne”
+STR_1584    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
+STR_1585    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalneENDQUOTES}
+STR_1586    :“To zdjęcie z przejażdżki na {STRINGID} było naprawdę opłacalne”
+STR_1587    :“Ten precel z {STRINGID} był naprawdę opłacalny”
+STR_1588    :“Ta gorąca czekolada z {STRINGID} była naprawdę opłacalna”
+STR_1589    :“Ta mrożona herbata z {STRINGID} była naprawdę opłacalna”
+STR_1590    :“Ten precel z {STRINGID} był naprawdę opłacalny”
+STR_1591    :“Te okulary przeciwsłoneczne z {STRINGID} były naprawdę opłacalne”
+STR_1592    :“Ten makaron z wołowiną z {STRINGID} był naprawdę opłacalny”
+STR_1593    :“Ten smażony makaron z {STRINGID} był naprawdę opłacalny”
+STR_1594    :“Ta zupa wonton z {STRINGID} była naprawdę opłacalna”
+STR_1595    :“Ta zupa z klopsikami z {STRINGID} była naprawdę opłacalna”
+STR_1596    :“Ten sok owocowy z {STRINGID} był naprawdę opłacalny”
+STR_1597    :“Te mleko sojowe z {STRINGID} było naprawdę opłacalne”
+STR_1598    :“Ta sujongkwa z {STRINGID} była naprawdę opłacalna”
+STR_1599    :“Ta kanapka z {STRINGID} była naprawdę opłacalna”
+STR_1600    :“To ciasteczko z {STRINGID} było naprawdę opłacalne”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Ta grillowana kiełbasa z {STRINGID} była naprawdę opłacalna”
+STR_1604    :“Ta grillowana kiełbasa z {STRINGID} była naprawdę opłacalna”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1000,27 +1000,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
-STR_1617    :{SMALLFONT}“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
-STR_1618    :{SMALLFONT}“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
-STR_1619    :{SMALLFONT}“Nie zapłacę tyle za precla z {STRINGID}”
-STR_1620    :{SMALLFONT}“Nie zapłacę tyle za gorącą czekoladę z {STRINGID}”
-STR_1621    :{SMALLFONT}“Nie zapłacę tyle za mrożoną herbatę z {STRINGID}”
-STR_1622    :{SMALLFONT}“Nie zapłacę tyle za chrusta z {STRINGID}”
-STR_1623    :{SMALLFONT}“Nie zapłacę tyle za okulary przeciwsłoneczne z {STRINGID}”
-STR_1624    :{SMALLFONT}“Nie zapłacę tyle za makaron z wołowiną z {STRINGID}”
-STR_1625    :{SMALLFONT}“Nie zapłacę tyle za smażony makaron ryżowy z {STRINGID}”
-STR_1626    :{SMALLFONT}“Nie zapłacę tyle za zupę wonton z {STRINGID}”
-STR_1627    :{SMALLFONT}“Nie zapłacę tyle za zupę z klopsikami z {STRINGID}”
-STR_1628    :{SMALLFONT}“Nie zapłacę tyle za sok owocowy z {STRINGID}”
-STR_1629    :{SMALLFONT}“Nie zapłacę tyle za mleko sojowe z {STRINGID}”
-STR_1630    :{SMALLFONT}“Nie zapłacę tyle za sujongkwa z {STRINGID}”
-STR_1631    :{SMALLFONT}“Nie zapłacę tyle za kanapkę z {STRINGID}”
-STR_1632    :{SMALLFONT}“Nie zapłacę tyle za ciasteczko z {STRINGID}”
+STR_1616    :“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
+STR_1617    :“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
+STR_1618    :“Nie zapłacę tyle za zdjęcie z przejażdżki na {STRINGID}”
+STR_1619    :“Nie zapłacę tyle za precla z {STRINGID}”
+STR_1620    :“Nie zapłacę tyle za gorącą czekoladę z {STRINGID}”
+STR_1621    :“Nie zapłacę tyle za mrożoną herbatę z {STRINGID}”
+STR_1622    :“Nie zapłacę tyle za chrusta z {STRINGID}”
+STR_1623    :“Nie zapłacę tyle za okulary przeciwsłoneczne z {STRINGID}”
+STR_1624    :“Nie zapłacę tyle za makaron z wołowiną z {STRINGID}”
+STR_1625    :“Nie zapłacę tyle za smażony makaron ryżowy z {STRINGID}”
+STR_1626    :“Nie zapłacę tyle za zupę wonton z {STRINGID}”
+STR_1627    :“Nie zapłacę tyle za zupę z klopsikami z {STRINGID}”
+STR_1628    :“Nie zapłacę tyle za sok owocowy z {STRINGID}”
+STR_1629    :“Nie zapłacę tyle za mleko sojowe z {STRINGID}”
+STR_1630    :“Nie zapłacę tyle za sujongkwa z {STRINGID}”
+STR_1631    :“Nie zapłacę tyle za kanapkę z {STRINGID}”
+STR_1632    :“Nie zapłacę tyle za ciasteczko z {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Nie zapłacę tyle za grillowaną kiełbasę z {RINGID}”
+STR_1636    :“Nie zapłacę tyle za grillowaną kiełbasę z {RINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1032,10 +1032,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Pomocy! Puść mnie!”
-STR_1649    :{SMALLFONT}“Kończą mi się pieniądze!”
-STR_1650    :{SMALLFONT}“Świetnie! Budują nową atrakcję!”
-STR_1653    :{SMALLFONT}“…i teraz jesteśmy na {STRINGID}!”
+STR_1648    :“Pomocy! Puść mnie!”
+STR_1649    :“Kończą mi się pieniądze!”
+STR_1650    :“Świetnie! Budują nową atrakcję!”
+STR_1653    :“…i teraz jesteśmy na {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Ostatnie myśli:
 STR_1655    :Buduj ścieżki na ziemi
 STR_1656    :Buduj ścieżki w powietrzu lub pod ziemią
@@ -1187,7 +1187,7 @@ STR_1808    :{WINDOW_COLOUR_2}Poprzednia awaria: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Aktualna awaria: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Nosi:
 STR_1811    :Nie można tego tutaj wybudować…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Różne obiekty
 STR_1814    :Akcje
 STR_1815    :Myśli
@@ -1196,7 +1196,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Wszyscy goście
 STR_1819    :{WINDOW_COLOUR_2}Wszyscy goście (pogrupowani)
 STR_1820    :{WINDOW_COLOUR_2}Goście {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Goście którzy myślą {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Goście którzy myślą {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Goście myślący o {POP16}{STRINGID}
 STR_1823    :Pokaż gości myślących o tej atrakcji
 STR_1824    :Pokaż gości przebywających na tej atrakcji
@@ -1297,7 +1297,6 @@ STR_1921    :Nowa gra
 STR_1922    :Kontynuuj zapisaną grę
 STR_1924    :Wyjdź
 STR_1925    :Nie można postawić tutaj osoby…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} zepsuł(a) się
 STR_1928    :{RED}{STRINGID} miał(a) wypadek!
 STR_1929    :{RED}Atrakcja {STRINGID} wciąż nie został(a) naprawiony(a).{NEWLINE}Sprawdź gdzie znajdują się twoi mechanicy i rozważ lepszą organizację ich pracy
@@ -1578,7 +1577,7 @@ STR_2218    :{RED}{STRINGID} na {STRINGID} jeszcze nie powrócił do {STRINGID}!
 STR_2219    :{RED}{COMMA16} ludzi zginęło w wypadku na atrakcji {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Ocena parku: {BLACK}{COMMA16}
 STR_2221    :Ocena Parku: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Gości w parku: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Gotówka: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Gotówka: {RED}{CURRENCY2DP}
@@ -1591,7 +1590,7 @@ STR_2231    :Hamowanie podczas opadania
 STR_2232    :Wyciągarka linowa
 STR_2233    :Informacje o parku
 STR_2234    :Najnowsze wiadomości
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Styczeń
 STR_2237    :Luty
 STR_2238    :Marzec
@@ -1795,7 +1794,7 @@ STR_2450    :{YELLOW}Twoja kampania reklamująca park dobiegła końca
 STR_2451    :{YELLOW}Twoja kampania reklamująca {STRINGID} dobiegła końca
 STR_2452    :{WINDOW_COLOUR_2}Gotówka (minus pożyczka): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Gotówka (minus pożyczka): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Pokaż rachunki
 STR_2458    :Pokaż wykres zmian gotówki w czasie pomniejszonej o wysokość pożyczki
 STR_2459    :Pokaż wykres zmian wartości parku w czasie
@@ -1905,7 +1904,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Wszystkie badania zakończone
-STR_2681    :{MEDIUMFONT}{BLACK}Zwiększa twoją gotówkę o {CURRENCY}
 STR_2684    :Przybywające duże grupy gości
 STR_2685    :Parametr hałasu Simplex
 STR_2686    :Najniższy:
@@ -1992,7 +1990,7 @@ STR_2789    :{WINDOW_COLOUR_2}Porażka! Cel nie został osiągnięty!
 STR_2790    :Podaj imię do listy scenariuszy
 STR_2791    :Podaj imię
 STR_2792    :Podaj swoje imię do listy scenariuszy:
-STR_2793    :{SMALLFONT}(Ukończone przez {STRINGID})
+STR_2793    :(Ukończone przez {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Ukończony przez: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} z wartością spółki wynoszącą: {BLACK}{CURRENCY}
 STR_2795    :Sortuj
 STR_2796    :Sortuj listę atrakcji według wyświetlonych informacji
@@ -2499,7 +2497,7 @@ STR_5134    :Ustaw większy obszar praw do ziemi
 STR_5135    :Zakup ziemi i praw do budowy
 STR_5136    :Prawa do ziemi
 STR_5137    :Znieś limity operacyjne
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Wyłącz awarie hamulców
 STR_5141    :Wyłącz wszystkie awarie
@@ -2645,7 +2643,7 @@ STR_5297    :Otwórz park
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Szybkie zwolnienie pracownika
-STR_5301    :{MEDIUMFONT}{BLACK}Usuń swoją pożyczkę
+STR_5301    :Usuń swoją pożyczkę
 STR_5302    :Usuń pożyczkę
 STR_5303    :Zezwól na budowę podczas pauzy
 STR_5304    :Sekwencja tytułowa:
@@ -2804,7 +2802,7 @@ STR_5481    :Motywy
 STR_5482    :{WINDOW_COLOUR_2}Termin ostatniej inspekcji:
 STR_5483    :{BLACK}(pozostało {COMMA16} tygodni)
 STR_5484    :{BLACK}(pozostał {COMMA16} tydzień)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Pokaż ostatnie wiadomości
 STR_5489    :Pokaż tylko śledzonych gości
@@ -3309,7 +3307,7 @@ STR_6030    :Przechwytywacz scenerii. Wybierz dowolny element scenerii na mapie 
 STR_6031    :Opis serwera:
 STR_6032    :Wiadomość powitalna:
 STR_6033    :Ścieżka do katalogu RCT1:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Proszę wybrać katalog z RCT1
 STR_6036    :Wyczyść
 STR_6037    :Proszę wybrać prawidłowy katalog RCT1
@@ -3454,7 +3452,7 @@ STR_6183    :Follow{MOVE_X}{87}No sprite selected
 STR_6184    :Follow Sprite
 STR_6185    :Select Sprite
 STR_6186    :No sprite selected
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Wymiociny
 STR_6189    :Kaczka
 STR_6190    :You cannot select a sprite while the main title screen is active.
@@ -3604,7 +3602,7 @@ STR_6356    :Przyzywa kaczki jeśli park zawiera wodę
 STR_6357    :Usuwa wszystkie kaczki z mapu
 STR_6358    :Strona {UINT16}
 STR_6359    :{POP16}{POP16}Strona {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Włącz efekty świetlne atrakcji (eksperymentalne)
 STR_6362    :Jeśłi włączone, pojazdy będą oświetlone w nocy.
 STR_6363    :Tekst skopiowany do schowka

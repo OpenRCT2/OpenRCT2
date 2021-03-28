@@ -795,14 +795,14 @@ STR_1410    :برج أفقي
 STR_1411    :في الطريق{STRINGID}
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}السرعة
 STR_1416    :{WINDOW_COLOUR_2}الإرتفاع
 STR_1417    :{WINDOW_COLOUR_2}Vert.Gs
 STR_1418    :{WINDOW_COLOUR_2}Lat.Gs
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Logging data from {POP16}{STRINGID}
 STR_1423    :Queue line path
 STR_1424    :Footpath
@@ -861,131 +861,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
 STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}“لا يمكنني تحمل كلفة {STRINGID}”
-STR_1481    :{SMALLFONT}“لقد أنفقت كل مالي”
-STR_1482    :{SMALLFONT}“أنا أشعر بالتعب”
-STR_1483    :{SMALLFONT}“أنا أشعر بالتنعب الشديد”
-STR_1484    :{SMALLFONT}“I want to go on something more thrilling than {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} looks too intense for me”
-STR_1486    :{SMALLFONT}“لقد إنتهيت من {STRINGID} yet”
-STR_1487    :{SMALLFONT}“Just looking at {STRINGID} makes me feel sick”
-STR_1488    :{SMALLFONT}“I’m not paying that much to go on {STRINGID}”
-STR_1489    :{SMALLFONT}“أنا أود الذهاب للمنزل”
-STR_1490    :{SMALLFONT}“{STRINGID} is really good value”
-STR_1491    :{SMALLFONT}“I’ve already got {STRINGID}”
-STR_1492    :{SMALLFONT}“I can’t afford {STRINGID}”
-STR_1493    :{SMALLFONT}“I’m not hungry”
-STR_1494    :{SMALLFONT}“I’m not thirsty”
-STR_1495    :{SMALLFONT}“النجدة! أنا أغرق!”
-STR_1496    :{SMALLFONT}“أنا تائه!”
-STR_1497    :{SMALLFONT}“{STRINGID} was great”
-STR_1498    :{SMALLFONT}“I’ve been queuing for {STRINGID} for ages”
-STR_1499    :{SMALLFONT}“أنا مرهق”
-STR_1500    :{SMALLFONT}“أنا جائع”
-STR_1501    :{SMALLFONT}“أنا عطشان”
-STR_1502    :{SMALLFONT}“أنا سوف أذهب إلي الحمام”
-STR_1503    :{SMALLFONT}“I can’t find {STRINGID}”
-STR_1504    :{SMALLFONT}“I’m not paying that much to use {STRINGID}”
-STR_1505    :{SMALLFONT}“I’m not going on {STRINGID} while it’s raining”
-STR_1506    :{SMALLFONT}“The litter here is really bad”
-STR_1507    :{SMALLFONT}“لا يمكنني إيجاد مخرج الحديقة”
-STR_1508    :{SMALLFONT}“I want to get off {STRINGID}”
-STR_1509    :{SMALLFONT}“I want to get out of {STRINGID}”
-STR_1510    :{SMALLFONT}“I’m not going on {STRINGID} - It isn’t safe”
-STR_1511    :{SMALLFONT}“This path is disgusting”
-STR_1512    :{SMALLFONT}“It’s too crowded here”
-STR_1513    :{SMALLFONT}“The vandalism here is really bad”
-STR_1514    :{SMALLFONT}“Great scenery!”
-STR_1515    :{SMALLFONT}“This park is really clean and tidy”
-STR_1516    :{SMALLFONT}“The jumping fountains are great”
-STR_1517    :{SMALLFONT}“The music is nice here”
-STR_1518    :{SMALLFONT}“This balloon from {STRINGID} is really good value”
-STR_1519    :{SMALLFONT}“This cuddly toy from {STRINGID} is really good value”
-STR_1520    :{SMALLFONT}“This park map from {STRINGID} is really good value”
-STR_1521    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
-STR_1522    :{SMALLFONT}“This umbrella from {STRINGID} is really good value”
-STR_1523    :{SMALLFONT}“This drink from {STRINGID} is really good value”
-STR_1524    :{SMALLFONT}“This burger from {STRINGID} is really good value”
-STR_1525    :{SMALLFONT}“These chips from {STRINGID} are really good value”
-STR_1526    :{SMALLFONT}“This ice cream from {STRINGID} is really good value”
-STR_1527    :{SMALLFONT}“This candyfloss from {STRINGID} is really good value”
+STR_1480    :“لا يمكنني تحمل كلفة {STRINGID}”
+STR_1481    :“لقد أنفقت كل مالي”
+STR_1482    :“أنا أشعر بالتعب”
+STR_1483    :“أنا أشعر بالتنعب الشديد”
+STR_1484    :“I want to go on something more thrilling than {STRINGID}”
+STR_1485    :“{STRINGID} looks too intense for me”
+STR_1486    :“لقد إنتهيت من {STRINGID} yet”
+STR_1487    :“Just looking at {STRINGID} makes me feel sick”
+STR_1488    :“I’m not paying that much to go on {STRINGID}”
+STR_1489    :“أنا أود الذهاب للمنزل”
+STR_1490    :“{STRINGID} is really good value”
+STR_1491    :“I’ve already got {STRINGID}”
+STR_1492    :“I can’t afford {STRINGID}”
+STR_1493    :“I’m not hungry”
+STR_1494    :“I’m not thirsty”
+STR_1495    :“النجدة! أنا أغرق!”
+STR_1496    :“أنا تائه!”
+STR_1497    :“{STRINGID} was great”
+STR_1498    :“I’ve been queuing for {STRINGID} for ages”
+STR_1499    :“أنا مرهق”
+STR_1500    :“أنا جائع”
+STR_1501    :“أنا عطشان”
+STR_1502    :“أنا سوف أذهب إلي الحمام”
+STR_1503    :“I can’t find {STRINGID}”
+STR_1504    :“I’m not paying that much to use {STRINGID}”
+STR_1505    :“I’m not going on {STRINGID} while it’s raining”
+STR_1506    :“The litter here is really bad”
+STR_1507    :“لا يمكنني إيجاد مخرج الحديقة”
+STR_1508    :“I want to get off {STRINGID}”
+STR_1509    :“I want to get out of {STRINGID}”
+STR_1510    :“I’m not going on {STRINGID} - It isn’t safe”
+STR_1511    :“This path is disgusting”
+STR_1512    :“It’s too crowded here”
+STR_1513    :“The vandalism here is really bad”
+STR_1514    :“Great scenery!”
+STR_1515    :“This park is really clean and tidy”
+STR_1516    :“The jumping fountains are great”
+STR_1517    :“The music is nice here”
+STR_1518    :“This balloon from {STRINGID} is really good value”
+STR_1519    :“This cuddly toy from {STRINGID} is really good value”
+STR_1520    :“This park map from {STRINGID} is really good value”
+STR_1521    :“This on-ride photo from {STRINGID} is really good value”
+STR_1522    :“This umbrella from {STRINGID} is really good value”
+STR_1523    :“This drink from {STRINGID} is really good value”
+STR_1524    :“This burger from {STRINGID} is really good value”
+STR_1525    :“These chips from {STRINGID} are really good value”
+STR_1526    :“This ice cream from {STRINGID} is really good value”
+STR_1527    :“This candyfloss from {STRINGID} is really good value”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“This pizza from {STRINGID} is really good value”
+STR_1531    :“This pizza from {STRINGID} is really good value”
 STR_1532    :
-STR_1533    :{SMALLFONT}“This popcorn from {STRINGID} is really good value”
-STR_1534    :{SMALLFONT}“This hot dog from {STRINGID} is really good value”
-STR_1535    :{SMALLFONT}“This tentacle from {STRINGID} is really good value”
-STR_1536    :{SMALLFONT}“This hat from {STRINGID} is really good value”
-STR_1537    :{SMALLFONT}“This toffee apple from {STRINGID} is really good value”
-STR_1538    :{SMALLFONT}“This T-shirt from {STRINGID} is really good value”
-STR_1539    :{SMALLFONT}“This doughnut from {STRINGID} is really good value”
-STR_1540    :{SMALLFONT}“This coffee from {STRINGID} is really good value”
+STR_1533    :“This popcorn from {STRINGID} is really good value”
+STR_1534    :“This hot dog from {STRINGID} is really good value”
+STR_1535    :“This tentacle from {STRINGID} is really good value”
+STR_1536    :“This hat from {STRINGID} is really good value”
+STR_1537    :“This toffee apple from {STRINGID} is really good value”
+STR_1538    :“This T-shirt from {STRINGID} is really good value”
+STR_1539    :“This doughnut from {STRINGID} is really good value”
+STR_1540    :“This coffee from {STRINGID} is really good value”
 STR_1541    :
-STR_1542    :{SMALLFONT}“This fried chicken from {STRINGID} is really good value”
-STR_1543    :{SMALLFONT}“This lemonade from {STRINGID} is really good value”
+STR_1542    :“This fried chicken from {STRINGID} is really good value”
+STR_1543    :“This lemonade from {STRINGID} is really good value”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“واو!”
-STR_1551    :{SMALLFONT}“I have the strangest feeling someone is watching me”
-STR_1552    :{SMALLFONT}“I’m not paying that much for a balloon from {STRINGID}”
-STR_1553    :{SMALLFONT}“I’m not paying that much for a cuddly toy from {STRINGID}”
-STR_1554    :{SMALLFONT}“I’m not paying that much for a park map from {STRINGID}”
-STR_1555    :{SMALLFONT}“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1556    :{SMALLFONT}“I’m not paying that much for an umbrella from {STRINGID}”
-STR_1557    :{SMALLFONT}“I’m not paying that much for a drink from {STRINGID}”
-STR_1558    :{SMALLFONT}“I’m not paying that much for a burger from {STRINGID}”
-STR_1559    :{SMALLFONT}“I’m not paying that much for chips from {STRINGID}”
-STR_1560    :{SMALLFONT}“I’m not paying that much for an ice cream from {STRINGID}”
-STR_1561    :{SMALLFONT}“I’m not paying that much for candyfloss from {STRINGID}”
+STR_1550    :“واو!”
+STR_1551    :“I have the strangest feeling someone is watching me”
+STR_1552    :“I’m not paying that much for a balloon from {STRINGID}”
+STR_1553    :“I’m not paying that much for a cuddly toy from {STRINGID}”
+STR_1554    :“I’m not paying that much for a park map from {STRINGID}”
+STR_1555    :“I’m not paying that much for an on-ride photo from {STRINGID}”
+STR_1556    :“I’m not paying that much for an umbrella from {STRINGID}”
+STR_1557    :“I’m not paying that much for a drink from {STRINGID}”
+STR_1558    :“I’m not paying that much for a burger from {STRINGID}”
+STR_1559    :“I’m not paying that much for chips from {STRINGID}”
+STR_1560    :“I’m not paying that much for an ice cream from {STRINGID}”
+STR_1561    :“I’m not paying that much for candyfloss from {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“I’m not paying that much for pizza from {STRINGID}”
+STR_1565    :“I’m not paying that much for pizza from {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“I’m not paying that much for popcorn from {STRINGID}”
-STR_1568    :{SMALLFONT}“I’m not paying that much for a hot dog from {STRINGID}”
-STR_1569    :{SMALLFONT}“I’m not paying that much for tentacle from {STRINGID}”
-STR_1570    :{SMALLFONT}“I’m not paying that much for a hat from {STRINGID}”
-STR_1571    :{SMALLFONT}“I’m not paying that much for a toffee apple from {STRINGID}”
-STR_1572    :{SMALLFONT}“I’m not paying that much for a T-shirt from {STRINGID}”
-STR_1573    :{SMALLFONT}“I’m not paying that much for a doughnut from {STRINGID}”
-STR_1574    :{SMALLFONT}“I’m not paying that much for coffee from {STRINGID}”
+STR_1567    :“I’m not paying that much for popcorn from {STRINGID}”
+STR_1568    :“I’m not paying that much for a hot dog from {STRINGID}”
+STR_1569    :“I’m not paying that much for tentacle from {STRINGID}”
+STR_1570    :“I’m not paying that much for a hat from {STRINGID}”
+STR_1571    :“I’m not paying that much for a toffee apple from {STRINGID}”
+STR_1572    :“I’m not paying that much for a T-shirt from {STRINGID}”
+STR_1573    :“I’m not paying that much for a doughnut from {STRINGID}”
+STR_1574    :“I’m not paying that much for coffee from {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“I’m not paying that much for fried chicken from {STRINGID}”
-STR_1577    :{SMALLFONT}“I’m not paying that much for lemonade from {STRINGID}”
+STR_1576    :“I’m not paying that much for fried chicken from {STRINGID}”
+STR_1577    :“I’m not paying that much for lemonade from {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
-STR_1585    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
-STR_1586    :{SMALLFONT}“This on-ride photo from {STRINGID} is really good value”
-STR_1587    :{SMALLFONT}“This pretzel from {STRINGID} is really good value”
-STR_1588    :{SMALLFONT}“This hot chocolate from {STRINGID} is really good value”
-STR_1589    :{SMALLFONT}“This iced tea from {STRINGID} is really good value”
-STR_1590    :{SMALLFONT}“This funnel cake from {STRINGID} is really good value”
-STR_1591    :{SMALLFONT}“These sunglasses from {STRINGID} are really good value”
-STR_1592    :{SMALLFONT}“These beef noodles from {STRINGID} are really good value”
-STR_1593    :{SMALLFONT}“These fried rice noodles from {STRINGID} are really good value”
-STR_1594    :{SMALLFONT}“This wonton soup from {STRINGID} is really good value”
-STR_1595    :{SMALLFONT}“This meatball soup from {STRINGID} is really good value”
-STR_1596    :{SMALLFONT}“This fruit juice from {STRINGID} is really good value”
-STR_1597    :{SMALLFONT}“This soybean milk from {STRINGID} is really good value”
-STR_1598    :{SMALLFONT}“This sujongkwa from {STRINGID} is really good value”
-STR_1599    :{SMALLFONT}“This sub sandwich from {STRINGID} is really good value”
-STR_1600    :{SMALLFONT}“This cookie from {STRINGID} is really good value”
+STR_1584    :“This on-ride photo from {STRINGID} is really good value”
+STR_1585    :“This on-ride photo from {STRINGID} is really good value”
+STR_1586    :“This on-ride photo from {STRINGID} is really good value”
+STR_1587    :“This pretzel from {STRINGID} is really good value”
+STR_1588    :“This hot chocolate from {STRINGID} is really good value”
+STR_1589    :“This iced tea from {STRINGID} is really good value”
+STR_1590    :“This funnel cake from {STRINGID} is really good value”
+STR_1591    :“These sunglasses from {STRINGID} are really good value”
+STR_1592    :“These beef noodles from {STRINGID} are really good value”
+STR_1593    :“These fried rice noodles from {STRINGID} are really good value”
+STR_1594    :“This wonton soup from {STRINGID} is really good value”
+STR_1595    :“This meatball soup from {STRINGID} is really good value”
+STR_1596    :“This fruit juice from {STRINGID} is really good value”
+STR_1597    :“This soybean milk from {STRINGID} is really good value”
+STR_1598    :“This sujongkwa from {STRINGID} is really good value”
+STR_1599    :“This sub sandwich from {STRINGID} is really good value”
+STR_1600    :“This cookie from {STRINGID} is really good value”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“This roast sausage from {STRINGID} are really good value”
+STR_1604    :“This roast sausage from {STRINGID} are really good value”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -997,27 +997,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1617    :{SMALLFONT}“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1618    :{SMALLFONT}“I’m not paying that much for an on-ride photo from {STRINGID}”
-STR_1619    :{SMALLFONT}“I’m not paying that much for a pretzel from {STRINGID}”
-STR_1620    :{SMALLFONT}“I’m not paying that much for hot chocolate from {STRINGID}”
-STR_1621    :{SMALLFONT}“I’m not paying that much for iced tea from {STRINGID}”
-STR_1622    :{SMALLFONT}“I’m not paying that much for a funnel cake from {STRINGID}”
-STR_1623    :{SMALLFONT}“I’m not paying that much for sunglasses from {STRINGID}”
-STR_1624    :{SMALLFONT}“I’m not paying that much for beef noodles from {STRINGID}”
-STR_1625    :{SMALLFONT}“I’m not paying that much for fried rice noodles from {STRINGID}”
-STR_1626    :{SMALLFONT}“I’m not paying that much for wonton soup from {STRINGID}”
-STR_1627    :{SMALLFONT}“I’m not paying that much for meatball soup from {STRINGID}”
-STR_1628    :{SMALLFONT}“I’m not paying that much for fruit juice from {STRINGID}”
-STR_1629    :{SMALLFONT}“I’m not paying that much for soybean milk from {STRINGID}”
-STR_1630    :{SMALLFONT}“I’m not paying that much for sujongkwa from {STRINGID}”
-STR_1631    :{SMALLFONT}“I’m not paying that much for a sub sandwich from {STRINGID}”
-STR_1632    :{SMALLFONT}“I’m not paying that much for a cookie from {STRINGID}”
+STR_1616    :“I’m not paying that much for an on-ride photo from {STRINGID}”
+STR_1617    :“I’m not paying that much for an on-ride photo from {STRINGID}”
+STR_1618    :“I’m not paying that much for an on-ride photo from {STRINGID}”
+STR_1619    :“I’m not paying that much for a pretzel from {STRINGID}”
+STR_1620    :“I’m not paying that much for hot chocolate from {STRINGID}”
+STR_1621    :“I’m not paying that much for iced tea from {STRINGID}”
+STR_1622    :“I’m not paying that much for a funnel cake from {STRINGID}”
+STR_1623    :“I’m not paying that much for sunglasses from {STRINGID}”
+STR_1624    :“I’m not paying that much for beef noodles from {STRINGID}”
+STR_1625    :“I’m not paying that much for fried rice noodles from {STRINGID}”
+STR_1626    :“I’m not paying that much for wonton soup from {STRINGID}”
+STR_1627    :“I’m not paying that much for meatball soup from {STRINGID}”
+STR_1628    :“I’m not paying that much for fruit juice from {STRINGID}”
+STR_1629    :“I’m not paying that much for soybean milk from {STRINGID}”
+STR_1630    :“I’m not paying that much for sujongkwa from {STRINGID}”
+STR_1631    :“I’m not paying that much for a sub sandwich from {STRINGID}”
+STR_1632    :“I’m not paying that much for a cookie from {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“I’m not paying that much for a roast sausage from {STRINGID}”
+STR_1636    :“I’m not paying that much for a roast sausage from {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1029,10 +1029,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Help! Put me down!”
-STR_1649    :{SMALLFONT}“I’m running out of cash!”
-STR_1650    :{SMALLFONT}“Wow! A new ride being built!”
-STR_1653    :{SMALLFONT}“…and here we are on {STRINGID}!”
+STR_1648    :“Help! Put me down!”
+STR_1649    :“I’m running out of cash!”
+STR_1650    :“Wow! A new ride being built!”
+STR_1653    :“…and here we are on {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Recent thoughts:
 STR_1655    :Construct footpath on land
 STR_1656    :Construct bridge or tunnel footpath
@@ -1184,7 +1184,7 @@ STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
 STR_1811    :Can’t build this here…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Miscellaneous Objects
 STR_1814    :Actions
 STR_1815    :Thoughts
@@ -1193,7 +1193,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}All guests
 STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
 STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Guests thinking {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
 STR_1823    :Show guests’ thoughts about this ride/attraction
 STR_1824    :Show guests on this ride/attraction
@@ -1296,7 +1296,6 @@ STR_1921    :Start a new game
 STR_1922    :Continue playing a saved game
 STR_1924    :Exit
 STR_1925    :Can’t place person here…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} has broken down
 STR_1928    :{RED}{STRINGID} has crashed!
 STR_1929    :{RED}{STRINGID} still hasn’t been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
@@ -1577,7 +1576,7 @@ STR_2218    :{RED}{STRINGID} on {STRINGID} hasn’t returned to the {STRINGID} y
 STR_2219    :{RED}{COMMA16} people have died in an accident on {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Park Rating: {BLACK}{COMMA16}
 STR_2221    :Park Rating: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Guests in park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Cash: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Cash: {RED}{CURRENCY2DP}
@@ -1590,7 +1589,7 @@ STR_2231    :Holding brake for drop
 STR_2232    :Cable lift hill
 STR_2233    :Park information
 STR_2234    :Recent Messages
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :January
 STR_2237    :February
 STR_2238    :March
@@ -1794,7 +1793,7 @@ STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
 STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Show financial accounts
 STR_2458    :Show graph of cash (less loan) over time
 STR_2459    :Show graph of park value over time
@@ -1904,7 +1903,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :All research complete
-STR_2681    :{MEDIUMFONT}{BLACK}Increases your money by {CURRENCY}
 STR_2684    :Large group of guests arrive
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Low:
@@ -1991,7 +1989,7 @@ STR_2789    :{WINDOW_COLOUR_2}You have failed your objective !
 STR_2790    :Enter name into scenario chart
 STR_2791    :ادخل أسمًا
 STR_2792    :Please enter your name for the scenario chart:
-STR_2793    :{SMALLFONT}(Completed by {STRINGID})
+STR_2793    :(Completed by {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completed by: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} with a company value of: {BLACK}{CURRENCY}
 STR_2795    :ترتيب
 STR_2796    :Sort the ride list into order using the information type displayed
@@ -2500,7 +2498,7 @@ STR_5134    :Adjust larger area of land rights
 STR_5135    :Buy land rights and construction rights
 STR_5136    :Land rights
 STR_5137    :Unlock operating limits
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
@@ -2646,7 +2644,7 @@ STR_5297    :فتح الحديقة
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Quick fire staff
-STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
+STR_5301    :Clear your loan
 STR_5302    :Clear loan
 STR_5303    :Allow building in pause mode
 STR_5304    :Title Sequence:
@@ -2805,7 +2803,7 @@ STR_5481    :الثيمات
 STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
 STR_5483    :{BLACK}({COMMA16} أسابيع باقية)
 STR_5484    :{BLACK}({COMMA16} أسبوع باقً)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :أظهر الرسائل الحالية
 STR_5489    :Show only tracked guests
@@ -3310,7 +3308,7 @@ STR_6030    :Scenery picker. Click any scenery on the map to select the same pie
 STR_6031    ::وصف السرفر
 STR_6032    :ترحيب السرفر:
 STR_6033    :Path to RCT1 installation:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Please select your RCT1 directory
 STR_6036    :Clear
 STR_6037    :Please select a valid RCT1 directory
@@ -3455,7 +3453,7 @@ STR_6183    :مابعة{MOVE_X}{87}لا نقطة محددة
 STR_6184    :متابعة النقطة
 STR_6185    :تحديد النقطة
 STR_6186    :لا نقطة متابعة
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :إخراج
 STR_6189    :إدخال
 STR_6190    :لا يمكنك تحديد نقطة في حين أن القائمة الرئيسية مفعلة.
@@ -3478,7 +3476,7 @@ STR_6217    :توافرية المسار \الرحلة
 STR_6218    :محاكاة الأفعوانيات المفتوحة 2 الرسمية
 STR_6219    :تعليم مشاكل المسار
 STR_6220    :أجعله مُستخدم
-STR_6221    :{SMALLFONT}{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
+STR_6221    :{BLACK هذا سوف يحدد المدخل والمخرج المعروف للرحلة للمنطقة هذه. فقط مدخل ومخرج واحد يمكن إسخدامة لكل  محطة.
 STR_6222    :لا يمكن وضع نقطة دخول الزوار هنا…
 STR_6223    :يجب أن يكون خارج حدود الحديقة!
 STR_6224    :{STRING} تم وضع نقطة دخول الزوار.
@@ -3569,7 +3567,7 @@ STR_6325    :حاكي الرحلة/المزار
 STR_6326    :…{POP16}{POP16}{POP16}{STRINGID} لا يمكن محاكاة
 STR_6327    :خلفية شفافة للقطات الشاشة العملاقة
 STR_6328    :.مع هذا الإعداد، صور لقطة الشاشة العملاقة ستحصل علي خلفية شفافة بدلاً من الخلفية السوداء الإفتراضية
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 
 #############
 # Scenarios #

@@ -799,14 +799,14 @@ STR_1410    :Sección vertical
 STR_1411    :{STRINGID} en medio
 STR_1412    :{WINDOW_COLOUR_3}Estadísticas no disponibles para este tipo de atracción
 STR_1413    :{WINDOW_COLOUR_3}Las estadísticas comenzarán a registrarse cuando el {STRINGID} salga de la {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocidad
 STR_1416    :{WINDOW_COLOUR_2}Altitud
 STR_1417    :{WINDOW_COLOUR_2}Acel. Vert.
 STR_1418    :{WINDOW_COLOUR_2}Acel. Lat.
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Guardando datos de {POP16}{STRINGID}
 STR_1423    :Fila de espera
 STR_1424    :Sendero
@@ -865,131 +865,131 @@ STR_1476    :{WINDOW_COLOUR_2}Nivel de intensidad: {BLACK}Aún no disponible
 STR_1477    :{WINDOW_COLOUR_2}Nivel de intensidad: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nivel de náusea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nivel de náusea: {BLACK}Aún no disponible
-STR_1480    :{SMALLFONT}“No puedo pagar para {STRINGID}”
-STR_1481    :{SMALLFONT}“He gastado todo mi dinero”
-STR_1482    :{SMALLFONT}“Me siento mareado”
-STR_1483    :{SMALLFONT}“Me siento muy mareado”
-STR_1484    :{SMALLFONT}“Quiero probar algo más arriesgado que {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} parece demasiado intenso para mí”
-STR_1486    :{SMALLFONT}“Aún no he acabado mi {STRINGID}”
-STR_1487    :{SMALLFONT}“Con sólo mirar {STRINGID} me marea”
-STR_1488    :{SMALLFONT}“No voy a pagar tanto para subir a {STRINGID}”
-STR_1489    :{SMALLFONT}“Quiero volver a casa”
-STR_1490    :{SMALLFONT}“{STRINGID} es barato”
-STR_1491    :{SMALLFONT}“Ya tengo {STRINGID}”
-STR_1492    :{SMALLFONT}“No puedo pagar para {STRINGID}”
-STR_1493    :{SMALLFONT}“No tengo hambre”
-STR_1494    :{SMALLFONT}“No tengo sed”
-STR_1495    :{SMALLFONT}“¡Ayuda!¡Me ahogo!”
-STR_1496    :{SMALLFONT}“¡Me he perdido!”
-STR_1497    :{SMALLFONT}“{STRINGID} ha sido estupendo”
-STR_1498    :{SMALLFONT}“He esperado una eternidad en  {STRINGID}”
-STR_1499    :{SMALLFONT}“Estoy cansado”
-STR_1500    :{SMALLFONT}“Tengo hambre”
-STR_1501    :{SMALLFONT}“Estoy sediento”
-STR_1502    :{SMALLFONT}“Tengo que ir al lavabo”
-STR_1503    :{SMALLFONT}“No encuentro {STRINGID}”
-STR_1504    :{SMALLFONT}“No voy a pagar tanto por {STRINGID}”
-STR_1505    :{SMALLFONT}“No voy a subir a {STRINGID} mientras llueve”
-STR_1506    :{SMALLFONT}“Las papeleras aquí brillan por su ausencia”
-STR_1507    :{SMALLFONT}“No puedo encontrar la salida”
-STR_1508    :{SMALLFONT}“Quiero bajarme de {STRINGID}”
-STR_1509    :{SMALLFONT}“Quiero salir de {STRINGID}”
-STR_1510    :{SMALLFONT}“No voy a subir a {STRINGID}, no es seguro”
-STR_1511    :{SMALLFONT}“Este sendero es repugnante”
-STR_1512    :{SMALLFONT}“Hay demasiada gente aquí”
-STR_1513    :{SMALLFONT}“El vandalismo es terrible”
-STR_1514    :{SMALLFONT}“¡El paisaje es estupendo!”
-STR_1515    :{SMALLFONT}“Este parque está realmente limpio y ordenado”
-STR_1516    :{SMALLFONT}“Las fuentes saltarinas son estupendas”
-STR_1517    :{SMALLFONT}“La música es agradable”
-STR_1518    :{SMALLFONT}“Este Globo de {STRINGID} es barato”
-STR_1519    :{SMALLFONT}“Este Juguetito de {STRINGID} es barato”
-STR_1520    :{SMALLFONT}“Este Mapa de {STRINGID} es barato”
-STR_1521    :{SMALLFONT}“Esta Foto de {STRINGID} es barato”
-STR_1522    :{SMALLFONT}“Este Paraguas de {STRINGID} es barato”
-STR_1523    :{SMALLFONT}“Esta Bebida de {STRINGID} es barata”
-STR_1524    :{SMALLFONT}“Esta Hamburguesa de {STRINGID} es barata”
-STR_1525    :{SMALLFONT}“Estas Papas Fritas de {STRINGID} son baratas”
-STR_1526    :{SMALLFONT}“Este Helado de {STRINGID} es barato”
-STR_1527    :{SMALLFONT}“Este Algodón de {STRINGID} es barato”
+STR_1480    :“No puedo pagar para {STRINGID}”
+STR_1481    :“He gastado todo mi dinero”
+STR_1482    :“Me siento mareado”
+STR_1483    :“Me siento muy mareado”
+STR_1484    :“Quiero probar algo más arriesgado que {STRINGID}”
+STR_1485    :“{STRINGID} parece demasiado intenso para mí”
+STR_1486    :“Aún no he acabado mi {STRINGID}”
+STR_1487    :“Con sólo mirar {STRINGID} me marea”
+STR_1488    :“No voy a pagar tanto para subir a {STRINGID}”
+STR_1489    :“Quiero volver a casa”
+STR_1490    :“{STRINGID} es barato”
+STR_1491    :“Ya tengo {STRINGID}”
+STR_1492    :“No puedo pagar para {STRINGID}”
+STR_1493    :“No tengo hambre”
+STR_1494    :“No tengo sed”
+STR_1495    :“¡Ayuda!¡Me ahogo!”
+STR_1496    :“¡Me he perdido!”
+STR_1497    :“{STRINGID} ha sido estupendo”
+STR_1498    :“He esperado una eternidad en  {STRINGID}”
+STR_1499    :“Estoy cansado”
+STR_1500    :“Tengo hambre”
+STR_1501    :“Estoy sediento”
+STR_1502    :“Tengo que ir al lavabo”
+STR_1503    :“No encuentro {STRINGID}”
+STR_1504    :“No voy a pagar tanto por {STRINGID}”
+STR_1505    :“No voy a subir a {STRINGID} mientras llueve”
+STR_1506    :“Las papeleras aquí brillan por su ausencia”
+STR_1507    :“No puedo encontrar la salida”
+STR_1508    :“Quiero bajarme de {STRINGID}”
+STR_1509    :“Quiero salir de {STRINGID}”
+STR_1510    :“No voy a subir a {STRINGID}, no es seguro”
+STR_1511    :“Este sendero es repugnante”
+STR_1512    :“Hay demasiada gente aquí”
+STR_1513    :“El vandalismo es terrible”
+STR_1514    :“¡El paisaje es estupendo!”
+STR_1515    :“Este parque está realmente limpio y ordenado”
+STR_1516    :“Las fuentes saltarinas son estupendas”
+STR_1517    :“La música es agradable”
+STR_1518    :“Este Globo de {STRINGID} es barato”
+STR_1519    :“Este Juguetito de {STRINGID} es barato”
+STR_1520    :“Este Mapa de {STRINGID} es barato”
+STR_1521    :“Esta Foto de {STRINGID} es barato”
+STR_1522    :“Este Paraguas de {STRINGID} es barato”
+STR_1523    :“Esta Bebida de {STRINGID} es barata”
+STR_1524    :“Esta Hamburguesa de {STRINGID} es barata”
+STR_1525    :“Estas Papas Fritas de {STRINGID} son baratas”
+STR_1526    :“Este Helado de {STRINGID} es barato”
+STR_1527    :“Este Algodón de {STRINGID} es barato”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Esta Pizza de {STRINGID} es barato”
+STR_1531    :“Esta Pizza de {STRINGID} es barato”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Estas Palomitas de {STRINGID} son baratas”
-STR_1534    :{SMALLFONT}“Este Perrito de {STRINGID} es barato”
-STR_1535    :{SMALLFONT}“Este Tentáculo de {STRINGID} es barato”
-STR_1536    :{SMALLFONT}“Este Sombrero de {STRINGID} es barato”
-STR_1537    :{SMALLFONT}“Esta Manzana de {STRINGID} es barata”
-STR_1538    :{SMALLFONT}“Esta Camiseta de {STRINGID} es barata”
-STR_1539    :{SMALLFONT}“Esta Rosquilla de {STRINGID} es barata”
-STR_1540    :{SMALLFONT}“Este Café de {STRINGID} es barato”
+STR_1533    :“Estas Palomitas de {STRINGID} son baratas”
+STR_1534    :“Este Perrito de {STRINGID} es barato”
+STR_1535    :“Este Tentáculo de {STRINGID} es barato”
+STR_1536    :“Este Sombrero de {STRINGID} es barato”
+STR_1537    :“Esta Manzana de {STRINGID} es barata”
+STR_1538    :“Esta Camiseta de {STRINGID} es barata”
+STR_1539    :“Esta Rosquilla de {STRINGID} es barata”
+STR_1540    :“Este Café de {STRINGID} es barato”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Este Pollo Frito de {STRINGID} es barato”
-STR_1543    :{SMALLFONT}“Esta Limonada de {STRINGID} es barata”
+STR_1542    :“Este Pollo Frito de {STRINGID} es barato”
+STR_1543    :“Esta Limonada de {STRINGID} es barata”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“¡Wow!”
-STR_1551    :{SMALLFONT}“Tengo la extraña sensación de que alguien me está observando”
-STR_1552    :{SMALLFONT}“No voy a pagar tanto por el Globo de {STRINGID}”
-STR_1553    :{SMALLFONT}“No voy a pagar tanto por el Juguetito de {STRINGID}”
-STR_1554    :{SMALLFONT}“No voy a pagar tanto por el Mapa de {STRINGID}”
-STR_1555    :{SMALLFONT}“No voy a pagar tanto por la Foto de {STRINGID}”
-STR_1556    :{SMALLFONT}“No voy a pagar tanto por el Paraguas de {STRINGID}”
-STR_1557    :{SMALLFONT}“No voy a pagar tanto por la Bebida de {STRINGID}”
-STR_1558    :{SMALLFONT}“No voy a pagar tanto por la Hamburguesa de {STRINGID}”
-STR_1559    :{SMALLFONT}“No voy a pagar tanto por las Papas Fritas de {STRINGID}”
-STR_1560    :{SMALLFONT}“No voy a pagar tanto por el helado de {STRINGID}”
-STR_1561    :{SMALLFONT}“No voy a pagar tanto por el Algodón de {STRINGID}”
+STR_1550    :“¡Wow!”
+STR_1551    :“Tengo la extraña sensación de que alguien me está observando”
+STR_1552    :“No voy a pagar tanto por el Globo de {STRINGID}”
+STR_1553    :“No voy a pagar tanto por el Juguetito de {STRINGID}”
+STR_1554    :“No voy a pagar tanto por el Mapa de {STRINGID}”
+STR_1555    :“No voy a pagar tanto por la Foto de {STRINGID}”
+STR_1556    :“No voy a pagar tanto por el Paraguas de {STRINGID}”
+STR_1557    :“No voy a pagar tanto por la Bebida de {STRINGID}”
+STR_1558    :“No voy a pagar tanto por la Hamburguesa de {STRINGID}”
+STR_1559    :“No voy a pagar tanto por las Papas Fritas de {STRINGID}”
+STR_1560    :“No voy a pagar tanto por el helado de {STRINGID}”
+STR_1561    :“No voy a pagar tanto por el Algodón de {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“No voy a pagar tanto por la Pizza de {STRINGID}”
+STR_1565    :“No voy a pagar tanto por la Pizza de {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“No voy a pagar tanto por las Palomitas de {STRINGID}”
-STR_1568    :{SMALLFONT}“No voy a pagar tanto por el Perrito de {STRINGID}”
-STR_1569    :{SMALLFONT}“No voy a pagar tanto por el Tentáculo de {STRINGID}”
-STR_1570    :{SMALLFONT}“No voy a pagar tanto por el Sombrero de {STRINGID}”
-STR_1571    :{SMALLFONT}“No voy a pagar tanto por la Manzana de {STRINGID}”
-STR_1572    :{SMALLFONT}“No voy a pagar tanto por la Camiseta de {STRINGID}”
-STR_1573    :{SMALLFONT}“No voy a pagar tanto por la Rosquilla de {STRINGID}”
-STR_1574    :{SMALLFONT}“No voy a pagar tanto por el Café de {STRINGID}”
+STR_1567    :“No voy a pagar tanto por las Palomitas de {STRINGID}”
+STR_1568    :“No voy a pagar tanto por el Perrito de {STRINGID}”
+STR_1569    :“No voy a pagar tanto por el Tentáculo de {STRINGID}”
+STR_1570    :“No voy a pagar tanto por el Sombrero de {STRINGID}”
+STR_1571    :“No voy a pagar tanto por la Manzana de {STRINGID}”
+STR_1572    :“No voy a pagar tanto por la Camiseta de {STRINGID}”
+STR_1573    :“No voy a pagar tanto por la Rosquilla de {STRINGID}”
+STR_1574    :“No voy a pagar tanto por el Café de {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“No voy a pagar tanto por el Pollo Frito de {STRINGID}”
-STR_1577    :{SMALLFONT}“No voy a pagar tanto por la Limonada de {STRINGID}”
+STR_1576    :“No voy a pagar tanto por el Pollo Frito de {STRINGID}”
+STR_1577    :“No voy a pagar tanto por la Limonada de {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Esta Foto de {STRINGID} es barata”
-STR_1585    :{SMALLFONT}“Esta Foto de {STRINGID} es barata”
-STR_1586    :{SMALLFONT}“Esta Foto de {STRINGID} es barata”
-STR_1587    :{SMALLFONT}“Este Pretzel de {STRINGID} es barato”
-STR_1588    :{SMALLFONT}“Este Chocolate de {STRINGID} es barato”
-STR_1589    :{SMALLFONT}“Este Té de {STRINGID} es barato”
-STR_1590    :{SMALLFONT}“Este Pastel de {STRINGID} es barato”
-STR_1591    :{SMALLFONT}“Estas Gafas de {STRINGID} son baratas”
-STR_1592    :{SMALLFONT}“Estos Fideos con carne de {STRINGID} son baratos”
-STR_1593    :{SMALLFONT}“Este Arroz Frito de {STRINGID} son baratos”
-STR_1594    :{SMALLFONT}“Esta Sopa Wonton de {STRINGID} es barata”
-STR_1595    :{SMALLFONT}“Esta Sopa de Albóndigas de {STRINGID} es barata”
-STR_1596    :{SMALLFONT}“Este Zumo de {STRINGID} es barato”
-STR_1597    :{SMALLFONT}“Esta Leche Soja de {STRINGID} es barata”
-STR_1598    :{SMALLFONT}“Este Sujeonggwa de {STRINGID} es barato”
-STR_1599    :{SMALLFONT}“Este Sándwich de {STRINGID} es barato”
-STR_1600    :{SMALLFONT}“Esta Galleta de {STRINGID} es barata”
+STR_1584    :“Esta Foto de {STRINGID} es barata”
+STR_1585    :“Esta Foto de {STRINGID} es barata”
+STR_1586    :“Esta Foto de {STRINGID} es barata”
+STR_1587    :“Este Pretzel de {STRINGID} es barato”
+STR_1588    :“Este Chocolate de {STRINGID} es barato”
+STR_1589    :“Este Té de {STRINGID} es barato”
+STR_1590    :“Este Pastel de {STRINGID} es barato”
+STR_1591    :“Estas Gafas de {STRINGID} son baratas”
+STR_1592    :“Estos Fideos con carne de {STRINGID} son baratos”
+STR_1593    :“Este Arroz Frito de {STRINGID} son baratos”
+STR_1594    :“Esta Sopa Wonton de {STRINGID} es barata”
+STR_1595    :“Esta Sopa de Albóndigas de {STRINGID} es barata”
+STR_1596    :“Este Zumo de {STRINGID} es barato”
+STR_1597    :“Esta Leche Soja de {STRINGID} es barata”
+STR_1598    :“Este Sujeonggwa de {STRINGID} es barato”
+STR_1599    :“Este Sándwich de {STRINGID} es barato”
+STR_1600    :“Esta Galleta de {STRINGID} es barata”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Esta Salchicha de {STRINGID} es barata”
+STR_1604    :“Esta Salchicha de {STRINGID} es barata”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1001,27 +1001,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“No voy a pagar tanto por la Foto de {STRINGID}”
-STR_1617    :{SMALLFONT}“No voy a pagar tanto por la Foto de {STRINGID}”
-STR_1618    :{SMALLFONT}“No voy a pagar tanto por la Foto de {STRINGID}”
-STR_1619    :{SMALLFONT}“No voy a pagar tanto por el Pretzel de {STRINGID}”
-STR_1620    :{SMALLFONT}“No voy a pagar tanto por el Chocolate de {STRINGID}”
-STR_1621    :{SMALLFONT}“No voy a pagar tanto por el Té de {STRINGID}”
-STR_1622    :{SMALLFONT}“No voy a pagar tanto por el Pastel de {STRINGID}”
-STR_1623    :{SMALLFONT}“No voy a pagar tanto por las Gafas de {STRINGID}”
-STR_1624    :{SMALLFONT}“No voy a pagar tanto por los Fideos de {STRINGID}”
-STR_1625    :{SMALLFONT}“No voy a pagar tanto por el Arroz Frito de {STRINGID}”
-STR_1626    :{SMALLFONT}“No voy a pagar tanto por la Sopa Wonton de {STRINGID}”
-STR_1627    :{SMALLFONT}“No voy a pagar tanto por la Sopa de Albóndigas de {STRINGID}”
-STR_1628    :{SMALLFONT}“No voy a pagar tanto por el Zumo de {STRINGID}”
-STR_1629    :{SMALLFONT}“No voy a pagar tanto por la Leche Soja de {STRINGID}”
-STR_1630    :{SMALLFONT}“No voy a pagar tanto por el Sujeonggwa de {STRINGID}”
-STR_1631    :{SMALLFONT}“No voy a pagar tanto por el Sándwich de {STRINGID}”
-STR_1632    :{SMALLFONT}“No voy a pagar tanto por la Galleta de {STRINGID}”
+STR_1616    :“No voy a pagar tanto por la Foto de {STRINGID}”
+STR_1617    :“No voy a pagar tanto por la Foto de {STRINGID}”
+STR_1618    :“No voy a pagar tanto por la Foto de {STRINGID}”
+STR_1619    :“No voy a pagar tanto por el Pretzel de {STRINGID}”
+STR_1620    :“No voy a pagar tanto por el Chocolate de {STRINGID}”
+STR_1621    :“No voy a pagar tanto por el Té de {STRINGID}”
+STR_1622    :“No voy a pagar tanto por el Pastel de {STRINGID}”
+STR_1623    :“No voy a pagar tanto por las Gafas de {STRINGID}”
+STR_1624    :“No voy a pagar tanto por los Fideos de {STRINGID}”
+STR_1625    :“No voy a pagar tanto por el Arroz Frito de {STRINGID}”
+STR_1626    :“No voy a pagar tanto por la Sopa Wonton de {STRINGID}”
+STR_1627    :“No voy a pagar tanto por la Sopa de Albóndigas de {STRINGID}”
+STR_1628    :“No voy a pagar tanto por el Zumo de {STRINGID}”
+STR_1629    :“No voy a pagar tanto por la Leche Soja de {STRINGID}”
+STR_1630    :“No voy a pagar tanto por el Sujeonggwa de {STRINGID}”
+STR_1631    :“No voy a pagar tanto por el Sándwich de {STRINGID}”
+STR_1632    :“No voy a pagar tanto por la Galleta de {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“No voy a pagar tanto por la Salchicha de {STRINGID}”
+STR_1636    :“No voy a pagar tanto por la Salchicha de {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1033,10 +1033,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“¡Ayuda! ¡Bájame!”
-STR_1649    :{SMALLFONT}“¡Me estoy quedando sin dinero!”
-STR_1650    :{SMALLFONT}“¡Wow! ¡Están construyendo una nueva atracción!”
-STR_1653    :{SMALLFONT}“… ¡Y aquí estamos en {STRINGID}!”
+STR_1648    :“¡Ayuda! ¡Bájame!”
+STR_1649    :“¡Me estoy quedando sin dinero!”
+STR_1650    :“¡Wow! ¡Están construyendo una nueva atracción!”
+STR_1653    :“… ¡Y aquí estamos en {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensamientos recientes:
 STR_1655    :Construir camino a nivel del suelo.
 STR_1656    :Construir puente o túnel.
@@ -1188,7 +1188,7 @@ STR_1808    :{WINDOW_COLOUR_2}Última avería: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Avería actual: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Lleva:
 STR_1811    :No puedes construir esto aquí…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Objetos misceláneos
 STR_1814    :Acciones
 STR_1815    :Pensamientos
@@ -1197,7 +1197,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Todos los visitantes
 STR_1819    :{WINDOW_COLOUR_2}Todos los visitantes (agrupados)
 STR_1820    :{WINDOW_COLOUR_2}Visitantes {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Visitantes Pensando {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Visitantes Pensando {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Visitantes Pensando en {POP16}{STRINGID}
 STR_1823    :Muestra los pensamientos de los visitantes sobre esta atracción
 STR_1824    :Mostrar visitantes en esta atracción
@@ -1298,7 +1298,6 @@ STR_1921    :Iniciar nueva partida
 STR_1922    :Continuar partida guardada
 STR_1924    :Salir del juego
 STR_1925    :No puedes colocar esta persona aquí…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} se ha averiado
 STR_1928    :{RED}¡{STRINGID} ha chocado!
 STR_1929    :{RED}{STRINGID} no se ha arreglado{NEWLINE}Comprueba dónde están tus mecánicos y considera organizarlos mejor
@@ -1579,7 +1578,7 @@ STR_2218    :{RED}¡{STRINGID} en {STRINGID} no ha regresado a la {STRINGID}!{NE
 STR_2219    :{RED}{COMMA16} personas han muerto en un accidente en {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valoración del parque: {BLACK}{COMMA16}
 STR_2221    :Valoración del parque: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Visitantes en el parque: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Efectivo: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Efectivo: {RED}{CURRENCY2DP}
@@ -1592,7 +1591,7 @@ STR_2231    :Frenos de caída libre
 STR_2232    :Cable de elevación
 STR_2233    :Información del parque
 STR_2234    :Mensajes recientes
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Enero
 STR_2237    :Febrero
 STR_2238    :Marzo
@@ -1796,7 +1795,7 @@ STR_2450    :{YELLOW}La campaña de publicidad del parque ha finalizado
 STR_2451    :{YELLOW}La campaña de publicidad de {STRINGID} ha finalizado
 STR_2452    :{WINDOW_COLOUR_2}Efectivo (restando préstamo): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Efectivo (restando préstamo): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Mostrar finanzas
 STR_2458    :Mostrar gráfica de efectivo disponible (restando préstamo) en el tiempo
 STR_2459    :Mostrar gráfica de valor del parque en el tiempo
@@ -1906,7 +1905,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Investigación Completa
-STR_2681    :{MEDIUMFONT}{BLACK}Incrementa tu dinero en {CURRENCY}
 STR_2684    :Llega un gran grupo de visitantes
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Bajo:
@@ -1993,7 +1991,7 @@ STR_2789    :{WINDOW_COLOUR_2}¡No has conseguido tu objetivo!
 STR_2790    :Introd. nombre en tabla de escenario
 STR_2791    :Ingresar nombre
 STR_2792    :Introduce nombre en la tabla de escenario:
-STR_2793    :{SMALLFONT}(Completado por {STRINGID})
+STR_2793    :(Completado por {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completado por: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con un valor de la compañía de: {BLACK}{CURRENCY}
 STR_2795    :Ordenar
 STR_2796    :Ordenar la lista de atracciones según el criterio seleccionado
@@ -2502,7 +2500,7 @@ STR_5134    :Ajustar un área mayor para los derechos de construcción.
 STR_5135    :Comprar terreno o derechos de construcción
 STR_5136    :Der. Construcc.
 STR_5137    :Desbloquea límites de funcionamiento
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Desactiva fallos de frenos
 STR_5141    :Desactiva todas las averías
@@ -2648,7 +2646,7 @@ STR_5297    :Abrir parque
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Despedir empleados rápidamente
-STR_5301    :{MEDIUMFONT}{BLACK}Eliminar deuda con el banco
+STR_5301    :Eliminar deuda con el banco
 STR_5302    :Reiniciar préstamo
 STR_5303    :Permite construir en pausa
 STR_5304    :Sec. Menú Principal:
@@ -2807,7 +2805,7 @@ STR_5481    :Apariencia
 STR_5482    :{WINDOW_COLOUR_2}Tiempo desde la última inspección: {BLACK}1 minuto
 STR_5483    :{BLACK}({COMMA16} semanas restantes)
 STR_5484    :{BLACK}({COMMA16} semana restante)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mensajes recientes
 STR_5489    :Mostrar sólo los visitantes con seguimiento activado
@@ -3314,7 +3312,7 @@ STR_6030    :Selector de Escenario. Haz clic en cualquier escenario del mapa par
 STR_6031    :Descripción Servidor:
 STR_6032    :Msg. de Bienvenida:
 STR_6033    :Ruta de Instalación RCT1:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Por favor selecciona la carpeta de RCT1
 STR_6036    :Borrar
 STR_6037    :Por favor selecciona una carpeta válida con una instalación de RCT1
@@ -3459,7 +3457,7 @@ STR_6183    :Seguir{MOVE_X}{87}No se eligió figura
 STR_6184    :Seguir figura
 STR_6185    :Elegir figura
 STR_6186    :No se eligió figura
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomito
 STR_6189    :Pato
 STR_6190    :No puedes elegir una figura mientras la ventana principal está activa
@@ -3609,7 +3607,7 @@ STR_6356    :Crear patos si el parque tiene agua
 STR_6357    :Quitar todos los patos del mapa
 STR_6358    :Página {UINT16}
 STR_6359    :{POP16}{POP16}Página {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Habilitar efectos de luz en atracciones (experimental)
 STR_6362    :Si está activado, vehículos para las atracciones con vias estarán iluminados de noche.
 STR_6363    :Copiar texto al portapapeles

@@ -800,14 +800,14 @@ STR_1410    :Torre verticale
 STR_1411    :{STRINGID} è d'intralcio
 STR_1412    :{WINDOW_COLOUR_3}La registrazione dei dati non è disponibile per questo tipo di attrazione
 STR_1413    :{WINDOW_COLOUR_3}La registrazione dati inizierà quando il prossimo {STRINGID} partirà da {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Velocità
 STR_1416    :{WINDOW_COLOUR_2}Altitud.
 STR_1417    :{WINDOW_COLOUR_2}G vertic.
 STR_1418    :{WINDOW_COLOUR_2}G lat.
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}G
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}G
 STR_1422    :Registraz. dati {POP16}{STRINGID}
 STR_1423    :Percorso della corsia d'attesa
 STR_1424    :Sentiero
@@ -866,131 +866,131 @@ STR_1476    :{WINDOW_COLOUR_2}Livello d'intensità: {BLACK}Non disponibile
 STR_1477    :{WINDOW_COLOUR_2}Livello d'intensità: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Livello di nausea: {BLACK}Non disponibile
-STR_1480    :{SMALLFONT}“Non posso permettermi {STRINGID}”
-STR_1481    :{SMALLFONT}“Ho speso tutti i miei soldi”
-STR_1482    :{SMALLFONT}“Mi sento male”
-STR_1483    :{SMALLFONT}“Mi sento molto male”
-STR_1484    :{SMALLFONT}“Voglio provare qualcosa di più eccitante {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID}sembra troppo intenso per me”
-STR_1486    :{SMALLFONT}“Non ho ancora finito {STRINGID}”
-STR_1487    :{SMALLFONT}“Solo guardando {STRINGID} mi sento male”
-STR_1488    :{SMALLFONT}“Non pagherò così tanto per andare su {STRINGID}”
-STR_1489    :{SMALLFONT}“Voglio tornare a casa”
-STR_1490    :{SMALLFONT}“{STRINGID} è a buon mercato”
-STR_1491    :{SMALLFONT}“Ho già: {STRINGID}”
-STR_1492    :{SMALLFONT}“Non posso permettermi: {STRINGID}”
-STR_1493    :{SMALLFONT}“Non ho fame”
-STR_1494    :{SMALLFONT}“Non ho sete”
-STR_1495    :{SMALLFONT}“Aiuto!!! Sto annegando!”
-STR_1496    :{SMALLFONT}“Mi sono perso!”
-STR_1497    :{SMALLFONT}“{STRINGID} è stato divertentissimo”
-STR_1498    :{SMALLFONT}“Sono in fila per {STRINGID} da secoli”
-STR_1499    :{SMALLFONT}“Sono stanco”
-STR_1500    :{SMALLFONT}“Ho fame”
-STR_1501    :{SMALLFONT}“Ho sete”
-STR_1502    :{SMALLFONT}“Devo andare in bagno”
-STR_1503    :{SMALLFONT}“Non riesco a trovare: {STRINGID}”
-STR_1504    :{SMALLFONT}“Non pagherò così tanto per usare: {STRINGID}”
-STR_1505    :{SMALLFONT}“Non andrò su {STRINGID} durante un temporale”
-STR_1506    :{SMALLFONT}“C'è troppa spazzatura in giro”
-STR_1507    :{SMALLFONT}“Non riesco a trovare l'uscita del parco”
-STR_1508    :{SMALLFONT}“Voglio scendere da {STRINGID}”
-STR_1509    :{SMALLFONT}“Voglio uscire da {STRINGID}”
-STR_1510    :{SMALLFONT}“Non andrò su {STRINGID} - Non è sicuro”
-STR_1511    :{SMALLFONT}“Questo percorso è disgustoso”
-STR_1512    :{SMALLFONT}“È troppo affollato qui”
-STR_1513    :{SMALLFONT}“Ci sono troppi vandalismi”
-STR_1514    :{SMALLFONT}“Bello scenario!”
-STR_1515    :{SMALLFONT}“Questo parco è davvero pulito e ordinato”
-STR_1516    :{SMALLFONT}“Le fontane zampillanti sono fantastiche”
-STR_1517    :{SMALLFONT}“La musica qui è gradevole”
-STR_1518    :{SMALLFONT}“Questo palloncino comprato da {STRINGID} costa davvero poco”
-STR_1519    :{SMALLFONT}“Questo peluche comprato da {STRINGID} costa davvero poco”
-STR_1520    :{SMALLFONT}“Questa mappa del parco comprata da {STRINGID} costa davvero poco”
-STR_1521    :{SMALLFONT}“Questa foto-in-corsa comprata da  {STRINGID} costa davvero poco”
-STR_1522    :{SMALLFONT}“Quest'ombrello comprato da {STRINGID} costa davvero poco”
-STR_1523    :{SMALLFONT}“Questa bevanda comprata da {STRINGID} costa davvero poco”
-STR_1524    :{SMALLFONT}“Questo panino comprato da {STRINGID} costa davvero poco”
-STR_1525    :{SMALLFONT}“Queste patatine comprate da {STRINGID} costano davvero poco”
-STR_1526    :{SMALLFONT}“Questo gelato comprato da {STRINGID} costa davvero poco”
-STR_1527    :{SMALLFONT}“Questo zucchero filato comprato da {STRINGID} costa davvero poco”
+STR_1480    :“Non posso permettermi {STRINGID}”
+STR_1481    :“Ho speso tutti i miei soldi”
+STR_1482    :“Mi sento male”
+STR_1483    :“Mi sento molto male”
+STR_1484    :“Voglio provare qualcosa di più eccitante {STRINGID}”
+STR_1485    :“{STRINGID}sembra troppo intenso per me”
+STR_1486    :“Non ho ancora finito {STRINGID}”
+STR_1487    :“Solo guardando {STRINGID} mi sento male”
+STR_1488    :“Non pagherò così tanto per andare su {STRINGID}”
+STR_1489    :“Voglio tornare a casa”
+STR_1490    :“{STRINGID} è a buon mercato”
+STR_1491    :“Ho già: {STRINGID}”
+STR_1492    :“Non posso permettermi: {STRINGID}”
+STR_1493    :“Non ho fame”
+STR_1494    :“Non ho sete”
+STR_1495    :“Aiuto!!! Sto annegando!”
+STR_1496    :“Mi sono perso!”
+STR_1497    :“{STRINGID} è stato divertentissimo”
+STR_1498    :“Sono in fila per {STRINGID} da secoli”
+STR_1499    :“Sono stanco”
+STR_1500    :“Ho fame”
+STR_1501    :“Ho sete”
+STR_1502    :“Devo andare in bagno”
+STR_1503    :“Non riesco a trovare: {STRINGID}”
+STR_1504    :“Non pagherò così tanto per usare: {STRINGID}”
+STR_1505    :“Non andrò su {STRINGID} durante un temporale”
+STR_1506    :“C'è troppa spazzatura in giro”
+STR_1507    :“Non riesco a trovare l'uscita del parco”
+STR_1508    :“Voglio scendere da {STRINGID}”
+STR_1509    :“Voglio uscire da {STRINGID}”
+STR_1510    :“Non andrò su {STRINGID} - Non è sicuro”
+STR_1511    :“Questo percorso è disgustoso”
+STR_1512    :“È troppo affollato qui”
+STR_1513    :“Ci sono troppi vandalismi”
+STR_1514    :“Bello scenario!”
+STR_1515    :“Questo parco è davvero pulito e ordinato”
+STR_1516    :“Le fontane zampillanti sono fantastiche”
+STR_1517    :“La musica qui è gradevole”
+STR_1518    :“Questo palloncino comprato da {STRINGID} costa davvero poco”
+STR_1519    :“Questo peluche comprato da {STRINGID} costa davvero poco”
+STR_1520    :“Questa mappa del parco comprata da {STRINGID} costa davvero poco”
+STR_1521    :“Questa foto-in-corsa comprata da  {STRINGID} costa davvero poco”
+STR_1522    :“Quest'ombrello comprato da {STRINGID} costa davvero poco”
+STR_1523    :“Questa bevanda comprata da {STRINGID} costa davvero poco”
+STR_1524    :“Questo panino comprato da {STRINGID} costa davvero poco”
+STR_1525    :“Queste patatine comprate da {STRINGID} costano davvero poco”
+STR_1526    :“Questo gelato comprato da {STRINGID} costa davvero poco”
+STR_1527    :“Questo zucchero filato comprato da {STRINGID} costa davvero poco”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Questa pizza comprata da {STRINGID} costa davvero poco”
+STR_1531    :“Questa pizza comprata da {STRINGID} costa davvero poco”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Questi pop-corn comprati da {STRINGID} costano davvero poco”
-STR_1534    :{SMALLFONT}“Questo hot dog comprato da {STRINGID} costa davvero poco”
-STR_1535    :{SMALLFONT}“Questo tentacolo comprato da {STRINGID} costa davvero poco”
-STR_1536    :{SMALLFONT}“Questo cappellino comprato da {STRINGID} costa davvero poco”
-STR_1537    :{SMALLFONT}“Questa mela caramellata comprata da {STRINGID} costa davvero poco”
-STR_1538    :{SMALLFONT}“Questa maglietta comprata da {STRINGID} costa davvero poco”
-STR_1539    :{SMALLFONT}“Questa ciambella comprata da {STRINGID} costa davvero poco”
-STR_1540    :{SMALLFONT}“Questo caffè comprato da {STRINGID} costa davvero poco”
+STR_1533    :“Questi pop-corn comprati da {STRINGID} costano davvero poco”
+STR_1534    :“Questo hot dog comprato da {STRINGID} costa davvero poco”
+STR_1535    :“Questo tentacolo comprato da {STRINGID} costa davvero poco”
+STR_1536    :“Questo cappellino comprato da {STRINGID} costa davvero poco”
+STR_1537    :“Questa mela caramellata comprata da {STRINGID} costa davvero poco”
+STR_1538    :“Questa maglietta comprata da {STRINGID} costa davvero poco”
+STR_1539    :“Questa ciambella comprata da {STRINGID} costa davvero poco”
+STR_1540    :“Questo caffè comprato da {STRINGID} costa davvero poco”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Questo pollo fritto comprato da {STRINGID} costa davvero poco”
-STR_1543    :{SMALLFONT}“Questa limonata comprata da {STRINGID} costa davvero poco”
+STR_1542    :“Questo pollo fritto comprato da {STRINGID} costa davvero poco”
+STR_1543    :“Questa limonata comprata da {STRINGID} costa davvero poco”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Wow!”
-STR_1551    :{SMALLFONT}“Ho la strana sensazione che qualcuno mi stia osservando”
-STR_1552    :{SMALLFONT}“Non ho intenzione di pagare così tanto un palloncino da {STRINGID}”
-STR_1553    :{SMALLFONT}“Non ho intenzione di pagare così tanto un peluche da {STRINGID}”
-STR_1554    :{SMALLFONT}“Non ho intenzione di pagare così tanto una mappa del parco da {STRINGID}”
-STR_1555    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
-STR_1556    :{SMALLFONT}“Non ho intenzione di pagare così tanto un ombrello da {STRINGID}”
-STR_1557    :{SMALLFONT}“Non ho intenzione di pagare così tanto una bevanda da {STRINGID}”
-STR_1558    :{SMALLFONT}“Non ho intenzione di pagare così tanto un panino da {STRINGID}”
-STR_1559    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle patatine da {STRINGID}”
-STR_1560    :{SMALLFONT}“Non ho intenzione di pagare così tanto un gelato da {STRINGID}”
-STR_1561    :{SMALLFONT}“Non ho intenzione di pagare così tanto dello zucchero filato da {STRINGID}”
+STR_1550    :“Wow!”
+STR_1551    :“Ho la strana sensazione che qualcuno mi stia osservando”
+STR_1552    :“Non ho intenzione di pagare così tanto un palloncino da {STRINGID}”
+STR_1553    :“Non ho intenzione di pagare così tanto un peluche da {STRINGID}”
+STR_1554    :“Non ho intenzione di pagare così tanto una mappa del parco da {STRINGID}”
+STR_1555    :“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1556    :“Non ho intenzione di pagare così tanto un ombrello da {STRINGID}”
+STR_1557    :“Non ho intenzione di pagare così tanto una bevanda da {STRINGID}”
+STR_1558    :“Non ho intenzione di pagare così tanto un panino da {STRINGID}”
+STR_1559    :“Non ho intenzione di pagare così tanto delle patatine da {STRINGID}”
+STR_1560    :“Non ho intenzione di pagare così tanto un gelato da {STRINGID}”
+STR_1561    :“Non ho intenzione di pagare così tanto dello zucchero filato da {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Non ho intenzione di pagare così tanto per una pizza da {STRINGID}”
+STR_1565    :“Non ho intenzione di pagare così tanto per una pizza da {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}”
-STR_1568    :{SMALLFONT}“Non ho intenzione di pagare così tanto un hot dog da {STRINGID}”
-STR_1569    :{SMALLFONT}“Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}”
-STR_1570    :{SMALLFONT}“Non ho intenzione di pagare così tanto un cappellino da {STRINGID}”
-STR_1571    :{SMALLFONT}“Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}”
-STR_1572    :{SMALLFONT}“Non ho intenzione di pagare così tanto una maglietta da {STRINGID}”
-STR_1573    :{SMALLFONT}“Non ho intenzione di pagare così tanto una ciambella da {STRINGID}”
-STR_1574    :{SMALLFONT}“Non ho intenzione di pagare così tanto un caffè da {STRINGID}”
+STR_1567    :“Non ho intenzione di pagare così tanto dei pop-corn da {STRINGID}”
+STR_1568    :“Non ho intenzione di pagare così tanto un hot dog da {STRINGID}”
+STR_1569    :“Non ho intenzione di pagare così tanto un tentacolo da {STRINGID}”
+STR_1570    :“Non ho intenzione di pagare così tanto un cappellino da {STRINGID}”
+STR_1571    :“Non ho intenzione di pagare così tanto una mela caramellata da {STRINGID}”
+STR_1572    :“Non ho intenzione di pagare così tanto una maglietta da {STRINGID}”
+STR_1573    :“Non ho intenzione di pagare così tanto una ciambella da {STRINGID}”
+STR_1574    :“Non ho intenzione di pagare così tanto un caffè da {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Non ho intenzione di pagare così tanto del pollo fritto da {STRINGID}”
-STR_1577    :{SMALLFONT}“Non ho intenzione di pagare così tanto della limonata da {STRINGID}”
+STR_1576    :“Non ho intenzione di pagare così tanto del pollo fritto da {STRINGID}”
+STR_1577    :“Non ho intenzione di pagare così tanto della limonata da {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
-STR_1585    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
-STR_1586    :{SMALLFONT}“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
-STR_1587    :{SMALLFONT}“Questo biscottino comprato da {STRINGID} costa davvero poco”
-STR_1588    :{SMALLFONT}“Questa cioccolata calda comprata da {STRINGID} costa davvero poco”
-STR_1589    :{SMALLFONT}“Questo tè freddo comprato da {STRINGID} costa davvero poco”
-STR_1590    :{SMALLFONT}“Questa torta a ciambella comprata da {STRINGID} costa davvero poco”
-STR_1591    :{SMALLFONT}“Questi occhiali da sole comprati da {STRINGID} costa davvero poco”
-STR_1592    :{SMALLFONT}“Questi spaghetti al ragù comprati da {STRINGID} costa davvero poco”
-STR_1593    :{SMALLFONT}“Questi spaghetti di riso fritto comprati da {STRINGID} costa davvero poco”
-STR_1594    :{SMALLFONT}“Questa zuppa di wonton comprata da {STRINGID} costa davvero poco”
-STR_1595    :{SMALLFONT}“Queste polpette in salsa comprate da {STRINGID} costa davvero poco”
-STR_1596    :{SMALLFONT}“Questo succo di frutta comprato da {STRINGID} costa davvero poco”
-STR_1597    :{SMALLFONT}“Questo latte di soia comprato da {STRINGID} costa davvero poco”
-STR_1598    :{SMALLFONT}“Questo sujongkwa {STRINGID} costa davvero poco”
-STR_1599    :{SMALLFONT}“Questo sandwich comprato da {STRINGID} costa davvero poco”
-STR_1600    :{SMALLFONT}“Questo biscotto comprato da {STRINGID} costa davvero poco”
+STR_1584    :“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1585    :“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1586    :“Questa foto-in-corsa comprata da {STRINGID} costa davvero poco”
+STR_1587    :“Questo biscottino comprato da {STRINGID} costa davvero poco”
+STR_1588    :“Questa cioccolata calda comprata da {STRINGID} costa davvero poco”
+STR_1589    :“Questo tè freddo comprato da {STRINGID} costa davvero poco”
+STR_1590    :“Questa torta a ciambella comprata da {STRINGID} costa davvero poco”
+STR_1591    :“Questi occhiali da sole comprati da {STRINGID} costa davvero poco”
+STR_1592    :“Questi spaghetti al ragù comprati da {STRINGID} costa davvero poco”
+STR_1593    :“Questi spaghetti di riso fritto comprati da {STRINGID} costa davvero poco”
+STR_1594    :“Questa zuppa di wonton comprata da {STRINGID} costa davvero poco”
+STR_1595    :“Queste polpette in salsa comprate da {STRINGID} costa davvero poco”
+STR_1596    :“Questo succo di frutta comprato da {STRINGID} costa davvero poco”
+STR_1597    :“Questo latte di soia comprato da {STRINGID} costa davvero poco”
+STR_1598    :“Questo sujongkwa {STRINGID} costa davvero poco”
+STR_1599    :“Questo sandwich comprato da {STRINGID} costa davvero poco”
+STR_1600    :“Questo biscotto comprato da {STRINGID} costa davvero poco”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Queste salsicce comprate da {STRINGID} costano davvero poco”
+STR_1604    :“Queste salsicce comprate da {STRINGID} costano davvero poco”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1002,27 +1002,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
-STR_1617    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
-STR_1618    :{SMALLFONT}“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
-STR_1619    :{SMALLFONT}“Non ho intenzione di pagare così tanto un biscottino da {STRINGID}”
-STR_1620    :{SMALLFONT}“Non ho intenzione di pagare così tanto una cioccolata calda da {STRINGID}”
-STR_1621    :{SMALLFONT}“Non ho intenzione di pagare così tanto del tè freddo da {STRINGID}”
-STR_1622    :{SMALLFONT}“Non ho intenzione di pagare così tanto una torta a ciambella da {STRINGID}”
-STR_1623    :{SMALLFONT}“Non ho intenzione di pagare così tanto un paio di occhiali da sole da {STRINGID}”
-STR_1624    :{SMALLFONT}“Non ho intenzione di pagare così tanto degli spaghetti al ragù da {STRINGID}”
-STR_1625    :{SMALLFONT}“Non ho intenzione di pagare così tanto degli spaghetti di riso fritto da {STRINGID}”
-STR_1626    :{SMALLFONT}“Non ho intenzione di pagare così tanto della zuppa di wonton da {STRINGID}”
-STR_1627    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle polpette in salsa da {STRINGID}”
-STR_1628    :{SMALLFONT}“Non ho intenzione di pagare così tanto un succo di frutta da {STRINGID}”
-STR_1629    :{SMALLFONT}“Non ho intenzione di pagare così tanto del latte di soia da {STRINGID}”
-STR_1630    :{SMALLFONT}“Non ho intenzione di pagare così tanto un sujongkwa da {STRINGID}”
-STR_1631    :{SMALLFONT}“Non ho intenzione di pagare così tanto un sandwich da {STRINGID}”
-STR_1632    :{SMALLFONT}“Non ho intenzione di pagare così tanto un biscotto da {STRINGID}”
+STR_1616    :“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1617    :“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1618    :“Non ho intenzione di pagare così tanto una foto-in-corsa da {STRINGID}”
+STR_1619    :“Non ho intenzione di pagare così tanto un biscottino da {STRINGID}”
+STR_1620    :“Non ho intenzione di pagare così tanto una cioccolata calda da {STRINGID}”
+STR_1621    :“Non ho intenzione di pagare così tanto del tè freddo da {STRINGID}”
+STR_1622    :“Non ho intenzione di pagare così tanto una torta a ciambella da {STRINGID}”
+STR_1623    :“Non ho intenzione di pagare così tanto un paio di occhiali da sole da {STRINGID}”
+STR_1624    :“Non ho intenzione di pagare così tanto degli spaghetti al ragù da {STRINGID}”
+STR_1625    :“Non ho intenzione di pagare così tanto degli spaghetti di riso fritto da {STRINGID}”
+STR_1626    :“Non ho intenzione di pagare così tanto della zuppa di wonton da {STRINGID}”
+STR_1627    :“Non ho intenzione di pagare così tanto delle polpette in salsa da {STRINGID}”
+STR_1628    :“Non ho intenzione di pagare così tanto un succo di frutta da {STRINGID}”
+STR_1629    :“Non ho intenzione di pagare così tanto del latte di soia da {STRINGID}”
+STR_1630    :“Non ho intenzione di pagare così tanto un sujongkwa da {STRINGID}”
+STR_1631    :“Non ho intenzione di pagare così tanto un sandwich da {STRINGID}”
+STR_1632    :“Non ho intenzione di pagare così tanto un biscotto da {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Non ho intenzione di pagare così tanto delle salsicce da {STRINGID}”
+STR_1636    :“Non ho intenzione di pagare così tanto delle salsicce da {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1034,10 +1034,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Aiuto! Voglio scendere!”
-STR_1649    :{SMALLFONT}“Sto finendo i soldi!”
-STR_1650    :{SMALLFONT}“Wow! Presto ci sarà una nuova attrazione!”
-STR_1653    :{SMALLFONT}“…e qui siamo su {STRINGID}!”
+STR_1648    :“Aiuto! Voglio scendere!”
+STR_1649    :“Sto finendo i soldi!”
+STR_1650    :“Wow! Presto ci sarà una nuova attrazione!”
+STR_1653    :“…e qui siamo su {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Pensieri più recenti:
 STR_1655    :Costruisci un sentiero sul terreno
 STR_1656    :Costruisci un sentiero sopraelevato o una galleria
@@ -1189,7 +1189,7 @@ STR_1808    :{WINDOW_COLOUR_2}Ultimo guasto: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Guasto attuale: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Sta trasportando:
 STR_1811    :Impossibile costruirlo qui…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Oggetti vari
 STR_1814    :Azioni
 STR_1815    :Pensieri
@@ -1198,7 +1198,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Tutti i visitatori
 STR_1819    :{WINDOW_COLOUR_2}Tutti i visitatori (riassunto)
 STR_1820    :{WINDOW_COLOUR_2}Visitatori {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Pensiero dei visitatori {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Pensiero dei visitatori {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Pensiero dei visitatori su {POP16}{STRINGID}
 STR_1823    :Mostra i pensieri dei visitatori relativi a quest'attrazione
 STR_1824    :Mostra i visitatori a bordo di quest'attrazione
@@ -1301,7 +1301,6 @@ STR_1921    :Inizia una nuova partita
 STR_1922    :Continua a giocare alla partita salvata
 STR_1924    :Esci
 STR_1925    :Impossibile collocare una persona qui…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} si è guastato/a
 STR_1928    :{RED}{STRINGID} ha avuto un incidente!
 STR_1929    :{RED}{STRINGID} ancora non è stato riparato{NEWLINE}Guarda dove si trovano i tuoi meccanici e prendi in considerazione l'idea di organizzarli meglio
@@ -1582,7 +1581,7 @@ STR_2218    :{RED}{STRINGID} sull'attrazione {STRINGID} non ha ancora fatto rito
 STR_2219    :{RED}{COMMA16} persone sono rimaste uccise in un incidente su {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Valutazione del parco: {BLACK}{COMMA16}
 STR_2221    :Valutazione del parco: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Visitatori nel parco: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Denaro: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Denaro: {RED}{CURRENCY2DP}
@@ -1595,7 +1594,7 @@ STR_2231    :Frenare in discesa
 STR_2232    :Sal. traino con cavo
 STR_2233    :Informazioni sul parco
 STR_2234    :Messaggi recenti
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Gennaio
 STR_2237    :Febbraio
 STR_2238    :Marzo
@@ -1799,7 +1798,7 @@ STR_2450    :{YELLOW}La campagna pubblicitaria per il parco è terminata
 STR_2451    :{YELLOW}La campagna pubblicitaria per {STRINGID} è terminata
 STR_2452    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Denaro (sottratti i prestiti): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Mostra i conti economici
 STR_2458    :Mostra il grafico di cassa (sottratti i prestiti) nel tempo
 STR_2459    :Mostra il grafico del valore del parco nel tempo
@@ -1909,7 +1908,6 @@ STR_2636    :Tastierino numerico /
 STR_2669    :BlocNum
 STR_2670    :Scorr
 STR_2680    :Tutte le ricerche sono completate
-STR_2681    :{MEDIUMFONT}{BLACK}Incrementa il tuo denaro di {CURRENCY}
 STR_2684    :Arriva un largo numero di visitatori
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Basso:
@@ -1995,7 +1993,7 @@ STR_2789    :{WINDOW_COLOUR_2}Non hai raggiunto il tuo obiettivo!
 STR_2790    :Inserimento nome nella classifica scenari
 STR_2791    :Inserire il nome
 STR_2792    :Digitare il proprio nome per la classifica degli scenari:
-STR_2793    :{SMALLFONT}(Completato da {STRINGID})
+STR_2793    :(Completato da {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Completato da: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} con un valore societario di: {BLACK}{CURRENCY}
 STR_2795    :Ordina
 STR_2796    :Ordina la lista delle attrazioni secondo il tipo di informazioni visualizzate
@@ -2502,7 +2500,7 @@ STR_5134    :Modifica un'area più grande dei terreni del parco
 STR_5135    :Acquista nuovi terreni o permessi di costruzione
 STR_5136    :Terreni del parco
 STR_5137    :Sblocca limiti operativi
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disattiva rotture dei freni
 STR_5141    :Disattiva tutte le rotture
@@ -2652,7 +2650,7 @@ STR_5297    :Apri parco
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Licenzia velocemente il personale
-STR_5301    :{MEDIUMFONT}{BLACK}Cancella il prestito
+STR_5301    :Cancella il prestito
 STR_5302    :Azzera prestito
 STR_5303    :Permetti la costruzione in pausa
 STR_5304    :Sequenza del titolo:
@@ -2811,7 +2809,7 @@ STR_5481    :Temi
 STR_5482    :{WINDOW_COLOUR_2}Tempo dall'ultima ispezione: {BLACK}1 minuto
 STR_5483    :{BLACK}({COMMA16} settimane rimaste)
 STR_5484    :{BLACK}({COMMA16} settimana rimasta)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra i messaggi recenti
 STR_5489    :Mostra solo i visitatori seguiti
@@ -3316,7 +3314,7 @@ STR_6030    :Contagocce scenario. Fare clic su un qualsiasi elemento dello scena
 STR_6031    :Descrizione server:
 STR_6032    :Messaggio di benvenuto server:
 STR_6033    :Cartella di RCT1:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Selezionare la cartella di installazione di RCT1
 STR_6036    :Pulisci
 STR_6037    :Selezionare una cartella di installazione di RCT1 valida
@@ -3462,7 +3460,7 @@ STR_6183    :Segui{MOVE_X}{87}Nessuno sprite selezionato
 STR_6184    :Segui sprite
 STR_6185    :Seleziona sprite
 STR_6186    :Nessuno sprite selezionato
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomito
 STR_6189    :Anatra
 STR_6190    :Non è possibile selezionare uno sprite mentre la schermata del titolo è attiva.
@@ -3612,7 +3610,7 @@ STR_6356    :Fa apparire anatre se il parco contiene acqua
 STR_6357    :Rimuove tutte le anatre dalla mappa
 STR_6358    :Pagina {UINT16}
 STR_6359    :{POP16}{POP16}Pagina {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Attiva effetti luce su attrazioni (sperimentale)
 STR_6362    :Se abilitato, i veicoli delle attrazioni con percorso saranno illuminati di notte.
 STR_6363    :Testo copiato negli appunti

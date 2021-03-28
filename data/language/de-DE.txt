@@ -798,14 +798,14 @@ STR_1410    :Vertikaler Turm
 STR_1411    :{STRINGID} im Weg
 STR_1412    :{WINDOW_COLOUR_3}Datenprotokollierung für diese Bahnart nicht verfügbar
 STR_1413    :{WINDOW_COLOUR_3}Datenprot. beginnt, wenn nächst. {STRINGID} d. {STRINGID} verlässt
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Geschw.
 STR_1416    :{WINDOW_COLOUR_2}Höhe
 STR_1417    :{WINDOW_COLOUR_2}Vert. G
 STR_1418    :{WINDOW_COLOUR_2}Seitl. G
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Datenprotokoll von {POP16}{STRINGID}
 STR_1423    :Warteschlangenweg
 STR_1424    :Fußweg
@@ -864,131 +864,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensitätswert: {BLACK}Noch nicht verfügbar
 STR_1477    :{WINDOW_COLOUR_2}Intensitätswert: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Übelkeitswert: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Übelkeitswert: {BLACK}Noch nicht verfügbar
-STR_1480    :{SMALLFONT}„Ich kann mir {STRINGID} nicht leisten“
-STR_1481    :{SMALLFONT}„Ich habe mein ganzes Geld ausgegeben“
-STR_1482    :{SMALLFONT}„Mir ist übel“
-STR_1483    :{SMALLFONT}„Mir ist total schlecht“
-STR_1484    :{SMALLFONT}„Ich will etwas Spannenderes als {STRINGID}“
-STR_1485    :{SMALLFONT}„{STRINGID} sieht mir zu extrem aus“
-STR_1486    :{SMALLFONT}„Ich bin noch nicht mit d. {STRINGID} fertig“
-STR_1487    :{SMALLFONT}„Uh, {STRINGID} - alleine beim Zusehen wird mir schlecht“
-STR_1488    :{SMALLFONT}„Ich bezahle nicht so viel für {STRINGID}“
-STR_1489    :{SMALLFONT}„Ich will nach Hause“
-STR_1490    :{SMALLFONT}„{STRINGID} ist das Geld wirklich wert“
-STR_1491    :{SMALLFONT}„Ich habe bereits {STRINGID}“
-STR_1492    :{SMALLFONT}„Ich kann mir d. {STRINGID} nicht leisten“
-STR_1493    :{SMALLFONT}„Ich bin nicht hungrig“
-STR_1494    :{SMALLFONT}„Ich bin nicht durstig“
-STR_1495    :{SMALLFONT}„Hilfe! Ich ertrinke!“
-STR_1496    :{SMALLFONT}„Ich habe mich verirrt!“
-STR_1497    :{SMALLFONT}„{STRINGID} war großartig“
-STR_1498    :{SMALLFONT}„Ich habe für {STRINGID} ewig angestanden“
-STR_1499    :{SMALLFONT}„Ich bin müde“
-STR_1500    :{SMALLFONT}„Ich bin hungrig“
-STR_1501    :{SMALLFONT}„Ich bin durstig“
-STR_1502    :{SMALLFONT}„Ich muss auf die Toilette“
-STR_1503    :{SMALLFONT}„Ich kann {STRINGID} nicht finden“
-STR_1504    :{SMALLFONT}„Ich bezahle nicht so viel für {STRINGID}“
-STR_1505    :{SMALLFONT}„Ich gehe nicht auf {STRINGID}, solange es regnet“
-STR_1506    :{SMALLFONT}„Das Müllproblem ist hier wirklich extrem“
-STR_1507    :{SMALLFONT}„Ich kann den Parkausgang nicht finden“
-STR_1508    :{SMALLFONT}„Ich möchte {STRINGID} verlassen“
-STR_1509    :{SMALLFONT}„Ich möchte aus {STRINGID} aussteigen“
-STR_1510    :{SMALLFONT}„Ich gehe nicht auf {STRINGID} - Es ist nicht sicher“
-STR_1511    :{SMALLFONT}„Dieser Weg ist schrecklich“
-STR_1512    :{SMALLFONT}„Hier sind zu viele Leute“
-STR_1513    :{SMALLFONT}„Der Vandalismus hier ist schrecklich“
-STR_1514    :{SMALLFONT}„Eine tolle Landschaft!“
-STR_1515    :{SMALLFONT}„Dieser Park ist wirklich sauber und aufgeräumt“
-STR_1516    :{SMALLFONT}„Die Springbrunnen sind großartig“
-STR_1517    :{SMALLFONT}„Die Musik hier gefällt mir“
-STR_1518    :{SMALLFONT}„Dieser Ballon von {STRINGID} ist sein Geld wert“
-STR_1519    :{SMALLFONT}„Dieses Plüschtier von {STRINGID} ist sein Geld wert“
-STR_1520    :{SMALLFONT}„Diese Parkkarte von {STRINGID} ist ihr Geld wert“
-STR_1521    :{SMALLFONT}„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
-STR_1522    :{SMALLFONT}„Dieser Regenschirm von {STRINGID} ist sein Geld wert“
-STR_1523    :{SMALLFONT}„Dieses Getränk von {STRINGID} ist sein Geld wert“
-STR_1524    :{SMALLFONT}„Dieser Burger von {STRINGID} ist sein Geld wert“
-STR_1525    :{SMALLFONT}„Diese Pommes von {STRINGID} sind ihr Geld wert“
-STR_1526    :{SMALLFONT}„Dieses Eis von {STRINGID} ist sein Geld wert“
-STR_1527    :{SMALLFONT}„Diese Zuckerwatte von {STRINGID} ist ihr Geld wert“
+STR_1480    :„Ich kann mir {STRINGID} nicht leisten“
+STR_1481    :„Ich habe mein ganzes Geld ausgegeben“
+STR_1482    :„Mir ist übel“
+STR_1483    :„Mir ist total schlecht“
+STR_1484    :„Ich will etwas Spannenderes als {STRINGID}“
+STR_1485    :„{STRINGID} sieht mir zu extrem aus“
+STR_1486    :„Ich bin noch nicht mit d. {STRINGID} fertig“
+STR_1487    :„Uh, {STRINGID} - alleine beim Zusehen wird mir schlecht“
+STR_1488    :„Ich bezahle nicht so viel für {STRINGID}“
+STR_1489    :„Ich will nach Hause“
+STR_1490    :„{STRINGID} ist das Geld wirklich wert“
+STR_1491    :„Ich habe bereits {STRINGID}“
+STR_1492    :„Ich kann mir d. {STRINGID} nicht leisten“
+STR_1493    :„Ich bin nicht hungrig“
+STR_1494    :„Ich bin nicht durstig“
+STR_1495    :„Hilfe! Ich ertrinke!“
+STR_1496    :„Ich habe mich verirrt!“
+STR_1497    :„{STRINGID} war großartig“
+STR_1498    :„Ich habe für {STRINGID} ewig angestanden“
+STR_1499    :„Ich bin müde“
+STR_1500    :„Ich bin hungrig“
+STR_1501    :„Ich bin durstig“
+STR_1502    :„Ich muss auf die Toilette“
+STR_1503    :„Ich kann {STRINGID} nicht finden“
+STR_1504    :„Ich bezahle nicht so viel für {STRINGID}“
+STR_1505    :„Ich gehe nicht auf {STRINGID}, solange es regnet“
+STR_1506    :„Das Müllproblem ist hier wirklich extrem“
+STR_1507    :„Ich kann den Parkausgang nicht finden“
+STR_1508    :„Ich möchte {STRINGID} verlassen“
+STR_1509    :„Ich möchte aus {STRINGID} aussteigen“
+STR_1510    :„Ich gehe nicht auf {STRINGID} - Es ist nicht sicher“
+STR_1511    :„Dieser Weg ist schrecklich“
+STR_1512    :„Hier sind zu viele Leute“
+STR_1513    :„Der Vandalismus hier ist schrecklich“
+STR_1514    :„Eine tolle Landschaft!“
+STR_1515    :„Dieser Park ist wirklich sauber und aufgeräumt“
+STR_1516    :„Die Springbrunnen sind großartig“
+STR_1517    :„Die Musik hier gefällt mir“
+STR_1518    :„Dieser Ballon von {STRINGID} ist sein Geld wert“
+STR_1519    :„Dieses Plüschtier von {STRINGID} ist sein Geld wert“
+STR_1520    :„Diese Parkkarte von {STRINGID} ist ihr Geld wert“
+STR_1521    :„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
+STR_1522    :„Dieser Regenschirm von {STRINGID} ist sein Geld wert“
+STR_1523    :„Dieses Getränk von {STRINGID} ist sein Geld wert“
+STR_1524    :„Dieser Burger von {STRINGID} ist sein Geld wert“
+STR_1525    :„Diese Pommes von {STRINGID} sind ihr Geld wert“
+STR_1526    :„Dieses Eis von {STRINGID} ist sein Geld wert“
+STR_1527    :„Diese Zuckerwatte von {STRINGID} ist ihr Geld wert“
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}„Diese Pizza von {STRINGID} ist ihr Geld wert“
+STR_1531    :„Diese Pizza von {STRINGID} ist ihr Geld wert“
 STR_1532    :
-STR_1533    :{SMALLFONT}„Dieses Popcorn von {STRINGID} ist sein Geld wert“
-STR_1534    :{SMALLFONT}„Dieser Hot Dog von {STRINGID} ist sein Geld wert“
-STR_1535    :{SMALLFONT}„Diese Meeresfrüchte von {STRINGID} sind ihr Geld wert“
-STR_1536    :{SMALLFONT}„Dieser Hut von {STRINGID} ist sein Geld wert“
-STR_1537    :{SMALLFONT}„Dieser Karamellapfel von {STRINGID} ist sein Geld wert“
-STR_1538    :{SMALLFONT}„Dieses T-Shirt von {STRINGID} ist sein Geld wert“
-STR_1539    :{SMALLFONT}„Dieser Donut von {STRINGID} ist sein Geld wert“
-STR_1540    :{SMALLFONT}„Dieser Kaffee von {STRINGID} ist sein Geld wert“
+STR_1533    :„Dieses Popcorn von {STRINGID} ist sein Geld wert“
+STR_1534    :„Dieser Hot Dog von {STRINGID} ist sein Geld wert“
+STR_1535    :„Diese Meeresfrüchte von {STRINGID} sind ihr Geld wert“
+STR_1536    :„Dieser Hut von {STRINGID} ist sein Geld wert“
+STR_1537    :„Dieser Karamellapfel von {STRINGID} ist sein Geld wert“
+STR_1538    :„Dieses T-Shirt von {STRINGID} ist sein Geld wert“
+STR_1539    :„Dieser Donut von {STRINGID} ist sein Geld wert“
+STR_1540    :„Dieser Kaffee von {STRINGID} ist sein Geld wert“
 STR_1541    :
-STR_1542    :{SMALLFONT}„Dieses Brathähnchen von {STRINGID} ist sein Geld wert“
-STR_1543    :{SMALLFONT}„Diese Limonade von {STRINGID} ist ihr Geld wert“
+STR_1542    :„Dieses Brathähnchen von {STRINGID} ist sein Geld wert“
+STR_1543    :„Diese Limonade von {STRINGID} ist ihr Geld wert“
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}„Wow!“
-STR_1551    :{SMALLFONT}„Ich habe das komische Gefühl, dass mich jemand beobachtet“
-STR_1552    :{SMALLFONT}„Ich bezahle nicht so viel für einen Ballon von {STRINGID}“
-STR_1553    :{SMALLFONT}„Ich bezahle nicht so viel für ein Plüschtier von {STRINGID}“
-STR_1554    :{SMALLFONT}„Ich bezahle nicht so viel für eine Parkkarte von {STRINGID}“
-STR_1555    :{SMALLFONT}„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
-STR_1556    :{SMALLFONT}„Ich bezahle nicht so viel für einen Regenschirm von {STRINGID}“
-STR_1557    :{SMALLFONT}„Ich bezahle nicht so viel für ein Getränk von {STRINGID}“
-STR_1558    :{SMALLFONT}„Ich bezahle nicht so viel für einen Ballon von {STRINGID}“
-STR_1559    :{SMALLFONT}„Ich bezahle nicht so viel für Pommes von {STRINGID}“
-STR_1560    :{SMALLFONT}„Ich bezahle nicht so viel für Eis von {STRINGID}“
-STR_1561    :{SMALLFONT}„Ich bezahle nicht so viel für Zuckerwatte von {STRINGID}“
+STR_1550    :„Wow!“
+STR_1551    :„Ich habe das komische Gefühl, dass mich jemand beobachtet“
+STR_1552    :„Ich bezahle nicht so viel für einen Ballon von {STRINGID}“
+STR_1553    :„Ich bezahle nicht so viel für ein Plüschtier von {STRINGID}“
+STR_1554    :„Ich bezahle nicht so viel für eine Parkkarte von {STRINGID}“
+STR_1555    :„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
+STR_1556    :„Ich bezahle nicht so viel für einen Regenschirm von {STRINGID}“
+STR_1557    :„Ich bezahle nicht so viel für ein Getränk von {STRINGID}“
+STR_1558    :„Ich bezahle nicht so viel für einen Ballon von {STRINGID}“
+STR_1559    :„Ich bezahle nicht so viel für Pommes von {STRINGID}“
+STR_1560    :„Ich bezahle nicht so viel für Eis von {STRINGID}“
+STR_1561    :„Ich bezahle nicht so viel für Zuckerwatte von {STRINGID}“
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}„Ich bezahle nicht so viel für eine Pizza von {STRINGID}“
+STR_1565    :„Ich bezahle nicht so viel für eine Pizza von {STRINGID}“
 STR_1566    :
-STR_1567    :{SMALLFONT}„Ich bezahle nicht so viel für Popcorn von {STRINGID}“
-STR_1568    :{SMALLFONT}„Ich bezahle nicht so viel für einen Hot Dog von {STRINGID}“
-STR_1569    :{SMALLFONT}„Ich bezahle nicht so viel für Meeresfrüchte von {STRINGID}“
-STR_1570    :{SMALLFONT}„Ich bezahle nicht so viel für einen Hut von {STRINGID}“
-STR_1571    :{SMALLFONT}„Ich bezahle nicht so viel für einen Karamellapfel von {STRINGID}“
-STR_1572    :{SMALLFONT}„Ich bezahle nicht so viel für ein T-Shirt von {STRINGID}“
-STR_1573    :{SMALLFONT}„Ich bezahle nicht so viel für einen Donut von {STRINGID}“
-STR_1574    :{SMALLFONT}„Ich bezahle nicht so viel für einen Kaffee von {STRINGID}“
+STR_1567    :„Ich bezahle nicht so viel für Popcorn von {STRINGID}“
+STR_1568    :„Ich bezahle nicht so viel für einen Hot Dog von {STRINGID}“
+STR_1569    :„Ich bezahle nicht so viel für Meeresfrüchte von {STRINGID}“
+STR_1570    :„Ich bezahle nicht so viel für einen Hut von {STRINGID}“
+STR_1571    :„Ich bezahle nicht so viel für einen Karamellapfel von {STRINGID}“
+STR_1572    :„Ich bezahle nicht so viel für ein T-Shirt von {STRINGID}“
+STR_1573    :„Ich bezahle nicht so viel für einen Donut von {STRINGID}“
+STR_1574    :„Ich bezahle nicht so viel für einen Kaffee von {STRINGID}“
 STR_1575    :
-STR_1576    :{SMALLFONT}„Ich bezahle nicht so viel für ein Brathähnchen von {STRINGID}“
-STR_1577    :{SMALLFONT}„Ich bezahle nicht so viel für Limonade von {STRINGID}“
+STR_1576    :„Ich bezahle nicht so viel für ein Brathähnchen von {STRINGID}“
+STR_1577    :„Ich bezahle nicht so viel für Limonade von {STRINGID}“
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
-STR_1585    :{SMALLFONT}„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
-STR_1586    :{SMALLFONT}„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
-STR_1587    :{SMALLFONT}„Diese Brezel von {STRINGID} ist ihr Geld wert“
-STR_1588    :{SMALLFONT}„Diese heiße Schokolade von {STRINGID} ist ihr Geld wert“
-STR_1589    :{SMALLFONT}„Dieser Eistee von {STRINGID} ist sein Geld wert“
-STR_1590    :{SMALLFONT}„Dieser Kuchen von {STRINGID} ist sein Geld wert“
-STR_1591    :{SMALLFONT}„Diese Sonnenbrille von {STRINGID} ist ihr Geld wert“
-STR_1592    :{SMALLFONT}„Diese Fleischnudeln von {STRINGID} sind ihr Geld wert“
-STR_1593    :{SMALLFONT}„Diese gebratenen Reisnudeln von  {STRINGID} sind ihr Geld wert“
-STR_1594    :{SMALLFONT}„Diese Wonton-Suppe von {STRINGID} ist ihr Geld wert“
-STR_1595    :{SMALLFONT}„Diese Fleischklößchensuppe von {STRINGID} ist ihr Geld wert“
-STR_1596    :{SMALLFONT}„Dieser Fruchtsaft von {STRINGID} ist sein Geld wert“
-STR_1597    :{SMALLFONT}„Diese Sojamilch von {STRINGID} ist ihr Geld wert“
-STR_1598    :{SMALLFONT}„Diese Sujeonggwa von {STRINGID} ist ihr Geld wert“
-STR_1599    :{SMALLFONT}„Dieses Sandwich von {STRINGID} ist sein Geld wert“
-STR_1600    :{SMALLFONT}„Dieser Keks von {STRINGID} ist sein Geld wert“
+STR_1584    :„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
+STR_1585    :„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
+STR_1586    :„Dieses Fahrtfoto von {STRINGID} ist sein Geld wert“
+STR_1587    :„Diese Brezel von {STRINGID} ist ihr Geld wert“
+STR_1588    :„Diese heiße Schokolade von {STRINGID} ist ihr Geld wert“
+STR_1589    :„Dieser Eistee von {STRINGID} ist sein Geld wert“
+STR_1590    :„Dieser Kuchen von {STRINGID} ist sein Geld wert“
+STR_1591    :„Diese Sonnenbrille von {STRINGID} ist ihr Geld wert“
+STR_1592    :„Diese Fleischnudeln von {STRINGID} sind ihr Geld wert“
+STR_1593    :„Diese gebratenen Reisnudeln von  {STRINGID} sind ihr Geld wert“
+STR_1594    :„Diese Wonton-Suppe von {STRINGID} ist ihr Geld wert“
+STR_1595    :„Diese Fleischklößchensuppe von {STRINGID} ist ihr Geld wert“
+STR_1596    :„Dieser Fruchtsaft von {STRINGID} ist sein Geld wert“
+STR_1597    :„Diese Sojamilch von {STRINGID} ist ihr Geld wert“
+STR_1598    :„Diese Sujeonggwa von {STRINGID} ist ihr Geld wert“
+STR_1599    :„Dieses Sandwich von {STRINGID} ist sein Geld wert“
+STR_1600    :„Dieser Keks von {STRINGID} ist sein Geld wert“
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}„Diese Bratwurst von {STRINGID} ist ihr Geld wert“
+STR_1604    :„Diese Bratwurst von {STRINGID} ist ihr Geld wert“
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1000,27 +1000,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
-STR_1617    :{SMALLFONT}„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
-STR_1618    :{SMALLFONT}„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
-STR_1619    :{SMALLFONT}„Ich bezahle nicht so viel für eine Brezel von {STRINGID}“
-STR_1620    :{SMALLFONT}„Ich bezahle nicht so viel für eine heiße Schokolade von {STRINGID}“
-STR_1621    :{SMALLFONT}„Ich bezahle nicht so viel für einen Eistee von {STRINGID}“
-STR_1622    :{SMALLFONT}„Ich bezahle nicht so viel für einen Kuchen von {STRINGID}“
-STR_1623    :{SMALLFONT}„Ich bezahle nicht so viel für eine Sonnenbrille von {STRINGID}“
-STR_1624    :{SMALLFONT}„Ich bezahle nicht so viel für Fleischnudeln von {STRINGID}“
-STR_1625    :{SMALLFONT}„Ich bezahle nicht so viel für gebratene Reisnudeln von {STRINGID}“
-STR_1626    :{SMALLFONT}„Ich bezahle nicht so viel für eine Wonton-Suppe von {STRINGID}“
-STR_1627    :{SMALLFONT}„Ich bezahle nicht so viel für eine Fleischklößchensuppe von {STRINGID}“
-STR_1628    :{SMALLFONT}„Ich bezahle nicht so viel für einen Fruchtsaft von {STRINGID}“
-STR_1629    :{SMALLFONT}„Ich bezahle nicht so viel für Sojamilch von {STRINGID}“
-STR_1630    :{SMALLFONT}„Ich bezahle nicht so viel für Sujeonggwa von {STRINGID}“
-STR_1631    :{SMALLFONT}„Ich bezahle nicht so viel für ein Sandwich von {STRINGID}“
-STR_1632    :{SMALLFONT}„Ich bezahle nicht so viel für einen Keks von {STRINGID}“
+STR_1616    :„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
+STR_1617    :„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
+STR_1618    :„Ich bezahle nicht so viel für ein Fahrtfoto von {STRINGID}“
+STR_1619    :„Ich bezahle nicht so viel für eine Brezel von {STRINGID}“
+STR_1620    :„Ich bezahle nicht so viel für eine heiße Schokolade von {STRINGID}“
+STR_1621    :„Ich bezahle nicht so viel für einen Eistee von {STRINGID}“
+STR_1622    :„Ich bezahle nicht so viel für einen Kuchen von {STRINGID}“
+STR_1623    :„Ich bezahle nicht so viel für eine Sonnenbrille von {STRINGID}“
+STR_1624    :„Ich bezahle nicht so viel für Fleischnudeln von {STRINGID}“
+STR_1625    :„Ich bezahle nicht so viel für gebratene Reisnudeln von {STRINGID}“
+STR_1626    :„Ich bezahle nicht so viel für eine Wonton-Suppe von {STRINGID}“
+STR_1627    :„Ich bezahle nicht so viel für eine Fleischklößchensuppe von {STRINGID}“
+STR_1628    :„Ich bezahle nicht so viel für einen Fruchtsaft von {STRINGID}“
+STR_1629    :„Ich bezahle nicht so viel für Sojamilch von {STRINGID}“
+STR_1630    :„Ich bezahle nicht so viel für Sujeonggwa von {STRINGID}“
+STR_1631    :„Ich bezahle nicht so viel für ein Sandwich von {STRINGID}“
+STR_1632    :„Ich bezahle nicht so viel für einen Keks von {STRINGID}“
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}„Ich bezahle nicht so viel für eine Bratwurst von {STRINGID}“
+STR_1636    :„Ich bezahle nicht so viel für eine Bratwurst von {STRINGID}“
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1032,11 +1032,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}„Hilfe! Lasst mich runter!“
-STR_1649    :{SMALLFONT}„Mir geht das Geld aus!“
-STR_1650    :{SMALLFONT}„Wow! Eine neue Bahn im Bau!“
+STR_1648    :„Hilfe! Lasst mich runter!“
+STR_1649    :„Mir geht das Geld aus!“
+STR_1650    :„Wow! Eine neue Bahn im Bau!“
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}„…und hier sind wir bei d. {STRINGID}!“
+STR_1653    :„…und hier sind wir bei d. {STRINGID}!“
 STR_1654    :{WINDOW_COLOUR_2}Aktuelle Gedanken:
 STR_1655    :Fußweg auf Gelände anlegen
 STR_1656    :Brücke bauen oder Tunnel anlegen
@@ -1188,7 +1188,7 @@ STR_1808    :{WINDOW_COLOUR_2}Letzte Störung: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Aktuelle Störung: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Trägt:
 STR_1811    :Dies kann hier nicht gebaut werden…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Verschiedene Objekte
 STR_1814    :Aktionen
 STR_1815    :Gedanken
@@ -1197,7 +1197,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Alle Besucher
 STR_1819    :{WINDOW_COLOUR_2}Alle Besucher (zusammengefasst)
 STR_1820    :{WINDOW_COLOUR_2}Besucher {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Besucher denken {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Besucher denken {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Besucher denken an {POP16}{STRINGID}
 STR_1823    :Gedanken der Besucher zu dieser{NEWLINE}Attraktion anzeigen
 STR_1824    :Besucher dieser Attraktion anzeigen
@@ -1298,7 +1298,6 @@ STR_1921    :Neues Spiel beginnen
 STR_1922    :Gespeichertes Spiel fortsetzen
 STR_1924    :Beenden
 STR_1925    :Person kann hier nicht platziert werden…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} ist ausgefallen
 STR_1928    :{RED}{STRINGID} hatte einen Unfall!
 STR_1929    :{RED}{STRINGID} wurde immer noch nicht repariert{NEWLINE}Schauen Sie nach, wo Ihre Mechaniker sind, und organisieren Sie sie besser
@@ -1579,7 +1578,7 @@ STR_2218    :{RED}{STRINGID} bei {STRINGID} ist noch nicht zu {STRINGID} zurück
 STR_2219    :{RED}{COMMA16} Menschen sind bei einem Unfall in {STRINGID} gestorben
 STR_2220    :{WINDOW_COLOUR_2}Parkbewertung: {BLACK}{COMMA16}
 STR_2221    :Parkbewertung: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Besucher im Park: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kontostand: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kontostand: {RED}{CURRENCY2DP}
@@ -1592,7 +1591,7 @@ STR_2231    :Haltebremse (Gefälle)
 STR_2232    :Kabellifthügel
 STR_2233    :Parkinformationen
 STR_2234    :Aktuelle Nachrichten
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Januar
 STR_2237    :Februar
 STR_2238    :März
@@ -1796,7 +1795,7 @@ STR_2450    :{YELLOW}Ihre Werbekampagne für den Park ist zu Ende
 STR_2451    :{YELLOW}Ihre Werbekampagne für d. {STRINGID} ist zu Ende
 STR_2452    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Kontostand (abzüglich Darlehen): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Finanzkonten anzeigen
 STR_2458    :Kontostand (abzüglich Darlehen){NEWLINE}im Zeitverlauf anzeigen
 STR_2459    :Verkehrswertdiagramm im{NEWLINE}Zeitverlauf anzeigen
@@ -1907,7 +1906,6 @@ STR_2636    :Ziffernblock /
 STR_2669    :Numlock
 STR_2670    :Rollen
 STR_2680    :Alle Forschungen beendet
-STR_2681    :{MEDIUMFONT}{BLACK}Erhöht Ihren Kontostand um {CURRENCY}
 STR_2684    :Eine große Gruppe von Besuchern tritt ein
 STR_2685    :Simplexrauschparameter
 STR_2686    :Niedrig:
@@ -1994,7 +1992,7 @@ STR_2789    :{WINDOW_COLOUR_2}Sie haben Ihr Ziel nicht erreicht!
 STR_2790    :Namen für die Szenarioübers. eingeben
 STR_2791    :Namen eingeben
 STR_2792    :Namen für die Szenarioübersicht eingeben:
-STR_2793    :{SMALLFONT}(Durchgeführt von {STRINGID})
+STR_2793    :(Durchgeführt von {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Durchgeführt von: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} mit einem Firmenwert von: {BLACK}{CURRENCY}
 STR_2795    :Sortieren
 STR_2796    :Sortieren Sie die Bahnliste in die richtige Reihenfolge mit Hilfe der angezeigten Informationsart
@@ -2500,7 +2498,7 @@ STR_5134    :Größeren Landbereich anpassen
 STR_5135    :Kaufe Land- und Baurechte
 STR_5136    :Landrechte
 STR_5137    :Betriebsbeschränkungen aufheben
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Deaktiviere Bremsenfehlfunktion
 STR_5141    :Deaktiviere alle Störungen
@@ -2646,7 +2644,7 @@ STR_5297    :Park öffnen
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Personal schnell feuern
-STR_5301    :{MEDIUMFONT}{BLACK}Ihr Darlehen zurückzahlen
+STR_5301    :Ihr Darlehen zurückzahlen
 STR_5302    :Darlehen zurückzahl.
 STR_5303    :Erlaube im Pausenmodus zu bauen
 STR_5304    :Titelsequenz:
@@ -2805,7 +2803,7 @@ STR_5481    :Themen
 STR_5482    :{WINDOW_COLOUR_2}Letzte Inspektion vor: {BLACK}1 Minute
 STR_5483    :{BLACK}({COMMA16} Wochen verbleibend)
 STR_5484    :{BLACK}({COMMA16} Woche verbleibend)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Aktuelle Nachrichten anzeigen
 STR_5489    :Nur überwachte Besucher anzeigen
@@ -3306,7 +3304,7 @@ STR_6030    :Landschaftsauswahl. Wählen Sie ein Landschaftselement auf der Kart
 STR_6031    :Serverbeschreibung:
 STR_6032    :Serverbegrüßung:
 STR_6033    :Pfad zur RCT1-Installation:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Bitte wählen Sie ein RCT1-Verzeichnis
 STR_6036    :Leeren
 STR_6037    :Das gewählte Verzeichnis enthält keine gültige „RollerCoaster Tycoon 1“-Installation.
@@ -3451,7 +3449,7 @@ STR_6183    :Folgen{MOVE_X}{87}Kein Objekt ausgewählt
 STR_6184    :Objekt folgen 
 STR_6185    :Objekt auswählen
 STR_6186    :Kein Objekt ausgewählt
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Erbrochenes
 STR_6189    :Ente
 STR_6190    :Sie können kein Objekt auswählen, solange Sie sich im Hauptmenü befinden
@@ -3601,7 +3599,7 @@ STR_6356    :Erzeugt Enten, falls der Park Wasser enthält
 STR_6357    :Entfernt alle Enten aus der Karte
 STR_6358    :Seite {UINT16}
 STR_6359    :{POP16}{POP16}Seite {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Lichter an Fahrgeschäften akt. (experimentell)
 STR_6362    :Falls aktiviert, werden Fahrzeuge für Streckenfahrgeschäfte in der Nacht leuchten.
 STR_6363    :Text in die Zwischenablage kopiert

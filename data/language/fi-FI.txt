@@ -798,14 +798,14 @@ STR_1410    :Pystysuora torni
 STR_1411    :{STRINGID} tiellä
 STR_1412    :{WINDOW_COLOUR_3}Tietojen keruu ei ole saatavilla tämäntyyppiselle laitteelle
 STR_1413    :{WINDOW_COLOUR_3}Tietojen keruu alkaa kun seuraava {STRINGID} lähtee {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Nopeus
 STR_1416    :{WINDOW_COLOUR_2}Korkeus
 STR_1417    :{WINDOW_COLOUR_2}Pyst. G-voima
 STR_1418    :{WINDOW_COLOUR_2}Sivut. G-voima
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Kerätään tietoja kohteesta {POP16}{STRINGID}
 STR_1423    :Jonolinjasto
 STR_1424    :Jalkakäytävä
@@ -865,131 +865,131 @@ STR_1476    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {BLACK}Ei viellä saatavill
 STR_1477    :{WINDOW_COLOUR_2}Intensiteettiarvosana: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Pahoinvoinnin arvosana: {BLACK}Ei viellä saatavilla
-STR_1480    :{SMALLFONT}“Minulla ei ole varaa mennä {STRINGID}”
-STR_1481    :{SMALLFONT}“Kulutin kaikki rahani”
-STR_1482    :{SMALLFONT}“Voin pahoin”
-STR_1483    :{SMALLFONT}“Voin erittäin pahoin”
-STR_1484    :{SMALLFONT}“Tahdon mennä johonkin jännittävämpään kuin {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} näyttää liian hurjalta minulle”
-STR_1486    :{SMALLFONT}“En ole syönyt/juonut {STRINGID} loppuun vielä”
-STR_1487    :{SMALLFONT}“Pelkästään {STRINGID} katsominen saa minut voimaan pahoin”
-STR_1488    :{SMALLFONT}“En aio maksaa noin paljon päästäkseni {STRINGID}”
-STR_1489    :{SMALLFONT}“Haluan kotiin”
-STR_1490    :{SMALLFONT}“{STRINGID} on todella hyvän arvoinen”
-STR_1491    :{SMALLFONT}“Minulla on jo {STRINGID}”
-STR_1492    :{SMALLFONT}“Minulla ei ole varaa ostaa {STRINGID}”
-STR_1493    :{SMALLFONT}“Minulla ei ole nälkä”
-STR_1494    :{SMALLFONT}“Minulla ei ole jano”
-STR_1495    :{SMALLFONT}“Apua! Hukun!”
-STR_1496    :{SMALLFONT}“Olen eksynyt!”
-STR_1497    :{SMALLFONT}“{STRINGID} oli mahtava”
-STR_1498    :{SMALLFONT}“Olen jonottanut ikuisuuden kohteeseen {STRINGID}”
-STR_1499    :{SMALLFONT}“Olen väsynyt”
-STR_1500    :{SMALLFONT}“Minulla on nälkä”
-STR_1501    :{SMALLFONT}“Minulla on jano”
-STR_1502    :{SMALLFONT}“Minun tarvitsee käydä vessassa”
-STR_1503    :{SMALLFONT}“En löydä {STRINGID}”
-STR_1504    :{SMALLFONT}“En aio maksaa noin paljon käyttääkseni {STRINGID}”
-STR_1505    :{SMALLFONT}“Täällä sataa, en halua mennä kohteeseen {STRINGID}”
-STR_1506    :{SMALLFONT}“Täällä on todella paljon roskaa”
-STR_1507    :{SMALLFONT}“En löydä puiston uloskäyntiä”
-STR_1508    :{SMALLFONT}“Tahdon pois kohteesta {STRINGID}”
-STR_1509    :{SMALLFONT}“Tahdon ulos kohteesta {STRINGID}”
-STR_1510    :{SMALLFONT}“En mene kohteeseen {STRINGID} - Se ei ole turvallinen”
-STR_1511    :{SMALLFONT}“Tämä tie on kuvottava”
-STR_1512    :{SMALLFONT}“Täällä on liikaa tungosta”
-STR_1513    :{SMALLFONT}“Täällä on todella paljon ilkivaltaa”
-STR_1514    :{SMALLFONT}“Mahtava maisema!”
-STR_1515    :{SMALLFONT}“Tämä puisto on todella puhdas ja siisti”
-STR_1516    :{SMALLFONT}“Hyppivät suihkulähteet ovat todella mahtavia!”
-STR_1517    :{SMALLFONT}“Täällä oleva musiikki on mukavaa”
-STR_1518    :{SMALLFONT}“Tämä ilmapallo kojusta {STRINGID} on todella hyvän hintainen”
-STR_1519    :{SMALLFONT}“Tämä pehmolelu kojusta {STRINGID} on todella hyvän hintainen”
-STR_1520    :{SMALLFONT}“Tämä puiston kartta kojusta {STRINGID} on todella hyvän hintainen”
-STR_1521    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
-STR_1522    :{SMALLFONT}“Tämä sateenvarjo kojusta {STRINGID} on todella hyvän hintainen”
-STR_1523    :{SMALLFONT}“Tämä juoma kojusta {STRINGID} on todella hyvän hintainen”
-STR_1524    :{SMALLFONT}“Tämä hampurilainen kojusta {STRINGID} on todella hyvän hintainen”
-STR_1525    :{SMALLFONT}“Nämä ranskalaiset kojusta {STRINGID} on todella hyvän hintainen”
-STR_1526    :{SMALLFONT}“Tämä jäätelö kojusta {STRINGID} on todella hyvän hintainen”
-STR_1527    :{SMALLFONT}“Tämä hattara kojusta {STRINGID} on todella hyvän hintainen”
+STR_1480    :“Minulla ei ole varaa mennä {STRINGID}”
+STR_1481    :“Kulutin kaikki rahani”
+STR_1482    :“Voin pahoin”
+STR_1483    :“Voin erittäin pahoin”
+STR_1484    :“Tahdon mennä johonkin jännittävämpään kuin {STRINGID}”
+STR_1485    :“{STRINGID} näyttää liian hurjalta minulle”
+STR_1486    :“En ole syönyt/juonut {STRINGID} loppuun vielä”
+STR_1487    :“Pelkästään {STRINGID} katsominen saa minut voimaan pahoin”
+STR_1488    :“En aio maksaa noin paljon päästäkseni {STRINGID}”
+STR_1489    :“Haluan kotiin”
+STR_1490    :“{STRINGID} on todella hyvän arvoinen”
+STR_1491    :“Minulla on jo {STRINGID}”
+STR_1492    :“Minulla ei ole varaa ostaa {STRINGID}”
+STR_1493    :“Minulla ei ole nälkä”
+STR_1494    :“Minulla ei ole jano”
+STR_1495    :“Apua! Hukun!”
+STR_1496    :“Olen eksynyt!”
+STR_1497    :“{STRINGID} oli mahtava”
+STR_1498    :“Olen jonottanut ikuisuuden kohteeseen {STRINGID}”
+STR_1499    :“Olen väsynyt”
+STR_1500    :“Minulla on nälkä”
+STR_1501    :“Minulla on jano”
+STR_1502    :“Minun tarvitsee käydä vessassa”
+STR_1503    :“En löydä {STRINGID}”
+STR_1504    :“En aio maksaa noin paljon käyttääkseni {STRINGID}”
+STR_1505    :“Täällä sataa, en halua mennä kohteeseen {STRINGID}”
+STR_1506    :“Täällä on todella paljon roskaa”
+STR_1507    :“En löydä puiston uloskäyntiä”
+STR_1508    :“Tahdon pois kohteesta {STRINGID}”
+STR_1509    :“Tahdon ulos kohteesta {STRINGID}”
+STR_1510    :“En mene kohteeseen {STRINGID} - Se ei ole turvallinen”
+STR_1511    :“Tämä tie on kuvottava”
+STR_1512    :“Täällä on liikaa tungosta”
+STR_1513    :“Täällä on todella paljon ilkivaltaa”
+STR_1514    :“Mahtava maisema!”
+STR_1515    :“Tämä puisto on todella puhdas ja siisti”
+STR_1516    :“Hyppivät suihkulähteet ovat todella mahtavia!”
+STR_1517    :“Täällä oleva musiikki on mukavaa”
+STR_1518    :“Tämä ilmapallo kojusta {STRINGID} on todella hyvän hintainen”
+STR_1519    :“Tämä pehmolelu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1520    :“Tämä puiston kartta kojusta {STRINGID} on todella hyvän hintainen”
+STR_1521    :“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1522    :“Tämä sateenvarjo kojusta {STRINGID} on todella hyvän hintainen”
+STR_1523    :“Tämä juoma kojusta {STRINGID} on todella hyvän hintainen”
+STR_1524    :“Tämä hampurilainen kojusta {STRINGID} on todella hyvän hintainen”
+STR_1525    :“Nämä ranskalaiset kojusta {STRINGID} on todella hyvän hintainen”
+STR_1526    :“Tämä jäätelö kojusta {STRINGID} on todella hyvän hintainen”
+STR_1527    :“Tämä hattara kojusta {STRINGID} on todella hyvän hintainen”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Tämä pitsa kojusta {STRINGID} on todella hyvän hintainen”
+STR_1531    :“Tämä pitsa kojusta {STRINGID} on todella hyvän hintainen”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Tämä popcorn kojusta {STRINGID} on todella hyvän hintainen”
-STR_1534    :{SMALLFONT}“Tämä nakkisämpylä kojusta {STRINGID} on todella hyvän hintainen”
-STR_1535    :{SMALLFONT}“Tämä lonkero kojusta {STRINGID} on todella hyvän hintainen”
-STR_1536    :{SMALLFONT}“Tämä hattu kojusta {STRINGID} on todella hyvän hintainen”
-STR_1537    :{SMALLFONT}“Tämä toffeeomena kojusta {STRINGID} on todella hyvän hintainen”
-STR_1538    :{SMALLFONT}“Tämä t-paita kojusta {STRINGID} on todella hyvän hintainen”
-STR_1539    :{SMALLFONT}“Tämä donitsi kojusta {STRINGID} on todella hyvän hintainen”
-STR_1540    :{SMALLFONT}“Tämä kahvi kojusta {STRINGID} on todella hyvän hintainen”
+STR_1533    :“Tämä popcorn kojusta {STRINGID} on todella hyvän hintainen”
+STR_1534    :“Tämä nakkisämpylä kojusta {STRINGID} on todella hyvän hintainen”
+STR_1535    :“Tämä lonkero kojusta {STRINGID} on todella hyvän hintainen”
+STR_1536    :“Tämä hattu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1537    :“Tämä toffeeomena kojusta {STRINGID} on todella hyvän hintainen”
+STR_1538    :“Tämä t-paita kojusta {STRINGID} on todella hyvän hintainen”
+STR_1539    :“Tämä donitsi kojusta {STRINGID} on todella hyvän hintainen”
+STR_1540    :“Tämä kahvi kojusta {STRINGID} on todella hyvän hintainen”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Tämä friteerattu kana kojusta {STRINGID} on todella hyvän hintainen”
-STR_1543    :{SMALLFONT}“Tämä limonaati {STRINGID} on todella hyvän hintainen”
+STR_1542    :“Tämä friteerattu kana kojusta {STRINGID} on todella hyvän hintainen”
+STR_1543    :“Tämä limonaati {STRINGID} on todella hyvän hintainen”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Vau!”
-STR_1551    :{SMALLFONT}“Minulla on outo fiilis että joku katselee minua”
-STR_1552    :{SMALLFONT}“En maksa noin paljon ilmapallosta kojussa {STRINGID}”
-STR_1553    :{SMALLFONT}“En maksa noin paljon pehmolelusta kojussa {STRINGID}”
-STR_1554    :{SMALLFONT}“En maksa noin paljon puiston kartasta kojussa {STRINGID}”
-STR_1555    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
-STR_1556    :{SMALLFONT}“En maksa noin paljon sateenvarjosta kojussa {STRINGID}”
-STR_1557    :{SMALLFONT}“En maksa noin paljon juomasta kojussa {STRINGID}”
-STR_1558    :{SMALLFONT}“En maksa noin paljon hampurilaisesta kojussa {STRINGID}”
-STR_1559    :{SMALLFONT}“En maksa noin paljon ranskalaisista kojussa {STRINGID}”
-STR_1560    :{SMALLFONT}“En maksa noin paljon jäätelöstä kojussa {STRINGID}”
-STR_1561    :{SMALLFONT}“En maksa noin paljon hattarasta kojussa {STRINGID}”
+STR_1550    :“Vau!”
+STR_1551    :“Minulla on outo fiilis että joku katselee minua”
+STR_1552    :“En maksa noin paljon ilmapallosta kojussa {STRINGID}”
+STR_1553    :“En maksa noin paljon pehmolelusta kojussa {STRINGID}”
+STR_1554    :“En maksa noin paljon puiston kartasta kojussa {STRINGID}”
+STR_1555    :“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1556    :“En maksa noin paljon sateenvarjosta kojussa {STRINGID}”
+STR_1557    :“En maksa noin paljon juomasta kojussa {STRINGID}”
+STR_1558    :“En maksa noin paljon hampurilaisesta kojussa {STRINGID}”
+STR_1559    :“En maksa noin paljon ranskalaisista kojussa {STRINGID}”
+STR_1560    :“En maksa noin paljon jäätelöstä kojussa {STRINGID}”
+STR_1561    :“En maksa noin paljon hattarasta kojussa {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“En maksa noin paljon pitsasta kojussa {STRINGID}”
+STR_1565    :“En maksa noin paljon pitsasta kojussa {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“En maksa noin paljon popcornista kojussa {STRINGID}”
-STR_1568    :{SMALLFONT}“En maksa noin paljon nakkisämpylästä kojussa {STRINGID}”
-STR_1569    :{SMALLFONT}“En maksa noin paljon lonkerosta kojussa {STRINGID}”
-STR_1570    :{SMALLFONT}“En maksa noin paljon hatusta kojussa {STRINGID}”
-STR_1571    :{SMALLFONT}“En maksa noin paljon toffeeomenasta kojussa {STRINGID}”
-STR_1572    :{SMALLFONT}“En maksa noin paljon t-paidasta kojussa {STRINGID}”
-STR_1573    :{SMALLFONT}“En maksa noin paljon donitsista kojussa {STRINGID}”
-STR_1574    :{SMALLFONT}“En maksa noin paljon kahvista kojussa {STRINGID}”
+STR_1567    :“En maksa noin paljon popcornista kojussa {STRINGID}”
+STR_1568    :“En maksa noin paljon nakkisämpylästä kojussa {STRINGID}”
+STR_1569    :“En maksa noin paljon lonkerosta kojussa {STRINGID}”
+STR_1570    :“En maksa noin paljon hatusta kojussa {STRINGID}”
+STR_1571    :“En maksa noin paljon toffeeomenasta kojussa {STRINGID}”
+STR_1572    :“En maksa noin paljon t-paidasta kojussa {STRINGID}”
+STR_1573    :“En maksa noin paljon donitsista kojussa {STRINGID}”
+STR_1574    :“En maksa noin paljon kahvista kojussa {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“En maksa noin paljon friteeratusta kanasta kojussa {STRINGID}”
-STR_1577    :{SMALLFONT}“En maksa noin paljon limonaadista kojussa {STRINGID}”
+STR_1576    :“En maksa noin paljon friteeratusta kanasta kojussa {STRINGID}”
+STR_1577    :“En maksa noin paljon limonaadista kojussa {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
-STR_1585    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
-STR_1586    :{SMALLFONT}“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
-STR_1587    :{SMALLFONT}“Tämä viipurinrinkeli kojusta {STRINGID} on todella hyvän hintainen”
-STR_1588    :{SMALLFONT}“Tämä kuuma kaakao kojusta {STRINGID} on todella hyvän hintainen”
-STR_1589    :{SMALLFONT}“Tämä jäätee kojusta {STRINGID} on todella hyvän hintainen”
-STR_1590    :{SMALLFONT}“Tämä tippaleipä kojusta {STRINGID} on todella hyvän hintainen”
-STR_1591    :{SMALLFONT}“TNämä aurinkolasit kojusta {STRINGID} on todella hyvän hintainen”
-STR_1592    :{SMALLFONT}“Nämä häränlihanuudelit kojusta {STRINGID} on todella hyvän hintainen”
-STR_1593    :{SMALLFONT}“Nämä paistetut riisinuudelit kojusta {STRINGID} on todella hyvän hintainen”
-STR_1594    :{SMALLFONT}“Tämä wontonkeitto kojusta {STRINGID} on todella hyvän hintainen”
-STR_1595    :{SMALLFONT}“Tämä lihapullakeitto kojusta {STRINGID} on todella hyvän hintainen”
-STR_1596    :{SMALLFONT}“Tämä hedelmämehu kojusta {STRINGID} on todella hyvän hintainen”
-STR_1597    :{SMALLFONT}“Tämä soijamaito kojusta {STRINGID} on todella hyvän hintainen”
-STR_1598    :{SMALLFONT}“Tämä sujongkwa kojusta {STRINGID} on todella hyvän hintainen”
-STR_1599    :{SMALLFONT}“Tämä pantonki kojusta {STRINGID} on todella hyvän hintainen”
-STR_1600    :{SMALLFONT}“Tämä keksi kojusta {STRINGID} on todella hyvän hintainen”
+STR_1584    :“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1585    :“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1586    :“Tämä kuva kojusta {STRINGID} on todella hyvän hintainen”
+STR_1587    :“Tämä viipurinrinkeli kojusta {STRINGID} on todella hyvän hintainen”
+STR_1588    :“Tämä kuuma kaakao kojusta {STRINGID} on todella hyvän hintainen”
+STR_1589    :“Tämä jäätee kojusta {STRINGID} on todella hyvän hintainen”
+STR_1590    :“Tämä tippaleipä kojusta {STRINGID} on todella hyvän hintainen”
+STR_1591    :“TNämä aurinkolasit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1592    :“Nämä häränlihanuudelit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1593    :“Nämä paistetut riisinuudelit kojusta {STRINGID} on todella hyvän hintainen”
+STR_1594    :“Tämä wontonkeitto kojusta {STRINGID} on todella hyvän hintainen”
+STR_1595    :“Tämä lihapullakeitto kojusta {STRINGID} on todella hyvän hintainen”
+STR_1596    :“Tämä hedelmämehu kojusta {STRINGID} on todella hyvän hintainen”
+STR_1597    :“Tämä soijamaito kojusta {STRINGID} on todella hyvän hintainen”
+STR_1598    :“Tämä sujongkwa kojusta {STRINGID} on todella hyvän hintainen”
+STR_1599    :“Tämä pantonki kojusta {STRINGID} on todella hyvän hintainen”
+STR_1600    :“Tämä keksi kojusta {STRINGID} on todella hyvän hintainen”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Tämä grillattu makkara kojusta {STRINGID} on todella hyvän hintainen”
+STR_1604    :“Tämä grillattu makkara kojusta {STRINGID} on todella hyvän hintainen”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1001,27 +1001,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
-STR_1617    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
-STR_1618    :{SMALLFONT}“En maksa noin paljon kuvasta kojussa {STRINGID}”
-STR_1619    :{SMALLFONT}“En maksa noin paljon viipurinrinkelistä kojussa {STRINGID}”
-STR_1620    :{SMALLFONT}“En maksa noin paljon kaakaosta kojussa {STRINGID}”
-STR_1621    :{SMALLFONT}“En maksa noin paljon jääteestä kojussa {STRINGID}”
-STR_1622    :{SMALLFONT}“En maksa noin paljon tippaleivästä kojussa {STRINGID}”
-STR_1623    :{SMALLFONT}“En maksa noin paljon aurinkolaseista kojussa {STRINGID}”
-STR_1624    :{SMALLFONT}“En maksa noin paljon härkänuudeleista kojussa {STRINGID}”
-STR_1625    :{SMALLFONT}“En maksa noin paljon paistetusta riisinuudeleista kojussa {STRINGID}”
-STR_1626    :{SMALLFONT}“En maksa noin paljon wontonkeitosta kojussa {STRINGID}”
-STR_1627    :{SMALLFONT}“En maksa noin paljon lihapullakeitosta kojussa {STRINGID}”
-STR_1628    :{SMALLFONT}“En maksa noin paljon hedelmämehusta kojussa {STRINGID}”
-STR_1629    :{SMALLFONT}“En maksa noin paljon soijamaidosta kojussa {STRINGID}”
-STR_1630    :{SMALLFONT}“En maksa noin paljon sujongkwasta kojussa {STRINGID}”
-STR_1631    :{SMALLFONT}“En maksa noin paljon patongista kojussa {STRINGID}”
-STR_1632    :{SMALLFONT}“En maksa noin paljon keksistä kojussa {STRINGID}”
+STR_1616    :“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1617    :“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1618    :“En maksa noin paljon kuvasta kojussa {STRINGID}”
+STR_1619    :“En maksa noin paljon viipurinrinkelistä kojussa {STRINGID}”
+STR_1620    :“En maksa noin paljon kaakaosta kojussa {STRINGID}”
+STR_1621    :“En maksa noin paljon jääteestä kojussa {STRINGID}”
+STR_1622    :“En maksa noin paljon tippaleivästä kojussa {STRINGID}”
+STR_1623    :“En maksa noin paljon aurinkolaseista kojussa {STRINGID}”
+STR_1624    :“En maksa noin paljon härkänuudeleista kojussa {STRINGID}”
+STR_1625    :“En maksa noin paljon paistetusta riisinuudeleista kojussa {STRINGID}”
+STR_1626    :“En maksa noin paljon wontonkeitosta kojussa {STRINGID}”
+STR_1627    :“En maksa noin paljon lihapullakeitosta kojussa {STRINGID}”
+STR_1628    :“En maksa noin paljon hedelmämehusta kojussa {STRINGID}”
+STR_1629    :“En maksa noin paljon soijamaidosta kojussa {STRINGID}”
+STR_1630    :“En maksa noin paljon sujongkwasta kojussa {STRINGID}”
+STR_1631    :“En maksa noin paljon patongista kojussa {STRINGID}”
+STR_1632    :“En maksa noin paljon keksistä kojussa {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“En maksa noin paljon grillatusta makkarasta kojussa {STRINGID}”
+STR_1636    :“En maksa noin paljon grillatusta makkarasta kojussa {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1033,11 +1033,11 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Auta! Laske minut alas!”
-STR_1649    :{SMALLFONT}“Rahat ovat loppumassa!”
-STR_1650    :{SMALLFONT}“Vau! Uutta laitetta rakennetaan!”
+STR_1648    :“Auta! Laske minut alas!”
+STR_1649    :“Rahat ovat loppumassa!”
+STR_1650    :“Vau! Uutta laitetta rakennetaan!”
 # Two removed inside jokes about Intamin and Phoenix
-STR_1653    :{SMALLFONT}“…ja tässä me olemme {STRINGID}!”
+STR_1653    :“…ja tässä me olemme {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Viimeisimmät ajatukset:
 STR_1655    :Rakenna jalkakäytävä maahan
 STR_1656    :Rakenna jalkakäytävätunneli tai -silta
@@ -1189,7 +1189,7 @@ STR_1808    :{WINDOW_COLOUR_2}Viimeisin konerikko: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nykyinen konerikko: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Kantaa:
 STR_1811    :Tätä ei voi rakentaa tähän…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Sekalaiset tavarat
 STR_1814    :Toiminnat
 STR_1815    :Ajatukset
@@ -1198,7 +1198,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Kaikki vieraat
 STR_1819    :{WINDOW_COLOUR_2}Kaikki vieraat (yhteenvetona)
 STR_1820    :{WINDOW_COLOUR_2}Vieraat {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Vieraat ajattelevat {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Vieraat ajattelevat {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Vieraat ajattelevat {POP16}{STRINGID}
 STR_1823    :Näytä vieraiden ajatukset tästä laitteesta/kohteesta
 STR_1824    :Näytä vieraat tässä laitteessa/kohteessa
@@ -1301,7 +1301,6 @@ STR_1921    :Aloita uusi peli
 STR_1922    :Jatka tallennetun pelin pelaamista
 STR_1924    :Lopeta
 STR_1925    :Henkilöä ei voi sijoittaa tähän…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} on hajonnut
 STR_1928    :{RED}{STRINGID} on hajonnut!
 STR_1929    :{RED}{STRINGID} ei vieläkään ole korjattu{NEWLINE}tarkista missä mekaanikkosi ovat ja pohdi niiden parempaa sijoittelua
@@ -1582,7 +1581,7 @@ STR_2218    :{RED}{STRINGID} on {STRINGID} hasn't returned to the {STRINGID} yet
 STR_2219    :{RED}{COMMA16} ihmistä kuoli tapaturmassa kohteessa {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Puiston luokitus: {BLACK}{COMMA16}
 STR_2221    :Puiston luokitus: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Vieraiden määrä: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Kassa: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Kassa: {RED}{CURRENCY2DP}
@@ -1595,7 +1594,7 @@ STR_2231    :Pidätysjarru pudotukseen
 STR_2232    :Kaapelinostomäki
 STR_2233    :Puiston tiedot
 STR_2234    :Viimeiset viestit
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Tammikuu
 STR_2237    :Helmikuu
 STR_2238    :Maaliskuu
@@ -1799,7 +1798,7 @@ STR_2450    :{YELLOW}Mainoskampanjasi puistolle on loppunut
 STR_2451    :{YELLOW}Mainoskampanjasi laitteelle {STRINGID} on loppunut
 STR_2452    :{WINDOW_COLOUR_2}Raha (less loan): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Raha (less loan): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Näytä taloustiedot
 STR_2458    :Näytä kuvaaja rahan määrästä (less loan) over time
 STR_2459    :Näytä kuvaaja puiston arvosta
@@ -1909,7 +1908,6 @@ STR_2636    :NumPad /
 STR_2669    :NumLock
 STR_2670    :Scroll
 STR_2680    :Kaikki tutkimustyö on tehty
-STR_2681    :{MEDIUMFONT}{BLACK}Saat {CURRENCY} lisää rahaa
 STR_2684    :Suuri kävijäryhmä saapuu
 STR_2685    :Simplex Noise Parameters
 STR_2686    :Matala:
@@ -1996,7 +1994,7 @@ STR_2789    :{WINDOW_COLOUR_2}Epäonnistuit tavoitteessasi !
 STR_2790    :Enter name into scenario chart
 STR_2791    :Anna nimi
 STR_2792    :Please enter your name for the scenario chart:
-STR_2793    :{SMALLFONT}(Suorittanut {STRINGID})
+STR_2793    :(Suorittanut {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Suorittanut: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} Yhtiön arvolla: {BLACK}{CURRENCY}
 STR_2795    :Järjestä
 STR_2796    :Järjestä laitelistaus valitun tietotyypin mukaan
@@ -2503,7 +2501,7 @@ STR_5134    :Adjust larger area of land rights
 STR_5135    :Buy land rights and construction rights
 STR_5136    :Maaoikeudet
 STR_5137    :Allow lift hill and launch speeds{NEWLINE}up to {VELOCITY}
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
@@ -2650,7 +2648,7 @@ STR_5297    :Avaa puisto
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Quick fire staff
-STR_5301    :{MEDIUMFONT}{BLACK}Poista lainasi
+STR_5301    :Poista lainasi
 STR_5302    :Poista laina
 STR_5303    :Salli rakentelu pelin ollessa pysäytetty
 STR_5304    :Title Sequence:
@@ -2809,7 +2807,7 @@ STR_5481    :Teemat
 STR_5482    :{WINDOW_COLOUR_2}Aikaa viime tarkistuksesta: {BLACK}1 minuutti
 STR_5483    :{BLACK}({COMMA16} viikkoa jäljellä)
 STR_5484    :{BLACK}({COMMA16} viikko jäljellä)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Näytä viimeiset viestit
 STR_5489    :Show only tracked guests
@@ -2874,4 +2872,4 @@ STR_5549    :Vuosi/Kuukausi/Päivä
 STR_5550    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :Vuosi/Päivä/Kuukausi
 STR_5552    :{POP16}{POP16}Vuosi {COMMA16}, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}

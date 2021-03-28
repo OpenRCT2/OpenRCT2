@@ -798,14 +798,14 @@ STR_1410    :Vertikala Turo
 STR_1411    :{STRINGID} obstrukcas
 STR_1412    :{WINDOW_COLOUR_3}Protokolado de datumoj ne disponeblas por ĉi tia atrakcio
 STR_1413    :{WINDOW_COLOUR_3}Protokolado de datumoj komenciĝos kiam la sekva {STRINGID} ekveturas el {STRINGID}
-STR_1414    :{SMALLFONT}{BLACK}{DURATION}
+STR_1414    :{BLACK}{DURATION}
 STR_1415    :{WINDOW_COLOUR_2}Rapideco
 STR_1416    :{WINDOW_COLOUR_2}Alteco
 STR_1417    :{WINDOW_COLOUR_2}Vertikala Graviteco
 STR_1418    :{WINDOW_COLOUR_2}Flanka Graviteco
-STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
-STR_1420    :{SMALLFONT}{BLACK}{LENGTH}
-STR_1421    :{SMALLFONT}{BLACK}{COMMA16}g
+STR_1419    :{BLACK}{VELOCITY}
+STR_1420    :{BLACK}{LENGTH}
+STR_1421    :{BLACK}{COMMA16}g
 STR_1422    :Protokoladas datumojn de {POP16}{STRINGID}
 STR_1423    :Atendovica vojo
 STR_1424    :Trotuaro
@@ -864,131 +864,131 @@ STR_1476    :{WINDOW_COLOUR_2}Pritakso de intenseco: {BLACK}Ankoraŭ ne disponeb
 STR_1477    :{WINDOW_COLOUR_2}Pritakso de intenseco: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Pritakso de naŭzo: {BLACK}Ankoraŭ ne disponebla
-STR_1480    :{SMALLFONT}“Mi ne havas sufiĉe da mono por rajdi sur {STRINGID}”
-STR_1481    :{SMALLFONT}“Mi elspezis mian tutan monon”
-STR_1482    :{SMALLFONT}“Mi sentas min malsana”
-STR_1483    :{SMALLFONT}“Mi sentas min tre malsana”
-STR_1484    :{SMALLFONT}“Mi volas rajdi sur io pli ekscita ol {STRINGID}”
-STR_1485    :{SMALLFONT}“{STRINGID} aspektas tro intensa por mi”
-STR_1486    :{SMALLFONT}“Mi ankoraŭ ne finis je mia {STRINGID}”
-STR_1487    :{SMALLFONT}“Simple rigardi al {STRINGID} malsanigas min”
-STR_1488    :{SMALLFONT}“Mi ne pagas tiom por rajdi sur {STRINGID}”
-STR_1489    :{SMALLFONT}“Mi volas iri hejmen”
-STR_1490    :{SMALLFONT}“{STRINGID} estas vere bona valoro”
-STR_1491    :{SMALLFONT}“Mi jam havas {STRINGID}”
-STR_1492    :{SMALLFONT}“Mi ne havas sufiĉe da mono por aĉeti {STRINGID}”
-STR_1493    :{SMALLFONT}“Mi ne estas malsata”
-STR_1494    :{SMALLFONT}“Mi ne estas soifa”
-STR_1495    :{SMALLFONT}“Helpu! Mi dronas!”
-STR_1496    :{SMALLFONT}“Mi estas perdita!”
-STR_1497    :{SMALLFONT}“{STRINGID} estis bonega”
-STR_1498    :{SMALLFONT}“Mi vicatendas por {STRINGID} por aĝoj”
-STR_1499    :{SMALLFONT}“Mi estas laca”
-STR_1500    :{SMALLFONT}“Mi estas malsata”
-STR_1501    :{SMALLFONT}“Mi estas soifa”
-STR_1502    :{SMALLFONT}“Mi bezonas iri al la necesejo”
-STR_1503    :{SMALLFONT}“Mi ne povas trovi je {STRINGID}”
-STR_1504    :{SMALLFONT}“Mi ne pagas tiom por uzi je {STRINGID}”
-STR_1505    :{SMALLFONT}“Mi ne rajdas sur {STRINGID} dum pluvas”
-STR_1506    :{SMALLFONT}“La rubo ĉi tie estas vere malbona”
-STR_1507    :{SMALLFONT}“Mi ne povas trovi la elirejon de la parko”
-STR_1508    :{SMALLFONT}“Mi volas eliri de {STRINGID}”
-STR_1509    :{SMALLFONT}“Mi volas eliri el {STRINGID}”
-STR_1510    :{SMALLFONT}“Mi ne rajdas sur {STRINGID} - ĝi ne estas sekura”
-STR_1511    :{SMALLFONT}“Ĉi tiu vojo naŭzas min”
-STR_1512    :{SMALLFONT}“Estas tro homplene ĉi tie”
-STR_1513    :{SMALLFONT}“La vandalismo ĉi tie estas vere malbona”
-STR_1514    :{SMALLFONT}“Bonegan pejzaĝon!”
-STR_1515    :{SMALLFONT}“Ĉi tiu parko estas vere pura kaj ordema”
-STR_1516    :{SMALLFONT}“La saltantaj fontanoj estas bonegaj”
-STR_1517    :{SMALLFONT}“La muziko estas agrabla ĉi tie”
-STR_1518    :{SMALLFONT}“Ĉi tiu balono de {STRINGID} estas vere bona valoro”
-STR_1519    :{SMALLFONT}“Ĉi tiu pluŝludilo de {STRINGID} estas vere bona valoro”
-STR_1520    :{SMALLFONT}“Ĉi tiu mapo de la parko de {STRINGID} estas vere bona valoro”
-STR_1521    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1522    :{SMALLFONT}“Ĉi tiu ombrelo de {STRINGID} estas vere bona valoro”
-STR_1523    :{SMALLFONT}“Ĉi tiu trinkaĵo de {STRINGID} estas vere bona valoro”
-STR_1524    :{SMALLFONT}“Ĉi tiu burgero de {STRINGID} estas vere bona valoro”
-STR_1525    :{SMALLFONT}“Ĉi tiuj fritoj de {STRINGID} estas vere bona valoro”
-STR_1526    :{SMALLFONT}“Ĉi tiu glaciaĵo de {STRINGID} estas vere bona valoro”
-STR_1527    :{SMALLFONT}“Ĉi tiu sukerŝpinaĵo de {STRINGID} estas vere bona valoro”
+STR_1480    :“Mi ne havas sufiĉe da mono por rajdi sur {STRINGID}”
+STR_1481    :“Mi elspezis mian tutan monon”
+STR_1482    :“Mi sentas min malsana”
+STR_1483    :“Mi sentas min tre malsana”
+STR_1484    :“Mi volas rajdi sur io pli ekscita ol {STRINGID}”
+STR_1485    :“{STRINGID} aspektas tro intensa por mi”
+STR_1486    :“Mi ankoraŭ ne finis je mia {STRINGID}”
+STR_1487    :“Simple rigardi al {STRINGID} malsanigas min”
+STR_1488    :“Mi ne pagas tiom por rajdi sur {STRINGID}”
+STR_1489    :“Mi volas iri hejmen”
+STR_1490    :“{STRINGID} estas vere bona valoro”
+STR_1491    :“Mi jam havas {STRINGID}”
+STR_1492    :“Mi ne havas sufiĉe da mono por aĉeti {STRINGID}”
+STR_1493    :“Mi ne estas malsata”
+STR_1494    :“Mi ne estas soifa”
+STR_1495    :“Helpu! Mi dronas!”
+STR_1496    :“Mi estas perdita!”
+STR_1497    :“{STRINGID} estis bonega”
+STR_1498    :“Mi vicatendas por {STRINGID} por aĝoj”
+STR_1499    :“Mi estas laca”
+STR_1500    :“Mi estas malsata”
+STR_1501    :“Mi estas soifa”
+STR_1502    :“Mi bezonas iri al la necesejo”
+STR_1503    :“Mi ne povas trovi je {STRINGID}”
+STR_1504    :“Mi ne pagas tiom por uzi je {STRINGID}”
+STR_1505    :“Mi ne rajdas sur {STRINGID} dum pluvas”
+STR_1506    :“La rubo ĉi tie estas vere malbona”
+STR_1507    :“Mi ne povas trovi la elirejon de la parko”
+STR_1508    :“Mi volas eliri de {STRINGID}”
+STR_1509    :“Mi volas eliri el {STRINGID}”
+STR_1510    :“Mi ne rajdas sur {STRINGID} - ĝi ne estas sekura”
+STR_1511    :“Ĉi tiu vojo naŭzas min”
+STR_1512    :“Estas tro homplene ĉi tie”
+STR_1513    :“La vandalismo ĉi tie estas vere malbona”
+STR_1514    :“Bonegan pejzaĝon!”
+STR_1515    :“Ĉi tiu parko estas vere pura kaj ordema”
+STR_1516    :“La saltantaj fontanoj estas bonegaj”
+STR_1517    :“La muziko estas agrabla ĉi tie”
+STR_1518    :“Ĉi tiu balono de {STRINGID} estas vere bona valoro”
+STR_1519    :“Ĉi tiu pluŝludilo de {STRINGID} estas vere bona valoro”
+STR_1520    :“Ĉi tiu mapo de la parko de {STRINGID} estas vere bona valoro”
+STR_1521    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1522    :“Ĉi tiu ombrelo de {STRINGID} estas vere bona valoro”
+STR_1523    :“Ĉi tiu trinkaĵo de {STRINGID} estas vere bona valoro”
+STR_1524    :“Ĉi tiu burgero de {STRINGID} estas vere bona valoro”
+STR_1525    :“Ĉi tiuj fritoj de {STRINGID} estas vere bona valoro”
+STR_1526    :“Ĉi tiu glaciaĵo de {STRINGID} estas vere bona valoro”
+STR_1527    :“Ĉi tiu sukerŝpinaĵo de {STRINGID} estas vere bona valoro”
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :{SMALLFONT}“Ĉi tiu pico de {STRINGID} estas vere bona valoro”
+STR_1531    :“Ĉi tiu pico de {STRINGID} estas vere bona valoro”
 STR_1532    :
-STR_1533    :{SMALLFONT}“Ĉi tiu krevmaizo de {STRINGID} estas vere bona valoro”
-STR_1534    :{SMALLFONT}“Ĉi tiu kolbasobulko de {STRINGID} estas vere bona valoro”
-STR_1535    :{SMALLFONT}“Ĉi tiu tentaklo de {STRINGID} estas vere bona valoro”
-STR_1536    :{SMALLFONT}“Ĉi tiu ĉapelo de {STRINGID} estas vere bona valoro”
-STR_1537    :{SMALLFONT}“Ĉi tiu sukerpomo de {STRINGID} estas vere bona valoro”
-STR_1538    :{SMALLFONT}“Ĉi tiu T-ĉemizo de {STRINGID} estas vere bona valoro”
-STR_1539    :{SMALLFONT}“Ĉi tiu benjeto de {STRINGID} estas vere bona valoro”
-STR_1540    :{SMALLFONT}“Ĉi tiu kafo de {STRINGID} estas vere bona valoro”
+STR_1533    :“Ĉi tiu krevmaizo de {STRINGID} estas vere bona valoro”
+STR_1534    :“Ĉi tiu kolbasobulko de {STRINGID} estas vere bona valoro”
+STR_1535    :“Ĉi tiu tentaklo de {STRINGID} estas vere bona valoro”
+STR_1536    :“Ĉi tiu ĉapelo de {STRINGID} estas vere bona valoro”
+STR_1537    :“Ĉi tiu sukerpomo de {STRINGID} estas vere bona valoro”
+STR_1538    :“Ĉi tiu T-ĉemizo de {STRINGID} estas vere bona valoro”
+STR_1539    :“Ĉi tiu benjeto de {STRINGID} estas vere bona valoro”
+STR_1540    :“Ĉi tiu kafo de {STRINGID} estas vere bona valoro”
 STR_1541    :
-STR_1542    :{SMALLFONT}“Ĉi tiu fritita kokaĵo de {STRINGID} estas vere bona valoro”
-STR_1543    :{SMALLFONT}“Ĉi tiu limonado de {STRINGID} estas vere bona valoro”
+STR_1542    :“Ĉi tiu fritita kokaĵo de {STRINGID} estas vere bona valoro”
+STR_1543    :“Ĉi tiu limonado de {STRINGID} estas vere bona valoro”
 STR_1544    :
 STR_1545    :
 STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}“Ŭaŭ!”
-STR_1551    :{SMALLFONT}“Mi havas la plej strangan senton, ke iu spektas min”
-STR_1552    :{SMALLFONT}“Mi ne pagas tiom por balono de {STRINGID}”
-STR_1553    :{SMALLFONT}“Mi ne pagas tiom por pluŝludilo de {STRINGID}”
-STR_1554    :{SMALLFONT}“Mi ne pagas tiom por mapo de la parko de {STRINGID}”
-STR_1555    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1556    :{SMALLFONT}“Mi ne pagas tiom por ombrelo de {STRINGID}”
-STR_1557    :{SMALLFONT}“Mi ne pagas tiom por trinkaĵo de {STRINGID}”
-STR_1558    :{SMALLFONT}“Mi ne pagas tiom por burgero de {STRINGID}”
-STR_1559    :{SMALLFONT}“Mi ne pagas tiom por fritoj de {STRINGID}”
-STR_1560    :{SMALLFONT}“Mi ne pagas tiom por glaciaĵo de {STRINGID}”
-STR_1561    :{SMALLFONT}“Mi ne pagas tiom por sukerŝpinaĵo de {STRINGID}”
+STR_1550    :“Ŭaŭ!”
+STR_1551    :“Mi havas la plej strangan senton, ke iu spektas min”
+STR_1552    :“Mi ne pagas tiom por balono de {STRINGID}”
+STR_1553    :“Mi ne pagas tiom por pluŝludilo de {STRINGID}”
+STR_1554    :“Mi ne pagas tiom por mapo de la parko de {STRINGID}”
+STR_1555    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1556    :“Mi ne pagas tiom por ombrelo de {STRINGID}”
+STR_1557    :“Mi ne pagas tiom por trinkaĵo de {STRINGID}”
+STR_1558    :“Mi ne pagas tiom por burgero de {STRINGID}”
+STR_1559    :“Mi ne pagas tiom por fritoj de {STRINGID}”
+STR_1560    :“Mi ne pagas tiom por glaciaĵo de {STRINGID}”
+STR_1561    :“Mi ne pagas tiom por sukerŝpinaĵo de {STRINGID}”
 STR_1562    :
 STR_1563    :
 STR_1564    :
-STR_1565    :{SMALLFONT}“Mi ne pagas tiom por pico de {STRINGID}”
+STR_1565    :“Mi ne pagas tiom por pico de {STRINGID}”
 STR_1566    :
-STR_1567    :{SMALLFONT}“Mi ne pagas tiom por krevmaizo de {STRINGID}”
-STR_1568    :{SMALLFONT}“Mi ne pagas tiom por kolbasobulko de {STRINGID}”
-STR_1569    :{SMALLFONT}“Mi ne pagas tiom por tentaklo de {STRINGID}”
-STR_1570    :{SMALLFONT}“Mi ne pagas tiom por ĉapelo de {STRINGID}”
-STR_1571    :{SMALLFONT}“Mi ne pagas tiom por sukerpomo de {STRINGID}”
-STR_1572    :{SMALLFONT}“Mi ne pagas tiom por T-ĉemizo de {STRINGID}”
-STR_1573    :{SMALLFONT}“Mi ne pagas tiom por benjeto de {STRINGID}”
-STR_1574    :{SMALLFONT}“Mi ne pagas tiom por kafo de {STRINGID}”
+STR_1567    :“Mi ne pagas tiom por krevmaizo de {STRINGID}”
+STR_1568    :“Mi ne pagas tiom por kolbasobulko de {STRINGID}”
+STR_1569    :“Mi ne pagas tiom por tentaklo de {STRINGID}”
+STR_1570    :“Mi ne pagas tiom por ĉapelo de {STRINGID}”
+STR_1571    :“Mi ne pagas tiom por sukerpomo de {STRINGID}”
+STR_1572    :“Mi ne pagas tiom por T-ĉemizo de {STRINGID}”
+STR_1573    :“Mi ne pagas tiom por benjeto de {STRINGID}”
+STR_1574    :“Mi ne pagas tiom por kafo de {STRINGID}”
 STR_1575    :
-STR_1576    :{SMALLFONT}“Mi ne pagas tiom por fritita kokaĵo de {STRINGID}”
-STR_1577    :{SMALLFONT}“Mi ne pagas tiom por limonado de {STRINGID}”
+STR_1576    :“Mi ne pagas tiom por fritita kokaĵo de {STRINGID}”
+STR_1577    :“Mi ne pagas tiom por limonado de {STRINGID}”
 STR_1578    :
 STR_1579    :
 STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1585    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1586    :{SMALLFONT}“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
-STR_1587    :{SMALLFONT}“Ĉi tiu breco de {STRINGID} estas vere bona valoro”
-STR_1588    :{SMALLFONT}“Ĉi tiu varma ĉokolado de {STRINGID} estas vere bona valoro”
-STR_1589    :{SMALLFONT}“Ĉi tiu glacia teo de {STRINGID} estas vere bona valoro”
-STR_1590    :{SMALLFONT}“Ĉi tiu funelkuko de {STRINGID} estas vere bona valoro”
-STR_1591    :{SMALLFONT}“Ĉi tiuj sunokulvitroj de {STRINGID} estas vere bona valoro”
-STR_1592    :{SMALLFONT}“Ĉi tiuj bovaĵaj nudeloj de {STRINGID} estas vere bona valoro”
-STR_1593    :{SMALLFONT}“Ĉi tiuj frititaj riznudeloj de {STRINGID} estas vere bona valoro”
-STR_1594    :{SMALLFONT}“Ĉi tiu huntuna supo de {STRINGID} estas vere bona valoro”
-STR_1595    :{SMALLFONT}“Ĉi tiu knela supo de {STRINGID} estas vere bona valoro”
-STR_1596    :{SMALLFONT}“Ĉi tiu fruktosuko de {STRINGID} estas vere bona valoro”
-STR_1597    :{SMALLFONT}“Ĉi tiu sojlakto de {STRINGID} estas vere bona valoro”
-STR_1598    :{SMALLFONT}“Ĉi tiu suĝongvao de {STRINGID} estas vere bona valoro”
-STR_1599    :{SMALLFONT}“Ĉi tiu subsandviĉo de {STRINGID} estas vere bona valoro”
-STR_1600    :{SMALLFONT}“Ĉi tiu kekso de {STRINGID} estas vere bona valoro”
+STR_1584    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1585    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1586    :“Ĉi tiu foto sur la atrakcio {STRINGID} estas vere bona valoro”
+STR_1587    :“Ĉi tiu breco de {STRINGID} estas vere bona valoro”
+STR_1588    :“Ĉi tiu varma ĉokolado de {STRINGID} estas vere bona valoro”
+STR_1589    :“Ĉi tiu glacia teo de {STRINGID} estas vere bona valoro”
+STR_1590    :“Ĉi tiu funelkuko de {STRINGID} estas vere bona valoro”
+STR_1591    :“Ĉi tiuj sunokulvitroj de {STRINGID} estas vere bona valoro”
+STR_1592    :“Ĉi tiuj bovaĵaj nudeloj de {STRINGID} estas vere bona valoro”
+STR_1593    :“Ĉi tiuj frititaj riznudeloj de {STRINGID} estas vere bona valoro”
+STR_1594    :“Ĉi tiu huntuna supo de {STRINGID} estas vere bona valoro”
+STR_1595    :“Ĉi tiu knela supo de {STRINGID} estas vere bona valoro”
+STR_1596    :“Ĉi tiu fruktosuko de {STRINGID} estas vere bona valoro”
+STR_1597    :“Ĉi tiu sojlakto de {STRINGID} estas vere bona valoro”
+STR_1598    :“Ĉi tiu suĝongvao de {STRINGID} estas vere bona valoro”
+STR_1599    :“Ĉi tiu subsandviĉo de {STRINGID} estas vere bona valoro”
+STR_1600    :“Ĉi tiu kekso de {STRINGID} estas vere bona valoro”
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :{SMALLFONT}“Ĉi tiu rostita kolbaso de {STRINGID} estas vere bona valoro”
+STR_1604    :“Ĉi tiu rostita kolbaso de {STRINGID} estas vere bona valoro”
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1000,27 +1000,27 @@ STR_1612    :
 STR_1613    :
 STR_1614    :
 STR_1615    :
-STR_1616    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1617    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1618    :{SMALLFONT}“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
-STR_1619    :{SMALLFONT}“Mi ne pagas tiom por breco de {STRINGID}”
-STR_1620    :{SMALLFONT}“Mi ne pagas tiom por varma ĉokolado de {STRINGID}”
-STR_1621    :{SMALLFONT}“Mi ne pagas tiom por glacia teo de {STRINGID}”
-STR_1622    :{SMALLFONT}“Mi ne pagas tiom por funelkuko de {STRINGID}”
-STR_1623    :{SMALLFONT}“Mi ne pagas tiom por sunokulvitroj de {STRINGID}”
-STR_1624    :{SMALLFONT}“Mi ne pagas tiom por bovaĵaj nudeloj de {STRINGID}”
-STR_1625    :{SMALLFONT}“Mi ne pagas tiom por frititaj riznudeloj de {STRINGID}”
-STR_1626    :{SMALLFONT}“Mi ne pagas tiom por huntuna supo de {STRINGID}”
-STR_1627    :{SMALLFONT}“Mi ne pagas tiom por knela supo de {STRINGID}”
-STR_1628    :{SMALLFONT}“Mi ne pagas tiom por fruktosuko de {STRINGID}”
-STR_1629    :{SMALLFONT}“Mi ne pagas tiom por sojlakto de {STRINGID}”
-STR_1630    :{SMALLFONT}“Mi ne pagas tiom por suĝongvao de {STRINGID}”
-STR_1631    :{SMALLFONT}“Mi ne pagas tiom por subsandviĉo de {STRINGID}”
-STR_1632    :{SMALLFONT}“Mi ne pagas tiom por kekso de {STRINGID}”
+STR_1616    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1617    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1618    :“Mi ne pagas tiom por foto sur la atrakcio {STRINGID}”
+STR_1619    :“Mi ne pagas tiom por breco de {STRINGID}”
+STR_1620    :“Mi ne pagas tiom por varma ĉokolado de {STRINGID}”
+STR_1621    :“Mi ne pagas tiom por glacia teo de {STRINGID}”
+STR_1622    :“Mi ne pagas tiom por funelkuko de {STRINGID}”
+STR_1623    :“Mi ne pagas tiom por sunokulvitroj de {STRINGID}”
+STR_1624    :“Mi ne pagas tiom por bovaĵaj nudeloj de {STRINGID}”
+STR_1625    :“Mi ne pagas tiom por frititaj riznudeloj de {STRINGID}”
+STR_1626    :“Mi ne pagas tiom por huntuna supo de {STRINGID}”
+STR_1627    :“Mi ne pagas tiom por knela supo de {STRINGID}”
+STR_1628    :“Mi ne pagas tiom por fruktosuko de {STRINGID}”
+STR_1629    :“Mi ne pagas tiom por sojlakto de {STRINGID}”
+STR_1630    :“Mi ne pagas tiom por suĝongvao de {STRINGID}”
+STR_1631    :“Mi ne pagas tiom por subsandviĉo de {STRINGID}”
+STR_1632    :“Mi ne pagas tiom por kekso de {STRINGID}”
 STR_1633    :
 STR_1634    :
 STR_1635    :
-STR_1636    :{SMALLFONT}“Mi ne pagas tiom por rostita kolbaso de {STRINGID}”
+STR_1636    :“Mi ne pagas tiom por rostita kolbaso de {STRINGID}”
 STR_1637    :
 STR_1638    :
 STR_1639    :
@@ -1032,10 +1032,10 @@ STR_1644    :
 STR_1645    :
 STR_1646    :
 STR_1647    :
-STR_1648    :{SMALLFONT}“Helpu! Metu min surteren!”
-STR_1649    :{SMALLFONT}“Mi estas preskaŭ sen mono!”
-STR_1650    :{SMALLFONT}“Ŭaŭ! Nova atrakcio konstruata!”
-STR_1653    :{SMALLFONT}“…kaj jen ni estas sur {STRINGID}!”
+STR_1648    :“Helpu! Metu min surteren!”
+STR_1649    :“Mi estas preskaŭ sen mono!”
+STR_1650    :“Ŭaŭ! Nova atrakcio konstruata!”
+STR_1653    :“…kaj jen ni estas sur {STRINGID}!”
 STR_1654    :{WINDOW_COLOUR_2}Lastaj pensoj:
 STR_1655    :Konstrui trotuaron sur la tero
 STR_1656    :Konstrui pontan aŭ tunelan trotuaron
@@ -1187,7 +1187,7 @@ STR_1808    :{WINDOW_COLOUR_2}Lasta paneo: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Nuna paneo: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Portas:
 STR_1811    :Ne eblas konstrui tion ĉi tie…
-STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
+STR_1812    :{BLACK}{STRINGID}
 STR_1813    :Diversaĵoj
 STR_1814    :Agadoj
 STR_1815    :Pensoj
@@ -1196,7 +1196,7 @@ STR_1817    :({COMMA32})
 STR_1818    :{WINDOW_COLOUR_2}Ĉiuj gastoj
 STR_1819    :{WINDOW_COLOUR_2}Ĉiuj gastoj (resumitaj)
 STR_1820    :{WINDOW_COLOUR_2}Gastoj {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Gastoj, kiuj pensas {STRINGID}
+STR_1821    :{WINDOW_COLOUR_2}Gastoj, kiuj pensas {SMALLFONT}{STRINGID}
 STR_1822    :{WINDOW_COLOUR_2}Gastoj pensantaj pri {POP16}{STRINGID}
 STR_1823    :Montri pensojn de gastoj pri ĉi tiu atrakcio
 STR_1824    :Montri gastojn en ĉi tiu atrakcio
@@ -1297,7 +1297,6 @@ STR_1921    :Komenci novan ludon
 STR_1922    :Daŭrigi ludi konservitan ludon
 STR_1924    :Eliri
 STR_1925    :Ne eblas meti homon ĉi tie…
-STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID} paneis
 STR_1928    :{RED}{STRINGID} koliziis!
 STR_1929    :{RED}{STRINGID} ankoraŭ ne estis riparita{NEWLINE}Kontrolu kie viaj mekanikistoj troviĝas, kaj eble organizu ilin pli bone
@@ -1578,7 +1577,7 @@ STR_2218    :{RED}{STRINGID} sur {STRINGID} ne jam revenis al la {STRINGID}!{NEW
 STR_2219    :{RED}{COMMA16} homoj mortis pro akcidento sur {STRINGID}
 STR_2220    :{WINDOW_COLOUR_2}Pritakso de Parko: {BLACK}{COMMA16}
 STR_2221    :Pritakso de Parko: {COMMA16}
-STR_2222    :{SMALLFONT}{BLACK}{STRINGID}
+STR_2222    :{BLACK}{STRINGID}
 STR_2223    :{WINDOW_COLOUR_2}Gastoj en parko: {BLACK}{COMMA32}
 STR_2224    :{WINDOW_COLOUR_2}Mono: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}Mono: {RED}{CURRENCY2DP}
@@ -1591,7 +1590,7 @@ STR_2231    :Bremsoj ĉe malleviĝo
 STR_2232    :Kablolifto monteto
 STR_2233    :Informoj de Parko
 STR_2234    :Lastaj Mesaĝoj
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{STRINGID} {STRINGID}
 STR_2236    :Januaro
 STR_2237    :Februaro
 STR_2238    :Marto
@@ -1795,7 +1794,7 @@ STR_2450    :{YELLOW}Via kampanjo de reklamado por la parko finiĝis
 STR_2451    :{YELLOW}Via kampanjo de reklamado por {STRINGID} finiĝis
 STR_2452    :{WINDOW_COLOUR_2}Mono (minus prunto): {BLACK}{CURRENCY2DP}
 STR_2453    :{WINDOW_COLOUR_2}Mono (minus prunto): {RED}{CURRENCY2DP}
-STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
+STR_2454    :{BLACK}{CURRENCY2DP} -
 STR_2457    :Montri financajn kontojn
 STR_2458    :Montri diagramon de mono (minus prunto) kontraŭ tempo
 STR_2459    :Montri diagramon de parkvaloro kontraŭ tempo
@@ -1905,7 +1904,6 @@ STR_2636    :Nombra klavaro /
 STR_2669    :Nombra klavara baskulo
 STR_2670    :Ruluma baskulo
 STR_2680    :Ĉiom da esplorado estas kompleta
-STR_2681    :{MEDIUMFONT}{BLACK}Pliigi vian monon per {CURRENCY}
 STR_2684    :Granda amaso da gastoj alvenas
 STR_2685    :Parametroj de simplaĵa bruo
 STR_2686    :Malalta:
@@ -1992,7 +1990,7 @@ STR_2789    :{WINDOW_COLOUR_2}Vi malsukcesigis vian celon!
 STR_2790    :Entajpu nomon en scenaroskemon
 STR_2791    :Entajpu nomon
 STR_2792    :Bonvolu entajpi vian nomon por la scenaroskemo:
-STR_2793    :{SMALLFONT}(Finita de {STRINGID})
+STR_2793    :(Finita de {STRINGID})
 STR_2794    :{WINDOW_COLOUR_2}Finita de: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} kun firmvaloro de: {BLACK}{CURRENCY}
 STR_2795    :Ordigi
 STR_2796    :Ordigi la liston de atrakcioj per la informotipo vidigita
@@ -2499,7 +2497,7 @@ STR_5134    :Agordi pli grandan areon da bienorajtoj
 STR_5135    :Aĉeti bienorajtojn kaj konstruado-rajtojn
 STR_5136    :Bienorajtoj
 STR_5137    :Malŝlosi limojn de funkciado
-STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
+STR_5138    :{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Malŝalti paneon de bremsoj
 STR_5141    :Malŝalti ĉiajn paneojn
@@ -2645,7 +2643,7 @@ STR_5297    :Malfermi parkon
 STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :Rapide maldungi dungitaron
-STR_5301    :{MEDIUMFONT}{BLACK}Vakigi vian prunton
+STR_5301    :Vakigi vian prunton
 STR_5302    :Vakigi prunton
 STR_5303    :Permesi konstruadon dum paŭzoj
 STR_5304    :Titolosekvenco:
@@ -2804,7 +2802,7 @@ STR_5481    :Temoj
 STR_5482    :{WINDOW_COLOUR_2}Daŭro de lasta inspekto: {BLACK}1 minuto
 STR_5483    :{BLACK}({COMMA16} semajnoj restantaj)
 STR_5484    :{BLACK}({COMMA16} semajno restanta)
-STR_5485    :{SMALLFONT}{STRING}
+STR_5485    :{STRING}
 STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Montri lastajn mesaĝojn
 STR_5489    :Montri nur gastojn spuratajn
@@ -3142,7 +3140,7 @@ STR_5862    :Bari nekonatajn ludantojn.
 STR_5863    :Permesi, ke nur ludantoj kun konataj ŝlosiloj aliĝu.
 STR_5864    :Ĉi tiu servilo nur permesas blanklistajn ludantojn.
 STR_5865    :Protokoli babilejo-historion
-STR_5866    :{SMALLFONT}{BLACK}Protokolas tutan babilejo-historion al dosieroj en via uzantdosierujo.
+STR_5866    :{BLACK}Protokolas tutan babilejo-historion al dosieroj en via uzantdosierujo.
 STR_5867    :{WINDOW_COLOUR_2}Nomo de Provizanto: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Retpoŝtadreso de Provizanto: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Retejo de Provizanto: {BLACK}{STRING}
@@ -3309,7 +3307,7 @@ STR_6030    :Pejzaĝo-elektilo. Alklaku iun ajn pejzaĝon sur la mapo por elekti
 STR_6031    :Priskribo de servilo:
 STR_6032    :Saluto de servilo:
 STR_6033    :Dosierindikon de RCT1-instalo:
-STR_6034    :{SMALLFONT}{BLACK}{STRING}
+STR_6034    :{BLACK}{STRING}
 STR_6035    :Bonvolu elekti vian RCT1-dosierujon
 STR_6036    :Vakigi
 STR_6037    :La elektita dosierujo ne enhavas validan instalon de RollerCoaster Tycoon 1.
@@ -3454,7 +3452,7 @@ STR_6183    :Sekvi{MOVE_X}{87}Neniu rastrumeto elektita
 STR_6184    :Sekvi Rastrumeton
 STR_6185    :Elekti Rastrumeton
 STR_6186    :Neniu rastrumeto elektita
-STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomaĵo
 STR_6189    :Anaso
 STR_6190    :Vi ne eblas elekti rastrumeton dum la ĉefa titolekrano estas aktiva.
@@ -3604,7 +3602,7 @@ STR_6356    :Generas anasojn se parko enhavas akvon
 STR_6357    :Forigas ĉiujn anasojn de la mapo
 STR_6358    :Paĝo {UINT16}
 STR_6359    :{POP16}{POP16}Paĝo {UINT16}
-STR_6360    :{SMALLFONT}{BLACK}{COMMA32}
+STR_6360    :{BLACK}{COMMA32}
 STR_6361    :Ŝalti lumefektojn sur atrakcioj (eksperimenta)
 STR_6362    :Se ŝaltita, veturiloj de atrakcioj kun trakoj lumos nokte.
 STR_6363    :Teksto kopiita al tondujo
@@ -3680,6 +3678,10 @@ STR_6432    :Muso {INT32}
 STR_6433    :Forigi
 STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
 STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA16}
+STR_6436    :Baskuligi nevideblecon
+STR_6437    :Nevidebla
+STR_6438    :N
+STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
 
 #############
 # Scenarios #
