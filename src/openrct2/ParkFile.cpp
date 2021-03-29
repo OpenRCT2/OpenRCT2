@@ -1134,7 +1134,7 @@ namespace OpenRCT2
 
     template<typename T> void ParkFile::ReadEntitiesOfType(OrcaStream::ChunkStream& cs)
     {
-        auto t = cs.Read<EntityType>();
+        [[maybe_unused]] auto t = cs.Read<EntityType>();
         assert(t == T::cEntityType);
         auto count = cs.Read<uint16_t>();
         for (auto i = 0; i < count; ++i)
