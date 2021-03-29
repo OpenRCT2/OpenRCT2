@@ -44,7 +44,8 @@ static rct_widget window_news_widgets[] = {
 class NewsWindow final : public Window
 {
 private:
-    static int32_t window_news_get_item_height()
+    int32_t _pressedNewsItemIndex, _pressedButtonIndex, _suspendUpdateTicks;
+    static int32_t CalculateItemHeight()
     {
         return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
     }
@@ -55,10 +56,10 @@ public:
         widgets = window_news_widgets;
         enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
         WindowInitScrollWidgets(this);
-        news.var_480 = -1;
+        _pressedNewsItemIndex = -1;
 
         int32_t w = 0, h = 0;
-        rct_widget* widget = &window_news_widgets[WIDX_SCROLL];
+        rct_widget* widget = &widgets[WIDX_SCROLL];
         window_get_scroll_size(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
         WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
@@ -79,7 +80,7 @@ public:
 
     void OnUpdate() override
     {
-        if (news.var_480 == -1 || --news.var_484 != 0)
+        if (_pressedNewsItemIndex == -1 || --_suspendUpdateTicks != 0)
         {
             return;
         }
@@ -87,8 +88,8 @@ public:
         Invalidate();
         OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
 
-        size_t j = news.var_480;
-        news.var_480 = -1;
+        size_t j = _pressedNewsItemIndex;
+        _pressedNewsItemIndex = -1;
 
         if (j >= gNewsItems.GetArchived().size())
         {
@@ -101,11 +102,11 @@ public:
             return;
         }
 
-        if (news.var_482 == 1)
+        if (_pressedButtonIndex == 1)
         {
             News::OpenSubject(newsItem.Type, newsItem.Assoc);
         }
-        else if (news.var_482 > 1)
+        else if (_pressedButtonIndex > 1)
         {
             static rct_window* _mainWindow;
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
@@ -118,13 +119,13 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        static int32_t _scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * window_news_get_item_height();
+        static int32_t _scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
         return {WW, _scrollHeight};
     }
 
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        int32_t itemHeight = window_news_get_item_height();
+        int32_t itemHeight = CalculateItemHeight();
         int32_t i = 0;
         int32_t buttonIndex = 0;
         auto mutableScreenCoords = screenCoords;
@@ -155,9 +156,9 @@ public:
 
         if (buttonIndex != 0)
         {
-            news.var_480 = i;
-            news.var_482 = buttonIndex;
-            news.var_484 = 4;
+            _pressedNewsItemIndex = i;
+            _pressedButtonIndex = buttonIndex;
+            _suspendUpdateTicks = 4;
             Invalidate();
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
         }
@@ -171,7 +172,7 @@ public:
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
-        int32_t itemHeight = window_news_get_item_height();
+        int32_t itemHeight = CalculateItemHeight();
         int32_t y = 0;
         int32_t i = 0;
 
@@ -209,10 +210,10 @@ public:
                 auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
 
                 int32_t press = 0;
-                if (news.var_480 != -1)
+                if (_pressedNewsItemIndex != -1)
                 {
-                    News::IsValidIndex(news.var_480 + News::ItemHistoryStart);
-                    if (i == news.var_480 && news.var_482 == 1)
+                    News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
+                    if (i == _pressedNewsItemIndex && _pressedButtonIndex == 1)
                     {
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
@@ -289,10 +290,10 @@ public:
                 auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
 
                 int32_t press = 0;
-                if (news.var_480 != -1)
+                if (_pressedNewsItemIndex != -1)
                 {
-                    News::IsValidIndex(news.var_480 + News::ItemHistoryStart);
-                    if (i == news.var_480 && news.var_482 == 2)
+                    News::IsValidIndex(_pressedNewsItemIndex + News::ItemHistoryStart);
+                    if (i == _pressedNewsItemIndex && _pressedButtonIndex == 2)
                         press = 0x20;
                 }
                 gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
