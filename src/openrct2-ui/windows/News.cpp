@@ -33,6 +33,7 @@ enum WINDOW_NEWS_WIDGET_IDX {
     WIDX_SCROLL
 };
 
+
 static rct_widget window_news_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
@@ -40,309 +41,271 @@ static rct_widget window_news_widgets[] = {
     { WIDGETS_END },
 };
 
-static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_news_update(rct_window *w);
-static void window_news_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_news_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
-
-static rct_window_event_list window_news_events([](auto& events)
+class NewsWindow final : public Window
 {
-    events.mouse_up = &window_news_mouseup;
-    events.update = &window_news_update;
-    events.get_scroll_size = &window_news_scrollgetsize;
-    events.scroll_mousedown = &window_news_scrollmousedown;
-    events.paint = &window_news_paint;
-    events.scroll_paint = &window_news_scrollpaint;
-});
-// clang-format on
-
-/**
- *
- *  rct2: 0x0066E464
- */
-rct_window* window_news_open()
-{
-    rct_window* window;
-
-    // Check if window is already open
-    window = window_bring_to_front_by_class(WC_RECENT_NEWS);
-    if (window == nullptr)
+private:
+    static int32_t window_news_get_item_height()
     {
-        window = WindowCreateAutoPos(400, 300, &window_news_events, WC_RECENT_NEWS, 0);
-        window->widgets = window_news_widgets;
-        window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
-        WindowInitScrollWidgets(window);
-        window->news.var_480 = -1;
+        return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
     }
 
-    // sub_66E4BA:
-    rct_widget* widget;
-
-    int32_t width = 0;
-    int32_t height = 0;
-    window_get_scroll_size(window, 0, &width, &height);
-    widget = &window_news_widgets[WIDX_SCROLL];
-    window->scrolls[0].v_top = std::max(0, height - (widget->height() - 1));
-    WidgetScrollUpdateThumbs(window, WIDX_SCROLL);
-
-    return window;
-}
-
-static int32_t window_news_get_item_height()
-{
-    return 4 * font_get_line_height(FontSpriteBase::SMALL) + 2;
-}
-
-/**
- *
- *  rct2: 0x0066D4D5
- */
-static void window_news_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
+public:
+    void OnOpen() override
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_SETTINGS:
-            context_open_window(WC_NOTIFICATION_OPTIONS);
-            break;
-    }
-}
+        widgets = window_news_widgets;
+        enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_SETTINGS);
+        WindowInitScrollWidgets(this);
+        news.var_480 = -1;
 
-/**
- *
- *  rct2: 0x0066EAB8
- */
-static void window_news_update(rct_window* w)
-{
-    if (w->news.var_480 == -1 || --w->news.var_484 != 0)
-    {
-        return;
+        int32_t w = 0, h = 0;
+        rct_widget* widget = &window_news_widgets[WIDX_SCROLL];
+        window_get_scroll_size(this, 0, &w, &h);
+        scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
+        WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
     }
 
-    w->Invalidate();
-    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, w->windowPos.x + (w->width / 2));
-
-    size_t j = w->news.var_480;
-    w->news.var_480 = -1;
-    if (j >= gNewsItems.GetArchived().size())
-        return;
-
-    const auto& newsItem = gNewsItems.GetArchived()[j];
-    if (newsItem.HasButton())
-        return;
-    if (w->news.var_482 == 1)
+    void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        News::OpenSubject(newsItem.Type, newsItem.Assoc);
-    }
-    else if (w->news.var_482 > 1)
-    {
-        auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
-        if (subjectLoc != std::nullopt && (w = window_get_main()) != nullptr)
+        switch (widgetIndex)
         {
-            window_scroll_to_location(w, *subjectLoc);
-        }
-    }
-}
-
-/**
- *
- *  rct2: 0x0066EA3C
- */
-static void window_news_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
-{
-    *height = static_cast<int32_t>(gNewsItems.GetArchived().size()) * window_news_get_item_height();
-}
-
-/**
- *
- *  rct2: 0x0066EA5C
- */
-static void window_news_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
-{
-    int32_t itemHeight = window_news_get_item_height();
-
-    int32_t i = 0;
-    int32_t buttonIndex = 0;
-    auto mutableScreenCoords = screenCoords;
-    for (const auto& newsItem : gNewsItems.GetArchived())
-    {
-        if (mutableScreenCoords.y < itemHeight)
-        {
-            if (newsItem.HasButton() || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
-                || mutableScreenCoords.x < 328)
-            {
-                buttonIndex = 0;
+            case WIDX_CLOSE:
+                Close();
                 break;
-            }
-            else if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
-            {
-                buttonIndex = 1;
+            case WIDX_SETTINGS:
+                context_open_window(WC_NOTIFICATION_OPTIONS);
                 break;
-            }
-            else if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
-            {
-                buttonIndex = 2;
-                break;
-            }
         }
-        mutableScreenCoords.y -= itemHeight;
-        i++;
     }
 
-    if (buttonIndex != 0)
+    void OnUpdate() override
     {
-        w->news.var_480 = i;
-        w->news.var_482 = buttonIndex;
-        w->news.var_484 = 4;
-        w->Invalidate();
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
-    }
-}
-
-/**
- *
- *  rct2: 0x0066E4E8
- */
-static void window_news_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-}
-
-/**
- *
- *  rct2: 0x0066E4EE
- */
-static void window_news_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
-{
-    int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
-    int32_t itemHeight = window_news_get_item_height();
-
-    int32_t y = 0;
-    int32_t i = 0;
-    for (const auto& newsItem : gNewsItems.GetArchived())
-    {
-        if (y >= dpi->y + dpi->height)
-            break;
-        if (y + itemHeight < dpi->y)
+        if (news.var_480 == -1 || --news.var_484 != 0)
         {
-            y += itemHeight;
-            i++;
-            continue;
+            return;
         }
 
-        // Background
-        gfx_fill_rect_inset(
-            dpi, { -1, y, 383, y + itemHeight - 1 }, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+        Invalidate();
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click2, 0, windowPos.x + (width / 2));
 
-        // Date text
-        {
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
-            ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
-            DrawTextBasic(dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
-        }
-        // Item text
-        {
-            auto ft = Formatter();
-            ft.Add<const char*>(newsItem.Text.c_str());
-            DrawTextWrapped(dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontSpriteBase::SMALL });
-        }
-        // Subject button
-        if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
-        {
-            auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
+        size_t j = news.var_480;
+        news.var_480 = -1;
 
-            int32_t press = 0;
-            if (w->news.var_480 != -1)
+        if (j >= gNewsItems.GetArchived().size())
+        {
+            return;
+        }
+
+        const auto& newsItem = gNewsItems.GetArchived()[j];
+        if (newsItem.HasButton())
+        {
+            return;
+        }
+
+        if (news.var_482 == 1)
+        {
+            News::OpenSubject(newsItem.Type, newsItem.Assoc);
+        }
+        else if (news.var_482 > 1)
+        {
+            static rct_window* _mainWindow;
+            auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
+            if (subjectLoc != std::nullopt && (_mainWindow = window_get_main()) != nullptr)
             {
-                News::IsValidIndex(w->news.var_480 + News::ItemHistoryStart);
-                if (i == w->news.var_480 && w->news.var_482 == 1)
-                    press = INSET_RECT_FLAG_BORDER_INSET;
+                window_scroll_to_location(_mainWindow, *subjectLoc);
             }
-            gfx_fill_rect_inset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, w->colours[2], press);
+        }
+    }
 
-            switch (newsItem.Type)
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+        static int32_t _scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * window_news_get_item_height();
+        return {WW, _scrollHeight};
+    }
+
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        int32_t itemHeight = window_news_get_item_height();
+        int32_t i = 0;
+        int32_t buttonIndex = 0;
+        auto mutableScreenCoords = screenCoords;
+        for (const auto& newsItem : gNewsItems.GetArchived())
+        {
+            if (mutableScreenCoords.y < itemHeight)
             {
-                case News::ItemType::Ride:
-                    gfx_draw_sprite(dpi, ImageId(SPR_RIDE), screenCoords);
-                    break;
-                case News::ItemType::Peep:
-                case News::ItemType::PeepOnRide:
+                if (newsItem.HasButton() || mutableScreenCoords.y < 14 || mutableScreenCoords.y >= 38
+                    || mutableScreenCoords.x < 328)
                 {
-                    rct_drawpixelinfo cliped_dpi;
-                    if (!clip_drawpixelinfo(&cliped_dpi, dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
-                    {
-                        break;
-                    }
-
-                    auto peep = TryGetEntity<Peep>(newsItem.Assoc);
-                    if (peep == nullptr)
-                        break;
-
-                    auto clipCoords = ScreenCoordsXY{ 10, 19 };
-
-                    // If normal peep set sprite to normal (no food)
-                    // If staff set sprite to staff sprite
-                    auto spriteType = PeepSpriteType::Normal;
-                    if (peep->Is<Staff>())
-                    {
-                        spriteType = peep->SpriteType;
-                        if (peep->AssignedStaffType == StaffType::Entertainer)
-                        {
-                            clipCoords.y += 3;
-                        }
-                    }
-
-                    uint32_t image_id = GetPeepAnimation(spriteType).base_image;
-                    image_id += 0xA0000001;
-                    image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
-
-                    gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
+                    buttonIndex = 0;
                     break;
                 }
-                case News::ItemType::Money:
-                    gfx_draw_sprite(dpi, ImageId(SPR_FINANCE), screenCoords);
+                else if (mutableScreenCoords.x < 351 && newsItem.TypeHasSubject())
+                {
+                    buttonIndex = 1;
                     break;
-                case News::ItemType::Research:
-                    gfx_draw_sprite(dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                }
+                else if (mutableScreenCoords.x < 376 && newsItem.TypeHasLocation())
+                {
+                    buttonIndex = 2;
                     break;
-                case News::ItemType::Peeps:
-                    gfx_draw_sprite(dpi, ImageId(SPR_GUESTS), screenCoords);
-                    break;
-                case News::ItemType::Award:
-                    gfx_draw_sprite(dpi, ImageId(SPR_AWARD), screenCoords);
-                    break;
-                case News::ItemType::Graph:
-                    gfx_draw_sprite(dpi, ImageId(SPR_GRAPH), screenCoords);
-                    break;
-                case News::ItemType::Null:
-                case News::ItemType::Blank:
-                case News::ItemType::Count:
-                    break;
+                }
             }
+            mutableScreenCoords.y -= itemHeight;
+            i++;
         }
 
-        // Location button
-        if ((newsItem.TypeHasLocation()) && !(newsItem.HasButton()))
+        if (buttonIndex != 0)
         {
-            auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
-
-            int32_t press = 0;
-            if (w->news.var_480 != -1)
-            {
-                News::IsValidIndex(w->news.var_480 + News::ItemHistoryStart);
-                if (i == w->news.var_480 && w->news.var_482 == 2)
-                    press = 0x20;
-            }
-            gfx_fill_rect_inset(dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, w->colours[2], press);
-            gfx_draw_sprite(dpi, ImageId(SPR_LOCATE), screenCoords);
+            news.var_480 = i;
+            news.var_482 = buttonIndex;
+            news.var_484 = 4;
+            Invalidate();
+            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, windowPos.x + (width / 2));
         }
-
-        y += itemHeight;
-        i++;
     }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+    }
+
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    {
+        int32_t lineHeight = font_get_line_height(FontSpriteBase::SMALL);
+        int32_t itemHeight = window_news_get_item_height();
+        int32_t y = 0;
+        int32_t i = 0;
+
+        for (const auto& newsItem : gNewsItems.GetArchived())
+        {
+            if (y >= dpi.y + dpi.height)
+                break;
+            if (y + itemHeight < dpi.y)
+            {
+                y += itemHeight;
+                i++;
+                continue;
+            }
+
+            // Background
+            gfx_fill_rect_inset(
+                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+
+            // Date text
+            {
+                auto ft = Formatter();
+                ft.Add<rct_string_id>(DateDayNames[newsItem.Day - 1]);
+                ft.Add<rct_string_id>(DateGameMonthNames[date_get_month(newsItem.MonthYear)]);
+                DrawTextBasic(&dpi, { 2, y }, STR_NEWS_DATE_FORMAT, ft, { COLOUR_WHITE, FontSpriteBase::SMALL });
+            }
+            // Item text
+            {
+                auto ft = Formatter();
+                ft.Add<const char*>(newsItem.Text.c_str());
+                DrawTextWrapped(&dpi, { 2, y + lineHeight }, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, ft, { FontSpriteBase::SMALL });
+            }
+            // Subject button
+            if ((newsItem.TypeHasSubject()) && !(newsItem.HasButton()))
+            {
+                auto screenCoords = ScreenCoordsXY{ 328, y + lineHeight + 4 };
+
+                int32_t press = 0;
+                if (news.var_480 != -1)
+                {
+                    News::IsValidIndex(news.var_480 + News::ItemHistoryStart);
+                    if (i == news.var_480 && news.var_482 == 1)
+                    {
+                        press = INSET_RECT_FLAG_BORDER_INSET;
+                    }
+
+                }
+                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+
+                switch (newsItem.Type)
+                {
+                    case News::ItemType::Ride:
+                        gfx_draw_sprite(&dpi, ImageId(SPR_RIDE), screenCoords);
+                        break;
+                    case News::ItemType::Peep:
+                    case News::ItemType::PeepOnRide:
+                    {
+                        rct_drawpixelinfo cliped_dpi;
+                        if (!clip_drawpixelinfo(&cliped_dpi, &dpi, screenCoords + ScreenCoordsXY{ 1, 1 }, 22, 22))
+                        {
+                            break;
+                        }
+
+                        auto peep = TryGetEntity<Peep>(newsItem.Assoc);
+                        if (peep == nullptr)
+                        {
+                            break;
+                        }
+
+                        auto clipCoords = ScreenCoordsXY{ 10, 19 };
+
+                        // If normal peep set sprite to normal (no food)
+                        // If staff set sprite to staff sprite
+                        auto spriteType = PeepSpriteType::Normal;
+                        if (peep->Is<Staff>())
+                        {
+                            spriteType = peep->SpriteType;
+                            if (peep->AssignedStaffType == StaffType::Entertainer)
+                            {
+                                clipCoords.y += 3;
+                            }
+                        }
+
+                        uint32_t image_id = GetPeepAnimation(spriteType).base_image;
+                        image_id += 0xA0000001;
+                        image_id |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24);
+
+                        gfx_draw_sprite(&cliped_dpi, ImageId::FromUInt32(image_id), clipCoords);
+                        break;
+                    }
+                    case News::ItemType::Money:
+                        gfx_draw_sprite(&dpi, ImageId(SPR_FINANCE), screenCoords);
+                        break;
+                    case News::ItemType::Research:
+                        gfx_draw_sprite(&dpi, ImageId(newsItem.Assoc < 0x10000 ? SPR_NEW_SCENERY : SPR_NEW_RIDE), screenCoords);
+                        break;
+                    case News::ItemType::Peeps:
+                        gfx_draw_sprite(&dpi, ImageId(SPR_GUESTS), screenCoords);
+                        break;
+                    case News::ItemType::Award:
+                        gfx_draw_sprite(&dpi, ImageId(SPR_AWARD), screenCoords);
+                        break;
+                    case News::ItemType::Graph:
+                        gfx_draw_sprite(&dpi, ImageId(SPR_GRAPH), screenCoords);
+                        break;
+                    case News::ItemType::Null:
+                    case News::ItemType::Blank:
+                    case News::ItemType::Count:
+                        break;
+                }
+            }
+
+            // Location button
+            if ((newsItem.TypeHasLocation()) && !(newsItem.HasButton()))
+            {
+                auto screenCoords = ScreenCoordsXY{ 352, y + lineHeight + 4 };
+
+                int32_t press = 0;
+                if (news.var_480 != -1)
+                {
+                    News::IsValidIndex(news.var_480 + News::ItemHistoryStart);
+                    if (i == news.var_480 && news.var_482 == 2)
+                        press = 0x20;
+                }
+                gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
+                gfx_draw_sprite(&dpi, ImageId(SPR_LOCATE), screenCoords);
+            }
+
+            y += itemHeight;
+            i++;
+        }
+    }
+};
+
+rct_window* window_news_open()
+{
+    return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
 }
