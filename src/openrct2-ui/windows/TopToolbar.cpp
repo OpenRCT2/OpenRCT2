@@ -2109,7 +2109,7 @@ static void top_toolbar_tool_update_land(const ScreenCoordsXY& screenPos)
 
     int16_t tool_size = gLandToolSize;
     std::optional<CoordsXY> mapTile;
-    uint8_t side;
+    uint8_t side{};
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     if (tool_size == 1)
