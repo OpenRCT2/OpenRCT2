@@ -3674,6 +3674,11 @@ STR_6431    :RMT
 STR_6432    :Maus {INT32}
 STR_6433    :Entfernen
 STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
+STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA16}
+STR_6436    :Unsichtbarkeit umschalten
+STR_6437    :Unsichtbar
+STR_6438    :U
+STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 
 #############
 # Scenarios #
