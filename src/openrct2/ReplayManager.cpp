@@ -523,7 +523,7 @@ namespace OpenRCT2
                 auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
 
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
-                objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+                objManager.LoadObjects(loadResult.RequiredObjects);
 
                 importer->Import();
 

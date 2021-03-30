@@ -1537,22 +1537,19 @@ public:
         return justText.data();
     }
 
-    std::vector<rct_object_entry> GetRequiredObjects()
+    std::vector<ObjectEntryDescriptor> GetRequiredObjects()
     {
-        std::vector<rct_object_entry> result;
-        rct_object_entry nullEntry = {};
-        std::memset(&nullEntry, 0xFF, sizeof(nullEntry));
-
+        std::vector<ObjectEntryDescriptor> result;
         int objectIt = 0;
         for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
-                result.push_back(_s6.objects[objectIt]);
+                result.push_back(ObjectEntryDescriptor(_s6.objects[objectIt]));
             }
             for (int16_t i = rct2_object_entry_group_counts[objectType]; i < object_entry_group_counts[objectType]; i++)
             {
-                result.push_back(nullEntry);
+                result.push_back({});
             }
         }
 
@@ -1864,7 +1861,7 @@ void load_from_sv6(const char* path)
     {
         auto& objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        objectMgr.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objectMgr.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
@@ -1904,7 +1901,7 @@ void load_from_sc6(const char* path)
     try
     {
         auto result = s6Importer->LoadScenario(path);
-        objManager.LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+        objManager.LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();

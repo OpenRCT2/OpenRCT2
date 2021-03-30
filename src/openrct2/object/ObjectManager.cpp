@@ -114,10 +114,10 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    void LoadObjects(const rct_object_entry* entries, size_t count) override
+    void LoadObjects(const std::vector<ObjectEntryDescriptor>& entries) override
     {
         // Find all the required objects
-        auto requiredObjects = GetRequiredObjects(entries, count);
+        auto requiredObjects = GetRequiredObjects(entries);
 
         // Load the required objects
         size_t numNewLoadedObjects = 0;
@@ -554,66 +554,21 @@ private:
         return duplicate;
     }
 
-    std::vector<rct_object_entry> GetInvalidObjects(const rct_object_entry* entries) override
-    {
-        std::vector<rct_object_entry> invalidEntries;
-        invalidEntries.reserve(OBJECT_ENTRY_COUNT);
-        for (int32_t i = 0; i < OBJECT_ENTRY_COUNT; i++)
-        {
-            auto entry = entries[i];
-            const ObjectRepositoryItem* ori = nullptr;
-            if (object_entry_is_empty(&entry))
-            {
-                entry = {};
-                continue;
-            }
-
-            ori = _objectRepository.FindObject(&entry);
-            if (ori == nullptr)
-            {
-                if (entry.GetType() != ObjectType::ScenarioText)
-                {
-                    invalidEntries.push_back(entry);
-                    ReportMissingObject(&entry);
-                }
-                else
-                {
-                    entry = {};
-                    continue;
-                }
-            }
-            else
-            {
-                auto loadedObject = ori->LoadedObject;
-                if (loadedObject == nullptr)
-                {
-                    auto object = _objectRepository.LoadObject(ori);
-                    if (object == nullptr)
-                    {
-                        invalidEntries.push_back(entry);
-                        ReportObjectLoadProblem(&entry);
-                    }
-                }
-            }
-        }
-        return invalidEntries;
-    }
-
-    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const rct_object_entry* entries, size_t count)
+    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const std::vector<ObjectEntryDescriptor>& objectList)
     {
         std::vector<const ObjectRepositoryItem*> requiredObjects;
-        std::vector<rct_object_entry> missingObjects;
+        std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (size_t i = 0; i < count; i++)
+        for (size_t i = 0; i < objectList.size(); i++)
         {
-            const rct_object_entry* entry = &entries[i];
+            const auto& entry = objectList[i];
             const ObjectRepositoryItem* ori = nullptr;
-            if (!object_entry_is_empty(entry))
+            if (entry.HasValue())
             {
                 ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry->GetType() != ObjectType::ScenarioText)
+                if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
                 {
-                    missingObjects.push_back(*entry);
+                    missingObjects.push_back(entry);
                     ReportMissingObject(entry);
                 }
             }
@@ -657,7 +612,7 @@ private:
     {
         std::vector<std::unique_ptr<Object>> objects;
         std::vector<Object*> loadedObjects;
-        std::vector<rct_object_entry> badObjects;
+        std::vector<ObjectEntryDescriptor> badObjects;
         objects.resize(OBJECT_ENTRY_COUNT);
         loadedObjects.reserve(OBJECT_ENTRY_COUNT);
 
@@ -677,7 +632,7 @@ private:
                     std::lock_guard<std::mutex> guard(commonMutex);
                     if (object == nullptr)
                     {
-                        badObjects.push_back(requiredObject->ObjectEntry);
+                        badObjects.push_back(ObjectEntryDescriptor(*requiredObject));
                         ReportObjectLoadProblem(&requiredObject->ObjectEntry);
                     }
                     else
@@ -778,11 +733,10 @@ private:
         }
     }
 
-    static void ReportMissingObject(const rct_object_entry* entry)
+    static void ReportMissingObject(const ObjectEntryDescriptor& entry)
     {
-        utf8 objName[DAT_NAME_LENGTH + 1] = { 0 };
-        std::copy_n(entry->name, DAT_NAME_LENGTH, objName);
-        Console::Error::WriteLine("[%s] Object not found.", objName);
+        std::string name(entry.GetName());
+        Console::Error::WriteLine("[%s] Object not found.", name.c_str());
     }
 
     void ReportObjectLoadProblem(const rct_object_entry* entry)

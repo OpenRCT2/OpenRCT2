@@ -29,9 +29,9 @@ struct scenario_index_entry;
 struct ParkLoadResult final
 {
 public:
-    std::vector<rct_object_entry> RequiredObjects;
+    std::vector<ObjectEntryDescriptor> RequiredObjects;
 
-    explicit ParkLoadResult(std::vector<rct_object_entry>&& requiredObjects)
+    explicit ParkLoadResult(std::vector<ObjectEntryDescriptor>&& requiredObjects)
         : RequiredObjects(std::move(requiredObjects))
     {
     }
@@ -68,9 +68,9 @@ namespace ParkImporter
 class ObjectLoadException : public std::exception
 {
 public:
-    std::vector<rct_object_entry> const MissingObjects;
+    std::vector<ObjectEntryDescriptor> const MissingObjects;
 
-    explicit ObjectLoadException(std::vector<rct_object_entry>&& missingObjects)
+    explicit ObjectLoadException(std::vector<ObjectEntryDescriptor>&& missingObjects)
         : MissingObjects(std::move(missingObjects))
     {
     }

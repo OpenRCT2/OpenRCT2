@@ -45,7 +45,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
 
     auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
     auto loadResult = importer->LoadSavedGame(parkPath.c_str(), false);
-    context->GetObjectManager().LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+    context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
     importer->Import();
 
     reset_sprite_spatial_index();
