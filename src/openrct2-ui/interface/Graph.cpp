@@ -14,15 +14,13 @@
 
 namespace Graph
 {
-    static void DrawMonths(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+    static void DrawMonths(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t i, yearOver32, currentMonth, currentDay;
-
-        currentMonth = date_get_month(gDateMonthsElapsed);
-        currentDay = gDateMonthTicks;
-        yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-        auto screenCoords = ScreenCoordsXY{ baseX, baseY };
-        for (i = count - 1; i >= 0; i--)
+        int32_t currentMonth = date_get_month(gDateMonthsElapsed);
+        int32_t currentDay = gDateMonthTicks;
+        int32_t yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
+        auto screenCoords = origCoords;
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != 255 && yearOver32 % 4 == 0)
             {
@@ -42,71 +40,64 @@ namespace Graph
         }
     }
 
-    static void DrawLineA(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+    static void DrawLineA(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t i, x, y, lastX, lastY;
-        lastX = -1;
-        lastY = -1;
-        x = baseX;
-        for (i = count - 1; i >= 0; i--)
+        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        auto coords = origCoords;
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != 255)
             {
-                y = baseY + ((255 - history[i]) * 100) / 256;
+                coords.y = origCoords.y + ((255 - history[i]) * 100) / 256;
 
-                if (lastX != -1)
+                if (lastCoords.x != -1)
                 {
-                    auto leftTop1 = ScreenCoordsXY{ lastX + 1, lastY + 1 };
-                    auto rightBottom1 = ScreenCoordsXY{ x + 1, y + 1 };
-                    auto leftTop2 = ScreenCoordsXY{ lastX, lastY + 1 };
-                    auto rightBottom2 = ScreenCoordsXY{ x, y + 1 };
+                    auto leftTop1 = lastCoords + ScreenCoordsXY{ 1, 1 };
+                    auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
+                    auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
+                    auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
                     gfx_draw_line(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
                     gfx_draw_line(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
+                    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
-                lastX = x;
-                lastY = y;
+                lastCoords = coords;
             }
-            x += 6;
+            coords.x += 6;
         }
     }
 
-    static void DrawLineB(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+    static void DrawLineB(rct_drawpixelinfo* dpi, const uint8_t* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
-        int32_t i, x, y, lastX, lastY;
-
-        lastX = -1;
-        lastY = -1;
-        x = baseX;
-        for (i = count - 1; i >= 0; i--)
+        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        auto coords = origCoords;
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != 255)
             {
-                y = baseY + ((255 - history[i]) * 100) / 256;
+                coords.y = origCoords.y + ((255 - history[i]) * 100) / 256;
 
-                if (lastX != -1)
+                if (lastCoords.x != -1)
                 {
-                    auto leftTop = ScreenCoordsXY{ lastX, lastY };
-                    auto rightBottom = ScreenCoordsXY{ x, y };
+                    auto leftTop = lastCoords;
+                    auto rightBottom = coords;
                     gfx_draw_line(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
+                    gfx_fill_rect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
-                lastX = x;
-                lastY = y;
+                lastCoords = coords;
             }
-            x += 6;
+            coords.x += 6;
         }
     }
 
-    void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, int32_t baseX, int32_t baseY)
+    void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos)
     {
-        DrawMonths(dpi, history, count, baseX, baseY);
-        DrawLineA(dpi, history, count, baseX, baseY);
-        DrawLineB(dpi, history, count, baseX, baseY);
+        DrawMonths(dpi, history, count, screenPos);
+        DrawLineA(dpi, history, count, screenPos);
+        DrawLineB(dpi, history, count, screenPos);
     }
 } // namespace Graph
 
@@ -134,9 +125,8 @@ static const ScreenCoordsXY ScreenCoordsForHistoryIndex(
     const int32_t index, const money32* history, const int32_t chartX, const int32_t chartY, const int32_t modifier,
     const int32_t offset)
 {
-    ScreenCoordsXY coords;
-    coords.x = chartX + ChartDataWidth * (ChartMaxIndex - index);
-    coords.y = chartY + ChartMaxHeight - ((((history[index] >> modifier) + offset) * 170) / 256);
+    auto coords = ScreenCoordsXY{ chartX + ChartDataWidth * (ChartMaxIndex - index),
+                                  chartY + ChartMaxHeight - ((((history[index] >> modifier) + offset) * 170) / 256) };
     return coords;
 }
 
@@ -153,19 +143,19 @@ static const FinancialTooltipInfo finance_tooltip_info_from_money(
     const auto coords = ScreenCoordsForHistoryIndex(
         historyIndex, history, chartFrame.GetLeft(), chartFrame.GetTop(), modifier, offset);
 
-    return { { coords.x, coords.y }, history[historyIndex] };
+    return { coords, history[historyIndex] };
 }
 
 namespace Graph
 {
-    static void DrawMonths(rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY)
+    static void DrawMonths(rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords)
     {
         int32_t i, yearOver32, currentMonth, currentDay;
 
         currentMonth = date_get_month(gDateMonthsElapsed);
         currentDay = gDateMonthTicks;
         yearOver32 = (currentMonth * 4) + (currentDay >> 14) - 31;
-        auto screenCoords = ScreenCoordsXY{ baseX, baseY };
+        auto screenCoords = origCoords;
         for (i = count - 1; i >= 0; i--)
         {
             if (history[i] != MONEY32_UNDEFINED && yearOver32 % 4 == 0)
@@ -186,75 +176,68 @@ namespace Graph
     }
 
     static void DrawLineA(
-        rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier,
+        rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
-        int32_t i, x, y, lastX, lastY;
-        lastX = -1;
-        lastY = -1;
-        x = baseX;
-        for (i = count - 1; i >= 0; i--)
+        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        auto coords = origCoords;
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != MONEY32_UNDEFINED)
             {
-                y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-                if (lastX != -1)
+                if (lastCoords.x != -1)
                 {
-                    auto leftTop1 = ScreenCoordsXY{ lastX + 1, lastY + 1 };
-                    auto rightBottom1 = ScreenCoordsXY{ x + 1, y + 1 };
-                    auto leftTop2 = ScreenCoordsXY{ lastX, lastY + 1 };
-                    auto rightBottom2 = ScreenCoordsXY{ x, y + 1 };
+                    auto leftTop1 = lastCoords + ScreenCoordsXY{ 1, 1 };
+                    auto rightBottom1 = coords + ScreenCoordsXY{ 1, 1 };
+                    auto leftTop2 = lastCoords + ScreenCoordsXY{ 0, 1 };
+                    auto rightBottom2 = coords + ScreenCoordsXY{ 0, 1 };
                     gfx_draw_line(dpi, { leftTop1, rightBottom1 }, PALETTE_INDEX_10);
                     gfx_draw_line(dpi, { leftTop2, rightBottom2 }, PALETTE_INDEX_10);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { { x, y }, { x + 2, y + 2 } }, PALETTE_INDEX_10);
+                    gfx_fill_rect(dpi, { coords, coords + ScreenCoordsXY{ 2, 2 } }, PALETTE_INDEX_10);
 
-                lastX = x;
-                lastY = y;
+                lastCoords = coords;
             }
-            x += 6;
+            coords.x += 6;
         }
     }
 
     static void DrawLineB(
-        rct_drawpixelinfo* dpi, const money32* history, int32_t count, int32_t baseX, int32_t baseY, int32_t modifier,
+        rct_drawpixelinfo* dpi, const money32* history, int32_t count, const ScreenCoordsXY& origCoords, int32_t modifier,
         int32_t offset)
     {
-        int32_t i, x, y, lastX, lastY;
-
-        lastX = -1;
-        lastY = -1;
-        x = baseX;
-        for (i = count - 1; i >= 0; i--)
+        auto lastCoords = ScreenCoordsXY{ -1, -1 };
+        auto coords = origCoords;
+        for (int32_t i = count - 1; i >= 0; i--)
         {
             if (history[i] != MONEY32_UNDEFINED)
             {
-                y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
+                coords.y = origCoords.y + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
-                if (lastX != -1)
+                if (lastCoords.x != -1)
                 {
-                    auto leftTop = ScreenCoordsXY{ lastX, lastY };
-                    auto rightBottom = ScreenCoordsXY{ x, y };
+                    auto leftTop = lastCoords;
+                    auto rightBottom = coords;
                     gfx_draw_line(dpi, { leftTop, rightBottom }, PALETTE_INDEX_21);
                 }
                 if (i == 0)
-                    gfx_fill_rect(dpi, { { x - 1, y - 1 }, { x + 1, y + 1 } }, PALETTE_INDEX_21);
+                    gfx_fill_rect(dpi, { coords - ScreenCoordsXY{ 1, 1 }, coords + ScreenCoordsXY{ 1, 1 } }, PALETTE_INDEX_21);
 
-                lastX = x;
-                lastY = y;
+                lastCoords = coords;
             }
-            x += 6;
+            coords.x += 6;
         }
     }
 
     static void DrawHoveredValue(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t historyCount, const int32_t baseX, const int32_t baseY,
+        rct_drawpixelinfo* dpi, const money32* history, const int32_t historyCount, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
         const auto cursorPosition = context_get_cursor_position_scaled();
-        const ScreenRect chartFrame{ { baseX, baseY }, { baseX + ChartMaxWidth, baseY + ChartMaxHeight } };
+        const ScreenRect chartFrame{ screenCoords, screenCoords + ScreenCoordsXY{ ChartMaxWidth, ChartMaxHeight } };
 
         if (!chartFrame.Contains(cursorPosition))
         {
@@ -287,12 +270,12 @@ namespace Graph
     }
 
     void Draw(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const int32_t baseX, const int32_t baseY,
+        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const ScreenCoordsXY& screenCoords,
         const int32_t modifier, const int32_t offset)
     {
-        DrawMonths(dpi, history, count, baseX, baseY);
-        DrawLineA(dpi, history, count, baseX, baseY, modifier, offset);
-        DrawLineB(dpi, history, count, baseX, baseY, modifier, offset);
-        DrawHoveredValue(dpi, history, count, baseX, baseY, modifier, offset);
+        DrawMonths(dpi, history, count, screenCoords);
+        DrawLineA(dpi, history, count, screenCoords, modifier, offset);
+        DrawLineB(dpi, history, count, screenCoords, modifier, offset);
+        DrawHoveredValue(dpi, history, count, screenCoords, modifier, offset);
     }
 } // namespace Graph

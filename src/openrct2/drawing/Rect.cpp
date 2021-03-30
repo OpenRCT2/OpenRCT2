@@ -140,9 +140,3 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
         }
     }
 }
-
-void gfx_fill_rect_inset(
-    rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom, int32_t colour, uint8_t flags)
-{
-    gfx_fill_rect_inset(dpi, { left, top, right, bottom }, colour, flags);
-}

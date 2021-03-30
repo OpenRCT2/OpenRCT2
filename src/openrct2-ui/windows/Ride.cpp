@@ -3692,9 +3692,8 @@ static void window_ride_locate_mechanic(rct_window* w)
  *  rct2: 0x006B7D08
  */
 static void window_ride_maintenance_draw_bar(
-    rct_window* w, rct_drawpixelinfo* dpi, int32_t x, int32_t y, int32_t value, int32_t colour)
+    rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t value, int32_t colour)
 {
-    ScreenCoordsXY coords{ x, y };
     gfx_fill_rect_inset(dpi, { coords, coords + ScreenCoordsXY{ 149, 8 } }, w->colours[1], INSET_RECT_F_30);
     if (colour & BAR_BLINK)
     {
@@ -4054,12 +4053,12 @@ static void window_ride_maintenance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     uint16_t reliability = ride->reliability_percentage;
     DrawTextBasic(dpi, screenCoords, STR_RELIABILITY_LABEL_1757, &reliability);
     window_ride_maintenance_draw_bar(
-        w, dpi, screenCoords.x + 103, screenCoords.y, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
+        w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, std::max<int32_t>(10, reliability), COLOUR_BRIGHT_GREEN);
     screenCoords.y += 11;
 
     uint16_t downTime = ride->downtime;
     DrawTextBasic(dpi, screenCoords, STR_DOWN_TIME_LABEL_1889, &downTime);
-    window_ride_maintenance_draw_bar(w, dpi, screenCoords.x + 103, screenCoords.y, downTime, COLOUR_BRIGHT_RED);
+    window_ride_maintenance_draw_bar(w, dpi, screenCoords + ScreenCoordsXY{ 103, 0 }, downTime, COLOUR_BRIGHT_RED);
     screenCoords.y += 26;
 
     // Last inspection

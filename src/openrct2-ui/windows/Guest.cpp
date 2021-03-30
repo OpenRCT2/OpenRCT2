@@ -1250,14 +1250,16 @@ void window_guest_stats_update(rct_window* w)
  *
  */
 static void window_guest_stats_bars_paint(
-    int32_t value, int32_t x, int32_t y, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
+    int32_t value, const ScreenCoordsXY& origCoords, rct_window* w, rct_drawpixelinfo* dpi, int32_t colour, bool blinkFlag)
 {
+    auto coords = origCoords;
     if (font_get_line_height(FontSpriteBase::MEDIUM) > 10)
     {
-        y += 1;
+        coords.y += 1;
     }
 
-    gfx_fill_rect_inset(dpi, x + 61, y + 1, x + 61 + 121, y + 9, w->colours[1], INSET_RECT_F_30);
+    gfx_fill_rect_inset(
+        dpi, { coords + ScreenCoordsXY{ 61, 1 }, coords + ScreenCoordsXY{ 61 + 121, 9 } }, w->colours[1], INSET_RECT_F_30);
 
     if (!blinkFlag || game_is_paused() || (gCurrentRealTimeTicks & 8) == 0)
     {
@@ -1267,7 +1269,7 @@ static void window_guest_stats_bars_paint(
         if (value <= 2)
             return;
 
-        gfx_fill_rect_inset(dpi, x + 63, y + 2, x + 63 + value - 1, y + 8, colour, 0);
+        gfx_fill_rect_inset(dpi, { coords + ScreenCoordsXY{ 63, 2 }, coords + ScreenCoordsXY{ 63 + value - 1, 8 } }, colour, 0);
     }
 }
 
@@ -1315,7 +1317,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t happiness = NormalizeGuestStatValue(peep->Happiness, PEEP_MAX_HAPPINESS, 10);
     int32_t barColour = COLOUR_BRIGHT_GREEN;
     bool barBlink = happiness < 50;
-    window_guest_stats_bars_paint(happiness, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(happiness, screenCoords, w, dpi, barColour, barBlink);
 
     // Energy
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1324,7 +1326,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t energy = NormalizeGuestStatValue(peep->Energy - PEEP_MIN_ENERGY, PEEP_MAX_ENERGY - PEEP_MIN_ENERGY, 10);
     barColour = COLOUR_BRIGHT_GREEN;
     barBlink = energy < 50;
-    window_guest_stats_bars_paint(energy, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(energy, screenCoords, w, dpi, barColour, barBlink);
 
     // Hunger
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1334,7 +1336,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     hunger = 255 - hunger; // the bar should be longer when peep->Hunger is low
     barColour = COLOUR_BRIGHT_RED;
     barBlink = hunger > 170;
-    window_guest_stats_bars_paint(hunger, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(hunger, screenCoords, w, dpi, barColour, barBlink);
 
     // Thirst
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1344,7 +1346,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     thirst = 255 - thirst; // the bar should be longer when peep->Thirst is low
     barColour = COLOUR_BRIGHT_RED;
     barBlink = thirst > 170;
-    window_guest_stats_bars_paint(thirst, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(thirst, screenCoords, w, dpi, barColour, barBlink);
 
     // Nausea
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1353,7 +1355,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t nausea = NormalizeGuestStatValue(peep->Nausea - 32, 223, 0);
     barColour = COLOUR_BRIGHT_RED;
     barBlink = nausea > 120;
-    window_guest_stats_bars_paint(nausea, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(nausea, screenCoords, w, dpi, barColour, barBlink);
 
     // Toilet
     screenCoords.y += LIST_ROW_HEIGHT;
@@ -1362,7 +1364,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t toilet = NormalizeGuestStatValue(peep->Toilet - 64, 178, 0);
     barColour = COLOUR_BRIGHT_RED;
     barBlink = toilet > 160;
-    window_guest_stats_bars_paint(toilet, screenCoords.x, screenCoords.y, w, dpi, barColour, barBlink);
+    window_guest_stats_bars_paint(toilet, screenCoords, w, dpi, barColour, barBlink);
 
     // Time in park
     screenCoords.y += LIST_ROW_HEIGHT + 1;
@@ -1377,7 +1379,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords.y += LIST_ROW_HEIGHT + 9;
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Preferred Ride
@@ -1664,7 +1666,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     gfx_fill_rect_inset(
-        dpi, screenCoords.x, screenCoords.y - 6, screenCoords.x + 179, screenCoords.y - 5, w->colours[1],
+        dpi, { screenCoords - ScreenCoordsXY{ 0, 6 }, screenCoords + ScreenCoordsXY{ 179, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
     // Paid to enter
