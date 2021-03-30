@@ -87,7 +87,7 @@ namespace OpenRCT2
     class ParkFile
     {
     public:
-        std::vector<rct_object_entry> RequiredObjects;
+        std::vector<ObjectEntryDescriptor> RequiredObjects;
 
     private:
         std::unique_ptr<OrcaStream> _os;
@@ -168,20 +168,34 @@ namespace OpenRCT2
 
         void ReadWriteObjectsChunk(OrcaStream& os)
         {
+            static constexpr uint8_t DESCRIPTOR_NONE = 0;
+            static constexpr uint8_t DESCRIPTOR_DAT = 1;
+            static constexpr uint8_t DESCRIPTOR_JSON = 2;
+
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                std::vector<rct_object_entry> entries;
-                os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&entries](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWriteVector(entries, [&cs](rct_object_entry& entry) {
-                        auto type = cs.Read<uint16_t>();
-                        auto id = cs.Read<std::string>();
-                        auto version = cs.Read<std::string>();
-
-                        entry.flags = type & 0x7FFF;
-                        strncpy(entry.name, id.c_str(), 8);
+                std::vector<ObjectEntryDescriptor> requiredObjects;
+                os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&requiredObjects](OrcaStream::ChunkStream& cs) {
+                    cs.ReadWriteVector(requiredObjects, [&cs](ObjectEntryDescriptor& objectDesc) {
+                        auto kind = cs.Read<uint8_t>();
+                        switch (kind)
+                        {
+                            case DESCRIPTOR_NONE:
+                                break;
+                            case DESCRIPTOR_DAT:
+                                objectDesc.Entry = cs.Read<rct_object_entry>();
+                                break;
+                            case DESCRIPTOR_JSON:
+                                objectDesc.Type = static_cast<ObjectType>(cs.Read<uint16_t>());
+                                objectDesc.Identifier = cs.Read<std::string>();
+                                objectDesc.Version = cs.Read<std::string>();
+                                break;
+                            default:
+                                throw std::runtime_error("Unknown object descriptor kind.");
+                        }
                     });
                 });
-                RequiredObjects = entries;
+                RequiredObjects = requiredObjects;
             }
             else
             {
@@ -193,18 +207,24 @@ namespace OpenRCT2
                         auto obj = objManager.GetLoadedObject(i);
                         if (obj != nullptr)
                         {
-                            auto entry = obj->GetObjectEntry();
-                            auto type = static_cast<uint16_t>(entry->flags & 0x0F);
-                            type |= 0x8000; // Make as legacy object
-                            cs.Write(type);
-                            cs.Write(std::string_view(entry->name, 8));
-                            cs.Write("");
+                            if (obj->IsJsonObject())
+                            {
+                                cs.Write(DESCRIPTOR_JSON);
+                                cs.Write(static_cast<uint16_t>(obj->GetObjectType()));
+                                cs.Write(obj->GetIdentifier());
+                                cs.Write(""); // reserved for version
+                            }
+                            else
+                            {
+                                auto entry = obj->GetObjectEntry();
+                                assert(entry != nullptr);
+                                cs.Write(DESCRIPTOR_DAT);
+                                cs.Write(entry);
+                            }
                         }
                         else
                         {
-                            cs.Write<uint16_t>(0);
-                            cs.Write("");
-                            cs.Write("");
+                            cs.Write(DESCRIPTOR_NONE);
                         }
                     });
                 });

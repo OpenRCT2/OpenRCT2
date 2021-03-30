@@ -159,30 +159,23 @@ enum class ObjectGeneration : uint8_t
 
 struct ObjectEntryDescriptor
 {
-    ObjectGeneration Generation;
-    std::string Identifier; // For JSON objects
-    rct_object_entry Entry; // For DAT objects
+    ObjectGeneration Generation = ObjectGeneration::JSON;
 
-    ObjectEntryDescriptor()
-        : Generation(ObjectGeneration::JSON)
-        , Identifier()
-        , Entry()
-    {
-    }
+    // DAT
+    rct_object_entry Entry;
 
-    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry)
-    {
-        Generation = ObjectGeneration::DAT;
-        Entry = newEntry;
-    }
+    // JSON
+    ObjectType Type{};
+    std::string Identifier;
+    std::string Version;
 
-    explicit ObjectEntryDescriptor(std::string_view newIdentifier)
-    {
-        Generation = ObjectGeneration::JSON;
-        Identifier = std::string(newIdentifier);
-    }
-
+    ObjectEntryDescriptor() = default;
+    explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
+    explicit ObjectEntryDescriptor(std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
+    bool HasValue() const;
+    ObjectType GetType() const;
+    std::string_view GetName() const;
 };
 
 struct IObjectRepository;

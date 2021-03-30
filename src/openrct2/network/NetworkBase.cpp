@@ -2718,7 +2718,7 @@ bool NetworkBase::LoadMap(IStream* stream)
         auto& objManager = context->GetObjectManager();
         auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
-        objManager.LoadObjects(loadResult.RequiredObjects.data(), loadResult.RequiredObjects.size());
+        objManager.LoadObjects(loadResult.RequiredObjects);
         importer->Import();
 
         EntityTweener::Get().Reset();

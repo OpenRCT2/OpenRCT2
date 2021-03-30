@@ -257,7 +257,7 @@ public:
             case WC_OBJECT_LOAD_ERROR:
             {
                 std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
-                const rct_object_entry* objects = static_cast<rct_object_entry*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
+                auto objects = static_cast<const ObjectEntryDescriptor*>(intent->GetPointerExtra(INTENT_EXTRA_LIST));
                 size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
                 window_object_load_error_open(const_cast<utf8*>(path.c_str()), count, objects);
 

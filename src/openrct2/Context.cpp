@@ -630,7 +630,7 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
-                _objectManager->LoadObjects(result.RequiredObjects.data(), result.RequiredObjects.size());
+                _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
                 gCurrentLoadedPath = path;
@@ -692,7 +692,7 @@ namespace OpenRCT2
                 // which the window function doesn't like
                 auto intent = Intent(WC_OBJECT_LOAD_ERROR);
                 intent.putExtra(INTENT_EXTRA_PATH, path);
-                intent.putExtra(INTENT_EXTRA_LIST, const_cast<rct_object_entry*>(e.MissingObjects.data()));
+                intent.putExtra(INTENT_EXTRA_LIST, const_cast<ObjectEntryDescriptor*>(e.MissingObjects.data()));
                 intent.putExtra(INTENT_EXTRA_LIST_COUNT, static_cast<uint32_t>(e.MissingObjects.size()));
 
                 auto windowManager = _uiContext->GetWindowManager();
@@ -1507,11 +1507,6 @@ utf8* platform_open_directory_browser(const utf8* title)
         log_error(ex.what());
         return nullptr;
     }
-}
-
-bool platform_place_string_on_clipboard(utf8* target)
-{
-    return GetContext()->GetUiContext()->SetClipboardText(target);
 }
 
 /**
