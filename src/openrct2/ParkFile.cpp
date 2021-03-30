@@ -383,14 +383,48 @@ namespace OpenRCT2
                 cs.ReadWrite(gResearchProgress);
                 cs.ReadWrite(gResearchExpectedMonth);
                 cs.ReadWrite(gResearchExpectedDay);
-                cs.ReadWrite(gResearchLastItem);
-                cs.ReadWrite(gResearchNextItem);
+                ReadWriteResearchItem(cs, gResearchLastItem);
+                ReadWriteResearchItem(cs, gResearchNextItem);
 
-                // Research order
-                //   type (uint8_t)
-                //   flags (uint8_t)
-                //   entry (uint32_t)
+                // Invention list
+                cs.ReadWriteVector(gResearchItemsUninvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
+                cs.ReadWriteVector(gResearchItemsInvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
             });
+        }
+
+        static void ReadWriteResearchItem(OrcaStream::ChunkStream& cs, std::optional<ResearchItem>& item)
+        {
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                auto hasValue = cs.Read<bool>();
+                if (hasValue)
+                {
+                    ResearchItem placeholder;
+                    ReadWriteResearchItem(cs, placeholder);
+                    item = placeholder;
+                }
+            }
+            else
+            {
+                if (item)
+                {
+                    cs.Write<bool>(true);
+                    ReadWriteResearchItem(cs, *item);
+                }
+                else
+                {
+                    cs.Write<bool>(false);
+                }
+            }
+        }
+
+        static void ReadWriteResearchItem(OrcaStream::ChunkStream& cs, ResearchItem& item)
+        {
+            cs.ReadWrite(item.type);
+            cs.ReadWrite(item.baseRideType);
+            cs.ReadWrite(item.entryIndex);
+            cs.ReadWrite(item.flags);
+            cs.ReadWrite(item.category);
         }
 
         void ReadWriteNotificationsChunk(OrcaStream& os)
