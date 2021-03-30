@@ -951,7 +951,6 @@ namespace OpenRCT2
     template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Vehicle& entity)
     {
         ReadWriteEntityCommon(cs, entity);
-        auto ride = entity.GetRide();
         cs.ReadWrite(entity.SubType);
         cs.ReadWrite(entity.vehicle_sprite_type);
         cs.ReadWrite(entity.bank_rotation);
@@ -962,15 +961,8 @@ namespace OpenRCT2
         cs.ReadWrite(entity.vehicle_type);
         cs.ReadWrite(entity.colours);
         cs.ReadWrite(entity.track_progress);
-        if (ride != nullptr && ride->mode == RideMode::BoatHire && entity.status == Vehicle::Status::TravellingBoat)
-        {
-            cs.ReadWrite(entity.BoatLocation);
-        }
-        else
-        {
-            // Track direction and type are in the same field
-            cs.ReadWrite(entity.TrackTypeAndDirection);
-        }
+        cs.ReadWrite(entity.BoatLocation);
+        cs.ReadWrite(entity.TrackTypeAndDirection);
         cs.ReadWrite(entity.TrackLocation.x);
         cs.ReadWrite(entity.TrackLocation.y);
         cs.ReadWrite(entity.TrackLocation.z);
@@ -1139,8 +1131,15 @@ namespace OpenRCT2
         auto count = cs.Read<uint16_t>();
         for (auto i = 0; i < count; ++i)
         {
+            T placeholder{};
+
             auto index = cs.Read<uint16_t>();
             auto* ent = CreateEntityAt<T>(index);
+            if (ent == nullptr)
+            {
+                // Unable to allocate entity
+                ent = &placeholder;
+            }
             ReadWriteEntity(cs, *ent);
         }
     }
