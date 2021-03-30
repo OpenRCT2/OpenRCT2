@@ -174,6 +174,7 @@ namespace OpenRCT2
             }
 
             gfx_object_check_all_images_freed();
+            gfx_unload_csg();
             gfx_unload_g2();
             gfx_unload_g1();
             Audio::Close();
