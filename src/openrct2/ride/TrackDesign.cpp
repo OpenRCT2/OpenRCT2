@@ -1887,7 +1887,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     ObjectEntryIndex entry_index;
     if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
     {
-        entry_index = RIDE_ENTRY_INDEX_NULL;
+        entry_index = OBJECT_ENTRY_INDEX_NULL;
     }
 
     ride_id_t rideIndex;

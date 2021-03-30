@@ -24,7 +24,7 @@ DEFINE_GAME_ACTION(RideCreateAction, GameCommand::CreateRide, RideCreateGameActi
 {
 private:
     int32_t _rideType{ RIDE_ID_NULL };
-    ObjectEntryIndex _subType{ RIDE_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _colour1{ 0xFF };
     uint8_t _colour2{ 0xFF };
 

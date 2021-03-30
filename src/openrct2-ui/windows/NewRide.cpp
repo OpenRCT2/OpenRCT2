@@ -312,7 +312,7 @@ static void window_new_ride_populate_list()
     }
 
     nextListItem->Type = RIDE_TYPE_NULL;
-    nextListItem->EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    nextListItem->EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
 static RideSelection* window_new_ride_iterate_over_ride_type(uint8_t rideType, RideSelection* nextListItem)
@@ -392,7 +392,7 @@ static void window_new_ride_scroll_to_focused_ride(rct_window* w)
     auto focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
     int32_t count = 0, row = 0;
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         if (listItem->Type == focusRideType.Type)
         {
@@ -436,9 +436,9 @@ rct_window* window_new_ride_open()
     WindowInitScrollWidgets(w);
 
     w->frame_no = 0;
-    w->new_ride.SelectedRide = { RIDE_TYPE_NULL, RIDE_ENTRY_INDEX_NULL };
+    w->new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
-    _lastTrackDesignCountRideType.EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
     w->new_ride.HighlightedRide = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
     if (w->new_ride.HighlightedRide.Type == RIDE_TYPE_NULL)
         w->new_ride.HighlightedRide = _windowNewRideListItems[0];
@@ -516,7 +516,7 @@ static void window_new_ride_set_page(rct_window* w, int32_t page)
 {
     _windowNewRideCurrentTab = page;
     w->frame_no = 0;
-    w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, RIDE_ENTRY_INDEX_NULL };
+    w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     w->new_ride.selected_ride_countdown = std::numeric_limits<uint16_t>::max();
     window_new_ride_populate_list();
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
@@ -689,7 +689,7 @@ static void window_new_ride_scrollgetsize(rct_window* w, int32_t scrollIndex, in
     RideSelection* listItem = _windowNewRideListItems;
 
     int32_t count = 0;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         count++;
         listItem++;
@@ -706,7 +706,7 @@ static void window_new_ride_scrollmousedown(rct_window* w, int32_t scrollIndex, 
     RideSelection item;
 
     item = window_new_ride_scroll_get_ride_list_item_at(w, screenCoords);
-    if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == RIDE_ENTRY_INDEX_NULL)
+    if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
         return;
 
     _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
@@ -777,7 +777,7 @@ static void window_new_ride_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         RideSelection item;
         item = w->new_ride.HighlightedRide;
-        if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != RIDE_ENTRY_INDEX_NULL)
+        if (item.Type != RIDE_TYPE_NULL || item.EntryIndex != OBJECT_ENTRY_INDEX_NULL)
             window_new_ride_paint_ride_information(
                 w, dpi, item, w->windowPos + ScreenCoordsXY{ 3, w->height - 64 }, w->width - 6);
     }
@@ -800,7 +800,7 @@ static void window_new_ride_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     ScreenCoordsXY coords{ 1, 1 };
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         rct_ride_entry* rideEntry;
         // Draw flat button rectangle
@@ -846,7 +846,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
 {
     RideSelection result;
     result.Type = RIDE_TYPE_NULL;
-    result.EntryIndex = RIDE_ENTRY_INDEX_NULL;
+    result.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
 
     if (screenCoords.x <= 0 || screenCoords.y <= 0)
         return result;
@@ -859,7 +859,7 @@ static RideSelection window_new_ride_scroll_get_ride_list_item_at(rct_window* w,
     int32_t index = column + (row * 5);
 
     RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != RIDE_ENTRY_INDEX_NULL)
+    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         if (index-- == 0)
             return *listItem;

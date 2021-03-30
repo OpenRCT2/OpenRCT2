@@ -575,7 +575,7 @@ private:
     void AddEntryForRideType(uint8_t rideType)
     {
         assert(rideType < std::size(_rideTypeToRideEntryMap));
-        if (_rideTypeToRideEntryMap[rideType] == RIDE_ENTRY_INDEX_NULL)
+        if (_rideTypeToRideEntryMap[rideType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetRideTypeObject(rideType);
             if (!String::Equals(entryName, "        "))
@@ -589,7 +589,7 @@ private:
     void AddEntryForVehicleType(uint8_t rideType, uint8_t vehicleType)
     {
         assert(vehicleType < std::size(_vehicleTypeToRideEntryMap));
-        if (_vehicleTypeToRideEntryMap[vehicleType] == RIDE_ENTRY_INDEX_NULL)
+        if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetVehicleObject(vehicleType);
             if (!String::Equals(entryName, "        "))
@@ -1995,7 +1995,8 @@ private:
                     _researchRideTypeUsed[rct1RideType] = true;
 
                     auto ownRideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                    Guard::Assert(ownRideEntryIndex != RIDE_ENTRY_INDEX_NULL, "ownRideEntryIndex was RIDE_ENTRY_INDEX_NULL");
+                    Guard::Assert(
+                        ownRideEntryIndex != OBJECT_ENTRY_INDEX_NULL, "ownRideEntryIndex was OBJECT_ENTRY_INDEX_NULL");
 
                     bool foundOwnType = false;
                     // If the ride type does not use vehicles, no point looking for them in the research list.
@@ -2291,7 +2292,7 @@ private:
         {
             auto entryIndex = _rideTypeToRideEntryMap[srcItem];
 
-            if (entryIndex != RIDE_ENTRY_INDEX_NULL)
+            if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
 
@@ -2310,7 +2311,7 @@ private:
         {
             auto entryIndex = _vehicleTypeToRideEntryMap[srcItem];
 
-            if (entryIndex != RIDE_ENTRY_INDEX_NULL)
+            if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
 

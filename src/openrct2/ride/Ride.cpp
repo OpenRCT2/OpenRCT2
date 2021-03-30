@@ -4427,7 +4427,7 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
 bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 {
     UpdateMaxVehicles();
-    if (subtype == RIDE_ENTRY_INDEX_NULL)
+    if (subtype == OBJECT_ENTRY_INDEX_NULL)
     {
         return true;
     }
@@ -4886,7 +4886,7 @@ bool Ride::Test(int32_t newStatus, bool isApplying)
         }
     }
 
-    if (subtype != RIDE_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
     {
         rct_ride_entry* rideType = get_ride_entry(subtype);
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
@@ -5019,7 +5019,7 @@ bool Ride::Open(bool isApplying)
         }
     }
 
-    if (subtype != RIDE_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
+    if (subtype != OBJECT_ENTRY_INDEX_NULL && !gCheatsEnableAllDrawableTrackPieces)
     {
         rct_ride_entry* rideEntry = get_ride_entry(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
@@ -6341,7 +6341,7 @@ static int32_t ride_get_track_length(Ride* ride)
  */
 void Ride::UpdateMaxVehicles()
 {
-    if (subtype == RIDE_ENTRY_INDEX_NULL)
+    if (subtype == OBJECT_ENTRY_INDEX_NULL)
         return;
 
     rct_ride_entry* rideEntry = get_ride_entry(subtype);
@@ -7074,7 +7074,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
 {
     int32_t subType = rideSubType;
 
-    if (subType == RIDE_ENTRY_INDEX_NULL)
+    if (subType == OBJECT_ENTRY_INDEX_NULL)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto& rideEntries = objManager.GetAllRideEntries(rideType);
@@ -7086,7 +7086,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
                 auto rideEntry = get_ride_entry(rideEntryIndex);
                 if (rideEntry == nullptr)
                 {
-                    return RIDE_ENTRY_INDEX_NULL;
+                    return OBJECT_ENTRY_INDEX_NULL;
                 }
 
                 // Can happen in select-by-track-type mode

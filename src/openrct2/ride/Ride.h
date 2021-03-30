@@ -54,8 +54,6 @@ constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
-constexpr const ObjectEntryIndex RIDE_ENTRY_INDEX_NULL = OBJECT_ENTRY_INDEX_NULL;
-
 constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE = 2;
 
 #pragma pack(push, 1)

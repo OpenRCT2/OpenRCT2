@@ -3147,7 +3147,7 @@ template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int3
         return;
     }
 
-    if (vehicle->ride_subtype == RIDE_ENTRY_INDEX_NULL)
+    if (vehicle->ride_subtype == OBJECT_ENTRY_INDEX_NULL)
     {
         vehicleEntry = &CableLiftVehicle;
     }
