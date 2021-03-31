@@ -150,12 +150,7 @@ uint32_t TerrainSurfaceObject::GetImageId(
 
 TerrainSurfaceObject* TerrainSurfaceObject::GetById(ObjectEntryIndex entryIndex)
 {
-    TerrainSurfaceObject* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<TerrainSurfaceObject*>(obj);
-    }
-    return result;
+    return obj != nullptr ? static_cast<TerrainSurfaceObject*>(obj) : nullptr;
 }

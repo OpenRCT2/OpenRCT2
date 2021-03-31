@@ -63,12 +63,7 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
 
 TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)
 {
-    TerrainEdgeObject* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, entryIndex);
-    if (obj != nullptr)
-    {
-        result = static_cast<TerrainEdgeObject*>(obj);
-    }
-    return result;
+    return obj != nullptr ? static_cast<TerrainEdgeObject*>(obj) : nullptr;
 }

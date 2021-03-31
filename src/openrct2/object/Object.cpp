@@ -304,7 +304,7 @@ std::unique_ptr<IStream> ObjectAsset::GetStream() const
 
 ObjectEntryDescriptor::ObjectEntryDescriptor(const ObjectRepositoryItem& ori)
 {
-    if (ori.Identifier != "")
+    if (!ori.Identifier.empty())
     {
         Generation = ObjectGeneration::JSON;
         Identifier = std::string(ori.Identifier);

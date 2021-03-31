@@ -145,10 +145,10 @@ void mapgen_generate(mapgen_settings* settings)
     const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
     std::string edgeTexture = selectedFloor != nullptr ? std::string(selectedEdge->GetIdentifier()) : "";
 
-    if (floorTexture == "")
+    if (floorTexture.empty())
         floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
 
-    if (edgeTexture == "")
+    if (edgeTexture.empty())
     {
         // Base edge type on surface type
         if (floorTexture == "rct2.surface.dirt")
