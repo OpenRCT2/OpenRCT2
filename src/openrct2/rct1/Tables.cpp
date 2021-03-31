@@ -118,7 +118,7 @@ namespace RCT1
 
     ObjectEntryIndex GetTerrain(uint8_t terrainSurface)
     {
-        static constexpr const char* map[RCT1_NUM_TERRAIN_SURFACES] =
+        static constexpr std::string_view map[RCT1_NUM_TERRAIN_SURFACES] =
         {
             "rct2.surface.grass",
             "rct2.surface.sand",
@@ -148,7 +148,7 @@ namespace RCT1
 
     ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge)
     {
-        static constexpr const char* map[RCT1_NUM_TERRAIN_EDGES] =
+        static constexpr std::string_view map[RCT1_NUM_TERRAIN_EDGES] =
         {
             "rct2.edge.rock",
             "rct1.edge.brick",
