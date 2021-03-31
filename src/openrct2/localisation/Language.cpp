@@ -48,6 +48,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "fi-FI", "Finnish",               "Suomi",                 FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_FINNISH
     { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_SWEDISH
     { "tr-TR", "Turkish",               "Türkçe",                FAMILY_OPENRCT2_SPRITE,                false }, // LANGUAGE_TURKISH
+    { "vi-VN", "Vietnamese",            "Vietnamese",            FAMILY(&TTFFamilySansSerif),           false }, // LANGUAGE_VIETNAMESE
 };
 // clang-format on
 
