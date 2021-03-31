@@ -421,8 +421,8 @@ static void window_mapgen_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
 static int32_t _mapSize = 150;
 static int32_t _baseHeight = 12;
 static int32_t _waterLevel = 6;
-static int32_t _floorTexture = TERRAIN_GRASS;
-static int32_t _wallTexture = TERRAIN_EDGE_ROCK;
+static int32_t _floorTexture = 0;
+static int32_t _wallTexture = 0;
 static bool _randomTerrain = true;
 static int32_t _placeTrees = 1;
 

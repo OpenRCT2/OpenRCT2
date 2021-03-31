@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../interface/Colour.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../world/Surface.h"
@@ -115,54 +116,63 @@ namespace RCT1
         return map[rct1SpriteType];
     }
 
-    uint8_t GetTerrain(uint8_t terrain)
+    ObjectEntryIndex GetTerrain(uint8_t terrainSurface)
     {
-        static constexpr const uint8_t map[] =
+        static constexpr std::string_view map[RCT1_NUM_TERRAIN_SURFACES] =
         {
-            TERRAIN_GRASS,
-            TERRAIN_SAND,
-            TERRAIN_DIRT,
-            TERRAIN_ROCK,
-            TERRAIN_MARTIAN,
-            TERRAIN_CHECKERBOARD,
-            TERRAIN_GRASS_CLUMPS,
-            TERRAIN_ROOF_BROWN,                 
-            TERRAIN_ICE,
-            TERRAIN_ROOF_LOG,                 
-            TERRAIN_ROOF_IRON,                 
-            TERRAIN_ROOF_GREY,                 
-            TERRAIN_GRID_RED,
-            TERRAIN_GRID_YELLOW,
-            TERRAIN_GRID_BLUE,
-            TERRAIN_GRID_GREEN
+            "rct2.surface.grass",
+            "rct2.surface.sand",
+            "rct2.surface.dirt",
+            "rct2.surface.rock",
+            "rct2.surface.martian",
+            "rct2.surface.chequerboard",
+            "rct2.surface.grassclumps",
+            "rct1.aa.surface.roofred",
+            "rct2.surface.ice",
+            "rct1.ll.surface.wood",
+            "rct1.ll.surface.rust",
+            "rct1.ll.surface.roofgrey",
+            "rct2.surface.gridred",
+            "rct2.surface.gridyellow",
+            "rct2.surface.gridpurple",
+            "rct2.surface.gridgreen",
         };
-        Guard::ArgumentInRange<size_t>(terrain, 0, std::size(map), "Unsupported RCT1 terrain type.");
-        return map[terrain];
+        std::string selectedSurface = "rct2.surface.grass";
+        if (terrainSurface < std::size(map))
+        {
+            selectedSurface = map[terrainSurface];
+        }
+
+        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedSurface));
     }
 
-    uint8_t GetTerrainEdge(uint8_t terrainEdge)
+    ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge)
     {
-        static constexpr const uint8_t map[] =
+        static constexpr std::string_view map[RCT1_NUM_TERRAIN_EDGES] =
         {
-            TERRAIN_EDGE_ROCK,          // rct2.edge.rock
-            TERRAIN_EDGE_BRICK,         // rct1.edge.brick
-            TERRAIN_EDGE_IRON,          // rct1.edge.iron
-            TERRAIN_EDGE_WOOD_RED,      // rct2.edge.woodred
-            TERRAIN_EDGE_GREY,          // rct1.aa.edge.grey
-            TERRAIN_EDGE_YELLOW,        // rct1.aa.edge.yellow
-            TERRAIN_EDGE_WOOD_BLACK,    // rct2.edge.woodblack
-            TERRAIN_EDGE_RED,           // rct1.aa.edge.red
-            TERRAIN_EDGE_ICE,           // rct2.edge.ice
-            TERRAIN_EDGE_PURPLE,        // rct1.ll.edge.purple
-            TERRAIN_EDGE_GREEN,         // rct1.ll.edge.green
-            TERRAIN_EDGE_STONE_BROWN,   // rct1.ll.edge.stonebrown
-            TERRAIN_EDGE_STONE_GREY,    // rct1.ll.edge.stonegrey
-            TERRAIN_EDGE_SKYSCRAPER_A,  // rct1.ll.edge.skyscrapera
-            TERRAIN_EDGE_SKYSCRAPER_B,  // rct1.ll.edge.skyscraperb
-            TERRAIN_EDGE_ROCK           // rct2.edge.rock (Unused)
+            "rct2.edge.rock",
+            "rct1.edge.brick",
+            "rct1.edge.iron",
+            "rct2.edge.woodred",
+            "rct1.aa.edge.grey",
+            "rct1.aa.edge.yellow",
+            "rct2.edge.woodblack",
+            "rct1.aa.edge.red",
+            "rct2.edge.ice",
+            "rct1.ll.edge.purple",
+            "rct1.ll.edge.green",
+            "rct1.ll.edge.stonebrown",
+            "rct1.ll.edge.stonegrey",
+            "rct1.ll.edge.skyscrapera",
+            "rct1.ll.edge.skyscraperb",
         };
-        Guard::ArgumentInRange<size_t>(terrainEdge, 0, std::size(map), "Unsupported RCT1 terrain edge.");
-        return map[terrainEdge];
+        std::string selectedEdge = "rct2.edge.rock";
+        if (terrainEdge < std::size(map))
+        {
+            selectedEdge = map[terrainEdge];
+        }
+
+        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedEdge));
     }
 
     uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType)

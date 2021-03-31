@@ -23,8 +23,8 @@ namespace RCT1
 
     colour_t GetColour(colour_t colour);
     PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType);
-    uint8_t GetTerrain(uint8_t terrain);
-    uint8_t GetTerrainEdge(uint8_t terrainEdge);
+    ObjectEntryIndex GetTerrain(uint8_t terrain);
+    ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge);
 
     uint8_t GetRideType(uint8_t rideType, uint8_t vehicleType);
     RCT1VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);

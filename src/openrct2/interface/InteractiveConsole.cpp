@@ -1071,7 +1071,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
 
         const rct_object_entry* entry = &ori->ObjectEntry;
-        void* loadedObject = object_manager_get_loaded_object(entry);
+        const auto* loadedObject = object_manager_get_loaded_object(ObjectEntryDescriptor(*ori));
         if (loadedObject != nullptr)
         {
             console.WriteLineError("Object is already in scenario.");

@@ -268,8 +268,8 @@ void map_init(int32_t size)
         tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
         tile_element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
         tile_element->AsSurface()->SetParkFences(0);
-        tile_element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-        tile_element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+        tile_element->AsSurface()->SetSurfaceStyle(0);
+        tile_element->AsSurface()->SetEdgeStyle(0);
     }
 
     gGrassSceneryTileLoopPosition = 0;
@@ -1682,8 +1682,8 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             element->clearance_height = MINIMUM_LAND_HEIGHT;
             element->owner = 0;
             element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-            element->AsSurface()->SetSurfaceStyle(TERRAIN_GRASS);
-            element->AsSurface()->SetEdgeStyle(TERRAIN_EDGE_ROCK);
+            element->AsSurface()->SetSurfaceStyle(0);
+            element->AsSurface()->SetEdgeStyle(0);
             element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
             element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
             element->AsSurface()->SetParkFences(0);

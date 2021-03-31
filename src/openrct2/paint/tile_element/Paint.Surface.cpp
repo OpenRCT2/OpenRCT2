@@ -304,7 +304,7 @@ static const TerrainSurfaceObject* get_surface_object(size_t index)
 }
 
 static uint32_t get_surface_image(
-    const paint_session* session, uint8_t index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
+    const paint_session* session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
     // Provide fallback for RCT1 surfaces if the user does have RCT1 linked.
@@ -971,7 +971,7 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     const auto zoomLevel = dpi->zoom_level;
     const uint8_t rotation = session->CurrentRotation;
-    const uint32_t terrain_type = tileElement->AsSurface()->GetSurfaceStyle();
+    const auto terrain_type = tileElement->AsSurface()->GetSurfaceStyle();
     const uint8_t surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
     const CoordsXY& base = session->SpritePosition;
     const corner_height& cornerHeights = corner_heights[surfaceShape];
@@ -1279,8 +1279,8 @@ void surface_paint(paint_session* session, uint8_t direction, uint16_t height, c
 
     if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
-        const uint32_t edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
-        if (edgeStyle >= TERRAIN_EDGE_COUNT)
+        const auto edgeStyle = tileElement->AsSurface()->GetEdgeStyle();
+        if (static_cast<int32_t>(edgeStyle) >= object_entry_group_counts[EnumValue(ObjectType::TerrainEdge)])
         {
             log_verbose("edgeStyle: %d", edgeStyle);
         }

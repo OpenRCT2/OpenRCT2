@@ -242,7 +242,7 @@ static void window_install_track_paint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
 
-        void* objectEntry = object_manager_load_object(&td6->vehicle_object);
+        const auto* objectEntry = object_manager_load_object(&td6->vehicle_object);
         if (objectEntry != nullptr)
         {
             auto groupIndex = object_manager_get_loaded_object_entry_index(objectEntry);

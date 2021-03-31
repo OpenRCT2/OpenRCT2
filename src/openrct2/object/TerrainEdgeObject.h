@@ -31,4 +31,6 @@ public:
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+
+    static TerrainEdgeObject* GetById(ObjectEntryIndex entryIndex);
 };
