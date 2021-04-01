@@ -241,8 +241,8 @@ STR_0831    :缩小
 STR_0832    :顺时针旋转90°
 STR_0833    :暂停游戏
 STR_0834    :磁盘和游戏选项
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :关于'OpenRCT2'
 STR_0850    :{WINDOW_COLOUR_2}版权 © 2002 Chris Sawyer, 版权所有
@@ -1068,12 +1068,12 @@ STR_1679    :向上盘旋 (向左)
 STR_1680    :向上盘旋 (向右)
 STR_1681    :向下盘旋 (向左)
 STR_1682    :向下盘旋 (向右)
-STR_1683    :2 x 2地基
-STR_1684    :4 x 4地基
-STR_1685    :2 x 4地基
-STR_1686    :5 x 1地基
+STR_1683    :2 × 2地基
+STR_1684    :4 × 4地基
+STR_1685    :2 × 4地基
+STR_1686    :5 × 1地基
 STR_1687    :水溅
-STR_1688    :4 x 1地基
+STR_1688    :4 × 1地基
 STR_1689    :刹车装置
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  费用: {BLACK}{CURRENCY}
@@ -1675,7 +1675,7 @@ STR_2312    :{WINDOW_COLOUR_2}刺激度: {BLACK}{COMMA2DP32} (大约)
 STR_2313    :{WINDOW_COLOUR_2}恶心度: {BLACK}{COMMA2DP32} (大约)
 STR_2314    :{WINDOW_COLOUR_2}轨道长度: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}建造费用: {BLACK}约{CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}需要空间: {BLACK}{COMMA16} x {COMMA16}格
+STR_2316    :{WINDOW_COLOUR_2}需要空间: {BLACK}{COMMA16} × {COMMA16}格
 STR_2321    :{WINDOW_COLOUR_2}游乐设施/店铺数目: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}员工数目: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}乐园大小: {BLACK}{COMMA32}m²
@@ -2309,7 +2309,7 @@ STR_3208    :轨道设计管理工具
 STR_3209    :上一步:
 STR_3210    :下一步:
 STR_3211    :地图大小:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :不能再缩小地图
 STR_3214    :不能再扩大地图
 STR_3215    :太接近地图的边缘

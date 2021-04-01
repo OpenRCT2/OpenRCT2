@@ -236,8 +236,8 @@ STR_0831    :Oddálit pohled
 STR_0832    :Otočit o 90° po směru hod. ruč.
 STR_0833    :Pozastavit hru
 STR_0834    :Uložení a nastavení hry
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :O hře OpenRCT2
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, všechna práva vyhrazena
@@ -1064,12 +1064,12 @@ STR_1679    :Spirála nahoru (levá)
 STR_1680    :Spirála nahoru (pravá)
 STR_1681    :Spirála dolů (levá)
 STR_1682    :Spirála dolů (pravá)
-STR_1683    :Velikost podstavy 2 x 2
-STR_1684    :Velikost podstavy 4 x 4
-STR_1685    :Velikost podstavy 2 x 4
-STR_1686    :Velikost podstavy 5 x 1
+STR_1683    :Velikost podstavy 2 × 2
+STR_1684    :Velikost podstavy 4 × 4
+STR_1685    :Velikost podstavy 2 × 4
+STR_1686    :Velikost podstavy 5 × 1
 STR_1687    :Průjezd vodou
-STR_1688    :Velikost podstavy 4 x 1
+STR_1688    :Velikost podstavy 4 × 1
 STR_1689    :Brzdící blok
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Cena: {BLACK}{CURRENCY}
@@ -1671,7 +1671,7 @@ STR_2312    :{WINDOW_COLOUR_2}Intenzita: asi {BLACK}{COMMA2DP32}
 STR_2313    :{WINDOW_COLOUR_2}Nevolnost: asi {BLACK}{COMMA2DP32}
 STR_2314    :{WINDOW_COLOUR_2}Délka jízdy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cena: {BLACK}okolo {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Vyžadovaný prostor: {BLACK}{COMMA16} x {COMMA16} dlaždic
+STR_2316    :{WINDOW_COLOUR_2}Vyžadovaný prostor: {BLACK}{COMMA16} × {COMMA16} dlaždic
 STR_2321    :{WINDOW_COLOUR_2}Celkem atrakcí: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Personál: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Velikost parku: {BLACK}{COMMA32}m²
@@ -2305,7 +2305,7 @@ STR_3208    :Správa návrhů tratí
 STR_3209    :Zpět k předchozímu kroku:
 STR_3210    :Jít na následující krok:
 STR_3211    :Velikost mapy:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :Mapu nelze více zmenšit
 STR_3214    :Mapu nelze více zvětšit
 STR_3215    :Příliš blízko u kraje mapy

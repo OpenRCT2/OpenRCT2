@@ -236,8 +236,8 @@ STR_0831    :تصغير المشهد للخارج
 STR_0832    :تدوير المشهد 90 ° بإتجاه عقارب الساعة
 STR_0833    :إيقاف اللعبة مؤقتاً
 STR_0834    :إعدادات اللعبة والهارد
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :‘OpenRCT2’ عن
 STR_0850    :{WINDOW_COLOUR_2}حقوق النشر © 2002 كريس سوير، كل الحقوق محفوظة
@@ -1062,12 +1062,12 @@ STR_1679    :Helix up (left)
 STR_1680    :Helix up (right)
 STR_1681    :Helix down (left)
 STR_1682    :Helix down (right)
-STR_1683    :Base size 2 x 2
-STR_1684    :Base size 4 x 4
-STR_1685    :Base size 2 x 4
-STR_1686    :Base size 5 x 1
+STR_1683    :Base size 2 × 2
+STR_1684    :Base size 4 × 4
+STR_1685    :Base size 2 × 4
+STR_1686    :Base size 5 × 1
 STR_1687    :Water splash
-STR_1688    :Base size 4 x 1
+STR_1688    :Base size 4 × 1
 STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  السعر: {BLACK}{CURRENCY}
@@ -1669,7 +1669,7 @@ STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
+STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} × {COMMA16} blocks
 STR_2321    :{WINDOW_COLOUR_2}Number of rides/attractions: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Staff: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park size: {BLACK}{COMMA32}m²
@@ -2303,7 +2303,7 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :حجم الخريطة:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -3383,7 +3383,7 @@ STR_6107    :شاحنات الوحش
 STR_6109    :Hyper-Twister
 STR_6111    :Classic Mini Roller Coaster
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
-STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
+STR_6115    :Powered giant 4 × 4 trucks which can climb steep slopes
 STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}

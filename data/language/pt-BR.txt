@@ -240,8 +240,8 @@ STR_0831    :Afastar Vista
 STR_0832    :Girar visão em 90° no sentido horário
 STR_0833    :Pausar Jogo
 STR_0834    :Opções de disco e jogo
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Sobre ‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, Todos os direitos reservados
 STR_0851    :{WINDOW_COLOUR_2}Projetado e programado por Chris Sawyer
@@ -1065,9 +1065,9 @@ STR_1679    :Espiral para Cima (esquerda)
 STR_1680    :Espiral para Cima (direita)
 STR_1681    :Espiral para Baixo (esquerda)
 STR_1682    :Espiral para Baixo (direita)
-STR_1683    :Tamanho da base 2 x 2
-STR_1684    :Tamanho da base 4 x 4
-STR_1685    :Tamanho da base 2 x 4
+STR_1683    :Tamanho da base 2 × 2
+STR_1684    :Tamanho da base 4 × 4
+STR_1685    :Tamanho da base 2 × 4
 STR_1686    :Tamanho da base 5 x 1
 STR_1687    :Respingo da água
 STR_1688    :Tamanho da base 4 x 1

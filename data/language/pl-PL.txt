@@ -240,8 +240,8 @@ STR_0831    :Oddal widok
 STR_0832    :Obróć widok o 90°
 STR_0833    :Pauza
 STR_0834    :Menu zapisu i opcji
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :O „OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, wszystkie prawa zastrzeżone
 STR_0851    :{WINDOW_COLOUR_2}Projekt i implementacja: Chris Sawyer
@@ -1065,12 +1065,12 @@ STR_1679    :Spirala w górę (lewo)
 STR_1680    :Spirala w dół (prawo)
 STR_1681    :Spirala w dół (lewo)
 STR_1682    :Spirala w dół (prawo)
-STR_1683    :Wymiary bazowe 2 x 2
-STR_1684    :Wymiary bazowe 4 x 4
-STR_1685    :Wymiary bazowe 2 x 4
-STR_1686    :Wymiary bazowe 5 x 1
+STR_1683    :Wymiary bazowe 2 × 2
+STR_1684    :Wymiary bazowe 4 × 4
+STR_1685    :Wymiary bazowe 2 × 4
+STR_1686    :Wymiary bazowe 5 × 1
 STR_1687    :Wzburzenie wody
-STR_1688    :Wymiary bazowe 4 x 1
+STR_1688    :Wymiary bazowe 4 × 1
 STR_1689    :Hamulce blokowe
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Koszt: {BLACK}{CURRENCY}
@@ -1670,7 +1670,7 @@ STR_2312    :{WINDOW_COLOUR_2}Intensywność: {BLACK}{COMMA2DP32} (około)
 STR_2313    :{WINDOW_COLOUR_2}Ocena nudności: {BLACK}{COMMA2DP32} (około)
 STR_2314    :{WINDOW_COLOUR_2}Długość trasy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Koszt: {BLACK}około {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Zajmowany teren: {BLACK}{COMMA16} x {COMMA16} pól
+STR_2316    :{WINDOW_COLOUR_2}Zajmowany teren: {BLACK}{COMMA16} × {COMMA16} pól
 STR_2321    :{WINDOW_COLOUR_2}Liczba atrakcji: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Liczba pracowników: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Rozmiar parku: {BLACK}{COMMA32}m²
@@ -2304,7 +2304,7 @@ STR_3208    :Menedżer tworzenia tras
 STR_3209    :Powrót do poprzedniego kroku:
 STR_3210    :Do następnego kroku:
 STR_3211    :Rozmiar mapy:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :Nie można bardziej zmniejszyć mapy
 STR_3214    :Nie można bardziej zwiększyć mapy
 STR_3215    :Za blisko do krawędzi mapy

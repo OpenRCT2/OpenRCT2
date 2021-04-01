@@ -236,8 +236,8 @@ STR_0831    :Görüntüyü uzaklaştır
 STR_0832    :Görüntüyü 90° çevir
 STR_0833    :Oyunu durdur
 STR_0834    :Oyun ve kayıt seçenekleri
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :OpenRCT2 hakkında
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, all rights reserved
 STR_0851    :{WINDOW_COLOUR_2}Programlama ve tasarlama: Chris Sawyer
@@ -1061,12 +1061,12 @@ STR_1679    :Sarmal yuarkı (sol)
 STR_1680    :Sarmal yuarkı (sağ)
 STR_1681    :Sarmal aşağı (sol)
 STR_1682    :Sarmal aşağı (sağ)
-STR_1683    :Taban boyutu 2 x 2
-STR_1684    :Taban boyutu 4 x 4
-STR_1685    :Taban boyutu 2 x 4
-STR_1686    :Taban boyutu 5 x 1
+STR_1683    :Taban boyutu 2 × 2
+STR_1684    :Taban boyutu 4 × 4
+STR_1685    :Taban boyutu 2 × 4
+STR_1686    :Taban boyutu 5 × 1
 STR_1687    :Havuz
-STR_1688    :Taban boyutu 4 x 1
+STR_1688    :Taban boyutu 4 × 1
 STR_1689    :Blok frenleri
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Maliyet: {BLACK}{CURRENCY}
@@ -1666,7 +1666,7 @@ STR_2312    :{WINDOW_COLOUR_2}Şiddet oranı: {BLACK}{COMMA2DP32} (yaklaşık)
 STR_2313    :{WINDOW_COLOUR_2}Bulantı oranı: {BLACK}{COMMA2DP32} (yaklaşık)
 STR_2314    :{WINDOW_COLOUR_2}Alet uzunluğu: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Maliyet: {BLACK} yaklaşık {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} x {COMMA16} blok
+STR_2316    :{WINDOW_COLOUR_2}Gerekli alan: {BLACK}{COMMA16} × {COMMA16} blok
 STR_2321    :{WINDOW_COLOUR_2}Alet sayısı: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Işci: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Park büyüklüğü: {BLACK}{COMMA32}m²
@@ -2300,7 +2300,7 @@ STR_3208    :Alet Meneceri
 STR_3209    :Bir önceki adım:
 STR_3210    :Bir sonraki adım:
 STR_3211    :Harita büyüklüğü:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :Arazi daha fazla alçaltılamıyor
 STR_3214    :Arazi daha fazla yükseltilemiyor
 STR_3215    :Arazi sınırına çok fazla yakın

@@ -240,8 +240,8 @@ STR_0831    :Alejar vista
 STR_0832    :Rota la cámara 90° sentido horario
 STR_0833    :Pausar juego
 STR_0834    :Opciones de juego
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
 STR_0847    :Sobre 'OpenRCT2'
 STR_0850    :{WINDOW_COLOUR_2} © 2002 Chris Sawyer, todos los derechos reservados
@@ -1066,12 +1066,12 @@ STR_1679    :Helice arriba (izq)
 STR_1680    :Helice arriba (der)
 STR_1681    :Helice abajo (izq)
 STR_1682    :Helice abajo (der)
-STR_1683    :Tamaño de base 2 x 2
-STR_1684    :Tamaño de base 4 x 4
-STR_1685    :Tamaño de base 2 x 4
-STR_1686    :Tamaño de base 5 x 1
+STR_1683    :Tamaño de base 2 × 2
+STR_1684    :Tamaño de base 4 × 4
+STR_1685    :Tamaño de base 2 × 4
+STR_1686    :Tamaño de base 5 × 1
 STR_1687    :Salpicadura de agua
-STR_1688    :Tamaño de base 4 x 1
+STR_1688    :Tamaño de base 4 × 1
 STR_1689    :Bloque de frenado
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Precio: {BLACK}{CURRENCY}
@@ -1671,7 +1671,7 @@ STR_2312    :{WINDOW_COLOUR_2}Nivel de intensidad: {BLACK}{COMMA2DP32} (aprox.)
 STR_2313    :{WINDOW_COLOUR_2}Nivel de náuseas: {BLACK}{COMMA2DP32} (aprox.)
 STR_2314    :{WINDOW_COLOUR_2}Longitud de vía: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Coste: {BLACK}alrededor de {CURRENCY}
-STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} x {COMMA16} bloques
+STR_2316    :{WINDOW_COLOUR_2}Espacio requerido: {BLACK}{COMMA16} × {COMMA16} bloques
 STR_2321    :{WINDOW_COLOUR_2}Número de atracciones: {BLACK}{COMMA16}
 STR_2322    :{WINDOW_COLOUR_2}Empleados: {BLACK}{COMMA16}
 STR_2323    :{WINDOW_COLOUR_2}Extensión del parque: {BLACK}{COMMA32}m²
@@ -2305,7 +2305,7 @@ STR_3208    :Diseñador de Vías
 STR_3209    :Regresar al paso anterior:
 STR_3210    :Avanzar al siguiente paso:
 STR_3211    :Tamaño de Mapa:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
 STR_3213    :No puedes disminuir más el tamaño del mapa
 STR_3214    :No puedes aumentar más el tamaño del mapa
 STR_3215    :Demasiado cerca del borde del mapa

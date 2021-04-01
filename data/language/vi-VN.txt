@@ -602,8 +602,8 @@ STR_1214    :Select maximum length of time to wait before departing
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :Select whether to synchronise departure with all adjacent stations (for ‘racing’)
 STR_1217    :{COMMA16} seconds
-STR_1218    :{BLACK}+
-STR_1219    :{BLACK}-
+STR_1218    :{BLACK}➕
+STR_1219    :{BLACK}➖
 STR_1220    :Exit only
 STR_1221    :No entrance
 STR_1222    :No exit

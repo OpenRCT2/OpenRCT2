@@ -229,8 +229,8 @@ STR_0831    :Kicsinyítés
 STR_0832    :Forgatás 90°-kal órajárás szerint
 STR_0833    :A játék megállítása
 STR_0834    :Mentési és játékbeállítások
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Az ’OpenRCT2’ névjegye
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, minden jog fenntartva
 STR_0851    :{WINDOW_COLOUR_2}Tervezés és programozás: Chris Sawyer
@@ -1059,12 +1059,12 @@ STR_1679    :Spirálpálya felfelé (balra)
 STR_1680    :Spirálpálya felfelé (jobbra)
 STR_1681    :Spirálpálya lefelé (balra)
 STR_1682    :Spirálpálya lefelé (jobbra)
-STR_1683    :Alapméret 2 x 2
-STR_1684    :Alapméret 4 x 4
-STR_1685    :Alapméret 2 x 4
-STR_1686    :Alapméret 5 x 1
+STR_1683    :Alapméret 2 × 2
+STR_1684    :Alapméret 4 × 4
+STR_1685    :Alapméret 2 × 4
+STR_1686    :Alapméret 5 × 1
 STR_1687    :Vízcsobbanás
-STR_1688    :Alapméret 4 x 1
+STR_1688    :Alapméret 4 × 1
 STR_1689    :Blokkolófékek
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  Ár: {BLACK}{CURRENCY}

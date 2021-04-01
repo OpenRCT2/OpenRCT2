@@ -3291,7 +3291,7 @@ STR_6016    :Modificer felt
 STR_6017    :Sæt venligst farten ned
 STR_6018    :Forlystelse konstruktion - Venstresving
 STR_6019    :Forlystelse konstruktion - Højresving
-STR_6020    :Forlystelse konstruktion - Use default track
+STR_6020    :Forlystelse konstruktion - Brug standard spor
 STR_6021    :Forlystelse konstruktion - Bakke ned
 STR_6022    :Forlystelse konstruktion - Bakke op
 STR_6023    :Forlystelse konstruktion - Skift kædeløft
@@ -3640,6 +3640,46 @@ STR_6396    :Slå screensaver og skærm-strømstyring fra
 STR_6397    :Hvis markeret, bliver screensaver og andre skærm strøm styringsfunktioner slået fra. indstillingen forbliver aktiv så længe OpenRCT2 kører.
 STR_6398    :Filen indeholder ikke understøttet forlystelsestyper. Opdater venligst til en nyere version af OpenRCT2.
 STR_6399    :OpenRCT2 skal bruge filer fra den originale RollerCoaster Tycoon 2 for at kunne fungere. Tilret venligst “game_path” variablen i config.ini filen, til den mappe hvor du har installeret RollerCoaster Tycoon 2, og genstart derefter OpenRCT2.
+STR_6400    :Jeg har GOG offline installationsfilen til RollerCoaster Tycoon 2 hentet, men har det er ikke installeret
+STR_6401    :Jeg har allerede installeret RollerCoaster Tycoon 2
+STR_6402    :OpenRCT2 Data opsætning
+STR_6403    :Vælg hvad der bedst passer for dig
+STR_6404    :Vælg venligst GOG RollerCoaster Tycoon 2 installationsfilen.
+STR_6405    :Vælg GOG installationsfil
+STR_6406    :GOG RollerCoaster Tycoon 2 installationsfil
+STR_6407    :Dette kan tage nogle få minutter.
+STR_6408    :Installer venligst “innoextract” for at udpakke GOG Installationen, og derefter genstart OpenRCT2.
+STR_6409    :Den valgte fil er ikke en korrekt offline GOG Installationsfil til RollerCoaster Tycoon 2. Du kan have hentet "GOG Galaxy downloader stub" eller valgt den forkerte fil.
+STR_6410    :Zoom ind/ud
+STR_6411    :Vis knapper til at zoome ind og ud på værktøjslinjen
+STR_6412    :Numerisk Enter tast
+STR_6413    :Shift
+STR_6414    :V Shift
+STR_6415    :H Shift
+STR_6416    :Ctrl
+STR_6417    :V Ctrl
+STR_6418    :H Ctrl
+STR_6419    :Alt
+STR_6420    :V Alt
+STR_6421    :H Alt
+STR_6422    :Cmd
+STR_6423    :V Cmd
+STR_6424    :H Cmd
+STR_6425    :Joy Venstre
+STR_6426    :Joy Højre
+STR_6427    :Joy Op
+STR_6428    :Joy Ned
+STR_6429    :Joy {INT32}
+STR_6430    :VMK
+STR_6431    :HMK
+STR_6432    :Mus {INT32}
+STR_6433    :Fjern
+STR_6434    :Fjern alle tilknytninger til denne genvej.
+STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA16}
+STR_6436    :Skift usynlighed
+STR_6437    :Usynlig
+STR_6438    :I
+STR_6439    :Felt undersøger: Skift usynlighed
 
 #############
 # Scenarios #
