@@ -30,6 +30,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../object/ObjectLimits.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/Staff.h"
@@ -1549,23 +1550,24 @@ public:
         return justText.data();
     }
 
-    std::vector<ObjectEntryDescriptor> GetRequiredObjects()
+    ObjectList GetRequiredObjects()
     {
-        std::vector<ObjectEntryDescriptor> result;
+        ObjectList objectList;
         int objectIt = 0;
         for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
             {
-                result.push_back(ObjectEntryDescriptor(_s6.objects[objectIt]));
-            }
-            for (int16_t i = rct2_object_entry_group_counts[objectType]; i < object_entry_group_counts[objectType]; i++)
-            {
-                result.push_back({});
+                auto entry = ObjectEntryDescriptor(_s6.objects[objectIt]);
+                if (entry.HasValue())
+                {
+                    objectList.SetObject(i, entry);
+                }
             }
         }
 
-        return result;
+        RCT12AddDefaultObjects(objectList);
+        return objectList;
     }
 };
 

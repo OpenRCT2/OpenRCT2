@@ -87,7 +87,7 @@ namespace OpenRCT2
     class ParkFile
     {
     public:
-        std::vector<ObjectEntryDescriptor> RequiredObjects;
+        ObjectList RequiredObjects;
 
     private:
         std::unique_ptr<OrcaStream> _os;
@@ -96,7 +96,7 @@ namespace OpenRCT2
         void Load(const std::string_view& path)
         {
             _os = std::make_unique<OrcaStream>(path, OrcaStream::Mode::READING);
-            RequiredObjects.clear();
+            RequiredObjects = {};
             ReadWriteObjectsChunk(*_os);
         }
 
@@ -174,59 +174,76 @@ namespace OpenRCT2
 
             if (os.GetMode() == OrcaStream::Mode::READING)
             {
-                std::vector<ObjectEntryDescriptor> requiredObjects;
+                ObjectList requiredObjects;
                 os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&requiredObjects](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWriteVector(requiredObjects, [&cs](ObjectEntryDescriptor& objectDesc) {
-                        auto kind = cs.Read<uint8_t>();
-                        switch (kind)
+                    auto numSubLists = cs.Read<uint16_t>();
+                    for (size_t i = 0; i < numSubLists; i++)
+                    {
+                        auto objectType = static_cast<ObjectType>(cs.Read<uint16_t>());
+                        auto subListSize = static_cast<ObjectEntryIndex>(cs.Read<uint32_t>());
+                        for (ObjectEntryIndex j = 0; j < subListSize; j++)
                         {
-                            case DESCRIPTOR_NONE:
-                                break;
-                            case DESCRIPTOR_DAT:
-                                objectDesc.Entry = cs.Read<rct_object_entry>();
-                                break;
-                            case DESCRIPTOR_JSON:
-                                objectDesc.Type = static_cast<ObjectType>(cs.Read<uint16_t>());
-                                objectDesc.Identifier = cs.Read<std::string>();
-                                objectDesc.Version = cs.Read<std::string>();
-                                break;
-                            default:
-                                throw std::runtime_error("Unknown object descriptor kind.");
+                            auto kind = cs.Read<uint8_t>();
+
+                            ObjectEntryDescriptor desc;
+                            switch (kind)
+                            {
+                                case DESCRIPTOR_NONE:
+                                    break;
+                                case DESCRIPTOR_DAT:
+                                    desc.Entry = cs.Read<rct_object_entry>();
+                                    requiredObjects.SetObject(j, desc);
+                                    break;
+                                case DESCRIPTOR_JSON:
+                                    desc.Type = objectType;
+                                    desc.Identifier = cs.Read<std::string>();
+                                    desc.Version = cs.Read<std::string>();
+                                    requiredObjects.SetObject(j, desc);
+                                    break;
+                                default:
+                                    throw std::runtime_error("Unknown object descriptor kind.");
+                            }
                         }
-                    });
+                    }
                 });
-                RequiredObjects = requiredObjects;
+                RequiredObjects = std::move(requiredObjects);
             }
             else
             {
-                std::vector<size_t> objectIds(OBJECT_ENTRY_COUNT);
-                std::iota(objectIds.begin(), objectIds.end(), 0);
-                os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [&objectIds](OrcaStream::ChunkStream& cs) {
+                os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [](OrcaStream::ChunkStream& cs) {
                     auto& objManager = GetContext()->GetObjectManager();
-                    cs.ReadWriteVector(objectIds, [&cs, &objManager](size_t& i) {
-                        auto obj = objManager.GetLoadedObject(i);
-                        if (obj != nullptr)
+                    auto objectList = objManager.GetLoadedObjects();
+
+                    // Write number of object sub lists
+                    cs.Write(static_cast<uint16_t>(ObjectType::Count));
+                    for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+                    {
+                        // Write sub list
+                        const auto& list = objectList.GetList(objectType);
+                        cs.Write(static_cast<uint16_t>(objectType));
+                        cs.Write(static_cast<uint32_t>(list.size()));
+                        for (const auto& entry : list)
                         {
-                            if (obj->IsJsonObject())
+                            if (entry.HasValue())
                             {
-                                cs.Write(DESCRIPTOR_JSON);
-                                cs.Write(static_cast<uint16_t>(obj->GetObjectType()));
-                                cs.Write(obj->GetIdentifier());
-                                cs.Write(""); // reserved for version
+                                if (entry.Generation == ObjectGeneration::JSON)
+                                {
+                                    cs.Write(DESCRIPTOR_JSON);
+                                    cs.Write(entry.Identifier);
+                                    cs.Write(""); // reserved for version
+                                }
+                                else
+                                {
+                                    cs.Write(DESCRIPTOR_DAT);
+                                    cs.Write(entry.Entry);
+                                }
                             }
                             else
                             {
-                                auto entry = obj->GetObjectEntry();
-                                assert(entry != nullptr);
-                                cs.Write(DESCRIPTOR_DAT);
-                                cs.Write(entry);
+                                cs.Write(DESCRIPTOR_NONE);
                             }
                         }
-                        else
-                        {
-                            cs.Write(DESCRIPTOR_NONE);
-                        }
-                    });
+                    }
                 });
             }
         }

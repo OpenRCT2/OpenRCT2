@@ -305,6 +305,14 @@ namespace OpenRCT2
                 }
             }
 
+#if defined(_MSC_VER)
+            template<>
+#endif
+            void Write(const std::string& v)
+            {
+                Write(std::string_view(v));
+            }
+
             template<typename TVec, typename TFunc> void ReadWriteVector(TVec& vec, TFunc f)
             {
                 if (_mode == Mode::READING)

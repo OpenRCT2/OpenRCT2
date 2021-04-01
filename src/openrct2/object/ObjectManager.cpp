@@ -102,6 +102,26 @@ public:
         return result;
     }
 
+    ObjectList GetLoadedObjects() override
+    {
+        ObjectList objectList;
+        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        {
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+            {
+                auto obj = GetLoadedObject(objectType, i);
+                if (obj != nullptr)
+                {
+                    auto entry = ObjectEntryDescriptor(obj->GetIdentifier());
+                    entry.Type = obj->GetObjectType();
+                    objectList.SetObject(i, entry);
+                }
+            }
+        }
+        return objectList;
+    }
+
     Object* LoadObject(std::string_view identifier) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
@@ -114,17 +134,16 @@ public:
         return RepositoryItemToObject(ori);
     }
 
-    void LoadObjects(const std::vector<ObjectEntryDescriptor>& entries) override
+    void LoadObjects(const ObjectList& objectList) override
     {
         // Find all the required objects
-        auto requiredObjects = GetRequiredObjects(entries);
+        auto requiredObjects = GetRequiredObjects(objectList);
 
         // Load the required objects
         size_t numNewLoadedObjects = 0;
         auto loadedObjects = LoadObjects(requiredObjects, &numNewLoadedObjects);
 
         SetNewLoadedObjectList(std::move(loadedObjects));
-        LoadDefaultObjects();
         UpdateSceneryGroupIndexes();
         ResetTypeToRideEntryIndexMap();
         log_verbose("%u / %u new objects loaded", numNewLoadedObjects, requiredObjects.size());
@@ -196,99 +215,6 @@ public:
             }
         }
         return objects;
-    }
-
-    void LoadDefaultObjects() override
-    {
-        // We currently will load new object types here that apply to all
-        // loaded RCT1 and RCT2 save files.
-
-        // Surfaces
-        LoadObject("rct2.surface.grass");
-        LoadObject("rct2.surface.sand");
-        LoadObject("rct2.surface.dirt");
-        LoadObject("rct2.surface.rock");
-        LoadObject("rct2.surface.martian");
-        LoadObject("rct2.surface.chequerboard");
-        LoadObject("rct2.surface.grassclumps");
-        LoadObject("rct2.surface.ice");
-        LoadObject("rct2.surface.gridred");
-        LoadObject("rct2.surface.gridyellow");
-        LoadObject("rct2.surface.gridpurple");
-        LoadObject("rct2.surface.gridgreen");
-        LoadObject("rct2.surface.sandred");
-        LoadObject("rct2.surface.sandbrown");
-        LoadObject("rct1.aa.surface.roofred");
-        LoadObject("rct1.ll.surface.roofgrey");
-        LoadObject("rct1.ll.surface.rust");
-        LoadObject("rct1.ll.surface.wood");
-
-        // Edges
-        LoadObject("rct2.edge.rock");
-        LoadObject("rct2.edge.woodred");
-        LoadObject("rct2.edge.woodblack");
-        LoadObject("rct2.edge.ice");
-        LoadObject("rct1.edge.brick");
-        LoadObject("rct1.edge.iron");
-        LoadObject("rct1.aa.edge.grey");
-        LoadObject("rct1.aa.edge.yellow");
-        LoadObject("rct1.aa.edge.red");
-        LoadObject("rct1.ll.edge.purple");
-        LoadObject("rct1.ll.edge.green");
-        LoadObject("rct1.ll.edge.stonebrown");
-        LoadObject("rct1.ll.edge.stonegrey");
-        LoadObject("rct1.ll.edge.skyscrapera");
-        LoadObject("rct1.ll.edge.skyscraperb");
-
-        // Stations
-        LoadObject("rct2.station.plain");
-        LoadObject("rct2.station.wooden");
-        LoadObject("rct2.station.canvastent");
-        LoadObject("rct2.station.castlegrey");
-        LoadObject("rct2.station.castlebrown");
-        LoadObject("rct2.station.jungle");
-        LoadObject("rct2.station.log");
-        LoadObject("rct2.station.classical");
-        LoadObject("rct2.station.abstract");
-        LoadObject("rct2.station.snow");
-        LoadObject("rct2.station.pagoda");
-        LoadObject("rct2.station.space");
-        LoadObject("openrct2.station.noentrance");
-
-        // Music
-        auto baseIndex = GetIndexFromTypeEntry(ObjectType::Music, 0);
-        LoadObject(baseIndex + MUSIC_STYLE_DODGEMS_BEAT, "rct2.music.dodgems");
-        LoadObject(baseIndex + MUSIC_STYLE_FAIRGROUND_ORGAN, "rct2.music.fairground");
-        LoadObject(baseIndex + MUSIC_STYLE_ROMAN_FANFARE, "rct2.music.roman");
-        LoadObject(baseIndex + MUSIC_STYLE_ORIENTAL, "rct2.music.oriental");
-        LoadObject(baseIndex + MUSIC_STYLE_MARTIAN, "rct2.music.martian");
-        LoadObject(baseIndex + MUSIC_STYLE_JUNGLE_DRUMS, "rct2.music.jungle");
-        LoadObject(baseIndex + MUSIC_STYLE_EGYPTIAN, "rct2.music.egyptian");
-        LoadObject(baseIndex + MUSIC_STYLE_TOYLAND, "rct2.music.toyland");
-        LoadObject(baseIndex + MUSIC_STYLE_SPACE, "rct2.music.space");
-        LoadObject(baseIndex + MUSIC_STYLE_HORROR, "rct2.music.horror");
-        LoadObject(baseIndex + MUSIC_STYLE_TECHNO, "rct2.music.techno");
-        LoadObject(baseIndex + MUSIC_STYLE_GENTLE, "rct2.music.gentle");
-        LoadObject(baseIndex + MUSIC_STYLE_SUMMER, "rct2.music.summer");
-        LoadObject(baseIndex + MUSIC_STYLE_WATER, "rct2.music.water");
-        LoadObject(baseIndex + MUSIC_STYLE_WILD_WEST, "rct2.music.wildwest");
-        LoadObject(baseIndex + MUSIC_STYLE_JURASSIC, "rct2.music.jurassic");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK, "rct2.music.rock1");
-        LoadObject(baseIndex + MUSIC_STYLE_RAGTIME, "rct2.music.ragtime");
-        LoadObject(baseIndex + MUSIC_STYLE_FANTASY, "rct2.music.fantasy");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_2, "rct2.music.rock2");
-        LoadObject(baseIndex + MUSIC_STYLE_ICE, "rct2.music.ice");
-        LoadObject(baseIndex + MUSIC_STYLE_SNOW, "rct2.music.snow");
-        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_1, "rct2.music.custom1");
-        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_2, "rct2.music.custom2");
-        LoadObject(baseIndex + MUSIC_STYLE_MEDIEVAL, "rct2.music.medieval");
-        LoadObject(baseIndex + MUSIC_STYLE_URBAN, "rct2.music.urban");
-        LoadObject(baseIndex + MUSIC_STYLE_ORGAN, "rct2.music.organ");
-        LoadObject(baseIndex + MUSIC_STYLE_MECHANICAL, "rct2.music.mechanical");
-        LoadObject(baseIndex + MUSIC_STYLE_MODERN, "rct2.music.modern");
-        LoadObject(baseIndex + MUSIC_STYLE_PIRATES, "rct2.music.pirate");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_3, "rct2.music.rock3");
-        LoadObject(baseIndex + MUSIC_STYLE_CANDY_STYLE, "rct2.music.candy");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)
@@ -554,25 +480,29 @@ private:
         return duplicate;
     }
 
-    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const std::vector<ObjectEntryDescriptor>& objectList)
+    std::vector<const ObjectRepositoryItem*> GetRequiredObjects(const ObjectList& objectList)
     {
         std::vector<const ObjectRepositoryItem*> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (size_t i = 0; i < objectList.size(); i++)
+        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
         {
-            const auto& entry = objectList[i];
-            const ObjectRepositoryItem* ori = nullptr;
-            if (entry.HasValue())
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
             {
-                ori = _objectRepository.FindObject(entry);
-                if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
+                const ObjectRepositoryItem* ori = nullptr;
+                const auto& entry = objectList.GetObject(objectType, i);
+                if (entry.HasValue())
                 {
-                    missingObjects.push_back(entry);
-                    ReportMissingObject(entry);
+                    ori = _objectRepository.FindObject(entry);
+                    if (ori == nullptr && entry.GetType() != ObjectType::ScenarioText)
+                    {
+                        missingObjects.push_back(entry);
+                        ReportMissingObject(entry);
+                    }
                 }
+                requiredObjects.push_back(ori);
             }
-            requiredObjects.push_back(ori);
         }
 
         if (!missingObjects.empty())

@@ -12,6 +12,7 @@
 #include "../core/String.hpp"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
+#include "../object/ObjectList.h"
 #include "../ride/Track.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -1346,4 +1347,94 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     }
 
     return origTrackType;
+}
+
+void RCT12AddDefaultObjects(ObjectList& objectList)
+{
+    // Surfaces
+    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.surface.grass");
+    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.surface.sand");
+    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.surface.dirt");
+    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.surface.rock");
+    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.surface.martian");
+    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.surface.chequerboard");
+    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.surface.grassclumps");
+    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.surface.ice");
+    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.surface.gridred");
+    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.surface.gridyellow");
+    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.surface.gridpurple");
+    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.surface.gridgreen");
+    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.surface.sandred");
+    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.surface.sandbrown");
+    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1.aa.surface.roofred");
+    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1.ll.surface.roofgrey");
+    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1.ll.surface.rust");
+    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1.ll.surface.wood");
+
+    // Edges
+    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.edge.rock");
+    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.edge.woodred");
+    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.edge.woodblack");
+    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.edge.ice");
+    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.edge.brick");
+    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.edge.iron");
+    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1.aa.edge.grey");
+    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1.aa.edge.yellow");
+    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1.aa.edge.red");
+    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1.ll.edge.purple");
+    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1.ll.edge.green");
+    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1.ll.edge.stonebrown");
+    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1.ll.edge.stonegrey");
+    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1.ll.edge.skyscrapera");
+    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1.ll.edge.skyscraperb");
+
+    // Stations
+    objectList.SetObject(ObjectType::Station, 0, "rct2.station.plain");
+    objectList.SetObject(ObjectType::Station, 1, "rct2.station.wooden");
+    objectList.SetObject(ObjectType::Station, 2, "rct2.station.canvastent");
+    objectList.SetObject(ObjectType::Station, 3, "rct2.station.castlegrey");
+    objectList.SetObject(ObjectType::Station, 4, "rct2.station.castlebrown");
+    objectList.SetObject(ObjectType::Station, 5, "rct2.station.jungle");
+    objectList.SetObject(ObjectType::Station, 6, "rct2.station.log");
+    objectList.SetObject(ObjectType::Station, 7, "rct2.station.classical");
+    objectList.SetObject(ObjectType::Station, 8, "rct2.station.abstract");
+    objectList.SetObject(ObjectType::Station, 9, "rct2.station.snow");
+    objectList.SetObject(ObjectType::Station, 10, "rct2.station.pagoda");
+    objectList.SetObject(ObjectType::Station, 11, "rct2.station.space");
+    objectList.SetObject(ObjectType::Station, 12, "openrct2.station.noentrance");
+
+    // Music
+    objectList.SetObject(ObjectType::Music, 0, "rct2.music.dodgems");
+    objectList.SetObject(ObjectType::Music, 1, "rct2.music.fairground");
+    objectList.SetObject(ObjectType::Music, 2, "rct2.music.roman");
+    objectList.SetObject(ObjectType::Music, 3, "rct2.music.oriental");
+    objectList.SetObject(ObjectType::Music, 4, "rct2.music.martian");
+    objectList.SetObject(ObjectType::Music, 5, "rct2.music.jungle");
+    objectList.SetObject(ObjectType::Music, 6, "rct2.music.egyptian");
+    objectList.SetObject(ObjectType::Music, 7, "rct2.music.toyland");
+    // Original ID: 8 was circus
+    objectList.SetObject(ObjectType::Music, 9, "rct2.music.space");
+    objectList.SetObject(ObjectType::Music, 10, "rct2.music.horror");
+    objectList.SetObject(ObjectType::Music, 11, "rct2.music.techno");
+    objectList.SetObject(ObjectType::Music, 12, "rct2.music.gentle");
+    objectList.SetObject(ObjectType::Music, 13, "rct2.music.summer");
+    objectList.SetObject(ObjectType::Music, 14, "rct2.music.water");
+    objectList.SetObject(ObjectType::Music, 15, "rct2.music.wildwest");
+    objectList.SetObject(ObjectType::Music, 16, "rct2.music.jurassic");
+    objectList.SetObject(ObjectType::Music, 17, "rct2.music.rock1");
+    objectList.SetObject(ObjectType::Music, 18, "rct2.music.ragtime");
+    objectList.SetObject(ObjectType::Music, 19, "rct2.music.fantasy");
+    objectList.SetObject(ObjectType::Music, 20, "rct2.music.rock2");
+    objectList.SetObject(ObjectType::Music, 21, "rct2.music.ice");
+    objectList.SetObject(ObjectType::Music, 22, "rct2.music.snow");
+    objectList.SetObject(ObjectType::Music, 23, "rct2.music.custom1");
+    objectList.SetObject(ObjectType::Music, 24, "rct2.music.custom2");
+    objectList.SetObject(ObjectType::Music, 25, "rct2.music.medieval");
+    objectList.SetObject(ObjectType::Music, 26, "rct2.music.urban");
+    objectList.SetObject(ObjectType::Music, 27, "rct2.music.organ");
+    objectList.SetObject(ObjectType::Music, 28, "rct2.music.mechanical");
+    objectList.SetObject(ObjectType::Music, 29, "rct2.music.modern");
+    objectList.SetObject(ObjectType::Music, 30, "rct2.music.pirate");
+    objectList.SetObject(ObjectType::Music, 31, "rct2.music.rock3");
+    objectList.SetObject(ObjectType::Music, 32, "rct2.music.candy");
 }

@@ -189,7 +189,6 @@ public:
         Initialise();
 
         CreateAvailableObjectMappings();
-        LoadObjects();
 
         ImportRides();
         ImportRideMeasurements();
@@ -339,7 +338,6 @@ private:
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
         auto context = OpenRCT2::GetContext();
-        context->GetObjectManager().UnloadAll();
         context->GetGameState()->InitAll(mapSize);
         gS6Info.editor_step = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -1486,83 +1484,25 @@ private:
         }
     }
 
-    void LoadObjects()
+    void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const EntryList& entryList)
     {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-        objectManager.LoadDefaultObjects();
-
-        LoadObjects(ObjectType::Ride, _rideEntries);
-        LoadObjects(ObjectType::SmallScenery, _smallSceneryEntries);
-        LoadObjects(ObjectType::LargeScenery, _largeSceneryEntries);
-        LoadObjects(ObjectType::Walls, _wallEntries);
-        LoadObjects(ObjectType::Paths, _pathEntries);
-        LoadObjects(ObjectType::PathBits, _pathAdditionEntries);
-        LoadObjects(ObjectType::SceneryGroup, _sceneryGroupEntries);
-        LoadObjects(
-            ObjectType::Banners,
-            std::vector<const char*>({
-                "BN1     ",
-                "BN2     ",
-                "BN3     ",
-                "BN4     ",
-                "BN5     ",
-                "BN6     ",
-                "BN7     ",
-                "BN8     ",
-                "BN9     ",
-            }));
-        LoadObjects(ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
-        LoadObjects(ObjectType::Water, _waterEntry);
+        AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
     }
 
-    void LoadObjects(ObjectType objectType, const EntryList& entries)
-    {
-        LoadObjects(objectType, entries.GetEntries());
-    }
-
-    void LoadObjects(ObjectType objectType, const std::vector<const char*>& entries)
-    {
-        auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-
-        uint32_t entryIndex = 0;
-        for (const char* objectName : entries)
-        {
-            rct_object_entry entry;
-            entry.flags = 0x00008000 + EnumValue(objectType);
-            std::copy_n(objectName, 8, entry.name);
-            entry.checksum = 0;
-
-            Object* object = objectManager.LoadObject(&entry);
-            if (object == nullptr && objectType != ObjectType::SceneryGroup)
-            {
-                log_error("Failed to load %s.", objectName);
-                throw std::runtime_error("Failed to load object.");
-            }
-
-            entryIndex++;
-        }
-    }
-
-    void AppendRequiredObjects(std::vector<ObjectEntryDescriptor>& entries, ObjectType objectType, const EntryList& entryList)
-    {
-        AppendRequiredObjects(entries, objectType, entryList.GetEntries());
-    }
-
-    void AppendRequiredObjects(
-        std::vector<ObjectEntryDescriptor>& entries, ObjectType objectType, const std::vector<const char*>& objectNames)
+    void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<const char*>& objectNames)
     {
         for (const auto objectName : objectNames)
         {
             rct_object_entry entry{};
             entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (EnumValue(objectType) & 0x0F);
             entry.SetName(objectName);
-            entries.push_back(ObjectEntryDescriptor(entry));
+            objectList.Add(ObjectEntryDescriptor(entry));
         }
     }
 
-    std::vector<ObjectEntryDescriptor> GetRequiredObjects()
+    ObjectList GetRequiredObjects()
     {
-        std::vector<ObjectEntryDescriptor> result;
+        ObjectList result;
         AppendRequiredObjects(result, ObjectType::Ride, _rideEntries);
         AppendRequiredObjects(result, ObjectType::SmallScenery, _smallSceneryEntries);
         AppendRequiredObjects(result, ObjectType::LargeScenery, _largeSceneryEntries);
@@ -1585,6 +1525,7 @@ private:
             }));
         AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
         AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
+        RCT12AddDefaultObjects(result);
         return result;
     }
 

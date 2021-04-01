@@ -70,7 +70,6 @@ namespace Editor
         // Reset loaded objects to just defaults
         auto& objectManager = context->GetObjectManager();
         objectManager.UnloadAll();
-        objectManager.LoadDefaultObjects();
     }
 
     /**
