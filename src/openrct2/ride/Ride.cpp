@@ -4084,6 +4084,9 @@ static Vehicle* vehicle_create_car(
     ride_id_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
     int32_t* remainingDistance, TrackElement* trackElement)
 {
+    if (trackElement == nullptr)
+        return nullptr;
+
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return nullptr;
