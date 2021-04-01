@@ -14,7 +14,7 @@
 DEFINE_GAME_ACTION(RideSetStatusAction, GameCommand::SetRideStatus, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     uint8_t _status{ RIDE_STATUS_CLOSED };
 
 public:

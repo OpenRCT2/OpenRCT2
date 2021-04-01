@@ -575,7 +575,7 @@ private:
     void AddEntryForRideType(uint8_t rideType)
     {
         assert(rideType < std::size(_rideTypeToRideEntryMap));
-        if (_rideTypeToRideEntryMap[rideType] == RIDE_ENTRY_INDEX_NULL)
+        if (_rideTypeToRideEntryMap[rideType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetRideTypeObject(rideType);
             if (!String::Equals(entryName, "        "))
@@ -589,7 +589,7 @@ private:
     void AddEntryForVehicleType(uint8_t rideType, uint8_t vehicleType)
     {
         assert(vehicleType < std::size(_vehicleTypeToRideEntryMap));
-        if (_vehicleTypeToRideEntryMap[vehicleType] == RIDE_ENTRY_INDEX_NULL)
+        if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
         {
             const char* entryName = RCT1::GetVehicleObject(vehicleType);
             if (!String::Equals(entryName, "        "))
@@ -1075,7 +1075,7 @@ private:
         {
             if (src.ride_index != RCT12_RIDE_ID_NULL)
             {
-                auto ride = get_ride(src.ride_index);
+                auto ride = get_ride(RCT12RideIdToOpenRCT2RideId(src.ride_index));
                 if (ride != nullptr)
                 {
                     ride->measurement = std::make_unique<RideMeasurement>();
@@ -1475,7 +1475,7 @@ private:
                 campaign.WeeksLeft = _s4.marketing_status[i] & ~CAMPAIGN_ACTIVE_FLAG;
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
-                    campaign.RideId = _s4.marketing_assoc[i];
+                    campaign.RideId = RCT12RideIdToOpenRCT2RideId(_s4.marketing_assoc[i]);
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
@@ -1672,7 +1672,7 @@ private:
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetWide(src2->IsWide());
                 dst2->SetHasQueueBanner(src2->HasQueueBanner());
@@ -1739,12 +1739,12 @@ private:
             {
                 auto dst2 = dst->AsTrack();
                 auto src2 = src->AsTrack();
-                const auto* ride = get_ride(src2->GetRideIndex());
+                const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;
 
                 dst2->SetTrackType(RCT1TrackTypeToOpenRCT2(src2->GetTrackType(), rideType));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(false);
@@ -1822,7 +1822,7 @@ private:
                 auto src2 = src->AsEntrance();
 
                 dst2->SetEntranceType(src2->GetEntranceType());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
 
@@ -1995,7 +1995,8 @@ private:
                     _researchRideTypeUsed[rct1RideType] = true;
 
                     auto ownRideEntryIndex = _rideTypeToRideEntryMap[rct1RideType];
-                    Guard::Assert(ownRideEntryIndex != RIDE_ENTRY_INDEX_NULL, "ownRideEntryIndex was RIDE_ENTRY_INDEX_NULL");
+                    Guard::Assert(
+                        ownRideEntryIndex != OBJECT_ENTRY_INDEX_NULL, "ownRideEntryIndex was OBJECT_ENTRY_INDEX_NULL");
 
                     bool foundOwnType = false;
                     // If the ride type does not use vehicles, no point looking for them in the research list.
@@ -2291,7 +2292,7 @@ private:
         {
             auto entryIndex = _rideTypeToRideEntryMap[srcItem];
 
-            if (entryIndex != RIDE_ENTRY_INDEX_NULL)
+            if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
 
@@ -2310,7 +2311,7 @@ private:
         {
             auto entryIndex = _vehicleTypeToRideEntryMap[srcItem];
 
-            if (entryIndex != RIDE_ENTRY_INDEX_NULL)
+            if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
             {
                 rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
 

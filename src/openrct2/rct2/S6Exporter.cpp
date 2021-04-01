@@ -778,7 +778,7 @@ void S6Exporter::ExportRideRatingsCalcData()
     dst.proximity_start_x = src.ProximityStart.x;
     dst.proximity_start_y = src.ProximityStart.y;
     dst.proximity_start_z = src.ProximityStart.z;
-    dst.current_ride = src.CurrentRide;
+    dst.current_ride = OpenRCT2RideIdToRCT12RideId(src.CurrentRide);
     dst.state = src.State;
     if (src.ProximityTrackType == TrackElemType::None)
         dst.proximity_track_type = 0xFF;
@@ -928,7 +928,7 @@ void S6Exporter::ExportMarketingCampaigns()
             _s6.campaign_weeks_left[campaign.Type] |= CAMPAIGN_FIRST_WEEK_FLAG;
         if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
         {
-            _s6.campaign_ride_index[campaign.Type] = campaign.RideId;
+            _s6.campaign_ride_index[campaign.Type] = OpenRCT2RideIdToRCT12RideId(campaign.RideId);
         }
         else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
         {
@@ -1528,7 +1528,7 @@ void S6Exporter::ExportBanner(RCT12Banner& dst, const Banner& src)
 
         if (src.flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
-            dst.ride_index = src.ride_index;
+            dst.ride_index = OpenRCT2RideIdToRCT12RideId(src.ride_index);
         }
         else
         {
@@ -1621,7 +1621,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
             dst2->SetSloped(src2->IsSloped());
             dst2->SetSlopeDirection(src2->GetSlopeDirection());
-            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetRideIndex(OpenRCT2RideIdToRCT12RideId(src2->GetRideIndex()));
             dst2->SetStationIndex(src2->GetStationIndex());
             dst2->SetWide(src2->IsWide());
             dst2->SetIsQueue(src2->IsQueue());
@@ -1644,7 +1644,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto trackType = OpenRCT2TrackTypeToRCT2(src2->GetTrackType());
             dst2->SetTrackType(static_cast<uint8_t>(trackType));
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
-            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetRideIndex(OpenRCT2RideIdToRCT12RideId(src2->GetRideIndex()));
             dst2->SetColourScheme(src2->GetColourScheme());
             dst2->SetStationIndex(src2->GetStationIndex());
             dst2->SetHasGreenLight(src2->HasGreenLight());
@@ -1705,7 +1705,7 @@ void S6Exporter::ExportTileElement(RCT12TileElement* dst, TileElement* src)
             auto src2 = src->AsEntrance();
 
             dst2->SetEntranceType(src2->GetEntranceType());
-            dst2->SetRideIndex(src2->GetRideIndex());
+            dst2->SetRideIndex(OpenRCT2RideIdToRCT12RideId(src2->GetRideIndex()));
             dst2->SetStationIndex(src2->GetStationIndex());
             dst2->SetSequenceIndex(src2->GetSequenceIndex());
             dst2->SetPathType(src2->GetPathType());

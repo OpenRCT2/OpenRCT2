@@ -206,7 +206,7 @@ void setup_in_use_selection_flags()
     for (auto* vehicle : TrainManager::View())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
         }
@@ -214,7 +214,7 @@ void setup_in_use_selection_flags()
     for (auto vehicle : EntityList<Vehicle>())
     {
         ObjectEntryIndex type = vehicle->ride_subtype;
-        if (type != RIDE_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
+        if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
         }

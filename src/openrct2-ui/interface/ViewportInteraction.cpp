@@ -91,7 +91,7 @@ InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoord
                 case EntityType::Vehicle:
                 {
                     auto vehicle = sprite->As<Vehicle>();
-                    if (vehicle != nullptr && vehicle->ride_subtype != RIDE_ENTRY_INDEX_NULL)
+                    if (vehicle != nullptr && vehicle->ride_subtype != OBJECT_ENTRY_INDEX_NULL)
                         vehicle->SetMapToolbar();
                     else
                         info.SpriteType = ViewportInteractionItem::None;

@@ -96,7 +96,7 @@ static rct_window_event_list window_track_place_events([](auto& events)
 static std::vector<uint8_t> _window_track_place_mini_preview;
 static CoordsXY _windowTrackPlaceLast;
 
-static uint8_t _window_track_place_ride_index;
+static ride_id_t _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
 static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;

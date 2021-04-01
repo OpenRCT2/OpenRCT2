@@ -29,7 +29,7 @@ enum class RideSetSetting : uint8_t
 DEFINE_GAME_ACTION(RideSetSettingAction, GameCommand::SetRideSetting, GameActions::Result)
 {
 private:
-    NetworkRideId_t _rideIndex{ RideIdNewNull };
+    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
     RideSetSetting _setting{};
     uint8_t _value{};
 

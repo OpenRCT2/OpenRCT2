@@ -802,7 +802,7 @@ public:
         dst = {};
         dst.Proximity = { src.proximity_x, src.proximity_y, src.proximity_z };
         dst.ProximityStart = { src.proximity_start_x, src.proximity_start_y, src.proximity_start_z };
-        dst.CurrentRide = src.current_ride;
+        dst.CurrentRide = RCT12RideIdToOpenRCT2RideId(src.current_ride);
         dst.State = src.state;
         if (src.current_ride < RCT12_MAX_RIDES_IN_PARK && _s6.rides[src.current_ride].type < std::size(RideTypeDescriptors))
             dst.ProximityTrackType = RCT2TrackTypeToOpenRCT2(src.proximity_track_type, _s6.rides[src.current_ride].type);
@@ -942,7 +942,7 @@ public:
 
         if (src->flags & BANNER_FLAG_LINKED_TO_RIDE)
         {
-            dst->ride_index = src->ride_index;
+            dst->ride_index = RCT12RideIdToOpenRCT2RideId(src->ride_index);
         }
         else
         {
@@ -1122,7 +1122,7 @@ public:
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetWide(src2->IsWide());
                 dst2->SetIsQueue(src2->IsQueue());
@@ -1147,7 +1147,7 @@ public:
 
                 dst2->SetTrackType(RCT2TrackTypeToOpenRCT2(trackType, _s6.rides[src2->GetRideIndex()].type));
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetColourScheme(src2->GetColourScheme());
                 dst2->SetHasChain(src2->HasChain());
                 dst2->SetHasCableLift(src2->HasCableLift());
@@ -1205,7 +1205,7 @@ public:
                 auto src2 = src->AsEntrance();
 
                 dst2->SetEntranceType(src2->GetEntranceType());
-                dst2->SetRideIndex(src2->GetRideIndex());
+                dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
                 dst2->SetPathType(src2->GetPathType());
@@ -1310,7 +1310,7 @@ public:
                 }
                 if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
                 {
-                    campaign.RideId = _s6.campaign_ride_index[i];
+                    campaign.RideId = RCT12RideIdToOpenRCT2RideId(_s6.campaign_ride_index[i]);
                 }
                 else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
                 {
