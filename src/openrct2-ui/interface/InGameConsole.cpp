@@ -300,7 +300,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // Make input area more opaque.
     gfx_filter_rect(
-        dpi, { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
+        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } },
         FilterPaletteID::Palette51);
 
     // Paint background colour.
@@ -343,17 +343,20 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     // Input area top border
     gfx_fill_rect(
         dpi,
-        { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 11 }, _consoleBottomRight - ScreenCoordsXY{ 0, lineHeight + 11 } },
+        { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 11 },
+          { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 11 } },
         borderColour1);
     gfx_fill_rect(
         dpi,
-        { _consoleTopLeft - ScreenCoordsXY{ 0, lineHeight + 10 }, _consoleBottomRight - ScreenCoordsXY{ 0, lineHeight + 10 } },
+        { { _consoleTopLeft.x, _consoleBottomRight.y - lineHeight - 10 },
+          { _consoleBottomRight.x, _consoleBottomRight.y - lineHeight - 10 } },
         borderColour2);
 
     // Input area bottom border
     gfx_fill_rect(
-        dpi, { _consoleTopLeft - ScreenCoordsXY{ 0, 1 }, _consoleBottomRight - ScreenCoordsXY{ 0, 1 } }, borderColour1);
-    gfx_fill_rect(dpi, { _consoleTopLeft, _consoleBottomRight }, borderColour2);
+        dpi, { { _consoleTopLeft.x, _consoleBottomRight.y - 1 }, { _consoleBottomRight.x, _consoleBottomRight.y - 1 } },
+        borderColour1);
+    gfx_fill_rect(dpi, { { _consoleTopLeft.x, _consoleBottomRight.y }, _consoleBottomRight }, borderColour2);
 }
 
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
