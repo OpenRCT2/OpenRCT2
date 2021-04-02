@@ -157,7 +157,7 @@ static void ride_ratings_update_state_0()
     ride_id_t currentRide = gRideRatingsCalcData.CurrentRide;
 
     currentRide++;
-    if (currentRide == RIDE_ID_NULL)
+    if (currentRide >= MAX_RIDES)
     {
         currentRide = 0;
     }
