@@ -523,6 +523,12 @@ public:
 #endif
                 case SDL_KEYDOWN:
                 {
+                    // Ignore keydowns when mod is held. Handles edge cases
+                    // where window managers don't eat the keypresses.
+                    if (SDL_GetModState() & KMOD_GUI)
+                    {
+                        break;
+                    }
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.State = InputEventState::Down;
