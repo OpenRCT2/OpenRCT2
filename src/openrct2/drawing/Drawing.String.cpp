@@ -745,6 +745,7 @@ static void ttf_process_format_code(rct_drawpixelinfo* dpi, const FmtString::tok
     }
 }
 
+#ifndef NO_TTF
 static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 {
     switch (codepoint)
@@ -769,6 +770,7 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
             return false;
     }
 }
+#endif // NO_TTF
 
 static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
