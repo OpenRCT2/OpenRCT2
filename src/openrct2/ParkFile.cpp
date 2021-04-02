@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "ParkFile.h"
+
 #include "Cheats.h"
 #include "Context.h"
 #include "GameState.h"
@@ -1244,6 +1246,14 @@ namespace OpenRCT2
         });
     }
 } // namespace OpenRCT2
+
+void ParkFileExporter::Export(std::string_view path)
+{
+    map_reorganise_elements();
+
+    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+    parkFile->Save(path);
+}
 
 enum : uint32_t
 {
