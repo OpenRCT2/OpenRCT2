@@ -846,7 +846,7 @@ static void peep_pathfind_heuristic_search(
                     if (tileElement->AsPath()->IsQueue()
                         && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != 0xFF))
+                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL))
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
