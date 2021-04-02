@@ -95,6 +95,7 @@ STR_0090    :Mine Forlystelse
 STR_0091    :Ukendt Forlystelse (59)
 STR_0092    :LIM Accelereret Rutschebane
 STR_0093    :Hybrid Rutschebane
+STR_0094    :Enkelt skinde rutchebane
 STR_0512    :En kompakt rutschebane med en spiral stigning og bløde, snoede fald.
 STR_0513    :En loopende rutschebane hvor passagerne er i en stående position
 STR_0514    :Vogne suspenderet under rutschebane sporet, svinger ud til siden i svingene
@@ -175,6 +176,7 @@ STR_0599    :En kompakt rutschebane med individuelle vogne og rolige snoede fald
 STR_0600    :Selvkørende togvogne kører igennem en sen snoet bane af spor
 STR_0602    :Rutsjebanetog accelereres ud af stationen af lineære induktionsmotorer for at suse gennem snoede inversioner
 STR_0603    :En rutsjebane i træ stil, med stål spor, Med stejle fald og hurtige sving.
+STR_0604    :Gæster sider i en enkelt række, på et smalt monorail spor, imens de suser igennem skarpe sving ,snoninger og hurtige vridninger.
 STR_0767    :Gæst {INT32}
 STR_0768    :Handymand {INT32}
 STR_0769    :Mekaniker {INT32}
@@ -3678,7 +3680,7 @@ STR_6434    :Fjern alle tilknytninger til denne genvej.
 STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA16}
 STR_6436    :Skift usynlighed
 STR_6437    :Usynlig
-STR_6438    :I
+STR_6438    :U
 STR_6439    :Felt undersøger: Skift usynlighed
 
 #############
@@ -4194,57 +4196,57 @@ STR_NAME    :Træ stolpe væg
 <Alpine Adventures>
 STR_SCNR    :Alpine Adventures
 STR_PARK    :Alpine Adventures
-STR_DTLS    :Convert a small mountain ski resort into a snow-themed amusement park
+STR_DTLS    :Konverter et lille bjerg ski ressort, til en park med sne som tema
 
 <Amity Airfield>
 STR_SCNR    :Amity Airfield
 STR_PARK    :Amity Airfield
-STR_DTLS    :Build a flying-themed amusement park in this abandoned airport
+STR_DTLS    :Byge en forlystelsespark med luftfart som tema, i en forladt lufthavn
 
 <Botany Breakers>
 STR_SCNR    :Botany Breakers
 STR_PARK    :Botany Breakers
-STR_DTLS    :Your challenge is to build a high-profit park on this paradise island
+STR_DTLS    :Din udfordring, er at bygge en højt profitabel forlystelsespark, på denne paradisø
 
 <Build your own Six Flags Belgium>
 STR_SCNR    :Build your own Six Flags Belgium
 STR_PARK    :Six Flags Belgium
-STR_DTLS    :Build your own version of this European Six Flags park
+STR_DTLS    :Byg din egen version af denne europæiske 'Six Flags' park
 
 <Build your own Six Flags Great Adventure>
 STR_SCNR    :Build your own Six Flags Great Adventure
 STR_PARK    :Six Flags Great Adventure
-STR_DTLS    :Use your design skills to recreate this Six Flags park
+STR_DTLS    :Brug dine designer evner, til at genopbygge denne 'Six Flags' forlystelsespark
 
 <Build your own Six Flags Holland>
 STR_SCNR    :Build your own Six Flags Holland
 STR_PARK    :Six Flags Holland
-STR_DTLS    :Build this European Six Flags park the way you want to
+STR_DTLS    :Byg denne europæiske 'Six Flags' forlystelsespark på din helt egen måde
 
 <Build your own Six Flags Magic Mountain>
 STR_SCNR    :Build your own Six Flags Magic Mountain
 STR_PARK    :Six Flags Magic Mountain
-STR_DTLS    :Create your own version of this massive Six Flags park
+STR_DTLS    :Lav din egen version af denne enorme Six Flags park
 
 <Build your own Six Flags over Texas>
 STR_SCNR    :Build your own Six Flags over Texas
 STR_PARK    :Six Flags over Texas
-STR_DTLS    :Starting from scratch, build the forlystelser in this Six Flags park
+STR_DTLS    :Start fra bunden, byg forlystelserne i denne Six Flags park
 
 <Build your own Six Flags Park>
 STR_SCNR    :Build your own Six Flags Park
 STR_PARK    :Six Flags
-STR_DTLS    :Build your own design of Six Flags park - Either build forlystelser from other Six Flags parks or design and build your own forlystelser
+STR_DTLS    :Byg dit eget Six Flags park design - Enten ved at bygge forlystelser fra andre Six Flags parker eller ved at designe og bygge dine egne forlystelser
 
 <Bumbly Bazaar>
 STR_SCNR    :Bumbly Bazaar
 STR_PARK    :Bumbly Bazaar
-STR_DTLS    :Starting with a small market bazaar, your challenge is to increase the profit from butikker og boder by building forlystelser and rutschebaner to attract more kunder
+STR_DTLS    :Du starter med en lille markeds bazaar, din udfordring er at forøge indtjeningen fra butikker og boder, ved at bygge forlystelser og rutschebaner for at tiltrække flere kunder
 
 <Crazy Castle>
 STR_SCNR    :Crazy Castle
 STR_PARK    :Crazy Castle
-STR_DTLS    :You have inherited a large castle - Your job is to convert it into a small theme park.
+STR_DTLS    :Du har arvet et kæmpe stort slot - Din opgave er at udvikle det til en lille forlystelsespark.
 
 <Dusty Greens>
 STR_SCNR    :Dusty Greens
