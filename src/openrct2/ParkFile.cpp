@@ -33,6 +33,7 @@
 #include "ride/ShopItem.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
+#include "scenario/ScenarioRepository.h"
 #include "world/Climate.h"
 #include "world/EntityList.h"
 #include "world/Entrance.h"
@@ -159,6 +160,35 @@ namespace OpenRCT2
         {
             FileStream fs(path, FILE_MODE_WRITE);
             Save(fs);
+        }
+
+        scenario_index_entry ReadScenarioChunk()
+        {
+            scenario_index_entry entry{};
+            auto& os = *_os;
+            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [this, &entry](OrcaStream::ChunkStream& cs) {
+                entry.category = cs.Read<uint8_t>();
+
+                std::string name;
+                ReadWriteStringTable(cs, name, "en-GB");
+                String::Set(entry.name, sizeof(entry.name), name.c_str());
+                String::Set(entry.internal_name, sizeof(entry.internal_name), name.c_str());
+
+                std::string parkName;
+                ReadWriteStringTable(cs, parkName, "en-GB");
+
+                std::string scenarioDetails;
+                ReadWriteStringTable(cs, scenarioDetails, "en-GB");
+                String::Set(entry.details, sizeof(entry.details), scenarioDetails.c_str());
+
+                entry.objective_type = cs.Read<uint8_t>();
+                entry.objective_arg_1 = cs.Read<uint8_t>();
+                entry.objective_arg_3 = cs.Read<int16_t>();
+                entry.objective_arg_2 = cs.Read<int32_t>();
+
+                entry.source_game = ScenarioSource::Other;
+            });
+            return entry;
         }
 
     private:
@@ -1404,7 +1434,8 @@ public:
 
     bool GetDetails(scenario_index_entry* dst) override
     {
-        return false;
+        *dst = _parkFile->ReadScenarioChunk();
+        return true;
     }
 };
 

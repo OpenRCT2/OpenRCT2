@@ -24,6 +24,7 @@
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "management/NewsItem.h"
+#include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "peep/Staff.h"
@@ -40,7 +41,6 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Sprite.h"
-#include "object/DefaultObjects.h"
 
 #include <algorithm>
 #include <array>
@@ -58,6 +58,7 @@ namespace Editor
     static bool LoadLandscapeFromSC4(const char* path);
     static void FinaliseMainView();
     static bool ReadS6(const char* path);
+    static bool ReadPark(const char* path);
     static void ClearMapForEditing(bool fromSave);
 
     static void object_list_load()
@@ -233,6 +234,8 @@ namespace Editor
                 return LoadLandscapeFromSC4(path);
             case FILE_EXTENSION_SV4:
                 return LoadLandscapeFromSV4(path);
+            case FILE_EXTENSION_PARK:
+                return ReadPark(path);
             default:
                 return false;
         }
@@ -297,6 +300,32 @@ namespace Editor
         context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         return true;
+    }
+
+    static bool ReadPark(const char* path)
+    {
+        try
+        {
+            auto context = GetContext();
+            auto& objManager = context->GetObjectManager();
+            auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
+            auto loadResult = importer->Load(path);
+            objManager.LoadObjects(loadResult.RequiredObjects);
+            importer->Import();
+
+            ClearMapForEditing(true);
+            gS6Info.editor_step = EditorStep::LandscapeEditor;
+            gScreenAge = 0;
+            gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
+            viewport_init_all();
+            context_open_window_view(WV_EDITOR_MAIN);
+            FinaliseMainView();
+            return true;
+        }
+        catch (const std::exception&)
+        {
+            return false;
+        }
     }
 
     static void ClearMapForEditing(bool fromSave)

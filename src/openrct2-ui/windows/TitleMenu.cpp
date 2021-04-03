@@ -112,7 +112,7 @@ rct_window* window_title_menu_open()
 
 static void window_title_menu_scenarioselect_callback(const utf8* path)
 {
-    context_load_park_from_file(path);
+    OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
 }
 

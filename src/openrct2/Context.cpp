@@ -555,7 +555,8 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
-        bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
+        bool LoadParkFromFile(
+            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
@@ -564,7 +565,7 @@ namespace OpenRCT2
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
-                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
+                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
                         throw std::runtime_error(".sea file may have been renamed.");
                     }
@@ -573,7 +574,7 @@ namespace OpenRCT2
                 else
                 {
                     auto fs = FileStream(path, FILE_MODE_OPEN);
-                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
+                    if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail, asScenario))
                     {
                         return false;
                     }
@@ -593,7 +594,9 @@ namespace OpenRCT2
             return false;
         }
 
-        bool LoadParkFromStream(IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail) final override
+        bool LoadParkFromStream(
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            bool asScenario = false) final override
         {
             try
             {
@@ -642,7 +645,7 @@ namespace OpenRCT2
                 gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
 
                 bool sendMap = false;
-                if (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME)
+                if (!asScenario && (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME))
                 {
                     if (network_get_mode() == NETWORK_MODE_CLIENT)
                     {
