@@ -172,6 +172,9 @@ public:
                 break;
             case WIDX_BANNER_DEMOLISH:
             {
+                if (_banner == nullptr || _tileElement == nullptr)
+                    break;
+
                 auto bannerRemoveAction = BannerRemoveAction(
                     { _banner->position.ToCoordsXY(), _tileElement->GetBaseZ(), _tileElement->GetPosition() });
                 GameActions::Execute(&bannerRemoveAction);
