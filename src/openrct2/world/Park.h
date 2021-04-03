@@ -89,18 +89,18 @@ namespace OpenRCT2
     };
 } // namespace OpenRCT2
 
-extern uint32_t gParkFlags;
+extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
 extern money16 gParkEntranceFee;
 extern uint16_t gParkSize;
 extern money16 gLandPrice;
 extern money16 gConstructionRightsPrice;
 
-extern uint32_t gTotalAdmissions;
-extern money32 gTotalIncomeFromAdmissions;
+extern uint64_t gTotalAdmissions;
+extern money64 gTotalIncomeFromAdmissions;
 
-extern money32 gParkValue;
-extern money32 gCompanyValue;
+extern money64 gParkValue;
+extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;
 extern uint8_t gParkRatingHistory[32];

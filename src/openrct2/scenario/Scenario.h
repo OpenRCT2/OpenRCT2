@@ -427,7 +427,7 @@ static constexpr money32 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
-extern uint32_t gScenarioTicks;
+extern uint64_t gScenarioTicks;
 extern random_engine_t gScenarioRand;
 
 extern Objective gScenarioObjective;

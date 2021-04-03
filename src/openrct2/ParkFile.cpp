@@ -83,8 +83,6 @@ namespace OpenRCT2
 //        constexpr uint32_t ANIMATIONS       = 0x34;
 //        constexpr uint32_t STAFF            = 0x35;
         constexpr uint32_t CHEATS           = 0x36;
-
-//        constexpr uint32_t DERIVED          = 0x50;
         // clang-format on
     }; // namespace ParkFileChunkType
 
@@ -130,8 +128,6 @@ namespace OpenRCT2
             gInitialCash = gCash;
             String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
             String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
-
-            AutoDeriveVariables();
         }
 
         void Save(IStream& stream)
@@ -175,9 +171,9 @@ namespace OpenRCT2
                     cs.Write(std::string_view(gVersionInfoFull));
                     std::vector<std::string> authors;
                     cs.ReadWriteVector(authors, [](std::string& s) {});
-                    cs.Write(std::string_view());     // custom notes that can be attached to the save
-                    cs.Write<uint64_t>(std::time(0)); // date started
-                    cs.Write<uint64_t>(std::time(0)); // date modified
+                    cs.Write(std::string_view());                  // custom notes that can be attached to the save
+                    cs.Write(static_cast<uint64_t>(std::time(0))); // date started
+                    cs.Write(static_cast<uint64_t>(std::time(0))); // date modified
                 });
             }
         }
@@ -207,7 +203,7 @@ namespace OpenRCT2
                                 case DESCRIPTOR_NONE:
                                     break;
                                 case DESCRIPTOR_DAT:
-                                    desc.Entry = cs.Read<rct_object_entry>();
+                                    cs.Read(&desc.Entry, sizeof(rct_object_entry));
                                     requiredObjects.SetObject(j, desc);
                                     break;
                                 case DESCRIPTOR_JSON:
@@ -251,7 +247,7 @@ namespace OpenRCT2
                                 else
                                 {
                                     cs.Write(DESCRIPTOR_DAT);
-                                    cs.Write(entry.Entry);
+                                    cs.Write(&entry.Entry, sizeof(rct_object_entry));
                                 }
                             }
                             else
@@ -267,7 +263,7 @@ namespace OpenRCT2
         void ReadWriteScenarioChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWriteAs<uint8_t, uint32_t>(gS6Info.category);
+                cs.ReadWrite(gS6Info.category);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
                 auto& park = GetContext()->GetGameState()->GetPark();
@@ -284,7 +280,10 @@ namespace OpenRCT2
                 //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // park value
                 //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // ride profit
                 //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // shop profit
-                cs.ReadWrite<Objective>(gScenarioObjective);
+                cs.ReadWrite(gScenarioObjective.Type);
+                cs.ReadWrite(gScenarioObjective.Year);
+                cs.ReadWrite(gScenarioObjective.NumGuests);
+                cs.ReadWrite(gScenarioObjective.Currency);
 
                 cs.ReadWrite(gScenarioParkRatingWarningDays);
 
@@ -318,8 +317,8 @@ namespace OpenRCT2
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gGamePaused);
-                cs.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
-                cs.ReadWriteAs<uint16_t, uint32_t>(gDateMonthTicks);
+                cs.ReadWrite(gScenarioTicks);
+                cs.ReadWrite(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
@@ -362,10 +361,18 @@ namespace OpenRCT2
         void ReadWriteInterfaceChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::INTERFACE, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gSavedView);
-                cs.ReadWrite(gSavedViewZoom);
+                cs.ReadWrite(gSavedView.x);
+                cs.ReadWrite(gSavedView.y);
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    gSavedViewZoom = static_cast<ZoomLevel>(cs.Read<int8_t>());
+                }
+                else
+                {
+                    cs.Write(static_cast<int8_t>(gSavedViewZoom));
+                }
                 cs.ReadWrite(gSavedViewRotation);
-                cs.ReadWriteAs<uint8_t, uint32_t>(gLastEntranceStyle);
+                cs.ReadWrite(gLastEntranceStyle);
             });
         }
 
@@ -383,7 +390,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gClimate);
                 cs.ReadWrite(gClimateUpdateTimer);
 
-                for (const auto* cl : { &gClimateCurrent, &gClimateNext })
+                for (auto* cl : { &gClimateCurrent, &gClimateNext })
                 {
                     cs.ReadWrite(cl->Weather);
                     cs.ReadWrite(cl->Temperature);
@@ -402,9 +409,9 @@ namespace OpenRCT2
                 cs.ReadWrite(gCash);
                 cs.ReadWrite(gBankLoan);
                 cs.ReadWrite(gMaxBankLoan);
-                cs.ReadWriteAs<uint8_t, uint16_t>(gBankLoanInterestRate);
-                cs.ReadWriteAs<uint32_t, uint64_t>(gParkFlags);
-                cs.ReadWriteAs<money16, money32>(gParkEntranceFee);
+                cs.ReadWrite(gBankLoanInterestRate);
+                cs.ReadWrite(gParkFlags);
+                cs.ReadWrite(gParkEntranceFee);
                 cs.ReadWrite(gStaffHandymanColour);
                 cs.ReadWrite(gStaffMechanicColour);
                 cs.ReadWrite(gStaffSecurityColour);
@@ -432,8 +439,12 @@ namespace OpenRCT2
                     }
                 });
 
-                cs.ReadWriteAs<money32, money64>(gParkValue);
-                cs.ReadWriteAs<uint16_t, uint32_t>(gParkRating);
+                cs.ReadWrite(gParkValue);
+                cs.ReadWrite(gCompanyValue);
+                cs.ReadWrite(gParkSize);
+                cs.ReadWrite(gNumGuestsInPark);
+                cs.ReadWrite(gNumGuestsHeadingForPark);
+                cs.ReadWrite(gParkRating);
                 cs.ReadWrite(gParkRatingCasualtyPenalty);
                 cs.ReadWrite(gCurrentExpenditure);
                 cs.ReadWrite(gCurrentProfit);
@@ -550,26 +561,11 @@ namespace OpenRCT2
             }
         }
 
-        void ReadWriteDerivedChunk(OrcaStream& os)
-        {
-            if (os.GetMode() == OrcaStream::Mode::WRITING)
-            {
-                os.ReadWriteChunk(ParkFileChunkType::NOTIFICATIONS, [](OrcaStream::ChunkStream& cs) {
-                    cs.Write<uint32_t>(gParkSize);
-                    cs.Write<uint32_t>(gNumGuestsInPark);
-                    cs.Write<uint32_t>(gNumGuestsHeadingForPark);
-                    cs.Write<uint32_t>(gCompanyValue);
-                    cs.Write<uint32_t>(gParkValue);
-                    cs.Write<uint32_t>(gParkRating);
-                });
-            }
-        }
-
         void ReadWriteTilesChunk(OrcaStream& os)
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::TILES, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWriteAs<int16_t, uint32_t>(gMapSize); // x
-                cs.Write<uint32_t>(gMapSize);                // y
+                cs.ReadWrite(gMapSize); // x
+                cs.Write(gMapSize);     // y
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -607,7 +603,8 @@ namespace OpenRCT2
                     cs.ReadWrite(banner.colour);
                     cs.ReadWrite(banner.ride_index);
                     cs.ReadWrite(banner.text_colour);
-                    cs.ReadWrite(banner.position);
+                    cs.ReadWrite(banner.position.x);
+                    cs.ReadWrite(banner.position.y);
                 });
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -667,7 +664,9 @@ namespace OpenRCT2
                     });
 
                     cs.ReadWriteArray(ride.vehicle_colours, [&cs](VehicleColour& vc) {
-                        cs.ReadWrite(vc);
+                        cs.ReadWrite(vc.Body);
+                        cs.ReadWrite(vc.Trim);
+                        cs.ReadWrite(vc.Ternary);
                         return true;
                     });
 
@@ -689,7 +688,8 @@ namespace OpenRCT2
                         return true;
                     });
 
-                    cs.ReadWrite(ride.overall_view);
+                    cs.ReadWrite(ride.overall_view.x);
+                    cs.ReadWrite(ride.overall_view.y);
 
                     // Vehicles
                     cs.ReadWrite(ride.num_vehicles);
@@ -789,7 +789,12 @@ namespace OpenRCT2
 
                     cs.ReadWrite(ride.cur_num_customers);
                     cs.ReadWrite(ride.num_customers_timeout);
-                    cs.ReadWrite(ride.num_customers);
+
+                    cs.ReadWriteArray(ride.num_customers, [&cs](uint16_t& v) {
+                        cs.ReadWrite(v);
+                        return true;
+                    });
+
                     cs.ReadWrite(ride.total_customers);
                     cs.ReadWrite(ride.total_profit);
                     cs.ReadWrite(ride.popularity);
@@ -818,7 +823,12 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.downtime);
                     cs.ReadWrite(ride.inspection_interval);
                     cs.ReadWrite(ride.last_inspection);
-                    cs.ReadWrite(ride.downtime_history);
+
+                    cs.ReadWriteArray(ride.downtime_history, [&cs](uint8_t& v) {
+                        cs.ReadWrite(v);
+                        return true;
+                    });
+
                     cs.ReadWrite(ride.breakdown_sound_modifier);
                     cs.ReadWrite(ride.not_fixed_timeout);
                     cs.ReadWrite(ride.last_crash_type);
@@ -873,7 +883,15 @@ namespace OpenRCT2
         static void ReadWritePeep(OrcaStream::ChunkStream& cs, Peep& entity)
         {
             ReadWriteEntityCommon(cs, entity);
-            cs.ReadWrite(entity.Name);
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                auto name = cs.Read<std::string>();
+                entity.SetName(name);
+            }
+            else
+            {
+                cs.Write(static_cast<const char*>(entity.Name));
+            }
             cs.ReadWrite(entity.NextLoc);
             cs.ReadWrite(entity.NextFlags);
             cs.ReadWrite(entity.OutsideOfPark);
@@ -898,7 +916,16 @@ namespace OpenRCT2
             cs.ReadWrite(entity.Toilet);
             cs.ReadWrite(entity.Mass);
             cs.ReadWrite(entity.TimeToConsume);
-            cs.ReadWrite(entity.Intensity);
+
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                entity.Intensity = IntensityRange(cs.Read<uint8_t>());
+            }
+            else
+            {
+                cs.Write(static_cast<uint8_t>(entity.Intensity));
+            }
+
             cs.ReadWrite(entity.NauseaTolerance);
             cs.ReadWrite(entity.WindowInvalidateFlags);
             cs.ReadWrite(entity.PaidOnDrink);
@@ -949,10 +976,16 @@ namespace OpenRCT2
             cs.ReadWrite(entity.GuestIsLostCountdown);
             cs.ReadWrite(entity.Photo1RideRef);
             cs.ReadWrite(entity.PeepFlags);
-            cs.ReadWrite(entity.PathfindGoal);
+            cs.ReadWrite(entity.PathfindGoal.x);
+            cs.ReadWrite(entity.PathfindGoal.y);
+            cs.ReadWrite(entity.PathfindGoal.z);
+            cs.ReadWrite(entity.PathfindGoal.direction);
             for (size_t i = 0; i < std::size(entity.PathfindHistory); i++)
             {
-                cs.ReadWrite(entity.PathfindHistory[i]);
+                cs.ReadWrite(entity.PathfindHistory[i].x);
+                cs.ReadWrite(entity.PathfindHistory[i].y);
+                cs.ReadWrite(entity.PathfindHistory[i].z);
+                cs.ReadWrite(entity.PathfindHistory[i].direction);
             }
             cs.ReadWrite(entity.WalkingFrameNum);
             cs.ReadWrite(entity.LitterCount);
@@ -987,32 +1020,6 @@ namespace OpenRCT2
         template<typename... T> void ReadEntitiesOfTypes(OrcaStream::ChunkStream& cs);
 
         void ReadWriteEntitiesChunk(OrcaStream& os);
-
-        void AutoDeriveVariables()
-        {
-            uint16_t numGuestsInPark = 0;
-            uint16_t numGuestsHeadingsForPark = 0;
-            for (auto guest : EntityList<Guest>())
-            {
-                if (guest->State == PeepState::EnteringPark)
-                {
-                    numGuestsHeadingsForPark++;
-                }
-                if (!guest->OutsideOfPark)
-                {
-                    numGuestsInPark++;
-                }
-            }
-
-            gNumGuestsInPark = numGuestsInPark;
-            gNumGuestsHeadingForPark = numGuestsHeadingsForPark;
-
-            auto& park = GetContext()->GetGameState()->GetPark();
-            gParkSize = park.CalculateParkSize();
-            gParkValue = park.CalculateParkValue();
-            gCompanyValue = park.CalculateCompanyValue();
-            gParkRating = park.CalculateParkRating();
-        }
 
         static void ReadWriteStringTable(OrcaStream::ChunkStream& cs, std::string& value, const std::string_view& lcode)
         {
@@ -1057,7 +1064,8 @@ namespace OpenRCT2
         cs.ReadWrite(entity.acceleration);
         cs.ReadWrite(entity.ride);
         cs.ReadWrite(entity.vehicle_type);
-        cs.ReadWrite(entity.colours);
+        cs.ReadWrite(entity.colours.body_colour);
+        cs.ReadWrite(entity.colours.trim_colour);
         cs.ReadWrite(entity.track_progress);
         cs.ReadWrite(entity.BoatLocation);
         cs.ReadWrite(entity.TrackTypeAndDirection);

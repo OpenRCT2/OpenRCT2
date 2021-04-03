@@ -45,18 +45,18 @@
 
 using namespace OpenRCT2;
 
-uint32_t gParkFlags;
+uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
 uint16_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
-uint32_t gTotalAdmissions;
-money32 gTotalIncomeFromAdmissions;
+uint64_t gTotalAdmissions;
+money64 gTotalIncomeFromAdmissions;
 
-money32 gParkValue;
-money32 gCompanyValue;
+money64 gParkValue;
+money64 gCompanyValue;
 
 int16_t gParkRatingCasualtyPenalty;
 uint8_t gParkRatingHistory[32];

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../world/Location.hpp"
 #include "Crypt.h"
 #include "FileStream.h"
 #include "MemoryStream.h"
@@ -19,6 +20,7 @@
 #include <fstream>
 #include <sstream>
 #include <stack>
+#include <type_traits>
 #include <vector>
 
 namespace OpenRCT2
@@ -98,7 +100,8 @@ namespace OpenRCT2
                 if (_header.Compression == COMPRESSION_GZIP)
                 {
                     size_t outUncompressedSize{};
-                    auto uncompressedData = util_zlib_inflate(reinterpret_cast<const uint8_t*>(_buffer.GetData()), _buffer.GetLength(), &outUncompressedSize);
+                    auto uncompressedData = util_zlib_inflate(
+                        reinterpret_cast<const uint8_t*>(_buffer.GetData()), _buffer.GetLength(), &outUncompressedSize);
                     if (_header.UncompressedSize != outUncompressedSize)
                     {
                         // Warning?
@@ -270,26 +273,98 @@ namespace OpenRCT2
                 }
             }
 
-            template<typename T> void ReadWrite(T& v)
+            void Read(void* addr, size_t len)
             {
-                ReadWrite(const_cast<void*>(reinterpret_cast<const void*>(&v)), sizeof(T));
-            }
-
-            template<typename TMem, typename TSave> void ReadWriteAs(TMem& v)
-            {
-                TSave sv;
-                if (_mode != Mode::READING)
-                {
-                    sv = v;
-                }
-                ReadWrite(reinterpret_cast<void*>(&sv), sizeof(TSave));
                 if (_mode == Mode::READING)
                 {
-                    v = static_cast<TMem>(sv);
+                    ReadBuffer(addr, len);
+                }
+                else
+                {
+                    throw std::runtime_error("Incorrect mode");
                 }
             }
 
-            template<typename T> T Read()
+            void Write(const void* addr, size_t len)
+            {
+                if (_mode == Mode::READING)
+                {
+                    throw std::runtime_error("Incorrect mode");
+                }
+                else
+                {
+                    WriteBuffer(addr, len);
+                }
+            }
+
+            template<typename T, std::enable_if_t<std::is_integral<T>::value, bool> = true> void ReadWrite(T& v)
+            {
+                if (_mode == Mode::READING)
+                {
+                    v = ReadInteger<T>();
+                }
+                else
+                {
+                    WriteInteger(v);
+                }
+            }
+
+            template<typename T, std::enable_if_t<std::is_enum<T>::value, bool> = true> void ReadWrite(T& v)
+            {
+                using underlying = typename std::underlying_type<T>::type;
+                if (_mode == Mode::READING)
+                {
+                    v = static_cast<T>(ReadInteger<underlying>());
+                }
+                else
+                {
+                    WriteInteger(static_cast<underlying>(v));
+                }
+            }
+
+            void ReadWrite(CoordsXY& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+            }
+
+            void ReadWrite(CoordsXYZ& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+                ReadWrite(coords.z);
+            }
+
+            void ReadWrite(CoordsXYZD& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+                ReadWrite(coords.z);
+                ReadWrite(coords.direction);
+            }
+
+            void ReadWrite(TileCoordsXY& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+            }
+
+            void ReadWrite(TileCoordsXYZ& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+                ReadWrite(coords.z);
+            }
+
+            void ReadWrite(TileCoordsXYZD& coords)
+            {
+                ReadWrite(coords.x);
+                ReadWrite(coords.y);
+                ReadWrite(coords.z);
+                ReadWrite(coords.direction);
+            }
+
+            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> T Read()
             {
                 T v{};
                 ReadWrite(v);
@@ -313,7 +388,7 @@ namespace OpenRCT2
                 }
             }
 
-            template<typename T> void Write(const T& v)
+            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> void Write(T v)
             {
                 if (_mode == Mode::READING)
                 {
@@ -324,6 +399,14 @@ namespace OpenRCT2
                 {
                     ReadWrite(v);
                 }
+            }
+
+            void Write(const char* v)
+            {
+                std::string_view sv;
+                if (v != nullptr)
+                    sv = v;
+                Write(sv);
             }
 
 #if defined(_MSC_VER)
@@ -418,6 +501,78 @@ namespace OpenRCT2
             void WriteBuffer(const void* buffer, size_t len)
             {
                 _buffer.Write(buffer, len);
+            }
+
+            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> T ReadInteger()
+            {
+                if (sizeof(T) > 4)
+                {
+                    if (std::is_signed<T>())
+                    {
+                        int64_t raw{};
+                        Read(&raw, sizeof(raw));
+                        return static_cast<T>(raw);
+                    }
+                    else
+                    {
+                        uint64_t raw{};
+                        Read(&raw, sizeof(raw));
+                        return static_cast<T>(raw);
+                    }
+                }
+                else
+                {
+                    if (std::is_signed<T>())
+                    {
+                        int32_t raw{};
+                        Read(&raw, sizeof(raw));
+                        if (raw < std::numeric_limits<T>::min() || raw > std::numeric_limits<T>::max())
+                        {
+                            throw std::runtime_error("Value is incompatible with internal type.");
+                        }
+                        return static_cast<T>(raw);
+                    }
+                    else
+                    {
+                        uint32_t raw{};
+                        Read(&raw, sizeof(raw));
+                        if (raw > std::numeric_limits<T>::max())
+                        {
+                            throw std::runtime_error("Value is incompatible with internal type.");
+                        }
+                        return static_cast<T>(raw);
+                    }
+                }
+            }
+
+            template<typename T, typename = std::enable_if<std::is_integral<T>::value>> void WriteInteger(T value)
+            {
+                if (sizeof(T) > 4)
+                {
+                    if (std::is_signed<T>())
+                    {
+                        auto raw = static_cast<int64_t>(value);
+                        Write(&raw, sizeof(raw));
+                    }
+                    else
+                    {
+                        auto raw = static_cast<uint64_t>(value);
+                        Write(&raw, sizeof(raw));
+                    }
+                }
+                else
+                {
+                    if (std::is_signed<T>())
+                    {
+                        auto raw = static_cast<int32_t>(value);
+                        Write(&raw, sizeof(raw));
+                    }
+                    else
+                    {
+                        auto raw = static_cast<uint32_t>(value);
+                        Write(&raw, sizeof(raw));
+                    }
+                }
             }
 
             std::string ReadString()
