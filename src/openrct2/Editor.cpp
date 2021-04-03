@@ -40,6 +40,7 @@
 #include "world/Park.h"
 #include "world/Scenery.h"
 #include "world/Sprite.h"
+#include "object/DefaultObjects.h"
 
 #include <algorithm>
 #include <array>
@@ -70,6 +71,12 @@ namespace Editor
         // Reset loaded objects to just defaults
         auto& objectManager = context->GetObjectManager();
         objectManager.UnloadAll();
+
+        // Load minimum required objects (like surface and edge)
+        for (const auto& entry : MinimumRequiredObjects)
+        {
+            objectManager.LoadObject(entry);
+        }
     }
 
     /**
@@ -79,7 +86,6 @@ namespace Editor
     void Load()
     {
         OpenRCT2::Audio::StopAll();
-        object_manager_unload_all_objects();
         object_list_load();
         OpenRCT2::GetContext()->GetGameState()->InitAll(150);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;

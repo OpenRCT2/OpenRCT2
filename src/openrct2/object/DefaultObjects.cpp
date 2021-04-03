@@ -11,6 +11,11 @@
 
 #include "Object.h"
 
+const std::string_view MinimumRequiredObjects[] = {
+    "rct2.surface.grass",
+    "rct2.edge.rock"
+};
+
 const std::string_view DefaultSelectedObjects[] = {
     // An initial default selection
     "rct2.scgtrees", // Scenery: Trees
@@ -48,6 +53,74 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.scgjungl", // Jungle Theming
     "rct2.scgsnow",  // Snow and Ice Theming
     "rct2.scgwater", // Water Feature Theming
+
+    // Surfaces
+    "rct2.surface.grass",
+    "rct2.surface.sand",
+    "rct2.surface.dirt",
+    "rct2.surface.rock",
+    "rct2.surface.martian",
+    "rct2.surface.chequerboard",
+    "rct2.surface.grassclumps",
+    "rct2.surface.ice",
+    "rct2.surface.gridred",
+    "rct2.surface.gridyellow",
+    "rct2.surface.gridpurple",
+    "rct2.surface.gridgreen",
+    "rct2.surface.sandred",
+    "rct2.surface.sandbrown",
+
+    // Edges
+    "rct2.edge.rock",
+    "rct2.edge.woodred",
+    "rct2.edge.woodblack",
+    "rct2.edge.ice",
+
+    // Stations
+    "rct2.station.plain",
+    "rct2.station.wooden",
+    "rct2.station.canvastent",
+    "rct2.station.castlegrey",
+    "rct2.station.castlebrown",
+    "rct2.station.jungle",
+    "rct2.station.log",
+    "rct2.station.classical",
+    "rct2.station.abstract",
+    "rct2.station.snow",
+    "rct2.station.pagoda",
+    "rct2.station.space",
+
+    // Music
+    "rct2.music.dodgems",
+    "rct2.music.fairground",
+    "rct2.music.roman",
+    "rct2.music.oriental",
+    "rct2.music.martian",
+    "rct2.music.jungle",
+    "rct2.music.egyptian",
+    "rct2.music.toyland",
+    "rct2.music.space",
+    "rct2.music.horror",
+    "rct2.music.techno",
+    "rct2.music.gentle",
+    "rct2.music.summer",
+    "rct2.music.water",
+    "rct2.music.wildwest",
+    "rct2.music.jurassic",
+    "rct2.music.rock1",
+    "rct2.music.ragtime",
+    "rct2.music.fantasy",
+    "rct2.music.rock2",
+    "rct2.music.ice",
+    "rct2.music.snow",
+    "rct2.music.medieval",
+    "rct2.music.urban",
+    "rct2.music.organ",
+    "rct2.music.mechanical",
+    "rct2.music.modern",
+    "rct2.music.pirate",
+    "rct2.music.rock3",
+    "rct2.music.candy",
 };
 
 const std::string_view DesignerSelectedObjects[] = {

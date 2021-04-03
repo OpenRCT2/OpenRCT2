@@ -137,6 +137,15 @@ void setup_in_use_selection_flags()
         {
             default:
             case TILE_ELEMENT_TYPE_SURFACE:
+            {
+                auto surfaceEl = iter.element->AsSurface();
+                auto surfaceIndex = surfaceEl->GetSurfaceStyle();
+                auto edgeIndex = surfaceEl->GetEdgeStyle();
+
+                Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                break;
+            }
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
@@ -197,8 +206,9 @@ void setup_in_use_selection_flags()
         auto ride = get_ride(ride_index);
         if (ride != nullptr)
         {
-            ObjectEntryIndex type = ride->subtype;
-            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Ride, ride->subtype, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Station, ride->entrance_style, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Music, ride->music, OBJECT_SELECTION_FLAG_SELECTED);
         }
     }
 
