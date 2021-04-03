@@ -1909,20 +1909,16 @@ void Vehicle::UpdateMeasurements()
     {
         curRide->testing_flags |= RIDE_TESTING_SHELTERED;
 
-        uint8_t numShelteredSections = curRide->num_sheltered_sections & 0x1F;
-        if (numShelteredSections != 0x1F)
-            numShelteredSections++;
-        curRide->num_sheltered_sections &= ~0x1F;
-        curRide->num_sheltered_sections |= numShelteredSections;
+        curRide->IncreaseNumShelteredSections();
 
         if (vehicle_sprite_type != 0)
         {
-            curRide->num_sheltered_sections |= (1 << 5);
+            curRide->num_sheltered_sections |= ShelteredSectionsBits::RotatingWhileSheltered;
         }
 
         if (bank_rotation != 0)
         {
-            curRide->num_sheltered_sections |= (1 << 6);
+            curRide->num_sheltered_sections |= ShelteredSectionsBits::BankingWhileSheltered;
         }
     }
 
