@@ -13,6 +13,7 @@
 #include "../Game.h"
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
+#include "../ParkFile.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
@@ -65,7 +66,6 @@ static constexpr uint32_t CHUNK_SIZE = 1024 * 63;
 #    include "../localisation/Localisation.h"
 #    include "../object/ObjectManager.h"
 #    include "../object/ObjectRepository.h"
-#    include "../rct2/S6Exporter.h"
 #    include "../scenario/Scenario.h"
 #    include "../util/Util.h"
 #    include "../world/Park.h"
@@ -1406,37 +1406,18 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
 
 std::vector<uint8_t> NetworkBase::save_for_network(const std::vector<const ObjectRepositoryItem*>& objects) const
 {
-    std::vector<uint8_t> header;
-    bool RLEState = gUseRLE;
-    gUseRLE = false;
-
+    std::vector<uint8_t> result;
     auto ms = OpenRCT2::MemoryStream();
-    if (!SaveMap(&ms, objects))
+    if (SaveMap(&ms, objects))
     {
-        log_warning("Failed to export map.");
-        return header;
-    }
-    gUseRLE = RLEState;
-
-    const void* data = ms.GetData();
-    int32_t size = ms.GetLength();
-
-    auto compressed = util_zlib_deflate(static_cast<const uint8_t*>(data), size);
-    if (compressed != std::nullopt)
-    {
-        std::string headerString = "open2_sv6_zlib";
-        header.resize(headerString.size() + 1 + compressed->size());
-        std::memcpy(&header[0], headerString.c_str(), headerString.size() + 1);
-        std::memcpy(&header[headerString.size() + 1], compressed->data(), compressed->size());
-        log_verbose("Sending map of size %u bytes, compressed to %u bytes", size, headerString.size() + 1 + compressed->size());
+        result.resize(ms.GetLength());
+        std::memcpy(result.data(), ms.GetData(), result.size());
     }
     else
     {
-        log_warning("Failed to compress the data, falling back to non-compressed sv6.");
-        header.resize(size);
-        std::memcpy(header.data(), data, size);
+        log_warning("Failed to export map.");
     }
-    return header;
+    return result;
 }
 
 void NetworkBase::Client_Send_CHAT(const char* text)
@@ -2655,25 +2636,6 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         bool has_to_free = false;
         uint8_t* data = &chunk_buffer[0];
         size_t data_size = size;
-        // zlib-compressed
-        if (strcmp("open2_sv6_zlib", reinterpret_cast<char*>(&chunk_buffer[0])) == 0)
-        {
-            log_verbose("Received zlib-compressed sv6 map");
-            has_to_free = true;
-            size_t header_len = strlen("open2_sv6_zlib") + 1;
-            data = util_zlib_inflate(&chunk_buffer[header_len], size - header_len, &data_size);
-            if (data == nullptr)
-            {
-                log_warning("Failed to decompress data sent from server.");
-                Close();
-                return;
-            }
-        }
-        else
-        {
-            log_verbose("Assuming received map is in plain sv6 format");
-        }
-
         auto ms = MemoryStream(data, data_size);
         if (LoadMap(&ms))
         {
@@ -2716,7 +2678,7 @@ bool NetworkBase::LoadMap(IStream* stream)
     {
         auto context = GetContext();
         auto& objManager = context->GetObjectManager();
-        auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+        auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
         objManager.LoadObjects(loadResult.RequiredObjects);
         importer->Import();
@@ -2724,43 +2686,12 @@ bool NetworkBase::LoadMap(IStream* stream)
         EntityTweener::Get().Reset();
         AutoCreateMapAnimations();
 
-        // Read checksum
-        [[maybe_unused]] uint32_t checksum = stream->ReadValue<uint32_t>();
-
-        // Read other data not in normal save files
-        gGamePaused = stream->ReadValue<uint32_t>();
-        _guestGenerationProbability = stream->ReadValue<uint32_t>();
-        _suggestedGuestMaximum = stream->ReadValue<uint32_t>();
-        gCheatsAllowTrackPlaceInvalidHeights = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableAllDrawableTrackPieces = stream->ReadValue<uint8_t>() != 0;
-        gCheatsSandboxMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableClearanceChecks = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableSupportLimits = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableTrainLengthLimit = stream->ReadValue<uint8_t>() != 0;
-        gCheatsEnableChainLiftOnAllTrack = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowAllOperatingModes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsShowVehiclesFromOtherTrackTypes = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFastLiftHill = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableBrakesFailure = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableAllBreakdowns = stream->ReadValue<uint8_t>() != 0;
-        gCheatsBuildInPauseMode = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreRideIntensity = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableVandalism = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableLittering = stream->ReadValue<uint8_t>() != 0;
-        gCheatsNeverendingMarketing = stream->ReadValue<uint8_t>() != 0;
-        gCheatsFreezeWeather = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisablePlantAging = stream->ReadValue<uint8_t>() != 0;
-        gCheatsAllowArbitraryRideTypeChanges = stream->ReadValue<uint8_t>() != 0;
-        gCheatsDisableRideValueAging = stream->ReadValue<uint8_t>() != 0;
-        gConfigGeneral.show_real_names_of_guests = stream->ReadValue<uint8_t>() != 0;
-        gCheatsIgnoreResearchStatus = stream->ReadValue<uint8_t>() != 0;
-        gAllowEarlyCompletionInNetworkPlay = stream->ReadValue<uint8_t>() != 0;
-
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        Console::Error::WriteLine("Unable to read map from server: %s", e.what());
     }
     return result;
 }
@@ -2772,44 +2703,14 @@ bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectReposit
     viewport_set_saved_view();
     try
     {
-        auto s6exporter = std::make_unique<S6Exporter>();
-        s6exporter->ExportObjectsList = objects;
-        s6exporter->Export();
-        s6exporter->SaveGame(stream);
-
-        // Write other data not in normal save files
-        stream->WriteValue<uint32_t>(gGamePaused);
-        stream->WriteValue<uint32_t>(_guestGenerationProbability);
-        stream->WriteValue<uint32_t>(_suggestedGuestMaximum);
-        stream->WriteValue<uint8_t>(gCheatsAllowTrackPlaceInvalidHeights);
-        stream->WriteValue<uint8_t>(gCheatsEnableAllDrawableTrackPieces);
-        stream->WriteValue<uint8_t>(gCheatsSandboxMode);
-        stream->WriteValue<uint8_t>(gCheatsDisableClearanceChecks);
-        stream->WriteValue<uint8_t>(gCheatsDisableSupportLimits);
-        stream->WriteValue<uint8_t>(gCheatsDisableTrainLengthLimit);
-        stream->WriteValue<uint8_t>(gCheatsEnableChainLiftOnAllTrack);
-        stream->WriteValue<uint8_t>(gCheatsShowAllOperatingModes);
-        stream->WriteValue<uint8_t>(gCheatsShowVehiclesFromOtherTrackTypes);
-        stream->WriteValue<uint8_t>(gCheatsFastLiftHill);
-        stream->WriteValue<uint8_t>(gCheatsDisableBrakesFailure);
-        stream->WriteValue<uint8_t>(gCheatsDisableAllBreakdowns);
-        stream->WriteValue<uint8_t>(gCheatsBuildInPauseMode);
-        stream->WriteValue<uint8_t>(gCheatsIgnoreRideIntensity);
-        stream->WriteValue<uint8_t>(gCheatsDisableVandalism);
-        stream->WriteValue<uint8_t>(gCheatsDisableLittering);
-        stream->WriteValue<uint8_t>(gCheatsNeverendingMarketing);
-        stream->WriteValue<uint8_t>(gCheatsFreezeWeather);
-        stream->WriteValue<uint8_t>(gCheatsDisablePlantAging);
-        stream->WriteValue<uint8_t>(gCheatsAllowArbitraryRideTypeChanges);
-        stream->WriteValue<uint8_t>(gCheatsDisableRideValueAging);
-        stream->WriteValue<uint8_t>(gConfigGeneral.show_real_names_of_guests);
-        stream->WriteValue<uint8_t>(gCheatsIgnoreResearchStatus);
-        stream->WriteValue<uint8_t>(gConfigGeneral.allow_early_completion);
-
+        auto exporter = std::make_unique<ParkFileExporter>();
+        exporter->ExportObjectsList = objects;
+        exporter->Export(*stream);
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        Console::Error::WriteLine("Unable to serialise map: %s", e.what());
     }
     return result;
 }

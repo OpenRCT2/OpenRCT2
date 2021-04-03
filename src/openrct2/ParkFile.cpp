@@ -298,12 +298,26 @@ namespace OpenRCT2
                 {
                     cs.ReadWrite(gScenarioCompletedBy);
                 }
+
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    auto earlyCompletion = cs.Read<bool>();
+                    if (network_get_mode() == NETWORK_MODE_CLIENT)
+                    {
+                        gAllowEarlyCompletionInNetworkPlay = earlyCompletion;
+                    }
+                }
+                else
+                {
+                    cs.Write(AllowEarlyCompletion());
+                }
             });
         }
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaStream::ChunkStream& cs) {
+                cs.ReadWrite(gGamePaused);
                 cs.ReadWriteAs<uint32_t, uint64_t>(gScenarioTicks);
                 cs.ReadWriteAs<uint16_t, uint32_t>(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
@@ -418,11 +432,15 @@ namespace OpenRCT2
                     }
                 });
 
+                cs.ReadWriteAs<money32, money64>(gParkValue);
+                cs.ReadWriteAs<uint16_t, uint32_t>(gParkRating);
                 cs.ReadWrite(gParkRatingCasualtyPenalty);
                 cs.ReadWrite(gCurrentExpenditure);
                 cs.ReadWrite(gCurrentProfit);
                 cs.ReadWrite(gTotalAdmissions);
                 cs.ReadWrite(gTotalIncomeFromAdmissions);
+                cs.ReadWrite(_guestGenerationProbability);
+                cs.ReadWrite(_suggestedGuestMaximum);
             });
         }
 
