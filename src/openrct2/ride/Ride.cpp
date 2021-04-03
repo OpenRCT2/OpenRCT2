@@ -7350,7 +7350,7 @@ void Ride::SetMaxCarsPerTrain(uint8_t newValue)
 
 uint8_t Ride::GetNumShelteredSections() const
 {
-    return num_sheltered_sections & NumShelteredSectionsMask;
+    return num_sheltered_sections & ShelteredSectionsBits::NumShelteredSectionsMask;
 }
 
 void Ride::IncreaseNumShelteredSections()
@@ -7358,6 +7358,6 @@ void Ride::IncreaseNumShelteredSections()
     auto newNumShelteredSections = GetNumShelteredSections();
     if (newNumShelteredSections != 0x1F)
         newNumShelteredSections++;
-    num_sheltered_sections &= ~NumShelteredSectionsMask;
+    num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
 }

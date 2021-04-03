@@ -190,12 +190,12 @@ enum class RideClassification
     KioskOrFacility
 };
 
-enum ShelteredSectionsBits : uint8_t
+namespace ShelteredSectionsBits
 {
-    NumShelteredSectionsMask = 0b00011111,
-    RotatingWhileSheltered = 0b00100000,
-    BankingWhileSheltered = 0b01000000,
-};
+    constexpr const uint8_t NumShelteredSectionsMask = 0b00011111;
+    constexpr const uint8_t RotatingWhileSheltered = 0b00100000;
+    constexpr const uint8_t BankingWhileSheltered = 0b01000000;
+}; // namespace ShelteredSectionsBits
 
 struct TrackDesign;
 enum class RideMode : uint8_t;
