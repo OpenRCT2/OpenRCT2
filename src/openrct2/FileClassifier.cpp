@@ -213,5 +213,7 @@ uint32_t get_file_extension_type(const utf8* path)
         return FILE_EXTENSION_SV6;
     if (String::Equals(extension, ".td6", true))
         return FILE_EXTENSION_TD6;
+    if (String::Equals(extension, ".park", true))
+        return FILE_EXTENSION_PARK;
     return FILE_EXTENSION_UNKNOWN;
 }

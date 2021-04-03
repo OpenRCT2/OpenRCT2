@@ -728,7 +728,6 @@
 		F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */; };
 		F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84711EC4E7CC00FA49E2 /* SawyerChunkWriter.cpp */; };
 		F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */; };
-		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
 		F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */; };
@@ -1751,8 +1750,6 @@
 		F76C84721EC4E7CC00FA49E2 /* SawyerChunkWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerChunkWriter.h; sourceTree = "<group>"; };
 		F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerEncoding.cpp; sourceTree = "<group>"; };
 		F76C84741EC4E7CC00FA49E2 /* SawyerEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerEncoding.h; sourceTree = "<group>"; };
-		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
-		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
 		F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignRepository.cpp; sourceTree = "<group>"; };
 		F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackDesignRepository.h; sourceTree = "<group>"; };
@@ -2823,8 +2820,6 @@
 			children = (
 				4CB30178249E382B0034A7F6 /* RCT2.cpp */,
 				4C7B54042004C58200A52E21 /* RCT2.h */,
-				F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */,
-				F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */,
 				F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */,
 				933C55B424B858490057E64B /* SeaDecrypt.cpp */,
 				01C6F0C522FD51FC0057E2F7 /* T6Exporter.cpp */,
@@ -4168,7 +4163,6 @@
 				C688784E202899CB0084B384 /* Date.cpp in Sources */,
 				66A10F9B257F1E1800DD651A /* ParkSetResearchFundingAction.cpp in Sources */,
 				F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */,
-				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				C68878E820289B9B0084B384 /* Platform.Win32.cpp in Sources */,
 				C688791A20289B9B0084B384 /* SpaceRings.cpp in Sources */,
 				C688790420289B9B0084B384 /* Steeplechase.cpp in Sources */,

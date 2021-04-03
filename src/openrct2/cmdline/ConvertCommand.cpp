@@ -7,14 +7,17 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Context.h"
 #include "../FileClassifier.h"
 #include "../OpenRCT2.h"
+#include "../ParkFile.h"
 #include "../ParkImporter.h"
 #include "../common.h"
 #include "../core/Console.hpp"
 #include "../core/Path.hpp"
 #include "../interface/Window.h"
-#include "../rct2/S6Exporter.h"
+#include "../object/ObjectManager.h"
+#include "../scenario/Scenario.h"
 #include "CommandLine.hpp"
 
 #include <memory>
@@ -55,9 +58,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     uint32_t destinationFileType = get_file_extension_type(destinationPath);
 
     // Validate target type
-    if (destinationFileType != FILE_EXTENSION_SC6 && destinationFileType != FILE_EXTENSION_SV6)
+    if (destinationFileType != FILE_EXTENSION_PARK)
     {
-        Console::Error::WriteLine("Only conversion to .SC6 or .SV4 is supported.");
+        Console::Error::WriteLine("Only conversion to .PARK is supported.");
         return EXITCODE_FAIL;
     }
 
@@ -90,11 +93,18 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     WriteConvertFromAndToMessage(sourceFileType, destinationFileType);
 
     gOpenRCT2Headless = true;
+    auto context = OpenRCT2::CreateContext();
+    context->Initialise();
+
+    auto& objManager = context->GetObjectManager();
 
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        importer->Load(sourcePath);
+        auto loadResult = importer->Load(sourcePath);
+
+        objManager.LoadObjects(loadResult.RequiredObjects);
+
         importer->Import();
     }
     catch (const std::exception& ex)
@@ -111,21 +121,13 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
 
     try
     {
-        auto exporter = std::make_unique<S6Exporter>();
+        auto exporter = std::make_unique<ParkFileExporter>();
 
         // HACK remove the main window so it saves the park with the
         //      correct initial view
         window_close_by_class(WC_MAIN_WINDOW);
 
-        exporter->Export();
-        if (destinationFileType == FILE_EXTENSION_SC6)
-        {
-            exporter->SaveScenario(destinationPath);
-        }
-        else
-        {
-            exporter->SaveGame(destinationPath);
-        }
+        exporter->Export(destinationPath);
     }
     catch (const std::exception& ex)
     {
@@ -157,6 +159,8 @@ static const utf8* GetFileTypeFriendlyName(uint32_t fileType)
             return "RollerCoaster Tycoon 2 scenario";
         case FILE_EXTENSION_SV6:
             return "RollerCoaster Tycoon 2 saved game";
+        case FILE_EXTENSION_PARK:
+            return "OpenRCT2 park";
     }
 
     assert(false);
