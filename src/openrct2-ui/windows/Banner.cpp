@@ -76,7 +76,7 @@ class BannerWindow final : public Window
 private:
     Banner* _banner;
     CoordsXYZ _bannerViewPos;
-    TileElement* _tileElement = nullptr;
+    BannerElement* _tileElement = nullptr;
 
     void CreateViewport()
     {
@@ -99,7 +99,7 @@ private:
             {
                 if ((tileElement->GetType() == TILE_ELEMENT_TYPE_BANNER) && (tileElement->AsBanner()->GetIndex() == number))
                 {
-                    _tileElement = tileElement;
+                    _tileElement = tileElement->AsBanner();
                     return;
                 }
                 if (tileElement->IsLastForTile())
@@ -173,7 +173,7 @@ public:
             case WIDX_BANNER_DEMOLISH:
             {
                 auto bannerRemoveAction = BannerRemoveAction(
-                    { _banner->position.ToCoordsXY(), _tileElement->GetBaseZ(), _tileElement->AsBanner()->GetPosition() });
+                    { _banner->position.ToCoordsXY(), _tileElement->GetBaseZ(), _tileElement->GetPosition() });
                 GameActions::Execute(&bannerRemoveAction);
                 break;
             }
