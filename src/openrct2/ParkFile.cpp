@@ -925,7 +925,7 @@ namespace OpenRCT2
             cs.ReadWrite(entity.PeepDirection);
             cs.ReadWrite(entity.InteractionRideIndex);
             cs.ReadWrite(entity.TimeInQueue);
-            cs.ReadWriteArray(entity.RidesBeenOn, [&cs](ride_id_t rideId) {
+            cs.ReadWriteArray(entity.RidesBeenOn, [&cs](ride_id_t& rideId) {
                 cs.ReadWrite(rideId);
                 return true;
             });
@@ -937,19 +937,12 @@ namespace OpenRCT2
             cs.ReadWrite(entity.RejoinQueueTimeout);
             cs.ReadWrite(entity.PreviousRide);
             cs.ReadWrite(entity.PreviousRideTimeOut);
-            cs.ReadWriteArray(entity.Thoughts, [&cs](rct_peep_thought thought) {
-                if (thought.type != PeepThoughtType::None)
-                {
-                    cs.ReadWrite(thought.type);
-                    cs.ReadWrite(thought.item);
-                    cs.ReadWrite(thought.freshness);
-                    cs.ReadWrite(thought.fresh_timeout);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+            cs.ReadWriteArray(entity.Thoughts, [&cs](rct_peep_thought& thought) {
+                cs.ReadWrite(thought.type);
+                cs.ReadWrite(thought.item);
+                cs.ReadWrite(thought.freshness);
+                cs.ReadWrite(thought.fresh_timeout);
+                return true;
             });
             cs.ReadWrite(entity.PathCheckOptimisation);
             cs.ReadWrite(entity.GuestHeadingToRideId);
