@@ -118,7 +118,7 @@ static bool OnCrash(
     swprintf_s(dumpFilePath, std::size(dumpFilePath), L"%s\\%s.dmp", dumpPath, miniDumpId);
     swprintf_s(saveFilePath, std::size(saveFilePath), L"%s\\%s.park", dumpPath, miniDumpId);
     swprintf_s(configFilePath, std::size(configFilePath), L"%s\\%s.ini", dumpPath, miniDumpId);
-    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.sv6r", dumpPath, miniDumpId);
+    swprintf_s(recordFilePathNew, std::size(recordFilePathNew), L"%s\\%s.parkrep", dumpPath, miniDumpId);
 
     wchar_t dumpFilePathNew[MAX_PATH];
     swprintf_s(
@@ -211,11 +211,11 @@ static bool OnCrash(
 
     if (with_record)
     {
-        auto sv6rPathW = String::ToWideChar(gSilentRecordingName);
-        bool record_copied = CopyFileW(sv6rPathW.c_str(), recordFilePathNew, true);
+        auto parkReplayPathW = String::ToWideChar(gSilentRecordingName);
+        bool record_copied = CopyFileW(parkReplayPathW.c_str(), recordFilePathNew, true);
         if (record_copied)
         {
-            uploadFiles[L"attachment_replay.sv6r"] = recordFilePathNew;
+            uploadFiles[L"attachment_replay.parkrep"] = recordFilePathNew;
         }
         else
         {

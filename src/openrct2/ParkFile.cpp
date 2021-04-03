@@ -46,6 +46,8 @@
 #include <string_view>
 #include <vector>
 
+using namespace OpenRCT2;
+
 namespace OpenRCT2
 {
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
@@ -97,7 +99,13 @@ namespace OpenRCT2
     public:
         void Load(const std::string_view& path)
         {
-            _os = std::make_unique<OrcaStream>(path, OrcaStream::Mode::READING);
+            FileStream fs(path, FILE_MODE_OPEN);
+            Load(fs);
+        }
+
+        void Load(IStream& stream)
+        {
+            _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
             RequiredObjects = {};
             ReadWriteObjectsChunk(*_os);
         }
@@ -126,9 +134,9 @@ namespace OpenRCT2
             AutoDeriveVariables();
         }
 
-        void Save(const std::string_view& path)
+        void Save(IStream& stream)
         {
-            OrcaStream os(path, OrcaStream::Mode::WRITING);
+            OrcaStream os(stream, OrcaStream::Mode::WRITING);
 
             auto& header = os.GetHeader();
             header.Magic = PARK_FILE_MAGIC;
@@ -149,6 +157,12 @@ namespace OpenRCT2
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
+        }
+
+        void Save(const std::string_view& path)
+        {
+            FileStream fs(path, FILE_MODE_WRITE);
+            Save(fs);
         }
 
     private:
@@ -1255,6 +1269,14 @@ void ParkFileExporter::Export(std::string_view path)
     parkFile->Save(path);
 }
 
+void ParkFileExporter::Export(IStream& stream)
+{
+    map_reorganise_elements();
+
+    auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+    parkFile->Save(stream);
+}
+
 enum : uint32_t
 {
     S6_SAVE_FLAG_EXPORT = 1 << 0,
@@ -1351,7 +1373,9 @@ public:
     ParkLoadResult LoadFromStream(
         OpenRCT2::IStream* stream, bool isScenario, bool skipObjectCheck = false, const utf8* path = String::Empty) override
     {
-        return Load(path);
+        _parkFile = std::make_unique<OpenRCT2::ParkFile>();
+        _parkFile->Load(*stream);
+        return ParkLoadResult(std::move(_parkFile->RequiredObjects));
     }
 
     void Import() override

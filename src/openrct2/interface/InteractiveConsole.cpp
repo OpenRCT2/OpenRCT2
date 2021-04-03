@@ -1412,9 +1412,9 @@ static int32_t cc_replay_startrecord(InteractiveConsole& console, const argument
 
     std::string name = argv[0];
 
-    if (!String::EndsWith(name, ".sv6r", true))
+    if (!String::EndsWith(name, ".parkrep", true))
     {
-        name += ".sv6r";
+        name += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
         OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);
@@ -1555,9 +1555,9 @@ static int32_t cc_replay_normalise(InteractiveConsole& console, const arguments_
     std::string inputFile = argv[0];
     std::string outputFile = argv[1];
 
-    if (!String::EndsWith(outputFile, ".sv6r", true))
+    if (!String::EndsWith(outputFile, ".parkrep", true))
     {
-        outputFile += ".sv6r";
+        outputFile += ".parkrep";
     }
     std::string outPath = OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(
         OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::REPLAY);

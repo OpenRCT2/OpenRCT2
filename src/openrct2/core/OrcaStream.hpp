@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Crypt.h"
+#include "FileStream.h"
 #include "MemoryStream.h"
 
 #include <algorithm>
@@ -44,8 +45,11 @@ namespace OpenRCT2
             uint32_t NumChunks{};
             uint64_t UncompressedSize{};
             uint32_t Compression{};
+            uint64_t CompressedSize{};
             std::array<uint8_t, 20> Sha1{};
+            uint8_t padding[8];
         };
+        static_assert(sizeof(Header) == 64, "Header should be 64 bytes");
 
         struct ChunkEntry
         {
@@ -55,7 +59,7 @@ namespace OpenRCT2
         };
 #pragma pack(pop)
 
-        std::string _path;
+        IStream* _stream;
         Mode _mode;
         Header _header;
         std::vector<ChunkEntry> _chunks;
@@ -63,38 +67,51 @@ namespace OpenRCT2
         ChunkEntry _currentChunk;
 
     public:
-        OrcaStream(const std::string_view& path, Mode mode)
+        OrcaStream(IStream& stream, Mode mode)
         {
-            _path = path;
+            _stream = &stream;
             _mode = mode;
             if (mode == Mode::READING)
             {
-                std::ifstream fs(std::string(path).c_str(), std::ios::binary);
-                fs.read(reinterpret_cast<char*>(&_header), sizeof(_header));
+                _header = _stream->ReadValue<Header>();
 
                 _chunks.clear();
                 for (uint32_t i = 0; i < _header.NumChunks; i++)
                 {
-                    ChunkEntry entry;
-                    fs.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+                    auto entry = _stream->ReadValue<ChunkEntry>();
                     _chunks.push_back(entry);
                 }
 
+                // Read compressed data into buffer (read in blocks)
                 _buffer = MemoryStream{};
-
-                char temp[2048];
-                size_t read = 0;
+                uint8_t temp[2048];
+                uint64_t bytesLeft = _header.CompressedSize;
                 do
                 {
-                    fs.read(temp, sizeof(temp));
-                    read = fs.gcount();
-                    _buffer.Write(temp, read);
-                } while (read != 0);
+                    auto readLen = std::min(bytesLeft, sizeof(temp));
+                    _stream->Read(temp, readLen);
+                    _buffer.Write(temp, readLen);
+                    bytesLeft -= readLen;
+                } while (bytesLeft > 0);
+
+                // Uncompress
+                if (_header.Compression == COMPRESSION_GZIP)
+                {
+                    size_t outUncompressedSize{};
+                    auto uncompressedData = util_zlib_inflate(reinterpret_cast<const uint8_t*>(_buffer.GetData()), _buffer.GetLength(), &outUncompressedSize);
+                    if (_header.UncompressedSize != outUncompressedSize)
+                    {
+                        // Warning?
+                    }
+                    _buffer.Clear();
+                    _buffer.Write(uncompressedData, outUncompressedSize);
+                    std::free(uncompressedData);
+                }
             }
             else
             {
                 _header = {};
-                _header.Compression = COMPRESSION_NONE;
+                _header.Compression = COMPRESSION_GZIP;
 
                 _buffer = MemoryStream{};
             }
@@ -109,26 +126,46 @@ namespace OpenRCT2
             }
             else
             {
-                // TODO avoid copying the buffer
                 const void* uncompressedData = _buffer.GetData();
                 const uint64_t uncompressedSize = _buffer.GetLength();
 
                 _header.NumChunks = static_cast<uint32_t>(_chunks.size());
                 _header.UncompressedSize = uncompressedSize;
+                _header.CompressedSize = uncompressedSize;
                 _header.Sha1 = Crypt::SHA1(uncompressedData, uncompressedSize);
 
-                std::ofstream fs(_path.c_str(), std::ios::binary);
+                // Compress data
+                std::optional<std::vector<uint8_t>> compressedBytes;
+                if (_header.Compression == COMPRESSION_GZIP)
+                {
+                    compressedBytes = util_zlib_deflate(reinterpret_cast<const uint8_t*>(uncompressedData), uncompressedSize);
+                    if (compressedBytes)
+                    {
+                        _header.CompressedSize = compressedBytes->size();
+                    }
+                    else
+                    {
+                        // Compression failed
+                        _header.Compression = COMPRESSION_NONE;
+                    }
+                }
 
-                // Write header
-                fs.seekp(0);
-                fs.write(reinterpret_cast<const char*>(&_header), sizeof(_header));
+                // Write header and chunk table
+                _stream->WriteValue(_header);
                 for (const auto& chunk : _chunks)
                 {
-                    fs.write(reinterpret_cast<const char*>(&chunk), sizeof(chunk));
+                    _stream->WriteValue(chunk);
                 }
 
                 // Write chunk data
-                fs.write(reinterpret_cast<const char*>(uncompressedData), uncompressedSize);
+                if (compressedBytes)
+                {
+                    _stream->Write(compressedBytes->data(), compressedBytes->size());
+                }
+                else
+                {
+                    _stream->Write(uncompressedData, uncompressedSize);
+                }
             }
         }
 
