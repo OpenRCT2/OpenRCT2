@@ -523,12 +523,15 @@ public:
 #endif
                 case SDL_KEYDOWN:
                 {
-                    // Ignore keydowns when mod is held. Handles edge cases
-                    // where window managers don't eat the keypresses.
+#if !(defined(__MACOSX__) || defined(__WINDOWS__))
+                    // Ignore winkey keydowns. Handles edge case where *NIX
+                    // tiling window managers don't eat the keypresses when
+                    // changing workspaces.
                     if (SDL_GetModState() & KMOD_GUI)
                     {
                         break;
                     }
+#endif
                     _textComposition.HandleMessage(&e);
                     auto ie = GetInputEventFromSDLEvent(e);
                     ie.State = InputEventState::Down;
