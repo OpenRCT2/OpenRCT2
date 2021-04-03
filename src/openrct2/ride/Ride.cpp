@@ -7347,3 +7347,17 @@ void Ride::SetMaxCarsPerTrain(uint8_t newValue)
     min_max_cars_per_train &= ~0x0F;
     min_max_cars_per_train |= newValue & 0x0F;
 }
+
+uint8_t Ride::GetNumShelteredSections() const
+{
+    return num_sheltered_sections & NumShelteredSectionsMask;
+}
+
+void Ride::IncreaseNumShelteredSections()
+{
+    auto newNumShelteredSections = GetNumShelteredSections();
+    if (newNumShelteredSections != 0x1F)
+        newNumShelteredSections++;
+    num_sheltered_sections &= ~NumShelteredSectionsMask;
+    num_sheltered_sections |= newNumShelteredSections;
+}

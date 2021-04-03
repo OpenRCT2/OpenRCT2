@@ -190,6 +190,13 @@ enum class RideClassification
     KioskOrFacility
 };
 
+enum ShelteredSectionsBits : uint8_t
+{
+    NumShelteredSectionsMask = 0b00011111,
+    RotatingWhileSheltered = 0b00100000,
+    BankingWhileSheltered = 0b01000000,
+};
+
 struct TrackDesign;
 enum class RideMode : uint8_t;
 
@@ -453,6 +460,9 @@ public:
     uint8_t GetMaxCarsPerTrain() const;
     void SetMinCarsPerTrain(uint8_t newValue);
     void SetMaxCarsPerTrain(uint8_t newValue);
+
+    uint8_t GetNumShelteredSections() const;
+    void IncreaseNumShelteredSections();
 };
 
 #pragma pack(push, 1)
