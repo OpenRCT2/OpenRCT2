@@ -58,7 +58,7 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
 };
 
-rct_s6_info gS6Info;
+SCENARIO_CATEGORY gScenarioCategory;
 std::string gScenarioName;
 std::string gScenarioDetails;
 std::string gScenarioCompletedBy;
@@ -107,12 +107,9 @@ void scenario_begin()
     gHistoricalProfit = gInitialCash - gBankLoan;
     gCash = gInitialCash;
 
-    gScenarioDetails = std::string_view(gS6Info.details, 256);
-    gScenarioName = std::string_view(gS6Info.name, 64);
-
     {
         utf8 normalisedName[64];
-        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gS6Info.name);
+        ScenarioSources::NormaliseName(normalisedName, sizeof(normalisedName), gScenarioName.c_str());
 
         rct_string_id localisedStringIds[3];
         if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
@@ -585,18 +582,6 @@ static bool scenario_prepare_rides_for_save()
  */
 bool scenario_prepare_for_save()
 {
-    auto& park = GetContext()->GetGameState()->GetPark();
-    auto parkName = park.Name.c_str();
-
-    gS6Info.entry.flags = 255;
-    if (gS6Info.name[0] == 0)
-        String::Set(gS6Info.name, sizeof(gS6Info.name), parkName);
-
-    gS6Info.objective_type = gScenarioObjective.Type;
-    gS6Info.objective_arg_1 = gScenarioObjective.Year;
-    gS6Info.objective_arg_2 = gScenarioObjective.Currency;
-    gS6Info.objective_arg_3 = gScenarioObjective.NumGuests;
-
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
     if (!scenario_prepare_rides_for_save())
     {

@@ -9,6 +9,7 @@
 
 #include "../Context.h"
 #include "../Diagnostic.h"
+#include "../Editor.h"
 #include "../Game.h"
 #include "../GameState.h"
 #include "../OpenRCT2.h"
@@ -195,21 +196,19 @@ public:
     {
         Initialise();
 
-        // _s6.header
-        gS6Info = _s6.info;
+        gEditorStep = _s6.info.editor_step;
+        gScenarioCategory = static_cast<SCENARIO_CATEGORY>(_s6.info.category);
 
         // Some scenarios have their scenario details in UTF-8, due to earlier bugs in OpenRCT2.
         if (!IsLikelyUTF8(_s6.info.name) && !IsLikelyUTF8(_s6.info.details))
         {
-            auto temp = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
-            safe_strcpy(gS6Info.name, temp.data(), sizeof(gS6Info.name));
-            auto temp2 = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
-            safe_strcpy(gS6Info.details, temp2.data(), sizeof(gS6Info.details));
+            gScenarioName = rct2_to_utf8(_s6.info.name, RCT2LanguageId::EnglishUK);
+            gScenarioDetails = rct2_to_utf8(_s6.info.details, RCT2LanguageId::EnglishUK);
         }
         else
         {
-            safe_strcpy(gS6Info.name, _s6.info.name, sizeof(gS6Info.name));
-            safe_strcpy(gS6Info.details, _s6.info.details, sizeof(gS6Info.details));
+            gScenarioName = _s6.info.name;
+            gScenarioDetails = _s6.info.details;
         }
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);

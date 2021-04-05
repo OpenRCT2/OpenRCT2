@@ -227,7 +227,7 @@ namespace OpenRCT2::Scripting
         }
     };
 
-    static const DukEnumMap<uint32_t> ParkFlagMap({
+    static const DukEnumMap<uint64_t> ParkFlagMap({
         { "open", PARK_FLAGS_PARK_OPEN },
         { "scenarioCompleteNameInput", PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT },
         { "forbidLandscapeChanges", PARK_FLAGS_FORBID_LANDSCAPE_CHANGES },

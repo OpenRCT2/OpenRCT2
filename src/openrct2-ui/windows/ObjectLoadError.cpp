@@ -22,6 +22,7 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
+#include <sstream>
 #include <string>
 #include <vector>
 

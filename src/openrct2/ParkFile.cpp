@@ -11,6 +11,7 @@
 
 #include "Cheats.h"
 #include "Context.h"
+#include "Editor.h"
 #include "GameState.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
@@ -127,8 +128,6 @@ namespace OpenRCT2
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
-            String::Set(gS6Info.name, sizeof(gS6Info.name), gScenarioName.c_str());
-            String::Set(gS6Info.details, sizeof(gS6Info.details), gScenarioName.c_str());
         }
 
         void Save(IStream& stream)
@@ -293,7 +292,7 @@ namespace OpenRCT2
         void ReadWriteScenarioChunk(OrcaStream& os)
         {
             os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gS6Info.category);
+                cs.ReadWrite(gScenarioCategory);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
                 auto& park = GetContext()->GetGameState()->GetPark();
@@ -381,6 +380,8 @@ namespace OpenRCT2
                 cs.ReadWrite(gLandPrice);
                 cs.ReadWrite(gConstructionRightsPrice);
                 cs.ReadWrite(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
+
+                cs.ReadWrite(gEditorStep);
             });
             if (!found)
             {

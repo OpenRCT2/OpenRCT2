@@ -322,6 +322,13 @@ namespace OpenRCT2
                 }
             }
 
+            void ReadWrite(bool& value)
+            {
+                uint8_t value8 = value ? 1 : 0;
+                ReadWrite(&value8, sizeof(value8));
+                value = value8 != 0;
+            }
+
             void ReadWrite(CoordsXY& coords)
             {
                 ReadWrite(coords.x);
@@ -371,11 +378,6 @@ namespace OpenRCT2
                 return v;
             }
 
-#if defined(_MSC_VER)
-            template<> void ReadWrite(std::string_view& v) = delete;
-
-            template<>
-#endif
             void ReadWrite(std::string& v)
             {
                 if (_mode == Mode::READING)
@@ -409,9 +411,6 @@ namespace OpenRCT2
                 Write(sv);
             }
 
-#if defined(_MSC_VER)
-            template<>
-#endif
             void Write(const std::string_view& v)
             {
                 if (_mode == Mode::READING)
@@ -425,9 +424,6 @@ namespace OpenRCT2
                 }
             }
 
-#if defined(_MSC_VER)
-            template<>
-#endif
             void Write(const std::string& v)
             {
                 Write(std::string_view(v));
@@ -505,7 +501,7 @@ namespace OpenRCT2
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>> T ReadInteger()
             {
-                if (sizeof(T) > 4)
+                if constexpr (sizeof(T) > 4)
                 {
                     if (std::is_signed<T>())
                     {
@@ -522,7 +518,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    if (std::is_signed<T>())
+                    if constexpr (std::is_signed<T>())
                     {
                         int32_t raw{};
                         Read(&raw, sizeof(raw));
@@ -547,7 +543,7 @@ namespace OpenRCT2
 
             template<typename T, typename = std::enable_if<std::is_integral<T>::value>> void WriteInteger(T value)
             {
-                if (sizeof(T) > 4)
+                if constexpr (sizeof(T) > 4)
                 {
                     if (std::is_signed<T>())
                     {
