@@ -333,8 +333,7 @@ namespace OpenRCT2
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gGamePaused);
-                cs.ReadWrite(gScenarioTicks);
-                gCurrentTicks = gScenarioTicks;
+                cs.ReadWrite(gCurrentTicks);
                 cs.ReadWrite(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
 

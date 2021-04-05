@@ -1371,7 +1371,7 @@ void window_guest_stats_paint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t guestEntryTime = peep->GetParkEntryTime();
     if (guestEntryTime != -1)
     {
-        int32_t timeInPark = (gScenarioTicks - guestEntryTime) >> 11;
+        int32_t timeInPark = (gCurrentTicks - guestEntryTime) >> 11;
         auto ft = Formatter();
         ft.Add<uint16_t>(timeInPark & 0xFFFF);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_TIME_IN_PARK, ft);
@@ -1441,7 +1441,7 @@ void window_guest_rides_update(rct_window* w)
     }
 
     // Every 2048 ticks do a full window_invalidate
-    int32_t number_of_ticks = gScenarioTicks - guest->GetParkEntryTime();
+    int32_t number_of_ticks = gCurrentTicks - guest->GetParkEntryTime();
     if (!(number_of_ticks & 0x7FF))
         w->Invalidate();
 

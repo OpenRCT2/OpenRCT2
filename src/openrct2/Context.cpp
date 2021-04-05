@@ -477,7 +477,6 @@ namespace OpenRCT2
 #endif
             }
 
-            gScenarioTicks = 0;
             input_reset_place_obj_modifier();
             viewport_init_all();
 

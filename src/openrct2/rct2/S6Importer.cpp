@@ -213,7 +213,7 @@ public:
 
         gDateMonthsElapsed = static_cast<int32_t>(_s6.elapsed_months);
         gDateMonthTicks = _s6.current_day;
-        gScenarioTicks = _s6.scenario_ticks;
+        gCurrentTicks = _s6.scenario_ticks;
 
         scenario_rand_seed(_s6.scenario_srand_0, _s6.scenario_srand_1);
 
@@ -385,7 +385,6 @@ public:
             // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
             String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
         }
-        gCurrentTicks = _s6.game_ticks_1;
         gCurrentRealTimeTicks = 0;
 
         ImportRides();

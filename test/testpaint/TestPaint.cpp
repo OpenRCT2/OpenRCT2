@@ -64,7 +64,6 @@ namespace TestPaint
 
         RCT2_CurrentViewportFlags = 0;
 
-        gScenarioTicks = 0;
         RCT2_ScenarioTicks = 0;
     }
 

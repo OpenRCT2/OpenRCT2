@@ -772,7 +772,7 @@ void litter_create(const CoordsXYZD& litterPos, LitterType type)
     litter->sprite_height_positive = 3;
     litter->SubType = type;
     litter->MoveTo(offsetLitterPos);
-    litter->creationTick = gScenarioTicks;
+    litter->creationTick = gCurrentTicks;
 }
 
 /**
