@@ -20,8 +20,15 @@ if (CCache_FOUND)
 endif (CCache_FOUND)
 
 if (APPLE)
-    set(CMAKE_OSX_ARCHITECTURES "x86_64")
-    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14")
+    execute_process(COMMAND /usr/bin/uname -m OUTPUT_VARIABLE UNAME)
+    # oddly, cmake_system_processor can be empty
+    if (${UNAME} MATCHES "^x86")
+	    set(CMAKE_OSX_ARCHITECTURES "x86_64" CACHE STRING "")
+    else ()
+	    set(CMAKE_OSX_ARCHITECTURES "arm64" CACHE STRING "")
+    endif ()
+    set(CMAKE_SYSTEM_PROCESSOR ${CMAKE_OSX_ARCHITECTURES} CACHE STRING "")
+    set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "")
 endif ()
 
 project(openrct2 CXX)
@@ -238,6 +245,9 @@ elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "amd64.*|x86_64.*|AMD64.*")
     set(X86_64 1)
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i686.*|i386.*|x86.*|amd64.*|AMD64.*")
     set(X86 1)
+else()
+    set(X86 0)
+    set(X86_64 0)
 endif()
 
 # Check if a flag exists and add it to the list of compiler (so, not linker) options
