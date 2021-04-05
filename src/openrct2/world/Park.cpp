@@ -18,6 +18,7 @@
 #include "../actions/ParkSetParameterAction.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "../interface/Colour.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
@@ -303,8 +304,8 @@ void Park::Initialise()
     finance_reset_history();
     award_reset();
 
-    gS6Info.name[0] = '\0';
-    format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
+    gScenarioName = "";
+    gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)
