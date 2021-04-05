@@ -300,15 +300,6 @@ namespace OpenRCT2
 
                 ReadWriteStringTable(cs, gScenarioDetails, "en-GB");
 
-                //                cs.ReadWriteAs<uint8_t, uint32_t>(gScenarioObjectiveType);
-                //                cs.ReadWriteAs<uint8_t, uint16_t>(gScenarioObjectiveYear);       // year
-                //                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // guests
-                //                cs.Write<uint16_t>(600);                                         // rating
-                //                cs.ReadWriteAs<money32, uint16_t>(gScenarioObjectiveCurrency);   // excitement
-                //                cs.ReadWriteAs<uint16_t, uint32_t>(gScenarioObjectiveNumGuests); // length
-                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // park value
-                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // ride profit
-                //                cs.ReadWrite<money32>(gScenarioObjectiveCurrency);               // shop profit
                 cs.ReadWrite(gScenarioObjective.Type);
                 cs.ReadWrite(gScenarioObjective.Year);
                 cs.ReadWrite(gScenarioObjective.NumGuests);
@@ -344,9 +335,10 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [](OrcaStream::ChunkStream& cs) {
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gGamePaused);
                 cs.ReadWrite(gScenarioTicks);
+                gCurrentTicks = gScenarioTicks;
                 cs.ReadWrite(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
 
@@ -365,6 +357,7 @@ namespace OpenRCT2
                     cs.Write(randState.s1);
                 }
 
+                cs.ReadWrite(gGuestInitialHappiness);
                 cs.ReadWrite(gGuestInitialCash);
                 cs.ReadWrite(gGuestInitialHunger);
                 cs.ReadWrite(gGuestInitialThirst);
@@ -380,6 +373,10 @@ namespace OpenRCT2
                 cs.ReadWrite(gLandPrice);
                 cs.ReadWrite(gConstructionRightsPrice);
                 cs.ReadWrite(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
+                cs.ReadWrite(gWidePathTileLoopX);
+                cs.ReadWrite(gWidePathTileLoopY);
+
+                ReadWriteRideRatingCalculationData(cs, gRideRatingsCalcData);
 
                 cs.ReadWrite(gEditorStep);
             });
@@ -387,6 +384,25 @@ namespace OpenRCT2
             {
                 throw std::runtime_error("No general chunk found.");
             }
+        }
+
+        void ReadWriteRideRatingCalculationData(OrcaStream::ChunkStream& cs, RideRatingCalculationData& calcData)
+        {
+            cs.ReadWrite(calcData.AmountOfBrakes);
+            cs.ReadWrite(calcData.Proximity);
+            cs.ReadWrite(calcData.ProximityStart);
+            cs.ReadWrite(calcData.CurrentRide);
+            cs.ReadWrite(calcData.State);
+            cs.ReadWrite(calcData.ProximityTrackType);
+            cs.ReadWrite(calcData.ProximityBaseHeight);
+            cs.ReadWrite(calcData.ProximityTotal);
+            cs.ReadWriteArray(calcData.ProximityScores, [&cs](uint16_t& value) {
+                cs.ReadWrite(value);
+                return true;
+            });
+            cs.ReadWrite(calcData.AmountOfBrakes);
+            cs.ReadWrite(calcData.AmountOfReversers);
+            cs.ReadWrite(calcData.StationFlags);
         }
 
         void ReadWriteInterfaceChunk(OrcaStream& os)
@@ -448,6 +464,36 @@ namespace OpenRCT2
                 cs.ReadWrite(gStaffSecurityColour);
                 cs.ReadWrite(gSamePriceThroughoutPark);
 
+                // Finances
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    auto numMonths = std::min<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT, cs.Read<uint32_t>());
+                    auto numTypes = std::min<uint32_t>(static_cast<uint32_t>(ExpenditureType::Count), cs.Read<uint32_t>());
+                    for (uint32_t i = 0; i < numMonths; i++)
+                    {
+                        for (uint32_t j = 0; j < numTypes; j++)
+                        {
+                            gExpenditureTable[i][j] = cs.Read<money32>();
+                        }
+                    }
+                }
+                else
+                {
+                    auto numMonths = static_cast<uint32_t>(EXPENDITURE_TABLE_MONTH_COUNT);
+                    auto numTypes = static_cast<uint32_t>(ExpenditureType::Count);
+
+                    cs.Write(numMonths);
+                    cs.Write(numTypes);
+                    for (uint32_t i = 0; i < numMonths; i++)
+                    {
+                        for (uint32_t j = 0; j < numTypes; j++)
+                        {
+                            cs.Write(gExpenditureTable[i][j]);
+                        }
+                    }
+                }
+                cs.ReadWrite(gHistoricalProfit);
+
                 // Marketing
                 cs.ReadWriteVector(gMarketingCampaigns, [&cs](MarketingCampaign& campaign) {
                     cs.ReadWrite(campaign.Type);
@@ -479,10 +525,43 @@ namespace OpenRCT2
                 cs.ReadWrite(gParkRatingCasualtyPenalty);
                 cs.ReadWrite(gCurrentExpenditure);
                 cs.ReadWrite(gCurrentProfit);
+                cs.ReadWrite(gWeeklyProfitAverageDividend);
+                cs.ReadWrite(gWeeklyProfitAverageDivisor);
                 cs.ReadWrite(gTotalAdmissions);
                 cs.ReadWrite(gTotalIncomeFromAdmissions);
+                cs.ReadWrite(gTotalRideValueForMoney);
+                cs.ReadWrite(gNumGuestsInParkLastWeek);
+                cs.ReadWrite(gGuestChangeModifier);
                 cs.ReadWrite(_guestGenerationProbability);
                 cs.ReadWrite(_suggestedGuestMaximum);
+
+                cs.ReadWriteArray(gPeepWarningThrottle, [&cs](uint8_t& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
+
+                cs.ReadWriteArray(gParkRatingHistory, [&cs](uint8_t& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
+
+                cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint8_t& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
+
+                cs.ReadWriteArray(gCashHistory, [&cs](money32& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
+                cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money32& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
+                cs.ReadWriteArray(gParkValueHistory, [&cs](money32& value) {
+                    cs.ReadWrite(value);
+                    return true;
+                });
             });
         }
 
