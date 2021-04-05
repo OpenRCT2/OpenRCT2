@@ -1234,9 +1234,69 @@ namespace OpenRCT2
     {
         ReadWritePeep(cs, entity);
     }
+
+    std::vector<TileCoordsXY> GetPatrolArea(uint32_t staffId)
+    {
+        std::vector<TileCoordsXY> area;
+        auto hasPatrol = gStaffModes[staffId] == StaffMode::Patrol;
+        if (hasPatrol)
+        {
+            auto offset = staffId * STAFF_PATROL_AREA_SIZE;
+            for (int32_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
+            {
+                // 32 blocks per array item (32 bits)
+                auto arrayItem = gStaffPatrolAreas[offset + i];
+                for (int32_t j = 0; j < 32; j++)
+                {
+                    int32_t blockIndex = (i * 32) + j;
+                    if (arrayItem & (1 << j))
+                    {
+                        auto sx = (blockIndex % 64) * 4;
+                        auto sy = (blockIndex / 64) * 4;
+                        for (int32_t y = 0; y < 4; y++)
+                        {
+                            for (int32_t x = 0; x < 4; x++)
+                            {
+                                area.push_back({ sx + x, sy + y });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return area;
+    }
+
+    void SetPatrolArea(uint32_t staffId, const std::vector<TileCoordsXY>& area)
+    {
+        if (area.empty())
+        {
+            gStaffModes[staffId] = StaffMode::Walk;
+        }
+        else
+        {
+            gStaffModes[staffId] = StaffMode::Patrol;
+            for (const auto& coord : area)
+            {
+                staff_set_patrol_area(staffId, coord.ToCoordsXY(), true);
+            }
+        }
+    }
+
     template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Staff& entity)
     {
         ReadWritePeep(cs, entity);
+
+        std::vector<TileCoordsXY> patrolArea;
+        if (cs.GetMode() == OrcaStream::Mode::WRITING)
+        {
+            patrolArea = GetPatrolArea(entity.StaffId);
+        }
+        cs.ReadWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.ReadWrite(value); });
+        if (cs.GetMode() == OrcaStream::Mode::READING)
+        {
+            SetPatrolArea(entity.StaffId, patrolArea);
+        }
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, SteamParticle& steamParticle)
@@ -1382,6 +1442,11 @@ namespace OpenRCT2
                 WriteEntitiesOfTypes<
                     Vehicle, Guest, Staff, Litter, SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud,
                     CrashSplashParticle, ExplosionFlare, JumpingFountain, Balloon, Duck>(cs);
+            }
+
+            if (cs.GetMode() == OrcaStream::Mode::READING)
+            {
+                staff_update_greyed_patrol_areas();
             }
         });
     }
