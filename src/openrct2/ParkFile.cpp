@@ -74,15 +74,11 @@ namespace OpenRCT2
 //        constexpr uint32_t HISTORY          = 0x07;
         constexpr uint32_t RESEARCH         = 0x08;
         constexpr uint32_t NOTIFICATIONS    = 0x09;
-
         constexpr uint32_t INTERFACE        = 0x20;
-//        constexpr uint32_t EDITOR           = 0x21;
-
         constexpr uint32_t TILES            = 0x30;
         constexpr uint32_t ENTITIES          = 0x31;
         constexpr uint32_t RIDES            = 0x32;
         constexpr uint32_t BANNERS          = 0x33;
-//        constexpr uint32_t ANIMATIONS       = 0x34;
 //        constexpr uint32_t STAFF            = 0x35;
         constexpr uint32_t CHEATS           = 0x36;
         // clang-format on
@@ -377,8 +373,6 @@ namespace OpenRCT2
                 cs.ReadWrite(gWidePathTileLoopY);
 
                 ReadWriteRideRatingCalculationData(cs, gRideRatingsCalcData);
-
-                cs.ReadWrite(gEditorStep);
             });
             if (!found)
             {
@@ -420,6 +414,7 @@ namespace OpenRCT2
                 }
                 cs.ReadWrite(gSavedViewRotation);
                 cs.ReadWrite(gLastEntranceStyle);
+                cs.ReadWrite(gEditorStep);
             });
         }
 
@@ -760,8 +755,10 @@ namespace OpenRCT2
                     cs.ReadWrite(ride.custom_name);
                     cs.ReadWrite(ride.default_name_number);
 
-                    cs.ReadWrite(ride.price[0]);
-                    cs.ReadWrite(ride.price[1]);
+                    cs.ReadWriteArray(ride.price, [&cs](money16& price) {
+                        cs.ReadWrite(price);
+                        return true;
+                    });
 
                     // Colours
                     cs.ReadWrite(ride.entrance_style);
