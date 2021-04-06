@@ -138,7 +138,7 @@ jobs:
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
-          name: "OpenRCT2-macOS"
+          name: "OpenRCT2-macOS-xcode"
           path: artifacts/openrct2-macos.zip
       - name: Upload artifacts (openrct2.org)
         run: |
@@ -168,13 +168,18 @@ jobs:
         run: . scripts/setenv -q && run-tests
       - name: Build artifacts
         shell: bash
-        run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-MacOS-x64-cmake.tar.gz bin/install/usr
+        run: |
+          . scripts/setenv
+          mkdir -p artifacts
+          mv bin/OpenRCT2.app artifacts
+          echo -e "\033[0;36mCompressing OpenRCT2.app...\033[0m"
+          cd artifacts
+          zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v2-preview
         with:
           name: "OpenRCT2-macOS-cmake"
-          path: artifacts
-
+          path: artifacts/openrct2-macos.zip
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest

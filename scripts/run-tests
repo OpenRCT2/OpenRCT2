@@ -11,7 +11,7 @@ cd $basedir/bin
 
 # Scan objects first so that does not happen within a test
 echo -e "\033[0;36mBuilding OpenRCT2 repository indexes...\033[0m"
-./openrct2 scan-objects
+./openrct2-cli scan-objects
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # Now run all the tests
