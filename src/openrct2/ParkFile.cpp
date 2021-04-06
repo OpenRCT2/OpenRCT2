@@ -222,21 +222,27 @@ namespace OpenRCT2
                         {
                             auto kind = cs.Read<uint8_t>();
 
-                            ObjectEntryDescriptor desc;
                             switch (kind)
                             {
                                 case DESCRIPTOR_NONE:
                                     break;
                                 case DESCRIPTOR_DAT:
-                                    cs.Read(&desc.Entry, sizeof(rct_object_entry));
+                                {
+                                    rct_object_entry datEntry;
+                                    cs.Read(&datEntry, sizeof(datEntry));
+                                    ObjectEntryDescriptor desc(datEntry);
                                     requiredObjects.SetObject(j, desc);
                                     break;
+                                }
                                 case DESCRIPTOR_JSON:
+                                {
+                                    ObjectEntryDescriptor desc;
                                     desc.Type = objectType;
                                     desc.Identifier = cs.Read<std::string>();
                                     desc.Version = cs.Read<std::string>();
                                     requiredObjects.SetObject(j, desc);
                                     break;
+                                }
                                 default:
                                     throw std::runtime_error("Unknown object descriptor kind.");
                             }
@@ -1234,7 +1240,7 @@ namespace OpenRCT2
         ReadWritePeep(cs, entity);
     }
 
-    std::vector<TileCoordsXY> GetPatrolArea(uint32_t staffId)
+    static std::vector<TileCoordsXY> GetPatrolArea(uint32_t staffId)
     {
         std::vector<TileCoordsXY> area;
         auto hasPatrol = gStaffModes[staffId] == StaffMode::Patrol;
@@ -1266,7 +1272,7 @@ namespace OpenRCT2
         return area;
     }
 
-    void SetPatrolArea(uint32_t staffId, const std::vector<TileCoordsXY>& area)
+    static void SetPatrolArea(uint32_t staffId, const std::vector<TileCoordsXY>& area)
     {
         if (area.empty())
         {

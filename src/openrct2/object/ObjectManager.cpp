@@ -113,9 +113,17 @@ public:
                 auto obj = GetLoadedObject(objectType, i);
                 if (obj != nullptr)
                 {
-                    auto entry = ObjectEntryDescriptor(obj->GetIdentifier());
-                    entry.Type = obj->GetObjectType();
-                    objectList.SetObject(i, entry);
+                    if (obj->IsJsonObject())
+                    {
+                        auto entry = ObjectEntryDescriptor(obj->GetIdentifier());
+                        entry.Type = obj->GetObjectType();
+                        objectList.SetObject(i, entry);
+                    }
+                    else
+                    {
+                        auto entry = ObjectEntryDescriptor(*obj->GetObjectEntry());
+                        objectList.SetObject(i, entry);
+                    }
                 }
             }
         }
