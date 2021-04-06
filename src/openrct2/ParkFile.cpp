@@ -16,9 +16,12 @@
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "Version.h"
+#include "core/Console.hpp"
 #include "core/Crypt.h"
 #include "core/DataSerialiser.h"
+#include "core/File.h"
 #include "core/OrcaStream.hpp"
+#include "core/Path.hpp"
 #include "drawing/Drawing.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
@@ -81,6 +84,7 @@ namespace OpenRCT2
         constexpr uint32_t BANNERS          = 0x33;
 //        constexpr uint32_t STAFF            = 0x35;
         constexpr uint32_t CHEATS           = 0x36;
+        constexpr uint32_t PACKED_OBJECTS   = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
 
@@ -88,6 +92,7 @@ namespace OpenRCT2
     {
     public:
         ObjectList RequiredObjects;
+        std::vector<const ObjectRepositoryItem*> ExportObjectsList;
 
     private:
         std::unique_ptr<OrcaStream> _os;
@@ -104,6 +109,7 @@ namespace OpenRCT2
             _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
             RequiredObjects = {};
             ReadWriteObjectsChunk(*_os);
+            ReadWritePackedObjectsChunk(*_os);
         }
 
         void Import()
@@ -149,6 +155,7 @@ namespace OpenRCT2
             ReadWriteNotificationsChunk(os);
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
+            ReadWritePackedObjectsChunk(os);
         }
 
         void Save(const std::string_view& path)
@@ -428,6 +435,101 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::CHEATS, [](OrcaStream::ChunkStream& cs) {
                 DataSerialiser ds(cs.GetMode() == OrcaStream::Mode::WRITING, cs.GetStream());
                 CheatsSerialise(ds);
+            });
+        }
+
+        void ReadWritePackedObjectsChunk(OrcaStream& os)
+        {
+            static constexpr uint8_t DESCRIPTOR_DAT = 0;
+            static constexpr uint8_t DESCRIPTOR_PARKOBJ = 1;
+
+            if (os.GetMode() == OrcaStream::Mode::WRITING && ExportObjectsList.size() == 0)
+            {
+                // Do not emit chunk if there are no packed objects
+                return;
+            }
+
+            os.ReadWriteChunk(ParkFileChunkType::PACKED_OBJECTS, [this](OrcaStream::ChunkStream& cs) {
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    auto& objRepository = GetContext()->GetObjectRepository();
+                    auto numObjects = cs.Read<uint32_t>();
+                    for (uint32_t i = 0; i < numObjects; i++)
+                    {
+                        auto type = cs.Read<uint8_t>();
+                        if (type == DESCRIPTOR_DAT)
+                        {
+                            rct_object_entry entry;
+                            cs.Read(&entry, sizeof(entry));
+                            auto size = cs.Read<uint32_t>();
+                            std::vector<uint8_t> data;
+                            data.resize(size);
+                            cs.Read(data.data(), data.size());
+
+                            auto legacyIdentifier = entry.GetName();
+                            if (objRepository.FindObjectLegacy(legacyIdentifier) == nullptr)
+                            {
+                                objRepository.AddObjectFromFile(ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
+                            }
+                        }
+                        else if (type == DESCRIPTOR_PARKOBJ)
+                        {
+                            auto identifier = cs.Read<std::string>();
+                            auto size = cs.Read<uint32_t>();
+                            std::vector<uint8_t> data;
+                            data.resize(size);
+                            cs.Read(data.data(), data.size());
+                            if (objRepository.FindObject(identifier) == nullptr)
+                            {
+                                objRepository.AddObjectFromFile(ObjectGeneration::JSON, identifier, data.data(), data.size());
+                            }
+                        }
+                        else
+                        {
+                            throw std::runtime_error("Unsupported packed object");
+                        }
+                    }
+                }
+                else
+                {
+                    auto& stream = cs.GetStream();
+                    auto countPosition = stream.GetPosition();
+
+                    // Write placeholder count, update later
+                    uint32_t count = 0;
+                    cs.Write(count);
+
+                    // Write objects
+                    for (const auto* ori : ExportObjectsList)
+                    {
+                        auto extension = Path::GetExtension(ori->Path);
+                        if (String::Equals(extension, ".dat", true))
+                        {
+                            cs.Write(DESCRIPTOR_DAT);
+                            cs.Write(&ori->ObjectEntry, sizeof(rct_object_entry));
+                        }
+                        else if (String::Equals(extension, ".parkobj", true))
+                        {
+                            cs.Write(DESCRIPTOR_PARKOBJ);
+                            cs.Write(ori->Identifier);
+                        }
+                        else
+                        {
+                            Console::WriteLine("%s not packed: unsupported extension.", ori->Identifier);
+                            continue;
+                        }
+
+                        auto data = File::ReadAllBytes(ori->Path);
+                        cs.Write<uint32_t>(data.size());
+                        cs.Write(data.data(), data.size());
+                        count++;
+                    }
+
+                    auto backupPosition = stream.GetPosition();
+                    stream.SetPosition(countPosition);
+                    cs.Write(count);
+                    stream.SetPosition(backupPosition);
+                }
             });
         }
 
@@ -1503,11 +1605,11 @@ int32_t scenario_save(const utf8* path, int32_t flags)
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
     try
     {
-        // if (flags & S6_SAVE_FLAG_EXPORT)
-        // {
-        //     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        //     s6exporter->ExportObjectsList = objManager.GetPackableObjects();
-        // }
+        if (flags & S6_SAVE_FLAG_EXPORT)
+        {
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            parkFile->ExportObjectsList = objManager.GetPackableObjects();
+        }
         // s6exporter->RemoveTracklessRides = true;
         // s6exporter->Export();
         if (flags & S6_SAVE_FLAG_SCENARIO)

@@ -170,7 +170,7 @@ private:
                         auto dataLen = response.body.size();
 
                         auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-                        objRepo.AddObjectFromFile(name, data, dataLen);
+                        objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                         _downloadedEntries.push_back(entry);

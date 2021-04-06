@@ -297,7 +297,7 @@ public:
         else
         {
             log_verbose("Adding object: [%s]", objectName);
-            auto path = GetPathForNewObject(objectName);
+            auto path = GetPathForNewObject(ObjectGeneration::DAT, objectName);
             try
             {
                 SaveObject(path, objectEntry, data, dataSize);
@@ -310,10 +310,10 @@ public:
         }
     }
 
-    void AddObjectFromFile(std::string_view objectName, const void* data, size_t dataSize) override
+    void AddObjectFromFile(ObjectGeneration generation, std::string_view objectName, const void* data, size_t dataSize) override
     {
         log_verbose("Adding object: [%s]", std::string(objectName).c_str());
-        auto path = GetPathForNewObject(objectName);
+        auto path = GetPathForNewObject(generation, objectName);
         try
         {
             File::WriteAllBytes(path, data, dataSize);
@@ -554,45 +554,53 @@ private:
         return salt;
     }
 
-    std::string GetPathForNewObject(std::string_view name)
+    std::string GetPathForNewObject(ObjectGeneration generation, std::string_view name)
     {
         // Get object directory and create it if it doesn't exist
         auto userObjPath = _env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT);
         Path::CreateDirectory(userObjPath);
 
         // Find a unique file name
-        auto fileName = GetFileNameForNewObject(name);
-        auto fullPath = Path::Combine(userObjPath, fileName + ".DAT");
+        auto fileName = GetFileNameForNewObject(generation, name);
+        auto extension = (generation == ObjectGeneration::DAT ? ".DAT" : ".parkobj");
+        auto fullPath = Path::Combine(userObjPath, fileName + extension);
         auto counter = 1U;
         while (File::Exists(fullPath))
         {
             counter++;
-            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X.DAT", fileName.c_str(), counter));
+            fullPath = Path::Combine(userObjPath, String::StdFormat("%s-%02X%s", fileName.c_str(), counter, extension));
         }
 
         return fullPath;
     }
 
-    std::string GetFileNameForNewObject(std::string_view name)
+    std::string GetFileNameForNewObject(ObjectGeneration generation, std::string_view name)
     {
-        // Trim name
-        char normalisedName[9] = { 0 };
-        auto maxLength = std::min<size_t>(name.size(), 8);
-        for (size_t i = 0; i < maxLength; i++)
+        if (generation == ObjectGeneration::DAT)
         {
-            if (name[i] != ' ')
+            // Trim name
+            char normalisedName[9] = { 0 };
+            auto maxLength = std::min<size_t>(name.size(), 8);
+            for (size_t i = 0; i < maxLength; i++)
             {
-                normalisedName[i] = toupper(name[i]);
+                if (name[i] != ' ')
+                {
+                    normalisedName[i] = toupper(name[i]);
+                }
+                else
+                {
+                    normalisedName[i] = '\0';
+                    break;
+                }
             }
-            else
-            {
-                normalisedName[i] = '\0';
-                break;
-            }
-        }
 
-        // Convert to UTF-8 filename
-        return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            // Convert to UTF-8 filename
+            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+        }
+        else
+        {
+            return std::string(name);
+        }
     }
 
     void WritePackedObject(OpenRCT2::IStream* stream, const rct_object_entry* entry)
