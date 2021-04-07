@@ -99,16 +99,13 @@ namespace OpenRCT2
                 // Uncompress
                 if (_header.Compression == COMPRESSION_GZIP)
                 {
-                    size_t outUncompressedSize{};
-                    auto uncompressedData = util_zlib_inflate(
-                        reinterpret_cast<const uint8_t*>(_buffer.GetData()), _buffer.GetLength(), &outUncompressedSize);
-                    if (_header.UncompressedSize != outUncompressedSize)
+                    auto uncompressedData = Ungzip(_buffer.GetData(), _buffer.GetLength());
+                    if (_header.UncompressedSize != uncompressedData.size())
                     {
                         // Warning?
                     }
                     _buffer.Clear();
-                    _buffer.Write(uncompressedData, outUncompressedSize);
-                    std::free(uncompressedData);
+                    _buffer.Write(uncompressedData.data(), uncompressedData.size());
                 }
             }
             else
@@ -141,7 +138,7 @@ namespace OpenRCT2
                 std::optional<std::vector<uint8_t>> compressedBytes;
                 if (_header.Compression == COMPRESSION_GZIP)
                 {
-                    compressedBytes = util_zlib_deflate(reinterpret_cast<const uint8_t*>(uncompressedData), uncompressedSize);
+                    compressedBytes = Gzip(uncompressedData, uncompressedSize);
                     if (compressedBytes)
                     {
                         _header.CompressedSize = compressedBytes->size();
