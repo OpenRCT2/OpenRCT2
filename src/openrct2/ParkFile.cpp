@@ -1679,6 +1679,7 @@ public:
     void Import() override
     {
         _parkFile->Import();
+        game_fix_save_vars();
     }
 
     bool GetDetails(scenario_index_entry* dst) override
