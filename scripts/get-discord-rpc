@@ -1,5 +1,5 @@
-#!/bin/bash
-set -e
+#!/bin/bash -e
+
 if [[ $(uname) == "Linux" ]]; then
     basedir="$(readlink -f `dirname $0`/..)"
 elif [[ $(uname) == "Darwin" ]]; then
@@ -10,5 +10,5 @@ else
 fi
 cd $basedir
 
-git clone https://github.com/discordapp/discord-rpc -b v3.4.0
-git clone https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson -b patch-1
+git clone --depth 1 -b v3.4.0 https://github.com/discordapp/discord-rpc
+git clone --depth 1 -b patch-1 https://github.com/janisozaur/rapidjson discord-rpc/thirdparty/rapidjson
