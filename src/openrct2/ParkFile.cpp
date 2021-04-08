@@ -380,9 +380,8 @@ namespace OpenRCT2
 
                 cs.ReadWrite(gLandPrice);
                 cs.ReadWrite(gConstructionRightsPrice);
-                cs.ReadWrite(gGrassSceneryTileLoopPosition); // TODO (this needs to be xy32)
-                cs.ReadWrite(gWidePathTileLoopX);
-                cs.ReadWrite(gWidePathTileLoopY);
+                cs.ReadWrite(gGrassSceneryTileLoopPosition);
+                cs.ReadWrite(gWidePathTileLoopPosition);
 
                 ReadWriteRideRatingCalculationData(cs, gRideRatingsCalcData);
             });
