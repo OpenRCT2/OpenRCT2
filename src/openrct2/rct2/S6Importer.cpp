@@ -459,8 +459,8 @@ public:
 
         // pad_13CE730
         // rct1_scenario_flags
-        gWidePathTileLoopX = _s6.wide_path_tile_loop_x;
-        gWidePathTileLoopY = _s6.wide_path_tile_loop_y;
+        gWidePathTileLoopPosition.x = _s6.wide_path_tile_loop_x;
+        gWidePathTileLoopPosition.y = _s6.wide_path_tile_loop_y;
         // pad_13CE778
 
         // Fix and set dynamic variables

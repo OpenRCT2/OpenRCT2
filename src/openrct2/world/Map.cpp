@@ -90,8 +90,7 @@ uint8_t gMapSelectArrowDirection;
 
 uint8_t gMapGroundFlags;
 
-uint16_t gWidePathTileLoopX;
-uint16_t gWidePathTileLoopY;
+TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
 int16_t gMapSizeUnits;
@@ -273,8 +272,7 @@ void map_init(int32_t size)
     }
 
     gGrassSceneryTileLoopPosition = 0;
-    gWidePathTileLoopX = 0;
-    gWidePathTileLoopY = 0;
+    gWidePathTileLoopPosition = {};
     gMapSizeUnits = size * 32 - 32;
     gMapSizeMinus2 = size * 32 - 2;
     gMapSize = size;
@@ -599,8 +597,8 @@ void map_update_path_wide_flags()
     // Presumably update_path_wide_flags is too computationally expensive to call for every
     // tile every update, so gWidePathTileLoopX and gWidePathTileLoopY store the x and y
     // progress. A maximum of 128 calls is done per update.
-    uint16_t x = gWidePathTileLoopX;
-    uint16_t y = gWidePathTileLoopY;
+    auto x = gWidePathTileLoopPosition.x;
+    auto y = gWidePathTileLoopPosition.y;
     for (int32_t i = 0; i < 128; i++)
     {
         footpath_update_path_wide_flags({ x, y });
@@ -617,8 +615,8 @@ void map_update_path_wide_flags()
             }
         }
     }
-    gWidePathTileLoopX = x;
-    gWidePathTileLoopY = y;
+    gWidePathTileLoopPosition.x = x;
+    gWidePathTileLoopPosition.y = y;
 }
 
 /**
@@ -1484,7 +1482,7 @@ void map_update_tiles()
     if (gScreenFlags & ignoreScreenFlags)
         return;
 
-    // Update 43 more tiles
+    // Update 43 more tiles (for each 256x256 block)
     for (int32_t j = 0; j < 43; j++)
     {
         int32_t x = 0;
@@ -1499,12 +1497,19 @@ void map_update_tiles()
             interleaved_xy >>= 1;
         }
 
-        auto mapPos = TileCoordsXY{ x, y }.ToCoordsXY();
-        auto* surfaceElement = map_get_surface_element_at(mapPos);
-        if (surfaceElement != nullptr)
+        // Repeat for each 256x256 block on the map
+        for (int32_t blockY = 0; blockY < gMapSize; blockY += 256)
         {
-            surfaceElement->UpdateGrassLength(mapPos);
-            scenery_update_tile(mapPos);
+            for (int32_t blockX = 0; blockX < gMapSize; blockX += 256)
+            {
+                auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
+                auto* surfaceElement = map_get_surface_element_at(mapPos);
+                if (surfaceElement != nullptr)
+                {
+                    surfaceElement->UpdateGrassLength(mapPos);
+                    scenery_update_tile(mapPos);
+                }
+            }
         }
 
         gGrassSceneryTileLoopPosition++;
