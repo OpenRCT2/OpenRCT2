@@ -66,9 +66,10 @@ void NetworkPacket::Write(const void* bytes, size_t size)
     Data.insert(Data.end(), src, src + size);
 }
 
-void NetworkPacket::WriteString(const utf8* string)
+void NetworkPacket::WriteString(std::string_view s)
 {
-    Write(reinterpret_cast<const uint8_t*>(string), strlen(string) + 1);
+    Write(s.data(), s.size());
+    Data.push_back(0);
 }
 
 const uint8_t* NetworkPacket::Read(size_t size)
@@ -85,7 +86,7 @@ const uint8_t* NetworkPacket::Read(size_t size)
     }
 }
 
-const utf8* NetworkPacket::ReadString()
+std::string_view NetworkPacket::ReadString()
 {
     char* str = reinterpret_cast<char*>(&GetData()[BytesRead]);
     char* strend = str;
@@ -96,7 +97,7 @@ const utf8* NetworkPacket::ReadString()
     }
     if (*strend != 0)
     {
-        return nullptr;
+        return {};
     }
     BytesRead++;
     return str;

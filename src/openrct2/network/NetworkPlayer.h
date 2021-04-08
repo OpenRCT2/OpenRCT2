@@ -40,7 +40,7 @@ public:
     std::unordered_map<GameCommand, int32_t> CooldownTime;
     NetworkPlayer() = default;
 
-    void SetName(const std::string& name);
+    void SetName(std::string_view name);
 
     void Read(NetworkPacket& packet);
     void Write(NetworkPacket& packet);

@@ -27,7 +27,6 @@ NetworkConnection::NetworkConnection()
 
 NetworkConnection::~NetworkConnection()
 {
-    delete[] _lastDisconnectReason;
 }
 
 NetworkReadPacket NetworkConnection::ReadPacket()
@@ -181,23 +180,12 @@ bool NetworkConnection::ReceivedPacketRecently()
 
 const utf8* NetworkConnection::GetLastDisconnectReason() const
 {
-    return this->_lastDisconnectReason;
+    return this->_lastDisconnectReason.c_str();
 }
 
-void NetworkConnection::SetLastDisconnectReason(const utf8* src)
+void NetworkConnection::SetLastDisconnectReason(std::string_view src)
 {
-    if (src == nullptr)
-    {
-        delete[] _lastDisconnectReason;
-        _lastDisconnectReason = nullptr;
-        return;
-    }
-
-    if (_lastDisconnectReason == nullptr)
-    {
-        _lastDisconnectReason = new utf8[NETWORK_DISCONNECT_REASON_BUFFER_SIZE];
-    }
-    String::Set(_lastDisconnectReason, NETWORK_DISCONNECT_REASON_BUFFER_SIZE, src);
+    _lastDisconnectReason = src;
 }
 
 void NetworkConnection::SetLastDisconnectReason(const rct_string_id string_id, void* args)

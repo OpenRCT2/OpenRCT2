@@ -1572,6 +1572,7 @@ void ParkFileExporter::Export(IStream& stream)
     map_reorganise_elements();
 
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
+    parkFile->ExportObjectsList = ExportObjectsList;
     parkFile->Save(stream);
 }
 

@@ -53,13 +53,13 @@ public:
     bool ReceivedPacketRecently();
 
     const utf8* GetLastDisconnectReason() const;
-    void SetLastDisconnectReason(const utf8* src);
+    void SetLastDisconnectReason(std::string_view src);
     void SetLastDisconnectReason(const rct_string_id string_id, void* args = nullptr);
 
 private:
     std::deque<NetworkPacket> _outboundPackets;
     uint32_t _lastPacketTime = 0;
-    utf8* _lastDisconnectReason = nullptr;
+    std::string _lastDisconnectReason;
 
     void RecordPacketStats(const NetworkPacket& packet, bool sending);
     bool SendPacket(NetworkPacket& packet);
