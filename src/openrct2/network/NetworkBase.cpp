@@ -2756,7 +2756,6 @@ bool NetworkBase::LoadMap(IStream* stream)
 bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     bool result = false;
-    map_reorganise_elements();
     viewport_set_saved_view();
     try
     {

@@ -1238,8 +1238,8 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
 
 static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    map_reorganise_elements();
-    int32_t tileElementCount = gNextFreeTileElement - gTileElements - 1;
+    const auto& tileElements = GetTileElements();
+    int32_t tileElementCount = tileElements.size();
 
     int32_t rideCount = ride_get_count();
     int32_t spriteCount = 0;

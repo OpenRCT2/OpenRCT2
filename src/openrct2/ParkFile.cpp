@@ -781,14 +781,22 @@ namespace OpenRCT2
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
+
+                    auto numElements = cs.Read<uint32_t>();
+
+                    std::vector<TileElement> tileElements;
+                    tileElements.resize(numElements);
+                    cs.Read(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                    SetTileElements(std::move(tileElements));
+                    UpdateParkEntranceLocations();
                 }
-
-                std::vector<TileElement> tiles(std::begin(gTileElements), std::end(gTileElements));
-                cs.ReadWriteVector(tiles, [&cs](TileElement& el) { cs.ReadWrite(&el, sizeof(TileElement)); });
-                std::copy_n(tiles.data(), std::min(tiles.size(), std::size(gTileElements)), gTileElements);
-
-                map_update_tile_pointers();
-                UpdateParkEntranceLocations();
+                else
+                {
+                    ReorganiseTileElements();
+                    const auto& tileElements = GetTileElements();
+                    cs.Write(static_cast<uint32_t>(tileElements.size()));
+                    cs.Write(tileElements.data(), tileElements.size() * sizeof(TileElement));
+                }
             });
             if (!found)
             {
@@ -1560,16 +1568,12 @@ namespace OpenRCT2
 
 void ParkFileExporter::Export(std::string_view path)
 {
-    map_reorganise_elements();
-
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
     parkFile->Save(path);
 }
 
 void ParkFileExporter::Export(IStream& stream)
 {
-    map_reorganise_elements();
-
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();
     parkFile->ExportObjectsList = ExportObjectsList;
     parkFile->Save(stream);
@@ -1598,7 +1602,6 @@ int32_t scenario_save(const utf8* path, int32_t flags)
         window_close_construction_windows();
     }
 
-    map_reorganise_elements();
     viewport_set_saved_view();
 
     bool result = false;

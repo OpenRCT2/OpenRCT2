@@ -391,7 +391,7 @@ namespace OpenRCT2
             {
                 if (_mode == Mode::READING)
                 {
-                    T temp;
+                    T temp{};
                     ReadWrite(temp);
                 }
                 else

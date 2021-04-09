@@ -81,6 +81,8 @@ const std::array<CoordsXY, 8> CoordsDirectionDelta = {
 const TileCoordsXY TileDirectionDelta[] = { { -1, 0 },  { 0, +1 },  { +1, 0 },  { 0, -1 },
                                             { -1, +1 }, { +1, +1 }, { +1, -1 }, { -1, -1 } };
 
+constexpr size_t MIN_TILE_ELEMENTS = 1024;
+
 uint16_t gMapSelectFlags;
 uint16_t gMapSelectType;
 CoordsXY gMapSelectPositionA;
@@ -99,13 +101,8 @@ int16_t gMapSize;
 int16_t gMapSizeMaxXY;
 int16_t gMapBaseZ;
 
-TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
-TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
-
-TileElement* gNextFreeTileElement;
-uint32_t gNextFreeTileElementPointerIndex;
 
 bool gLandMountainMode;
 bool gLandPaintMode;
@@ -117,6 +114,114 @@ uint16_t gLandRemainingOwnershipSales;
 uint16_t gLandRemainingConstructionSales;
 
 bool gMapLandRightsUpdateSuccess;
+
+static TilePointerIndex<TileElement> _tileIndex;
+static std::vector<TileElement> _tileElements;
+static TilePointerIndex<TileElement> _tileIndexStash;
+static std::vector<TileElement> _tileElementsStash;
+static int32_t _mapSizeUnitsStash;
+static int32_t _mapSizeMinus2Stash;
+static int32_t _mapSizeStash;
+static int32_t _currentRotationStash;
+
+void StashMap()
+{
+    _tileIndexStash = std::move(_tileIndex);
+    _tileElementsStash = std::move(_tileElements);
+    _mapSizeUnitsStash = gMapSizeUnits;
+    _mapSizeMinus2Stash = gMapSizeMinus2;
+    _mapSizeStash = gMapSize;
+    _currentRotationStash = gCurrentRotation;
+}
+
+void UnstashMap()
+{
+    _tileIndex = std::move(_tileIndexStash);
+    _tileElements = std::move(_tileElementsStash);
+    gMapSizeUnits = _mapSizeUnitsStash;
+    gMapSizeMinus2 = _mapSizeMinus2Stash;
+    gMapSize = _mapSizeStash;
+    gCurrentRotation = _currentRotationStash;
+}
+
+const std::vector<TileElement>& GetTileElements()
+{
+    return _tileElements;
+}
+
+void SetTileElements(std::vector<TileElement>&& tileElements)
+{
+    _tileElements = std::move(tileElements);
+    _tileIndex = TilePointerIndex<TileElement>(MAXIMUM_MAP_SIZE_TECHNICAL, _tileElements.data());
+}
+
+static void ReorganiseTileElements(size_t capacity)
+{
+    context_setcurrentcursor(CursorID::ZZZ);
+
+    std::vector<TileElement> newElements;
+    newElements.reserve(std::max(MIN_TILE_ELEMENTS, capacity));
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    {
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        {
+            const auto* element = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            if (element == nullptr)
+            {
+                auto& newElement = newElements.emplace_back();
+                newElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                newElement.SetLastForTile(true);
+                newElement.base_height = 14;
+                newElement.clearance_height = 14;
+                newElement.AsSurface()->SetWaterHeight(0);
+                newElement.AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+                newElement.AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+                newElement.AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+                newElement.AsSurface()->SetParkFences(0);
+                newElement.AsSurface()->SetSurfaceStyle(0);
+                newElement.AsSurface()->SetEdgeStyle(0);
+            }
+            else
+            {
+                do
+                {
+                    newElements.push_back(*element);
+                } while (!(element++)->IsLastForTile());
+            }
+        }
+    }
+
+    SetTileElements(std::move(newElements));
+}
+
+void ReorganiseTileElements()
+{
+    ReorganiseTileElements(_tileElements.size());
+}
+
+bool map_check_free_elements_and_reorganise(size_t numElements)
+{
+    auto freeElements = _tileElements.capacity() - _tileElements.size();
+    if (freeElements >= numElements)
+    {
+        return true;
+    }
+    else
+    {
+        auto newCapacity = std::min<size_t>(MAX_TILE_ELEMENTS, _tileElements.capacity() * 2);
+        if (newCapacity - _tileElements.size() < numElements)
+        {
+            // Limit reached
+            gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
+            return false;
+        }
+        else
+        {
+            ReorganiseTileElements(newCapacity);
+            return true;
+        }
+    }
+}
 
 static void clear_elements_at(const CoordsXY& loc);
 static ScreenCoordsXY translate_3d_to_2d(int32_t rotation, const CoordsXY& pos);
@@ -173,7 +278,7 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
         return nullptr;
     }
     auto tileElementPos = TileCoordsXY{ elementPos };
-    return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * MAXIMUM_MAP_SIZE_TECHNICAL];
+    return _tileIndex.GetFirstElementAt(tileElementPos);
 }
 
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n)
@@ -210,7 +315,7 @@ void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements)
         log_error("Trying to access element outside of range");
         return;
     }
-    gTileElementTilePointers[tilePos.x + tilePos.y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
+    _tileIndex.SetTile(tilePos, elements);
 }
 
 SurfaceElement* map_get_surface_element_at(const CoordsXY& coords)
@@ -253,23 +358,26 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  */
 void map_init(int32_t size)
 {
-    gNextFreeTileElementPointerIndex = 0;
+    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    std::vector<TileElement> tileElements;
+    tileElements.resize(numTiles);
+    for (int32_t i = 0; i < numTiles; i++)
     {
-        TileElement* tile_element = &gTileElements[i];
-        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->SetLastForTile(true);
-        tile_element->base_height = 14;
-        tile_element->clearance_height = 14;
-        tile_element->AsSurface()->SetWaterHeight(0);
-        tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        tile_element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        tile_element->AsSurface()->SetParkFences(0);
-        tile_element->AsSurface()->SetSurfaceStyle(0);
-        tile_element->AsSurface()->SetEdgeStyle(0);
+        auto* element = &tileElements[i];
+        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->SetLastForTile(true);
+        element->base_height = 14;
+        element->clearance_height = 14;
+        element->AsSurface()->SetWaterHeight(0);
+        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
+        element->AsSurface()->SetParkFences(0);
+        element->AsSurface()->SetSurfaceStyle(0);
+        element->AsSurface()->SetEdgeStyle(0);
     }
+    SetTileElements(std::move(tileElements));
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
@@ -278,7 +386,6 @@ void map_init(int32_t size)
     gMapSize = size;
     gMapSizeMaxXY = size * 32 - 33;
     gMapBaseZ = 7;
-    map_update_tile_pointers();
     map_remove_out_of_range_elements();
     AutoCreateMapAnimations();
 
@@ -338,38 +445,10 @@ void map_count_remaining_land_rights()
  */
 void map_strip_ghost_flag_from_elements()
 {
-    for (auto& element : gTileElements)
+    for (auto& element : _tileElements)
     {
         element.SetGhost(false);
     }
-}
-
-/**
- *
- *  rct2: 0x0068AFFD
- */
-void map_update_tile_pointers()
-{
-    int32_t i, x, y;
-
-    for (i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
-    {
-        gTileElementTilePointers[i] = TILE_UNDEFINED_TILE_ELEMENT;
-    }
-
-    TileElement* tileElement = gTileElements;
-    TileElement** tile = gTileElementTilePointers;
-    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            *tile++ = tileElement;
-            while (!(tileElement++)->IsLastForTile())
-                ;
-        }
-    }
-
-    gNextFreeTileElement = tileElement;
 }
 
 /**
@@ -925,9 +1004,9 @@ void tile_element_remove(TileElement* tileElement)
     (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = MAX_ELEMENT_HEIGHT;
 
-    if ((tileElement + 1) == gNextFreeTileElement)
+    if ((tileElement + 1) == &_tileElements[_tileElements.size()])
     {
-        gNextFreeTileElement--;
+        _tileElements.pop_back();
     }
 }
 
@@ -1029,77 +1108,28 @@ void map_invalidate_selection_rect()
     viewports_invalidate(left, top, right, bottom);
 }
 
-/**
- *
- *  rct2: 0x0068B111
- */
-void map_reorganise_elements()
+static size_t CountElementsOnTile(const CoordsXY& loc)
 {
-    context_setcurrentcursor(CursorID::ZZZ);
-
-    auto newTileElements = std::make_unique<TileElement[]>(MAX_TILE_ELEMENTS_WITH_SPARE_ROOM);
-    TileElement* newElementsPtr = newTileElements.get();
-
-    if (newTileElements == nullptr)
+    size_t count = 0;
+    auto* element = _tileIndex.GetFirstElementAt(TileCoordsXY(loc));
+    do
     {
-        log_fatal("Unable to allocate memory for map elements.");
-        return;
-    }
-
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
-    {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
-        {
-            TileElement* startElement = map_get_first_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-            if (startElement == nullptr)
-                continue;
-            TileElement* endElement = startElement;
-            while (!(endElement++)->IsLastForTile())
-                ;
-
-            const auto numElements = static_cast<uint32_t>(endElement - startElement);
-            std::memcpy(newElementsPtr, startElement, numElements * sizeof(TileElement));
-            newElementsPtr += numElements;
-        }
-    }
-
-    const auto numElements = static_cast<uint32_t>(newElementsPtr - newTileElements.get());
-    std::memcpy(gTileElements, newTileElements.get(), numElements * sizeof(TileElement));
-    std::memset(gTileElements + numElements, 0, (MAX_TILE_ELEMENTS_WITH_SPARE_ROOM - numElements) * sizeof(TileElement));
-
-    map_update_tile_pointers();
+        count++;
+    } while (!(element++)->IsLastForTile());
+    return count;
 }
 
-/**
- *
- *  rct2: 0x0068B044
- *  Returns true on space available for more elements
- *  Reorganises the map elements to check for space
- */
-bool map_check_free_elements_and_reorganise(int32_t numElements)
+static TileElement* AllocateTileElements(size_t count)
 {
-    if (numElements != 0)
+    if (!map_check_free_elements_and_reorganise(count))
     {
-        auto tileElementEnd = &gTileElements[MAX_TILE_ELEMENTS];
-
-        // Check if is there is room for the required number of elements
-        auto newTileElementEnd = gNextFreeTileElement + numElements;
-        if (newTileElementEnd > tileElementEnd)
-        {
-            // Defragment the map element list
-            map_reorganise_elements();
-
-            // Check if there is any room again
-            newTileElementEnd = gNextFreeTileElement + numElements;
-            if (newTileElementEnd > tileElementEnd)
-            {
-                // Not enough spare elements left :'(
-                gGameCommandErrorText = STR_ERR_LANDSCAPE_DATA_AREA_FULL;
-                return false;
-            }
-        }
+        log_error("Cannot insert new element");
+        return nullptr;
     }
-    return true;
+
+    auto oldSize = _tileElements.size();
+    _tileElements.resize(_tileElements.size() + count);
+    return &_tileElements[oldSize];
 }
 
 /**
@@ -1109,21 +1139,16 @@ bool map_check_free_elements_and_reorganise(int32_t numElements)
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type)
 {
     const auto& tileLoc = TileCoordsXYZ(loc);
-    TileElement *originalTileElement, *newTileElement, *insertedElement;
-    bool isLastForTile = false;
 
-    if (!map_check_free_elements_and_reorganise(1))
-    {
-        log_error("Cannot insert new element");
-        return nullptr;
-    }
-
-    newTileElement = gNextFreeTileElement;
-    originalTileElement = gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x];
+    auto numElementsOnTileOld = CountElementsOnTile(loc);
+    auto numElementsOnTileNew = numElementsOnTileOld + 1;
+    auto* newTileElement = AllocateTileElements(numElementsOnTileNew);
+    auto* originalTileElement = _tileIndex.GetFirstElementAt(tileLoc);
 
     // Set tile index pointer to point to new element block
-    gTileElementTilePointers[tileLoc.y * MAXIMUM_MAP_SIZE_TECHNICAL + tileLoc.x] = newTileElement;
+    _tileIndex.SetTile(tileLoc, newTileElement);
 
+    bool isLastForTile = false;
     if (originalTileElement == nullptr)
     {
         isLastForTile = true;
@@ -1150,7 +1175,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     }
 
     // Insert new map element
-    insertedElement = newTileElement;
+    auto* insertedElement = newTileElement;
     newTileElement->type = 0;
     newTileElement->SetType(static_cast<uint8_t>(type));
     newTileElement->SetBaseZ(loc.z);
@@ -1176,7 +1201,6 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
         } while (!((newTileElement - 1)->IsLastForTile()));
     }
 
-    gNextFreeTileElement = newTileElement;
     return insertedElement;
 }
 

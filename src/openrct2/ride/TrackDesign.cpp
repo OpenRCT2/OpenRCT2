@@ -96,10 +96,6 @@ static bool _trackDesignPlaceStateHasScenery = false;
 static bool _trackDesignPlaceStatePlaceScenery = true;
 static bool _trackDesignPlaceIsReplay = false;
 
-static std::unique_ptr<map_backup> track_design_preview_backup_map();
-
-static void track_design_preview_restore_map(map_backup* backup);
-
 static void track_design_preview_clear_map();
 
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
@@ -1984,12 +1980,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
  */
 void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
 {
-    // Make a copy of the map
-    auto mapBackup = track_design_preview_backup_map();
-    if (mapBackup == nullptr)
-    {
-        return;
-    }
+    StashMap();
     track_design_preview_clear_map();
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
@@ -2003,7 +1994,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     if (!track_design_place_preview(td6, &cost, &ride, &flags))
     {
         std::fill_n(pixels, TRACK_PREVIEW_IMAGE_SIZE * 4, 0x00);
-        track_design_preview_restore_map(mapBackup.get());
+        UnstashMap();
         return;
     }
     td6->cost = cost;
@@ -2086,43 +2077,7 @@ void track_design_draw_preview(TrackDesign* td6, uint8_t* pixels)
     }
 
     ride->Delete();
-    track_design_preview_restore_map(mapBackup.get());
-}
-
-/**
- * Create a backup of the map as it will be cleared for drawing the track
- * design preview.
- *  rct2: 0x006D1C68
- */
-static std::unique_ptr<map_backup> track_design_preview_backup_map()
-{
-    auto backup = std::make_unique<map_backup>();
-    if (backup != nullptr)
-    {
-        std::memcpy(backup->tile_elements, gTileElements, sizeof(backup->tile_elements));
-        std::memcpy(backup->tile_pointers, gTileElementTilePointers, sizeof(backup->tile_pointers));
-        backup->next_free_tile_element = gNextFreeTileElement;
-        backup->map_size_units = gMapSizeUnits;
-        backup->map_size_units_minus_2 = gMapSizeMinus2;
-        backup->map_size = gMapSize;
-        backup->current_rotation = get_current_rotation();
-    }
-    return backup;
-}
-
-/**
- * Restores the map from a backup.
- *  rct2: 0x006D2378
- */
-static void track_design_preview_restore_map(map_backup* backup)
-{
-    std::memcpy(gTileElements, backup->tile_elements, sizeof(backup->tile_elements));
-    std::memcpy(gTileElementTilePointers, backup->tile_pointers, sizeof(backup->tile_pointers));
-    gNextFreeTileElement = backup->next_free_tile_element;
-    gMapSizeUnits = backup->map_size_units;
-    gMapSizeMinus2 = backup->map_size_units_minus_2;
-    gMapSize = backup->map_size;
-    gCurrentRotation = backup->current_rotation;
+    UnstashMap();
 }
 
 /**
@@ -2131,26 +2086,30 @@ static void track_design_preview_restore_map(map_backup* backup)
  */
 static void track_design_preview_clear_map()
 {
-    // These values were previously allocated in backup map but
-    // it seems more fitting to place in this function
+    auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+
     gMapSizeUnits = 255 * COORDS_XY_STEP;
     gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 
-    for (int32_t i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
+    // Reserve ~8 elements per tile
+    std::vector<TileElement> tileElements;
+    tileElements.reserve(numTiles * 8);
+
+    for (int32_t i = 0; i < numTiles; i++)
     {
-        TileElement* tile_element = &gTileElements[i];
-        tile_element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-        tile_element->SetLastForTile(true);
-        tile_element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        tile_element->AsSurface()->SetWaterHeight(0);
-        tile_element->AsSurface()->SetSurfaceStyle(0);
-        tile_element->AsSurface()->SetEdgeStyle(0);
-        tile_element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        tile_element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
-        tile_element->AsSurface()->SetParkFences(0);
+        auto* element = &tileElements.emplace_back();
+        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->SetLastForTile(true);
+        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
+        element->AsSurface()->SetWaterHeight(0);
+        element->AsSurface()->SetSurfaceStyle(0);
+        element->AsSurface()->SetEdgeStyle(0);
+        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
+        element->AsSurface()->SetOwnership(OWNERSHIP_OWNED);
+        element->AsSurface()->SetParkFences(0);
     }
-    map_update_tile_pointers();
+    SetTileElements(std::move(tileElements));
 }
 
 bool track_design_are_entrance_and_exit_placed()

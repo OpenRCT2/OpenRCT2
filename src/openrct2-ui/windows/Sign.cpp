@@ -123,6 +123,7 @@ rct_window* window_sign_open(rct_windownumber number)
     if (tile_element == nullptr)
         return nullptr;
 
+    auto& tileElements = GetTileElements();
     while (1)
     {
         if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -137,7 +138,7 @@ rct_window* window_sign_open(rct_windownumber number)
             }
         }
         tile_element++;
-        if (tile_element >= &gTileElements[std::size(gTileElements)])
+        if (tile_element >= &tileElements[tileElements.size()])
         {
             return nullptr;
         }
@@ -180,6 +181,8 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
             auto tile_element = map_get_first_element_at(bannerCoords);
             if (tile_element == nullptr)
                 return;
+
+            auto& tileElements = GetTileElements();
             while (1)
             {
                 if (tile_element->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
@@ -193,7 +196,7 @@ static void window_sign_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                     }
                 }
                 tile_element++;
-                if (tile_element >= &gTileElements[std::size(gTileElements)])
+                if (tile_element >= &tileElements[tileElements.size()])
                 {
                     return;
                 }
