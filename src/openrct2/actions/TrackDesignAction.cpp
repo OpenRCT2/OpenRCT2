@@ -259,11 +259,12 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+    for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
     {
-        ride->vehicle_colours[i].Body = _td.vehicle_colours[i].body_colour;
-        ride->vehicle_colours[i].Trim = _td.vehicle_colours[i].trim_colour;
-        ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[i];
+        auto tdIndex = std::min(i, std::size(_td.vehicle_colours) - 1);
+        ride->vehicle_colours[i].Body = _td.vehicle_colours[tdIndex].body_colour;
+        ride->vehicle_colours[i].Trim = _td.vehicle_colours[tdIndex].trim_colour;
+        ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[tdIndex];
     }
 
     for (int32_t count = 1; count == 1 || r->Error != GameActions::Status::Ok; ++count)

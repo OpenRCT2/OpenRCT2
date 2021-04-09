@@ -36,12 +36,13 @@ struct Vehicle;
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
-#define MAX_VEHICLES_PER_RIDE 31
+constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 31;
+constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
+constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
 #define NUM_COLOUR_SCHEMES 4
 #define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
-#define MAX_CARS_PER_TRAIN 255
 #define MAX_STATIONS 4
 #define MAX_RIDES 255
 #define RIDE_TYPE_NULL 255
@@ -215,7 +216,7 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[MAX_CARS_PER_TRAIN];
+    VehicleColour vehicle_colours[MAX_VEHICLE_COLOURS];
     // 0 = closed, 1 = open, 2 = test
     uint8_t status;
     std::string custom_name;
