@@ -515,7 +515,7 @@ namespace OpenRCT2
                         }
                         else
                         {
-                            Console::WriteLine("%s not packed: unsupported extension.", ori->Identifier);
+                            Console::WriteLine("%s not packed: unsupported extension.", ori->Identifier.c_str());
                             continue;
                         }
 

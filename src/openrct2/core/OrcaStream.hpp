@@ -90,7 +90,7 @@ namespace OpenRCT2
                 uint64_t bytesLeft = _header.CompressedSize;
                 do
                 {
-                    auto readLen = std::min(bytesLeft, sizeof(temp));
+                    auto readLen = std::min(size_t(bytesLeft), sizeof(temp));
                     _stream->Read(temp, readLen);
                     _buffer.Write(temp, readLen);
                     bytesLeft -= readLen;
