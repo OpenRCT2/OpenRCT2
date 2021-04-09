@@ -468,7 +468,8 @@ namespace OpenRCT2
                             auto legacyIdentifier = entry.GetName();
                             if (objRepository.FindObjectLegacy(legacyIdentifier) == nullptr)
                             {
-                                objRepository.AddObjectFromFile(ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
+                                objRepository.AddObjectFromFile(
+                                    ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
                             }
                         }
                         else if (type == DESCRIPTOR_PARKOBJ)

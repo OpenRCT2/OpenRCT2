@@ -375,7 +375,8 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             break;
         }
         case WIDX_SCENARIO_NAME:
-            window_text_input_raw_open(w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gScenarioName.c_str(), 64);
+            window_text_input_raw_open(
+                w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, gScenarioName.c_str(), 64);
             break;
         case WIDX_DETAILS:
             window_text_input_raw_open(

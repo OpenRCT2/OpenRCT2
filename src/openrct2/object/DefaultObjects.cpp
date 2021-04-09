@@ -11,10 +11,7 @@
 
 #include "Object.h"
 
-const std::string_view MinimumRequiredObjects[] = {
-    "rct2.surface.grass",
-    "rct2.edge.rock"
-};
+const std::string_view MinimumRequiredObjects[] = { "rct2.surface.grass", "rct2.edge.rock" };
 
 const std::string_view DefaultSelectedObjects[] = {
     // An initial default selection
