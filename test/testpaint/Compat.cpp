@@ -41,6 +41,7 @@ uint8_t gClipHeight = 255;
 CoordsXY gClipSelectionA = { 0, 0 };
 CoordsXY gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
 uint8_t gCurrentRotation;
+uint32_t gCurrentTicks;
 
 // clang-format off
 constexpr const std::array<CoordsXY, 8> CoordsDirectionDelta = {
@@ -877,6 +878,11 @@ void TileElementBase::SetOwner(uint8_t newOwner)
 {
     owner &= ~OWNER_MASK;
     owner |= (newOwner & OWNER_MASK);
+}
+
+bool TileElementBase::IsInvisible() const
+{
+    return (this->Flags & TILE_ELEMENT_FLAG_INVISIBLE) != 0;
 }
 
 namespace OpenRCT2
