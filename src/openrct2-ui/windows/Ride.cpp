@@ -2702,7 +2702,7 @@ static void window_ride_vehicle_mousedown(rct_window* w, rct_widgetindex widgetI
             window_ride_show_vehicle_type_dropdown(w, &w->widgets[widgetIndex]);
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
-            if (ride->num_vehicles < 32)
+            if (ride->num_vehicles < MAX_VEHICLES_PER_RIDE)
                 ride->SetNumVehicles(ride->num_vehicles + 1);
             break;
         case WIDX_VEHICLE_TRAINS_DECREASE:
@@ -2710,7 +2710,7 @@ static void window_ride_vehicle_mousedown(rct_window* w, rct_widgetindex widgetI
                 ride->SetNumVehicles(ride->num_vehicles - 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
-            if (ride->num_cars_per_train < 255)
+            if (ride->num_cars_per_train < MAX_CARS_PER_TRAIN)
                 ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:

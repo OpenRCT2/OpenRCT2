@@ -6401,7 +6401,7 @@ void Ride::UpdateMaxVehicles()
         {
             case RideMode::ContinuousCircuitBlockSectioned:
             case RideMode::PoweredLaunchBlockSectioned:
-                maxNumTrains = std::clamp(num_stations + num_block_brakes - 1, 1, 31);
+                maxNumTrains = std::clamp(num_stations + num_block_brakes - 1, 1, int32_t(MAX_VEHICLES_PER_RIDE));
                 break;
             case RideMode::ReverseInclineLaunchedShuttle:
             case RideMode::PoweredLaunchPasstrough:
@@ -6433,7 +6433,7 @@ void Ride::UpdateMaxVehicles()
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
                     || !(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
-                    maxNumTrains = std::min(maxNumTrains, 31);
+                    maxNumTrains = std::min(maxNumTrains, int32_t(MAX_VEHICLES_PER_RIDE));
                 }
                 else
                 {
@@ -6462,7 +6462,7 @@ void Ride::UpdateMaxVehicles()
                     {
                         maxNumTrains++;
                         length += totalSpacing;
-                    } while (maxNumTrains < 31 && length < trackLength);
+                    } while (maxNumTrains < MAX_VEHICLES_PER_RIDE && length < trackLength);
                 }
                 break;
         }
@@ -6481,7 +6481,7 @@ void Ride::UpdateMaxVehicles()
 
     if (gCheatsDisableTrainLengthLimit)
     {
-        maxNumTrains = 31;
+        maxNumTrains = MAX_VEHICLES_PER_RIDE;
     }
     numVehicles = std::min(proposed_num_vehicles, static_cast<uint8_t>(maxNumTrains));
 
