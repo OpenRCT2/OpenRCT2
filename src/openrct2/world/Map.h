@@ -116,14 +116,8 @@ extern uint8_t gMapSelectArrowDirection;
 
 extern uint8_t gMapGroundFlags;
 
-extern TileElement gTileElements[MAX_TILE_ELEMENTS_WITH_SPARE_ROOM];
-extern TileElement* gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-
 extern std::vector<CoordsXY> gMapSelectionTiles;
 extern std::vector<PeepSpawn> gPeepSpawns;
-
-extern TileElement* gNextFreeTileElement;
-extern uint32_t gNextFreeTileElementPointerIndex;
 
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
@@ -146,9 +140,11 @@ extern const uint8_t tile_element_raise_styles[9][32];
 template<typename T> class TilePointerIndex
 {
     std::vector<T*> TilePointers;
-    uint16_t MapSize;
+    uint16_t MapSize{};
 
 public:
+    TilePointerIndex() = default;
+
     explicit TilePointerIndex(const uint16_t mapSize, T* tileElements)
     {
         MapSize = mapSize;
@@ -171,13 +167,23 @@ public:
     {
         return TilePointers[coords.x + (coords.y * MapSize)];
     }
+
+    void SetTile(TileCoordsXY coords, T* tileElement)
+    {
+        TilePointers[coords.x + (coords.y * MapSize)] = tileElement;
+    }
 };
+
+void ReorganiseTileElements();
+const std::vector<TileElement>& GetTileElements();
+void SetTileElements(std::vector<TileElement>&& tileElements);
+void StashMap();
+void UnstashMap();
 
 void map_init(int32_t size);
 
 void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
-void map_update_tile_pointers();
 TileElement* map_get_first_element_at(const CoordsXY& elementPos);
 TileElement* map_get_nth_element_at(const CoordsXY& coords, int32_t n);
 void map_set_tile_element(const TileCoordsXY& tilePos, TileElement* elements);
@@ -210,8 +216,7 @@ void tile_element_remove(TileElement* tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
-void map_reorganise_elements();
-bool map_check_free_elements_and_reorganise(int32_t num_elements);
+bool map_check_free_elements_and_reorganise(size_t num_elements);
 TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)

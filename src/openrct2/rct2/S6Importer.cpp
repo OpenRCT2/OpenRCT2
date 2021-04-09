@@ -465,7 +465,6 @@ public:
 
         // Fix and set dynamic variables
         map_strip_ghost_flag_from_elements();
-        map_update_tile_pointers();
         game_convert_strings_to_utf8();
         map_count_remaining_land_rights();
         determine_ride_entrance_and_exit_locations();
@@ -1040,16 +1039,16 @@ public:
         // Build tile pointer cache (needed to get the first element at a certain location)
         auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(RCT2_MAXIMUM_MAP_SIZE_TECHNICAL, _s6.tile_elements);
 
-        TileElement* dstElement = gTileElements;
+        std::vector<TileElement> tileElements;
         for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
         {
             for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
             {
                 if (coords.x >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL || coords.y >= RCT2_MAXIMUM_MAP_SIZE_TECHNICAL)
                 {
-                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                    dstElement->SetLastForTile(true);
-                    dstElement++;
+                    auto& dstElement = tileElements.emplace_back();
+                    dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement.SetLastForTile(true);
                     continue;
                 }
 
@@ -1057,17 +1056,18 @@ public:
                 // This might happen with damaged parks. Make sure there is *something* to avoid crashes.
                 if (srcElement == nullptr)
                 {
-                    dstElement->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
-                    dstElement->SetLastForTile(true);
-                    dstElement++;
+                    auto& dstElement = tileElements.emplace_back();
+                    dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                    dstElement.SetLastForTile(true);
                     continue;
                 }
 
                 do
                 {
+                    auto& dstElement = tileElements.emplace_back();
                     if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
                     {
-                        std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                        std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
                     }
                     else
                     {
@@ -1076,19 +1076,20 @@ public:
                         if (tileElementType == RCT12TileElementType::Corrupt
                             || tileElementType == RCT12TileElementType::EightCarsCorrupt14
                             || tileElementType == RCT12TileElementType::EightCarsCorrupt15)
-                            std::memcpy(dstElement, srcElement, sizeof(*srcElement));
+                            std::memcpy(&dstElement, srcElement, sizeof(*srcElement));
                         else
-                            ImportTileElement(dstElement, srcElement);
+                            ImportTileElement(&dstElement, srcElement);
                     }
-
-                    dstElement++;
                 } while (!(srcElement++)->IsLastForTile());
+
+                // Set last element flag in case the original last element was never added
+                if (tileElements.size() > 0)
+                {
+                    tileElements.back().SetLastForTile(true);
+                }
             }
         }
-
-        gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
-
-        map_update_tile_pointers();
+        SetTileElements(std::move(tileElements));
     }
 
     void ImportTileElement(TileElement* dst, const RCT12TileElement* src)

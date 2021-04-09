@@ -231,8 +231,6 @@ void mapgen_generate(mapgen_settings* settings)
     // Place the trees
     if (settings->trees != 0)
         mapgen_place_trees();
-
-    map_reorganise_elements();
 }
 
 static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
