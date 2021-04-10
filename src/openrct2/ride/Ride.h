@@ -299,7 +299,7 @@ public:
     // Various flags stating whether a window needs to be refreshed
     uint8_t window_invalidate_flags;
     uint32_t total_customers;
-    money32 total_profit;
+    money64 total_profit;
     uint8_t popularity;
     uint8_t popularity_time_out; // Updated every purchase and ?possibly by time?
     uint8_t popularity_next;     // When timeout reached this will be the next popularity
@@ -349,8 +349,8 @@ public:
     uint8_t not_fixed_timeout;
     uint8_t last_crash_type;
     uint8_t connected_message_throttle;
-    money32 income_per_hour;
-    money32 profit;
+    money64 income_per_hour;
+    money64 profit;
     TrackColour track_colour[NUM_COLOUR_SCHEMES];
     uint8_t music;
     uint8_t entrance_style;

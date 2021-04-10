@@ -122,6 +122,13 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
+        void Set(const char* name, int64_t value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, uint64_t value)
         {
             EnsureObjectPushed();
@@ -311,6 +318,12 @@ namespace OpenRCT2::Scripting
     template<> inline DukValue ToDuk(duk_context* ctx, const int32_t& value)
     {
         duk_push_int(ctx, value);
+        return DukValue::take_from_stack(ctx);
+    }
+
+    template<> inline DukValue ToDuk(duk_context* ctx, const int64_t& value)
+    {
+        duk_push_number(ctx, value);
         return DukValue::take_from_stack(ctx);
     }
 

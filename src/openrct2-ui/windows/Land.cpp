@@ -256,7 +256,7 @@ public:
     {
         ScreenCoordsXY screenCoords;
         int32_t numTiles;
-        money32 price;
+        money64 price;
         rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
@@ -284,12 +284,18 @@ public:
         {
             // Draw raise cost amount
             if (gLandToolRaiseCost != MONEY32_UNDEFINED && gLandToolRaiseCost != 0)
-                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &gLandToolRaiseCost, { TextAlignment::CENTRE });
+            {
+                price = gLandToolRaiseCost;
+                DrawTextBasic(&dpi, screenCoords, STR_RAISE_COST_AMOUNT, &price, { TextAlignment::CENTRE });
+            }
             screenCoords.y += 10;
 
             // Draw lower cost amount
             if (gLandToolLowerCost != MONEY32_UNDEFINED && gLandToolLowerCost != 0)
-                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &gLandToolLowerCost, { TextAlignment::CENTRE });
+            {
+                price = gLandToolLowerCost;
+                DrawTextBasic(&dpi, screenCoords, STR_LOWER_COST_AMOUNT, &price, { TextAlignment::CENTRE });
+            }
             screenCoords.y += 50;
 
             // Draw paint price
@@ -302,17 +308,17 @@ public:
                     objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
                 if (surfaceObj != nullptr)
                 {
-                    price += numTiles * surfaceObj->Price;
+                    price += numTiles * static_cast<money64>(surfaceObj->Price);
                 }
             }
 
             if (gLandToolTerrainEdge != OBJECT_ENTRY_INDEX_NULL)
-                price += numTiles * 100;
+                price += numTiles * 100LL;
 
             if (price != 0)
             {
                 auto ft = Formatter();
-                ft.Add<money32>(price);
+                ft.Add<money64>(price);
                 DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft.Data(), { TextAlignment::CENTRE });
             }
         }

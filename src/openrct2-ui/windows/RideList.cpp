@@ -632,7 +632,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
             case INFORMATION_TYPE_PROFIT:
                 formatSecondary = 0;
-                if (ride->profit != MONEY32_UNDEFINED)
+                if (ride->profit != MONEY64_UNDEFINED)
                 {
                     formatSecondary = STR_PROFIT_LABEL;
                     ft.Add<int32_t>(ride->profit);
@@ -644,7 +644,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                 break;
             case INFORMATION_TYPE_TOTAL_PROFIT:
                 formatSecondary = 0;
-                if (ride->total_profit != MONEY32_UNDEFINED)
+                if (ride->total_profit != MONEY64_UNDEFINED)
                 {
                     formatSecondary = STR_RIDE_LIST_TOTAL_PROFIT_LABEL;
                     ft.Add<int32_t>(ride->total_profit);
@@ -674,7 +674,7 @@ static void window_ride_list_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             }
             case INFORMATION_TYPE_INCOME:
                 formatSecondary = 0;
-                if (ride->income_per_hour != MONEY32_UNDEFINED)
+                if (ride->income_per_hour != MONEY64_UNDEFINED)
                 {
                     formatSecondary = STR_RIDE_LIST_INCOME_LABEL;
                     ft.Add<int32_t>(ride->income_per_hour);

@@ -915,7 +915,7 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t 
  * @param rotation (ebp)
  */
 void PaintFloatingMoneyEffect(
-    paint_session* session, money32 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
+    paint_session* session, money64 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
     uint32_t rotation)
 {
     if (session->NoPaintStructsAvailable())
@@ -933,8 +933,7 @@ void PaintFloatingMoneyEffect(
     paint_string_struct* ps = session->AllocateStringPaintEntry();
     ps->string_id = string_id;
     ps->next = nullptr;
-    ps->args[0] = amount;
-    ps->args[1] = y;
+    std::memcpy(ps->args, &amount, sizeof(amount));
     ps->args[2] = 0;
     ps->args[3] = 0;
     ps->y_offsets = reinterpret_cast<uint8_t*>(y_offsets);

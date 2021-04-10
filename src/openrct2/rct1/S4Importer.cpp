@@ -271,7 +271,7 @@ public:
         return true;
     }
 
-    int32_t CorrectRCT1ParkValue(money32 oldParkValue)
+    money32 CorrectRCT1ParkValue(money32 oldParkValue)
     {
         if (oldParkValue == MONEY32_UNDEFINED)
         {
@@ -1437,13 +1437,13 @@ private:
         gInitialCash = _s4.cash;
 
         gCompanyValue = _s4.company_value;
-        gParkValue = CorrectRCT1ParkValue(_s4.park_value);
+        gParkValue = ToMoney64(CorrectRCT1ParkValue(_s4.park_value));
         gCurrentProfit = _s4.profit;
 
         for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
         {
             gCashHistory[i] = _s4.cash_history[i];
-            gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.park_value_history[i]);
+            gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.park_value_history[i]));
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
@@ -2343,7 +2343,7 @@ private:
         // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
         // we need to check the goal to avoid affecting scenarios like Volcania.
         if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
-            gScenarioObjective.Currency = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+            gScenarioObjective.Currency = ToMoney64(CorrectRCT1ParkValue(_s4.scenario_objective_currency));
         else
             gScenarioObjective.Currency = _s4.scenario_objective_currency;
 

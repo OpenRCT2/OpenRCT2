@@ -36,20 +36,20 @@ static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType
     1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0,
 };
 
-money32 gInitialCash;
-money32 gCash;
-money32 gBankLoan;
+money64 gInitialCash;
+money64 gCash;
+money64 gBankLoan;
 uint8_t gBankLoanInterestRate;
-money32 gMaxBankLoan;
-money32 gCurrentExpenditure;
-money32 gCurrentProfit;
-money32 gHistoricalProfit;
-money32 gWeeklyProfitAverageDividend;
+money64 gMaxBankLoan;
+money64 gCurrentExpenditure;
+money64 gCurrentProfit;
+money64 gHistoricalProfit;
+money64 gWeeklyProfitAverageDividend;
 uint16_t gWeeklyProfitAverageDivisor;
-money32 gCashHistory[FINANCE_GRAPH_SIZE];
-money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
-money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
+money64 gCashHistory[FINANCE_GRAPH_SIZE];
+money64 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+money64 gParkValueHistory[FINANCE_GRAPH_SIZE];
+money64 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][static_cast<int32_t>(ExpenditureType::Count)];
 
 /**
  * Checks the condition if the game is required to use money.
@@ -187,9 +187,9 @@ void finance_reset_history()
 {
     for (int32_t i = 0; i < FINANCE_GRAPH_SIZE; i++)
     {
-        gCashHistory[i] = MONEY32_UNDEFINED;
-        gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
-        gParkValueHistory[i] = MONEY32_UNDEFINED;
+        gCashHistory[i] = MONEY64_UNDEFINED;
+        gWeeklyProfitHistory[i] = MONEY64_UNDEFINED;
+        gParkValueHistory[i] = MONEY64_UNDEFINED;
     }
 }
 
@@ -222,7 +222,7 @@ void finance_init()
     gBankLoanInterestRate = 10;
     gParkValue = 0;
     gCompanyValue = 0;
-    gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
+    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
     gScenarioCompletedBy = "?";
@@ -277,22 +277,22 @@ void finance_update_daily_profit()
     window_invalidate_by_class(WC_FINANCES);
 }
 
-money32 finance_get_initial_cash()
+money64 finance_get_initial_cash()
 {
     return gInitialCash;
 }
 
-money32 finance_get_current_loan()
+money64 finance_get_current_loan()
 {
     return gBankLoan;
 }
 
-money32 finance_get_maximum_loan()
+money64 finance_get_maximum_loan()
 {
     return gMaxBankLoan;
 }
 
-money32 finance_get_current_cash()
+money64 finance_get_current_cash()
 {
     return gCash;
 }
@@ -307,7 +307,7 @@ void finance_shift_expenditure_table()
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
     if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
-        money32 sum = 0;
+        money64 sum = 0;
         for (uint32_t i = 0; i < static_cast<int32_t>(ExpenditureType::Count); i++)
         {
             sum += gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1][i];
@@ -345,12 +345,12 @@ void finance_reset_cash_to_initial()
 /**
  * Gets the last month's profit from food, drink and merchandise.
  */
-money32 finance_get_last_month_shop_profit()
+money64 finance_get_last_month_shop_profit()
 {
-    money32 profit = 0;
+    money64 profit = 0;
     if (gDateMonthsElapsed != 0)
     {
-        money32* lastMonthExpenditure = gExpenditureTable[1];
+        const auto* lastMonthExpenditure = gExpenditureTable[1];
 
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)];
         profit += lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)];

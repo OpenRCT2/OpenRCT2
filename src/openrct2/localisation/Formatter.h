@@ -82,6 +82,7 @@ public:
             std::is_same_v<TSpecified, int16_t> ||
             std::is_same_v<TSpecified, int32_t> ||
             std::is_same_v<TSpecified, money32> ||
+            std::is_same_v<TSpecified, money64> ||
             std::is_same_v<TSpecified, rct_string_id> ||
             std::is_same_v<TSpecified, uint16_t> ||
             std::is_same_v<TSpecified, uint32_t> ||

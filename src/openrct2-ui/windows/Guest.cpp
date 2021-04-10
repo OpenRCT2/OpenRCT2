@@ -1652,7 +1652,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash in pocket
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashInPocket);
+        ft.Add<money64>(peep->CashInPocket);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_IN_POCKET, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
@@ -1660,7 +1660,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Cash spent
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->CashSpent);
+        ft.Add<money64>(peep->CashSpent);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_CASH_SPENT, ft);
         screenCoords.y += LIST_ROW_HEIGHT * 2;
     }
@@ -1672,14 +1672,14 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid to enter
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidToEnter);
+        ft.Add<money64>(peep->PaidToEnter);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_EXPENSES_ENTRANCE_FEE, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
     }
     // Paid on rides
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnRides);
+        ft.Add<money64>(peep->PaidOnRides);
         ft.Add<uint16_t>(peep->GuestNumRides);
         if (peep->GuestNumRides != 1)
         {
@@ -1694,7 +1694,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on food
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnFood);
+        ft.Add<money64>(peep->PaidOnFood);
         ft.Add<uint16_t>(peep->AmountOfFood);
         if (peep->AmountOfFood != 1)
         {
@@ -1710,7 +1710,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on drinks
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnDrink);
+        ft.Add<money64>(peep->PaidOnDrink);
         ft.Add<uint16_t>(peep->AmountOfDrinks);
         if (peep->AmountOfDrinks != 1)
         {
@@ -1725,7 +1725,7 @@ void window_guest_finance_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Paid on souvenirs
     {
         auto ft = Formatter();
-        ft.Add<money32>(peep->PaidOnSouvenirs);
+        ft.Add<money64>(peep->PaidOnSouvenirs);
         ft.Add<uint16_t>(peep->AmountOfSouvenirs);
         if (peep->AmountOfSouvenirs != 1)
         {

@@ -528,7 +528,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             ft.Add<uint16_t>(scenario->objective_arg_2);
         else
-            ft.Add<money32>(scenario->objective_arg_2);
+            ft.Add<money64>(scenario->objective_arg_2);
     }
     screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
@@ -544,7 +544,7 @@ static void window_scenarioselect_paint(rct_window* w, rct_drawpixelinfo* dpi)
         ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(completedByName);
-        ft.Add<money32>(scenario->highscore->company_value);
+        ft.Add<money64>(scenario->highscore->company_value);
         screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_COMPLETED_BY_WITH_COMPANY_VALUE, ft);
     }
 }

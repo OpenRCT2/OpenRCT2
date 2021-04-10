@@ -247,11 +247,11 @@ namespace OpenRCT2::Scripting
     class ScPark
     {
     public:
-        money32 cash_get() const
+        money64 cash_get() const
         {
             return gCash;
         }
-        void cash_set(money32 value)
+        void cash_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -280,11 +280,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 bankLoan_get() const
+        money64 bankLoan_get() const
         {
             return gBankLoan;
         }
-        void bankLoan_set(money32 value)
+        void bankLoan_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -296,11 +296,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 maxBankLoan_get() const
+        money64 maxBankLoan_get() const
         {
             return gMaxBankLoan;
         }
-        void maxBankLoan_set(money32 value)
+        void maxBankLoan_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -332,11 +332,11 @@ namespace OpenRCT2::Scripting
             return gNumGuestsInPark;
         }
 
-        money32 value_get() const
+        money64 value_get() const
         {
             return gParkValue;
         }
-        void value_set(money32 value)
+        void value_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -348,11 +348,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 companyValue_get() const
+        money64 companyValue_get() const
         {
             return gCompanyValue;
         }
-        void companyValue_set(money32 value)
+        void companyValue_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 
@@ -379,11 +379,11 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        money32 totalIncomeFromAdmissions_get() const
+        money64 totalIncomeFromAdmissions_get() const
         {
             return gTotalIncomeFromAdmissions;
         }
-        void totalIncomeFromAdmissions_set(money32 value)
+        void totalIncomeFromAdmissions_set(money64 value)
         {
             ThrowIfGameStateNotMutable();
 

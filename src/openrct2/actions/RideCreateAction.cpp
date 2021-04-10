@@ -283,8 +283,8 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride->no_primary_items_sold = 0;
     ride->no_secondary_items_sold = 0;
     ride->last_crash_type = RIDE_CRASH_TYPE_NONE;
-    ride->income_per_hour = MONEY32_UNDEFINED;
-    ride->profit = MONEY32_UNDEFINED;
+    ride->income_per_hour = MONEY64_UNDEFINED;
+    ride->profit = MONEY64_UNDEFINED;
     ride->connected_message_throttle = 0;
     ride->entrance_style = 0;
     ride->num_block_brakes = 0;

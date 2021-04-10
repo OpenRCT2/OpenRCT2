@@ -79,7 +79,7 @@ struct MoneyEffect : MiscEntity
     static void CreateAt(money32 value, const CoordsXYZ& effectPos, bool vertical);
     static void Create(money32 value, const CoordsXYZ& loc);
     void Update();
-    std::pair<rct_string_id, money32> GetStringId() const;
+    std::pair<rct_string_id, money64> GetStringId() const;
 };
 
 struct VehicleCrashParticle : MiscEntity

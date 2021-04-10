@@ -18,7 +18,7 @@ namespace Graph
 {
     void Draw(rct_drawpixelinfo* dpi, uint8_t* history, int32_t count, const ScreenCoordsXY& screenPos);
     void Draw(
-        rct_drawpixelinfo* dpi, const money32* history, const int32_t count, const ScreenCoordsXY& coords,
+        rct_drawpixelinfo* dpi, const money64* history, const int32_t count, const ScreenCoordsXY& coords,
         const int32_t modifier, const int32_t offset);
 } // namespace Graph
 

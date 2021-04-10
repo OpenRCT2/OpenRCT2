@@ -6507,10 +6507,10 @@ static void window_ride_income_invalidate(rct_window* w)
     if (ride == nullptr)
         return;
 
-    w->widgets[WIDX_TITLE].text = STR_ARG_14_STRINGID;
+    w->widgets[WIDX_TITLE].text = STR_ARG_18_STRINGID;
 
     auto ft = Formatter::Common();
-    ft.Increment(14);
+    ft.Increment(18);
     ride->FormatNameTo(ft);
 
     auto rideEntry = ride->GetRideEntry();
@@ -6536,11 +6536,10 @@ static void window_ride_income_invalidate(rct_window* w)
     window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].text = STR_SHOP_ITEM_PRICE_LABEL_ON_RIDE_PHOTO;
     window_ride_income_widgets[WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK].type = WindowWidgetType::Empty;
 
-    window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_ARG_6_CURRENCY2DP;
+    window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_BOTTOM_TOOLBAR_CASH;
     money16 ridePrimaryPrice = ride_get_price(ride);
     ft.Rewind();
-    ft.Increment(6);
-    ft.Add<money32>(ridePrimaryPrice);
+    ft.Add<money64>(ridePrimaryPrice);
     if (ridePrimaryPrice == 0)
         window_ride_income_widgets[WIDX_PRIMARY_PRICE].text = STR_FREE;
 
@@ -6591,7 +6590,9 @@ static void window_ride_income_invalidate(rct_window* w)
 
         // Set secondary item price
         window_ride_income_widgets[WIDX_SECONDARY_PRICE].text = STR_RIDE_SECONDARY_PRICE_VALUE;
-        ft.Add<money32>(ride->price[1]);
+        ft.Rewind();
+        ft.Increment(10);
+        ft.Add<money64>(ride->price[1]);
         if (ride->price[1] == 0)
             window_ride_income_widgets[WIDX_SECONDARY_PRICE].text = STR_FREE;
     }
@@ -6607,7 +6608,7 @@ static void window_ride_income_invalidate(rct_window* w)
 static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
-    money32 profit, costPerHour;
+    money64 profit, costPerHour;
     ShopItem primaryItem, secondaryItem;
 
     WindowDrawWidgets(w, dpi);
@@ -6665,7 +6666,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += 18;
 
     // Income per hour
-    if (ride->income_per_hour != MONEY32_UNDEFINED)
+    if (ride->income_per_hour != MONEY64_UNDEFINED)
     {
         DrawTextBasic(dpi, screenCoords, STR_INCOME_PER_HOUR, &ride->income_per_hour);
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -6678,7 +6679,7 @@ static void window_ride_income_paint(rct_window* w, rct_drawpixelinfo* dpi)
     screenCoords.y += LIST_ROW_HEIGHT;
 
     // Profit per hour
-    if (ride->profit != MONEY32_UNDEFINED)
+    if (ride->profit != MONEY64_UNDEFINED)
     {
         DrawTextBasic(dpi, screenCoords, STR_PROFIT_PER_HOUR, &ride->profit);
         screenCoords.y += LIST_ROW_HEIGHT;

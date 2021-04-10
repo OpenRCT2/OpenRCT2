@@ -131,12 +131,12 @@ void MoneyEffect::Update()
     sprite_remove(this);
 }
 
-std::pair<rct_string_id, money32> MoneyEffect::GetStringId() const
+std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const
 {
     rct_string_id spentStringId = Vertical ? STR_MONEY_EFFECT_SPEND_HIGHP : STR_MONEY_EFFECT_SPEND;
     rct_string_id receiveStringId = Vertical ? STR_MONEY_EFFECT_RECEIVE_HIGHP : STR_MONEY_EFFECT_RECEIVE;
     rct_string_id stringId = receiveStringId;
-    money32 outValue = Value;
+    money64 outValue = Value;
     if (Value < 0)
     {
         outValue *= -1;

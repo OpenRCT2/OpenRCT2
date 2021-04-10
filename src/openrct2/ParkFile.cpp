@@ -317,7 +317,7 @@ namespace OpenRCT2
                 cs.ReadWrite(gScenarioParkRatingWarningDays);
 
                 cs.ReadWrite(gScenarioCompletedCompanyValue);
-                if (gScenarioCompletedCompanyValue == MONEY32_UNDEFINED
+                if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
                     || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
                 {
                     cs.Write("");
@@ -575,7 +575,7 @@ namespace OpenRCT2
                     {
                         for (uint32_t j = 0; j < numTypes; j++)
                         {
-                            gExpenditureTable[i][j] = cs.Read<money32>();
+                            gExpenditureTable[i][j] = cs.Read<money64>();
                         }
                     }
                 }
@@ -652,15 +652,15 @@ namespace OpenRCT2
                     return true;
                 });
 
-                cs.ReadWriteArray(gCashHistory, [&cs](money32& value) {
+                cs.ReadWriteArray(gCashHistory, [&cs](money64& value) {
                     cs.ReadWrite(value);
                     return true;
                 });
-                cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money32& value) {
+                cs.ReadWriteArray(gWeeklyProfitHistory, [&cs](money64& value) {
                     cs.ReadWrite(value);
                     return true;
                 });
-                cs.ReadWriteArray(gParkValueHistory, [&cs](money32& value) {
+                cs.ReadWriteArray(gParkValueHistory, [&cs](money64& value) {
                     cs.ReadWrite(value);
                     return true;
                 });
