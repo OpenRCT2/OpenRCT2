@@ -52,13 +52,13 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y);
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
 static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
 
 static constexpr int32_t CalculatePositionHash(const paint_struct& ps, uint8_t rotation)
 {
-    auto pos = CoordsXY{ static_cast<int16_t>(ps.bounds.x), static_cast<int16_t>(ps.bounds.y) }.Rotate(rotation);
+    auto pos = CoordsXY{ ps.bounds.x, ps.bounds.y }.Rotate(rotation);
     switch (rotation)
     {
         case 0:
@@ -189,8 +189,7 @@ static paint_struct* CreateNormalPaintStruct(
 template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* session)
 {
     // Optimised modified version of viewport_coord_to_map_coord
-    ScreenCoordsXY screenCoord = { static_cast<int16_t>((session->DPI.x) & 0xFFE0),
-                                   static_cast<int16_t>((session->DPI.y - 16) & 0xFFE0) };
+    ScreenCoordsXY screenCoord = { floor2(session->DPI.x, 32), floor2((session->DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -445,8 +444,8 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    int16_t x = ps->x;
-    int16_t y = ps->y;
+    auto x = ps->x;
+    auto y = ps->y;
 
     if (ps->sprite_type == ViewportInteractionItem::Entity)
     {
@@ -522,7 +521,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
     const uint8_t rotation = get_current_rotation();
@@ -608,7 +607,7 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int16_t x, int16_t y)
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y)
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
@@ -700,8 +699,8 @@ paint_struct* PaintAddImageAsParent(
 }
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
+    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
+    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset)
 {
     return PaintAddImageAsParent(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z });
@@ -742,9 +741,9 @@ paint_struct* PaintAddImageAsParent(
 }
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
+    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
+    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
     return PaintAddImageAsParent(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
@@ -769,12 +768,12 @@ paint_struct* PaintAddImageAsParent(
  * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
+    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
+    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
-    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
+    assert(bound_box_length_x > 0);
+    assert(bound_box_length_y > 0);
 
     session->LastPS = nullptr;
     session->LastAttachedPS = nullptr;
@@ -831,12 +830,12 @@ paint_struct* PaintAddImageAsChild(
 }
 
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
+    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
+    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
-    assert(static_cast<uint16_t>(bound_box_length_x) == static_cast<int16_t>(bound_box_length_x));
-    assert(static_cast<uint16_t>(bound_box_length_y) == static_cast<int16_t>(bound_box_length_y));
+    assert(bound_box_length_x > 0);
+    assert(bound_box_length_y > 0);
     return PaintAddImageAsChild(
         session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
@@ -850,7 +849,7 @@ paint_struct* PaintAddImageAsChild(
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
+bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
 {
     auto* previousAttachedPS = session->LastAttachedPS;
     if (previousAttachedPS == nullptr)
@@ -883,7 +882,7 @@ bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int1
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t x, int16_t y)
+bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
 {
     auto* masterPs = session->LastPS;
     if (masterPs == nullptr)
@@ -920,7 +919,7 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int16_t 
  * @param rotation (ebp)
  */
 void PaintFloatingMoneyEffect(
-    paint_session* session, money64 amount, rct_string_id string_id, int16_t y, int16_t z, int8_t y_offsets[], int16_t offset_x,
+    paint_session* session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation)
 {
     auto* ps = session->AllocateStringPaintEntry();

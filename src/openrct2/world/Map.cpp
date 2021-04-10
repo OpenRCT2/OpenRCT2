@@ -93,11 +93,8 @@ uint8_t gMapSelectArrowDirection;
 TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
-int16_t gMapSizeUnits;
-int16_t gMapSizeMinus2;
-int16_t gMapSize;
-int16_t gMapSizeMaxXY;
-int16_t gMapBaseZ;
+int32_t gMapSize;
+int32_t gMapBaseZ;
 
 std::vector<CoordsXY> gMapSelectionTiles;
 std::vector<PeepSpawn> gPeepSpawns;
@@ -108,8 +105,8 @@ bool gClearSmallScenery;
 bool gClearLargeScenery;
 bool gClearFootpath;
 
-uint16_t gLandRemainingOwnershipSales;
-uint16_t gLandRemainingConstructionSales;
+uint32_t gLandRemainingOwnershipSales;
+uint32_t gLandRemainingConstructionSales;
 
 bool gMapLandRightsUpdateSuccess;
 
@@ -119,8 +116,6 @@ static TilePointerIndex<TileElement> _tileIndexStash;
 static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
 static size_t _tileElementsInUseStash;
-static int32_t _mapSizeUnitsStash;
-static int32_t _mapSizeMinus2Stash;
 static int32_t _mapSizeStash;
 static int32_t _currentRotationStash;
 
@@ -128,8 +123,6 @@ void StashMap()
 {
     _tileIndexStash = std::move(_tileIndex);
     _tileElementsStash = std::move(_tileElements);
-    _mapSizeUnitsStash = gMapSizeUnits;
-    _mapSizeMinus2Stash = gMapSizeMinus2;
     _mapSizeStash = gMapSize;
     _currentRotationStash = gCurrentRotation;
     _tileElementsInUseStash = _tileElementsInUse;
@@ -139,8 +132,6 @@ void UnstashMap()
 {
     _tileIndex = std::move(_tileIndexStash);
     _tileElements = std::move(_tileElementsStash);
-    gMapSizeUnits = _mapSizeUnitsStash;
-    gMapSizeMinus2 = _mapSizeMinus2Stash;
     gMapSize = _mapSizeStash;
     gCurrentRotation = _currentRotationStash;
     _tileElementsInUse = _tileElementsInUseStash;
@@ -403,10 +394,7 @@ void map_init(int32_t size)
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
-    gMapSizeUnits = size * 32 - 32;
-    gMapSizeMinus2 = size * 32 - 2;
     gMapSize = size;
-    gMapSizeMaxXY = size * 32 - 33;
     gMapBaseZ = 7;
     map_remove_out_of_range_elements();
     AutoCreateMapAnimations();
@@ -752,7 +740,7 @@ bool map_is_location_valid(const CoordsXY& coords)
 
 bool map_is_edge(const CoordsXY& coords)
 {
-    return (coords.x < 32 || coords.y < 32 || coords.x >= gMapSizeUnits || coords.y >= gMapSizeUnits);
+    return (coords.x < 32 || coords.y < 32 || coords.x >= GetMapSizeUnits() || coords.y >= GetMapSizeUnits());
 }
 
 bool map_can_build_at(const CoordsXYZ& loc)
@@ -938,8 +926,8 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()),
+                            std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -968,8 +956,8 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), static_cast<int32_t>(gMapSizeMaxXY)),
-                            std::min(range.GetBottom(), static_cast<int32_t>(gMapSizeMaxXY)) };
+                            std::min(range.GetRight(), GetMapSizeMaxXY()),
+                            std::min(range.GetBottom(), GetMapSizeMaxXY()) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -1610,7 +1598,7 @@ void map_restore_provisional_elements()
  */
 void map_remove_out_of_range_elements()
 {
-    int32_t mapMaxXY = gMapSizeMaxXY;
+    int32_t mapMaxXY = GetMapSizeMaxXY();
 
     // Ensure that we can remove elements
     //

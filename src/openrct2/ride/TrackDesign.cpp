@@ -2086,8 +2086,6 @@ static void track_design_preview_clear_map()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSizeUnits = 255 * COORDS_XY_STEP;
-    gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize = 256;
 
     // Reserve ~8 elements per tile
