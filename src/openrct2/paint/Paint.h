@@ -48,12 +48,12 @@ enum PAINT_QUADRANT_FLAGS
 
 struct paint_struct_bound_box
 {
-    uint16_t x;
-    uint16_t y;
-    uint16_t z;
-    uint16_t x_end;
-    uint16_t y_end;
-    uint16_t z_end;
+    int32_t x;
+    int32_t y;
+    int32_t z;
+    int32_t x_end;
+    int32_t y_end;
+    int32_t z_end;
 };
 
 struct paint_struct
