@@ -224,7 +224,7 @@ void viewports_invalidate(int32_t left, int32_t top, int32_t right, int32_t bott
  */
 CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 {
-    int16_t height = 0;
+    int32_t height = 0;
 
     uint32_t rotation = get_current_rotation();
     CoordsXY pos{};
@@ -235,7 +235,7 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
-        int16_t max = gMapSizeMinus2;
+        auto max = GetMapSizeMinus2();
         if (pos.x > max && pos.y > max)
         {
             const CoordsXY corr[] = { { -1, -1 }, { 1, -1 }, { 1, 1 }, { -1, 1 } };
@@ -326,10 +326,10 @@ static void viewport_redraw_after_shift(
     }
     else
     {
-        int16_t left = viewport->pos.x;
-        int16_t right = viewport->pos.x + viewport->width;
-        int16_t top = viewport->pos.y;
-        int16_t bottom = viewport->pos.y + viewport->height;
+        auto left = viewport->pos.x;
+        auto right = viewport->pos.x + viewport->width;
+        auto top = viewport->pos.y;
+        auto bottom = viewport->pos.y + viewport->height;
 
         // if moved more than the viewport size
         if (abs(coords.x) < viewport->width && abs(coords.y) < viewport->height)
@@ -340,14 +340,14 @@ static void viewport_redraw_after_shift(
             if (coords.x > 0)
             {
                 // draw left
-                int16_t _right = viewport->pos.x + coords.x;
+                auto _right = viewport->pos.x + coords.x;
                 window_draw_all(dpi, left, top, _right, bottom);
                 left += coords.x;
             }
             else if (coords.x < 0)
             {
                 // draw right
-                int16_t _left = viewport->pos.x + viewport->width + coords.x;
+                auto _left = viewport->pos.x + viewport->width + coords.x;
                 window_draw_all(dpi, _left, top, right, bottom);
                 right += coords.x;
             }
@@ -374,7 +374,7 @@ static void viewport_redraw_after_shift(
 }
 
 static void viewport_shift_pixels(
-    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int16_t x_diff, int16_t y_diff)
+    rct_drawpixelinfo* dpi, rct_window* window, rct_viewport* viewport, int32_t x_diff, int32_t y_diff)
 {
     auto it = window_get_iterator(window);
     for (; it != g_window_list.end(); it++)
@@ -428,8 +428,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    int16_t x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
-    int16_t y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
+    auto x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
+    auto y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
 
     viewport->viewPos = coords;
 
@@ -577,14 +577,14 @@ void viewport_update_position(rct_window* window)
     }
 
     // Clamp to the map maximum value (scenario specific)
-    if (mapCoord.x > gMapSizeMinus2)
+    if (mapCoord.x > GetMapSizeMinus2())
     {
-        mapCoord.x = gMapSizeMinus2;
+        mapCoord.x = GetMapSizeMinus2();
         at_map_edge = 1;
     }
-    if (mapCoord.y > gMapSizeMinus2)
+    if (mapCoord.y > GetMapSizeMinus2())
     {
-        mapCoord.y = gMapSizeMinus2;
+        mapCoord.y = GetMapSizeMinus2();
         at_map_edge = 1;
     }
 
@@ -921,13 +921,13 @@ static void viewport_paint_column(paint_session* session)
  *  ebp: bottom
  */
 void viewport_paint(
-    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom,
+    const rct_viewport* viewport, rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom,
     std::vector<paint_session>* recorded_sessions)
 {
     uint32_t viewFlags = viewport->flags;
-    uint16_t width = right - left;
-    uint16_t height = bottom - top;
-    uint16_t bitmask = viewport->zoom >= 0 ? 0xFFFF & (0xFFFF * viewport->zoom) : 0xFFFF;
+    uint32_t width = right - left;
+    uint32_t height = bottom - top;
+    uint32_t bitmask = viewport->zoom >= 0 ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
 
     width &= bitmask;
     height &= bitmask;
@@ -936,11 +936,11 @@ void viewport_paint(
     right = left + width;
     bottom = top + height;
 
-    int16_t x = static_cast<int16_t>(left - static_cast<int16_t>(viewport->viewPos.x & bitmask));
+    auto x = left - static_cast<int32_t>(viewport->viewPos.x & bitmask);
     x = x / viewport->zoom;
     x += viewport->pos.x;
 
-    int16_t y = static_cast<int16_t>(top - static_cast<int16_t>(viewport->viewPos.y & bitmask));
+    auto y = top - static_cast<int32_t>(viewport->viewPos.y & bitmask);
     y = y / viewport->zoom;
     y += viewport->pos.y;
 
@@ -956,10 +956,10 @@ void viewport_paint(
     dpi1.remX = std::max(0, dpi->x - x);
     dpi1.remY = std::max(0, dpi->y - y);
 
-    // make sure, the compare operation is done in int16_t to avoid the loop becoming an infiniteloop.
+    // make sure, the compare operation is done in int32_t to avoid the loop becoming an infiniteloop.
     // this as well as the [x += 32] in the loop causes signed integer overflow -> undefined behaviour.
-    const int16_t rightBorder = dpi1.x + dpi1.width;
-    const int16_t alignedX = floor2(dpi1.x, 32);
+    auto rightBorder = dpi1.x + dpi1.width;
+    auto alignedX = floor2(dpi1.x, 32);
 
     _paintColumns.clear();
 
@@ -977,8 +977,8 @@ void viewport_paint(
     size_t index = 0;
     if (recorded_sessions != nullptr)
     {
-        const uint16_t columnSize = rightBorder - alignedX;
-        const uint16_t columnCount = (columnSize + 31) / 32;
+        auto columnSize = rightBorder - alignedX;
+        auto columnCount = (columnSize + 31) / 32;
         recorded_sessions->resize(columnCount);
     }
 
@@ -991,17 +991,17 @@ void viewport_paint(
         rct_drawpixelinfo& dpi2 = session->DPI;
         if (x >= dpi2.x)
         {
-            int16_t leftPitch = x - dpi2.x;
+            auto leftPitch = x - dpi2.x;
             dpi2.width -= leftPitch;
             dpi2.bits += leftPitch / dpi2.zoom_level;
             dpi2.pitch += leftPitch / dpi2.zoom_level;
             dpi2.x = x;
         }
 
-        int16_t paintRight = dpi2.x + dpi2.width;
+        auto paintRight = dpi2.x + dpi2.width;
         if (paintRight >= x + 32)
         {
-            int16_t rightPitch = paintRight - x - 32;
+            auto rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
             dpi2.pitch += rightPitch / dpi2.zoom_level;
         }
@@ -1063,8 +1063,8 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
     }
     else
     {
-        int16_t mod_x = mapCoords->x & 0x1F;
-        int16_t mod_y = mapCoords->y & 0x1F;
+        auto mod_x = mapCoords->x & 0x1F;
+        auto mod_y = mapCoords->y & 0x1F;
         if (mod_x <= 16)
         {
             if (mod_y < 16)
@@ -1337,9 +1337,9 @@ static bool is_pixel_present_bmp(
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool is_pixel_present_rle(const uint8_t* esi, int16_t x_start_point, int16_t y_start_point, int32_t round)
+static bool is_pixel_present_rle(const uint8_t* esi, int32_t x_start_point, int32_t y_start_point, int32_t round)
 {
-    uint16_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
+    uint32_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
     const uint8_t* ebx = esi + start_offset;
 
     uint8_t last_data_line = 0;
@@ -1450,8 +1450,8 @@ static bool is_sprite_interacted_with_palette_set(
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
                 /* .bits = */ dpi->bits,
-                /* .x = */ static_cast<int16_t>(dpi->x >> 1),
-                /* .y = */ static_cast<int16_t>(dpi->y >> 1),
+                /* .x = */ dpi->x >> 1,
+                /* .y = */ dpi->y >> 1,
                 /* .height = */ dpi->height,
                 /* .width = */ dpi->width,
                 /* .pitch = */ dpi->pitch,
@@ -1472,8 +1472,8 @@ static bool is_sprite_interacted_with_palette_set(
     }
 
     origin.y += g1->y_offset;
-    int16_t yStartPoint = 0;
-    int16_t height = g1->height;
+    int32_t yStartPoint = 0;
+    int32_t height = g1->height;
     if (dpi->zoom_level != 0)
     {
         if (height % 2)
@@ -1498,7 +1498,7 @@ static bool is_sprite_interacted_with_palette_set(
     }
 
     origin.y = floor2(origin.y, round);
-    int16_t yEndPoint = height;
+    int32_t yEndPoint = height;
     origin.y -= dpi->y;
     if (origin.y < 0)
     {
@@ -1523,8 +1523,8 @@ static bool is_sprite_interacted_with_palette_set(
         }
     }
 
-    int16_t xStartPoint = 0;
-    int16_t xEndPoint = g1->width;
+    int32_t xStartPoint = 0;
+    int32_t xEndPoint = g1->width;
 
     origin.x += g1->x_offset;
     origin.x = floor2(origin.x, round);
@@ -1813,7 +1813,7 @@ std::optional<CoordsXY> screen_get_map_xy(const ScreenCoordsXY& screenCoords, rc
  *
  *  rct2: 0x006894D4
  */
-std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int16_t z)
+std::optional<CoordsXY> screen_get_map_xy_with_z(const ScreenCoordsXY& screenCoords, int32_t z)
 {
     rct_viewport* viewport = viewport_find_from_point(screenCoords);
     if (viewport == nullptr)
@@ -1849,7 +1849,7 @@ std::optional<CoordsXY> screen_get_map_xy_quadrant(const ScreenCoordsXY& screenC
  *
  *  rct2: 0x0068964B
  */
-std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* quadrant)
+std::optional<CoordsXY> screen_get_map_xy_quadrant_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* quadrant)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
     if (!mapCoords)
@@ -1877,7 +1877,7 @@ std::optional<CoordsXY> screen_get_map_xy_side(const ScreenCoordsXY& screenCoord
  *
  *  rct2: 0x006896DC
  */
-std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int16_t z, uint8_t* side)
+std::optional<CoordsXY> screen_get_map_xy_side_with_z(const ScreenCoordsXY& screenCoords, int32_t z, uint8_t* side)
 {
     auto mapCoords = screen_get_map_xy_with_z(screenCoords, z);
     if (!mapCoords)
@@ -1910,7 +1910,7 @@ uint8_t get_current_rotation()
     return rotation_masked;
 }
 
-int16_t get_height_marker_offset()
+int32_t get_height_marker_offset()
 {
     // Height labels in units
     if (gConfigGeneral.show_height_as_units)

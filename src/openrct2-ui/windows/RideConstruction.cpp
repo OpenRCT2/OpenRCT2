@@ -2390,15 +2390,9 @@ static void sub_6CBCE2(
     if (ride == nullptr)
         return;
 
-    int16_t preserveMapSizeUnits = gMapSizeUnits;
-    int16_t preserveMapSizeMinus2 = gMapSizeMinus2;
-    int16_t preserveMapSize = gMapSize;
-    int16_t preserveMapSizeMaxXY = gMapSizeMaxXY;
+    int32_t preserveMapSize = gMapSize;
 
-    gMapSizeUnits = MAXIMUM_TILE_START_XY;
-    gMapSizeMinus2 = ((MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32) + 286;
     gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
-    gMapSizeMaxXY = MAXIMUM_MAP_SIZE_BIG - 1;
 
     auto trackBlock = TrackBlocks[trackType];
     while (trackBlock->index != 255)
@@ -2458,10 +2452,7 @@ static void sub_6CBCE2(
         trackBlock++;
     }
 
-    gMapSizeUnits = preserveMapSizeUnits;
-    gMapSizeMinus2 = preserveMapSizeMinus2;
     gMapSize = preserveMapSize;
-    gMapSizeMaxXY = preserveMapSizeMaxXY;
 
     PaintSessionArrange(session);
     PaintDrawStructs(session);

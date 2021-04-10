@@ -184,7 +184,7 @@ rct_string_id LandSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_coords.x > gMapSizeMaxXY || _coords.y > gMapSizeMaxXY)
+    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
     {
         return STR_OFF_EDGE_OF_MAP;
     }

@@ -33,7 +33,6 @@ rct_sprite* sprite_list = RCT2_ADDRESS(0x010E63BC, rct_sprite);
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
 Ride gRideList[MAX_RIDES];
-int16_t gMapSizeUnits;
 int16_t gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
@@ -212,7 +211,7 @@ TileElement* map_get_first_element_at(const CoordsXY& elementPos)
     return gTileElementTilePointers[tileElementPos.x + tileElementPos.y * 256];
 }
 
-int16_t get_height_marker_offset()
+int32_t get_height_marker_offset()
 {
     return 0;
 }

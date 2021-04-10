@@ -1373,9 +1373,6 @@ static void map_window_increase_map_size()
     }
 
     gMapSize++;
-    gMapSizeUnits = (gMapSize - 1) * 32;
-    gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
-    gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_extend_boundary_surface();
     window_map_init_map();
     window_map_centre_on_view_point();
@@ -1395,9 +1392,6 @@ static void map_window_decrease_map_size()
     }
 
     gMapSize--;
-    gMapSizeUnits = (gMapSize - 1) * 32;
-    gMapSizeMinus2 = (gMapSize * 32) + MAXIMUM_MAP_SIZE_PRACTICAL;
-    gMapSizeMaxXY = ((gMapSize - 1) * 32) - 1;
     map_remove_out_of_range_elements();
     window_map_init_map();
     window_map_centre_on_view_point();
@@ -1575,7 +1569,7 @@ static void map_window_set_pixels(rct_window* w)
 
     for (int32_t i = 0; i < MAXIMUM_MAP_SIZE_TECHNICAL; i++)
     {
-        if (x > 0 && y > 0 && x < gMapSizeUnits && y < gMapSizeUnits)
+        if (x > 0 && y > 0 && x < GetMapSizeUnits() && y < GetMapSizeUnits())
         {
             switch (w->selected_tab)
             {

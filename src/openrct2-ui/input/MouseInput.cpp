@@ -1620,11 +1620,11 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
         }
 
         // Clamp to the map maximum value (scenario specific)
-        if (mapCoord.x > gMapSizeMinus2 || mapCoord.y > gMapSizeMinus2)
+        if (mapCoord.x > GetMapSizeMinus2() || mapCoord.y > GetMapSizeMinus2())
         {
             at_map_edge = 1;
         }
-        if (mapCoord_dy.x > gMapSizeMinus2 || mapCoord_dy.y > gMapSizeMinus2)
+        if (mapCoord_dy.x > GetMapSizeMinus2() || mapCoord_dy.y > GetMapSizeMinus2())
         {
             at_map_edge_dy = 1;
         }

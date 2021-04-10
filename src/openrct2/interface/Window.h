@@ -146,12 +146,12 @@ struct rct_widget
  */
 struct rct_viewport
 {
-    int16_t width;
-    int16_t height;
+    int32_t width;
+    int32_t height;
     ScreenCoordsXY pos;
     ScreenCoordsXY viewPos;
-    int16_t view_width;
-    int16_t view_height;
+    int32_t view_width;
+    int32_t view_height;
     uint32_t flags;
     ZoomLevel zoom;
     uint8_t var_11;
@@ -764,8 +764,8 @@ rct_window* window_get_main();
 void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords);
 void window_rotate_camera(rct_window* w, int32_t direction);
 void window_viewport_get_map_coords_by_cursor(
-    rct_window* w, int16_t* map_x, int16_t* map_y, int16_t* offset_x, int16_t* offset_y);
-void window_viewport_centre_tile_around_cursor(rct_window* w, int16_t map_x, int16_t map_y, int16_t offset_x, int16_t offset_y);
+    rct_window* w, int32_t* map_x, int32_t* map_y, int32_t* offset_x, int32_t* offset_y);
+void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y);
 void window_check_all_valid_zoom();
 void window_zoom_set(rct_window* w, ZoomLevel zoomLevel, bool atCursor);
 void window_zoom_in(rct_window* w, bool atCursor);
@@ -774,7 +774,7 @@ void main_window_zoom(bool zoomIn, bool atCursor);
 
 void window_show_textinput(rct_window* w, rct_widgetindex widgetIndex, uint16_t title, uint16_t text, int32_t value);
 
-void window_draw_all(rct_drawpixelinfo* dpi, int16_t left, int16_t top, int16_t right, int16_t bottom);
+void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);

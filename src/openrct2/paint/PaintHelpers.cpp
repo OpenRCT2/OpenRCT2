@@ -12,8 +12,8 @@
 #include "Paint.h"
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset)
 {
     if (direction & 1)
     {
@@ -30,9 +30,9 @@ paint_struct* PaintAddImageAsParentRotated(
 }
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
+    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
     if (direction & 1)
     {
@@ -49,9 +49,9 @@ paint_struct* PaintAddImageAsParentRotated(
 }
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
-    int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
-    int16_t bound_box_offset_y, int16_t bound_box_offset_z)
+    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
+    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z)
 {
     if (direction & 1)
     {
