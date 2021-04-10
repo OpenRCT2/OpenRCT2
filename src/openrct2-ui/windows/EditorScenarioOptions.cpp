@@ -1316,7 +1316,6 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
  */
 static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    int32_t arg;
     ScreenCoordsXY screenCoords{};
     rct_string_id stringId;
 
@@ -1331,8 +1330,8 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
         // Cost to buy land value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_LAND_COST].left + 1, w->widgets[WIDX_LAND_COST].top };
-        arg = gLandPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        money64 value = gLandPrice;
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &value);
     }
 
     if (w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].type != WindowWidgetType::Empty)
@@ -1345,8 +1344,8 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
         screenCoords = w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].left + 1,
                               w->widgets[WIDX_CONSTRUCTION_RIGHTS_COST].top };
-        arg = gConstructionRightsPrice;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        money64 value = gConstructionRightsPrice;
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &value);
     }
 
     if (w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type != WindowWidgetType::Empty)
@@ -1375,8 +1374,8 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
 
         // Entry price value
         screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_ENTRY_PRICE].left + 1, w->widgets[WIDX_ENTRY_PRICE].top };
-        arg = gParkEntranceFee;
-        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &arg);
+        money64 value = gParkEntranceFee;
+        DrawTextBasic(dpi, screenCoords, STR_CURRENCY_FORMAT_LABEL, &value);
     }
 
     // Climate label

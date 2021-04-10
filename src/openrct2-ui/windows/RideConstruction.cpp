@@ -2329,7 +2329,8 @@ static void window_ride_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
     screenCoords.y += 11;
     if (_currentTrackPrice != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, static_cast<void*>(&_currentTrackPrice), { TextAlignment::CENTRE });
+        money64 value = _currentTrackPrice;
+        DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, &value, { TextAlignment::CENTRE });
     }
 }
 
