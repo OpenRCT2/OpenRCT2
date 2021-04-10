@@ -203,9 +203,9 @@ constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 struct coordinate_focus
 {
     int16_t var_480;
-    int16_t x;        // 0x482
-    int16_t y;        // 0x484 & VIEWPORT_FOCUS_Y_MASK
-    int16_t z;        // 0x486
+    int32_t x;        // 0x482
+    int32_t y;        // 0x484
+    int32_t z;        // 0x486
     uint8_t rotation; // 0x488
     uint8_t zoom;     // 0x489
     int16_t width;
@@ -230,7 +230,6 @@ enum VIEWPORT_FOCUS_TYPE : uint8_t
     VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),
     VIEWPORT_FOCUS_TYPE_SPRITE = (1 << 7)
 };
-#define VIEWPORT_FOCUS_Y_MASK 0x3FFF
 
 struct viewport_focus
 {

@@ -24,13 +24,8 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session* session, const uint16_t x, const uint16_t y)
+void sprite_paint_setup(paint_session* session, int32_t x, int32_t y)
 {
-    if ((x & 0xe000) | (y & 0xe000))
-    {
-        return;
-    }
-
     if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;

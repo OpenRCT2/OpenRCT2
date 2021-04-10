@@ -778,7 +778,7 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
 struct ride_overall_view {
-    int16_t x, y, z;
+    int32_t x, y, z;
     uint8_t zoom;
 };
 
@@ -1641,7 +1641,7 @@ static void window_ride_init_viewport(rct_window* w)
     if (w->viewport != nullptr)
     {
         if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && (focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK) == w->viewport_focus_coordinates.y
+            && focus.coordinate.y == w->viewport_focus_coordinates.y
             && focus.coordinate.z == w->viewport_focus_coordinates.z
             && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation
             && focus.coordinate.zoom == w->viewport_focus_coordinates.zoom && focus.coordinate.width == w->width
@@ -1677,7 +1677,7 @@ static void window_ride_init_viewport(rct_window* w)
         int32_t height = view_widget->height() - 1;
         viewport_create(
             w, screenPos, width, height, focus.coordinate.zoom,
-            { focus.coordinate.x, focus.coordinate.y & VIEWPORT_FOCUS_Y_MASK, focus.coordinate.z },
+            { focus.coordinate.x, focus.coordinate.y, focus.coordinate.z },
             focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
 
         w->flags |= WF_NO_SCROLLING;

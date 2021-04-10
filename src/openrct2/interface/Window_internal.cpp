@@ -30,7 +30,7 @@ void rct_window::ScrollToViewport()
     else
     {
         newCoords.x = viewport_focus_coordinates.x;
-        newCoords.y = viewport_focus_coordinates.y & VIEWPORT_FOCUS_Y_MASK;
+        newCoords.y = viewport_focus_coordinates.y;
         newCoords.z = viewport_focus_coordinates.z;
     }
 
