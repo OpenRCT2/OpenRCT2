@@ -1004,7 +1004,7 @@ void tile_element_remove(TileElement* tileElement)
     (tileElement - 1)->SetLastForTile(true);
     tileElement->base_height = MAX_ELEMENT_HEIGHT;
 
-    if ((tileElement + 1) == &_tileElements[_tileElements.size()])
+    if (tileElement == &_tileElements.back())
     {
         _tileElements.pop_back();
     }
