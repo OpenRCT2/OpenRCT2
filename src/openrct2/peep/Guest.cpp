@@ -2321,7 +2321,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
     {
         chosen_train = ride->stations[CurrentRideStation].TrainAtStation;
     }
-    if (chosen_train == RideStation::NO_TRAIN || chosen_train >= MAX_VEHICLES_PER_RIDE)
+    if (chosen_train >= MAX_VEHICLES_PER_RIDE)
     {
         return false;
     }

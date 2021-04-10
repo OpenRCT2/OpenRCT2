@@ -1640,7 +1640,7 @@ int32_t scenario_save(const utf8* path, int32_t flags)
     return result;
 }
 
-class ParkFileImporter : public IParkImporter
+class ParkFileImporter final : public IParkImporter
 {
 private:
 #ifdef __clang__

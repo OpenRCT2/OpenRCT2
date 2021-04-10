@@ -36,7 +36,7 @@ struct Vehicle;
 // The max number of different types of vehicle.
 // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
 #define MAX_VEHICLES_PER_RIDE_ENTRY 4
-constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255;
+constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 #define NUM_COLOUR_SCHEMES 4
 #define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
