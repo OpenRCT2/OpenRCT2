@@ -82,6 +82,7 @@ public:
             std::is_same_v<typename std::remove_cv<TSpecified>::type, int16_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, int32_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, money32> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, money64> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, rct_string_id> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint16_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint32_t> ||

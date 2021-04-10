@@ -286,7 +286,7 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
-            ft.Add<money32>(GetStaffWage(GetSelectedStaffType()));
+            ft.Add<money64>(GetStaffWage(GetSelectedStaffType()));
             DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ width - 155, 32 }, STR_COST_PER_MONTH, ft);
         }
 

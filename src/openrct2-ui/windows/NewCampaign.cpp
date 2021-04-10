@@ -353,12 +353,12 @@ public:
         screenCoords = windowPos + ScreenCoordsXY{ 14, 60 };
 
         // Price per week
-        money32 pricePerWeek = AdvertisingCampaignPricePerWeek[campaign.campaign_type];
+        money64 pricePerWeek = AdvertisingCampaignPricePerWeek[campaign.campaign_type];
         DrawTextBasic(&dpi, screenCoords, STR_MARKETING_COST_PER_WEEK, &pricePerWeek);
         screenCoords.y += 13;
 
         // Total price
-        money32 totalPrice = AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks;
+        money64 totalPrice = AdvertisingCampaignPricePerWeek[campaign.campaign_type] * campaign.no_weeks;
         DrawTextBasic(&dpi, screenCoords, STR_MARKETING_TOTAL_COST, &totalPrice);
     }
 };

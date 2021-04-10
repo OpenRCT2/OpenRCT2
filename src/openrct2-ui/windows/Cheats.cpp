@@ -616,7 +616,7 @@ public:
         {
             auto colour = colours[1];
             auto ft = Formatter();
-            ft.Add<money32>(_moneySpinnerValue);
+            ft.Add<money64>(_moneySpinnerValue);
             if (IsWidgetDisabled(WIDX_MONEY_SPINNER))
             {
                 colour |= COLOUR_FLAG_INSET;

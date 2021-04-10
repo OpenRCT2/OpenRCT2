@@ -515,7 +515,7 @@ static void window_finances_summary_invalidate(rct_window* w)
     window_finances_set_pressed_tab(w);
     auto ft = Formatter::Common();
     ft.Increment(6);
-    ft.Add<money32>(gBankLoan);
+    ft.Add<money64>(gBankLoan);
 }
 
 /**
@@ -566,9 +566,9 @@ static void window_finances_summary_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Objective related financial information
     if (gScenarioObjective.Type == OBJECTIVE_MONTHLY_FOOD_INCOME)
     {
-        money32 lastMonthProfit = finance_get_last_month_shop_profit();
+        auto lastMonthProfit = finance_get_last_month_shop_profit();
         ft = Formatter();
-        ft.Add<money32>(lastMonthProfit);
+        ft.Add<money64>(lastMonthProfit);
         DrawTextBasic(
             dpi, w->windowPos + ScreenCoordsXY{ 280, 279 }, STR_LAST_MONTH_PROFIT_FROM_FOOD_DRINK_MERCHANDISE_SALES_LABEL, ft);
     }
@@ -621,17 +621,17 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         screenCoords.y += 14;
 
         // Month expenditures
-        money32 profit = 0;
+        money64 profit = 0;
         for (int32_t j = 0; j < static_cast<int32_t>(ExpenditureType::Count); j++)
         {
-            money32 expenditure = gExpenditureTable[i][j];
+            auto expenditure = gExpenditureTable[i][j];
             if (expenditure != 0)
             {
                 profit += expenditure;
                 const rct_string_id format = expenditure >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE
                                                               : STR_FINANCES_SUMMARY_EXPENDITURE_VALUE;
                 ft = Formatter();
-                ft.Add<money32>(expenditure);
+                ft.Add<money64>(expenditure);
                 DrawTextBasic(
                     dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
             }
@@ -642,7 +642,7 @@ static void window_finances_summary_scrollpaint(rct_window* w, rct_drawpixelinfo
         // Month profit
         const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
         ft = Formatter();
-        ft.Add<money32>(profit);
+        ft.Add<money64>(profit);
         DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
 
         gfx_fill_rect(
@@ -713,7 +713,7 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Cash (less loan)
-    money32 cashLessLoan = gCash - gBankLoan;
+    auto cashLessLoan = gCash - gBankLoan;
 
     DrawTextBasic(
         dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
@@ -728,8 +728,8 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
     int32_t yAxisScale = 0;
     for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gCashHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gCashHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
@@ -743,12 +743,12 @@ static void window_finances_financial_graph_paint(rct_window* w, rct_drawpixelin
 
     // Y axis labels
     auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-    money32 axisBase;
+    money64 axisBase;
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        auto axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
+        ft.Add<money64>(axisValue);
         DrawTextBasic(
             dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
             { FontSpriteBase::SMALL, TextAlignment::RIGHT });
@@ -821,7 +821,7 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Park value
-    money32 parkValue = gParkValue;
+    auto parkValue = gParkValue;
     DrawTextBasic(dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 }, STR_FINANCES_PARK_VALUE, &parkValue);
 
     // Graph
@@ -831,8 +831,8 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
     int32_t yAxisScale = 0;
     for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gParkValueHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gParkValueHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 255 pixels
@@ -846,12 +846,12 @@ static void window_finances_park_value_graph_paint(rct_window* w, rct_drawpixeli
 
     // Y axis labels
     auto coords = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-    money32 axisBase;
+    money64 axisBase;
     for (axisBase = MONEY(24, 00); axisBase >= MONEY(0, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        auto axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
+        ft.Add<money64>(axisValue);
         DrawTextBasic(
             dpi, coords + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
             { FontSpriteBase::SMALL, TextAlignment::RIGHT });
@@ -923,7 +923,7 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     auto graphBottomRight = w->windowPos + ScreenCoordsXY{ pageWidget->right - 4, pageWidget->bottom - 4 };
 
     // Weekly profit
-    money32 weeklyPofit = gCurrentProfit;
+    auto weeklyPofit = gCurrentProfit;
     DrawTextBasic(
         dpi, graphTopLeft - ScreenCoordsXY{ 0, 11 },
         weeklyPofit >= 0 ? STR_FINANCES_WEEKLY_PROFIT_POSITIVE : STR_FINANCES_WEEKLY_PROFIT_LOSS, &weeklyPofit);
@@ -935,8 +935,8 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
     int32_t yAxisScale = 0;
     for (int32_t i = 0; i < 64; i++)
     {
-        money32 balance = gWeeklyProfitHistory[i];
-        if (balance == MONEY32_UNDEFINED)
+        auto balance = gWeeklyProfitHistory[i];
+        if (balance == MONEY64_UNDEFINED)
             continue;
 
         // Modifier balance then keep halving until less than 127 pixels
@@ -950,12 +950,12 @@ static void window_finances_profit_graph_paint(rct_window* w, rct_drawpixelinfo*
 
     // Y axis labels
     auto screenPos = graphTopLeft + ScreenCoordsXY{ 18, 14 };
-    money32 axisBase;
+    money64 axisBase;
     for (axisBase = MONEY(12, 00); axisBase >= MONEY(-12, 00); axisBase -= MONEY(6, 00))
     {
-        money32 axisValue = axisBase << yAxisScale;
+        money64 axisValue = axisBase << yAxisScale;
         auto ft = Formatter();
-        ft.Add<money32>(axisValue);
+        ft.Add<money64>(axisValue);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 70, 0 }, STR_FINANCES_FINANCIAL_GRAPH_CASH_VALUE, ft,
             { FontSpriteBase::SMALL, TextAlignment::RIGHT });
@@ -1117,7 +1117,7 @@ static void window_finances_marketing_paint(rct_window* w, rct_drawpixelinfo* dp
         if (campaignButton->type != WindowWidgetType::Empty)
         {
             // Draw button text
-            money32 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
+            money64 pricePerWeek = AdvertisingCampaignPricePerWeek[i];
             DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
             DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, &pricePerWeek);
 

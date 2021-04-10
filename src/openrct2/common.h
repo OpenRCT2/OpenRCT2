@@ -141,6 +141,12 @@ using money64 = fixed64_1dp;
 #define MONEY_FREE MONEY(0, 00)
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
+#define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))
+
+static constexpr money64 ToMoney64(money32 value)
+{
+    return value == MONEY32_UNDEFINED ? MONEY64_UNDEFINED : value;
+}
 
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;

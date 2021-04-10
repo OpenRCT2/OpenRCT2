@@ -321,7 +321,7 @@ public:
         {
             gCashHistory[i] = _s6.balance_history[i];
             gWeeklyProfitHistory[i] = _s6.weekly_profit_history[i];
-            gParkValueHistory[i] = _s6.park_value_history[i];
+            gParkValueHistory[i] = ToMoney64(_s6.park_value_history[i]);
         }
 
         gScenarioCompletedCompanyValue = _s6.completed_company_value;
