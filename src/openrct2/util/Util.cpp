@@ -725,7 +725,7 @@ std::vector<uint8_t> Gzip(const void* data, size_t dataLen)
         do
         {
             output.resize(output.size() + nextBlockSize);
-            strm.avail_out = nextBlockSize;
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
             strm.next_out = &output[output.size() - nextBlockSize];
             ret = deflate(&strm, flush);
             if (ret == Z_STREAM_ERROR)
@@ -770,7 +770,7 @@ std::vector<uint8_t> Ungzip(const void* data, size_t dataLen)
         do
         {
             output.resize(output.size() + nextBlockSize);
-            strm.avail_out = nextBlockSize;
+            strm.avail_out = static_cast<uInt>(nextBlockSize);
             strm.next_out = &output[output.size() - nextBlockSize];
             ret = inflate(&strm, flush);
             if (ret == Z_STREAM_ERROR)

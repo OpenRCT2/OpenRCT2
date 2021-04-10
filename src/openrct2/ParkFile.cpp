@@ -520,7 +520,7 @@ namespace OpenRCT2
                         }
 
                         auto data = File::ReadAllBytes(ori->Path);
-                        cs.Write<uint32_t>(data.size());
+                        cs.Write<uint32_t>(static_cast<uint32_t>(data.size()));
                         cs.Write(data.data(), data.size());
                         count++;
                     }
