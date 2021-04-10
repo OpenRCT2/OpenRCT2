@@ -218,13 +218,12 @@ struct sprite_focus
     int16_t var_480;
     uint16_t sprite_id; // 0x482
     uint8_t pad_484;
-    uint8_t type; // 0x485 & VIEWPORT_FOCUS_TYPE_MASK
+    uint8_t type; // 0x485
     uint16_t pad_486;
     uint8_t rotation; // 0x488
     uint8_t zoom;     // 0x489
 };
 
-#define VIEWPORT_FOCUS_TYPE_MASK 0xC0
 enum VIEWPORT_FOCUS_TYPE : uint8_t
 {
     VIEWPORT_FOCUS_TYPE_COORDINATE = (1 << 6),

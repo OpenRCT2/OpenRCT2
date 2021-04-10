@@ -32,7 +32,7 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = { { 6,
  *  rct2: 0x0088ABA4
  */
 static void paint_crooked_house_structure(
-    paint_session* session, uint8_t direction, uint8_t x_offset, uint8_t y_offset, uint32_t segment, int32_t height)
+    paint_session* session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
 {
     const TileElement* original_tile_element = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -85,14 +85,14 @@ static void paint_crooked_house(
     switch (trackSequence)
     {
         case 3:
-            paint_crooked_house_structure(session, direction, 32, 224, 0, height);
+            paint_crooked_house_structure(session, direction, 32, -32, 0, height);
             break;
         // case 5: sub_88ABA4(direction, 0, 224, 1, height); break;
         case 6:
-            paint_crooked_house_structure(session, direction, 224, 32, 4, height);
+            paint_crooked_house_structure(session, direction, -32, 32, 4, height);
             break;
         case 7:
-            paint_crooked_house_structure(session, direction, 224, 224, 2, height);
+            paint_crooked_house_structure(session, direction, -32, -32, 2, height);
             break;
             // case 8: sub_88ABA4(rideIndex, 224, 0, 3, height); break;
     }

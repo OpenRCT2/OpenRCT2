@@ -1561,10 +1561,10 @@ static void window_ride_init_viewport(rct_window* w)
 
     int32_t eax = w->viewport_focus_coordinates.var_480 - 1;
 
-    union
+    struct
     {
-        sprite_focus sprite;
-        coordinate_focus coordinate;
+        sprite_focus sprite{};
+        coordinate_focus coordinate{};
     } focus;
 
     focus.coordinate.x = 0;
@@ -1640,8 +1640,7 @@ static void window_ride_init_viewport(rct_window* w)
 
     if (w->viewport != nullptr)
     {
-        if (focus.coordinate.x == w->viewport_focus_coordinates.x
-            && focus.coordinate.y == w->viewport_focus_coordinates.y
+        if (focus.coordinate.x == w->viewport_focus_coordinates.x && focus.coordinate.y == w->viewport_focus_coordinates.y
             && focus.coordinate.z == w->viewport_focus_coordinates.z
             && focus.coordinate.rotation == w->viewport_focus_coordinates.rotation
             && focus.coordinate.zoom == w->viewport_focus_coordinates.zoom && focus.coordinate.width == w->width
@@ -1676,9 +1675,8 @@ static void window_ride_init_viewport(rct_window* w)
         int32_t width = view_widget->width() - 1;
         int32_t height = view_widget->height() - 1;
         viewport_create(
-            w, screenPos, width, height, focus.coordinate.zoom,
-            { focus.coordinate.x, focus.coordinate.y, focus.coordinate.z },
-            focus.sprite.type & VIEWPORT_FOCUS_TYPE_MASK, focus.sprite.sprite_id);
+            w, screenPos, width, height, focus.coordinate.zoom, { focus.coordinate.x, focus.coordinate.y, focus.coordinate.z },
+            focus.sprite.type, focus.sprite.sprite_id);
 
         w->flags |= WF_NO_SCROLLING;
         w->Invalidate();
