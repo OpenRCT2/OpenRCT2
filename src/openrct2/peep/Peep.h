@@ -736,10 +736,7 @@ public: // Peep
     void Pickup();
     void PickupAbort(int32_t old_x);
     std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
-    static Peep* Generate(const CoordsXYZ& coords);
-    void RemoveFromQueue();
     void RemoveFromRide();
-    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;
     std::string GetName() const;
@@ -748,12 +745,6 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next peep_pathfind_choose_direction call.
     void ResetPathfindGoal();
-    uint64_t GetItemFlags() const;
-    void SetItemFlags(uint64_t itemFlags);
-    void RemoveAllItems();
-    void RemoveItem(ShopItem item);
-    void GiveItem(ShopItem item);
-    bool HasItem(ShopItem peepItem) const;
 
     void SetDestination(const CoordsXY& coords);
     void SetDestination(const CoordsXY& coords, int32_t tolerance);
@@ -816,6 +807,17 @@ public:
     void HandleEasterEggName();
     int32_t GetEasterEggNameId() const;
     void UpdateEasterEggInteractions();
+    void InsertNewThought(PeepThoughtType thought_type, uint8_t thought_arguments);
+    static Guest* Generate(const CoordsXYZ& coords);
+    bool UpdateQueuePosition(PeepActionType previous_action);
+    void RemoveFromQueue();
+
+    uint64_t GetItemFlags() const;
+    void SetItemFlags(uint64_t itemFlags);
+    void RemoveAllItems();
+    void RemoveItem(ShopItem item);
+    void GiveItem(ShopItem item);
+    bool HasItem(ShopItem peepItem) const;
 
 private:
     void UpdateRide();
@@ -1006,7 +1008,6 @@ extern uint32_t gNextGuestNumber;
 
 extern uint8_t gPeepWarningThrottle[16];
 
-Peep* try_get_guest(uint16_t spriteIndex);
 int32_t peep_get_staff_count();
 void peep_update_all();
 void peep_problem_warnings_update();
@@ -1015,8 +1016,8 @@ void peep_update_crowd_noise();
 void peep_update_days_in_queue();
 void peep_applause();
 void peep_thought_set_format_args(const rct_peep_thought* thought, Formatter& ft);
-int32_t get_peep_face_sprite_small(Peep* peep);
-int32_t get_peep_face_sprite_large(Peep* peep);
+int32_t get_peep_face_sprite_small(Guest* peep);
+int32_t get_peep_face_sprite_large(Guest* peep);
 void peep_sprite_remove(Peep* peep);
 
 void peep_window_state_update(Peep* peep);

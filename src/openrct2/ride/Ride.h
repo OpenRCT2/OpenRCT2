@@ -26,9 +26,9 @@
 struct IObjectManager;
 class Formatter;
 class StationObject;
-struct Peep;
 struct Ride;
 struct RideTypeDescriptor;
+struct Guest;
 struct Staff;
 struct Vehicle;
 
@@ -437,8 +437,8 @@ public:
     int32_t GetTotalQueueLength() const;
     int32_t GetMaxQueueTime() const;
 
-    void QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep);
-    Peep* GetQueueHeadGuest(StationIndex stationIndex) const;
+    void QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep);
+    Guest* GetQueueHeadGuest(StationIndex stationIndex) const;
 
     void SetNameToDefault();
     std::string GetName() const;
@@ -1140,7 +1140,7 @@ int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 void ride_measurements_update();
 void ride_breakdown_add_news_item(Ride* ride);
-Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
+Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
 void ride_construction_invalidate_current_track();
 std::optional<CoordsXYZ> sub_6C683D(

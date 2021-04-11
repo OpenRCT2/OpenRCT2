@@ -128,7 +128,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         return MakeResult(GameActions::Status::NoFreeElements, STR_TOO_MANY_STAFF_IN_GAME);
     }
 
-    Peep* newPeep = CreateEntity<Staff>();
+    Staff* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {
         // Too many peeps exist already.
@@ -149,13 +149,11 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
         newPeep->WalkingFrameNum = 0;
         newPeep->ActionSpriteType = PeepActionSpriteType::None;
         newPeep->PathCheckOptimisation = 0;
-        newPeep->OutsideOfPark = false;
         newPeep->PeepFlags = 0;
-        newPeep->PaidToEnter = 0;
-        newPeep->PaidOnRides = 0;
-        newPeep->PaidOnFood = 0;
-        newPeep->PaidOnSouvenirs = 0;
-        newPeep->FavouriteRide = RIDE_ID_NULL;
+        newPeep->StaffLawnsMown = 0;
+        newPeep->StaffGardensWatered = 0;
+        newPeep->StaffLitterSwept = 0;
+        newPeep->StaffBinsEmptied = 0;
         newPeep->StaffOrders = _staffOrders;
 
         // We search for the first available Id for a given staff type

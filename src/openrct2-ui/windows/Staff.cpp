@@ -1034,24 +1034,6 @@ void window_staff_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dpi)
     ebx += eax;
 
     gfx_draw_sprite(&clip_dpi, ImageId(ebx, peep->TshirtColour, peep->TrousersColour), screenCoords);
-
-    // If holding a balloon
-    if (ebx >= 0x2A1D && ebx < 0x2A3D)
-    {
-        gfx_draw_sprite(&clip_dpi, ImageId(ebx + 32, peep->BalloonColour), screenCoords);
-    }
-
-    // If holding umbrella
-    if (ebx >= 0x2BBD && ebx < 0x2BDD)
-    {
-        gfx_draw_sprite(&clip_dpi, ImageId(ebx + 32, peep->UmbrellaColour), screenCoords);
-    }
-
-    // If wearing hat
-    if (ebx >= 0x29DD && ebx < 0x29FD)
-    {
-        gfx_draw_sprite(&clip_dpi, ImageId(ebx + 32, peep->HatColour), screenCoords);
-    }
 }
 
 /**

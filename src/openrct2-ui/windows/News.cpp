@@ -246,10 +246,11 @@ public:
                         // If normal peep set sprite to normal (no food)
                         // If staff set sprite to staff sprite
                         auto spriteType = PeepSpriteType::Normal;
-                        if (peep->Is<Staff>())
+                        auto* staff = peep->As<Staff>();
+                        if (staff != nullptr)
                         {
-                            spriteType = peep->SpriteType;
-                            if (peep->AssignedStaffType == StaffType::Entertainer)
+                            spriteType = staff->SpriteType;
+                            if (staff->AssignedStaffType == StaffType::Entertainer)
                             {
                                 clipCoords.y += 3;
                             }

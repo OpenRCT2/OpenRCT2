@@ -601,8 +601,9 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
                 return;
 
             auto clipCoords = ScreenCoordsXY{ 10, 19 };
-
-            if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
+            auto* staff = peep->As<Staff>();
+            auto* guest = peep->As<Guest>();
+            if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
             {
                 clipCoords.y += 3;
             }
@@ -614,17 +615,20 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
             gfx_draw_sprite(&cliped_dpi, image_id, clipCoords);
 
-            if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+            if (guest != nullptr)
             {
-                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->BalloonColour), clipCoords);
-            }
-            else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
-            {
-                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->UmbrellaColour), clipCoords);
-            }
-            else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
-            {
-                gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, peep->HatColour), clipCoords);
+                if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->BalloonColour), clipCoords);
+                }
+                else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->UmbrellaColour), clipCoords);
+                }
+                else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
+                {
+                    gfx_draw_sprite(&cliped_dpi, ImageId(image_id_base + 32, guest->HatColour), clipCoords);
+                }
             }
             break;
         }

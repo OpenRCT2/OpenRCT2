@@ -493,15 +493,19 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
     }
 
-    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK && peep->GuestIsLostCountdown < 90)
+    auto* guest = peep->As<Guest>();
+    if (guest == nullptr)
+        return 8;
+
+    if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK && guest->GuestIsLostCountdown < 90)
     {
         return 8;
     }
 
-    if (peep->HasItem(ShopItem::Map))
+    if (guest->HasItem(ShopItem::Map))
         return 7;
 
-    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+    if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return 7;
 
     return 5;
