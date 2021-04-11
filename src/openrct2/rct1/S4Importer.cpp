@@ -845,7 +845,7 @@ private:
         dst->lift_hill_speed = 5;
 
         dst->music = OBJECT_ENTRY_INDEX_NULL;
-        if (!GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
         {
             if (_gameVersion == FILE_VERSION_RCT1)
             {
