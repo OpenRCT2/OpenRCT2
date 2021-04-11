@@ -1349,6 +1349,13 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     return origTrackType;
 }
 
+static constexpr std::string_view _stationStyles[] = {
+    "rct2.station.plain",         "rct2.station.wooden", "rct2.station.canvastent", "rct2.station.castlegrey",
+    "rct2.station.castlebrown",   "rct2.station.jungle", "rct2.station.log",        "rct2.station.classical",
+    "rct2.station.abstract",      "rct2.station.snow",   "rct2.station.pagoda",     "rct2.station.space",
+    "openrct2.station.noentrance"
+};
+
 static constexpr std::string_view _musicStyles[] = { "rct2.music.dodgems",  "rct2.music.fairground", "rct2.music.roman",
                                                      "rct2.music.oriental", "rct2.music.martian",    "rct2.music.jungle",
                                                      "rct2.music.egyptian", "rct2.music.toyland",    "", // CIRCUS
@@ -1360,6 +1367,15 @@ static constexpr std::string_view _musicStyles[] = { "rct2.music.dodgems",  "rct
                                                      "rct2.music.custom2",  "rct2.music.medieval",   "rct2.music.urban",
                                                      "rct2.music.organ",    "rct2.music.mechanical", "rct2.music.modern",
                                                      "rct2.music.pirate",   "rct2.music.rock3",      "rct2.music.candy" };
+
+std::string_view GetStationIdentifierFromStyle(uint8_t style)
+{
+    if (style < std::size(_stationStyles))
+    {
+        return _stationStyles[style];
+    }
+    return {};
+}
 
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
 {
@@ -1411,19 +1427,10 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1.ll.edge.skyscraperb");
 
     // Stations
-    objectList.SetObject(ObjectType::Station, 0, "rct2.station.plain");
-    objectList.SetObject(ObjectType::Station, 1, "rct2.station.wooden");
-    objectList.SetObject(ObjectType::Station, 2, "rct2.station.canvastent");
-    objectList.SetObject(ObjectType::Station, 3, "rct2.station.castlegrey");
-    objectList.SetObject(ObjectType::Station, 4, "rct2.station.castlebrown");
-    objectList.SetObject(ObjectType::Station, 5, "rct2.station.jungle");
-    objectList.SetObject(ObjectType::Station, 6, "rct2.station.log");
-    objectList.SetObject(ObjectType::Station, 7, "rct2.station.classical");
-    objectList.SetObject(ObjectType::Station, 8, "rct2.station.abstract");
-    objectList.SetObject(ObjectType::Station, 9, "rct2.station.snow");
-    objectList.SetObject(ObjectType::Station, 10, "rct2.station.pagoda");
-    objectList.SetObject(ObjectType::Station, 11, "rct2.station.space");
-    objectList.SetObject(ObjectType::Station, 12, "openrct2.station.noentrance");
+    for (size_t i = 0; i < std::size(_stationStyles); i++)
+    {
+        objectList.SetObject(ObjectType::Station, static_cast<ObjectEntryIndex>(i), _stationStyles[i]);
+    }
 
     // Music
     for (size_t i = 0; i < std::size(_musicStyles); i++)

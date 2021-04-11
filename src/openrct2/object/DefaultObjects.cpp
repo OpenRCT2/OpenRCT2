@@ -121,7 +121,7 @@ const std::string_view DefaultSelectedObjects[] = {
 };
 
 const std::string_view DesignerSelectedObjects[] = {
-    // An initial default selection + all standard footpaths
+    // An initial default selection + all standard footpaths + all standard stations
     "rct2.scgtrees", // Scenery: Trees
     "rct2.scgshrub", // Scenery: Shrubs and Ornaments
     "rct2.scggardn", // Scenery: Gardens
@@ -137,4 +137,16 @@ const std::string_view DesignerSelectedObjects[] = {
     "rct2.pathcrzy", // Footpath: Crazy Paving Footpath
     "rct2.pathdirt", // Footpath: Dirt Footpath
     "rct2.pathash",  // Footpath: Ash Footpath
+    "rct2.station.plain",
+    "rct2.station.wooden",
+    "rct2.station.canvastent",
+    "rct2.station.castlegrey",
+    "rct2.station.castlebrown",
+    "rct2.station.jungle",
+    "rct2.station.log",
+    "rct2.station.classical",
+    "rct2.station.abstract",
+    "rct2.station.snow",
+    "rct2.station.pagoda",
+    "rct2.station.space",
 };

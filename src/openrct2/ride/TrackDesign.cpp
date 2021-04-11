@@ -1887,7 +1887,14 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
         return false;
 
     ride->custom_name = {};
-    ride->entrance_style = td6->entrance_style;
+
+    auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
+    {
+        ride->entrance_style = gLastEntranceStyle;
+    }
 
     for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
     {

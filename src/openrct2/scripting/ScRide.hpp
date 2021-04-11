@@ -411,13 +411,13 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t stationStyle_get() const
+        ObjectEntryIndex stationStyle_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->entrance_style : 0;
         }
 
-        void stationStyle_set(uint8_t value)
+        void stationStyle_set(ObjectEntryIndex value)
         {
             ThrowIfGameStateNotMutable();
             auto ride = GetRide();
@@ -427,13 +427,13 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        uint8_t music_get() const
+        ObjectEntryIndex music_get() const
         {
             auto ride = GetRide();
             return ride != nullptr ? ride->music : 0;
         }
 
-        void music_set(uint8_t value)
+        void music_set(ObjectEntryIndex value)
         {
             ThrowIfGameStateNotMutable();
             auto ride = GetRide();
