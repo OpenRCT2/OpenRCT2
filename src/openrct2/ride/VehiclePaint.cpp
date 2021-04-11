@@ -3140,7 +3140,7 @@ template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int3
     int32_t y = vehicle->y;
     int32_t z = vehicle->z;
 
-    if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE)
+    if (vehicle->IsCrashedVehicle)
     {
         uint32_t ebx = 22965 + vehicle->animation_frame;
         PaintAddImageAsParent(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2);

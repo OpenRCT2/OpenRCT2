@@ -4270,6 +4270,7 @@ static Vehicle* vehicle_create_car(
     vehicle->num_peeps = 0;
     vehicle->next_free_seat = 0;
     vehicle->BoatLocation.setNull();
+    vehicle->IsCrashedVehicle = false;
     return vehicle;
 }
 

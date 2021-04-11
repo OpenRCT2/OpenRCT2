@@ -1068,7 +1068,7 @@ void S6Exporter::ExportEntityCommonProperties(RCT12SpriteBase* dst, const Sprite
     dst->next_in_quadrant = SPRITE_INDEX_NULL;
     dst->sprite_height_negative = src->sprite_height_negative;
     dst->sprite_index = src->sprite_index;
-    dst->flags = src->flags;
+    dst->flags = 0;
     dst->x = src->x;
     dst->y = src->y;
     dst->z = src->z;
@@ -1167,6 +1167,7 @@ template<> void S6Exporter::ExportEntity(RCT2SpriteVehicle* dst, const Vehicle* 
     dst->colours_extended = src->colours_extended;
     dst->seat_rotation = src->seat_rotation;
     dst->target_seat_rotation = src->target_seat_rotation;
+    dst->flags = src->IsCrashedVehicle ? RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE : 0;
 }
 
 template<> void S6Exporter::ExportEntity(RCT2SpritePeep* dst, const Guest* src)

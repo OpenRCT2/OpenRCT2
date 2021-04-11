@@ -1401,7 +1401,6 @@ private:
 
     void ImportEntityCommonProperties(SpriteBase* dst, const RCT12SpriteBase* src)
     {
-        dst->flags = src->flags;
         dst->sprite_direction = src->sprite_direction;
         dst->sprite_width = src->sprite_width;
         dst->sprite_height_negative = src->sprite_height_negative;
@@ -2877,6 +2876,7 @@ template<> void S4Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& srcBase
 
     dst->num_peeps = src->num_peeps;
     dst->next_free_seat = src->next_free_seat;
+    dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 }
 
 template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
