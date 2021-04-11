@@ -79,6 +79,7 @@ Vehicle* cable_lift_segment_create(
     current->num_peeps = 0;
     current->next_free_seat = 0;
     current->BoatLocation.setNull();
+    current->IsCrashedVehicle = false;
     return current;
 }
 

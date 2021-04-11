@@ -197,7 +197,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         COMPARE_FIELD(SpriteBase, Type);
         COMPARE_FIELD(SpriteBase, sprite_index);
-        COMPARE_FIELD(SpriteBase, flags);
         COMPARE_FIELD(SpriteBase, x);
         COMPARE_FIELD(SpriteBase, y);
         COMPARE_FIELD(SpriteBase, z);
@@ -392,6 +391,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, target_seat_rotation);
         COMPARE_FIELD(Vehicle, BoatLocation.x);
         COMPARE_FIELD(Vehicle, BoatLocation.y);
+        COMPARE_FIELD(Vehicle, IsCrashedVehicle);
     }
 
     void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const

@@ -1512,7 +1512,6 @@ public:
         dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
-        dst->flags = src->flags;
         dst->x = src->x;
         dst->y = src->y;
         dst->z = src->z;
@@ -1666,6 +1665,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->colours_extended = src->colours_extended;
     dst->seat_rotation = src->seat_rotation;
     dst->target_seat_rotation = src->target_seat_rotation;
+    dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 }
 
 template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)

@@ -132,7 +132,6 @@ static void CompareSpriteDataCommon(const SpriteBase& left, const SpriteBase& ri
 {
     COMPARE_FIELD(Type);
     COMPARE_FIELD(sprite_index);
-    COMPARE_FIELD(flags);
     COMPARE_FIELD(x);
     COMPARE_FIELD(y);
     COMPARE_FIELD(z);
@@ -336,6 +335,7 @@ static void CompareSpriteDataVehicle(const Vehicle& left, const Vehicle& right)
     COMPARE_FIELD(colours_extended);
     COMPARE_FIELD(seat_rotation);
     COMPARE_FIELD(target_seat_rotation);
+    COMPARE_FIELD(IsCrashedVehicle);
 }
 
 static void CompareSpriteDataLitter(const Litter& left, const Litter& right)
