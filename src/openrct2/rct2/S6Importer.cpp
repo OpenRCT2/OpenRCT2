@@ -760,7 +760,7 @@ public:
         }
 
         auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
-        if (!GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        if (GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
         {
             musicStyle = src->music;
         }
@@ -768,11 +768,11 @@ public:
 
         // In SV7, "plain" entrances are invisible.
         auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
-        if (!_isSV7 && !GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+        if (!_isSV7 && GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
         {
             entranceStyle = src->entrance_style;
         }
-        dst->entrance_style = src->entrance_style;
+        dst->entrance_style = entranceStyle;
 
         dst->vehicle_change_timeout = src->vehicle_change_timeout;
         dst->num_block_brakes = src->num_block_brakes;
