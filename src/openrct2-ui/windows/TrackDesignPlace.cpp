@@ -497,9 +497,8 @@ static void window_track_place_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Price
     if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        DrawTextBasic(
-            dpi, w->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, &_window_track_place_last_cost,
-            { TextAlignment::CENTRE });
+        money64 value = _window_track_place_last_cost;
+        DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, &value, { TextAlignment::CENTRE });
     }
 }
 
