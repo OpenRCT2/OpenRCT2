@@ -18,7 +18,6 @@
 struct TileElement;
 enum class ViewportInteractionItem : uint8_t;
 
-#pragma pack(push, 1)
 struct attached_paint_struct
 {
     uint32_t image_id;
@@ -34,10 +33,6 @@ struct attached_paint_struct
     uint8_t pad_0D;
     attached_paint_struct* next;
 };
-#ifdef PLATFORM_32BIT
-// TODO: drop packing from this when all rendering is done.
-assert_struct_size(attached_paint_struct, 0x12);
-#endif
 
 enum PAINT_QUADRANT_FLAGS
 {
@@ -81,21 +76,16 @@ struct paint_struct
     int32_t map_y;
     TileElement* tileElement;
 };
-#ifdef PLATFORM_32BIT
-// TODO: drop packing from this when all rendering is done.
-assert_struct_size(paint_struct, 0x34);
-#endif
 
 struct paint_string_struct
 {
-    rct_string_id string_id;   // 0x00
-    paint_string_struct* next; // 0x02
-    int32_t x;                 // 0x06
-    int32_t y;                 // 0x08
-    uint32_t args[4];          // 0x0A
-    uint8_t* y_offsets;        // 0x1A
+    rct_string_id string_id;
+    paint_string_struct* next;
+    int32_t x;
+    int32_t y;
+    uint32_t args[4];
+    uint8_t* y_offsets;
 };
-#pragma pack(pop)
 
 union paint_entry
 {

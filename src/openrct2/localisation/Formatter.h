@@ -72,8 +72,8 @@ public:
 
     template<typename TSpecified, typename TDeduced> Formatter& Add(TDeduced value)
     {
-        static_assert(sizeof(TSpecified) <= sizeof(uintptr_t), "Type too large");
-        static_assert(sizeof(TDeduced) <= sizeof(uintptr_t), "Type too large");
+        static_assert(sizeof(TSpecified) <= sizeof(uint64_t), "Type too large");
+        static_assert(sizeof(TDeduced) <= sizeof(uint64_t), "Type too large");
 
         // clang-format off
         static_assert(
@@ -91,14 +91,14 @@ public:
         );
         // clang-format on
 
-        uintptr_t convertedValue;
+        uint64_t convertedValue;
         if constexpr (std::is_integral_v<TSpecified>)
         {
-            convertedValue = static_cast<uintptr_t>(value);
+            convertedValue = static_cast<uint64_t>(value);
         }
         else
         {
-            convertedValue = reinterpret_cast<uintptr_t>(value);
+            convertedValue = reinterpret_cast<uint64_t>(value);
         }
         std::memcpy(CurrentBuf, &convertedValue, sizeof(TSpecified));
         Increment(sizeof(TSpecified));
