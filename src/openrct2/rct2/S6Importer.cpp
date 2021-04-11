@@ -759,15 +759,21 @@ public:
             }
         }
 
-        dst->music = src->music;
-
-        auto entranceStyle = src->entrance_style;
-        // In SV7, "plain" entrances are invisible.
-        if (_isSV7 && entranceStyle == RCT12_STATION_STYLE_PLAIN)
+        auto musicStyle = OBJECT_ENTRY_INDEX_NULL;
+        if (!GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
         {
-            entranceStyle = RCT12_STATION_STYLE_INVISIBLE;
+            musicStyle = src->music;
         }
-        dst->entrance_style = entranceStyle;
+        dst->music = musicStyle;
+
+        // In SV7, "plain" entrances are invisible.
+        auto entranceStyle = OBJECT_ENTRY_INDEX_NULL;
+        if (!_isSV7 && !GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+        {
+            entranceStyle = src->entrance_style;
+        }
+        dst->entrance_style = src->entrance_style;
+
         dst->vehicle_change_timeout = src->vehicle_change_timeout;
         dst->num_block_brakes = src->num_block_brakes;
         dst->lift_hill_speed = src->lift_hill_speed;

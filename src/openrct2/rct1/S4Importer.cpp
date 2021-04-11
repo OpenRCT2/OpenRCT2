@@ -844,25 +844,33 @@ private:
         // RCT1 used 5mph / 8 km/h for every lift hill
         dst->lift_hill_speed = 5;
 
-        if (_gameVersion == FILE_VERSION_RCT1)
+        dst->music = OBJECT_ENTRY_INDEX_NULL;
+        if (!GetRideTypeDescriptor(dst->type).HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
         {
-            // Original RCT had no music settings, take default style
-            dst->music = GetRideTypeDescriptor(dst->type).DefaultMusic;
-
-            // Only merry-go-round and dodgems had music and used
-            // the same flag as synchronise stations for the option to enable it
-            if (src->type == RCT1_RIDE_TYPE_MERRY_GO_ROUND || src->type == RCT1_RIDE_TYPE_DODGEMS)
+            if (_gameVersion == FILE_VERSION_RCT1)
             {
-                if (src->depart_flags & RCT1_RIDE_DEPART_PLAY_MUSIC)
+                // Original RCT had no music settings, take default style
+                auto style = GetStyleFromMusicIdentifier(GetRideTypeDescriptor(dst->type).DefaultMusic);
+                if (style)
                 {
-                    dst->depart_flags &= ~RCT1_RIDE_DEPART_PLAY_MUSIC;
-                    dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+                    dst->music = *style;
+                }
+
+                // Only merry-go-round and dodgems had music and used
+                // the same flag as synchronise stations for the option to enable it
+                if (src->type == RCT1_RIDE_TYPE_MERRY_GO_ROUND || src->type == RCT1_RIDE_TYPE_DODGEMS)
+                {
+                    if (src->depart_flags & RCT1_RIDE_DEPART_PLAY_MUSIC)
+                    {
+                        dst->depart_flags &= ~RCT1_RIDE_DEPART_PLAY_MUSIC;
+                        dst->lifecycle_flags |= RIDE_LIFECYCLE_MUSIC;
+                    }
                 }
             }
-        }
-        else
-        {
-            dst->music = src->music;
+            else
+            {
+                dst->music = src->music;
+            }
         }
 
         if (src->operating_mode == RCT1_RIDE_MODE_POWERED_LAUNCH)
@@ -998,8 +1006,20 @@ private:
                 dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
                 dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
             }
+        }
+
+        dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
+        if (dst->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
+        {
             // Entrance styles were introduced with AA. They correspond directly with those in RCT2.
-            dst->entrance_style = src->entrance_style;
+            if (_gameVersion == FILE_VERSION_RCT1)
+            {
+                dst->entrance_style = 0; // plain entrance
+            }
+            else
+            {
+                dst->entrance_style = src->entrance_style;
+            }
         }
 
         if (_gameVersion < FILE_VERSION_RCT1_LL && dst->type == RIDE_TYPE_MERRY_GO_ROUND)

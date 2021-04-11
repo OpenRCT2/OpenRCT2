@@ -91,6 +91,16 @@ public:
         return loadedObject;
     }
 
+    ObjectEntryIndex GetLoadedObjectEntryIndex(std::string_view identifier) override
+    {
+        const auto* obj = GetLoadedObject(ObjectEntryDescriptor(identifier));
+        if (obj != nullptr)
+        {
+            return GetLoadedObjectEntryIndex(obj);
+        }
+        return OBJECT_ENTRY_INDEX_NULL;
+    }
+
     ObjectEntryIndex GetLoadedObjectEntryIndex(const Object* object) override
     {
         ObjectEntryIndex result = OBJECT_ENTRY_INDEX_NULL;

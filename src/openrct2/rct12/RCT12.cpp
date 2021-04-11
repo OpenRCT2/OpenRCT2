@@ -1349,6 +1349,28 @@ RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType)
     return origTrackType;
 }
 
+static constexpr std::string_view _musicStyles[] = { "rct2.music.dodgems",  "rct2.music.fairground", "rct2.music.roman",
+                                                     "rct2.music.oriental", "rct2.music.martian",    "rct2.music.jungle",
+                                                     "rct2.music.egyptian", "rct2.music.toyland",    "", // CIRCUS
+                                                     "rct2.music.space",    "rct2.music.horror",     "rct2.music.techno",
+                                                     "rct2.music.gentle",   "rct2.music.summer",     "rct2.music.water",
+                                                     "rct2.music.wildwest", "rct2.music.jurassic",   "rct2.music.rock1",
+                                                     "rct2.music.ragtime",  "rct2.music.fantasy",    "rct2.music.rock2",
+                                                     "rct2.music.ice",      "rct2.music.snow",       "rct2.music.custom1",
+                                                     "rct2.music.custom2",  "rct2.music.medieval",   "rct2.music.urban",
+                                                     "rct2.music.organ",    "rct2.music.mechanical", "rct2.music.modern",
+                                                     "rct2.music.pirate",   "rct2.music.rock3",      "rct2.music.candy" };
+
+std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
+{
+    auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);
+    if (it != std::end(_musicStyles))
+    {
+        return std::distance(std::begin(_musicStyles), it);
+    }
+    return {};
+}
+
 void RCT12AddDefaultObjects(ObjectList& objectList)
 {
     // Surfaces
@@ -1404,37 +1426,11 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
     objectList.SetObject(ObjectType::Station, 12, "openrct2.station.noentrance");
 
     // Music
-    objectList.SetObject(ObjectType::Music, 0, "rct2.music.dodgems");
-    objectList.SetObject(ObjectType::Music, 1, "rct2.music.fairground");
-    objectList.SetObject(ObjectType::Music, 2, "rct2.music.roman");
-    objectList.SetObject(ObjectType::Music, 3, "rct2.music.oriental");
-    objectList.SetObject(ObjectType::Music, 4, "rct2.music.martian");
-    objectList.SetObject(ObjectType::Music, 5, "rct2.music.jungle");
-    objectList.SetObject(ObjectType::Music, 6, "rct2.music.egyptian");
-    objectList.SetObject(ObjectType::Music, 7, "rct2.music.toyland");
-    // Original ID: 8 was circus
-    objectList.SetObject(ObjectType::Music, 9, "rct2.music.space");
-    objectList.SetObject(ObjectType::Music, 10, "rct2.music.horror");
-    objectList.SetObject(ObjectType::Music, 11, "rct2.music.techno");
-    objectList.SetObject(ObjectType::Music, 12, "rct2.music.gentle");
-    objectList.SetObject(ObjectType::Music, 13, "rct2.music.summer");
-    objectList.SetObject(ObjectType::Music, 14, "rct2.music.water");
-    objectList.SetObject(ObjectType::Music, 15, "rct2.music.wildwest");
-    objectList.SetObject(ObjectType::Music, 16, "rct2.music.jurassic");
-    objectList.SetObject(ObjectType::Music, 17, "rct2.music.rock1");
-    objectList.SetObject(ObjectType::Music, 18, "rct2.music.ragtime");
-    objectList.SetObject(ObjectType::Music, 19, "rct2.music.fantasy");
-    objectList.SetObject(ObjectType::Music, 20, "rct2.music.rock2");
-    objectList.SetObject(ObjectType::Music, 21, "rct2.music.ice");
-    objectList.SetObject(ObjectType::Music, 22, "rct2.music.snow");
-    objectList.SetObject(ObjectType::Music, 23, "rct2.music.custom1");
-    objectList.SetObject(ObjectType::Music, 24, "rct2.music.custom2");
-    objectList.SetObject(ObjectType::Music, 25, "rct2.music.medieval");
-    objectList.SetObject(ObjectType::Music, 26, "rct2.music.urban");
-    objectList.SetObject(ObjectType::Music, 27, "rct2.music.organ");
-    objectList.SetObject(ObjectType::Music, 28, "rct2.music.mechanical");
-    objectList.SetObject(ObjectType::Music, 29, "rct2.music.modern");
-    objectList.SetObject(ObjectType::Music, 30, "rct2.music.pirate");
-    objectList.SetObject(ObjectType::Music, 31, "rct2.music.rock3");
-    objectList.SetObject(ObjectType::Music, 32, "rct2.music.candy");
+    for (size_t i = 0; i < std::size(_musicStyles); i++)
+    {
+        if (!_musicStyles[i].empty())
+        {
+            objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
+        }
+    }
 }

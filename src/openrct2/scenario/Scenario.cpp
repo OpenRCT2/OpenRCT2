@@ -31,6 +31,7 @@
 #include "../network/network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../rct1/RCT1.h"
@@ -152,7 +153,15 @@ void scenario_begin()
     park_calculate_size();
     map_count_remaining_land_rights();
     Staff::ResetStats();
-    gLastEntranceStyle = 0;
+
+    auto& objManager = GetContext()->GetObjectManager();
+    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
+    {
+        // Fall back to first entrance object
+        gLastEntranceStyle = 0;
+    }
+
     gMarketingCampaigns.clear();
     gParkRatingCasualtyPenalty = 0;
 
