@@ -128,7 +128,7 @@ StationIndex gRideEntranceExitPlaceStationIndex;
 uint8_t gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
 
-uint8_t gLastEntranceStyle;
+ObjectEntryIndex gLastEntranceStyle;
 
 // Static function declarations
 Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);

@@ -1105,7 +1105,7 @@ extern uint8_t gRideEntranceExitPlaceDirection;
 
 extern bool gGotoStartPlacementMode;
 
-extern uint8_t gLastEntranceStyle;
+extern ObjectEntryIndex gLastEntranceStyle;
 
 int32_t ride_get_count();
 void ride_init_all();
