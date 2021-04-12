@@ -1,5 +1,4 @@
-#!/bin/bash
-set -e
+#!/bin/bash -e
 
 # Ensure we are in root directory
 if [[ $(uname) == "Darwin" ]]; then
