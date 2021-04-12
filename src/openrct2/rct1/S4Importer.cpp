@@ -69,7 +69,7 @@ using namespace OpenRCT2;
 class EntryList
 {
 private:
-    std::vector<const char*> _entries;
+    std::vector<std::string> _entries;
 
 public:
     size_t GetCount() const
@@ -77,20 +77,22 @@ public:
         return _entries.size();
     }
 
-    const std::vector<const char*>& GetEntries() const
+    const std::vector<std::string>& GetEntries() const
     {
         return _entries;
     }
 
-    ObjectEntryIndex GetOrAddEntry(const char* entryName)
+    ObjectEntryIndex GetOrAddEntry(std::string_view identifier)
     {
-        auto entryIndex = Collections::IndexOf(_entries, entryName, true);
-        if (entryIndex == SIZE_MAX)
+        for (size_t i = 0; i < _entries.size(); i++)
         {
-            entryIndex = _entries.size();
-            _entries.push_back(entryName);
+            if (_entries[i] == identifier)
+            {
+                return static_cast<ObjectEntryIndex>(i);
+            }
         }
-        return static_cast<ObjectEntryIndex>(entryIndex);
+        _entries.emplace_back(identifier);
+        return static_cast<ObjectEntryIndex>(_entries.size() - 1);
     }
 
     void AddRange(std::initializer_list<const char*> initializerList)
@@ -387,25 +389,16 @@ private:
     {
         // Add default scenery groups
         _sceneryGroupEntries.AddRange({
-            "SCGTREES",
-            "SCGSHRUB",
-            "SCGGARDN",
-            "SCGFENCE",
-            "SCGWALLS",
-            "SCGPATHX",
+            "rct2.scgtrees",
+            "rct2.scgshrub",
+            "rct2.scggardn",
+            "rct2.scgfence",
+            "rct2.scgwalls",
+            "rct2.scgpathx",
         });
 
         // Add default footpaths
-        _pathEntries.AddRange({
-            "TARMAC  ",
-            "TARMACG ",
-            "TARMACB ",
-            "PATHCRZY",
-            "PATHSPCE",
-            "PATHDIRT",
-            "PATHASH ",
-            "ROAD    ",
-        });
+        _pathEntries.AddRange({ "rct1.path.tarmac", "rct1.path.dirt", "rct1.path.crazy", "rct1.path.tile.pink" });
     }
 
     void AddAvailableEntriesFromResearchList()
@@ -519,11 +512,11 @@ private:
             if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == OBJECT_ENTRY_INDEX_NULL)
                 continue;
 
-            std::vector<const char*> objects = RCT1::GetSceneryObjects(sceneryTheme);
-            for (const char* objectName : objects)
+            auto objects = RCT1::GetSceneryObjects(sceneryTheme);
+            for (auto objectName : objects)
             {
                 auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                auto foundObject = objectRepository.FindObjectLegacy(objectName);
+                auto foundObject = objectRepository.FindObject(objectName);
                 if (foundObject != nullptr)
                 {
                     ObjectType objectType = foundObject->ObjectEntry.GetType();
@@ -556,8 +549,7 @@ private:
 
     void AddEntryForWater()
     {
-        const char* entryName;
-
+        std::string_view entryName;
         if (_gameVersion < FILE_VERSION_RCT1_LL)
         {
             entryName = RCT1::GetWaterObject(RCT1_WATER_CYAN);
@@ -566,7 +558,6 @@ private:
         {
             entryName = RCT1::GetWaterObject(_s4.water_colour);
         }
-
         _waterEntry.GetOrAddEntry(entryName);
     }
 
@@ -575,8 +566,8 @@ private:
         assert(rideType < std::size(_rideTypeToRideEntryMap));
         if (_rideTypeToRideEntryMap[rideType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetRideTypeObject(rideType);
-            if (!String::Equals(entryName, "        "))
+            auto entryName = RCT1::GetRideTypeObject(rideType);
+            if (!entryName.empty())
             {
                 auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                 _rideTypeToRideEntryMap[rideType] = entryIndex;
@@ -589,8 +580,8 @@ private:
         assert(vehicleType < std::size(_vehicleTypeToRideEntryMap));
         if (_vehicleTypeToRideEntryMap[vehicleType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetVehicleObject(vehicleType);
-            if (!String::Equals(entryName, "        "))
+            auto entryName = RCT1::GetVehicleObject(vehicleType);
+            if (!entryName.empty())
             {
                 auto entryIndex = _rideEntries.GetOrAddEntry(entryName);
                 _vehicleTypeToRideEntryMap[vehicleType] = entryIndex;
@@ -606,7 +597,7 @@ private:
         assert(smallSceneryType < std::size(_smallSceneryTypeToEntryMap));
         if (_smallSceneryTypeToEntryMap[smallSceneryType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
+            auto entryName = RCT1::GetSmallSceneryObject(smallSceneryType);
             auto entryIndex = _smallSceneryEntries.GetOrAddEntry(entryName);
 
             _smallSceneryTypeToEntryMap[smallSceneryType] = entryIndex;
@@ -618,7 +609,7 @@ private:
         assert(largeSceneryType < std::size(_largeSceneryTypeToEntryMap));
         if (_largeSceneryTypeToEntryMap[largeSceneryType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
+            auto entryName = RCT1::GetLargeSceneryObject(largeSceneryType);
             auto entryIndex = _largeSceneryEntries.GetOrAddEntry(entryName);
 
             _largeSceneryTypeToEntryMap[largeSceneryType] = entryIndex;
@@ -630,7 +621,7 @@ private:
         assert(wallType < std::size(_wallTypeToEntryMap));
         if (_wallTypeToEntryMap[wallType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetWallObject(wallType);
+            auto entryName = RCT1::GetWallObject(wallType);
             auto entryIndex = _wallEntries.GetOrAddEntry(entryName);
 
             _wallTypeToEntryMap[wallType] = entryIndex;
@@ -642,10 +633,10 @@ private:
         assert(pathType < std::size(_pathTypeToEntryMap));
         if (_pathTypeToEntryMap[pathType] == OBJECT_ENTRY_INDEX_NULL)
         {
-            const char* entryName = RCT1::GetPathObject(pathType);
-            if (!String::Equals(entryName, "        "))
+            auto identifier = RCT1::GetPathObject(pathType);
+            if (!identifier.empty())
             {
-                auto entryIndex = _pathEntries.GetOrAddEntry(entryName);
+                auto entryIndex = _pathEntries.GetOrAddEntry(identifier);
                 _pathTypeToEntryMap[pathType] = entryIndex;
             }
         }
@@ -661,7 +652,7 @@ private:
             uint8_t normalisedPathAdditionType = RCT1::NormalisePathAddition(pathAdditionType);
             if (_pathAdditionTypeToEntryMap[normalisedPathAdditionType] == OBJECT_ENTRY_INDEX_NULL)
             {
-                const char* entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
+                auto entryName = RCT1::GetPathAddtionObject(normalisedPathAdditionType);
                 auto entryIndex = _pathAdditionEntries.GetOrAddEntry(entryName);
 
                 _pathAdditionTypeToEntryMap[normalisedPathAdditionType] = entryIndex;
@@ -680,7 +671,7 @@ private:
         }
         else
         {
-            const char* entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
+            auto entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
             if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
             {
                 Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
@@ -1509,14 +1500,13 @@ private:
         AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
     }
 
-    void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<const char*>& objectNames)
+    void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
     {
-        for (const auto objectName : objectNames)
+        for (const auto& objectName : objectNames)
         {
-            rct_object_entry entry{};
-            entry.flags = ((static_cast<uint8_t>(ObjectSourceGame::RCT2) << 4) & 0xF0) | (EnumValue(objectType) & 0x0F);
-            entry.SetName(objectName);
-            objectList.Add(ObjectEntryDescriptor(entry));
+            auto descriptor = ObjectEntryDescriptor(objectName);
+            descriptor.Type = objectType;
+            objectList.Add(descriptor);
         }
     }
 
@@ -1532,18 +1522,18 @@ private:
         AppendRequiredObjects(result, ObjectType::SceneryGroup, _sceneryGroupEntries);
         AppendRequiredObjects(
             result, ObjectType::Banners,
-            std::vector<const char*>({
-                "BN1     ",
-                "BN2     ",
-                "BN3     ",
-                "BN4     ",
-                "BN5     ",
-                "BN6     ",
-                "BN7     ",
-                "BN8     ",
-                "BN9     ",
+            std::vector<std::string>({
+                "rct2.bn1",
+                "rct2.bn2",
+                "rct2.bn3",
+                "rct2.bn4",
+                "rct2.bn5",
+                "rct2.bn6",
+                "rct2.bn7",
+                "rct2.bn8",
+                "rct2.bn9",
             }));
-        AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<const char*>({ "PKENT1  " }));
+        AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.pkent1" }));
         AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
         RCT12AddDefaultObjects(result);
         return result;

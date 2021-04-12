@@ -414,7 +414,15 @@ private:
 
     bool AddItem(const ObjectRepositoryItem& item)
     {
-        auto conflict = FindObject(&item.ObjectEntry);
+        const ObjectRepositoryItem* conflict{};
+        if (item.ObjectEntry.name[0] != '\0')
+        {
+            conflict = FindObject(&item.ObjectEntry);
+        }
+        if (conflict == nullptr)
+        {
+            conflict = FindObject(item.Identifier);
+        }
         if (conflict == nullptr)
         {
             size_t index = _items.size();

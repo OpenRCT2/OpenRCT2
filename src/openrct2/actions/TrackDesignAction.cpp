@@ -87,7 +87,7 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
         return MakeResult(GameActions::Status::InvalidParameters);
     }
 
-    const rct_object_entry* rideEntryObject = &_td.vehicle_object;
+    const rct_object_entry* rideEntryObject = &_td.vehicle_object.Entry;
 
     ObjectType entryType;
     ObjectEntryIndex entryIndex;
@@ -150,7 +150,7 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     res->Position.z = _loc.z;
     res->Expenditure = ExpenditureType::RideConstruction;
 
-    const rct_object_entry* rideEntryObject = &_td.vehicle_object;
+    const rct_object_entry* rideEntryObject = &_td.vehicle_object.Entry;
 
     ObjectType entryType;
     ObjectEntryIndex entryIndex;

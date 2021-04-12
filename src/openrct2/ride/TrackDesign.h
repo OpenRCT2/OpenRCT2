@@ -115,7 +115,7 @@ struct TrackDesign
     uint8_t track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint8_t track_support_colour[RCT12_NUM_COLOUR_SCHEMES];
     uint32_t flags2;
-    rct_object_entry vehicle_object;
+    ObjectEntryDescriptor vehicle_object;
     uint8_t space_required_x;
     uint8_t space_required_y;
     uint8_t vehicle_additional_colour[RCT2_MAX_CARS_PER_TRAIN];

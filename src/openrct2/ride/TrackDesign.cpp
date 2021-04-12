@@ -94,7 +94,7 @@ rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
 
     // Note we are only copying rct_object_entry in size and
     // not the extended as we don't need the chunk size.
-    std::memcpy(&vehicle_object, object->GetObjectEntry(), sizeof(rct_object_entry));
+    vehicle_object = ObjectEntryDescriptor(*object->GetObjectEntry());
 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
@@ -590,7 +590,7 @@ void TrackDesign::Serialise(DataSerialiser& stream)
     stream << DS_TAG(track_rail_colour);
     stream << DS_TAG(track_support_colour);
     stream << DS_TAG(flags2);
-    stream << DS_TAG(vehicle_object);
+    stream << DS_TAG(vehicle_object.Entry);
     stream << DS_TAG(space_required_x);
     stream << DS_TAG(space_required_y);
     stream << DS_TAG(vehicle_additional_colour);
@@ -630,7 +630,7 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
     object_manager_unload_all_objects();
 
     // Load ride object
-    rct_object_entry* rideEntry = &td6->vehicle_object;
+    rct_object_entry* rideEntry = &td6->vehicle_object.Entry;
     object_manager_load_object(rideEntry);
 
     // Load scenery objects
@@ -1870,7 +1870,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     ObjectType entry_type;
     ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
+    if (!find_object_in_entry_group(&td6->vehicle_object.Entry, &entry_type, &entry_index))
     {
         entry_index = OBJECT_ENTRY_INDEX_NULL;
     }
@@ -1944,7 +1944,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     if (resultCost != MONEY32_UNDEFINED)
     {
-        if (!find_object_in_entry_group(&td6->vehicle_object, &entry_type, &entry_index))
+        if (!find_object_in_entry_group(&td6->vehicle_object.Entry, &entry_type, &entry_index))
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }

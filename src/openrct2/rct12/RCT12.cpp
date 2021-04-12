@@ -1440,4 +1440,11 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
             objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
         }
     }
+
+    // Path railings
+    objectList.SetObject(ObjectType::FootpathRailings, 0, "rct2.railings.wood");
+    objectList.SetObject(ObjectType::FootpathRailings, 1, "rct2.railings.concrete");
+    objectList.SetObject(ObjectType::FootpathRailings, 2, "rct2.railings.space");
+    objectList.SetObject(ObjectType::FootpathRailings, 3, "rct2.railings.black");
+    objectList.SetObject(ObjectType::FootpathRailings, 4, "rct2.railings.brown");
 }
