@@ -13,6 +13,8 @@
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
 
+class FootpathRailingsObject;
+
 enum
 {
     PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
@@ -109,6 +111,7 @@ enum
 {
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
     FOOTPATH_ENTRY_FLAG_IS_QUEUE = (1 << 3),
+    FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS = (1 << 4),
 };
 
 enum
@@ -199,7 +202,7 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
 int32_t entrance_get_directions(const TileElement* tileElement);
 
 PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex);
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex);
+FootpathRailingsObject* get_path_railings_entry(PathRailingsIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

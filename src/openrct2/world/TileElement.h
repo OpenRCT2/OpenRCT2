@@ -330,9 +330,6 @@ public:
     uint8_t GetAdditionStatus() const;
     void SetAdditionStatus(uint8_t newStatus);
 
-    bool ShouldDrawPathOverSupports() const;
-    void SetShouldDrawPathOverSupports(bool on);
-
     bool IsLevelCrossing(const CoordsXY& coords) const;
 };
 assert_struct_size(PathElement, 16);

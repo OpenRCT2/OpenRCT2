@@ -104,10 +104,11 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
 
-     { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
-     { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
-     { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
-     { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
+    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
+    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
+    { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
+    { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
+    { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      false },
 };
 
 #pragma region Widgets

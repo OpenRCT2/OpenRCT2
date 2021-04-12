@@ -42,6 +42,7 @@ enum class ObjectType : uint8_t
     TerrainEdge,
     Station,
     Music,
+    FootpathRailings,
 
     Count,
     None = 255

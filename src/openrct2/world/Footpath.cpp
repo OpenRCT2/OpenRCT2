@@ -20,6 +20,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object/FootpathObject.h"
+#include "../object/FootpathRailingsObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
@@ -1668,7 +1669,8 @@ PathSurfaceEntry* PathElement::GetSurfaceEntry() const
 
 PathRailingsEntry* PathElement::GetRailingEntry() const
 {
-    return get_path_railings_entry(GetRailingEntryIndex());
+    return nullptr;
+    // return get_path_railings_entry(GetRailingEntryIndex());
 }
 
 void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
@@ -1690,16 +1692,6 @@ void PathElement::SetQueueBannerDirection(uint8_t direction)
 {
     type &= ~FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK;
     type |= (direction << 6);
-}
-
-bool PathElement::ShouldDrawPathOverSupports() const
-{
-    return (GetRailingEntry()->flags & RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS);
-}
-
-void PathElement::SetShouldDrawPathOverSupports(bool on)
-{
-    log_verbose("Setting 'draw path over supports' to %d", static_cast<size_t>(on));
 }
 
 /**
@@ -2268,16 +2260,10 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
     return result;
 }
 
-PathRailingsEntry* get_path_railings_entry(PathRailingsIndex entryIndex)
+FootpathRailingsObject* get_path_railings_entry(PathRailingsIndex entryIndex)
 {
-    PathRailingsEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
-    if (obj != nullptr)
-    {
-        result = (static_cast<FootpathObject*>(obj))->GetPathRailingsEntry();
-    }
-    return result;
+    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex));
 }
 
 ride_id_t PathElement::GetRideIndex() const
