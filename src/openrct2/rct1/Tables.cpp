@@ -1256,35 +1256,35 @@ namespace RCT1
     {
         static constexpr const char * map[] =
         {
-            "rct1.path.tarmac",         // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
-            "rct1.aa.path.space",       // RCT1_FOOTPATH_TYPE_QUEUE_RED
-            "rct1.path.dirt",           // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
-            "rct1.aa.tarmac.green",     // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
+            "rct1.path.tarmac",             // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
+            "rct1.aa.path.space",           // RCT1_FOOTPATH_TYPE_QUEUE_RED
+            "rct1.path.dirt",               // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+            "rct1.aa.path.tarmac.green",    // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "rct1.path.tarmac",         // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
-            "rct1.aa.path.space",       // RCT1_FOOTPATH_TYPE_TARMAC_RED
-            "rct1.aa.tarmac.brown",     // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
-            "rct1.aa.tarmac.green",     // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+            "rct1.path.tarmac",             // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "rct1.aa.path.space",           // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "rct1.aa.path.tarmac.brown",    // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "rct1.aa.path.tarmac.green",    // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
-            "rct1.path.dirt",           // RCT1_FOOTPATH_TYPE_DIRT_RED
-            "rct1.aa.path.ash",         // RCT1_FOOTPATH_TYPE_DIRT_BLACK
-            "",
-            "",
-
-            "rct1.path.crazy",          // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
-            "",
+            "rct1.path.dirt",               // RCT1_FOOTPATH_TYPE_DIRT_RED
+            "rct1.aa.path.ash",             // RCT1_FOOTPATH_TYPE_DIRT_BLACK
             "",
             "",
 
-            "rct2.road",                // RCT1_FOOTPATH_TYPE_ROADS
+            "rct1.path.crazy",              // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
             "",
             "",
             "",
 
-            "rct1.path.tile.pink",      // RCT1_FOOTPATH_TYPE_TILE_PINK
-            "rct1.aa.path.tile.grey",   // RCT1_FOOTPATH_TYPE_TILE_GRAY
-            "rct1.ll.path.tile.red",    // RCT1_FOOTPATH_TYPE_TILE_RED
-            "rct1.ll.path.tile.green",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
+            "rct2.road",                    // RCT1_FOOTPATH_TYPE_ROADS
+            "",
+            "",
+            "",
+
+            "rct1.path.tile.pink",          // RCT1_FOOTPATH_TYPE_TILE_PINK
+            "rct1.aa.path.tile.grey",       // RCT1_FOOTPATH_TYPE_TILE_GRAY
+            "rct1.ll.path.tile.red",        // RCT1_FOOTPATH_TYPE_TILE_RED
+            "rct1.ll.path.tile.green",      // RCT1_FOOTPATH_TYPE_TILE_GREEN
         };
         return map[pathType];
     }
@@ -1310,6 +1310,18 @@ namespace RCT1
             "rct2.jumpsnw1",    // RCT1_PATH_ADDITION_JUMPING_SNOW
         };
         return map[pathAdditionType];
+    }
+
+    std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType)
+    {
+        static constexpr const char * map[] =
+        {
+            "rct2.railings.wood",       // RCT1_PATH_SUPPORT_TYPE_TRUSS
+            "rct2.railings.concrete",   // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
+            "rct2.railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
+            "rct2.railings.brown",      // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+        };
+        return map[footpathRailingsType];
     }
 
     std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType)

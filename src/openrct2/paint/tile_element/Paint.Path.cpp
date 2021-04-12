@@ -945,7 +945,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
 
     PathSurfaceEntry* footpathEntry = tile_element->AsPath()->GetSurfaceEntry();
-    auto railingEntry = get_path_railings_entry(0);
+    auto railingEntry = tile_element->AsPath()->GetRailingEntry();
 
     if (footpathEntry != nullptr && railingEntry != nullptr)
     {

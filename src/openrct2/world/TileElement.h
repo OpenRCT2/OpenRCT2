@@ -22,6 +22,7 @@ struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
+class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
 constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
@@ -279,7 +280,7 @@ public:
     void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
 
     PathRailingsIndex GetRailingEntryIndex() const;
-    PathRailingsEntry* GetRailingEntry() const;
+    FootpathRailingsObject* GetRailingEntry() const;
     void SetRailingEntryIndex(PathRailingsIndex newIndex);
 
     uint8_t GetQueueBannerDirection() const;

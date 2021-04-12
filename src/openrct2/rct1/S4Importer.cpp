@@ -122,6 +122,7 @@ private:
     EntryList _pathAdditionEntries;
     EntryList _sceneryGroupEntries;
     EntryList _waterEntry;
+    EntryList _footpathRailingsEntries;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
     ObjectEntryIndex _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT]{};
@@ -132,6 +133,7 @@ private:
     ObjectEntryIndex _pathTypeToEntryMap[24]{};
     ObjectEntryIndex _pathAdditionTypeToEntryMap[16]{};
     ObjectEntryIndex _sceneryThemeTypeToEntryMap[24]{};
+    ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
     // Research
     std::bitset<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
@@ -369,6 +371,8 @@ private:
         std::fill(std::begin(_pathTypeToEntryMap), std::end(_pathTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(std::begin(_pathAdditionTypeToEntryMap), std::end(_pathAdditionTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
         std::fill(std::begin(_sceneryThemeTypeToEntryMap), std::end(_sceneryThemeTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(
+            std::begin(_footpathRailingsTypeToEntryMap), std::end(_footpathRailingsTypeToEntryMap), OBJECT_ENTRY_INDEX_NULL);
     }
 
     /**
@@ -399,6 +403,9 @@ private:
 
         // Add default footpaths
         _pathEntries.AddRange({ "rct1.path.tarmac", "rct1.path.dirt", "rct1.path.crazy", "rct1.path.tile.pink" });
+
+        _footpathRailingsEntries.AddRange({ "rct2.railings.wood", "rct2.railings.concrete", "rct2.railings.space",
+                                            "rct2.railings.black", "rct2.railings.brown" });
     }
 
     void AddAvailableEntriesFromResearchList()
@@ -457,9 +464,15 @@ private:
                 {
                     uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                     uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
+                    uint8_t footpathRailingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
+                    if (_gameVersion == FILE_VERSION_RCT1_LL)
+                    {
+                        footpathRailingsType = tileElement->AsPath()->GetRCT1SupportType();
+                    }
 
                     AddEntryForPath(pathType);
                     AddEntryForPathAddition(pathAdditionsType);
+                    AddEntryForFootpathRailings(footpathRailingsType);
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -681,6 +694,20 @@ private:
             {
                 auto entryIndex = _sceneryGroupEntries.GetOrAddEntry(entryName);
                 _sceneryThemeTypeToEntryMap[sceneryThemeType] = entryIndex;
+            }
+        }
+    }
+
+    void AddEntryForFootpathRailings(ObjectEntryIndex railingsType)
+    {
+        assert(railingsType < std::size(_footpathRailingsTypeToEntryMap));
+        if (_footpathRailingsTypeToEntryMap[railingsType] == OBJECT_ENTRY_INDEX_NULL)
+        {
+            auto identifier = RCT1::GetFootpathRailingsObject(railingsType);
+            if (!identifier.empty())
+            {
+                auto entryIndex = _footpathRailingsEntries.GetOrAddEntry(identifier);
+                _footpathRailingsTypeToEntryMap[railingsType] = entryIndex;
             }
         }
     }
@@ -1535,6 +1562,7 @@ private:
             }));
         AppendRequiredObjects(result, ObjectType::ParkEntrance, std::vector<std::string>({ "rct2.pkent1" }));
         AppendRequiredObjects(result, ObjectType::Water, _waterEntry);
+        AppendRequiredObjects(result, ObjectType::FootpathRailings, _footpathRailingsEntries);
         RCT12AddDefaultObjects(result);
         return result;
     }
@@ -1652,30 +1680,14 @@ private:
                 {
                     dst2->SetIsQueue(true);
                 }
-                if (_gameVersion != FILE_VERSION_RCT1_LL)
+
+                uint8_t railingsType = RCT1_PATH_SUPPORT_TYPE_TRUSS;
+                if (_gameVersion == FILE_VERSION_RCT1_LL)
                 {
-                    dst2->SetRailingEntryIndex(0);
+                    railingsType = src2->GetRCT1SupportType();
                 }
-                else
-                {
-                    ObjectEntryIndex railingsEntryIndex;
-                    switch (src2->GetRCT1SupportType())
-                    {
-                        case RCT1_PATH_SUPPORT_TYPE_COATED_WOOD:
-                            railingsEntryIndex = 3;
-                            break;
-                        case RCT1_PATH_SUPPORT_TYPE_SPACE:
-                            railingsEntryIndex = 4;
-                            break;
-                        case RCT1_PATH_SUPPORT_TYPE_BAMBOO:
-                            railingsEntryIndex = 5;
-                            break;
-                        case RCT1_PATH_SUPPORT_TYPE_TRUSS:
-                        default:
-                            railingsEntryIndex = 0;
-                    }
-                    dst2->SetRailingEntryIndex(railingsEntryIndex);
-                }
+                auto railingsEntryIndex = _footpathRailingsTypeToEntryMap[railingsType];
+                dst2->SetRailingEntryIndex(railingsEntryIndex);
 
                 // Additions
                 ObjectEntryIndex additionType = dst2->GetAddition();

@@ -1656,7 +1656,7 @@ PathSurfaceIndex PathElement::GetSurfaceEntryIndex() const
 
 PathRailingsIndex PathElement::GetRailingEntryIndex() const
 {
-    return GetSurfaceEntryIndex();
+    return RailingsIndex;
 }
 
 PathSurfaceEntry* PathElement::GetSurfaceEntry() const
@@ -1667,10 +1667,9 @@ PathSurfaceEntry* PathElement::GetSurfaceEntry() const
         return get_path_surface_entry(GetSurfaceEntryIndex() + MAX_PATH_OBJECTS);
 }
 
-PathRailingsEntry* PathElement::GetRailingEntry() const
+FootpathRailingsObject* PathElement::GetRailingEntry() const
 {
-    return nullptr;
-    // return get_path_railings_entry(GetRailingEntryIndex());
+    return get_path_railings_entry(GetRailingEntryIndex());
 }
 
 void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
@@ -1680,7 +1679,7 @@ void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
 
 void PathElement::SetRailingEntryIndex(PathRailingsIndex newEntryIndex)
 {
-    log_verbose("Setting railing entry index to %d", newEntryIndex);
+    RailingsIndex = newEntryIndex;
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
