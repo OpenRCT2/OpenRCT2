@@ -602,7 +602,6 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
 
             auto clipCoords = ScreenCoordsXY{ 10, 19 };
             auto* staff = peep->As<Staff>();
-            auto* guest = peep->As<Guest>();
             if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
             {
                 clipCoords.y += 3;
@@ -615,6 +614,7 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo* dpi, rc
             auto image_id = ImageId(image_id_base, peep->TshirtColour, peep->TrousersColour);
             gfx_draw_sprite(&cliped_dpi, image_id, clipCoords);
 
+            auto* guest = peep->As<Guest>();
             if (guest != nullptr)
             {
                 if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)

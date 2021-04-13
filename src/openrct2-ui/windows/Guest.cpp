@@ -759,7 +759,6 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     }
 
     auto* staff = peep->As<Staff>();
-    auto* guest = peep->As<Guest>();
     if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
@@ -777,6 +776,7 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     auto sprite_id = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
     gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords);
 
+    auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {
         // If holding a balloon
