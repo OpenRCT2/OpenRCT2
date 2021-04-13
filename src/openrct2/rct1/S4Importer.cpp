@@ -402,7 +402,10 @@ private:
         });
 
         // Add default footpaths
-        _pathEntries.AddRange({ "rct1.path.tarmac", "rct1.path.dirt", "rct1.path.crazy", "rct1.path.tile.pink" });
+        _pathEntries.AddRange({ "rct1.path.tarmac", "rct1.path.dirt", "rct1.path.crazy", "rct1.path.tile.pink",
+                                "rct1.aa.path.ash", "rct1.aa.path.tarmac.green", "rct1.aa.path.tarmac.brown",
+                                "rct1.aa.path.tile.grey", "rct1.aa.path.space", "rct1.ll.path.tile.green",
+                                "rct1.ll.path.tile.red" });
 
         _footpathRailingsEntries.AddRange({ "rct2.railings.wood", "rct2.railings.concrete", "rct2.railings.space",
                                             "rct2.railings.black", "rct2.railings.brown" });
