@@ -302,6 +302,14 @@ public:
         return _isJsonObject;
     };
 
+    ObjectEntryDescriptor GetDescriptor() const
+    {
+        if (_isJsonObject)
+            return ObjectEntryDescriptor(_identifier);
+        else
+            return ObjectEntryDescriptor(_objectEntry);
+    }
+
     // Legacy data structures
     std::string_view GetLegacyIdentifier() const
     {

@@ -214,7 +214,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
         // Log place holder information
         if (placeHoldersAdded > 0)
         {
-            std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+            std::string msg = "PAdding " + std::to_string(placeHoldersAdded) + " placeholders";
             context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
         }
     }

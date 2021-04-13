@@ -394,7 +394,6 @@ rct_window* window_editor_object_selection_open()
 
     window->selected_tab = 0;
     window->selected_list_item = -1;
-    window->object_entry = nullptr;
     window->min_width = 600;
     window->min_height = 400;
     window->max_width = 1200;
@@ -464,7 +463,6 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             visible_list_refresh(w);
 
             w->selected_list_item = -1;
-            w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
             w->Invalidate();
             break;
@@ -483,7 +481,6 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
             visible_list_refresh(w);
 
             w->selected_list_item = -1;
-            w->object_entry = nullptr;
             w->scrolls[0].v_top = 0;
             w->frame_no = 0;
             w->Invalidate();
@@ -702,7 +699,7 @@ static void window_editor_object_selection_scroll_mousedown(
         flags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
     _maxObjectsWasHit = false;
-    if (!window_editor_object_selection_select_object(0, flags, listItem->entry))
+    if (!window_editor_object_selection_select_object(0, flags, listItem->repositoryItem))
     {
         rct_string_id error_title = (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
                                                                               : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
@@ -749,15 +746,15 @@ static void window_editor_object_selection_scroll_mouseover(
         if (_loadedObject != nullptr)
             _loadedObject->Unload();
 
-        if (selectedObject == -1)
-        {
-            w->object_entry = nullptr;
-        }
-        else
+        if (selectedObject != -1)
         {
             auto listItem = &_listItems[selectedObject];
-            w->object_entry = listItem->entry;
-            _loadedObject = object_repository_load_object(listItem->entry);
+            auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+            _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
+            if (_loadedObject != nullptr)
+            {
+                _loadedObject->Load();
+            }
         }
 
         w->Invalidate();
@@ -1134,8 +1131,9 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
     gfx_clear(dpi, paletteIndex);
 
     screenCoords.y = 0;
-    for (const auto& listItem : _listItems)
+    for (size_t i = 0; i < _listItems.size(); i++)
     {
+        const auto& listItem = _listItems[i];
         if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi->y && screenCoords.y <= dpi->y + dpi->height)
         {
             // Draw checkbox
@@ -1144,7 +1142,7 @@ static void window_editor_object_selection_scrollpaint(rct_window* w, rct_drawpi
                     dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
 
             // Highlight background
-            auto highlighted = listItem.entry == w->object_entry && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
+            auto highlighted = i == static_cast<size_t>(w->selected_list_item) && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
             if (highlighted)
             {
                 auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
@@ -1216,7 +1214,6 @@ static void window_editor_object_set_page(rct_window* w, int32_t page)
 
     w->selected_tab = page;
     w->selected_list_item = -1;
-    w->object_entry = nullptr;
     w->scrolls[0].v_top = 0;
     w->frame_no = 0;
 
@@ -1291,26 +1288,27 @@ static void window_editor_object_selection_manage_tracks()
  */
 static void editor_load_selected_objects()
 {
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numItems; i++)
     {
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
-            const ObjectRepositoryItem* item = &items[i];
-            const rct_object_entry* entry = &item->ObjectEntry;
-            const auto* loadedObject = object_manager_get_loaded_object(ObjectEntryDescriptor(*item));
+            const auto* item = &items[i];
+            auto descriptor = ObjectEntryDescriptor(*item);
+            const auto* loadedObject = objManager.GetLoadedObject(descriptor);
             if (loadedObject == nullptr)
             {
-                loadedObject = object_manager_load_object(entry);
+                loadedObject = objManager.LoadObject(descriptor);
                 if (loadedObject == nullptr)
                 {
-                    log_error("Failed to load entry %.8s", entry->name);
+                    log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
                     // Defaults selected items to researched (if in-game)
-                    ObjectType objectType = entry->GetType();
+                    auto objectType = loadedObject->GetObjectType();
                     auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
                     if (objectType == ObjectType::Ride)
                     {

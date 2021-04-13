@@ -34,8 +34,9 @@ struct IObjectManager
 
     virtual Object* LoadObject(std::string_view identifier) abstract;
     virtual Object* LoadObject(const rct_object_entry* entry) abstract;
+    virtual Object* LoadObject(const ObjectEntryDescriptor& descriptor) abstract;
     virtual void LoadObjects(const ObjectList& entries) abstract;
-    virtual void UnloadObjects(const std::vector<rct_object_entry>& entries) abstract;
+    virtual void UnloadObjects(const std::vector<ObjectEntryDescriptor>& entries) abstract;
     virtual void UnloadAll() abstract;
 
     virtual void ResetObjects() abstract;
@@ -51,6 +52,6 @@ Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry);
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject);
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryDescriptor& entry);
 Object* object_manager_load_object(const rct_object_entry* entry);
-void object_manager_unload_objects(const std::vector<rct_object_entry>& entries);
+void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries);
 void object_manager_unload_all_objects();
 rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame);

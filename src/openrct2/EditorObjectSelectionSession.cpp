@@ -230,19 +230,19 @@ void setup_in_use_selection_flags()
         }
     }
 
-    int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
-    for (int32_t i = 0; i < numObjects; i++)
+    auto numObjects = object_repository_get_items_count();
+    const auto* items = object_repository_get_items();
+    for (size_t i = 0; i < numObjects; i++)
     {
-        uint8_t* selectionFlags = &_objectSelectionFlags[i];
-        const ObjectRepositoryItem* item = &items[i];
+        auto* selectionFlags = &_objectSelectionFlags[i];
+        const auto* item = &items[i];
         *selectionFlags &= ~OBJECT_SELECTION_FLAG_IN_USE;
 
-        ObjectType entryType;
-        ObjectEntryIndex entryIndex;
-        if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex))
+        if (item->LoadedObject != nullptr)
         {
-            auto flags = Editor::GetSelectedObjectFlags(entryType, entryIndex);
+            auto objectType = item->LoadedObject->GetObjectType();
+            auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject);
+            auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
             if (flags & OBJECT_SELECTION_FLAG_SELECTED)
             {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_SELECTED;
@@ -353,16 +353,14 @@ void unload_unselected_objects()
 {
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
-    std::vector<rct_object_entry> objectsToUnload;
+    std::vector<ObjectEntryDescriptor> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
     {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
-            const rct_object_entry* entry = &items[i].ObjectEntry;
-
-            remove_selected_objects_from_research(entry);
-            objectsToUnload.push_back(*entry);
+            remove_selected_objects_from_research(&items[i].ObjectEntry);
+            objectsToUnload.push_back(ObjectEntryDescriptor(items[i]));
         }
     }
     object_manager_unload_objects(objectsToUnload);
@@ -408,24 +406,21 @@ static void SelectDesignerObjects()
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
-
+    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
     if (oldPalette != nullptr)
     {
-        const std::vector<rct_object_entry> oldEntries = { *(oldPalette->GetObjectEntry()) };
+        const std::vector<ObjectEntryDescriptor> oldEntries = { oldPalette->GetDescriptor() };
         objectManager.UnloadObjects(oldEntries);
     }
 
-    const rct_object_entry& newPaletteEntry = item->ObjectEntry;
-
-    if (objectManager.GetLoadedObject(ObjectEntryDescriptor(newPaletteEntry)) != nullptr
-        || objectManager.LoadObject(&newPaletteEntry) != nullptr)
+    auto newPaletteEntry = ObjectEntryDescriptor(*item);
+    if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
     {
         load_palette();
     }
     else
     {
-        log_error("Failed to load selected palette %.8s", newPaletteEntry.name);
+        log_error("Failed to load selected palette %s", std::string(newPaletteEntry.GetName()).c_str());
     }
 }
 
