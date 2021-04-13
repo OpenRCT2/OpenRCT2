@@ -407,8 +407,9 @@ private:
                                 "rct1.aa.path.tile.grey", "rct1.aa.path.space", "rct1.ll.path.tile.green",
                                 "rct1.ll.path.tile.red" });
 
-        _footpathRailingsEntries.AddRange({ "rct2.railings.wood", "rct2.railings.concrete", "rct2.railings.space",
-                                            "rct2.railings.black", "rct2.railings.brown" });
+        _footpathRailingsEntries.AddRange({ "rct2.railings.wood", "rct1.railings.space", "rct1.railings.bamboo",
+                                            "rct2.railings.concrete", "rct2.railings.space", "rct2.railings.black",
+                                            "rct2.railings.brown" });
     }
 
     void AddAvailableEntriesFromResearchList()

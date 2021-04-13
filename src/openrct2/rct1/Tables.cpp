@@ -1318,8 +1318,8 @@ namespace RCT1
         {
             "rct2.railings.wood",       // RCT1_PATH_SUPPORT_TYPE_TRUSS
             "rct2.railings.concrete",   // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
-            "rct2.railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
-            "rct2.railings.brown",      // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+            "rct1.railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
+            "rct1.railings.bamboo",     // RCT1_PATH_SUPPORT_TYPE_BAMBOO
         };
         return map[footpathRailingsType];
     }
