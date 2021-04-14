@@ -33,7 +33,7 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
 {
     park_entrance_remove_ghost();
 
-    auto gameAction = PlaceParkEntranceAction(entranceLoc);
+    auto gameAction = PlaceParkEntranceAction(entranceLoc, gFootpathSelectedId);
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);

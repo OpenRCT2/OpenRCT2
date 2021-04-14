@@ -72,6 +72,14 @@ struct PathRailingsEntry
     uint8_t scrolling_mode;
 };
 
+struct ProvisionalFootpath
+{
+    ObjectEntryIndex Type;
+    CoordsXYZ Position;
+    uint8_t Slope;
+    uint8_t Flags;
+};
+
 // Masks for values stored in TileElement.type
 enum
 {
@@ -158,18 +166,10 @@ enum
     FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
-extern uint8_t gFootpathProvisionalFlags;
-extern CoordsXYZ gFootpathProvisionalPosition;
-extern uint8_t gFootpathProvisionalType;
-extern uint8_t gFootpathProvisionalSlope;
-extern uint8_t gFootpathConstructionMode;
+extern ProvisionalFootpath gProvisionalFootpath;
 extern uint16_t gFootpathSelectedId;
-extern uint8_t gFootpathSelectedType;
 extern CoordsXYZ gFootpathConstructFromPosition;
-extern uint8_t gFootpathConstructDirection;
 extern uint8_t gFootpathConstructSlope;
-extern uint8_t gFootpathConstructValidDirections;
-extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.

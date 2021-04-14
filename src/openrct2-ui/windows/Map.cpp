@@ -1327,7 +1327,7 @@ static void window_map_place_park_entrance_tool_down(const ScreenCoordsXY& scree
     CoordsXYZD parkEntrancePosition = place_park_entrance_get_map_position(screenCoords);
     if (!parkEntrancePosition.isNull())
     {
-        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition);
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GameActions::Status::Ok)
         {

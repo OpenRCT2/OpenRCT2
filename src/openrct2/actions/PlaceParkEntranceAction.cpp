@@ -21,8 +21,9 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
-PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location)
+PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
     : _loc(location)
+    , _pathType(pathType)
 {
 }
 
@@ -146,7 +147,7 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
         entranceElement->SetDirection(_loc.direction);
         entranceElement->SetSequenceIndex(index);
         entranceElement->SetEntranceType(ENTRANCE_TYPE_PARK_ENTRANCE);
-        entranceElement->SetPathType(gFootpathSelectedId);
+        entranceElement->SetPathType(_pathType);
 
         if (!entranceElement->IsGhost())
         {
