@@ -40,10 +40,7 @@
 
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
-uint8_t gFootpathProvisionalFlags;
-CoordsXYZ gFootpathProvisionalPosition;
-uint8_t gFootpathProvisionalType;
-uint8_t gFootpathProvisionalSlope;
+ProvisionalFootpath gProvisionalFootpath;
 uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
 uint8_t gFootpathConstructSlope;
@@ -153,10 +150,10 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gFootpathProvisionalType = type;
-        gFootpathProvisionalPosition = footpathLoc;
-        gFootpathProvisionalSlope = slope;
-        gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Type = type;
+        gProvisionalFootpath.Position = footpathLoc;
+        gProvisionalFootpath.Slope = slope;
+        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
@@ -180,15 +177,15 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
         }
         else if (
             gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
-            || gFootpathProvisionalPosition.z < gFootpathConstructFromPosition.z)
+            || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            virtual_floor_set_height(gFootpathProvisionalPosition.z);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z);
         }
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gFootpathProvisionalPosition.z + LAND_HEIGHT_STEP);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
         }
     }
 
@@ -201,12 +198,12 @@ money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int
  */
 void footpath_provisional_remove()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
 
         footpath_remove(
-            gFootpathProvisionalPosition,
+            gProvisionalFootpath.Position,
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                 | GAME_COMMAND_FLAG_GHOST);
     }
@@ -218,9 +215,9 @@ void footpath_provisional_remove()
  */
 void footpath_provisional_update()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         map_invalidate_tile_full(gFootpathConstructFromPosition);

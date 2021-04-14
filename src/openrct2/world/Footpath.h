@@ -72,6 +72,14 @@ struct PathRailingsEntry
     uint8_t scrolling_mode;
 };
 
+struct ProvisionalFootpath
+{
+    ObjectEntryIndex Type;
+    CoordsXYZ Position;
+    uint8_t Slope;
+    uint8_t Flags;
+};
+
 // Masks for values stored in TileElement.type
 enum
 {
@@ -158,10 +166,7 @@ enum
     FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
-extern uint8_t gFootpathProvisionalFlags;
-extern CoordsXYZ gFootpathProvisionalPosition;
-extern uint8_t gFootpathProvisionalType;
-extern uint8_t gFootpathProvisionalSlope;
+extern ProvisionalFootpath gProvisionalFootpath;
 extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructSlope;

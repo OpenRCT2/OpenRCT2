@@ -650,7 +650,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_CONSTRUCT:
             window_ride_construction_construct(w);
             // Force any footpath construction to recheck the area.
-            gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_2;
+            gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
             break;
         case WIDX_DEMOLISH:
             window_ride_construction_mouseup_demolish(w);

@@ -465,14 +465,14 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
     }
 
     // Recheck area for construction. Set by ride_construction window
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_2)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_2)
     {
         footpath_provisional_remove();
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_2;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_2;
     }
 
     // Update provisional bridge mode path
-    if (!(gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1))
+    if (!(gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1))
     {
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
@@ -487,12 +487,12 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
     {
         _footpathConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
 
-        gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+        gProvisionalFootpath.Flags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
         gMapSelectArrowPosition = footpathLoc;
         gMapSelectArrowDirection = _footpathConstructDirection;
-        if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+        if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
         }
@@ -725,8 +725,8 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
     else
     {
         // Check for change
-        if ((gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
-            && gFootpathProvisionalPosition == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
+        if ((gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
+            && gProvisionalFootpath.Position == CoordsXYZ{ info.Loc, info.Element->GetBaseZ() })
         {
             return;
         }
@@ -941,7 +941,7 @@ static void window_footpath_start_bridge_at_point(const ScreenCoordsXY& screenCo
     tool_cancel();
     gFootpathConstructFromPosition = { mapCoords, z };
     _footpathConstructDirection = direction;
-    gFootpathProvisionalFlags = 0;
+    gProvisionalFootpath.Flags = 0;
     gFootpathConstructSlope = 0;
     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
     _footpathConstructValidDirections = INVALID_DIRECTION;
