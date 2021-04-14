@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This sets up more environment variables using existing the environment
+# This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
