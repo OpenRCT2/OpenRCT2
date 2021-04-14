@@ -316,32 +316,39 @@ void editor_object_flags_free()
  *
  *  rct2: 0x00685791
  */
-static void remove_selected_objects_from_research(const rct_object_entry* installedObject)
+static void remove_selected_objects_from_research(const ObjectEntryDescriptor& descriptor)
 {
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(installedObject, &entry_type, &entry_index))
-        return;
-
-    if (entry_type == ObjectType::Ride)
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objManager.GetLoadedObject(descriptor);
+    if (obj != nullptr)
     {
-        auto rideEntry = get_ride_entry(entry_index);
-
-        for (auto rideType : rideEntry->ride_type)
+        auto entryIndex = objManager.GetLoadedObjectEntryIndex(obj);
+        switch (obj->GetObjectType())
         {
-            ResearchItem tmp = {};
-            tmp.type = Research::EntryType::Ride;
-            tmp.entryIndex = entry_index;
-            tmp.baseRideType = rideType;
-            research_remove(&tmp);
+            case ObjectType::Ride:
+            {
+                auto rideEntry = get_ride_entry(entryIndex);
+                for (auto rideType : rideEntry->ride_type)
+                {
+                    ResearchItem tmp = {};
+                    tmp.type = Research::EntryType::Ride;
+                    tmp.entryIndex = entryIndex;
+                    tmp.baseRideType = rideType;
+                    research_remove(&tmp);
+                }
+                break;
+            }
+            case ObjectType::SceneryGroup:
+            {
+                ResearchItem tmp = {};
+                tmp.type = Research::EntryType::Scenery;
+                tmp.entryIndex = entryIndex;
+                research_remove(&tmp);
+                break;
+            }
+            default:
+                break;
         }
-    }
-    else if (entry_type == ObjectType::SceneryGroup)
-    {
-        ResearchItem tmp = {};
-        tmp.type = Research::EntryType::Scenery;
-        tmp.entryIndex = entry_index;
-        research_remove(&tmp);
     }
 }
 
@@ -351,16 +358,17 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
  */
 void unload_unselected_objects()
 {
-    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
-    const ObjectRepositoryItem* items = object_repository_get_items();
+    auto numItems = static_cast<int32_t>(object_repository_get_items_count());
+    const auto* items = object_repository_get_items();
     std::vector<ObjectEntryDescriptor> objectsToUnload;
 
     for (int32_t i = 0; i < numItems; i++)
     {
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
-            remove_selected_objects_from_research(&items[i].ObjectEntry);
-            objectsToUnload.push_back(ObjectEntryDescriptor(items[i]));
+            auto descriptor = ObjectEntryDescriptor(items[i]);
+            remove_selected_objects_from_research(descriptor);
+            objectsToUnload.push_back(descriptor);
         }
     }
     object_manager_unload_objects(objectsToUnload);

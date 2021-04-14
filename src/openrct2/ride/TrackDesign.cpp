@@ -1879,12 +1879,8 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     *outRide = nullptr;
     *flags = 0;
 
-    ObjectType entry_type;
-    ObjectEntryIndex entry_index;
-    if (!find_object_in_entry_group(&td6->vehicle_object.Entry, &entry_type, &entry_index))
-    {
-        entry_index = OBJECT_ENTRY_INDEX_NULL;
-    }
+    auto& objManager = GetContext()->GetObjectManager();
+    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
     ride_id_t rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
@@ -1900,7 +1896,6 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
     ride->custom_name = {};
 
     auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
@@ -1955,7 +1950,7 @@ static bool track_design_place_preview(TrackDesign* td6, money32* cost, Ride** o
 
     if (resultCost != MONEY32_UNDEFINED)
     {
-        if (!find_object_in_entry_group(&td6->vehicle_object.Entry, &entry_type, &entry_index))
+        if (entry_index == OBJECT_ENTRY_INDEX_NULL)
         {
             *flags |= TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE;
         }
