@@ -1132,6 +1132,7 @@ public:
                 auto src2 = src->AsPath();
 
                 dst2->SetSurfaceEntryIndex(src2->GetEntryIndex());
+                dst2->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1567,6 +1568,14 @@ public:
         }
 
         RCT12AddDefaultObjects(objectList);
+
+        // Add default railings
+        objectList.SetObject(ObjectType::FootpathRailings, 0, "rct2.railings.wood");
+        objectList.SetObject(ObjectType::FootpathRailings, 1, "rct2.railings.concrete");
+        objectList.SetObject(ObjectType::FootpathRailings, 2, "rct2.railings.space");
+        objectList.SetObject(ObjectType::FootpathRailings, 3, "rct2.railings.black");
+        objectList.SetObject(ObjectType::FootpathRailings, 4, "rct2.railings.brown");
+
         return objectList;
     }
 };

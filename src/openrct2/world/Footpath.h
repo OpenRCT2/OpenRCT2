@@ -29,12 +29,6 @@ constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
 
 #define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
-using PathSurfaceIndex = uint16_t;
-constexpr PathSurfaceIndex PATH_SURFACE_INDEX_NULL = static_cast<PathSurfaceIndex>(-1);
-
-using PathRailingsIndex = uint8_t;
-constexpr PathRailingsIndex PATH_RAILINGS_INDEX_NULL = static_cast<PathRailingsIndex>(-1);
-
 enum class RailingEntrySupportType : uint8_t
 {
     Box = 0,
@@ -201,8 +195,7 @@ int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t 
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex);
-FootpathRailingsObject* get_path_railings_entry(PathRailingsIndex entryIndex);
+PathSurfaceEntry* get_path_surface_entry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

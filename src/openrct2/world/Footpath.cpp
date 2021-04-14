@@ -1649,37 +1649,53 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
 }
 
-PathSurfaceIndex PathElement::GetSurfaceEntryIndex() const
+ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
     return SurfaceIndex;
 }
 
-PathRailingsIndex PathElement::GetRailingEntryIndex() const
+ObjectEntryIndex PathElement::GetRailingEntryIndex() const
 {
+    if (RailingsIndex == std::numeric_limits<uint8_t>::max())
+    {
+        return OBJECT_ENTRY_INDEX_NULL;
+    }
     return RailingsIndex;
 }
 
-PathSurfaceEntry* PathElement::GetSurfaceEntry() const
+FootpathObject* PathElement::GetSurfaceEntry() const
 {
-    if (!IsQueue())
-        return get_path_surface_entry(GetSurfaceEntryIndex());
-    else
-        return get_path_surface_entry(GetSurfaceEntryIndex() + MAX_PATH_OBJECTS);
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetSurfaceEntryIndex()));
 }
 
 FootpathRailingsObject* PathElement::GetRailingEntry() const
 {
-    return get_path_railings_entry(GetRailingEntryIndex());
+    auto entryIndex = GetRailingEntryIndex();
+    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        return nullptr;
+    }
+
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex));
 }
 
-void PathElement::SetSurfaceEntryIndex(PathSurfaceIndex newIndex)
+void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 {
-    SurfaceIndex = newIndex & ~FOOTPATH_ELEMENT_INSERT_QUEUE;
+    SurfaceIndex = newIndex;
 }
 
-void PathElement::SetRailingEntryIndex(PathRailingsIndex newEntryIndex)
+void PathElement::SetRailingEntryIndex(ObjectEntryIndex newEntryIndex)
 {
-    RailingsIndex = newEntryIndex;
+    if (newEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        RailingsIndex = std::numeric_limits<uint8_t>::max();
+    }
+    else
+    {
+        RailingsIndex = static_cast<uint8_t>(newEntryIndex);
+    }
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
@@ -2243,7 +2259,7 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
+PathSurfaceEntry* get_path_surface_entry(ObjectEntryIndex entryIndex)
 {
     PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
@@ -2257,12 +2273,6 @@ PathSurfaceEntry* get_path_surface_entry(PathSurfaceIndex entryIndex)
             result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
     }
     return result;
-}
-
-FootpathRailingsObject* get_path_railings_entry(PathRailingsIndex entryIndex)
-{
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex));
 }
 
 ride_id_t PathElement::GetRideIndex() const

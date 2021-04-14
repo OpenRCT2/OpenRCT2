@@ -16,6 +16,7 @@
 #include "../world/Location.hpp"
 
 struct TileElement;
+enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
 
 struct attached_paint_struct
@@ -188,6 +189,17 @@ struct paint_session
         LastPSString = string;
         return LastPSString;
     }
+};
+
+struct FootpathPaintInfo
+{
+    uint32_t SurfaceImageId{};
+    uint32_t BridgeImageId{};
+    uint32_t RailingsImageId{};
+    uint32_t SurfaceFlags{};
+    uint32_t RailingFlags{};
+    uint8_t ScrollingMode{};
+    RailingEntrySupportType SupportType{};
 };
 
 extern paint_session gPaintSession;

@@ -182,6 +182,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
     }
 
     pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+    pathElement->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
     bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
     pathElement->SetIsQueue(isQueue);
 
@@ -348,6 +349,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
 
         pathElement->SetClearanceZ(zHigh);
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        pathElement->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
         pathElement->SetIsQueue(_type & FOOTPATH_ELEMENT_INSERT_QUEUE);

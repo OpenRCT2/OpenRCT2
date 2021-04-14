@@ -22,6 +22,7 @@ struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
+class FootpathObject;
 class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
@@ -254,10 +255,10 @@ struct PathElement : TileElementBase
     static constexpr TileElementType ElementType = TileElementType::Path;
 
 private:
-    PathSurfaceIndex SurfaceIndex; // 5
+    ObjectEntryIndex SurfaceIndex; // 5
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    PathRailingsIndex RailingsIndex; // 7
+    uint8_t RailingsIndex; // 7
 #pragma clang diagnostic pop
     uint8_t Additions;       // 8 (0 means no addition)
     uint8_t EdgesAndCorners; // 9 (edges in lower 4 bits, corners in upper 4)
@@ -275,13 +276,13 @@ private:
 #pragma clang diagnostic pop
 
 public:
-    PathSurfaceIndex GetSurfaceEntryIndex() const;
-    PathSurfaceEntry* GetSurfaceEntry() const;
-    void SetSurfaceEntryIndex(PathSurfaceIndex newIndex);
+    ObjectEntryIndex GetSurfaceEntryIndex() const;
+    FootpathObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
-    PathRailingsIndex GetRailingEntryIndex() const;
+    ObjectEntryIndex GetRailingEntryIndex() const;
     FootpathRailingsObject* GetRailingEntry() const;
-    void SetRailingEntryIndex(PathRailingsIndex newIndex);
+    void SetRailingEntryIndex(ObjectEntryIndex newIndex);
 
     uint8_t GetQueueBannerDirection() const;
     void SetQueueBannerDirection(uint8_t direction);
@@ -560,7 +561,7 @@ private:
     uint8_t entranceType;      // 5
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
     uint8_t StationIndex;      // 7
-    PathSurfaceIndex PathType; // 8
+    ObjectEntryIndex PathType; // 8
     ride_id_t rideIndex;       // 9
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -580,8 +581,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    PathSurfaceIndex GetPathType() const;
-    void SetPathType(PathSurfaceIndex newPathType);
+    ObjectEntryIndex GetPathType() const;
+    void SetPathType(ObjectEntryIndex newPathType);
 };
 assert_struct_size(EntranceElement, 16);
 
