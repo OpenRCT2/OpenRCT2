@@ -15,10 +15,11 @@ DEFINE_GAME_ACTION(PlaceParkEntranceAction, GameCommand::PlaceParkEntrance, Game
 {
 private:
     CoordsXYZD _loc;
+    ObjectEntryIndex _pathType;
 
 public:
     PlaceParkEntranceAction() = default;
-    PlaceParkEntranceAction(const CoordsXYZD& location);
+    PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType);
 
     uint16_t GetActionFlags() const override;
 
