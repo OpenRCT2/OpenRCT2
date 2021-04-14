@@ -149,19 +149,21 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_TRACK:
                 break;
             case TILE_ELEMENT_TYPE_PATH:
-                type = iter.element->AsPath()->GetSurfaceEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
-                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
-
-                if (iter.element->AsPath()->HasAddition())
+            {
+                auto footpathEl = iter.element->AsPath();
+                auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
+                auto railingEntryIndex = footpathEl->GetRailingEntryIndex();
+                Editor::SetSelectedObject(ObjectType::Paths, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                if (footpathEl->HasAddition())
                 {
-                    uint8_t path_additions = iter.element->AsPath()->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, path_additions, OBJECT_SELECTION_FLAG_SELECTED);
+                    auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;
+            }
             case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]);
                 Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -174,17 +176,14 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
                 type = iter.element->AsEntrance()->GetPathType();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
                 Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
                 type = iter.element->AsWall()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::Walls)]);
                 Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
-                assert(type < object_entry_group_counts[EnumValue(ObjectType::LargeScenery)]);
                 Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
@@ -193,7 +192,6 @@ void setup_in_use_selection_flags()
                 if (banner != nullptr)
                 {
                     type = banner->type;
-                    assert(type < object_entry_group_counts[EnumValue(ObjectType::Banners)]);
                     Editor::SetSelectedObject(ObjectType::Banners, type, OBJECT_SELECTION_FLAG_SELECTED);
                 }
                 break;

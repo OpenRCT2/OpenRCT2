@@ -591,6 +591,7 @@ namespace Editor
 
     void SetSelectedObject(ObjectType objectType, size_t index, uint32_t flags)
     {
+        assert(static_cast<int32_t>(objectType) < object_entry_group_counts[EnumValue(ObjectType::Paths)]);
         auto& list = _editorSelectedObjectFlags[EnumValue(objectType)];
         if (list.size() <= index)
         {
