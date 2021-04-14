@@ -44,14 +44,9 @@ uint8_t gFootpathProvisionalFlags;
 CoordsXYZ gFootpathProvisionalPosition;
 uint8_t gFootpathProvisionalType;
 uint8_t gFootpathProvisionalSlope;
-uint8_t gFootpathConstructionMode;
 uint16_t gFootpathSelectedId;
-uint8_t gFootpathSelectedType;
 CoordsXYZ gFootpathConstructFromPosition;
-uint8_t gFootpathConstructDirection;
 uint8_t gFootpathConstructSlope;
-uint8_t gFootpathConstructValidDirections;
-money32 gFootpathPrice;
 uint8_t gFootpathGroundFlags;
 
 static ride_id_t* _footpathQueueChainNext;

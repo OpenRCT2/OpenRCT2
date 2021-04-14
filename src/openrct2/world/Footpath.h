@@ -162,14 +162,9 @@ extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern uint8_t gFootpathProvisionalType;
 extern uint8_t gFootpathProvisionalSlope;
-extern uint8_t gFootpathConstructionMode;
 extern uint16_t gFootpathSelectedId;
-extern uint8_t gFootpathSelectedType;
 extern CoordsXYZ gFootpathConstructFromPosition;
-extern uint8_t gFootpathConstructDirection;
 extern uint8_t gFootpathConstructSlope;
-extern uint8_t gFootpathConstructValidDirections;
-extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.
