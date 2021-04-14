@@ -90,11 +90,18 @@ static void track_design_preview_clear_map();
 rct_string_id TrackDesign::CreateTrackDesign(const Ride& ride)
 {
     type = ride.type;
-    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
 
-    // Note we are only copying rct_object_entry in size and
-    // not the extended as we don't need the chunk size.
-    vehicle_object = ObjectEntryDescriptor(*object->GetObjectEntry());
+    auto object = object_entry_get_object(ObjectType::Ride, ride.subtype);
+    if (object != nullptr)
+    {
+        auto entry = object->GetObjectEntry();
+        if (entry.IsEmpty())
+        {
+            // TODO create a new error message for `JSON objects are unsupported`
+            return STR_UNKNOWN_OBJECT_TYPE;
+        }
+        vehicle_object = ObjectEntryDescriptor(entry);
+    }
 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
@@ -627,17 +634,22 @@ std::unique_ptr<TrackDesign> track_design_open(const utf8* path)
  */
 static void track_design_load_scenery_objects(TrackDesign* td6)
 {
-    object_manager_unload_all_objects();
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager.UnloadAll();
 
     // Load ride object
-    rct_object_entry* rideEntry = &td6->vehicle_object.Entry;
-    object_manager_load_object(rideEntry);
+    if (td6->vehicle_object.HasValue())
+    {
+        objectManager.LoadObject(td6->vehicle_object);
+    }
 
     // Load scenery objects
     for (const auto& scenery : td6->scenery_elements)
     {
-        const rct_object_entry* sceneryEntry = &scenery.scenery_object;
-        object_manager_load_object(sceneryEntry);
+        if (scenery.scenery_object.HasValue())
+        {
+            objectManager.LoadObject(td6->vehicle_object);
+        }
     }
 }
 
@@ -647,28 +659,20 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
  */
 static void track_design_mirror_scenery(TrackDesign* td6)
 {
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     for (auto& scenery : td6->scenery_elements)
     {
-        ObjectType entry_type{ 0 };
-        ObjectEntryIndex entryIndex{ 0 };
-        if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entryIndex))
-        {
-            entry_type = scenery.scenery_object.GetType();
-            if (entry_type != ObjectType::Paths)
-            {
-                continue;
-            }
+        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        if (obj == nullptr)
+            continue;
 
-            entryIndex = 0;
-        }
-
-        rct_scenery_entry* scenery_entry = static_cast<rct_scenery_entry*>(object_entry_get_chunk(entry_type, entryIndex));
-        switch (entry_type)
+        switch (obj->GetObjectType())
         {
             case ObjectType::LargeScenery:
             {
+                auto sceneryEntry = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
                 int16_t x1 = 0, x2 = 0, y1 = 0, y2 = 0;
-                for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles; tile->x_offset != -1; tile++)
+                for (rct_large_scenery_tile* tile = sceneryEntry->large_scenery.tiles; tile->x_offset != -1; tile++)
                 {
                     if (x1 > tile->x_offset)
                     {
@@ -711,12 +715,13 @@ static void track_design_mirror_scenery(TrackDesign* td6)
             }
             case ObjectType::SmallScenery:
             {
+                auto sceneryEntry = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
                 scenery.y = -scenery.y;
 
-                if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_DIAGONAL))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
                 {
                     scenery.flags ^= (1 << 0);
-                    if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_FULL_TILE))
+                    if (!scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
                     {
                         scenery.flags ^= (1 << 2);
                     }
@@ -755,7 +760,6 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             default:
-                // This switch processes only ObjectType for Scenery items.
                 break;
         }
     }
@@ -854,7 +858,14 @@ static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
 static bool TrackDesignPlaceSceneryElementGetEntry(
     ObjectType& entry_type, ObjectEntryIndex& entry_index, const TrackDesignSceneryElement& scenery)
 {
-    if (!find_object_in_entry_group(&scenery.scenery_object, &entry_type, &entry_index))
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+    if (obj != nullptr)
+    {
+        entry_type = obj->GetObjectType();
+        entry_index = objectMgr.GetLoadedObjectEntryIndex(obj);
+    }
+    else
     {
         entry_type = scenery.scenery_object.GetType();
         if (entry_type != ObjectType::Paths)

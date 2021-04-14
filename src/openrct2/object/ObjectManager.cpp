@@ -123,17 +123,7 @@ public:
                 auto obj = GetLoadedObject(objectType, i);
                 if (obj != nullptr)
                 {
-                    if (obj->IsJsonObject())
-                    {
-                        auto entry = ObjectEntryDescriptor(obj->GetIdentifier());
-                        entry.Type = obj->GetObjectType();
-                        objectList.SetObject(i, entry);
-                    }
-                    else
-                    {
-                        auto entry = ObjectEntryDescriptor(*obj->GetObjectEntry());
-                        objectList.SetObject(i, entry);
-                    }
+                    objectList.SetObject(i, obj->GetDescriptor());
                 }
             }
         }
@@ -374,7 +364,7 @@ private:
             object->Unload();
 
             // TODO try to prevent doing a repository search
-            const ObjectRepositoryItem* ori = _objectRepository.FindObject(object->GetObjectEntry());
+            const auto* ori = _objectRepository.FindObject(object->GetDescriptor());
             if (ori != nullptr)
             {
                 _objectRepository.UnregisterLoadedObject(ori, object);

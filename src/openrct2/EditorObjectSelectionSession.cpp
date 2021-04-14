@@ -380,7 +380,7 @@ static void window_editor_object_selection_select_default_objects()
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
-                defaultSelectedObject);
+                ObjectEntryDescriptor(defaultSelectedObject));
         }
     }
 }
@@ -395,7 +395,7 @@ static void SelectDesignerObjects()
                 0,
                 INPUT_FLAG_EDITOR_OBJECT_SELECT | INPUT_FLAG_EDITOR_OBJECT_1
                     | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP,
-                designerSelectedObject);
+                ObjectEntryDescriptor(designerSelectedObject));
         }
     }
 }
@@ -596,25 +596,12 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     }
 }
 
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, std::string_view identifier)
+bool window_editor_object_selection_select_object(
+    uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-    const auto* item = objectRepository.FindObject(identifier);
+    const auto* item = objectRepository.FindObject(descriptor);
     return window_editor_object_selection_select_object(isMasterObject, flags, item);
-}
-
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const rct_object_entry* entry)
-{
-    const ObjectRepositoryItem* item = object_repository_find_object_by_entry(entry);
-    return window_editor_object_selection_select_object(isMasterObject, flags, item);
-}
-
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& entry)
-{
-    if (entry.Generation == ObjectGeneration::DAT)
-        return window_editor_object_selection_select_object(isMasterObject, flags, &entry.Entry);
-
-    return window_editor_object_selection_select_object(isMasterObject, flags, entry.Identifier);
 }
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)

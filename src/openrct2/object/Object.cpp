@@ -35,7 +35,7 @@ ObjectType& operator++(ObjectType& d, int)
 
 ObjectEntryDescriptor::ObjectEntryDescriptor(const rct_object_entry& newEntry)
 {
-    if (!object_entry_is_empty(&newEntry))
+    if (!newEntry.IsEmpty())
     {
         Generation = ObjectGeneration::DAT;
         Entry = newEntry;
@@ -46,6 +46,13 @@ ObjectEntryDescriptor::ObjectEntryDescriptor(std::string_view newIdentifier)
 {
     Generation = ObjectGeneration::JSON;
     Identifier = std::string(newIdentifier);
+}
+
+ObjectEntryDescriptor::ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier)
+{
+    Generation = ObjectGeneration::JSON;
+    Identifier = std::string(newIdentifier);
+    Type = type;
 }
 
 ObjectEntryDescriptor::ObjectEntryDescriptor(const ObjectRepositoryItem& ori)
@@ -77,8 +84,28 @@ std::string_view ObjectEntryDescriptor::GetName() const
     return Generation == ObjectGeneration::JSON ? Identifier : Entry.GetName();
 }
 
+bool ObjectEntryDescriptor::operator==(const ObjectEntryDescriptor& rhs) const
+{
+    if (Generation != rhs.Generation)
+        return false;
+    if (Generation == ObjectGeneration::DAT)
+    {
+        return Entry == rhs.Entry;
+    }
+    else
+    {
+        return Type == rhs.Type && Identifier == rhs.Identifier;
+    }
+}
+
+bool ObjectEntryDescriptor::operator!=(const ObjectEntryDescriptor& rhs) const
+{
+    return !(*this == rhs);
+}
+
 Object::Object(const rct_object_entry& entry)
 {
+    _type = entry.GetType();
     _objectEntry = entry;
 }
 
@@ -213,6 +240,61 @@ std::optional<uint8_t> rct_object_entry::GetSceneryType() const
         default:
             return std::nullopt;
     }
+}
+
+bool rct_object_entry::IsEmpty() const
+{
+    uint64_t a, b;
+    std::memcpy(&a, reinterpret_cast<const uint8_t*>(this), 8);
+    std::memcpy(&b, reinterpret_cast<const uint8_t*>(this) + 8, 8);
+
+    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
+        return true;
+    if (a == 0 && b == 0)
+        return true;
+    return false;
+}
+
+bool rct_object_entry::operator==(const rct_object_entry& rhs) const
+{
+    const auto a = this;
+    const auto b = &rhs;
+
+    // If an official object don't bother checking checksum
+    if ((a->flags & 0xF0) || (b->flags & 0xF0))
+    {
+        if (a->GetType() != b->GetType())
+        {
+            return false;
+        }
+        int32_t match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
+    }
+    else
+    {
+        if (a->flags != b->flags)
+        {
+            return false;
+        }
+        int32_t match = memcmp(a->name, b->name, 8);
+        if (match)
+        {
+            return false;
+        }
+        if (a->checksum != b->checksum)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool rct_object_entry::operator!=(const rct_object_entry& rhs) const
+{
+    return !(*this == rhs);
 }
 
 /**

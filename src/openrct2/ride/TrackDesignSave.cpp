@@ -14,7 +14,9 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../object/LargeSceneryObject.h"
 #include "../object/ObjectList.h"
+#include "../object/ObjectManager.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -188,16 +190,29 @@ static void track_design_save_push_tile_element(const CoordsXY& loc, TileElement
     }
 }
 
+static bool track_design_is_supported_object(const Object* obj)
+{
+    const auto& entry = obj->GetObjectEntry();
+    return !entry.IsEmpty();
+}
+
 /**
  *
  *  rct2: 0x006D2FA7
  */
 static void track_design_save_push_tile_element_desc(
-    const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
+    const auto& entry = obj->GetObjectEntry();
+    if (entry.IsEmpty())
+    {
+        // Unsupported, should have been blocked earlier
+        assert(false);
+    }
+
     auto tileLoc = TileCoordsXYZ(loc);
     TrackDesignSceneryElement item{};
-    item.scenery_object = *entry;
+    item.scenery_object = ObjectEntryDescriptor(entry);
     item.x = tileLoc.x;
     item.y = tileLoc.y;
     item.z = tileLoc.z;
@@ -210,105 +225,112 @@ static void track_design_save_push_tile_element_desc(
 
 static void track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
-    int32_t entryType = sceneryElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::SmallScenery, entryType);
+    auto entryIndex = sceneryElement->GetEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    if (obj != nullptr && track_design_is_supported_object(obj))
+    {
+        uint8_t flags = 0;
+        flags |= sceneryElement->GetDirection();
+        flags |= sceneryElement->GetSceneryQuadrant() << 2;
 
-    uint8_t flags = 0;
-    flags |= sceneryElement->GetDirection();
-    flags |= sceneryElement->GetSceneryQuadrant() << 2;
+        uint8_t primaryColour = sceneryElement->GetPrimaryColour();
+        uint8_t secondaryColour = sceneryElement->GetSecondaryColour();
 
-    uint8_t primaryColour = sceneryElement->GetPrimaryColour();
-    uint8_t secondaryColour = sceneryElement->GetSecondaryColour();
-
-    track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
-    track_design_save_push_tile_element_desc(
-        entry->GetObjectEntry(), { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+        track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
+        track_design_save_push_tile_element_desc(
+            obj, { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+    }
 }
 
 static void track_design_save_add_large_scenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
-    rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t direction, sequence;
-
     if (tileElement == nullptr)
     {
         log_warning("Null tile element");
         return;
     }
 
-    int32_t entryType = tileElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::LargeScenery, entryType);
-    sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
-
-    int32_t z = tileElement->base_height;
-    direction = tileElement->GetDirection();
-    sequence = tileElement->GetSequenceIndex();
-
-    auto sceneryOrigin = map_large_scenery_get_origin(
-        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
-    if (!sceneryOrigin)
+    auto entryIndex = tileElement->GetEntryIndex();
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
+    if (obj != nullptr && track_design_is_supported_object(obj))
     {
-        return;
-    }
+        auto legacyData = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
+        auto sceneryTiles = legacyData->large_scenery.tiles;
 
-    // Iterate through each tile of the large scenery element
-    sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
-    {
-        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
-        auto rotatedOffsetPos = offsetPos.Rotate(direction);
+        int32_t z = tileElement->base_height;
+        auto direction = tileElement->GetDirection();
+        auto sequence = tileElement->GetSequenceIndex();
 
-        CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                              sceneryOrigin->z + tile->z_offset };
-        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
-        if (largeElement != nullptr)
+        auto sceneryOrigin = map_large_scenery_get_origin(
+            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        if (!sceneryOrigin)
         {
-            if (sequence == 0)
-            {
-                uint8_t flags = largeElement->GetDirection();
-                uint8_t primaryColour = largeElement->GetPrimaryColour();
-                uint8_t secondaryColour = largeElement->GetSecondaryColour();
+            return;
+        }
 
-                track_design_save_push_tile_element_desc(
-                    entry->GetObjectEntry(), tileLoc, flags, primaryColour, secondaryColour);
+        // Iterate through each tile of the large scenery element
+        sequence = 0;
+        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        {
+            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+
+            CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
+                                  sceneryOrigin->z + tile->z_offset };
+            auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+            if (largeElement != nullptr)
+            {
+                if (sequence == 0)
+                {
+                    uint8_t flags = largeElement->GetDirection();
+                    uint8_t primaryColour = largeElement->GetPrimaryColour();
+                    uint8_t secondaryColour = largeElement->GetSecondaryColour();
+
+                    track_design_save_push_tile_element_desc(obj, tileLoc, flags, primaryColour, secondaryColour);
+                }
+                track_design_save_push_tile_element({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
             }
-            track_design_save_push_tile_element({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
         }
     }
 }
 
 static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallElement)
 {
-    int32_t entryType = wallElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::Walls, entryType);
+    auto entryIndex = wallElement->GetEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    if (obj != nullptr && track_design_is_supported_object(obj))
+    {
+        uint8_t flags = 0;
+        flags |= wallElement->GetDirection();
+        flags |= wallElement->GetTertiaryColour() << 2;
 
-    uint8_t flags = 0;
-    flags |= wallElement->GetDirection();
-    flags |= wallElement->GetTertiaryColour() << 2;
+        uint8_t secondaryColour = wallElement->GetSecondaryColour();
+        uint8_t primaryColour = wallElement->GetPrimaryColour();
 
-    uint8_t secondaryColour = wallElement->GetSecondaryColour();
-    uint8_t primaryColour = wallElement->GetPrimaryColour();
-
-    track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
-    track_design_save_push_tile_element_desc(
-        entry->GetObjectEntry(), { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+        track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
+        track_design_save_push_tile_element_desc(
+            obj, { loc.x, loc.y, wallElement->GetBaseZ() }, flags, primaryColour, secondaryColour);
+    }
 }
 
 static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    int32_t entryType = pathElement->GetSurfaceEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::Paths, entryType);
+    auto entryIndex = pathElement->GetSurfaceEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::Paths, entryIndex);
+    if (obj != nullptr && track_design_is_supported_object(obj))
+    {
+        uint8_t flags = 0;
+        flags |= pathElement->GetEdges();
+        flags |= (pathElement->GetSlopeDirection()) << 5;
+        if (pathElement->IsSloped())
+            flags |= 0b00010000;
+        if (pathElement->IsQueue())
+            flags |= 1 << 7;
 
-    uint8_t flags = 0;
-    flags |= pathElement->GetEdges();
-    flags |= (pathElement->GetSlopeDirection()) << 5;
-    if (pathElement->IsSloped())
-        flags |= 0b00010000;
-    if (pathElement->IsQueue())
-        flags |= 1 << 7;
-
-    track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
-    track_design_save_push_tile_element_desc(entry->GetObjectEntry(), { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0);
+        track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
+        track_design_save_push_tile_element_desc(obj, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0);
+    }
 }
 
 /**
@@ -370,7 +392,7 @@ static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement*
  *
  *  rct2: 0x006D2FDD
  */
-static void track_design_save_pop_tile_element_desc(const rct_object_entry* entry, const CoordsXYZ& loc, uint8_t flags)
+static void track_design_save_pop_tile_element_desc(const ObjectEntryDescriptor& entry, const CoordsXYZ& loc, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
     auto tileLoc = TileCoordsXYZ(loc);
@@ -385,7 +407,7 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
             continue;
         if (item->flags != flags)
             continue;
-        if (!object_entry_compare(&item->scenery_object, entry))
+        if (item->scenery_object != entry)
             continue;
 
         removeIndex = i;
@@ -399,93 +421,101 @@ static void track_design_save_pop_tile_element_desc(const rct_object_entry* entr
 
 static void track_design_save_remove_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
 {
-    int32_t entryType = sceneryElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::SmallScenery, entryType);
+    auto entryIndex = sceneryElement->GetEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::SmallScenery, entryIndex);
+    if (obj != nullptr)
+    {
+        uint8_t flags = 0;
+        flags |= sceneryElement->GetDirection();
+        flags |= sceneryElement->GetSceneryQuadrant() << 2;
 
-    uint8_t flags = 0;
-    flags |= sceneryElement->GetDirection();
-    flags |= sceneryElement->GetSceneryQuadrant() << 2;
-
-    track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
-    track_design_save_pop_tile_element_desc(entry->GetObjectEntry(), { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags);
+        track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(sceneryElement));
+        track_design_save_pop_tile_element_desc(obj->GetDescriptor(), { loc.x, loc.y, sceneryElement->GetBaseZ() }, flags);
+    }
 }
 
 static void track_design_save_remove_large_scenery(const CoordsXY& loc, LargeSceneryElement* tileElement)
 {
-    rct_large_scenery_tile *sceneryTiles, *tile;
-    int32_t direction, sequence;
-
     if (tileElement == nullptr)
     {
         log_warning("Null tile element");
         return;
     }
 
-    int32_t entryType = tileElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::LargeScenery, entryType);
-    sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
-
-    int32_t z = tileElement->base_height;
-    direction = tileElement->GetDirection();
-    sequence = tileElement->GetSequenceIndex();
-
-    auto sceneryOrigin = map_large_scenery_get_origin(
-        { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
-    if (!sceneryOrigin)
+    auto entryIndex = tileElement->GetEntryIndex();
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objectMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
+    if (obj != nullptr)
     {
-        return;
-    }
+        auto legacyData = reinterpret_cast<const rct_scenery_entry*>(obj->GetLegacyData());
+        auto sceneryTiles = legacyData->large_scenery.tiles;
 
-    // Iterate through each tile of the large scenery element
-    sequence = 0;
-    for (tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
-    {
-        CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
-        auto rotatedOffsetPos = offsetPos.Rotate(direction);
+        int32_t z = tileElement->base_height;
+        auto direction = tileElement->GetDirection();
+        auto sequence = tileElement->GetSequenceIndex();
 
-        CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
-                              sceneryOrigin->z + tile->z_offset };
-        auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
-        if (largeElement != nullptr)
+        auto sceneryOrigin = map_large_scenery_get_origin(
+            { loc.x, loc.y, z << 3, static_cast<Direction>(direction) }, sequence, nullptr);
+        if (!sceneryOrigin)
         {
-            if (sequence == 0)
+            return;
+        }
+
+        // Iterate through each tile of the large scenery element
+        sequence = 0;
+        for (auto tile = sceneryTiles; tile->x_offset != -1; tile++, sequence++)
+        {
+            CoordsXY offsetPos{ tile->x_offset, tile->y_offset };
+            auto rotatedOffsetPos = offsetPos.Rotate(direction);
+
+            CoordsXYZ tileLoc = { sceneryOrigin->x + rotatedOffsetPos.x, sceneryOrigin->y + rotatedOffsetPos.y,
+                                  sceneryOrigin->z + tile->z_offset };
+            auto largeElement = map_get_large_scenery_segment({ tileLoc, static_cast<Direction>(direction) }, sequence);
+            if (largeElement != nullptr)
             {
-                uint8_t flags = largeElement->GetDirection();
-                track_design_save_pop_tile_element_desc(entry->GetObjectEntry(), tileLoc, flags);
+                if (sequence == 0)
+                {
+                    uint8_t flags = largeElement->GetDirection();
+                    track_design_save_pop_tile_element_desc(obj->GetDescriptor(), tileLoc, flags);
+                }
+                track_design_save_pop_tile_element({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
             }
-            track_design_save_pop_tile_element({ tileLoc.x, tileLoc.y }, reinterpret_cast<TileElement*>(largeElement));
         }
     }
 }
 
 static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wallElement)
 {
-    int32_t entryType = wallElement->GetEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::Walls, entryType);
+    auto entryIndex = wallElement->GetEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::Walls, entryIndex);
+    if (obj != nullptr)
+    {
+        uint8_t flags = 0;
+        flags |= wallElement->GetDirection();
+        flags |= wallElement->GetTertiaryColour() << 2;
 
-    uint8_t flags = 0;
-    flags |= wallElement->GetDirection();
-    flags |= wallElement->GetTertiaryColour() << 2;
-
-    track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
-    track_design_save_pop_tile_element_desc(entry->GetObjectEntry(), { loc.x, loc.y, wallElement->GetBaseZ() }, flags);
+        track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(wallElement));
+        track_design_save_pop_tile_element_desc(obj->GetDescriptor(), { loc.x, loc.y, wallElement->GetBaseZ() }, flags);
+    }
 }
 
 static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    int32_t entryType = pathElement->GetSurfaceEntryIndex();
-    auto entry = object_entry_get_object(ObjectType::Paths, entryType);
+    auto entryIndex = pathElement->GetSurfaceEntryIndex();
+    auto obj = object_entry_get_object(ObjectType::Paths, entryIndex);
+    if (obj != nullptr)
+    {
+        uint8_t flags = 0;
+        flags |= pathElement->GetEdges();
+        if (pathElement->IsSloped())
+            flags |= (1 << 4);
+        flags |= (pathElement->GetSlopeDirection()) << 5;
+        if (pathElement->IsQueue())
+            flags |= (1 << 7);
 
-    uint8_t flags = 0;
-    flags |= pathElement->GetEdges();
-    if (pathElement->IsSloped())
-        flags |= (1 << 4);
-    flags |= (pathElement->GetSlopeDirection()) << 5;
-    if (pathElement->IsQueue())
-        flags |= (1 << 7);
-
-    track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
-    track_design_save_pop_tile_element_desc(entry->GetObjectEntry(), { loc.x, loc.y, pathElement->GetBaseZ() }, flags);
+        track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
+        track_design_save_pop_tile_element_desc(obj->GetDescriptor(), { loc.x, loc.y, pathElement->GetBaseZ() }, flags);
+    }
 }
 
 /**

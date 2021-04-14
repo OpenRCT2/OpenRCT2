@@ -123,7 +123,7 @@ bool T6Exporter::SaveTrack(OpenRCT2::IStream* stream)
 
     for (const auto& sceneryElement : _trackDesign->scenery_elements)
     {
-        tempStream.Write(&sceneryElement.scenery_object, sizeof(rct_object_entry));
+        tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(rct_object_entry));
         tempStream.WriteValue<int8_t>(sceneryElement.x);
         tempStream.WriteValue<int8_t>(sceneryElement.y);
         tempStream.WriteValue<int8_t>(sceneryElement.z);

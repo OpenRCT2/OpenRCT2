@@ -249,7 +249,6 @@ enum
 struct list_item
 {
     const ObjectRepositoryItem* repositoryItem;
-    rct_object_entry* entry;
     std::unique_ptr<rct_object_filters> filter;
     uint8_t* flags;
 };
@@ -307,7 +306,6 @@ static void visible_list_refresh(rct_window* w)
 
             list_item currentListItem;
             currentListItem.repositoryItem = item;
-            currentListItem.entry = const_cast<rct_object_entry*>(&item->ObjectEntry);
             currentListItem.filter = std::move(filter);
             currentListItem.flags = &_objectSelectionFlags[i];
             _listItems.push_back(std::move(currentListItem));
@@ -681,7 +679,7 @@ static void window_editor_object_selection_scroll_mousedown(
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
-        if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->entry))
+        if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem))
             return;
 
         // Close any other open windows such as options/colour schemes to prevent a crash.

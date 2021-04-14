@@ -174,19 +174,6 @@ void ObjectList::SetObject(ObjectType type, ObjectEntryIndex index, std::string_
     SetObject(index, entry);
 }
 
-bool object_entry_is_empty(const rct_object_entry* entry)
-{
-    uint64_t a, b;
-    std::memcpy(&a, reinterpret_cast<const uint8_t*>(entry), 8);
-    std::memcpy(&b, reinterpret_cast<const uint8_t*>(entry) + 8, 8);
-
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
-        return true;
-    if (a == 0 && b == 0)
-        return true;
-    return false;
-}
-
 /**
  *
  *  rct2: 0x006AB344
@@ -218,7 +205,7 @@ bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry
         if (loadedObj != nullptr)
         {
             auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
-            if (object_entry_compare(thisEntry, entry))
+            if (thisEntry == *entry)
             {
                 *entry_type = objectType;
                 *entryIndex = i;
@@ -249,20 +236,6 @@ void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIn
         *outObjectType = static_cast<ObjectType>(objectType);
     if (outEntryIndex != nullptr)
         *outEntryIndex = static_cast<ObjectEntryIndex>(index);
-}
-
-const rct_object_entry* get_loaded_object_entry(size_t index)
-{
-    ObjectType objectType;
-    ObjectEntryIndex entryIndex;
-    get_type_entry_index(index, &objectType, &entryIndex);
-    auto obj = object_entry_get_object(objectType, entryIndex);
-    if (obj == nullptr)
-    {
-        return nullptr;
-    }
-
-    return obj->GetObjectEntry();
 }
 
 void* get_loaded_object_chunk(size_t index)

@@ -76,7 +76,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 {
 private:
     static constexpr uint32_t MAGIC_NUMBER = 0x5844494F; // OIDX
-    static constexpr uint16_t VERSION = 27;
+    static constexpr uint16_t VERSION = 28;
     static constexpr auto PATTERN = "*.dat;*.pob;*.json;*.parkobj";
 
     IObjectRepository& _objectRepository;
@@ -113,8 +113,10 @@ public:
         if (object != nullptr)
         {
             ObjectRepositoryItem item = {};
+            item.Type = object->GetObjectType();
+            item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
-            item.ObjectEntry = *object->GetObjectEntry();
+            item.ObjectEntry = object->GetObjectEntry();
             item.Path = path;
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
@@ -622,7 +624,7 @@ private:
         // Read object data from file
         auto fs = OpenRCT2::FileStream(item->Path, OpenRCT2::FILE_MODE_OPEN);
         auto fileEntry = fs.ReadValue<rct_object_entry>();
-        if (!object_entry_compare(entry, &fileEntry))
+        if (*entry != fileEntry)
         {
             throw std::runtime_error("Header found in object file does not match object to pack.");
         }
@@ -731,40 +733,6 @@ const ObjectRepositoryItem* object_repository_find_object_by_name(const char* na
 {
     auto& objectRepository = GetContext()->GetObjectRepository();
     return objectRepository.FindObjectLegacy(name);
-}
-
-bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b)
-{
-    // If an official object don't bother checking checksum
-    if ((a->flags & 0xF0) || (b->flags & 0xF0))
-    {
-        if (a->GetType() != b->GetType())
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-    }
-    else
-    {
-        if (a->flags != b->flags)
-        {
-            return false;
-        }
-        int32_t match = memcmp(a->name, b->name, 8);
-        if (match)
-        {
-            return false;
-        }
-        if (a->checksum != b->checksum)
-        {
-            return false;
-        }
-    }
-    return true;
 }
 
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength)

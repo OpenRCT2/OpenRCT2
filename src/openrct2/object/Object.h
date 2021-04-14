@@ -123,6 +123,10 @@ struct rct_object_entry
     {
         return static_cast<ObjectSourceGame>((flags & 0xF0) >> 4);
     }
+
+    bool IsEmpty() const;
+    bool operator==(const rct_object_entry& rhs) const;
+    bool operator!=(const rct_object_entry& rhs) const;
 };
 assert_struct_size(rct_object_entry, 0x10);
 
@@ -173,10 +177,14 @@ struct ObjectEntryDescriptor
     ObjectEntryDescriptor() = default;
     explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
     explicit ObjectEntryDescriptor(std::string_view newIdentifier);
+    explicit ObjectEntryDescriptor(ObjectType type, std::string_view newIdentifier);
     explicit ObjectEntryDescriptor(const ObjectRepositoryItem& ori);
     bool HasValue() const;
     ObjectType GetType() const;
     std::string_view GetName() const;
+
+    bool operator==(const ObjectEntryDescriptor& rhs) const;
+    bool operator!=(const ObjectEntryDescriptor& rhs) const;
 };
 
 struct IObjectRepository;
@@ -243,13 +251,14 @@ struct IReadObjectContext
 class Object
 {
 private:
+    ObjectType _type = ObjectType::None;
     std::string _identifier;
     rct_object_entry _objectEntry{};
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<ObjectSourceGame> _sourceGames;
     std::vector<std::string> _authors;
-    bool _isJsonObject{};
+    ObjectGeneration _generation{};
 
 protected:
     StringTable& GetStringTable()
@@ -294,20 +303,29 @@ public:
 
     void MarkAsJsonObject()
     {
-        _isJsonObject = true;
+        _generation = ObjectGeneration::JSON;
     }
 
-    bool IsJsonObject() const
+    ObjectGeneration GetGeneration() const
     {
-        return _isJsonObject;
+        return _generation;
     };
+
+    ObjectType GetObjectType() const
+    {
+        return _type;
+    }
 
     ObjectEntryDescriptor GetDescriptor() const
     {
-        if (_isJsonObject)
-            return ObjectEntryDescriptor(_identifier);
-        else
+        if (_generation == ObjectGeneration::DAT)
+        {
             return ObjectEntryDescriptor(_objectEntry);
+        }
+        else
+        {
+            return ObjectEntryDescriptor(_type, _identifier);
+        }
     }
 
     // Legacy data structures
@@ -315,9 +333,9 @@ public:
     {
         return _objectEntry.GetName();
     }
-    const rct_object_entry* GetObjectEntry() const
+    const rct_object_entry& GetObjectEntry() const
     {
-        return &_objectEntry;
+        return _objectEntry;
     }
     virtual void* GetLegacyData();
 
@@ -335,10 +353,6 @@ public:
     {
     }
 
-    virtual ObjectType GetObjectType() const final
-    {
-        return _objectEntry.GetType();
-    }
     virtual std::string GetName() const;
     virtual std::string GetName(int32_t language) const;
 
@@ -372,8 +386,6 @@ public:
 extern int32_t object_entry_group_counts[];
 extern int32_t object_entry_group_encoding[];
 
-bool object_entry_is_empty(const rct_object_entry* entry);
-bool object_entry_compare(const rct_object_entry* a, const rct_object_entry* b);
 int32_t object_calculate_checksum(const rct_object_entry* entry, const void* data, size_t dataLength);
 bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex);
 void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object);
