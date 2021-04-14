@@ -736,7 +736,7 @@ namespace RCT1
             "rct2.mgr1",    // RCT1_RIDE_TYPE_MERRY_GO_ROUND
             "rct2.balln",   // RCT1_RIDE_TYPE_BALLOON_STALL
             "rct2.infok",   // RCT1_RIDE_TYPE_INFORMATION_KIOSK
-            "rct2.tlt1",    // RCT1_RIDE_TYPE_TOILETS
+            "rct1.ride.toilets",    // RCT1_RIDE_TYPE_TOILETS
             "rct2.fwh1",    // RCT1_RIDE_TYPE_FERRIS_WHEEL
             "rct2.simpod",  // RCT1_RIDE_TYPE_MOTION_SIMULATOR
             "rct2.c3d",     // RCT1_RIDE_TYPE_3D_CINEMA
