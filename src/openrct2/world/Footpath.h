@@ -177,7 +177,8 @@ extern const CoordsXY BenchUseOffsets[NumOrthogonalDirections * 2];
 TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
-money32 footpath_provisional_set(int32_t type, const CoordsXYZ& footpathLoc, int32_t slope);
+money32 footpath_provisional_set(
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
@@ -196,6 +197,7 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
 int32_t entrance_get_directions(const TileElement* tileElement);
 
 PathSurfaceEntry* get_path_surface_entry(ObjectEntryIndex entryIndex);
+FootpathRailingsObject* get_path_railings_entry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(ride_id_t rideIndex);

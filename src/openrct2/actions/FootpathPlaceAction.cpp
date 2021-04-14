@@ -25,10 +25,12 @@
 
 using namespace OpenRCT2;
 
-FootpathPlaceAction::FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction)
+FootpathPlaceAction::FootpathPlaceAction(
+    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, Direction direction)
     : _loc(loc)
     , _slope(slope)
     , _type(type)
+    , _railingsType(railingsType)
     , _direction(direction)
 {
 }
@@ -37,6 +39,7 @@ void FootpathPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit(_loc);
     visitor.Visit("object", _type);
+    visitor.Visit("railingsObject", _railingsType);
     visitor.Visit("direction", _direction);
     visitor.Visit("slope", _slope);
 }
@@ -182,7 +185,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
     }
 
     pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
-    pathElement->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+    pathElement->SetRailingEntryIndex(_railingsType);
     bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
     pathElement->SetIsQueue(isQueue);
 
@@ -349,7 +352,7 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
 
         pathElement->SetClearanceZ(zHigh);
         pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
-        pathElement->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+        pathElement->SetRailingEntryIndex(_railingsType);
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
         pathElement->SetIsQueue(_type & FOOTPATH_ELEMENT_INSERT_QUEUE);

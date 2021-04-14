@@ -18,6 +18,7 @@
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
@@ -26,9 +27,11 @@
 #include <openrct2/world/Surface.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_FOOTPATHS;
-static constexpr const int32_t WH = 381;
+static constexpr const int32_t WH = 421;
 static constexpr const int32_t WW = 106;
 static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
+
+static ObjectEntryIndex _selectedRailings = OBJECT_ENTRY_INDEX_NULL;
 
 // clang-format off
 enum
@@ -53,6 +56,7 @@ enum WINDOW_FOOTPATH_WIDGET_IDX
     WIDX_TYPE_GROUP,
     WIDX_FOOTPATH_TYPE,
     WIDX_QUEUELINE_TYPE,
+    WIDX_RAILINGS_TYPE,
 
     WIDX_DIRECTION_GROUP,
     WIDX_DIRECTION_NW,
@@ -76,29 +80,30 @@ static rct_widget window_footpath_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
 
     // Type group
-    MakeWidget({ 3,  17}, {100, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_TYPE                                                                          ),
+    MakeWidget({ 3,  17}, {100, 95}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_TYPE                                                                          ),
     MakeWidget({ 6,  30}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
     MakeWidget({53,  30}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP                        ),
+    MakeWidget({29,  69}, { 47, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,                        STR_FOOTPATH_TIP                               ),
 
     // Direction group
-    MakeWidget({ 3,  75}, {100, 77}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_DIRECTION                                                                     ),
-    MakeWidget({53,  87}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP                              ),
-    MakeWidget({53, 116}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP                              ),
-    MakeWidget({ 8, 116}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP                              ),
-    MakeWidget({ 8,  87}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP                              ),
+    MakeWidget({ 3, 115}, {100, 77}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_DIRECTION                                                                     ),
+    MakeWidget({53, 127}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP                              ),
+    MakeWidget({53, 156}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP                              ),
+    MakeWidget({ 8, 156}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP                              ),
+    MakeWidget({ 8, 127}, { 45, 29}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP                              ),
 
     // Slope group
-    MakeWidget({ 3, 155}, {100, 41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_SLOPE                                                                         ),
-    MakeWidget({17, 167}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP                             ),
-    MakeWidget({41, 167}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP                                  ),
-    MakeWidget({65, 167}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP                               ),
-    MakeWidget({ 8, 202}, { 90, 90}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
-    MakeWidget({30, 295}, { 46, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
+    MakeWidget({ 3, 195}, {100, 41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_SLOPE                                                                         ),
+    MakeWidget({17, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP                             ),
+    MakeWidget({41, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP                                  ),
+    MakeWidget({65, 207}, { 24, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP                               ),
+    MakeWidget({ 8, 242}, { 90, 90}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP),
+    MakeWidget({30, 335}, { 46, 24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP       ),
 
     // Mode group
-    MakeWidget({ 3, 321}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                      ),
-    MakeWidget({13, 332}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
-    MakeWidget({57, 332}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
+    MakeWidget({ 3, 361}, {100, 54}, WindowWidgetType::Groupbox, WindowColour::Primary                                                                                      ),
+    MakeWidget({13, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP             ),
+    MakeWidget({57, 372}, { 36, 36}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP    ),
     {WIDGETS_END},
 };
 
@@ -165,6 +170,7 @@ static constexpr const uint8_t ConstructionPreviewImages[][4] = {
 static void window_footpath_mousedown_direction(int32_t direction);
 static void window_footpath_mousedown_slope(int32_t slope);
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues);
+static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget* widget);
 static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& screenCoords);
 static void window_footpath_set_selection_start_bridge_at_point(const ScreenCoordsXY& screenCoords);
 static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoords);
@@ -205,12 +211,12 @@ rct_window* window_footpath_open()
         return window;
     }
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), 106, 381, &window_footpath_events, WC_FOOTPATH, 0);
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_FOOTPATH_TYPE) | (1 << WIDX_QUEUELINE_TYPE)
-        | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW) | (1 << WIDX_DIRECTION_SE)
-        | (1 << WIDX_SLOPEDOWN) | (1 << WIDX_LEVEL) | (1 << WIDX_SLOPEUP) | (1 << WIDX_CONSTRUCT) | (1 << WIDX_REMOVE)
-        | (1 << WIDX_CONSTRUCT_ON_LAND) | (1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
+        | (1 << WIDX_RAILINGS_TYPE) | (1 << WIDX_DIRECTION_NW) | (1 << WIDX_DIRECTION_NE) | (1 << WIDX_DIRECTION_SW)
+        | (1 << WIDX_DIRECTION_SE) | (1 << WIDX_SLOPEDOWN) | (1 << WIDX_LEVEL) | (1 << WIDX_SLOPEUP) | (1 << WIDX_CONSTRUCT)
+        | (1 << WIDX_REMOVE) | (1 << WIDX_CONSTRUCT_ON_LAND) | (1 << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
     WindowInitScrollWidgets(window);
     window_push_others_right(window);
@@ -308,6 +314,9 @@ static void window_footpath_mousedown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_QUEUELINE_TYPE:
             window_footpath_show_footpath_types_dialog(w, widget, true);
             break;
+        case WIDX_RAILINGS_TYPE:
+            window_footpath_show_railings_types_dialog(w, widget);
+            break;
         case WIDX_DIRECTION_NW:
             window_footpath_mousedown_direction(0);
             break;
@@ -345,6 +354,16 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     else if (widgetIndex == WIDX_QUEUELINE_TYPE)
     {
         gFootpathSelectedType = SELECTED_PATH_TYPE_QUEUE;
+    }
+    else if (widgetIndex == WIDX_RAILINGS_TYPE)
+    {
+        if (dropdownIndex != -1)
+            _selectedRailings = dropdownIndex;
+
+        footpath_provisional_update();
+        _window_footpath_cost = MONEY32_UNDEFINED;
+        w->Invalidate();
+        return;
     }
     else
     {
@@ -471,7 +490,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
     {
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
-        _window_footpath_cost = footpath_provisional_set(type, footpathLoc, slope);
+        _window_footpath_cost = footpath_provisional_set(type, _selectedRailings, footpathLoc, slope);
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
@@ -578,6 +597,14 @@ static void window_footpath_invalidate(rct_window* w)
     }
     window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
     window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+
+    auto railingsImage = static_cast<uint32_t>(SPR_NONE);
+    auto railingsEntry = get_path_railings_entry(_selectedRailings);
+    if (railingsEntry != nullptr)
+    {
+        railingsImage = railingsEntry->PreviewImageId;
+    }
+    window_footpath_widgets[WIDX_RAILINGS_TYPE].image = railingsImage;
 }
 
 /**
@@ -677,6 +704,32 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         36, itemsPerRow);
 }
 
+static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget* widget)
+{
+    uint32_t numRailingsTypes = 0;
+    // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
+
+    for (int32_t i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    {
+        FootpathRailingsObject* railingsEntry = get_path_railings_entry(i);
+        if (railingsEntry == nullptr)
+        {
+            continue;
+        }
+
+        int32_t image = railingsEntry->PreviewImageId;
+
+        gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
+        gDropdownItemsArgs[numRailingsTypes] = image;
+        numRailingsTypes++;
+    }
+
+    auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
+    WindowDropdownShowImage(
+        w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, w->colours[1], 0, numRailingsTypes,
+        47, 36, itemsPerRow);
+}
+
 /**
  *
  *  rct2: 0x006A8111 0x006A8135 0x006A815C 0x006A8183
@@ -772,7 +825,7 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
         }
         int32_t pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
-        _window_footpath_cost = footpath_provisional_set(pathType, { info.Loc, z }, slope);
+        _window_footpath_cost = footpath_provisional_set(pathType, _selectedRailings, { info.Loc, z }, slope);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -869,7 +922,7 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, slope, selectedType);
+    auto footpathPlaceAction = FootpathPlaceAction({ info.Loc, z }, slope, selectedType, _selectedRailings);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
@@ -958,7 +1011,7 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, footpathLoc, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, gFootpathConstructDirection);
+    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, _selectedRailings, gFootpathConstructDirection);
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {

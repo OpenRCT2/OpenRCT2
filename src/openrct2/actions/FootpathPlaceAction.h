@@ -18,11 +18,14 @@ private:
     CoordsXYZ _loc;
     uint8_t _slope{};
     ObjectEntryIndex _type{};
+    ObjectEntryIndex _railingsType{};
     Direction _direction{ INVALID_DIRECTION };
 
 public:
     FootpathPlaceAction() = default;
-    FootpathPlaceAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, Direction direction = INVALID_DIRECTION);
+    FootpathPlaceAction(
+        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
+        Direction direction = INVALID_DIRECTION);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
