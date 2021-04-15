@@ -58,10 +58,11 @@ jobs:
           build-symbols
           build-installer -i
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2
         with:
-          name: "OpenRCT2-Windows-${{ matrix.platform }}"
-          path: artifacts/*
+          name: OpenRCT2-${{ runner.os }}-${{ matrix.platform }}
+          path: artifacts
+          if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
@@ -114,10 +115,11 @@ jobs:
           cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=MinSizeRel -DDISABLE_IPO=on -DDISABLE_HTTP=Off -DFORCE32=on -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
           ninja -k0
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2
         with:
           name: "OpenRCT2-NT5.1"
           path: bin/openrct2.exe
+          if-no-files-found: error
   macos-xcode:
     name: macOS (x64) using Xcode
     runs-on: macos-latest
@@ -135,10 +137,11 @@ jobs:
           cd artifacts
           zip -rq openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2
         with:
-          name: "OpenRCT2-macOS-xcode"
+          name: OpenRCT2-${{ runner.os }}-xcode
           path: artifacts/openrct2-macos.zip
+          if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv
@@ -173,10 +176,11 @@ jobs:
           cd artifacts
           zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2-preview
+        uses: actions/upload-artifact@v2
         with:
-          name: "OpenRCT2-macOS-cmake"
+          name: OpenRCT2-${{ runner.os }}-cmake
           path: artifacts/openrct2-macos.zip
+          if-no-files-found: error
   linux-portable:
     name: Linux (x64, portable)
     runs-on: ubuntu-latest
@@ -231,10 +235,11 @@ jobs:
       - name: Build artifacts
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: "OpenRCT2-Linux-i686"
           path: artifacts
+          if-no-files-found: error
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
@@ -265,10 +270,11 @@ jobs:
       - name: Build AppImage
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
           name: OpenRCT2-AppImage
           path: artifacts
+          if-no-files-found: error
   linux-flathub-beta:
     name: Linux (Flathub beta channel)
     if: github.repository == 'OpenRCT2/OpenRCT2' && github.ref == 'refs/heads/develop' && github.event_name == 'push'
@@ -341,10 +347,11 @@ jobs:
           mkdir -p artifacts
           mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2-arm.apk
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v2
         with:
-          name: "OpenRCT2-Android"
+          name: OpenRCT2-Android
           path: artifacts
+          if-no-files-found: error
       - name: Upload artifacts (openrct2.org)
         run: |
           . scripts/setenv -q
