@@ -31,7 +31,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-format
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Run clang-format
         shell: sh
         run: scripts/check-code-formatting
@@ -48,7 +48,7 @@ jobs:
       PLATFORM: ${{ matrix.platform }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Build OpenRCT2
         run: . scripts/setenv && build
       - name: Build artifacts
@@ -126,7 +126,7 @@ jobs:
     needs: [check-code-formatting]
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
@@ -156,7 +156,7 @@ jobs:
     needs: [check-code-formatting]
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -223,7 +223,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-bionic32
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -258,7 +258,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -293,10 +293,12 @@ jobs:
     if: github.repository == 'OpenRCT2/OpenRCT2'
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout image
+        uses: actions/checkout@v2
+        with:
+          repository: OpenRCT2/openrct2-docker
       - name: Build image
-        run: |
-          git clone --depth 1 https://github.com/OpenRCT2/openrct2-docker .
-          docker build -t openrct2/openrct2-cli:develop develop/cli
+        run: docker build -t openrct2/openrct2-cli:develop develop/cli
       - name: Push image
         env:
           OPENRCT2_DOCKER_USER: ${{ secrets.OPENRCT2_DOCKER_USER }}
@@ -318,7 +320,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -333,7 +335,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-android
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
