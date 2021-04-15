@@ -18,7 +18,7 @@ jobs:
       - name: Clone repositories
         run: |
           echo "Cloning repositories..."
-          git clone -b master git@github.com:OpenRCT2/Localisation.git Localisation
+          git clone -b master --depth 1 git@github.com:OpenRCT2/Localisation.git Localisation
           git clone -b develop git@github.com:OpenRCT2/OpenRCT2.git OpenRCT2
       - name: Copy over language files
         run: |
