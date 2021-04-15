@@ -37,6 +37,7 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_loc);
+    stream << DS_TAG(_pathType);
 }
 
 GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
