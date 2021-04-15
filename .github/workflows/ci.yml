@@ -1,5 +1,8 @@
 name: CI
 on: [push, pull_request]
+defaults:
+  run:
+    shell: bash
 env:
   OPENRCT2_BUILD_SERVER: GitHub
   OPENRCT2_ORG_TOKEN: ${{ secrets.OPENRCT2_ORG_TOKEN }}
@@ -47,10 +50,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Build OpenRCT2
-        shell: bash
         run: . scripts/setenv && build
       - name: Build artifacts
-        shell: bash
         run: |
           . scripts/setenv -q
           build-portable
@@ -62,10 +63,8 @@ jobs:
           name: "OpenRCT2-Windows-${{ matrix.platform }}"
           path: artifacts/*
       - name: Run Tests
-        shell: bash
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
-        shell: bash
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
@@ -164,10 +163,8 @@ jobs:
           brew install ninja
           . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=on
       - name: Run Tests
-        shell: bash
         run: . scripts/setenv -q && run-tests
       - name: Build artifacts
-        shell: bash
         run: |
           . scripts/setenv
           mkdir -p artifacts
@@ -194,13 +191,10 @@ jobs:
         with:
           key: linux-portable
       - name: Get pre-reqs
-        shell: bash
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
-        shell: bash
         run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
       - name: Build artifacts
-        shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-x86_64.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v1
@@ -208,10 +202,8 @@ jobs:
           name: "OpenRCT2-Linux-x86_64"
           path: artifacts
       - name: Run Tests
-        shell: bash
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
-        shell: bash
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
@@ -233,13 +225,10 @@ jobs:
         with:
           key: linux-portable-32
       - name: Get pre-reqs
-        shell: bash
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
-        shell: bash
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -m32"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
       - name: Build artifacts
-        shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v1
@@ -247,10 +236,8 @@ jobs:
           name: "OpenRCT2-Linux-i686"
           path: artifacts
       - name: Run Tests
-        shell: bash
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
-        shell: bash
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
@@ -272,13 +259,10 @@ jobs:
         with:
           key: linux-appimage
       - name: Get pre-reqs
-        shell: bash
         run: . scripts/setenv -q && get-discord-rpc
       - name: Build OpenRCT2
-        shell: bash
         run: . scripts/setenv -q && build -DCMAKE_BUILD_TYPE=Release -DAPPIMAGE=ON -DOPENRCT2_USE_CCACHE=on
       - name: Build AppImage
-        shell: bash
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v1
@@ -334,7 +318,6 @@ jobs:
         with:
           key: linux-clang
       - name: Build OpenRCT2
-        shell: bash
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
   android:
     name: Android
@@ -350,7 +333,6 @@ jobs:
         with:
           key: android
       - name: Build OpenRCT2
-        shell: bash
         run: |
           . scripts/setenv
           pushd src/openrct2-android
@@ -364,7 +346,6 @@ jobs:
           name: "OpenRCT2-Android"
           path: artifacts
       - name: Upload artifacts (openrct2.org)
-        shell: bash
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
