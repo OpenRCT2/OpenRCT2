@@ -237,9 +237,7 @@ jobs:
         run: . scripts/setenv && get-discord-rpc
       - name: Build OpenRCT2
         shell: bash
-        env:
-          TESTPAINT: true
-        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -gz"
+        run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=MinSizeRel -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON -DFORCE32=ON -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz -m32"
       - name: Build artifacts
         shell: bash
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-Linux-i686.tar.gz bin/install/usr
@@ -251,9 +249,6 @@ jobs:
       - name: Run Tests
         shell: bash
         run: . scripts/setenv -q && run-tests
-      - name: Run testpaint
-        shell: bash
-        run: . scripts/setenv -q && run-testpaint
       - name: Upload artifacts (openrct2.org)
         shell: bash
         run: |
