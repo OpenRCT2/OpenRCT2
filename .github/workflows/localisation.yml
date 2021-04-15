@@ -29,8 +29,8 @@ jobs:
               cp $f "./OpenRCT2/data/language/$filename"
           done
       - name: Commit and push
+        working-directory: OpenRCT2
         run: |
-          pushd ./OpenRCT2
           if [[ $(git status -s) ]]; then
               echo "Committing and pushing..."
               git add .
@@ -42,4 +42,3 @@ jobs:
           else
               echo "No changes to merge."
           fi
-          popd
