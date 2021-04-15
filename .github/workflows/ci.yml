@@ -158,7 +158,7 @@ jobs:
           key: macos
       - name: Build OpenRCT2
         run: |
-          brew install ninja
+          HOMEBREW_NO_ANALYTICS=1 brew install ninja
           . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=on
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
