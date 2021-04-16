@@ -16,6 +16,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideTypes.h"
 #include "../ride/ShopItem.h"
+#include "../ride/gentle/Maze.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 #include "../world/SpriteBase.h"
@@ -630,8 +631,8 @@ struct Peep : SpriteBase
     };
     union
     {
-        uint8_t MazeLastEdge;
-        Direction PeepDirection; // Direction ?
+        PeepMazeStateRegister PeepMazeRegister;
+        Direction PeepDirection;
     };
     ride_id_t InteractionRideIndex;
     uint16_t TimeInQueue;
@@ -663,8 +664,15 @@ struct Peep : SpriteBase
     };
     ride_id_t Photo1RideRef;
     uint32_t PeepFlags;
-    rct12_xyzd8 PathfindGoal;
-    rct12_xyzd8 PathfindHistory[4];
+    union
+    {
+        struct
+        {
+            rct12_xyzd8 PathfindGoal;
+            rct12_xyzd8 PathfindHistory[4];
+        };
+        MazePathfindingHistory MazePathfindHistory;
+    };
     uint8_t WalkingFrameNum;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8_t LitterCount;
