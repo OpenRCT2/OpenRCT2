@@ -758,7 +758,8 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
         return;
     }
 
-    if (peep->Is<Staff>() && peep->AssignedStaffType == StaffType::Entertainer)
+    auto* staff = peep->As<Staff>();
+    if (staff != nullptr && staff->AssignedStaffType == StaffType::Entertainer)
         screenCoords.y++;
 
     int32_t animationFrame = GetPeepAnimation(peep->SpriteType).base_image + 1;
@@ -775,22 +776,26 @@ static void window_guest_overview_tab_paint(rct_window* w, rct_drawpixelinfo* dp
     auto sprite_id = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
     gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords);
 
-    // If holding a balloon
-    if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+    auto* guest = peep->As<Guest>();
+    if (guest != nullptr)
     {
-        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->BalloonColour), screenCoords);
-    }
+        // If holding a balloon
+        if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+        }
 
-    // If holding umbrella
-    if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
-    {
-        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->UmbrellaColour), screenCoords);
-    }
+        // If holding umbrella
+        if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+        }
 
-    // If wearing hat
-    if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
-    {
-        gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, peep->HatColour), screenCoords);
+        // If wearing hat
+        if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
+        {
+            gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+        }
     }
 }
 
@@ -1833,7 +1838,7 @@ void window_guest_inventory_update(rct_window* w)
     }
 }
 
-static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Peep* peep, ShopItem item)
+static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Guest* guest, ShopItem item)
 {
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
     auto parkName = park.Name.c_str();
@@ -1851,10 +1856,10 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
     {
         case ShopItem::Balloon:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->BalloonColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->BalloonColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo:
-            ride = get_ride(peep->Photo1RideRef);
+            ride = get_ride(guest->Photo1RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1865,10 +1870,10 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             break;
         case ShopItem::Umbrella:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->UmbrellaColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->UmbrellaColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Voucher:
-            switch (peep->VoucherType)
+            switch (guest->VoucherType)
             {
                 case VOUCHER_TYPE_PARK_ENTRY_FREE:
                     ft.Rewind();
@@ -1878,7 +1883,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Add<const char*>(parkName);
                     break;
                 case VOUCHER_TYPE_RIDE_FREE:
-                    ride = get_ride(peep->VoucherRideId);
+                    ride = get_ride(guest->VoucherRideId);
                     if (ride != nullptr)
                     {
                         ft.Rewind();
@@ -1898,20 +1903,20 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
                     ft.Rewind();
                     ft.Increment(6);
                     ft.Add<rct_string_id>(STR_PEEP_INVENTORY_VOUCHER_FOOD_OR_DRINK_FREE);
-                    ft.Add<rct_string_id>(GetShopItemDescriptor(peep->VoucherShopItem).Naming.Singular);
+                    ft.Add<rct_string_id>(GetShopItemDescriptor(guest->VoucherShopItem).Naming.Singular);
                     break;
             }
             break;
         case ShopItem::Hat:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->HatColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->HatColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::TShirt:
             ft.Rewind();
-            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(peep->TshirtColour) | GetShopItemDescriptor(item).Image);
+            ft.Add<uint32_t>(SPRITE_ID_PALETTE_COLOUR_1(guest->TshirtColour) | GetShopItemDescriptor(item).Image);
             break;
         case ShopItem::Photo2:
-            ride = get_ride(peep->Photo2RideRef);
+            ride = get_ride(guest->Photo2RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1920,7 +1925,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
             break;
         case ShopItem::Photo3:
-            ride = get_ride(peep->Photo3RideRef);
+            ride = get_ride(guest->Photo3RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();
@@ -1929,7 +1934,7 @@ static std::pair<rct_string_id, Formatter> window_guest_inventory_format_item(Pe
             }
             break;
         case ShopItem::Photo4:
-            ride = get_ride(peep->Photo4RideRef);
+            ride = get_ride(guest->Photo4RideRef);
             if (ride != nullptr)
             {
                 ft.Rewind();

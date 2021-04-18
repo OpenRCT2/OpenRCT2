@@ -131,7 +131,7 @@ Direction gRideEntranceExitPlaceDirection;
 uint8_t gLastEntranceStyle;
 
 // Static function declarations
-Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
+Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
 static void ride_breakdown_status_update(Ride* ride);
 static void ride_breakdown_update(Ride* ride);
 static void ride_call_closest_mechanic(Ride* ride);
@@ -309,12 +309,12 @@ int32_t Ride::GetMaxQueueTime() const
     return static_cast<int32_t>(queueTime);
 }
 
-Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
+Guest* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
 {
-    Peep* peep;
-    Peep* result = nullptr;
+    Guest* peep;
+    Guest* result = nullptr;
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
-    while ((peep = try_get_guest(spriteIndex)) != nullptr)
+    while ((peep = TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
         result = peep;
@@ -325,9 +325,9 @@ Peep* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
 void Ride::UpdateQueueLength(StationIndex stationIndex)
 {
     uint16_t count = 0;
-    Peep* peep;
+    Guest* peep;
     uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
-    while ((peep = try_get_guest(spriteIndex)) != nullptr)
+    while ((peep = TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
         count++;
@@ -335,13 +335,13 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
     stations[stationIndex].QueueLength = count;
 }
 
-void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Peep* peep)
+void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
 {
     assert(stationIndex < MAX_STATIONS);
     assert(peep != nullptr);
 
     peep->GuestNextInQueue = SPRITE_INDEX_NULL;
-    Peep* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
+    auto* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
         stations[peep->CurrentRideStation].LastPeepInQueue = peep->sprite_index;
@@ -2698,7 +2698,7 @@ static void ride_call_closest_mechanic(Ride* ride)
         ride_call_mechanic(ride, mechanic, forInspection);
 }
 
-Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
+Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
     // Get either exit position or entrance position if there is no exit
     auto stationIndex = ride->inspection_station;
@@ -2727,9 +2727,9 @@ Peep* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
  *  rct2: 0x006B774B (forInspection = 0)
  *  rct2: 0x006B78C3 (forInspection = 1)
  */
-Peep* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection)
+Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection)
 {
-    Peep* closestMechanic = nullptr;
+    Staff* closestMechanic = nullptr;
     uint32_t closestDistance = std::numeric_limits<uint32_t>::max();
 
     for (auto peep : EntityList<Staff>())
