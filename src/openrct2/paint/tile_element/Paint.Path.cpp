@@ -90,7 +90,7 @@ void path_paint_box_support(
     bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
-    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags, colour_t colour = 255);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -955,6 +955,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         pathPaintInfo.SurfaceImageId = surfaceEntry->image;
         pathPaintInfo.SurfaceFlags = surfaceEntry->flags;
 
+        colour_t colour = COLOUR_NULL;
         auto railingObj = tile_element->AsPath()->GetRailingEntry();
         if (railingObj != nullptr)
         {
@@ -963,6 +964,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
             pathPaintInfo.RailingFlags = railingObj->Flags;
             pathPaintInfo.ScrollingMode = railingObj->ScrollingMode;
             pathPaintInfo.SupportType = railingObj->SupportType;
+            colour = railingObj->Colour;
         }
         else
         {
@@ -975,7 +977,8 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
 
         if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
         {
-            path_paint_pole_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
+            path_paint_pole_support(
+                session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags, colour);
         }
         else
         {
@@ -1159,7 +1162,7 @@ void path_paint_box_support(
 
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
-    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags, colour_t colour)
 {
     const PathElement* pathElement = tileElement->AsPath();
 
@@ -1262,7 +1265,8 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, pathPaintInfo);
+            const int32_t extraFlags = (colour != COLOUR_NULL) ? SPRITE_ID_PALETTE_COLOUR_1(colour) : 0;
+            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags | extraFlags, pathPaintInfo);
         }
     }
 

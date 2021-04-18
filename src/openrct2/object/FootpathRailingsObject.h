@@ -22,6 +22,7 @@ public:
     RailingEntrySupportType SupportType{};
     uint8_t Flags{};
     uint8_t ScrollingMode{};
+    colour_t Colour{};
 
 public:
     explicit FootpathRailingsObject(const rct_object_entry& entry)

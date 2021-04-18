@@ -52,6 +52,7 @@ void FootpathRailingsObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         SupportType = ParseSupportType(Json::GetString(properties["supportType"]));
         ScrollingMode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
+        Colour = Colour::FromString(Json::GetString(properties["colour"]), COLOUR_NULL);
         Flags = Json::GetFlags<uint8_t>(
             properties,
             {
