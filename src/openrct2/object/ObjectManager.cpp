@@ -288,7 +288,7 @@ private:
             loadedObject = ori->LoadedObject;
             if (loadedObject == nullptr)
             {
-                ObjectType objectType = ori->ObjectEntry.GetType();
+                ObjectType objectType = ori->Type;
                 if (slot)
                 {
                     if (_loadedObjects.size() > static_cast<size_t>(*slot) && _loadedObjects[*slot] != nullptr)

@@ -109,6 +109,7 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
     { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      false },
+    { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      false },
 };
 
 #pragma region Widgets
@@ -295,8 +296,7 @@ static void visible_list_refresh(rct_window* w)
     {
         uint8_t selectionFlags = _objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        ObjectType objectType = item->ObjectEntry.GetType();
-        if (objectType == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
+        if (item->Type == get_selected_object_type(w) && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && filter_source(item)
             && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags))
         {
             auto filter = std::make_unique<rct_object_filters>();
@@ -1425,7 +1425,7 @@ static bool filter_string(const ObjectRepositoryItem* item)
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = strstr(name_lower, filter_lower) != nullptr;
-    bool inRideType = (item->ObjectEntry.GetType() == ObjectType::Ride) && strstr(type_lower, filter_lower) != nullptr;
+    bool inRideType = (item->Type == ObjectType::Ride) && strstr(type_lower, filter_lower) != nullptr;
     bool inPath = strstr(object_path, filter_lower) != nullptr;
 
     return inName || inRideType || inPath;
@@ -1468,7 +1468,7 @@ static bool filter_source(const ObjectRepositoryItem* item)
 
 static bool filter_chunks(const ObjectRepositoryItem* item)
 {
-    if (item->ObjectEntry.GetType() == ObjectType::Ride)
+    if (item->Type == ObjectType::Ride)
     {
         uint8_t rideType = 0;
         for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
@@ -1498,8 +1498,7 @@ static void filter_update_counts()
             const ObjectRepositoryItem* item = &items[i];
             if (filter_source(item) && filter_string(item) && filter_chunks(item) && filter_selected(selectionFlags[i]))
             {
-                ObjectType objectType = item->ObjectEntry.GetType();
-                _filter_object_counts[EnumValue(objectType)]++;
+                _filter_object_counts[EnumValue(item->Type)]++;
             }
         }
     }

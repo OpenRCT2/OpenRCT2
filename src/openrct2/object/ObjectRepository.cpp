@@ -130,6 +130,8 @@ public:
 protected:
     void Serialise(DataSerialiser& ds, ObjectRepositoryItem& item) const override
     {
+        ds << item.Type;
+        ds << item.Generation;
         ds << item.Identifier;
         ds << item.ObjectEntry;
         ds << item.Path;
@@ -138,7 +140,7 @@ protected:
         ds << item.Sources;
         ds << item.Authors;
 
-        switch (item.ObjectEntry.GetType())
+        switch (item.Type)
         {
             case ObjectType::Ride:
                 ds << item.RideInfo.RideFlags;
@@ -435,7 +437,10 @@ private:
             {
                 _newItemMap[item.Identifier] = index;
             }
-            _itemMap[item.ObjectEntry] = index;
+            if (!item.ObjectEntry.IsEmpty())
+            {
+                _itemMap[item.ObjectEntry] = index;
+            }
             return true;
         }
         else
@@ -649,8 +654,7 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     // Do not count our new object types as custom yet, otherwise the game
     // will try to pack them into saved games.
-    auto type = object->ObjectEntry.GetType();
-    if (type > ObjectType::ScenarioText)
+    if (object->Type > ObjectType::ScenarioText)
     {
         return false;
     }

@@ -55,8 +55,7 @@ static void setup_track_manager_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        ObjectType object_type = item->ObjectEntry.GetType();
-        if (object_type == ObjectType::Ride)
+        if (item->Type == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -85,8 +84,7 @@ static void setup_track_designer_objects()
     {
         uint8_t* selectionFlags = &_objectSelectionFlags[i];
         const ObjectRepositoryItem* item = &items[i];
-        ObjectType objectType = item->ObjectEntry.GetType();
-        if (objectType == ObjectType::Ride)
+        if (item->Type == ObjectType::Ride)
         {
             *selectionFlags |= OBJECT_SELECTION_FLAG_6;
 
@@ -271,7 +269,7 @@ void sub_6AB211()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        auto objectType = items[i].Type;
         _numAvailableObjectsForType[EnumValue(objectType)]++;
     }
 
@@ -445,7 +443,7 @@ void reset_selected_object_count_and_size()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        auto objectType = items[i].Type;
         if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
         {
             _numSelectedObjectsForType[EnumValue(objectType)]++;
@@ -527,7 +525,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return false;
         }
 
-        ObjectType objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->Type;
         if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
         {
             for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
@@ -554,7 +552,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
             return true;
         }
 
-        ObjectType objectType = item->ObjectEntry.GetType();
+        ObjectType objectType = item->Type;
         uint16_t maxObjects = object_entry_group_counts[EnumValue(objectType)];
 
         if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
@@ -617,7 +615,7 @@ bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
 
     for (size_t i = 0; i < numObjects; i++)
     {
-        ObjectType objectType = items[i].ObjectEntry.GetType();
+        auto objectType = items[i].Type;
         if (checkObjectType == objectType && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED))
         {
             return true;
@@ -643,7 +641,7 @@ int32_t editor_remove_unused_objects()
                 && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
             {
                 const ObjectRepositoryItem* item = &items[i];
-                ObjectType objectType = item->ObjectEntry.GetType();
+                ObjectType objectType = item->Type;
 
                 if (objectType >= ObjectType::SceneryGroup)
                 {

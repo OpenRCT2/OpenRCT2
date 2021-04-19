@@ -24,11 +24,6 @@ private:
     std::unique_ptr<rct_large_scenery_text> _3dFont;
 
 public:
-    explicit LargeSceneryObject(const rct_object_entry& entry)
-        : SceneryObject(entry)
-    {
-    }
-
     void* GetLegacyData() override
     {
         return &_legacyType;

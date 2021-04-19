@@ -17,6 +17,7 @@
 struct IObjectRepository;
 class Object;
 struct rct_object_entry;
+enum class ObjectType : uint8_t;
 
 namespace ObjectFactory
 {
@@ -24,7 +25,7 @@ namespace ObjectFactory
     std::unique_ptr<Object> CreateObjectFromLegacyData(
         IObjectRepository& objectRepository, const rct_object_entry* entry, const void* data, size_t dataSize);
     std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path);
-    std::unique_ptr<Object> CreateObject(const rct_object_entry& entry);
+    std::unique_ptr<Object> CreateObject(ObjectType type);
 
     std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path);
 } // namespace ObjectFactory

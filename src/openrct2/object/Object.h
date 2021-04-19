@@ -42,6 +42,7 @@ enum class ObjectType : uint8_t
     TerrainEdge,
     Station,
     Music,
+    FootpathSurface,
     FootpathRailings,
 
     Count,
@@ -167,7 +168,7 @@ struct ObjectEntryDescriptor
     ObjectGeneration Generation = ObjectGeneration::JSON;
 
     // DAT
-    rct_object_entry Entry;
+    rct_object_entry Entry{};
 
     // JSON
     ObjectType Type{};
@@ -251,9 +252,8 @@ struct IReadObjectContext
 class Object
 {
 private:
-    ObjectType _type = ObjectType::None;
     std::string _identifier;
-    rct_object_entry _objectEntry{};
+    ObjectEntryDescriptor _descriptor{};
     StringTable _stringTable;
     ImageTable _imageTable;
     std::vector<ObjectSourceGame> _sourceGames;
@@ -289,7 +289,6 @@ protected:
     std::string GetString(int32_t language, ObjectStringID index) const;
 
 public:
-    explicit Object(const rct_object_entry& entry);
     virtual ~Object() = default;
 
     std::string_view GetIdentifier() const
@@ -313,29 +312,28 @@ public:
 
     ObjectType GetObjectType() const
     {
-        return _type;
+        return _descriptor.GetType();
     }
 
     ObjectEntryDescriptor GetDescriptor() const
     {
-        if (_generation == ObjectGeneration::DAT)
-        {
-            return ObjectEntryDescriptor(_objectEntry);
-        }
-        else
-        {
-            return ObjectEntryDescriptor(_type, _identifier);
-        }
+        return _descriptor;
+    }
+    void SetDescriptor(const ObjectEntryDescriptor& value)
+    {
+        _descriptor = value;
     }
 
     // Legacy data structures
     std::string_view GetLegacyIdentifier() const
     {
-        return _objectEntry.GetName();
+        return _descriptor.GetName();
     }
+
+    // TODO remove this, we should no longer assume objects have a legacy object entry
     const rct_object_entry& GetObjectEntry() const
     {
-        return _objectEntry;
+        return _descriptor.Entry;
     }
     virtual void* GetLegacyData();
 

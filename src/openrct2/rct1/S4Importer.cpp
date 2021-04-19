@@ -536,7 +536,7 @@ private:
                 auto foundObject = objectRepository.FindObject(objectName);
                 if (foundObject != nullptr)
                 {
-                    ObjectType objectType = foundObject->ObjectEntry.GetType();
+                    auto objectType = foundObject->Type;
                     switch (objectType)
                     {
                         case ObjectType::SmallScenery:

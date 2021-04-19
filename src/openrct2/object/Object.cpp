@@ -103,12 +103,6 @@ bool ObjectEntryDescriptor::operator!=(const ObjectEntryDescriptor& rhs) const
     return !(*this == rhs);
 }
 
-Object::Object(const rct_object_entry& entry)
-{
-    _type = entry.GetType();
-    _objectEntry = entry;
-}
-
 void* Object::GetLegacyData()
 {
     throw std::runtime_error("Not supported.");

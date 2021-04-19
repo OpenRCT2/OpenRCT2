@@ -25,11 +25,6 @@ public:
     colour_t Colour{};
 
 public:
-    explicit FootpathRailingsObject(const rct_object_entry& entry)
-        : Object(entry)
-    {
-    }
-
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;
