@@ -39,8 +39,29 @@ void FootpathRailingsObject::Unload()
 
 void FootpathRailingsObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    auto screenCoords = ScreenCoordsXY{ (width - 45) / 2, (height - 34) / 2 };
-    gfx_draw_sprite(dpi, PreviewImageId, screenCoords, 0);
+    auto x = width / 2;
+    auto y = height / 2;
+    if (SupportType == RailingEntrySupportType::Pole)
+    {
+        auto img = ImageId(BridgeImageId + 20 + 15, Colour);
+        for (int i = 0; i < 2; i++)
+        {
+            auto h = i * 16;
+            gfx_draw_sprite(dpi, img, { x - 8, y + 8 + h });
+            gfx_draw_sprite(dpi, img, { x + 8, y + 16 + h });
+        }
+
+        gfx_draw_sprite(dpi, BridgeImageId + 5, { x, y - 17 }, 0);
+        gfx_draw_sprite(dpi, RailingsImageId + 1, { x + 4, y - 14 }, 0);
+        gfx_draw_sprite(dpi, RailingsImageId + 1, { x + 27, y - 2 }, 0);
+    }
+    else
+    {
+        gfx_draw_sprite(dpi, BridgeImageId + 22, { x + 0, y + 16 }, 0);
+        gfx_draw_sprite(dpi, BridgeImageId + 49, { x, y - 17 }, 0);
+        gfx_draw_sprite(dpi, RailingsImageId + 1, { x + 4, y - 14 }, 0);
+        gfx_draw_sprite(dpi, RailingsImageId + 1, { x + 27, y - 3 }, 0);
+    }
 }
 
 void FootpathRailingsObject::ReadJson(IReadObjectContext* context, json_t& root)
