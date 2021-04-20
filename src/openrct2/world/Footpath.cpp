@@ -19,8 +19,8 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../paint/VirtualFloor.h"
@@ -43,8 +43,10 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
 
 uint8_t gFootpathProvisionalFlags;
 CoordsXYZ gFootpathProvisionalPosition;
-uint8_t gFootpathProvisionalType;
+ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
+ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 uint8_t gFootpathProvisionalSlope;
+bool gFootpathProvisionalIsQueue;
 uint8_t gFootpathConstructionMode;
 uint16_t gFootpathSelectedId;
 uint8_t gFootpathSelectedType;
@@ -148,21 +150,23 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
  *  rct2: 0x006A76FF
  */
 money32 footpath_provisional_set(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope)
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope, bool isQueue)
 {
     money32 cost;
 
     footpath_provisional_remove();
 
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType);
+    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, isQueue);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gFootpathProvisionalType = type;
+        gFootpathProvisionalSurfaceIndex = type;
+        gFootpathProvisionalRailingsIndex = railingsType;
         gFootpathProvisionalPosition = footpathLoc;
         gFootpathProvisionalSlope = slope;
+        gFootpathProvisionalIsQueue = isQueue;
         gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
@@ -1664,10 +1668,10 @@ ObjectEntryIndex PathElement::GetRailingEntryIndex() const
     return RailingsIndex;
 }
 
-FootpathObject* PathElement::GetSurfaceEntry() const
+FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetSurfaceEntryIndex()));
+    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
 }
 
 FootpathRailingsObject* PathElement::GetRailingEntry() const
@@ -2260,20 +2264,14 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
-PathSurfaceEntry* get_path_surface_entry(ObjectEntryIndex entryIndex)
+FootpathSurfaceObject* get_path_surface_entry(ObjectEntryIndex entryIndex)
 {
-    PathSurfaceEntry* result = nullptr;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    // TODO: Change when moving to the new save format.
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex % MAX_PATH_OBJECTS);
-    if (obj != nullptr)
-    {
-        if (entryIndex < MAX_PATH_OBJECTS)
-            result = (static_cast<FootpathObject*>(obj))->GetPathSurfaceEntry();
-        else
-            result = (static_cast<FootpathObject*>(obj))->GetQueueEntry();
-    }
-    return result;
+    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    if (obj == nullptr)
+        return nullptr;
+
+    return static_cast<FootpathSurfaceObject*>(obj);
 }
 
 FootpathRailingsObject* get_path_railings_entry(ObjectEntryIndex entryIndex)

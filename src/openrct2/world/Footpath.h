@@ -13,6 +13,7 @@
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
 
+class FootpathSurfaceObject;
 class FootpathRailingsObject;
 
 enum
@@ -26,8 +27,6 @@ constexpr auto FootpathMaxHeight = 248 * COORDS_Z_STEP;
 constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
-
-#define FOOTPATH_ELEMENT_INSERT_QUEUE 0x80
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -157,8 +156,10 @@ enum
 
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
-extern uint8_t gFootpathProvisionalType;
+extern ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
+extern ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 extern uint8_t gFootpathProvisionalSlope;
+extern bool gFootpathProvisionalIsQueue;
 extern uint8_t gFootpathConstructionMode;
 extern uint16_t gFootpathSelectedId;
 extern uint8_t gFootpathSelectedType;
@@ -178,7 +179,7 @@ TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
 money32 footpath_provisional_set(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope);
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope, bool isQueue);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);
@@ -196,7 +197,7 @@ int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t 
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 int32_t entrance_get_directions(const TileElement* tileElement);
 
-PathSurfaceEntry* get_path_surface_entry(ObjectEntryIndex entryIndex);
+FootpathSurfaceObject* get_path_surface_entry(ObjectEntryIndex entryIndex);
 FootpathRailingsObject* get_path_railings_entry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();

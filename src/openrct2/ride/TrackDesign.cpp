@@ -39,6 +39,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
@@ -881,15 +882,15 @@ static bool TrackDesignPlaceSceneryElementGetEntry(
         }
 
         entry_index = 0;
-        for (PathSurfaceEntry* path = get_path_surface_entry(0);
-             entry_index < object_entry_group_counts[EnumValue(ObjectType::Paths)];
+        for (const auto* path = get_path_surface_entry(0);
+             entry_index < object_entry_group_counts[EnumValue(ObjectType::FootpathSurface)];
              path = get_path_surface_entry(entry_index), entry_index++)
         {
             if (path == nullptr)
             {
                 return true;
             }
-            if (path->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            if (path->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
             {
                 return true;
             }
@@ -1158,12 +1159,7 @@ static bool TrackDesignPlaceSceneryElement(
                 z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
                 if (mode == 0)
                 {
-                    if (scenery.flags & (1 << 7))
-                    {
-                        // dh
-                        entry_index |= (1 << 7);
-                    }
-
+                    auto isQueue = (scenery.flags & (1 << 7)) != 0;
                     uint8_t bh = ((scenery.flags & 0xF) << rotation);
                     flags = bh >> 4;
                     bh = (bh | flags) & 0xF;
@@ -1193,7 +1189,7 @@ static bool TrackDesignPlaceSceneryElement(
                     uint8_t slope = ((bh >> 5) & 0x3) | ((bh >> 2) & 0x4);
                     uint8_t edges = bh & 0xF;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges);
+                        { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entry_index, edges, isQueue);
                     footpathPlaceAction.SetFlags(flags);
                     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                                : GameActions::QueryNested(&footpathPlaceAction);

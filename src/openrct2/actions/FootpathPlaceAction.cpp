@@ -26,12 +26,14 @@
 using namespace OpenRCT2;
 
 FootpathPlaceAction::FootpathPlaceAction(
-    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, Direction direction)
+    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, Direction direction,
+    bool isQueue)
     : _loc(loc)
     , _slope(slope)
     , _type(type)
     , _railingsType(railingsType)
     , _direction(direction)
+    , _isQueue(isQueue)
 {
 }
 
@@ -42,6 +44,7 @@ void FootpathPlaceAction::AcceptParameters(GameActionParameterVisitor& visitor)
     visitor.Visit("railingsObject", _railingsType);
     visitor.Visit("direction", _direction);
     visitor.Visit("slope", _slope);
+    visitor.Visit("isQueue", _isQueue);
 }
 
 uint16_t FootpathPlaceAction::GetActionFlags() const
@@ -53,7 +56,7 @@ void FootpathPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_direction);
+    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_direction) << DS_TAG(_isQueue);
 }
 
 GameActions::Result::Ptr FootpathPlaceAction::Query() const
@@ -154,9 +157,8 @@ GameActions::Result::Ptr FootpathPlaceAction::Execute() const
 
 GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pathElement, GameActions::Result::Ptr res) const
 {
-    const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
-    const bool newPathIsQueue = ((_type >> 7) == 1);
-    if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+    if (pathElement->GetSurfaceEntryIndex() != _type || pathElement->GetRailingEntryIndex() != _railingsType
+        || pathElement->IsQueue() != _isQueue)
     {
         res->Cost += MONEY(6, 00);
     }
@@ -170,9 +172,8 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateQuery(PathElement* pa
 
 GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* pathElement, GameActions::Result::Ptr res) const
 {
-    const int32_t newFootpathType = (_type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
-    const bool newPathIsQueue = ((_type >> 7) == 1);
-    if (pathElement->GetSurfaceEntryIndex() != newFootpathType || pathElement->IsQueue() != newPathIsQueue)
+    if (pathElement->GetSurfaceEntryIndex() != _type || pathElement->GetRailingEntryIndex() != _railingsType
+        || pathElement->IsQueue() != _isQueue)
     {
         res->Cost += MONEY(6, 00);
     }
@@ -184,15 +185,14 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementUpdateExecute(PathElement* 
         footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
     }
 
-    pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+    pathElement->SetSurfaceEntryIndex(_type);
     pathElement->SetRailingEntryIndex(_railingsType);
-    bool isQueue = _type & FOOTPATH_ELEMENT_INSERT_QUEUE;
-    pathElement->SetIsQueue(isQueue);
+    pathElement->SetIsQueue(_isQueue);
 
     rct_scenery_entry* elem = pathElement->GetAdditionEntry();
     if (elem != nullptr)
     {
-        if (isQueue)
+        if (_isQueue)
         {
             // remove any addition that isn't a TV or a lamp
             if ((elem->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) == 0 && (elem->path_bit.flags & PATH_BIT_FLAG_LAMP) == 0)
@@ -249,9 +249,8 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertQuery(GameActions::Re
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8_t crossingMode = _isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
@@ -314,9 +313,8 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = (_type & FOOTPATH_ELEMENT_INSERT_QUEUE) || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    uint8_t crossingMode = _isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
@@ -351,11 +349,11 @@ GameActions::Result::Ptr FootpathPlaceAction::ElementInsertExecute(GameActions::
         Guard::Assert(pathElement != nullptr);
 
         pathElement->SetClearanceZ(zHigh);
-        pathElement->SetSurfaceEntryIndex(_type & ~FOOTPATH_ELEMENT_INSERT_QUEUE);
+        pathElement->SetSurfaceEntryIndex(_type);
         pathElement->SetRailingEntryIndex(_railingsType);
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
-        pathElement->SetIsQueue(_type & FOOTPATH_ELEMENT_INSERT_QUEUE);
+        pathElement->SetIsQueue(_isQueue);
         pathElement->SetAddition(0);
         pathElement->SetRideIndex(RIDE_ID_NULL);
         pathElement->SetAdditionStatus(255);

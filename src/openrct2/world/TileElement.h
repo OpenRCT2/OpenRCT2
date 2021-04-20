@@ -22,7 +22,7 @@ struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
-class FootpathObject;
+class FootpathSurfaceObject;
 class FootpathRailingsObject;
 using track_type_t = uint16_t;
 
@@ -277,7 +277,7 @@ private:
 
 public:
     ObjectEntryIndex GetSurfaceEntryIndex() const;
-    FootpathObject* GetSurfaceEntry() const;
+    FootpathSurfaceObject* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 
     ObjectEntryIndex GetRailingEntryIndex() const;

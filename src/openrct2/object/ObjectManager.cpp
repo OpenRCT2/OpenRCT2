@@ -71,7 +71,10 @@ public:
         if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
-            log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+            }
 #endif
             return nullptr;
         }

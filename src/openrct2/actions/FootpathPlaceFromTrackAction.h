@@ -18,10 +18,11 @@ private:
     uint8_t _slope{};
     ObjectEntryIndex _type{};
     uint8_t _edges{};
+    bool _isQueue{};
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges);
+    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges, bool isQueue);
 
     uint16_t GetActionFlags() const override;
 

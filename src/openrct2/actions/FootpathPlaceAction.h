@@ -20,12 +20,14 @@ private:
     ObjectEntryIndex _type{};
     ObjectEntryIndex _railingsType{};
     Direction _direction{ INVALID_DIRECTION };
+    bool _isQueue{};
 
 public:
     FootpathPlaceAction() = default;
     FootpathPlaceAction(
         const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
-        Direction direction = INVALID_DIRECTION);
+        Direction direction = INVALID_DIRECTION,
+        bool isQueue = false);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 

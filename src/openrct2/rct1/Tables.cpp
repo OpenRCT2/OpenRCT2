@@ -1252,39 +1252,39 @@ namespace RCT1
             return map[0];
     }
 
-    std::string_view GetPathObject(uint8_t pathType)
+    std::string_view GetPathSurfaceObject(uint8_t pathType)
     {
         static constexpr const char * map[] =
         {
-            "rct1.path.tarmac",             // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
-            "rct1.aa.path.space",           // RCT1_FOOTPATH_TYPE_QUEUE_RED
-            "rct1.path.dirt",               // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
-            "rct1.aa.path.tarmac.green",    // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
+            "rct1.pathsurface.queue.blue",         // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
+            "rct1.pathsurface.queue.red",          // RCT1_FOOTPATH_TYPE_QUEUE_RED
+            "rct1.pathsurface.queue.yellow",       // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+            "rct1.pathsurface.queue.green",        // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "rct1.path.tarmac",             // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
-            "rct1.aa.path.space",           // RCT1_FOOTPATH_TYPE_TARMAC_RED
-            "rct1.aa.path.tarmac.brown",    // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
-            "rct1.aa.path.tarmac.green",    // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+            "rct1.pathsurface.tarmac",             // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
+            "rct1.aa.pathsurface.space",           // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "rct1.aa.pathsurface.tarmac.brown",    // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "rct1.aa.pathsurface.tarmac.green",    // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
-            "rct1.path.dirt",               // RCT1_FOOTPATH_TYPE_DIRT_RED
-            "rct1.aa.path.ash",             // RCT1_FOOTPATH_TYPE_DIRT_BLACK
-            "",
-            "",
-
-            "rct1.path.crazy",              // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
-            "",
+            "rct1.pathsurface.dirt",               // RCT1_FOOTPATH_TYPE_DIRT_RED
+            "rct1.aa.pathsurface.ash",             // RCT1_FOOTPATH_TYPE_DIRT_BLACK
             "",
             "",
 
-            "rct2.road",                    // RCT1_FOOTPATH_TYPE_ROADS
+            "rct1.pathsurface.crazy",              // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
             "",
             "",
             "",
 
-            "rct1.path.tile.pink",          // RCT1_FOOTPATH_TYPE_TILE_PINK
-            "rct1.aa.path.tile.grey",       // RCT1_FOOTPATH_TYPE_TILE_GRAY
-            "rct1.ll.path.tile.red",        // RCT1_FOOTPATH_TYPE_TILE_RED
-            "rct1.ll.path.tile.green",      // RCT1_FOOTPATH_TYPE_TILE_GREEN
+            "rct2.pathsurface.road",               // RCT1_FOOTPATH_TYPE_ROADS
+            "",
+            "",
+            "",
+
+            "rct1.pathsurface.tile.pink",          // RCT1_FOOTPATH_TYPE_TILE_PINK
+            "rct1.aa.pathsurface.tile.grey",       // RCT1_FOOTPATH_TYPE_TILE_GRAY
+            "rct1.ll.pathsurface.tile.red",        // RCT1_FOOTPATH_TYPE_TILE_RED
+            "rct1.ll.pathsurface.tile.green",      // RCT1_FOOTPATH_TYPE_TILE_GREEN
         };
         return map[pathType];
     }

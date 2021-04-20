@@ -19,7 +19,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/object/FootpathObject.h>
+#include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
@@ -1814,10 +1814,13 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Details
                 // Path name
-                auto legacyFootpathEntry = reinterpret_cast<rct_footpath_entry*>(
-                    tileElement->AsPath()->GetSurfaceEntry()->GetLegacyData());
-                rct_string_id pathNameId = legacyFootpathEntry->string_idx;
-                DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, { COLOUR_WHITE });
+                auto pathEl = tileElement->AsPath();
+                auto surfaceObj = pathEl->GetSurfaceEntry();
+                if (surfaceObj != nullptr)
+                {
+                    rct_string_id pathNameId = surfaceObj->NameStringId;
+                    DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, { COLOUR_WHITE });
+                }
 
                 // Path addition
                 if (tileElement->AsPath()->HasAddition())

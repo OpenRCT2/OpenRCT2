@@ -72,6 +72,9 @@ private:
     rct_s6_data _s6{};
     uint8_t _gameVersion = 0;
     bool _isSV7 = false;
+    ObjectEntryIndex _pathToSurfaceMap[16];
+    ObjectEntryIndex _pathToQueueSurfaceMap[16];
+    ObjectEntryIndex _pathToRailingMap[16];
 
 public:
     S6Importer(IObjectRepository& objectRepository)
@@ -1131,8 +1134,22 @@ public:
                 auto dst2 = dst->AsPath();
                 auto src2 = src->AsPath();
 
-                dst2->SetSurfaceEntryIndex(src2->GetEntryIndex());
-                dst2->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                auto pathEntryIndex = src2->GetEntryIndex();
+                auto surfaceEntry = src2->IsQueue() ? _pathToQueueSurfaceMap[pathEntryIndex]
+                                                    : _pathToSurfaceMap[pathEntryIndex];
+                if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    // Legacy footpath object
+                    dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                    dst2->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                }
+                else
+                {
+                    // Surface / railing
+                    dst2->SetSurfaceEntryIndex(surfaceEntry);
+                    dst2->SetRailingEntryIndex(_pathToRailingMap[pathEntryIndex]);
+                }
+
                 dst2->SetQueueBannerDirection(src2->GetQueueBannerDirection());
                 dst2->SetSloped(src2->IsSloped());
                 dst2->SetSlopeDirection(src2->GetSlopeDirection());
@@ -1222,8 +1239,19 @@ public:
                 dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
-                dst2->SetPathType(src2->GetPathType());
 
+                auto pathEntryIndex = src2->GetPathType();
+                auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
+                if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    // Legacy footpath object
+                    dst2->SetPathType(OBJECT_ENTRY_INDEX_NULL);
+                }
+                else
+                {
+                    // Surface
+                    dst2->SetPathType(surfaceEntry);
+                }
                 break;
             }
             case TILE_ELEMENT_TYPE_WALL:
@@ -1553,8 +1581,14 @@ public:
 
     ObjectList GetRequiredObjects()
     {
+        std::fill(std::begin(_pathToSurfaceMap), std::end(_pathToSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathToQueueSurfaceMap), std::end(_pathToQueueSurfaceMap), OBJECT_ENTRY_INDEX_NULL);
+        std::fill(std::begin(_pathToRailingMap), std::end(_pathToRailingMap), OBJECT_ENTRY_INDEX_NULL);
+
         ObjectList objectList;
         int objectIt = 0;
+        ObjectEntryIndex surfaceCount = 0;
+        ObjectEntryIndex railingCount = 0;
         for (int16_t objectType = EnumValue(ObjectType::Ride); objectType <= EnumValue(ObjectType::Water); objectType++)
         {
             for (int16_t i = 0; i < rct2_object_entry_group_counts[objectType]; i++, objectIt++)
@@ -1562,21 +1596,75 @@ public:
                 auto entry = ObjectEntryDescriptor(_s6.objects[objectIt]);
                 if (entry.HasValue())
                 {
-                    objectList.SetObject(i, entry);
+                    if (objectType == EnumValue(ObjectType::Paths))
+                    {
+                        auto [normal, queue, railings] = GetFootpathSurfaceId(entry);
+                        if (normal.empty() && queue.empty() && railings.empty())
+                        {
+                            // Unsupported footpath
+                            objectList.SetObject(i, entry);
+                        }
+                        else
+                        {
+                            // We have surface objects for this footpath
+                            auto surfaceIndex = objectList.Find(ObjectType::FootpathSurface, normal);
+                            if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, normal);
+                                surfaceIndex = surfaceCount++;
+                            }
+                            _pathToSurfaceMap[i] = surfaceIndex;
+
+                            surfaceIndex = objectList.Find(ObjectType::FootpathSurface, queue);
+                            if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, queue);
+                                surfaceIndex = surfaceCount++;
+                            }
+                            _pathToQueueSurfaceMap[i] = surfaceIndex;
+
+                            auto railingIndex = objectList.Find(ObjectType::FootpathRailings, railings);
+                            if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
+                            {
+                                objectList.SetObject(ObjectType::FootpathRailings, railingCount, railings);
+                                railingIndex = railingCount++;
+                            }
+                            _pathToRailingMap[i] = railingIndex;
+                        }
+                    }
+                    else
+                    {
+                        objectList.SetObject(i, entry);
+                    }
                 }
             }
         }
 
         RCT12AddDefaultObjects(objectList);
-
-        // Add default railings
-        objectList.SetObject(ObjectType::FootpathRailings, 0, "rct2.railings.wood");
-        objectList.SetObject(ObjectType::FootpathRailings, 1, "rct2.railings.concrete");
-        objectList.SetObject(ObjectType::FootpathRailings, 2, "rct2.railings.space");
-        objectList.SetObject(ObjectType::FootpathRailings, 3, "rct2.railings.black");
-        objectList.SetObject(ObjectType::FootpathRailings, 4, "rct2.railings.brown");
-
         return objectList;
+    }
+
+    std::tuple<std::string_view, std::string_view, std::string_view> GetFootpathSurfaceId(const ObjectEntryDescriptor& desc)
+    {
+        auto name = desc.Entry.GetName();
+        if (name == "PATHASH ")
+            return { "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.black" };
+        else if (name == "PATHCRZY")
+            return { "rct2.pathsurface.crazy", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
+        else if (name == "PATHDIRT")
+            return { "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.brown" };
+        else if (name == "PATHSPCE")
+            return { "rct2.pathsurface.space", "rct2.pathsurface.queue.red", "rct2.railings.space" };
+        else if (name == "ROAD    ")
+            return { "rct2.pathsurface.road", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
+        else if (name == "TARMACB ")
+            return { "rct2.pathsurface.tarmac.brown", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
+        else if (name == "TARMACG ")
+            return { "rct2.pathsurface.tarmac.green", "rct2.pathsurface.queue.green", "rct2.railings.concretegreen" };
+        else if (name == "TARMAC  ")
+            return { "rct2.pathsurface.tarmac", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
+        else
+            return {};
     }
 };
 

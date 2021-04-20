@@ -38,7 +38,7 @@ namespace RCT1
     std::string_view GetSmallSceneryObject(uint8_t smallSceneryType);
     std::string_view GetLargeSceneryObject(uint8_t largeSceneryType);
     std::string_view GetWallObject(uint8_t wallType);
-    std::string_view GetPathObject(uint8_t pathType);
+    std::string_view GetPathSurfaceObject(uint8_t pathType);
     std::string_view GetPathAddtionObject(uint8_t pathAdditionType);
     std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType);
     std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType);

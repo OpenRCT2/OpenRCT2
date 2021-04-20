@@ -13,8 +13,8 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
-#include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
+#include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
 #include "../../peep/Staff.h"
@@ -944,16 +944,12 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         PaintAddImageAsParent(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
     }
 
-    auto footpathObj = tile_element->AsPath()->GetSurfaceEntry();
-    if (footpathObj != nullptr)
+    auto footpathSurfaceObj = tile_element->AsPath()->GetSurfaceEntry();
+    if (footpathSurfaceObj != nullptr)
     {
-        auto surfaceEntry = tile_element->AsPath()->IsQueue() ? footpathObj->GetQueueEntry()
-                                                              : footpathObj->GetPathSurfaceEntry();
-        auto railingsEntry = footpathObj->GetPathRailingsEntry();
-
         FootpathPaintInfo pathPaintInfo;
-        pathPaintInfo.SurfaceImageId = surfaceEntry->image;
-        pathPaintInfo.SurfaceFlags = surfaceEntry->flags;
+        pathPaintInfo.SurfaceImageId = footpathSurfaceObj->BaseImageId;
+        pathPaintInfo.SurfaceFlags = footpathSurfaceObj->Flags;
 
         colour_t colour = COLOUR_NULL;
         auto railingObj = tile_element->AsPath()->GetRailingEntry();
@@ -966,14 +962,14 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
             pathPaintInfo.SupportType = railingObj->SupportType;
             colour = railingObj->Colour;
         }
-        else
-        {
-            pathPaintInfo.BridgeImageId = railingsEntry->bridge_image;
-            pathPaintInfo.RailingsImageId = railingsEntry->railings_image;
-            pathPaintInfo.RailingFlags = railingsEntry->flags;
-            pathPaintInfo.ScrollingMode = railingsEntry->scrolling_mode;
-            pathPaintInfo.SupportType = railingsEntry->support_type;
-        }
+        // else
+        // {
+        //     pathPaintInfo.BridgeImageId = railingsEntry->bridge_image;
+        //     pathPaintInfo.RailingsImageId = railingsEntry->railings_image;
+        //     pathPaintInfo.RailingFlags = railingsEntry->flags;
+        //     pathPaintInfo.ScrollingMode = railingsEntry->scrolling_mode;
+        //     pathPaintInfo.SupportType = railingsEntry->support_type;
+        // }
 
         if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
         {
