@@ -30,16 +30,16 @@ flat out vec3  fPalettes;
 void main()
 {
     // Clamp position by vClip, correcting interpolated values for the clipping
-    vec2 m = clamp(((vVertMat * vClip) - (vVertMat * vBounds))/(vBounds.zw - vBounds.xy) + vVertVec, 0.0, 1.0);
-    vec2 pos = mix(vBounds.xy, vBounds.zw, m);
+    vec2 m = clamp(((vVertMat * vec4(vClip)) - (vVertMat * vec4(vBounds)))/vec2(vBounds.zw - vBounds.xy) + vVertVec, 0.0, 1.0);
+    vec2 pos = mix(vec2(vBounds.xy), vec2(vBounds.zw), m);
     fTexColour = vec3(mix(vTexColourBounds.xy, vTexColourBounds.zw, m), vTexColourAtlas);
     fTexMask = vec3(mix(vTexMaskBounds.xy, vTexMaskBounds.zw, m), vTexMaskAtlas);
 
     fPosition = pos;
 
     // Transform screen coordinates to texture coordinates
-    float depth = 1.0 - (vDepth + 1) * DEPTH_INCREMENT;
-    pos = pos / uScreenSize;
+    float depth = 1.0 - (float(vDepth) + 1.0) * DEPTH_INCREMENT;
+    pos = pos / vec2(uScreenSize);
     pos.y = pos.y * -1.0 + 1.0;
     fPeelPos = vec3(pos, depth * 0.5 + 0.5);
 
