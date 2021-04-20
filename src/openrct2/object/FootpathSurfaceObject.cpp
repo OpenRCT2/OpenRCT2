@@ -20,15 +20,15 @@ void FootpathSurfaceObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        BaseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
-        PreviewImageId = BaseImageId + 72;
+        PreviewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        BaseImageId = PreviewImageId + 1;
     }
 }
 
 void FootpathSurfaceObject::Unload()
 {
     language_free_object_string(NameStringId);
-    gfx_object_free_images(BaseImageId, GetImageTable().GetCount());
+    gfx_object_free_images(PreviewImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
     PreviewImageId = 0;

@@ -190,21 +190,10 @@ static bool footpath_select_default();
  */
 rct_window* window_footpath_open()
 {
-    // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
-    const auto* pathEntry = get_path_surface_entry(gFootpathSelectedId);
-    if (pathEntry != nullptr && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    if (!footpath_select_default())
     {
-        pathEntry = nullptr;
-    }
-
-    // Select the default path if we don't have one
-    if (pathEntry == nullptr)
-    {
-        if (!footpath_select_default())
-        {
-            // No path objects to select from, don't open window
-            return nullptr;
-        }
+        // No path objects to select from, don't open window
+        return nullptr;
     }
 
     // Check if window is already open
@@ -562,13 +551,13 @@ static void window_footpath_invalidate(rct_window* w)
     auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
     if (pathEntry != nullptr)
     {
-        pathImage = pathEntry->BaseImageId;
+        pathImage = pathEntry->PreviewImageId;
     }
 
     pathEntry = get_path_surface_entry(_selectedQueue);
     if (pathEntry != nullptr)
     {
-        queueImage = pathEntry->BaseImageId;
+        queueImage = pathEntry->PreviewImageId;
     }
 
     window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
@@ -651,6 +640,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
     _dropdownEntries.clear();
+    std::optional<size_t> defaultIndex;
     for (size_t i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
         const auto* pathType = get_path_surface_entry(i);
@@ -666,9 +656,13 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         {
             continue;
         }
+        if (i == (showQueues ? _selectedQueue : gFootpathSelectedId))
+        {
+            defaultIndex = numPathTypes;
+        }
 
         gDropdownItemsFormat[numPathTypes] = STR_NONE;
-        gDropdownItemsArgs[numPathTypes] = pathType->BaseImageId;
+        gDropdownItemsArgs[numPathTypes] = pathType->PreviewImageId;
         _dropdownEntries.push_back(i);
         numPathTypes++;
     }
@@ -677,6 +671,8 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, w->colours[1], 0, numPathTypes, 47,
         36, itemsPerRow);
+    if (defaultIndex)
+        gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
 }
 
 static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget* widget)
@@ -685,12 +681,17 @@ static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
 
     _dropdownEntries.clear();
+    std::optional<size_t> defaultIndex;
     for (int32_t i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
     {
         const auto* railingsEntry = get_path_railings_entry(i);
         if (railingsEntry == nullptr)
         {
             continue;
+        }
+        if (i == _selectedRailings)
+        {
+            defaultIndex = numRailingsTypes;
         }
 
         gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
@@ -703,6 +704,8 @@ static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, w->colours[1], 0, numRailingsTypes,
         47, 36, itemsPerRow);
+    if (defaultIndex)
+        gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
 }
 
 /**
@@ -1258,12 +1261,24 @@ static bool footpath_select_default()
 {
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
-    // Select first available footpath
-    ObjectEntryIndex surfaceIndex = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex queueIndex = OBJECT_ENTRY_INDEX_NULL;
+    // Select default footpath and queue
+    auto surfaceIndex = OBJECT_ENTRY_INDEX_NULL;
+    const auto* pathEntry = get_path_surface_entry(gFootpathSelectedId);
+    if (pathEntry != nullptr && (!(pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) || showEditorPaths))
+    {
+        surfaceIndex = gFootpathSelectedId;
+    }
+
+    auto queueIndex = OBJECT_ENTRY_INDEX_NULL;
+    pathEntry = get_path_surface_entry(gFootpathSelectedId);
+    if (pathEntry != nullptr && (!(pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) || showEditorPaths))
+    {
+        queueIndex = _selectedQueue;
+    }
+
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
-        const auto* pathEntry = get_path_surface_entry(i);
+        pathEntry = get_path_surface_entry(i);
         if (pathEntry != nullptr)
         {
             if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
@@ -1273,21 +1288,22 @@ static bool footpath_select_default()
 
             if (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE)
             {
-                if (surfaceIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (queueIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
-                    surfaceIndex = i;
+                    queueIndex = i;
                 }
             }
             else
             {
-                if (queueIndex != OBJECT_ENTRY_INDEX_NULL)
+                if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
-                    queueIndex = i;
+                    surfaceIndex = i;
                 }
             }
         }
     }
 
+    // Select a default railing
     ObjectEntryIndex railingIndex = OBJECT_ENTRY_INDEX_NULL;
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
     {
