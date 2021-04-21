@@ -1664,7 +1664,7 @@ FootpathObject* PathElement::GetPathEntry() const
 
 ObjectEntryIndex PathElement::GetPathEntryIndex() const
 {
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return SurfaceIndex;
     else
         return OBJECT_ENTRY_INDEX_NULL;
@@ -1674,12 +1674,12 @@ void PathElement::SetPathEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex;
     RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
-    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
+    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return OBJECT_ENTRY_INDEX_NULL;
     else
         return SurfaceIndex;
@@ -1687,7 +1687,7 @@ ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 
 ObjectEntryIndex PathElement::GetRailingEntryIndex() const
 {
-    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY)
         return OBJECT_ENTRY_INDEX_NULL;
     else
         return RailingsIndex;
@@ -1714,13 +1714,13 @@ FootpathRailingsObject* PathElement::GetRailingEntry() const
 void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex;
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 void PathElement::SetRailingEntryIndex(ObjectEntryIndex newEntryIndex)
 {
     RailingsIndex = newEntryIndex;
-    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_LEGACY_PATH_ENTRY;
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const
