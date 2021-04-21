@@ -10,6 +10,7 @@
 #include "Entrance.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/ParkEntranceRemoveAction.h"
@@ -18,6 +19,9 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
+#include "../object/FootpathSurfaceObject.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
@@ -272,12 +276,42 @@ void EntranceElement::SetSequenceIndex(uint8_t newSequenceIndex)
     SequenceIndex |= (newSequenceIndex & 0xF);
 }
 
-ObjectEntryIndex EntranceElement::GetPathType() const
+FootpathObject* EntranceElement::GetPathEntry() const
 {
-    return PathType;
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetPathEntryIndex()));
 }
 
-void EntranceElement::SetPathType(ObjectEntryIndex newPathType)
+ObjectEntryIndex EntranceElement::GetPathEntryIndex() const
 {
-    PathType = newPathType;
+    if (flags2 & ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY)
+        return PathType;
+    else
+        return OBJECT_ENTRY_INDEX_NULL;
+}
+
+void EntranceElement::SetPathEntryIndex(ObjectEntryIndex newIndex)
+{
+    PathType = newIndex;
+    flags2 |= ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY;
+}
+
+ObjectEntryIndex EntranceElement::GetSurfaceEntryIndex() const
+{
+    if (flags2 & ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+    else
+        return PathType;
+}
+
+FootpathSurfaceObject* EntranceElement::GetSurfaceEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+}
+
+void EntranceElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
+{
+    PathType = newIndex;
+    flags2 &= ~ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY;
 }

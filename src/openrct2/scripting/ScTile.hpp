@@ -1338,7 +1338,7 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto el = _element->AsEntrance();
             if (el != nullptr)
-                duk_push_int(ctx, el->GetPathType());
+                duk_push_int(ctx, el->GetSurfaceEntryIndex());
             else
                 duk_push_null(ctx);
             return DukValue::take_from_stack(ctx);
@@ -1349,7 +1349,7 @@ namespace OpenRCT2::Scripting
             auto el = _element->AsEntrance();
             if (el != nullptr)
             {
-                el->SetPathType(value);
+                el->SetSurfaceEntryIndex(value);
                 Invalidate();
             }
         }

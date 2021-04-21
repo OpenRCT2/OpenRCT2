@@ -200,6 +200,7 @@ struct FootpathPaintInfo
     uint32_t RailingFlags{};
     uint8_t ScrollingMode{};
     RailingEntrySupportType SupportType{};
+    colour_t SupportColour = 255;
 };
 
 extern paint_session gPaintSession;

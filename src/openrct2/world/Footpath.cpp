@@ -19,6 +19,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object/FootpathObject.h"
 #include "../object/FootpathRailingsObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectList.h"
@@ -1654,18 +1655,41 @@ void PathElement::SetAdditionIsGhost(bool isGhost)
         Flags2 |= FOOTPATH_ELEMENT_FLAGS2_ADDITION_IS_GHOST;
 }
 
+FootpathObject* PathElement::GetPathEntry() const
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathObject*>(objMgr.GetLoadedObject(ObjectType::Paths, GetPathEntryIndex()));
+}
+
+ObjectEntryIndex PathElement::GetPathEntryIndex() const
+{
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
+        return SurfaceIndex;
+    else
+        return OBJECT_ENTRY_INDEX_NULL;
+}
+
+void PathElement::SetPathEntryIndex(ObjectEntryIndex newIndex)
+{
+    SurfaceIndex = newIndex;
+    RailingsIndex = OBJECT_ENTRY_INDEX_NULL;
+    Flags2 |= FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
+}
+
 ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 {
-    return SurfaceIndex;
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
+        return OBJECT_ENTRY_INDEX_NULL;
+    else
+        return SurfaceIndex;
 }
 
 ObjectEntryIndex PathElement::GetRailingEntryIndex() const
 {
-    if (RailingsIndex == std::numeric_limits<uint8_t>::max())
-    {
+    if (Flags2 & FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY)
         return OBJECT_ENTRY_INDEX_NULL;
-    }
-    return RailingsIndex;
+    else
+        return RailingsIndex;
 }
 
 FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
@@ -1689,18 +1713,13 @@ FootpathRailingsObject* PathElement::GetRailingEntry() const
 void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
 {
     SurfaceIndex = newIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
 }
 
 void PathElement::SetRailingEntryIndex(ObjectEntryIndex newEntryIndex)
 {
-    if (newEntryIndex == OBJECT_ENTRY_INDEX_NULL)
-    {
-        RailingsIndex = std::numeric_limits<uint8_t>::max();
-    }
-    else
-    {
-        RailingsIndex = static_cast<uint8_t>(newEntryIndex);
-    }
+    RailingsIndex = newEntryIndex;
+    Flags2 &= ~FOOTPATH_ELEMENT_FLAGS2_PATH_ENTRY;
 }
 
 uint8_t PathElement::GetQueueBannerDirection() const

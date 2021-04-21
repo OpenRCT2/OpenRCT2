@@ -22,6 +22,7 @@ struct rct_footpath_entry;
 class LargeSceneryObject;
 class TerrainSurfaceObject;
 class TerrainEdgeObject;
+class FootpathObject;
 class FootpathSurfaceObject;
 class FootpathRailingsObject;
 using track_type_t = uint16_t;
@@ -255,27 +256,24 @@ struct PathElement : TileElementBase
     static constexpr TileElementType ElementType = TileElementType::Path;
 
 private:
-    ObjectEntryIndex SurfaceIndex; // 5
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t RailingsIndex; // 7
-#pragma clang diagnostic pop
-    uint8_t Additions;       // 8 (0 means no addition)
-    uint8_t EdgesAndCorners; // 9 (edges in lower 4 bits, corners in upper 4)
-    uint8_t Flags2;          // 10
-    uint8_t SlopeDirection;  // 11
+    ObjectEntryIndex SurfaceIndex;  // 5
+    ObjectEntryIndex RailingsIndex; // 7
+    uint8_t Additions;              // 9 (0 means no addition)
+    uint8_t EdgesAndCorners;        // 11 (edges in lower 4 bits, corners in upper 4)
+    uint8_t Flags2;                 // 12
+    uint8_t SlopeDirection;         // 13
     union
     {
-        uint8_t AdditionStatus; // 12, only used for litter bins
-        ride_id_t rideIndex;    // 12
+        uint8_t AdditionStatus; // 14, only used for litter bins
+        ride_id_t rideIndex;    // 14
     };
-    ::StationIndex StationIndex; // 14
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0F[1];
-#pragma clang diagnostic pop
+    ::StationIndex StationIndex; // 15
 
 public:
+    FootpathObject* GetPathEntry() const;
+    ObjectEntryIndex GetPathEntryIndex() const;
+    void SetPathEntryIndex(ObjectEntryIndex newIndex);
+
     ObjectEntryIndex GetSurfaceEntryIndex() const;
     FootpathSurfaceObject* GetSurfaceEntry() const;
     void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
@@ -562,10 +560,11 @@ private:
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
     uint8_t StationIndex;      // 7
     ObjectEntryIndex PathType; // 8
-    ride_id_t rideIndex;       // 9
+    ride_id_t rideIndex;       // A
+    uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0C[4];
+    uint8_t pad_0C[3];
 #pragma clang diagnostic pop
 
 public:
@@ -581,8 +580,13 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ObjectEntryIndex GetPathType() const;
-    void SetPathType(ObjectEntryIndex newPathType);
+    FootpathObject* GetPathEntry() const;
+    ObjectEntryIndex GetPathEntryIndex() const;
+    void SetPathEntryIndex(ObjectEntryIndex newIndex);
+
+    ObjectEntryIndex GetSurfaceEntryIndex() const;
+    FootpathSurfaceObject* GetSurfaceEntry() const;
+    void SetSurfaceEntryIndex(ObjectEntryIndex newIndex);
 };
 assert_struct_size(EntranceElement, 16);
 

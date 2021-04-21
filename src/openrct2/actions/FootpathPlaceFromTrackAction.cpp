@@ -123,7 +123,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetSurfaceEntryIndex() == _type)
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -190,7 +190,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         entrancePath = true;
         // Make the price the same as replacing a path
-        if (entranceElement->GetPathType() == (_type & 0xF))
+        if (entranceElement->GetSurfaceEntryIndex() == _type)
             entranceIsSamePath = true;
         else
             res->Cost -= MONEY(6, 00);
@@ -225,7 +225,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
         {
             // Set the path type but make sure it's not a queue as that will not show up
-            entranceElement->SetPathType(_type & 0x7F);
+            entranceElement->SetSurfaceEntryIndex(_type);
             map_invalidate_tile_full(_loc);
         }
     }

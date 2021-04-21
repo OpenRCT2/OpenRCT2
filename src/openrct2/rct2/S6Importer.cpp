@@ -1140,8 +1140,7 @@ public:
                 if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
                 {
                     // Legacy footpath object
-                    dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
-                    dst2->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+                    dst2->SetPathEntryIndex(pathEntryIndex);
                 }
                 else
                 {
@@ -1240,17 +1239,24 @@ public:
                 dst2->SetStationIndex(src2->GetStationIndex());
                 dst2->SetSequenceIndex(src2->GetSequenceIndex());
 
-                auto pathEntryIndex = src2->GetPathType();
-                auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
-                if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                if (src2->GetSequenceIndex() == 0)
                 {
-                    // Legacy footpath object
-                    dst2->SetPathType(OBJECT_ENTRY_INDEX_NULL);
+                    auto pathEntryIndex = src2->GetPathType();
+                    auto surfaceEntry = _pathToSurfaceMap[pathEntryIndex];
+                    if (surfaceEntry == OBJECT_ENTRY_INDEX_NULL)
+                    {
+                        // Legacy footpath object
+                        dst2->SetPathEntryIndex(pathEntryIndex);
+                    }
+                    else
+                    {
+                        // Surface
+                        dst2->SetSurfaceEntryIndex(surfaceEntry);
+                    }
                 }
                 else
                 {
-                    // Surface
-                    dst2->SetPathType(surfaceEntry);
+                    dst2->SetSurfaceEntryIndex(OBJECT_ENTRY_INDEX_NULL);
                 }
                 break;
             }

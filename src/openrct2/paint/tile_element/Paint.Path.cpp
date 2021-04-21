@@ -13,6 +13,7 @@
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
@@ -90,7 +91,7 @@ void path_paint_box_support(
     bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
-    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags, colour_t colour = 255);
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(
@@ -805,6 +806,52 @@ static void sub_6A3F61(
     }
 }
 
+static FootpathPaintInfo GetFootpathPaintInfo(const PathElement* pathEl)
+{
+    FootpathPaintInfo pathPaintInfo;
+    auto footpathObj = pathEl->GetPathEntry();
+    if (footpathObj != nullptr)
+    {
+        auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+        if (pathEl->IsQueue())
+        {
+            pathPaintInfo.SurfaceImageId = footpathEntry->image + 51;
+            pathPaintInfo.SurfaceFlags = footpathEntry->flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
+        }
+        else
+        {
+            pathPaintInfo.SurfaceImageId = footpathEntry->image;
+            pathPaintInfo.SurfaceFlags = footpathEntry->flags;
+        }
+        pathPaintInfo.ScrollingMode = footpathEntry->scrolling_mode;
+        pathPaintInfo.SupportType = footpathEntry->support_type;
+        pathPaintInfo.BridgeImageId = footpathEntry->bridge_image;
+        pathPaintInfo.RailingFlags = footpathEntry->flags;
+        pathPaintInfo.RailingsImageId = footpathEntry->image + 73;
+    }
+    else
+    {
+        auto footpathSurfaceObj = pathEl->GetSurfaceEntry();
+        if (footpathSurfaceObj != nullptr)
+        {
+            pathPaintInfo.SurfaceImageId = footpathSurfaceObj->BaseImageId;
+            pathPaintInfo.SurfaceFlags = footpathSurfaceObj->Flags;
+
+            auto railingObj = pathEl->GetRailingEntry();
+            if (railingObj != nullptr)
+            {
+                pathPaintInfo.BridgeImageId = railingObj->BridgeImageId;
+                pathPaintInfo.RailingsImageId = railingObj->RailingsImageId;
+                pathPaintInfo.RailingFlags = railingObj->Flags;
+                pathPaintInfo.ScrollingMode = railingObj->ScrollingMode;
+                pathPaintInfo.SupportType = railingObj->SupportType;
+                pathPaintInfo.SupportColour = railingObj->Colour;
+            }
+        }
+    }
+    return pathPaintInfo;
+}
+
 /**
  * rct2: 0x0006A3590
  */
@@ -817,11 +864,12 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     uint32_t sceneryImageFlags = 0;
     uint32_t imageFlags = 0;
 
+    auto pathEl = tile_element->AsPath();
     if (gTrackDesignSaveMode)
     {
-        if (tile_element->AsPath()->IsQueue())
+        if (pathEl->IsQueue())
         {
-            if (tile_element->AsPath()->GetRideIndex() != gTrackDesignSaveRideIndex)
+            if (pathEl->GetRideIndex() != gTrackDesignSaveRideIndex)
             {
                 return;
             }
@@ -838,7 +886,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         imageFlags = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
     }
 
-    if (tile_element->AsPath()->AdditionIsGhost())
+    if (pathEl->AdditionIsGhost())
     {
         sceneryImageFlags = CONSTRUCTION_MARKER;
     }
@@ -850,13 +898,13 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
 
     // For debugging purpose, show blocked tiles with a colour
-    if (gPaintBlockedTiles && tile_element->AsPath()->IsBlockedByVehicle())
+    if (gPaintBlockedTiles && pathEl->IsBlockedByVehicle())
     {
         imageFlags = COLOUR_BRIGHT_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
     }
 
     // Draw wide flags as ghosts, leaving only the "walkable" paths to be drawn normally
-    if (gPaintWidePathsAsGhost && tile_element->AsPath()->IsWide())
+    if (gPaintWidePathsAsGhost && pathEl->IsWide())
     {
         imageFlags &= 0x7FFFF;
         imageFlags |= CONSTRUCTION_MARKER;
@@ -874,11 +922,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
     else
     {
-        if (tile_element->AsPath()->IsSloped())
+        if (pathEl->IsSloped())
         {
             // Diagonal path
 
-            if (surface->GetSlope() != PathSlopeToLandSlope[tile_element->AsPath()->GetSlopeDirection()])
+            if (surface->GetSlope() != PathSlopeToLandSlope[pathEl->GetSlopeDirection()])
             {
                 hasSupports = true;
             }
@@ -920,9 +968,9 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         {
             uint32_t imageId = 2618;
             int32_t patrolAreaBaseZ = tile_element->GetBaseZ();
-            if (tile_element->AsPath()->IsSloped())
+            if (pathEl->IsSloped())
             {
-                imageId = 2619 + ((tile_element->AsPath()->GetSlopeDirection() + session->CurrentRotation) & 3);
+                imageId = 2619 + ((pathEl->GetSlopeDirection() + session->CurrentRotation) & 3);
                 patrolAreaBaseZ += 16;
             }
 
@@ -934,7 +982,7 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = tile_element->GetBaseZ() + 3;
-        if (tile_element->AsPath()->IsSloped())
+        if (pathEl->IsSloped())
         {
             heightMarkerBaseZ += 8;
         }
@@ -944,66 +992,38 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
         PaintAddImageAsParent(session, imageId, 16, 16, 1, 1, 0, heightMarkerBaseZ);
     }
 
-    auto footpathSurfaceObj = tile_element->AsPath()->GetSurfaceEntry();
-    if (footpathSurfaceObj != nullptr)
+    auto pathPaintInfo = GetFootpathPaintInfo(pathEl);
+    if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
     {
-        FootpathPaintInfo pathPaintInfo;
-        pathPaintInfo.SurfaceImageId = footpathSurfaceObj->BaseImageId;
-        pathPaintInfo.SurfaceFlags = footpathSurfaceObj->Flags;
-
-        colour_t colour = COLOUR_NULL;
-        auto railingObj = tile_element->AsPath()->GetRailingEntry();
-        if (railingObj != nullptr)
-        {
-            pathPaintInfo.BridgeImageId = railingObj->BridgeImageId;
-            pathPaintInfo.RailingsImageId = railingObj->RailingsImageId;
-            pathPaintInfo.RailingFlags = railingObj->Flags;
-            pathPaintInfo.ScrollingMode = railingObj->ScrollingMode;
-            pathPaintInfo.SupportType = railingObj->SupportType;
-            colour = railingObj->Colour;
-        }
-        // else
-        // {
-        //     pathPaintInfo.BridgeImageId = railingsEntry->bridge_image;
-        //     pathPaintInfo.RailingsImageId = railingsEntry->railings_image;
-        //     pathPaintInfo.RailingFlags = railingsEntry->flags;
-        //     pathPaintInfo.ScrollingMode = railingsEntry->scrolling_mode;
-        //     pathPaintInfo.SupportType = railingsEntry->support_type;
-        // }
-
-        if (pathPaintInfo.SupportType == RailingEntrySupportType::Pole)
-        {
-            path_paint_pole_support(
-                session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags, colour);
-        }
-        else
-        {
-            path_paint_box_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
-        }
+        path_paint_pole_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
+    }
+    else
+    {
+        path_paint_box_support(session, tile_element, height, pathPaintInfo, hasSupports, imageFlags, sceneryImageFlags);
     }
 
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        if (tile_element->AsPath()->HasAddition() && !(tile_element->AsPath()->IsBroken()))
+        if (pathEl->HasAddition() && !(pathEl->IsBroken()))
         {
-            rct_scenery_entry* sceneryEntry = tile_element->AsPath()->GetAdditionEntry();
+            rct_scenery_entry* sceneryEntry = pathEl->GetAdditionEntry();
             if (sceneryEntry != nullptr && sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP)
             {
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_NE))
+                if (!(pathEl->GetEdges() & EDGE_NE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, -16, 0, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_SE))
+                if (!(pathEl->GetEdges() & EDGE_SE))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_SW))
+                if (!(pathEl->GetEdges() & EDGE_SW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LightType::Lantern3);
                 }
-                if (!(tile_element->AsPath()->GetEdges() & EDGE_NW))
+                if (!(pathEl->GetEdges() & EDGE_NW))
                 {
                     lightfx_add_3d_light_magic_from_drawing_tile(
                         session->MapPosition, 0, -16, height + 23, LightType::Lantern3);
@@ -1158,7 +1178,7 @@ void path_paint_box_support(
 
 void path_paint_pole_support(
     paint_session* session, const TileElement* tileElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
-    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags, colour_t colour)
+    bool hasSupports, uint32_t imageFlags, uint32_t sceneryImageFlags)
 {
     const PathElement* pathElement = tileElement->AsPath();
 
@@ -1261,7 +1281,9 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            const int32_t extraFlags = (colour != COLOUR_NULL) ? SPRITE_ID_PALETTE_COLOUR_1(colour) : 0;
+            const int32_t extraFlags = (pathPaintInfo.SupportColour != COLOUR_NULL)
+                ? SPRITE_ID_PALETTE_COLOUR_1(pathPaintInfo.SupportColour)
+                : 0;
             path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags | extraFlags, pathPaintInfo);
         }
     }

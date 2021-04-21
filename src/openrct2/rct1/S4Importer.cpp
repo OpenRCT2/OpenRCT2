@@ -1812,7 +1812,7 @@ private:
                         pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                     }
                     auto entryIndex = _footpathSurfaceTypeToEntryMap[pathType];
-                    dst2->SetPathType(entryIndex & 0x7F);
+                    dst2->SetSurfaceEntryIndex(entryIndex);
                 }
 
                 return 1;

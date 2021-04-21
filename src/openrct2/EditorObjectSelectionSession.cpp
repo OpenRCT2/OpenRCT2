@@ -173,7 +173,7 @@ void setup_in_use_selection_flags()
 
                 Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->AsEntrance()->GetPathType();
+                type = iter.element->AsEntrance()->GetSurfaceEntryIndex();
                 Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_WALL:

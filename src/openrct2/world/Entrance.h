@@ -29,6 +29,11 @@ assert_struct_size(rct_entrance_type, 8);
 
 struct TileElement;
 
+enum
+{
+    ENTRANCE_ELEMENT_FLAGS2_PATH_ENTRY = (1 << 0),
+};
+
 constexpr const uint8_t ParkEntranceHeight = 12 * COORDS_Z_STEP;
 constexpr const uint8_t RideEntranceHeight = 7 * COORDS_Z_STEP;
 constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
