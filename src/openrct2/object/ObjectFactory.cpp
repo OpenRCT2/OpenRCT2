@@ -241,6 +241,7 @@ namespace ObjectFactory
             if (entry.GetType() != ObjectType::ScenarioText)
             {
                 result = CreateObject(entry.GetType());
+                result->SetDescriptor(ObjectEntryDescriptor(entry));
 
                 utf8 objectName[DAT_NAME_LENGTH + 1] = { 0 };
                 object_entry_get_name_fixed(objectName, sizeof(objectName), &entry);
