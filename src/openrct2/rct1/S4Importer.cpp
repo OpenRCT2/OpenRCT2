@@ -407,7 +407,7 @@ private:
 
         // Add default footpaths
         _footpathSurfaceEntries.AddRange(
-            { "rct1.pathsurface.tarmac", "rct1.pathsurface.dirt", "rct1.pathsurface.crazy", "rct1.pathsurface.tile.pink",
+            { "rct1.pathsurface.tarmac", "rct1.pathsurface.dirt", "rct1.pathsurface.crazy", "rct1.pathsurface.tile.brown",
               "rct1.aa.pathsurface.ash", "rct1.aa.pathsurface.tarmac.green", "rct1.aa.pathsurface.tarmac.brown",
               "rct1.aa.pathsurface.tile.grey", "rct1.aa.pathsurface.space", "rct1.ll.pathsurface.tile.green",
               "rct1.ll.pathsurface.tile.red", "rct1.pathsurface.queue.blue", "rct1.pathsurface.queue.red",

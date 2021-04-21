@@ -1281,7 +1281,7 @@ namespace RCT1
             "",
             "",
 
-            "rct1.pathsurface.tile.pink",          // RCT1_FOOTPATH_TYPE_TILE_PINK
+            "rct1.pathsurface.tile.brown",          // RCT1_FOOTPATH_TYPE_TILE_BROWN
             "rct1.aa.pathsurface.tile.grey",       // RCT1_FOOTPATH_TYPE_TILE_GRAY
             "rct1.ll.pathsurface.tile.red",        // RCT1_FOOTPATH_TYPE_TILE_RED
             "rct1.ll.pathsurface.tile.green",      // RCT1_FOOTPATH_TYPE_TILE_GREEN
