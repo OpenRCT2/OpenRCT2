@@ -48,7 +48,7 @@ rct_window* window_main_open()
     gShowGridLinesRefCount = 0;
     gShowLandRightsRefCount = 0;
     gShowConstuctionRightsRefCount = 0;
-    gFootpathSelectedType = 0;
+    gFootpathSelection = {};
 
     return window;
 }

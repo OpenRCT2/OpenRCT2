@@ -162,6 +162,21 @@ namespace PathConstructFlag
     constexpr PathConstructFlags IsPathObject = 1 << 1;
 } // namespace PathConstructFlag
 
+struct FootpathSelection
+{
+    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
+    bool IsQueueSelected{};
+
+    ObjectEntryIndex GetSelectedSurface() const
+    {
+        return IsQueueSelected ? QueueSurface : NormalSurface;
+    }
+};
+
+extern FootpathSelection gFootpathSelection;
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
@@ -169,8 +184,6 @@ extern ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 extern uint8_t gFootpathProvisionalSlope;
 extern PathConstructFlags gFootpathProvisionalConstructFlags;
 extern uint8_t gFootpathConstructionMode;
-extern uint16_t gFootpathSelectedId;
-extern uint8_t gFootpathSelectedType;
 extern CoordsXYZ gFootpathConstructFromPosition;
 extern uint8_t gFootpathConstructDirection;
 extern uint8_t gFootpathConstructSlope;

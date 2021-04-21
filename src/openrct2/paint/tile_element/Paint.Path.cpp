@@ -1281,7 +1281,7 @@ void path_paint_pole_support(
     {
         if (!(edges & (1 << i)))
         {
-            const int32_t extraFlags = (pathPaintInfo.SupportColour != COLOUR_NULL)
+            const int32_t extraFlags = (pathPaintInfo.SupportColour != COLOUR_NULL && !tileElement->IsGhost())
                 ? SPRITE_ID_PALETTE_COLOUR_1(pathPaintInfo.SupportColour)
                 : 0;
             path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags | extraFlags, pathPaintInfo);

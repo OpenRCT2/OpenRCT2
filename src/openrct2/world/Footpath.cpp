@@ -42,6 +42,7 @@
 
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
+FootpathSelection gFootpathSelection;
 uint8_t gFootpathProvisionalFlags;
 CoordsXYZ gFootpathProvisionalPosition;
 ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
@@ -49,8 +50,6 @@ ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 uint8_t gFootpathProvisionalSlope;
 PathConstructFlags gFootpathProvisionalConstructFlags;
 uint8_t gFootpathConstructionMode;
-uint16_t gFootpathSelectedId;
-uint8_t gFootpathSelectedType;
 CoordsXYZ gFootpathConstructFromPosition;
 uint8_t gFootpathConstructDirection;
 uint8_t gFootpathConstructSlope;
