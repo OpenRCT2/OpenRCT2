@@ -149,10 +149,18 @@ void setup_in_use_selection_flags()
             case TILE_ELEMENT_TYPE_PATH:
             {
                 auto footpathEl = iter.element->AsPath();
-                auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
-                auto railingEntryIndex = footpathEl->GetRailingEntryIndex();
-                Editor::SetSelectedObject(ObjectType::Paths, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
-                Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                auto legacyPathEntryIndex = footpathEl->GetPathEntryIndex();
+                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
+                    auto railingEntryIndex = footpathEl->GetRailingEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
+                else
+                {
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
@@ -165,17 +173,29 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (iter.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
-                    break;
-                // Skip if not the middle part
-                if (iter.element->AsEntrance()->GetSequenceIndex() != 0)
+            {
+                auto parkEntranceEl = iter.element->AsEntrance();
+                if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
 
                 Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
 
-                type = iter.element->AsEntrance()->GetSurfaceEntryIndex();
-                Editor::SetSelectedObject(ObjectType::Paths, type, OBJECT_SELECTION_FLAG_SELECTED);
+                // Skip if not the middle part
+                if (parkEntranceEl->GetSequenceIndex() != 0)
+                    break;
+
+                auto legacyPathEntryIndex = parkEntranceEl->GetPathEntryIndex();
+                if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
+                {
+                    auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
+                else
+                {
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                }
                 break;
+            }
             case TILE_ELEMENT_TYPE_WALL:
                 type = iter.element->AsWall()->GetEntryIndex();
                 Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
