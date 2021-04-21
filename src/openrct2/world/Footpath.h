@@ -155,12 +155,19 @@ enum
     FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
+using PathConstructFlags = uint8_t;
+namespace PathConstructFlag
+{
+    constexpr PathConstructFlags IsQueue = 1 << 0;
+    constexpr PathConstructFlags IsPathObject = 1 << 1;
+} // namespace PathConstructFlag
+
 extern uint8_t gFootpathProvisionalFlags;
 extern CoordsXYZ gFootpathProvisionalPosition;
 extern ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
 extern ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 extern uint8_t gFootpathProvisionalSlope;
-extern bool gFootpathProvisionalIsQueue;
+extern PathConstructFlags gFootpathProvisionalConstructFlags;
 extern uint8_t gFootpathConstructionMode;
 extern uint16_t gFootpathSelectedId;
 extern uint8_t gFootpathSelectedType;
@@ -180,7 +187,8 @@ TileElement* map_get_footpath_element(const CoordsXYZ& coords);
 void footpath_interrupt_peeps(const CoordsXYZ& footpathPos);
 money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags);
 money32 footpath_provisional_set(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope, bool isQueue);
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+    PathConstructFlags constructFlags);
 void footpath_provisional_remove();
 void footpath_provisional_update();
 CoordsXY footpath_get_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t* direction, TileElement** tileElement);

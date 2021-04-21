@@ -47,7 +47,7 @@ CoordsXYZ gFootpathProvisionalPosition;
 ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
 ObjectEntryIndex gFootpathProvisionalRailingsIndex;
 uint8_t gFootpathProvisionalSlope;
-bool gFootpathProvisionalIsQueue;
+PathConstructFlags gFootpathProvisionalConstructFlags;
 uint8_t gFootpathConstructionMode;
 uint16_t gFootpathSelectedId;
 uint8_t gFootpathSelectedType;
@@ -151,13 +151,14 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
  *  rct2: 0x006A76FF
  */
 money32 footpath_provisional_set(
-    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope, bool isQueue)
+    ObjectEntryIndex type, ObjectEntryIndex railingsType, const CoordsXYZ& footpathLoc, int32_t slope,
+    PathConstructFlags constructFlags)
 {
     money32 cost;
 
     footpath_provisional_remove();
 
-    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, isQueue);
+    auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
@@ -167,7 +168,7 @@ money32 footpath_provisional_set(
         gFootpathProvisionalRailingsIndex = railingsType;
         gFootpathProvisionalPosition = footpathLoc;
         gFootpathProvisionalSlope = slope;
-        gFootpathProvisionalIsQueue = isQueue;
+        gFootpathProvisionalConstructFlags = constructFlags;
         gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)

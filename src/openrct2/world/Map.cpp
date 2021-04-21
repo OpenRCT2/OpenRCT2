@@ -1556,7 +1556,7 @@ void map_restore_provisional_elements()
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
         footpath_provisional_set(
             gFootpathProvisionalSurfaceIndex, gFootpathProvisionalRailingsIndex, gFootpathProvisionalPosition,
-            gFootpathProvisionalSlope, gFootpathProvisionalIsQueue);
+            gFootpathProvisionalSlope, gFootpathProvisionalConstructFlags);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {

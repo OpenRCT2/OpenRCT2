@@ -20,14 +20,13 @@ private:
     ObjectEntryIndex _type{};
     ObjectEntryIndex _railingsType{};
     Direction _direction{ INVALID_DIRECTION };
-    bool _isQueue{};
+    PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceAction() = default;
     FootpathPlaceAction(
         const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType,
-        Direction direction = INVALID_DIRECTION,
-        bool isQueue = false);
+        Direction direction = INVALID_DIRECTION, PathConstructFlags constructFlags = 0);
 
     void AcceptParameters(GameActionParameterVisitor & visitor) override;
 
@@ -45,4 +44,5 @@ private:
     void AutomaticallySetPeepSpawn() const;
     void RemoveIntersectingWalls(PathElement * pathElement) const;
     PathElement* map_get_footpath_element_slope(const CoordsXYZ& footpathPos, int32_t slope) const;
+    bool IsSameAsPathElement(const PathElement* pathElement) const;
 };

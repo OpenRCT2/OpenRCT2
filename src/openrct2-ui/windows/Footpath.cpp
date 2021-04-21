@@ -12,15 +12,18 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Cheats.h>
+#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/FootpathPlaceAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/FootpathObject.h>
 #include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/ObjectLimits.h>
+#include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
@@ -32,9 +35,10 @@ static constexpr const int32_t WH = 421;
 static constexpr const int32_t WW = 106;
 static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
 
+static ObjectEntryIndex _selectedPath = OBJECT_ENTRY_INDEX_NULL;
 static ObjectEntryIndex _selectedQueue = OBJECT_ENTRY_INDEX_NULL;
 static ObjectEntryIndex _selectedRailings = OBJECT_ENTRY_INDEX_NULL;
-static std::vector<ObjectEntryIndex> _dropdownEntries;
+static std::vector<std::pair<ObjectType, ObjectEntryIndex>> _dropdownEntries;
 
 // clang-format off
 enum
@@ -346,16 +350,32 @@ static void window_footpath_dropdown(rct_window* w, rct_widgetindex widgetIndex,
     if (widgetIndex == WIDX_FOOTPATH_TYPE)
     {
         gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
-        gFootpathSelectedId = entryIndex;
+        if (entryIndex.first == ObjectType::Paths)
+        {
+            _selectedPath = entryIndex.second;
+        }
+        else
+        {
+            _selectedPath = OBJECT_ENTRY_INDEX_NULL;
+            gFootpathSelectedId = entryIndex.second;
+        }
     }
     else if (widgetIndex == WIDX_QUEUELINE_TYPE)
     {
         gFootpathSelectedType = SELECTED_PATH_TYPE_QUEUE;
-        _selectedQueue = entryIndex;
+        if (entryIndex.first == ObjectType::Paths)
+        {
+            _selectedPath = entryIndex.second;
+        }
+        else
+        {
+            _selectedPath = OBJECT_ENTRY_INDEX_NULL;
+            _selectedQueue = entryIndex.second;
+        }
     }
     else if (widgetIndex == WIDX_RAILINGS_TYPE)
     {
-        _selectedRailings = entryIndex;
+        _selectedRailings = entryIndex.second;
     }
     else
     {
@@ -429,7 +449,6 @@ static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, c
  */
 static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* w)
 {
-    ObjectEntryIndex type;
     int32_t slope;
 
     if (gFootpathConstructionMode != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
@@ -447,10 +466,21 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
     // Update provisional bridge mode path
     if (!(gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1))
     {
+        ObjectEntryIndex type;
+        ObjectEntryIndex railings = _selectedRailings;
+
         CoordsXYZ footpathLoc;
         footpath_get_next_path_info(&type, footpathLoc, &slope);
-        auto isQueue = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE;
-        _window_footpath_cost = footpath_provisional_set(type, _selectedRailings, footpathLoc, slope, isQueue);
+        PathConstructFlags pathConstructFlags = 0;
+        if (gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE)
+            pathConstructFlags |= PathConstructFlag::IsQueue;
+        if (_selectedPath != OBJECT_ENTRY_INDEX_NULL)
+        {
+            pathConstructFlags |= PathConstructFlag::IsPathObject;
+            type = _selectedPath;
+        }
+
+        _window_footpath_cost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
@@ -463,7 +493,7 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window* 
 
         gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
-        footpath_get_next_path_info(&type, footpathLoc, &slope);
+        footpath_get_next_path_info(nullptr, footpathLoc, &slope);
         gMapSelectArrowPosition = footpathLoc;
         gMapSelectArrowDirection = gFootpathConstructDirection;
         if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
@@ -545,31 +575,57 @@ static void window_footpath_invalidate(rct_window* w)
         ? WindowWidgetType::ImgBtn
         : WindowWidgetType::Empty;
 
-    // Set footpath and queue type button images
-    auto pathImage = static_cast<uint32_t>(SPR_NONE);
-    auto queueImage = static_cast<uint32_t>(SPR_NONE);
-    auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
-    if (pathEntry != nullptr)
+    if (_selectedPath == OBJECT_ENTRY_INDEX_NULL)
     {
-        pathImage = pathEntry->PreviewImageId;
-    }
+        // Set footpath and queue type button images
+        auto pathImage = static_cast<uint32_t>(SPR_NONE);
+        auto queueImage = static_cast<uint32_t>(SPR_NONE);
+        auto pathEntry = get_path_surface_entry(gFootpathSelectedId);
+        if (pathEntry != nullptr)
+        {
+            pathImage = pathEntry->PreviewImageId;
+        }
 
-    pathEntry = get_path_surface_entry(_selectedQueue);
-    if (pathEntry != nullptr)
+        pathEntry = get_path_surface_entry(_selectedQueue);
+        if (pathEntry != nullptr)
+        {
+            queueImage = pathEntry->PreviewImageId;
+        }
+
+        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
+        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+
+        // Set railing
+        auto railingsImage = static_cast<uint32_t>(SPR_NONE);
+        auto railingsEntry = get_path_railings_entry(_selectedRailings);
+        if (railingsEntry != nullptr)
+        {
+            railingsImage = railingsEntry->PreviewImageId;
+        }
+        window_footpath_widgets[WIDX_RAILINGS_TYPE].image = railingsImage;
+        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+    }
+    else
     {
-        queueImage = pathEntry->PreviewImageId;
-    }
+        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
-    window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-    window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+        // Set footpath and queue type button images
+        auto pathImage = static_cast<uint32_t>(SPR_NONE);
+        auto queueImage = static_cast<uint32_t>(SPR_NONE);
+        auto pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, _selectedPath));
+        if (pathObj != nullptr)
+        {
+            auto pathEntry = reinterpret_cast<rct_footpath_entry*>(pathObj->GetLegacyData());
+            pathImage = pathEntry->image + 71;
+            queueImage = pathEntry->image + 72;
+        }
 
-    auto railingsImage = static_cast<uint32_t>(SPR_NONE);
-    auto railingsEntry = get_path_railings_entry(_selectedRailings);
-    if (railingsEntry != nullptr)
-    {
-        railingsImage = railingsEntry->PreviewImageId;
+        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
+        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+
+        // Hide railing button
+        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
     }
-    window_footpath_widgets[WIDX_RAILINGS_TYPE].image = railingsImage;
 }
 
 /**
@@ -595,12 +651,30 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
             slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
         }
 
-        auto selectedPath = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE ? _selectedQueue : gFootpathSelectedId;
-        const auto* pathType = get_path_surface_entry(selectedPath);
-        if (pathType != nullptr)
+        std::optional<uint32_t> baseImage;
+        if (_selectedPath == OBJECT_ENTRY_INDEX_NULL)
         {
-            int32_t image = ConstructionPreviewImages[slope][direction];
-            image += pathType->BaseImageId;
+            auto selectedPath = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE ? _selectedQueue : gFootpathSelectedId;
+            const auto* pathType = get_path_surface_entry(selectedPath);
+            if (pathType != nullptr)
+            {
+                baseImage = pathType->BaseImageId;
+            }
+        }
+        else
+        {
+            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, _selectedPath));
+            if (pathObj != nullptr)
+            {
+                auto pathEntry = reinterpret_cast<const rct_footpath_entry*>(pathObj->GetLegacyData());
+                baseImage = pathEntry->image;
+            }
+        }
+
+        if (baseImage)
+        {
+            auto image = *baseImage + ConstructionPreviewImages[slope][direction];
 
             // Draw construction image
             screenCoords = w->windowPos
@@ -635,6 +709,8 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget* widget, bool showQueues)
 {
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+
     uint32_t numPathTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
     bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
@@ -643,7 +719,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
     std::optional<size_t> defaultIndex;
     for (size_t i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
-        const auto* pathType = get_path_surface_entry(i);
+        const auto* pathType = static_cast<FootpathSurfaceObject*>(objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
         if (pathType == nullptr)
         {
             continue;
@@ -656,14 +732,39 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         {
             continue;
         }
-        if (i == (showQueues ? _selectedQueue : gFootpathSelectedId))
+        if (_selectedPath == OBJECT_ENTRY_INDEX_NULL && i == (showQueues ? _selectedQueue : gFootpathSelectedId))
         {
             defaultIndex = numPathTypes;
         }
 
         gDropdownItemsFormat[numPathTypes] = STR_NONE;
         gDropdownItemsArgs[numPathTypes] = pathType->PreviewImageId;
-        _dropdownEntries.push_back(i);
+        _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
+        numPathTypes++;
+    }
+
+    for (size_t i = 0; i < MAX_PATH_OBJECTS; i++)
+    {
+        auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, i));
+        if (pathObj == nullptr)
+        {
+            continue;
+        }
+
+        auto pathEntry = reinterpret_cast<const rct_footpath_entry*>(pathObj->GetLegacyData());
+        if ((pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+        {
+            continue;
+        }
+
+        if (_selectedPath != OBJECT_ENTRY_INDEX_NULL && _selectedPath == i)
+        {
+            defaultIndex = numPathTypes;
+        }
+
+        gDropdownItemsFormat[numPathTypes] = STR_NONE;
+        gDropdownItemsArgs[numPathTypes] = pathEntry->image + (showQueues ? 72 : 71);
+        _dropdownEntries.push_back({ ObjectType::Paths, i });
         numPathTypes++;
     }
 
@@ -696,7 +797,7 @@ static void window_footpath_show_railings_types_dialog(rct_window* w, rct_widget
 
         gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
         gDropdownItemsArgs[numRailingsTypes] = railingsEntry->PreviewImageId;
-        _dropdownEntries.push_back(i);
+        _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
         numRailingsTypes++;
     }
 
@@ -802,9 +903,23 @@ static void window_footpath_set_provisional_path_at_point(const ScreenCoordsXY& 
             z += PATH_HEIGHT_STEP;
         }
 
-        auto isQueue = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE;
-        auto pathType = isQueue ? _selectedQueue : gFootpathSelectedId;
-        _window_footpath_cost = footpath_provisional_set(pathType, _selectedRailings, { info.Loc, z }, slope, isQueue);
+        PathConstructFlags constructFlags = 0;
+        auto pathType = gFootpathSelectedId;
+        if (gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE)
+        {
+            constructFlags |= PathConstructFlag::IsQueue;
+            pathType = _selectedQueue;
+        }
+        else
+        {
+            pathType = gFootpathSelectedId;
+        }
+        if (_selectedPath != OBJECT_ENTRY_INDEX_NULL)
+        {
+            constructFlags |= PathConstructFlag::IsPathObject;
+            pathType = _selectedPath;
+        }
+        _window_footpath_cost = footpath_provisional_set(pathType, _selectedRailings, { info.Loc, z }, slope, constructFlags);
         window_invalidate_by_class(WC_FOOTPATH);
     }
 }
@@ -897,13 +1012,23 @@ static void window_footpath_place_path_at_point(const ScreenCoordsXY& screenCoor
         slope &= ~RAISE_FOOTPATH_FLAG;
         z += PATH_HEIGHT_STEP;
     }
-    auto selectedType = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE ? _selectedQueue : gFootpathSelectedId;
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto isQueue = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE;
+    auto selectedType = gFootpathSelectedId;
+    PathConstructFlags constructFlags = 0;
+    if (gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE)
+    {
+        constructFlags |= PathConstructFlag::IsQueue;
+        selectedType = _selectedQueue;
+    }
+    if (_selectedPath != OBJECT_ENTRY_INDEX_NULL)
+    {
+        constructFlags |= PathConstructFlag::IsPathObject;
+        selectedType = _selectedPath;
+    }
     auto footpathPlaceAction = FootpathPlaceAction(
-        { info.Loc, z }, slope, selectedType, _selectedRailings, INVALID_DIRECTION, isQueue);
+        { info.Loc, z }, slope, selectedType, _selectedRailings, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
@@ -993,9 +1118,16 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, footpathLoc, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    auto isQueue = gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE;
+    PathConstructFlags constructFlags = 0;
+    if (gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE)
+        constructFlags |= PathConstructFlag::IsQueue;
+    if (_selectedPath != OBJECT_ENTRY_INDEX_NULL)
+    {
+        constructFlags |= PathConstructFlag::IsPathObject;
+        type = _selectedPath;
+    }
     auto footpathPlaceAction = FootpathPlaceAction(
-        footpathLoc, slope, type, _selectedRailings, gFootpathConstructDirection, isQueue);
+        footpathLoc, slope, type, _selectedRailings, gFootpathConstructDirection, constructFlags);
     footpathPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error == GameActions::Status::Ok)
         {
@@ -1239,11 +1371,13 @@ static void footpath_get_next_path_info(ObjectEntryIndex* type, CoordsXYZ& footp
     footpathLoc.z = gFootpathConstructFromPosition.z;
     if (gFootpathSelectedType == SELECTED_PATH_TYPE_QUEUE)
     {
-        *type = _selectedQueue;
+        if (type != nullptr)
+            *type = _selectedQueue;
     }
     else
     {
-        *type = gFootpathSelectedId;
+        if (type != nullptr)
+            *type = gFootpathSelectedId;
     }
     *slope = TILE_ELEMENT_SLOPE_FLAT;
     if (gFootpathConstructSlope != 0)
