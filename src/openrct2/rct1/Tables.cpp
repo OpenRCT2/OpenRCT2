@@ -1257,9 +1257,9 @@ namespace RCT1
         static constexpr const char * map[] =
         {
             "rct1.pathsurface.queue.blue",         // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
-            "rct1.pathsurface.queue.red",          // RCT1_FOOTPATH_TYPE_QUEUE_RED
-            "rct1.pathsurface.queue.yellow",       // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
-            "rct1.pathsurface.queue.green",        // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
+            "rct1.aa.pathsurface.queue.red",          // RCT1_FOOTPATH_TYPE_QUEUE_RED
+            "rct1.aa.pathsurface.queue.yellow",       // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+            "rct1.aa.pathsurface.queue.green",        // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
             "rct1.pathsurface.tarmac",             // RCT1_FOOTPATH_TYPE_TARMAC_GRAY
             "rct1.aa.pathsurface.space",           // RCT1_FOOTPATH_TYPE_TARMAC_RED
@@ -1318,8 +1318,8 @@ namespace RCT1
         {
             "rct2.railings.wood",       // RCT1_PATH_SUPPORT_TYPE_TRUSS
             "rct2.railings.concrete",   // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
-            "rct1.railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
-            "rct1.railings.bamboo",     // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+            "rct1.ll.railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
+            "rct1.ll.railings.bamboo",     // RCT1_PATH_SUPPORT_TYPE_BAMBOO
         };
         return map[footpathRailingsType];
     }

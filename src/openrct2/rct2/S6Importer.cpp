@@ -1654,11 +1654,11 @@ public:
     {
         auto name = desc.Entry.GetName();
         if (name == "PATHASH ")
-            return { "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.black" };
+            return { "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.bambooblack" };
         else if (name == "PATHCRZY")
             return { "rct2.pathsurface.crazy", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
         else if (name == "PATHDIRT")
-            return { "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.brown" };
+            return { "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.bamboobrown" };
         else if (name == "PATHSPCE")
             return { "rct2.pathsurface.space", "rct2.pathsurface.queue.red", "rct2.railings.space" };
         else if (name == "ROAD    ")

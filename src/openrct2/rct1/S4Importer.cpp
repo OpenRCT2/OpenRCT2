@@ -410,11 +410,11 @@ private:
             { "rct1.pathsurface.tarmac", "rct1.pathsurface.dirt", "rct1.pathsurface.crazy", "rct1.pathsurface.tile.brown",
               "rct1.aa.pathsurface.ash", "rct1.aa.pathsurface.tarmac.green", "rct1.aa.pathsurface.tarmac.brown",
               "rct1.aa.pathsurface.tile.grey", "rct1.aa.pathsurface.space", "rct1.ll.pathsurface.tile.green",
-              "rct1.ll.pathsurface.tile.red", "rct1.pathsurface.queue.blue", "rct1.pathsurface.queue.red",
-              "rct1.pathsurface.queue.yellow", "rct1.pathsurface.queue.green" });
+              "rct1.ll.pathsurface.tile.red", "rct1.pathsurface.queue.blue", "rct1.aa.pathsurface.queue.red",
+              "rct1.aa.pathsurface.queue.yellow", "rct1.aa.pathsurface.queue.green" });
 
         _footpathRailingsEntries.AddRange(
-            { "rct2.railings.wood", "rct1.railings.space", "rct1.railings.bamboo", "rct2.railings.concrete" });
+            { "rct2.railings.wood", "rct1.ll.railings.space", "rct1.ll.railings.bamboo", "rct2.railings.concrete" });
     }
 
     void AddAvailableEntriesFromResearchList()
