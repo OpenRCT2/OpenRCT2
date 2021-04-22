@@ -22,12 +22,14 @@
 #include "../world/Wall.h"
 
 FootpathPlaceFromTrackAction::FootpathPlaceFromTrackAction(
-    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges, bool isQueue)
+    const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+    PathConstructFlags constructFlags)
     : _loc(loc)
     , _slope(slope)
     , _type(type)
+    , _railingsType(railingsType)
     , _edges(edges)
-    , _isQueue(isQueue)
+    , _constructFlags(constructFlags)
 {
 }
 
@@ -35,7 +37,8 @@ void FootpathPlaceFromTrackAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_edges) << DS_TAG(_isQueue);
+    stream << DS_TAG(_loc) << DS_TAG(_slope) << DS_TAG(_type) << DS_TAG(_railingsType) << DS_TAG(_edges)
+           << DS_TAG(_constructFlags);
 }
 
 uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
@@ -130,9 +133,9 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = _isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
+    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), &res->Cost, crossingMode))
@@ -197,9 +200,9 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     }
 
     // Do not attempt to build a crossing with a queue or a sloped.
-    uint8_t crossingMode = _isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT)
-        ? CREATE_CROSSING_MODE_NONE
-        : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    auto isQueue = _constructFlags & PathConstructFlag::IsQueue;
+    uint8_t crossingMode = isQueue || (_slope != TILE_ELEMENT_SLOPE_FLAT) ? CREATE_CROSSING_MODE_NONE
+                                                                          : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     if (!entrancePath
         && !map_can_construct_with_clear_at(
             { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
@@ -224,8 +227,14 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     {
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
         {
-            // Set the path type but make sure it's not a queue as that will not show up
-            entranceElement->SetSurfaceEntryIndex(_type);
+            if (_constructFlags & PathConstructFlag::IsPathObject)
+            {
+                entranceElement->SetPathEntryIndex(_type);
+            }
+            else
+            {
+                entranceElement->SetSurfaceEntryIndex(_type);
+            }
             map_invalidate_tile_full(_loc);
         }
     }
@@ -235,11 +244,18 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         Guard::Assert(pathElement != nullptr);
 
         pathElement->SetClearanceZ(zHigh);
-        pathElement->SetSurfaceEntryIndex(_type);
-        pathElement->SetRailingEntryIndex(OBJECT_ENTRY_INDEX_NULL);
+        if (_constructFlags & PathConstructFlag::IsPathObject)
+        {
+            pathElement->SetPathEntryIndex(_type);
+        }
+        else
+        {
+            pathElement->SetSurfaceEntryIndex(_type);
+            pathElement->SetRailingEntryIndex(_railingsType);
+        }
         pathElement->SetSlopeDirection(_slope & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
-        pathElement->SetIsQueue(_isQueue);
+        pathElement->SetIsQueue(isQueue);
         pathElement->SetAddition(0);
         pathElement->SetRideIndex(RIDE_ID_NULL);
         pathElement->SetAdditionStatus(255);

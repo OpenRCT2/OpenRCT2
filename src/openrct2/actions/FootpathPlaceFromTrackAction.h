@@ -17,12 +17,15 @@ private:
     CoordsXYZ _loc;
     uint8_t _slope{};
     ObjectEntryIndex _type{};
+    ObjectEntryIndex _railingsType{};
     uint8_t _edges{};
-    bool _isQueue{};
+    PathConstructFlags _constructFlags{};
 
 public:
     FootpathPlaceFromTrackAction() = default;
-    FootpathPlaceFromTrackAction(const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, uint8_t edges, bool isQueue);
+    FootpathPlaceFromTrackAction(
+        const CoordsXYZ& loc, uint8_t slope, ObjectEntryIndex type, ObjectEntryIndex railingsType, uint8_t edges,
+        PathConstructFlags constructFlags = 0);
 
     uint16_t GetActionFlags() const override;
 

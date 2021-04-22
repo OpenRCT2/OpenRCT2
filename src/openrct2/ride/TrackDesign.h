@@ -39,6 +39,11 @@ struct TrackDesignSceneryElement
     uint8_t flags;
     uint8_t primary_colour;
     uint8_t secondary_colour;
+
+    bool IsQueue() const
+    {
+        return (flags & (1 << 7)) != 0;
+    }
 };
 
 /**
