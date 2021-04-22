@@ -83,7 +83,7 @@ static char _filter_string[MAX_PATH];
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
-static constexpr const int32_t WW = 600;
+static constexpr const int32_t WW = 755;
 
 struct ObjectPageDesc
 {
@@ -104,9 +104,9 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
     { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
 
-    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            false },
-    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            false },
-    { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               false },
+    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            true },
+    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            true },
+    { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               true },
     { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
     { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      false },
     { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      false },
@@ -144,7 +144,7 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 static bool _window_editor_object_selection_widgets_initialised;
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0, 43}, {600, 357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
+    MakeWidget({  0, 43}, {WW, 357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
     MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
     MakeWidget({391, 45}, {114, 115}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
@@ -373,7 +373,7 @@ rct_window* window_editor_object_selection_open()
     reset_selected_object_count_and_size();
 
     window = WindowCreateCentred(
-        600, 400, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
+        WW, WH, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
     window->widgets = _window_editor_object_selection_widgets.data();
     window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
@@ -392,8 +392,8 @@ rct_window* window_editor_object_selection_open()
 
     window->selected_tab = 0;
     window->selected_list_item = -1;
-    window->min_width = 600;
-    window->min_height = 400;
+    window->min_width = WW;
+    window->min_height = WH;
     window->max_width = 1200;
     window->max_height = 1000;
 
@@ -547,7 +547,7 @@ static void window_editor_object_selection_mouseup(rct_window* w, rct_widgetinde
 
 static void window_editor_object_selection_resize(rct_window* w)
 {
-    window_set_resize(w, 600, 400, 1200, 1000);
+    window_set_resize(w, WW, WH, 1200, 1000);
 }
 
 void window_editor_object_selection_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
@@ -862,8 +862,8 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     }
 
     w->widgets[WIDX_FILTER_DROPDOWN].type = WindowWidgetType::Button;
-    w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
-    w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
+    w->widgets[WIDX_LIST].right = w->width - (WW - 587) - x;
+    w->widgets[WIDX_PREVIEW].left = w->width - (WW - 537) - (x / 2);
     w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;
     w->widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = w->widgets[WIDX_LIST].right;
 
