@@ -161,3 +161,26 @@ RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
     // This function is safe to run this way round.
     return OpenRCT2FlatTrackTypeToRCT12(origTrackType);
 }
+
+std::tuple<std::string_view, std::string_view, std::string_view> GetFootpathSurfaceId(const ObjectEntryDescriptor& desc)
+{
+    auto name = desc.Entry.GetName();
+    if (name == "PATHASH ")
+        return { "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.bambooblack" };
+    else if (name == "PATHCRZY")
+        return { "rct2.pathsurface.crazy", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
+    else if (name == "PATHDIRT")
+        return { "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.bamboobrown" };
+    else if (name == "PATHSPCE")
+        return { "rct2.pathsurface.space", "rct2.pathsurface.queue.red", "rct2.railings.space" };
+    else if (name == "ROAD    ")
+        return { "rct2.pathsurface.road", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
+    else if (name == "TARMACB ")
+        return { "rct2.pathsurface.tarmac.brown", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
+    else if (name == "TARMACG ")
+        return { "rct2.pathsurface.tarmac.green", "rct2.pathsurface.queue.green", "rct2.railings.concretegreen" };
+    else if (name == "TARMAC  ")
+        return { "rct2.pathsurface.tarmac", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
+    else
+        return {};
+}

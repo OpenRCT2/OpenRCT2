@@ -654,6 +654,106 @@ static void track_design_load_scenery_objects(TrackDesign* td6)
     }
 }
 
+struct TrackSceneryEntry
+{
+    ObjectType Type = ObjectType::None;
+    ObjectEntryIndex Index = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex SecondaryIndex = OBJECT_ENTRY_INDEX_NULL; // For footpath railing
+};
+
+static ObjectEntryIndex TrackDesignGetDefaultSurfaceIndex(bool isQueue)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    {
+        auto footpathSurfaceObj = get_path_surface_entry(i);
+        if (footpathSurfaceObj != nullptr)
+        {
+            if (footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
+            {
+                continue;
+            }
+
+            if (isQueue != ((footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                continue;
+            }
+
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static ObjectEntryIndex TrackDesignGetDefaultRailingIndex()
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    {
+        auto footpathRailingsObj = get_path_railings_entry(i);
+        if (footpathRailingsObj != nullptr)
+        {
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
+{
+    TrackSceneryEntry result;
+
+    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    if (scenery.scenery_object.GetType() == ObjectType::Paths)
+    {
+        auto [normal, queue, railings] = GetFootpathSurfaceId(scenery.scenery_object);
+        if (normal.empty() && queue.empty() && railings.empty())
+        {
+            // Check if legacy path object is loaded
+            auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+            if (obj != nullptr)
+            {
+                result.Type = obj->GetObjectType();
+                result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            }
+            else
+            {
+                result.Type = ObjectType::FootpathSurface;
+            }
+        }
+        else
+        {
+            result.Type = ObjectType::FootpathSurface;
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(scenery.IsQueue() ? queue : normal));
+            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(railings));
+        }
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL)
+            result.Index = TrackDesignGetDefaultSurfaceIndex(false);
+        if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+            result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
+
+        if (result.Index == OBJECT_ENTRY_INDEX_NULL || result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    else
+    {
+        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        if (obj != nullptr)
+        {
+            result.Type = obj->GetObjectType();
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+        }
+        else
+        {
+            _trackDesignPlaceStateSceneryUnavailable = true;
+            return {};
+        }
+    }
+    return result;
+}
+
 /**
  *
  *  rct2: 0x006D247A
@@ -663,10 +763,11 @@ static void track_design_mirror_scenery(TrackDesign* td6)
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     for (auto& scenery : td6->scenery_elements)
     {
-        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
-        if (obj == nullptr)
+        auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
+        if (!entryInfo)
             continue;
 
+        auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
         switch (obj->GetObjectType())
         {
             case ObjectType::LargeScenery:
@@ -746,6 +847,7 @@ static void track_design_mirror_scenery(TrackDesign* td6)
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
             {
                 scenery.y = -scenery.y;
 
@@ -856,83 +958,6 @@ static void track_design_update_max_min_coordinates(const CoordsXYZ& coords)
                          std::max(_trackPreviewMax.z, coords.z) };
 }
 
-struct TrackSceneryEntry
-{
-    ObjectType Type = ObjectType::None;
-    ObjectEntryIndex Index = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex SecondaryIndex = OBJECT_ENTRY_INDEX_NULL; // For footpath railing
-};
-
-static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(const TrackDesignSceneryElement& scenery)
-{
-    TrackSceneryEntry result;
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
-    if (obj != nullptr)
-    {
-        result.Type = obj->GetObjectType();
-        result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
-    }
-    else
-    {
-        // Find a fallback footpath
-        result.Type = scenery.scenery_object.GetType();
-        if (result.Type != ObjectType::Paths)
-        {
-            // Unsupported object type
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return {};
-        }
-
-        if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        {
-            // Don't bother with fallback with track designer
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return {};
-        }
-
-        // Find a default footpath surface to use
-        auto isQueue = scenery.IsQueue();
-        for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
-        {
-            auto footpathSurfaceObj = get_path_surface_entry(i);
-            if (footpathSurfaceObj != nullptr)
-            {
-                if (footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)
-                {
-                    continue;
-                }
-
-                if (isQueue != ((footpathSurfaceObj->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
-                {
-                    continue;
-                }
-
-                result.Index = i;
-                break;
-            }
-        }
-
-        // Find a default railing to use
-        for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
-        {
-            auto footpathRailingsObj = get_path_railings_entry(i);
-            if (footpathRailingsObj != nullptr)
-            {
-                result.SecondaryIndex = i;
-                break;
-            }
-        }
-
-        if (result.Index == OBJECT_ENTRY_INDEX_NULL || result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
-        {
-            _trackDesignPlaceStateSceneryUnavailable = true;
-            return {};
-        }
-    }
-    return result;
-}
-
 static bool TrackDesignPlaceSceneryElementRemoveGhost(
     CoordsXY mapCoord, const TrackDesignSceneryElement& scenery, uint8_t rotation, int32_t originZ)
 {
@@ -979,6 +1004,7 @@ static bool TrackDesignPlaceSceneryElementRemoveGhost(
             ga = std::make_unique<WallRemoveAction>(CoordsXYZD{ mapCoord.x, mapCoord.y, z, sceneryRotation });
             break;
         case ObjectType::Paths:
+        case ObjectType::FootpathSurface:
             ga = std::make_unique<FootpathRemoveAction>(CoordsXYZ{ mapCoord.x, mapCoord.y, z });
             break;
         default:
@@ -1175,6 +1201,7 @@ static bool TrackDesignPlaceSceneryElement(
                 break;
             }
             case ObjectType::Paths:
+            case ObjectType::FootpathSurface:
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_PLACE_Z)
                 {
                     return true;
@@ -1215,6 +1242,8 @@ static bool TrackDesignPlaceSceneryElement(
                     PathConstructFlags constructFlags = 0;
                     if (isQueue)
                         constructFlags |= PathConstructFlag::IsQueue;
+                    if (entryInfo->Type == ObjectType::Paths)
+                        constructFlags |= PathConstructFlag::IsPathObject;
                     auto footpathPlaceAction = FootpathPlaceFromTrackAction(
                         { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex,
                         edges, constructFlags);

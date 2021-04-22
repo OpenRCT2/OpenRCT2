@@ -16,6 +16,7 @@
 #include "../ride/RideRatings.h"
 #include "../ride/VehicleColour.h"
 
+#include <tuple>
 #include <vector>
 
 constexpr const uint8_t RCT2_MAX_STAFF = 200;
@@ -802,3 +803,5 @@ RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType);
  * Handles single and multi-byte strings.
  */
 size_t GetRCT2StringBufferLen(const char* buffer, size_t maxBufferLen);
+
+std::tuple<std::string_view, std::string_view, std::string_view> GetFootpathSurfaceId(const ObjectEntryDescriptor& desc);
