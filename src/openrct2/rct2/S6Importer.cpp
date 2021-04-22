@@ -1604,8 +1604,8 @@ public:
                 {
                     if (objectType == EnumValue(ObjectType::Paths))
                     {
-                        auto [normal, queue, railings] = GetFootpathSurfaceId(entry);
-                        if (normal.empty() && queue.empty() && railings.empty())
+                        auto footpathMapping = GetFootpathSurfaceId(entry);
+                        if (footpathMapping == nullptr)
                         {
                             // Unsupported footpath
                             objectList.SetObject(i, entry);
@@ -1613,26 +1613,26 @@ public:
                         else
                         {
                             // We have surface objects for this footpath
-                            auto surfaceIndex = objectList.Find(ObjectType::FootpathSurface, normal);
+                            auto surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
                             if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
                             {
-                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, normal);
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->NormalSurface);
                                 surfaceIndex = surfaceCount++;
                             }
                             _pathToSurfaceMap[i] = surfaceIndex;
 
-                            surfaceIndex = objectList.Find(ObjectType::FootpathSurface, queue);
+                            surfaceIndex = objectList.Find(ObjectType::FootpathSurface, footpathMapping->QueueSurface);
                             if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
                             {
-                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, queue);
+                                objectList.SetObject(ObjectType::FootpathSurface, surfaceCount, footpathMapping->QueueSurface);
                                 surfaceIndex = surfaceCount++;
                             }
                             _pathToQueueSurfaceMap[i] = surfaceIndex;
 
-                            auto railingIndex = objectList.Find(ObjectType::FootpathRailings, railings);
+                            auto railingIndex = objectList.Find(ObjectType::FootpathRailings, footpathMapping->Railing);
                             if (railingIndex == OBJECT_ENTRY_INDEX_NULL)
                             {
-                                objectList.SetObject(ObjectType::FootpathRailings, railingCount, railings);
+                                objectList.SetObject(ObjectType::FootpathRailings, railingCount, footpathMapping->Railing);
                                 railingIndex = railingCount++;
                             }
                             _pathToRailingMap[i] = railingIndex;

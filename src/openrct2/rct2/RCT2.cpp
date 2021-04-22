@@ -7,7 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Context.h"
 #include "../object/Object.h"
+#include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -162,25 +164,82 @@ RCT12TrackType OpenRCT2TrackTypeToRCT2(track_type_t origTrackType)
     return OpenRCT2FlatTrackTypeToRCT12(origTrackType);
 }
 
-std::tuple<std::string_view, std::string_view, std::string_view> GetFootpathSurfaceId(const ObjectEntryDescriptor& desc)
+static FootpathMapping _footpathMappings[] = {
+    // RCT2 mappings
+    { "PATHASH ", "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.bambooblack" },
+    { "PATHCRZY", "rct2.pathsurface.crazy", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" },
+    { "PATHDIRT", "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.bamboobrown" },
+    { "PATHSPCE", "rct2.pathsurface.space", "rct2.pathsurface.queue.red", "rct2.railings.space" },
+    { "ROAD    ", "rct2.pathsurface.road", "rct2.pathsurface.queue.blue", "rct2.railings.wood" },
+    { "TARMACB ", "rct2.pathsurface.tarmac.brown", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" },
+    { "TARMACG ", "rct2.pathsurface.tarmac.green", "rct2.pathsurface.queue.green", "rct2.railings.concretegreen" },
+    { "TARMAC  ", "rct2.pathsurface.tarmac", "rct2.pathsurface.queue.blue", "rct2.railings.wood" },
+
+    // RCT 1 mappings (for reverse lookup)
+    { "PATHASH ", "rct1.aa.pathsurface.ash", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.bambooblack" },
+    { "PATHCRZY", "rct1.pathsurface.crazy", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.concrete" },
+    { "PATHDIRT", "rct1.pathsurface.dirt", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.bamboobrown" },
+    { "PATHSPCE", "rct1.aa.pathsurface.space", "rct1.pathsurface.queue.red", "rct1.ll.railings.space" },
+    { "TARMACB ", "rct1.aa.pathsurface.tarmac.brown", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.concrete" },
+    { "TARMACG ", "rct1.aa.pathsurface.tarmac.green", "rct1.aa.pathsurface.queue.green", "rct2.railings.concretegreen" },
+    { "TARMAC  ", "rct1.pathsurface.tarmac", "rct1.pathsurface.queue.blue", "rct2.railings.wood" },
+    { "PATHCRZY", "rct1.pathsurface.tile.brown", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.concrete" },
+    { "PATHCRZY", "rct1.aa.pathsurface.tile.grey", "rct1.pathsurface.queue.blue", "rct2.railings.concrete" },
+    { "PATHCRZY", "rct1.ll.pathsurface.tile.red", "rct1.pathsurface.queue.red", "rct2.railings.concrete" },
+    { "PATHCRZY", "rct1.ll.pathsurface.tile.green", "rct1.aa.pathsurface.queue.green", "rct2.railings.concrete" },
+};
+
+const FootpathMapping* GetFootpathSurfaceId(const ObjectEntryDescriptor& desc, bool ideallyLoaded, bool isQueue)
 {
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+
     auto name = desc.Entry.GetName();
-    if (name == "PATHASH ")
-        return { "rct2.pathsurface.ash", "rct2.pathsurface.queue.yellow", "rct2.railings.bambooblack" };
-    else if (name == "PATHCRZY")
-        return { "rct2.pathsurface.crazy", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
-    else if (name == "PATHDIRT")
-        return { "rct2.pathsurface.dirt", "rct2.pathsurface.queue.yellow", "rct2.railings.bamboobrown" };
-    else if (name == "PATHSPCE")
-        return { "rct2.pathsurface.space", "rct2.pathsurface.queue.red", "rct2.railings.space" };
-    else if (name == "ROAD    ")
-        return { "rct2.pathsurface.road", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
-    else if (name == "TARMACB ")
-        return { "rct2.pathsurface.tarmac.brown", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" };
-    else if (name == "TARMACG ")
-        return { "rct2.pathsurface.tarmac.green", "rct2.pathsurface.queue.green", "rct2.railings.concretegreen" };
-    else if (name == "TARMAC  ")
-        return { "rct2.pathsurface.tarmac", "rct2.pathsurface.queue.blue", "rct2.railings.wood" };
-    else
-        return {};
+    for (const auto& mapping : _footpathMappings)
+    {
+        if (mapping.Original == name)
+        {
+            if (ideallyLoaded)
+            {
+                auto obj = objManager.GetLoadedObject(
+                    ObjectEntryDescriptor(isQueue ? mapping.QueueSurface : mapping.NormalSurface));
+                if (obj == nullptr)
+                    continue;
+            }
+            return &mapping;
+        }
+    }
+    return nullptr;
+}
+
+std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings)
+{
+    rct_object_entry result;
+    std::memset(&result, 0, sizeof(result));
+
+    result.SetType(ObjectType::Paths);
+
+    auto foundMapping = false;
+    for (const auto& mapping : _footpathMappings)
+    {
+        if (surface == mapping.NormalSurface || surface == mapping.QueueSurface)
+        {
+            if (railings == mapping.Railing)
+            {
+                // Best match found
+                foundMapping = true;
+                result.SetName(mapping.Original);
+                break;
+            }
+            else if (!foundMapping)
+            {
+                // Found a mapping, but keep searching to see if there is a closer match
+                foundMapping = true;
+                result.SetName(mapping.Original);
+            }
+        }
+    }
+
+    if (foundMapping)
+        return result;
+    return {};
 }

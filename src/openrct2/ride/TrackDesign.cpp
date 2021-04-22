@@ -704,8 +704,8 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (scenery.scenery_object.GetType() == ObjectType::Paths)
     {
-        auto [normal, queue, railings] = GetFootpathSurfaceId(scenery.scenery_object);
-        if (normal.empty() && queue.empty() && railings.empty())
+        auto footpathMapping = GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
+        if (footpathMapping == nullptr)
         {
             // Check if legacy path object is loaded
             auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
@@ -722,12 +722,13 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         else
         {
             result.Type = ObjectType::FootpathSurface;
-            result.Index = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(scenery.IsQueue() ? queue : normal));
-            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(railings));
+            result.Index = objectMgr.GetLoadedObjectEntryIndex(
+                ObjectEntryDescriptor(scenery.IsQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
+            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
         if (result.Index == OBJECT_ENTRY_INDEX_NULL)
-            result.Index = TrackDesignGetDefaultSurfaceIndex(false);
+            result.Index = TrackDesignGetDefaultSurfaceIndex(scenery.IsQueue());
         if (result.SecondaryIndex == OBJECT_ENTRY_INDEX_NULL)
             result.SecondaryIndex = TrackDesignGetDefaultRailingIndex();
 

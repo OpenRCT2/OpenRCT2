@@ -14,6 +14,9 @@
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../object/FootpathObject.h"
+#include "../object/FootpathRailingsObject.h"
+#include "../object/FootpathSurfaceObject.h"
 #include "../object/LargeSceneryObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
@@ -196,20 +199,9 @@ static bool track_design_is_supported_object(const Object* obj)
     return !entry.IsEmpty();
 }
 
-/**
- *
- *  rct2: 0x006D2FA7
- */
 static void track_design_save_push_tile_element_desc(
-    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+    const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
-    const auto& entry = obj->GetObjectEntry();
-    if (entry.IsEmpty())
-    {
-        // Unsupported, should have been blocked earlier
-        assert(false);
-    }
-
     auto tileLoc = TileCoordsXYZ(loc);
     TrackDesignSceneryElement item{};
     item.scenery_object = ObjectEntryDescriptor(entry);
@@ -221,6 +213,19 @@ static void track_design_save_push_tile_element_desc(
     item.secondary_colour = secondaryColour;
 
     _trackSavedTileElementsDesc.push_back(std::move(item));
+}
+
+static void track_design_save_push_tile_element_desc(
+    const Object* obj, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
+{
+    const auto& entry = obj->GetObjectEntry();
+    if (entry.IsEmpty())
+    {
+        // Unsupported, should have been blocked earlier
+        assert(false);
+    }
+
+    track_design_save_push_tile_element_desc(entry, loc, flags, primaryColour, secondaryColour);
 }
 
 static void track_design_save_add_scenery(const CoordsXY& loc, SmallSceneryElement* sceneryElement)
@@ -316,21 +321,45 @@ static void track_design_save_add_wall(const CoordsXY& loc, WallElement* wallEle
 
 static void track_design_save_add_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    auto entryIndex = pathElement->GetSurfaceEntryIndex();
-    auto obj = object_entry_get_object(ObjectType::Paths, entryIndex);
-    if (obj != nullptr && track_design_is_supported_object(obj))
+    rct_object_entry pathEntry;
+    auto legacyPathObj = pathElement->GetPathEntry();
+    if (legacyPathObj != nullptr)
     {
-        uint8_t flags = 0;
-        flags |= pathElement->GetEdges();
-        flags |= (pathElement->GetSlopeDirection()) << 5;
-        if (pathElement->IsSloped())
-            flags |= 0b00010000;
-        if (pathElement->IsQueue())
-            flags |= 1 << 7;
-
-        track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
-        track_design_save_push_tile_element_desc(obj, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0);
+        pathEntry = legacyPathObj->GetObjectEntry();
+        if (pathEntry.IsEmpty())
+        {
+            return;
+        }
     }
+    else
+    {
+        auto surfaceEntry = pathElement->GetSurfaceEntry();
+        if (surfaceEntry == nullptr)
+        {
+            return;
+        }
+
+        auto surfaceId = surfaceEntry->GetIdentifier();
+        auto railingsEntry = pathElement->GetRailingEntry();
+        auto railingsId = railingsEntry == nullptr ? "" : railingsEntry->GetIdentifier();
+
+        auto bestPathEntry = GetBestObjectEntryForSurface(surfaceId, railingsId);
+        if (!bestPathEntry)
+            return;
+
+        pathEntry = *bestPathEntry;
+    }
+
+    uint8_t flags = 0;
+    flags |= pathElement->GetEdges();
+    flags |= (pathElement->GetSlopeDirection()) << 5;
+    if (pathElement->IsSloped())
+        flags |= 0b00010000;
+    if (pathElement->IsQueue())
+        flags |= 1 << 7;
+
+    track_design_save_push_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
+    track_design_save_push_tile_element_desc(pathEntry, { loc.x, loc.y, pathElement->GetBaseZ() }, flags, 0, 0);
 }
 
 /**
