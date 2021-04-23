@@ -918,7 +918,11 @@ void path_paint(paint_session* session, uint16_t height, const TileElement* tile
     }
     else if (surface->GetBaseZ() != height)
     {
-        hasSupports = true;
+        const auto* surfaceEntry = pathEl->GetSurfaceEntry();
+        const bool showUndergroundRailings = surfaceEntry == nullptr
+            || !(surfaceEntry->Flags & FOOTPATH_ENTRY_FLAG_NO_SLOPE_RAILINGS);
+        if (surface->GetBaseZ() < height || showUndergroundRailings)
+            hasSupports = true;
     }
     else
     {
