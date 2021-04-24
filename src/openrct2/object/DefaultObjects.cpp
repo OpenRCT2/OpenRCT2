@@ -11,6 +11,7 @@
 
 #include "Object.h"
 
+// clang-format off
 const std::string_view MinimumRequiredObjects[] = { "rct2.surface.grass", "rct2.edge.rock" };
 
 const std::string_view DefaultSelectedObjects[] = {
@@ -40,11 +41,6 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.rboat",    // Ride: Rowing Boats
     "rct2.pkent1",   // Park Entrance: Traditional Park Entrance
     "rct2.wtrcyan",  // Water: Natural Water
-    "rct2.tarmacb",  // Footpath: Brown Tarmac Footpath
-    "rct2.pathspce", // Footpath: Space Style Footpath
-    "rct2.pathdirt", // Footpath: Dirt Footpath
-    "rct2.pathcrzy", // Footpath: Crazy Paving Footpath
-    "rct2.pathash",  // Footpath: Ash Footpath
 
     // The following are for all random map generation features to work out the box
     "rct2.scgjungl", // Jungle Theming
@@ -118,6 +114,25 @@ const std::string_view DefaultSelectedObjects[] = {
     "rct2.music.pirate",
     "rct2.music.rock3",
     "rct2.music.candy",
+
+    // Footpath surfaces
+    "rct2.pathsurface.tarmac.brown",
+    "rct2.pathsurface.space",
+    "rct2.pathsurface.dirt",
+    "rct2.pathsurface.crazy",
+    "rct2.pathsurface.ash",
+    "rct2.pathsurface.queue.blue",
+    "rct2.pathsurface.queue.green",
+    "rct2.pathsurface.queue.red",
+    "rct2.pathsurface.queue.yellow",
+
+    // Footpath railings
+    "rct2.railings.bambooblack",
+    "rct2.railings.bamboobrown",
+    "rct2.railings.concrete",
+    "rct2.railings.concretegreen",
+    "rct2.railings.space",
+    "rct2.railings.wood"
 };
 
 const std::string_view DesignerSelectedObjects[] = {
@@ -150,3 +165,5 @@ const std::string_view DesignerSelectedObjects[] = {
     "rct2.station.pagoda",
     "rct2.station.space",
 };
+
+// clang-format on
