@@ -3941,6 +3941,8 @@ enum
     STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED = 6440,
     STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED = 6441,
     STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED = 6442,
+    STR_OBJECT_SELECTION_FOOTPATH_SURFACES = 6443,
+    STR_OBJECT_SELECTION_FOOTPATH_RAILINGS = 6444,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
