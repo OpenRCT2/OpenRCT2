@@ -3943,6 +3943,8 @@ enum
     STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED = 6442,
     STR_OBJECT_SELECTION_FOOTPATH_SURFACES = 6443,
     STR_OBJECT_SELECTION_FOOTPATH_RAILINGS = 6444,
+    STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME = 6445,
+    STR_TILE_INSPECTOR_FOOTPATH_RAILINGS_NAME = 6446,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

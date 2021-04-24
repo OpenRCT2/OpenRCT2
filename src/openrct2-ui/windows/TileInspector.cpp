@@ -19,6 +19,8 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
+#include <openrct2/object/FootpathObject.h>
+#include <openrct2/object/FootpathRailingsObject.h>
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/TerrainEdgeObject.h>
 #include <openrct2/object/TerrainSurfaceObject.h>
@@ -262,7 +264,7 @@ static rct_widget SurfaceWidgets[] = {
 constexpr int32_t PAT_GBPB = PADDING_BOTTOM;               // Path group box properties bottom
 constexpr int32_t PAT_GBPT = PAT_GBPB + 16 + 5 * 21;       // Path group box properties top
 constexpr int32_t PAT_GBDB = PAT_GBPT + GROUPBOX_PADDING;  // Path group box info bottom
-constexpr int32_t PAT_GBDT = PAT_GBDB + 20 + 2 * 11;       // Path group box info top
+constexpr int32_t PAT_GBDT = PAT_GBDB + 20 + 3 * 11;       // Path group box info top
 static rct_widget PathWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
       SPINNER_WIDGETS      (1,  GBBL(1), GBBR(1), GBBT(WH - PAT_GBPT, 0) + 3, GBBB(WH - PAT_GBPT, 0) - 3,  STR_NONE,  STR_NONE),  // WIDX_PATH_SPINNER_HEIGHT{,_INCREASE,_DECREASE}
@@ -1813,13 +1815,35 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
             case TILE_ELEMENT_TYPE_PATH:
             {
                 // Details
-                // Path name
                 auto pathEl = tileElement->AsPath();
-                auto surfaceObj = pathEl->GetSurfaceEntry();
-                if (surfaceObj != nullptr)
+                auto footpathObj = pathEl->GetPathEntry();
+                if (footpathObj == nullptr)
                 {
-                    rct_string_id pathNameId = surfaceObj->NameStringId;
-                    DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, &pathNameId, { COLOUR_WHITE });
+                    // Surface name
+                    auto surfaceObj = pathEl->GetSurfaceEntry();
+                    if (surfaceObj != nullptr)
+                    {
+                        auto surfaceNameId = surfaceObj->NameStringId;
+                        DrawTextBasic(
+                            dpi, screenCoords, STR_TILE_INSPECTOR_FOOTPATH_SURFACE_NAME, &surfaceNameId, { COLOUR_WHITE });
+                    }
+
+                    // Railings name
+                    auto railingsObj = pathEl->GetRailingEntry();
+                    if (railingsObj != nullptr)
+                    {
+                        auto railingNameId = railingsObj->NameStringId;
+                        DrawTextBasic(
+                            dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_FOOTPATH_RAILINGS_NAME,
+                            &railingNameId, { COLOUR_WHITE });
+                    }
+                }
+                else
+                {
+                    // Legacy path name
+                    auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+                    auto footpathNameId = footpathEntry->string_idx;
+                    DrawTextBasic(dpi, screenCoords, STR_TILE_INSPECTOR_PATH_NAME, &footpathNameId, { COLOUR_WHITE });
                 }
 
                 // Path addition
@@ -1831,13 +1855,15 @@ static void window_tile_inspector_paint(rct_window* w, rct_drawpixelinfo* dpi)
                         ? sceneryElement->name
                         : static_cast<rct_string_id>(STR_UNKNOWN_OBJECT_TYPE);
                     DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId,
+                        dpi, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS, &additionNameId,
                         { COLOUR_WHITE });
                 }
                 else
+                {
                     DrawTextBasic(
-                        dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, {},
+                        dpi, screenCoords + ScreenCoordsXY{ 0, 2 * 11 }, STR_TILE_INSPECTOR_PATH_ADDITIONS_NONE, {},
                         { COLOUR_WHITE });
+                }
 
                 // Properties
                 // Raise / lower label
