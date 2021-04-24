@@ -719,7 +719,7 @@ namespace OpenRCT2::Scripting
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    duk_push_int(ctx, el->GetSurfaceEntryIndex());
+                    duk_push_int(ctx, el->GetPathEntryIndex());
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
@@ -754,43 +754,45 @@ namespace OpenRCT2::Scripting
             }
             return DukValue::take_from_stack(ctx);
         }
-        void object_set(uint32_t value)
+        void object_set(const DukValue& value)
         {
             ThrowIfGameStateNotMutable();
+
+            auto index = FromDuk<ObjectEntryIndex>(value);
             switch (_element->GetType())
             {
                 case TILE_ELEMENT_TYPE_PATH:
                 {
                     auto el = _element->AsPath();
-                    el->SetSurfaceEntryIndex(value & 0xFF);
+                    el->SetPathEntryIndex(index);
                     Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 {
                     auto el = _element->AsSmallScenery();
-                    el->SetEntryIndex(value & 0xFF);
+                    el->SetEntryIndex(index);
                     Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 {
                     auto el = _element->AsLargeScenery();
-                    el->SetEntryIndex(value);
+                    el->SetEntryIndex(index);
                     Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_WALL:
                 {
                     auto el = _element->AsWall();
-                    el->SetEntryIndex(value & 0xFFFF);
+                    el->SetEntryIndex(index);
                     Invalidate();
                     break;
                 }
                 case TILE_ELEMENT_TYPE_ENTRANCE:
                 {
                     auto el = _element->AsEntrance();
-                    el->SetEntranceType(value & 0xFF);
+                    el->SetEntranceType(index);
                     Invalidate();
                     break;
                 }
@@ -1237,6 +1239,74 @@ namespace OpenRCT2::Scripting
             }
         }
 
+        DukValue surfaceObject_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+            {
+                auto el = _element->AsPath();
+                auto index = el->GetSurfaceEntryIndex();
+                if (index != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    duk_push_int(ctx, index);
+                }
+                else
+                {
+                    duk_push_null(ctx);
+                }
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+            return DukValue::take_from_stack(ctx);
+        }
+
+        void surfaceObject_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+            {
+                auto el = _element->AsPath();
+                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+
+        DukValue railingsObject_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+            {
+                auto el = _element->AsPath();
+                auto index = el->GetRailingEntryIndex();
+                if (index != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    duk_push_int(ctx, index);
+                }
+                else
+                {
+                    duk_push_null(ctx);
+                }
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+            return DukValue::take_from_stack(ctx);
+        }
+
+        void railingsObject_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+            {
+                auto el = _element->AsPath();
+                el->SetRailingEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+
         DukValue addition_get() const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -1338,18 +1408,63 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             auto el = _element->AsEntrance();
             if (el != nullptr)
-                duk_push_int(ctx, el->GetSurfaceEntryIndex());
+            {
+                auto index = el->GetPathEntryIndex();
+                if (index != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    duk_push_int(ctx, index);
+                }
+                else
+                {
+                    duk_push_null(ctx);
+                }
+            }
             else
+            {
                 duk_push_null(ctx);
+            }
             return DukValue::take_from_stack(ctx);
         }
-        void footpathObject_set(uint8_t value)
+        void footpathObject_set(const DukValue& value)
         {
             ThrowIfGameStateNotMutable();
             auto el = _element->AsEntrance();
             if (el != nullptr)
             {
-                el->SetSurfaceEntryIndex(value);
+                el->SetPathEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+
+        DukValue footpathSurfaceObject_get() const
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+            {
+                auto index = el->GetSurfaceEntryIndex();
+                if (index != OBJECT_ENTRY_INDEX_NULL)
+                {
+                    duk_push_int(ctx, index);
+                }
+                else
+                {
+                    duk_push_null(ctx);
+                }
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+            return DukValue::take_from_stack(ctx);
+        }
+        void footpathSurfaceObject_set(const DukValue& value)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+            {
+                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
                 Invalidate();
             }
         }
@@ -1470,11 +1585,15 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::queueBannerDirection_set,
                 "queueBannerDirection");
-            dukglue_register_property(ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::edges_set, "test");
 
             dukglue_register_property(
                 ctx, &ScTileElement::isBlockedByVehicle_get, &ScTileElement::isBlockedByVehicle_set, "isBlockedByVehicle");
             dukglue_register_property(ctx, &ScTileElement::isWide_get, &ScTileElement::isWide_set, "isWide");
+
+            dukglue_register_property(
+                ctx, &ScTileElement::surfaceObject_get, &ScTileElement::surfaceObject_set, "surfaceObject");
+            dukglue_register_property(
+                ctx, &ScTileElement::railingsObject_get, &ScTileElement::railingsObject_set, "railingsObject");
 
             dukglue_register_property(ctx, &ScTileElement::addition_get, &ScTileElement::addition_set, "addition");
             dukglue_register_property(
@@ -1506,6 +1625,9 @@ namespace OpenRCT2::Scripting
             // Entrance only
             dukglue_register_property(
                 ctx, &ScTileElement::footpathObject_get, &ScTileElement::footpathObject_set, "footpathObject");
+            dukglue_register_property(
+                ctx, &ScTileElement::footpathSurfaceObject_get, &ScTileElement::footpathSurfaceObject_set,
+                "footpathSurfaceObject");
         }
     };
 
