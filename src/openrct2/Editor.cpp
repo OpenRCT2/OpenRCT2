@@ -489,10 +489,20 @@ namespace Editor
 
         if (!isTrackDesignerManager)
         {
-            if (!editor_check_object_group_at_least_one_selected(ObjectType::Paths))
+            if (!editor_check_object_group_at_least_one_surface_selected(false))
             {
-                gGameCommandErrorText = STR_AT_LEAST_ONE_PATH_OBJECT_MUST_BE_SELECTED;
-                return ObjectType::Paths;
+                gGameCommandErrorText = STR_AT_LEAST_ONE_FOOTPATH_NON_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED;
+                return ObjectType::FootpathSurface;
+            }
+            if (!editor_check_object_group_at_least_one_surface_selected(true))
+            {
+                gGameCommandErrorText = STR_AT_LEAST_ONE_FOOTPATH_QUEUE_SURFACE_OBJECT_MUST_BE_SELECTED;
+                return ObjectType::FootpathSurface;
+            }
+            if (!editor_check_object_group_at_least_one_selected(ObjectType::FootpathRailings))
+            {
+                gGameCommandErrorText = STR_AT_LEAST_ONE_FOOTPATH_RAILING_OBJECT_MUST_BE_SELECTED;
+                return ObjectType::FootpathRailings;
             }
         }
 

@@ -56,6 +56,10 @@ struct ObjectRepositoryItem
     {
         std::vector<ObjectEntryDescriptor> Entries;
     } SceneryGroupInfo;
+    struct
+    {
+        uint8_t Flags{};
+    } FootpathSurfaceInfo;
 
     ObjectSourceGame GetFirstSourceGame() const
     {

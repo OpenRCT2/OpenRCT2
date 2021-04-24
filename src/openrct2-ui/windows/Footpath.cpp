@@ -715,7 +715,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
 
     _dropdownEntries.clear();
     std::optional<size_t> defaultIndex;
-    for (size_t i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
         const auto* pathType = static_cast<FootpathSurfaceObject*>(objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
         if (pathType == nullptr)
@@ -742,7 +742,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         numPathTypes++;
     }
 
-    for (size_t i = 0; i < MAX_PATH_OBJECTS; i++)
+    for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
     {
         auto* pathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, i));
         if (pathObj == nullptr)

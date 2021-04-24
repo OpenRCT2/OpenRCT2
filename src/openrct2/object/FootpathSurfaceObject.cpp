@@ -11,6 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../object/ObjectRepository.h"
 
 void FootpathSurfaceObject::Load()
 {
@@ -60,4 +61,9 @@ void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
+}
+
+void FootpathSurfaceObject::SetRepositoryItem(ObjectRepositoryItem* item) const
+{
+    item->FootpathSurfaceInfo.Flags = Flags;
 }

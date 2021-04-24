@@ -28,6 +28,7 @@ extern std::vector<uint8_t> _objectSelectionFlags;
 extern int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 
 bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType);
+bool editor_check_object_group_at_least_one_surface_selected(bool queue);
 void editor_object_flags_free();
 void unload_unselected_objects();
 void sub_6AB211();

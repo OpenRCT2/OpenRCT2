@@ -152,6 +152,9 @@ protected:
                 ds << item.SceneryGroupInfo.Entries;
                 break;
             }
+            case ObjectType::FootpathSurface:
+                ds << item.FootpathSurfaceInfo.Flags;
+                break;
             default:
                 // Switch processes only ObjectType::Ride and ObjectType::SceneryGroup
                 break;

@@ -644,6 +644,23 @@ bool editor_check_object_group_at_least_one_selected(ObjectType checkObjectType)
     return false;
 }
 
+bool editor_check_object_group_at_least_one_surface_selected(bool queue)
+{
+    auto numObjects = std::min(object_repository_get_items_count(), _objectSelectionFlags.size());
+    const auto* items = object_repository_get_items();
+    for (size_t i = 0; i < numObjects; i++)
+    {
+        const auto& ori = items[i];
+        auto isQueue = (ori.FootpathSurfaceInfo.Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0;
+        if (ori.Type == ObjectType::FootpathSurface && (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
+            && queue == isQueue)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int32_t editor_remove_unused_objects()
 {
     sub_6AB211();

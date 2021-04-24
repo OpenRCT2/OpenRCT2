@@ -3679,6 +3679,9 @@ STR_6436    :Toggle invisibility
 STR_6437    :Invisible
 STR_6438    :I
 STR_6439    :Tile Inspector: Toggle invisibility
+STR_6440    :At least one footpath non-queue surface object must be selected.
+STR_6441    :At least one footpath queue surface object must be selected.
+STR_6442    :At least one footpath railing object must be selected.
 
 #############
 # Scenarios #
