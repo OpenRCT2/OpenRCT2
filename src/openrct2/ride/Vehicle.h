@@ -204,6 +204,7 @@ struct Vehicle : SpriteBase
     uint8_t seat_rotation;
     uint8_t target_seat_rotation;
     CoordsXY BoatLocation;
+    bool IsCrashedVehicle;
 
     constexpr bool IsHead() const
     {

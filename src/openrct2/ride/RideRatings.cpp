@@ -1326,19 +1326,19 @@ static RatingTuple ride_ratings_get_sheltered_ratings(Ride* ride)
     /*eax = (ride->var_11C * 30340) >> 16;*/
     /*nausea += eax;*/
 
-    if (ride->num_sheltered_sections & 0x40)
+    if (ride->num_sheltered_sections & ShelteredSectionsBits::BankingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;
     }
 
-    if (ride->num_sheltered_sections & 0x20)
+    if (ride->num_sheltered_sections & ShelteredSectionsBits::RotatingWhileSheltered)
     {
         excitement += 20;
         nausea += 15;
     }
 
-    uint8_t lowerVal = ride->num_sheltered_sections & 0x1F;
+    uint8_t lowerVal = ride->GetNumShelteredSections();
     lowerVal = std::min<uint8_t>(lowerVal, 11);
     excitement += (lowerVal * 774516) >> 16;
 

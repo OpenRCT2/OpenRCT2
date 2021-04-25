@@ -197,7 +197,6 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     {
         COMPARE_FIELD(SpriteBase, Type);
         COMPARE_FIELD(SpriteBase, sprite_index);
-        COMPARE_FIELD(SpriteBase, flags);
         COMPARE_FIELD(SpriteBase, x);
         COMPARE_FIELD(SpriteBase, y);
         COMPARE_FIELD(SpriteBase, z);
@@ -219,11 +218,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, NextLoc.y);
         COMPARE_FIELD(Peep, NextLoc.z);
         COMPARE_FIELD(Peep, NextFlags);
-        COMPARE_FIELD(Peep, OutsideOfPark);
         COMPARE_FIELD(Peep, State);
         COMPARE_FIELD(Peep, SubState);
         COMPARE_FIELD(Peep, SpriteType);
-        COMPARE_FIELD(Peep, GuestNumRides);
         COMPARE_FIELD(Peep, TshirtColour);
         COMPARE_FIELD(Peep, TrousersColour);
         COMPARE_FIELD(Peep, DestinationX);
@@ -232,27 +229,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, Var37);
         COMPARE_FIELD(Peep, Energy);
         COMPARE_FIELD(Peep, EnergyTarget);
-        COMPARE_FIELD(Peep, Happiness);
-        COMPARE_FIELD(Peep, HappinessTarget);
-        COMPARE_FIELD(Peep, Nausea);
-        COMPARE_FIELD(Peep, NauseaTarget);
-        COMPARE_FIELD(Peep, Hunger);
-        COMPARE_FIELD(Peep, Thirst);
-        COMPARE_FIELD(Peep, Toilet);
         COMPARE_FIELD(Peep, Mass);
-        COMPARE_FIELD(Peep, TimeToConsume);
-        COMPARE_FIELD(Peep, Intensity);
-        COMPARE_FIELD(Peep, NauseaTolerance);
         COMPARE_FIELD(Peep, WindowInvalidateFlags);
-        COMPARE_FIELD(Peep, PaidOnDrink);
-        for (int i = 0; i < 16; i++)
-        {
-            COMPARE_FIELD(Peep, RideTypesBeenOn[i]);
-        }
-        COMPARE_FIELD(Peep, ItemFlags);
-        COMPARE_FIELD(Peep, Photo2RideRef);
-        COMPARE_FIELD(Peep, Photo3RideRef);
-        COMPARE_FIELD(Peep, Photo4RideRef);
         COMPARE_FIELD(Peep, CurrentRide);
         COMPARE_FIELD(Peep, CurrentRideStation);
         COMPARE_FIELD(Peep, CurrentTrain);
@@ -264,58 +242,102 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Peep, Action);
         COMPARE_FIELD(Peep, ActionFrame);
         COMPARE_FIELD(Peep, StepProgress);
-        COMPARE_FIELD(Peep, GuestNextInQueue);
         COMPARE_FIELD(Peep, MazeLastEdge);
         COMPARE_FIELD(Peep, InteractionRideIndex);
-        COMPARE_FIELD(Peep, TimeInQueue);
-        for (int i = 0; i < 32; i++)
-        {
-            COMPARE_FIELD(Peep, RidesBeenOn[i]);
-        }
         COMPARE_FIELD(Peep, Id);
-        COMPARE_FIELD(Peep, CashInPocket);
-        COMPARE_FIELD(Peep, CashSpent);
-        COMPARE_FIELD(Peep, ParkEntryTime);
-        COMPARE_FIELD(Peep, RejoinQueueTimeout);
-        COMPARE_FIELD(Peep, PreviousRide);
-        COMPARE_FIELD(Peep, PreviousRideTimeOut);
-        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
-        {
-            COMPARE_FIELD(Peep, Thoughts[i]);
-        }
         COMPARE_FIELD(Peep, PathCheckOptimisation);
-        COMPARE_FIELD(Peep, GuestHeadingToRideId);
-        COMPARE_FIELD(Peep, StaffOrders);
-        COMPARE_FIELD(Peep, Photo1RideRef);
-        COMPARE_FIELD(Peep, PeepFlags);
         COMPARE_FIELD(Peep, PathfindGoal);
         for (int i = 0; i < 4; i++)
         {
             COMPARE_FIELD(Peep, PathfindHistory[i]);
         }
         COMPARE_FIELD(Peep, WalkingFrameNum);
-        COMPARE_FIELD(Peep, LitterCount);
-        COMPARE_FIELD(Peep, GuestTimeOnRide);
-        COMPARE_FIELD(Peep, DisgustingCount);
-        COMPARE_FIELD(Peep, PaidToEnter);
-        COMPARE_FIELD(Peep, PaidOnRides);
-        COMPARE_FIELD(Peep, PaidOnFood);
-        COMPARE_FIELD(Peep, PaidOnSouvenirs);
-        COMPARE_FIELD(Peep, AmountOfFood);
-        COMPARE_FIELD(Peep, AmountOfDrinks);
-        COMPARE_FIELD(Peep, AmountOfSouvenirs);
-        COMPARE_FIELD(Peep, VandalismSeen);
-        COMPARE_FIELD(Peep, VoucherType);
-        COMPARE_FIELD(Peep, VoucherRideId);
-        COMPARE_FIELD(Peep, SurroundingsThoughtTimeout);
-        COMPARE_FIELD(Peep, Angriness);
-        COMPARE_FIELD(Peep, TimeLost);
-        COMPARE_FIELD(Peep, DaysInQueue);
-        COMPARE_FIELD(Peep, BalloonColour);
-        COMPARE_FIELD(Peep, UmbrellaColour);
-        COMPARE_FIELD(Peep, HatColour);
-        COMPARE_FIELD(Peep, FavouriteRide);
-        COMPARE_FIELD(Peep, FavouriteRideRating);
+    }
+
+    void CompareSpriteDataStaff(const Staff& spriteBase, const Staff& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
+
+        COMPARE_FIELD(Staff, AssignedStaffType);
+        COMPARE_FIELD(Staff, MechanicTimeSinceCall);
+        COMPARE_FIELD(Staff, HireDate);
+        COMPARE_FIELD(Staff, StaffId);
+        COMPARE_FIELD(Staff, StaffOrders);
+        COMPARE_FIELD(Staff, StaffMowingTimeout);
+        COMPARE_FIELD(Staff, StaffRidesFixed);
+        COMPARE_FIELD(Staff, StaffRidesInspected);
+        COMPARE_FIELD(Staff, StaffLitterSwept);
+        COMPARE_FIELD(Staff, StaffBinsEmptied);
+    }
+
+    void CompareSpriteDataGuest(const Guest& spriteBase, const Guest& spriteCmp, GameStateSpriteChange_t& changeData) const
+    {
+        CompareSpriteDataPeep(spriteBase, spriteCmp, changeData);
+
+        COMPARE_FIELD(Guest, OutsideOfPark);
+        COMPARE_FIELD(Guest, GuestNumRides);
+        COMPARE_FIELD(Guest, Happiness);
+        COMPARE_FIELD(Guest, HappinessTarget);
+        COMPARE_FIELD(Guest, Nausea);
+        COMPARE_FIELD(Guest, NauseaTarget);
+        COMPARE_FIELD(Guest, Hunger);
+        COMPARE_FIELD(Guest, Thirst);
+        COMPARE_FIELD(Guest, Toilet);
+        COMPARE_FIELD(Guest, TimeToConsume);
+        COMPARE_FIELD(Guest, Intensity);
+        COMPARE_FIELD(Guest, NauseaTolerance);
+        COMPARE_FIELD(Guest, PaidOnDrink);
+        for (int i = 0; i < 16; i++)
+        {
+            COMPARE_FIELD(Guest, RideTypesBeenOn[i]);
+        }
+        COMPARE_FIELD(Guest, ItemFlags);
+        COMPARE_FIELD(Guest, Photo2RideRef);
+        COMPARE_FIELD(Guest, Photo3RideRef);
+        COMPARE_FIELD(Guest, Photo4RideRef);
+        COMPARE_FIELD(Guest, GuestNextInQueue);
+        COMPARE_FIELD(Guest, TimeInQueue);
+        for (int i = 0; i < 32; i++)
+        {
+            COMPARE_FIELD(Guest, RidesBeenOn[i]);
+        }
+
+        COMPARE_FIELD(Guest, CashInPocket);
+        COMPARE_FIELD(Guest, CashSpent);
+        COMPARE_FIELD(Guest, ParkEntryTime);
+        COMPARE_FIELD(Guest, RejoinQueueTimeout);
+        COMPARE_FIELD(Guest, PreviousRide);
+        COMPARE_FIELD(Guest, PreviousRideTimeOut);
+        for (int i = 0; i < PEEP_MAX_THOUGHTS; i++)
+        {
+            COMPARE_FIELD(Guest, Thoughts[i]);
+        }
+        COMPARE_FIELD(Guest, GuestHeadingToRideId);
+        COMPARE_FIELD(Guest, GuestIsLostCountdown);
+        COMPARE_FIELD(Guest, Photo1RideRef);
+        COMPARE_FIELD(Guest, PeepFlags);
+        COMPARE_FIELD(Guest, LitterCount);
+        COMPARE_FIELD(Guest, GuestTimeOnRide);
+        COMPARE_FIELD(Guest, DisgustingCount);
+        COMPARE_FIELD(Guest, PaidToEnter);
+        COMPARE_FIELD(Guest, PaidOnRides);
+        COMPARE_FIELD(Guest, PaidOnFood);
+        COMPARE_FIELD(Guest, PaidOnSouvenirs);
+        COMPARE_FIELD(Guest, AmountOfFood);
+        COMPARE_FIELD(Guest, AmountOfDrinks);
+        COMPARE_FIELD(Guest, AmountOfSouvenirs);
+        COMPARE_FIELD(Guest, VandalismSeen);
+        COMPARE_FIELD(Guest, VoucherType);
+        COMPARE_FIELD(Guest, VoucherRideId);
+        COMPARE_FIELD(Guest, SurroundingsThoughtTimeout);
+        COMPARE_FIELD(Guest, Angriness);
+        COMPARE_FIELD(Guest, TimeLost);
+        COMPARE_FIELD(Guest, DaysInQueue);
+        COMPARE_FIELD(Guest, BalloonColour);
+        COMPARE_FIELD(Guest, UmbrellaColour);
+        COMPARE_FIELD(Guest, HatColour);
+        COMPARE_FIELD(Guest, FavouriteRide);
+        COMPARE_FIELD(Guest, FavouriteRideRating);
     }
 
     void CompareSpriteDataVehicle(
@@ -392,6 +414,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, target_seat_rotation);
         COMPARE_FIELD(Vehicle, BoatLocation.x);
         COMPARE_FIELD(Vehicle, BoatLocation.y);
+        COMPARE_FIELD(Vehicle, IsCrashedVehicle);
     }
 
     void CompareSpriteDataLitter(const Litter& spriteBase, const Litter& spriteCmp, GameStateSpriteChange_t& changeData) const
@@ -480,10 +503,12 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             switch (spriteBase.misc.Type)
             {
                 case EntityType::Guest:
-                    CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
+                    CompareSpriteDataGuest(
+                        static_cast<const Guest&>(spriteBase.peep), static_cast<const Guest&>(spriteCmp.peep), changeData);
                     break;
                 case EntityType::Staff:
-                    CompareSpriteDataPeep(spriteBase.peep, spriteCmp.peep, changeData);
+                    CompareSpriteDataStaff(
+                        static_cast<const Staff&>(spriteBase.peep), static_cast<const Staff&>(spriteCmp.peep), changeData);
                     break;
                 case EntityType::Vehicle:
                     CompareSpriteDataVehicle(spriteBase.vehicle, spriteCmp.vehicle, changeData);

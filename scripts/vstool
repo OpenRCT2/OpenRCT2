@@ -1,2 +1,3 @@
 #!/bin/bash
+
 vstool.cmd $@

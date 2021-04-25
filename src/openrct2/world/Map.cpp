@@ -1530,10 +1530,10 @@ void map_update_tiles()
 
 void map_remove_provisional_elements()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         footpath_provisional_remove();
-        gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {
@@ -1551,12 +1551,12 @@ void map_remove_provisional_elements()
 
 void map_restore_provisional_elements()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
         footpath_provisional_set(
-            gFootpathProvisionalSurfaceIndex, gFootpathProvisionalRailingsIndex, gFootpathProvisionalPosition,
-            gFootpathProvisionalSlope, gFootpathProvisionalConstructFlags);
+            gProvisionalFootpath.SurfaceIndex, gProvisionalFootpath.RailingsIndex, gProvisionalFootpath.Position,
+            gProvisionalFootpath.Slope, gProvisionalFootpath.ConstructFlags);
     }
     if (window_find_by_class(WC_RIDE_CONSTRUCTION) != nullptr)
     {

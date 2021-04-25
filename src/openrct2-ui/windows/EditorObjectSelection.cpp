@@ -836,7 +836,8 @@ static void window_editor_object_selection_invalidate(rct_window* w)
     for (size_t i = 0; i < std::size(ObjectSelectionPages); i++)
     {
         auto widget = &w->widgets[WIDX_TAB_1 + i];
-        if (!advancedMode && ObjectSelectionPages[i].IsAdvanced || ObjectSelectionPages[i].Image == SPR_NONE)
+        if ((!advancedMode && ObjectSelectionPages[i].IsAdvanced)
+            || ObjectSelectionPages[i].Image == static_cast<uint32_t>(SPR_NONE))
         {
             widget->type = WindowWidgetType::Empty;
         }

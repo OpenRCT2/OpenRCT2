@@ -67,6 +67,38 @@ struct PathRailingsEntry
     uint8_t scrolling_mode;
 };
 
+using PathConstructFlags = uint8_t;
+namespace PathConstructFlag
+{
+    constexpr PathConstructFlags IsQueue = 1 << 0;
+    constexpr PathConstructFlags IsPathObject = 1 << 1;
+} // namespace PathConstructFlag
+
+struct FootpathSelection
+{
+    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
+    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
+    bool IsQueueSelected{};
+
+    ObjectEntryIndex GetSelectedSurface() const
+    {
+        return IsQueueSelected ? QueueSurface : NormalSurface;
+    }
+};
+
+struct ProvisionalFootpath
+{
+    ObjectEntryIndex Type;
+    CoordsXYZ Position;
+    uint8_t Slope;
+    uint8_t Flags;
+    ObjectEntryIndex SurfaceIndex;
+    ObjectEntryIndex RailingsIndex;
+    PathConstructFlags ConstructFlags;
+};
+
 // Masks for values stored in TileElement.type
 enum
 {
@@ -155,40 +187,11 @@ enum
     FOOTPATH_CONNECTED_MAP_EDGE_IGNORE_NO_ENTRY = (1 << 7)
 };
 
-using PathConstructFlags = uint8_t;
-namespace PathConstructFlag
-{
-    constexpr PathConstructFlags IsQueue = 1 << 0;
-    constexpr PathConstructFlags IsPathObject = 1 << 1;
-} // namespace PathConstructFlag
-
-struct FootpathSelection
-{
-    ObjectEntryIndex LegacyPath = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex NormalSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex QueueSurface = OBJECT_ENTRY_INDEX_NULL;
-    ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
-    bool IsQueueSelected{};
-
-    ObjectEntryIndex GetSelectedSurface() const
-    {
-        return IsQueueSelected ? QueueSurface : NormalSurface;
-    }
-};
-
 extern FootpathSelection gFootpathSelection;
-extern uint8_t gFootpathProvisionalFlags;
-extern CoordsXYZ gFootpathProvisionalPosition;
-extern ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
-extern ObjectEntryIndex gFootpathProvisionalRailingsIndex;
-extern uint8_t gFootpathProvisionalSlope;
-extern PathConstructFlags gFootpathProvisionalConstructFlags;
-extern uint8_t gFootpathConstructionMode;
+extern ProvisionalFootpath gProvisionalFootpath;
+extern uint16_t gFootpathSelectedId;
 extern CoordsXYZ gFootpathConstructFromPosition;
-extern uint8_t gFootpathConstructDirection;
 extern uint8_t gFootpathConstructSlope;
-extern uint8_t gFootpathConstructValidDirections;
-extern money32 gFootpathPrice;
 extern uint8_t gFootpathGroundFlags;
 
 // Given a direction, this will return how to increase/decrease the x and y coordinates.

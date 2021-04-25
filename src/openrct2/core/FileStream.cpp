@@ -13,6 +13,7 @@
 #include "String.hpp"
 
 #include <algorithm>
+#include <string_view>
 
 #ifndef _WIN32
 #    include <sys/stat.h>
@@ -37,6 +38,11 @@ namespace OpenRCT2
 
     FileStream::FileStream(const std::string& path, int32_t fileMode)
         : FileStream(path.c_str(), fileMode)
+    {
+    }
+
+    FileStream::FileStream(std::string_view path, int32_t fileMode)
+        : FileStream(std::string(path), fileMode)
     {
     }
 

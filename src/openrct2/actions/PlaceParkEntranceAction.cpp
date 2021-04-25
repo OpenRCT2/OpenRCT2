@@ -21,8 +21,9 @@
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
 
-PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location)
+PlaceParkEntranceAction::PlaceParkEntranceAction(const CoordsXYZD& location, ObjectEntryIndex pathType)
     : _loc(location)
+    , _pathType(pathType)
 {
 }
 
@@ -36,6 +37,7 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     GameAction::Serialise(stream);
 
     stream << DS_TAG(_loc);
+    stream << DS_TAG(_pathType);
 }
 
 GameActions::Result::Ptr PlaceParkEntranceAction::Query() const

@@ -34,9 +34,9 @@ ride_id_t gPeepPathFindQueueRideIndex;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 // Use to guard calls to log messages
-bool gPathFindDebug = false;
+static bool _pathFindDebug = false;
 // Use to put the peep name in the log message
-utf8 gPathFindDebugPeepName[256];
+static utf8 _pathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 static int32_t guest_surface_path_finding(Peep* peep);
@@ -493,15 +493,19 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
         return 8;
     }
 
-    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK && peep->GuestIsLostCountdown < 90)
+    auto* guest = peep->As<Guest>();
+    if (guest == nullptr)
+        return 8;
+
+    if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK && guest->GuestIsLostCountdown < 90)
     {
         return 8;
     }
 
-    if (peep->HasItem(ShopItem::Map))
+    if (guest->HasItem(ShopItem::Map))
         return 7;
 
-    if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
+    if (guest->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return 7;
 
     return 5;
@@ -1269,10 +1273,10 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
     TileCoordsXYZ goal = gPeepPathFindGoalPosition;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (gPathFindDebug)
+    if (_pathFindDebug)
     {
         log_verbose(
-            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", gPathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
+            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", _pathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
             loc.y, loc.z);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -1362,7 +1366,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                 edges = pathfindHistory.direction;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-                if (gPathFindDebug)
+                if (_pathFindDebug)
                 {
                     log_verbose(
                         "Getting untried edges from pf_history for %d,%d,%d:  %s,%s,%s,%s", loc.x, loc.y, loc.z,
@@ -1384,7 +1388,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                     edges = pathfindHistory.direction;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-                    if (gPathFindDebug)
+                    if (_pathFindDebug)
                     {
                         log_verbose("All edges tried for %d,%d,%d - resetting to all untried", loc.x, loc.y, loc.z);
                     }
@@ -1408,7 +1412,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         // Clear pathfinding history
         std::fill_n(reinterpret_cast<uint8_t*>(peep->PathfindHistory), sizeof(peep->PathfindHistory), 0xFF);
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_verbose("New goal; clearing pf_history.");
         }
@@ -1433,7 +1437,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         uint8_t bestDirectionList[16];
         TileCoordsXYZ bestXYZ;
 
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
         }
@@ -1515,7 +1519,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                 endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-            if (gPathFindDebug)
+            if (_pathFindDebug)
             {
                 log_verbose(
                     "Pathfind test edge: %d score: %d steps: %d end: %d,%d,%d junctions: %d", test_edge, score, endSteps,
@@ -1556,7 +1560,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
         if (best_score == 0xFFFF)
         {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-            if (gPathFindDebug)
+            if (_pathFindDebug)
             {
                 log_verbose("Pathfind heuristic search failed.");
             }
@@ -1564,7 +1568,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             return INVALID_DIRECTION;
         }
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_verbose("Pathfind best edge %d with score %d steps %d", chosen_edge, best_score, best_sub);
             for (uint8_t listIdx = 0; listIdx < bestJunctions; listIdx++)
@@ -1592,7 +1596,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
                  * entered the junction from those left to try. */
                 peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-                if (gPathFindDebug)
+                if (_pathFindDebug)
                 {
                     log_verbose(
                         "Updating existing pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i,
@@ -1617,7 +1621,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
          * entered the junction from those left to try. */
         peep->PathfindHistory[i].direction &= ~(1 << direction_reverse(peep->PeepDirection));
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_verbose(
                 "Storing new pf_history (in index: %d) for %d,%d,%d without entry edge %d & exit edge %d.", i, loc.x, loc.y,
@@ -1980,9 +1984,9 @@ int32_t guest_path_finding(Guest* peep)
 {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     PathfindLoggingEnable(peep);
-    if (gPathFindDebug)
+    if (_pathFindDebug)
     {
-        log_info("Starting guest_path_finding for %s", gPathFindDebugPeepName);
+        log_info("Starting guest_path_finding for %s", _pathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -2050,10 +2054,10 @@ int32_t guest_path_finding(Guest* peep)
     if ((edges & ~(1 << direction)) == 0)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_info(
-                "Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName,
+                "Completed guest_path_finding for %s - taking only direction available: %d.", _pathFindDebugPeepName,
                 direction);
         }
         PathfindLoggingDisable();
@@ -2068,9 +2072,9 @@ int32_t guest_path_finding(Guest* peep)
     if (peep->OutsideOfPark)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
-            log_info("Completed guest_path_finding for %s - peep is outside the park.", gPathFindDebugPeepName);
+            log_info("Completed guest_path_finding for %s - peep is outside the park.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2138,9 +2142,9 @@ int32_t guest_path_finding(Guest* peep)
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
-            log_info("Completed guest_path_finding for %s - peep is leaving the park.", gPathFindDebugPeepName);
+            log_info("Completed guest_path_finding for %s - peep is leaving the park.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2150,9 +2154,9 @@ int32_t guest_path_finding(Guest* peep)
     if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
-            log_info("Completed guest_path_finding for %s - peep is aimless.", gPathFindDebugPeepName);
+            log_info("Completed guest_path_finding for %s - peep is aimless.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2165,10 +2169,10 @@ int32_t guest_path_finding(Guest* peep)
     if (ride == nullptr || ride->status != RIDE_STATUS_OPEN)
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
             log_info(
-                "Completed guest_path_finding for %s - peep is heading to closed ride == aimless.", gPathFindDebugPeepName);
+                "Completed guest_path_finding for %s - peep is heading to closed ride == aimless.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2249,9 +2253,9 @@ int32_t guest_path_finding(Guest* peep)
         peep->ResetPathfindGoal();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        if (gPathFindDebug)
+        if (_pathFindDebug)
         {
-            log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", gPathFindDebugPeepName);
+            log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", _pathFindDebugPeepName);
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2259,9 +2263,9 @@ int32_t guest_path_finding(Guest* peep)
         return guest_path_find_aimless(peep, edges);
     }
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (gPathFindDebug)
+    if (_pathFindDebug)
     {
-        log_info("Completed guest_path_finding for %s - direction chosen: %d.", gPathFindDebugPeepName, direction);
+        log_info("Completed guest_path_finding for %s - direction chosen: %d.", _pathFindDebugPeepName, direction);
     }
     PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -2302,9 +2306,9 @@ bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_
 void Peep::ResetPathfindGoal()
 {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    if (gPathFindDebug)
+    if (_pathFindDebug)
     {
-        log_info("Resetting PathfindGoal for %s", gPathFindDebugPeepName);
+        log_info("Resetting PathfindGoal for %s", _pathFindDebugPeepName);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 

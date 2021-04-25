@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# This sets up more environment variables using existing the environment
+# This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
@@ -22,10 +22,10 @@ get_build_number()
 export OPENRCT2_BUILD=$(get_build_number)
 
 # Get the name of the branch and decide whether we should push the build to openrct2.org
-export OPENRCT2_TAG=
-export OPENRCT2_PUSH=
+unset OPENRCT2_TAG
+unset OPENRCT2_PUSH
 if [[ $GITHUB_REF == refs/tags/* ]]; then
-    export OPENRCT2_BRANCH=
+    unset OPENRCT2_BRANCH
     export OPENRCT2_TAG=true
     export OPENRCT2_PUSH=true
 else
@@ -35,13 +35,13 @@ else
     fi
 fi
 if [[ "$OPENRCT2_ORG_TOKEN" == "" ]]; then
-    export OPENRCT2_PUSH=
+    unset OPENRCT2_PUSH
 fi
 
 # Get the short SHA1
 export OPENRCT2_SHA1=$GITHUB_SHA
 export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1:0:7}
-export OPENRCT2_VERSION_EXTRA=
+unset OPENRCT2_VERSION_EXTRA
 if [[ "$OPENRCT2_TAG" != "true" ]]; then
     export OPENRCT2_VERSION_EXTRA=$OPENRCT2_BRANCH-$OPENRCT2_SHA1_SHORT
 fi

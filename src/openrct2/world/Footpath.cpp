@@ -43,18 +43,10 @@
 void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElement* tileElement);
 
 FootpathSelection gFootpathSelection;
-uint8_t gFootpathProvisionalFlags;
-CoordsXYZ gFootpathProvisionalPosition;
-ObjectEntryIndex gFootpathProvisionalSurfaceIndex;
-ObjectEntryIndex gFootpathProvisionalRailingsIndex;
-uint8_t gFootpathProvisionalSlope;
-PathConstructFlags gFootpathProvisionalConstructFlags;
-uint8_t gFootpathConstructionMode;
+ProvisionalFootpath gProvisionalFootpath;
+uint16_t gFootpathSelectedId;
 CoordsXYZ gFootpathConstructFromPosition;
-uint8_t gFootpathConstructDirection;
 uint8_t gFootpathConstructSlope;
-uint8_t gFootpathConstructValidDirections;
-money32 gFootpathPrice;
 uint8_t gFootpathGroundFlags;
 
 static ride_id_t* _footpathQueueChainNext;
@@ -163,12 +155,12 @@ money32 footpath_provisional_set(
     cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
     if (res->Error == GameActions::Status::Ok)
     {
-        gFootpathProvisionalSurfaceIndex = type;
-        gFootpathProvisionalRailingsIndex = railingsType;
-        gFootpathProvisionalPosition = footpathLoc;
-        gFootpathProvisionalSlope = slope;
-        gFootpathProvisionalConstructFlags = constructFlags;
-        gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.SurfaceIndex = type;
+        gProvisionalFootpath.RailingsIndex = railingsType;
+        gProvisionalFootpath.Position = footpathLoc;
+        gProvisionalFootpath.Slope = slope;
+        gProvisionalFootpath.ConstructFlags = constructFlags;
+        gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_1;
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
         {
@@ -192,15 +184,15 @@ money32 footpath_provisional_set(
         }
         else if (
             gFootpathConstructSlope == TILE_ELEMENT_SLOPE_FLAT
-            || gFootpathProvisionalPosition.z < gFootpathConstructFromPosition.z)
+            || gProvisionalFootpath.Position.z < gFootpathConstructFromPosition.z)
         {
             // Going either straight on, or down.
-            virtual_floor_set_height(gFootpathProvisionalPosition.z);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z);
         }
         else
         {
             // Going up in the world!
-            virtual_floor_set_height(gFootpathProvisionalPosition.z + LAND_HEIGHT_STEP);
+            virtual_floor_set_height(gProvisionalFootpath.Position.z + LAND_HEIGHT_STEP);
         }
     }
 
@@ -213,12 +205,12 @@ money32 footpath_provisional_set(
  */
 void footpath_provisional_remove()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;
 
         footpath_remove(
-            gFootpathProvisionalPosition,
+            gProvisionalFootpath.Position,
             GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
                 | GAME_COMMAND_FLAG_GHOST);
     }
@@ -230,9 +222,9 @@ void footpath_provisional_remove()
  */
 void footpath_provisional_update()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+    if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
     {
-        gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
+        gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_SHOW_ARROW;
 
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         map_invalidate_tile_full(gFootpathConstructFromPosition);

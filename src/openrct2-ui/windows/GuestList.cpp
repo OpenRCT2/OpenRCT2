@@ -773,7 +773,7 @@ private:
         }
     }
 
-    bool GuestShouldBeVisible(const Peep& peep)
+    bool GuestShouldBeVisible(const Guest& peep)
     {
         if (_trackingOnly && !(peep.PeepFlags & PEEP_FLAGS_TRACKING))
             return false;
@@ -794,7 +794,7 @@ private:
         return true;
     }
 
-    bool IsPeepInFilter(const Peep& peep)
+    bool IsPeepInFilter(const Guest& peep)
     {
         auto guestViewType = _selectedFilter == GuestFilterType::Guests ? GuestViewType::Actions : GuestViewType::Thoughts;
         auto peepArgs = GetArgumentsFromPeep(peep, guestViewType);
@@ -875,7 +875,7 @@ private:
     /**
      * Calculates a hash value (arguments) for comparing peep actions/thoughts
      */
-    static FilterArguments GetArgumentsFromPeep(const Peep& peep, GuestViewType type)
+    static FilterArguments GetArgumentsFromPeep(const Guest& peep, GuestViewType type)
     {
         FilterArguments result;
         Formatter ft(result.args);

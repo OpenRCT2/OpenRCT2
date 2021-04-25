@@ -700,7 +700,7 @@ void Park::GenerateGuests()
     }
 }
 
-Peep* Park::GenerateGuestFromCampaign(int32_t campaign)
+Guest* Park::GenerateGuestFromCampaign(int32_t campaign)
 {
     auto peep = GenerateGuest();
     if (peep != nullptr)
@@ -710,14 +710,14 @@ Peep* Park::GenerateGuestFromCampaign(int32_t campaign)
     return peep;
 }
 
-Peep* Park::GenerateGuest()
+Guest* Park::GenerateGuest()
 {
-    Peep* peep = nullptr;
+    Guest* peep = nullptr;
     const auto spawn = get_random_peep_spawn();
     if (spawn != nullptr)
     {
         auto direction = direction_reverse(spawn->direction);
-        peep = Peep::Generate({ spawn->x, spawn->y, spawn->z });
+        peep = Guest::Generate({ spawn->x, spawn->y, spawn->z });
         if (peep != nullptr)
         {
             peep->sprite_direction = direction << 3;

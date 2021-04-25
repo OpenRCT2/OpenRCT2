@@ -1388,11 +1388,9 @@ public:
         }
         dst->NextLoc = { src->next_x, src->next_y, src->next_z * COORDS_Z_STEP };
         dst->NextFlags = src->next_flags;
-        dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
         dst->State = static_cast<PeepState>(src->state);
         dst->SubState = src->sub_state;
         dst->SpriteType = static_cast<PeepSpriteType>(src->sprite_type);
-        dst->GuestNumRides = src->no_of_rides;
         dst->TshirtColour = src->tshirt_colour;
         dst->TrousersColour = src->trousers_colour;
         dst->DestinationX = src->destination_x;
@@ -1401,27 +1399,8 @@ public:
         dst->Var37 = src->var_37;
         dst->Energy = src->energy;
         dst->EnergyTarget = src->energy_target;
-        dst->Happiness = src->happiness;
-        dst->HappinessTarget = src->happiness_target;
-        dst->Nausea = src->nausea;
-        dst->NauseaTarget = src->nausea_target;
-        dst->Hunger = src->hunger;
-        dst->Thirst = src->thirst;
-        dst->Toilet = src->toilet;
         dst->Mass = src->mass;
-        dst->TimeToConsume = src->time_to_consume;
-        dst->Intensity = static_cast<IntensityRange>(src->intensity);
-        dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
         dst->WindowInvalidateFlags = src->window_invalidate_flags;
-        dst->PaidOnDrink = src->paid_on_drink;
-        for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
-        {
-            dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
-        }
-        dst->SetItemFlags(src->GetItemFlags());
-        dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
-        dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
-        dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
         dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
         dst->CurrentRideStation = src->current_ride_station;
         dst->CurrentTrain = src->current_train;
@@ -1433,34 +1412,10 @@ public:
         dst->Action = static_cast<PeepActionType>(src->action);
         dst->ActionFrame = src->action_frame;
         dst->StepProgress = src->step_progress;
-        dst->GuestNextInQueue = src->next_in_queue;
         dst->PeepDirection = src->direction;
         dst->InteractionRideIndex = RCT12RideIdToOpenRCT2RideId(src->interaction_ride_index);
-        dst->TimeInQueue = src->time_in_queue;
-        for (size_t i = 0; i < std::size(src->rides_been_on); i++)
-        {
-            dst->RidesBeenOn[i] = src->rides_been_on[i];
-        }
         dst->Id = src->id;
-        dst->CashInPocket = src->cash_in_pocket;
-        dst->CashSpent = src->cash_spent;
-        dst->ParkEntryTime = src->park_entry_time;
-        dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
-        dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
-        dst->PreviousRideTimeOut = src->previous_ride_time_out;
-        for (size_t i = 0; i < std::size(src->thoughts); i++)
-        {
-            auto srcThought = &src->thoughts[i];
-            auto dstThought = &dst->Thoughts[i];
-            dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
-            dstThought->item = srcThought->item;
-            dstThought->freshness = srcThought->freshness;
-            dstThought->fresh_timeout = srcThought->fresh_timeout;
-        }
         dst->PathCheckOptimisation = src->path_check_optimisation;
-        dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
-        dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
         dst->PeepFlags = src->peep_flags;
         dst->PathfindGoal = src->pathfind_goal;
         for (size_t i = 0; i < std::size(src->pathfind_history); i++)
@@ -1468,28 +1423,6 @@ public:
             dst->PathfindHistory[i] = src->pathfind_history[i];
         }
         dst->WalkingFrameNum = src->no_action_frame_num;
-        dst->LitterCount = src->litter_count;
-        dst->GuestTimeOnRide = src->time_on_ride;
-        dst->DisgustingCount = src->disgusting_count;
-        dst->PaidToEnter = src->paid_to_enter;
-        dst->PaidOnRides = src->paid_on_rides;
-        dst->PaidOnFood = src->paid_on_food;
-        dst->PaidOnSouvenirs = src->paid_on_souvenirs;
-        dst->AmountOfFood = src->no_of_food;
-        dst->AmountOfDrinks = src->no_of_drinks;
-        dst->AmountOfSouvenirs = src->no_of_souvenirs;
-        dst->VandalismSeen = src->vandalism_seen;
-        dst->VoucherType = src->voucher_type;
-        dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
-        dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
-        dst->Angriness = src->angriness;
-        dst->TimeLost = src->time_lost;
-        dst->DaysInQueue = src->days_in_queue;
-        dst->BalloonColour = src->balloon_colour;
-        dst->UmbrellaColour = src->umbrella_colour;
-        dst->HatColour = src->hat_colour;
-        dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
-        dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
     constexpr EntityType GetEntityTypeFromRCT2Sprite(const RCT12SpriteBase* src)
@@ -1560,7 +1493,6 @@ public:
         dst->Type = GetEntityTypeFromRCT2Sprite(src);
         dst->sprite_height_negative = src->sprite_height_negative;
         dst->sprite_index = src->sprite_index;
-        dst->flags = src->flags;
         dst->x = src->x;
         dst->y = src->y;
         dst->z = src->z;
@@ -1757,6 +1689,7 @@ template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc
     dst->colours_extended = src->colours_extended;
     dst->seat_rotation = src->seat_rotation;
     dst->target_seat_rotation = src->target_seat_rotation;
+    dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
 }
 
 template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
@@ -1764,6 +1697,74 @@ template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
     auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
     auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
     ImportEntityPeep(dst, src);
+
+    dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
+    dst->GuestNumRides = src->no_of_rides;
+    dst->Happiness = src->happiness;
+    dst->HappinessTarget = src->happiness_target;
+    dst->Nausea = src->nausea;
+    dst->NauseaTarget = src->nausea_target;
+    dst->Hunger = src->hunger;
+    dst->Thirst = src->thirst;
+    dst->Toilet = src->toilet;
+    dst->TimeToConsume = src->time_to_consume;
+    dst->Intensity = static_cast<IntensityRange>(src->intensity);
+    dst->NauseaTolerance = static_cast<PeepNauseaTolerance>(src->nausea_tolerance);
+    dst->PaidOnDrink = src->paid_on_drink;
+    for (size_t i = 0; i < std::size(src->ride_types_been_on); i++)
+    {
+        dst->RideTypesBeenOn[i] = src->ride_types_been_on[i];
+    }
+    dst->SetItemFlags(src->GetItemFlags());
+    dst->Photo1RideRef = RCT12RideIdToOpenRCT2RideId(src->photo1_ride_ref);
+    dst->Photo2RideRef = RCT12RideIdToOpenRCT2RideId(src->photo2_ride_ref);
+    dst->Photo3RideRef = RCT12RideIdToOpenRCT2RideId(src->photo3_ride_ref);
+    dst->Photo4RideRef = RCT12RideIdToOpenRCT2RideId(src->photo4_ride_ref);
+    dst->GuestNextInQueue = src->next_in_queue;
+    dst->TimeInQueue = src->time_in_queue;
+    for (size_t i = 0; i < std::size(src->rides_been_on); i++)
+    {
+        dst->RidesBeenOn[i] = src->rides_been_on[i];
+    }
+    dst->CashInPocket = src->cash_in_pocket;
+    dst->CashSpent = src->cash_spent;
+    dst->ParkEntryTime = src->park_entry_time;
+    dst->RejoinQueueTimeout = src->rejoin_queue_timeout;
+    dst->PreviousRide = RCT12RideIdToOpenRCT2RideId(src->previous_ride);
+    dst->PreviousRideTimeOut = src->previous_ride_time_out;
+    for (size_t i = 0; i < std::size(src->thoughts); i++)
+    {
+        auto srcThought = &src->thoughts[i];
+        auto dstThought = &dst->Thoughts[i];
+        dstThought->type = static_cast<PeepThoughtType>(srcThought->type);
+        dstThought->item = srcThought->item;
+        dstThought->freshness = srcThought->freshness;
+        dstThought->fresh_timeout = srcThought->fresh_timeout;
+    }
+    dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
+    dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
+    dst->LitterCount = src->litter_count;
+    dst->GuestTimeOnRide = src->time_on_ride;
+    dst->DisgustingCount = src->disgusting_count;
+    dst->PaidToEnter = src->paid_to_enter;
+    dst->PaidOnRides = src->paid_on_rides;
+    dst->PaidOnFood = src->paid_on_food;
+    dst->PaidOnSouvenirs = src->paid_on_souvenirs;
+    dst->AmountOfFood = src->no_of_food;
+    dst->AmountOfDrinks = src->no_of_drinks;
+    dst->AmountOfSouvenirs = src->no_of_souvenirs;
+    dst->VandalismSeen = src->vandalism_seen;
+    dst->VoucherType = src->voucher_type;
+    dst->VoucherRideId = RCT12RideIdToOpenRCT2RideId(src->voucher_arguments);
+    dst->SurroundingsThoughtTimeout = src->surroundings_thought_timeout;
+    dst->Angriness = src->angriness;
+    dst->TimeLost = src->time_lost;
+    dst->DaysInQueue = src->days_in_queue;
+    dst->BalloonColour = src->balloon_colour;
+    dst->UmbrellaColour = src->umbrella_colour;
+    dst->HatColour = src->hat_colour;
+    dst->FavouriteRide = RCT12RideIdToOpenRCT2RideId(src->favourite_ride);
+    dst->FavouriteRideRating = src->favourite_ride_rating;
 }
 
 template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
@@ -1771,6 +1772,17 @@ template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
     auto dst = CreateEntityAt<Staff>(baseSrc.sprite_index);
     auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
     ImportEntityPeep(dst, src);
+
+    dst->AssignedStaffType = StaffType(src->staff_type);
+    dst->MechanicTimeSinceCall = src->mechanic_time_since_call;
+    dst->HireDate = src->park_entry_time;
+    dst->StaffId = src->staff_id;
+    dst->StaffOrders = src->staff_orders;
+    dst->StaffMowingTimeout = src->staff_mowing_timeout;
+    dst->StaffLawnsMown = src->paid_to_enter;
+    dst->StaffGardensWatered = src->paid_on_rides;
+    dst->StaffLitterSwept = src->paid_on_food;
+    dst->StaffBinsEmptied = src->paid_on_souvenirs;
 }
 
 template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)

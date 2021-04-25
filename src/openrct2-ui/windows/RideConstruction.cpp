@@ -650,7 +650,7 @@ static void window_ride_construction_mouseup(rct_window* w, rct_widgetindex widg
         case WIDX_CONSTRUCT:
             window_ride_construction_construct(w);
             // Force any footpath construction to recheck the area.
-            gFootpathProvisionalFlags |= PROVISIONAL_PATH_FLAG_2;
+            gProvisionalFootpath.Flags |= PROVISIONAL_PATH_FLAG_2;
             break;
         case WIDX_DEMOLISH:
             window_ride_construction_mouseup_demolish(w);
@@ -1981,7 +1981,7 @@ static void window_ride_construction_entrance_click(rct_window* w)
     else
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
-        gRideEntranceExitPlaceRideIndex = w->number % MAX_RIDES;
+        gRideEntranceExitPlaceRideIndex = static_cast<ride_id_t>(w->number);
         gRideEntranceExitPlaceStationIndex = 0;
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();

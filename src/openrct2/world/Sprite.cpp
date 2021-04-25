@@ -427,7 +427,6 @@ static void PrepareNewEntity(SpriteBase* base, const EntityType type)
     base->sprite_width = 0x10;
     base->sprite_height_negative = 0x14;
     base->sprite_height_positive = 0x8;
-    base->flags = 0;
     base->sprite_left = LOCATION_NULL;
 
     SpriteSpatialInsert(base, { LOCATION_NULL, 0 });

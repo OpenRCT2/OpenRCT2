@@ -1093,7 +1093,6 @@ namespace OpenRCT2
         {
             cs.ReadWrite(entity.sprite_index);
             cs.ReadWrite(entity.sprite_height_negative);
-            cs.ReadWrite(entity.flags);
             cs.ReadWrite(entity.x);
             cs.ReadWrite(entity.y);
             cs.ReadWrite(entity.z);
@@ -1343,6 +1342,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.colours_extended);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
+        cs.ReadWrite(entity.IsCrashedVehicle);
     }
 
     template<> void ParkFile::ReadWriteEntity(OrcaStream::ChunkStream& cs, Guest& entity)

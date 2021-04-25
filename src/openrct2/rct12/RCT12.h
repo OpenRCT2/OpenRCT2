@@ -175,6 +175,11 @@ enum
     RCT12_STATION_STYLE_INVISIBLE, // Added by OpenRCT2
 };
 
+enum
+{
+    RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE = 1 << 7,
+};
+
 #pragma pack(push, 1)
 
 struct RCT12xy8

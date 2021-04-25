@@ -812,5 +812,6 @@ struct FootpathMapping
     std::string_view Railing;
 };
 
-const FootpathMapping* GetFootpathSurfaceId(const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
+const FootpathMapping* GetFootpathSurfaceId(
+    const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
 std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
