@@ -8707,7 +8707,7 @@ loc_6DBA33:;
  *
  *
  */
-void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry)
+void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, bool vehicleHasFlag25, rct_ride_entry_vehicle* vehicleEntry)
 {
     uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
     TileElement* tileElement = nullptr;
@@ -8991,7 +8991,7 @@ loc_6DC743:
     bank_rotation = moveInfo->bank_rotation;
     vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (vehicleHasFlag25)
     {
         if (vehicle_sprite_type != 0)
         {
@@ -9107,7 +9107,7 @@ loc_6DCC2C:
     bank_rotation = moveInfo->bank_rotation;
     vehicle_sprite_type = moveInfo->vehicle_sprite_type;
 
-    if (rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25)
+    if (vehicleHasFlag25)
     {
         if (vehicle_sprite_type != 0)
         {
@@ -9258,7 +9258,8 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
 
     for (Vehicle* vehicle = _vehicleFrontVehicle; vehicle != nullptr;)
     {
-        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, rideEntry, vehicleEntry);
+        bool vehicleHasFlag25 = rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_25;
+        vehicle->UpdateTrackMotionMiniGolfVehicle(curRide, vehicleHasFlag25, vehicleEntry);
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
