@@ -2076,9 +2076,13 @@ private:
         }
 
         // Number of guests history
-        for (size_t i = 0; i < 32; i++)
+        std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+        for (size_t i = 0; i < std::size(_s4.guests_in_park_history); i++)
         {
-            gGuestsInParkHistory[i] = _s4.guests_in_park_history[i];
+            if (_s4.guests_in_park_history[i] != std::numeric_limits<uint8_t>::max())
+            {
+                gGuestsInParkHistory[i] = _s4.guests_in_park_history[i] * 20;
+            }
         }
 
         // News items

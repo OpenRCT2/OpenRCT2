@@ -61,7 +61,7 @@ money64 gCompanyValue;
 
 int16_t gParkRatingCasualtyPenalty;
 uint8_t gParkRatingHistory[32];
-uint8_t gGuestsInParkHistory[32];
+uint32_t gGuestsInParkHistory[32];
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
 static int32_t _forcedParkRating = -1;
@@ -743,11 +743,8 @@ template<typename T, size_t TSize> static void HistoryPushRecord(T history[TSize
 
 void Park::ResetHistories()
 {
-    for (size_t i = 0; i < 32; i++)
-    {
-        gParkRatingHistory[i] = 255;
-        gGuestsInParkHistory[i] = 255;
-    }
+    std::fill(std::begin(gParkRatingHistory), std::end(gParkRatingHistory), std::numeric_limits<uint8_t>::max());
+    std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
 }
 
 void Park::UpdateHistories()
@@ -767,7 +764,7 @@ void Park::UpdateHistories()
 
     // Update park rating, guests in park and current cash history
     HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, CalculateParkRating() / 4);
-    HistoryPushRecord<uint8_t, 32>(gGuestsInParkHistory, std::min<uint16_t>(gNumGuestsInPark, 5000) / 20);
+    HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, finance_get_current_cash() - gBankLoan);
 
     // Update weekly profit history

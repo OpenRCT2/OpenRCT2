@@ -647,7 +647,7 @@ namespace OpenRCT2
                     return true;
                 });
 
-                cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint8_t& value) {
+                cs.ReadWriteArray(gGuestsInParkHistory, [&cs](uint32_t& value) {
                     cs.ReadWrite(value);
                     return true;
                 });

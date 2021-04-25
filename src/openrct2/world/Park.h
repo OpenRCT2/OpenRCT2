@@ -102,7 +102,7 @@ extern money64 gCompanyValue;
 
 extern int16_t gParkRatingCasualtyPenalty;
 extern uint8_t gParkRatingHistory[32];
-extern uint8_t gGuestsInParkHistory[32];
+extern uint32_t gGuestsInParkHistory[32];
 extern int32_t _guestGenerationProbability;
 extern uint32_t _suggestedGuestMaximum;
 

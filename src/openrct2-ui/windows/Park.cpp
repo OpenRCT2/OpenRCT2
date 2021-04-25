@@ -1062,7 +1062,20 @@ static void window_park_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
     // Graph
     screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
 
-    Graph::Draw(dpi, gGuestsInParkHistory, 32, screenPos);
+    uint8_t cappedHistory[32];
+    for (size_t i = 0; i < std::size(cappedHistory); i++)
+    {
+        auto value = gGuestsInParkHistory[i];
+        if (value != std::numeric_limits<uint32_t>::max())
+        {
+            cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
+        }
+        else
+        {
+            cappedHistory[i] = std::numeric_limits<uint8_t>::max();
+        }
+    }
+    Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
 }
 
 #pragma endregion

@@ -264,7 +264,15 @@ public:
         gParkRating = _s6.park_rating;
 
         std::memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
-        std::memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
+
+        std::fill(std::begin(gGuestsInParkHistory), std::end(gGuestsInParkHistory), std::numeric_limits<uint32_t>::max());
+        for (size_t i = 0; i < std::size(_s6.guests_in_park_history); i++)
+        {
+            if (_s6.guests_in_park_history[i] != std::numeric_limits<uint8_t>::max())
+            {
+                gGuestsInParkHistory[i] = _s6.guests_in_park_history[i] * 20;
+            }
+        }
 
         gResearchPriorities = _s6.active_research_types;
         gResearchProgressStage = _s6.research_progress_stage;
