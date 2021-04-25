@@ -1701,13 +1701,11 @@ static void window_top_toolbar_scenery_tool_down(const ScreenCoordsXY& windowPos
         return;
     }
 
-    ScenerySelection selectedTab = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
+        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
+        : ScenerySelection{};
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
-
-    if (selectedTab.IsUndefined())
-        return;
-
     CoordsXY gridPos;
 
     switch (sceneryType)
@@ -2611,8 +2609,13 @@ static void top_toolbar_tool_update_scenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    ScenerySelection selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
+    {
+        scenery_remove_ghost_tool_placement();
+        return;
+    }
 
+    const auto selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();

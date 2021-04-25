@@ -324,12 +324,6 @@ struct ride_variables
     int32_t var_486;
 };
 
-struct scenery_variables
-{
-    ScenerySelection SelectedScenery;
-    int16_t hover_counter;
-};
-
 struct track_list_variables
 {
     bool track_list_being_updated;
@@ -540,9 +534,9 @@ enum
 #define WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE 29
 #define WC_RIDE_CONSTRUCTION__WIDX_EXIT 30
 #define WC_RIDE_CONSTRUCTION__WIDX_ROTATE 32
-#define WC_SCENERY__WIDX_SCENERY_TAB_1 4
-#define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 25
-#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 30
+#define WC_SCENERY__WIDX_SCENERY_TAB_1 12
+#define WC_SCENERY__WIDX_SCENERY_ROTATE_OBJECTS_BUTTON 5
+#define WC_SCENERY__WIDX_SCENERY_EYEDROPPER_BUTTON 10
 #define WC_PEEP__WIDX_PATROL 10
 #define WC_PEEP__WIDX_ACTION_LBL 13
 #define WC_PEEP__WIDX_PICKUP 14

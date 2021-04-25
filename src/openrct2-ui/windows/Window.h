@@ -23,8 +23,8 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern ScenerySelection gWindowSceneryTabSelections[];
-extern uint8_t gWindowSceneryActiveTabIndex;
+extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
+extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
