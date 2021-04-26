@@ -189,6 +189,7 @@ const std::vector<TileElement>& GetTileElements();
 void SetTileElements(std::vector<TileElement>&& tileElements);
 void StashMap();
 void UnstashMap();
+std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
 void map_init(int32_t size);
 

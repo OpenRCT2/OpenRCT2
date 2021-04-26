@@ -459,8 +459,6 @@ uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
 int32_t scenario_save(const utf8* path, int32_t flags);
-void scenario_remove_trackless_rides(rct_s6_data* s6);
-void scenario_fix_ghosts(rct_s6_data* s6);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);
