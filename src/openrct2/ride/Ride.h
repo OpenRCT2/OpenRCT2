@@ -1251,4 +1251,6 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
 
+std::vector<ride_id_t> GetTracklessRides();
+
 #endif

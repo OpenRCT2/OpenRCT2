@@ -93,6 +93,7 @@ namespace OpenRCT2
     public:
         ObjectList RequiredObjects;
         std::vector<const ObjectRepositoryItem*> ExportObjectsList;
+        bool OmitTracklessRides{};
 
     private:
         std::unique_ptr<OrcaStream> _os;
@@ -839,7 +840,7 @@ namespace OpenRCT2
 
         void ReadWriteRidesChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::RIDES, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::RIDES, [this](OrcaStream::ChunkStream& cs) {
                 std::vector<ride_id_t> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -847,9 +848,24 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    for (const auto& ride : GetRideManager())
+                    if (OmitTracklessRides)
                     {
-                        rideIds.push_back(ride.id);
+                        auto tracklessRides = GetTracklessRides();
+                        for (const auto& ride : GetRideManager())
+                        {
+                            auto it = std::find(tracklessRides.begin(), tracklessRides.end(), ride.id);
+                            if (it == tracklessRides.end())
+                            {
+                                rideIds.push_back(ride.id);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (const auto& ride : GetRideManager())
+                        {
+                            rideIds.push_back(ride.id);
+                        }
                     }
                 }
                 cs.ReadWriteVector(rideIds, [&cs](ride_id_t& rideId) {
@@ -1614,8 +1630,7 @@ int32_t scenario_save(const utf8* path, int32_t flags)
             auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
             parkFile->ExportObjectsList = objManager.GetPackableObjects();
         }
-        // s6exporter->RemoveTracklessRides = true;
-        // s6exporter->Export();
+        parkFile->OmitTracklessRides = true;
         if (flags & S6_SAVE_FLAG_SCENARIO)
         {
             // s6exporter->SaveScenario(path);

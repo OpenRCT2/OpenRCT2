@@ -7362,3 +7362,37 @@ void Ride::IncreaseNumShelteredSections()
     num_sheltered_sections &= ~ShelteredSectionsBits::NumShelteredSectionsMask;
     num_sheltered_sections |= newNumShelteredSections;
 }
+
+std::vector<ride_id_t> GetTracklessRides()
+{
+    // Iterate map and build list of seen ride IDs
+    std::vector<bool> seen;
+    seen.resize(256);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto trackEl = it.element->AsTrack();
+        if (trackEl != nullptr && !trackEl->IsGhost())
+        {
+            auto rideId = trackEl->GetRideIndex();
+            if (rideId >= seen.size())
+            {
+                seen.resize(rideId + 1);
+            }
+            seen[rideId] = true;
+        }
+    }
+
+    // Get all rides that did not get seen during map iteration
+    const auto& rideManager = GetRideManager();
+    std::vector<ride_id_t> result;
+    for (const auto& ride : rideManager)
+    {
+        if (seen.size() <= ride.id || !seen[ride.id])
+        {
+            result.push_back(ride.id);
+        }
+    }
+    return result;
+}

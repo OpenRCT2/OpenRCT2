@@ -666,41 +666,6 @@ void scenario_fix_ghosts(rct_s6_data* s6)
     }
 }
 
-static void ride_all_has_any_track_elements(std::array<bool, RCT12_MAX_RIDES_IN_PARK>& rideIndexArray)
-{
-    tile_element_iterator it;
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
-    {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            continue;
-        if (it.element->IsGhost())
-            continue;
-
-        rideIndexArray[it.element->AsTrack()->GetRideIndex()] = true;
-    }
-}
-
-void scenario_remove_trackless_rides(rct_s6_data* s6)
-{
-    std::array<bool, RCT12_MAX_RIDES_IN_PARK> rideHasTrack{};
-    ride_all_has_any_track_elements(rideHasTrack);
-    for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
-    {
-        auto ride = &s6->rides[i];
-        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
-        {
-            continue;
-        }
-
-        ride->type = RIDE_TYPE_NULL;
-        if (is_user_string_id(ride->name))
-        {
-            s6->custom_strings[(ride->name % RCT12_MAX_USER_STRINGS)][0] = 0;
-        }
-    }
-}
-
 ObjectiveStatus Objective::CheckGuestsBy() const
 {
     int16_t parkRating = gParkRating;
