@@ -936,14 +936,18 @@ OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widge
  */
 void window_scenery_invalidate(rct_window* w)
 {
+    // Set the window title
     rct_string_id titleStringId = STR_MISCELLANEOUS;
     auto tabIndex = gWindowSceneryActiveTabIndex;
-    const auto* sgEntry = get_scenery_group_entry(static_cast<ObjectEntryIndex>(tabIndex));
-    if (sgEntry != nullptr)
+    if (tabIndex < _tabEntries.size())
     {
-        titleStringId = sgEntry->name;
+        const auto& tabInfo = _tabEntries[tabIndex];
+        const auto* sgEntry = tabInfo.GetSceneryGroupEntry();
+        if (sgEntry != nullptr)
+        {
+            titleStringId = sgEntry->name;
+        }
     }
-
     w->widgets[WIDX_SCENERY_TITLE].text = titleStringId;
 
     w->pressed_widgets = 0;
