@@ -728,10 +728,13 @@ static void window_scenery_update(rct_window* w)
                 }
                 else
                 {
-                    int32_t windowHeight = std::min(463, w->scrolls[0].v_bottom + 62);
-                    if (context_get_height() < 600)
-                        windowHeight = std::min(374, windowHeight);
-                    windowHeight = std::max(WINDOW_SCENERY_HEIGHT, windowHeight);
+                    const auto& listWidget = w->widgets[WIDX_SCENERY_LIST];
+                    auto nonListHeight = w->height - listWidget.height() + 2;
+
+                    auto numRows = static_cast<int32_t>(window_scenery_count_rows(w));
+                    auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
+                    auto maxWindowHeight = maxContentHeight + nonListHeight;
+                    auto windowHeight = std::clamp(maxWindowHeight, WINDOW_SCENERY_HEIGHT, 463);
 
                     w->min_width = WINDOW_SCENERY_WIDTH;
                     w->max_width = WINDOW_SCENERY_WIDTH;
