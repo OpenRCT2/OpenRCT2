@@ -3686,6 +3686,7 @@ STR_6443    :Footpath Surfaces
 STR_6444    :Footpath Railings
 STR_6445    :{WINDOW_COLOUR_2}Surface name: {BLACK}{STRINGID}
 STR_6446    :{WINDOW_COLOUR_2}Railing name: {BLACK}{STRINGID}
+STR_6447    :Unsupported object format
 
 #############
 # Scenarios #
