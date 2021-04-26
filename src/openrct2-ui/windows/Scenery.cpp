@@ -31,8 +31,6 @@ constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-constexpr int32_t SCENERY_WINDOW_TABS = MAX_SCENERY_GROUP_OBJECTS + 1; // The + 1 is for the 'Miscellaneous' tab
-constexpr uint16_t SCENERY_ENTRIES_PER_TAB = 1024;
 
 // clang-format off
 enum {
@@ -190,7 +188,6 @@ struct SceneryTabInfo
 
 static std::vector<SceneryTabInfo> _tabEntries;
 static std::vector<rct_widget> _widgets;
-static size_t _numSceneryTabs;
 static ScenerySelection _selectedScenery;
 static int16_t _hoverCounter;
 
@@ -288,11 +285,9 @@ static void window_scenery_prepare_widgets(rct_window* w)
 
     // Add tabs
     ScreenCoordsXY pos = { 3, 17 };
-    auto finalTabRight = 0;
     for (const auto& tabInfo : _tabEntries)
     {
         auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
-        finalTabRight = widget.right;
         pos.x += 31;
 
         if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
@@ -853,7 +848,7 @@ void window_scenery_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* w
 
 static ScenerySelection get_scenery_id_by_cursor_pos(const ScreenCoordsXY& screenCoords)
 {
-    int32_t tabSceneryIndex = screenCoords.x / SCENERY_BUTTON_WIDTH + (screenCoords.y / SCENERY_BUTTON_HEIGHT) * 9;
+    size_t tabSceneryIndex = static_cast<size_t>(screenCoords.x / SCENERY_BUTTON_WIDTH + (screenCoords.y / SCENERY_BUTTON_HEIGHT) * 9);
 
     ScenerySelection scenery{};
     auto tabIndex = gWindowSceneryActiveTabIndex;
@@ -910,7 +905,7 @@ OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widge
 {
     if (widgetIndex >= WIDX_SCENERY_TAB_1)
     {
-        auto tabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
+        auto tabIndex = static_cast<size_t>(widgetIndex - WIDX_SCENERY_TAB_1);
         if (_tabEntries.size() > tabIndex)
         {
             const auto& tabInfo = _tabEntries[tabIndex];
@@ -932,7 +927,7 @@ OpenRCT2String window_scenery_tooltip(rct_window* w, const rct_widgetindex widge
             }
         }
     }
-    return { STR_NONE };
+    return { STR_NONE, Formatter() };
 }
 
 /**
@@ -1206,7 +1201,7 @@ void window_scenery_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t s
     ScreenCoordsXY topLeft{ 0, 0 };
 
     const auto& tabInfo = _tabEntries[tabIndex];
-    for (int32_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
+    for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
     {
         const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
         auto tabSelectedScenery = GetSelectedScenery(tabIndex);
