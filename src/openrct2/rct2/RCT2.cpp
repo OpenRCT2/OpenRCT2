@@ -174,6 +174,15 @@ static FootpathMapping _footpathMappings[] = {
     { "TARMACB ", "rct2.pathsurface.tarmac.brown", "rct2.pathsurface.queue.yellow", "rct2.railings.concrete" },
     { "TARMACG ", "rct2.pathsurface.tarmac.green", "rct2.pathsurface.queue.green", "rct2.railings.concretegreen" },
     { "TARMAC  ", "rct2.pathsurface.tarmac", "rct2.pathsurface.queue.blue", "rct2.railings.wood" },
+    // Time Twister
+    { "1920PATH", "rct2.tt.pathsurface.pavement", "rct2.tt.pathsurface.queue.pavement", "rct2.tt.pathrailings.pavement" },
+    { "FUTRPATH", "rct2.tt.pathsurface.circuitboard", "rct2.tt.pathsurface.queue.circuitboard",
+      "rct2.tt.pathrailings.circuitboard" },
+    { "FUTRPAT2", "rct2.tt.pathsurface.circuitboard", "rct2.tt.pathsurface.queue.circuitboard", "openrct2.railings.invisible" },
+    { "JURRPATH", "rct2.tt.pathsurface.rocky", "rct2.pathsurface.queue.yellow", "rct2.tt.pathrailings.rocky" },
+    { "MEDIPATH", "rct2.tt.pathsurface.medieval", "rct2.pathsurface.queue.yellow", "rct2.tt.pathrailings.medieval" },
+    { "MYTHPATH", "rct2.tt.pathsurface.mosaic", "rct2.pathsurface.queue.yellow", "rct2.tt.pathrailings.balustrade" },
+    { "RANBPATH", "rct2.tt.pathsurface.rainbow", "rct2.tt.pathsurface.queue.rainbow", "rct2.tt.pathrailings.rainbow" },
 
     // RCT 1 mappings (for reverse lookup)
     { "PATHASH ", "rct1.aa.pathsurface.ash", "rct1.aa.pathsurface.queue.yellow", "rct2.railings.bambooblack" },
