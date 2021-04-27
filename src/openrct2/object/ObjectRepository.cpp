@@ -664,6 +664,9 @@ bool IsObjectCustom(const ObjectRepositoryItem* object)
 
     switch (object->GetFirstSourceGame())
     {
+        case ObjectSourceGame::RCT1:
+        case ObjectSourceGame::AddedAttractions:
+        case ObjectSourceGame::LoopyLandscapes:
         case ObjectSourceGame::RCT2:
         case ObjectSourceGame::WackyWorlds:
         case ObjectSourceGame::TimeTwister:
