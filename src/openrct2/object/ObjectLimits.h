@@ -26,8 +26,8 @@ constexpr const uint16_t MAX_TERRAIN_SURFACE_OBJECTS = 100;
 constexpr const uint16_t MAX_TERRAIN_EDGE_OBJECTS = 100;
 constexpr const uint16_t MAX_STATION_OBJECTS = 100;
 constexpr const uint16_t MAX_MUSIC_OBJECTS = 255;
-constexpr const uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 32;
-constexpr const uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 32;
+constexpr const uint16_t MAX_FOOTPATH_SURFACE_OBJECTS = 100;
+constexpr const uint16_t MAX_FOOTPATH_RAILINGS_OBJECTS = 100;
 
 // clang-format off
 constexpr const uint16_t OBJECT_ENTRY_COUNT =
