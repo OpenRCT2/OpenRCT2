@@ -617,8 +617,8 @@ static void window_footpath_invalidate(rct_window* w)
         if (pathObj != nullptr)
         {
             auto pathEntry = reinterpret_cast<rct_footpath_entry*>(pathObj->GetLegacyData());
-            pathImage = pathEntry->image + 71;
-            queueImage = pathEntry->image + 72;
+            pathImage = pathEntry->GetPreviewImage();
+            queueImage = pathEntry->GetQueuePreviewImage();
         }
 
         window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
@@ -670,7 +670,10 @@ static void window_footpath_paint(rct_window* w, rct_drawpixelinfo* dpi)
             if (pathObj != nullptr)
             {
                 auto pathEntry = reinterpret_cast<const rct_footpath_entry*>(pathObj->GetLegacyData());
-                baseImage = pathEntry->image;
+                if (gFootpathSelection.IsQueueSelected)
+                    baseImage = pathEntry->GetQueueImage();
+                else
+                    baseImage = pathEntry->image;
             }
         }
 
@@ -766,7 +769,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window* w, rct_widget
         }
 
         gDropdownItemsFormat[numPathTypes] = STR_NONE;
-        gDropdownItemsArgs[numPathTypes] = pathEntry->image + (showQueues ? 72 : 71);
+        gDropdownItemsArgs[numPathTypes] = showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage();
         _dropdownEntries.push_back({ ObjectType::Paths, i });
         numPathTypes++;
     }

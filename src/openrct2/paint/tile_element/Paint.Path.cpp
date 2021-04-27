@@ -815,7 +815,7 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement* pathEl)
         auto footpathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
         if (pathEl->IsQueue())
         {
-            pathPaintInfo.SurfaceImageId = footpathEntry->image + 51;
+            pathPaintInfo.SurfaceImageId = footpathEntry->GetQueueImage();
             pathPaintInfo.SurfaceFlags = footpathEntry->flags | FOOTPATH_ENTRY_FLAG_IS_QUEUE;
         }
         else
@@ -827,7 +827,7 @@ static FootpathPaintInfo GetFootpathPaintInfo(const PathElement* pathEl)
         pathPaintInfo.SupportType = footpathEntry->support_type;
         pathPaintInfo.BridgeImageId = footpathEntry->bridge_image;
         pathPaintInfo.RailingFlags = footpathEntry->flags;
-        pathPaintInfo.RailingsImageId = footpathEntry->image + 73;
+        pathPaintInfo.RailingsImageId = footpathEntry->GetRailingsImage();
     }
     else
     {
