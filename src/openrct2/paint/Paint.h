@@ -15,6 +15,9 @@
 #include "../interface/Colour.h"
 #include "../world/Location.hpp"
 
+#include <mutex>
+#include <thread>
+
 struct TileElement;
 enum class ViewportInteractionItem : uint8_t;
 
@@ -135,10 +138,33 @@ struct tunnel_entry
 #define MAX_PAINT_QUADRANTS 512
 #define TUNNEL_MAX_COUNT 65
 
+struct PaintStructPool
+{
+    FixedVector<paint_entry, 0x80000> PaintStructs;
+    std::mutex _mutex;
+
+    paint_entry* Allocate()
+    {
+        std::lock_guard<std::mutex> guard(_mutex);
+
+        if (PaintStructs.size() < PaintStructs.capacity())
+        {
+            return &PaintStructs.emplace_back();
+        }
+        return nullptr;
+    }
+
+    void Clear()
+    {
+        PaintStructs.clear();
+    }
+};
+
 struct paint_session
 {
     rct_drawpixelinfo DPI;
-    FixedVector<paint_entry, 4000> PaintStructs;
+    // FixedVector<paint_entry, 4000> PaintStructs;
+    PaintStructPool* SharedPaintStructPool;
     paint_struct* Quadrants[MAX_PAINT_QUADRANTS];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
@@ -169,36 +195,46 @@ struct paint_session
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
 
-    constexpr bool NoPaintStructsAvailable() noexcept
+    paint_struct* AllocateNormalPaintEntry() noexcept
     {
-        return PaintStructs.size() >= PaintStructs.capacity();
-    }
-
-    constexpr paint_struct* AllocateNormalPaintEntry() noexcept
-    {
-        LastPS = &PaintStructs.emplace_back().basic;
-        return LastPS;
-    }
-
-    constexpr attached_paint_struct* AllocateAttachedPaintEntry() noexcept
-    {
-        LastAttachedPS = &PaintStructs.emplace_back().attached;
-        return LastAttachedPS;
-    }
-
-    constexpr paint_string_struct* AllocateStringPaintEntry() noexcept
-    {
-        auto* string = &PaintStructs.emplace_back().string;
-        if (LastPSString == nullptr)
+        auto* entry = SharedPaintStructPool->Allocate();
+        if (entry != nullptr)
         {
-            PSStringHead = string;
+            LastPS = &entry->basic;
+            return LastPS;
         }
-        else
+        return nullptr;
+    }
+
+    attached_paint_struct* AllocateAttachedPaintEntry() noexcept
+    {
+        auto* entry = SharedPaintStructPool->Allocate();
+        if (entry != nullptr)
         {
-            LastPSString->next = string;
+            LastAttachedPS = &entry->attached;
+            return LastAttachedPS;
         }
-        LastPSString = string;
-        return LastPSString;
+        return nullptr;
+    }
+
+    paint_string_struct* AllocateStringPaintEntry() noexcept
+    {
+        auto* entry = SharedPaintStructPool->Allocate();
+        if (entry != nullptr)
+        {
+            auto* string = &entry->string;
+            if (LastPSString == nullptr)
+            {
+                PSStringHead = string;
+            }
+            else
+            {
+                LastPSString->next = string;
+            }
+            LastPSString = string;
+            return LastPSString;
+        }
+        return nullptr;
     }
 };
 
