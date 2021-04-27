@@ -2054,7 +2054,7 @@ declare global {
 
     type Widget =
         ButtonWidget | CheckboxWidget | ColourPickerWidget | CustomWidget | DropdownWidget | GroupBoxWidget |
-        LabelWidget | ListView | SpinnerWidget | TextBoxWidget | ViewportWidget;
+        LabelWidget | ListViewWidget | SpinnerWidget | TextBoxWidget | ViewportWidget;
 
     interface WidgetBase {
         readonly window?: Window;
@@ -2147,7 +2147,7 @@ declare global {
         column: number;
     }
 
-    interface ListView extends WidgetBase {
+    interface ListViewWidget extends WidgetBase {
         type: "listview";
         scrollbars?: ScrollbarType;
         isStriped?: boolean;
