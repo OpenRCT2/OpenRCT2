@@ -818,6 +818,7 @@ public:
     void RemoveItem(ShopItem item);
     void GiveItem(ShopItem item);
     bool HasItem(ShopItem peepItem) const;
+    void Serialise(DataSerialiser& stream);
 
 private:
     void UpdateRide();
@@ -885,6 +886,7 @@ public:
     bool CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) const;
 
     static void ResetStats();
+    void Serialise(DataSerialiser& stream);
 
 private:
     void UpdatePatrolling();

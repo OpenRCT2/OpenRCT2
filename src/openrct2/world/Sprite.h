@@ -18,12 +18,14 @@
 #include "SpriteBase.h"
 
 enum LitterType : uint8_t;
+struct DataSerialiser;
 
 struct Litter : SpriteBase
 {
     static constexpr auto cEntityType = EntityType::Litter;
     LitterType SubType;
     uint32_t creationTick;
+    void Serialise(DataSerialiser& stream);
 };
 
 struct Balloon : MiscEntity
@@ -36,6 +38,7 @@ struct Balloon : MiscEntity
     void Update();
     void Pop();
     void Press();
+    void Serialise(DataSerialiser& stream);
 };
 
 struct Duck : MiscEntity
@@ -57,6 +60,7 @@ struct Duck : MiscEntity
     uint32_t GetFrameImage(int32_t direction) const;
     bool IsFlying();
     void Remove();
+    void Serialise(DataSerialiser& stream);
 
 private:
     void UpdateFlyToWater();
@@ -80,6 +84,7 @@ struct MoneyEffect : MiscEntity
     static void Create(money32 value, const CoordsXYZ& loc);
     void Update();
     std::pair<rct_string_id, money32> GetStringId() const;
+    void Serialise(DataSerialiser& stream);
 };
 
 struct VehicleCrashParticle : MiscEntity
@@ -96,24 +101,28 @@ struct VehicleCrashParticle : MiscEntity
     int32_t acceleration_z;
 
     void Update();
+    void Serialise(DataSerialiser& stream);
 };
 
 struct ExplosionFlare : MiscEntity
 {
     static constexpr auto cEntityType = EntityType::ExplosionFlare;
     void Update();
+    void Serialise(DataSerialiser& stream);
 };
 
 struct ExplosionCloud : MiscEntity
 {
     static constexpr auto cEntityType = EntityType::ExplosionCloud;
     void Update();
+    void Serialise(DataSerialiser& stream);
 };
 
 struct CrashSplashParticle : MiscEntity
 {
     static constexpr auto cEntityType = EntityType::CrashSplash;
     void Update();
+    void Serialise(DataSerialiser& stream);
 };
 
 struct SteamParticle : MiscEntity
@@ -122,6 +131,7 @@ struct SteamParticle : MiscEntity
     uint16_t time_to_move;
 
     void Update();
+    void Serialise(DataSerialiser& stream);
 };
 
 #pragma pack(push, 1)

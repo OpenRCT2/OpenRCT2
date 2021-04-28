@@ -266,6 +266,7 @@ struct Vehicle : SpriteBase
         update_flags |= flag;
     }
     void ApplyMass(int16_t appliedMass);
+    void Serialise(DataSerialiser& stream);
 
 private:
     bool SoundCanPlay() const;
