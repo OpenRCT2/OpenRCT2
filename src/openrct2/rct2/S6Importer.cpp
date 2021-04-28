@@ -237,8 +237,6 @@ public:
         gGuestChangeModifier = _s6.guest_count_change_modifier;
         gResearchFundingLevel = _s6.current_research_level;
         // pad_01357400
-        ImportResearchedRideTypes();
-        ImportResearchedRideEntries();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -258,8 +256,6 @@ public:
         gStaffHandymanColour = _s6.handyman_colour;
         gStaffMechanicColour = _s6.mechanic_colour;
         gStaffSecurityColour = _s6.security_colour;
-
-        ImportResearchedSceneryItems();
 
         gParkRating = _s6.park_rating;
 
@@ -858,61 +854,6 @@ public:
             dst.altitude[i] = src.altitude[i];
             dst.vertical[i] = src.vertical[i];
             dst.lateral[i] = src.lateral[i];
-        }
-    }
-
-    void ImportResearchedRideTypes()
-    {
-        set_every_ride_type_not_invented();
-
-        for (int32_t rideType = 0; rideType < RCT2_RIDE_TYPE_COUNT; rideType++)
-        {
-            int32_t quadIndex = rideType >> 5;
-            int32_t bitIndex = rideType & 0x1F;
-            bool invented = (_s6.researched_ride_types[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-                ride_type_set_invented(rideType);
-        }
-    }
-
-    void ImportResearchedRideEntries()
-    {
-        set_every_ride_entry_not_invented();
-
-        for (int32_t rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
-        {
-            int32_t quadIndex = rideEntryIndex >> 5;
-            int32_t bitIndex = rideEntryIndex & 0x1F;
-            bool invented = (_s6.researched_ride_entries[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-                ride_entry_set_invented(rideEntryIndex);
-        }
-    }
-
-    void ImportResearchedSceneryItems()
-    {
-        set_all_scenery_items_not_invented();
-
-        for (uint16_t sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
-        {
-            int32_t quadIndex = sceneryEntryIndex >> 5;
-            int32_t bitIndex = sceneryEntryIndex & 0x1F;
-            bool invented = (_s6.researched_scenery_items[quadIndex] & (1UL << bitIndex));
-
-            if (invented)
-            {
-                ScenerySelection scenerySelection = { static_cast<uint8_t>((sceneryEntryIndex >> 8) & 0xFF),
-                                                      static_cast<uint16_t>(sceneryEntryIndex & 0xFF) };
-
-                // SV6 has room for 8 types of scenery, and sometimes scenery of non-existing types 5 and 6 is marked as
-                // "invented".
-                if (scenerySelection.SceneryType < SCENERY_TYPE_COUNT)
-                {
-                    scenery_set_invented(scenerySelection);
-                }
-            }
         }
     }
 

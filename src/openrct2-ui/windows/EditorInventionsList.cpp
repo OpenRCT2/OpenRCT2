@@ -162,7 +162,7 @@ static void move_research_item(ResearchItem* beforeItem, int32_t scrollIndex)
     {
         for (size_t i = 0; i < researchList.size(); i++)
         {
-            if (researchList[i].Equals(beforeItem))
+            if (researchList[i] == *beforeItem)
             {
                 researchList.insert((researchList.begin() + i), _editorInventionsListDraggedItem);
                 return;
@@ -610,7 +610,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window* w, rct_drawpix
             gfx_filter_rect(dpi, 0, top, boxWidth, bottom, FilterPaletteID::PaletteDarken1);
         }
 
-        if (researchItem.Equals(&_editorInventionsListDraggedItem))
+        if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
         // TODO: this parameter by itself produces very light text.

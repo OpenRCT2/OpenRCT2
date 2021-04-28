@@ -421,7 +421,7 @@ void research_remove(ResearchItem* researchItem)
     for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2.Equals(researchItem))
+        if (researchItem2 == *researchItem)
         {
             gResearchItemsUninvented.erase(it);
             return;
@@ -430,7 +430,7 @@ void research_remove(ResearchItem* researchItem)
     for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end(); it++)
     {
         auto& researchItem2 = *it;
-        if (researchItem2.Equals(researchItem))
+        if (researchItem2 == *researchItem)
         {
             gResearchItemsInvented.erase(it);
             return;
@@ -731,18 +731,17 @@ void research_remove_flags()
     }
 }
 
-void research_fix()
+static void research_remove_null_items(std::vector<ResearchItem>& items)
 {
-    // Fix invalid research items
-    for (auto it = gResearchItemsInvented.begin(); it != gResearchItemsInvented.end();)
+    for (auto it = items.begin(); it != items.end();)
     {
         auto& researchItem = *it;
         if (researchItem.type == Research::EntryType::Ride)
         {
-            rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
+            const auto* rideEntry = get_ride_entry(researchItem.entryIndex);
             if (rideEntry == nullptr)
             {
-                it = gResearchItemsInvented.erase(it);
+                it = items.erase(it);
             }
             else
             {
@@ -751,10 +750,10 @@ void research_fix()
         }
         else
         {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
+            const auto* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
             if (sceneryGroupEntry == nullptr)
             {
-                it = gResearchItemsInvented.erase(it);
+                it = items.erase(it);
             }
             else
             {
@@ -762,72 +761,94 @@ void research_fix()
             }
         }
     }
-    for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end();)
+}
+
+static void research_mark_item_as_researched(const ResearchItem& item)
+{
+    if (item.type == Research::EntryType::Ride)
     {
-        auto& researchItem = *it;
-        if (researchItem.type == Research::EntryType::Ride)
+        const auto* rideEntry = get_ride_entry(item.entryIndex);
+        if (rideEntry != nullptr)
         {
-            rct_ride_entry* rideEntry = get_ride_entry(researchItem.entryIndex);
-            if (rideEntry == nullptr)
+            ride_entry_set_invented(item.entryIndex);
+            for (auto rideType : rideEntry->ride_type)
             {
-                it = gResearchItemsUninvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
-        else
-        {
-            rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(researchItem.entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                it = gResearchItemsUninvented.erase(it);
-            }
-            else
-            {
-                it++;
-            }
-        }
-    }
-
-    research_update_uncompleted_types();
-    if (gResearchUncompletedCategories == 0)
-        gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
-
-    // Sometimes ride entries are not in the research table.
-    // If all research is done, simply insert all of them as researched.
-    // For good measure, also include scenery groups.
-    if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
-    {
-        for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
-        {
-            const rct_ride_entry* rideEntry = get_ride_entry(i);
-
-            if (rideEntry != nullptr)
-            {
-                research_insert_ride_entry(i, true);
-                ride_entry_set_invented(i);
-
-                for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                if (rideType != RIDE_TYPE_NULL)
                 {
-                    uint32_t rideType = rideEntry->ride_type[j];
-                    if (rideType != RIDE_TYPE_NULL)
-                    {
-                        ride_type_set_invented(rideEntry->ride_type[j]);
-                    }
+                    ride_type_set_invented(rideType);
                 }
             }
         }
-
-        for (uint8_t i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    }
+    else if (item.type == Research::EntryType::Scenery)
+    {
+        const auto sgEntry = get_scenery_group_entry(item.entryIndex);
+        if (sgEntry != nullptr)
         {
-            const rct_scenery_group_entry* groupEntry = get_scenery_group_entry(i);
-
-            if (groupEntry != nullptr)
-                research_insert_scenery_group_entry(i, true);
+            for (auto i = 0; i < sgEntry->entry_count; i++)
+            {
+                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
+                scenery_set_invented(sceneryEntryIndex);
+            }
         }
     }
+}
+
+static void research_rebuild_invented_tables()
+{
+    set_every_ride_type_not_invented();
+    set_every_ride_entry_invented();
+    set_every_ride_entry_not_invented();
+    set_all_scenery_items_not_invented();
+    for (const auto& item : gResearchItemsInvented)
+    {
+        // Ignore item, if the research of it is in progress
+        if (gResearchProgressStage == RESEARCH_STAGE_DESIGNING || gResearchProgressStage == RESEARCH_STAGE_COMPLETING_DESIGN)
+        {
+            if (item == gResearchNextItem)
+            {
+                continue;
+            }
+        }
+
+        research_mark_item_as_researched(item);
+    }
+}
+
+static void research_add_all_missing_items(bool isResearched)
+{
+    for (ObjectEntryIndex i = 0; i < MAX_RIDE_OBJECTS; i++)
+    {
+        const auto* rideEntry = get_ride_entry(i);
+        if (rideEntry != nullptr)
+        {
+            research_insert_ride_entry(i, isResearched);
+        }
+    }
+
+    for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+    {
+        const auto* groupEntry = get_scenery_group_entry(i);
+        if (groupEntry != nullptr)
+        {
+            research_insert_scenery_group_entry(i, isResearched);
+        }
+    }
+}
+
+void research_fix()
+{
+    // Remove null entries from the research list
+    research_remove_null_items(gResearchItemsInvented);
+    research_remove_null_items(gResearchItemsUninvented);
+
+    // Add missing entries to the research list
+    // If research is complete, mark all the missing items as available
+    research_add_all_missing_items(gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL);
+
+    // Now rebuild all the tables that say whether a ride or scenery item is invented
+    research_rebuild_invented_tables();
+    research_update_uncompleted_types();
 }
 
 void research_items_make_all_unresearched()
@@ -870,23 +891,18 @@ void ResearchItem::SetNull()
     entryIndex = OBJECT_ENTRY_INDEX_NULL;
 }
 
-bool ResearchItem::Equals(const ResearchItem* otherItem) const
-{
-    return (entryIndex == otherItem->entryIndex && baseRideType == otherItem->baseRideType && type == otherItem->type);
-}
-
 bool ResearchItem::Exists() const
 {
     for (auto const& researchItem : gResearchItemsUninvented)
     {
-        if (researchItem.Equals(this))
+        if (researchItem == *this)
         {
             return true;
         }
     }
     for (auto const& researchItem : gResearchItemsInvented)
     {
-        if (researchItem.Equals(this))
+        if (researchItem == *this)
         {
             return true;
         }
@@ -930,6 +946,11 @@ rct_string_id ResearchItem::GetCategoryName() const
     const auto categoryValue = EnumValue(category);
     Guard::Assert(categoryValue <= 6, "Unsupported category name");
     return _researchCategoryNames[categoryValue];
+}
+
+bool ResearchItem::operator==(const ResearchItem& rhs) const
+{
+    return (entryIndex == rhs.entryIndex && baseRideType == rhs.baseRideType && type == rhs.type);
 }
 
 static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
@@ -988,11 +1009,11 @@ void research_determine_first_of_type()
 
         // The last research item will also be present in gResearchItemsInvented.
         // Avoid marking its ride type as "invented" prematurely.
-        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem.Equals(&gResearchLastItem.value()))
+        if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem == *gResearchLastItem)
             continue;
 
         // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented yet(!)
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == *gResearchNextItem)
             continue;
 
         research_mark_ride_type_as_seen(researchItem);
@@ -1012,7 +1033,7 @@ void research_determine_first_of_type()
     for (auto& researchItem : gResearchItemsUninvented)
     {
         // The next research item is (sometimes?) also present in gResearchItemsUninvented
-        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem.Equals(&gResearchNextItem.value()))
+        if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == *gResearchNextItem)
         {
             // Copy the "first of type" flag.
             researchItem.flags = gResearchNextItem->flags;
