@@ -3,6 +3,7 @@
 - Feature: [#13967] Track List window now displays the path to the design when debugging tools are on.
 - Feature: [#14071] “Vandals stopped” statistic for security guards.
 - Feature: [#14296] Allow using early scenario completion in multiplayer.
+- Feature: [#14538] [Plugin] Add property for getting current plugin api version.
 - Change: [#14496] [Plugin] Rename Object to LoadedObject to fix conflicts with Typescript's Object interface.
 - Change: [#14536] [Plugin] Rename ListView to ListViewWidget to make it consistent with names of other widgets.
 - Fix: [#11829] Visual glitches and crashes when using RCT1 assets from mismatched or corrupt CSG1.DAT and CSG1i.DAT files.

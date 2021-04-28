@@ -160,6 +160,12 @@ declare global {
      */
     interface Context {
         /**
+         * Gets the current version of the plugin api. This is an integer that increments
+         * by 1 every time a change to the plugin api is made.
+         */
+        readonly apiVersion: number;
+
+        /**
          * The user's current configuration.
          */
         configuration: Configuration;
