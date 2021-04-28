@@ -58,11 +58,12 @@
 		4C8BB68125533D65005C8830 /* StringBuilder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67D25533D64005C8830 /* StringBuilder.cpp */; };
 		4C8BB68225533D65005C8830 /* StringReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB67E25533D64005C8830 /* StringReader.cpp */; };
 		4C8BB68525533DB9005C8830 /* ZoomLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BB68425533DB9005C8830 /* ZoomLevel.cpp */; };
+		4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BF07623EDD145002D1F7F /* ParkFile.cpp */; };
 		4C91FD5F25AE476700CA5DA4 /* MusicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD5D25AE476700CA5DA4 /* MusicObject.cpp */; };
 		4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C91FD6025AE483600CA5DA4 /* RideAudio.cpp */; };
-		4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8BF07623EDD145002D1F7F /* ParkFile.cpp */; };
-		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
-		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
+		4C976BC0263976D2002DEBD5 /* Crypt.OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */; };
+		4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */; };
+		4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */; };
 		4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */; };
 		4CA39E522513F8A00094066B /* RTL.FriBidi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */; };
 		4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CB1375521C2E9F80029FCDA /* SimulateCommands.cpp */; };
@@ -1156,6 +1157,11 @@
 		4C93F1B71F8E185600A9330D /* NewsItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewsItem.h; sourceTree = "<group>"; };
 		4C93F1B81F8E185600A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1B91F8E185600A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Crypt.OpenRCT2.cpp; sourceTree = "<group>"; };
+		4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathSurfaceObject.cpp; sourceTree = "<group>"; };
+		4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FootpathRailingsObject.cpp; sourceTree = "<group>"; };
+		4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathRailingsObject.h; sourceTree = "<group>"; };
+		4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FootpathSurfaceObject.h; sourceTree = "<group>"; };
 		4CA39E4E2513F8A00094066B /* RTL.ICU.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.ICU.cpp; sourceTree = "<group>"; };
 		4CA39E4F2513F8A00094066B /* RTL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RTL.h; sourceTree = "<group>"; };
 		4CA39E502513F8A00094066B /* RTL.FriBidi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RTL.FriBidi.cpp; sourceTree = "<group>"; };
@@ -2441,6 +2447,7 @@
 				F76C837A1EC4E7CC00FA49E2 /* Console.cpp */,
 				F76C837B1EC4E7CC00FA49E2 /* Console.hpp */,
 				9344BEF720C1E6180047D165 /* Crypt.h */,
+				4C976BBF263976D2002DEBD5 /* Crypt.OpenRCT2.cpp */,
 				9344BEF820C1E6180047D165 /* Crypt.OpenSSL.cpp */,
 				C6352B811F477022006CCEE3 /* DataSerialiser.h */,
 				2ADE2F22224418B1002598AF /* DataSerialiserTag.h */,
@@ -2661,6 +2668,10 @@
 				F76C84171EC4E7CC00FA49E2 /* FootpathItemObject.h */,
 				F76C84181EC4E7CC00FA49E2 /* FootpathObject.cpp */,
 				F76C84191EC4E7CC00FA49E2 /* FootpathObject.h */,
+				4C976BC2263976F0002DEBD5 /* FootpathRailingsObject.cpp */,
+				4C976BC3263976F0002DEBD5 /* FootpathRailingsObject.h */,
+				4C976BC1263976F0002DEBD5 /* FootpathSurfaceObject.cpp */,
+				4C976BC4263976F0002DEBD5 /* FootpathSurfaceObject.h */,
 				F76C841A1EC4E7CC00FA49E2 /* ImageTable.cpp */,
 				F76C841B1EC4E7CC00FA49E2 /* ImageTable.h */,
 				F76C841C1EC4E7CC00FA49E2 /* LargeSceneryObject.cpp */,
@@ -3607,7 +3618,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "version=\"1.0.20\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -fLo \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
 			shellScript = "version=\"1.2\"\nzipname=\"objects.zip\"\nliburl=\"https://github.com/OpenRCT2/objects/releases/download/v$version/$zipname\"\n\n[[ ! -d \"${SRCROOT}/data/object\" || ! -e \"${SRCROOT}/objectsversion\" || $(head -n 1 \"${SRCROOT}/objectsversion\") != $version ]]\noutdated=$?\n\nif [[ $outdated -eq 0 ]]; then\nif [[ -d \"${SRCROOT}/data/object\" ]]; then rm -r \"${SRCROOT}/data/object\"; fi\nmkdir -p \"${SRCROOT}/data/object\"\n\ncurl -L -o \"${SRCROOT}/data/object/$zipname\" \"$liburl\"\nunzip -uaq -d \"${SRCROOT}/data/object\" \"${SRCROOT}/data/object/$zipname\"\nrm \"${SRCROOT}/data/object/$zipname\"\n\necho $version > \"${SRCROOT}/objectsversion\"\nfi\n";
 		};
 		C68B2D471EC790710020651C /* Download Libraries */ = {
@@ -3715,6 +3725,7 @@
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
 				4CB1375621C2E9F80029FCDA /* SimulateCommands.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
+				4C976BC0263976D2002DEBD5 /* Crypt.OpenRCT2.cpp in Sources */,
 				4CB2716A24195B45000CF9EE /* VehicleSubpositionData.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
@@ -3738,7 +3749,6 @@
 				4C2BF6C4258FF2FB005CD9A0 /* SingleRailRollerCoaster.cpp in Sources */,
 				930EEA6A24FC00950070314E /* ScenarioSelect.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
-				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
 				4C8BF07723EDD145002D1F7F /* ParkFile.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
 				4C91FD6225AE483700CA5DA4 /* RideAudio.cpp in Sources */,
@@ -3781,6 +3791,7 @@
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C68878C720289B710084B384 /* OpenGLShaderProgram.cpp in Sources */,
+				4C976BC5263976F0002DEBD5 /* FootpathSurfaceObject.cpp in Sources */,
 				4CA39E512513F8A00094066B /* RTL.ICU.cpp in Sources */,
 				93CBA4C420A7502E00867D56 /* Imaging.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
@@ -3794,6 +3805,7 @@
 				C68878C520289B710084B384 /* OpenGLDrawingEngine.cpp in Sources */,
 				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				4C976BC6263976F0002DEBD5 /* FootpathRailingsObject.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
